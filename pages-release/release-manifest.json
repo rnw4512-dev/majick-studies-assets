@@ -1,14 +1,29 @@
 {
-  "release": "Majick Studies V3.3.9 — Dark Collegium + Adaptive Stability",
+  "release": "Majick Studies V3.3.10 — Phaser Motion Restore + Dark Collegium Visual Pass",
   "live_url": "https://rnw4512-dev.github.io/majick-studies-assets/",
+  "deployment_run": 35476299319,
+  "deployment_status": "success",
   "base_package": "pages-release/majick-pages-site.zip",
-  "patch_parts": [
+  "v339_patch_parts": [
     "pages-release/v339-patch.b64.part01",
     "pages-release/v339-patch.b64.part02",
     "pages-release/v339-patch.b64.part03",
     "pages-release/v339-patch.b64.part04",
     "pages-release/v339-patch.b64.part05"
   ],
-  "deploy_status": "GitHub Actions run 35474609393 succeeded",
-  "study_progress_policy": "Preserve current browser progress; do not overwrite with older snapshot."
+  "v3310_sources": [
+    "pages-release/v3310/v3310-main.js",
+    "pages-release/v3310/v3310-main.css",
+    "pages-release/v3310/v3310-sanctuary.js",
+    "pages-release/v3310/v3310-apply.py"
+  ],
+  "verified": [
+    "GitHub Pages deployment completed successfully",
+    "V3.3.10 files present in deployed artifact",
+    "Preloader points to same-origin sanctuary/assets/motion",
+    "Original Phase 4 movement PNGs are present in the deployed artifact",
+    "JavaScript syntax checks passed for V3.3.10, Game, Preloader and service worker"
+  ],
+  "study_progress_policy": "Preserve current GitHub Pages browser progress; no destructive migration.",
+  "study_now_logic": "V3.3.9 adaptive logic retained; V3.3.10 changes guardian presentation and sanctuary motion/visual staging only."
 }
