@@ -1,0 +1,37 @@
+/* Majick Studies V3.3.11 — polished evolution + Living Grimoire */
+.v3311CanonPortrait{position:relative}
+.v3311CanonPortrait img{object-fit:contain!important;object-position:center!important;filter:drop-shadow(0 10px 18px #09030d66)}
+.v3311StageBadge{position:absolute;left:8px;bottom:7px;padding:3px 7px;border-radius:999px;background:#14091ddd;color:#f2d49e;border:1px solid #d8b47c55;font-size:9px;font-weight:900;letter-spacing:.03em}
+.v3311BookShell{padding:10px 4px 34px;min-height:calc(100vh - 160px)}
+.v3311BookShell>header{display:flex;justify-content:space-between;align-items:end;margin-bottom:18px}
+.v3311BookShell h2{font-family:Georgia,serif;color:#f0cf98;font-size:34px;margin:4px 0}
+.v3311BookShell header p{color:#cdbfce;margin:0}
+.v3311BookStage{display:grid;grid-template-columns:58px minmax(0,920px) 58px;justify-content:center;align-items:center;gap:14px;perspective:1600px}
+.v3311Book{position:relative;min-height:570px;padding:54px 60px 42px;border-radius:20px 28px 28px 20px;background:
+ radial-gradient(circle at 84% 12%,#fffaf0 0,#fffaf000 32%),
+ linear-gradient(90deg,#dfc7a8 0,#f6e9d0 7%,#fff9ec 50%,#f2dfc3 94%,#ceb08e 100%);
+ color:#33241f;border:1px solid #b78d63;box-shadow:0 28px 65px #06020a88,inset 20px 0 38px #77513e18,inset -12px 0 30px #77513e15;overflow:hidden;animation:v3311Turn .32s ease both}
+.v3311Book:after{content:'';position:absolute;inset:13px;border:1px solid #9f76512b;border-radius:14px 22px 22px 14px;pointer-events:none}
+.v3311Book:before{content:'';position:absolute;top:0;bottom:0;left:50%;width:1px;background:#7e5b4218}
+.v3311Book.cover{background:radial-gradient(circle at 50% 25%,#55395f 0,#29152f 46%,#120918 100%);color:#f4e8df;border-color:#c9a06a;box-shadow:0 32px 75px #050208b8,inset 0 0 0 5px #d2ae7230,inset 0 0 0 13px #0f0714}
+.v3311Book h3{position:relative;z-index:2;font-family:Georgia,serif;color:#5a352d;font-size:31px;margin:0 0 15px}.v3311Book.cover h3{color:#f0ce95;text-align:center;font-size:42px;margin-top:80px}
+.v3311Lead{position:relative;z-index:2;font-size:17px;line-height:1.65}.cover .v3311Lead{text-align:center;color:#e9dce7;max-width:650px;margin:20px auto}
+.v3311CoverSigil{position:relative;z-index:2;text-align:center;font-size:86px;color:#f1d18f;text-shadow:0 0 30px #bd7bc777}
+.v3311Promise{position:relative;z-index:2;display:grid;grid-template-columns:repeat(2,1fr);gap:12px;max-width:540px;margin:28px auto}
+.v3311Promise span{padding:13px;border-radius:15px;border:1px solid #d5b77b35;background:#ffffff09;color:#f5e6d2;text-align:center}
+.v3311Rows{position:relative;z-index:2;display:grid;gap:8px;margin:18px 0}.v3311Rows>div{display:grid;grid-template-columns:185px 1fr;gap:14px;padding:10px 12px;border-bottom:1px solid #7c5d4422}.v3311Rows b{font-family:Georgia,serif;color:#6c3d34}.v3311Rows span{line-height:1.45}.v3311Rows em{grid-column:2;color:#81556c;font-style:normal;font-size:12px;font-weight:800}
+.v3311Book aside{position:relative;z-index:2;display:flex;gap:12px;padding:14px;border-radius:14px;background:#75485a12;border-left:4px solid #8d5169;margin:18px 0}.v3311Book aside b{color:#793f54}
+.v3311Book footer{position:relative;z-index:2;display:flex;gap:8px;flex-wrap:wrap;margin-top:22px;padding-top:14px;border-top:1px solid #82614824}
+.v3311Folio{position:absolute;right:28px;top:22px;z-index:2;color:#755844;font-size:11px;font-weight:900}
+.v3311Arrow{height:80px;width:54px;border-radius:999px;border:1px solid #d3b17444;background:#211027;color:#f2d292;font-size:42px;cursor:pointer;box-shadow:0 12px 28px #0005}.v3311Arrow:disabled{opacity:.18;cursor:not-allowed}
+.v3311Mistakes{position:relative;z-index:2;display:grid;gap:12px}.v3311Mistakes article{padding:14px;border-radius:14px;border:1px solid #8f6a5330;background:#fff8ec90}.v3311Mistakes article>*{display:block;margin:5px 0}.v3311Mistakes .bad{color:#9e4b5b}.v3311Mistakes .good{color:#2d7057;font-weight:800}
+.v3311Glossary{position:relative;z-index:2;display:grid;gap:8px;max-height:430px;overflow:auto}.v3311Glossary details{padding:9px 4px;border-bottom:1px solid #76584125}.v3311Glossary summary{font-family:Georgia,serif;font-size:17px;color:#663b33;font-weight:700;cursor:pointer}
+.v3311Empty{position:relative;z-index:2;padding:100px 10px;text-align:center;font-family:Georgia,serif;color:#75504d;font-size:26px}
+.v3311Chapters{display:flex;gap:8px;overflow:auto;max-width:1040px;margin:14px auto 0;padding:4px}.v3311Chapters button{flex:0 0 auto;border:1px solid #9c777044;background:#1d0e25;color:#d8c6d7;border-radius:999px;padding:8px 12px;font-size:11px;cursor:pointer}.v3311Chapters button.active{background:#6c416a;color:#fff1df;border-color:#e0bb815c}
+@keyframes v3311Turn{from{opacity:.25;transform:rotateY(-7deg) translateX(-8px)}to{opacity:1;transform:none}}
+.v3311EvolutionWrap{margin-top:32px}
+.v3311Evolution{margin:18px 0;padding:18px;border-radius:24px;background:linear-gradient(145deg,color-mix(in srgb,var(--evo,#c79be9) 10%,#160a20),#100716 70%);border:1px solid color-mix(in srgb,var(--evo,#c79be9) 35%,#cba36b);box-shadow:0 16px 44px #05020855}
+.v3311EvoHead{display:flex;justify-content:space-between;align-items:center;gap:14px;margin-bottom:14px}.v3311EvoHead h3{font-family:Georgia,serif;color:#f0d09a;font-size:25px;margin:4px 0}.v3311EvoHead p{color:#cdbdcc;margin:0}.v3311EvoHead img{width:104px;height:104px;object-fit:contain;border-radius:20px;background:#0d0713;border:1px solid #dfbd7a42;padding:7px;box-shadow:0 12px 28px #0006}
+.v3311FullBanner{display:block;width:100%;max-height:360px;object-fit:contain;border-radius:18px;background:#0d0712;border:1px solid #d8b47a35;box-shadow:0 12px 32px #0006}
+.v3311StageChips{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:12px}.v3311StageChips span{text-align:center;padding:8px 6px;border-radius:999px;background:#ffffff08;border:1px solid #ffffff10;color:#cdbdcb;font-size:11px;font-weight:900}.v3311StageChips .current{background:color-mix(in srgb,var(--evo,#c79be9) 24%,#1d1025);border-color:var(--evo,#c79be9);color:#fff0dd;box-shadow:0 0 0 2px color-mix(in srgb,var(--evo,#c79be9) 18%,transparent)}
+@media(max-width:900px){.v3311BookStage{grid-template-columns:38px minmax(0,1fr) 38px}.v3311Book{padding:44px 26px 34px;min-height:520px}.v3311Arrow{width:38px}.v3311Rows>div{grid-template-columns:1fr}.v3311Rows em{grid-column:1}.v3311EvoHead{align-items:flex-start}.v3311EvoHead img{width:80px;height:80px}.v3311StageChips{grid-template-columns:repeat(2,1fr)}.v3311StageChips span:last-child{grid-column:1/-1}.v3311Promise{grid-template-columns:1fr}}
