@@ -1,10 +1,14 @@
 {
-  "release": "Majick Studies V3.3.8 Canon Guardians + Progress Restored",
-  "parts": [
-    {"file":"majick-pages-part-01.zip","bytes":19559476},
-    {"file":"majick-pages-part-02.zip","bytes":19564636},
-    {"file":"majick-pages-part-03.zip","bytes":19509642},
-    {"file":"majick-pages-part-04.zip","bytes":17770294}
+  "release": "Majick Studies V3.3.9 — Dark Collegium + Adaptive Stability",
+  "live_url": "https://rnw4512-dev.github.io/majick-studies-assets/",
+  "base_package": "pages-release/majick-pages-site.zip",
+  "patch_parts": [
+    "pages-release/v339-patch.b64.part01",
+    "pages-release/v339-patch.b64.part02",
+    "pages-release/v339-patch.b64.part03",
+    "pages-release/v339-patch.b64.part04",
+    "pages-release/v339-patch.b64.part05"
   ],
-  "expected_site_url": "https://rnw4512-dev.github.io/majick-studies-assets/"
+  "deploy_status": "GitHub Actions run 35474609393 succeeded",
+  "study_progress_policy": "Preserve current browser progress; do not overwrite with older snapshot."
 }
