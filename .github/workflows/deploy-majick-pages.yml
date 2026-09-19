@@ -5,7 +5,8 @@ on:
     branches: [main]
     paths:
       - 'pages-release/majick-pages-site.zip'
-      - 'pages-release/v3310-patch.zip'
+      - 'pages-release/v339-patch.b64.part*'
+      - 'pages-release/v3310/**'
       - '.github/workflows/deploy-majick-pages.yml'
   workflow_dispatch:
 
@@ -28,27 +29,41 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Verify Majick Studies packages
+      - name: Verify Majick Studies sources
         shell: bash
         run: |
           set -euo pipefail
           test -s pages-release/majick-pages-site.zip
-          test -s pages-release/v3310-patch.zip
+          for n in 01 02 03 04 05; do test -s "pages-release/v339-patch.b64.part$n"; done
+          test -s pages-release/v3310/v3310-main.js
+          test -s pages-release/v3310/v3310-main.css
+          test -s pages-release/v3310/v3310-sanctuary.js
+          test -s pages-release/v3310/v3310-apply.py
 
       - name: Assemble Majick Studies V3.3.10
         shell: bash
         run: |
           set -euo pipefail
-          rm -rf _site _patch
-          mkdir -p _site _patch
+          rm -rf _site _patch339 /tmp/v339-patch.zip /tmp/v339-patch.b64
+          mkdir -p _site _patch339
 
+          # Stable V3.3.8 base.
           unzip -oq pages-release/majick-pages-site.zip -d _site
-          unzip -t pages-release/v3310-patch.zip
-          unzip -oq pages-release/v3310-patch.zip -d _patch
-          python _patch/apply_patch.py _site
 
-          # Preserve the hand-built Phase 4 sprite files exactly as they already exist.
-          # Only their hosting location is normalized to this same Pages origin.
+          # Reapply the V3.3.9 layer that already deployed successfully.
+          cat pages-release/v339-patch.b64.part01               pages-release/v339-patch.b64.part02               pages-release/v339-patch.b64.part03               pages-release/v339-patch.b64.part04               pages-release/v339-patch.b64.part05               | tr -d '\r\n' > /tmp/v339-patch.b64
+          base64 --decode /tmp/v339-patch.b64 > /tmp/v339-patch.zip
+          unzip -t /tmp/v339-patch.zip
+          unzip -oq /tmp/v339-patch.zip -d _patch339
+          python _patch339/apply_patch.py _site
+
+          # V3.3.10 is text-only code around the original sprite art.
+          cp pages-release/v3310/v3310-main.js _site/v3310-main.js
+          cp pages-release/v3310/v3310-main.css _site/v3310-main.css
+          cp pages-release/v3310/v3310-sanctuary.js _site/sanctuary/v3310-sanctuary.js
+          python pages-release/v3310/v3310-apply.py _site
+
+          # Preserve the hand-built Phase 4 images exactly as uploaded.
           mkdir -p _site/sanctuary/assets/motion
           cp luna-idle.png _site/sanctuary/assets/motion/luna-idle.png
           cp luna-walk-1.png _site/sanctuary/assets/motion/luna-walk-1.png
@@ -88,6 +103,8 @@ jobs:
           cp mallow-binky.png _site/sanctuary/assets/motion/mallow-binky.png
 
           touch _site/.nojekyll
+
+          # Fail loudly before publishing if any motion or patch dependency is missing.
           test -s _site/index.html
           test -s _site/v339-main.js
           test -s _site/v3310-main.js
