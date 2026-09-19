@@ -5,7 +5,7 @@ on:
     branches: [main]
     paths:
       - 'pages-release/majick-pages-site.zip'
-      - 'pages-release/v339-patch.zip'
+      - 'pages-release/v339-patch.b64.part*'
       - '.github/workflows/deploy-majick-pages.yml'
   workflow_dispatch:
 
@@ -33,20 +33,28 @@ jobs:
         run: |
           set -euo pipefail
           test -f pages-release/majick-pages-site.zip
-          test -f pages-release/v339-patch.zip
+          for n in 01 02 03 04 05; do
+            test -f "pages-release/v339-patch.b64.part$n"
+          done
 
       - name: Assemble Majick Studies V3.3.9
         shell: bash
         run: |
           set -euo pipefail
-          rm -rf _site _patch
+          rm -rf _site _patch /tmp/v339-patch.zip /tmp/v339-patch.b64
           mkdir -p _site _patch
+
           unzip -oq pages-release/majick-pages-site.zip -d _site
-          unzip -oq pages-release/v339-patch.zip -d _patch
+
+          cat pages-release/v339-patch.b64.part01               pages-release/v339-patch.b64.part02               pages-release/v339-patch.b64.part03               pages-release/v339-patch.b64.part04               pages-release/v339-patch.b64.part05               | tr -d '\r\n' > /tmp/v339-patch.b64
+          base64 --decode /tmp/v339-patch.b64 > /tmp/v339-patch.zip
+          unzip -t /tmp/v339-patch.zip
+          unzip -oq /tmp/v339-patch.zip -d _patch
           python _patch/apply_patch.py _site
 
-          # Serve the EXISTING Phase 4 motion art from the same Pages origin.
-          # No movement routines or familiar sprite designs are replaced.
+          # Keep the existing Phase 4 movement art exactly as-is, but serve it
+          # from the same GitHub Pages origin so browser cross-site loading
+          # cannot stall the sanctuary.
           mkdir -p _site/sanctuary/assets/motion
           cp luna-idle.png _site/sanctuary/assets/motion/luna-idle.png
           cp luna-walk-1.png _site/sanctuary/assets/motion/luna-walk-1.png
@@ -88,6 +96,7 @@ jobs:
           touch _site/.nojekyll
           test -s _site/index.html
           test -s _site/v339-main.js
+          test -s _site/v339-main.css
           test -s _site/sanctuary/Preloader.js
           test -s _site/sanctuary/assets/motion/luna-idle.png
           test -s _site/sanctuary/assets/motion/ember-idle.png
@@ -95,6 +104,7 @@ jobs:
           test -s _site/sanctuary/assets/motion/mallow-idle.png
           grep -q "V3.3.9 Dark Collegium" _site/v339-main.js
           grep -q "V3.3.9 DARK COLLEGE SANCTUARY ROOM SKIN" _site/sanctuary/Game.js
+          grep -q "./assets/motion/" _site/sanctuary/Preloader.js
           echo "Majick Studies V3.3.9 assembled successfully."
 
       - name: Configure GitHub Pages
