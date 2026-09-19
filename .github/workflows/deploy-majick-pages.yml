@@ -4,7 +4,7 @@ on:
   push:
     branches: [main]
     paths:
-      - 'pages-release/**'
+      - 'pages-release/majick-pages-site.zip'
       - '.github/workflows/deploy-majick-pages.yml'
   workflow_dispatch:
 
@@ -27,14 +27,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Verify release parts
+      - name: Verify Majick Studies package
         shell: bash
         run: |
           set -euo pipefail
-          test -f pages-release/majick-pages-part-01.zip
-          test -f pages-release/majick-pages-part-02.zip
-          test -f pages-release/majick-pages-part-03.zip
-          test -f pages-release/majick-pages-part-04.zip
+          test -f pages-release/majick-pages-site.zip
 
       - name: Assemble Majick Studies site
         shell: bash
@@ -42,13 +39,11 @@ jobs:
           set -euo pipefail
           rm -rf _site
           mkdir -p _site
-          for part in pages-release/majick-pages-part-*.zip; do
-            unzip -oq "$part" -d _site
-          done
+          unzip -oq pages-release/majick-pages-site.zip -d _site
           touch _site/.nojekyll
           test -f _site/index.html
           test -f _site/sanctuary/index.html
-          echo "Majick Studies site assembled successfully."
+          echo "Majick Studies V3.3.8 assembled successfully."
 
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
