@@ -1,25 +1,30 @@
 # Majick Studies — Permanent GitHub Pages App
 
-This folder is the deployment source for the permanent Majick Studies web app.
+The deployment workflow is already installed in this repository.
 
-## Current release
-Majick Studies V3.3.8 — Canon Guardians + Progress Restored
+## Upload exactly one file
 
-The release is split into four ZIP parts so each file stays below GitHub's browser-upload limit. The deployment workflow unpacks all four parts into one site and publishes the result to GitHub Pages.
+Upload the current site package here and name it exactly:
 
-## One-time setup
-1. Open this repository on GitHub.
-2. Go to **Settings → Pages**.
-3. Under **Build and deployment → Source**, choose **GitHub Actions**.
-4. Return to this `pages-release` folder.
-5. Use **Add file → Upload files** and upload all four `majick-pages-part-XX.zip` files together.
-6. Commit directly to `main`.
+`pages-release/majick-pages-site.zip`
 
-After the workflow finishes, the permanent site should be:
+Current package: **Majick Studies V3.3.8 — Canon Guardians + Current Progress Restored**
+
+### GitHub steps
+1. Open this repository and enter the **pages-release** folder.
+2. Click **Add file → Upload files**.
+3. Upload the supplied `Majick_Studies_GitHub_Pages_SITE_V3_3_8.zip`.
+4. Before committing, set the repository filename to **majick-pages-site.zip**.
+5. Commit directly to **main**.
+6. Open **Settings → Pages** and set **Source** to **GitHub Actions** if it is not already selected.
+7. Open **Actions** and wait for **Deploy Majick Studies to GitHub Pages** to finish.
+
+Permanent app address after deployment:
 
 https://rnw4512-dev.github.io/majick-studies-assets/
 
-## Progress behavior
-The site uses one stable GitHub Pages origin, so browser storage remains attached to the same app across future code updates. V3.3.8 also carries the Sep 19 recovery snapshot for the first transition from localhost to GitHub Pages.
+## Future updates
 
-Normal future updates should modify the same deployed app rather than changing the public URL.
+The URL does not change. Future Majick Studies releases replace only `pages-release/majick-pages-site.zip`. The workflow publishes the replacement at the same GitHub Pages address.
+
+Because the web origin remains the same, normal browser progress stays with the same app between code updates. The current build also includes the Sep 19 emergency recovery snapshot for the initial move from localhost.
