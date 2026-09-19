@@ -5,6 +5,7 @@ on:
     branches: [main]
     paths:
       - 'pages-release/majick-pages-site.zip'
+      - 'pages-release/v339-patch.zip'
       - '.github/workflows/deploy-majick-pages.yml'
   workflow_dispatch:
 
@@ -27,23 +28,74 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Verify Majick Studies package
+      - name: Verify Majick Studies packages
         shell: bash
         run: |
           set -euo pipefail
           test -f pages-release/majick-pages-site.zip
+          test -f pages-release/v339-patch.zip
 
-      - name: Assemble Majick Studies site
+      - name: Assemble Majick Studies V3.3.9
         shell: bash
         run: |
           set -euo pipefail
-          rm -rf _site
-          mkdir -p _site
+          rm -rf _site _patch
+          mkdir -p _site _patch
           unzip -oq pages-release/majick-pages-site.zip -d _site
+          unzip -oq pages-release/v339-patch.zip -d _patch
+          python _patch/apply_patch.py _site
+
+          # Serve the EXISTING Phase 4 motion art from the same Pages origin.
+          # No movement routines or familiar sprite designs are replaced.
+          mkdir -p _site/sanctuary/assets/motion
+          cp luna-idle.png _site/sanctuary/assets/motion/luna-idle.png
+          cp luna-walk-1.png _site/sanctuary/assets/motion/luna-walk-1.png
+          cp luna-walk-2.png _site/sanctuary/assets/motion/luna-walk-2.png
+          cp luna-hop.png _site/sanctuary/assets/motion/luna-hop.png
+
+          cp ember-idle.png _site/sanctuary/assets/motion/ember-idle.png
+          cp ember-walk-1.png _site/sanctuary/assets/motion/ember-walk-1.png
+          cp ember-walk-2.png _site/sanctuary/assets/motion/ember-walk-2.png
+          cp ember-hop.png _site/sanctuary/assets/motion/ember-hop.png
+          cp ember-slither-1.png _site/sanctuary/assets/motion/ember-slither-1.png
+          cp ember-slither-2.png _site/sanctuary/assets/motion/ember-slither-2.png
+          cp ember-sit.png _site/sanctuary/assets/motion/ember-sit.png
+          cp ember-sleep.png _site/sanctuary/assets/motion/ember-sleep.png
+
+          cp nova-walk-1.png _site/sanctuary/assets/motion/nova-walk-1.png
+          cp nova-walk-2.png _site/sanctuary/assets/motion/nova-walk-2.png
+          cp nova-run.png _site/sanctuary/assets/motion/nova-run.png
+          cp nova-hop.png _site/sanctuary/assets/motion/nova-hop.png
+          cp nova-paw.png _site/sanctuary/assets/motion/nova-paw.png
+          cp nova-spin.png _site/sanctuary/assets/motion/nova-spin.png
+          cp nova-sit.png _site/sanctuary/assets/motion/nova-sit.png
+          cp nova-sleep.png _site/sanctuary/assets/motion/nova-sleep.png
+          cp nova-pounce.png _site/sanctuary/assets/motion/nova-pounce.png
+          cp nova-pounce2.png _site/sanctuary/assets/motion/nova-pounce2.png
+          cp nova-pounce3.png _site/sanctuary/assets/motion/nova-pounce3.png
+
+          cp mallow-idle.png _site/sanctuary/assets/motion/mallow-idle.png
+          cp mallow-hop-1.png _site/sanctuary/assets/motion/mallow-hop-1.png
+          cp mallow-hop-2.png _site/sanctuary/assets/motion/mallow-hop-2.png
+          cp "mallow-fly 1.png" _site/sanctuary/assets/motion/mallow-fly-1.png
+          cp "mallow-fly 2.png" _site/sanctuary/assets/motion/mallow-fly-2.png
+          cp mallow-paw.png _site/sanctuary/assets/motion/mallow-paw.png
+          cp mallow-sit.png _site/sanctuary/assets/motion/mallow-sit.png
+          cp mallow-sleep.png _site/sanctuary/assets/motion/mallow-sleep.png
+          cp mallow-land.png _site/sanctuary/assets/motion/mallow-land.png
+          cp mallow-binky.png _site/sanctuary/assets/motion/mallow-binky.png
+
           touch _site/.nojekyll
-          test -f _site/index.html
-          test -f _site/sanctuary/index.html
-          echo "Majick Studies V3.3.8 assembled successfully."
+          test -s _site/index.html
+          test -s _site/v339-main.js
+          test -s _site/sanctuary/Preloader.js
+          test -s _site/sanctuary/assets/motion/luna-idle.png
+          test -s _site/sanctuary/assets/motion/ember-idle.png
+          test -s _site/sanctuary/assets/motion/nova-sit.png
+          test -s _site/sanctuary/assets/motion/mallow-idle.png
+          grep -q "V3.3.9 Dark Collegium" _site/v339-main.js
+          grep -q "V3.3.9 DARK COLLEGE SANCTUARY ROOM SKIN" _site/sanctuary/Game.js
+          echo "Majick Studies V3.3.9 assembled successfully."
 
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
