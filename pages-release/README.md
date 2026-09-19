@@ -1,30 +1,26 @@
 # Majick Studies — Permanent GitHub Pages App
 
-The deployment workflow is already installed in this repository.
-
-## Upload exactly one file
-
-Upload the current site package here and name it exactly:
-
-`pages-release/majick-pages-site.zip`
-
-Current package: **Majick Studies V3.3.8 — Canon Guardians + Current Progress Restored**
-
-### GitHub steps
-1. Open this repository and enter the **pages-release** folder.
-2. Click **Add file → Upload files**.
-3. Upload the supplied `Majick_Studies_GitHub_Pages_SITE_V3_3_8.zip`.
-4. Before committing, set the repository filename to **majick-pages-site.zip**.
-5. Commit directly to **main**.
-6. Open **Settings → Pages** and set **Source** to **GitHub Actions** if it is not already selected.
-7. Open **Actions** and wait for **Deploy Majick Studies to GitHub Pages** to finish.
-
-Permanent app address after deployment:
-
+Permanent app:
 https://rnw4512-dev.github.io/majick-studies-assets/
 
-## Future updates
+## Current live release
+**Majick Studies V3.3.9 — Dark Collegium + Adaptive Stability**
 
-The URL does not change. Future Majick Studies releases replace only `pages-release/majick-pages-site.zip`. The workflow publishes the replacement at the same GitHub Pages address.
+The permanent site keeps the V3.3.8 base package and applies the V3.3.9 patch during GitHub Actions deployment. This lets future updates preserve the same public URL and browser origin instead of requiring a new local ZIP every release.
 
-Because the web origin remains the same, normal browser progress stays with the same app between code updates. The current build also includes the Sep 19 emergency recovery snapshot for the initial move from localhost.
+### V3.3.9 deployment pieces
+- `majick-pages-site.zip` — stable V3.3.8 site base
+- `v339-patch.b64.part01` through `part05` — V3.3.9 patch payload
+- `.github/workflows/deploy-majick-pages.yml` — assembles and deploys the current site
+
+### V3.3.9 focus
+- stronger adaptive question rotation and difficulty escalation
+- Test Week lock disabled
+- persistent browser audio unlock
+- canon Guardian portraits in study coaching
+- darker magical-college sanctuary presentation
+- crystal beds and interactive sanctuary furnishings
+- existing Phase 4 moving familiar art/routines preserved
+- existing moving art served from the same GitHub Pages origin for stability
+
+Normal future updates should continue publishing to this same Pages URL. Browser progress should remain attached to the same origin across code updates.
