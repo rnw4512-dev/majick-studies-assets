@@ -377,7 +377,10 @@ try{
     const row=await MajickMaterialStore.get(id);
     return row?.learningPath||null;
   },forged.id);
-  await assert(sourcePath?.lessonId==='d772-s1-l1','D772 data-collection notes did not auto-fill Lesson 1 in the learning path');
+  await assert(
+    sourcePath?.lessonId==='d772-s1-l1'||sourcePath?.lessonIds?.includes?.('d772-s1-l1'),
+    'D772 mixed statistics notes lost their Lesson 1 data-collection placement'
+  );
 
   await page.evaluate(()=>navigate('learninglab'));
   await page.waitForSelector('[data-tutor-tab="path"]',{timeout:10000});
