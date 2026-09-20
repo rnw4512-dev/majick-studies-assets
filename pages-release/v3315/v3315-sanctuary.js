@@ -70,6 +70,43 @@ Game.prototype.v3315EnsureEvolutionTexture=function(type,action,done){
   this.load.start();
 };
 
+Game.prototype.v3315EnsureWalkSkin=function(type){
+  const pet=this[type];if(!pet||this['v3315WalkSkin_'+type])return;
+  this.v3315EnsureEvolutionTexture(type,'walk',k=>{
+    if(!k||!pet?.active||this['v3315WalkSkin_'+type])return;
+    const img=this.add.image(pet.x,pet.y,k).setOrigin(.5,1).setDepth((pet.depth||70)+1).setVisible(false);
+    const maxW=Math.max(110,pet.displayWidth*1.35),maxH=Math.max(120,pet.displayHeight*1.55);
+    const sc=Math.min(maxW/Math.max(1,img.width),maxH/Math.max(1,img.height));
+    img.setScale(sc);
+    this['v3315WalkSkin_'+type]=img;
+  });
+};
+
+Game.prototype.v3315UpdateWalkSkins=function(){
+  this.__v3315WalkPositions=this.__v3315WalkPositions||{};
+  const now=this.time.now;
+  ['luna','ember','nova','mallow'].forEach(type=>{
+    const pet=this[type];if(!pet?.active)return;
+    this.v3315EnsureWalkSkin(type);
+    const img=this['v3315WalkSkin_'+type],prev=this.__v3315WalkPositions[type];
+    const moved=prev&&(Math.abs(pet.x-prev.x)>1.5||Math.abs(pet.y-prev.y)>1.5);
+    this.__v3315WalkPositions[type]={x:pet.x,y:pet.y,at:now};
+    if(!img?.active)return;
+    img.setPosition(pet.x,pet.y).setDepth((pet.depth||70)+1);
+    const actionActive=!!this['v3315Action_'+type]?.active;
+    if(moved&&!actionActive){
+      img.setVisible(true);
+      pet.setAlpha(.08);
+      this['__v3315LastMove_'+type]=now;
+    }else if(!actionActive&&now-(this['__v3315LastMove_'+type]||0)>260){
+      img.setVisible(false);
+      pet.setAlpha(1);
+    }else if(actionActive){
+      img.setVisible(false);
+    }
+  });
+};
+
 Game.prototype.v3315ShowGuardianAction=function(type,action,duration){
   const pet=this[type];if(!pet)return;
   this.v3315EnsureEvolutionTexture(type,action,k=>{
@@ -103,6 +140,7 @@ if(typeof baseStart==='function'){
 const baseCreate=Game.prototype.create;
 Game.prototype.create=function(){
   baseCreate.call(this);
+  this.time.addEvent({delay:90,loop:true,callback:()=>this.v3315UpdateWalkSkins()});
   this.time.delayedCall(180,()=>{
     ['luna','ember','nova','mallow'].forEach(type=>{
       const pet=this[type],s=state(this,type);if(!pet||!s)return;
@@ -124,6 +162,7 @@ window.addEventListener('message',ev=>{
     const pet=scene[type],s=state(scene,type);if(!pet||!s)return;
     pet.setData('majickStage',s.stageSlug);
     pet.setData('majickStageName',s.stage);
+    scene.v3315EnsureWalkSkin(type);
   });
 });
 
