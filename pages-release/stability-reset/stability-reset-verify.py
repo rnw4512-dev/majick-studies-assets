@@ -4,14 +4,14 @@ site=Path(sys.argv[1])
 def fail(msg): raise SystemExit('STABILITY RESET VERIFY FAILED: '+msg)
 main=(site/'index.html').read_text(encoding='utf-8')
 san=(site/'sanctuary'/'index.html').read_text(encoding='utf-8')
-for f in ('v3310-ui-compat.js','v3312-ui-compat.js','guardian-registry.js','majick-state-core.js','learning-lab.js','learning-lab.css','guardian-care-economy.js','v3317-main.js','sanctuary/v3317-sanctuary.js','sanctuary/v3320-sanctuary-life.js','sanctuary/v3321-sanctuary-customize.js','v3322-main-recovery.js','sanctuary/v3322-sanctuary-recovery.js'):
+for f in ('v3310-ui-compat.js','v3312-ui-compat.js','guardian-registry.js','majick-state-core.js','learning-lab.js','learning-lab.css','learning-plan.js','learning-plan.css','guardian-care-economy.js','v3317-main.js','sanctuary/v3317-sanctuary.js','sanctuary/v3320-sanctuary-life.js','sanctuary/v3321-sanctuary-customize.js','v3322-main-recovery.js','sanctuary/v3322-sanctuary-recovery.js'):
     p=site/f
     if not p.exists() or not p.stat().st_size: fail('missing '+f)
 for old in ('v3310-main.js','v3312-main.js','v3313-main.js','v3314-main.js','v3315-main.js','v3316-main.js'):
     if old in main: fail('obsolete main runtime still loaded: '+old)
 for old in ('v3311-sanctuary.js','v3312-sanctuary.js','v3313-sanctuary.js','v3314-sanctuary.js','v3315-sanctuary.js'):
     if old in san: fail('obsolete Sanctuary runtime still loaded: '+old)
-order=['v3310-ui-compat.js','v3312-ui-compat.js','guardian-registry.js','majick-state-core.js','guardian-care-economy.js','learning-lab.js','v3317-main.js','v3322-main-recovery.js']
+order=['v3310-ui-compat.js','v3312-ui-compat.js','guardian-registry.js','majick-state-core.js','guardian-care-economy.js','learning-lab.js','learning-plan.js','v3317-main.js','v3322-main-recovery.js']
 pos=[main.find(x) for x in order]
 if any(x<0 for x in pos) or pos!=sorted(pos): fail('main runtime load order is wrong')
 if san.find('guardian-registry.js')<0 or san.find('v3317-sanctuary.js')<0: fail('Sanctuary registry/bridge missing')
@@ -45,6 +45,11 @@ if 'PROTECTED_MOTION_TYPES()' not in san_bridge: fail('Sanctuary motion loop is 
 learning=(site/'learning-lab.js').read_text(encoding='utf-8')
 for marker in ("window.MajickLearningLab","startVocabGame","calculateExpression","function stats","function renderLesson","function renderMastery"):
     if marker not in learning: fail('Learning Lab missing '+marker)
+learning_plan=(site/'learning-plan.js').read_text(encoding='utf-8')
+for marker in ("window.MajickLearningPlan","passageList","PERSONAL LEARNING PLAN","Read & Learn"):
+    if marker not in learning_plan: fail('Learning Plan missing '+marker)
+if 'learning-plan.js?v=3324' not in main or 'learning-plan.css?v=3324' not in main:
+    fail('Learning Plan assets are not installed in index.html')
 if 'learning-lab.js?v=3319' not in main or 'learning-lab.css?v=3319' not in main:
     fail('Learning Lab assets are not installed in index.html')
 san_life=(site/'sanctuary'/'v3320-sanctuary-life.js').read_text(encoding='utf-8')

@@ -145,38 +145,87 @@ function isNotesForgeQuestion(q){
 
 // Make Notes Forge questions a synchronized view of ACTIVE sources for one course.
 // This removes questions from deleted/inactive sources before re-adding active ones.
+function qsig(q){
+  return (String(q?.prompt||'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim()+'|'+
+    String(q?.answer||'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim());
+}
+function roundRobinBySource(rows,rigor,limit){
+  const queues=rows.map(row=>({
+    row,
+    qs:((row.generated&&row.generated.practiceQuestions)||[]).filter(q=>Number(q.rigorLevel||1)===rigor)
+  }));
+  const out=[],seen=new Set();
+  let advanced=true;
+  while(out.length<limit&&advanced){
+    advanced=false;
+    for(const bucket of queues){
+      const q=bucket.qs.shift();
+      if(!q)continue;
+      advanced=true;
+      const sig=qsig(q);
+      if(seen.has(sig))continue;
+      seen.add(sig);
+      out.push({q,row:bucket.row});
+      if(out.length>=limit)break;
+    }
+  }
+  return out;
+}
 async function syncQuestions(courseObj,courseId){
-  if(!courseObj||!Array.isArray(courseObj.questionBank))return {added:0,removed:0,total:0};
+  if(!courseObj||!Array.isArray(courseObj.questionBank))return {added:0,removed:0,total:0,target:100};
 
   const rows=await list(courseId);
-  const activeRows=rows.filter(r=>r.active!==false);
+  const activeRows=rows.filter(r=>r.active!==false)
+    .sort((a,b)=>String(b.createdAt||'').localeCompare(String(a.createdAt||'')));
 
   const before=courseObj.questionBank.length;
   courseObj.questionBank=courseObj.questionBank.filter(q=>!isNotesForgeQuestion(q));
   const removed=before-courseObj.questionBank.length;
 
-  let added=0;
-  for(const row of activeRows){
-    for(const q of ((row.generated&&row.generated.practiceQuestions)||[])){
-      const next=Object.assign({},q,{
-        courseId:String(courseId||row.courseId||''),
-        sourceId:row.id,
-        sourceName:row.sourceName,
-        sourceType:row.sourceType,
-        managedBy:'notes-forge'
-      });
-      if(!courseObj.questionBank.some(x=>x.id===next.id)){
-        courseObj.questionBank.push(next);
-        added++;
+  const target=100;
+  const quotas={1:20,2:30,3:30,4:20};
+  const selected=[],globalSeen=new Set();
+  for(const rigor of [1,2,3,4]){
+    for(const item of roundRobinBySource(activeRows,rigor,quotas[rigor])){
+      const sig=qsig(item.q);
+      if(globalSeen.has(sig))continue;
+      globalSeen.add(sig);selected.push(item);
+    }
+  }
+  if(selected.length<target){
+    for(const row of activeRows){
+      for(const q of ((row.generated&&row.generated.practiceQuestions)||[])){
+        if(selected.length>=target)break;
+        const sig=qsig(q);
+        if(globalSeen.has(sig))continue;
+        globalSeen.add(sig);selected.push({q,row});
       }
+      if(selected.length>=target)break;
+    }
+  }
+
+  let added=0;
+  for(const {q,row} of selected.slice(0,110)){
+    const next=Object.assign({},q,{
+      courseId:String(courseId||row.courseId||''),
+      sourceId:row.id,
+      sourceName:row.sourceName,
+      sourceType:row.sourceType,
+      managedBy:'notes-forge',
+      bankTarget:target
+    });
+    if(!courseObj.questionBank.some(x=>x.id===next.id)){
+      courseObj.questionBank.push(next);added++;
     }
   }
 
   return {
-    added,
-    removed,
+    added,removed,
     total:courseObj.questionBank.filter(isNotesForgeQuestion).length,
-    activeSources:activeRows.length
+    available:selected.length,
+    target,
+    activeSources:activeRows.length,
+    rigorMix:[1,2,3,4].reduce((o,r)=>(o[r]=courseObj.questionBank.filter(q=>isNotesForgeQuestion(q)&&Number(q.rigorLevel||1)===r).length,o),{})
   };
 }
 

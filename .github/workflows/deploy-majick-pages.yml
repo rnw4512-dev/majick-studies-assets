@@ -9,6 +9,7 @@ on:
       - 'pages-release/v3320/**'
       - 'pages-release/v3321/**'
       - 'pages-release/v3322/**'
+      - 'pages-release/v3324/**'
       - 'pages-release/v3315/study-material/**'
       - 'pages-release/v3316/courseManager.js'
       - 'pages-release/v3317/v3317-main.js'
@@ -63,6 +64,8 @@ jobs:
           test -s pages-release/stability-reset/majick-state-core.js
           test -s pages-release/v3319/learning-lab.js
           test -s pages-release/v3319/learning-lab.css
+          test -s pages-release/v3324/learning-plan.js
+          test -s pages-release/v3324/learning-plan.css
           test -s pages-release/v3320/sanctuary-life.js
           test -s pages-release/v3321/sanctuary-customize.js
           test -s pages-release/v3322/main-recovery.js
@@ -92,6 +95,7 @@ jobs:
           node --check pages-release/stability-reset/guardian-registry.js
           node --check pages-release/stability-reset/majick-state-core.js
           node --check pages-release/v3319/learning-lab.js
+          node --check pages-release/v3324/learning-plan.js
           node --check pages-release/v3320/sanctuary-life.js
           node --check pages-release/v3321/sanctuary-customize.js
           node --check pages-release/v3322/main-recovery.js
@@ -177,6 +181,8 @@ jobs:
           cmp pages-release/stability-reset/majick-state-core.js _site/majick-state-core.js
           cmp pages-release/v3319/learning-lab.js _site/learning-lab.js
           cmp pages-release/v3319/learning-lab.css _site/learning-lab.css
+          cmp pages-release/v3324/learning-plan.js _site/learning-plan.js
+          cmp pages-release/v3324/learning-plan.css _site/learning-plan.css
           cmp pages-release/v3316/courseManager.js _site/courseManager.js
           cmp pages-release/v3317/v3317-main.js _site/v3317-main.js
           cmp pages-release/v3317/v3317-sanctuary.js _site/sanctuary/v3317-sanctuary.js
@@ -191,6 +197,8 @@ jobs:
           grep -q '"version": "V3.3.22 Recovery & Sanctuary Usability"' _site/app-progress.json
           grep -q 'learning-lab.js?v=3319' _site/index.html
           grep -q 'learning-lab.css?v=3319' _site/index.html
+          grep -q 'learning-plan.js?v=3324' _site/index.html
+          grep -q 'learning-plan.css?v=3324' _site/index.html
           grep -q '"sanctuary_version": "V3.3.22 Owned Guardian Recovery"' _site/app-progress.json
           grep -q 'majick-state-core.js?v=3322-recovery' _site/index.html
           grep -q 'guardian-care-economy.js?v=3322-recovery' _site/index.html
@@ -214,6 +222,7 @@ jobs:
           node --check _site/guardian-registry.js
           node --check _site/majick-state-core.js
           node --check _site/learning-lab.js
+          node --check _site/learning-plan.js
           node --check _site/courseManager.js
           node --check _site/guardian-care-economy.js
           node --check _site/v3317-main.js

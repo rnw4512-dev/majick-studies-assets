@@ -172,6 +172,7 @@ try{
   await page.evaluate(()=>{switchCourse('D772');navigate('learninglab');});
   await page.waitForSelector('.learnLab[data-course="D772"]',{timeout:10000});
   const d772Learn=await page.evaluate(()=>MajickLearningLab.model('D772'));
+  await assert(!!window.MajickLearningPlan&&MajickLearningPlan.VERSION==='3.3.24','Adaptive Learning Plan runtime missing');
   await assert(d772Learn.vocab.some(v=>v.term.toLowerCase()==='mean'),'D772 Learn Mode missing statistics vocabulary');
   await assert(d772Learn.lessons.length>=5,'D772 Learn Mode missing visual starter lessons');
   const toolCheck=await page.evaluate(()=>({
@@ -264,7 +265,7 @@ try{
     mimeType:'text/plain',
     buffer:Buffer.from(d772Notes,'utf8')
   });
-  await page.locator('#materialCount').selectOption('5');
+  await assert(await page.locator('#materialCount').count()===0,'Notes Forge still asks for a manual question count');
   await page.locator('#materialForgeBtn').click();
   await page.waitForFunction(()=>document.getElementById('materialStatus')?.textContent?.includes('Study material saved'),{timeout:12000});
 
@@ -276,15 +277,35 @@ try{
       courseId:cid,
       id:row?.id||null,
       questions:row?.generated?.practiceQuestions?.length||0,
+      passages:row?.generated?.passages?.length||0,
+      target:row?.settings?.targetCount||0,
+      rigor:[1,2,3,4].map(r=>(row?.generated?.practiceQuestions||[]).filter(q=>Number(q.rigorLevel||1)===r).length),
       bank:(S.courses?.[cid]?.questionBank||[]).filter(q=>q.sourceId===row?.id).length,
       active:row?.active!==false
     };
   });
   await assert(!!forged.id,'Notes Forge did not save a source');
   await assert(forged.courseId==='D772','uploaded D772 notes were saved under the wrong course');
-  await assert(forged.questions>=5,'Notes Forge generated fewer questions than requested');
-  await assert(forged.bank>=5,'Notes Forge questions were not synchronized into D772');
+  await assert(forged.target===100,'Notes Forge did not default to the 100-question adaptive target');
+  await assert(forged.questions>=40,'Notes Forge did not build a sufficiently deep adaptive candidate bank');
+  await assert(forged.passages>=1,'Notes Forge did not create Read & Learn passages');
+  await assert(forged.rigor[2]>0&&forged.rigor[3]>0,'Notes Forge did not include application/analysis rigor');
+  await assert(forged.bank>=40&&forged.bank<=110,'Notes Forge did not synchronize a bounded adaptive course bank');
   await assert(forged.active,'new Notes Forge source was not active');
+
+  await page.evaluate(()=>navigate('learninglab'));
+  await page.waitForSelector('[data-plan-tab="plan"]',{timeout:10000});
+  await page.locator('[data-plan-tab="read"]').click();
+  await page.waitForSelector('.coursePassage',{timeout:10000});
+  const learningDepth=await page.evaluate(()=>({
+    passages:MajickLearningPlan.passageList('D772').length,
+    questions:MajickLearningPlan.profile('D772').questions.length,
+    recommendation:MajickLearningPlan.recommendation('D772')
+  }));
+  await assert(learningDepth.passages>=1,'Read & Learn did not expose generated passages');
+  await assert(learningDepth.questions>=40,'Learning Plan did not see the adaptive question bank');
+  await assert(!!learningDepth.recommendation,'Learning Plan produced no next-step recommendation');
+  await page.evaluate(()=>navigate('addmaterial'));
 
   const d772LeakCheck=await page.evaluate(async id=>{
     const otherId=Object.keys(S.courses||{}).find(cid=>cid!=='D772')||null;
@@ -322,7 +343,7 @@ try{
     const row=await MajickMaterialStore.get(id);
     return {exists:!!row,questions:row?.generated?.practiceQuestions?.length||0,bank:(S.courses?.[S.activeCourse]?.questionBank||[]).filter(q=>q.sourceId===id).length};
   },forged.id);
-  await assert(regenerated.exists&&regenerated.questions>=5&&regenerated.bank>=5,'Notes Forge regeneration broke source synchronization');
+  await assert(regenerated.exists&&regenerated.questions>=40&&regenerated.bank>=40,'Notes Forge regeneration broke adaptive source synchronization');
 
   await page.locator(sourceSelector+' .v3315RemoveSource').click();
   await page.waitForFunction(()=>document.getElementById('materialStatus')?.textContent?.startsWith('Removed '),{timeout:8000});

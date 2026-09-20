@@ -49,7 +49,7 @@ function render(){
       '<aside class="v3315ForgeCard">'+
         '<h3>3. What should Majick build?</h3>'+
         '<div class="v3315Checks">'+outputChecks()+'</div>'+
-        '<label class="v3315Count">Question count <select id="materialCount"><option>5</option><option selected>10</option><option>15</option><option>20</option><option>25</option></select></label>'+
+        '<div class="v3315Count"><b>Adaptive question bank</b><small>Majick automatically targets about 100 rigorous questions for the active class and rebalances them as you add lessons.</small></div>'+
         '<button class="btn primary v3315ForgeButton" id="materialForgeBtn">✦ Forge Study Material</button>'+
         '<p class="v3315Small">Generated questions stay linked to the source that created them. Only active sources feed that course\'s practice bank.</p>'+
       '</aside>'+
@@ -104,7 +104,8 @@ function showPreview(g){
     return;
   }
   const cards=[];
-  if(g.practiceQuestions?.length)cards.push('<article><b>Practice Questions • '+g.practiceQuestions.length+'</b>'+g.practiceQuestions.slice(0,4).map(q=>'<p>'+E(q.prompt)+'</p>').join('')+'</article>');
+  if(g.passages?.length)cards.push('<article><b>Read & Learn • '+g.passages.length+' passages</b>'+g.passages.slice(0,2).map(p=>'<p><strong>'+E(p.title)+':</strong> '+E(p.text.slice(0,240))+(p.text.length>240?'…':'')+'</p>').join('')+'</article>');
+  if(g.practiceQuestions?.length)cards.push('<article><b>Adaptive Questions • '+g.practiceQuestions.length+'</b><p>Rigor mix: '+(g.rigorMix?.foundation||0)+' foundation • '+(g.rigorMix?.understanding||0)+' understanding • '+(g.rigorMix?.application||0)+' application • '+(g.rigorMix?.analysis||0)+' analysis</p>'+g.practiceQuestions.slice(0,4).map(q=>'<p>'+E(q.prompt)+'</p>').join('')+'</article>');
   if(g.vocabulary?.length)cards.push('<article><b>Vocabulary • '+g.vocabulary.length+'</b>'+g.vocabulary.slice(0,6).map(v=>'<p><strong>'+E(v.term)+':</strong> '+E(v.definition)+'</p>').join('')+'</article>');
   if(g.explanations?.length)cards.push('<article><b>Explanations</b>'+g.explanations.slice(0,4).map(v=>'<p><strong>'+E(v.concept)+':</strong> '+E(v.explanation)+'</p>').join('')+'</article>');
   if(g.misconceptionRepair?.length)cards.push('<article><b>Misconception Repair</b>'+g.misconceptionRepair.slice(0,3).map(v=>'<p>'+E(v.correction)+'</p>').join('')+'</article>');
@@ -147,11 +148,6 @@ async function openSource(id){
   const file=document.getElementById('materialFile');
   if(file)file.value='';
   applyOutputs(row.outputs||{});
-  const count=document.getElementById('materialCount');
-  if(count){
-    const n=String(row.settings?.count||row.generated?.practiceQuestions?.length||10);
-    if([...count.options].some(o=>o.value===n))count.value=n;
-  }
   showPreview(row.generated);
   setStatus('Opened '+row.sourceName+' • '+(row.active===false?'paused':'active')+' for '+row.courseId+'.');
   await refreshLibrary();
@@ -162,14 +158,14 @@ async function regenerateSource(id){
   if(!row)return;
   setStatus('Regenerating '+row.sourceName+'…');
   const opts=row.outputs||values();
-  const count=Number(row.settings?.count||row.generated?.practiceQuestions?.length||10);
+  const targetCount=100;
   row.generated=MajickQuestionBuilder.build(row.text,{
     ...opts,
-    count,
+    targetCount,
     courseId:row.courseId,
     sourceId:row.id
   });
-  row.settings={...(row.settings||{}),count};
+  row.settings={...(row.settings||{}),targetCount,adaptive:true};
   await MajickMaterialStore.save(row);
   addGeneratedCourseMetadata(row.courseId,row);
   await syncCourse(row.courseId);
@@ -247,7 +243,7 @@ async function forge(){
     const parsed=await MajickMaterialParser.extract(file,pasted);
     if(parsed.text.length<80)throw new Error('The material is too short to build a useful study set. Add a little more detail.');
     const opts=values();
-    const count=Number(document.getElementById('materialCount')?.value||10);
+    const targetCount=100;
     const draft=MajickMaterialStore.newRecord({
       courseId,
       sourceType:parsed.sourceType,
@@ -255,18 +251,18 @@ async function forge(){
       text:parsed.text,
       outputs:opts
     });
-    draft.settings={count};
+    draft.settings={targetCount,adaptive:true};
     setStatus('Forging questions, explanations, vocabulary and review…');
     draft.generated=MajickQuestionBuilder.build(parsed.text,{
       ...opts,
-      count,
+      targetCount,
       courseId,
       sourceId:draft.id
     });
     await MajickMaterialStore.save(draft);
     addGeneratedCourseMetadata(courseId,draft);
     const synced=await syncCourse(courseId);
-    setStatus('<b>✓ Study material saved.</b> '+draft.generated.practiceQuestions.length+' questions forged • '+(synced?.total||0)+' active Notes Forge questions in '+courseId+'.',true);
+    setStatus('<b>✓ Study material saved.</b> '+draft.generated.practiceQuestions.length+' rigorous candidates built • '+(synced?.total||0)+' active adaptive questions in '+courseId+' • '+(draft.generated.passages?.length||0)+' reading passages.',true);
     showPreview(draft.generated);
     await refreshLibrary();
   }catch(err){

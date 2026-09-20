@@ -75,6 +75,8 @@ OVERLAYS=[
     ("pages-release/stability-reset/majick-state-core.js","majick-state-core.js"),
     ("pages-release/v3319/learning-lab.js","learning-lab.js"),
     ("pages-release/v3319/learning-lab.css","learning-lab.css"),
+    ("pages-release/v3324/learning-plan.js","learning-plan.js"),
+    ("pages-release/v3324/learning-plan.css","learning-plan.css"),
     ("pages-release/v3315/study-material/materialParser.js","study-material/materialParser.js"),
     ("pages-release/v3315/study-material/materialStoreModel.js","study-material/materialStoreModel.js"),
     ("pages-release/v3315/study-material/questionBuilder.js","study-material/questionBuilder.js"),
@@ -160,7 +162,7 @@ progress=site/"app-progress.json"
 if progress.exists():
     data=json.loads(progress.read_text(encoding="utf-8"))
     data["version"]="V3.3.22 Recovery & Sanctuary Usability"
-    data["learning_intelligence"]="course-aware Learn Mode, vocabulary game, guided practice, mastery, calculator, D772 statistics labs"
+    data["learning_intelligence"]="V3.3.24 adaptive learning plan with passages, vocabulary, guided practice, ~100-question course bank, rigor progression, mastery and D772 statistics tools"
     data["sanctuary_version"]="V3.3.22 Owned Guardian Recovery"
     data["sanctuary_home"]="Guardian needs HUD, object-aware care travel, exclusive beds, visible care inventory, safe furniture snapping"
     data["sanctuary_customization"]="personal Guardian nooks, feeding/play zones, owned furniture storage, Cozy Dorm layout preset"
@@ -173,16 +175,16 @@ if progress.exists():
 
 index=site/"index.html"
 html=index.read_text(encoding="utf-8")
-html=html.replace('<link rel="stylesheet" href="./learning-lab.css?v=3319">','').replace('<script src="./learning-lab.js?v=3319"></script>','').replace('<script src="./v3322-main-recovery.js?v=3322"></script>','')
+html=html.replace('<link rel="stylesheet" href="./learning-lab.css?v=3319">','').replace('<link rel="stylesheet" href="./learning-plan.css?v=3324">','').replace('<script src="./learning-lab.js?v=3319"></script>','').replace('<script src="./learning-plan.js?v=3324"></script>','').replace('<script src="./v3322-main-recovery.js?v=3322"></script>','')
 html=html.replace('./guardian-care-economy.css?v=stability-1','./guardian-care-economy.css?v=3322-recovery')
 html=html.replace('./majick-state-core.js?v=stability-1','./majick-state-core.js?v=3322-recovery')
 html=html.replace('./guardian-care-economy.js?v=stability-1','./guardian-care-economy.js?v=3322-recovery')
 html=html.replace('./v3317-main.js?v=stability-1','./v3317-main.js?v=3322-recovery')
-html=html.replace('</head>','<link rel="stylesheet" href="./learning-lab.css?v=3319">\\n</head>',1)
+html=html.replace('</head>','<link rel="stylesheet" href="./learning-lab.css?v=3319">\\n<link rel="stylesheet" href="./learning-plan.css?v=3324">\\n</head>',1)
 main_tag='<script src="./v3317-main.js?v=3322-recovery"></script>'
 if main_tag not in html:
     fail("authoritative main runtime tag missing while installing recovery")
-html=html.replace(main_tag,'<script src="./learning-lab.js?v=3319"></script>\\n'+main_tag+'\\n<script src="./v3322-main-recovery.js?v=3322"></script>',1)
+html=html.replace(main_tag,'<script src="./learning-lab.js?v=3319"></script>\\n<script src="./learning-plan.js?v=3324"></script>\\n'+main_tag+'\\n<script src="./v3322-main-recovery.js?v=3322"></script>',1)
 index.write_text(html,encoding="utf-8")
 
 san_index=site/"sanctuary"/"index.html"
