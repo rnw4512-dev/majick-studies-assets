@@ -12,7 +12,7 @@ def remove_script_tag(text,filename):
     pattern=r'\s*<script[^>]+src=["\'][^"\']*'+re.escape(filename)+r'[^"\']*["\'][^>]*></script>\s*'
     return re.sub(pattern,'\n',text)
 
-for name in ('v3313-main.js','v3314-main.js','v3315-main.js','v3316-main.js','guardian-registry.js','majick-state-core.js','guardian-care-economy.js','v3317-main.js'):
+for name in ('v3310-main.js','v3312-main.js','v3313-main.js','v3314-main.js','v3315-main.js','v3316-main.js','v3310-ui-compat.js','v3312-ui-compat.js','guardian-registry.js','majick-state-core.js','guardian-care-economy.js','v3317-main.js'):
     h=remove_script_tag(h,name)
 for name in ('v3311-sanctuary.js','v3312-sanctuary.js','v3313-sanctuary.js','v3314-sanctuary.js','v3315-sanctuary.js','guardian-registry.js','v3317-sanctuary.js'):
     s=remove_script_tag(s,name)
@@ -21,8 +21,10 @@ for name in ('v3311-sanctuary.js','v3312-sanctuary.js','v3313-sanctuary.js','v33
 h=re.sub(r'\s*<link[^>]+href=["\'][^"\']*guardian-care-economy\.css[^"\']*["\'][^>]*>\s*','\n',h)
 h=h.replace('</head>','<link rel="stylesheet" href="./guardian-care-economy.css?v=stability-1">\n</head>',1)
 
-# Load order is intentional: registry -> state -> care -> authoritative bridge.
-main_tags='''<script src="./guardian-registry.js?v=stability-1"></script>
+# Load order is intentional: preserved UI helpers -> registry -> state -> care -> authoritative bridge.
+main_tags='''<script src="./v3310-ui-compat.js?v=stability-1"></script>
+<script src="./v3312-ui-compat.js?v=stability-1"></script>
+<script src="./guardian-registry.js?v=stability-1"></script>
 <script src="./majick-state-core.js?v=stability-1"></script>
 <script src="./guardian-care-economy.js?v=stability-1"></script>
 <script src="./v3317-main.js?v=stability-1"></script>'''
@@ -42,7 +44,7 @@ san_idx.write_text(s,encoding='utf-8')
 for rel in (
  'sanctuary/v3311-sanctuary.js','sanctuary/v3312-sanctuary.js','sanctuary/v3313-sanctuary.js',
  'sanctuary/v3314-sanctuary.js','sanctuary/v3315-sanctuary.js',
- 'v3313-main.js','v3314-main.js','v3315-main.js','v3316-main.js'
+ 'v3310-main.js','v3312-main.js','v3313-main.js','v3314-main.js','v3315-main.js','v3316-main.js'
 ):
     p=root/rel
     if p.exists(): p.unlink()
