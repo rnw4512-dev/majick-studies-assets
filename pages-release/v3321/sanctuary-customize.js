@@ -34,7 +34,9 @@ function objectMeta(item){return item?.getData?.('manifestObject')||null}
 function manifestObjects(scene){
   try{
     const m=scene.cache.json.get('majick-object-manifest')||{objects:[]};
-    return (m.objects||[]).filter(o=>o.enabled&&o.preload&&o.placement&&scene.textures.exists('obj-'+o.id));
+    // Ownership is a data fact from the manifest, not a race against texture
+    // decoding. Individual decor helpers still check whether a live item exists.
+    return (m.objects||[]).filter(o=>o.enabled&&o.preload&&o.placement);
   }catch(_){return[]}
 }
 function decor(scene,id){return (scene?.decorItems||[]).find(x=>objectId(x)===id)||null}

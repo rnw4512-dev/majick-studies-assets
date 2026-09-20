@@ -41,6 +41,8 @@ try{
   await assert(boot.hasRegistry,'Guardian registry unavailable after boot');
   await assert(boot.version==='3.3.27-moonlit-collegium','wrong deployed runtime version: '+boot.version);
   await assert(boot.guardians.length>=10,'baseline Guardian registry unexpectedly shrank');
+  await page.waitForSelector('.v3327Home',{timeout:10000});
+  await assert(await page.locator('.v3327PortalHero').count()===1,'Moonlit Collegium did not render on the first app load');
 
   const balanceRecovery=await page.evaluate(()=>{
     // Create the exact affected ownership signature without adding any unowned Guardian.
@@ -398,10 +400,12 @@ try{
   const tutorDepth=await page.evaluate(()=>{
     const lesson=MajickCourseTutor.selectedLesson('D772');
     const c=MajickCourseTutor.chapter(lesson,'D772');
-    return {lesson:lesson?.id,sources:c.sourceRows.length,passages:c.passages.length,vocab:c.vocab.length,status:c.mastery.status,target:c.mastery.targetRigor};
+    return {lesson:lesson?.id,sources:c.sourceRows.length,passages:c.passages.length,merged:!!c.mergedTeaching,mergedTitle:c.mergedTeaching?.title||'',vocab:c.vocab.length,status:c.mastery.status,target:c.mastery.targetRigor};
   });
   await assert(tutorDepth.lesson==='d772-s1-l1'&&tutorDepth.sources>=1,'Course Tutor did not open the note-backed D772 Lesson 1');
   await assert(tutorDepth.passages>=1&&tutorDepth.vocab>=1,'Course Tutor did not build deep lesson teaching content');
+  await assert(tutorDepth.merged&&/Complete Lesson 1 Teaching Notes/.test(tutorDepth.mergedTitle),'D772 Lesson 1 was not combined into one complete teaching chapter');
+  await assert(await page.locator('#courseTutorLesson .tutorMergedTeaching').count()===1,'D772 Lesson 1 rendered repeated reading cards instead of one merged chapter');
   await assert(tutorDepth.status==='Learning'&&tutorDepth.target===1,'new lesson did not begin at Learning / foundation rigor');
 
   const tutorGrowth=await page.evaluate(()=>{
@@ -472,13 +476,41 @@ try{
   },forged.id);
   await assert(regenerated.exists&&regenerated.questions>=40&&regenerated.bank>=40,'Notes Forge regeneration broke adaptive source synchronization');
 
+  const duplicateCleanup=await page.evaluate(async id=>{
+    const row=await MajickMaterialStore.get(id);
+    const copy=JSON.parse(JSON.stringify(row));
+    copy.id=id+'_duplicate_copy';
+    copy.sourceName=row.sourceName+' duplicate copy';
+    copy.createdAt=new Date(Date.now()+1000).toISOString();
+    await MajickMaterialStore.save(copy);
+    await AddStudyMaterialPage.refreshLibrary();
+    return {copyId:copy.id,answersBefore:prog().answers.length};
+  },forged.id);
+  await assert(await page.locator('.v3315DuplicateBadge').count()===1,'exact duplicate upload was not identified in My Study Sources');
+  page.once('dialog',dialog=>dialog.accept());
+  await page.locator('.v3315DeleteDuplicates').click();
+  await page.waitForFunction(()=>document.getElementById('materialStatus')?.textContent?.startsWith('Deleted 1 duplicate source copy'),{timeout:8000});
+  const duplicateRemoved=await page.evaluate(async ({id,copyId,answersBefore})=>({
+    original:!!(await MajickMaterialStore.get(id)),
+    copy:await MajickMaterialStore.get(copyId),
+    answersBefore,
+    answersAfter:prog().answers.length,
+    bank:(S.courses?.[S.activeCourse]?.questionBank||[]).filter(q=>q.sourceId===id).length
+  }),{id:forged.id,copyId:duplicateCleanup.copyId,answersBefore:duplicateCleanup.answersBefore});
+  await assert(duplicateRemoved.original&&!duplicateRemoved.copy,'duplicate cleanup did not preserve the original source and delete only the later copy');
+  await assert(duplicateRemoved.answersAfter===duplicateRemoved.answersBefore&&duplicateRemoved.bank>=40,'duplicate cleanup erased answer history or failed to rebuild the active question bank');
+
+  const answersBeforeDelete=await page.evaluate(()=>prog().answers.length);
+  page.once('dialog',dialog=>dialog.accept());
   await page.locator(sourceSelector+' .v3315RemoveSource').click();
-  await page.waitForFunction(()=>document.getElementById('materialStatus')?.textContent?.startsWith('Removed '),{timeout:8000});
+  await page.waitForFunction(()=>document.getElementById('materialStatus')?.textContent?.startsWith('Deleted '),{timeout:8000});
   const removed=await page.evaluate(async id=>({
     row:await MajickMaterialStore.get(id),
-    bank:(S.courses?.[S.activeCourse]?.questionBank||[]).filter(q=>q.sourceId===id).length
+    bank:(S.courses?.[S.activeCourse]?.questionBank||[]).filter(q=>q.sourceId===id).length,
+    answers:prog().answers.length
   }),forged.id);
   await assert(!removed.row&&removed.bank===0,'removing a Notes Forge source left stale source questions behind');
+  await assert(removed.answers===answersBeforeDelete,'deleting a Notes Forge source erased answer history');
 
   // WGU courses must keep academic data separate while account rewards stay shared.
   const courseIsolation=await page.evaluate(()=>{
@@ -663,7 +695,7 @@ try{
   await assert(!careDock.detailsVisible,'full Guardian care panel should be collapsed by default');
   await assert(careDock.dockTop<=careDock.sanctuaryTop,'Take Care dock is still below the Sanctuary');
   await page.waitForSelector('iframe.v3317SanctuaryFrame',{timeout:15000});
-  const frame=page.frames().find(f=>f.url().includes('/sanctuary/'));
+  const frame=page.frames().find(f=>f.url().includes('/sanctuary/')&&f.url().includes('context=companions'));
   await assert(!!frame,'Sanctuary iframe did not load');
   await frame.waitForFunction(()=>typeof window.Game!=='undefined'||document.querySelector('canvas'),{timeout:20000});
   await frame.waitForFunction(()=>window.MajickSanctuaryLife?.VERSION==='3.3.20',{timeout:12000});
@@ -722,7 +754,7 @@ try{
     const scene=window.majickPhaserGame?.scene?.getScene?.('Game');
     scene.v3320ApplyCareSnapshot?.(scene.v3317CareState);
     const food=scene.getObjectInteractionDef?.('guardian-food-bowl');
-    const movable=(scene.decorItems||[]).find(x=>(x.getData?.('objectId')||x.getData?.('decorId'))==='arcane-stacks');
+    const movable=(scene.decorItems||[]).find(x=>!!(x.getData?.('objectId')||x.getData?.('decorId')));
     if(movable){movable.x=427;movable.y=773}
     const snapped=scene.v3320SnapDecorItem?.(movable);
     return {

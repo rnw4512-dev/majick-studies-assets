@@ -119,5 +119,23 @@ function magicalHomeHTML(){
 
 window.v3327MagicalHomeHTML=magicalHomeHTML;
 try{window.homeHTML=magicalHomeHTML}catch(_){}
+const previousScreenHTML=window.screenHTML;
+if(typeof previousScreenHTML==='function'&&!previousScreenHTML.__v3327MoonlitHome){
+  const moonlitScreenHTML=function(){
+    if(window.S?.screen==='home')return magicalHomeHTML();
+    return previousScreenHTML.apply(this,arguments);
+  };
+  moonlitScreenHTML.__v3327MoonlitHome=true;
+  window.screenHTML=moonlitScreenHTML;
+}
 window.MajickCollegeDashboard={VERSION,academic,magicalHomeHTML};
+// The authoritative app runtime performs its first render before this overlay loads.
+// Re-render home once so Moonlit Collegium is the first screen, not a second-visit upgrade.
+if(window.S?.screen==='control'){
+  window.S.screen='home';
+  try{window.save?.()}catch(_){}
+}
+if(window.S?.screen==='home')setTimeout(()=>{
+  if(!document.querySelector('.v3327Home'))try{window.render?.()}catch(e){console.warn('Moonlit Collegium first render',e)}
+},0);
 })();

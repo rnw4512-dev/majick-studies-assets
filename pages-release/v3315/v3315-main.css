@@ -30,7 +30,11 @@
 .v3315SourceRow.paused{opacity:.68}.v3315SourceRow.paused b::after{content:'  • paused';font-size:11px;color:#b7a9c9;font-family:Arial,sans-serif;font-weight:600}
 .v3315SourceActions{display:flex!important;flex-wrap:wrap;justify-content:flex-end;gap:7px!important;min-width:min(100%,420px)!important}
 .v3315SourceActions .btn{min-height:34px;padding:7px 10px;font-size:12px;white-space:nowrap}
+.v3315DeleteSource,.v3315DeleteDuplicates{border-color:rgba(229,118,142,.55)!important;background:rgba(93,28,46,.58)!important;color:#ffd9e1!important}
+.v3315DeleteSource:hover,.v3315DeleteDuplicates:hover{background:rgba(126,35,58,.78)!important}
+.v3315DuplicateTools{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:10px;padding:13px 14px;border:1px solid rgba(229,118,142,.3);border-radius:14px;background:linear-gradient(135deg,rgba(72,28,48,.55),rgba(40,22,51,.7))}
+.v3315DuplicateTools>div{display:grid;gap:3px}.v3315DuplicateTools small{color:#cdbdce}.v3315DuplicateBadge{display:inline-block;margin-left:7px;padding:3px 6px;border:1px solid rgba(238,132,154,.42);border-radius:999px;color:#ffc5d0;font:800 9px/1.1 Arial,sans-serif;letter-spacing:.06em;vertical-align:middle}
 .v3315Empty{padding:18px;border-radius:14px;background:rgba(255,255,255,.025);color:#aaa0bc;text-align:center}
 .v3315StagePortrait img{object-fit:contain}
 @media(max-width:900px){.v3315MaterialGrid,.v3315PreviewGrid{grid-template-columns:1fr}.v3315UploadRow{grid-template-columns:1fr}.v3315Or{text-align:center}.v3315ForgeSigil{display:none}}
-@media(max-width:520px){.v3315MaterialHero,.v3315SourceCard,.v3315ForgeCard,.v3315Preview,.v3315Library{padding:15px;border-radius:18px}.v3315SourceRow{align-items:flex-start;flex-direction:column}.v3315SourceActions{width:100%;justify-content:stretch}.v3315SourceActions button{flex:1 1 46%}}
+@media(max-width:520px){.v3315MaterialHero,.v3315SourceCard,.v3315ForgeCard,.v3315Preview,.v3315Library{padding:15px;border-radius:18px}.v3315SourceRow,.v3315DuplicateTools{align-items:flex-start;flex-direction:column}.v3315SourceActions{width:100%;justify-content:stretch}.v3315SourceActions button,.v3315DeleteDuplicates{flex:1 1 46%;width:100%}}

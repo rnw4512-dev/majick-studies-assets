@@ -365,22 +365,68 @@ function dedupePassages(sourceRows,lesson,id=cid()){
   return out;
 }
 function dedupeVocab(sourceRows,lesson,id=cid()){
-  const out=[],seen=new Set();
+  const out=[],byTerm=new Map();
   for(const v of lessonItems(sourceRows,'vocabulary',lesson,id)){
     const key=norm(v.term);
-    if(!key||seen.has(key))continue;
-    seen.add(key);out.push(v);
+    if(!key)continue;
+    const previous=byTerm.get(key);
+    if(previous===undefined){byTerm.set(key,out.length);out.push(v);continue}
+    const at=Number(previous);
+    if(String(v.definition||'').length>String(out[at]?.definition||'').length)out[at]=v;
   }
   return out;
+}
+function teachingSentences(text){
+  return String(text||'')
+    .replace(/\r/g,'')
+    .split(/(?<=[.!?])\s+|\n+/)
+    .map(x=>x.replace(/^\s*[-*•]\s*/, '').replace(/\s+/g,' ').trim())
+    .filter(x=>x.length>=22);
+}
+function wordSet(text){return new Set(norm(text).split(' ').filter(x=>x.length>2))}
+function nearDuplicateTeaching(a,b){
+  const na=norm(a),nb=norm(b);
+  if(!na||!nb)return false;
+  if(na===nb)return true;
+  if(Math.min(na.length,nb.length)>=55&&(na.includes(nb)||nb.includes(na)))return true;
+  const aa=wordSet(na),bb=wordSet(nb);
+  if(!aa.size||!bb.size)return false;
+  let shared=0;for(const word of aa)if(bb.has(word))shared++;
+  return shared/Math.min(aa.size,bb.size)>=.82;
+}
+function mergeLessonTeaching(sourceRows,lesson,id=cid()){
+  const raw=dedupePassages(sourceRows,lesson,id);
+  if(id!=='D772'||lesson.review||!raw.length)return null;
+  const sentences=[];
+  for(const passage of raw){
+    for(const sentence of teachingSentences(passage.text)){
+      const similar=sentences.findIndex(existing=>nearDuplicateTeaching(existing,sentence));
+      if(similar<0)sentences.push(sentence);
+      else if(sentence.length>sentences[similar].length)sentences[similar]=sentence;
+    }
+  }
+  const sourceNames=uniqText(raw.map(p=>p.sourceName).filter(Boolean));
+  const text=sentences.slice(0,22).join(' ');
+  if(!text)return null;
+  return {
+    id:'merged-'+lesson.id,
+    title:'Complete Lesson '+lesson.number+' Teaching Notes',
+    text,
+    sourceName:'Merged from '+sourceNames.length+' saved source'+(sourceNames.length===1?'':'s'),
+    sourceNames,
+    merged:true,
+    originalPassageCount:raw.length
+  };
 }
 function chapter(lesson,id=cid()){
   const sourceRows=sourcesForLesson(lesson,id);
   const passages=dedupePassages(sourceRows,lesson,id);
+  const mergedTeaching=mergeLessonTeaching(sourceRows,lesson,id);
   const vocab=dedupeVocab(sourceRows,lesson,id);
   const explanations=uniqText(lessonItems(sourceRows,'explanations',lesson,id),x=>x.explanation);
   const repairs=uniqText(lessonItems(sourceRows,'misconceptionRepair',lesson,id),x=>x.correction);
   const m=mastery(lesson,id);
-  return {lesson,section:findSectionForLesson(lesson,id),sourceRows,passages,vocab,explanations,repairs,mastery:m};
+  return {lesson,section:findSectionForLesson(lesson,id),sourceRows,passages,mergedTeaching,vocab,explanations,repairs,mastery:m};
 }
 function nextStep(m){
   if(!m.sourceCount)return 'Add this lesson’s notes to unlock its tutor chapter.';
@@ -444,9 +490,9 @@ function renderTutor(){
   const id=cid(),lesson=selectedLesson(id);
   if(!lesson){box.innerHTML='<div class="learnEmpty">Add course material to begin your tutor path.</div>';return}
   const ch=chapter(lesson,id),m=ch.mastery;
-  const sourceNames=ch.sourceRows.map(r=>r.sourceName);
-  const deep=ch.passages.slice(0,5);
-  const sourceEvidence=deep.length?deep.map((p,i)=>'<article><small>READING '+(i+1)+' • '+E(p.sourceName)+'</small><h4>'+E(p.title)+'</h4><p>'+E(p.text)+'</p></article>').join(''):
+  const sourceNames=uniqText(ch.sourceRows.map(r=>r.sourceName));
+  const deep=ch.mergedTeaching?[ch.mergedTeaching]:ch.passages.slice(0,5);
+  const sourceEvidence=deep.length?deep.map((p,i)=>'<article class="'+(p.merged?'tutorMergedTeaching':'')+'"><small>'+(p.merged?'MERGED LESSON CHAPTER • '+p.originalPassageCount+' NOTE PASSAGES REVIEWED':'READING '+(i+1)+' • '+E(p.sourceName))+'</small><h4>'+E(p.title)+'</h4><p>'+E(p.text)+'</p>'+(p.merged?'<span class="tutorMergeNote">Repeated and overlapping material was combined here. Your original uploads were not rewritten.</span>':'')+'</article>').join(''):
     '<div class="tutorLocked">Upload notes for this lesson and Majick will build its teaching chapter here.</div>';
   box.innerHTML='<div class="tutorLessonHead"><div><button class="tutorBack" id="tutorBack">← Course Path</button><span>'+E(ch.section?.title||id)+' • '+E(lessonNumberLabel(lesson))+'</span><h2>'+E(lesson.title)+'</h2><p>'+E(lesson.goal||'Learn and apply this lesson.')+'</p></div><div class="masteryBadge '+statusClass(m.status)+'"><small>MASTERY</small><b>'+E(m.status)+'</b><span>'+m.accuracy+'% • target rigor '+m.targetRigor+'</span></div></div>'+
     '<div class="tutorNext"><b>What Majick wants you to do next:</b> '+E(nextStep(m))+'</div>'+
@@ -456,9 +502,10 @@ function renderTutor(){
     '<section class="tutorChapterBlock"><div class="tutorBlockTitle"><span>4</span><div><small>HOW TO THINK THROUGH IT</small><h3>Use this when a question feels confusing</h3></div></div><ol class="thinkingSteps">'+(lesson.thinking||[]).map(x=>'<li>'+E(x)+'</li>').join('')+'</ol></section></div>'+
     '<div class="tutorTwoCol"><section class="tutorChapterBlock trapBlock"><div class="tutorBlockTitle"><span>5</span><div><small>COMMON TRAPS</small><h3>What Majick should catch you doing</h3></div></div><ul>'+[...(lesson.traps||[]),...ch.repairs.slice(0,3).map(r=>r.correction)].slice(0,6).map(x=>'<li>'+E(x)+'</li>').join('')+'</ul></section>'+
     '<section class="tutorChapterBlock"><div class="tutorBlockTitle"><span>6</span><div><small>PROVE IT</small><h3>Adaptive lesson practice</h3></div></div><div class="proveStats"><span><b>'+m.questionCount+'</b> lesson questions</span><span><b>'+m.attempts+'</b> attempts</span><span><b>'+m.accuracy+'%</b> accuracy</span><span><b>R'+m.targetRigor+'</b> next rigor</span></div><button class="btn primary" id="tutorPractice" '+(m.questionCount?'':'disabled')+'>'+ (m.status==='Needs Review'?'Repair this lesson':'Start adaptive lesson practice')+' →</button></section></div>'+
-    '<section class="tutorSources"><b>Source coverage</b><span>'+E(sourceNames.length?sourceNames.join(' • '):'No lesson source uploaded yet')+'</span></section>';
+    '<section class="tutorSources"><div><b>Source coverage</b><span>'+E(sourceNames.length?sourceNames.join(' • '):'No lesson source uploaded yet')+'</span></div><button class="tutorManageSources" id="tutorManageSources" type="button">Manage or delete source notes →</button></section>';
   document.getElementById('tutorBack')?.addEventListener('click',()=>show('path'));
   document.getElementById('tutorPractice')?.addEventListener('click',()=>startPractice(lesson,id));
+  document.getElementById('tutorManageSources')?.addEventListener('click',()=>{try{navigate('addmaterial')}catch(_){}});
 }
 const baseRender=MajickLearningLab.render;
 MajickLearningLab.render=function(){
@@ -475,5 +522,5 @@ MajickLearningLab.bind=function(){
 };
 const baseRefresh=MajickLearningLab.refresh;
 MajickLearningLab.refresh=function(){baseRefresh();hydrate()};
-window.MajickCourseTutor={VERSION,D772_SECTION_ONE,hydrate,sections,classifySource,annotateSource,tagD772Generated,classifyD772Item,d772Segments,sourcesForLesson,questionsForLesson,mastery,sectionProgress,chapter,startPractice,show,renderPath,renderTutor,selectedLesson};
+window.MajickCourseTutor={VERSION,D772_SECTION_ONE,hydrate,sections,classifySource,annotateSource,tagD772Generated,classifyD772Item,d772Segments,sourcesForLesson,questionsForLesson,mastery,sectionProgress,chapter,mergeLessonTeaching,startPractice,show,renderPath,renderTutor,selectedLesson};
 })();

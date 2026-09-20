@@ -4,6 +4,7 @@
 const DB='majick-studies-sources-v1';
 const STORE='sources';
 const FALLBACK='majick-study-materials-v1';
+const deletedIds=new Set();
 
 function openDb(){
   return new Promise((resolve,reject)=>{
@@ -28,6 +29,8 @@ function fallbackWrite(rows){
 
 async function save(record){
   const row=Object.assign({},record,{updatedAt:new Date().toISOString()});
+  // A late Tutor hydration must never resurrect a source the learner deleted.
+  if(deletedIds.has(row.id))return null;
   try{
     const db=await openDb();
     if(!db)throw new Error('fallback');
@@ -83,6 +86,8 @@ async function list(courseId){
 }
 
 async function remove(id){
+  if(!id)return;
+  deletedIds.add(id);
   try{
     const db=await openDb();
     if(!db)throw new Error('fallback');

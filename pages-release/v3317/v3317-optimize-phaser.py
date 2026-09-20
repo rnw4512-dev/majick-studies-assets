@@ -33,7 +33,15 @@ preload_names=[
 ]
 for name in preload_names:
     src=objects/name
-    if src.exists(): convert(src,runtime_objects/name,512,82)
+    if src.exists():
+        dst=runtime_objects/name
+        convert(src,dst,512,82)
+        # A zero-byte runtime image makes Phaser reject the entire texture.
+        # Verify the derived file while the untouched source is still available.
+        if not dst.exists() or dst.stat().st_size < 256:
+            convert(src,dst,512,82)
+        if not dst.exists() or dst.stat().st_size < 256:
+            raise RuntimeError('invalid runtime object image: '+name)
 
 # Guardian evolution action art is already final-clean WebP and loads on demand.
 # Do not rebuild those 60 files during CI.

@@ -191,15 +191,53 @@ async function toggleSource(id){
   await refreshLibrary();
 }
 
-async function removeSource(id){
+function sourceFingerprint(row){
+  const text=String(row?.text||'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim();
+  return text.length>=80?text:'';
+}
+
+function duplicateSourceIds(rows){
+  const seen=new Set(),duplicates=new Set();
+  const ordered=[...(rows||[])].sort((a,b)=>String(a.createdAt||'').localeCompare(String(b.createdAt||'')));
+  for(const row of ordered){
+    const key=sourceFingerprint(row);
+    if(!key)continue;
+    if(seen.has(key))duplicates.add(row.id);
+    else seen.add(key);
+  }
+  return duplicates;
+}
+
+async function removeSource(id,options={}){
   const row=await MajickMaterialStore.get(id);
   if(!row)return;
+  if(options.confirm!==false){
+    const ok=window.confirm('Delete "'+row.sourceName+'" from '+row.courseId+'?\n\nIts generated questions will leave the active bank. Your original answer history will be preserved.');
+    if(!ok){setStatus('Delete cancelled. '+row.sourceName+' is still saved.');return}
+  }
   await MajickMaterialStore.remove(id);
   const c=courseForId(row.courseId);
   if(c?.sources)c.sources=c.sources.filter(x=>x.id!==id);
   const result=await syncCourse(row.courseId);
+  await window.MajickCourseTutor?.hydrate?.(row.courseId);
   showPreview(null);
-  setStatus('Removed '+row.sourceName+' from '+row.courseId+' • '+(result?.total||0)+' Notes Forge questions remain active.');
+  setStatus('Deleted '+row.sourceName+' from '+row.courseId+' • '+(result?.total||0)+' Notes Forge questions remain active. Answer history was preserved.');
+  await refreshLibrary();
+}
+
+async function deleteDuplicateSources(courseId=selectedCourseId()){
+  const rows=await MajickMaterialStore.list(courseId);
+  const ids=duplicateSourceIds(rows);
+  if(!ids.size){setStatus('No exact duplicate source copies were found in '+courseId+'.');return}
+  const ok=window.confirm('Delete '+ids.size+' duplicate source cop'+(ids.size===1?'y':'ies')+' from '+courseId+'?\n\nMajick will keep one complete copy of each upload, rebuild the active question bank, and preserve answer history.');
+  if(!ok){setStatus('Duplicate cleanup cancelled. Nothing was deleted.');return}
+  for(const id of ids)await MajickMaterialStore.remove(id);
+  const c=courseForId(courseId);
+  if(c?.sources)c.sources=c.sources.filter(x=>!ids.has(x.id));
+  const result=await syncCourse(courseId);
+  await window.MajickCourseTutor?.hydrate?.(courseId);
+  showPreview(null);
+  setStatus('Deleted '+ids.size+' duplicate source cop'+(ids.size===1?'y':'ies')+' from '+courseId+'. One complete copy remains, '+(result?.total||0)+' active questions were rebuilt, and answer history was preserved.');
   await refreshLibrary();
 }
 
@@ -212,19 +250,21 @@ async function refreshLibrary(){
     box.innerHTML='<div class="v3315Empty">No saved sources for this course yet.</div>';
     return;
   }
-  box.innerHTML=rows.map(r=>{
+  const duplicateIds=duplicateSourceIds(rows);
+  box.innerHTML=(duplicateIds.size?'<div class="v3315DuplicateTools"><div><b>'+duplicateIds.size+' duplicate source cop'+(duplicateIds.size===1?'y':'ies')+' detected</b><small>Majick already hides repeated lesson content. You can also delete the extra saved copies.</small></div><button class="btn v3315DeleteDuplicates" type="button">Delete duplicate copies</button></div>':'')+rows.map(r=>{
     const active=r.active!==false;
     return '<article class="v3315SourceRow '+(active?'':'paused')+'" data-source="'+E(r.id)+'">'+
-      '<div><b>'+E(r.sourceName)+'</b><small>'+E(String(r.sourceType||'').toUpperCase())+' • '+new Date(r.createdAt).toLocaleDateString()+' • '+(r.generated?.practiceQuestions?.length||0)+' questions • '+(active?'ACTIVE':'PAUSED')+(r.learningPath?.lessonTitle?' • '+E(r.learningPath.lessonTitle):'')+'</small></div>'+
+      '<div><b>'+E(r.sourceName)+(duplicateIds.has(r.id)?' <span class="v3315DuplicateBadge">DUPLICATE COPY</span>':'')+'</b><small>'+E(String(r.sourceType||'').toUpperCase())+' • '+new Date(r.createdAt).toLocaleDateString()+' • '+(r.generated?.practiceQuestions?.length||0)+' questions • '+(active?'ACTIVE':'PAUSED')+(r.learningPath?.lessonTitle?' • '+E(r.learningPath.lessonTitle):'')+'</small></div>'+
       '<div class="v3315SourceActions">'+
         '<button class="btn ghost v3315OpenSource" type="button">Open</button>'+
         '<button class="btn ghost v3315RegenerateSource" type="button">Regenerate</button>'+
         '<button class="btn ghost v3315ToggleSource" type="button">'+(active?'Pause':'Activate')+'</button>'+
-        '<button class="btn ghost v3315RemoveSource" type="button">Remove</button>'+
+        '<button class="btn ghost v3315RemoveSource v3315DeleteSource" type="button">Delete</button>'+
       '</div>'+
     '</article>';
   }).join('');
 
+  box.querySelector('.v3315DeleteDuplicates')?.addEventListener('click',()=>deleteDuplicateSources(cid));
   box.querySelectorAll('.v3315OpenSource').forEach(btn=>btn.addEventListener('click',()=>openSource(btn.closest('[data-source]')?.dataset.source)));
   box.querySelectorAll('.v3315RegenerateSource').forEach(btn=>btn.addEventListener('click',()=>regenerateSource(btn.closest('[data-source]')?.dataset.source)));
   box.querySelectorAll('.v3315ToggleSource').forEach(btn=>btn.addEventListener('click',()=>toggleSource(btn.closest('[data-source]')?.dataset.source)));
@@ -291,6 +331,6 @@ function bind(){
   refreshLibrary();
 }
 
-window.AddStudyMaterialPage={render,bind,refreshLibrary,openSource,regenerateSource,toggleSource,removeSource};
+window.AddStudyMaterialPage={render,bind,refreshLibrary,openSource,regenerateSource,toggleSource,removeSource,deleteDuplicateSources,duplicateSourceIds};
 window.v3315BindStudyMaterialPage=bind;
 })();
