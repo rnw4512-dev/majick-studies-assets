@@ -1,4 +1,4 @@
-// Majick Studies V3.3.18 Stability Reset — AUTHORITATIVE MAIN APP BRIDGE
+// Majick Studies V3.3.19 Learning Intelligence — AUTHORITATIVE MAIN APP BRIDGE
 (function(){
 'use strict';
 
@@ -178,8 +178,8 @@ function applyReleaseBadge(){
   const pill=document.querySelector('.top .pill');
   if(pill&&pill.textContent!==RELEASE_LABEL)pill.textContent=RELEASE_LABEL;
   if(document.title!==RELEASE_TITLE)document.title=RELEASE_TITLE;
-  if(document.documentElement.dataset.majickVersion!=='3.3.18-stability'){
-    document.documentElement.dataset.majickVersion='3.3.18-stability';
+  if(document.documentElement.dataset.majickVersion!=='3.3.19-learning'){
+    document.documentElement.dataset.majickVersion='3.3.19-learning';
   }
 }
 
@@ -215,6 +215,9 @@ if(previousRender){
     if(window.S?.screen==='addmaterial'){
       setTimeout(()=>window.MajickCourseManager?.bindPanel?.(),0);
       setTimeout(()=>window.v3315BindStudyMaterialPage?.(),0);
+    }
+    if(window.S?.screen==='learninglab'){
+      setTimeout(()=>window.MajickLearningLab?.bind?.(),0);
     }
     if(window.S?.screen==='home')setTimeout(()=>window.lfUpgradeHomeHabitat(),0);
     setTimeout(()=>window.v3317PushGuardianLevels(),140);
