@@ -51,7 +51,7 @@ function activateObject(scene,obj){
     return scene.showMirrorPanel?.();
   }
   if(obj.interaction==='guardian-care'){
-    return route(scene,'companions',{objectId:obj.id});
+    return scene.openGuardianCarePicker?.(obj.careAction||null,obj.id);
   }
 
   switch(obj.id){
@@ -76,6 +76,111 @@ function activateObject(scene,obj){
     return scene.showToast?.(obj.displayName,'This Sanctuary path is not unlocked yet.');
   }
 }
+
+// -----------------------------------------------------------------------------
+// GUARDIAN CARE — persistent state lives in the main app; Phaser owns reactions.
+// -----------------------------------------------------------------------------
+
+function carePost(scene,type,action,extra={}){
+  try{
+    window.parent?.postMessage({
+      type:'MAJICK_CARE_ACTION_V3317',
+      guardian:type,
+      action,
+      ...extra
+    },location.origin);
+  }catch(e){console.warn('V3.3.17 care post',e)}
+}
+function careLabel(scene,type){
+  const g=scene.v3317CareState?.guardians?.[type];
+  if(!g)return '';
+  const avg=['hunger','hydration','energy','fun','grooming','affection']
+    .reduce((n,k)=>n+(Number(g[k])||0),0)/6;
+  return 'Bond '+Math.round(Number(g.bond)||0)+' • '+(g.mood?.label||Math.round(avg)+'% cared for');
+}
+Game.prototype.v3317CareRequest=function(type,action,extra={}){
+  carePost(this,type,action,extra);
+};
+Game.prototype.openGuardianCarePicker=function(action,objectId){
+  const title=action?'Use '+(this.getSanctuaryObject(objectId)?.displayName||'Guardian Care Station'):'Guardian Care';
+  this.showInteractionPanel?.(
+    'Choose a Guardian',
+    title,
+    action?'Choose who should use this care object.':'Choose a Guardian to care for.',
+    [
+      {label:'VELORA',run:()=>action?this.v3317CareRequest('luna',action,{objectId}):this.openGuardianCarePanel('luna')},
+      {label:'CASCADE',run:()=>action?this.v3317CareRequest('ember',action,{objectId}):this.openGuardianCarePanel('ember')},
+      {label:'SOLSTICE',run:()=>action?this.v3317CareRequest('nova',action,{objectId}):this.openGuardianCarePanel('nova')},
+      {label:'AURELIA',primary:true,run:()=>action?this.v3317CareRequest('mallow',action,{objectId}):this.openGuardianCarePanel('mallow')}
+    ]
+  );
+};
+Game.prototype.openGuardianCarePanel=function(type){
+  const snap=this.v3317CareState;
+  const g=snap?.guardians?.[type];
+  if(!g){
+    try{window.parent?.postMessage({type:'MAJICK_CARE_STATE_REQUEST_V3317'},location.origin)}catch(_){}
+    this.showToast?.('Guardian Care','Care status is syncing from Majick Studies. Tap your Guardian again in a moment.');
+    return;
+  }
+  const inv=snap.inventory||{},owned=new Set(snap.owned||[]);
+  const meal=Number(inv['moonberry-meal']||0),treat=Number(inv['starlight-treat']||0);
+  const brush=owned.has('moon-silver-brush');
+  const favorite=g.favoriteOwned?' • favorite owned':'';
+  const body=[
+    'Hunger '+Math.round(g.hunger)+'%',
+    'Water '+Math.round(g.hydration)+'%',
+    'Energy '+Math.round(g.energy)+'%',
+    'Fun '+Math.round(g.fun)+'%',
+    'Grooming '+Math.round(g.grooming)+'%',
+    'Affection '+Math.round(g.affection)+'%',
+    'Bond '+Math.round(g.bond)
+  ].join('  •  ')+'\nFavorite: '+(g.favoriteLabel||'Sanctuary treasure')+favorite;
+
+  this.showInteractionPanel?.(
+    (g.name||NAMES[type]||'Guardian')+' • Care',
+    (g.mood?.icon||'✦')+' '+(g.mood?.label||'Sanctuary bond'),
+    body,
+    [
+      {label:'FEED • '+meal+' MEALS',run:()=>this.v3317CareRequest(type,'feed')},
+      {label:'FRESH WATER',run:()=>this.v3317CareRequest(type,'water')},
+      {label:'TREAT • '+treat+' LEFT',run:()=>this.v3317CareRequest(type,'treat')},
+      {label:brush?'BRUSH & GROOM':'BRUSH • BUY TOOL',run:()=>brush?this.v3317CareRequest(type,'groom'):window.parent?.postMessage({type:'MAJICK_OPEN_CARE_SHOP_V3317'},location.origin)},
+      {label:'PLAY',run:()=>this.v3317CareRequest(type,'play')},
+      {label:'AFFECTION',run:()=>this.v3317CareRequest(type,'affection')},
+      {label:'REST IN BED',run:()=>this.v3317CareRequest(type,'sleep')},
+      {label:'MOON CRYSTAL BOUTIQUE',primary:true,run:()=>window.parent?.postMessage({type:'MAJICK_OPEN_CARE_SHOP_V3317'},location.origin)}
+    ]
+  );
+};
+Game.prototype.v3317CareReaction=function(result){
+  if(!result?.guardian)return;
+  const type=result.guardian,pet=this[type];
+  if(!pet?.active)return;
+
+  if(result.travelObject){
+    this.__v3317CareSkipBed=type+'|'+result.travelObject;
+    this.startFamiliarObjectInteraction?.(type,result.travelObject);
+  }else{
+    this.v3317ShowAction?.(type,result.visualAction==='sleep'?'sleep':'play',result.action==='affection'?2200:2900);
+  }
+
+  try{
+    const def=this.getFamiliarInteractionDef?.(type);
+    this.createSparkles?.(pet.x,pet.y-70,result.favoriteBonus?26:16);
+    this.showPetMessage?.(pet,result.message||'The familiar bond glows a little brighter.',def?.bubble||'#e8d4ff');
+    const float=this.add.text(pet.x,pet.y-150,result.icon||'✦',{
+      fontFamily:'Georgia',fontSize:'34px',color:'#ffe2a0',
+      stroke:'#24152f',strokeThickness:4
+    }).setOrigin(.5).setDepth(500);
+    this.tweens.add({targets:float,y:float.y-55,alpha:0,duration:1500,ease:'Sine.out',onComplete:()=>float.destroy()});
+  }catch(e){console.warn('V3.3.17 care reaction',e)}
+
+  this.showToast?.(
+    (result.name||NAMES[type]||'Guardian')+' • '+(result.mood?.label||'Bond moment'),
+    result.message||'Care complete.'
+  );
+};
 
 // -----------------------------------------------------------------------------
 // RICH PANELS — directly on V3.3.17, no dependency on old sanctuary wrappers.
@@ -290,6 +395,16 @@ Game.prototype.playFamiliarObjectReaction=function(def,obj,token){
   const result=baseReaction?.call(this,def,obj,token);
   const action=obj?.mode==='sleep'?'sleep':'play';
   this.v3317ShowAction?.(def?.id,action,obj?.mode==='sleep'?3900:2900);
+
+  // Directly clicking a crystal bed now changes real care state.
+  if(obj?.mode==='sleep'&&(obj.id==='bed-west'||obj.id==='bed-east')){
+    const key=def?.id+'|'+obj.id;
+    if(this.__v3317CareSkipBed===key){
+      this.__v3317CareSkipBed=null;
+    }else{
+      carePost(this,def?.id,'sleep',{objectId:obj.id});
+    }
+  }
   return result;
 };
 
@@ -318,6 +433,7 @@ function hideLegacyLabels(scene){
 const baseCreate=Game.prototype.create;
 Game.prototype.create=function(){
   this.v3317GuardianStates={};
+  this.v3317CareState={guardians:{},inventory:{},owned:[]};
   baseCreate.call(this);
   hideLegacyLabels(this);
 
@@ -329,7 +445,7 @@ Game.prototype.create=function(){
     try{
       pet.setInteractive({useHandCursor:true});
       pet.on('pointerup',()=>{
-        if(!this.editMode)route(this,'companions',{guardian:type});
+        if(!this.editMode)this.openGuardianCarePanel(type);
       });
     }catch(_){}
   });
@@ -341,24 +457,45 @@ Game.prototype.create=function(){
   this.time.delayedCall(250,()=>this.v3317UpdateGuardianVisuals());
   this.time.delayedCall(320,()=>this.v3317CheckCoreObjects());
 
-  try{window.parent?.postMessage({type:'MAJICK_SANCTUARY_READY_V3317'},location.origin)}catch(_){}
+  try{
+    window.parent?.postMessage({type:'MAJICK_SANCTUARY_READY_V3317'},location.origin);
+    window.parent?.postMessage({type:'MAJICK_CARE_STATE_REQUEST_V3317'},location.origin);
+  }catch(_){}
 };
 
 window.addEventListener('message',ev=>{
   if(ev.origin!==location.origin)return;
   const d=ev.data||{};
-  if(d.type!=='MAJICK_GUARDIAN_LEVELS_V3317'||!d.guardians)return;
   const scene=window.majickPhaserGame?.scene?.getScene('Game');
   if(!scene)return;
 
-  scene.v3317GuardianStates=d.guardians;
-  ['luna','ember','nova','mallow'].forEach(type=>{
-    try{scene['v3317Walk_'+type]?.destroy()}catch(_){}
-    try{scene['v3317Action_'+type]?.destroy()}catch(_){}
-    scene['v3317Walk_'+type]=null;
-    scene['v3317Action_'+type]=null;
-    scene.v3317EnsureWalkSkin(type);
-  });
+  if(d.type==='MAJICK_GUARDIAN_LEVELS_V3317'&&d.guardians){
+    scene.v3317GuardianStates=d.guardians;
+    ['luna','ember','nova','mallow'].forEach(type=>{
+      try{scene['v3317Walk_'+type]?.destroy()}catch(_){}
+      try{scene['v3317Action_'+type]?.destroy()}catch(_){}
+      scene['v3317Walk_'+type]=null;
+      scene['v3317Action_'+type]=null;
+      scene.v3317EnsureWalkSkin(type);
+    });
+    return;
+  }
+
+  if(d.type==='MAJICK_CARE_STATE_V3317'&&d.snapshot){
+    scene.v3317CareState=d.snapshot;
+    return;
+  }
+
+  if(d.type==='MAJICK_CARE_RESULT_V3317'&&d.result){
+    scene.v3317CareState=d.snapshot||d.result.snapshot||scene.v3317CareState;
+    if(d.result.ok)scene.v3317CareReaction(d.result);
+    else{
+      scene.showToast?.('Guardian Care',d.result.message||'That care action is not available right now.');
+      if(d.result.needsShop){
+        scene.time.delayedCall(650,()=>window.parent?.postMessage({type:'MAJICK_OPEN_CARE_SHOP_V3317'},location.origin));
+      }
+    }
+  }
 });
 
 })();
