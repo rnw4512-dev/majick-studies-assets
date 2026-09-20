@@ -1,0 +1,29 @@
+from pathlib import Path
+from PIL import Image
+import json,re,sys
+root=Path(sys.argv[1])
+idx=root/'index.html';s=idx.read_text(encoding='utf-8')
+if 'v3312-main.css' not in s:s=s.replace('</head>','<link rel="stylesheet" href="./v3312-main.css?v=3312">\n</head>',1)
+if 'v3312-main.js' not in s:s=s.replace('</body>','<script src="./v3312-main.js?v=3312"></script>\n</body>',1)
+s=s.replace('Living Familiars • V3.3.11 Living Grimoire','Living Familiars • V3.3.12 Faster Evolutions');idx.write_text(s,encoding='utf-8')
+sidx=root/'sanctuary'/'index.html';t=sidx.read_text(encoding='utf-8')
+if 'v3312-sanctuary.js' not in t:
+    needle='<script src="./v3311-sanctuary.js?v=3311"></script>'
+    if needle in t:t=t.replace(needle,needle+'\n    <script src="./v3312-sanctuary.js?v=3312"></script>',1)
+    else:t=t.replace('<script src="./bridge.js"></script>','<script src="./v3312-sanctuary.js?v=3312"></script>\n    <script src="./bridge.js"></script>',1)
+sidx.write_text(t,encoding='utf-8')
+b=root/'assets/familiars/evolution_banners';o=root/'assets/familiars/evolution_stages';o.mkdir(parents=True,exist_ok=True)
+types=['velora','cascade','solstice','aurelia','vesper','briar','zephyr','prism','rook','solara'];st=['new-bond','apprentice','guardian','ascendant','celestial'];centers=[245,540,900,1240,1550]
+for typ in types:
+    im=Image.open(b/f'{typ}-evolution.webp').convert('RGB')
+    if im.size!=(1800,600):raise RuntimeError(f'{typ} banner size {im.size}, expected 1800x600')
+    for i,name in enumerate(st):
+        cx=centers[i];x0=max(0,cx-155);x1=min(im.width,cx+155)
+        crop=im.crop((x0,105,x1,590)).resize((320,500),Image.Resampling.LANCZOS)
+        crop.save(o/f'{typ}-{name}.webp','WEBP',quality=90,method=6)
+sw=root/'service-worker.js';w=sw.read_text(encoding='utf-8');w=re.sub(r"const CACHE='[^']+';","const CACHE='majick-studies-v3-3-12-fast-shell';",w,count=1)
+shell=['./','./index.html','./manifest.webmanifest','./app-progress.json','./v339-main.js','./v339-main.css','./v3310-main.js','./v3310-main.css','./v3311-main.js','./v3311-main.css','./v3311-plus.js','./v3311-plus.css','./v3312-main.js','./v3312-main.css']
+w=re.sub(r"const ASSETS=\[.*?\];",'const ASSETS=['+','.join(repr(x) for x in shell)+'];',w,count=1,flags=re.S);sw.write_text(w,encoding='utf-8')
+p=root/'app-progress.json';d=json.loads(p.read_text());d.update({'version':'V3.3.12','release_name':'Faster Evolutions + Interactive Campus','overall_full_vision_percent':90,'usable_study_app_percent':96,'stable_base':'V3.3.11 Living Grimoire with confirmed V3.3.10 Phaser motion foundation','study_now_changed':False,'study_now_change_note':'No question scoring, adaptive scheduling, XP, crystal, streak, answer, or course-progress logic changed.','save_compatibility':'Additive-only. Existing XP, crystals, streaks, answers, course progress, current Guardian data, and Phase 4 movement saves are preserved.','what_changed':['Level-aware evolution art now displays automatically in sidebar, Study Now coach, Guardian roster, Vault, and evolution gallery.','Fixed legacy type-to-canon image mapping: luna→velora, ember→cascade, nova→solstice, mallow→aurelia.','Regenerated all 50 individual evolution images as cleaner centered crops from the approved banners without redesigning the animals.','Companion page now lazy-loads evolution art; five-form trees load only when opened.','Sanctuary Phaser iframe is user-started so the main app no longer downloads ~53 MB of movement art during normal page load.','Service worker now pre-caches only the lightweight app shell; heavy art caches after use.','Removed static pet name/type text hovering over Phaser familiars; the familiars themselves remain clickable and now show hover hints.','Realm cards use existing dark-fantasy app artwork instead of blank placeholder swatches.'],'placeholders':['Sanctuary furniture is still mostly code-drawn until final transparent object art is added to GitHub.'],'known_risks':['First entry into the Living Sanctuary can still take time because the protected original motion PNGs total roughly 53 MB; they are intentionally not altered or recompressed.','One hard refresh is recommended after deployment so the new lightweight service worker replaces the old heavy cache.'],'next_priorities':['Add polished transparent WebP object art for Arcane Stacks, Moonlit Desk, Observatory Telescope, crystal beds, Apothecary, Familiar Lounge and Magic Mirror.','Add evolution aura/FX layers around the protected moving sprites without swapping or editing their sprite files.','Create true movement sets for the six newer Guardians only after their exact designs are approved for animation.']});p.write_text(json.dumps(d,indent=2),encoding='utf-8')
+(root/'PROJECT_PROGRESS.md').write_text('# Majick Studies V3.3.12 — Faster Evolutions + Interactive Campus\n\n## Protected hard rule\nVelora, Cascade, Solstice, and Aurelia\'s current Phase 4 movement methods and original sprite files are unchanged. No movement-system rewrite, replacement, or simplification.\n\n## Changes\n- Level-aware Guardian art now changes automatically across the app.\n- 50 cleaner individual evolution images are derived from the approved ten banners.\n- Fixed legacy ID mapping to canon art.\n- Evolution gallery and sanctuary use lazy/on-demand loading.\n- Service worker pre-caches only the lightweight shell; heavy images cache after first use.\n- Removed static text over Phaser pet heads; clicking the familiar opens its profile.\n- Realm previews now use existing Majick dark-fantasy art.\n\n## Save safety\nNo destructive migration. XP, crystals, streaks, answers, course progress, current Guardian data, and existing movement saves are preserved.\n',encoding='utf-8')
+print('V3.3.12 applied safely')
