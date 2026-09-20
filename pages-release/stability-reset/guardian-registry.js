@@ -20,8 +20,48 @@ const STAGES=[
   {slug:'ascendant',name:'Ascendant',min:8,max:11},
   {slug:'celestial',name:'Celestial',min:12,max:Infinity}
 ];
-function get(type){return GUARDIANS[String(type||'').toLowerCase()]||null}
-function all(){return Object.values(GUARDIANS)}
+function normalizeExtra(type,raw={}){
+  const key=String(type||raw.type||'').toLowerCase();
+  if(!key)return null;
+  return {
+    type:key,
+    canon:String(raw.canon||raw.slug||raw.name||key).toLowerCase().replace(/[^a-z0-9-]+/g,'-'),
+    name:raw.name||raw.display||key,
+    species:raw.species||'Guardian',
+    icon:raw.icon||raw.sigil||'✦',
+    favoriteItem:raw.favoriteItem||raw.favorite||null,
+    favoriteLabel:raw.favoriteLabel||raw.favorite||'Sanctuary treasure',
+    hasProtectedMotion:!!raw.hasProtectedMotion
+  };
+}
+function dynamicSources(){
+  const out={};
+  const canon=window.V338_CANON||{};
+  for(const [type,raw] of Object.entries(canon)){
+    if(!GUARDIANS[type])out[type]=normalizeExtra(type,raw);
+  }
+  for(const pet of (window.S?.legacy?.pets||[])){
+    if(pet?.type&&!GUARDIANS[pet.type]&&!out[pet.type])out[pet.type]=normalizeExtra(pet.type,pet);
+  }
+  for(const egg of (window.S?.legacy?.eggs||[])){
+    if(egg?.type&&!GUARDIANS[egg.type]&&!out[egg.type])out[egg.type]=normalizeExtra(egg.type,egg);
+  }
+  return out;
+}
+function register(type,meta){
+  const normalized=normalizeExtra(type,meta);
+  if(!normalized)return null;
+  GUARDIANS[normalized.type]={...(GUARDIANS[normalized.type]||{}),...normalized,...meta,type:normalized.type};
+  return GUARDIANS[normalized.type];
+}
+function get(type){
+  const key=String(type||'').toLowerCase();
+  return GUARDIANS[key]||dynamicSources()[key]||null;
+}
+function all(){
+  const merged={...dynamicSources(),...GUARDIANS};
+  return Object.values(merged).filter(Boolean);
+}
 function protectedMotionTypes(){return all().filter(x=>x.hasProtectedMotion).map(x=>x.type)}
 function stage(level){
   const n=Math.max(1,Number(level)||1);
@@ -34,5 +74,5 @@ function stageImage(type,levelOrIndex){
   const i=Number.isInteger(levelOrIndex)&&levelOrIndex>=0&&levelOrIndex<=4?levelOrIndex:stage(levelOrIndex).index;
   return 'assets/familiars/evolution_stages/'+g.canon+'-'+STAGES[i].slug+'.webp';
 }
-window.MajickGuardianRegistry={version:1,guardians:GUARDIANS,stages:STAGES,get,all,protectedMotionTypes,stage,stageImage};
+window.MajickGuardianRegistry={version:2,guardians:GUARDIANS,stages:STAGES,get,all,register,normalizeExtra,protectedMotionTypes,stage,stageImage};
 })();
