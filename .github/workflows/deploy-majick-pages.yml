@@ -14,6 +14,7 @@ on:
       - 'pages-release/v3315/**'
       - 'sanctuary/assets/objects/**'
       - 'sanctuary/assets/evolutions/**'
+      - 'sanctuary/assets/majick-v3315-art-sync.zip'
       - '.github/workflows/deploy-majick-pages.yml'
   workflow_dispatch:
 
@@ -133,6 +134,18 @@ jobs:
           cp sanctuary/assets/objects/objects-manifest.json _site/sanctuary/assets/objects/objects-manifest.json
           python pages-release/v3314/v3314-apply.py _site
 
+          # Optional single-file V3.3.15 art sync bundle.
+          # Upload sanctuary/assets/majick-v3315-art-sync.zip once; the build expands it safely.
+          if [ -s sanctuary/assets/majick-v3315-art-sync.zip ]; then
+            rm -rf /tmp/majick-v3315-art-sync
+            mkdir -p /tmp/majick-v3315-art-sync
+            unzip -oq sanctuary/assets/majick-v3315-art-sync.zip -d /tmp/majick-v3315-art-sync
+            test -d /tmp/majick-v3315-art-sync/sanctuary/assets/evolutions
+            test -d /tmp/majick-v3315-art-sync/sanctuary/assets/objects
+            cp -a /tmp/majick-v3315-art-sync/sanctuary/assets/evolutions/. sanctuary/assets/evolutions/
+            cp -a /tmp/majick-v3315-art-sync/sanctuary/assets/objects/. sanctuary/assets/objects/
+          fi
+
           # V3.3.15 adds Notes Forge and one shared Guardian stage resolver.
           cp pages-release/v3315/v3315-main.js _site/v3315-main.js
           cp pages-release/v3315/v3315-main.css _site/v3315-main.css
@@ -227,6 +240,18 @@ jobs:
           test -s _site/v3315-main.css
           test -s _site/sanctuary/v3315-sanctuary.js
           test -s _site/sanctuary/assets/evolutions/evolution-manifest.json
+          if [ -s sanctuary/assets/majick-v3315-art-sync.zip ]; then
+            test "$(find _site/sanctuary/assets/evolutions -type f -name '*.webp' | wc -l)" -ge 60
+            test -s _site/sanctuary/assets/evolutions/velora/ascendant/walk.webp
+            test -s _site/sanctuary/assets/evolutions/cascade/celestial/play.webp
+            test -s _site/sanctuary/assets/evolutions/solstice/guardian/sleep.webp
+            test -s _site/sanctuary/assets/evolutions/aurelia/new-bond/walk.webp
+            test -s _site/sanctuary/assets/objects/magic-mirror.webp
+            test -s _site/sanctuary/assets/objects/moonlit-study-desk.webp
+            test -s _site/sanctuary/assets/objects/celestial-telescope.webp
+            test -s _site/sanctuary/assets/objects/enchanted-bookstack.webp
+            test -s _site/sanctuary/assets/objects/moonstone-canopy-bed.webp
+          fi
           test -s _site/study-material/materialParser.js
           test -s _site/study-material/materialStoreModel.js
           test -s _site/study-material/questionBuilder.js
