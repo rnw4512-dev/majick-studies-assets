@@ -39,7 +39,7 @@ try{
   await assert(boot.hasRender,'render() unavailable after boot');
   await assert(boot.hasState,'MajickStateCore unavailable after boot');
   await assert(boot.hasRegistry,'Guardian registry unavailable after boot');
-  await assert(boot.version==='3.3.22-recovery','wrong deployed runtime version: '+boot.version);
+  await assert(boot.version==='3.3.25-guardian-visual','wrong deployed runtime version: '+boot.version);
   await assert(boot.guardians.length>=10,'baseline Guardian registry unexpectedly shrank');
 
   const balanceRecovery=await page.evaluate(()=>{
@@ -543,6 +543,7 @@ try{
   await frame.waitForFunction(()=>window.MajickSanctuaryLife?.VERSION==='3.3.20',{timeout:12000});
   await frame.waitForFunction(()=>window.MajickSanctuaryCustomize?.VERSION==='3.3.21',{timeout:12000});
   await frame.waitForFunction(()=>window.MajickSanctuaryRecovery?.VERSION==='3.3.22',{timeout:12000});
+  await frame.waitForFunction(()=>window.MajickGuardianVisualAuthority?.VERSION==='3.3.25',{timeout:12000});
   await frame.waitForFunction(()=>!!window.majickPhaserGame?.scene?.getScene?.('Game'),{timeout:20000});
   await frame.waitForFunction(()=>Number(window.majickPhaserGame?.scene?.getScene?.('Game')?.v3317CareState?.roster?.length||0)>0,{timeout:12000});
   const san=await frame.evaluate(()=>({
@@ -551,13 +552,31 @@ try{
     hasRegistry:!!window.MajickGuardianRegistry,
     sanctuaryLife:window.MajickSanctuaryLife?.VERSION||null,
     sanctuaryCustomize:window.MajickSanctuaryCustomize?.VERSION||null,
-    sanctuaryRecovery:window.MajickSanctuaryRecovery?.VERSION||null
+    sanctuaryRecovery:window.MajickSanctuaryRecovery?.VERSION||null,
+    guardianVisualAuthority:window.MajickGuardianVisualAuthority?.VERSION||null
   }));
   await assert(san.hasGame||san.hasCanvas,'Phaser Sanctuary did not initialize');
   await assert(san.hasRegistry,'Guardian registry unavailable inside Sanctuary');
   await assert(san.sanctuaryLife==='3.3.20','Sanctuary Home runtime did not load');
   await assert(san.sanctuaryCustomize==='3.3.21','Sanctuary Customization runtime did not load');
   await assert(san.sanctuaryRecovery==='3.3.22','Sanctuary Recovery runtime did not load');
+  await assert(san.guardianVisualAuthority==='3.3.25','Guardian Visual Authority runtime did not load');
+
+  await frame.waitForTimeout(1200);
+  const visualAuthority=await frame.evaluate(()=>{
+    const scene=window.majickPhaserGame?.scene?.getScene?.('Game');
+    scene.v3325SyncOwnedVisuals?.();
+    scene.v3317UpdateGuardianVisuals?.();
+    return window.MajickGuardianVisualAuthority.inspect(scene);
+  });
+  await assert(visualAuthority.owned.length===3,'Guardian visual authority did not preserve the three owned Guardians');
+  await assert(visualAuthority.visuals.luna.count===1,'Velora has duplicate visible Phaser layers');
+  await assert(visualAuthority.visuals.nova.count===1,'Solstice has duplicate visible Phaser layers');
+  await assert(visualAuthority.visuals.ember.count===1,'Cascade has duplicate visible Phaser layers');
+  await assert(visualAuthority.visuals.mallow.count===0,'unowned Aurelia is still visible in the Sanctuary');
+  await assert(visualAuthority.totalVisible===3,'Sanctuary renders more visible Guardian layers than the owned roster');
+  await assert(visualAuthority.visuals.ember.height<=238,'Cascade Apprentice visual is oversized');
+  await assert(visualAuthority.visuals.luna.height<=288&&visualAuthority.visuals.nova.height<=288,'evolved Guardian visuals are oversized');
 
   const ownedVisibility=await frame.evaluate(()=>{
     const scene=window.majickPhaserGame?.scene?.getScene?.('Game');

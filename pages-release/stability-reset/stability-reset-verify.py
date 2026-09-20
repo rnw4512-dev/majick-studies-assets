@@ -4,7 +4,7 @@ site=Path(sys.argv[1])
 def fail(msg): raise SystemExit('STABILITY RESET VERIFY FAILED: '+msg)
 main=(site/'index.html').read_text(encoding='utf-8')
 san=(site/'sanctuary'/'index.html').read_text(encoding='utf-8')
-for f in ('v3310-ui-compat.js','v3312-ui-compat.js','guardian-registry.js','majick-state-core.js','learning-lab.js','learning-lab.css','learning-plan.js','learning-plan.css','guardian-care-economy.js','v3317-main.js','sanctuary/v3317-sanctuary.js','sanctuary/v3320-sanctuary-life.js','sanctuary/v3321-sanctuary-customize.js','v3322-main-recovery.js','sanctuary/v3322-sanctuary-recovery.js'):
+for f in ('v3310-ui-compat.js','v3312-ui-compat.js','guardian-registry.js','majick-state-core.js','learning-lab.js','learning-lab.css','learning-plan.js','learning-plan.css','guardian-care-economy.js','v3317-main.js','sanctuary/v3317-sanctuary.js','sanctuary/v3320-sanctuary-life.js','sanctuary/v3321-sanctuary-customize.js','v3322-main-recovery.js','sanctuary/v3322-sanctuary-recovery.js','sanctuary/v3325-sanctuary-visual-authority.js'):
     p=site/f
     if not p.exists() or not p.stat().st_size: fail('missing '+f)
 for old in ('v3310-main.js','v3312-main.js','v3313-main.js','v3314-main.js','v3315-main.js','v3316-main.js'):
@@ -22,6 +22,8 @@ if san.find('v3321-sanctuary-customize.js')<0: fail('Sanctuary Customization run
 if san.find('v3320-sanctuary-life.js')>san.find('v3321-sanctuary-customize.js'): fail('Sanctuary Customization loads before Sanctuary Home')
 if san.find('v3322-sanctuary-recovery.js')<0: fail('Sanctuary recovery runtime missing')
 if san.find('v3321-sanctuary-customize.js')>san.find('v3322-sanctuary-recovery.js'): fail('Sanctuary recovery loads before customization')
+if san.find('v3325-sanctuary-visual-authority.js')<0: fail('Guardian visual authority runtime missing')
+if san.find('v3322-sanctuary-recovery.js')>san.find('v3325-sanctuary-visual-authority.js'): fail('Guardian visual authority loads before recovery')
 for compat_name in ('v3310-ui-compat.js','v3312-ui-compat.js'):
     compat=(site/compat_name).read_text(encoding='utf-8')
     if 'window.render=function' in compat or 'render=function' in compat or 'const prevRender=render' in compat or 'const render12=window.render' in compat:
@@ -68,14 +70,19 @@ for marker in ("window.MajickRecoveryUI","window.practiceTopics","window.startGr
 san_recovery=(site/'sanctuary'/'v3322-sanctuary-recovery.js').read_text(encoding='utf-8')
 for marker in ("window.MajickSanctuaryRecovery","v3322SyncOwnedGuardians","v3322DockGuardianHome"):
     if marker not in san_recovery: fail('Sanctuary recovery missing '+marker)
+visual=(site/'sanctuary'/'v3325-sanctuary-visual-authority.js').read_text(encoding='utf-8')
+for marker in ("window.MajickGuardianVisualAuthority","v3325SyncOwnedVisuals","v3325BaseScale","totalVisible"):
+    if marker not in visual: fail('Guardian visual authority missing '+marker)
 for marker in ('majick-state-core.js?v=3322-recovery','guardian-care-economy.js?v=3322-recovery','v3317-main.js?v=3322-recovery','v3322-main-recovery.js?v=3322'):
     if marker not in main: fail('main cache-bust/runtime missing '+marker)
 if 'v3322-sanctuary-recovery.js?v=3322' not in san:
     fail('Sanctuary recovery asset is not installed')
+if 'v3325-sanctuary-visual-authority.js?v=3325' not in san:
+    fail('Guardian visual authority asset is not installed')
 care=(site/'guardian-care-economy.js').read_text(encoding='utf-8')
 if 'window.MajickGuardianRegistry?.get?.(type)' not in care: fail('Guardian care does not use the shared registry')
 
-for path in (site/'guardian-registry.js',site/'majick-state-core.js',site/'learning-lab.js',site/'guardian-care-economy.js',site/'v3317-main.js',site/'sanctuary'/'v3317-sanctuary.js',site/'sanctuary'/'v3320-sanctuary-life.js',site/'sanctuary'/'v3321-sanctuary-customize.js',site/'v3322-main-recovery.js',site/'sanctuary'/'v3322-sanctuary-recovery.js'):
+for path in (site/'guardian-registry.js',site/'majick-state-core.js',site/'learning-lab.js',site/'guardian-care-economy.js',site/'v3317-main.js',site/'sanctuary'/'v3317-sanctuary.js',site/'sanctuary'/'v3320-sanctuary-life.js',site/'sanctuary'/'v3321-sanctuary-customize.js',site/'v3322-main-recovery.js',site/'sanctuary'/'v3322-sanctuary-recovery.js',site/'sanctuary'/'v3325-sanctuary-visual-authority.js'):
     r=subprocess.run(['node','--check',str(path)],capture_output=True,text=True)
     if r.returncode: fail(path.name+' syntax: '+r.stderr)
 print('STABILITY RESET VERIFY PASSED')

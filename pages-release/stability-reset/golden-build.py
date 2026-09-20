@@ -90,6 +90,7 @@ OVERLAYS=[
     ("pages-release/v3321/sanctuary-customize.js","sanctuary/v3321-sanctuary-customize.js"),
     ("pages-release/v3322/main-recovery.js","v3322-main-recovery.js"),
     ("pages-release/v3322/sanctuary-recovery.js","sanctuary/v3322-sanctuary-recovery.js"),
+    ("pages-release/v3325/sanctuary-visual-authority.js","sanctuary/v3325-sanctuary-visual-authority.js"),
 ]
 for src_rel,dst_rel in OVERLAYS:
     src=repo/src_rel
@@ -161,9 +162,9 @@ for src_name,(dst_name,expected_hash,expected_bytes) in PINNED_MOTION.items():
 progress=site/"app-progress.json"
 if progress.exists():
     data=json.loads(progress.read_text(encoding="utf-8"))
-    data["version"]="V3.3.22 Recovery & Sanctuary Usability"
+    data["version"]="V3.3.25 Adaptive Learning + Guardian Visual Fix"
     data["learning_intelligence"]="V3.3.24 adaptive learning plan with passages, vocabulary, guided practice, ~100-question course bank, rigor progression, mastery and D772 statistics tools"
-    data["sanctuary_version"]="V3.3.22 Owned Guardian Recovery"
+    data["sanctuary_version"]="V3.3.25 Single Guardian Visual Authority"
     data["sanctuary_home"]="Guardian needs HUD, object-aware care travel, exclusive beds, visible care inventory, safe furniture snapping"
     data["sanctuary_customization"]="personal Guardian nooks, feeding/play zones, owned furniture storage, Cozy Dorm layout preset"
     data["build_foundation"]="V3.3.18 Golden Baseline"
@@ -189,13 +190,13 @@ index.write_text(html,encoding="utf-8")
 
 san_index=site/"sanctuary"/"index.html"
 san_html=san_index.read_text(encoding="utf-8")
-san_html=san_html.replace('<script src="./v3320-sanctuary-life.js?v=3320"></script>','').replace('<script src="./v3321-sanctuary-customize.js?v=3321"></script>','').replace('<script src="./v3322-sanctuary-recovery.js?v=3322"></script>','')
+san_html=san_html.replace('<script src="./v3320-sanctuary-life.js?v=3320"></script>','').replace('<script src="./v3321-sanctuary-customize.js?v=3321"></script>','').replace('<script src="./v3322-sanctuary-recovery.js?v=3322"></script>','').replace('<script src="./v3325-sanctuary-visual-authority.js?v=3325"></script>','')
 san_html=san_html.replace('../guardian-registry.js?v=stability-1','../guardian-registry.js?v=3322-recovery')
 san_html=san_html.replace('./v3317-sanctuary.js?v=stability-1','./v3317-sanctuary.js?v=3322-recovery')
 san_tag='<script src="./v3317-sanctuary.js?v=3322-recovery"></script>'
 if san_tag not in san_html:
     fail("authoritative Sanctuary runtime tag missing while installing Sanctuary recovery")
-san_html=san_html.replace(san_tag,san_tag+'\\n<script src="./v3320-sanctuary-life.js?v=3322-recovery"></script>\\n<script src="./v3321-sanctuary-customize.js?v=3322-recovery"></script>\\n<script src="./v3322-sanctuary-recovery.js?v=3322"></script>',1)
+san_html=san_html.replace(san_tag,san_tag+'\\n<script src="./v3320-sanctuary-life.js?v=3322-recovery"></script>\\n<script src="./v3321-sanctuary-customize.js?v=3322-recovery"></script>\\n<script src="./v3322-sanctuary-recovery.js?v=3322"></script>\\n<script src="./v3325-sanctuary-visual-authority.js?v=3325"></script>',1)
 san_index.write_text(san_html,encoding="utf-8")
 
 (site/".nojekyll").touch()
