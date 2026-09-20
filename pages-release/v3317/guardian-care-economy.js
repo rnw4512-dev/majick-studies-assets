@@ -69,17 +69,19 @@ function normalizeGuardianInventory(a){
 }
 
 function canon(type){
+  const reg=window.MajickGuardianRegistry?.get?.(type);
   try{
     const c=window.V338_CANON?.[type]||window.v338Canon?.(type);
-    if(c)return {
-      name:c.display||type,
-      species:c.species||type,
-      icon:c.sigil||'✦',
-      favoriteObject:c.favorite||'Sanctuary treasure',
-      ...FALLBACK_META[type]
+    if(c||reg)return {
+      name:c?.display||reg?.name||type,
+      species:c?.species||reg?.species||type,
+      icon:c?.sigil||reg?.icon||'✦',
+      favoriteObject:c?.favorite||reg?.favoriteLabel||'Sanctuary treasure',
+      ...(FALLBACK_META[type]||{}),
+      ...(reg||{})
     };
   }catch(_){}
-  return FALLBACK_META[type]||{name:type||'Guardian',species:'Guardian',icon:'✦',favoriteItem:'celestial-feather-wand',favoriteLabel:'Celestial Feather Wand'};
+  return reg||FALLBACK_META[type]||{name:type||'Guardian',species:'Guardian',icon:'✦',favoriteItem:'celestial-feather-wand',favoriteLabel:'Celestial Feather Wand'};
 }
 function ownedPets(){
   return Array.isArray(window.S?.legacy?.pets)?S.legacy.pets.filter(Boolean):[];
