@@ -5,8 +5,10 @@
 'use strict';
 if(typeof Game==='undefined')return;
 
-const CANON={luna:'velora',ember:'cascade',nova:'solstice',mallow:'aurelia'};
-const NAMES={luna:'Velora',ember:'Cascade',nova:'Solstice',mallow:'Aurelia'};
+const registry=()=>window.MajickGuardianRegistry;
+const canonOf=type=>registry()?.get?.(type)?.canon||String(type||'').toLowerCase();
+const nameOf=type=>registry()?.get?.(type)?.name||String(type||'Guardian');
+const PROTECTED_MOTION_TYPES=()=>registry()?.protectedMotionTypes?.()||['luna','ember','nova','mallow'];
 const STAGES=['new-bond','apprentice','guardian','ascendant','celestial'];
 
 function stageFromLevel(level){
@@ -16,7 +18,7 @@ function stageFromLevel(level){
 function guardianState(scene,type){
   const known=scene.v3317GuardianStates?.[type]||{};
   const level=Math.max(1,Number(known.level||scene[type]?.getData?.('level')||1)||1);
-  return {type,canon:CANON[type]||type,level,stage:known.stageSlug||known.stage||stageFromLevel(level)};
+  return {type,canon:canonOf(type),level,stage:known.stageSlug||known.stage||stageFromLevel(level)};
 }
 function evoKey(scene,type,action){
   const s=guardianState(scene,type);
@@ -199,7 +201,7 @@ Game.prototype.v3317CareReaction=function(result){
   }
 
   this.showToast?.(
-    (result.name||NAMES[type]||'Guardian')+' • '+(result.mood?.label||'Bond moment'),
+    (result.name||nameOf(type)||'Guardian')+' • '+(result.mood?.label||'Bond moment'),
     result.message||'Care complete.'
   );
 };
@@ -382,7 +384,7 @@ Game.prototype.v3317UpdateGuardianVisuals=function(){
   this.__v3317Prev=this.__v3317Prev||{};
   const now=this.time.now;
 
-  ['luna','ember','nova','mallow'].forEach(type=>{
+  PROTECTED_MOTION_TYPES().forEach(type=>{
     const pet=this[type];if(!pet?.active)return;
     this.v3317EnsureWalkSkin(type);
 
