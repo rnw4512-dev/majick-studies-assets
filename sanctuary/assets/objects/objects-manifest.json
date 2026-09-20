@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "libraryVersion": "3.3.14",
+  "libraryVersion": "3.3.17-object-pass",
   "sourceOfTruth": true,
   "protectedMovementRule": "Object loading and interactions must never rewrite Guardian movement methods or replace the 33 protected movement files.",
   "basePath": "./assets/objects/",
@@ -105,7 +105,8 @@
           "misconception-repair",
           "review"
         ]
-      }
+      },
+      "panelAction": "openStudyDesk"
     },
     {
       "id": "observatory-telescope",
@@ -178,7 +179,8 @@
         "glowFeedback": true,
         "dragPolicy": "edit-mode-only",
         "depthPolicy": "y-sort"
-      }
+      },
+      "panelAction": "openCrystalFocus"
     },
     {
       "id": "moonstone-crystal-bed",
@@ -215,8 +217,7 @@
         "glowFeedback": true,
         "dragPolicy": "edit-mode-only",
         "depthPolicy": "y-sort"
-      },
-      "panelAction": "openFamiliarObjectPicker"
+      }
     },
     {
       "id": "amethyst-crystal-bed",
@@ -289,7 +290,8 @@
         "glowFeedback": true,
         "dragPolicy": "edit-mode-only",
         "depthPolicy": "y-sort"
-      }
+      },
+      "panelAction": "openCrystalFocus"
     },
     {
       "id": "familiar-lounge",
@@ -325,7 +327,8 @@
         "glowFeedback": true,
         "dragPolicy": "edit-mode-only",
         "depthPolicy": "y-sort"
-      }
+      },
+      "panelAction": "openFamiliarLounge"
     },
     {
       "id": "magic-mirror",
@@ -362,7 +365,7 @@
         "dragPolicy": "edit-mode-only",
         "depthPolicy": "y-sort"
       },
-      "panelAction": "openMagicMirror3313"
+      "panelAction": "showMirrorPanel"
     },
     {
       "id": "ancient-reading-lectern",
@@ -3047,7 +3050,10 @@
     "hoverFeedback": true,
     "tapFeedback": true,
     "dragOnlyInEditMode": true,
-    "protectedGuardianMovement": true
+    "protectedGuardianMovement": true,
+    "specialInteractionBeforePanelAction": true,
+    "bedSlotRequiredForAssignRest": true,
+    "persistedLayoutKey": "majick-sanctuary-layout-v2"
   },
   "phaserDefaults": {
     "textureKeyPrefix": "obj-",
@@ -3083,5 +3089,6 @@
       "soft celestial blue"
     ],
     "finish": "polished magical-academia game asset"
-  }
+  },
+  "runtimeOwner": "v3317-sanctuary.js"
 }
