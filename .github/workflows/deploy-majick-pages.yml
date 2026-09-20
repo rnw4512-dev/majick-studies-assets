@@ -4,7 +4,8 @@ on:
   push:
     branches: [main]
     paths:
-      - 'pages-release/stability-reset/**'\n      - 'pages-release/v3319/**'
+      - 'pages-release/stability-reset/**'
+      - 'pages-release/v3319/**'
       - 'pages-release/v3315/study-material/**'
       - 'pages-release/v3316/courseManager.js'
       - 'pages-release/v3317/v3317-main.js'
