@@ -21,3 +21,10 @@
 .majEggEmpty{margin-top:18px;padding:13px;border-radius:14px;background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.06);color:#b8aabc;font-size:12px}
 .majShopFavorite{margin:3px 0 8px;color:#e5c9ee;font-size:10px;font-weight:700}
 @media(max-width:620px){.majGuardianRoster{display:grid;grid-template-columns:1fr 1fr}.majGuardianTab{min-width:0}.majEggGrid{grid-template-columns:1fr}}
+
+/* V3.3.22 compact care dock — keeps the Sanctuary visible instead of pushing care below it */
+.majCareDock{margin:0 0 14px;padding:13px 14px;border:1px solid rgba(235,204,145,.28);border-radius:18px;background:linear-gradient(135deg,rgba(31,17,42,.97),rgba(20,13,31,.97));box-shadow:0 12px 34px rgba(8,3,14,.24);display:grid;grid-template-columns:minmax(0,1fr) auto;gap:14px;align-items:center;color:#eee5f6}
+.majCareDockCopy{min-width:0}.majCareDockTitle{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}.majCareDockTitle b{font:700 20px/1.2 Georgia,serif;color:#f2d7a1}.majCareDockTitle span{font-size:11px;color:#cfc0d8}
+.majCareDockRoster{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}.majCareDockPet{border:1px solid rgba(212,182,232,.18);background:#25172f;color:#d6c8de;border-radius:999px;padding:6px 9px;font:700 10px system-ui;cursor:pointer}.majCareDockPet.active{border-color:#d7b86e;color:#f5dda7;background:#3a2445}
+.majCareDockActions{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}.majCareDockActions button{border:1px solid rgba(216,184,244,.20);border-radius:10px;background:#382448;color:#f4ebf6;padding:8px 10px;font:700 10px system-ui;cursor:pointer}.majCareDockActions button.detail{background:#6c4e7c;border-color:#b894cb}
+@media(max-width:900px){.majCareDock{grid-template-columns:1fr}.majCareDockActions{justify-content:flex-start}}

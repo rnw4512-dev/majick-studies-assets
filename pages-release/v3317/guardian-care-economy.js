@@ -519,11 +519,38 @@ window.majickBuyCareItem=function(id){
   return r;
 };
 
+function compactCareDockHTML(){
+  const snap=snapshot();
+  if(!snap.roster.length){
+    return '<section class="majCareDock"><div><div class="eyebrow">GUARDIAN CARE</div><b>No hatched Guardian yet</b><small>Keep studying to grow your incubating egg.</small></div></section>';
+  }
+  const focus=petById(snap.focusPetId)||activePetSafe()||ownedPets()[0];
+  const g=snap.guardians[focus.id];
+  const needs=['hunger','hydration','energy','fun','grooming','affection'];
+  const low=needs.map(k=>({k,v:Number(g[k]??100)})).sort((a,b)=>a.v-b.v)[0];
+  const label={hunger:'Food',hydration:'Water',energy:'Rest',fun:'Play',grooming:'Grooming',affection:'Affection'}[low.k]||'Care';
+  const tabs=snap.roster.map(r=>'<button class="majCareDockPet '+(r.petId===focus.id?'active':'')+'" onclick="majickSelectCareGuardian(\''+E(r.petId)+'\')">'+E(r.name)+'</button>').join('');
+  return '<section class="majCareDock" data-guardian-id="'+E(focus.id)+'">'+
+    '<div class="majCareDockCopy"><div class="eyebrow">TAKE CARE • '+snap.roster.length+' OWNED GUARDIAN'+(snap.roster.length===1?'':'S')+'</div><div class="majCareDockTitle"><b>'+E(g.name)+'</b><span>'+E(g.mood?.icon||'✦')+' '+E(g.mood?.label||'Bonded')+' • '+label+' '+Math.round(low.v)+'% • Bond '+Math.round(g.bond)+'</span></div><div class="majCareDockRoster">'+tabs+'</div></div>'+
+    '<div class="majCareDockActions">'+
+      '<button onclick="majickCareAction(\''+E(focus.id)+'\',\'feed\')">Feed</button>'+
+      '<button onclick="majickCareAction(\''+E(focus.id)+'\',\'water\')">Water</button>'+
+      '<button onclick="majickCareAction(\''+E(focus.id)+'\',\'play\')">Play</button>'+
+      '<button onclick="majickCareAction(\''+E(focus.id)+'\',\'affection\')">Affection</button>'+
+      '<button class="detail" onclick="majickToggleCareDetails()">Care Details</button>'+
+    '</div>'+
+  '</section>';
+}
+window.majickToggleCareDetails=function(){
+  window.__majickCareDetailsOpen=!window.__majickCareDetailsOpen;
+  try{render()}catch(_){}
+};
 const oldCompanion=window.companionHTML;
 if(typeof oldCompanion==='function'){
   window.companionHTML=function(){
     const base=oldCompanion();
-    return base+guardianCareHTML();
+    const detail=window.__majickCareDetailsOpen?guardianCareHTML():'';
+    return compactCareDockHTML()+detail+base;
   };
 }
 const oldVault=window.vaultHTML;
@@ -572,6 +599,6 @@ ensureAccount();
 setTimeout(()=>broadcastState(),200);
 window.MajickGuardianCare={
   ensure:ensureAccount,state,snapshot,performAction,buy,catalog:CATALOG,normalizeOwnedCollection,normalizeGuardianInventory,
-  ownedPets,incubatingEggs,guardianCareHTML,catalogHTML,broadcastState,moodInfo,bestToy,assignedBed,canon
+  ownedPets,incubatingEggs,guardianCareHTML,compactCareDockHTML,catalogHTML,broadcastState,moodInfo,bestToy,assignedBed,canon
 };
 })();

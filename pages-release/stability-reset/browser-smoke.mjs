@@ -39,7 +39,7 @@ try{
   await assert(boot.hasRender,'render() unavailable after boot');
   await assert(boot.hasState,'MajickStateCore unavailable after boot');
   await assert(boot.hasRegistry,'Guardian registry unavailable after boot');
-  await assert(boot.version==='3.3.19-learning','wrong deployed runtime version: '+boot.version);
+  await assert(boot.version==='3.3.22-recovery','wrong deployed runtime version: '+boot.version);
   await assert(boot.guardians.length>=10,'baseline Guardian registry unexpectedly shrank');
 
   const balanceRecovery=await page.evaluate(()=>{
@@ -103,6 +103,34 @@ try{
 
   // Continue this smoke from D755 so the existing Assessment course remains intact.
   await assert((await page.locator('.courseSelect').inputValue())==='D755','visible class selector did not return to D755');
+
+  // Real Study Guide and Grimoire buttons must be clickable, not blocked by Sanctuary layers.
+  await page.evaluate(()=>navigate('guide'));
+  await page.waitForSelector('.studyCard button',{timeout:10000});
+  await page.locator('.studyCard button').first().click();
+  await page.waitForFunction(()=>window.S?.screen==='mission'&&!!window.session,{timeout:8000});
+  const guideClick=await page.evaluate(()=>({screen:S.screen,mode:session?.mode||null,label:session?.label||null}));
+  await assert(guideClick.screen==='mission','Study Guide practice button did not open practice');
+
+  await page.evaluate(()=>{
+    switchCourse('D755');
+    const c=course();
+    const q=(c.questionBank||[])[0];
+    const p=prog();
+    if(q){
+      p.answers.push({qid:q.id,topicId:q.topicId,chosen:'__wrong__',correct:false,difficulty:q.difficulty||1,ts:Date.now()});
+      p.grimoire=p.grimoire||{};
+      p.grimoire[q.id]={qid:q.id,topicId:q.topicId,repaired:false};
+    }
+    session=null;navigate('grimoire');
+  });
+  await page.waitForSelector('.sectionTitle button',{timeout:10000});
+  const raidBtn=page.getByRole('button',{name:/Fight My Mistakes/i});
+  await assert(await raidBtn.count()===1,'Grimoire raid button missing');
+  await raidBtn.click();
+  await page.waitForFunction(()=>window.S?.screen==='mission'&&!!window.session,{timeout:8000});
+  const grimoireClick=await page.evaluate(()=>({screen:S.screen,mode:session?.mode||null}));
+  await assert(grimoireClick.screen==='mission','Grimoire practice button did not open repair practice');
 
   // Learn Mode must work for every class and keep learning state course-specific.
   await page.evaluate(()=>{switchCourse('D755');navigate('learninglab');});
@@ -454,12 +482,23 @@ try{
 
   // Companions must create the real Sanctuary iframe, not a dead static replacement.
   await page.evaluate(()=>{if(typeof navigate==='function')navigate('companions');else {S.screen='companions';render();}});
+  await page.waitForSelector('.majCareDock',{timeout:10000});
+  const careDock=await page.evaluate(()=>({
+    rosterButtons:document.querySelectorAll('.majCareDockPet').length,
+    detailsVisible:!!document.querySelector('.majGuardianCare'),
+    dockTop:document.querySelector('.majCareDock')?.getBoundingClientRect().top||0,
+    sanctuaryTop:document.querySelector('.phase4Wrap')?.getBoundingClientRect().top||0
+  }));
+  await assert(careDock.rosterButtons===2,'compact care dock shows a Guardian that is not owned');
+  await assert(!careDock.detailsVisible,'full Guardian care panel should be collapsed by default');
+  await assert(careDock.dockTop<=careDock.sanctuaryTop,'Take Care dock is still below the Sanctuary');
   await page.waitForSelector('iframe.v3317SanctuaryFrame',{timeout:15000});
   const frame=page.frames().find(f=>f.url().includes('/sanctuary/'));
   await assert(!!frame,'Sanctuary iframe did not load');
   await frame.waitForFunction(()=>typeof window.Game!=='undefined'||document.querySelector('canvas'),{timeout:20000});
   await frame.waitForFunction(()=>window.MajickSanctuaryLife?.VERSION==='3.3.20',{timeout:12000});
   await frame.waitForFunction(()=>window.MajickSanctuaryCustomize?.VERSION==='3.3.21',{timeout:12000});
+  await frame.waitForFunction(()=>window.MajickSanctuaryRecovery?.VERSION==='3.3.22',{timeout:12000});
   await frame.waitForFunction(()=>!!window.majickPhaserGame?.scene?.getScene?.('Game'),{timeout:20000});
   await frame.waitForFunction(()=>Number(window.majickPhaserGame?.scene?.getScene?.('Game')?.v3317CareState?.roster?.length||0)>0,{timeout:12000});
   const san=await frame.evaluate(()=>({
@@ -467,12 +506,25 @@ try{
     hasCanvas:!!document.querySelector('canvas'),
     hasRegistry:!!window.MajickGuardianRegistry,
     sanctuaryLife:window.MajickSanctuaryLife?.VERSION||null,
-    sanctuaryCustomize:window.MajickSanctuaryCustomize?.VERSION||null
+    sanctuaryCustomize:window.MajickSanctuaryCustomize?.VERSION||null,
+    sanctuaryRecovery:window.MajickSanctuaryRecovery?.VERSION||null
   }));
   await assert(san.hasGame||san.hasCanvas,'Phaser Sanctuary did not initialize');
   await assert(san.hasRegistry,'Guardian registry unavailable inside Sanctuary');
   await assert(san.sanctuaryLife==='3.3.20','Sanctuary Home runtime did not load');
   await assert(san.sanctuaryCustomize==='3.3.21','Sanctuary Customization runtime did not load');
+  await assert(san.sanctuaryRecovery==='3.3.22','Sanctuary Recovery runtime did not load');
+
+  const ownedVisibility=await frame.evaluate(()=>{
+    const scene=window.majickPhaserGame?.scene?.getScene?.('Game');
+    scene.v3322SyncOwnedGuardians?.();
+    scene.v3322DockGuardianHome?.();
+    return window.MajickSanctuaryRecovery.inspect(scene);
+  });
+  await assert(ownedVisibility.owned.length===2&&ownedVisibility.owned.includes('luna')&&ownedVisibility.owned.includes('nova'),'Sanctuary owned roster is not the real two hatched Guardians');
+  await assert(!ownedVisibility.visible.ember.controller&&!ownedVisibility.visible.ember.walk&&!ownedVisibility.visible.ember.action,'unowned Cascade/ember is visible in Sanctuary');
+  await assert(!ownedVisibility.visible.mallow.controller&&!ownedVisibility.visible.mallow.walk&&!ownedVisibility.visible.mallow.action,'unowned Aurelia/mallow is visible in Sanctuary');
+  await assert(ownedVisibility.hud?.x>500&&ownedVisibility.hud?.y<=100,'Guardian Home panel was not moved to the upper-right');
 
   const sanctuaryHome=await frame.evaluate(()=>{
     const scene=window.majickPhaserGame?.scene?.getScene?.('Game');

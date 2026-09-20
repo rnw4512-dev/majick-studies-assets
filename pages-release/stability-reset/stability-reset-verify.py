@@ -4,14 +4,14 @@ site=Path(sys.argv[1])
 def fail(msg): raise SystemExit('STABILITY RESET VERIFY FAILED: '+msg)
 main=(site/'index.html').read_text(encoding='utf-8')
 san=(site/'sanctuary'/'index.html').read_text(encoding='utf-8')
-for f in ('v3310-ui-compat.js','v3312-ui-compat.js','guardian-registry.js','majick-state-core.js','learning-lab.js','learning-lab.css','guardian-care-economy.js','v3317-main.js','sanctuary/v3317-sanctuary.js','sanctuary/v3320-sanctuary-life.js','sanctuary/v3321-sanctuary-customize.js'):
+for f in ('v3310-ui-compat.js','v3312-ui-compat.js','guardian-registry.js','majick-state-core.js','learning-lab.js','learning-lab.css','guardian-care-economy.js','v3317-main.js','sanctuary/v3317-sanctuary.js','sanctuary/v3320-sanctuary-life.js','sanctuary/v3321-sanctuary-customize.js','v3322-main-recovery.js','sanctuary/v3322-sanctuary-recovery.js'):
     p=site/f
     if not p.exists() or not p.stat().st_size: fail('missing '+f)
 for old in ('v3310-main.js','v3312-main.js','v3313-main.js','v3314-main.js','v3315-main.js','v3316-main.js'):
     if old in main: fail('obsolete main runtime still loaded: '+old)
 for old in ('v3311-sanctuary.js','v3312-sanctuary.js','v3313-sanctuary.js','v3314-sanctuary.js','v3315-sanctuary.js'):
     if old in san: fail('obsolete Sanctuary runtime still loaded: '+old)
-order=['v3310-ui-compat.js','v3312-ui-compat.js','guardian-registry.js','majick-state-core.js','guardian-care-economy.js','learning-lab.js','v3317-main.js']
+order=['v3310-ui-compat.js','v3312-ui-compat.js','guardian-registry.js','majick-state-core.js','guardian-care-economy.js','learning-lab.js','v3317-main.js','v3322-main-recovery.js']
 pos=[main.find(x) for x in order]
 if any(x<0 for x in pos) or pos!=sorted(pos): fail('main runtime load order is wrong')
 if san.find('guardian-registry.js')<0 or san.find('v3317-sanctuary.js')<0: fail('Sanctuary registry/bridge missing')
@@ -20,6 +20,8 @@ if san.find('v3320-sanctuary-life.js')<0: fail('Sanctuary Home runtime missing')
 if san.find('v3317-sanctuary.js')>san.find('v3320-sanctuary-life.js'): fail('Sanctuary Home loads before V3.3.17 bridge')
 if san.find('v3321-sanctuary-customize.js')<0: fail('Sanctuary Customization runtime missing')
 if san.find('v3320-sanctuary-life.js')>san.find('v3321-sanctuary-customize.js'): fail('Sanctuary Customization loads before Sanctuary Home')
+if san.find('v3322-sanctuary-recovery.js')<0: fail('Sanctuary recovery runtime missing')
+if san.find('v3321-sanctuary-customize.js')>san.find('v3322-sanctuary-recovery.js'): fail('Sanctuary recovery loads before customization')
 for compat_name in ('v3310-ui-compat.js','v3312-ui-compat.js'):
     compat=(site/compat_name).read_text(encoding='utf-8')
     if 'window.render=function' in compat or 'render=function' in compat or 'const prevRender=render' in compat or 'const render12=window.render' in compat:
@@ -33,7 +35,7 @@ state=(site/'majick-state-core.js').read_text(encoding='utf-8')
 for marker in ('window.prog=safeProg','window.course=safeCourse',"const SHARED=['xp','crystals','chests']",'bindSharedField'):
     if marker not in state: fail('state core missing '+marker)
 main_bridge=(site/'v3317-main.js').read_text(encoding='utf-8')
-if 'V3.3.19 Learning Intelligence' not in main_bridge: fail('main bridge does not identify Learning Intelligence')
+if 'V3.3.22 Recovery & Sanctuary Fix' not in main_bridge: fail('main bridge does not identify V3.3.22 recovery')
 if 'CANON[' in main_bridge: fail('main bridge still contains fixed Guardian CANON lookup')
 if "const meta=registry()?.get?.(p.type);" not in main_bridge: fail('Guardian payload is not registry-driven')
 if r'\\nconst canonOf' in main_bridge: fail('escaped newline leaked into JavaScript source')
@@ -53,12 +55,22 @@ if 'v3320-sanctuary-life.js?v=3320' not in san:
 san_custom=(site/'sanctuary'/'v3321-sanctuary-customize.js').read_text(encoding='utf-8')
 for marker in ("window.MajickSanctuaryCustomize","v3321SetPlaced","v3321ApplyPreset","v3321BuildFurnitureManager","COZY_DORM"):
     if marker not in san_custom: fail('Sanctuary Customization missing '+marker)
-if 'v3321-sanctuary-customize.js?v=3321' not in san:
-    fail('Sanctuary Customization asset is not installed in sanctuary/index.html')
+if 'v3321-sanctuary-customize.js?v=3322-recovery' not in san:
+    fail('Sanctuary Customization asset is not cache-busted in sanctuary/index.html')
+recovery=(site/'v3322-main-recovery.js').read_text(encoding='utf-8')
+for marker in ("window.MajickRecoveryUI","window.practiceTopics","window.startGrimoireRaid"):
+    if marker not in recovery: fail('main recovery missing '+marker)
+san_recovery=(site/'sanctuary'/'v3322-sanctuary-recovery.js').read_text(encoding='utf-8')
+for marker in ("window.MajickSanctuaryRecovery","v3322SyncOwnedGuardians","v3322DockGuardianHome"):
+    if marker not in san_recovery: fail('Sanctuary recovery missing '+marker)
+for marker in ('majick-state-core.js?v=3322-recovery','guardian-care-economy.js?v=3322-recovery','v3317-main.js?v=3322-recovery','v3322-main-recovery.js?v=3322'):
+    if marker not in main: fail('main cache-bust/runtime missing '+marker)
+if 'v3322-sanctuary-recovery.js?v=3322' not in san:
+    fail('Sanctuary recovery asset is not installed')
 care=(site/'guardian-care-economy.js').read_text(encoding='utf-8')
 if 'window.MajickGuardianRegistry?.get?.(type)' not in care: fail('Guardian care does not use the shared registry')
 
-for path in (site/'guardian-registry.js',site/'majick-state-core.js',site/'learning-lab.js',site/'guardian-care-economy.js',site/'v3317-main.js',site/'sanctuary'/'v3317-sanctuary.js',site/'sanctuary'/'v3320-sanctuary-life.js',site/'sanctuary'/'v3321-sanctuary-customize.js'):
+for path in (site/'guardian-registry.js',site/'majick-state-core.js',site/'learning-lab.js',site/'guardian-care-economy.js',site/'v3317-main.js',site/'sanctuary'/'v3317-sanctuary.js',site/'sanctuary'/'v3320-sanctuary-life.js',site/'sanctuary'/'v3321-sanctuary-customize.js',site/'v3322-main-recovery.js',site/'sanctuary'/'v3322-sanctuary-recovery.js'):
     r=subprocess.run(['node','--check',str(path)],capture_output=True,text=True)
     if r.returncode: fail(path.name+' syntax: '+r.stderr)
 print('STABILITY RESET VERIFY PASSED')

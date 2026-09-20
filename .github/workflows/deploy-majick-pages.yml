@@ -8,6 +8,7 @@ on:
       - 'pages-release/v3319/**'
       - 'pages-release/v3320/**'
       - 'pages-release/v3321/**'
+      - 'pages-release/v3322/**'
       - 'pages-release/v3315/study-material/**'
       - 'pages-release/v3316/courseManager.js'
       - 'pages-release/v3317/v3317-main.js'
@@ -64,6 +65,8 @@ jobs:
           test -s pages-release/v3319/learning-lab.css
           test -s pages-release/v3320/sanctuary-life.js
           test -s pages-release/v3321/sanctuary-customize.js
+          test -s pages-release/v3322/main-recovery.js
+          test -s pages-release/v3322/sanctuary-recovery.js
           test -s pages-release/v3315/study-material/materialParser.js
           test -s pages-release/v3315/study-material/materialStoreModel.js
           test -s pages-release/v3315/study-material/questionBuilder.js
@@ -91,6 +94,8 @@ jobs:
           node --check pages-release/v3319/learning-lab.js
           node --check pages-release/v3320/sanctuary-life.js
           node --check pages-release/v3321/sanctuary-customize.js
+          node --check pages-release/v3322/main-recovery.js
+          node --check pages-release/v3322/sanctuary-recovery.js
           node --check pages-release/v3317/v3317-main.js
           node --check pages-release/v3317/v3317-sanctuary.js
           node --check pages-release/v3317/guardian-care-economy.js
@@ -177,16 +182,23 @@ jobs:
           cmp pages-release/v3317/v3317-sanctuary.js _site/sanctuary/v3317-sanctuary.js
           cmp pages-release/v3320/sanctuary-life.js _site/sanctuary/v3320-sanctuary-life.js
           cmp pages-release/v3321/sanctuary-customize.js _site/sanctuary/v3321-sanctuary-customize.js
+          cmp pages-release/v3322/main-recovery.js _site/v3322-main-recovery.js
+          cmp pages-release/v3322/sanctuary-recovery.js _site/sanctuary/v3322-sanctuary-recovery.js
           cmp pages-release/v3317/guardian-care-economy.js _site/guardian-care-economy.js
 
           # Golden architecture and protected assets.
           grep -q '"build_foundation": "V3.3.18 Golden Baseline"' _site/app-progress.json
-          grep -q '"version": "V3.3.19 Learning Intelligence"' _site/app-progress.json
+          grep -q '"version": "V3.3.22 Recovery & Sanctuary Usability"' _site/app-progress.json
           grep -q 'learning-lab.js?v=3319' _site/index.html
           grep -q 'learning-lab.css?v=3319' _site/index.html
-          grep -q '"sanctuary_version": "V3.3.21 Sanctuary Customization"' _site/app-progress.json
-          grep -q 'v3320-sanctuary-life.js?v=3320' _site/sanctuary/index.html
-          grep -q 'v3321-sanctuary-customize.js?v=3321' _site/sanctuary/index.html
+          grep -q '"sanctuary_version": "V3.3.22 Owned Guardian Recovery"' _site/app-progress.json
+          grep -q 'majick-state-core.js?v=3322-recovery' _site/index.html
+          grep -q 'guardian-care-economy.js?v=3322-recovery' _site/index.html
+          grep -q 'v3317-main.js?v=3322-recovery' _site/index.html
+          grep -q 'v3322-main-recovery.js?v=3322' _site/index.html
+          grep -q 'v3320-sanctuary-life.js?v=3322-recovery' _site/sanctuary/index.html
+          grep -q 'v3321-sanctuary-customize.js?v=3322-recovery' _site/sanctuary/index.html
+          grep -q 'v3322-sanctuary-recovery.js?v=3322' _site/sanctuary/index.html
           grep -q '"historical_patch_chain": "retired from deployment"' _site/app-progress.json
           test "$(find _site/sanctuary/assets/motion -type f -name '*.png' | wc -l)" -eq 33
           test "$(find _site/sanctuary/assets/runtime-motion -type f -name '*.webp' | wc -l)" -eq 33
@@ -208,6 +220,8 @@ jobs:
           node --check _site/sanctuary/v3317-sanctuary.js
           node --check _site/sanctuary/v3320-sanctuary-life.js
           node --check _site/sanctuary/v3321-sanctuary-customize.js
+          node --check _site/v3322-main-recovery.js
+          node --check _site/sanctuary/v3322-sanctuary-recovery.js
           node --check _site/study-material/materialParser.js
           node --check _site/study-material/materialStoreModel.js
           node --check _site/study-material/questionBuilder.js

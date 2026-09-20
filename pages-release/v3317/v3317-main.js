@@ -2,8 +2,8 @@
 (function(){
 'use strict';
 
-const RELEASE_LABEL='Learning Intelligence • V3.3.19';
-const RELEASE_TITLE='Majick Studies — V3.3.19 Learning Intelligence';
+const RELEASE_LABEL='Recovery & Sanctuary Fix • V3.3.22';
+const RELEASE_TITLE='Majick Studies — V3.3.22 Recovery & Sanctuary Fix';
 const registry=()=>window.MajickGuardianRegistry;
 const canonOf=type=>registry()?.get?.(type)?.canon||String(type||'').toLowerCase();
 const STAGE_SLUGS=['new-bond','apprentice','guardian','ascendant','celestial'];
@@ -122,9 +122,9 @@ function sanctuaryMarkup(context){
   if(location.protocol==='file:'){
     return '<section class="phase4Wrap"><div class="phase4Top"><b>✦ Phaser 4 Living Sanctuary</b><br><span>Open Majick Studies through GitHub Pages so Phaser can load.</span></div></section>';
   }
-  const q='?v=3321-sanctuary-custom&context='+encodeURIComponent(context||'app');
+  const q='?v=3322-recovery&context='+encodeURIComponent(context||'app');
   return '<section class="phase4Wrap v3317Phase" aria-label="Phaser 4 Living Sanctuary">'+
-    '<div class="phase4Top"><div><b>✦ Living Sanctuary • V3.3.21</b><br><span>Protected Guardian movement • personalized nooks • furniture storage</span></div>'+
+    '<div class="phase4Top"><div><b>✦ Living Sanctuary • V3.3.22</b><br><span>Protected Guardian movement • personalized nooks • furniture storage</span></div>'+
     '<div class="phase4Actions"><button class="btn ghost" onclick="phase4OpenFullscreen()">Full Sanctuary</button><button class="btn primary" onclick="navigate(\'addmaterial\')">Add Study Material</button></div></div>'+
     '<iframe class="phase4Frame v3317SanctuaryFrame" src="sanctuary/index.html'+q+'" title="Majick Studies Living Sanctuary" loading="eager" allow="fullscreen" onload="setTimeout(()=>{v3317PushGuardianLevels();v3321PushFurnitureState();},120)"></iframe>'+
     '<div class="phase4Help">Personal Guardian nooks • feeding + play zones • store/place owned furniture • Cozy Dorm layout preset.</div>'+
@@ -211,14 +211,14 @@ function applyReleaseBadge(){
   const pill=document.querySelector('.top .pill');
   if(pill&&pill.textContent!==RELEASE_LABEL)pill.textContent=RELEASE_LABEL;
   if(document.title!==RELEASE_TITLE)document.title=RELEASE_TITLE;
-  if(document.documentElement.dataset.majickVersion!=='3.3.19-learning'){
-    document.documentElement.dataset.majickVersion='3.3.19-learning';
+  if(document.documentElement.dataset.majickVersion!=='3.3.22-recovery'){
+    document.documentElement.dataset.majickVersion='3.3.22-recovery';
   }
 }
 
 function showRuntimeNotice(error){
   const message=String(error?.message||error||'Unknown runtime error');
-  console.error('Majick V3.3.19 runtime error',error);
+  console.error('Majick V3.3.22 runtime error',error);
   if(document.getElementById('v3317RuntimeNotice'))return;
   try{
     const n=document.createElement('div');
@@ -259,7 +259,7 @@ if(previousRender){
     return result;
   };
 }else{
-  console.error('Majick V3.3.19: base render function was missing; refusing to install a broken wrapper.');
+  console.error('Majick V3.3.22: base render function was missing; refusing to install a broken wrapper.');
 }
 
 const observer=new MutationObserver(()=>{
