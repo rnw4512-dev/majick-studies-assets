@@ -524,7 +524,10 @@ try{
   await assert(ownedVisibility.owned.length===2&&ownedVisibility.owned.includes('luna')&&ownedVisibility.owned.includes('nova'),'Sanctuary owned roster is not the real two hatched Guardians');
   await assert(!ownedVisibility.visible.ember.controller&&!ownedVisibility.visible.ember.walk&&!ownedVisibility.visible.ember.action,'unowned Cascade/ember is visible in Sanctuary');
   await assert(!ownedVisibility.visible.mallow.controller&&!ownedVisibility.visible.mallow.walk&&!ownedVisibility.visible.mallow.action,'unowned Aurelia/mallow is visible in Sanctuary');
-  await assert(ownedVisibility.hud?.x>500&&ownedVisibility.hud?.y<=100,'Guardian Home panel was not moved to the upper-right');
+  await assert(
+    ownedVisibility.hud?.screenX>ownedVisibility.hud?.viewportWidth*.5&&ownedVisibility.hud?.screenY<=100,
+    'Guardian Home panel was not moved to the upper-right'
+  );
 
   const sanctuaryHome=await frame.evaluate(()=>{
     const scene=window.majickPhaserGame?.scene?.getScene?.('Game');

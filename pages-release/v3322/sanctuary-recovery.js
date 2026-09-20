@@ -114,7 +114,17 @@ function inspect(scene){
     version:VERSION,
     owned,
     visible,
-    hud:s?.v3320HomeHud?.active?{x:s.v3320HomeHud.x,y:s.v3320HomeHud.y}:null
+    hud:s?.v3320HomeHud?.active?(()=>{
+      const zoom=s.cameras?.main?.zoom||1;
+      return {
+        x:s.v3320HomeHud.x,
+        y:s.v3320HomeHud.y,
+        screenX:s.v3320HomeHud.x*zoom,
+        screenY:s.v3320HomeHud.y*zoom,
+        viewportWidth:s.scale?.width||0,
+        zoom
+      };
+    })():null
   };
 }
 window.MajickSanctuaryRecovery={VERSION,inspect};
