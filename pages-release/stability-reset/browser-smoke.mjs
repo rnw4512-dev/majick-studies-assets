@@ -172,7 +172,8 @@ try{
   await page.evaluate(()=>{switchCourse('D772');navigate('learninglab');});
   await page.waitForSelector('.learnLab[data-course="D772"]',{timeout:10000});
   const d772Learn=await page.evaluate(()=>MajickLearningLab.model('D772'));
-  await assert(!!window.MajickLearningPlan&&MajickLearningPlan.VERSION==='3.3.24','Adaptive Learning Plan runtime missing');
+  const planRuntime=await page.evaluate(()=>({ok:!!window.MajickLearningPlan,version:window.MajickLearningPlan?.VERSION||null}));
+  await assert(planRuntime.ok&&planRuntime.version==='3.3.24','Adaptive Learning Plan runtime missing');
   await assert(d772Learn.vocab.some(v=>v.term.toLowerCase()==='mean'),'D772 Learn Mode missing statistics vocabulary');
   await assert(d772Learn.lessons.length>=5,'D772 Learn Mode missing visual starter lessons');
   const toolCheck=await page.evaluate(()=>({
