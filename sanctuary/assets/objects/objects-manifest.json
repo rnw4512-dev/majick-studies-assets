@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "libraryVersion": "3.3.14",
   "sourceOfTruth": true,
   "protectedMovementRule": "Object loading and interactions must never rewrite Guardian movement methods or replace the 33 protected movement files.",
@@ -17,8 +17,8 @@
   "objects": [
     {
       "id": "arcane-stacks",
-      "filename": "arcane-stacks.webp",
-      "displayName": "Arcane Stacks",
+      "filename": "enchanted-bookstack.webp",
+      "displayName": "Enchanted Bookstack",
       "category": "core",
       "scale": 1,
       "interaction": "open-route",
@@ -29,13 +29,28 @@
       "hoverAnimation": true,
       "preload": true,
       "enabled": true,
-      "artStatus": "starter-generated",
+      "artStatus": "final-generated",
       "replaceableWithoutCode": true,
       "placement": {
         "x": 245,
         "y": 725,
         "width": 265
-      }
+      },
+      "phaser": {
+        "textureKey": "obj-arcane-stacks",
+        "interactive": true,
+        "imageIsHitTarget": true,
+        "cursor": "pointer",
+        "hitArea": {
+          "type": "alpha-bounds",
+          "padding": 12
+        },
+        "hoverFeedback": true,
+        "glowFeedback": true,
+        "dragPolicy": "edit-mode-only",
+        "depthPolicy": "y-sort"
+      },
+      "panelAction": "openArcaneStacks"
     },
     {
       "id": "moonlit-study-desk",
@@ -51,18 +66,51 @@
       "hoverAnimation": true,
       "preload": true,
       "enabled": true,
-      "artStatus": "starter-generated",
+      "artStatus": "final-generated",
       "replaceableWithoutCode": true,
       "placement": {
         "x": 1015,
         "y": 800,
         "width": 335
+      },
+      "phaser": {
+        "textureKey": "obj-moonlit-study-desk",
+        "interactive": true,
+        "imageIsHitTarget": true,
+        "cursor": "pointer",
+        "hitArea": {
+          "type": "alpha-bounds",
+          "padding": 12
+        },
+        "hoverFeedback": true,
+        "glowFeedback": true,
+        "dragPolicy": "edit-mode-only",
+        "depthPolicy": "y-sort"
+      },
+      "studyIntegration": {
+        "primaryFeature": "add-study-material",
+        "routeWhenAvailable": "addmaterial",
+        "currentSafeFallback": "mission",
+        "acceptedSources": [
+          "pdf",
+          "docx",
+          "txt",
+          "md",
+          "pasted-text"
+        ],
+        "generatedOutputs": [
+          "practice-questions",
+          "explanations",
+          "vocabulary",
+          "misconception-repair",
+          "review"
+        ]
       }
     },
     {
       "id": "observatory-telescope",
-      "filename": "observatory-telescope.webp",
-      "displayName": "Observatory Telescope",
+      "filename": "celestial-telescope.webp",
+      "displayName": "Celestial Telescope",
       "category": "core",
       "scale": 1,
       "interaction": "open-route",
@@ -73,13 +121,28 @@
       "hoverAnimation": true,
       "preload": true,
       "enabled": true,
-      "artStatus": "starter-generated",
+      "artStatus": "final-generated",
       "replaceableWithoutCode": true,
       "placement": {
         "x": 1285,
         "y": 735,
         "width": 280
-      }
+      },
+      "phaser": {
+        "textureKey": "obj-observatory-telescope",
+        "interactive": true,
+        "imageIsHitTarget": true,
+        "cursor": "pointer",
+        "hitArea": {
+          "type": "alpha-bounds",
+          "padding": 12
+        },
+        "hoverFeedback": true,
+        "glowFeedback": true,
+        "dragPolicy": "edit-mode-only",
+        "depthPolicy": "y-sort"
+      },
+      "panelAction": "openObservatory"
     },
     {
       "id": "crystal-focus-pedestal",
@@ -101,12 +164,26 @@
         "x": 1510,
         "y": 780,
         "width": 220
+      },
+      "phaser": {
+        "textureKey": "obj-crystal-focus-pedestal",
+        "interactive": true,
+        "imageIsHitTarget": true,
+        "cursor": "pointer",
+        "hitArea": {
+          "type": "alpha-bounds",
+          "padding": 12
+        },
+        "hoverFeedback": false,
+        "glowFeedback": true,
+        "dragPolicy": "edit-mode-only",
+        "depthPolicy": "y-sort"
       }
     },
     {
       "id": "moonstone-crystal-bed",
-      "filename": "moonstone-crystal-bed.webp",
-      "displayName": "Moonstone Crystal Bed",
+      "filename": "moonstone-canopy-bed.webp",
+      "displayName": "Moonstone Canopy Bed",
       "category": "core",
       "scale": 1,
       "interaction": "assign-rest",
@@ -117,14 +194,29 @@
       "hoverAnimation": true,
       "preload": true,
       "enabled": true,
-      "artStatus": "starter-generated",
+      "artStatus": "final-generated",
       "replaceableWithoutCode": true,
       "placement": {
         "x": 730,
         "y": 855,
         "width": 305,
         "slot": "bed-west"
-      }
+      },
+      "phaser": {
+        "textureKey": "obj-moonstone-crystal-bed",
+        "interactive": true,
+        "imageIsHitTarget": true,
+        "cursor": "pointer",
+        "hitArea": {
+          "type": "alpha-bounds",
+          "padding": 12
+        },
+        "hoverFeedback": true,
+        "glowFeedback": true,
+        "dragPolicy": "edit-mode-only",
+        "depthPolicy": "y-sort"
+      },
+      "panelAction": "openFamiliarObjectPicker"
     },
     {
       "id": "amethyst-crystal-bed",
@@ -147,6 +239,20 @@
         "y": 855,
         "width": 305,
         "slot": "bed-east"
+      },
+      "phaser": {
+        "textureKey": "obj-amethyst-crystal-bed",
+        "interactive": true,
+        "imageIsHitTarget": true,
+        "cursor": "pointer",
+        "hitArea": {
+          "type": "alpha-bounds",
+          "padding": 12
+        },
+        "hoverFeedback": true,
+        "glowFeedback": true,
+        "dragPolicy": "edit-mode-only",
+        "depthPolicy": "y-sort"
       }
     },
     {
@@ -169,6 +275,20 @@
         "x": 360,
         "y": 850,
         "width": 230
+      },
+      "phaser": {
+        "textureKey": "obj-study-apothecary",
+        "interactive": true,
+        "imageIsHitTarget": true,
+        "cursor": "pointer",
+        "hitArea": {
+          "type": "alpha-bounds",
+          "padding": 12
+        },
+        "hoverFeedback": false,
+        "glowFeedback": true,
+        "dragPolicy": "edit-mode-only",
+        "depthPolicy": "y-sort"
       }
     },
     {
@@ -191,6 +311,20 @@
         "x": 1815,
         "y": 805,
         "width": 330
+      },
+      "phaser": {
+        "textureKey": "obj-familiar-lounge",
+        "interactive": true,
+        "imageIsHitTarget": true,
+        "cursor": "pointer",
+        "hitArea": {
+          "type": "alpha-bounds",
+          "padding": 12
+        },
+        "hoverFeedback": true,
+        "glowFeedback": true,
+        "dragPolicy": "edit-mode-only",
+        "depthPolicy": "y-sort"
       }
     },
     {
@@ -207,13 +341,28 @@
       "hoverAnimation": true,
       "preload": true,
       "enabled": true,
-      "artStatus": "starter-generated",
+      "artStatus": "final-generated",
       "replaceableWithoutCode": true,
       "placement": {
         "x": 1630,
         "y": 690,
         "width": 210
-      }
+      },
+      "phaser": {
+        "textureKey": "obj-magic-mirror",
+        "interactive": true,
+        "imageIsHitTarget": true,
+        "cursor": "pointer",
+        "hitArea": {
+          "type": "alpha-bounds",
+          "padding": 12
+        },
+        "hoverFeedback": true,
+        "glowFeedback": true,
+        "dragPolicy": "edit-mode-only",
+        "depthPolicy": "y-sort"
+      },
+      "panelAction": "openMagicMirror3313"
     },
     {
       "id": "ancient-reading-lectern",
@@ -230,7 +379,21 @@
       "preload": false,
       "enabled": true,
       "artStatus": "starter-generated",
-      "replaceableWithoutCode": true
+      "replaceableWithoutCode": true,
+      "phaser": {
+        "textureKey": "obj-ancient-reading-lectern",
+        "interactive": true,
+        "imageIsHitTarget": true,
+        "cursor": "pointer",
+        "hitArea": {
+          "type": "alpha-bounds",
+          "padding": 12
+        },
+        "hoverFeedback": true,
+        "glowFeedback": true,
+        "dragPolicy": "edit-mode-only",
+        "depthPolicy": "y-sort"
+      }
     },
     {
       "id": "floating-spellbook",
@@ -247,7 +410,21 @@
       "preload": false,
       "enabled": true,
       "artStatus": "starter-generated",
-      "replaceableWithoutCode": true
+      "replaceableWithoutCode": true,
+      "phaser": {
+        "textureKey": "obj-floating-spellbook",
+        "interactive": true,
+        "imageIsHitTarget": true,
+        "cursor": "pointer",
+        "hitArea": {
+          "type": "alpha-bounds",
+          "padding": 12
+        },
+        "hoverFeedback": true,
+        "glowFeedback": true,
+        "dragPolicy": "edit-mode-only",
+        "depthPolicy": "y-sort"
+      }
     },
     {
       "id": "enchanted-book-cart",
@@ -264,7 +441,21 @@
       "preload": false,
       "enabled": true,
       "artStatus": "starter-generated",
-      "replaceableWithoutCode": true
+      "replaceableWithoutCode": true,
+      "phaser": {
+        "textureKey": "obj-enchanted-book-cart",
+        "interactive": true,
+        "imageIsHitTarget": true,
+        "cursor": "pointer",
+        "hitArea": {
+          "type": "alpha-bounds",
+          "padding": 12
+        },
+        "hoverFeedback": true,
+        "glowFeedback": true,
+        "dragPolicy": "edit-mode-only",
+        "depthPolicy": "y-sort"
+      }
     },
     {
       "id": "glossary-orb",
@@ -281,7 +472,21 @@
       "preload": false,
       "enabled": true,
       "artStatus": "starter-generated",
-      "replaceableWithoutCode": true
+      "replaceableWithoutCode": true,
+      "phaser": {
+        "textureKey": "obj-glossary-orb",
+        "interactive": true,
+        "imageIsHitTarget": true,
+        "cursor": "pointer",
+        "hitArea": {
+          "type": "alpha-bounds",
+          "padding": 12
+        },
+        "hoverFeedback": true,
+        "glowFeedback": true,
+        "dragPolicy": "edit-mode-only",
+        "depthPolicy": "y-sort"
+      }
     },
     {
       "id": "bookmark-crystal",
@@ -298,7 +503,21 @@
       "preload": false,
       "enabled": true,
       "artStatus": "starter-generated",
-      "replaceableWithoutCode": true
+      "replaceableWithoutCode": true,
+      "phaser": {
+        "textureKey": "obj-bookmark-crystal",
+        "interactive": true,
+        "imageIsHitTarget": true,
+        "cursor": "pointer",
+        "hitArea": {
+          "type": "alpha-bounds",
+          "padding": 12
+        },
+        "hoverFeedback": true,
+        "glowFeedback": true,
+        "dragPolicy": "edit-mode-only",
+        "depthPolicy": "y-sort"
+      }
     },
     {
       "id": "memory-scroll-rack",
@@ -315,7 +534,21 @@
       "preload": false,
       "enabled": true,
       "artStatus": "starter-generated",
-      "replaceableWithoutCode": true
+      "replaceableWithoutCode": true,
+      "phaser": {
+        "textureKey": "obj-memory-scroll-rack",
+        "interactive": true,
+        "imageIsHitTarget": true,
+        "cursor": "pointer",
+        "hitArea": {
+          "type": "alpha-bounds",
+          "padding": 12
+        },
+        "hoverFeedback": true,
+        "glowFeedback": true,
+        "dragPolicy": "edit-mode-only",
+        "depthPolicy": "y-sort"
+      }
     },
     {
       "id": "journal-writing-quill",
@@ -332,7 +565,21 @@
       "preload": false,
       "enabled": true,
       "artStatus": "starter-generated",
-      "replaceableWithoutCode": true
+      "replaceableWithoutCode": true,
+      "phaser": {
+        "textureKey": "obj-journal-writing-quill",
+        "interactive": true,
+        "imageIsHitTarget": true,
+        "cursor": "pointer",
+        "hitArea": {
+          "type": "alpha-bounds",
+          "padding": 12
+        },
+        "hoverFeedback": true,
+        "glowFeedback": true,
+        "dragPolicy": "edit-mode-only",
+        "depthPolicy": "y-sort"
+      }
     },
     {
       "id": "mistake-repair-book",
@@ -349,7 +596,21 @@
       "preload": false,
       "enabled": true,
       "artStatus": "starter-generated",
-      "replaceableWithoutCode": true
+      "replaceableWithoutCode": true,
+      "phaser": {
+        "textureKey": "obj-mistake-repair-book",
+        "interactive": true,
+        "imageIsHitTarget": true,
+        "cursor": "pointer",
+        "hitArea": {
+          "type": "alpha-bounds",
+          "padding": 12
+        },
+        "hoverFeedback": true,
+        "glowFeedback": true,
+        "dragPolicy": "edit-mode-only",
+        "depthPolicy": "y-sort"
+      }
     },
     {
       "id": "rune-reference-table",
@@ -366,7 +627,21 @@
       "preload": false,
       "enabled": true,
       "artStatus": "starter-generated",
-      "replaceableWithoutCode": true
+      "replaceableWithoutCode": true,
+      "phaser": {
+        "textureKey": "obj-rune-reference-table",
+        "interactive": true,
+        "imageIsHitTarget": true,
+        "cursor": "pointer",
+        "hitArea": {
+          "type": "alpha-bounds",
+          "padding": 12
+        },
+        "hoverFeedback": true,
+        "glowFeedback": true,
+        "dragPolicy": "edit-mode-only",
+        "depthPolicy": "y-sort"
+      }
     },
     {
       "id": "study-hourglass",
@@ -383,7 +658,21 @@
       "preload": false,
       "enabled": true,
       "artStatus": "starter-generated",
-      "replaceableWithoutCode": true
+      "replaceableWithoutCode": true,
+      "phaser": {
+        "textureKey": "obj-study-hourglass",
+        "interactive": true,
+        "imageIsHitTarget": true,
+        "cursor": "pointer",
+        "hitArea": {
+          "type": "alpha-bounds",
+          "padding": 12
+        },
+        "hoverFeedback": true,
+        "glowFeedback": true,
+        "dragPolicy": "edit-mode-only",
+        "depthPolicy": "y-sort"
+      }
     },
     {
       "id": "study-lantern",
@@ -400,7 +689,21 @@
       "preload": false,
       "enabled": true,
       "artStatus": "starter-generated",
-      "replaceableWithoutCode": true
+      "replaceableWithoutCode": true,
+      "phaser": {
+        "textureKey": "obj-study-lantern",
+        "interactive": true,
+        "imageIsHitTarget": true,
+        "cursor": "pointer",
+        "hitArea": {
+          "type": "alpha-bounds",
+          "padding": 12
+        },
+        "hoverFeedback": true,
+        "glowFeedback": true,
+        "dragPolicy": "edit-mode-only",
+        "depthPolicy": "y-sort"
+      }
     },
     {
       "id": "focus-candle-cluster",
@@ -417,7 +720,21 @@
       "preload": false,
       "enabled": true,
       "artStatus": "starter-generated",
-      "replaceableWithoutCode": true
+      "replaceableWithoutCode": true,
+      "phaser": {
+        "textureKey": "obj-focus-candle-cluster",
+        "interactive": true,
+        "imageIsHitTarget": true,
+        "cursor": "pointer",
+        "hitArea": {
+          "type": "alpha-bounds",
+          "padding": 12
+        },
+        "hoverFeedback": true,
+        "glowFeedback": true,
+        "dragPolicy": "edit-mode-only",
+        "depthPolicy": "y-sort"
+      }
     },
     {
       "id": "pomodoro-crystal",
@@ -434,7 +751,21 @@
       "preload": false,
       "enabled": true,
       "artStatus": "starter-generated",
-      "replaceableWithoutCode": true
+      "replaceableWithoutCode": true,
+      "phaser": {
+        "textureKey": "obj-pomodoro-crystal",
+        "interactive": true,
+        "imageIsHitTarget": true,
+        "cursor": "pointer",
+        "hitArea": {
+          "type": "alpha-bounds",
+          "padding": 12
+        },
+        "hoverFeedback": true,
+        "glowFeedback": true,
+        "dragPolicy": "edit-mode-only",
+        "depthPolicy": "y-sort"
+      }
     },
     {
       "id": "practice-cauldron",
@@ -451,7 +782,21 @@
       "preload": false,
       "enabled": true,
       "artStatus": "starter-generated",
-      "replaceableWithoutCode": true
+      "replaceableWithoutCode": true,
+      "phaser": {
+        "textureKey": "obj-practice-cauldron",
+        "interactive": true,
+        "imageIsHitTarget": true,
+        "cursor": "pointer",
+        "hitArea": {
+          "type": "alpha-bounds",
+          "padding": 12
+        },
+        "hoverFeedback": true,
+        "glowFeedback": true,
+        "dragPolicy": "edit-mode-only",
+        "depthPolicy": "y-sort"
+      }
     },
     {
       "id": "quiz-crystal-ball",
@@ -468,7 +813,21 @@
       "preload": false,
       "enabled": true,
       "artStatus": "starter-generated",
-      "replaceableWithoutCode": true
+      "replaceableWithoutCode": true,
+      "phaser": {
+        "textureKey": "obj-quiz-crystal-ball",
+        "interactive": true,
+        "imageIsHitTarget": true,
+        "cursor": "pointer",
+        "hitArea": {
+          "type": "alpha-bounds",
+          "padding": 12
+        },
+        "hoverFeedback": true,
+        "glowFeedback": true,
+        "dragPolicy": "edit-mode-only",
+        "depthPolicy": "y-sort"
+      }
     },
     {
       "id": "challenge-gauntlet",
@@ -485,7 +844,21 @@
       "preload": false,
       "enabled": true,
       "artStatus": "starter-generated",
-      "replaceableWithoutCode": true
+      "replaceableWithoutCode": true,
+      "phaser": {
+        "textureKey": "obj-challenge-gauntlet",
+        "interactive": true,
+        "imageIsHitTarget": true,
+        "cursor": "pointer",
+        "hitArea": {
+          "type": "alpha-bounds",
+          "padding": 12
+        },
+        "hoverFeedback": true,
+        "glowFeedback": true,
+        "dragPolicy": "edit-mode-only",
+        "depthPolicy": "y-sort"
+      }
     },
     {
       "id": "mastery-bell",
@@ -502,7 +875,21 @@
       "preload": false,
       "enabled": true,
       "artStatus": "starter-generated",
-      "replaceableWithoutCode": true
+      "replaceableWithoutCode": true,
+      "phaser": {
+        "textureKey": "obj-mastery-bell",
+        "interactive": true,
+        "imageIsHitTarget": true,
+        "cursor": "pointer",
+        "hitArea": {
+          "type": "alpha-bounds",
+          "padding": 12
+        },
+        "hoverFeedback": true,
+        "glowFeedback": true,
+        "dragPolicy": "edit-mode-only",
+        "depthPolicy": "y-sort"
+      }
     },
     {
       "id": "confidence-orb",
@@ -519,7 +906,21 @@
       "preload": false,
       "enabled": true,
       "artStatus": "starter-generated",
-      "replaceableWithoutCode": true
+      "replaceableWithoutCode": true,
+      "phaser": {
+        "textureKey": "obj-confidence-orb",
+        "interactive": true,
+        "imageIsHitTarget": true,
+        "cursor": "pointer",
+        "hitArea": {
+          "type": "alpha-bounds",
+          "padding": 12
+        },
+        "hoverFeedback": true,
+        "glowFeedback": true,
+        "dragPolicy": "edit-mode-only",
+        "depthPolicy": "y-sort"
+      }
     },
     {
       "id": "memory-fountain",
@@ -536,7 +937,21 @@
       "preload": false,
       "enabled": true,
       "artStatus": "starter-generated",
-      "replaceableWithoutCode": true
+      "replaceableWithoutCode": true,
+      "phaser": {
+        "textureKey": "obj-memory-fountain",
+        "interactive": true,
+        "imageIsHitTarget": true,
+        "cursor": "pointer",
+        "hitArea": {
+          "type": "alpha-bounds",
+          "padding": 12
+        },
+        "hoverFeedback": true,
+        "glowFeedback": true,
+        "dragPolicy": "edit-mode-only",
+        "depthPolicy": "y-sort"
+      }
     },
     {
       "id": "echo-bell",
@@ -553,7 +968,21 @@
       "preload": false,
       "enabled": true,
       "artStatus": "starter-generated",
-      "replaceableWithoutCode": true
+      "replaceableWithoutCode": true,
+      "phaser": {
+        "textureKey": "obj-echo-bell",
+        "interactive": true,
+        "imageIsHitTarget": true,
+        "cursor": "pointer",
+        "hitArea": {
+          "type": "alpha-bounds",
+          "padding": 12
+        },
+        "hoverFeedback": true,
+        "glowFeedback": true,
+        "dragPolicy": "edit-mode-only",
+        "depthPolicy": "y-sort"
+      }
     },
     {
       "id": "recall-pedestal",
@@ -570,7 +999,21 @@
       "preload": false,
       "enabled": true,
       "artStatus": "starter-generated",
-      "replaceableWithoutCode": true
+      "replaceableWithoutCode": true,
+      "phaser": {
+        "textureKey": "obj-recall-pedestal",
+        "interactive": true,
+        "imageIsHitTarget": true,
+        "cursor": "pointer",
+        "hitArea": {
+          "type": "alpha-bounds",
+          "padding": 12
+        },
+        "hoverFeedback": true,
+        "glowFeedback": true,
+        "dragPolicy": "edit-mode-only",
+        "depthPolicy": "y-sort"
+      }
     },
     {
       "id": "constellation-chart",
@@ -587,7 +1030,21 @@
       "preload": false,
       "enabled": true,
       "artStatus": "starter-generated",
-      "replaceableWithoutCode": true
+      "replaceableWithoutCode": true,
+      "phaser": {
+        "textureKey": "obj-constellation-chart",
+        "interactive": true,
+        "imageIsHitTarget": true,
+        "cursor": "pointer",
+        "hitArea": {
+          "type": "alpha-bounds",
+          "padding": 12
+        },
+        "hoverFeedback": true,
+        "glowFeedback": true,
+        "dragPolicy": "edit-mode-only",
+        "depthPolicy": "y-sort"
+      }
     },
     {
       "id": "moon-phase-review-wheel",
@@ -604,7 +1061,21 @@
       "preload": false,
       "enabled": true,
       "artStatus": "starter-generated",
-      "replaceableWithoutCode": true
+      "replaceableWithoutCode": true,
+      "phaser": {
+        "textureKey": "obj-moon-phase-review-wheel",
+        "interactive": true,
+        "imageIsHitTarget": true,
+        "cursor": "pointer",
+        "hitArea": {
+          "type": "alpha-bounds",
+          "padding": 12
+        },
+        "hoverFeedback": true,
+        "glowFeedback": true,
+        "dragPolicy": "edit-mode-only",
+        "depthPolicy": "y-sort"
+      }
     },
     {
       "id": "knowledge-compass",
@@ -621,7 +1092,21 @@
       "preload": false,
       "enabled": true,
       "artStatus": "starter-generated",
-      "replaceableWithoutCode": true
+      "replaceableWithoutCode": true,
+      "phaser": {
+        "textureKey": "obj-knowledge-compass",
+        "interactive": true,
+        "imageIsHitTarget": true,
+        "cursor": "pointer",
+        "hitArea": {
+          "type": "alpha-bounds",
+          "padding": 12
+        },
+        "hoverFeedback": true,
+        "glowFeedback": true,
+        "dragPolicy": "edit-mode-only",
+        "depthPolicy": "y-sort"
+      }
     },
     {
       "id": "mastery-telescope-chart",
@@ -638,7 +1123,21 @@
       "preload": false,
       "enabled": true,
       "artStatus": "starter-generated",
-      "replaceableWithoutCode": true
+      "replaceableWithoutCode": true,
+      "phaser": {
+        "textureKey": "obj-mastery-telescope-chart",
+        "interactive": true,
+        "imageIsHitTarget": true,
+        "cursor": "pointer",
+        "hitArea": {
+          "type": "alpha-bounds",
+          "padding": 12
+        },
+        "hoverFeedback": true,
+        "glowFeedback": true,
+        "dragPolicy": "edit-mode-only",
+        "depthPolicy": "y-sort"
+      }
     },
     {
       "id": "forgotten-rune-tablet",
@@ -655,7 +1154,21 @@
       "preload": false,
       "enabled": true,
       "artStatus": "starter-generated",
-      "replaceableWithoutCode": true
+      "replaceableWithoutCode": true,
+      "phaser": {
+        "textureKey": "obj-forgotten-rune-tablet",
+        "interactive": true,
+        "imageIsHitTarget": true,
+        "cursor": "pointer",
+        "hitArea": {
+          "type": "alpha-bounds",
+          "padding": 12
+        },
+        "hoverFeedback": true,
+        "glowFeedback": true,
+        "dragPolicy": "edit-mode-only",
+        "depthPolicy": "y-sort"
+      }
     },
     {
       "id": "course-portal-arch",
@@ -672,7 +1185,21 @@
       "preload": false,
       "enabled": true,
       "artStatus": "starter-generated",
-      "replaceableWithoutCode": true
+      "replaceableWithoutCode": true,
+      "phaser": {
+        "textureKey": "obj-course-portal-arch",
+        "interactive": true,
+        "imageIsHitTarget": true,
+        "cursor": "pointer",
+        "hitArea": {
+          "type": "alpha-bounds",
+          "padding": 12
+        },
+        "hoverFeedback": true,
+        "glowFeedback": true,
+        "dragPolicy": "edit-mode-only",
+        "depthPolicy": "y-sort"
+      }
     },
     {
       "id": "course-scroll-chest",
@@ -689,7 +1216,21 @@
       "preload": false,
       "enabled": true,
       "artStatus": "starter-generated",
-      "replaceableWithoutCode": true
+      "replaceableWithoutCode": true,
+      "phaser": {
+        "textureKey": "obj-course-scroll-chest",
+        "interactive": true,
+        "imageIsHitTarget": true,
+        "cursor": "pointer",
+        "hitArea": {
+          "type": "alpha-bounds",
+          "padding": 12
+        },
+        "hoverFeedback": true,
+        "glowFeedback": true,
+        "dragPolicy": "edit-mode-only",
+        "depthPolicy": "y-sort"
+      }
     },
     {
       "id": "quest-map-table",
@@ -706,7 +1247,21 @@
       "preload": false,
       "enabled": true,
       "artStatus": "starter-generated",
-      "replaceableWithoutCode": true
+      "replaceableWithoutCode": true,
+      "phaser": {
+        "textureKey": "obj-quest-map-table",
+        "interactive": true,
+        "imageIsHitTarget": true,
+        "cursor": "pointer",
+        "hitArea": {
+          "type": "alpha-bounds",
+          "padding": 12
+        },
+        "hoverFeedback": true,
+        "glowFeedback": true,
+        "dragPolicy": "edit-mode-only",
+        "depthPolicy": "y-sort"
+      }
     },
     {
       "id": "assessment-gateway",
@@ -723,7 +1278,21 @@
       "preload": false,
       "enabled": true,
       "artStatus": "starter-generated",
-      "replaceableWithoutCode": true
+      "replaceableWithoutCode": true,
+      "phaser": {
+        "textureKey": "obj-assessment-gateway",
+        "interactive": true,
+        "imageIsHitTarget": true,
+        "cursor": "pointer",
+        "hitArea": {
+          "type": "alpha-bounds",
+          "padding": 12
+        },
+        "hoverFeedback": true,
+        "glowFeedback": true,
+        "dragPolicy": "edit-mode-only",
+        "depthPolicy": "y-sort"
+      }
     },
     {
       "id": "mission-board",
@@ -740,7 +1309,21 @@
       "preload": false,
       "enabled": true,
       "artStatus": "starter-generated",
-      "replaceableWithoutCode": true
+      "replaceableWithoutCode": true,
+      "phaser": {
+        "textureKey": "obj-mission-board",
+        "interactive": true,
+        "imageIsHitTarget": true,
+        "cursor": "pointer",
+        "hitArea": {
+          "type": "alpha-bounds",
+          "padding": 12
+        },
+        "hoverFeedback": true,
+        "glowFeedback": true,
+        "dragPolicy": "edit-mode-only",
+        "depthPolicy": "y-sort"
+      }
     },
     {
       "id": "skill-tree-obelisk",
@@ -757,7 +1340,21 @@
       "preload": false,
       "enabled": true,
       "artStatus": "starter-generated",
-      "replaceableWithoutCode": true
+      "replaceableWithoutCode": true,
+      "phaser": {
+        "textureKey": "obj-skill-tree-obelisk",
+        "interactive": true,
+        "imageIsHitTarget": true,
+        "cursor": "pointer",
+        "hitArea": {
+          "type": "alpha-bounds",
+          "padding": 12
+        },
+        "hoverFeedback": true,
+        "glowFeedback": true,
+        "dragPolicy": "edit-mode-only",
+        "depthPolicy": "y-sort"
+      }
     },
     {
       "id": "guardian-food-bowl",
@@ -774,7 +1371,21 @@
       "preload": false,
       "enabled": true,
       "artStatus": "starter-generated",
-      "replaceableWithoutCode": true
+      "replaceableWithoutCode": true,
+      "phaser": {
+        "textureKey": "obj-guardian-food-bowl",
+        "interactive": true,
+        "imageIsHitTarget": true,
+        "cursor": "pointer",
+        "hitArea": {
+          "type": "alpha-bounds",
+          "padding": 12
+        },
+        "hoverFeedback": true,
+        "glowFeedback": true,
+        "dragPolicy": "edit-mode-only",
+        "depthPolicy": "y-sort"
+      }
     },
     {
       "id": "guardian-water-basin",
@@ -791,7 +1402,21 @@
       "preload": false,
       "enabled": true,
       "artStatus": "starter-generated",
-      "replaceableWithoutCode": true
+      "replaceableWithoutCode": true,
+      "phaser": {
+        "textureKey": "obj-guardian-water-basin",
+        "interactive": true,
+        "imageIsHitTarget": true,
+        "cursor": "pointer",
+        "hitArea": {
+          "type": "alpha-bounds",
+          "padding": 12
+        },
+        "hoverFeedback": true,
+        "glowFeedback": true,
+        "dragPolicy": "edit-mode-only",
+        "depthPolicy": "y-sort"
+      }
     },
     {
       "id": "guardian-toy-basket",
@@ -808,7 +1433,21 @@
       "preload": false,
       "enabled": true,
       "artStatus": "starter-generated",
-      "replaceableWithoutCode": true
+      "replaceableWithoutCode": true,
+      "phaser": {
+        "textureKey": "obj-guardian-toy-basket",
+        "interactive": true,
+        "imageIsHitTarget": true,
+        "cursor": "pointer",
+        "hitArea": {
+          "type": "alpha-bounds",
+          "padding": 12
+        },
+        "hoverFeedback": true,
+        "glowFeedback": true,
+        "dragPolicy": "edit-mode-only",
+        "depthPolicy": "y-sort"
+      }
     },
     {
       "id": "guardian-brush",
@@ -825,7 +1464,21 @@
       "preload": false,
       "enabled": true,
       "artStatus": "starter-generated",
-      "replaceableWithoutCode": true
+      "replaceableWithoutCode": true,
+      "phaser": {
+        "textureKey": "obj-guardian-brush",
+        "interactive": true,
+        "imageIsHitTarget": true,
+        "cursor": "pointer",
+        "hitArea": {
+          "type": "alpha-bounds",
+          "padding": 12
+        },
+        "hoverFeedback": true,
+        "glowFeedback": true,
+        "dragPolicy": "edit-mode-only",
+        "depthPolicy": "y-sort"
+      }
     },
     {
       "id": "guardian-treat-jar",
@@ -842,7 +1495,21 @@
       "preload": false,
       "enabled": true,
       "artStatus": "starter-generated",
-      "replaceableWithoutCode": true
+      "replaceableWithoutCode": true,
+      "phaser": {
+        "textureKey": "obj-guardian-treat-jar",
+        "interactive": true,
+        "imageIsHitTarget": true,
+        "cursor": "pointer",
+        "hitArea": {
+          "type": "alpha-bounds",
+          "padding": 12
+        },
+        "hoverFeedback": true,
+        "glowFeedback": true,
+        "dragPolicy": "edit-mode-only",
+        "depthPolicy": "y-sort"
+      }
     },
     {
       "id": "guardian-nest",
@@ -859,7 +1526,21 @@
       "preload": false,
       "enabled": true,
       "artStatus": "starter-generated",
-      "replaceableWithoutCode": true
+      "replaceableWithoutCode": true,
+      "phaser": {
+        "textureKey": "obj-guardian-nest",
+        "interactive": true,
+        "imageIsHitTarget": true,
+        "cursor": "pointer",
+        "hitArea": {
+          "type": "alpha-bounds",
+          "padding": 12
+        },
+        "hoverFeedback": true,
+        "glowFeedback": true,
+        "dragPolicy": "edit-mode-only",
+        "depthPolicy": "y-sort"
+      }
     },
     {
       "id": "guardian-cushion",
@@ -876,7 +1557,21 @@
       "preload": false,
       "enabled": true,
       "artStatus": "starter-generated",
-      "replaceableWithoutCode": true
+      "replaceableWithoutCode": true,
+      "phaser": {
+        "textureKey": "obj-guardian-cushion",
+        "interactive": true,
+        "imageIsHitTarget": true,
+        "cursor": "pointer",
+        "hitArea": {
+          "type": "alpha-bounds",
+          "padding": 12
+        },
+        "hoverFeedback": true,
+        "glowFeedback": true,
+        "dragPolicy": "edit-mode-only",
+        "depthPolicy": "y-sort"
+      }
     },
     {
       "id": "guardian-play-rug",
@@ -893,7 +1588,21 @@
       "preload": false,
       "enabled": true,
       "artStatus": "starter-generated",
-      "replaceableWithoutCode": true
+      "replaceableWithoutCode": true,
+      "phaser": {
+        "textureKey": "obj-guardian-play-rug",
+        "interactive": true,
+        "imageIsHitTarget": true,
+        "cursor": "pointer",
+        "hitArea": {
+          "type": "alpha-bounds",
+          "padding": 12
+        },
+        "hoverFeedback": true,
+        "glowFeedback": true,
+        "dragPolicy": "edit-mode-only",
+        "depthPolicy": "y-sort"
+      }
     },
     {
       "id": "guardian-toy-ball",
@@ -910,7 +1619,21 @@
       "preload": false,
       "enabled": true,
       "artStatus": "starter-generated",
-      "replaceableWithoutCode": true
+      "replaceableWithoutCode": true,
+      "phaser": {
+        "textureKey": "obj-guardian-toy-ball",
+        "interactive": true,
+        "imageIsHitTarget": true,
+        "cursor": "pointer",
+        "hitArea": {
+          "type": "alpha-bounds",
+          "padding": 12
+        },
+        "hoverFeedback": true,
+        "glowFeedback": true,
+        "dragPolicy": "edit-mode-only",
+        "depthPolicy": "y-sort"
+      }
     },
     {
       "id": "guardian-feather-toy",
@@ -927,7 +1650,21 @@
       "preload": false,
       "enabled": true,
       "artStatus": "starter-generated",
-      "replaceableWithoutCode": true
+      "replaceableWithoutCode": true,
+      "phaser": {
+        "textureKey": "obj-guardian-feather-toy",
+        "interactive": true,
+        "imageIsHitTarget": true,
+        "cursor": "pointer",
+        "hitArea": {
+          "type": "alpha-bounds",
+          "padding": 12
+        },
+        "hoverFeedback": true,
+        "glowFeedback": true,
+        "dragPolicy": "edit-mode-only",
+        "depthPolicy": "y-sort"
+      }
     },
     {
       "id": "guardian-bond-shrine",
@@ -944,7 +1681,21 @@
       "preload": false,
       "enabled": true,
       "artStatus": "starter-generated",
-      "replaceableWithoutCode": true
+      "replaceableWithoutCode": true,
+      "phaser": {
+        "textureKey": "obj-guardian-bond-shrine",
+        "interactive": true,
+        "imageIsHitTarget": true,
+        "cursor": "pointer",
+        "hitArea": {
+          "type": "alpha-bounds",
+          "padding": 12
+        },
+        "hoverFeedback": true,
+        "glowFeedback": true,
+        "dragPolicy": "edit-mode-only",
+        "depthPolicy": "y-sort"
+      }
     },
     {
       "id": "guardian-evolution-shrine",
@@ -961,7 +1712,21 @@
       "preload": false,
       "enabled": true,
       "artStatus": "starter-generated",
-      "replaceableWithoutCode": true
+      "replaceableWithoutCode": true,
+      "phaser": {
+        "textureKey": "obj-guardian-evolution-shrine",
+        "interactive": true,
+        "imageIsHitTarget": true,
+        "cursor": "pointer",
+        "hitArea": {
+          "type": "alpha-bounds",
+          "padding": 12
+        },
+        "hoverFeedback": true,
+        "glowFeedback": true,
+        "dragPolicy": "edit-mode-only",
+        "depthPolicy": "y-sort"
+      }
     },
     {
       "id": "guardian-portrait-frame",
@@ -978,7 +1743,21 @@
       "preload": false,
       "enabled": true,
       "artStatus": "starter-generated",
-      "replaceableWithoutCode": true
+      "replaceableWithoutCode": true,
+      "phaser": {
+        "textureKey": "obj-guardian-portrait-frame",
+        "interactive": true,
+        "imageIsHitTarget": true,
+        "cursor": "pointer",
+        "hitArea": {
+          "type": "alpha-bounds",
+          "padding": 12
+        },
+        "hoverFeedback": true,
+        "glowFeedback": true,
+        "dragPolicy": "edit-mode-only",
+        "depthPolicy": "y-sort"
+      }
     },
     {
       "id": "celestial-hatchery",
@@ -995,7 +1774,21 @@
       "preload": false,
       "enabled": true,
       "artStatus": "starter-generated",
-      "replaceableWithoutCode": true
+      "replaceableWithoutCode": true,
+      "phaser": {
+        "textureKey": "obj-celestial-hatchery",
+        "interactive": true,
+        "imageIsHitTarget": true,
+        "cursor": "pointer",
+        "hitArea": {
+          "type": "alpha-bounds",
+          "padding": 12
+        },
+        "hoverFeedback": true,
+        "glowFeedback": true,
+        "dragPolicy": "edit-mode-only",
+        "depthPolicy": "y-sort"
+      }
     },
     {
       "id": "crystal-vault-chest",
@@ -1012,7 +1805,21 @@
       "preload": false,
       "enabled": true,
       "artStatus": "starter-generated",
-      "replaceableWithoutCode": true
+      "replaceableWithoutCode": true,
+      "phaser": {
+        "textureKey": "obj-crystal-vault-chest",
+        "interactive": true,
+        "imageIsHitTarget": true,
+        "cursor": "pointer",
+        "hitArea": {
+          "type": "alpha-bounds",
+          "padding": 12
+        },
+        "hoverFeedback": true,
+        "glowFeedback": true,
+        "dragPolicy": "edit-mode-only",
+        "depthPolicy": "y-sort"
+      }
     },
     {
       "id": "xp-crystal-pillar",
@@ -1029,7 +1836,21 @@
       "preload": false,
       "enabled": true,
       "artStatus": "starter-generated",
-      "replaceableWithoutCode": true
+      "replaceableWithoutCode": true,
+      "phaser": {
+        "textureKey": "obj-xp-crystal-pillar",
+        "interactive": true,
+        "imageIsHitTarget": true,
+        "cursor": "pointer",
+        "hitArea": {
+          "type": "alpha-bounds",
+          "padding": 12
+        },
+        "hoverFeedback": true,
+        "glowFeedback": true,
+        "dragPolicy": "edit-mode-only",
+        "depthPolicy": "y-sort"
+      }
     },
     {
       "id": "streak-flame",
@@ -1046,7 +1867,21 @@
       "preload": false,
       "enabled": true,
       "artStatus": "starter-generated",
-      "replaceableWithoutCode": true
+      "replaceableWithoutCode": true,
+      "phaser": {
+        "textureKey": "obj-streak-flame",
+        "interactive": true,
+        "imageIsHitTarget": true,
+        "cursor": "pointer",
+        "hitArea": {
+          "type": "alpha-bounds",
+          "padding": 12
+        },
+        "hoverFeedback": true,
+        "glowFeedback": true,
+        "dragPolicy": "edit-mode-only",
+        "depthPolicy": "y-sort"
+      }
     },
     {
       "id": "achievement-trophy-case",
@@ -1063,7 +1898,21 @@
       "preload": false,
       "enabled": true,
       "artStatus": "starter-generated",
-      "replaceableWithoutCode": true
+      "replaceableWithoutCode": true,
+      "phaser": {
+        "textureKey": "obj-achievement-trophy-case",
+        "interactive": true,
+        "imageIsHitTarget": true,
+        "cursor": "pointer",
+        "hitArea": {
+          "type": "alpha-bounds",
+          "padding": 12
+        },
+        "hoverFeedback": true,
+        "glowFeedback": true,
+        "dragPolicy": "edit-mode-only",
+        "depthPolicy": "y-sort"
+      }
     },
     {
       "id": "reward-chest",
@@ -1080,7 +1929,21 @@
       "preload": false,
       "enabled": true,
       "artStatus": "starter-generated",
-      "replaceableWithoutCode": true
+      "replaceableWithoutCode": true,
+      "phaser": {
+        "textureKey": "obj-reward-chest",
+        "interactive": true,
+        "imageIsHitTarget": true,
+        "cursor": "pointer",
+        "hitArea": {
+          "type": "alpha-bounds",
+          "padding": 12
+        },
+        "hoverFeedback": true,
+        "glowFeedback": true,
+        "dragPolicy": "edit-mode-only",
+        "depthPolicy": "y-sort"
+      }
     },
     {
       "id": "mystery-chest",
@@ -1097,7 +1960,21 @@
       "preload": false,
       "enabled": true,
       "artStatus": "starter-generated",
-      "replaceableWithoutCode": true
+      "replaceableWithoutCode": true,
+      "phaser": {
+        "textureKey": "obj-mystery-chest",
+        "interactive": true,
+        "imageIsHitTarget": true,
+        "cursor": "pointer",
+        "hitArea": {
+          "type": "alpha-bounds",
+          "padding": 12
+        },
+        "hoverFeedback": true,
+        "glowFeedback": true,
+        "dragPolicy": "edit-mode-only",
+        "depthPolicy": "y-sort"
+      }
     },
     {
       "id": "collection-display-case",
@@ -1114,7 +1991,21 @@
       "preload": false,
       "enabled": true,
       "artStatus": "starter-generated",
-      "replaceableWithoutCode": true
+      "replaceableWithoutCode": true,
+      "phaser": {
+        "textureKey": "obj-collection-display-case",
+        "interactive": true,
+        "imageIsHitTarget": true,
+        "cursor": "pointer",
+        "hitArea": {
+          "type": "alpha-bounds",
+          "padding": 12
+        },
+        "hoverFeedback": true,
+        "glowFeedback": true,
+        "dragPolicy": "edit-mode-only",
+        "depthPolicy": "y-sort"
+      }
     },
     {
       "id": "rare-relic-pedestal",
@@ -1131,7 +2022,21 @@
       "preload": false,
       "enabled": true,
       "artStatus": "starter-generated",
-      "replaceableWithoutCode": true
+      "replaceableWithoutCode": true,
+      "phaser": {
+        "textureKey": "obj-rare-relic-pedestal",
+        "interactive": true,
+        "imageIsHitTarget": true,
+        "cursor": "pointer",
+        "hitArea": {
+          "type": "alpha-bounds",
+          "padding": 12
+        },
+        "hoverFeedback": true,
+        "glowFeedback": true,
+        "dragPolicy": "edit-mode-only",
+        "depthPolicy": "y-sort"
+      }
     },
     {
       "id": "moon-window",
@@ -1148,7 +2053,21 @@
       "preload": false,
       "enabled": true,
       "artStatus": "starter-generated",
-      "replaceableWithoutCode": true
+      "replaceableWithoutCode": true,
+      "phaser": {
+        "textureKey": "obj-moon-window",
+        "interactive": false,
+        "imageIsHitTarget": false,
+        "cursor": "default",
+        "hitArea": {
+          "type": "alpha-bounds",
+          "padding": 12
+        },
+        "hoverFeedback": false,
+        "glowFeedback": true,
+        "dragPolicy": "edit-mode-only",
+        "depthPolicy": "y-sort"
+      }
     },
     {
       "id": "star-window",
@@ -1165,7 +2084,21 @@
       "preload": false,
       "enabled": true,
       "artStatus": "starter-generated",
-      "replaceableWithoutCode": true
+      "replaceableWithoutCode": true,
+      "phaser": {
+        "textureKey": "obj-star-window",
+        "interactive": false,
+        "imageIsHitTarget": false,
+        "cursor": "default",
+        "hitArea": {
+          "type": "alpha-bounds",
+          "padding": 12
+        },
+        "hoverFeedback": false,
+        "glowFeedback": true,
+        "dragPolicy": "edit-mode-only",
+        "depthPolicy": "y-sort"
+      }
     },
     {
       "id": "arched-stained-glass-window",
@@ -1182,7 +2115,21 @@
       "preload": false,
       "enabled": true,
       "artStatus": "starter-generated",
-      "replaceableWithoutCode": true
+      "replaceableWithoutCode": true,
+      "phaser": {
+        "textureKey": "obj-arched-stained-glass-window",
+        "interactive": false,
+        "imageIsHitTarget": false,
+        "cursor": "default",
+        "hitArea": {
+          "type": "alpha-bounds",
+          "padding": 12
+        },
+        "hoverFeedback": false,
+        "glowFeedback": true,
+        "dragPolicy": "edit-mode-only",
+        "depthPolicy": "y-sort"
+      }
     },
     {
       "id": "hanging-moon-lantern",
@@ -1199,7 +2146,21 @@
       "preload": false,
       "enabled": true,
       "artStatus": "starter-generated",
-      "replaceableWithoutCode": true
+      "replaceableWithoutCode": true,
+      "phaser": {
+        "textureKey": "obj-hanging-moon-lantern",
+        "interactive": true,
+        "imageIsHitTarget": true,
+        "cursor": "pointer",
+        "hitArea": {
+          "type": "alpha-bounds",
+          "padding": 12
+        },
+        "hoverFeedback": true,
+        "glowFeedback": true,
+        "dragPolicy": "edit-mode-only",
+        "depthPolicy": "y-sort"
+      }
     },
     {
       "id": "floating-candle-cluster",
@@ -1216,7 +2177,21 @@
       "preload": false,
       "enabled": true,
       "artStatus": "starter-generated",
-      "replaceableWithoutCode": true
+      "replaceableWithoutCode": true,
+      "phaser": {
+        "textureKey": "obj-floating-candle-cluster",
+        "interactive": true,
+        "imageIsHitTarget": true,
+        "cursor": "pointer",
+        "hitArea": {
+          "type": "alpha-bounds",
+          "padding": 12
+        },
+        "hoverFeedback": true,
+        "glowFeedback": true,
+        "dragPolicy": "edit-mode-only",
+        "depthPolicy": "y-sort"
+      }
     },
     {
       "id": "crystal-chandelier",
@@ -1233,7 +2208,21 @@
       "preload": false,
       "enabled": true,
       "artStatus": "starter-generated",
-      "replaceableWithoutCode": true
+      "replaceableWithoutCode": true,
+      "phaser": {
+        "textureKey": "obj-crystal-chandelier",
+        "interactive": false,
+        "imageIsHitTarget": false,
+        "cursor": "default",
+        "hitArea": {
+          "type": "alpha-bounds",
+          "padding": 12
+        },
+        "hoverFeedback": false,
+        "glowFeedback": true,
+        "dragPolicy": "edit-mode-only",
+        "depthPolicy": "y-sort"
+      }
     },
     {
       "id": "mushroom-lamp",
@@ -1250,7 +2239,21 @@
       "preload": false,
       "enabled": true,
       "artStatus": "starter-generated",
-      "replaceableWithoutCode": true
+      "replaceableWithoutCode": true,
+      "phaser": {
+        "textureKey": "obj-mushroom-lamp",
+        "interactive": false,
+        "imageIsHitTarget": false,
+        "cursor": "default",
+        "hitArea": {
+          "type": "alpha-bounds",
+          "padding": 12
+        },
+        "hoverFeedback": false,
+        "glowFeedback": true,
+        "dragPolicy": "edit-mode-only",
+        "depthPolicy": "y-sort"
+      }
     },
     {
       "id": "moon-rug",
@@ -1267,7 +2270,21 @@
       "preload": false,
       "enabled": true,
       "artStatus": "starter-generated",
-      "replaceableWithoutCode": true
+      "replaceableWithoutCode": true,
+      "phaser": {
+        "textureKey": "obj-moon-rug",
+        "interactive": false,
+        "imageIsHitTarget": false,
+        "cursor": "default",
+        "hitArea": {
+          "type": "alpha-bounds",
+          "padding": 12
+        },
+        "hoverFeedback": false,
+        "glowFeedback": true,
+        "dragPolicy": "edit-mode-only",
+        "depthPolicy": "y-sort"
+      }
     },
     {
       "id": "constellation-rug",
@@ -1284,7 +2301,21 @@
       "preload": false,
       "enabled": true,
       "artStatus": "starter-generated",
-      "replaceableWithoutCode": true
+      "replaceableWithoutCode": true,
+      "phaser": {
+        "textureKey": "obj-constellation-rug",
+        "interactive": true,
+        "imageIsHitTarget": true,
+        "cursor": "pointer",
+        "hitArea": {
+          "type": "alpha-bounds",
+          "padding": 12
+        },
+        "hoverFeedback": true,
+        "glowFeedback": true,
+        "dragPolicy": "edit-mode-only",
+        "depthPolicy": "y-sort"
+      }
     },
     {
       "id": "arcane-round-rug",
@@ -1301,7 +2332,21 @@
       "preload": false,
       "enabled": true,
       "artStatus": "starter-generated",
-      "replaceableWithoutCode": true
+      "replaceableWithoutCode": true,
+      "phaser": {
+        "textureKey": "obj-arcane-round-rug",
+        "interactive": false,
+        "imageIsHitTarget": false,
+        "cursor": "default",
+        "hitArea": {
+          "type": "alpha-bounds",
+          "padding": 12
+        },
+        "hoverFeedback": false,
+        "glowFeedback": true,
+        "dragPolicy": "edit-mode-only",
+        "depthPolicy": "y-sort"
+      }
     },
     {
       "id": "book-pile-small",
@@ -1318,7 +2363,21 @@
       "preload": false,
       "enabled": true,
       "artStatus": "starter-generated",
-      "replaceableWithoutCode": true
+      "replaceableWithoutCode": true,
+      "phaser": {
+        "textureKey": "obj-book-pile-small",
+        "interactive": false,
+        "imageIsHitTarget": false,
+        "cursor": "default",
+        "hitArea": {
+          "type": "alpha-bounds",
+          "padding": 12
+        },
+        "hoverFeedback": false,
+        "glowFeedback": false,
+        "dragPolicy": "edit-mode-only",
+        "depthPolicy": "y-sort"
+      }
     },
     {
       "id": "book-pile-large",
@@ -1335,7 +2394,21 @@
       "preload": false,
       "enabled": true,
       "artStatus": "starter-generated",
-      "replaceableWithoutCode": true
+      "replaceableWithoutCode": true,
+      "phaser": {
+        "textureKey": "obj-book-pile-large",
+        "interactive": false,
+        "imageIsHitTarget": false,
+        "cursor": "default",
+        "hitArea": {
+          "type": "alpha-bounds",
+          "padding": 12
+        },
+        "hoverFeedback": false,
+        "glowFeedback": false,
+        "dragPolicy": "edit-mode-only",
+        "depthPolicy": "y-sort"
+      }
     },
     {
       "id": "scroll-stack",
@@ -1352,7 +2425,21 @@
       "preload": false,
       "enabled": true,
       "artStatus": "starter-generated",
-      "replaceableWithoutCode": true
+      "replaceableWithoutCode": true,
+      "phaser": {
+        "textureKey": "obj-scroll-stack",
+        "interactive": false,
+        "imageIsHitTarget": false,
+        "cursor": "default",
+        "hitArea": {
+          "type": "alpha-bounds",
+          "padding": 12
+        },
+        "hoverFeedback": false,
+        "glowFeedback": true,
+        "dragPolicy": "edit-mode-only",
+        "depthPolicy": "y-sort"
+      }
     },
     {
       "id": "potion-bottle-set",
@@ -1369,7 +2456,21 @@
       "preload": false,
       "enabled": true,
       "artStatus": "starter-generated",
-      "replaceableWithoutCode": true
+      "replaceableWithoutCode": true,
+      "phaser": {
+        "textureKey": "obj-potion-bottle-set",
+        "interactive": false,
+        "imageIsHitTarget": false,
+        "cursor": "default",
+        "hitArea": {
+          "type": "alpha-bounds",
+          "padding": 12
+        },
+        "hoverFeedback": false,
+        "glowFeedback": true,
+        "dragPolicy": "edit-mode-only",
+        "depthPolicy": "y-sort"
+      }
     },
     {
       "id": "crystal-cluster-blue",
@@ -1386,7 +2487,21 @@
       "preload": false,
       "enabled": true,
       "artStatus": "starter-generated",
-      "replaceableWithoutCode": true
+      "replaceableWithoutCode": true,
+      "phaser": {
+        "textureKey": "obj-crystal-cluster-blue",
+        "interactive": false,
+        "imageIsHitTarget": false,
+        "cursor": "default",
+        "hitArea": {
+          "type": "alpha-bounds",
+          "padding": 12
+        },
+        "hoverFeedback": false,
+        "glowFeedback": true,
+        "dragPolicy": "edit-mode-only",
+        "depthPolicy": "y-sort"
+      }
     },
     {
       "id": "crystal-cluster-purple",
@@ -1403,7 +2518,21 @@
       "preload": false,
       "enabled": true,
       "artStatus": "starter-generated",
-      "replaceableWithoutCode": true
+      "replaceableWithoutCode": true,
+      "phaser": {
+        "textureKey": "obj-crystal-cluster-purple",
+        "interactive": false,
+        "imageIsHitTarget": false,
+        "cursor": "default",
+        "hitArea": {
+          "type": "alpha-bounds",
+          "padding": 12
+        },
+        "hoverFeedback": false,
+        "glowFeedback": true,
+        "dragPolicy": "edit-mode-only",
+        "depthPolicy": "y-sort"
+      }
     },
     {
       "id": "crystal-cluster-gold",
@@ -1420,7 +2549,21 @@
       "preload": false,
       "enabled": true,
       "artStatus": "starter-generated",
-      "replaceableWithoutCode": true
+      "replaceableWithoutCode": true,
+      "phaser": {
+        "textureKey": "obj-crystal-cluster-gold",
+        "interactive": false,
+        "imageIsHitTarget": false,
+        "cursor": "default",
+        "hitArea": {
+          "type": "alpha-bounds",
+          "padding": 12
+        },
+        "hoverFeedback": false,
+        "glowFeedback": true,
+        "dragPolicy": "edit-mode-only",
+        "depthPolicy": "y-sort"
+      }
     },
     {
       "id": "potted-moonfern",
@@ -1437,7 +2580,21 @@
       "preload": false,
       "enabled": true,
       "artStatus": "starter-generated",
-      "replaceableWithoutCode": true
+      "replaceableWithoutCode": true,
+      "phaser": {
+        "textureKey": "obj-potted-moonfern",
+        "interactive": false,
+        "imageIsHitTarget": false,
+        "cursor": "default",
+        "hitArea": {
+          "type": "alpha-bounds",
+          "padding": 12
+        },
+        "hoverFeedback": false,
+        "glowFeedback": true,
+        "dragPolicy": "edit-mode-only",
+        "depthPolicy": "y-sort"
+      }
     },
     {
       "id": "potted-starflower",
@@ -1454,7 +2611,21 @@
       "preload": false,
       "enabled": true,
       "artStatus": "starter-generated",
-      "replaceableWithoutCode": true
+      "replaceableWithoutCode": true,
+      "phaser": {
+        "textureKey": "obj-potted-starflower",
+        "interactive": false,
+        "imageIsHitTarget": false,
+        "cursor": "default",
+        "hitArea": {
+          "type": "alpha-bounds",
+          "padding": 12
+        },
+        "hoverFeedback": false,
+        "glowFeedback": true,
+        "dragPolicy": "edit-mode-only",
+        "depthPolicy": "y-sort"
+      }
     },
     {
       "id": "hanging-vine",
@@ -1471,7 +2642,21 @@
       "preload": false,
       "enabled": true,
       "artStatus": "starter-generated",
-      "replaceableWithoutCode": true
+      "replaceableWithoutCode": true,
+      "phaser": {
+        "textureKey": "obj-hanging-vine",
+        "interactive": false,
+        "imageIsHitTarget": false,
+        "cursor": "default",
+        "hitArea": {
+          "type": "alpha-bounds",
+          "padding": 12
+        },
+        "hoverFeedback": false,
+        "glowFeedback": true,
+        "dragPolicy": "edit-mode-only",
+        "depthPolicy": "y-sort"
+      }
     },
     {
       "id": "mystic-floor-cushions",
@@ -1488,7 +2673,21 @@
       "preload": false,
       "enabled": true,
       "artStatus": "starter-generated",
-      "replaceableWithoutCode": true
+      "replaceableWithoutCode": true,
+      "phaser": {
+        "textureKey": "obj-mystic-floor-cushions",
+        "interactive": false,
+        "imageIsHitTarget": false,
+        "cursor": "default",
+        "hitArea": {
+          "type": "alpha-bounds",
+          "padding": 12
+        },
+        "hoverFeedback": false,
+        "glowFeedback": true,
+        "dragPolicy": "edit-mode-only",
+        "depthPolicy": "y-sort"
+      }
     },
     {
       "id": "wooden-storage-chest",
@@ -1505,7 +2704,21 @@
       "preload": false,
       "enabled": true,
       "artStatus": "starter-generated",
-      "replaceableWithoutCode": true
+      "replaceableWithoutCode": true,
+      "phaser": {
+        "textureKey": "obj-wooden-storage-chest",
+        "interactive": false,
+        "imageIsHitTarget": false,
+        "cursor": "default",
+        "hitArea": {
+          "type": "alpha-bounds",
+          "padding": 12
+        },
+        "hoverFeedback": false,
+        "glowFeedback": false,
+        "dragPolicy": "edit-mode-only",
+        "depthPolicy": "y-sort"
+      }
     },
     {
       "id": "portal-doorway",
@@ -1522,7 +2735,21 @@
       "preload": false,
       "enabled": true,
       "artStatus": "starter-generated",
-      "replaceableWithoutCode": true
+      "replaceableWithoutCode": true,
+      "phaser": {
+        "textureKey": "obj-portal-doorway",
+        "interactive": true,
+        "imageIsHitTarget": true,
+        "cursor": "pointer",
+        "hitArea": {
+          "type": "alpha-bounds",
+          "padding": 12
+        },
+        "hoverFeedback": true,
+        "glowFeedback": true,
+        "dragPolicy": "edit-mode-only",
+        "depthPolicy": "y-sort"
+      }
     },
     {
       "id": "moonstone-archway",
@@ -1539,7 +2766,21 @@
       "preload": false,
       "enabled": true,
       "artStatus": "starter-generated",
-      "replaceableWithoutCode": true
+      "replaceableWithoutCode": true,
+      "phaser": {
+        "textureKey": "obj-moonstone-archway",
+        "interactive": true,
+        "imageIsHitTarget": true,
+        "cursor": "pointer",
+        "hitArea": {
+          "type": "alpha-bounds",
+          "padding": 12
+        },
+        "hoverFeedback": true,
+        "glowFeedback": true,
+        "dragPolicy": "edit-mode-only",
+        "depthPolicy": "y-sort"
+      }
     },
     {
       "id": "spiral-staircase",
@@ -1556,7 +2797,21 @@
       "preload": false,
       "enabled": true,
       "artStatus": "starter-generated",
-      "replaceableWithoutCode": true
+      "replaceableWithoutCode": true,
+      "phaser": {
+        "textureKey": "obj-spiral-staircase",
+        "interactive": true,
+        "imageIsHitTarget": true,
+        "cursor": "pointer",
+        "hitArea": {
+          "type": "alpha-bounds",
+          "padding": 12
+        },
+        "hoverFeedback": true,
+        "glowFeedback": true,
+        "dragPolicy": "edit-mode-only",
+        "depthPolicy": "y-sort"
+      }
     },
     {
       "id": "stone-steps",
@@ -1573,7 +2828,21 @@
       "preload": false,
       "enabled": true,
       "artStatus": "starter-generated",
-      "replaceableWithoutCode": true
+      "replaceableWithoutCode": true,
+      "phaser": {
+        "textureKey": "obj-stone-steps",
+        "interactive": false,
+        "imageIsHitTarget": false,
+        "cursor": "default",
+        "hitArea": {
+          "type": "alpha-bounds",
+          "padding": 12
+        },
+        "hoverFeedback": false,
+        "glowFeedback": false,
+        "dragPolicy": "edit-mode-only",
+        "depthPolicy": "y-sort"
+      }
     },
     {
       "id": "wooden-bridge",
@@ -1590,7 +2859,21 @@
       "preload": false,
       "enabled": true,
       "artStatus": "starter-generated",
-      "replaceableWithoutCode": true
+      "replaceableWithoutCode": true,
+      "phaser": {
+        "textureKey": "obj-wooden-bridge",
+        "interactive": true,
+        "imageIsHitTarget": true,
+        "cursor": "pointer",
+        "hitArea": {
+          "type": "alpha-bounds",
+          "padding": 12
+        },
+        "hoverFeedback": true,
+        "glowFeedback": false,
+        "dragPolicy": "edit-mode-only",
+        "depthPolicy": "y-sort"
+      }
     },
     {
       "id": "magic-circle",
@@ -1607,7 +2890,21 @@
       "preload": false,
       "enabled": true,
       "artStatus": "starter-generated",
-      "replaceableWithoutCode": true
+      "replaceableWithoutCode": true,
+      "phaser": {
+        "textureKey": "obj-magic-circle",
+        "interactive": false,
+        "imageIsHitTarget": false,
+        "cursor": "default",
+        "hitArea": {
+          "type": "alpha-bounds",
+          "padding": 12
+        },
+        "hoverFeedback": false,
+        "glowFeedback": true,
+        "dragPolicy": "edit-mode-only",
+        "depthPolicy": "y-sort"
+      }
     },
     {
       "id": "constellation-gate",
@@ -1624,7 +2921,21 @@
       "preload": false,
       "enabled": true,
       "artStatus": "starter-generated",
-      "replaceableWithoutCode": true
+      "replaceableWithoutCode": true,
+      "phaser": {
+        "textureKey": "obj-constellation-gate",
+        "interactive": true,
+        "imageIsHitTarget": true,
+        "cursor": "pointer",
+        "hitArea": {
+          "type": "alpha-bounds",
+          "padding": 12
+        },
+        "hoverFeedback": true,
+        "glowFeedback": true,
+        "dragPolicy": "edit-mode-only",
+        "depthPolicy": "y-sort"
+      }
     },
     {
       "id": "locked-arcane-door",
@@ -1641,7 +2952,21 @@
       "preload": false,
       "enabled": true,
       "artStatus": "starter-generated",
-      "replaceableWithoutCode": true
+      "replaceableWithoutCode": true,
+      "phaser": {
+        "textureKey": "obj-locked-arcane-door",
+        "interactive": true,
+        "imageIsHitTarget": true,
+        "cursor": "pointer",
+        "hitArea": {
+          "type": "alpha-bounds",
+          "padding": 12
+        },
+        "hoverFeedback": true,
+        "glowFeedback": true,
+        "dragPolicy": "edit-mode-only",
+        "depthPolicy": "y-sort"
+      }
     },
     {
       "id": "sanctuary-signpost",
@@ -1658,7 +2983,21 @@
       "preload": false,
       "enabled": true,
       "artStatus": "starter-generated",
-      "replaceableWithoutCode": true
+      "replaceableWithoutCode": true,
+      "phaser": {
+        "textureKey": "obj-sanctuary-signpost",
+        "interactive": true,
+        "imageIsHitTarget": true,
+        "cursor": "pointer",
+        "hitArea": {
+          "type": "alpha-bounds",
+          "padding": 12
+        },
+        "hoverFeedback": true,
+        "glowFeedback": true,
+        "dragPolicy": "edit-mode-only",
+        "depthPolicy": "y-sort"
+      }
     },
     {
       "id": "quest-waystone",
@@ -1675,7 +3014,74 @@
       "preload": false,
       "enabled": true,
       "artStatus": "starter-generated",
-      "replaceableWithoutCode": true
+      "replaceableWithoutCode": true,
+      "phaser": {
+        "textureKey": "obj-quest-waystone",
+        "interactive": true,
+        "imageIsHitTarget": true,
+        "cursor": "pointer",
+        "hitArea": {
+          "type": "alpha-bounds",
+          "padding": 12
+        },
+        "hoverFeedback": true,
+        "glowFeedback": true,
+        "dragPolicy": "edit-mode-only",
+        "depthPolicy": "y-sort"
+      }
     }
-  ]
+  ],
+  "assetContract": {
+    "format": "webp",
+    "transparentBackground": true,
+    "preferredCanvas": "1024x1024",
+    "perspective": "consistent 3/4 isometric",
+    "bakedText": false,
+    "guardianBakedIntoFurniture": false,
+    "replaceableWithoutCode": true
+  },
+  "interactionPolicy": {
+    "imageIsHitTarget": true,
+    "cursor": "pointer",
+    "keyboardActivation": true,
+    "hoverFeedback": true,
+    "tapFeedback": true,
+    "dragOnlyInEditMode": true,
+    "protectedGuardianMovement": true
+  },
+  "phaserDefaults": {
+    "textureKeyPrefix": "obj-",
+    "hitArea": {
+      "type": "alpha-bounds",
+      "padding": 12
+    },
+    "hover": {
+      "scale": 1.035,
+      "durationMs": 120
+    },
+    "press": {
+      "scale": 0.97,
+      "durationMs": 80
+    },
+    "depthPolicy": "y-sort",
+    "interactiveWhen": "interaction != decor"
+  },
+  "designLanguage": {
+    "name": "Majick Studies Celestial Academy",
+    "motifs": [
+      "moon",
+      "stars",
+      "crystals",
+      "gold filigree",
+      "magical scholarship"
+    ],
+    "palette": [
+      "midnight indigo",
+      "violet",
+      "moonstone",
+      "warm gold",
+      "soft celestial blue"
+    ],
+    "finish": "polished magical-academia game asset"
+  }
 }
