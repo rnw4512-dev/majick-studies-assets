@@ -55,9 +55,18 @@ for raw in files_path.read_text(encoding="utf-8").splitlines():
 if count!=int(manifest.get("file_count",0)):
     fail(f"baseline file count mismatch: verified {count}")
 
-index=(site/"index.html")
-if not index.exists() or "3.3.18-stability" not in index.read_text(encoding="utf-8"):
-    fail("baseline index is not V3.3.18 Stability Reset")
+index=site/"index.html"
+progress=site/"app-progress.json"
+if not index.exists() or index.stat().st_size==0:
+    fail("baseline index.html is missing")
+if not progress.exists():
+    fail("baseline app-progress.json is missing")
+baseline_progress=json.loads(progress.read_text(encoding="utf-8"))
+if baseline_progress.get("version")!="V3.3.18 Stability Reset":
+    fail("baseline app-progress version is not V3.3.18 Stability Reset")
+for required in ("guardian-registry.js?v=stability-1","majick-state-core.js?v=stability-1","guardian-care-economy.js?v=stability-1","v3317-main.js?v=stability-1"):
+    if required not in index.read_text(encoding="utf-8"):
+        fail("baseline index is missing runtime script: "+required)
 
 OVERLAYS=[
     ("pages-release/stability-reset/v3310-ui-compat.js","v3310-ui-compat.js"),
