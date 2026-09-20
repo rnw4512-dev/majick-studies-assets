@@ -1,30 +1,32 @@
-name: Deploy Majick Studies to GitHub Pages
+name: Deploy Majick Studies Golden Baseline to GitHub Pages
 
 on:
   push:
     branches: [main]
     paths:
-      - 'pages-release/majick-pages-site.zip'
-      - 'pages-release/v339-patch.b64.part*'
-      - 'pages-release/v3310/**'
-      - 'pages-release/v3311/**'
-      - 'pages-release/v3312/**'
-      - 'pages-release/v3313/**'
-      - 'pages-release/v3314/**'
-      - 'pages-release/v3315/**'
-      - 'pages-release/v3316/**'
-      - 'pages-release/v3317/**'
       - 'pages-release/stability-reset/**'
+      - 'pages-release/v3315/study-material/**'
+      - 'pages-release/v3316/courseManager.js'
+      - 'pages-release/v3317/v3317-main.js'
+      - 'pages-release/v3317/v3317-sanctuary.js'
+      - 'pages-release/v3317/guardian-care-economy.js'
+      - 'pages-release/v3317/guardian-care-economy.css'
+      - 'pages-release/v3317/v3317-optimize-phaser.py'
+      - 'pages-release/v3317/v3317-migration-smoke.js'
       - 'sanctuary/assets/objects/**'
       - 'sanctuary/assets/evolutions/**'
       - 'sanctuary/assets/majick-v3317-evolution-repair-small.zip'
       - 'sanctuary/assets/majick-v3317-evolution-final-clean.zip'
       - 'sanctuary/assets/majick-v3315-art-sync.zip'
+      - 'luna-*.png'
+      - 'ember-*.png'
+      - 'nova-*.png'
+      - 'mallow-*.png'
       - '.github/workflows/deploy-majick-pages.yml'
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
   pages: write
   id-token: write
 
@@ -39,355 +41,166 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
+      - name: Checkout current sources
         uses: actions/checkout@v4
 
-      - name: Verify Majick Studies sources
+      - name: Verify current Stability Reset sources
         shell: bash
         run: |
           set -euo pipefail
-          test -s pages-release/majick-pages-site.zip
-          for n in 01 02 03 04 05; do test -s "pages-release/v339-patch.b64.part$n"; done
-          test -s pages-release/v3310/v3310-main.js
-          test -s pages-release/v3310/v3310-main.css
-          test -s pages-release/v3310/v3310-sanctuary.js
-          test -s pages-release/v3310/v3310-apply.py
-          test -s pages-release/v3311/v3311-main.js
-          test -s pages-release/v3311/v3311-main.css
-          test -s pages-release/v3311/v3311-plus.js
-          test -s pages-release/v3311/v3311-plus.css
-          test -s pages-release/v3311/v3311-sanctuary.js
-          test -s pages-release/v3311/v3311-apply.py
-          test -s pages-release/v3312/v3312-main.js
-          test -s pages-release/v3312/v3312-main.css
-          test -s pages-release/v3312/v3312-sanctuary.js
-          test -s pages-release/v3312/v3312-apply.py
-          test -s pages-release/v3313/v3313-main.js
-          test -s pages-release/v3313/v3313-main.css
-          test -s pages-release/v3313/v3313-sanctuary.js
-          test -s pages-release/v3313/v3313-apply.py
-          test -s pages-release/v3314/v3314-main.js
-          test -s pages-release/v3314/v3314-main.css
-          test -s pages-release/v3314/v3314-sanctuary.js
-          test -s pages-release/v3314/v3314-apply.py
-          test -s pages-release/v3315/v3315-main.js
-          test -s pages-release/v3315/v3315-main.css
-          test -s pages-release/v3315/v3315-sanctuary.js
-          test -s pages-release/v3315/v3315-apply.py
-          test -s pages-release/v3315/study-material/materialParser.js
-          test -s pages-release/v3315/study-material/materialStoreModel.js
-          test -s pages-release/v3315/study-material/questionBuilder.js
-          test -s pages-release/v3315/study-material/AddStudyMaterialPage.js
-          test -s sanctuary/assets/evolutions/evolution-manifest.json
-          test -s sanctuary/assets/evolutions/normalize-evolution-art.py
-          test -s sanctuary/assets/majick-v3317-evolution-repair-small.zip
-          test -s pages-release/v3316/courseManager.js
-          test -s pages-release/v3316/v3316-main.js
-          test -s pages-release/v3316/v3316-main.css
-          test -s pages-release/v3316/v3316-apply.py
-          test -s pages-release/v3317/v3317-sanctuary.js
-          test -s pages-release/v3317/v3317-main.js
-          test -s pages-release/v3317/guardian-care-economy.js
-          test -s pages-release/v3317/guardian-care-economy.css
-          test -s pages-release/v3317/v3317-apply.py
-          test -s pages-release/v3317/refresh-v3317.html
-          test -s pages-release/v3317/v3317-clean-sanitize.py
-          test -s pages-release/v3317/v3317-optimize-phaser.py
-          test -s pages-release/v3317/v3317-verify-release.py
-          test -s pages-release/v3317/v3317-migration-smoke.js
+          git ls-remote --exit-code --heads origin refs/heads/v3318-golden-baseline >/dev/null
+          test -s pages-release/stability-reset/golden-build.py
+          test -s pages-release/stability-reset/stability-reset-verify.py
+          test -s pages-release/stability-reset/browser-smoke.mjs
+          test -s pages-release/stability-reset/stability-state-smoke.js
           test -s pages-release/stability-reset/v3310-ui-compat.js
           test -s pages-release/stability-reset/v3312-ui-compat.js
           test -s pages-release/stability-reset/guardian-registry.js
           test -s pages-release/stability-reset/majick-state-core.js
-          test -s pages-release/stability-reset/stability-reset-build.py
-          test -s pages-release/stability-reset/stability-reset-verify.py
-          test -s pages-release/stability-reset/browser-smoke.mjs
-          test -s pages-release/stability-reset/stability-state-smoke.js
-          test -s pages-release/v3316/enlarge-approved-stage-art.py
+          test -s pages-release/v3315/study-material/materialParser.js
+          test -s pages-release/v3315/study-material/materialStoreModel.js
+          test -s pages-release/v3315/study-material/questionBuilder.js
+          test -s pages-release/v3315/study-material/AddStudyMaterialPage.js
+          test -s pages-release/v3316/courseManager.js
+          test -s pages-release/v3317/v3317-main.js
+          test -s pages-release/v3317/v3317-sanctuary.js
+          test -s pages-release/v3317/guardian-care-economy.js
+          test -s pages-release/v3317/guardian-care-economy.css
+          test -s pages-release/v3317/v3317-optimize-phaser.py
           test -s sanctuary/assets/objects/objects-manifest.json
           test -s sanctuary/assets/objects/generate-object-library.py
-          python -m py_compile pages-release/v3317/v3317-apply.py
-          python -m py_compile pages-release/stability-reset/stability-reset-build.py
+          test -s sanctuary/assets/evolutions/evolution-manifest.json
+          test -s sanctuary/assets/majick-v3317-evolution-repair-small.zip
+
+          python -m py_compile pages-release/stability-reset/golden-build.py
           python -m py_compile pages-release/stability-reset/stability-reset-verify.py
           python -m py_compile pages-release/v3317/v3317-optimize-phaser.py
-          python -m py_compile pages-release/v3317/v3317-verify-release.py
           python -m py_compile sanctuary/assets/objects/generate-object-library.py
-          node --check pages-release/v3317/v3317-main.js
-          node --check pages-release/v3317/v3317-sanctuary.js
-          node --check pages-release/v3317/guardian-care-economy.js
+
           node --check pages-release/stability-reset/v3310-ui-compat.js
           node --check pages-release/stability-reset/v3312-ui-compat.js
           node --check pages-release/stability-reset/guardian-registry.js
           node --check pages-release/stability-reset/majick-state-core.js
+          node --check pages-release/v3317/v3317-main.js
+          node --check pages-release/v3317/v3317-sanctuary.js
+          node --check pages-release/v3317/guardian-care-economy.js
+          node --check pages-release/v3315/study-material/materialParser.js
+          node --check pages-release/v3315/study-material/materialStoreModel.js
+          node --check pages-release/v3315/study-material/questionBuilder.js
+          node --check pages-release/v3315/study-material/AddStudyMaterialPage.js
+          node --check pages-release/v3316/courseManager.js
           node --check pages-release/stability-reset/stability-state-smoke.js
-          node --check pages-release/v3317/v3317-migration-smoke.js
+          node --check pages-release/stability-reset/browser-smoke.mjs
+
           node pages-release/v3317/v3317-migration-smoke.js
           node pages-release/stability-reset/stability-state-smoke.js
 
-      - name: Assemble Majick Studies V3.3.18 Stability Reset
+      - name: Fetch immutable V3.3.18 Golden Baseline
         shell: bash
         run: |
           set -euo pipefail
-          rm -rf _site _patch339 /tmp/v339-patch.zip /tmp/v339-patch.b64
-          mkdir -p _site _patch339
+          rm -f /tmp/majick-golden.zip /tmp/majick-golden-manifest.json /tmp/majick-golden-files.sha256
+          git fetch --no-tags --depth=1 origin refs/heads/v3318-golden-baseline
+          git show FETCH_HEAD:majick-v3318-golden-baseline.zip > /tmp/majick-golden.zip
+          git show FETCH_HEAD:manifest.json > /tmp/majick-golden-manifest.json
+          git show FETCH_HEAD:FILES.sha256 > /tmp/majick-golden-files.sha256
+          python - <<'PY'
+          import hashlib,json
+          from pathlib import Path
+          z=Path('/tmp/majick-golden.zip')
+          m=json.loads(Path('/tmp/majick-golden-manifest.json').read_text())
+          h=hashlib.sha256(z.read_bytes()).hexdigest()
+          assert m['runtime_version']=='3.3.18-stability'
+          assert h==m['golden_zip_sha256'], (h,m['golden_zip_sha256'])
+          assert m['file_count']>=200
+          print('Golden Baseline archive verified:',h)
+          PY
 
-          # Stable website base.
-          unzip -oq pages-release/majick-pages-site.zip -d _site
-
-          # Reapply V3.3.9.
-          cat pages-release/v339-patch.b64.part01 \
-              pages-release/v339-patch.b64.part02 \
-              pages-release/v339-patch.b64.part03 \
-              pages-release/v339-patch.b64.part04 \
-              pages-release/v339-patch.b64.part05 \
-              | tr -d '\r\n' > /tmp/v339-patch.b64
-          base64 --decode /tmp/v339-patch.b64 > /tmp/v339-patch.zip
-          unzip -t /tmp/v339-patch.zip
-          unzip -oq /tmp/v339-patch.zip -d _patch339
-          python _patch339/apply_patch.py _site
-
-          # Reapply the confirmed-working V3.3.10 motion-restore layer.
-          cp pages-release/v3310/v3310-main.js _site/v3310-main.js
-          cp pages-release/v3310/v3310-main.css _site/v3310-main.css
-          cp pages-release/v3310/v3310-sanctuary.js _site/sanctuary/v3310-sanctuary.js
-          python pages-release/v3310/v3310-apply.py _site
-
-          # V3.3.11 works around the protected Phaser movers.
-          cp pages-release/v3311/v3311-main.js _site/v3311-main.js
-          cp pages-release/v3311/v3311-main.css _site/v3311-main.css
-          cp pages-release/v3311/v3311-plus.js _site/v3311-plus.js
-          cp pages-release/v3311/v3311-plus.css _site/v3311-plus.css
-          cp pages-release/v3311/v3311-sanctuary.js _site/sanctuary/v3311-sanctuary.js
+      - name: Assemble from Golden Baseline
+        shell: bash
+        run: |
+          set -euo pipefail
           python -m pip install --quiet pillow
-          python pages-release/v3311/v3311-apply.py _site
 
-          # V3.3.12 fixes level-aware evolution visuals and moves heavy art to on-demand loading.
-          cp pages-release/v3312/v3312-main.js _site/v3312-main.js
-          cp pages-release/v3312/v3312-main.css _site/v3312-main.css
-          cp pages-release/v3312/v3312-sanctuary.js _site/sanctuary/v3312-sanctuary.js
-          python pages-release/v3312/v3312-apply.py _site
+          python pages-release/stability-reset/golden-build.py             "$PWD" "$PWD/_site"             /tmp/majick-golden.zip             /tmp/majick-golden-manifest.json             /tmp/majick-golden-files.sha256
 
-          # V3.3.13 restores the real Phaser sanctuary and wires optional final object art.
-          cp pages-release/v3313/v3313-main.js _site/v3313-main.js
-          cp pages-release/v3313/v3313-main.css _site/v3313-main.css
-          cp pages-release/v3313/v3313-sanctuary.js _site/sanctuary/v3313-sanctuary.js
-          python pages-release/v3313/v3313-apply.py _site
-
-          # V3.3.14 makes every Sanctuary view use the same Phaser world and moves objects/evolution visuals to data-driven layers.
-          cp pages-release/v3314/v3314-main.js _site/v3314-main.js
-          cp pages-release/v3314/v3314-main.css _site/v3314-main.css
-          cp pages-release/v3314/v3314-sanctuary.js _site/sanctuary/v3314-sanctuary.js
-          mkdir -p _site/sanctuary/assets/objects
-          cp sanctuary/assets/objects/objects-manifest.json _site/sanctuary/assets/objects/objects-manifest.json
-          python pages-release/v3314/v3314-apply.py _site
-
-          # Optional single-file furniture sync bundle.
-          # The old generated evolution-action sheets are intentionally ignored.
-          if [ -s sanctuary/assets/majick-v3315-art-sync.zip ]; then
-            rm -rf /tmp/majick-v3315-art-sync
-            mkdir -p /tmp/majick-v3315-art-sync
-            unzip -oq sanctuary/assets/majick-v3315-art-sync.zip -d /tmp/majick-v3315-art-sync
-            test -d /tmp/majick-v3315-art-sync/sanctuary/assets/objects
-            cp -a /tmp/majick-v3315-art-sync/sanctuary/assets/objects/. sanctuary/assets/objects/
-          fi
-
-          # V3.3.17 individual Guardian evolution assets.
-          # Prefer the final-clean bundle when present; keep the earlier repair bundle only as fallback.
-          rm -rf /tmp/majick-v3317-evolution-repair
-          mkdir -p /tmp/majick-v3317-evolution-repair
+          # Refresh current evolution assets directly into the site. Never mutate source folders.
+          rm -rf /tmp/majick-evolution-overlay
+          mkdir -p /tmp/majick-evolution-overlay
           if [ -s sanctuary/assets/majick-v3317-evolution-final-clean.zip ]; then
-            unzip -oq sanctuary/assets/majick-v3317-evolution-final-clean.zip -d /tmp/majick-v3317-evolution-repair
-            echo "Using FINAL CLEAN Guardian evolution bundle"
+            unzip -oq sanctuary/assets/majick-v3317-evolution-final-clean.zip -d /tmp/majick-evolution-overlay
           else
-            unzip -oq sanctuary/assets/majick-v3317-evolution-repair-small.zip -d /tmp/majick-v3317-evolution-repair
-            echo "Using fallback Guardian evolution repair bundle"
+            unzip -oq sanctuary/assets/majick-v3317-evolution-repair-small.zip -d /tmp/majick-evolution-overlay
           fi
-          test -d /tmp/majick-v3317-evolution-repair/sanctuary/assets/evolutions
-          cp -a /tmp/majick-v3317-evolution-repair/sanctuary/assets/evolutions/. sanctuary/assets/evolutions/
-
-          # V3.3.15 adds Notes Forge and one shared Guardian stage resolver.
-          cp pages-release/v3315/v3315-main.js _site/v3315-main.js
-          cp pages-release/v3315/v3315-main.css _site/v3315-main.css
-          cp pages-release/v3315/v3315-sanctuary.js _site/sanctuary/v3315-sanctuary.js
-          mkdir -p _site/study-material
-          cp pages-release/v3315/study-material/materialParser.js _site/study-material/materialParser.js
-          cp pages-release/v3315/study-material/materialStoreModel.js _site/study-material/materialStoreModel.js
-          cp pages-release/v3315/study-material/questionBuilder.js _site/study-material/questionBuilder.js
-          cp pages-release/v3315/study-material/AddStudyMaterialPage.js _site/study-material/AddStudyMaterialPage.js
+          test -d /tmp/majick-evolution-overlay/sanctuary/assets/evolutions
           mkdir -p _site/sanctuary/assets/evolutions
-          cp -a sanctuary/assets/evolutions/. _site/sanctuary/assets/evolutions/
-          python pages-release/v3315/v3315-apply.py _site
+          cp -a /tmp/majick-evolution-overlay/sanctuary/assets/evolutions/. _site/sanctuary/assets/evolutions/
+          cp sanctuary/assets/evolutions/evolution-manifest.json _site/sanctuary/assets/evolutions/evolution-manifest.json
 
-          # V3.3.16 separates academic course state from learner-level experience and repairs Guardian presentation.
-          cp pages-release/v3316/courseManager.js _site/courseManager.js
-          cp pages-release/v3316/v3316-main.js _site/v3316-main.js
-          cp pages-release/v3316/v3316-main.css _site/v3316-main.css
-          python pages-release/v3316/v3316-apply.py _site
-          python pages-release/v3316/enlarge-approved-stage-art.py _site/assets/familiars/evolution_stages
-          cp pages-release/v3317/v3317-sanctuary.js _site/sanctuary/v3317-sanctuary.js
-          cp pages-release/v3317/v3317-main.js _site/v3317-main.js
-          cp pages-release/v3317/guardian-care-economy.js _site/guardian-care-economy.js
-          cp pages-release/v3317/guardian-care-economy.css _site/guardian-care-economy.css
-          cp pages-release/stability-reset/v3310-ui-compat.js _site/v3310-ui-compat.js
-          cp pages-release/stability-reset/v3312-ui-compat.js _site/v3312-ui-compat.js
-          cp pages-release/stability-reset/guardian-registry.js _site/guardian-registry.js
-          cp pages-release/stability-reset/majick-state-core.js _site/majick-state-core.js
-          python pages-release/v3317/v3317-apply.py _site
-          cp pages-release/v3317/refresh-v3317.html _site/refresh-v3317.html
-          python -c "from pathlib import Path; p=Path('_site/sanctuary/index.html'); s=p.read_text(); tag='<script src=\"./v3317-sanctuary.js?v=3317\"></script>'; s=s if tag in s else s.replace('</body>',tag+'\\n</body>',1); p.write_text(s)"
-
-          # STABILITY RESET: historical releases are compile-time inputs only.
-          # Publish one registry/state/care/runtime chain without rewriting JS bodies.
-          python pages-release/stability-reset/stability-reset-build.py _site
-
-          # HARD RULE: copy the original Phase 4 images byte-for-byte; never regenerate them.
-          mkdir -p _site/sanctuary/assets/motion
-          cp luna-idle.png _site/sanctuary/assets/motion/luna-idle.png
-          cp luna-walk-1.png _site/sanctuary/assets/motion/luna-walk-1.png
-          cp luna-walk-2.png _site/sanctuary/assets/motion/luna-walk-2.png
-          cp luna-hop.png _site/sanctuary/assets/motion/luna-hop.png
-
-          cp ember-idle.png _site/sanctuary/assets/motion/ember-idle.png
-          cp ember-walk-1.png _site/sanctuary/assets/motion/ember-walk-1.png
-          cp ember-walk-2.png _site/sanctuary/assets/motion/ember-walk-2.png
-          cp ember-hop.png _site/sanctuary/assets/motion/ember-hop.png
-          cp ember-slither-1.png _site/sanctuary/assets/motion/ember-slither-1.png
-          cp ember-slither-2.png _site/sanctuary/assets/motion/ember-slither-2.png
-          cp ember-sit.png _site/sanctuary/assets/motion/ember-sit.png
-          cp ember-sleep.png _site/sanctuary/assets/motion/ember-sleep.png
-
-          cp nova-walk-1.png _site/sanctuary/assets/motion/nova-walk-1.png
-          cp nova-walk-2.png _site/sanctuary/assets/motion/nova-walk-2.png
-          cp nova-run.png _site/sanctuary/assets/motion/nova-run.png
-          cp nova-hop.png _site/sanctuary/assets/motion/nova-hop.png
-          cp nova-paw.png _site/sanctuary/assets/motion/nova-paw.png
-          cp nova-spin.png _site/sanctuary/assets/motion/nova-spin.png
-          cp nova-sit.png _site/sanctuary/assets/motion/nova-sit.png
-          cp nova-sleep.png _site/sanctuary/assets/motion/nova-sleep.png
-          cp nova-pounce.png _site/sanctuary/assets/motion/nova-pounce.png
-          cp nova-pounce2.png _site/sanctuary/assets/motion/nova-pounce2.png
-          cp nova-pounce3.png _site/sanctuary/assets/motion/nova-pounce3.png
-
-          cp mallow-idle.png _site/sanctuary/assets/motion/mallow-idle.png
-          cp mallow-hop-1.png _site/sanctuary/assets/motion/mallow-hop-1.png
-          cp mallow-hop-2.png _site/sanctuary/assets/motion/mallow-hop-2.png
-          cp "mallow-fly 1.png" _site/sanctuary/assets/motion/mallow-fly-1.png
-          cp "mallow-fly 2.png" _site/sanctuary/assets/motion/mallow-fly-2.png
-          cp mallow-paw.png _site/sanctuary/assets/motion/mallow-paw.png
-          cp mallow-sit.png _site/sanctuary/assets/motion/mallow-sit.png
-          cp mallow-sleep.png _site/sanctuary/assets/motion/mallow-sleep.png
-          cp mallow-land.png _site/sanctuary/assets/motion/mallow-land.png
-          cp mallow-binky.png _site/sanctuary/assets/motion/mallow-binky.png
-
-          # Full manifest object library. Generate starter WebPs only when a final replacement file is not present.
-          python sanctuary/assets/objects/generate-object-library.py sanctuary/assets/objects
+          # Build current furniture/object assets in temp, not in the repository checkout.
+          rm -rf /tmp/majick-objects /tmp/majick-art-sync
+          mkdir -p /tmp/majick-objects
+          cp -a sanctuary/assets/objects/. /tmp/majick-objects/
+          if [ -s sanctuary/assets/majick-v3315-art-sync.zip ]; then
+            mkdir -p /tmp/majick-art-sync
+            unzip -oq sanctuary/assets/majick-v3315-art-sync.zip -d /tmp/majick-art-sync
+            if [ -d /tmp/majick-art-sync/sanctuary/assets/objects ]; then
+              cp -a /tmp/majick-art-sync/sanctuary/assets/objects/. /tmp/majick-objects/
+            fi
+          fi
+          python sanctuary/assets/objects/generate-object-library.py /tmp/majick-objects
+          rm -rf _site/sanctuary/assets/objects
           mkdir -p _site/sanctuary/assets/objects
-          cp -a sanctuary/assets/objects/. _site/sanctuary/assets/objects/
+          cp -a /tmp/majick-objects/. _site/sanctuary/assets/objects/
 
-          # PERFORMANCE HOTFIX: do not decode the 33 protected 1254px PNGs at startup.
-          # Keep originals untouched and generate smaller runtime-only WebP copies.
+          # Derived runtime assets only. Original 33 PNGs were already hash-pinned and copied byte-for-byte.
           python pages-release/v3317/v3317-optimize-phaser.py _site
-
           touch _site/.nojekyll
 
-          # Gate deployment on protected movement plus current V3.3.17 requirements.
-          test -s _site/index.html
-          test -s _site/v3311-main.js
-          test -s _site/v3311-plus.js
-          test -s _site/v3311-main.css
-          test -s _site/v3311-plus.css
-          test -s _site/sanctuary/assets/motion/luna-walk-1.png
-          test -s _site/sanctuary/assets/motion/ember-slither-1.png
-          test -s _site/sanctuary/assets/motion/nova-run.png
-          test -s _site/sanctuary/assets/motion/mallow-fly-1.png
+          # Current source overlays must be exact.
+          cmp pages-release/stability-reset/guardian-registry.js _site/guardian-registry.js
+          cmp pages-release/stability-reset/majick-state-core.js _site/majick-state-core.js
+          cmp pages-release/v3316/courseManager.js _site/courseManager.js
+          cmp pages-release/v3317/v3317-main.js _site/v3317-main.js
+          cmp pages-release/v3317/v3317-sanctuary.js _site/sanctuary/v3317-sanctuary.js
+          cmp pages-release/v3317/guardian-care-economy.js _site/guardian-care-economy.js
+
+          # Golden architecture and protected assets.
+          grep -q '"build_foundation": "V3.3.18 Golden Baseline"' _site/app-progress.json
+          grep -q '"historical_patch_chain": "retired from deployment"' _site/app-progress.json
+          test "$(find _site/sanctuary/assets/motion -type f -name '*.png' | wc -l)" -eq 33
+          test "$(find _site/sanctuary/assets/runtime-motion -type f -name '*.webp' | wc -l)" -eq 33
+          test "$(find _site/sanctuary/assets/objects -type f -name '*.webp' | wc -l)" -ge 9
+          test "$(find _site/sanctuary/assets/runtime-objects -type f -name '*.webp' | wc -l)" -ge 15
+          test "$(find _site/sanctuary/assets/evolutions -type f -name '*.webp' | wc -l)" -ge 60
           test "$(find _site/assets/familiars/evolution_stages -type f -name '*.webp' | wc -l)" -eq 50
           test -s _site/assets/familiars/evolution_stages/velora-new-bond.webp
-          test -s _site/assets/familiars/evolution_stages/velora-ascendant.webp
           test -s _site/assets/familiars/evolution_stages/solara-celestial.webp
-          test -s _site/v3310-ui-compat.js
-          test -s _site/v3312-ui-compat.js
-          test -s _site/v3312-main.css
-          test -s _site/v3313-main.css
-          grep -q "obj-arcane-stacks" _site/sanctuary/Preloader.js
-          test -s _site/v3314-main.css
-          test -s _site/sanctuary/assets/objects/objects-manifest.json
-          test -s _site/v3315-main.css
-          test -s _site/sanctuary/assets/evolutions/evolution-manifest.json
-          if [ -s sanctuary/assets/majick-v3315-art-sync.zip ]; then
-            test -s _site/sanctuary/assets/objects/magic-mirror.webp
-            test -s _site/sanctuary/assets/objects/moonlit-study-desk.webp
-            test -s _site/sanctuary/assets/objects/celestial-telescope.webp
-            test -s _site/sanctuary/assets/objects/enchanted-bookstack.webp
-            test -s _site/sanctuary/assets/objects/moonstone-canopy-bed.webp
-          fi
-          python -c "from PIL import Image; from pathlib import Path; root=Path('_site/assets/familiars/evolution_stages'); paths=[root/f'{n}-{s}.webp' for n in ('velora','cascade','solstice','aurelia') for s in ('new-bond','apprentice','guardian','ascendant','celestial')]; [(_ for _ in ()).throw(AssertionError(f'{p} missing')) for p in paths if not p.exists()]; [(_ for _ in ()).throw(AssertionError(f'{p} size {Image.open(p).size}')) for p in paths if Image.open(p).size!=(640,1000)]; print('Approved Guardian portraits verified at 640x1000')"
-          test -s _site/study-material/materialParser.js
-          test -s _site/study-material/materialStoreModel.js
-          test -s _site/study-material/questionBuilder.js
-          test -s _site/study-material/AddStudyMaterialPage.js
-          grep -q "majick-evolution-manifest" _site/sanctuary/Preloader.js
-          grep -q "Add Study Material" _site/study-material/AddStudyMaterialPage.js
+          test -s _site/sanctuary/assets/evolutions/velora/ascendant/play.webp
+          test -s _site/sanctuary/assets/evolutions/cascade/celestial/sleep.webp
+
+          node --check _site/guardian-registry.js
+          node --check _site/majick-state-core.js
+          node --check _site/courseManager.js
+          node --check _site/guardian-care-economy.js
+          node --check _site/v3317-main.js
+          node --check _site/sanctuary/v3317-sanctuary.js
           node --check _site/study-material/materialParser.js
           node --check _site/study-material/materialStoreModel.js
           node --check _site/study-material/questionBuilder.js
           node --check _site/study-material/AddStudyMaterialPage.js
-          test "$(find _site/sanctuary/assets/objects -type f -name '*.webp' | wc -l)" -ge 9
-          test "$(find _site/sanctuary/assets/motion -type f -name '*.png' | wc -l)" -eq 33
-          test "$(find _site/sanctuary/assets/runtime-motion -type f -name '*.webp' | wc -l)" -eq 33
-          test "$(find _site/sanctuary/assets/runtime-objects -type f -name '*.webp' | wc -l)" -ge 15
-          grep -q "assets/runtime-motion/" _site/sanctuary/Preloader.js
-          grep -q "assets/runtime-objects/" _site/sanctuary/Preloader.js
-          python -c "from pathlib import Path; n=sum(p.stat().st_size for p in Path('_site/sanctuary/assets/runtime-motion').glob('*.webp')); print('runtime motion bytes',n); assert n < 4*1024*1024"
-          test -s _site/courseManager.js
-          test -s _site/v3316-main.css
-          grep -q "PASS_XP=500" _site/courseManager.js
-          node --check _site/courseManager.js
-          test -s _site/sanctuary/v3317-sanctuary.js
-          test -s _site/v3317-main.js
-          test -s _site/refresh-v3317.html
-          grep -q "v3310-sanctuary.js" _site/sanctuary/index.html
-          grep -q "guardian-registry.js?v=stability-1" _site/sanctuary/index.html
-          grep -q "v3317-sanctuary.js?v=stability-1" _site/sanctuary/index.html
-          grep -q "guardian-registry.js?v=stability-1" _site/index.html
-          grep -q "majick-state-core.js?v=stability-1" _site/index.html
-          grep -q "guardian-care-economy.js?v=stability-1" _site/index.html
-          grep -q "v3317-main.js?v=stability-1" _site/index.html
-          for old in v3311-sanctuary.js v3312-sanctuary.js v3313-sanctuary.js v3314-sanctuary.js v3315-sanctuary.js; do
-            if grep -q "$old" _site/sanctuary/index.html; then
-              echo "Old Sanctuary wrapper still loaded: $old"; exit 1
-            fi
-            if [ -e "_site/sanctuary/$old" ]; then
-              echo "Old Sanctuary wrapper still published: $old"; exit 1
-            fi
-          done
-          for old in v3310-main.js v3312-main.js v3313-main.js v3314-main.js v3315-main.js v3316-main.js; do
-            if grep -q "$old" _site/index.html; then
-              echo "Old main Sanctuary bridge still loaded: $old"; exit 1
-            fi
-          done
-          grep -q "protected V3.3.10 movement + one V3.3.17 Sanctuary bridge" _site/app-progress.json
-          grep -q "V3.3.18 Stability Reset" _site/app-progress.json
-          grep -q "majick-studies-retired-v3317" _site/service-worker.js
-          if grep -q 'navigator.serviceWorker.register("./service-worker.js")' _site/index.html; then
-            echo "Old service-worker registration is still present"; exit 1
-          fi
-          if grep -q "Moonlit V5.2 runtime error" _site/index.html; then
-            echo "Legacy global crash handler is still present"; exit 1
-          fi
-          grep -q "Majick V3.3.18 runtime error" _site/v3317-main.js
-          node --check _site/sanctuary/v3317-sanctuary.js
-          node --check _site/v3317-main.js
-          test "$(find _site/sanctuary/assets/evolutions -type f -name '*.webp' | wc -l)" -ge 60
-          test -s _site/sanctuary/assets/evolutions/velora/new-bond/walk.webp
-          test -s _site/sanctuary/assets/evolutions/velora/ascendant/play.webp
-          test -s _site/sanctuary/assets/evolutions/cascade/celestial/sleep.webp
-          test -s _site/sanctuary/assets/evolutions/solstice/guardian/walk.webp
-          test -s _site/sanctuary/assets/evolutions/aurelia/apprentice/play.webp
-          python pages-release/stability-reset/stability-reset-verify.py _site
-          echo "Verified protected motion + evolution action assets under Stability Reset"
-          echo "Majick Studies V3.3.18 Stability Reset assembled successfully."
 
-      - name: Browser smoke test Stability Reset
+          python - <<'PY'
+          from pathlib import Path
+          n=sum(p.stat().st_size for p in Path('_site/sanctuary/assets/runtime-motion').glob('*.webp'))
+          assert n < 4*1024*1024, n
+          print('runtime motion bytes',n)
+          PY
+
+          python pages-release/stability-reset/stability-reset-verify.py _site
+          echo "Majick Studies V3.3.18 Golden Baseline assembly passed."
+
+      - name: Browser regression gate
         shell: bash
         run: |
           set -euo pipefail
@@ -428,91 +241,11 @@ jobs:
           LIVE_URL="${{ steps.deployment.outputs.page_url }}"
           echo "Verifying deployed Majick Studies at $LIVE_URL"
           for attempt in 1 2 3 4 5 6; do
-            if MAJICK_BASE_URL="${LIVE_URL}?smoke=${GITHUB_SHA}-${attempt}" node pages-release/stability-reset/browser-smoke.mjs; then
-              echo "LIVE MAJICK BROWSER SMOKE PASSED"
+            if MAJICK_BASE_URL="$LIVE_URL?smoke=$GITHUB_SHA-$attempt" node pages-release/stability-reset/browser-smoke.mjs; then
+              echo "LIVE GOLDEN BASELINE BROWSER GATE PASSED"
               exit 0
             fi
-            echo "Live Pages build not ready on attempt $attempt; retrying after propagation delay."
             sleep 5
           done
-          echo "Live Pages deployment never passed the V3.3.18 browser gate."
+          echo "Live Pages deployment never passed the Golden Baseline browser gate."
           exit 1
-
-      - name: Freeze V3.3.18 Golden Baseline once
-        if: ${{ github.ref == 'refs/heads/main' }}
-        shell: bash
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          set -euo pipefail
-          BASELINE_BRANCH="v3318-golden-baseline"
-          if git ls-remote --exit-code --heads origin "refs/heads/$BASELINE_BRANCH" >/dev/null 2>&1; then
-            echo "Golden Baseline already exists on $BASELINE_BRANCH; leaving it immutable."
-            exit 0
-          fi
-
-          rm -rf /tmp/majick-golden /tmp/majick-golden-repo
-          mkdir -p /tmp/majick-golden /tmp/majick-golden-repo
-
-          (
-            cd _site
-            find . -type f \
-              ! -path './sanctuary/assets/motion/*' \
-              ! -path './sanctuary/assets/runtime-motion/*' \
-              -print0 | sort -z | xargs -0 sha256sum
-          ) > /tmp/majick-golden/FILES.sha256
-
-          (
-            cd _site
-            zip -q -r /tmp/majick-golden/majick-v3318-golden-baseline.zip . \
-              -x 'sanctuary/assets/motion/*' \
-              -x 'sanctuary/assets/runtime-motion/*'
-          )
-
-          GOLDEN_SHA="$(sha256sum /tmp/majick-golden/majick-v3318-golden-baseline.zip | awk '{print $1}')"
-          GOLDEN_BYTES="$(stat -c %s /tmp/majick-golden/majick-v3318-golden-baseline.zip)"
-          GOLDEN_FILES="$(wc -l < /tmp/majick-golden/FILES.sha256 | tr -d ' ')"
-
-          cat > /tmp/majick-golden/manifest.json <<EOF
-          {
-            "name": "Majick Studies V3.3.18 Golden Baseline",
-            "runtime_version": "3.3.18-stability",
-            "source_commit": "$GITHUB_SHA",
-            "source_run_id": "$GITHUB_RUN_ID",
-            "golden_zip_sha256": "$GOLDEN_SHA",
-            "archive_bytes": $GOLDEN_BYTES,
-            "file_count": $GOLDEN_FILES,
-            "excluded_from_baseline": [
-              "sanctuary/assets/motion/**",
-              "sanctuary/assets/runtime-motion/**"
-            ],
-            "protected_motion_policy": "Original Guardian motion assets are never stored in or rewritten by the Golden Baseline. They remain protected repository sources and are copied byte-for-byte during deployment; runtime motion files are derived copies only."
-          }
-          EOF
-
-          cat > /tmp/majick-golden/README.md <<EOF
-          # Majick Studies V3.3.18 Golden Baseline
-
-          This branch is an immutable deployment baseline created only after the full local Chromium gate, GitHub Pages deployment, and live Chromium gate passed.
-
-          The baseline intentionally excludes `sanctuary/assets/motion/**` and `sanctuary/assets/runtime-motion/**`. Protected Guardian movement assets stay in their original repository sources and are not regenerated or simplified by this baseline.
-
-          Source commit: `$GITHUB_SHA`
-          Source workflow run: `$GITHUB_RUN_ID`
-          Archive SHA-256: `$GOLDEN_SHA`
-          EOF
-
-          cd /tmp/majick-golden-repo
-          git init
-          git config user.name "Majick Stability Bot"
-          git config user.email "actions@users.noreply.github.com"
-          git checkout --orphan "$BASELINE_BRANCH"
-          cp /tmp/majick-golden/majick-v3318-golden-baseline.zip .
-          cp /tmp/majick-golden/FILES.sha256 .
-          cp /tmp/majick-golden/manifest.json .
-          cp /tmp/majick-golden/README.md .
-          git add .
-          git commit -m "Freeze tested Majick Studies V3.3.18 Golden Baseline"
-          git remote add origin "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
-          git push origin "HEAD:refs/heads/$BASELINE_BRANCH"
-          echo "Golden Baseline frozen on $BASELINE_BRANCH with SHA-256 $GOLDEN_SHA"
