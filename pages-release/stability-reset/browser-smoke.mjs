@@ -511,7 +511,7 @@ try{
     dockTop:document.querySelector('.majCareDock')?.getBoundingClientRect().top||0,
     sanctuaryTop:document.querySelector('.phase4Wrap')?.getBoundingClientRect().top||0
   }));
-  await assert(careDock.rosterButtons===2,'compact care dock shows a Guardian that is not owned');
+  await assert(careDock.rosterButtons===3,'compact care dock does not match the current three hatched Guardians');
   await assert(!careDock.detailsVisible,'full Guardian care panel should be collapsed by default');
   await assert(careDock.dockTop<=careDock.sanctuaryTop,'Take Care dock is still below the Sanctuary');
   await page.waitForSelector('iframe.v3317SanctuaryFrame',{timeout:15000});
@@ -543,8 +543,8 @@ try{
     scene.v3322DockGuardianHome?.();
     return window.MajickSanctuaryRecovery.inspect(scene);
   });
-  await assert(ownedVisibility.owned.length===2&&ownedVisibility.owned.includes('luna')&&ownedVisibility.owned.includes('nova'),'Sanctuary owned roster is not the real two hatched Guardians');
-  await assert(!ownedVisibility.visible.ember.controller&&!ownedVisibility.visible.ember.walk&&!ownedVisibility.visible.ember.action,'unowned Cascade/ember is visible in Sanctuary');
+  await assert(ownedVisibility.owned.length===3&&ownedVisibility.owned.includes('luna')&&ownedVisibility.owned.includes('nova')&&ownedVisibility.owned.includes('ember'),'Sanctuary owned roster is not the real three hatched Guardians');
+  await assert(ownedVisibility.visible.ember.controller||ownedVisibility.visible.ember.walk||ownedVisibility.visible.ember.action,'hatched Cascade/ember is not visible in Sanctuary');
   await assert(!ownedVisibility.visible.mallow.controller&&!ownedVisibility.visible.mallow.walk&&!ownedVisibility.visible.mallow.action,'unowned Aurelia/mallow is visible in Sanctuary');
   await assert(
     ownedVisibility.hud?.screenX>ownedVisibility.hud?.viewportWidth*.5&&ownedVisibility.hud?.screenY<=100,
