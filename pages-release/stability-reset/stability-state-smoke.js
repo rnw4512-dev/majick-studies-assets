@@ -66,6 +66,14 @@ MajickStateCore.normalizeAll();
 assert(S.progress.D772&&Array.isArray(S.progress.D772.answers),'undefined active course was not repaired');
 assert(S.progress.D772.crystals===173,'repaired course lost account crystals');
 
+const repaired=S.progress.D772;
+for(const key of ['answers','explanations','repair','spacedQueue','charms','cosmetics','questionMemory','sessionHistory','masteryRewarded','helpHistory','familyMemory','urgentRepair','v5SessionHistory','errorTags','strategyHistory']){
+  assert(Array.isArray(repaired[key]),'repaired progress missing array '+key);
+}
+for(const key of ['distractorHistory','flaggedQuestions','masteryProofs','sourceCoverage','questionExposure','aiCache']){
+  assert(repaired[key]&&typeof repaired[key]==='object'&&!Array.isArray(repaired[key]),'repaired progress missing object '+key);
+}
+
 run('pages-release/v3317/guardian-care-economy.js');
 const snap=MajickGuardianCare.snapshot();
 assert(snap.roster.length===2,'care roster must use actual two hatched Guardians');
