@@ -25,7 +25,7 @@ global.S={
   activeCourse:'PMFC',
   screen:'mission',
   courses:{
-    PMFC:{id:'PMFC',title:'Assessment for Special Education'},
+    PMFC:{id:'PMFC',title:'Assessment for Special Education',questionBank:[{id:'legacy-assessment-q',prompt:'Legacy assessment question'}]},
     D772:{id:'D772',title:'Statistical Data Literacy'},
     GHOST:{id:'GHOST',title:'Old Imported Course'}
   },
@@ -58,11 +58,21 @@ function run(path){
 
 run('pages-release/v3316/courseManager.js');
 
-assert(S.progress.PMFC&&typeof S.progress.PMFC==='object','PMFC progress disappeared');
-assert(S.progress.D772&&typeof S.progress.D772==='object','undefined course progress was not repaired');
+assert(!S.courses.PMFC,'legacy PMFC course key was not retired');
+assert(!S.progress.PMFC,'legacy PMFC progress key was not retired');
+assert(S.courses.D755?.id==='D755','Assessment course was not migrated to D755');
+assert(S.courses.D755?.title==='Assessment for Special Education','D755 title is incorrect');
+assert(S.courses.D755.questionBank?.some(q=>q.id==='legacy-assessment-q'),'existing assessment question bank was lost during D755 migration');
+assert(S.activeCourse==='D755','active legacy Assessment course did not follow migration to D755');
+assert(S.progress.D755&&typeof S.progress.D755==='object','D755 progress disappeared');
+assert(S.progress.D755.answers?.some(a=>a.qid==='q1'),'existing Assessment answer history was lost during D755 migration');
+assert(Number(S.progress.D755.streak)===3,'existing Assessment streak was lost during D755 migration');
+assert(S.progress.D772&&typeof S.progress.D772==='object','undefined D772 progress was not repaired');
 assert(S.progress.GHOST&&typeof S.progress.GHOST==='object','null course progress was not repaired');
 assert(Number(S.progress.D772.xp)===1511,'repaired course did not receive account XP safely');
 assert(Array.isArray(S.progress.D772.answers),'repaired course answers is not an array');
+assert(MajickCourseManager.COURSE_CATALOG.D755?.title==='Assessment for Special Education','D755 missing from course catalog');
+assert(MajickCourseManager.COURSE_CATALOG.D772?.title==='Statistical Data Literacy','D772 missing from course catalog');
 assert(typeof window.MajickCourseManager?.normalizeAllProgress==='function','course progress normalizer not exported');
 
 run('pages-release/v3317/guardian-care-economy.js');
@@ -80,7 +90,7 @@ assert(snap.guardians.luna||snap.guardians['luna'],'Velora care state missing');
 assert(snap.guardians.pet_solstice,'Solstice care state missing');
 
 console.log('V3.3.17 migration smoke passed');
-console.log('courses repaired:',Object.keys(S.progress).length);
+console.log('courses repaired:',Object.keys(S.progress).join(', '));
 console.log('owned Guardians:',snap.roster.length);
 console.log('incubating eggs:',snap.eggs.length);
 console.log('owned care items:',snap.owned.join(', '));
