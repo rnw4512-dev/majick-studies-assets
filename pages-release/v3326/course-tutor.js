@@ -70,24 +70,7 @@ function headingInfo(row){
     lessonTitle:lesson?.[2]?.trim()||''
   };
 }
-function escRx(s){return String(s||'').replace(/[.*+?^$()|[\]\\]/g,'\\function classifyD772(row){
-  if(row?.learningPath?.courseId==='D772'&&row.learningPath.lessonId)return row.learningPath;
-  const text=sourceText(row),head=headingInfo(row);
-  let best=null,bestScore=0;
-  for(const lesson of D772_SECTION_ONE.lessons.filter(x=>!x.review)){
-    let score=0;
-    if(head.lessonNumber===lesson.number)score+=12;
-    if(norm(head.lessonTitle).includes(norm(lesson.short)))score+=8;
-    if(text.includes(norm(lesson.title)))score+=12;
-    for(const k of lesson.keywords)if(text.includes(k))score+=1;
-    if(score>bestScore){bestScore=score;best=lesson}
-  }
-  if(!best||bestScore<2)return null;
-  return {
-    courseId:'D772',sectionId:D772_SECTION_ONE.id,sectionTitle:D772_SECTION_ONE.title,
-    lessonId:best.id,lessonTitle:best.title,lessonNumber:best.number,confidence:bestScore>=10?'high':bestScore>=4?'medium':'low'
-  };
-}')}
+function escRx(s){return String(s||'').replace(/[.*+?^${}()|[\]\\]/g,'\\$&')}
 function lessonById(id){return D772_SECTION_ONE.lessons.find(l=>l.id===id)||null}
 function classifyD772(row){
   if(row?.learningPath?.courseId==='D772'&&(row.learningPath.lessonId||row.learningPath.multiLesson))return row.learningPath;
