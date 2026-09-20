@@ -24,6 +24,19 @@ for ver in ('3311','3312','3313','3314','3315'):
     p=root/'sanctuary'/f'v{ver}-sanctuary.js'
     if p.exists(): p.unlink()
 
+# V3.3.10 keeps the protected movement methods, but its old hot-reload restart
+# is not part of movement and can race the Preloader during a normal page load.
+v3310=root/'sanctuary'/'v3310-sanctuary.js'
+if v3310.exists():
+    t=v3310.read_text(encoding='utf-8')
+    t=re.sub(
+        r"\ntry\s*\{\s*const liveGame=window\.majickPhaserGame;[\s\S]*?console\.warn\('V3\.3\.10 sanctuary restart', e\);\s*\}\s*$",
+        "\n",
+        t,
+        count=1
+    )
+    v3310.write_text(t,encoding='utf-8')
+
 # ------------------------------------------------------------------
 # MAIN APP: preserve working study features, remove Sanctuary-era bridge wrappers.
 # V3.3.17 now owns Sanctuary, stage messaging, Notes Forge navigation and portraits.
