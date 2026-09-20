@@ -405,3 +405,29 @@ if "catch(e){console.error(e);throw e}" not in main_html:
 if "console.error('V5 safe render',e);throw e" not in main_html:
     fail('V5 render does not rethrow to the V3.3.17 recovery boundary')
 print('Single V3.3.17 recovery surface verified')
+
+
+# 14) V3.3.17 must be the single render owner.
+v3311_main=(site/'v3311-main.js').read_text(encoding='utf-8')
+v3311_plus=(site/'v3311-plus.js').read_text(encoding='utf-8')
+course_mgr=(site/'courseManager.js').read_text(encoding='utf-8')
+v3317_main=(site/'v3317-main.js').read_text(encoding='utf-8')
+
+for name,src in (('v3311-main',v3311_main),('v3311-plus',v3311_plus)):
+    if "const oldRender=window.render" in src or "let oldRender=window.render" in src:
+        fail(name+' still hijacks window.render')
+    if "oldRender()" in src:
+        fail(name+' still calls an obsolete oldRender()')
+
+if "const oldRender=window.AddStudyMaterialPage?.render" in course_mgr:
+    fail('CourseManager still uses the unsafe oldRender Study Material wrapper')
+if "typeof oldMaterialRender==='function'" not in course_mgr:
+    fail('CourseManager Study Material wrapper is not function-guarded')
+if "const previousRender=typeof window.render==='function'?window.render:null;" not in v3317_main:
+    fail('V3.3.17 does not guard its base render reference')
+if "if(previousRender){" not in v3317_main:
+    fail('V3.3.17 installs render wrapper without checking base render')
+if "Base render function is unavailable." not in v3317_main:
+    fail('V3.3.17 startup does not report missing base render safely')
+
+print('Single render owner verified: V3.3.17 only')
