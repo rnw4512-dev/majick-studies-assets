@@ -39,6 +39,7 @@ try{
   await assert(boot.hasRender,'render() unavailable after boot');
   await assert(boot.hasState,'MajickStateCore unavailable after boot');
   await assert(boot.hasRegistry,'Guardian registry unavailable after boot');
+  await assert(boot.version==='3.3.18-stability','wrong deployed runtime version: '+boot.version);
   await assert(boot.guardians.length>=10,'baseline Guardian registry unexpectedly shrank');
 
   // Recreate the exact class-progress failure that previously required Reload.
