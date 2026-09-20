@@ -24,7 +24,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
   pages: write
   id-token: write
 
@@ -437,3 +437,82 @@ jobs:
           done
           echo "Live Pages deployment never passed the V3.3.18 browser gate."
           exit 1
+
+      - name: Freeze V3.3.18 Golden Baseline once
+        if: ${{ github.ref == 'refs/heads/main' }}
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          BASELINE_BRANCH="v3318-golden-baseline"
+          if git ls-remote --exit-code --heads origin "refs/heads/$BASELINE_BRANCH" >/dev/null 2>&1; then
+            echo "Golden Baseline already exists on $BASELINE_BRANCH; leaving it immutable."
+            exit 0
+          fi
+
+          rm -rf /tmp/majick-golden /tmp/majick-golden-repo
+          mkdir -p /tmp/majick-golden /tmp/majick-golden-repo
+
+          (
+            cd _site
+            find . -type f \
+              ! -path './sanctuary/assets/motion/*' \
+              ! -path './sanctuary/assets/runtime-motion/*' \
+              -print0 | sort -z | xargs -0 sha256sum
+          ) > /tmp/majick-golden/FILES.sha256
+
+          (
+            cd _site
+            zip -q -r /tmp/majick-golden/majick-v3318-golden-baseline.zip . \
+              -x 'sanctuary/assets/motion/*' \
+              -x 'sanctuary/assets/runtime-motion/*'
+          )
+
+          GOLDEN_SHA="$(sha256sum /tmp/majick-golden/majick-v3318-golden-baseline.zip | awk '{print $1}')"
+          GOLDEN_BYTES="$(stat -c %s /tmp/majick-golden/majick-v3318-golden-baseline.zip)"
+          GOLDEN_FILES="$(wc -l < /tmp/majick-golden/FILES.sha256 | tr -d ' ')"
+
+          cat > /tmp/majick-golden/manifest.json <<EOF
+          {
+            "name": "Majick Studies V3.3.18 Golden Baseline",
+            "runtime_version": "3.3.18-stability",
+            "source_commit": "$GITHUB_SHA",
+            "source_run_id": "$GITHUB_RUN_ID",
+            "golden_zip_sha256": "$GOLDEN_SHA",
+            "archive_bytes": $GOLDEN_BYTES,
+            "file_count": $GOLDEN_FILES,
+            "excluded_from_baseline": [
+              "sanctuary/assets/motion/**",
+              "sanctuary/assets/runtime-motion/**"
+            ],
+            "protected_motion_policy": "Original Guardian motion assets are never stored in or rewritten by the Golden Baseline. They remain protected repository sources and are copied byte-for-byte during deployment; runtime motion files are derived copies only."
+          }
+          EOF
+
+          cat > /tmp/majick-golden/README.md <<EOF
+          # Majick Studies V3.3.18 Golden Baseline
+
+          This branch is an immutable deployment baseline created only after the full local Chromium gate, GitHub Pages deployment, and live Chromium gate passed.
+
+          The baseline intentionally excludes `sanctuary/assets/motion/**` and `sanctuary/assets/runtime-motion/**`. Protected Guardian movement assets stay in their original repository sources and are not regenerated or simplified by this baseline.
+
+          Source commit: `$GITHUB_SHA`
+          Source workflow run: `$GITHUB_RUN_ID`
+          Archive SHA-256: `$GOLDEN_SHA`
+          EOF
+
+          cd /tmp/majick-golden-repo
+          git init
+          git config user.name "Majick Stability Bot"
+          git config user.email "actions@users.noreply.github.com"
+          git checkout --orphan "$BASELINE_BRANCH"
+          cp /tmp/majick-golden/majick-v3318-golden-baseline.zip .
+          cp /tmp/majick-golden/FILES.sha256 .
+          cp /tmp/majick-golden/manifest.json .
+          cp /tmp/majick-golden/README.md .
+          git add .
+          git commit -m "Freeze tested Majick Studies V3.3.18 Golden Baseline"
+          git remote add origin "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+          git push origin "HEAD:refs/heads/$BASELINE_BRANCH"
+          echo "Golden Baseline frozen on $BASELINE_BRANCH with SHA-256 $GOLDEN_SHA"
