@@ -13,11 +13,46 @@ function blankProgress(){
     cosmetics:[],eliminationWins:0,voicePractices:0
   };
 }
-function activeProgress(){return window.S?.progress?.[window.S?.activeCourse]||null}
+function normalizeProgressRow(row,cid=''){
+  const p=(row&&typeof row==='object'&&!Array.isArray(row))?row:blankProgress();
+  p.answers=Array.isArray(p.answers)?p.answers:[];
+  p.explanations=Array.isArray(p.explanations)?p.explanations:[];
+  p.repair=Array.isArray(p.repair)?p.repair:[];
+  p.spacedQueue=Array.isArray(p.spacedQueue)?p.spacedQueue:[];
+  p.charms=Array.isArray(p.charms)?p.charms:[];
+  p.inventory=(p.inventory&&typeof p.inventory==='object'&&!Array.isArray(p.inventory))
+    ?p.inventory:{streakShield:0,clueCharm:0,bossShield:0,oracleTicket:0};
+  p.streak=Number(p.streak||0);
+  p.bossWins=Number(p.bossWins||0);
+  p.xp=Number(p.xp||0);
+  p.crystals=Number(p.crystals||0);
+  p.chests=Number(p.chests||0);
+  if(cid)p.courseId=cid;
+  return p;
+}
+function normalizeAllProgress(){
+  if(!window.S)return;
+  S.progress=(S.progress&&typeof S.progress==='object'&&!Array.isArray(S.progress))?S.progress:{};
+  for(const [cid,row] of Object.entries(S.progress)){
+    S.progress[cid]=normalizeProgressRow(row,cid);
+  }
+  for(const cid of Object.keys(S.courses||{})){
+    S.progress[cid]=normalizeProgressRow(S.progress[cid],cid);
+  }
+}
+function activeProgress(){
+  if(!window.S)return null;
+  S.progress=(S.progress&&typeof S.progress==='object'&&!Array.isArray(S.progress))?S.progress:{};
+  const cid=S.activeCourse;
+  if(!cid)return null;
+  S.progress[cid]=normalizeProgressRow(S.progress[cid],cid);
+  return S.progress[cid];
+}
 function ensure(){
   if(!window.S)return;
-  S.courses=S.courses||{};
-  S.progress=S.progress||{};
+  S.courses=(S.courses&&typeof S.courses==='object'&&!Array.isArray(S.courses))?S.courses:{};
+  S.progress=(S.progress&&typeof S.progress==='object'&&!Array.isArray(S.progress))?S.progress:{};
+  normalizeAllProgress();
   S.majickCourseRecords=S.majickCourseRecords||{};
   S.majickCourseUI=S.majickCourseUI||{};
   if(!S.majickAccount){
@@ -28,7 +63,7 @@ function ensure(){
     };
   }
   for(const [cid,c] of Object.entries(S.courses)){
-    const p=S.progress[cid]||(S.progress[cid]=blankProgress());
+    const p=S.progress[cid]=normalizeProgressRow(S.progress[cid],cid);
     p.courseId=cid;
     if(!p.__majickSharedReady){
       for(const k of SHARED)p[k]=Number(S.majickAccount[k]||0);
@@ -47,8 +82,9 @@ function captureAccount(){
 }
 function mirrorAccount(){
   ensure();
-  for(const p of Object.values(S.progress||{})){
-    for(const k of SHARED)p[k]=Number(S.majickAccount[k]||0);
+  for(const [cid,row] of Object.entries(S.progress||{})){
+    const p=S.progress[cid]=normalizeProgressRow(row,cid);
+    for(const k of SHARED)p[k]=Number(S.majickAccount?.[k]||0);
     p.__majickSharedReady=true;
   }
 }
@@ -183,5 +219,5 @@ if(window.AddStudyMaterialPage&&oldRender){
   window.AddStudyMaterialPage.bind=function(){oldBind?.();bindPanel()};
   window.v3315BindStudyMaterialPage=window.AddStudyMaterialPage.bind;
 }
-window.MajickCourseManager={ensure,captureAccount,mirrorAccount,createCourse,passCourse,currentStatus,panelHTML,bindPanel,decorateSelector,record,PASS_XP};
+window.MajickCourseManager={ensure,captureAccount,mirrorAccount,normalizeProgressRow,normalizeAllProgress,createCourse,passCourse,currentStatus,panelHTML,bindPanel,decorateSelector,record,PASS_XP};
 })();
