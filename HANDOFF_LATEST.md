@@ -139,4 +139,6 @@ The user may upload approved art bundles only when explicitly instructed.
 - V3.3.15 emergency restore now yields when V3.3.17 is active so the two layers do not fight over sprite opacity.
 - V3.3.17 Guardian visual size target was increased to approximately 230–360 px high in the Sanctuary.
 - The build now verifies at least 60 evolution WebPs plus representative files from Velora, Cascade, Solstice, and Aurelia before deployment.
-- Current deployment: GitHub Pages run #48, commit `b6f501b7eca6afd5bb6841fceccd5d37b0e080ad`, assembling V3.3.17 at last check.
+- Deployment SUCCESS: GitHub Pages run #48, commit `b6f501b7eca6afd5bb6841fceccd5d37b0e080ad`.
+- The uploaded `majick-v3317-evolution-repair-small.zip` was accepted by the build and V3.3.17 deployed successfully.
+- User can now hard-refresh the live Majick Studies app and test Guardian size, stage visuals, Phase 4 walking, play/sleep interactions, Home Sanctuary, and Notes Forge.
