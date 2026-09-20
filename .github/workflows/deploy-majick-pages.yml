@@ -100,6 +100,7 @@ jobs:
           test -s pages-release/stability-reset/stability-reset-build.py
           test -s pages-release/stability-reset/stability-reset-verify.py
           test -s pages-release/stability-reset/browser-smoke.mjs
+          test -s pages-release/stability-reset/stability-state-smoke.js
           test -s pages-release/v3316/enlarge-approved-stage-art.py
           test -s sanctuary/assets/objects/objects-manifest.json
           test -s sanctuary/assets/objects/generate-object-library.py
@@ -114,8 +115,10 @@ jobs:
           node --check pages-release/v3317/guardian-care-economy.js
           node --check pages-release/stability-reset/guardian-registry.js
           node --check pages-release/stability-reset/majick-state-core.js
+          node --check pages-release/stability-reset/stability-state-smoke.js
           node --check pages-release/v3317/v3317-migration-smoke.js
           node pages-release/v3317/v3317-migration-smoke.js
+          node pages-release/stability-reset/stability-state-smoke.js
 
       - name: Assemble Majick Studies V3.3.18 Stability Reset
         shell: bash
