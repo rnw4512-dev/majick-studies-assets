@@ -1,0 +1,14 @@
+{
+  "name": "Majick Studies V3.3.18 Golden Baseline",
+  "runtime_version": "3.3.18-stability",
+  "source_commit": "5bf33d2ac93efb47419a20640e5c5880691d9339",
+  "source_run_id": "35525886749",
+  "golden_zip_sha256": "93b9b5de6c6389e480fb366ade7255cdf9ed5a48485cae64bf67aa5d2df07033",
+  "archive_bytes": 25534531,
+  "file_count": 240,
+  "excluded_from_baseline": [
+    "sanctuary/assets/motion/**",
+    "sanctuary/assets/runtime-motion/**"
+  ],
+  "protected_motion_policy": "Original Guardian motion assets are never stored in or rewritten by the Golden Baseline. They remain protected repository sources and are copied byte-for-byte during deployment; runtime motion files are derived copies only."
+}
