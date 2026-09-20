@@ -111,3 +111,11 @@ The user may upload approved art bundles only when explicitly instructed.
 3. Confirm approved stage portraits are large and visible in sidebar/profile cards.
 4. Confirm Home uses the real Phaser Sanctuary.
 5. Only after those are stable, rebuild true individual evolved motion art correctly instead of using sliced poster sheets.
+
+## Latest deployment checkpoint
+- Workflow YAML indentation error was found and fixed in commit `3a041132c3f5e64db0508703a4321be99026055a`.
+- GitHub Pages run #40 is the current repair deployment and was **pending** at the last check because an older run was still occupying the Pages deployment queue.
+- Do not judge the live app until run #40 completes.
+- The old V3.3.15 evolution-action files are ignored for live movement.
+- The protected original Phase 4 movers are restored as the live Sanctuary movement source.
+- Approved stage portraits are enlarged to 640×1000 at build time for UI/profile cards.
