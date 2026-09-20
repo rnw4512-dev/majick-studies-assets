@@ -86,6 +86,8 @@ jobs:
           test -s pages-release/v3316/v3316-apply.py
           test -s pages-release/v3317/v3317-sanctuary.js
           test -s pages-release/v3317/v3317-main.js
+          test -s pages-release/v3317/guardian-care-economy.js
+          test -s pages-release/v3317/guardian-care-economy.css
           test -s pages-release/v3317/v3317-apply.py
           test -s pages-release/v3317/refresh-v3317.html
           test -s pages-release/v3317/v3317-clean-sanitize.py
@@ -101,6 +103,7 @@ jobs:
           python -m py_compile sanctuary/assets/objects/generate-object-library.py
           node --check pages-release/v3317/v3317-main.js
           node --check pages-release/v3317/v3317-sanctuary.js
+          node --check pages-release/v3317/guardian-care-economy.js
 
       - name: Assemble Majick Studies V3.3.17
         shell: bash
@@ -204,6 +207,8 @@ jobs:
           python pages-release/v3316/enlarge-approved-stage-art.py _site/assets/familiars/evolution_stages
           cp pages-release/v3317/v3317-sanctuary.js _site/sanctuary/v3317-sanctuary.js
           cp pages-release/v3317/v3317-main.js _site/v3317-main.js
+          cp pages-release/v3317/guardian-care-economy.js _site/guardian-care-economy.js
+          cp pages-release/v3317/guardian-care-economy.css _site/guardian-care-economy.css
           python pages-release/v3317/v3317-apply.py _site
           cp pages-release/v3317/refresh-v3317.html _site/refresh-v3317.html
           python -c "from pathlib import Path; p=Path('_site/sanctuary/index.html'); s=p.read_text(); tag='<script src=\"./v3317-sanctuary.js?v=3317\"></script>'; s=s if tag in s else s.replace('</body>',tag+'\\n</body>',1); p.write_text(s)"
@@ -305,7 +310,7 @@ jobs:
           test "$(find _site/sanctuary/assets/objects -type f -name '*.webp' | wc -l)" -ge 9
           test "$(find _site/sanctuary/assets/motion -type f -name '*.png' | wc -l)" -eq 33
           test "$(find _site/sanctuary/assets/runtime-motion -type f -name '*.webp' | wc -l)" -eq 33
-          test "$(find _site/sanctuary/assets/runtime-objects -type f -name '*.webp' | wc -l)" -ge 9
+          test "$(find _site/sanctuary/assets/runtime-objects -type f -name '*.webp' | wc -l)" -ge 15
           grep -q "assets/runtime-motion/" _site/sanctuary/Preloader.js
           grep -q "assets/runtime-objects/" _site/sanctuary/Preloader.js
           python -c "from pathlib import Path; n=sum(p.stat().st_size for p in Path('_site/sanctuary/assets/runtime-motion').glob('*.webp')); print('runtime motion bytes',n); assert n < 4*1024*1024"
