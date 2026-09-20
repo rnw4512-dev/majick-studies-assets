@@ -11,7 +11,9 @@ on:
       - 'pages-release/v3312/**'
       - 'pages-release/v3313/**'
       - 'pages-release/v3314/**'
+      - 'pages-release/v3315/**'
       - 'sanctuary/assets/objects/**'
+      - 'sanctuary/assets/evolutions/**'
       - '.github/workflows/deploy-majick-pages.yml'
   workflow_dispatch:
 
@@ -62,10 +64,19 @@ jobs:
           test -s pages-release/v3314/v3314-main.css
           test -s pages-release/v3314/v3314-sanctuary.js
           test -s pages-release/v3314/v3314-apply.py
+          test -s pages-release/v3315/v3315-main.js
+          test -s pages-release/v3315/v3315-main.css
+          test -s pages-release/v3315/v3315-sanctuary.js
+          test -s pages-release/v3315/v3315-apply.py
+          test -s pages-release/v3315/study-material/materialParser.js
+          test -s pages-release/v3315/study-material/materialStoreModel.js
+          test -s pages-release/v3315/study-material/questionBuilder.js
+          test -s pages-release/v3315/study-material/AddStudyMaterialPage.js
+          test -s sanctuary/assets/evolutions/evolution-manifest.json
           test -s sanctuary/assets/objects/objects-manifest.json
           test -s sanctuary/assets/objects/generate-object-library.py
 
-      - name: Assemble Majick Studies V3.3.14
+      - name: Assemble Majick Studies V3.3.15
         shell: bash
         run: |
           set -euo pipefail
@@ -121,6 +132,19 @@ jobs:
           mkdir -p _site/sanctuary/assets/objects
           cp sanctuary/assets/objects/objects-manifest.json _site/sanctuary/assets/objects/objects-manifest.json
           python pages-release/v3314/v3314-apply.py _site
+
+          # V3.3.15 adds Notes Forge and one shared Guardian stage resolver.
+          cp pages-release/v3315/v3315-main.js _site/v3315-main.js
+          cp pages-release/v3315/v3315-main.css _site/v3315-main.css
+          cp pages-release/v3315/v3315-sanctuary.js _site/sanctuary/v3315-sanctuary.js
+          mkdir -p _site/study-material
+          cp pages-release/v3315/study-material/materialParser.js _site/study-material/materialParser.js
+          cp pages-release/v3315/study-material/materialStoreModel.js _site/study-material/materialStoreModel.js
+          cp pages-release/v3315/study-material/questionBuilder.js _site/study-material/questionBuilder.js
+          cp pages-release/v3315/study-material/AddStudyMaterialPage.js _site/study-material/AddStudyMaterialPage.js
+          mkdir -p _site/sanctuary/assets/evolutions
+          cp -a sanctuary/assets/evolutions/. _site/sanctuary/assets/evolutions/
+          python pages-release/v3315/v3315-apply.py _site
 
           # HARD RULE: copy the original Phase 4 images byte-for-byte; never regenerate them.
           mkdir -p _site/sanctuary/assets/motion
@@ -200,9 +224,27 @@ jobs:
           grep -q "V3.3.14" _site/app-progress.json
           grep -q "MAJICK_GUARDIAN_LEVELS_V3314" _site/v3314-main.js
           grep -q "v3314ApplyEvolutionFX" _site/sanctuary/v3314-sanctuary.js
+          test -s _site/v3315-main.js
+          test -s _site/v3315-main.css
+          test -s _site/sanctuary/v3315-sanctuary.js
+          test -s _site/sanctuary/assets/evolutions/evolution-manifest.json
+          test -s _site/study-material/materialParser.js
+          test -s _site/study-material/materialStoreModel.js
+          test -s _site/study-material/questionBuilder.js
+          test -s _site/study-material/AddStudyMaterialPage.js
+          grep -q "V3.3.15" _site/app-progress.json
+          grep -q "addmaterial" _site/v3315-main.js
+          grep -q "majick-evolution-manifest" _site/sanctuary/Preloader.js
+          grep -q "Add Study Material" _site/study-material/AddStudyMaterialPage.js
+          node --check _site/v3315-main.js
+          node --check _site/sanctuary/v3315-sanctuary.js
+          node --check _site/study-material/materialParser.js
+          node --check _site/study-material/materialStoreModel.js
+          node --check _site/study-material/questionBuilder.js
+          node --check _site/study-material/AddStudyMaterialPage.js
           test "$(find _site/sanctuary/assets/objects -type f -name '*.webp' | wc -l)" -ge 80
           test "$(find _site/sanctuary/assets/motion -type f -name '*.png' | wc -l)" -eq 33
-          echo "Majick Studies V3.3.14 assembled successfully."
+          echo "Majick Studies V3.3.15 assembled successfully."
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
 
