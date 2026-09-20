@@ -69,6 +69,13 @@ assert(S.progress.D772.crystals===173,'repaired course lost account crystals');
 run('pages-release/v3317/guardian-care-economy.js');
 const snap=MajickGuardianCare.snapshot();
 assert(snap.roster.length===2,'care roster must use actual two hatched Guardians');
+
+const beforeBuy=S.majickAccount.crystals;
+const purchased=MajickGuardianCare.buy('moonberry-meal');
+assert(purchased.ok,'care shop purchase failed');
+assert(S.majickAccount.crystals===beforeBuy-6,'care shop charged crystals more than once or wrong amount');
+assert(S.progress.D772.crystals===beforeBuy-6,'active course did not mirror post-purchase balance');
+assert(S.progress.PMFC.crystals===beforeBuy-6,'other course did not mirror post-purchase balance');
 assert(snap.roster.some(g=>g.type==='nyx'),'future Guardian missing from care roster');
 assert(snap.eggs.length===1&&snap.eggs[0].type==='aurora-moth','future egg missing from incubator snapshot');
 
