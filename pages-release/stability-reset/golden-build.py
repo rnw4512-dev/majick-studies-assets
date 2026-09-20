@@ -166,8 +166,8 @@ for src_name,(dst_name,expected_hash,expected_bytes) in PINNED_MOTION.items():
 progress=site/"app-progress.json"
 if progress.exists():
     data=json.loads(progress.read_text(encoding="utf-8"))
-    data["version"]="V3.3.27 Moonlit Collegium"
-    data["learning_intelligence"]="V3.3.27 Moonlit Collegium with magical college dashboard, item-level D772 lesson repair, note-driven tutor chapters, mastery/rigor progression and adaptive course bank"
+    data["version"]="V3.3.28 Section 1 Master Tutor"
+    data["learning_intelligence"]="V3.3.28 Section 1 Master Tutor with one canonical D772 Section 1, built-in Lessons 1–4 master notes, Section 1 Summary/Test, de-duplicated supplemental uploads, mastery/rigor progression and adaptive course bank"
     data["sanctuary_version"]="V3.3.25 Single Guardian Visual Authority"
     data["sanctuary_home"]="Guardian needs HUD, object-aware care travel, exclusive beds, visible care inventory, safe furniture snapping"
     data["sanctuary_customization"]="personal Guardian nooks, feeding/play zones, owned furniture storage, Cozy Dorm layout preset"
