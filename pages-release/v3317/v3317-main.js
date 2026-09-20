@@ -50,11 +50,12 @@ window.v334Portrait=function(p,variant='card'){
     '<span class="v3313Stage">'+st.name+'</span></div>';
 };
 
-// Notes Forge belongs to the main study app.
+// Learning Lab and Notes Forge belong to the main study app.
 const previousScreenHTML=window.screenHTML;
 if(typeof previousScreenHTML==='function'){
   window.screenHTML=function(){
-    if(window.S?.screen==='learninglab'&&window.MajickLearningLab)return window.MajickLearningLab.render();\n    if(window.S?.screen==='addmaterial'&&window.AddStudyMaterialPage)return window.AddStudyMaterialPage.render();
+    if(window.S?.screen==='learninglab'&&window.MajickLearningLab)return window.MajickLearningLab.render();
+    if(window.S?.screen==='addmaterial'&&window.AddStudyMaterialPage)return window.AddStudyMaterialPage.render();
     return previousScreenHTML();
   };
 }
@@ -62,7 +63,13 @@ const previousSideHTML=window.sideHTML;
 if(typeof previousSideHTML==='function'){
   window.sideHTML=function(){
     let h=previousSideHTML();
-    if(!h.includes('data-nav="learninglab"')){\n      const learn='<button data-nav="learninglab" class="'+(window.S?.screen==='learninglab'?'active':'')+'" onclick="navigate(\\'learninglab\\')"><span>✦</span><span class="label">Learn Lab</span></button>';\n      const target='<button data-nav="livinggrimoire"';\n      const at=h.indexOf(target);\n      if(at>=0)h=h.slice(0,at)+learn+h.slice(at);else h+=learn;\n    }\n    if(!h.includes('data-nav="addmaterial"')){
+    if(!h.includes('data-nav="learninglab"')){
+      const learn='<button data-nav="learninglab" class="'+(window.S?.screen==='learninglab'?'active':'')+'" onclick="navigate(\'learninglab\')"><span>✦</span><span class="label">Learn Lab</span></button>';
+      const target='<button data-nav="livinggrimoire"';
+      const at=h.indexOf(target);
+      if(at>=0)h=h.slice(0,at)+learn+h.slice(at);else h+=learn;
+    }
+    if(!h.includes('data-nav="addmaterial"')){
       const button='<button data-nav="addmaterial" class="'+(window.S?.screen==='addmaterial'?'active':'')+'" onclick="navigate(\'addmaterial\')"><span>✦</span><span class="label">Study Material</span></button>';
       const target='<button data-nav="livinggrimoire"';
       const at=h.indexOf(target);
