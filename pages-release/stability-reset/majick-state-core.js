@@ -16,7 +16,17 @@ function exposeState(){
   return st;
 }
 function blankProgress(){
-  return {answers:[],explanations:[],repair:[],spacedQueue:[],streak:0,lastDay:'',bossWins:0,xp:0,crystals:0,charms:[],chests:0,inventory:{streakShield:0,clueCharm:0,bossShield:0,oracleTicket:0},cosmetics:[],eliminationWins:0,voicePractices:0};
+  return {
+    answers:[],explanations:[],repair:[],spacedQueue:[],charms:[],cosmetics:[],
+    questionMemory:[],sessionHistory:[],masteryRewarded:[],helpHistory:[],familyMemory:[],
+    urgentRepair:[],v5SessionHistory:[],errorTags:[],strategyHistory:[],
+    distractorHistory:{},flaggedQuestions:{},masteryProofs:{},sourceCoverage:{},
+    questionExposure:{},aiCache:{},
+    streak:0,lastDay:'',bossWins:0,xp:0,crystals:0,chests:0,bestCombo:0,
+    aiGeneratedCount:0,petAbilityUses:0,eliminationWins:0,voicePractices:0,
+    dailyClaimed:'',weeklyClaimed:'',
+    inventory:{streakShield:0,clueCharm:0,bossShield:0,oracleTicket:0}
+  };
 }
 function plainNumber(v){v=Number(v);return Number.isFinite(v)?v:0}
 function ensureCourses(){
@@ -61,13 +71,28 @@ function bindSharedField(row,key){
 }
 function normalizeProgressRow(row,cid=''){
   const p=(row&&typeof row==='object'&&!Array.isArray(row))?row:blankProgress();
-  p.answers=Array.isArray(p.answers)?p.answers:[];
-  p.explanations=Array.isArray(p.explanations)?p.explanations:[];
-  p.repair=Array.isArray(p.repair)?p.repair:[];
-  p.spacedQueue=Array.isArray(p.spacedQueue)?p.spacedQueue:[];
-  p.charms=Array.isArray(p.charms)?p.charms:[];
-  p.inventory=(p.inventory&&typeof p.inventory==='object'&&!Array.isArray(p.inventory))?p.inventory:{streakShield:0,clueCharm:0,bossShield:0,oracleTicket:0};
-  p.streak=plainNumber(p.streak);p.bossWins=plainNumber(p.bossWins);
+
+  const arrays=[
+    'answers','explanations','repair','spacedQueue','charms','cosmetics',
+    'questionMemory','sessionHistory','masteryRewarded','helpHistory','familyMemory',
+    'urgentRepair','v5SessionHistory','errorTags','strategyHistory'
+  ];
+  for(const key of arrays)p[key]=Array.isArray(p[key])?p[key]:[];
+
+  const objects=['distractorHistory','flaggedQuestions','masteryProofs','sourceCoverage','questionExposure','aiCache'];
+  for(const key of objects)p[key]=(p[key]&&typeof p[key]==='object'&&!Array.isArray(p[key]))?p[key]:{};
+
+  p.inventory=(p.inventory&&typeof p.inventory==='object'&&!Array.isArray(p.inventory))
+    ?p.inventory:{streakShield:0,clueCharm:0,bossShield:0,oracleTicket:0};
+  p.inventory=Object.assign({streakShield:0,clueCharm:0,bossShield:0,oracleTicket:0},p.inventory);
+
+  const numeric=['streak','bossWins','bestCombo','aiGeneratedCount','petAbilityUses','eliminationWins','voicePractices'];
+  for(const key of numeric)p[key]=plainNumber(p[key]);
+
+  p.lastDay=typeof p.lastDay==='string'?p.lastDay:'';
+  p.dailyClaimed=typeof p.dailyClaimed==='string'?p.dailyClaimed:'';
+  p.weeklyClaimed=typeof p.weeklyClaimed==='string'?p.weeklyClaimed:'';
+
   if(cid)p.courseId=cid;
   for(const key of SHARED)bindSharedField(p,key);
   return p;
