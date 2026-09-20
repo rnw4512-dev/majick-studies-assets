@@ -103,12 +103,26 @@ try{
   await assert(rewardPersist.crystals===studyReward.after.crystals,'Moon Crystals did not survive reload');
   await assert(rewardPersist.answers===studyReward.after.answers,'study answer history did not survive reload');
 
-  // Notes Forge must complete the full source lifecycle through the visible UI.
+  // D772 must be pre-seeded and Notes Forge must accept a real uploaded notes file.
+  const d772Ready=await page.evaluate(()=>{
+    const before=S.activeCourse;
+    const d=S.courses?.D772;
+    if(!d)return {ok:false,before};
+    switchCourse('D772');
+    return {ok:true,before,active:S.activeCourse,title:S.courses.D772?.title||''};
+  });
+  await assert(d772Ready.ok,'D772 was not seeded into Majick Studies');
+  await assert(d772Ready.active==='D772'&&d772Ready.title==='Statistical Data Literacy','D772 course metadata is wrong');
+
   await page.evaluate(()=>navigate('addmaterial'));
-  await page.waitForSelector('#materialPaste',{timeout:10000});
-  await page.locator('#materialPaste').fill(
-    'Statistical literacy requires checking who collected the data, why it was collected, how the sample was selected, and whether a graph fairly represents the values. A random sample reduces selection bias. The mean is sensitive to extreme values, while the median is more resistant. Probability ranges from zero to one and can be represented as a fraction, decimal, or percent.'
-  );
+  await page.waitForSelector('#materialFile',{timeout:10000});
+  await assert(await page.locator('#materialCourse').inputValue()==='D772','Add Study Material did not default to active D772');
+  const d772Notes='Statistical literacy requires checking who collected the data, why it was collected, how the sample was selected, and whether a graph fairly represents the values. A random sample reduces selection bias. The mean is sensitive to extreme values, while the median is more resistant. Probability ranges from zero to one and can be represented as a fraction, decimal, or percent.';
+  await page.locator('#materialFile').setInputFiles({
+    name:'D772-statistical-data-literacy-notes.txt',
+    mimeType:'text/plain',
+    buffer:Buffer.from(d772Notes,'utf8')
+  });
   await page.locator('#materialCount').selectOption('5');
   await page.locator('#materialForgeBtn').click();
   await page.waitForFunction(()=>document.getElementById('materialStatus')?.textContent?.includes('Study material saved'),{timeout:12000});
@@ -126,9 +140,23 @@ try{
     };
   });
   await assert(!!forged.id,'Notes Forge did not save a source');
+  await assert(forged.courseId==='D772','uploaded D772 notes were saved under the wrong course');
   await assert(forged.questions>=5,'Notes Forge generated fewer questions than requested');
-  await assert(forged.bank>=5,'Notes Forge questions were not synchronized into the active course');
+  await assert(forged.bank>=5,'Notes Forge questions were not synchronized into D772');
   await assert(forged.active,'new Notes Forge source was not active');
+
+  const d772LeakCheck=await page.evaluate(async id=>{
+    const otherId=Object.keys(S.courses||{}).find(cid=>cid!=='D772')||null;
+    const other=otherId?S.courses[otherId]:null;
+    const otherRows=otherId?await MajickMaterialStore.list(otherId):[];
+    return {
+      otherId,
+      bank:(other?.questionBank||[]).filter(q=>q.sourceId===id).length,
+      sources:otherRows.filter(row=>row.id===id).length
+    };
+  },forged.id);
+  await assert(!!d772LeakCheck.otherId,'no second course exists for D772 isolation test');
+  await assert(d772LeakCheck.bank===0&&d772LeakCheck.sources===0,'D772 uploaded notes leaked into another course');
 
   const sourceSelector='[data-source="'+forged.id+'"]';
   await page.locator(sourceSelector+' .v3315ToggleSource').click();
@@ -165,7 +193,12 @@ try{
 
   // WGU courses must keep academic data separate while account rewards stay shared.
   const courseIsolation=await page.evaluate(()=>{
-    const originalId=S.activeCourse;
+    let originalId=Object.keys(S.courses||{}).find(cid=>cid!=='D772');
+    if(!originalId){
+      MajickCourseManager.createCourse('TEST101','Isolation Test Course');
+      originalId='TEST101';
+    }
+    switchCourse(originalId);
     const originalCourse=S.courses[originalId];
     const accountBefore={
       xp:Number(MajickStateCore.ensureAccount()?.xp||0),
