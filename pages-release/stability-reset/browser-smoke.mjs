@@ -52,9 +52,6 @@ try{
     S.legacy.activePetId='pet_velora';
     S.legacy.eggs=[{id:'egg_ember',type:'ember',progress:0,goal:20,source:'study'}];
     S.majickAccount={xp:0,crystals:0,chests:0,schemaVersion:2};
-    for(const row of Object.values(S.progress||{})){
-      try{row.xp=0;row.crystals=0}catch(_){}
-    }
     const account=MajickStateCore.ensureAccount();
     const first={xp:account.xp,crystals:account.crystals,marker:!!account.balanceRecoveryV3322?.applied};
     account.crystals=91;

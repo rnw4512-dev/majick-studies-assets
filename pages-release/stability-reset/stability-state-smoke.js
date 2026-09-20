@@ -98,9 +98,6 @@ S.legacy={
   eggs:[{id:'egg_ember',type:'ember',progress:0,goal:20}]
 };
 S.majickAccount={xp:0,crystals:0,chests:0,schemaVersion:2};
-for(const row of Object.values(S.progress||{})){
-  try{row.xp=0;row.crystals=0}catch(_){}
-}
 const recovered=MajickStateCore.ensureAccount();
 assert(recovered.xp===4000,'lost Majick XP was not restored to 4000');
 assert(recovered.crystals===150,'lost Moon Crystals were not restored to 150');
