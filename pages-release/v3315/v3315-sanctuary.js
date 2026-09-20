@@ -167,3 +167,37 @@ window.addEventListener('message',ev=>{
 });
 
 })();
+
+// V3317_PROTECTED_MOTION_RESTORE
+// The generated evolution-action sheets were not suitable as live movement sprites.
+// Keep the original 33 Phase 4 movement images authoritative until true individual
+// stage-specific motion art is approved.
+(function(){
+  if(typeof Game==='undefined')return;
+  Game.prototype.v3315EnsureWalkSkin=function(type){
+    const pet=this[type];
+    const skin=this['v3315WalkSkin_'+type];
+    try{skin?.destroy()}catch(_){}
+    this['v3315WalkSkin_'+type]=null;
+    if(pet?.active)pet.setAlpha(1).setVisible(true);
+  };
+  Game.prototype.v3315UpdateWalkSkins=function(){
+    ['luna','ember','nova','mallow'].forEach(type=>{
+      const pet=this[type],skin=this['v3315WalkSkin_'+type],action=this['v3315Action_'+type];
+      try{skin?.destroy()}catch(_){}
+      try{action?.destroy()}catch(_){}
+      this['v3315WalkSkin_'+type]=null;
+      this['v3315Action_'+type]=null;
+      if(pet?.active)pet.setAlpha(1).setVisible(true);
+    });
+  };
+  Game.prototype.v3315ShowGuardianAction=function(type){
+    const pet=this[type];
+    if(pet?.active)pet.setAlpha(1).setVisible(true);
+  };
+  const _restoreCreate=Game.prototype.create;
+  Game.prototype.create=function(){
+    _restoreCreate.call(this);
+    this.time.delayedCall(300,()=>this.v3315UpdateWalkSkins());
+  };
+})();
