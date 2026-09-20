@@ -1,0 +1,33 @@
+/* Majick Studies V3.3.15 — Notes Forge + unified Guardian stage resolver */
+.v3315Material{display:grid;gap:18px;max-width:1380px;margin:0 auto}
+.v3315MaterialHero{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:24px;border:1px solid rgba(219,190,255,.24);border-radius:24px;background:linear-gradient(135deg,rgba(40,25,68,.96),rgba(18,16,42,.96));box-shadow:inset 0 0 34px rgba(173,131,255,.07)}
+.v3315MaterialHero h2{margin:4px 0 8px;font-family:Georgia,serif;font-size:clamp(28px,4vw,44px);color:#f7e9bd}
+.v3315MaterialHero p{margin:0;max-width:760px;color:#d8cee8;line-height:1.55}
+.v3315ForgeSigil{display:grid;place-items:center;min-width:76px;height:76px;border-radius:50%;border:1px solid rgba(248,216,145,.5);font-size:34px;color:#ffe6a7;background:radial-gradient(circle,rgba(197,154,255,.28),rgba(18,13,37,.2))}
+.v3315MaterialGrid{display:grid;grid-template-columns:minmax(0,1.7fr) minmax(280px,.8fr);gap:18px}
+.v3315SourceCard,.v3315ForgeCard,.v3315Preview,.v3315Library{border:1px solid rgba(219,190,255,.18);border-radius:22px;background:rgba(24,18,45,.9);padding:20px}
+.v3315SourceCard h3,.v3315ForgeCard h3{font-family:Georgia,serif;color:#f4dfac;margin:0 0 12px}
+.v3315SourceCard select,.v3315ForgeCard select,.v3315Paste textarea{width:100%;box-sizing:border-box;border:1px solid rgba(205,175,244,.28);border-radius:14px;background:#151126;color:#f5eefc;padding:12px;font:inherit}
+.v3315SourceCard>select{margin-bottom:20px}
+.v3315UploadRow{display:grid;grid-template-columns:minmax(210px,.75fr) auto minmax(0,1.25fr);gap:14px;align-items:stretch}
+.v3315Drop,.v3315Paste{border:1px dashed rgba(219,190,255,.34);border-radius:18px;padding:16px;background:rgba(112,77,155,.08)}
+.v3315Drop{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;min-height:210px;text-align:center;cursor:pointer}
+.v3315Drop span{font-size:38px;color:#f0cf83}.v3315Drop small,.v3315Small,.v3315SourceRow small{color:#aaa0bc}
+.v3315Drop input{max-width:100%;font-size:13px}
+.v3315Paste{display:flex;flex-direction:column;gap:10px}
+.v3315Paste textarea{min-height:170px;resize:vertical}
+.v3315Or{align-self:center;font-weight:800;color:#9f91b5;font-size:12px}
+.v3315Status{margin-top:14px;padding:12px 14px;border-radius:14px;background:rgba(104,82,143,.14);color:#dcd0eb}
+.v3315Checks{display:grid;gap:10px;margin:16px 0}.v3315Checks label{display:flex;gap:9px;align-items:center;padding:9px 11px;border-radius:12px;background:rgba(255,255,255,.025)}
+.v3315Checks input{width:18px;height:18px;accent-color:#b99cff}
+.v3315Count{display:grid;gap:7px;color:#d7cbe4}.v3315ForgeButton{width:100%;margin:16px 0 8px;min-height:48px}
+.v3315PreviewGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.v3315PreviewGrid article{padding:15px;border-radius:16px;border:1px solid rgba(219,190,255,.14);background:rgba(255,255,255,.025)}
+.v3315PreviewGrid article>b{display:block;margin-bottom:8px;color:#f0dba6;font-family:Georgia,serif}
+.v3315PreviewGrid p{color:#d8cee6;line-height:1.45}
+.v3315SourceRow{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:13px 0;border-bottom:1px solid rgba(255,255,255,.07)}
+.v3315SourceRow:last-child{border-bottom:0}.v3315SourceRow div{display:grid;gap:4px;min-width:0}.v3315SourceRow b{overflow-wrap:anywhere}
+.v3315Empty{padding:18px;border-radius:14px;background:rgba(255,255,255,.025);color:#aaa0bc;text-align:center}
+.v3315StagePortrait img{object-fit:contain}
+@media(max-width:900px){.v3315MaterialGrid,.v3315PreviewGrid{grid-template-columns:1fr}.v3315UploadRow{grid-template-columns:1fr}.v3315Or{text-align:center}.v3315ForgeSigil{display:none}}
+@media(max-width:520px){.v3315MaterialHero,.v3315SourceCard,.v3315ForgeCard,.v3315Preview,.v3315Library{padding:15px;border-radius:18px}.v3315SourceRow{align-items:flex-start;flex-direction:column}.v3315SourceRow button{width:100%}}
