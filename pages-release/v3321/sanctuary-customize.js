@@ -11,21 +11,21 @@ const ZONE_DEPTH=22;
 const NOOK_COLORS=[0x8663a8,0x4f8191,0x9a6d87,0x8b7447,0x58775f,0x6b6f9d];
 
 const COZY_DORM={
-  'arcane-stacks':{x:190,y:720},
-  'study-apothecary':{x:350,y:845},
-  'guardian-treat-jar':{x:505,y:855},
-  'guardian-brush':{x:610,y:855},
-  'moonstone-crystal-bed':{x:760,y:845},
-  'guardian-food-bowl':{x:925,y:875},
-  'guardian-water-basin':{x:1055,y:875},
-  'moonlit-study-desk':{x:1090,y:770},
-  'observatory-telescope':{x:1325,y:710},
-  'guardian-play-rug':{x:1385,y:875},
-  'crystal-focus-pedestal':{x:1545,y:765},
-  'magic-mirror':{x:1645,y:690},
-  'guardian-toy-basket':{x:1705,y:865},
-  'familiar-lounge':{x:1855,y:785},
-  'amethyst-crystal-bed':{x:1980,y:845}
+  'arcane-stacks':{x:200,y:720},
+  'study-apothecary':{x:360,y:840},
+  'guardian-treat-jar':{x:500,y:860},
+  'guardian-brush':{x:620,y:860},
+  'moonstone-crystal-bed':{x:760,y:840},
+  'guardian-food-bowl':{x:920,y:880},
+  'guardian-water-basin':{x:1060,y:880},
+  'moonlit-study-desk':{x:1100,y:780},
+  'observatory-telescope':{x:1320,y:720},
+  'guardian-play-rug':{x:1380,y:880},
+  'crystal-focus-pedestal':{x:1540,y:760},
+  'magic-mirror':{x:1640,y:700},
+  'guardian-toy-basket':{x:1700,y:860},
+  'familiar-lounge':{x:1860,y:780},
+  'amethyst-crystal-bed':{x:1980,y:840}
 };
 
 function clamp(n,min,max){return Math.max(min,Math.min(max,Number(n)||0))}

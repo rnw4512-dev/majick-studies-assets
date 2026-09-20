@@ -498,7 +498,7 @@ try{
   });
   await assert(placeAndPreset.placed?.ok&&placeAndPreset.inspect.stored===0,'placing stored Sanctuary furniture failed');
   await assert(placeAndPreset.preset?.ok&&placeAndPreset.inspect.preset==='cozy-dorm','Cozy Dorm preset failed');
-  await assert(placeAndPreset.desk.visible&&placeAndPreset.saved?.x===1090&&placeAndPreset.saved?.y===780,'Cozy Dorm layout did not persist its study-zone placement');
+  await assert(placeAndPreset.desk.visible&&placeAndPreset.saved?.x===1100&&placeAndPreset.saved?.y===780,'Cozy Dorm layout did not persist its study-zone placement');
   await page.waitForFunction(()=>!S?.majickAccount?.sanctuaryFurniture?.stored?.includes('guardian-toy-basket')&&S?.majickAccount?.sanctuaryFurniture?.preset==='cozy-dorm',{timeout:5000});
 
   // Sanctuary edit positions must be backed by persistent layout storage.
