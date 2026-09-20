@@ -212,12 +212,16 @@ function decorateSelector(){
 }
 
 ensure();mirrorAccount();
-const oldRender=window.AddStudyMaterialPage?.render;
-const oldBind=window.AddStudyMaterialPage?.bind;
-if(window.AddStudyMaterialPage&&oldRender){
-  window.AddStudyMaterialPage.render=function(){return panelHTML()+oldRender()};
-  window.AddStudyMaterialPage.bind=function(){oldBind?.();bindPanel()};
-  window.v3315BindStudyMaterialPage=window.AddStudyMaterialPage.bind;
+const materialPage=window.AddStudyMaterialPage;
+const oldMaterialRender=materialPage?.render;
+const oldMaterialBind=materialPage?.bind;
+if(materialPage&&typeof oldMaterialRender==='function'){
+  materialPage.render=function(){return panelHTML()+oldMaterialRender.call(materialPage)};
+  materialPage.bind=function(){
+    if(typeof oldMaterialBind==='function')oldMaterialBind.call(materialPage);
+    bindPanel();
+  };
+  window.v3315BindStudyMaterialPage=materialPage.bind;
 }
 window.MajickCourseManager={ensure,captureAccount,mirrorAccount,normalizeProgressRow,normalizeAllProgress,createCourse,passCourse,currentStatus,panelHTML,bindPanel,decorateSelector,record,PASS_XP};
 })();
