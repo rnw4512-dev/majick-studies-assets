@@ -34,15 +34,12 @@ h=idx.read_text(encoding='utf-8')
 for js in ('v3313-main.js','v3314-main.js','v3315-main.js','v3316-main.js'):
     h=re.sub(r'\s*<script[^>]+src=["\']\./'+re.escape(js)+r'[^"\']*["\'][^>]*></script>\s*','\n',h)
 
-for css in ('v3313-main.css','v3314-main.css'):
-    h=re.sub(r'\s*<link[^>]+href=["\']\./'+re.escape(css)+r'[^"\']*["\'][^>]*>\s*','\n',h)
-
 # Reinsert one clean V3.3.17 bridge at the end.
 h=re.sub(r'\s*<script[^>]+src=["\']\./v3317-main\.js[^"\']*["\'][^>]*></script>\s*','\n',h)
 h=h.replace('</body>','<script src="./v3317-main.js?v=3317-clean"></script>\n</body>',1)
 idx.write_text(h,encoding='utf-8')
 
-for p in ('v3313-main.js','v3314-main.js','v3315-main.js','v3316-main.js','v3313-main.css','v3314-main.css'):
+for p in ('v3313-main.js','v3314-main.js','v3315-main.js','v3316-main.js'):
     f=root/p
     if f.exists(): f.unlink()
 
