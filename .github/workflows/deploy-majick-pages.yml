@@ -14,6 +14,7 @@ on:
       - 'pages-release/v3315/**'
       - 'pages-release/v3316/**'
       - 'pages-release/v3317/**'
+      - 'pages-release/stability-reset/**'
       - 'sanctuary/assets/objects/**'
       - 'sanctuary/assets/evolutions/**'
       - 'sanctuary/assets/majick-v3317-evolution-repair-small.zip'
@@ -94,21 +95,28 @@ jobs:
           test -s pages-release/v3317/v3317-optimize-phaser.py
           test -s pages-release/v3317/v3317-verify-release.py
           test -s pages-release/v3317/v3317-migration-smoke.js
+          test -s pages-release/stability-reset/guardian-registry.js
+          test -s pages-release/stability-reset/majick-state-core.js
+          test -s pages-release/stability-reset/stability-reset-build.py
+          test -s pages-release/stability-reset/stability-reset-verify.py
           test -s pages-release/v3316/enlarge-approved-stage-art.py
           test -s sanctuary/assets/objects/objects-manifest.json
           test -s sanctuary/assets/objects/generate-object-library.py
           python -m py_compile pages-release/v3317/v3317-apply.py
-          python -m py_compile pages-release/v3317/v3317-clean-sanitize.py
+          python -m py_compile pages-release/stability-reset/stability-reset-build.py
+          python -m py_compile pages-release/stability-reset/stability-reset-verify.py
           python -m py_compile pages-release/v3317/v3317-optimize-phaser.py
           python -m py_compile pages-release/v3317/v3317-verify-release.py
           python -m py_compile sanctuary/assets/objects/generate-object-library.py
           node --check pages-release/v3317/v3317-main.js
           node --check pages-release/v3317/v3317-sanctuary.js
           node --check pages-release/v3317/guardian-care-economy.js
+          node --check pages-release/stability-reset/guardian-registry.js
+          node --check pages-release/stability-reset/majick-state-core.js
           node --check pages-release/v3317/v3317-migration-smoke.js
           node pages-release/v3317/v3317-migration-smoke.js
 
-      - name: Assemble Majick Studies V3.3.17
+      - name: Assemble Majick Studies V3.3.18 Stability Reset
         shell: bash
         run: |
           set -euo pipefail
@@ -212,13 +220,15 @@ jobs:
           cp pages-release/v3317/v3317-main.js _site/v3317-main.js
           cp pages-release/v3317/guardian-care-economy.js _site/guardian-care-economy.js
           cp pages-release/v3317/guardian-care-economy.css _site/guardian-care-economy.css
+          cp pages-release/stability-reset/guardian-registry.js _site/guardian-registry.js
+          cp pages-release/stability-reset/majick-state-core.js _site/majick-state-core.js
           python pages-release/v3317/v3317-apply.py _site
           cp pages-release/v3317/refresh-v3317.html _site/refresh-v3317.html
           python -c "from pathlib import Path; p=Path('_site/sanctuary/index.html'); s=p.read_text(); tag='<script src=\"./v3317-sanctuary.js?v=3317\"></script>'; s=s if tag in s else s.replace('</body>',tag+'\\n</body>',1); p.write_text(s)"
 
-          # CLEAN RUNTIME: preserve the working V3.3.17 feature set but remove
-          # duplicate Sanctuary/main wrappers from the published app.
-          python pages-release/v3317/v3317-clean-sanitize.py _site
+          # STABILITY RESET: historical releases are compile-time inputs only.
+          # Publish one registry/state/care/runtime chain without rewriting JS bodies.
+          python pages-release/stability-reset/stability-reset-build.py _site
 
           # HARD RULE: copy the original Phase 4 images byte-for-byte; never regenerate them.
           mkdir -p _site/sanctuary/assets/motion
@@ -325,8 +335,12 @@ jobs:
           test -s _site/v3317-main.js
           test -s _site/refresh-v3317.html
           grep -q "v3310-sanctuary.js" _site/sanctuary/index.html
-          grep -q "v3317-sanctuary.js?v=3317-clean" _site/sanctuary/index.html
-          grep -q "v3317-main.js?v=3317-clean" _site/index.html
+          grep -q "guardian-registry.js?v=stability-1" _site/sanctuary/index.html
+          grep -q "v3317-sanctuary.js?v=stability-1" _site/sanctuary/index.html
+          grep -q "guardian-registry.js?v=stability-1" _site/index.html
+          grep -q "majick-state-core.js?v=stability-1" _site/index.html
+          grep -q "guardian-care-economy.js?v=stability-1" _site/index.html
+          grep -q "v3317-main.js?v=stability-1" _site/index.html
           for old in v3311-sanctuary.js v3312-sanctuary.js v3313-sanctuary.js v3314-sanctuary.js v3315-sanctuary.js; do
             if grep -q "$old" _site/sanctuary/index.html; then
               echo "Old Sanctuary wrapper still loaded: $old"; exit 1
@@ -340,8 +354,8 @@ jobs:
               echo "Old main Sanctuary bridge still loaded: $old"; exit 1
             fi
           done
-          grep -q "Base Game.js + V3.3.10 movement restore + one clean V3.3.17 runtime" _site/app-progress.json
-          grep -q "V3.3.17" _site/app-progress.json
+          grep -q "protected V3.3.10 movement + one V3.3.17 Sanctuary bridge" _site/app-progress.json
+          grep -q "V3.3.18 Stability Reset" _site/app-progress.json
           grep -q "majick-studies-retired-v3317" _site/service-worker.js
           if grep -q 'navigator.serviceWorker.register("./service-worker.js")' _site/index.html; then
             echo "Old service-worker registration is still present"; exit 1
@@ -358,9 +372,9 @@ jobs:
           test -s _site/sanctuary/assets/evolutions/cascade/celestial/sleep.webp
           test -s _site/sanctuary/assets/evolutions/solstice/guardian/walk.webp
           test -s _site/sanctuary/assets/evolutions/aurelia/apprentice/play.webp
-          python pages-release/v3317/v3317-verify-release.py _site .
-          echo "Verified 60 corrected V3.3.17 evolution action assets"
-          echo "Majick Studies V3.3.17 assembled successfully."
+          python pages-release/stability-reset/stability-reset-verify.py _site
+          echo "Verified protected motion + evolution action assets under Stability Reset"
+          echo "Majick Studies V3.3.18 Stability Reset assembled successfully."
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
 
