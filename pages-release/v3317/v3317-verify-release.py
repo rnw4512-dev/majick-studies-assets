@@ -253,3 +253,89 @@ for marker in required_course_markers:
         fail('Course isolation/pass contract missing: '+marker)
 
 print('Notes Forge lifecycle + course isolation contract verified')
+
+
+# 10) Guardian care + Moon Crystal economy must stay roster-driven.
+care_js=(site/'guardian-care-economy.js')
+care_css=(site/'guardian-care-economy.css')
+if not care_js.exists() or care_js.stat().st_size==0:
+    fail('Guardian care economy JavaScript is missing')
+if not care_css.exists() or care_css.stat().st_size==0:
+    fail('Guardian care economy CSS is missing')
+
+care=care_js.read_text(encoding='utf-8')
+required_care_markers=[
+    "function ownedPets()",
+    "function incubatingEggs()",
+    "petIdentityKey",
+    "S.legacy?.pets",
+    "S.legacy?.eggs",
+    "guardianCare.guardians[pet.id]",
+    "function performAction(target,action,opts={})",
+    "action==='feed'",
+    "action==='water'",
+    "action==='treat'",
+    "action==='groom'",
+    "action==='play'",
+    "action==='sleep'",
+    "action==='affection'",
+    "function buy(id)",
+    "guardianCareHTML",
+    "catalogHTML",
+    "eggs:eggSnapshot()",
+]
+for marker in required_care_markers:
+    if marker not in care:
+        fail('Guardian care contract missing: '+marker)
+
+if "const TYPES=['luna','ember','nova','mallow']" in care:
+    fail('Guardian care regressed to a fixed four-Guardian roster')
+if "roster:[],guardians:{},byType:{},eggs:[]" not in v3317:
+    fail('Phaser care state is not roster/egg aware')
+if "openGuardianCarePicker" not in v3317:
+    fail('Phaser Guardian-care picker is missing')
+if "guardianId" not in v3317 or "guardianType" not in v3317:
+    fail('Phaser care bridge is not Guardian-instance aware')
+if "openGuardianCarePicker?.('sleep'" not in v3317:
+    fail('Beds are not routed through the live Guardian roster')
+
+care_manifest=obj_manifest.get('careSystem',{})
+if care_manifest.get('rosterDriven') is not True:
+    fail('Sanctuary care manifest is not roster-driven')
+if care_manifest.get('petIdentityKey')!='pet.id':
+    fail('Sanctuary care state must key Guardians by pet.id')
+if care_manifest.get('eggsRemainIncubatingUntilHatch') is not True:
+    fail('Eggs must remain separate from care until they hatch')
+
+care_objects={
+    'guardian-food-bowl':'feed',
+    'guardian-water-basin':'water',
+    'guardian-treat-jar':'treat',
+    'guardian-brush':'groom',
+    'guardian-toy-basket':'play',
+    'guardian-play-rug':'play',
+}
+for oid,action in care_objects.items():
+    o=by_id.get(oid)
+    if not o: fail(f'Missing care object: {oid}')
+    if not o.get('preload'): fail(f'Care object is not preloaded: {oid}')
+    if not o.get('placement'): fail(f'Care object has no Sanctuary placement: {oid}')
+    if o.get('interaction')!='guardian-care': fail(f'{oid} must use guardian-care')
+    if o.get('careAction')!=action: fail(f'{oid} must perform {action}')
+
+manifest_preloads=[o for o in obj_manifest.get('objects',[]) if o.get('enabled',True) and o.get('preload')]
+if len(object_files)!=len(manifest_preloads):
+    fail(f'Runtime furniture count {len(object_files)} does not match manifest preload count {len(manifest_preloads)}')
+
+main_index=(site/'index.html').read_text(encoding='utf-8')
+if 'guardian-care-economy.css?v=3317-care' not in main_index:
+    fail('Guardian care stylesheet is not loaded')
+if 'guardian-care-economy.js?v=3317-care' not in main_index:
+    fail('Guardian care JavaScript is not loaded')
+if main_index.find('guardian-care-economy.js?v=3317-care') > main_index.find('v3317-main.js?v=3317-clean'):
+    fail('Guardian care must load before the V3.3.17 main bridge')
+
+print('Guardian care + Moon Crystal economy contract verified')
+print('owned-roster model: pet.id')
+print('egg model: incubator until hatch')
+print('care stations verified:',len(care_objects))
