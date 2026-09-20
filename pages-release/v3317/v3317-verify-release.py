@@ -355,3 +355,37 @@ if "p.crystals=Number(p.crystals||0);" not in main_html:
 if "function prog(){return S.progress[S.activeCourse]}" in main_html:
     fail('Unsafe legacy prog() returned to the assembled app')
 print('Study progress state hardening verified: XP/crystal reads cannot see undefined progress')
+
+
+# 12) Legacy save migration must tolerate malformed old shapes.
+if "function v3317NormalizeAllProgressState()" not in main_html:
+    fail('Early all-course progress normalizer is missing')
+if "v3317NormalizeAllProgressState();" not in main_html:
+    fail('Early all-course progress normalizer is not executed before legacy layers')
+if "function v3317NormalizeProgressRow(row)" not in main_html:
+    fail('Early progress-row normalizer is missing')
+
+course_mgr=(site/'courseManager.js').read_text(encoding='utf-8')
+for marker in (
+    "function normalizeProgressRow(row,cid='')",
+    "function normalizeAllProgress()",
+    "S.progress[cid]=normalizeProgressRow(row,cid)",
+    "const p=S.progress[cid]=normalizeProgressRow(S.progress[cid],cid)",
+):
+    if marker not in course_mgr:
+        fail('CourseManager save migration missing: '+marker)
+
+care=(site/'guardian-care-economy.js').read_text(encoding='utf-8')
+for marker in (
+    "function normalizeOwnedCollection(a)",
+    "function normalizeGuardianInventory(a)",
+    "raw instanceof Set",
+    "Object.entries(raw).filter(([,v])=>!!v).map(([k])=>k)",
+    "owned:[...normalizeOwnedCollection(a)]",
+):
+    if marker not in care:
+        fail('Guardian ownership migration missing: '+marker)
+if "owned:[...a.guardianOwned]" in care:
+    fail('Unsafe direct Guardian ownership spread returned')
+
+print('Legacy save migration verified: malformed progress + Guardian ownership are normalized safely')
