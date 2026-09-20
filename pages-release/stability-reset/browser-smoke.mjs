@@ -11,7 +11,22 @@ async function assert(ok,msg){if(!ok)throw new Error('BROWSER SMOKE FAILED: '+ms
 
 try{
   await page.goto(base,{waitUntil:'domcontentloaded',timeout:30000});
-  await page.waitForFunction(()=>typeof window.render==='function'&&!!window.MajickStateCore&&!!window.MajickGuardianRegistry,{timeout:20000});
+  try{
+    await page.waitForFunction(()=>typeof window.render==='function'&&!!window.MajickStateCore&&!!window.MajickGuardianRegistry,{timeout:12000});
+  }catch(e){
+    const diag=await page.evaluate(()=>({
+      readyState:document.readyState,
+      hasS:!!window.S,
+      hasRender:typeof window.render,
+      hasState:!!window.MajickStateCore,
+      hasRegistry:!!window.MajickGuardianRegistry,
+      scripts:[...document.scripts].map(x=>x.src||'[inline]').slice(-30),
+      bodyText:(document.body?.innerText||'').slice(0,1200)
+    })).catch(()=>({evaluateFailed:true}));
+    console.error('BOOT DIAGNOSTICS',JSON.stringify(diag,null,2));
+    console.error('BROWSER ERRORS',fatal.join('\n'));
+    throw e;
+  }
 
   const boot=await page.evaluate(()=>({
     title:document.title,
