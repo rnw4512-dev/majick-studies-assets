@@ -160,3 +160,47 @@ print('runtime motion bytes:',runtime_bytes)
 print('runtime furniture bytes:',object_bytes)
 print('startup image bytes:',startup_bytes)
 print('Sanctuary script chain:',scripts)
+
+
+# 8) Core Sanctuary object contract must stay internally consistent.
+manifest_path=san/'assets'/'objects'/'objects-manifest.json'
+if not manifest_path.exists(): fail('Missing Sanctuary object manifest')
+import json
+obj_manifest=json.loads(manifest_path.read_text(encoding='utf-8'))
+by_id={o.get('id'):o for o in obj_manifest.get('objects',[])}
+
+expected_actions={
+ 'arcane-stacks':'openArcaneStacks',
+ 'moonlit-study-desk':'openStudyDesk',
+ 'observatory-telescope':'openObservatory',
+ 'crystal-focus-pedestal':'openCrystalFocus',
+ 'study-apothecary':'openCrystalFocus',
+ 'familiar-lounge':'openFamiliarLounge',
+ 'magic-mirror':'showMirrorPanel',
+}
+for oid,action in expected_actions.items():
+    o=by_id.get(oid)
+    if not o: fail(f'Missing core Sanctuary object: {oid}')
+    if not o.get('preload'): fail(f'Core Sanctuary object is not preloaded: {oid}')
+    if not o.get('placement'): fail(f'Core Sanctuary object has no placement: {oid}')
+    if o.get('panelAction')!=action:
+        fail(f'Wrong panelAction for {oid}: {o.get("panelAction")} != {action}')
+
+for oid,slot in (('moonstone-crystal-bed','bed-west'),('amethyst-crystal-bed','bed-east')):
+    o=by_id.get(oid)
+    if not o: fail(f'Missing Guardian bed: {oid}')
+    if o.get('interaction')!='assign-rest': fail(f'{oid} must use assign-rest')
+    if o.get('panelAction'): fail(f'{oid} must not bypass its slot with panelAction')
+    if (o.get('placement') or {}).get('slot')!=slot: fail(f'{oid} must target {slot}')
+
+if obj_manifest.get('interactionPolicy',{}).get('persistedLayoutKey')!='majick-sanctuary-layout-v2':
+    fail('Sanctuary layout persistence key changed unexpectedly')
+
+if "specialInteractionBeforePanelAction:true" not in v3317:
+    fail('V3.3.17 does not protect bed/special interactions before generic panel actions')
+if "v3317CheckCoreObjects" not in v3317:
+    fail('V3.3.17 core-object runtime health check is missing')
+if "hitW=Math.max(150" not in v3317:
+    fail('V3.3.17 responsive object hit areas are missing')
+
+print('core Sanctuary object contract: 9 startup objects verified')
