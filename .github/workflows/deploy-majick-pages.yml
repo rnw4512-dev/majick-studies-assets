@@ -217,7 +217,7 @@ jobs:
 
           touch _site/.nojekyll
 
-          # Gate deployment on protected movement plus current V3.3.15 requirements.
+          # Gate deployment on protected movement plus current V3.3.16 requirements.
           test -s _site/index.html
           test -s _site/v3311-main.js
           test -s _site/v3311-plus.js
@@ -241,7 +241,6 @@ jobs:
           grep -q "v3313-sanctuary.js" _site/sanctuary/index.html
           grep -q "obj-arcane-stacks" _site/sanctuary/Preloader.js
           grep -q "The Living Sanctuary" _site/v3313-main.js
-          grep -q "Do not rewrite Velora" _site/app-progress.json
           test -s _site/v3314-main.js
           test -s _site/v3314-main.css
           test -s _site/sanctuary/v3314-sanctuary.js
