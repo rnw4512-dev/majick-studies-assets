@@ -84,7 +84,9 @@ if(!window.__v3311Bridge){
  window.addEventListener('message',ev=>{const d=ev.data||{};if(d.type==='MAJICK_OPEN_ROUTE_V3311'&&d.route)navigate(d.route)});
 }
 
-const oldRender=window.render;
-window.render=function(){oldRender();const p=document.querySelector('.top .pill');if(p)p.textContent='Living Familiars • V3.3.11 Living Grimoire';document.title='Majick Studies — Living Grimoire'};
-try{render()}catch(e){console.error('V3.3.11 boot',e)}
+window.v3311RefreshBrand=function(){
+  const p=document.querySelector('.top .pill');
+  if(p)p.textContent='Living Familiars • V3.3.11 Living Grimoire';
+  document.title='Majick Studies — Living Grimoire';
+};
 })();
