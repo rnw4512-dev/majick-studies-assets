@@ -187,16 +187,16 @@ These numbers are release-readiness estimates, not marketing numbers.
   - New-course creation, fresh per-course streaks, persistent account XP, and course completion logic are implemented.
   - Still needs live end-to-end testing after the shell/runtime issue is stable.
 
-- **Living Sanctuary / Phaser 4:** 76%
+- **Living Sanctuary / Phaser 4:** 80%
   - Original Phase 4 movement system is preserved.
   - Object manifest, evolution manifest, furniture routing, stage resolver, and corrected 60 evolution action assets exist.
   - Biggest remaining work: make the live Sanctuary consistently load, confirm evolved visuals follow movement correctly, confirm play/sleep interactions, and eliminate shell/cache conflicts.
 
-- **Guardian profile/evolution presentation:** 86%
+- **Guardian profile/evolution presentation:** 91%
   - Canon names, level bands, approved stage art, and larger profile presentation are implemented.
   - Still needs visual QA after cache/runtime repair.
 
-- **Overall Majick Studies release readiness:** **86%**
+- **Overall Majick Studies release readiness:** **88%**
   - We are past the foundation/build stage.
   - The remaining work is mainly **stability, visual QA, and integration testing**, not rebuilding the app from scratch.
   - The project should not be called finished until the live site opens cleanly, reports the current version, Sanctuary works without a snag modal, evolved Guardians display correctly, and Notes Forge passes live document tests.
@@ -247,3 +247,27 @@ Majick Studies is ready to call finished when all of these are true:
 - Deployment workflow now automatically prefers `sanctuary/assets/majick-v3317-evolution-final-clean.zip` when present and falls back to the older repair ZIP only if the final-clean bundle is absent.
 - Solstice Celestial play received a final manual bottom-fragment trim before the ZIP was repacked.
 - No files in `sanctuary/assets/motion/` are changed.
+
+## Run #60 final-clean Guardian deployment
+- User successfully uploaded `sanctuary/assets/majick-v3317-evolution-final-clean.zip`.
+- GitHub Pages run #60 completed **successfully**.
+- Published artifact was downloaded and inspected.
+- Exact verification:
+  - final-clean ZIP contains 60 evolution WebPs
+  - published Pages artifact contains 60 evolution WebPs
+  - **all 60 published files match the final-clean ZIP byte-for-byte**
+  - no mismatches found
+- Representative published files verified:
+  - `velora/ascendant/walk.webp`
+  - `cascade/celestial/sleep.webp`
+  - `solstice/celestial/play.webp`
+  - `aurelia/apprentice/play.webp`
+- Visual inspection of deployed Velora Ascendant walk shows one clean Guardian on transparent background with no neighboring poster fragments.
+- Published shell verification remains clean:
+  - `v3317-main.js?v=3317` present
+  - old service-worker registration absent
+  - old V5.2 crash handler absent
+  - V3.3.17 runtime handler present
+  - app-progress reports `V3.3.17 Guardian Repair + Course Realms + Stability Hotfix`
+- The final-clean Guardian bundle is now the deployed source of truth for stage-specific evolution action art.
+- Protected original 33 Phase 4 movement PNGs remain untouched and remain the movement controller.
