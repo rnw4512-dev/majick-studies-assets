@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "libraryVersion": "3.3.17-object-pass",
+  "libraryVersion": "3.3.17-guardian-care",
   "sourceOfTruth": true,
   "protectedMovementRule": "Object loading and interactions must never rewrite Guardian movement methods or replace the 33 protected movement files.",
   "basePath": "./assets/objects/",
@@ -217,7 +217,8 @@
         "glowFeedback": true,
         "dragPolicy": "edit-mode-only",
         "depthPolicy": "y-sort"
-      }
+      },
+      "careAction": "sleep"
     },
     {
       "id": "amethyst-crystal-bed",
@@ -254,7 +255,8 @@
         "glowFeedback": true,
         "dragPolicy": "edit-mode-only",
         "depthPolicy": "y-sort"
-      }
+      },
+      "careAction": "sleep"
     },
     {
       "id": "study-apothecary",
@@ -1371,7 +1373,7 @@
       "blocksWalking": false,
       "glow": true,
       "hoverAnimation": true,
-      "preload": false,
+      "preload": true,
       "enabled": true,
       "artStatus": "starter-generated",
       "replaceableWithoutCode": true,
@@ -1388,6 +1390,12 @@
         "glowFeedback": true,
         "dragPolicy": "edit-mode-only",
         "depthPolicy": "y-sort"
+      },
+      "careAction": "feed",
+      "placement": {
+        "x": 860,
+        "y": 940,
+        "width": 120
       }
     },
     {
@@ -1402,7 +1410,7 @@
       "blocksWalking": false,
       "glow": true,
       "hoverAnimation": true,
-      "preload": false,
+      "preload": true,
       "enabled": true,
       "artStatus": "starter-generated",
       "replaceableWithoutCode": true,
@@ -1419,6 +1427,12 @@
         "glowFeedback": true,
         "dragPolicy": "edit-mode-only",
         "depthPolicy": "y-sort"
+      },
+      "careAction": "water",
+      "placement": {
+        "x": 1010,
+        "y": 940,
+        "width": 120
       }
     },
     {
@@ -1433,7 +1447,7 @@
       "blocksWalking": false,
       "glow": true,
       "hoverAnimation": true,
-      "preload": false,
+      "preload": true,
       "enabled": true,
       "artStatus": "starter-generated",
       "replaceableWithoutCode": true,
@@ -1450,6 +1464,12 @@
         "glowFeedback": true,
         "dragPolicy": "edit-mode-only",
         "depthPolicy": "y-sort"
+      },
+      "careAction": "play",
+      "placement": {
+        "x": 1715,
+        "y": 910,
+        "width": 145
       }
     },
     {
@@ -1464,7 +1484,7 @@
       "blocksWalking": false,
       "glow": true,
       "hoverAnimation": true,
-      "preload": false,
+      "preload": true,
       "enabled": true,
       "artStatus": "starter-generated",
       "replaceableWithoutCode": true,
@@ -1481,6 +1501,12 @@
         "glowFeedback": true,
         "dragPolicy": "edit-mode-only",
         "depthPolicy": "y-sort"
+      },
+      "careAction": "groom",
+      "placement": {
+        "x": 600,
+        "y": 830,
+        "width": 105
       }
     },
     {
@@ -1495,7 +1521,7 @@
       "blocksWalking": false,
       "glow": true,
       "hoverAnimation": true,
-      "preload": false,
+      "preload": true,
       "enabled": true,
       "artStatus": "starter-generated",
       "replaceableWithoutCode": true,
@@ -1512,6 +1538,12 @@
         "glowFeedback": true,
         "dragPolicy": "edit-mode-only",
         "depthPolicy": "y-sort"
+      },
+      "careAction": "treat",
+      "placement": {
+        "x": 505,
+        "y": 785,
+        "width": 105
       }
     },
     {
@@ -1588,7 +1620,7 @@
       "blocksWalking": false,
       "glow": true,
       "hoverAnimation": true,
-      "preload": false,
+      "preload": true,
       "enabled": true,
       "artStatus": "starter-generated",
       "replaceableWithoutCode": true,
@@ -1605,6 +1637,12 @@
         "glowFeedback": true,
         "dragPolicy": "edit-mode-only",
         "depthPolicy": "y-sort"
+      },
+      "careAction": "play",
+      "placement": {
+        "x": 1365,
+        "y": 960,
+        "width": 275
       }
     },
     {
@@ -3090,5 +3128,26 @@
     ],
     "finish": "polished magical-academia game asset"
   },
-  "runtimeOwner": "v3317-sanctuary.js"
+  "runtimeOwner": "v3317-sanctuary.js",
+  "careSystem": {
+    "schemaVersion": 2,
+    "rosterDriven": true,
+    "petIdentityKey": "pet.id",
+    "eggsRemainIncubatingUntilHatch": true,
+    "actions": {
+      "feed": "guardian-food-bowl",
+      "water": "guardian-water-basin",
+      "treat": "guardian-treat-jar",
+      "groom": "guardian-brush",
+      "play": [
+        "guardian-toy-basket",
+        "guardian-play-rug"
+      ],
+      "sleep": [
+        "moonstone-crystal-bed",
+        "amethyst-crystal-bed"
+      ],
+      "affection": "guardian-click"
+    }
+  }
 }
