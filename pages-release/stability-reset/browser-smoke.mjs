@@ -108,7 +108,7 @@ try{
   await page.evaluate(()=>navigate('guide'));
   await page.waitForSelector('.studyCard button',{timeout:10000});
   await page.locator('.studyCard button').first().click();
-  await page.waitForFunction(()=>window.S?.screen==='mission'&&!!window.session,{timeout:8000});
+  await page.waitForFunction(()=>window.S?.screen==='mission'&&typeof session!=='undefined'&&!!session,null,{timeout:8000});
   const guideClick=await page.evaluate(()=>({screen:S.screen,mode:session?.mode||null,label:session?.label||null}));
   await assert(guideClick.screen==='mission','Study Guide practice button did not open practice');
 
@@ -128,7 +128,7 @@ try{
   const raidBtn=page.getByRole('button',{name:/Fight My Mistakes/i});
   await assert(await raidBtn.count()===1,'Grimoire raid button missing');
   await raidBtn.click();
-  await page.waitForFunction(()=>window.S?.screen==='mission'&&!!window.session,{timeout:8000});
+  await page.waitForFunction(()=>window.S?.screen==='mission'&&typeof session!=='undefined'&&!!session,null,{timeout:8000});
   const grimoireClick=await page.evaluate(()=>({screen:S.screen,mode:session?.mode||null}));
   await assert(grimoireClick.screen==='mission','Grimoire practice button did not open repair practice');
 
