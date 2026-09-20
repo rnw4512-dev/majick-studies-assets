@@ -306,7 +306,14 @@ jobs:
           grep -q "v3317-sanctuary.js" _site/sanctuary/index.html
           grep -q "v3317-main.js?v=3317" _site/index.html
           grep -q "V3.3.17" _site/app-progress.json
-          grep -q "majick-studies-v3-3-17-guardian-repair" _site/service-worker.js
+          grep -q "majick-studies-retired-v3317" _site/service-worker.js
+          if grep -q 'navigator.serviceWorker.register("./service-worker.js")' _site/index.html; then
+            echo "Old service-worker registration is still present"; exit 1
+          fi
+          if grep -q "Moonlit V5.2 runtime error" _site/index.html; then
+            echo "Legacy global crash handler is still present"; exit 1
+          fi
+          grep -q "Majick V3.3.17 runtime error" _site/v3317-main.js
           node --check _site/sanctuary/v3317-sanctuary.js
           node --check _site/v3317-main.js
           test "$(find _site/sanctuary/assets/evolutions -type f -name '*.webp' | wc -l)" -ge 60
