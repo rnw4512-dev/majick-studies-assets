@@ -175,6 +175,7 @@ window.addEventListener('message',ev=>{
 (function(){
   if(typeof Game==='undefined')return;
   Game.prototype.v3315EnsureWalkSkin=function(type){
+    if(this.__v3317Active)return;
     const pet=this[type];
     const skin=this['v3315WalkSkin_'+type];
     try{skin?.destroy()}catch(_){}
@@ -182,6 +183,7 @@ window.addEventListener('message',ev=>{
     if(pet?.active)pet.setAlpha(1).setVisible(true);
   };
   Game.prototype.v3315UpdateWalkSkins=function(){
+    if(this.__v3317Active)return;
     ['luna','ember','nova','mallow'].forEach(type=>{
       const pet=this[type],skin=this['v3315WalkSkin_'+type],action=this['v3315Action_'+type];
       try{skin?.destroy()}catch(_){}
@@ -192,6 +194,7 @@ window.addEventListener('message',ev=>{
     });
   };
   Game.prototype.v3315ShowGuardianAction=function(type){
+    if(this.__v3317Active)return;
     const pet=this[type];
     if(pet?.active)pet.setAlpha(1).setVisible(true);
   };
