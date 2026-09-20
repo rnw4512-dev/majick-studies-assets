@@ -90,7 +90,7 @@
       "studyIntegration": {
         "primaryFeature": "add-study-material",
         "routeWhenAvailable": "addmaterial",
-        "currentSafeFallback": null,
+        "currentSafeFallback": "addmaterial",
         "acceptedSources": [
           "pdf",
           "docx",
