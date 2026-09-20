@@ -208,3 +208,48 @@ if "hitW=Math.max(150" not in v3317:
     fail('V3.3.17 responsive object hit areas are missing')
 
 print('core Sanctuary object contract: 9 startup objects verified')
+
+
+# 9) Notes Forge source lifecycle and course isolation.
+store=(site/'study-material'/'materialStoreModel.js').read_text(encoding='utf-8')
+page=(site/'study-material'/'AddStudyMaterialPage.js').read_text(encoding='utf-8')
+course_mgr=(site/'courseManager.js').read_text(encoding='utf-8')
+
+required_store_markers=[
+    "rows=rows.filter(x=>x.courseId===courseId)",
+    "rows.filter(r=>r.active!==false)",
+    "courseObj.questionBank=courseObj.questionBank.filter(q=>!isNotesForgeQuestion(q))",
+    "async function setActive(id,active)",
+    "async function syncQuestions(courseObj,courseId)",
+    "managedBy:'notes-forge'",
+]
+for marker in required_store_markers:
+    if marker not in store:
+        fail('Notes Forge store contract missing: '+marker)
+
+required_page_markers=[
+    "Open</button>",
+    "Regenerate</button>",
+    "Pause':'Activate",
+    "async function openSource(id)",
+    "async function regenerateSource(id)",
+    "async function toggleSource(id)",
+    "async function removeSource(id)",
+    "await MajickMaterialStore.syncQuestions(c,courseId)",
+]
+for marker in required_page_markers:
+    if marker not in page:
+        fail('Notes Forge page lifecycle missing: '+marker)
+
+required_course_markers=[
+    "streak:0",
+    "if(r.status==='passed')",
+    "S.activeCourse=id",
+    "S.progress[code]=blankProgress()",
+    "S.majickAccount.xp=Number(S.majickAccount.xp||0)+PASS_XP",
+]
+for marker in required_course_markers:
+    if marker not in course_mgr:
+        fail('Course isolation/pass contract missing: '+marker)
+
+print('Notes Forge lifecycle + course isolation contract verified')
