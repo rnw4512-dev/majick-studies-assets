@@ -13,7 +13,12 @@ function ensureCourses(){
   if(!S.activeCourse||!S.courses[S.activeCourse])S.activeCourse=Object.keys(S.courses)[0]||S.activeCourse||'PMFC';
 }
 function initialSharedValue(key){
-  let best=plainNumber(S?.majickAccount?.[key]);
+  const account=S?.majickAccount;
+  if(account&&Object.prototype.hasOwnProperty.call(account,key)){
+    const n=Number(account[key]);
+    if(Number.isFinite(n))return n;
+  }
+  let best=0;
   for(const row of Object.values(S?.progress||{})){
     if(row&&typeof row==='object')best=Math.max(best,plainNumber(row[key]));
   }
