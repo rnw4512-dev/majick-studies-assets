@@ -198,20 +198,24 @@ window.addEventListener('error',ev=>{
 });
 window.addEventListener('unhandledrejection',ev=>console.warn('Majick promise warning',ev.reason));
 
-const previousRender=window.render;
-window.render=function(){
-  const result=previousRender.apply(this,arguments);
-  try{window.MajickCourseManager?.decorateSelector?.()}catch(_){}
-  if(window.S?.screen==='addmaterial'){
-    setTimeout(()=>window.MajickCourseManager?.bindPanel?.(),0);
-    setTimeout(()=>window.v3315BindStudyMaterialPage?.(),0);
-  }
-  if(window.S?.screen==='home')setTimeout(()=>window.lfUpgradeHomeHabitat(),0);
-  setTimeout(()=>window.v3317PushGuardianLevels(),140);
-  hydrateGeneratedQuestions();
-  applyReleaseBadge();
-  return result;
-};
+const previousRender=typeof window.render==='function'?window.render:null;
+if(previousRender){
+  window.render=function(){
+    const result=previousRender.apply(this,arguments);
+    try{window.MajickCourseManager?.decorateSelector?.()}catch(_){}
+    if(window.S?.screen==='addmaterial'){
+      setTimeout(()=>window.MajickCourseManager?.bindPanel?.(),0);
+      setTimeout(()=>window.v3315BindStudyMaterialPage?.(),0);
+    }
+    if(window.S?.screen==='home')setTimeout(()=>window.lfUpgradeHomeHabitat(),0);
+    setTimeout(()=>window.v3317PushGuardianLevels(),140);
+    hydrateGeneratedQuestions();
+    applyReleaseBadge();
+    return result;
+  };
+}else{
+  console.error('Majick V3.3.17: base render function was missing; refusing to install a broken wrapper.');
+}
 
 const observer=new MutationObserver(()=>{
   applyReleaseBadge();
@@ -223,6 +227,9 @@ observer.observe(document.documentElement,{childList:true,subtree:true});
 
 retireOldMajickCaches();
 applyReleaseBadge();
-try{render()}catch(e){showRuntimeNotice(e)}
+try{
+  if(typeof window.render==='function')window.render();
+  else throw new Error('Base render function is unavailable.');
+}catch(e){showRuntimeNotice(e)}
 
 })();
