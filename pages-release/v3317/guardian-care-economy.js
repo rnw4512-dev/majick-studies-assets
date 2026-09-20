@@ -179,7 +179,14 @@ function moodInfo(g){
   return {label:'Ready for a little care',icon:'✧'};
 }
 function crystalBalance(){
-  try{return Number(prog()?.crystals||0)}catch(_){return Number(S?.majickAccount?.crystals||0)}
+  try{
+    const a=window.MajickStateCore?.ensureAccount?.();
+    if(a&&Number.isFinite(Number(a.crystals)))return Number(a.crystals);
+  }catch(_){}
+  try{
+    if(S?.majickAccount&&Number.isFinite(Number(S.majickAccount.crystals)))return Number(S.majickAccount.crystals);
+  }catch(_){}
+  try{return Number(prog()?.crystals||0)}catch(_){return 0}
 }
 function inventoryCount(id){
   const a=ensureAccount();
@@ -330,11 +337,15 @@ function buy(id){
 
   let p=null;
   try{p=prog()}catch(_){}
-  const balance=p?Number(p.crystals||0):crystalBalance();
+  const account=window.MajickStateCore?.ensureAccount?.()||ensureAccount();
+  const balance=Number(account?.crystals??p?.crystals??0);
   if(balance<it.cost)return {ok:false,message:'You need '+(it.cost-balance)+' more Moon Crystals.'};
 
-  if(p)p.crystals=balance-it.cost;
-  if(S.majickAccount)S.majickAccount.crystals=balance-it.cost;
+  const nextBalance=balance-it.cost;
+  if(account)account.crystals=nextBalance;
+  // Legacy course progress remains a compatibility mirror. If it is not already
+  // bound to the account ledger, synchronize it once without subtracting twice.
+  if(p&&Number(p.crystals)!==nextBalance)p.crystals=nextBalance;
 
   if(it.kind==='consumable')addInventory(it.id,it.qty||1);
   else addOwned(it.id);
