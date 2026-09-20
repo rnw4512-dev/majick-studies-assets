@@ -95,6 +95,8 @@ jobs:
           test -s pages-release/v3317/v3317-optimize-phaser.py
           test -s pages-release/v3317/v3317-verify-release.py
           test -s pages-release/v3317/v3317-migration-smoke.js
+          test -s pages-release/stability-reset/v3310-ui-compat.js
+          test -s pages-release/stability-reset/v3312-ui-compat.js
           test -s pages-release/stability-reset/guardian-registry.js
           test -s pages-release/stability-reset/majick-state-core.js
           test -s pages-release/stability-reset/stability-reset-build.py
@@ -113,6 +115,8 @@ jobs:
           node --check pages-release/v3317/v3317-main.js
           node --check pages-release/v3317/v3317-sanctuary.js
           node --check pages-release/v3317/guardian-care-economy.js
+          node --check pages-release/stability-reset/v3310-ui-compat.js
+          node --check pages-release/stability-reset/v3312-ui-compat.js
           node --check pages-release/stability-reset/guardian-registry.js
           node --check pages-release/stability-reset/majick-state-core.js
           node --check pages-release/stability-reset/stability-state-smoke.js
@@ -224,6 +228,8 @@ jobs:
           cp pages-release/v3317/v3317-main.js _site/v3317-main.js
           cp pages-release/v3317/guardian-care-economy.js _site/guardian-care-economy.js
           cp pages-release/v3317/guardian-care-economy.css _site/guardian-care-economy.css
+          cp pages-release/stability-reset/v3310-ui-compat.js _site/v3310-ui-compat.js
+          cp pages-release/stability-reset/v3312-ui-compat.js _site/v3312-ui-compat.js
           cp pages-release/stability-reset/guardian-registry.js _site/guardian-registry.js
           cp pages-release/stability-reset/majick-state-core.js _site/majick-state-core.js
           python pages-release/v3317/v3317-apply.py _site
@@ -353,7 +359,7 @@ jobs:
               echo "Old Sanctuary wrapper still published: $old"; exit 1
             fi
           done
-          for old in v3313-main.js v3314-main.js v3315-main.js v3316-main.js; do
+          for old in v3310-main.js v3312-main.js v3313-main.js v3314-main.js v3315-main.js v3316-main.js; do
             if grep -q "$old" _site/index.html; then
               echo "Old main Sanctuary bridge still loaded: $old"; exit 1
             fi
