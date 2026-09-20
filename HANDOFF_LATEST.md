@@ -142,3 +142,13 @@ The user may upload approved art bundles only when explicitly instructed.
 - Deployment SUCCESS: GitHub Pages run #48, commit `b6f501b7eca6afd5bb6841fceccd5d37b0e080ad`.
 - The uploaded `majick-v3317-evolution-repair-small.zip` was accepted by the build and V3.3.17 deployed successfully.
 - User can now hard-refresh the live Majick Studies app and test Guardian size, stage visuals, Phase 4 walking, play/sleep interactions, Home Sanctuary, and Notes Forge.
+
+## V3.3.17 authoritative shell fix
+- Added `pages-release/v3317/v3317-main.js`.
+- Added `pages-release/v3317/v3317-apply.py`.
+- The main app shell now owns the visible release badge: `Living Familiars • V3.3.17 Guardian Repair`.
+- The shell reapplies that badge after every app render and after DOM mutations so older V3.3.8/V3.3.16 labels cannot overwrite it.
+- The service-worker cache is now bumped to `majick-studies-v3-3-17-guardian-repair`.
+- `app-progress.json` is updated to V3.3.17 during deployment.
+- Workflow now verifies `v3317-main.js`, the V3.3.17 app-progress marker, and the V3.3.17 service-worker cache before Pages can publish.
+- Current deployment checkpoint: GitHub Pages run #51 (`f39940180c6c34cb0c2560557ede5bb79925f3c8`) queued at last check.
