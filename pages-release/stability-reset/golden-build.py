@@ -79,6 +79,8 @@ OVERLAYS=[
     ("pages-release/v3324/learning-plan.css","learning-plan.css"),
     ("pages-release/v3326/course-tutor.js","course-tutor.js"),
     ("pages-release/v3326/course-tutor.css","course-tutor.css"),
+    ("pages-release/v3327/magical-college-home.js","magical-college-home.js"),
+    ("pages-release/v3327/magical-college-home.css","magical-college-home.css"),
     ("pages-release/v3315/study-material/materialParser.js","study-material/materialParser.js"),
     ("pages-release/v3315/study-material/materialStoreModel.js","study-material/materialStoreModel.js"),
     ("pages-release/v3315/study-material/questionBuilder.js","study-material/questionBuilder.js"),
@@ -164,8 +166,8 @@ for src_name,(dst_name,expected_hash,expected_bytes) in PINNED_MOTION.items():
 progress=site/"app-progress.json"
 if progress.exists():
     data=json.loads(progress.read_text(encoding="utf-8"))
-    data["version"]="V3.3.26 Majick Course Tutor"
-    data["learning_intelligence"]="V3.3.26 course tutor with section/lesson learning paths, note-driven chapters, lesson mastery states, rigor progression, repair loops, ~100-question adaptive course bank and D772 statistics tools"
+    data["version"]="V3.3.27 Moonlit Collegium"
+    data["learning_intelligence"]="V3.3.27 Moonlit Collegium with magical college dashboard, item-level D772 lesson repair, note-driven tutor chapters, mastery/rigor progression and adaptive course bank"
     data["sanctuary_version"]="V3.3.25 Single Guardian Visual Authority"
     data["sanctuary_home"]="Guardian needs HUD, object-aware care travel, exclusive beds, visible care inventory, safe furniture snapping"
     data["sanctuary_customization"]="personal Guardian nooks, feeding/play zones, owned furniture storage, Cozy Dorm layout preset"
@@ -178,7 +180,7 @@ if progress.exists():
 
 index=site/"index.html"
 html=index.read_text(encoding="utf-8")
-html=html.replace('<link rel="stylesheet" href="./learning-lab.css?v=3319">','').replace('<link rel="stylesheet" href="./learning-plan.css?v=3324">','').replace('<link rel="stylesheet" href="./course-tutor.css?v=3326">','').replace('<script src="./learning-lab.js?v=3319"></script>','').replace('<script src="./learning-plan.js?v=3324"></script>','').replace('<script src="./course-tutor.js?v=3326"></script>','').replace('<script src="./v3322-main-recovery.js?v=3322"></script>','')
+html=html.replace('<link rel="stylesheet" href="./learning-lab.css?v=3319">','').replace('<link rel="stylesheet" href="./learning-plan.css?v=3324">','').replace('<link rel="stylesheet" href="./course-tutor.css?v=3326">','').replace('<link rel="stylesheet" href="./magical-college-home.css?v=3327">','').replace('<script src="./learning-lab.js?v=3319"></script>','').replace('<script src="./learning-plan.js?v=3324"></script>','').replace('<script src="./course-tutor.js?v=3326"></script>','').replace('<script src="./magical-college-home.js?v=3327"></script>','').replace('<script src="./v3322-main-recovery.js?v=3322"></script>','')
 html=html.replace('./guardian-care-economy.css?v=stability-1','./guardian-care-economy.css?v=3322-recovery')
 html=html.replace('./majick-state-core.js?v=stability-1','./majick-state-core.js?v=3322-recovery')
 html=html.replace('./guardian-care-economy.js?v=stability-1','./guardian-care-economy.js?v=3322-recovery')

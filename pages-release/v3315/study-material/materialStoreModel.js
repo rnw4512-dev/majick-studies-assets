@@ -212,7 +212,10 @@ async function syncQuestions(courseObj,courseId){
       sourceName:row.sourceName,
       sourceType:row.sourceType,
       managedBy:'notes-forge',
-      bankTarget:target
+      bankTarget:target,
+      learningPathLessonId:q.learningPathLessonId||row.learningPath?.lessonId||null,
+      learningPathLessonTitle:q.learningPathLessonTitle||row.learningPath?.lessonTitle||null,
+      learningPathSectionId:q.learningPathSectionId||row.learningPath?.sectionId||null
     });
     if(!courseObj.questionBank.some(x=>x.id===next.id)){
       courseObj.questionBank.push(next);added++;

@@ -39,7 +39,7 @@ try{
   await assert(boot.hasRender,'render() unavailable after boot');
   await assert(boot.hasState,'MajickStateCore unavailable after boot');
   await assert(boot.hasRegistry,'Guardian registry unavailable after boot');
-  await assert(boot.version==='3.3.26-course-tutor','wrong deployed runtime version: '+boot.version);
+  await assert(boot.version==='3.3.27-moonlit-collegium','wrong deployed runtime version: '+boot.version);
   await assert(boot.guardians.length>=10,'baseline Guardian registry unexpectedly shrank');
 
   const balanceRecovery=await page.evaluate(()=>{
@@ -122,6 +122,24 @@ try{
   await page.waitForFunction(()=>window.S?.activeCourse==='D772',{timeout:8000});
   await page.locator('.courseSelect').selectOption('D755');
   await page.waitForFunction(()=>window.S?.activeCourse==='D755',{timeout:8000});
+
+  // Home must feel like a magical college portal, with academics and Guardian life both first-class.
+  await page.evaluate(()=>{S.screen='home';render();});
+  await page.waitForSelector('.v3327Home',{timeout:10000});
+  const collegiateHome=await page.evaluate(()=>({
+    version:window.MajickCollegeDashboard?.VERSION||null,
+    hero:document.querySelector('.v3327PortalHero')?.innerText||'',
+    academic:!!document.querySelector('.v3327AcademicHall'),
+    guardian:!!document.querySelector('.v3327GuardianHall'),
+    sanctuary:!!document.querySelector('.v3327CampusSanctuary iframe'),
+    guardianCards:document.querySelectorAll('.v3327GuardianCard').length,
+    record:document.querySelector('.v3327StudentRecord')?.innerText||''
+  }));
+  await assert(collegiateHome.version==='3.3.27','Moonlit Collegium home runtime missing');
+  await assert(/MOONLIT COLLEGIUM/i.test(collegiateHome.hero),'Home is missing the magical-college identity');
+  await assert(collegiateHome.academic&&collegiateHome.guardian&&collegiateHome.sanctuary,'Home does not give academics and Guardian life equal presence');
+  await assert(collegiateHome.guardianCards===3,'Home Guardian House does not match the three owned Guardians');
+  await assert(/ACADEMIC RECORD/i.test(collegiateHome.record)&&/MAJICK RECORD/i.test(collegiateHome.record),'Home does not separate academic and Majick progress');
 
   // Continue this smoke from D755 so the existing Assessment course remains intact.
   await assert((await page.locator('.courseSelect').inputValue())==='D755','visible class selector did not return to D755');
@@ -294,6 +312,67 @@ try{
   await assert(forged.rigor[2]>0&&forged.rigor[3]>0,'Notes Forge did not include application/analysis rigor');
   await assert(forged.bank>=40&&forged.bank<=110,'Notes Forge did not synchronize a bounded adaptive course bank');
   await assert(forged.active,'new Notes Forge source was not active');
+
+  // D772 repair: one mixed upload may contain several lessons, but the original source
+  // remains untouched while generated content is sorted to its correct lesson.
+  const mixedRepair=await page.evaluate(async()=>{
+    const mixedText=[
+      'Section 1: Assessing Research and Data Credibility',
+      'Lesson 1: Understanding Data Collection Methods',
+      'A population is the entire group of interest. A sample is a subset selected from the population. Data collection methods include surveys, observations, and experiments.',
+      'Lesson 2: Recognizing Bias in Data Collection',
+      'Selection bias occurs when the method of choosing participants systematically favors some members of the population. Nonresponse and leading wording can also bias results.'
+    ].join('\n');
+    const row=MajickMaterialStore.newRecord({courseId:'D772',sourceName:'D772 Section 1 combined lessons.txt',sourceType:'txt',text:mixedText});
+    row.generated={
+      passages:[
+        {id:'mix_passage_l1',text:'A population is the entire group of interest. A sample is a subset selected from the population.',sourceExcerpt:'A population is the entire group of interest. A sample is a subset selected from the population.'},
+        {id:'mix_passage_l2',text:'Selection bias occurs when the method of choosing participants systematically favors some members of the population.',sourceExcerpt:'Selection bias occurs when the method of choosing participants systematically favors some members of the population.'}
+      ],
+      vocabulary:[
+        {term:'Population',definition:'The entire group of interest.',sourceExcerpt:'A population is the entire group of interest.'},
+        {term:'Selection bias',definition:'A systematic problem in how participants are chosen.',sourceExcerpt:'Selection bias occurs when the method of choosing participants systematically favors some members of the population.'}
+      ],
+      explanations:[],
+      misconceptionRepair:[],
+      practiceQuestions:[
+        {id:'notes_mix_l1',topicId:'notes-population',type:'mcq',prompt:'What is a population?',options:['Entire group','Sample','Bias','Axis'],answer:'Entire group',why:'Population is the entire group.',sourceExcerpt:'A population is the entire group of interest.',rigorLevel:1,difficulty:'foundation'},
+        {id:'notes_mix_l2',topicId:'notes-bias',type:'mcq',prompt:'Which situation shows selection bias?',options:['Systematic selection problem','Random sample','Census','Fair graph'],answer:'Systematic selection problem',why:'Selection bias comes from the selection method.',sourceExcerpt:'Selection bias occurs when the method of choosing participants systematically favors some members of the population.',rigorLevel:2,difficulty:'understanding'}
+      ]
+    };
+    await MajickMaterialStore.save(row);
+    const p=prog();
+    p.answers.push({qid:'notes_mix_l2',topicId:'notes-bias',chosen:'Systematic selection problem',correct:true,difficulty:'understanding',ts:Date.now()});
+    await MajickCourseTutor.hydrate('D772');
+    const repaired=await MajickMaterialStore.get(row.id);
+    const l1=MajickCourseTutor.D772_SECTION_ONE.lessons.find(l=>l.id==='d772-s1-l1');
+    const l2=MajickCourseTutor.D772_SECTION_ONE.lessons.find(l=>l.id==='d772-s1-l2');
+    const c1=MajickCourseTutor.chapter(l1,'D772');
+    const c2=MajickCourseTutor.chapter(l2,'D772');
+    const answerPreserved=p.answers.some(a=>a.qid==='notes_mix_l2'&&a.correct);
+    const result={
+      id:row.id,
+      originalText:repaired.text===mixedText,
+      multi:repaired.learningPath?.multiLesson===true,
+      lessonIds:repaired.learningPath?.lessonIds||[],
+      l1HasPopulation:c1.passages.some(x=>x.id==='mix_passage_l1'),
+      l1HasBias:c1.passages.some(x=>x.id==='mix_passage_l2'),
+      l2HasBias:c2.passages.some(x=>x.id==='mix_passage_l2'),
+      l2HasPopulation:c2.passages.some(x=>x.id==='mix_passage_l1'),
+      answerPreserved,
+      repair:repaired.learningPathRepair
+    };
+    await MajickMaterialStore.remove(row.id);
+    await MajickMaterialStore.syncQuestions(course('D772'),'D772');
+    return result;
+  });
+  await assert(mixedRepair.originalText,'D772 repair changed the original uploaded source');
+  await assert(mixedRepair.multi&&mixedRepair.lessonIds.includes('d772-s1-l1')&&mixedRepair.lessonIds.includes('d772-s1-l2'),'mixed D772 source was not recognized as multi-lesson');
+  await assert(mixedRepair.l1HasPopulation&&!mixedRepair.l1HasBias,'Lesson 1 Tutor still contains Lesson 2 bias passage');
+  await assert(mixedRepair.l2HasBias&&!mixedRepair.l2HasPopulation,'Lesson 2 Tutor still contains Lesson 1 population passage');
+  await assert(mixedRepair.answerPreserved,'D772 note repair erased existing answer history');
+  await assert(mixedRepair.repair?.originalSourcePreserved===true,'D772 repair did not record source preservation');
+
   const sourcePath=await page.evaluate(async id=>{
     const row=await MajickMaterialStore.get(id);
     return row?.learningPath||null;

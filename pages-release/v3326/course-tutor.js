@@ -70,7 +70,7 @@ function headingInfo(row){
     lessonTitle:lesson?.[2]?.trim()||''
   };
 }
-function classifyD772(row){
+function escRx(s){return String(s||'').replace(/[.*+?^$()|[\]\\]/g,'\\function classifyD772(row){
   if(row?.learningPath?.courseId==='D772'&&row.learningPath.lessonId)return row.learningPath;
   const text=sourceText(row),head=headingInfo(row);
   let best=null,bestScore=0;
@@ -87,6 +87,119 @@ function classifyD772(row){
     courseId:'D772',sectionId:D772_SECTION_ONE.id,sectionTitle:D772_SECTION_ONE.title,
     lessonId:best.id,lessonTitle:best.title,lessonNumber:best.number,confidence:bestScore>=10?'high':bestScore>=4?'medium':'low'
   };
+}')}
+function lessonById(id){return D772_SECTION_ONE.lessons.find(l=>l.id===id)||null}
+function classifyD772(row){
+  if(row?.learningPath?.courseId==='D772'&&(row.learningPath.lessonId||row.learningPath.multiLesson))return row.learningPath;
+  const text=sourceText(row),head=headingInfo(row);
+  let best=null,bestScore=0;
+  for(const lesson of D772_SECTION_ONE.lessons.filter(x=>!x.review)){
+    let score=0;
+    if(head.lessonNumber===lesson.number)score+=12;
+    if(norm(head.lessonTitle).includes(norm(lesson.short)))score+=8;
+    if(text.includes(norm(lesson.title)))score+=12;
+    for(const k of lesson.keywords)if(text.includes(k))score+=1;
+    if(score>bestScore){bestScore=score;best=lesson}
+  }
+  if(!best||bestScore<2)return null;
+  return {
+    courseId:'D772',sectionId:D772_SECTION_ONE.id,sectionTitle:D772_SECTION_ONE.title,
+    lessonId:best.id,lessonTitle:best.title,lessonNumber:best.number,confidence:bestScore>=10?'high':bestScore>=4?'medium':'low'
+  };
+}
+function d772Segments(row){
+  const raw=String(row?.text||'');
+  if(!raw)return [];
+  const marks=[];
+  for(const lesson of D772_SECTION_ONE.lessons.filter(x=>!x.review)){
+    const patterns=[
+      new RegExp('\\bLesson\\s*'+lesson.number+'\\b[^\\n]{0,120}','ig'),
+      new RegExp(escRx(lesson.title),'ig')
+    ];
+    for(const rx of patterns){
+      let m;
+      while((m=rx.exec(raw))){
+        marks.push({at:m.index,lessonId:lesson.id,lessonTitle:lesson.title,lessonNumber:lesson.number});
+        if(rx.lastIndex===m.index)rx.lastIndex++;
+      }
+    }
+  }
+  marks.sort((a,b)=>a.at-b.at);
+  const unique=[];
+  for(const mark of marks){
+    const prev=unique[unique.length-1];
+    if(prev&&prev.lessonId===mark.lessonId&&Math.abs(prev.at-mark.at)<160)continue;
+    unique.push(mark);
+  }
+  return unique.map((mark,i)=>({...mark,text:raw.slice(mark.at,unique[i+1]?.at??raw.length)}));
+}
+function d772ItemText(item){
+  return [item?.sourceExcerpt,item?.text,item?.keyIdea,item?.term,item?.definition,item?.explanation,item?.correction,item?.prompt,item?.why,item?.answer]
+    .filter(Boolean).join(' ');
+}
+function scoreD772Item(text,lesson){
+  const t=norm(text);
+  if(!t)return 0;
+  let score=0;
+  if(t.includes(norm(lesson.title)))score+=20;
+  if(t.includes('lesson '+lesson.number))score+=18;
+  const strong={
+    'd772-s1-l1':['data collection','collection method','random sample','sampling method','population','census','survey','observation','experiment'],
+    'd772-s1-l2':['selection bias','response bias','nonresponse','undercoverage','voluntary response','convenience sample','leading question','biased wording','bias'],
+    'd772-s1-l3':['truncated axis','misleading graph','misrepresentation','axis','scale','interval','distort','display'],
+    'd772-s1-l4':['causation','causal','correlation','association','generalize','inference','supported conclusion','limitation','claim','findings']
+  }[lesson.id]||lesson.keywords||[];
+  for(const k of strong)if(t.includes(norm(k)))score+=k.includes(' ')?4:2;
+  return score;
+}
+function classifyD772Item(row,item){
+  if(item?.learningPathLessonId&&lessonById(item.learningPathLessonId))return item.learningPathLessonId;
+  const text=d772ItemText(item),needle=norm(item?.sourceExcerpt||item?.text||'');
+  const segments=d772Segments(row);
+  if(needle.length>=18){
+    const hit=segments.find(seg=>norm(seg.text).includes(needle.slice(0,Math.min(needle.length,180))));
+    if(hit)return hit.lessonId;
+  }
+  let best=null,bestScore=0;
+  for(const lesson of D772_SECTION_ONE.lessons.filter(x=>!x.review)){
+    const score=scoreD772Item(text,lesson);
+    if(score>bestScore){bestScore=score;best=lesson}
+  }
+  if(best&&bestScore>=3)return best.id;
+  const lp=row?.learningPath;
+  if(lp?.lessonId&&lessonById(lp.lessonId))return lp.lessonId;
+  return null;
+}
+function tagD772Generated(row){
+  if(!row||row.courseId!=='D772'||!row.generated)return {changed:false,lessonIds:[]};
+  let changed=false;
+  const buckets=['passages','vocabulary','explanations','misconceptionRepair','practiceQuestions'];
+  const lessonIds=new Set();
+  for(const bucket of buckets){
+    for(const item of (row.generated[bucket]||[])){
+      const id=classifyD772Item(row,item);
+      if(!id)continue;
+      const lesson=lessonById(id);lessonIds.add(id);
+      if(item.learningPathLessonId!==id){item.learningPathLessonId=id;changed=true}
+      if(item.learningPathLessonTitle!==lesson.title){item.learningPathLessonTitle=lesson.title;changed=true}
+      if(item.learningPathSectionId!==D772_SECTION_ONE.id){item.learningPathSectionId=D772_SECTION_ONE.id;changed=true}
+    }
+  }
+  const ids=[...lessonIds];
+  if(ids.length>1){
+    const next={courseId:'D772',sectionId:D772_SECTION_ONE.id,sectionTitle:D772_SECTION_ONE.title,multiLesson:true,lessonIds:ids,confidence:'item-level'};
+    if(JSON.stringify(row.learningPath)!==JSON.stringify(next)){row.learningPath=next;changed=true}
+  }else if(ids.length===1){
+    const lesson=lessonById(ids[0]);
+    const next={courseId:'D772',sectionId:D772_SECTION_ONE.id,sectionTitle:D772_SECTION_ONE.title,lessonId:lesson.id,lessonTitle:lesson.title,lessonNumber:lesson.number,confidence:'item-level'};
+    if(JSON.stringify(row.learningPath)!==JSON.stringify(next)){row.learningPath=next;changed=true}
+  }
+  row.learningPathRepair={version:'3.3.27',mode:'item-level',lessonIds:ids,originalSourcePreserved:true};
+  return {changed,lessonIds:ids};
+}
+function itemMatchesLesson(row,item,lessonId){
+  if(row?.courseId!=='D772')return true;
+  return classifyD772Item(row,item)===lessonId;
 }
 function classifyGeneric(row,id){
   const head=headingInfo(row);
@@ -109,22 +222,36 @@ function classifySource(row,id=String(row?.courseId||cid())){
 }
 function annotateSource(row,id=String(row?.courseId||cid())){
   if(!row)return row;
+  if(id==='D772'&&row.courseId==='D772'){
+    const tagged=tagD772Generated(row);
+    if(tagged.lessonIds.length)return row;
+  }
   const next=classifySource(row,id);
   if(next)row.learningPath=next;
   return row;
 }
 async function hydrate(id=cid()){
-  const rows=await MajickMaterialStore.list(id);
+  const sourceRows=await MajickMaterialStore.list(id);
   let changed=false;
-  for(const row of rows){
-    if(!row.learningPath?.lessonId){
-      annotateSource(row,id);
+  for(const row of sourceRows){
+    let rowChanged=false;
+    if(id==='D772'){
+      const repaired=tagD772Generated(row);
+      rowChanged=repaired.changed||!row.learningPath;
+      if(!row.learningPath)annotateSource(row,id);
+    }else if(!row.learningPath?.lessonId){
+      annotateSource(row,id);rowChanged=true;
+    }
+    if(rowChanged){
       try{await MajickMaterialStore.save(row);changed=true}catch(_){}
     }
   }
-  cache[id]=rows;
+  cache[id]=sourceRows;
+  if(changed&&id==='D772'){
+    try{await MajickMaterialStore.syncQuestions(course(id),id)}catch(e){console.warn('D772 lesson bank repair',e)}
+  }
   renderPath();renderTutor();
-  return {rows,changed};
+  return {rows:sourceRows,changed};
 }
 function rows(id=cid()){return (cache[id]||[]).filter(r=>r.active!==false)}
 function dynamicSections(id,sourceRows){
@@ -150,18 +277,37 @@ function sections(id=cid()){
   out.push(...dynamicSections(id,sourceRows));
   return out;
 }
+function rowHasLesson(row,lessonId,id=cid()){
+  if(id==='D772'){
+    if(row?.learningPath?.lessonId===lessonId)return true;
+    if(row?.learningPath?.lessonIds?.includes?.(lessonId))return true;
+    const buckets=['passages','vocabulary','explanations','misconceptionRepair','practiceQuestions'];
+    return buckets.some(bucket=>(row?.generated?.[bucket]||[]).some(item=>itemMatchesLesson(row,item,lessonId)));
+  }
+  const lp=row.learningPath||classifySource(row,id);
+  return lp?.lessonId===lessonId;
+}
 function sourcesForLesson(lesson,id=cid()){
   if(lesson.review){
     const section=sections(id).find(s=>s.lessons.some(l=>l.id===lesson.id));
     const ids=new Set((section?.lessons||[]).filter(l=>!l.review).flatMap(l=>sourcesForLesson(l,id).map(r=>r.id)));
     return rows(id).filter(r=>ids.has(r.id));
   }
-  return rows(id).filter(r=>{
-    const lp=r.learningPath||classifySource(r,id);
-    return lp?.lessonId===lesson.id;
-  });
+  return rows(id).filter(r=>rowHasLesson(r,lesson.id,id));
 }
 function questionsForLesson(lesson,id=cid()){
+  if(id==='D772'){
+    if(lesson.review){
+      const sec=sections(id).find(s=>s.lessons.some(l=>l.id===lesson.id));
+      const lessonIds=new Set((sec?.lessons||[]).filter(l=>!l.review).map(l=>l.id));
+      return (course(id).questionBank||[]).filter(q=>lessonIds.has(q.learningPathLessonId)||lessonIds.has(classifyD772Item(rows(id).find(r=>r.id===q.sourceId),q)));
+    }
+    return (course(id).questionBank||[]).filter(q=>{
+      if(q.learningPathLessonId===lesson.id)return true;
+      const row=rows(id).find(r=>r.id===q.sourceId);
+      return row?classifyD772Item(row,q)===lesson.id:false;
+    });
+  }
   const srcIds=new Set(sourcesForLesson(lesson,id).map(r=>r.id));
   return (course(id).questionBank||[]).filter(q=>srcIds.has(q.sourceId));
 }
@@ -216,34 +362,40 @@ function selectedLesson(id=cid()){
 }
 function findSectionForLesson(lesson,id=cid()){return sections(id).find(s=>s.lessons.some(l=>l.id===lesson?.id))||null}
 function lessonNumberLabel(lesson){return lesson.review?'SECTION REVIEW':lesson.number?('LESSON '+lesson.number):'LESSON'}
-function dedupePassages(sourceRows){
-  const out=[],seen=new Set();
+function lessonItems(sourceRows,bucket,lesson,id=cid()){
+  const out=[];
   for(const row of sourceRows){
-    for(const p of (row.generated?.passages||[])){
-      const key=norm(p.text);
-      if(!key||seen.has(key))continue;
-      seen.add(key);out.push({...p,sourceName:row.sourceName});
+    for(const item of (row.generated?.[bucket]||[])){
+      if(id==='D772'&&!itemMatchesLesson(row,item,lesson.id))continue;
+      out.push({...item,sourceName:row.sourceName,sourceId:row.id});
     }
   }
   return out;
 }
-function dedupeVocab(sourceRows){
+function dedupePassages(sourceRows,lesson,id=cid()){
   const out=[],seen=new Set();
-  for(const row of sourceRows){
-    for(const v of (row.generated?.vocabulary||[])){
-      const key=norm(v.term);
-      if(!key||seen.has(key))continue;
-      seen.add(key);out.push(v);
-    }
+  for(const p of lessonItems(sourceRows,'passages',lesson,id)){
+    const key=norm(p.text);
+    if(!key||seen.has(key))continue;
+    seen.add(key);out.push(p);
+  }
+  return out;
+}
+function dedupeVocab(sourceRows,lesson,id=cid()){
+  const out=[],seen=new Set();
+  for(const v of lessonItems(sourceRows,'vocabulary',lesson,id)){
+    const key=norm(v.term);
+    if(!key||seen.has(key))continue;
+    seen.add(key);out.push(v);
   }
   return out;
 }
 function chapter(lesson,id=cid()){
   const sourceRows=sourcesForLesson(lesson,id);
-  const passages=dedupePassages(sourceRows);
-  const vocab=dedupeVocab(sourceRows);
-  const explanations=uniqText(sourceRows.flatMap(r=>r.generated?.explanations||[]),x=>x.explanation);
-  const repairs=uniqText(sourceRows.flatMap(r=>r.generated?.misconceptionRepair||[]),x=>x.correction);
+  const passages=dedupePassages(sourceRows,lesson,id);
+  const vocab=dedupeVocab(sourceRows,lesson,id);
+  const explanations=uniqText(lessonItems(sourceRows,'explanations',lesson,id),x=>x.explanation);
+  const repairs=uniqText(lessonItems(sourceRows,'misconceptionRepair',lesson,id),x=>x.correction);
   const m=mastery(lesson,id);
   return {lesson,section:findSectionForLesson(lesson,id),sourceRows,passages,vocab,explanations,repairs,mastery:m};
 }
@@ -336,5 +488,5 @@ MajickLearningLab.bind=function(){
 };
 const baseRefresh=MajickLearningLab.refresh;
 MajickLearningLab.refresh=function(){baseRefresh();hydrate()};
-window.MajickCourseTutor={VERSION,D772_SECTION_ONE,hydrate,sections,classifySource,annotateSource,sourcesForLesson,questionsForLesson,mastery,sectionProgress,chapter,startPractice,show,renderPath,renderTutor,selectedLesson};
+window.MajickCourseTutor={VERSION,D772_SECTION_ONE,hydrate,sections,classifySource,annotateSource,tagD772Generated,classifyD772Item,d772Segments,sourcesForLesson,questionsForLesson,mastery,sectionProgress,chapter,startPractice,show,renderPath,renderTutor,selectedLesson};
 })();
