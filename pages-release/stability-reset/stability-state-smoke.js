@@ -26,11 +26,11 @@ global.S={
   activeCourse:'D772',
   courses:{
     D772:{id:'D772',title:'Statistical Data Literacy'},
-    PMFC:{id:'PMFC',title:'Assessment for Special Education'}
+    D755:{id:'D755',title:'Assessment for Special Education'}
   },
   progress:{
     D772:{answers:[],xp:1200,crystals:155,chests:1,streak:4},
-    PMFC:{answers:[{qid:'x'}],xp:900,crystals:120,chests:0,streak:2}
+    D755:{answers:[{qid:'x'}],xp:900,crystals:120,chests:0,streak:2}
   },
   majickAccount:{xp:1511,crystals:200,chests:2,schemaVersion:1},
   legacy:{
@@ -55,11 +55,11 @@ MajickStateCore.normalizeAll();
 assert(prog()===S.progress.D772,'safe prog does not return active course');
 assert(S.majickAccount.crystals===200,'account crystal migration chose wrong value');
 assert(S.progress.D772.crystals===200,'D772 did not mirror account crystals');
-assert(S.progress.PMFC.crystals===200,'PMFC did not mirror account crystals');
+assert(S.progress.D755.crystals===200,'D755 did not mirror account crystals');
 
 prog().crystals=173;
 assert(S.majickAccount.crystals===173,'writing active progress crystals did not update account');
-assert(S.progress.PMFC.crystals===173,'other course did not reflect shared account crystals');
+assert(S.progress.D755.crystals===173,'other course did not reflect shared account crystals');
 
 S.progress.D772=undefined;
 MajickStateCore.normalizeAll();
@@ -83,7 +83,7 @@ const purchased=MajickGuardianCare.buy('moonberry-meal');
 assert(purchased.ok,'care shop purchase failed');
 assert(S.majickAccount.crystals===beforeBuy-6,'care shop charged crystals more than once or wrong amount');
 assert(S.progress.D772.crystals===beforeBuy-6,'active course did not mirror post-purchase balance');
-assert(S.progress.PMFC.crystals===beforeBuy-6,'other course did not mirror post-purchase balance');
+assert(S.progress.D755.crystals===beforeBuy-6,'other course did not mirror post-purchase balance');
 assert(snap.roster.some(g=>g.type==='nyx'),'future Guardian missing from care roster');
 assert(snap.eggs.length===1&&snap.eggs[0].type==='aurora-moth','future egg missing from incubator snapshot');
 
