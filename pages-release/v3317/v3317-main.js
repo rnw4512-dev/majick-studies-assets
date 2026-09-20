@@ -1,4 +1,4 @@
-// Majick Studies V3.3.17 — AUTHORITATIVE MAIN APP BRIDGE
+// Majick Studies V3.3.18 Stability Reset — AUTHORITATIVE MAIN APP BRIDGE
 (function(){
 'use strict';
 
@@ -133,7 +133,7 @@ if(!window.__v3317Bridge){
     if(ev.origin!==location.origin)return;
     const d=ev.data||{};
     if((d.type==='MAJICK_OPEN_ROUTE_V3311'||d.type==='MAJICK_OPEN_ROUTE')&&d.route){
-      try{navigate(d.route)}catch(e){console.error('V3.3.17 route bridge',e)}
+      try{navigate(d.route)}catch(e){console.error('V3.3.18 route bridge',e)}
     }
     if(d.type==='MAJICK_CONTINUE_STUDYING'){
       try{navigate('mission')}catch(_){}
@@ -149,7 +149,7 @@ async function hydrateGeneratedQuestions(){
     if(!window.MajickMaterialStore||typeof course!=='function')return;
     const c=course();
     if(c?.id)await window.MajickMaterialStore.injectQuestions(c,c.id);
-  }catch(e){console.warn('V3.3.17 notes hydration',e)}
+  }catch(e){console.warn('V3.3.18 notes hydration',e)}
 }
 
 async function retireOldMajickCaches(){
@@ -158,13 +158,13 @@ async function retireOldMajickCaches(){
       const regs=await navigator.serviceWorker.getRegistrations();
       await Promise.allSettled(regs.map(r=>r.unregister()));
     }
-  }catch(e){console.warn('V3.3.17 service-worker cleanup',e)}
+  }catch(e){console.warn('V3.3.18 service-worker cleanup',e)}
   try{
     if('caches' in window){
       const keys=await caches.keys();
       await Promise.allSettled(keys.filter(k=>String(k).startsWith('majick-studies-')).map(k=>caches.delete(k)));
     }
-  }catch(e){console.warn('V3.3.17 cache cleanup',e)}
+  }catch(e){console.warn('V3.3.18 cache cleanup',e)}
 }
 
 function applyReleaseBadge(){
@@ -178,7 +178,7 @@ function applyReleaseBadge(){
 
 function showRuntimeNotice(error){
   const message=String(error?.message||error||'Unknown runtime error');
-  console.error('Majick V3.3.17 runtime error',error);
+  console.error('Majick V3.3.18 runtime error',error);
   if(document.getElementById('v3317RuntimeNotice'))return;
   try{
     const n=document.createElement('div');
@@ -216,7 +216,7 @@ if(previousRender){
     return result;
   };
 }else{
-  console.error('Majick V3.3.17: base render function was missing; refusing to install a broken wrapper.');
+  console.error('Majick V3.3.18: base render function was missing; refusing to install a broken wrapper.');
 }
 
 const observer=new MutationObserver(()=>{
