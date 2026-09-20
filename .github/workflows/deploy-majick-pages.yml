@@ -84,6 +84,8 @@ jobs:
           test -s pages-release/v3316/v3316-main.css
           test -s pages-release/v3316/v3316-apply.py
           test -s pages-release/v3317/v3317-sanctuary.js
+          test -s pages-release/v3317/v3317-main.js
+          test -s pages-release/v3317/v3317-apply.py
           test -s pages-release/v3316/enlarge-approved-stage-art.py
           test -s sanctuary/assets/objects/objects-manifest.json
           test -s sanctuary/assets/objects/generate-object-library.py
@@ -182,6 +184,8 @@ jobs:
           python pages-release/v3316/v3316-apply.py _site
           python pages-release/v3316/enlarge-approved-stage-art.py _site/assets/familiars/evolution_stages
           cp pages-release/v3317/v3317-sanctuary.js _site/sanctuary/v3317-sanctuary.js
+          cp pages-release/v3317/v3317-main.js _site/v3317-main.js
+          python pages-release/v3317/v3317-apply.py _site
           python -c "from pathlib import Path; p=Path('_site/sanctuary/index.html'); s=p.read_text(); tag='<script src=\"./v3317-sanctuary.js?v=3317\"></script>'; s=s if tag in s else s.replace('</body>',tag+'\\n</body>',1); p.write_text(s)"
 
           # HARD RULE: copy the original Phase 4 images byte-for-byte; never regenerate them.
@@ -296,8 +300,13 @@ jobs:
           node --check _site/courseManager.js
           node --check _site/v3316-main.js
           test -s _site/sanctuary/v3317-sanctuary.js
+          test -s _site/v3317-main.js
           grep -q "v3317-sanctuary.js" _site/sanctuary/index.html
+          grep -q "v3317-main.js?v=3317" _site/index.html
+          grep -q "V3.3.17" _site/app-progress.json
+          grep -q "majick-studies-v3-3-17-guardian-repair" _site/service-worker.js
           node --check _site/sanctuary/v3317-sanctuary.js
+          node --check _site/v3317-main.js
           test "$(find _site/sanctuary/assets/evolutions -type f -name '*.webp' | wc -l)" -ge 60
           test -s _site/sanctuary/assets/evolutions/velora/new-bond/walk.webp
           test -s _site/sanctuary/assets/evolutions/velora/ascendant/play.webp
