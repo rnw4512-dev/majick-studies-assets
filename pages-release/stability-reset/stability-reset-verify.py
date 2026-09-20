@@ -50,8 +50,8 @@ if 'learning-lab.js?v=3319' not in main or 'learning-lab.css?v=3319' not in main
 san_life=(site/'sanctuary'/'v3320-sanctuary-life.js').read_text(encoding='utf-8')
 for marker in ("window.MajickSanctuaryLife","v3320BuildHomeHud","v3320SnapDecorItem","guardian-food-bowl","bedAssignments"):
     if marker not in san_life: fail('Sanctuary Home missing '+marker)
-if 'v3320-sanctuary-life.js?v=3320' not in san:
-    fail('Sanctuary Home asset is not installed in sanctuary/index.html')
+if 'v3320-sanctuary-life.js?v=3322-recovery' not in san:
+    fail('Sanctuary Home asset is not cache-busted in sanctuary/index.html')
 san_custom=(site/'sanctuary'/'v3321-sanctuary-customize.js').read_text(encoding='utf-8')
 for marker in ("window.MajickSanctuaryCustomize","v3321SetPlaced","v3321ApplyPreset","v3321BuildFurnitureManager","COZY_DORM"):
     if marker not in san_custom: fail('Sanctuary Customization missing '+marker)
