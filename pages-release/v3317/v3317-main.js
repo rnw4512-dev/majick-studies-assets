@@ -102,17 +102,32 @@ window.v3317PushGuardianLevels=function(){
     try{f.contentWindow?.postMessage(payload,location.origin)}catch(_){}
   });
 };
+function furnitureAccountState(){
+  try{return window.MajickStateCore?.ensureAccount?.()?.sanctuaryFurniture||window.S?.majickAccount?.sanctuaryFurniture||null}catch(_){return null}
+}
+window.v3321PushFurnitureState=function(target){
+  const state=furnitureAccountState();
+  if(!state)return;
+  const payload={type:'MAJICK_SANCTUARY_FURNITURE_SYNC_V3321',state};
+  if(target){
+    try{target.postMessage(payload,location.origin)}catch(_){}
+    return;
+  }
+  document.querySelectorAll('.v3317SanctuaryFrame').forEach(f=>{
+    try{f.contentWindow?.postMessage(payload,location.origin)}catch(_){}
+  });
+};
 
 function sanctuaryMarkup(context){
   if(location.protocol==='file:'){
     return '<section class="phase4Wrap"><div class="phase4Top"><b>✦ Phaser 4 Living Sanctuary</b><br><span>Open Majick Studies through GitHub Pages so Phaser can load.</span></div></section>';
   }
-  const q='?v=3320-sanctuary-home&context='+encodeURIComponent(context||'app');
+  const q='?v=3321-sanctuary-custom&context='+encodeURIComponent(context||'app');
   return '<section class="phase4Wrap v3317Phase" aria-label="Phaser 4 Living Sanctuary">'+
-    '<div class="phase4Top"><div><b>✦ Living Sanctuary • V3.3.20</b><br><span>Protected Guardian movement • care-aware home • movable furniture</span></div>'+
+    '<div class="phase4Top"><div><b>✦ Living Sanctuary • V3.3.21</b><br><span>Protected Guardian movement • personalized nooks • furniture storage</span></div>'+
     '<div class="phase4Actions"><button class="btn ghost" onclick="phase4OpenFullscreen()">Full Sanctuary</button><button class="btn primary" onclick="navigate(\'addmaterial\')">Add Study Material</button></div></div>'+
-    '<iframe class="phase4Frame v3317SanctuaryFrame" src="sanctuary/index.html'+q+'" title="Majick Studies Living Sanctuary" loading="eager" allow="fullscreen" onload="setTimeout(()=>v3317PushGuardianLevels(),120)"></iframe>'+
-    '<div class="phase4Help">Care objects call Guardians across the room • beds remember their Guardian • Edit Sanctuary snaps furniture safely into place.</div>'+
+    '<iframe class="phase4Frame v3317SanctuaryFrame" src="sanctuary/index.html'+q+'" title="Majick Studies Living Sanctuary" loading="eager" allow="fullscreen" onload="setTimeout(()=>{v3317PushGuardianLevels();v3321PushFurnitureState();},120)"></iframe>'+
+    '<div class="phase4Help">Personal Guardian nooks • feeding + play zones • store/place owned furniture • Cozy Dorm layout preset.</div>'+
   '</section>';
 }
 window.phase4SanctuaryHTML=function(){return sanctuaryMarkup('companions')};
@@ -147,6 +162,24 @@ if(!window.__v3317Bridge){
     }
     if(d.type==='MAJICK_SANCTUARY_READY_V3317'){
       window.v3317PushGuardianLevels();
+      window.v3321PushFurnitureState(ev.source);
+    }
+    if(d.type==='MAJICK_SANCTUARY_FURNITURE_REQUEST_V3321'){
+      window.v3321PushFurnitureState(ev.source);
+    }
+    if(d.type==='MAJICK_SANCTUARY_FURNITURE_STATE_V3321'&&d.state){
+      try{
+        const account=window.MajickStateCore?.ensureAccount?.()||(S.majickAccount=S.majickAccount||{});
+        account.sanctuaryFurniture={
+          schemaVersion:1,
+          version:'3.3.21',
+          owned:[...new Set((d.state.owned||[]).filter(Boolean).map(String))],
+          stored:[...new Set((d.state.stored||[]).filter(Boolean).map(String))],
+          preset:d.state.preset||null,
+          updatedAt:Number(d.state.updatedAt||Date.now())
+        };
+        save();
+      }catch(e){console.warn('V3.3.21 furniture state bridge',e)}
     }
   });
 }
@@ -220,7 +253,7 @@ if(previousRender){
       setTimeout(()=>window.MajickLearningLab?.bind?.(),0);
     }
     if(window.S?.screen==='home')setTimeout(()=>window.lfUpgradeHomeHabitat(),0);
-    setTimeout(()=>window.v3317PushGuardianLevels(),140);
+    setTimeout(()=>{window.v3317PushGuardianLevels();window.v3321PushFurnitureState();},140);
     hydrateGeneratedQuestions();
     applyReleaseBadge();
     return result;

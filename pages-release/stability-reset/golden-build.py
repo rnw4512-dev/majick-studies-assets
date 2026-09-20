@@ -85,6 +85,7 @@ OVERLAYS=[
     ("pages-release/v3317/v3317-main.js","v3317-main.js"),
     ("pages-release/v3317/v3317-sanctuary.js","sanctuary/v3317-sanctuary.js"),
     ("pages-release/v3320/sanctuary-life.js","sanctuary/v3320-sanctuary-life.js"),
+    ("pages-release/v3321/sanctuary-customize.js","sanctuary/v3321-sanctuary-customize.js"),
 ]
 for src_rel,dst_rel in OVERLAYS:
     src=repo/src_rel
@@ -158,8 +159,9 @@ if progress.exists():
     data=json.loads(progress.read_text(encoding="utf-8"))
     data["version"]="V3.3.19 Learning Intelligence"
     data["learning_intelligence"]="course-aware Learn Mode, vocabulary game, guided practice, mastery, calculator, D772 statistics labs"
-    data["sanctuary_version"]="V3.3.20 Sanctuary Home"
+    data["sanctuary_version"]="V3.3.21 Sanctuary Customization"
     data["sanctuary_home"]="Guardian needs HUD, object-aware care travel, exclusive beds, visible care inventory, safe furniture snapping"
+    data["sanctuary_customization"]="personal Guardian nooks, feeding/play zones, owned furniture storage, Cozy Dorm layout preset"
     data["build_foundation"]="V3.3.18 Golden Baseline"
     data["golden_baseline_source_commit"]=manifest.get("source_commit")
     data["golden_baseline_source_run_id"]=manifest.get("source_run_id")
@@ -179,11 +181,11 @@ index.write_text(html,encoding="utf-8")
 
 san_index=site/"sanctuary"/"index.html"
 san_html=san_index.read_text(encoding="utf-8")
-san_html=san_html.replace('<script src="./v3320-sanctuary-life.js?v=3320"></script>','')
+san_html=san_html.replace('<script src="./v3320-sanctuary-life.js?v=3320"></script>','').replace('<script src="./v3321-sanctuary-customize.js?v=3321"></script>','')
 san_tag='<script src="./v3317-sanctuary.js?v=stability-1"></script>'
 if san_tag not in san_html:
     fail("authoritative Sanctuary runtime tag missing while installing Sanctuary Home")
-san_html=san_html.replace(san_tag,san_tag+'\\n<script src="./v3320-sanctuary-life.js?v=3320"></script>',1)
+san_html=san_html.replace(san_tag,san_tag+'\\n<script src="./v3320-sanctuary-life.js?v=3320"></script>\\n<script src="./v3321-sanctuary-customize.js?v=3321"></script>',1)
 san_index.write_text(san_html,encoding="utf-8")
 
 (site/".nojekyll").touch()

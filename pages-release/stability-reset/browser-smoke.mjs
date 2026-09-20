@@ -434,17 +434,20 @@ try{
   await assert(!!frame,'Sanctuary iframe did not load');
   await frame.waitForFunction(()=>typeof window.Game!=='undefined'||document.querySelector('canvas'),{timeout:20000});
   await frame.waitForFunction(()=>window.MajickSanctuaryLife?.VERSION==='3.3.20',{timeout:12000});
+  await frame.waitForFunction(()=>window.MajickSanctuaryCustomize?.VERSION==='3.3.21',{timeout:12000});
   await frame.waitForFunction(()=>!!window.majickPhaserGame?.scene?.getScene?.('Game'),{timeout:20000});
   await frame.waitForFunction(()=>Number(window.majickPhaserGame?.scene?.getScene?.('Game')?.v3317CareState?.roster?.length||0)>0,{timeout:12000});
   const san=await frame.evaluate(()=>({
     hasGame:typeof window.Game!=='undefined',
     hasCanvas:!!document.querySelector('canvas'),
     hasRegistry:!!window.MajickGuardianRegistry,
-    sanctuaryLife:window.MajickSanctuaryLife?.VERSION||null
+    sanctuaryLife:window.MajickSanctuaryLife?.VERSION||null,
+    sanctuaryCustomize:window.MajickSanctuaryCustomize?.VERSION||null
   }));
   await assert(san.hasGame||san.hasCanvas,'Phaser Sanctuary did not initialize');
   await assert(san.hasRegistry,'Guardian registry unavailable inside Sanctuary');
   await assert(san.sanctuaryLife==='3.3.20','Sanctuary Home runtime did not load');
+  await assert(san.sanctuaryCustomize==='3.3.21','Sanctuary Customization runtime did not load');
 
   const sanctuaryHome=await frame.evaluate(()=>{
     const scene=window.majickPhaserGame?.scene?.getScene?.('Game');
@@ -464,6 +467,39 @@ try{
   await assert(Object.keys(sanctuaryHome.inspect.badges||{}).length>=6,'care furniture status badges did not initialize');
   await assert(sanctuaryHome.food.id==='guardian-food-bowl'&&sanctuaryHome.food.mode==='delight','food bowl is not a physical Guardian interaction target');
   await assert(sanctuaryHome.snapped?.x%20===0&&sanctuaryHome.snapped?.y%20===0,'edit-mode furniture snapping is not active');
+
+  const customizationBefore=await frame.evaluate(()=>{
+    const scene=window.majickPhaserGame?.scene?.getScene?.('Game');
+    scene.v3321ApplyFurnitureVisibility?.();
+    scene.v3321BuildRoomZones?.();
+    return window.MajickSanctuaryCustomize.inspect(scene);
+  });
+  await assert(customizationBefore.owned>=15,'existing Sanctuary furniture was not migrated as owned');
+  await assert(customizationBefore.managerButton,'Furniture manager button did not initialize');
+  await assert(customizationBefore.zones,'Sanctuary room zones did not initialize');
+  await assert(customizationBefore.nooks>=1,'Guardian personal nook was not created from the real roster/bed state');
+
+  const storeResult=await frame.evaluate(()=>{
+    const scene=window.majickPhaserGame?.scene?.getScene?.('Game');
+    const r=scene.v3321SetPlaced?.('guardian-toy-basket',false);
+    const item=(scene.decorItems||[]).find(x=>(x.getData?.('objectId')||x.getData?.('decorId'))==='guardian-toy-basket');
+    return {r,visible:item?.visible!==false,inspect:window.MajickSanctuaryCustomize.inspect(scene)};
+  });
+  await assert(storeResult.r?.ok&&storeResult.visible===false&&storeResult.inspect.stored>=1,'storing owned Sanctuary furniture failed');
+  await page.waitForFunction(()=>S?.majickAccount?.sanctuaryFurniture?.stored?.includes('guardian-toy-basket'),{timeout:5000});
+
+  const placeAndPreset=await frame.evaluate(()=>{
+    const scene=window.majickPhaserGame?.scene?.getScene?.('Game');
+    const placed=scene.v3321SetPlaced?.('guardian-toy-basket',true);
+    const preset=scene.v3321ApplyPreset?.('cozy-dorm');
+    const desk=(scene.decorItems||[]).find(x=>(x.getData?.('objectId')||x.getData?.('decorId'))==='moonlit-study-desk');
+    const saved=scene.readSavedDecorPosition?.('moonlit-study-desk');
+    return {placed,preset,desk:{x:desk?.x,y:desk?.y,visible:desk?.visible},saved,inspect:window.MajickSanctuaryCustomize.inspect(scene)};
+  });
+  await assert(placeAndPreset.placed?.ok&&placeAndPreset.inspect.stored===0,'placing stored Sanctuary furniture failed');
+  await assert(placeAndPreset.preset?.ok&&placeAndPreset.inspect.preset==='cozy-dorm','Cozy Dorm preset failed');
+  await assert(placeAndPreset.desk.visible&&placeAndPreset.saved?.x===1090&&placeAndPreset.saved?.y===780,'Cozy Dorm layout did not persist its study-zone placement');
+  await page.waitForFunction(()=>!S?.majickAccount?.sanctuaryFurniture?.stored?.includes('guardian-toy-basket')&&S?.majickAccount?.sanctuaryFurniture?.preset==='cozy-dorm',{timeout:5000});
 
   // Sanctuary edit positions must be backed by persistent layout storage.
   const layoutWrite=await frame.evaluate(()=>{
