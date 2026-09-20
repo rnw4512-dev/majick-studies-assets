@@ -151,4 +151,6 @@ The user may upload approved art bundles only when explicitly instructed.
 - The service-worker cache is now bumped to `majick-studies-v3-3-17-guardian-repair`.
 - `app-progress.json` is updated to V3.3.17 during deployment.
 - Workflow now verifies `v3317-main.js`, the V3.3.17 app-progress marker, and the V3.3.17 service-worker cache before Pages can publish.
-- Current deployment checkpoint: GitHub Pages run #51 (`f39940180c6c34cb0c2560557ede5bb79925f3c8`) queued at last check.
+- Deployment SUCCESS: GitHub Pages run #52 (`98dd087d11739b1c48f88de71eaccc17b939ccea`) completed successfully. V3.3.17 is now the authoritative main shell and Sanctuary release.
+
+- Run #52 passed assembly, Pages configuration, artifact upload, and GitHub Pages deployment.
