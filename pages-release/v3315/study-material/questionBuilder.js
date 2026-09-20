@@ -48,18 +48,51 @@ function vocabulary(text,limit){
 
 function questions(text,count,sourceId){
   const ss=sentenceList(text);
-  const terms=keyWords(text).slice(0,40);
-  const out=[];
-  for(let i=0;i<ss.length&&out.length<count;i++){
-    const s=ss[(i*3)%ss.length];
-    const candidates=terms.filter(t=>s.toLowerCase().includes(t)).sort((a,b)=>b.length-a.length);
-    const answer=candidates[0];
-    if(!answer)continue;
-    const distractors=terms.filter(t=>t!==answer&&!s.toLowerCase().includes(t)).slice(i%8,(i%8)+3);
-    ['evidence','variable','context'].forEach(x=>{if(distractors.length<3&&!distractors.includes(x))distractors.push(x);});
-    const blank=s.replace(new RegExp('\\b'+escapeRx(answer)+'\\b','i'),'_____');
+  const terms=keyWords(text).slice(0,60);
+  const out=[],seen=new Set();
+  const pairs=[];
+
+  // One useful sentence can support more than one grounded question when it
+  // contains several important terms. This honors the selected count without
+  // inventing facts or repeating an identical answer/prompt pair.
+  ss.forEach((sentence,sentenceIndex)=>{
+    const candidates=terms
+      .filter(term=>new RegExp('\\b'+escapeRx(term)+'\\b','i').test(sentence))
+      .sort((a,b)=>b.length-a.length||terms.indexOf(a)-terms.indexOf(b))
+      .slice(0,5);
+    candidates.forEach((answer,termIndex)=>pairs.push({sentence,sentenceIndex,answer,termIndex}));
+  });
+
+  // Interleave first-choice terms across sentences before using second/third
+  // terms from the same sentence, which keeps a small source set varied.
+  pairs.sort((a,b)=>a.termIndex-b.termIndex||a.sentenceIndex-b.sentenceIndex||b.answer.length-a.answer.length);
+
+  for(const pair of pairs){
+    if(out.length>=count)break;
+    const {sentence,answer,sentenceIndex}=pair;
+    const blank=sentence.replace(new RegExp('\\b'+escapeRx(answer)+'\\b','i'),'_____');
+    if(blank===sentence)continue;
+    const signature=(answer+'|'+blank).toLowerCase();
+    if(seen.has(signature))continue;
+
+    const sentenceTerms=new Set(
+      terms.filter(term=>new RegExp('\\b'+escapeRx(term)+'\\b','i').test(sentence))
+    );
+    const distractors=[];
+    const offset=(sentenceIndex+out.length)%Math.max(1,terms.length);
+    for(let j=0;j<terms.length&&distractors.length<3;j++){
+      const candidate=terms[(offset+j)%terms.length];
+      if(candidate===answer||sentenceTerms.has(candidate)||distractors.includes(candidate))continue;
+      distractors.push(candidate);
+    }
+    ['evidence','variable','context','sample','pattern'].forEach(candidate=>{
+      if(distractors.length<3&&candidate!==answer&&!sentenceTerms.has(candidate)&&!distractors.includes(candidate))distractors.push(candidate);
+    });
+    if(distractors.length<3)continue;
+
+    seen.add(signature);
     const choices=[cap(answer),...distractors.slice(0,3).map(cap)];
-    choices.sort((a,b)=>((a.length+i*5)%13)-((b.length+i*5)%13));
+    choices.sort((a,b)=>((a.length+(out.length+1)*5)%13)-((b.length+(out.length+1)*5)%13));
     out.push({
       id:'notes_'+sourceId+'_'+out.length,
       topicId:'uploaded-notes',
@@ -67,15 +100,14 @@ function questions(text,count,sourceId){
       prompt:'Based on your study material, which term best completes this statement?\n'+blank,
       options:choices,
       answer:cap(answer),
-      why:'Your source says: '+s,
+      why:'Your source says: '+sentence,
       sourceId,
-      sourceExcerpt:s,
+      sourceExcerpt:sentence,
       difficulty:out.length<Math.ceil(count/3)?'foundation':out.length<Math.ceil(count*2/3)?'application':'challenge'
     });
   }
   return out;
 }
-
 function build(text,opts){
   opts=opts||{};
   const ss=sentenceList(text);
