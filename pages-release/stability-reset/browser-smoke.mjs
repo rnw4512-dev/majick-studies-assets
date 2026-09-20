@@ -163,6 +163,97 @@ try{
   }),forged.id);
   await assert(!removed.row&&removed.bank===0,'removing a Notes Forge source left stale source questions behind');
 
+  // WGU courses must keep academic data separate while account rewards stay shared.
+  const courseIsolation=await page.evaluate(()=>{
+    const originalId=S.activeCourse;
+    const originalCourse=S.courses[originalId];
+    const accountBefore={
+      xp:Number(MajickStateCore.ensureAccount()?.xp||0),
+      crystals:Number(MajickStateCore.ensureAccount()?.crystals||0)
+    };
+
+    S.v3311=S.v3311||{};
+    S.v3311.grimoire=S.v3311.grimoire||{page:0,bookmarks:[],notes:{},remember:{},search:''};
+    S.v3311.grimoire.notes=S.v3311.grimoire.notes||{};
+    S.v3311.grimoire.notes.__courseIsolation='ORIGINAL_ONLY';
+    save();
+
+    if(!S.courses.D772){
+      MajickCourseManager.createCourse('D772','Statistical Data Literacy');
+    }else{
+      switchCourse('D772');
+    }
+    MajickStateCore.normalizeAll();
+
+    const d=prog();
+    d.streak=7;
+    d.answers.push({qid:'__d772_isolation_answer',correct:true,ts:Date.now()});
+    S.courses.D772.questionBank=S.courses.D772.questionBank||[];
+    S.courses.D772.questionBank.push({
+      id:'__d772_isolation_question',
+      topicId:'uploaded-notes',
+      type:'mcq',
+      prompt:'D772 isolation marker',
+      options:['A','B','C','D'],
+      answer:'A',
+      sourceId:'__course_isolation'
+    });
+    S.v3311=S.v3311||{};
+    S.v3311.grimoire={page:2,bookmarks:['__d772'],notes:{__courseIsolation:'D772_ONLY'},remember:{},search:'probability'};
+    save();
+
+    const d772BeforeSwitch={
+      streak:d.streak,
+      answer:d.answers.some(x=>x.qid==='__d772_isolation_answer'),
+      question:S.courses.D772.questionBank.some(x=>x.id==='__d772_isolation_question'),
+      note:S.v3311?.grimoire?.notes?.__courseIsolation||null
+    };
+    const accountMid={
+      xp:Number(MajickStateCore.ensureAccount()?.xp||0),
+      crystals:Number(MajickStateCore.ensureAccount()?.crystals||0)
+    };
+
+    switchCourse(originalId);
+    MajickStateCore.normalizeAll();
+    const originalP=prog();
+    const originalAfter={
+      id:S.activeCourse,
+      title:S.courses[S.activeCourse]?.title||'',
+      streak:Number(originalP.streak||0),
+      leakedAnswer:originalP.answers.some(x=>x.qid==='__d772_isolation_answer'),
+      leakedQuestion:(S.courses[S.activeCourse]?.questionBank||[]).some(x=>x.id==='__d772_isolation_question'),
+      note:S.v3311?.grimoire?.notes?.__courseIsolation||null,
+      xp:Number(MajickStateCore.ensureAccount()?.xp||0),
+      crystals:Number(MajickStateCore.ensureAccount()?.crystals||0)
+    };
+
+    switchCourse('D772');
+    MajickStateCore.normalizeAll();
+    const d772After={
+      streak:Number(prog().streak||0),
+      answer:prog().answers.some(x=>x.qid==='__d772_isolation_answer'),
+      question:(S.courses.D772?.questionBank||[]).some(x=>x.id==='__d772_isolation_question'),
+      note:S.v3311?.grimoire?.notes?.__courseIsolation||null,
+      xp:Number(MajickStateCore.ensureAccount()?.xp||0),
+      crystals:Number(MajickStateCore.ensureAccount()?.crystals||0)
+    };
+
+    // Return to the original course so the rest of the smoke stays on its starting class.
+    switchCourse(originalId);
+
+    return {originalId,originalTitle:originalCourse?.title||'',accountBefore,accountMid,originalAfter,d772BeforeSwitch,d772After};
+  });
+
+  await assert(courseIsolation.originalAfter.id===courseIsolation.originalId,'course switch did not return to the original class');
+  await assert(!courseIsolation.originalAfter.leakedAnswer,'D772 answer history leaked into the original course');
+  await assert(!courseIsolation.originalAfter.leakedQuestion,'D772 question bank leaked into the original course');
+  await assert(courseIsolation.originalAfter.note==='ORIGINAL_ONLY','original Grimoire state was not restored by course');
+  await assert(courseIsolation.d772BeforeSwitch.streak===7&&courseIsolation.d772After.streak===7,'D772 class streak did not remain course-specific');
+  await assert(courseIsolation.d772After.answer&&courseIsolation.d772After.question,'D772 academic data did not survive a course switch');
+  await assert(courseIsolation.d772After.note==='D772_ONLY','D772 Grimoire state did not survive a course switch');
+  await assert(courseIsolation.accountBefore.xp===courseIsolation.accountMid.xp&&courseIsolation.accountMid.xp===courseIsolation.d772After.xp,'Majick XP changed merely from switching courses');
+  await assert(courseIsolation.accountBefore.crystals===courseIsolation.accountMid.crystals&&courseIsolation.accountMid.crystals===courseIsolation.d772After.crystals,'Moon Crystals changed merely from switching courses');
+
   // Guardian care must be a functional loop, not decorative buttons.
   const careFlow=await page.evaluate(()=>{
     const initial=MajickGuardianCare.snapshot();
