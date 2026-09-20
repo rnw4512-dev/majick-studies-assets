@@ -108,13 +108,13 @@ h=h.replace(unsafe_prog,safe_prog,1)
 # ------------------------------------------------------------------
 h,n1=re.subn(
     r"catch\(e\)\{console\.error\(e\);document\.getElementById\('app'\)\.innerHTML=`<main class=\"main\"><div class=\"content\"><div class=\"error\"><h2>The app caught an error instead of going blank\.</h2>[\s\S]*?</main>`\}\}",
-    "catch(e){console.error(e);throw e}",
+    "catch(e){console.error(e);throw e}}",
     h,
     count=1
 )
 h,n2=re.subn(
     r"catch\(e\)\{console\.error\('V5 safe render',e\);let app=document\.getElementById\('app'\);if\(app\)app\.innerHTML=`<main class=\"main\"><div class=\"content\"><div class=\"card v5Safe\">[\s\S]*?</main>`\}\}",
-    "catch(e){console.error('V5 safe render',e);throw e}",
+    "catch(e){console.error('V5 safe render',e);throw e}}",
     h,
     count=1
 )
