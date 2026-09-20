@@ -119,3 +119,13 @@ The user may upload approved art bundles only when explicitly instructed.
 - The old V3.3.15 evolution-action files are ignored for live movement.
 - The protected original Phase 4 movers are restored as the live Sanctuary movement source.
 - Approved stage portraits are enlarged to 640×1000 at build time for UI/profile cards.
+
+## V3.3.17 Guardian evolution repair
+- Corrected repair ZIP created: `majick-v3317-evolution-repair.zip`.
+- Contains 60 true individual files: 4 Guardians × 5 stages × walk/play/sleep.
+- Every asset is a 1024×1024 transparent WebP with one Guardian only, centered and enlarged for Phaser.
+- New deployment support added for `sanctuary/assets/majick-v3317-evolution-repair.zip`.
+- New Phaser layer: `pages-release/v3317/v3317-sanctuary.js`.
+- The V3.3.17 layer uses the existing protected Phase 4 movement coordinates and overlays the correct evolved Guardian stage/action art.
+- If the V3.3.17 assets are missing or fail to load, the original protected Phase 4 sprite remains the fallback.
+- The user only needs to upload the single repair ZIP to `sanctuary/assets/`; do not unzip manually and do not touch `sanctuary/assets/motion/`.
