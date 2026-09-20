@@ -338,3 +338,20 @@ print('Guardian care + Moon Crystal economy contract verified')
 print('owned-roster model: pet.id')
 print('egg model: incubator until hatch')
 print('care stations verified:',len(care_objects))
+
+
+# 11) Study progress must exist before XP/crystal reads.
+main_html=(site/'index.html').read_text(encoding='utf-8')
+if "function prog(){" not in main_html:
+    fail('Safe prog() function is missing from assembled app')
+if "let p=S.progress[S.activeCourse];" not in main_html:
+    fail('prog() does not read the active course safely')
+if "p=S.progress[S.activeCourse]={" not in main_html:
+    fail('prog() does not synchronously create missing course progress')
+if "p.xp=Number(p.xp||0);" not in main_html:
+    fail('prog() does not normalize XP before reads')
+if "p.crystals=Number(p.crystals||0);" not in main_html:
+    fail('prog() does not normalize crystals before reads')
+if "function prog(){return S.progress[S.activeCourse]}" in main_html:
+    fail('Unsafe legacy prog() returned to the assembled app')
+print('Study progress state hardening verified: XP/crystal reads cannot see undefined progress')
