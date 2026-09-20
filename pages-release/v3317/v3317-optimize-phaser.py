@@ -22,7 +22,14 @@ def convert(src,dst,max_dim,quality=82):
 
 # Protected originals remain untouched. Phaser loads these derived runtime copies.
 for src in motion.glob('*.png'):
-    convert(src,runtime_motion/(src.stem+'.webp'),512,80)
+    dst=runtime_motion/(src.stem+'.webp')
+    convert(src,dst,512,80)
+    # Image encoders can occasionally leave an empty derived file in CI.
+    # Retry once and fail the build instead of shipping a broken Phaser texture.
+    if not dst.exists() or dst.stat().st_size < 256:
+        convert(src,dst,512,80)
+    if not dst.exists() or dst.stat().st_size < 256:
+        raise RuntimeError('invalid runtime motion image: '+src.name)
 
 # Optimize exactly the objects the manifest marks for Phaser startup.
 manifest_path=objects/'objects-manifest.json'

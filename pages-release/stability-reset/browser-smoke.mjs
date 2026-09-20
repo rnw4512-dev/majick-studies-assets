@@ -43,6 +43,14 @@ try{
   await assert(boot.guardians.length>=10,'baseline Guardian registry unexpectedly shrank');
   await page.waitForSelector('.v3327Home',{timeout:10000});
   await assert(await page.locator('.v3327PortalHero').count()===1,'Moonlit Collegium did not render on the first app load');
+  const firstHeroLayout=await page.evaluate(()=>{
+    const hero=document.querySelector('.v3327PortalHero')?.getBoundingClientRect();
+    const copy=document.querySelector('.v3327HeroCopy')?.getBoundingClientRect();
+    const seal=document.querySelector('.v3327RegistrarSeal')?.getBoundingClientRect();
+    return hero&&copy&&seal?{heroWidth:hero.width,copyWidth:copy.width,copyX:copy.x,sealX:seal.x}:null;
+  });
+  await assert(firstHeroLayout&&firstHeroLayout.copyWidth>firstHeroLayout.heroWidth*.55,'Moonlit Collegium hero copy is squeezed into the seal column');
+  await assert(firstHeroLayout.sealX>firstHeroLayout.copyX,'Arcane Registrar seal is not positioned beside the course introduction');
 
   const balanceRecovery=await page.evaluate(()=>{
     // Create the exact affected ownership signature without adding any unowned Guardian.
