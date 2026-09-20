@@ -2,7 +2,7 @@
 'use strict';
 if(!window.MajickLearningLab||!window.MajickMaterialStore)return;
 
-const VERSION='3.3.26';
+const VERSION='3.3.28';
 const D772_SECTION_ONE={
   id:'d772-section-1',
   title:'Section 1: Assessing Research and Data Credibility',
@@ -27,12 +27,122 @@ const D772_SECTION_ONE={
       visual:['Study design','Evidence observed','Population represented','Limits','Supported conclusion'],
       thinking:['What did the study actually observe?','Who does the sample represent?','Is this association or evidence of cause?','What limitations narrow the conclusion?','Is the claim stronger than the evidence?'],
       traps:['Turning correlation into causation.','Generalizing beyond the population represented by the sample.','Ignoring limitations when judging a claim.']},
-    {id:'d772-s1-review',number:5,title:'Section 1 Review',short:'Section Review',review:true,keywords:[],
+    {id:'d772-s1-review',number:null,title:'Section 1: Summary and Test',short:'Section 1 Review',review:true,keywords:[],
       goal:'Combine data collection, bias, representation, and conclusion skills in mixed evidence-based practice.',
       visual:['Collection','Bias','Representation','Conclusion','Credibility decision'],
       thinking:['How was the data collected?','What bias is possible?','Is the display fair?','What conclusion is supported?','What would make the evidence stronger?'],
       traps:['Solving only one part of a multi-step credibility problem.','Choosing the strongest-sounding conclusion instead of the best-supported conclusion.']}
   ]
+};
+
+const D772_SECTION_ONE_CONTENT={
+  'd772-s1-l1':{
+    overview:'Lesson 1 asks where the data came from and how the study was designed. Follow the chain: population and sample → sampling method → study type → experimental design.',
+    teach:[
+      {title:'Population, sample, individuals, variables, and data',text:'Population means the entire group of interest; sample means the smaller group actually studied. A parameter describes a population, while a statistic describes a sample. Individuals are the people or objects described by the data. Variables are characteristics measured on those individuals, and data are the recorded values. Quantitative variables are meaningful numerical measurements; categorical variables are labels or groups.'},
+      {title:'Random sampling methods',text:'Simple random sampling selects entirely by chance. Stratified sampling takes SOME FROM ALL subgroups. Cluster sampling takes ALL FROM SOME randomly selected groups. Systematic sampling chooses a random starting point and then every nth individual. Random sampling decides WHO enters the sample.'},
+      {title:'Observational studies, surveys, and experiments',text:'Observational studies measure variables as they naturally occur. A sample survey is an observational study based on self-reported answers. An experiment deliberately imposes a treatment. The explanatory variable may explain or predict the outcome; the response variable is the measured outcome.'},
+      {title:'Strong experimental design',text:'Randomization assigns experimental units to treatments by chance. Replication uses enough observations or repeated studies. A control group gives a comparison baseline. A placebo is inactive; the placebo effect is a response caused by expectation. Single-blind means participants do not know treatment assignment; double-blind means participants and interacting researchers do not know. Random assignment decides WHERE participants go after they enter the study.'}
+    ],
+    vocab:[
+      ['Population','The entire group of individuals or objects the researcher wants to study.'],
+      ['Sample','A smaller group selected from the population to represent the larger group.'],
+      ['Parameter','A numerical value describing a characteristic of a population.'],
+      ['Statistic','A numerical value describing a characteristic of a sample.'],
+      ['Individual','A person or object described by the data.'],
+      ['Variable','A characteristic or measurement recorded on an individual.'],
+      ['Quantitative variable','A variable whose values are meaningful numerical measurements.'],
+      ['Categorical variable','A variable whose values are labels or categories.'],
+      ['Simple random sample','A random sample in which every possible same-size subset has an equal chance of selection.'],
+      ['Stratified sample','Divide into strata and randomly sample some individuals from every stratum.'],
+      ['Cluster sample','Randomly select some natural groups and include everyone in the chosen groups.'],
+      ['Systematic sample','Choose a random start and then select every nth individual.'],
+      ['Observational study','Researchers observe variables without assigning a treatment.'],
+      ['Sample survey','An observational study in which people self-report answers or opinions.'],
+      ['Experiment','Researchers deliberately manipulate an explanatory variable and observe the response.'],
+      ['Randomization','Assigning experimental units to treatment groups by chance.'],
+      ['Replication','Using enough observations or repeating a study so results are not driven by a few unusual cases.'],
+      ['Control group','A comparison group that does not receive the experimental treatment.'],
+      ['Placebo','An inactive treatment.'],
+      ['Blinding','Keeping participants and/or researchers unaware of treatment assignment.']
+    ],
+    memory:['Population = ALL; Sample = SOME.','Parameter → Population; Statistic → Sample.','Stratified = SOME FROM ALL; Cluster = ALL FROM SOME.','Random sampling = WHO enters; random assignment = WHERE they go.','Researcher changes something = experiment.']
+  },
+  'd772-s1-l2':{
+    overview:'Lesson 2 asks whether the data-collection process systematically favored certain people, answers, or outcomes. The fastest way to diagnose bias is to identify WHERE the distortion entered the study.',
+    teach:[
+      {title:'Representative vs. non-representative samples',text:'A representative sample reasonably reflects the target population. A non-representative sample systematically misses or overrepresents important groups, weakening the credibility of conclusions about the larger population.'},
+      {title:'Selection problems',text:'Sampling bias occurs when the selection method makes some population members more likely to be included. Convenience sampling chooses whoever is easiest to reach. A volunteer sample lets people choose themselves; voluntary response bias occurs because people with strong opinions are often more likely to participate. A sampling-frame error occurs when the list used to select people does not cover the full target population.'},
+      {title:'Response problems',text:'Non-response bias happens after selection when people who refuse, fail to answer, or drop out differ systematically from those who respond. Response bias occurs when participants give inaccurate answers because of misunderstanding, memory, social pressure, embarrassment, interviewer effects, or fear. Perceived lack of anonymity is a response-bias problem caused by fear that answers can be traced back to the respondent.'},
+      {title:'Wording and self-interest',text:'A loaded question nudges respondents toward a particular answer through wording. A self-interest study is a credibility concern when a researcher or sponsor has something to gain from a particular result. A conflict of interest is a reason for closer scrutiny, not automatic proof that the findings are false.'}
+    ],
+    vocab:[
+      ['Representative sample','A sample that reasonably reflects the characteristics of the target population.'],
+      ['Non-representative sample','A biased sample that does not accurately reflect the target population.'],
+      ['Volunteer sample','A non-random sample in which people select themselves to participate.'],
+      ['Voluntary response bias','Bias caused when people with strong opinions or special interest are especially likely to volunteer.'],
+      ['Convenience sample','A sample chosen because the individuals are easy to reach.'],
+      ['Sampling frame','The list of potential individuals from which a sample is selected.'],
+      ['Sampling frame error','A problem in which the sampling frame does not cover the full target population.'],
+      ['Sampling bias','A selection problem that gives some population members a systematically different chance of inclusion.'],
+      ['Non-response bias','Bias caused when selected nonresponders differ systematically from responders.'],
+      ['Response bias','Inaccurate answers caused by pressure, misunderstanding, memory, fear, or other response effects.'],
+      ['Perceived lack of anonymity','Response bias caused by fear that an honest answer can be linked back to the respondent.'],
+      ['Loaded question','Question wording that pushes respondents toward a particular answer.'],
+      ['Self-interest study','A study in which the researcher or sponsor has a stake in a particular outcome.']
+    ],
+    memory:['Sampling bias = wrong/unbalanced PEOPLE. Response bias = inaccurate ANSWERS.','Voluntary response = people choose themselves IN. Non-response = selected people stay OUT.','Convenience = researcher chooses easy people. Volunteer = people choose themselves.','A random sample cannot fix a bad sampling frame.']
+  },
+  'd772-s1-l3':{
+    overview:'Lesson 3 asks whether the display, sample size, significance claim, or reporting practice could mislead the reader—even when some of the underlying numbers are technically real.',
+    teach:[
+      {title:'Misleading graphical displays',text:'A truncated bar-chart axis can make a modest difference look enormous. Icons enlarged in both height and width exaggerate area. A tilted 3-D pie chart can make equal slices appear unequal because of perspective. Always compare the visual impression with the actual values, scale, labels, units, and intervals.'},
+      {title:'Sample size and random variation',text:'Small samples are more vulnerable to random fluctuations and can produce extreme-looking results by chance. Larger samples generally provide more stable estimates when the sampling method itself is sound. A huge biased sample is still biased.'},
+      {title:'Statistical significance',text:'In D772, statistical significance means the observed result is unlikely to be explained by random chance alone under the statistical method used. It does not automatically mean the effect is large, important, unbiased, ethical, or proven with certainty. Statistical significance and practical importance answer different questions.'},
+      {title:'Misrepresentation, fabrication, and falsification',text:'Misrepresentation presents information in a way likely to produce an incorrect conclusion. Fabrication invents data or results that never existed. Falsification manipulates the research record by altering values, changing instruments without disclosure, misreporting subject counts, intentionally selecting a biased sample, omitting inconvenient valid data, or duplicating observations. Transparent pre-established exclusion rules are different from secretly deleting results because they hurt a preferred conclusion.'}
+    ],
+    vocab:[
+      ['Statistical significance','Evidence that an observed result is unlikely to be explained by random chance alone under the statistical method used.'],
+      ['Practical significance','Whether the size of an effect is large or meaningful enough to matter in the real world.'],
+      ['Misrepresenting data','Presenting real or partly real data in a way likely to mislead viewers or encourage an incorrect conclusion.'],
+      ['Fabricating data','Making up data or results that were never actually observed.'],
+      ['Falsifying data','Changing, omitting, manipulating, or otherwise distorting the research record.'],
+      ['Truncated axis','A graph axis that begins close to the observed values rather than an appropriate baseline, potentially exaggerating visual differences.'],
+      ['Duplicating data','Counting copied observations as if they were new independent observations.']
+    ],
+    memory:['Statistically significant = unlikely to be chance; practically significant = large or meaningful enough to matter.','Misrepresentation can use real data misleadingly; falsification changes or invents the research record.','Small sample = more random bounce. Large sample does not cure bias.','Bars compare length; pictures can trick your eye into comparing area.']
+  },
+  'd772-s1-l4':{
+    overview:'Lesson 4 connects the study design to the conclusion you are allowed to make. The central rule is that association is not the same as causation, and a scatterplot shows a relationship but not why it exists.',
+    teach:[
+      {title:'Association vs. causation',text:'Association means two variables are related. A causal relationship means a change in one variable directly produces an effect in the other. Observational studies can support association but cannot establish causation by themselves. A well-designed randomized experiment can support a causal conclusion when alternative explanations are appropriately controlled.'},
+      {title:'Confounding variables',text:'A confounding variable is related to both the explanatory and response variables and can make them appear directly connected. Ask whether a third variable could explain why the two measured variables occur together. Examples include sun exposure in sunscreen/skin-cancer data and season or temperature in ice-cream-sales/shark-attack data.'},
+      {title:'Scatterplot shape, trend, strength, and outliers',text:'A scatterplot displays the relationship between two quantitative variables. Describe SHAPE first: linear, nonlinear, or no pattern. For a linear relationship describe TREND as positive or negative. Describe STRENGTH by how tightly the points follow the pattern. Identify OUTLIERS that sit noticeably away from the overall pattern. Nonlinear does not mean no relationship.'},
+      {title:'Correlation still does not prove cause',text:'Even a very strong positive or negative scatterplot pattern does not prove that one variable causes the other. Confounding, reverse direction, or coincidence can produce correlation. Causal reasoning comes from the study design, especially manipulation, comparison/control, and random assignment.'}
+    ],
+    vocab:[
+      ['Association','A relationship between two variables.'],
+      ['Causal relationship','A relationship in which a change in one variable directly produces an effect in another.'],
+      ['Confounding variable','A variable associated with both the explanatory and response variables that can distort the apparent relationship.'],
+      ['Scatterplot','A graph that displays the relationship between two quantitative variables.'],
+      ['Linear relationship','A point pattern that roughly follows a straight line.'],
+      ['Nonlinear relationship','A clear relationship whose pattern is curved or otherwise not well described by a straight line.'],
+      ['Positive correlation','A linear pattern in which higher values of one variable tend to occur with higher values of the other.'],
+      ['Negative correlation','A linear pattern in which higher values of one variable tend to occur with lower values of the other.'],
+      ['Outlier','A point that lies noticeably away from the overall pattern.']
+    ],
+    memory:['OBSERVE → association only. EXPERIMENT → causation may be justified.','Scatterplot routine: SHAPE → TREND → STRENGTH → OUTLIERS.','Positive does not mean good; negative does not mean bad.','Strong correlation still does not prove causation.']
+  },
+  'd772-s1-review':{
+    overview:'Section 1 Summary and Test combines the entire research-credibility chain. Start with who was studied and how they were selected, then identify study design and bias, inspect the display and significance claim, evaluate research integrity, and finish by deciding what conclusion the evidence supports.',
+    teach:[
+      {title:'Section 1 decision path',text:'1) Identify population, sample, individuals, variables, and variable type. 2) Determine the sampling method. 3) Identify observational study, survey, or experiment. 4) For experiments, inspect randomization, replication, control, placebo, and blinding. 5) Diagnose bias. 6) Inspect graphs for visual distortion. 7) Consider sample size and statistical significance. 8) Check whether data were honestly reported. 9) Decide whether the evidence supports association only or a causal conclusion and, when relevant, describe scatterplots by shape, trend, strength, and outliers.'},
+      {title:'Master trap pairs',text:'Population vs. sample = entire group vs. smaller group studied. Parameter vs. statistic = population number vs. sample number. Stratified vs. cluster = some from all vs. all from some. Random sampling vs. random assignment = who enters vs. which treatment group they enter. Sampling bias vs. response bias = wrong people vs. wrong answers. Statistical significance vs. practical importance = unlikely due to chance vs. meaningful size. Association vs. causation = variables related vs. one directly causes the other.'},
+      {title:'Math-anxiety strategy',text:'Section 1 is mainly reasoning and vocabulary, not heavy calculation. Translate a complicated prompt into one question: “What exactly is the study doing?” Then classify the situation. Read graph scales before trusting the picture, do not translate “statistically significant” into “large,” and never translate a strong correlation into causation.'}
+    ],
+    vocab:[],
+    memory:['One Section 1. Four lessons. One final Summary and Test.','Follow the evidence from collection → bias → presentation → conclusion.']
+  }
 };
 
 const cache={};
@@ -255,8 +365,8 @@ function dynamicSections(id,sourceRows){
 }
 function sections(id=cid()){
   const sourceRows=rows(id);
-  // D772 has one official path right now: Section 1. Uploaded material is
-  // sorted into these lessons; it must never create duplicate auto-sections.
+  // D772 has exactly one official course section: Section 1. There is no Section 2.
+  // Uploaded material is sorted into Lessons 1–4 and the Section 1 Summary/Test only.
   if(id==='D772')return [JSON.parse(JSON.stringify(D772_SECTION_ONE))];
   return dynamicSections(id,sourceRows);
 }
@@ -298,8 +408,9 @@ function answersForQuestions(qs,id=cid()){
   const ids=new Set((qs||[]).map(q=>q.id));
   return (prog(id).answers||[]).filter(a=>ids.has(a.qid));
 }
+function officialD772Content(lesson,id=cid()){return id==='D772'&&lesson?D772_SECTION_ONE_CONTENT[lesson.id]||null:null}
 function mastery(lesson,id=cid()){
-  const src=sourcesForLesson(lesson,id),qs=questionsForLesson(lesson,id),answers=answersForQuestions(qs,id);
+  const src=sourcesForLesson(lesson,id),official=officialD772Content(lesson,id),qs=questionsForLesson(lesson,id),answers=answersForQuestions(qs,id);
   const byId=new Map(qs.map(q=>[q.id,q]));
   const attempts=answers.length,correct=answers.filter(a=>a.correct).length;
   const accuracy=attempts?Math.round(correct/attempts*100):0;
@@ -315,16 +426,17 @@ function mastery(lesson,id=cid()){
   if(attempts>=6&&accuracy>=82&&rigorCorrect[3]>=2)targetRigor=4;
   if(recent.length>=3&&recentAccuracy<.5)targetRigor=Math.max(1,targetRigor-1);
 
+  const sourceCount=src.length+(official?1:0);
   let status='Not Started';
-  if(src.length){
+  if(sourceCount){
     if(!attempts)status='Learning';
     else if(recent.length>=3&&recentAccuracy<.5)status='Needs Review';
     else if(attempts>=8&&accuracy>=85&&rigorCorrect[4]>=2)status='Mastered';
     else if(attempts>=5&&accuracy>=78&&rigorCorrect[3]>=2)status='Proficient';
     else status='Developing';
   }
-  if(lesson.review&&!src.length)status='Not Started';
-  return {status,attempts,correct,accuracy,targetRigor,rigorCorrect,recentAccuracy,sourceCount:src.length,questionCount:qs.length};
+  if(lesson.review&&!sourceCount)status='Not Started';
+  return {status,attempts,correct,accuracy,targetRigor,rigorCorrect,recentAccuracy,sourceCount,questionCount:qs.length};
 }
 function sectionProgress(section,id=cid()){
   const lessons=section.lessons.filter(l=>!l.review);
@@ -420,13 +532,16 @@ function mergeLessonTeaching(sourceRows,lesson,id=cid()){
 }
 function chapter(lesson,id=cid()){
   const sourceRows=sourcesForLesson(lesson,id);
+  const official=officialD772Content(lesson,id);
   const passages=dedupePassages(sourceRows,lesson,id);
   const mergedTeaching=mergeLessonTeaching(sourceRows,lesson,id);
-  const vocab=dedupeVocab(sourceRows,lesson,id);
+  const uploadedVocab=dedupeVocab(sourceRows,lesson,id);
+  const vocab=[];const vocabSeen=new Set();
+  for(const v of [...(official?.vocab||[]).map(x=>({term:x[0],definition:x[1],sourceName:'D772 Section 1 Master Notes'})),...uploadedVocab]){const key=norm(v.term);if(!key||vocabSeen.has(key))continue;vocabSeen.add(key);vocab.push(v)}
   const explanations=uniqText(lessonItems(sourceRows,'explanations',lesson,id),x=>x.explanation);
   const repairs=uniqText(lessonItems(sourceRows,'misconceptionRepair',lesson,id),x=>x.correction);
   const m=mastery(lesson,id);
-  return {lesson,section:findSectionForLesson(lesson,id),sourceRows,passages,mergedTeaching,vocab,explanations,repairs,mastery:m};
+  return {lesson,section:findSectionForLesson(lesson,id),sourceRows,official,passages,mergedTeaching,vocab,explanations,repairs,mastery:m};
 }
 function nextStep(m){
   if(!m.sourceCount)return 'Add this lesson’s notes to unlock its tutor chapter.';
@@ -464,7 +579,7 @@ function renderPath(){
   const id=cid(),secs=sections(id);
   const active=selectedLesson(id);
   const pathHero=id==='D772'
-    ? '<div class="tutorHero tutorHeroCompact"><div><span>D772 • SECTION 1 COURSE PATH</span><h3>Four lessons. One Section 1 review.</h3><p>Choose the lesson you need. Your uploaded notes stay intact and are sorted into the correct lesson below.</p></div><button class="btn primary" id="continueTutor">'+(active?'Continue '+E(active.short||active.title):'Open Tutor')+' →</button></div>'
+    ? '<div class="tutorHero tutorHeroCompact"><div><span>D772 • SECTION 1 • COMPLETE COURSE PATH</span><h3>Four lessons. One Section 1 Summary and Test. No Section 2.</h3><p>The complete Section 1 master notes are built into the Tutor. Extra uploads stay intact and are sorted into the correct lesson without creating duplicate sections.</p></div><button class="btn primary" id="continueTutor">'+(active?'Continue '+E(active.short||active.title):'Open Tutor')+' →</button></div>'
     : '<div class="tutorHero"><div><span>MAJICK COURSE TUTOR • '+E(id)+'</span><h3>Learn the course in order. Prove each lesson at higher rigor.</h3><p>Your uploaded notes automatically fill this path. Repeated material is deduplicated in the tutor chapter and the active question bank.</p></div><button class="btn primary" id="continueTutor">'+(active?'Continue '+E(active.short||active.title):'Open Tutor')+' →</button></div>';
   box.innerHTML=pathHero+
     secs.map(sec=>{
@@ -485,6 +600,10 @@ function visualHtml(lesson){
   const v=lesson.visual||['Learn','Practice','Apply','Review'];
   return '<div class="tutorVisual">'+v.map((x,i)=>'<div><span>'+E(x)+'</span></div>'+(i<v.length-1?'<b>→</b>':'')).join('')+'</div>';
 }
+function officialTeachingHtml(official){
+  if(!official)return '';
+  return '<article class="tutorOfficialTeaching"><small>AUTHORITATIVE D772 • SECTION 1 MASTER NOTES</small><h4>'+E(official.overview)+'</h4>'+(official.teach||[]).map(x=>'<div class="tutorOfficialTopic"><b>'+E(x.title)+'</b><p>'+E(x.text)+'</p></div>').join('')+((official.memory||[]).length?'<div class="tutorMemoryCues"><small>MEMORY CUES</small><ul>'+official.memory.map(x=>'<li>'+E(x)+'</li>').join('')+'</ul></div>':'')+'</article>';
+}
 function renderTutor(){
   const box=document.getElementById('courseTutorLesson');if(!box)return;
   const id=cid(),lesson=selectedLesson(id);
@@ -492,8 +611,8 @@ function renderTutor(){
   const ch=chapter(lesson,id),m=ch.mastery;
   const sourceNames=uniqText(ch.sourceRows.map(r=>r.sourceName));
   const deep=ch.mergedTeaching?[ch.mergedTeaching]:ch.passages.slice(0,5);
-  const sourceEvidence=deep.length?deep.map((p,i)=>'<article class="'+(p.merged?'tutorMergedTeaching':'')+'"><small>'+(p.merged?'MERGED LESSON CHAPTER • '+p.originalPassageCount+' NOTE PASSAGES REVIEWED':'READING '+(i+1)+' • '+E(p.sourceName))+'</small><h4>'+E(p.title)+'</h4><p>'+E(p.text)+'</p>'+(p.merged?'<span class="tutorMergeNote">Repeated and overlapping material was combined here. Your original uploads were not rewritten.</span>':'')+'</article>').join(''):
-    '<div class="tutorLocked">Upload notes for this lesson and Majick will build its teaching chapter here.</div>';
+  const uploadedEvidence=!ch.official&&deep.length?deep.map((p,i)=>'<article class="'+(p.merged?'tutorMergedTeaching':'')+'"><small>'+(p.merged?'MERGED LESSON CHAPTER • '+p.originalPassageCount+' NOTE PASSAGES REVIEWED':'READING '+(i+1)+' • '+E(p.sourceName))+'</small><h4>'+E(p.title)+'</h4><p>'+E(p.text)+'</p>'+(p.merged?'<span class="tutorMergeNote">Repeated and overlapping material was combined here. Your original uploads were not rewritten.</span>':'')+'</article>').join(''):'';
+  const sourceEvidence=officialTeachingHtml(ch.official)+uploadedEvidence||'<div class="tutorLocked">Upload notes for this lesson and Majick will build its teaching chapter here.</div>';
   box.innerHTML='<div class="tutorLessonHead"><div><button class="tutorBack" id="tutorBack">← Course Path</button><span>'+E(ch.section?.title||id)+' • '+E(lessonNumberLabel(lesson))+'</span><h2>'+E(lesson.title)+'</h2><p>'+E(lesson.goal||'Learn and apply this lesson.')+'</p></div><div class="masteryBadge '+statusClass(m.status)+'"><small>MASTERY</small><b>'+E(m.status)+'</b><span>'+m.accuracy+'% • target rigor '+m.targetRigor+'</span></div></div>'+
     '<div class="tutorNext"><b>What Majick wants you to do next:</b> '+E(nextStep(m))+'</div>'+
     '<section class="tutorChapterBlock"><div class="tutorBlockTitle"><span>1</span><div><small>TEACH ME</small><h3>Build the idea before memorizing it</h3></div></div>'+sourceEvidence+'</section>'+
@@ -502,7 +621,7 @@ function renderTutor(){
     '<section class="tutorChapterBlock"><div class="tutorBlockTitle"><span>4</span><div><small>HOW TO THINK THROUGH IT</small><h3>Use this when a question feels confusing</h3></div></div><ol class="thinkingSteps">'+(lesson.thinking||[]).map(x=>'<li>'+E(x)+'</li>').join('')+'</ol></section></div>'+
     '<div class="tutorTwoCol"><section class="tutorChapterBlock trapBlock"><div class="tutorBlockTitle"><span>5</span><div><small>COMMON TRAPS</small><h3>What Majick should catch you doing</h3></div></div><ul>'+[...(lesson.traps||[]),...ch.repairs.slice(0,3).map(r=>r.correction)].slice(0,6).map(x=>'<li>'+E(x)+'</li>').join('')+'</ul></section>'+
     '<section class="tutorChapterBlock"><div class="tutorBlockTitle"><span>6</span><div><small>PROVE IT</small><h3>Adaptive lesson practice</h3></div></div><div class="proveStats"><span><b>'+m.questionCount+'</b> lesson questions</span><span><b>'+m.attempts+'</b> attempts</span><span><b>'+m.accuracy+'%</b> accuracy</span><span><b>R'+m.targetRigor+'</b> next rigor</span></div><button class="btn primary" id="tutorPractice" '+(m.questionCount?'':'disabled')+'>'+ (m.status==='Needs Review'?'Repair this lesson':'Start adaptive lesson practice')+' →</button></section></div>'+
-    '<section class="tutorSources"><div><b>Source coverage</b><span>'+E(sourceNames.length?sourceNames.join(' • '):'No lesson source uploaded yet')+'</span></div><button class="tutorManageSources" id="tutorManageSources" type="button">Manage or delete source notes →</button></section>';
+    '<section class="tutorSources"><div><b>Source coverage</b><span>'+E(ch.official?('D772 Section 1 Master Notes'+(sourceNames.length?' • '+sourceNames.join(' • '):'')):(sourceNames.length?sourceNames.join(' • '):'No lesson source uploaded yet'))+'</span></div><button class="tutorManageSources" id="tutorManageSources" type="button">Manage or delete source notes →</button></section>';
   document.getElementById('tutorBack')?.addEventListener('click',()=>show('path'));
   document.getElementById('tutorPractice')?.addEventListener('click',()=>startPractice(lesson,id));
   document.getElementById('tutorManageSources')?.addEventListener('click',()=>{try{navigate('addmaterial')}catch(_){}});
@@ -522,5 +641,5 @@ MajickLearningLab.bind=function(){
 };
 const baseRefresh=MajickLearningLab.refresh;
 MajickLearningLab.refresh=function(){baseRefresh();hydrate()};
-window.MajickCourseTutor={VERSION,D772_SECTION_ONE,hydrate,sections,classifySource,annotateSource,tagD772Generated,classifyD772Item,d772Segments,sourcesForLesson,questionsForLesson,mastery,sectionProgress,chapter,mergeLessonTeaching,startPractice,show,renderPath,renderTutor,selectedLesson};
+window.MajickCourseTutor={VERSION,D772_SECTION_ONE,D772_SECTION_ONE_CONTENT,hydrate,sections,classifySource,annotateSource,tagD772Generated,classifyD772Item,d772Segments,sourcesForLesson,questionsForLesson,mastery,sectionProgress,chapter,mergeLessonTeaching,officialD772Content,startPractice,show,renderPath,renderTutor,selectedLesson};
 })();
