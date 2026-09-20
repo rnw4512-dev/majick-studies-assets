@@ -86,6 +86,7 @@ jobs:
           test -s pages-release/v3317/v3317-sanctuary.js
           test -s pages-release/v3317/v3317-main.js
           test -s pages-release/v3317/v3317-apply.py
+          test -s pages-release/v3317/refresh-v3317.html
           test -s pages-release/v3316/enlarge-approved-stage-art.py
           test -s sanctuary/assets/objects/objects-manifest.json
           test -s sanctuary/assets/objects/generate-object-library.py
@@ -186,6 +187,7 @@ jobs:
           cp pages-release/v3317/v3317-sanctuary.js _site/sanctuary/v3317-sanctuary.js
           cp pages-release/v3317/v3317-main.js _site/v3317-main.js
           python pages-release/v3317/v3317-apply.py _site
+          cp pages-release/v3317/refresh-v3317.html _site/refresh-v3317.html
           python -c "from pathlib import Path; p=Path('_site/sanctuary/index.html'); s=p.read_text(); tag='<script src=\"./v3317-sanctuary.js?v=3317\"></script>'; s=s if tag in s else s.replace('</body>',tag+'\\n</body>',1); p.write_text(s)"
 
           # HARD RULE: copy the original Phase 4 images byte-for-byte; never regenerate them.
@@ -300,6 +302,7 @@ jobs:
           node --check _site/v3316-main.js
           test -s _site/sanctuary/v3317-sanctuary.js
           test -s _site/v3317-main.js
+          test -s _site/refresh-v3317.html
           grep -q "v3317-sanctuary.js" _site/sanctuary/index.html
           grep -q "v3317-main.js?v=3317" _site/index.html
           grep -q "V3.3.17" _site/app-progress.json
