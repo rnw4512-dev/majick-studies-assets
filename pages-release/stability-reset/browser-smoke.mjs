@@ -39,7 +39,7 @@ try{
   await assert(boot.hasRender,'render() unavailable after boot');
   await assert(boot.hasState,'MajickStateCore unavailable after boot');
   await assert(boot.hasRegistry,'Guardian registry unavailable after boot');
-  await assert(boot.version==='3.3.27-moonlit-collegium','wrong deployed runtime version: '+boot.version);
+  await assert(boot.version==='3.3.28-section-one-master','wrong deployed runtime version: '+boot.version);
   await assert(boot.guardians.length>=10,'baseline Guardian registry unexpectedly shrank');
   await page.waitForSelector('.v3327Home',{timeout:10000});
   await assert(await page.locator('.v3327PortalHero').count()===1,'Moonlit Collegium did not render on the first app load');
@@ -397,9 +397,14 @@ try{
   const d772Path=await page.evaluate(()=>({
     sections:MajickCourseTutor.sections('D772').map(s=>({id:s.id,title:s.title,lessons:s.lessons.map(x=>x.title)}))
   }));
-  await assert(d772Path.sections.length===1,'D772 must have exactly one canonical section; duplicate auto-sections were created');
+  await assert(d772Path.sections.length===1,'D772 must have exactly one canonical section; Section 2 or duplicate auto-sections were created');
   await assert(d772Path.sections[0].id==='d772-section-1'&&d772Path.sections[0].title==='Section 1: Assessing Research and Data Credibility','D772 canonical Section 1 metadata is wrong');
-  await assert(d772Path.sections[0].lessons.join('|')==='Understanding Data Collection Methods|Recognizing Bias in Data Collection|Unveiling Data Misrepresentations|Conclusions About Data Findings|Section 1 Review','D772 Section 1 learning path order is wrong');
+  await assert(d772Path.sections[0].lessons.join('|')==='Understanding Data Collection Methods|Recognizing Bias in Data Collection|Unveiling Data Misrepresentations|Conclusions About Data Findings|Section 1: Summary and Test','D772 Section 1 learning path order is wrong');
+  await assert(d772Path.sections[0].lessons.length===5,'D772 Section 1 must contain four lessons plus one Summary/Test');
+  const reviewMeta=MajickCourseTutor.D772_SECTION_ONE.lessons.find(x=>x.review);
+  await assert(reviewMeta?.number==null&&reviewMeta?.title==='Section 1: Summary and Test','Section 1 review was incorrectly numbered as Lesson 5');
+  await assert(!MajickCourseTutor.sections('D772').some(s=>/Section\\s*2/i.test(s.title||'')),'D772 incorrectly exposes a Section 2');
+  await assert(Object.keys(MajickCourseTutor.D772_SECTION_ONE_CONTENT||{}).length===5,'built-in D772 Section 1 master content is incomplete');
   await page.waitForSelector('#courseTutorPath .pathSection',{timeout:10000});
   await assert(await page.locator('#courseTutorPath .pathSection').count()===1,'D772 Course Path rendered repeated/extra sections');
   await assert(await page.getByText('Section 1: Assessing Research and Data Credibility',{exact:true}).count()>=1,'D772 Section 1 path is not visible');
@@ -408,12 +413,12 @@ try{
   const tutorDepth=await page.evaluate(()=>{
     const lesson=MajickCourseTutor.selectedLesson('D772');
     const c=MajickCourseTutor.chapter(lesson,'D772');
-    return {lesson:lesson?.id,sources:c.sourceRows.length,passages:c.passages.length,merged:!!c.mergedTeaching,mergedTitle:c.mergedTeaching?.title||'',vocab:c.vocab.length,status:c.mastery.status,target:c.mastery.targetRigor};
+    return {lesson:lesson?.id,sources:c.sourceRows.length,official:!!c.official,officialTopics:c.official?.teach?.length||0,passages:c.passages.length,merged:!!c.mergedTeaching,mergedTitle:c.mergedTeaching?.title||'',vocab:c.vocab.length,status:c.mastery.status,target:c.mastery.targetRigor};
   });
-  await assert(tutorDepth.lesson==='d772-s1-l1'&&tutorDepth.sources>=1,'Course Tutor did not open the note-backed D772 Lesson 1');
+  await assert(tutorDepth.lesson==='d772-s1-l1'&&tutorDepth.official&&tutorDepth.officialTopics>=4,'Course Tutor did not open the built-in D772 Lesson 1 master notes');
   await assert(tutorDepth.passages>=1&&tutorDepth.vocab>=1,'Course Tutor did not build deep lesson teaching content');
   await assert(tutorDepth.merged&&/Complete Lesson 1 Teaching Notes/.test(tutorDepth.mergedTitle),'D772 Lesson 1 was not combined into one complete teaching chapter');
-  await assert(await page.locator('#courseTutorLesson .tutorMergedTeaching').count()===1,'D772 Lesson 1 rendered repeated reading cards instead of one merged chapter');
+  await assert(await page.locator('#courseTutorLesson .tutorOfficialTeaching').count()===1,'D772 Lesson 1 master teaching block did not render exactly once');
   await assert(tutorDepth.status==='Learning'&&tutorDepth.target===1,'new lesson did not begin at Learning / foundation rigor');
 
   const tutorGrowth=await page.evaluate(()=>{
