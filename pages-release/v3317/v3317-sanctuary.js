@@ -45,7 +45,7 @@ function activateObject(scene,obj){
 
   // Interaction-specific behavior must win before a generic panel action.
   if(obj.interaction==='assign-rest'){
-    return scene.openFamiliarObjectPicker?.(obj.placement?.slot||obj.id);
+    return scene.openGuardianCarePicker?.('sleep',obj.placement?.slot||obj.id);
   }
   if(obj.interaction==='progress-mirror'){
     return scene.showMirrorPanel?.();
