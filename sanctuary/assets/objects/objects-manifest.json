@@ -11,7 +11,8 @@
     "glow": true,
     "hoverAnimation": true,
     "preload": false,
-    "enabled": true
+    "enabled": true,
+    "placement": null
   },
   "objects": [
     {
@@ -29,7 +30,12 @@
       "preload": true,
       "enabled": true,
       "artStatus": "starter-generated",
-      "replaceableWithoutCode": true
+      "replaceableWithoutCode": true,
+      "placement": {
+        "x": 245,
+        "y": 725,
+        "width": 265
+      }
     },
     {
       "id": "moonlit-study-desk",
@@ -46,7 +52,12 @@
       "preload": true,
       "enabled": true,
       "artStatus": "starter-generated",
-      "replaceableWithoutCode": true
+      "replaceableWithoutCode": true,
+      "placement": {
+        "x": 1015,
+        "y": 800,
+        "width": 335
+      }
     },
     {
       "id": "observatory-telescope",
@@ -63,7 +74,12 @@
       "preload": true,
       "enabled": true,
       "artStatus": "starter-generated",
-      "replaceableWithoutCode": true
+      "replaceableWithoutCode": true,
+      "placement": {
+        "x": 1285,
+        "y": 735,
+        "width": 280
+      }
     },
     {
       "id": "crystal-focus-pedestal",
@@ -71,8 +87,8 @@
       "displayName": "Crystal Focus Pedestal",
       "category": "core",
       "scale": 1,
-      "interaction": "decor",
-      "destination": null,
+      "interaction": "open-route",
+      "destination": "focus",
       "unlockRequirement": null,
       "blocksWalking": true,
       "glow": true,
@@ -80,7 +96,12 @@
       "preload": true,
       "enabled": true,
       "artStatus": "starter-generated",
-      "replaceableWithoutCode": true
+      "replaceableWithoutCode": true,
+      "placement": {
+        "x": 1510,
+        "y": 780,
+        "width": 220
+      }
     },
     {
       "id": "moonstone-crystal-bed",
@@ -97,7 +118,13 @@
       "preload": true,
       "enabled": true,
       "artStatus": "starter-generated",
-      "replaceableWithoutCode": true
+      "replaceableWithoutCode": true,
+      "placement": {
+        "x": 730,
+        "y": 855,
+        "width": 305,
+        "slot": "bed-west"
+      }
     },
     {
       "id": "amethyst-crystal-bed",
@@ -114,7 +141,13 @@
       "preload": true,
       "enabled": true,
       "artStatus": "starter-generated",
-      "replaceableWithoutCode": true
+      "replaceableWithoutCode": true,
+      "placement": {
+        "x": 2035,
+        "y": 855,
+        "width": 305,
+        "slot": "bed-east"
+      }
     },
     {
       "id": "study-apothecary",
@@ -122,8 +155,8 @@
       "displayName": "Study Apothecary",
       "category": "core",
       "scale": 1,
-      "interaction": "decor",
-      "destination": null,
+      "interaction": "open-route",
+      "destination": "focus",
       "unlockRequirement": null,
       "blocksWalking": true,
       "glow": true,
@@ -131,7 +164,12 @@
       "preload": true,
       "enabled": true,
       "artStatus": "starter-generated",
-      "replaceableWithoutCode": true
+      "replaceableWithoutCode": true,
+      "placement": {
+        "x": 360,
+        "y": 850,
+        "width": 230
+      }
     },
     {
       "id": "familiar-lounge",
@@ -148,7 +186,12 @@
       "preload": true,
       "enabled": true,
       "artStatus": "starter-generated",
-      "replaceableWithoutCode": true
+      "replaceableWithoutCode": true,
+      "placement": {
+        "x": 1815,
+        "y": 805,
+        "width": 330
+      }
     },
     {
       "id": "magic-mirror",
@@ -156,8 +199,8 @@
       "displayName": "Magic Mirror",
       "category": "core",
       "scale": 1,
-      "interaction": "open-route",
-      "destination": "vault",
+      "interaction": "progress-mirror",
+      "destination": "analytics",
       "unlockRequirement": null,
       "blocksWalking": true,
       "glow": true,
@@ -165,7 +208,12 @@
       "preload": true,
       "enabled": true,
       "artStatus": "starter-generated",
-      "replaceableWithoutCode": true
+      "replaceableWithoutCode": true,
+      "placement": {
+        "x": 1630,
+        "y": 690,
+        "width": 210
+      }
     },
     {
       "id": "ancient-reading-lectern",
