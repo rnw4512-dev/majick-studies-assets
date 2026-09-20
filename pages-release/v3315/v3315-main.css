@@ -26,8 +26,11 @@
 .v3315PreviewGrid article>b{display:block;margin-bottom:8px;color:#f0dba6;font-family:Georgia,serif}
 .v3315PreviewGrid p{color:#d8cee6;line-height:1.45}
 .v3315SourceRow{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:13px 0;border-bottom:1px solid rgba(255,255,255,.07)}
-.v3315SourceRow:last-child{border-bottom:0}.v3315SourceRow div{display:grid;gap:4px;min-width:0}.v3315SourceRow b{overflow-wrap:anywhere}
+.v3315SourceRow:last-child{border-bottom:0}.v3315SourceRow>div:first-child{display:grid;gap:4px;min-width:0}.v3315SourceRow b{overflow-wrap:anywhere}
+.v3315SourceRow.paused{opacity:.68}.v3315SourceRow.paused b::after{content:'  • paused';font-size:11px;color:#b7a9c9;font-family:Arial,sans-serif;font-weight:600}
+.v3315SourceActions{display:flex!important;flex-wrap:wrap;justify-content:flex-end;gap:7px!important;min-width:min(100%,420px)!important}
+.v3315SourceActions .btn{min-height:34px;padding:7px 10px;font-size:12px;white-space:nowrap}
 .v3315Empty{padding:18px;border-radius:14px;background:rgba(255,255,255,.025);color:#aaa0bc;text-align:center}
 .v3315StagePortrait img{object-fit:contain}
 @media(max-width:900px){.v3315MaterialGrid,.v3315PreviewGrid{grid-template-columns:1fr}.v3315UploadRow{grid-template-columns:1fr}.v3315Or{text-align:center}.v3315ForgeSigil{display:none}}
-@media(max-width:520px){.v3315MaterialHero,.v3315SourceCard,.v3315ForgeCard,.v3315Preview,.v3315Library{padding:15px;border-radius:18px}.v3315SourceRow{align-items:flex-start;flex-direction:column}.v3315SourceRow button{width:100%}}
+@media(max-width:520px){.v3315MaterialHero,.v3315SourceCard,.v3315ForgeCard,.v3315Preview,.v3315Library{padding:15px;border-radius:18px}.v3315SourceRow{align-items:flex-start;flex-direction:column}.v3315SourceActions{width:100%;justify-content:stretch}.v3315SourceActions button{flex:1 1 46%}}
