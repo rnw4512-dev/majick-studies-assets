@@ -2,9 +2,10 @@
 (function(){
 'use strict';
 
-const RELEASE_LABEL='Living Familiars • V3.3.17 Clean Sanctuary';
-const RELEASE_TITLE='Majick Studies — V3.3.17 Clean Sanctuary';
-const registry=()=>window.MajickGuardianRegistry;\nconst canonOf=type=>registry()?.get?.(type)?.canon||String(type||'').toLowerCase();
+const RELEASE_LABEL='Living Familiars • V3.3.18 Stability Reset';
+const RELEASE_TITLE='Majick Studies — V3.3.18 Stability Reset';
+const registry=()=>window.MajickGuardianRegistry;
+const canonOf=type=>registry()?.get?.(type)?.canon||String(type||'').toLowerCase();
 const STAGE_SLUGS=['new-bond','apprentice','guardian','ascendant','celestial'];
 const STAGE_NAMES=['New Bond','Apprentice','Guardian','Ascendant','Celestial'];
 
@@ -74,7 +75,8 @@ if(typeof previousSideHTML==='function'){
 function guardianPayload(){
   const out={};
   for(const p of (window.S?.legacy?.pets||[])){
-    if(!CANON[p.type])continue;
+    const meta=registry()?.get?.(p.type);
+    if(!meta)continue;
     const st=stageForPet(p);
     out[p.type]={
       type:p.type,
@@ -85,7 +87,7 @@ function guardianPayload(){
       stageName:st.name
     };
   }
-  return {type:'MAJICK_GUARDIAN_LEVELS_V3317',guardians:out,resolverVersion:'3317-clean'};
+  return {type:'MAJICK_GUARDIAN_LEVELS_V3317',guardians:out,resolverVersion:'3318-stability'};
 }
 window.v3317PushGuardianLevels=function(){
   const payload=guardianPayload();
@@ -98,9 +100,9 @@ function sanctuaryMarkup(context){
   if(location.protocol==='file:'){
     return '<section class="phase4Wrap"><div class="phase4Top"><b>✦ Phaser 4 Living Sanctuary</b><br><span>Open Majick Studies through GitHub Pages so Phaser can load.</span></div></section>';
   }
-  const q='?v=3317-clean&context='+encodeURIComponent(context||'app');
+  const q='?v=3318-stability&context='+encodeURIComponent(context||'app');
   return '<section class="phase4Wrap v3317Phase" aria-label="Phaser 4 Living Sanctuary">'+
-    '<div class="phase4Top"><div><b>✦ Living Sanctuary • V3.3.17</b><br><span>Protected Phase 4 movement • final-clean evolution art • manifest furniture</span></div>'+
+    '<div class="phase4Top"><div><b>✦ Living Sanctuary • V3.3.18</b><br><span>Protected Phase 4 movement • final-clean evolution art • manifest furniture</span></div>'+
     '<div class="phase4Actions"><button class="btn ghost" onclick="phase4OpenFullscreen()">Full Sanctuary</button><button class="btn primary" onclick="navigate(\'addmaterial\')">Add Study Material</button></div></div>'+
     '<iframe class="phase4Frame v3317SanctuaryFrame" src="sanctuary/index.html'+q+'" title="Majick Studies Living Sanctuary" loading="eager" allow="fullscreen" onload="setTimeout(()=>v3317PushGuardianLevels(),120)"></iframe>'+
     '<div class="phase4Help">Click furniture to use it • Edit Sanctuary lets you drag objects • Guardians keep the protected Phase 4 movement engine.</div>'+
@@ -169,8 +171,8 @@ function applyReleaseBadge(){
   const pill=document.querySelector('.top .pill');
   if(pill&&pill.textContent!==RELEASE_LABEL)pill.textContent=RELEASE_LABEL;
   if(document.title!==RELEASE_TITLE)document.title=RELEASE_TITLE;
-  if(document.documentElement.dataset.majickVersion!=='3.3.17-clean'){
-    document.documentElement.dataset.majickVersion='3.3.17-clean';
+  if(document.documentElement.dataset.majickVersion!=='3.3.18-stability'){
+    document.documentElement.dataset.majickVersion='3.3.18-stability';
   }
 }
 
