@@ -42,6 +42,34 @@ try{
   await assert(boot.version==='3.3.19-learning','wrong deployed runtime version: '+boot.version);
   await assert(boot.guardians.length>=10,'baseline Guardian registry unexpectedly shrank');
 
+  const balanceRecovery=await page.evaluate(()=>{
+    // Create the exact affected ownership signature without adding any unowned Guardian.
+    S.legacy=S.legacy||{};
+    S.legacy.pets=[
+      {id:'pet_velora',type:'luna',name:'Velora',bond:122},
+      {id:'pet_solstice',type:'nova',name:'Solstice',bond:78}
+    ];
+    S.legacy.activePetId='pet_velora';
+    S.legacy.eggs=[{id:'egg_ember',type:'ember',progress:0,goal:20,source:'study'}];
+    S.majickAccount={xp:0,crystals:0,chests:0,schemaVersion:2};
+    for(const row of Object.values(S.progress||{})){
+      try{row.xp=0;row.crystals=0}catch(_){}
+    }
+    const account=MajickStateCore.ensureAccount();
+    const first={xp:account.xp,crystals:account.crystals,marker:!!account.balanceRecoveryV3322?.applied};
+    account.crystals=91;
+    account.xp=3991;
+    MajickStateCore.ensureAccount();
+    const second={xp:account.xp,crystals:account.crystals};
+    account.xp=4000;
+    account.crystals=150;
+    save();
+    return {first,second};
+  });
+  await assert(balanceRecovery.first.xp===4000&&balanceRecovery.first.crystals===150,'lost account balance was not restored');
+  await assert(balanceRecovery.first.marker,'one-time balance recovery marker missing');
+  await assert(balanceRecovery.second.xp===3991&&balanceRecovery.second.crystals===91,'recovery refilled after the one-time repair');
+
   // Recreate the exact class-progress failure that previously required Reload.
   const repaired=await page.evaluate(()=>{
     const cid=S.activeCourse;

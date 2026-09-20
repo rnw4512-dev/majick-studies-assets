@@ -87,6 +87,30 @@ assert(S.progress.D755.crystals===beforeBuy-6,'other course did not mirror post-
 assert(snap.roster.some(g=>g.type==='nyx'),'future Guardian missing from care roster');
 assert(snap.eggs.length===1&&snap.eggs[0].type==='aurora-moth','future egg missing from incubator snapshot');
 
+// V3.3.22 one-time user balance recovery: only the affected two-Guardian + Pocket Dragon egg
+// save signature is eligible, and the marker prevents later spending from being refilled.
+S.legacy={
+  activePetId:'pet_velora',
+  pets:[
+    {id:'pet_velora',type:'luna',name:'Velora',bond:100},
+    {id:'pet_solstice',type:'nova',name:'Solstice',bond:78}
+  ],
+  eggs:[{id:'egg_ember',type:'ember',progress:0,goal:20}]
+};
+S.majickAccount={xp:0,crystals:0,chests:0,schemaVersion:2};
+for(const row of Object.values(S.progress||{})){
+  try{row.xp=0;row.crystals=0}catch(_){}
+}
+const recovered=MajickStateCore.ensureAccount();
+assert(recovered.xp===4000,'lost Majick XP was not restored to 4000');
+assert(recovered.crystals===150,'lost Moon Crystals were not restored to 150');
+assert(recovered.balanceRecoveryV3322?.applied===true,'balance recovery marker was not stored');
+recovered.crystals=90;
+recovered.xp=3900;
+MajickStateCore.ensureAccount();
+assert(recovered.crystals===90,'one-time recovery incorrectly refilled spent crystals');
+assert(recovered.xp===3900,'one-time recovery incorrectly refilled spent XP');
+
 MajickGuardianRegistry.register('ember-whale',{
   name:'Cetus',species:'Ember Whale',canon:'cetus',favoriteItem:'star-kelp'
 });

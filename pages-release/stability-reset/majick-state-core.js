@@ -2,6 +2,7 @@
 (function(){
 'use strict';
 const SHARED=['xp','crystals','chests'];
+const BALANCE_RECOVERY_V3322={xp:4000,crystals:150};
 function stateRef(){
   try{
     if(typeof S!=='undefined'&&S&&typeof S==='object')return S;
@@ -50,12 +51,45 @@ function initialSharedValue(key){
   }
   return best;
 }
+function recoverySignature(st){
+  const pets=Array.isArray(st?.legacy?.pets)?st.legacy.pets.filter(Boolean):[];
+  const eggs=Array.isArray(st?.legacy?.eggs)?st.legacy.eggs.filter(Boolean):[];
+  const types=new Set(pets.map(p=>String(p?.type||'')));
+  const eggTypes=new Set(eggs.map(e=>String(e?.type||'')));
+  return pets.length===2&&types.has('luna')&&types.has('nova')&&eggTypes.has('ember');
+}
+function applyBalanceRecovery(st,account){
+  if(!st||!account||account.balanceRecoveryV3322?.applied)return false;
+  if(!recoverySignature(st))return false;
+
+  const before={xp:plainNumber(account.xp),crystals:plainNumber(account.crystals)};
+  let changed=false;
+  if(before.xp<=0){
+    account.xp=BALANCE_RECOVERY_V3322.xp;
+    changed=true;
+  }
+  if(before.crystals<=0){
+    account.crystals=BALANCE_RECOVERY_V3322.crystals;
+    changed=true;
+  }
+  if(!changed)return false;
+
+  account.balanceRecoveryV3322={
+    applied:true,
+    appliedAt:new Date().toISOString(),
+    reason:'restore lost shared Majick balance',
+    before,
+    restoredTo:{xp:plainNumber(account.xp),crystals:plainNumber(account.crystals)}
+  };
+  return true;
+}
 function ensureAccount(){
   const st=exposeState();
   if(!st)return null;
   st.majickAccount=(st.majickAccount&&typeof st.majickAccount==='object'&&!Array.isArray(st.majickAccount))?st.majickAccount:{};
   for(const key of SHARED)st.majickAccount[key]=initialSharedValue(key);
-  st.majickAccount.schemaVersion=Math.max(2,plainNumber(st.majickAccount.schemaVersion));
+  applyBalanceRecovery(st,st.majickAccount);
+  st.majickAccount.schemaVersion=Math.max(3,plainNumber(st.majickAccount.schemaVersion));
   return st.majickAccount;
 }
 function bindSharedField(row,key){
@@ -123,8 +157,8 @@ function install(){
   // One compatibility surface for all legacy code. Shared values route to majickAccount.
   window.prog=safeProg;
   window.course=safeCourse;
-  window.MajickStateCore={version:2,SHARED,stateRef,exposeState,blankProgress,normalizeProgressRow,normalizeAll,ensureAccount,safeProg,safeCourse,install};
-  document.documentElement.dataset.majickStateCore='2';
+  window.MajickStateCore={version:3,SHARED,BALANCE_RECOVERY_V3322,stateRef,exposeState,blankProgress,normalizeProgressRow,normalizeAll,ensureAccount,applyBalanceRecovery,recoverySignature,safeProg,safeCourse,install};
+  document.documentElement.dataset.majickStateCore='3';
   return true;
 }
 if(!install())window.addEventListener('DOMContentLoaded',install,{once:true});
