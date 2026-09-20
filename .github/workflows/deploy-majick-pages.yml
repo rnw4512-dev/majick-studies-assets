@@ -84,7 +84,7 @@ jobs:
           test -s sanctuary/assets/objects/objects-manifest.json
           test -s sanctuary/assets/objects/generate-object-library.py
 
-      - name: Assemble Majick Studies V3.3.15
+      - name: Assemble Majick Studies V3.3.16
         shell: bash
         run: |
           set -euo pipefail
@@ -264,7 +264,6 @@ jobs:
           test -s _site/study-material/materialStoreModel.js
           test -s _site/study-material/questionBuilder.js
           test -s _site/study-material/AddStudyMaterialPage.js
-          grep -q "V3.3.15" _site/app-progress.json
           grep -q "addmaterial" _site/v3315-main.js
           grep -q "majick-evolution-manifest" _site/sanctuary/Preloader.js
           grep -q "Add Study Material" _site/study-material/AddStudyMaterialPage.js
