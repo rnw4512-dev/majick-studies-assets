@@ -8,10 +8,15 @@ function courseOptions(){
   let current=null;
   try{current=typeof course==='function'?course():null}catch(_){}
   try{
-    const src=window.COURSES||window.COURSE_DATA||{};
+    const src=window.S?.courses||window.COURSES||window.COURSE_DATA||{};
     Object.entries(src).forEach(([id,c])=>rows.push({id:c.id||id,title:c.title||c.name||id}));
   }catch(_){}
   if(current&&!rows.some(x=>x.id===current.id))rows.unshift({id:current.id,title:current.title||current.id});
+  rows.sort((a,b)=>{
+    if(a.id===window.S?.activeCourse)return -1;
+    if(b.id===window.S?.activeCourse)return 1;
+    return String(a.id).localeCompare(String(b.id));
+  });
   return rows.length?rows:[{id:'current',title:'Current WGU Course'}];
 }
 
@@ -32,7 +37,7 @@ function render(){
     '<div class="v3315MaterialGrid">'+
       '<section class="v3315SourceCard">'+
         '<h3>1. Choose your course</h3>'+
-        '<select id="materialCourse">'+opts.map((x,i)=>'<option value="'+E(x.id)+'" '+(!i?'selected':'')+'>'+E(x.id+' • '+x.title)+'</option>').join('')+'</select>'+
+        '<select id="materialCourse">'+opts.map(x=>'<option value="'+E(x.id)+'" '+(x.id===window.S?.activeCourse?'selected':'')+'>'+E((window.MajickCourseManager?.record?.(x.id)?.status==='passed'?'✓ ':'')+x.id+' • '+x.title)+'</option>').join('')+'</select>'+
         '<h3>2. Add your notes</h3>'+
         '<div class="v3315UploadRow">'+
           '<label class="v3315Drop"><span>⬆</span><b>Upload File</b><small>PDF • Word DOCX • TXT • MD</small><input id="materialFile" type="file" accept=".pdf,.docx,.txt,.md"></label>'+
@@ -122,8 +127,17 @@ async function forge(){
     });
     await MajickMaterialStore.save(draft);
     try{
-      const c=typeof course==='function'?course():null;
-      if(c&&c.id===courseId)await MajickMaterialStore.injectQuestions(c,courseId);
+      const c=window.S?.courses?.[courseId]||(typeof course==='function'?course():null);
+      if(c&&c.id===courseId){
+        c.glossary=c.glossary||{};
+        (draft.generated.vocabulary||[]).forEach(v=>{if(v?.term&&v?.definition)c.glossary[v.term]=v.definition;});
+        c.concepts=c.concepts||[];
+        if(!c.concepts.some(x=>x.id==='uploaded-notes'))c.concepts.push({id:'uploaded-notes',title:'Uploaded Course Material',section:'course',priority:'core'});
+        c.sources=c.sources||[];
+        if(!c.sources.some(x=>x.id===draft.id))c.sources.push({id:draft.id,name:draft.sourceName,note:'Uploaded through Notes Forge',type:draft.sourceType});
+        await MajickMaterialStore.injectQuestions(c,courseId);
+        try{save()}catch(_){}
+      }
     }catch(_){}
     if(status)status.innerHTML='<b>✓ Study material saved.</b> '+draft.generated.practiceQuestions.length+' new practice questions are ready.';
     showPreview(draft.generated);
