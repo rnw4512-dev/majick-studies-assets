@@ -6,13 +6,10 @@ root=Path(sys.argv[1])
 san=root/'sanctuary'
 motion=san/'assets'/'motion'
 objects=san/'assets'/'objects'
-evolutions=san/'assets'/'evolutions'
-
 runtime_motion=san/'assets'/'runtime-motion'
 runtime_objects=san/'assets'/'runtime-objects'
-runtime_evolutions=san/'assets'/'runtime-evolutions'
 
-for p in (runtime_motion,runtime_objects,runtime_evolutions):
+for p in (runtime_motion,runtime_objects):
     if p.exists(): shutil.rmtree(p)
     p.mkdir(parents=True,exist_ok=True)
 
@@ -21,7 +18,7 @@ def convert(src,dst,max_dim,quality=82):
         im=im.convert('RGBA')
         im.thumbnail((max_dim,max_dim),Image.Resampling.LANCZOS)
         dst.parent.mkdir(parents=True,exist_ok=True)
-        im.save(dst,'WEBP',quality=quality,method=5)
+        im.save(dst,'WEBP',quality=quality,method=4)
 
 # Protected originals remain untouched. Phaser loads these derived runtime copies.
 for src in motion.glob('*.png'):
@@ -43,10 +40,8 @@ for name in preload_names:
     src=objects/name
     if src.exists(): convert(src,runtime_objects/name,512,82)
 
-# Runtime Guardian action copies: source final-clean assets remain intact.
-for src in evolutions.rglob('*.webp'):
-    rel=src.relative_to(evolutions)
-    convert(src,runtime_evolutions/rel,640,84)
+# Guardian evolution action art is already final-clean WebP and loads on demand.
+# Do not rebuild those 60 files during CI.
 
 # Patch Preloader to use lighter runtime images under the SAME Phaser texture keys.
 pre=san/'Preloader.js'
@@ -64,14 +59,6 @@ s=s.replace("'./assets/objects/familiar-lounge.webp?v=3314'","'./assets/runtime-
 s=s.replace("'./assets/objects/magic-mirror.webp?v=3314'","'./assets/runtime-objects/magic-mirror.webp?v=3317-fast'")
 pre.write_text(s,encoding='utf-8')
 
-# Patch only the deployed clean V3.3.17 runtime to use optimized Guardian action copies.
-v=san/'v3317-sanctuary.js'
-t=v.read_text(encoding='utf-8')
-t=t.replace("'./assets/evolutions/'","'./assets/runtime-evolutions/'")
-t=t.replace("webp?v=3317-final","webp?v=3317-fast")
-v.write_text(t,encoding='utf-8')
-
 print('V3.3.17 Phaser runtime assets optimized safely')
 print('motion runtime files:',len(list(runtime_motion.glob('*.webp'))))
 print('object runtime files:',len(list(runtime_objects.glob('*.webp'))))
-print('evolution runtime files:',len(list(runtime_evolutions.rglob('*.webp'))))
