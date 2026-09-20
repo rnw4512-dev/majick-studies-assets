@@ -81,46 +81,61 @@ function activateObject(scene,obj){
 // GUARDIAN CARE — persistent state lives in the main app; Phaser owns reactions.
 // -----------------------------------------------------------------------------
 
-function carePost(scene,type,action,extra={}){
+function careGuardian(scene,target){
+  const snap=scene.v3317CareState||{};
+  const key=String(target||'');
+  return (snap.roster||[]).find(g=>g.petId===key) || snap.byType?.[key] || null;
+}
+function carePost(scene,target,action,extra={}){
+  const g=careGuardian(scene,target);
   try{
     window.parent?.postMessage({
       type:'MAJICK_CARE_ACTION_V3317',
-      guardian:type,
+      guardianId:g?.petId||(!String(target||'').includes('undefined')?String(target||''):null),
+      guardianType:g?.type||(!g&&scene[String(target||'')]?String(target||''):null),
       action,
       ...extra
     },location.origin);
   }catch(e){console.warn('V3.3.17 care post',e)}
 }
-function careLabel(scene,type){
-  const g=scene.v3317CareState?.guardians?.[type];
+function careLabel(scene,target){
+  const g=careGuardian(scene,target);
   if(!g)return '';
   const avg=['hunger','hydration','energy','fun','grooming','affection']
     .reduce((n,k)=>n+(Number(g[k])||0),0)/6;
   return 'Bond '+Math.round(Number(g.bond)||0)+' • '+(g.mood?.label||Math.round(avg)+'% cared for');
 }
-Game.prototype.v3317CareRequest=function(type,action,extra={}){
-  carePost(this,type,action,extra);
+Game.prototype.v3317CareRequest=function(target,action,extra={}){
+  carePost(this,target,action,extra);
 };
 Game.prototype.openGuardianCarePicker=function(action,objectId){
+  const snap=this.v3317CareState||{};
+  const roster=snap.roster||[];
+  if(!roster.length){
+    try{window.parent?.postMessage({type:'MAJICK_CARE_STATE_REQUEST_V3317'},location.origin)}catch(_){}
+    this.showToast?.('Guardian Care','Your bonded Guardian roster is syncing.');
+    return;
+  }
   const title=action?'Use '+(this.getSanctuaryObject(objectId)?.displayName||'Guardian Care Station'):'Guardian Care';
+  const eggText=(snap.eggs||[]).length?' • '+snap.eggs.length+' egg incubating':'';
+  const buttons=roster.map((g,i)=>({
+    label:(g.name||'Guardian').toUpperCase()+' • '+(g.mood?.label||'BOND '+Math.round(g.bond||0)),
+    primary:i===0,
+    run:()=>action?this.v3317CareRequest(g.petId,action,{objectId}):this.openGuardianCarePanel(g.petId)
+  }));
   this.showInteractionPanel?.(
     'Choose a Guardian',
     title,
-    action?'Choose who should use this care object.':'Choose a Guardian to care for.',
-    [
-      {label:'VELORA',run:()=>action?this.v3317CareRequest('luna',action,{objectId}):this.openGuardianCarePanel('luna')},
-      {label:'CASCADE',run:()=>action?this.v3317CareRequest('ember',action,{objectId}):this.openGuardianCarePanel('ember')},
-      {label:'SOLSTICE',run:()=>action?this.v3317CareRequest('nova',action,{objectId}):this.openGuardianCarePanel('nova')},
-      {label:'AURELIA',primary:true,run:()=>action?this.v3317CareRequest('mallow',action,{objectId}):this.openGuardianCarePanel('mallow')}
-    ]
+    (action?'Choose which bonded Guardian should use this care object.':'Care for any Guardian you have hatched.')+eggText,
+    buttons
   );
 };
-Game.prototype.openGuardianCarePanel=function(type){
-  const snap=this.v3317CareState;
-  const g=snap?.guardians?.[type];
+Game.prototype.openGuardianCarePanel=function(target){
+  const snap=this.v3317CareState||{};
+  const g=careGuardian(this,target);
   if(!g){
     try{window.parent?.postMessage({type:'MAJICK_CARE_STATE_REQUEST_V3317'},location.origin)}catch(_){}
-    this.showToast?.('Guardian Care','Care status is syncing from Majick Studies. Tap your Guardian again in a moment.');
+    this.showToast?.('Guardian Care','Care status is syncing from Majick Studies. Try again in a moment.');
     return;
   }
   const inv=snap.inventory||{},owned=new Set(snap.owned||[]);
@@ -128,6 +143,7 @@ Game.prototype.openGuardianCarePanel=function(type){
   const brush=owned.has('moon-silver-brush');
   const favorite=g.favoriteOwned?' • favorite owned':'';
   const body=[
+    g.species||'Guardian',
     'Hunger '+Math.round(g.hunger)+'%',
     'Water '+Math.round(g.hydration)+'%',
     'Energy '+Math.round(g.energy)+'%',
@@ -138,43 +154,49 @@ Game.prototype.openGuardianCarePanel=function(type){
   ].join('  •  ')+'\nFavorite: '+(g.favoriteLabel||'Sanctuary treasure')+favorite;
 
   this.showInteractionPanel?.(
-    (g.name||NAMES[type]||'Guardian')+' • Care',
+    (g.name||'Guardian')+' • Care',
     (g.mood?.icon||'✦')+' '+(g.mood?.label||'Sanctuary bond'),
     body,
     [
-      {label:'FEED • '+meal+' MEALS',run:()=>this.v3317CareRequest(type,'feed')},
-      {label:'FRESH WATER',run:()=>this.v3317CareRequest(type,'water')},
-      {label:'TREAT • '+treat+' LEFT',run:()=>this.v3317CareRequest(type,'treat')},
-      {label:brush?'BRUSH & GROOM':'BRUSH • BUY TOOL',run:()=>brush?this.v3317CareRequest(type,'groom'):window.parent?.postMessage({type:'MAJICK_OPEN_CARE_SHOP_V3317'},location.origin)},
-      {label:'PLAY',run:()=>this.v3317CareRequest(type,'play')},
-      {label:'AFFECTION',run:()=>this.v3317CareRequest(type,'affection')},
-      {label:'REST IN BED',run:()=>this.v3317CareRequest(type,'sleep')},
+      {label:'FEED • '+meal+' MEALS',run:()=>this.v3317CareRequest(g.petId,'feed')},
+      {label:'FRESH WATER',run:()=>this.v3317CareRequest(g.petId,'water')},
+      {label:'TREAT • '+treat+' LEFT',run:()=>this.v3317CareRequest(g.petId,'treat')},
+      {label:brush?'BRUSH & GROOM':'BRUSH • BUY TOOL',run:()=>brush?this.v3317CareRequest(g.petId,'groom'):window.parent?.postMessage({type:'MAJICK_OPEN_CARE_SHOP_V3317'},location.origin)},
+      {label:'PLAY',run:()=>this.v3317CareRequest(g.petId,'play')},
+      {label:'AFFECTION',run:()=>this.v3317CareRequest(g.petId,'affection')},
+      {label:'REST IN BED',run:()=>this.v3317CareRequest(g.petId,'sleep')},
       {label:'MOON CRYSTAL BOUTIQUE',primary:true,run:()=>window.parent?.postMessage({type:'MAJICK_OPEN_CARE_SHOP_V3317'},location.origin)}
     ]
   );
 };
 Game.prototype.v3317CareReaction=function(result){
-  if(!result?.guardian)return;
-  const type=result.guardian,pet=this[type];
-  if(!pet?.active)return;
+  if(!result?.guardianId&&!result?.guardianType)return;
+  const type=result.guardianType;
+  const pet=type?this[type]:null;
 
-  if(result.travelObject){
-    this.__v3317CareSkipBed=type+'|'+result.travelObject;
-    this.startFamiliarObjectInteraction?.(type,result.travelObject);
+  if(pet?.active){
+    if(result.travelObject){
+      this.__v3317CareSkipBed=type+'|'+result.travelObject;
+      this.startFamiliarObjectInteraction?.(type,result.travelObject);
+    }else{
+      this.v3317ShowAction?.(type,result.visualAction==='sleep'?'sleep':'play',result.action==='affection'?2200:2900);
+    }
+
+    try{
+      const def=this.getFamiliarInteractionDef?.(type);
+      this.createSparkles?.(pet.x,pet.y-70,result.favoriteBonus?26:16);
+      this.showPetMessage?.(pet,result.message||'The familiar bond glows a little brighter.',def?.bubble||'#e8d4ff');
+      const float=this.add.text(pet.x,pet.y-150,result.icon||'✦',{
+        fontFamily:'Georgia',fontSize:'34px',color:'#ffe2a0',
+        stroke:'#24152f',strokeThickness:4
+      }).setOrigin(.5).setDepth(500);
+      this.tweens.add({targets:float,y:float.y-55,alpha:0,duration:1500,ease:'Sine.out',onComplete:()=>float.destroy()});
+    }catch(e){console.warn('V3.3.17 care reaction',e)}
   }else{
-    this.v3317ShowAction?.(type,result.visualAction==='sleep'?'sleep':'play',result.action==='affection'?2200:2900);
+    // Portrait-ready Guardians without movement sets still receive full care state,
+    // inventory use and bond gains. Their bespoke Phaser movement can be added later.
+    try{this.createSparkles?.(960,330,result.favoriteBonus?30:18)}catch(_){}
   }
-
-  try{
-    const def=this.getFamiliarInteractionDef?.(type);
-    this.createSparkles?.(pet.x,pet.y-70,result.favoriteBonus?26:16);
-    this.showPetMessage?.(pet,result.message||'The familiar bond glows a little brighter.',def?.bubble||'#e8d4ff');
-    const float=this.add.text(pet.x,pet.y-150,result.icon||'✦',{
-      fontFamily:'Georgia',fontSize:'34px',color:'#ffe2a0',
-      stroke:'#24152f',strokeThickness:4
-    }).setOrigin(.5).setDepth(500);
-    this.tweens.add({targets:float,y:float.y-55,alpha:0,duration:1500,ease:'Sine.out',onComplete:()=>float.destroy()});
-  }catch(e){console.warn('V3.3.17 care reaction',e)}
 
   this.showToast?.(
     (result.name||NAMES[type]||'Guardian')+' • '+(result.mood?.label||'Bond moment'),
@@ -433,7 +455,7 @@ function hideLegacyLabels(scene){
 const baseCreate=Game.prototype.create;
 Game.prototype.create=function(){
   this.v3317GuardianStates={};
-  this.v3317CareState={guardians:{},inventory:{},owned:[]};
+  this.v3317CareState={roster:[],guardians:{},byType:{},eggs:[],inventory:{},owned:[]};
   baseCreate.call(this);
   hideLegacyLabels(this);
 
@@ -445,7 +467,7 @@ Game.prototype.create=function(){
     try{
       pet.setInteractive({useHandCursor:true});
       pet.on('pointerup',()=>{
-        if(!this.editMode)this.openGuardianCarePanel(type);
+        if(!this.editMode)this.openGuardianCarePanel(this.v3317CareState?.byType?.[type]?.petId||type);
       });
     }catch(_){}
   });
