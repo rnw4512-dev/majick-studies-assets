@@ -64,6 +64,172 @@ try{
   const snag=await page.locator('#v3317RuntimeNotice').count();
   await assert(snag===0,'Study Now produced the runtime snag notice');
 
+  // A real correct study answer must reward the shared account and persist through reload.
+  const studyReward=await page.evaluate(()=>{
+    const before={
+      xp:Number(MajickStateCore.ensureAccount()?.xp||0),
+      crystals:Number(MajickStateCore.ensureAccount()?.crystals||0),
+      answers:Number(prog()?.answers?.length||0)
+    };
+    startAdaptive();
+    const q=session?.current;
+    if(!q)return {ok:false,before};
+    answerQ(q.answer);
+    return {
+      ok:true,
+      before,
+      after:{
+        xp:Number(MajickStateCore.ensureAccount()?.xp||0),
+        crystals:Number(MajickStateCore.ensureAccount()?.crystals||0),
+        answers:Number(prog()?.answers?.length||0)
+      },
+      reward:{...(session?.reward||{})},
+      qid:q.id
+    };
+  });
+  await assert(studyReward.ok,'Smart Mission could not produce a question');
+  await assert(studyReward.after.answers===studyReward.before.answers+1,'correct study answer was not recorded');
+  await assert(studyReward.after.xp>studyReward.before.xp,'correct study answer did not award Majick XP');
+  await assert(studyReward.after.crystals>studyReward.before.crystals,'correct study answer did not award Moon Crystals');
+
+  await page.reload({waitUntil:'domcontentloaded'});
+  await page.waitForFunction(()=>typeof window.render==='function'&&!!window.MajickStateCore&&!!window.MajickGuardianRegistry,{timeout:15000});
+  const rewardPersist=await page.evaluate(()=>({
+    xp:Number(MajickStateCore.ensureAccount()?.xp||0),
+    crystals:Number(MajickStateCore.ensureAccount()?.crystals||0),
+    answers:Number(prog()?.answers?.length||0)
+  }));
+  await assert(rewardPersist.xp===studyReward.after.xp,'study XP did not survive reload');
+  await assert(rewardPersist.crystals===studyReward.after.crystals,'Moon Crystals did not survive reload');
+  await assert(rewardPersist.answers===studyReward.after.answers,'study answer history did not survive reload');
+
+  // Notes Forge must complete the full source lifecycle through the visible UI.
+  await page.evaluate(()=>navigate('addmaterial'));
+  await page.waitForSelector('#materialPaste',{timeout:10000});
+  await page.locator('#materialPaste').fill(
+    'Statistical literacy requires checking who collected the data, why it was collected, how the sample was selected, and whether a graph fairly represents the values. A random sample reduces selection bias. The mean is sensitive to extreme values, while the median is more resistant. Probability ranges from zero to one and can be represented as a fraction, decimal, or percent.'
+  );
+  await page.locator('#materialCount').selectOption('5');
+  await page.locator('#materialForgeBtn').click();
+  await page.waitForFunction(()=>document.getElementById('materialStatus')?.textContent?.includes('Study material saved'),{timeout:12000});
+
+  const forged=await page.evaluate(async()=>{
+    const cid=S.activeCourse;
+    const rows=await MajickMaterialStore.list(cid);
+    const row=rows[0]||null;
+    return {
+      courseId:cid,
+      id:row?.id||null,
+      questions:row?.generated?.practiceQuestions?.length||0,
+      bank:(S.courses?.[cid]?.questionBank||[]).filter(q=>q.sourceId===row?.id).length,
+      active:row?.active!==false
+    };
+  });
+  await assert(!!forged.id,'Notes Forge did not save a source');
+  await assert(forged.questions>=5,'Notes Forge generated fewer questions than requested');
+  await assert(forged.bank>=5,'Notes Forge questions were not synchronized into the active course');
+  await assert(forged.active,'new Notes Forge source was not active');
+
+  const sourceSelector='[data-source="'+forged.id+'"]';
+  await page.locator(sourceSelector+' .v3315ToggleSource').click();
+  await page.waitForFunction(()=>document.getElementById('materialStatus')?.textContent?.startsWith('Paused '),{timeout:8000});
+  const paused=await page.evaluate(async id=>{
+    const row=await MajickMaterialStore.get(id);
+    return {active:row?.active!==false,bank:(S.courses?.[S.activeCourse]?.questionBank||[]).filter(q=>q.sourceId===id).length};
+  },forged.id);
+  await assert(!paused.active&&paused.bank===0,'pausing a Notes Forge source did not remove its questions');
+
+  await page.locator(sourceSelector+' .v3315ToggleSource').click();
+  await page.waitForFunction(()=>document.getElementById('materialStatus')?.textContent?.startsWith('Activated '),{timeout:8000});
+  const activated=await page.evaluate(async id=>{
+    const row=await MajickMaterialStore.get(id);
+    return {active:row?.active!==false,bank:(S.courses?.[S.activeCourse]?.questionBank||[]).filter(q=>q.sourceId===id).length};
+  },forged.id);
+  await assert(activated.active&&activated.bank>=5,'reactivating a Notes Forge source did not restore its questions');
+
+  await page.locator(sourceSelector+' .v3315RegenerateSource').click();
+  await page.waitForFunction(()=>document.getElementById('materialStatus')?.textContent?.includes('Regenerated '),{timeout:10000});
+  const regenerated=await page.evaluate(async id=>{
+    const row=await MajickMaterialStore.get(id);
+    return {exists:!!row,questions:row?.generated?.practiceQuestions?.length||0,bank:(S.courses?.[S.activeCourse]?.questionBank||[]).filter(q=>q.sourceId===id).length};
+  },forged.id);
+  await assert(regenerated.exists&&regenerated.questions>=5&&regenerated.bank>=5,'Notes Forge regeneration broke source synchronization');
+
+  await page.locator(sourceSelector+' .v3315RemoveSource').click();
+  await page.waitForFunction(()=>document.getElementById('materialStatus')?.textContent?.startsWith('Removed '),{timeout:8000});
+  const removed=await page.evaluate(async id=>({
+    row:await MajickMaterialStore.get(id),
+    bank:(S.courses?.[S.activeCourse]?.questionBank||[]).filter(q=>q.sourceId===id).length
+  }),forged.id);
+  await assert(!removed.row&&removed.bank===0,'removing a Notes Forge source left stale source questions behind');
+
+  // Guardian care must be a functional loop, not decorative buttons.
+  const careFlow=await page.evaluate(()=>{
+    const initial=MajickGuardianCare.snapshot();
+    const pet=initial.roster[0];
+    if(!pet)return {ok:false,reason:'no owned Guardian'};
+    const account=MajickStateCore.ensureAccount();
+    account.crystals=200;
+    account.guardianInventory={};
+    account.guardianOwned=['starter-ribbon-toy'];
+    const g=MajickGuardianCare.state(pet.petId);
+    Object.assign(g,{hunger:40,hydration:40,energy:40,fun:40,grooming:40,affection:40,affectionCooldownUntil:0});
+    const favorite=MajickGuardianCare.snapshot().guardians[pet.petId]?.favoriteItem;
+    const catalog=MajickGuardianCare.catalog;
+    const ids=['moonberry-meal','starlight-treat','moon-silver-brush'];
+    if(favorite&&catalog.some(x=>x.id===favorite))ids.push(favorite);
+    const purchases=[];
+    for(const id of ids){
+      const before=MajickGuardianCare.snapshot().crystals;
+      const item=catalog.find(x=>x.id===id);
+      const result=MajickGuardianCare.buy(id);
+      const after=MajickGuardianCare.snapshot().crystals;
+      purchases.push({id,cost:item?.cost||0,ok:result.ok,before,after});
+    }
+    const actions={
+      feed:MajickGuardianCare.performAction(pet.petId,'feed'),
+      water:MajickGuardianCare.performAction(pet.petId,'water'),
+      treat:MajickGuardianCare.performAction(pet.petId,'treat'),
+      groom:MajickGuardianCare.performAction(pet.petId,'groom'),
+      play:MajickGuardianCare.performAction(pet.petId,'play',{itemId:favorite}),
+      sleep:MajickGuardianCare.performAction(pet.petId,'sleep',{objectId:'moonstone-crystal-bed'}),
+      affection:MajickGuardianCare.performAction(pet.petId,'affection')
+    };
+    save();
+    return {
+      ok:true,petId:pet.petId,favorite,purchases,
+      actions:Object.fromEntries(Object.entries(actions).map(([k,v])=>[k,{ok:v.ok,favoriteBonus:v.favoriteBonus||false}])),
+      snapshot:MajickGuardianCare.snapshot(),
+      bed:S.v3311?.sanctuaryState?.bedAssignments?.['moonstone-crystal-bed']||null
+    };
+  });
+  await assert(careFlow.ok,'no owned Guardian was available for care testing');
+  for(const purchase of careFlow.purchases){
+    await assert(purchase.ok,'Guardian Boutique purchase failed for '+purchase.id);
+    await assert(purchase.after===purchase.before-purchase.cost,'Guardian Boutique charged the wrong amount for '+purchase.id);
+  }
+  for(const [action,result] of Object.entries(careFlow.actions)){
+    await assert(result.ok,'Guardian care action failed: '+action);
+  }
+  await assert(careFlow.actions.play.favoriteBonus===true,'owned favorite item did not trigger the Guardian bond bonus');
+  await assert(careFlow.bed===careFlow.petId,'Guardian bed assignment was not stored by pet id');
+
+  await page.reload({waitUntil:'domcontentloaded'});
+  await page.waitForFunction(()=>typeof window.render==='function'&&!!window.MajickGuardianCare&&!!window.MajickStateCore,{timeout:15000});
+  const carePersist=await page.evaluate(({petId,favorite})=>({
+    bed:S.v3311?.sanctuaryState?.bedAssignments?.['moonstone-crystal-bed']||null,
+    brush:MajickGuardianCare.snapshot().owned.includes('moon-silver-brush'),
+    favorite:MajickGuardianCare.snapshot().owned.includes(favorite),
+    meal:Number(MajickGuardianCare.snapshot().inventory['moonberry-meal']||0),
+    treat:Number(MajickGuardianCare.snapshot().inventory['starlight-treat']||0),
+    bond:Number(MajickGuardianCare.snapshot().guardians[petId]?.bond||0)
+  }),{petId:careFlow.petId,favorite:careFlow.favorite});
+  await assert(carePersist.bed===careFlow.petId,'Guardian bed assignment did not survive reload');
+  await assert(carePersist.brush,'Grooming brush ownership did not survive reload');
+  await assert(carePersist.favorite,'Guardian favorite-item ownership did not survive reload');
+  await assert(carePersist.meal===2&&carePersist.treat===2,'consumable Guardian inventory did not persist expected quantities');
+  await assert(carePersist.bond>0,'Guardian bond progress did not survive reload');
+
   // Companions must create the real Sanctuary iframe, not a dead static replacement.
   await page.evaluate(()=>{if(typeof navigate==='function')navigate('companions');else {S.screen='companions';render();}});
   await page.waitForSelector('iframe.v3317SanctuaryFrame',{timeout:15000});
@@ -77,6 +243,29 @@ try{
   }));
   await assert(san.hasGame||san.hasCanvas,'Phaser Sanctuary did not initialize');
   await assert(san.hasRegistry,'Guardian registry unavailable inside Sanctuary');
+
+  // Sanctuary edit positions must be backed by persistent layout storage.
+  const layoutWrite=await frame.evaluate(()=>{
+    const scene=window.majickPhaserGame?.scene?.getScene?.('Game');
+    if(!scene||typeof scene.saveDecorPosition!=='function'||typeof scene.readSavedDecorPosition!=='function')return {ok:false};
+    scene.saveDecorPosition('arcane-stacks',432,777);
+    return {ok:true,saved:scene.readSavedDecorPosition('arcane-stacks')};
+  });
+  await assert(layoutWrite.ok&&layoutWrite.saved?.x===432&&layoutWrite.saved?.y===777,'Sanctuary furniture position did not save through the Game scene');
+
+  await page.reload({waitUntil:'domcontentloaded'});
+  await page.waitForFunction(()=>typeof window.render==='function'&&!!window.MajickStateCore,{timeout:15000});
+  await page.evaluate(()=>navigate('companions'));
+  await page.waitForSelector('iframe.v3317SanctuaryFrame',{timeout:15000});
+  const frameReloaded=page.frames().find(f=>f.url().includes('/sanctuary/'));
+  await assert(!!frameReloaded,'Sanctuary iframe did not reload');
+  await frameReloaded.waitForFunction(()=>!!window.majickPhaserGame?.scene?.getScene?.('Game'),{timeout:20000});
+  const layoutPersist=await frameReloaded.evaluate(()=>{
+    const scene=window.majickPhaserGame?.scene?.getScene?.('Game');
+    const saved=scene?.readSavedDecorPosition?.('arcane-stacks');
+    return {saved};
+  });
+  await assert(layoutPersist.saved?.x===432&&layoutPersist.saved?.y===777,'Sanctuary furniture position did not survive reload');
 
   // Care model must remain roster-driven and future-Guardian capable.
   const care=await page.evaluate(()=>({
