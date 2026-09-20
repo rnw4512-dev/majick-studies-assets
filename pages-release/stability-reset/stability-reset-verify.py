@@ -37,7 +37,7 @@ state=(site/'majick-state-core.js').read_text(encoding='utf-8')
 for marker in ('window.prog=safeProg','window.course=safeCourse',"const SHARED=['xp','crystals','chests']",'bindSharedField'):
     if marker not in state: fail('state core missing '+marker)
 main_bridge=(site/'v3317-main.js').read_text(encoding='utf-8')
-if 'V3.3.22 Recovery & Sanctuary Fix' not in main_bridge: fail('main bridge does not identify V3.3.22 recovery')
+if 'V3.3.25 Adaptive Learning + Guardian Visual Fix' not in main_bridge: fail('main bridge does not identify V3.3.25 Guardian visual fix')
 if 'CANON[' in main_bridge: fail('main bridge still contains fixed Guardian CANON lookup')
 if "const meta=registry()?.get?.(p.type);" not in main_bridge: fail('Guardian payload is not registry-driven')
 if r'\\nconst canonOf' in main_bridge: fail('escaped newline leaked into JavaScript source')
