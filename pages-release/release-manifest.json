@@ -1,29 +1,35 @@
 {
-  "release": "Majick Studies V3.3.10 — Phaser Motion Restore + Dark Collegium Visual Pass",
+  "release": "Majick Studies V3.3.12 — Faster Evolutions + Interactive Campus",
   "live_url": "https://rnw4512-dev.github.io/majick-studies-assets/",
-  "deployment_run": 35476299319,
+  "deployment_run": 35480970745,
   "deployment_status": "success",
-  "base_package": "pages-release/majick-pages-site.zip",
-  "v339_patch_parts": [
-    "pages-release/v339-patch.b64.part01",
-    "pages-release/v339-patch.b64.part02",
-    "pages-release/v339-patch.b64.part03",
-    "pages-release/v339-patch.b64.part04",
-    "pages-release/v339-patch.b64.part05"
-  ],
-  "v3310_sources": [
-    "pages-release/v3310/v3310-main.js",
-    "pages-release/v3310/v3310-main.css",
-    "pages-release/v3310/v3310-sanctuary.js",
-    "pages-release/v3310/v3310-apply.py"
+  "stable_base": "V3.3.11 Living Grimoire + confirmed V3.3.10 Phaser motion foundation",
+  "protected_phaser_rules": [
+    "Do not rewrite Velora, Cascade, Solstice, or Aurelia movement methods",
+    "Do not replace their original sprite files",
+    "Do not simplify their movement art",
+    "Future work goes around the working movement system"
   ],
   "verified": [
     "GitHub Pages deployment completed successfully",
-    "V3.3.10 files present in deployed artifact",
-    "Preloader points to same-origin sanctuary/assets/motion",
-    "Original Phase 4 movement PNGs are present in the deployed artifact",
-    "JavaScript syntax checks passed for V3.3.10, Game, Preloader and service worker"
+    "V3.3.12 app-progress.json present",
+    "50 evolution stage WebP files present",
+    "Legacy-to-canon stage mapping included",
+    "Original 33 Phase 4 motion files remain present",
+    "Service-worker startup precache reduced to 14 lightweight shell assets",
+    "V3.3.12 JavaScript syntax checks passed"
   ],
-  "study_progress_policy": "Preserve current GitHub Pages browser progress; no destructive migration.",
-  "study_now_logic": "V3.3.9 adaptive logic retained; V3.3.10 changes guardian presentation and sanctuary motion/visual staging only."
+  "save_safety": "No destructive migration. Existing XP, crystals, streaks, answers, course progress, current Guardian data, and movement saves are preserved.",
+  "next_art_folder": "sanctuary/assets/objects/",
+  "recommended_object_files": [
+    "arcane-stacks.webp",
+    "moonlit-study-desk.webp",
+    "observatory-telescope.webp",
+    "crystal-focus-pedestal.webp",
+    "moonstone-crystal-bed.webp",
+    "amethyst-crystal-bed.webp",
+    "study-apothecary.webp",
+    "familiar-lounge.webp",
+    "magic-mirror.webp"
+  ]
 }
