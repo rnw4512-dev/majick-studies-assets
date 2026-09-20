@@ -395,3 +395,35 @@ Current estimate:
   - runtime furniture: 449,014 bytes;
   - total startup image budget: 2,907,938 bytes (~2.77 MiB).
 - This is now the active verified live build.
+
+## Run #82 — Old-save migration repair
+- GitHub Pages run #82 completed **successfully** and deployed.
+- Fixed two user-visible runtime errors from older saved state:
+  - `Cannot read properties of undefined (reading 'xp')`
+  - `a.guardianOwned is not iterable`
+- Root cause of remaining XP error:
+  - some legacy course-progress entries could be null/undefined before V4/V5 and `courseManager.js` mirrored shared XP;
+  - startup now normalizes **every** saved course progress row before any XP/crystal/streak access;
+  - `courseManager.js` also normalizes malformed rows before mirroring shared account values.
+- Guardian ownership migration:
+  - old arrays remain arrays;
+  - Set/string/old boolean-map ownership formats are converted safely;
+  - truthy old purchases are preserved;
+  - false old-map entries are discarded;
+  - old array-style Guardian inventory is converted into quantity counts.
+- Added a permanent Node migration smoke test using:
+  - malformed PMFC/D772/GHOST progress,
+  - 1511 XP / 200 crystals,
+  - old Guardian ownership map,
+  - old inventory array,
+  - two hatched Guardians (Velora + Solstice),
+  - one incubating egg.
+- Run #82 verified:
+  - `V3.3.17 migration smoke passed`
+  - `V3.3.17 RELEASE VERIFIER PASSED`
+  - `Study progress state hardening verified`
+  - `Legacy save migration verified`
+  - `Guardian care + Moon Crystal economy contract verified`
+  - `Single V3.3.17 recovery surface verified`
+- Removed stacked legacy error surfaces. Runtime failures now route to the single V3.3.17 recovery dialog.
+- Phaser startup budget remains safe at **2,907,938 bytes (~2.77 MiB)**.
