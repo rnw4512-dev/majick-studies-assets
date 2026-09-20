@@ -267,8 +267,8 @@ care=care_js.read_text(encoding='utf-8')
 required_care_markers=[
     "function ownedPets()",
     "function incubatingEggs()",
-    "S.legacy?.pets",
-    "S.legacy?.eggs",
+    "window.S?.legacy?.pets",
+    "window.S?.legacy?.eggs",
     "guardianCare.guardians[pet.id]",
     "function performAction(target,action,opts={})",
     "action==='feed'",
