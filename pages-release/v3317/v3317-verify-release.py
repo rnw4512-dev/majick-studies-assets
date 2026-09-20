@@ -1,6 +1,6 @@
 from pathlib import Path
 from PIL import Image
-import hashlib,re,sys
+import hashlib,re,sys,subprocess,tempfile
 
 site=Path(sys.argv[1]).resolve()
 repo=Path(sys.argv[2]).resolve()
@@ -431,3 +431,43 @@ if "Base render function is unavailable." not in v3317_main:
     fail('V3.3.17 startup does not report missing base render safely')
 
 print('Single render owner verified: V3.3.17 only')
+
+
+# 15) Every inline app script must parse before deployment.
+# A syntax error in any one classic inline script prevents its functions from
+# existing at runtime, including the base render() function.
+script_tags=re.findall(r'<script([^>]*)>([\s\S]*?)</script>',main_html,re.I)
+inline_count=0
+base_render_index=None
+v3317_external_index=None
+
+for idx,(attrs,body) in enumerate(script_tags):
+    src_match=re.search(r'\bsrc=["\']([^"\']+)["\']',attrs,re.I)
+    if src_match:
+        if 'v3317-main.js' in src_match.group(1):
+            v3317_external_index=idx
+        continue
+    if not body.strip():
+        continue
+    inline_count+=1
+    if "function render(){" in body and base_render_index is None:
+        base_render_index=idx
+    with tempfile.NamedTemporaryFile('w',suffix='.js',encoding='utf-8',delete=False) as tf:
+        tf.write(body)
+        tmp=tf.name
+    check=subprocess.run(['node','--check',tmp],capture_output=True,text=True)
+    Path(tmp).unlink(missing_ok=True)
+    if check.returncode!=0:
+        fail(f'Inline script #{idx} has invalid JavaScript: {check.stderr.strip()}')
+
+if inline_count<5:
+    fail(f'Expected multiple inline application scripts, found only {inline_count}')
+if base_render_index is None:
+    fail('No valid inline base render() declaration found')
+if v3317_external_index is None:
+    fail('V3.3.17 main script tag is missing')
+if base_render_index>=v3317_external_index:
+    fail('Base render() is not defined before V3.3.17 loads')
+
+print('Inline JavaScript syntax verified:',inline_count,'scripts')
+print('Base render order verified: inline script',base_render_index,'before V3.3.17 script',v3317_external_index)
