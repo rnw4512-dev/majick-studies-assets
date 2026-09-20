@@ -17,6 +17,7 @@ on:
       - 'sanctuary/assets/objects/**'
       - 'sanctuary/assets/evolutions/**'
       - 'sanctuary/assets/majick-v3317-evolution-repair-small.zip'
+      - 'sanctuary/assets/majick-v3317-evolution-final-clean.zip'
       - 'sanctuary/assets/majick-v3315-art-sync.zip'
       - '.github/workflows/deploy-majick-pages.yml'
   workflow_dispatch:
@@ -158,10 +159,17 @@ jobs:
             cp -a /tmp/majick-v3315-art-sync/sanctuary/assets/objects/. sanctuary/assets/objects/
           fi
 
-          # V3.3.17 corrected individual Guardian evolution assets.
+          # V3.3.17 individual Guardian evolution assets.
+          # Prefer the final-clean bundle when present; keep the earlier repair bundle only as fallback.
           rm -rf /tmp/majick-v3317-evolution-repair
           mkdir -p /tmp/majick-v3317-evolution-repair
-          unzip -oq sanctuary/assets/majick-v3317-evolution-repair-small.zip -d /tmp/majick-v3317-evolution-repair
+          if [ -s sanctuary/assets/majick-v3317-evolution-final-clean.zip ]; then
+            unzip -oq sanctuary/assets/majick-v3317-evolution-final-clean.zip -d /tmp/majick-v3317-evolution-repair
+            echo "Using FINAL CLEAN Guardian evolution bundle"
+          else
+            unzip -oq sanctuary/assets/majick-v3317-evolution-repair-small.zip -d /tmp/majick-v3317-evolution-repair
+            echo "Using fallback Guardian evolution repair bundle"
+          fi
           test -d /tmp/majick-v3317-evolution-repair/sanctuary/assets/evolutions
           cp -a /tmp/majick-v3317-evolution-repair/sanctuary/assets/evolutions/. sanctuary/assets/evolutions/
 
