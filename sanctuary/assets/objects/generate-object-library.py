@@ -4,7 +4,10 @@ import json, hashlib, math, sys
 
 # Generates starter transparent WebP art ONLY when a manifest-listed file is missing.
 # Uploaded final art always wins. This file never reads or modifies Guardian motion art.
-root = Path(sys.argv[1]) if len(sys.argv) > 1 else Path(__file__).parent
+args = sys.argv[1:]
+root_arg = next((a for a in args if not a.startswith('--')), None)
+root = Path(root_arg) if root_arg else Path(__file__).parent
+generate_all = '--all' in args
 manifest_path = root / "objects-manifest.json"
 manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
 root.mkdir(parents=True, exist_ok=True)
@@ -144,12 +147,17 @@ def draw_asset(filename, dest):
     img.save(dest,"WEBP",quality=78,method=6)
 
 created=0
+eligible=0
 for obj in manifest["objects"]:
     if not obj.get("enabled", True): continue
+    if not generate_all and not obj.get("preload", False) and not obj.get("placement"):
+        continue
+    eligible += 1
     dest=root / obj["filename"]
     if dest.exists() and dest.stat().st_size > 100:
         continue
     draw_asset(obj["filename"], dest)
     created += 1
 
-print(f"Majick object library ready: {len(manifest['objects'])} registered, {created} starter WebP files generated.")
+mode = "full-library" if generate_all else "startup-only"
+print(f"Majick object library ready: {len(manifest['objects'])} registered, {eligible} eligible for {mode}, {created} starter WebP files generated.")
