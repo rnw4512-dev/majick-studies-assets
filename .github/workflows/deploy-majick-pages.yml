@@ -159,17 +159,7 @@ jobs:
           grep -q "luna:'velora'" _site/v3312-main.js
           grep -q "53 MB" _site/app-progress.json
           test "$(find _site/assets/familiars/evolution_stages -type f -name '*.webp' | wc -l)" -eq 50
-          python - <<'PY'
-import re
-s=open('_site/service-worker.js',encoding='utf-8').read()
-m=re.search(r"const ASSETS=\[(.*?)\];",s,re.S)
-assert m
-items=re.findall(r"['\"]([^'\"]+)['\"]",m.group(1))
-assert len(items)<=20, len(items)
-assert not any('/assets/motion/' in x for x in items)
-assert not any('/evolution_stages/' in x for x in items)
-print('V3.3.12 lightweight precache:',len(items),'assets')
-PY
+          python -c "import re; s=open('_site/service-worker.js',encoding='utf-8').read(); m=re.search(r'const ASSETS=\\[(.*?)\\];',s,re.S); assert m; items=re.findall(r\"['\\\"]([^'\\\"]+)['\\\"]\",m.group(1)); assert len(items)<=20, len(items); assert not any('/assets/motion/' in x for x in items); assert not any('/evolution_stages/' in x for x in items); print('V3.3.12 lightweight precache:',len(items),'assets')"
           echo "Majick Studies V3.3.12 assembled successfully."
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
