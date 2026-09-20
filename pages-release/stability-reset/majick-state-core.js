@@ -2,44 +2,61 @@
 (function(){
 'use strict';
 const SHARED=['xp','crystals','chests'];
+function stateRef(){
+  try{
+    if(typeof S!=='undefined'&&S&&typeof S==='object')return S;
+  }catch(_){}
+  return (window.S&&typeof window.S==='object')?window.S:null;
+}
+function exposeState(){
+  const st=stateRef();
+  if(st&&!window.S){
+    try{window.S=st}catch(_){}
+  }
+  return st;
+}
 function blankProgress(){
   return {answers:[],explanations:[],repair:[],spacedQueue:[],streak:0,lastDay:'',bossWins:0,xp:0,crystals:0,charms:[],chests:0,inventory:{streakShield:0,clueCharm:0,bossShield:0,oracleTicket:0},cosmetics:[],eliminationWins:0,voicePractices:0};
 }
 function plainNumber(v){v=Number(v);return Number.isFinite(v)?v:0}
 function ensureCourses(){
-  if(!window.S)return;
-  S.courses=(S.courses&&typeof S.courses==='object'&&!Array.isArray(S.courses))?S.courses:{};
-  S.progress=(S.progress&&typeof S.progress==='object'&&!Array.isArray(S.progress))?S.progress:{};
-  if(!S.activeCourse||!S.courses[S.activeCourse])S.activeCourse=Object.keys(S.courses)[0]||S.activeCourse||'PMFC';
+  const st=exposeState();
+  if(!st)return null;
+  st.courses=(st.courses&&typeof st.courses==='object'&&!Array.isArray(st.courses))?st.courses:{};
+  st.progress=(st.progress&&typeof st.progress==='object'&&!Array.isArray(st.progress))?st.progress:{};
+  if(!st.activeCourse||!st.courses[st.activeCourse])st.activeCourse=Object.keys(st.courses)[0]||st.activeCourse||'PMFC';
+  return st;
 }
 function initialSharedValue(key){
-  const account=S?.majickAccount;
+  const st=exposeState();
+  const account=st?.majickAccount;
   if(account&&Object.prototype.hasOwnProperty.call(account,key)){
     const n=Number(account[key]);
     if(Number.isFinite(n))return n;
   }
   let best=0;
-  for(const row of Object.values(S?.progress||{})){
+  for(const row of Object.values(st?.progress||{})){
     if(row&&typeof row==='object')best=Math.max(best,plainNumber(row[key]));
   }
   return best;
 }
 function ensureAccount(){
-  if(!window.S)return null;
-  S.majickAccount=(S.majickAccount&&typeof S.majickAccount==='object'&&!Array.isArray(S.majickAccount))?S.majickAccount:{};
-  for(const key of SHARED)S.majickAccount[key]=initialSharedValue(key);
-  S.majickAccount.schemaVersion=Math.max(2,plainNumber(S.majickAccount.schemaVersion));
-  return S.majickAccount;
+  const st=exposeState();
+  if(!st)return null;
+  st.majickAccount=(st.majickAccount&&typeof st.majickAccount==='object'&&!Array.isArray(st.majickAccount))?st.majickAccount:{};
+  for(const key of SHARED)st.majickAccount[key]=initialSharedValue(key);
+  st.majickAccount.schemaVersion=Math.max(2,plainNumber(st.majickAccount.schemaVersion));
+  return st.majickAccount;
 }
 function bindSharedField(row,key){
   const desc=Object.getOwnPropertyDescriptor(row,key);
   if(desc?.get&&desc?.set&&desc.get.__majickSharedGetter)return;
-  const getter=function(){return plainNumber(S?.majickAccount?.[key])};
+  const getter=function(){return plainNumber(exposeState()?.majickAccount?.[key])};
   getter.__majickSharedGetter=true;
   Object.defineProperty(row,key,{
     enumerable:true,configurable:true,
     get:getter,
-    set(v){ensureAccount();S.majickAccount[key]=plainNumber(v)}
+    set(v){const a=ensureAccount();if(a)a[key]=plainNumber(v)}
   });
 }
 function normalizeProgressRow(row,cid=''){
@@ -56,28 +73,33 @@ function normalizeProgressRow(row,cid=''){
   return p;
 }
 function normalizeAll(){
-  ensureCourses();ensureAccount();
-  for(const [cid,row] of Object.entries(S.progress||{}))S.progress[cid]=normalizeProgressRow(row,cid);
-  for(const cid of Object.keys(S.courses||{}))S.progress[cid]=normalizeProgressRow(S.progress[cid],cid);
-  if(S.activeCourse&&!S.progress[S.activeCourse])S.progress[S.activeCourse]=normalizeProgressRow(null,S.activeCourse);
+  const st=ensureCourses();
+  if(!st)return null;
+  ensureAccount();
+  for(const [cid,row] of Object.entries(st.progress||{}))st.progress[cid]=normalizeProgressRow(row,cid);
+  for(const cid of Object.keys(st.courses||{}))st.progress[cid]=normalizeProgressRow(st.progress[cid],cid);
+  if(st.activeCourse&&!st.progress[st.activeCourse])st.progress[st.activeCourse]=normalizeProgressRow(null,st.activeCourse);
+  return st;
 }
 function safeCourse(){
-  normalizeAll();
-  return S.courses?.[S.activeCourse]||window.BUILTIN||null;
+  const st=normalizeAll();
+  return st?.courses?.[st.activeCourse]||window.BUILTIN||null;
 }
 function safeProg(){
-  normalizeAll();
-  S.progress[S.activeCourse]=normalizeProgressRow(S.progress[S.activeCourse],S.activeCourse);
-  return S.progress[S.activeCourse];
+  const st=normalizeAll();
+  if(!st)return blankProgress();
+  st.progress[st.activeCourse]=normalizeProgressRow(st.progress[st.activeCourse],st.activeCourse);
+  return st.progress[st.activeCourse];
 }
 function install(){
-  if(!window.S)return false;
+  const st=exposeState();
+  if(!st)return false;
   normalizeAll();
   // One compatibility surface for all legacy code. Shared values route to majickAccount.
   window.prog=safeProg;
   window.course=safeCourse;
-  window.MajickStateCore={version:1,SHARED,blankProgress,normalizeProgressRow,normalizeAll,ensureAccount,safeProg,safeCourse,install};
-  document.documentElement.dataset.majickStateCore='1';
+  window.MajickStateCore={version:2,SHARED,stateRef,exposeState,blankProgress,normalizeProgressRow,normalizeAll,ensureAccount,safeProg,safeCourse,install};
+  document.documentElement.dataset.majickStateCore='2';
   return true;
 }
 if(!install())window.addEventListener('DOMContentLoaded',install,{once:true});
