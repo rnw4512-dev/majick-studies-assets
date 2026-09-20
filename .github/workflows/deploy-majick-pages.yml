@@ -80,6 +80,7 @@ jobs:
           test -s pages-release/v3316/v3316-main.js
           test -s pages-release/v3316/v3316-main.css
           test -s pages-release/v3316/v3316-apply.py
+          test -s pages-release/v3316/enlarge-approved-stage-art.py
           test -s sanctuary/assets/objects/objects-manifest.json
           test -s sanctuary/assets/objects/generate-object-library.py
 
@@ -140,20 +141,15 @@ jobs:
           cp sanctuary/assets/objects/objects-manifest.json _site/sanctuary/assets/objects/objects-manifest.json
           python pages-release/v3314/v3314-apply.py _site
 
-          # Optional single-file V3.3.15 art sync bundle.
-          # Upload sanctuary/assets/majick-v3315-art-sync.zip once; the build expands it safely.
+          # Optional single-file furniture sync bundle.
+          # The old generated evolution-action sheets are intentionally ignored.
           if [ -s sanctuary/assets/majick-v3315-art-sync.zip ]; then
             rm -rf /tmp/majick-v3315-art-sync
             mkdir -p /tmp/majick-v3315-art-sync
             unzip -oq sanctuary/assets/majick-v3315-art-sync.zip -d /tmp/majick-v3315-art-sync
-            test -d /tmp/majick-v3315-art-sync/sanctuary/assets/evolutions
             test -d /tmp/majick-v3315-art-sync/sanctuary/assets/objects
-            cp -a /tmp/majick-v3315-art-sync/sanctuary/assets/evolutions/. sanctuary/assets/evolutions/
             cp -a /tmp/majick-v3315-art-sync/sanctuary/assets/objects/. sanctuary/assets/objects/
           fi
-
-          # Normalize evolved Guardian action art so transparent margins do not shrink Phaser sprites.
-          python sanctuary/assets/evolutions/normalize-evolution-art.py sanctuary/assets/evolutions
 
           # V3.3.15 adds Notes Forge and one shared Guardian stage resolver.
           cp pages-release/v3315/v3315-main.js _site/v3315-main.js
@@ -173,6 +169,7 @@ jobs:
           cp pages-release/v3316/v3316-main.js _site/v3316-main.js
           cp pages-release/v3316/v3316-main.css _site/v3316-main.css
           python pages-release/v3316/v3316-apply.py _site
+          python pages-release/v3316/enlarge-approved-stage-art.py _site/assets/familiars/evolution_stages
 
           # HARD RULE: copy the original Phase 4 images byte-for-byte; never regenerate them.
           mkdir -p _site/sanctuary/assets/motion
@@ -256,17 +253,23 @@ jobs:
           test -s _site/sanctuary/v3315-sanctuary.js
           test -s _site/sanctuary/assets/evolutions/evolution-manifest.json
           if [ -s sanctuary/assets/majick-v3315-art-sync.zip ]; then
-            test "$(find _site/sanctuary/assets/evolutions -type f -name '*.webp' | wc -l)" -ge 60
-            test -s _site/sanctuary/assets/evolutions/velora/ascendant/walk.webp
-            test -s _site/sanctuary/assets/evolutions/cascade/celestial/play.webp
-            test -s _site/sanctuary/assets/evolutions/solstice/guardian/sleep.webp
-            test -s _site/sanctuary/assets/evolutions/aurelia/new-bond/walk.webp
             test -s _site/sanctuary/assets/objects/magic-mirror.webp
             test -s _site/sanctuary/assets/objects/moonlit-study-desk.webp
             test -s _site/sanctuary/assets/objects/celestial-telescope.webp
             test -s _site/sanctuary/assets/objects/enchanted-bookstack.webp
             test -s _site/sanctuary/assets/objects/moonstone-canopy-bed.webp
           fi
+          python - <<'PY'
+from PIL import Image
+from pathlib import Path
+root=Path('_site/assets/familiars/evolution_stages')
+for name in ('velora','cascade','solstice','aurelia'):
+    for stage in ('new-bond','apprentice','guardian','ascendant','celestial'):
+        p=root/f'{name}-{stage}.webp'
+        assert p.exists(), p
+        assert Image.open(p).size==(640,1000), (p,Image.open(p).size)
+print('Approved Guardian portraits verified at 640x1000')
+PY
           test -s _site/study-material/materialParser.js
           test -s _site/study-material/materialStoreModel.js
           test -s _site/study-material/questionBuilder.js
