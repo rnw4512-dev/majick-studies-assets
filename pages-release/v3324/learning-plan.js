@@ -128,7 +128,7 @@ const baseBind=MajickLearningLab.bind;
 MajickLearningLab.bind=function(){
   baseBind();
   document.querySelectorAll('[data-plan-tab]').forEach(b=>b.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();show(b.dataset.planTab)}));
-  hydrate().then(()=>show('plan'));
+  hydrate().then(()=>{if(!window.MajickCourseTutor)show('plan')});
 };
 const baseRefresh=MajickLearningLab.refresh;
 MajickLearningLab.refresh=function(){baseRefresh();hydrate()};

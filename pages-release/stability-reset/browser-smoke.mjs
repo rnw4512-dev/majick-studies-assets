@@ -39,7 +39,7 @@ try{
   await assert(boot.hasRender,'render() unavailable after boot');
   await assert(boot.hasState,'MajickStateCore unavailable after boot');
   await assert(boot.hasRegistry,'Guardian registry unavailable after boot');
-  await assert(boot.version==='3.3.25-guardian-visual','wrong deployed runtime version: '+boot.version);
+  await assert(boot.version==='3.3.26-course-tutor','wrong deployed runtime version: '+boot.version);
   await assert(boot.guardians.length>=10,'baseline Guardian registry unexpectedly shrank');
 
   const balanceRecovery=await page.evaluate(()=>{
@@ -172,8 +172,9 @@ try{
   await page.evaluate(()=>{switchCourse('D772');navigate('learninglab');});
   await page.waitForSelector('.learnLab[data-course="D772"]',{timeout:10000});
   const d772Learn=await page.evaluate(()=>MajickLearningLab.model('D772'));
-  const planRuntime=await page.evaluate(()=>({ok:!!window.MajickLearningPlan,version:window.MajickLearningPlan?.VERSION||null}));
+  const planRuntime=await page.evaluate(()=>({ok:!!window.MajickLearningPlan,version:window.MajickLearningPlan?.VERSION||null,tutor:window.MajickCourseTutor?.VERSION||null}));
   await assert(planRuntime.ok&&planRuntime.version==='3.3.24','Adaptive Learning Plan runtime missing');
+  await assert(planRuntime.tutor==='3.3.26','Majick Course Tutor runtime missing');
   await assert(d772Learn.vocab.some(v=>v.term.toLowerCase()==='mean'),'D772 Learn Mode missing statistics vocabulary');
   await assert(d772Learn.lessons.length>=5,'D772 Learn Mode missing visual starter lessons');
   const toolCheck=await page.evaluate(()=>({
@@ -293,9 +294,46 @@ try{
   await assert(forged.rigor[2]>0&&forged.rigor[3]>0,'Notes Forge did not include application/analysis rigor');
   await assert(forged.bank>=40&&forged.bank<=110,'Notes Forge did not synchronize a bounded adaptive course bank');
   await assert(forged.active,'new Notes Forge source was not active');
+  const sourcePath=await page.evaluate(async id=>{
+    const row=await MajickMaterialStore.get(id);
+    return row?.learningPath||null;
+  },forged.id);
+  await assert(sourcePath?.lessonId==='d772-s1-l1','D772 data-collection notes did not auto-fill Lesson 1 in the learning path');
 
   await page.evaluate(()=>navigate('learninglab'));
-  await page.waitForSelector('[data-plan-tab="plan"]',{timeout:10000});
+  await page.waitForSelector('[data-tutor-tab="path"]',{timeout:10000});
+  const pathTitles=await page.evaluate(()=>MajickCourseTutor.sections('D772')[0].lessons.map(x=>x.title));
+  await assert(pathTitles.join('|')==='Understanding Data Collection Methods|Recognizing Bias in Data Collection|Unveiling Data Misrepresentations|Conclusions About Data Findings|Section 1 Review','D772 Section 1 learning path order is wrong');
+  await assert(await page.getByText('Section 1: Assessing Research and Data Credibility',{exact:true}).count()>=1,'D772 Section 1 path is not visible');
+  await page.getByText('Understanding Data Collection Methods',{exact:true}).first().click();
+  await page.waitForSelector('#courseTutorLesson .tutorChapterBlock',{timeout:10000});
+  const tutorDepth=await page.evaluate(()=>{
+    const lesson=MajickCourseTutor.selectedLesson('D772');
+    const c=MajickCourseTutor.chapter(lesson,'D772');
+    return {lesson:lesson?.id,sources:c.sourceRows.length,passages:c.passages.length,vocab:c.vocab.length,status:c.mastery.status,target:c.mastery.targetRigor};
+  });
+  await assert(tutorDepth.lesson==='d772-s1-l1'&&tutorDepth.sources>=1,'Course Tutor did not open the note-backed D772 Lesson 1');
+  await assert(tutorDepth.passages>=1&&tutorDepth.vocab>=1,'Course Tutor did not build deep lesson teaching content');
+  await assert(tutorDepth.status==='Learning'&&tutorDepth.target===1,'new lesson did not begin at Learning / foundation rigor');
+
+  const tutorGrowth=await page.evaluate(()=>{
+    const lesson=MajickCourseTutor.selectedLesson('D772');
+    const qs=MajickCourseTutor.questionsForLesson(lesson,'D772');
+    const p=prog();
+    const r4=qs.filter(q=>Number(q.rigorLevel||1)===4).slice(0,2);
+    const r3=qs.filter(q=>Number(q.rigorLevel||1)===3).slice(0,3);
+    const base=qs.filter(q=>!r4.includes(q)&&!r3.includes(q)).slice(0,4);
+    const chosen=[...r4,...r3,...base];
+    chosen.forEach(q=>p.answers.push({qid:q.id,topicId:q.topicId,chosen:q.answer,correct:true,difficulty:q.difficulty,ts:Date.now()}));
+    const high=MajickCourseTutor.mastery(lesson,'D772');
+    chosen.slice(0,3).forEach(q=>p.answers.push({qid:q.id,topicId:q.topicId,chosen:'__wrong__',correct:false,difficulty:q.difficulty,ts:Date.now()+1}));
+    const repair=MajickCourseTutor.mastery(lesson,'D772');
+    return {high,repair};
+  });
+  await assert(tutorGrowth.high.targetRigor>=3,'correct lesson answers did not increase target rigor');
+  await assert(['Proficient','Mastered'].includes(tutorGrowth.high.status),'correct higher-rigor answers did not improve lesson mastery');
+  await assert(tutorGrowth.repair.status==='Needs Review'&&tutorGrowth.repair.targetRigor<tutorGrowth.high.targetRigor,'recent wrong answers did not trigger a repair loop');
+
   await page.locator('[data-plan-tab="read"]').click();
   await page.waitForSelector('.coursePassage',{timeout:10000});
   const learningDepth=await page.evaluate(()=>({

@@ -166,6 +166,7 @@ async function regenerateSource(id){
     sourceId:row.id
   });
   row.settings={...(row.settings||{}),targetCount,adaptive:true};
+  window.MajickCourseTutor?.annotateSource?.(row,row.courseId);
   await MajickMaterialStore.save(row);
   addGeneratedCourseMetadata(row.courseId,row);
   await syncCourse(row.courseId);
@@ -214,7 +215,7 @@ async function refreshLibrary(){
   box.innerHTML=rows.map(r=>{
     const active=r.active!==false;
     return '<article class="v3315SourceRow '+(active?'':'paused')+'" data-source="'+E(r.id)+'">'+
-      '<div><b>'+E(r.sourceName)+'</b><small>'+E(String(r.sourceType||'').toUpperCase())+' • '+new Date(r.createdAt).toLocaleDateString()+' • '+(r.generated?.practiceQuestions?.length||0)+' questions • '+(active?'ACTIVE':'PAUSED')+'</small></div>'+
+      '<div><b>'+E(r.sourceName)+'</b><small>'+E(String(r.sourceType||'').toUpperCase())+' • '+new Date(r.createdAt).toLocaleDateString()+' • '+(r.generated?.practiceQuestions?.length||0)+' questions • '+(active?'ACTIVE':'PAUSED')+(r.learningPath?.lessonTitle?' • '+E(r.learningPath.lessonTitle):'')+'</small></div>'+
       '<div class="v3315SourceActions">'+
         '<button class="btn ghost v3315OpenSource" type="button">Open</button>'+
         '<button class="btn ghost v3315RegenerateSource" type="button">Regenerate</button>'+
@@ -259,6 +260,7 @@ async function forge(){
       courseId,
       sourceId:draft.id
     });
+    window.MajickCourseTutor?.annotateSource?.(draft,courseId);
     await MajickMaterialStore.save(draft);
     addGeneratedCourseMetadata(courseId,draft);
     const synced=await syncCourse(courseId);

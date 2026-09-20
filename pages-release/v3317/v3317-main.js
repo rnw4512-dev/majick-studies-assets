@@ -2,8 +2,8 @@
 (function(){
 'use strict';
 
-const RELEASE_LABEL='Adaptive Learning + Guardian Visual Fix • V3.3.25';
-const RELEASE_TITLE='Majick Studies — V3.3.25 Adaptive Learning + Guardian Visual Fix';
+const RELEASE_LABEL='Majick Course Tutor • V3.3.26';
+const RELEASE_TITLE='Majick Studies — V3.3.26 Majick Course Tutor';
 const registry=()=>window.MajickGuardianRegistry;
 const canonOf=type=>registry()?.get?.(type)?.canon||String(type||'').toLowerCase();
 const STAGE_SLUGS=['new-bond','apprentice','guardian','ascendant','celestial'];
@@ -211,14 +211,14 @@ function applyReleaseBadge(){
   const pill=document.querySelector('.top .pill');
   if(pill&&pill.textContent!==RELEASE_LABEL)pill.textContent=RELEASE_LABEL;
   if(document.title!==RELEASE_TITLE)document.title=RELEASE_TITLE;
-  if(document.documentElement.dataset.majickVersion!=='3.3.25-guardian-visual'){
-    document.documentElement.dataset.majickVersion='3.3.25-guardian-visual';
+  if(document.documentElement.dataset.majickVersion!=='3.3.26-course-tutor'){
+    document.documentElement.dataset.majickVersion='3.3.26-course-tutor';
   }
 }
 
 function showRuntimeNotice(error){
   const message=String(error?.message||error||'Unknown runtime error');
-  console.error('Majick V3.3.25 runtime error',error);
+  console.error('Majick V3.3.26 runtime error',error);
   if(document.getElementById('v3317RuntimeNotice'))return;
   try{
     const n=document.createElement('div');
