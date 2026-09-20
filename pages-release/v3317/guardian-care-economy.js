@@ -1,26 +1,36 @@
 (function(){
 'use strict';
 
-const VERSION=1;
-const TYPES=['luna','ember','nova','mallow'];
-const GUARDIANS={
-  luna:{name:'Velora',icon:'☾',favoriteItem:'velvet-moon-cushion',favoriteLabel:'Velvet Moon Cushion'},
-  ember:{name:'Cascade',icon:'✧',favoriteItem:'rune-puzzle',favoriteLabel:'Rune Puzzle'},
-  nova:{name:'Solstice',icon:'✦',favoriteItem:'comet-ball',favoriteLabel:'Comet Ball'},
-  mallow:{name:'Aurelia',icon:'♡',favoriteItem:'moonflower-plush',favoriteLabel:'Moonflower Plush'}
+const VERSION=2;
+const FALLBACK_META={
+  luna:{name:'Velora',species:'Moon Cat',icon:'☾',favoriteItem:'velvet-moon-cushion',favoriteLabel:'Velvet Moon Cushion'},
+  ember:{name:'Cascade',species:'Pocket Dragon',icon:'◇',favoriteItem:'rune-puzzle',favoriteLabel:'Rune Puzzle'},
+  nova:{name:'Solstice',species:'Star Fox',icon:'✦',favoriteItem:'comet-ball',favoriteLabel:'Comet Ball'},
+  mallow:{name:'Aurelia',species:'Winged Bunny',icon:'♡',favoriteItem:'moonflower-plush',favoriteLabel:'Moonflower Plush'},
+  vesper:{name:'Vesper',species:'Starlight Owl',icon:'✧',favoriteItem:'celestial-feather-wand',favoriteLabel:'Celestial Feather Wand'},
+  briar:{name:'Briar',species:'Moonlit Fawn',icon:'❀',favoriteItem:'moonvine-plush',favoriteLabel:'Moonvine Plush'},
+  zephyr:{name:'Zephyr',species:'Cloud Ferret',icon:'🔔',favoriteItem:'ribbon-comet',favoriteLabel:'Ribbon Comet Toy'},
+  prism:{name:'Prism',species:'Crystal Axolotl',icon:'◇',favoriteItem:'crystal-bubble-orb',favoriteLabel:'Crystal Bubble Orb'},
+  rook:{name:'Rook',species:'Twilight Raven',icon:'🪶',favoriteItem:'strategy-rune-tokens',favoriteLabel:'Strategy Rune Tokens'},
+  solara:{name:'Solara',species:'Sunrise Hedgehog',icon:'☀',favoriteItem:'sunburst-ball',favoriteLabel:'Sunburst Ball'}
 };
 
 const CATALOG=[
   {id:'moonberry-meal',name:'Moonberry Familiar Meals',icon:'✦',cost:6,kind:'consumable',qty:3,desc:'Three nourishing familiar meals. Used when you Feed a Guardian.'},
   {id:'starlight-treat',name:'Starlight Treats',icon:'☆',cost:8,kind:'consumable',qty:3,desc:'Three tiny celebratory treats that raise affection and fun.'},
-  {id:'moon-silver-brush',name:'Moon-Silver Grooming Brush',icon:'☾',cost:16,kind:'tool',desc:'Permanent grooming tool. Makes Brush/Groom available forever.'},
-  {id:'comet-ball',name:'Comet Ball',icon:'◉',cost:18,kind:'toy',desc:'A permanent enchanted play toy. Solstice especially loves it.'},
-  {id:'celestial-feather-wand',name:'Celestial Feather Wand',icon:'✧',cost:20,kind:'toy',desc:'A permanent floating feather toy for playful familiar sessions.'},
-  {id:'moonflower-plush',name:'Moonflower Plush',icon:'❀',cost:20,kind:'toy',desc:'A soft enchanted plush. Aurelia gets a favorite-item bond bonus.'},
+  {id:'moon-silver-brush',name:'Moon-Silver Grooming Brush',icon:'☾',cost:16,kind:'tool',desc:'Permanent grooming tool. Makes Brush & Groom available forever.'},
+  {id:'comet-ball',name:'Comet Ball',icon:'◉',cost:18,kind:'toy',desc:'An enchanted chase toy. Solstice especially loves it.'},
+  {id:'celestial-feather-wand',name:'Celestial Feather Wand',icon:'✧',cost:20,kind:'toy',desc:'A floating feather toy. Vesper gets a favorite-item bond bonus.'},
+  {id:'moonflower-plush',name:'Moonflower Plush',icon:'❀',cost:20,kind:'toy',desc:'A soft enchanted plush. Aurelia especially loves it.'},
   {id:'rune-puzzle',name:'Rune Puzzle',icon:'◇',cost:22,kind:'toy',desc:'A reusable puzzle toy. Cascade gets a favorite-item bond bonus.'},
-  {id:'velvet-moon-cushion',name:'Velvet Moon Cushion',icon:'☾',cost:24,kind:'comfort',desc:'A permanent velvet comfort item. Velora gets a favorite-item bond bonus.'},
-  {id:'guardian-bell-collar',name:'Celestial Bell Collar',icon:'✦',cost:28,kind:'accessory',desc:'A collectible Guardian accessory for later dress-up expansion.'},
-  {id:'sanctuary-upgrade-token',name:'Sanctuary Expansion Seal',icon:'⌂',cost:75,kind:'future',disabled:true,desc:'Reserved for the future dorm-room expansion system.'}
+  {id:'velvet-moon-cushion',name:'Velvet Moon Cushion',icon:'☾',cost:24,kind:'comfort',desc:'A permanent velvet comfort item. Velora especially loves it.'},
+  {id:'moonvine-plush',name:'Moonvine Plush',icon:'❀',cost:20,kind:'toy',desc:'A soft moonvine fawn plush. Briar treats it like a tiny garden companion.'},
+  {id:'ribbon-comet',name:'Ribbon Comet Toy',icon:'🎐',cost:18,kind:'toy',desc:'A fast enchanted ribbon toy made for Zephyr’s momentum bursts.'},
+  {id:'crystal-bubble-orb',name:'Crystal Bubble Orb',icon:'◌',cost:20,kind:'toy',desc:'A floating reflective orb that Prism can chase and watch shimmer.'},
+  {id:'strategy-rune-tokens',name:'Strategy Rune Tokens',icon:'♟',cost:22,kind:'toy',desc:'A set of moving rune pieces. Rook gets a favorite-item bond bonus.'},
+  {id:'sunburst-ball',name:'Sunburst Ball',icon:'☀',cost:18,kind:'toy',desc:'A warm glowing ball that Solara loves to nudge around the Sanctuary.'},
+  {id:'guardian-bell-collar',name:'Celestial Bell Collar',icon:'✦',cost:28,kind:'accessory',desc:'A collectible Guardian accessory for the dress-up system.'},
+  {id:'sanctuary-upgrade-token',name:'Sanctuary Expansion Seal',icon:'⌂',cost:75,kind:'future',disabled:true,desc:'Reserved for future dorm-room expansion.'}
 ];
 
 const DEFAULT_NEEDS={hunger:82,hydration:86,energy:84,fun:78,grooming:86,affection:82,bond:0};
@@ -28,20 +38,53 @@ const DECAY_PER_HOUR={hunger:1.15,hydration:1.35,energy:.8,fun:.55,grooming:.24,
 const NEED_KEYS=['hunger','hydration','energy','fun','grooming','affection'];
 
 const clamp=(n,min=0,max=100)=>Math.max(min,Math.min(max,Number(n)||0));
-const escCare=s=>{try{return esc(String(s??''))}catch(_){return String(s??'').replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]))}};
+const E=s=>{try{return esc(String(s??''))}catch(_){return String(s??'').replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]))}};
 
-function legacyPet(type){
-  return (window.S?.legacy?.pets||[]).find(p=>p.type===type)||null;
+function canon(type){
+  try{
+    const c=window.V338_CANON?.[type]||window.v338Canon?.(type);
+    if(c)return {
+      name:c.display||type,
+      species:c.species||type,
+      icon:c.sigil||'✦',
+      favoriteObject:c.favorite||'Sanctuary treasure',
+      ...FALLBACK_META[type]
+    };
+  }catch(_){}
+  return FALLBACK_META[type]||{name:type||'Guardian',species:'Guardian',icon:'✦',favoriteItem:'celestial-feather-wand',favoriteLabel:'Celestial Feather Wand'};
 }
-function activeGuardianType(){
-  try{return activePet()?.type||window.S?.legacy?.pets?.[0]?.type||'luna'}catch(_){return window.S?.legacy?.pets?.[0]?.type||'luna'}
+function ownedPets(){
+  return Array.isArray(window.S?.legacy?.pets)?S.legacy.pets.filter(Boolean):[];
 }
+function incubatingEggs(){
+  return Array.isArray(window.S?.legacy?.eggs)?S.legacy.eggs.filter(Boolean):[];
+}
+function petById(id){
+  return ownedPets().find(p=>p.id===id)||null;
+}
+function petByType(type){
+  return ownedPets().find(p=>p.type===type)||null;
+}
+function resolvePet(target){
+  if(target&&typeof target==='object'&&target.id)return target;
+  const key=String(target||'');
+  return petById(key)||petByType(key)||null;
+}
+function activePetSafe(){
+  try{
+    const p=activePet();
+    if(p)return p;
+  }catch(_){}
+  const id=window.S?.legacy?.activePetId;
+  return petById(id)||ownedPets()[0]||null;
+}
+
 function ensureAccount(){
   try{window.MajickCourseManager?.ensure?.()}catch(_){}
   if(!window.S)return {};
   S.majickAccount=S.majickAccount||{xp:0,crystals:0,chests:0,schemaVersion:1};
   const a=S.majickAccount;
-  a.guardianCare=a.guardianCare||{schemaVersion:VERSION,lastDecayAt:Date.now(),guardians:{},log:[]};
+  a.guardianCare=a.guardianCare||{schemaVersion:VERSION,lastDecayAt:Date.now(),guardians:{},log:[],focusPetId:null};
   a.guardianCare.schemaVersion=VERSION;
   a.guardianCare.guardians=a.guardianCare.guardians||{};
   a.guardianCare.log=Array.isArray(a.guardianCare.log)?a.guardianCare.log:[];
@@ -49,42 +92,54 @@ function ensureAccount(){
   a.guardianOwned=Array.isArray(a.guardianOwned)?a.guardianOwned:[];
   if(!a.guardianOwned.includes('starter-ribbon-toy'))a.guardianOwned.push('starter-ribbon-toy');
 
-  for(const type of TYPES){
-    const g=a.guardianCare.guardians[type]||(a.guardianCare.guardians[type]={...DEFAULT_NEEDS});
+  const pets=ownedPets();
+  for(const pet of pets){
+    // Migrate the early type-key prototype automatically if it exists.
+    if(!a.guardianCare.guardians[pet.id]&&a.guardianCare.guardians[pet.type]){
+      a.guardianCare.guardians[pet.id]={...a.guardianCare.guardians[pet.type]};
+    }
+    const g=a.guardianCare.guardians[pet.id]||(a.guardianCare.guardians[pet.id]={...DEFAULT_NEEDS});
     for(const k of NEED_KEYS)g[k]=clamp(g[k]??DEFAULT_NEEDS[k],25,100);
-    g.bond=Math.max(0,Number(g.bond||0));
-    g.favoriteItem=GUARDIANS[type].favoriteItem;
+    g.bond=Math.max(Number(pet.bond||0),Number(g.bond||0));
+    g.petId=pet.id;
+    g.type=pet.type;
     g.lastCareAt=g.lastCareAt||null;
     g.lastAction=g.lastAction||null;
     g.affectionCooldownUntil=Number(g.affectionCooldownUntil||0);
-    const pet=legacyPet(type);
-    if(pet)pet.bond=Math.max(Number(pet.bond||0),g.bond);
+    pet.bond=Math.max(Number(pet.bond||0),g.bond);
+  }
+
+  if(!petById(a.guardianCare.focusPetId)){
+    a.guardianCare.focusPetId=activePetSafe()?.id||pets[0]?.id||null;
   }
   applyDecay(a);
   return a;
 }
 
-function applyDecay(a=ensureAccount()){
+function applyDecay(a){
+  if(!a?.guardianCare)return;
   const care=a.guardianCare;
   const now=Date.now();
   const last=Number(care.lastDecayAt||now);
   const hours=Math.min(36,Math.max(0,(now-last)/3600000));
   if(hours<.05)return;
-  for(const type of TYPES){
-    const g=care.guardians[type];
+  const ids=new Set(ownedPets().map(p=>p.id));
+  for(const [id,g] of Object.entries(care.guardians||{})){
+    if(!ids.has(id))continue;
     for(const [k,rate] of Object.entries(DECAY_PER_HOUR)){
       g[k]=clamp(g[k]-hours*rate,25,100);
     }
   }
   care.lastDecayAt=now;
 }
-function state(type){
-  const a=ensureAccount();
-  applyDecay(a);
-  return a.guardianCare.guardians[type]||a.guardianCare.guardians.luna;
+
+function state(target){
+  const a=ensureAccount(),pet=resolvePet(target)||activePetSafe();
+  if(!pet)return null;
+  return a.guardianCare.guardians[pet.id]||null;
 }
 function averageNeeds(g){
-  return NEED_KEYS.reduce((n,k)=>n+clamp(g[k]),0)/NEED_KEYS.length;
+  return g?NEED_KEYS.reduce((n,k)=>n+clamp(g[k]),0)/NEED_KEYS.length:0;
 }
 function moodInfo(g){
   const avg=averageNeeds(g);
@@ -97,29 +152,28 @@ function crystalBalance(){
   try{return Number(prog()?.crystals||0)}catch(_){return Number(S?.majickAccount?.crystals||0)}
 }
 function inventoryCount(id){
-  const a=ensureAccount();
-  return Number(a.guardianInventory[id]||0);
+  return Number(ensureAccount().guardianInventory[id]||0);
 }
 function owns(id){
   return ensureAccount().guardianOwned.includes(id);
 }
 function saveCare(){
-  for(const type of TYPES){
-    const pet=legacyPet(type),g=state(type);
-    if(pet)pet.bond=Math.max(Number(pet.bond||0),Number(g.bond||0));
+  const a=ensureAccount();
+  for(const pet of ownedPets()){
+    const g=a.guardianCare.guardians[pet.id];
+    if(g)pet.bond=Math.max(Number(pet.bond||0),Number(g.bond||0));
   }
   try{save()}catch(e){console.warn('Guardian care save',e)}
 }
-function logCare(type,action,message){
-  const a=ensureAccount(),g=a.guardianCare.guardians[type];
-  a.guardianCare.log.unshift({type,action,message,at:new Date().toISOString()});
+function logCare(pet,action,message){
+  const a=ensureAccount(),g=a.guardianCare.guardians[pet.id];
+  a.guardianCare.log.unshift({petId:pet.id,type:pet.type,name:pet.name,action,message,at:new Date().toISOString()});
   a.guardianCare.log=a.guardianCare.log.slice(0,60);
   g.lastCareAt=new Date().toISOString();
   g.lastAction=action;
 }
 function consume(id,n=1){
-  const a=ensureAccount();
-  const have=Number(a.guardianInventory[id]||0);
+  const a=ensureAccount(),have=Number(a.guardianInventory[id]||0);
   if(have<n)return false;
   a.guardianInventory[id]=have-n;
   return true;
@@ -138,72 +192,77 @@ function change(g,changes){
     else g[k]=clamp(Number(g[k]||0)+Number(v||0),25,100);
   }
 }
-function favoriteOwned(type){
-  return owns(GUARDIANS[type]?.favoriteItem);
+function favoriteForPet(pet){
+  const meta=canon(pet?.type);
+  return {id:meta.favoriteItem||'celestial-feather-wand',label:meta.favoriteLabel||meta.favoriteObject||'Sanctuary treasure'};
 }
-function bestToy(type){
-  const favorite=GUARDIANS[type]?.favoriteItem;
-  if(favorite&&owns(favorite))return favorite;
-  const ids=['comet-ball','celestial-feather-wand','moonflower-plush','rune-puzzle','velvet-moon-cushion'];
+function favoriteOwned(pet){
+  return owns(favoriteForPet(pet).id);
+}
+function bestToy(pet){
+  const fav=favoriteForPet(pet).id;
+  if(fav&&owns(fav))return fav;
+  const ids=CATALOG.filter(x=>x.kind==='toy'||x.kind==='comfort').map(x=>x.id);
   return ids.find(owns)||'starter-ribbon-toy';
 }
-function assignedBed(type){
+function assignedBed(pet){
   try{
     const beds=S?.v3311?.sanctuaryState?.bedAssignments||{};
-    const found=Object.entries(beds).find(([,guardian])=>guardian===type);
+    const found=Object.entries(beds).find(([,guardian])=>guardian===pet.id||guardian===pet.type);
     if(found)return found[0];
   }catch(_){}
-  return (type==='luna'||type==='mallow')?'bed-west':'bed-east';
+  return Number(ownedPets().findIndex(p=>p.id===pet.id))%2===0?'bed-west':'bed-east';
+}
+function resultBase(pet,action){
+  const g=state(pet),meta=canon(pet.type);
+  return {ok:true,guardianId:pet.id,guardianType:pet.type,name:pet.name||meta.name,action,state:g,icon:meta.icon,visualAction:'play'};
 }
 
-function resultBase(type,action){
-  const g=state(type),meta=GUARDIANS[type]||GUARDIANS.luna;
-  return {ok:true,guardian:type,name:meta.name,action,state:g,icon:meta.icon,visualAction:'play'};
-}
+function performAction(target,action,opts={}){
+  const pet=resolvePet(target);
+  if(!pet)return {ok:false,action,message:'That Guardian is not currently in your bonded roster.'};
 
-function performAction(type,action,opts={}){
-  if(!TYPES.includes(type))type=activeGuardianType();
-  const a=ensureAccount(),g=a.guardianCare.guardians[type],meta=GUARDIANS[type],r=resultBase(type,action);
+  const a=ensureAccount(),g=a.guardianCare.guardians[pet.id],meta=canon(pet.type),r=resultBase(pet,action);
   let msg='',favoriteBonus=false;
 
   if(action==='feed'){
-    if(!consume('moonberry-meal',1))return {ok:false,guardian:type,action,message:'You are out of Moonberry Familiar Meals. Visit the Moon Crystal Boutique.',needsShop:true};
+    if(!consume('moonberry-meal',1))return {ok:false,guardianId:pet.id,guardianType:pet.type,action,message:'You are out of Moonberry Familiar Meals. Visit the Moon Crystal Boutique.',needsShop:true};
     change(g,{hunger:34,affection:3,bond:3});
-    msg=meta.name+' happily finishes a Moonberry meal and looks noticeably more content.';
+    msg=(pet.name||meta.name)+' happily finishes a Moonberry meal and looks noticeably more content.';
     r.icon='✦';
   }else if(action==='water'){
     change(g,{hydration:38,bond:1});
-    msg=meta.name+' drinks from the enchanted water basin. The water shimmers as they finish.';
+    msg=(pet.name||meta.name)+' drinks from the enchanted water basin. The water shimmers as they finish.';
     r.icon='◌';
   }else if(action==='treat'){
-    if(!consume('starlight-treat',1))return {ok:false,guardian:type,action,message:'You are out of Starlight Treats. Visit the Moon Crystal Boutique.',needsShop:true};
+    if(!consume('starlight-treat',1))return {ok:false,guardianId:pet.id,guardianType:pet.type,action,message:'You are out of Starlight Treats. Visit the Moon Crystal Boutique.',needsShop:true};
     change(g,{hunger:10,fun:8,affection:12,bond:4});
-    msg=meta.name+' takes the Starlight Treat and gives you a very pleased little reaction.';
+    msg=(pet.name||meta.name)+' takes the Starlight Treat and gives you a very pleased little reaction.';
     r.icon='☆';
   }else if(action==='groom'){
-    if(!owns('moon-silver-brush'))return {ok:false,guardian:type,action,message:'You need the Moon-Silver Grooming Brush from the Boutique first.',needsShop:true};
+    if(!owns('moon-silver-brush'))return {ok:false,guardianId:pet.id,guardianType:pet.type,action,message:'You need the Moon-Silver Grooming Brush from the Boutique first.',needsShop:true};
     change(g,{grooming:38,affection:8,bond:4});
-    msg=meta.name+' relaxes while you brush and groom them. Their coat and aura look immaculate.';
+    msg=(pet.name||meta.name)+' relaxes while you brush and groom them. Their coat and aura look immaculate.';
     r.icon='✧';
   }else if(action==='play'){
-    const toy=opts.itemId||bestToy(type);
-    favoriteBonus=toy===meta.favoriteItem&&owns(toy);
+    const toy=opts.itemId||bestToy(pet);
+    favoriteBonus=toy===favoriteForPet(pet).id&&owns(toy);
     change(g,{fun:favoriteBonus?44:32,energy:-4,affection:6,bond:favoriteBonus?7:4});
     const item=CATALOG.find(x=>x.id===toy);
-    msg=meta.name+' plays with '+(item?.name||'the Sanctuary ribbon toy')+'.'+(favoriteBonus?' It is one of their favorite things, and the bond magic flares brighter.':'');
+    msg=(pet.name||meta.name)+' plays with '+(item?.name||'the Sanctuary ribbon toy')+'.'+(favoriteBonus?' It is one of their favorite things, and the bond magic flares brighter.':'');
     r.icon=favoriteBonus?'✦':'♡';
     r.itemId=toy;
     r.favoriteBonus=favoriteBonus;
   }else if(action==='sleep'){
-    const bed=opts.objectId||assignedBed(type);
-    const beds=S.v3311=S.v3311||{};
+    const bed=opts.objectId||assignedBed(pet);
+    S.v3311=S.v3311||{};
     S.v3311.sanctuaryState=S.v3311.sanctuaryState||{bedAssignments:{}};
     S.v3311.sanctuaryState.bedAssignments=S.v3311.sanctuaryState.bedAssignments||{};
-    const already=S.v3311.sanctuaryState.bedAssignments[bed]===type;
-    S.v3311.sanctuaryState.bedAssignments[bed]=type;
+    const already=S.v3311.sanctuaryState.bedAssignments[bed]===pet.id||S.v3311.sanctuaryState.bedAssignments[bed]===pet.type;
+    S.v3311.sanctuaryState.bedAssignments[bed]=pet.id;
     change(g,{energy:48,affection:3,bond:already?5:2});
     g.preferredBed=bed;
-    msg=meta.name+(already?' settles into their familiar bed and immediately relaxes.':' chooses this bed as a favorite resting place.');
+    msg=(pet.name||meta.name)+(already?' settles into their familiar bed and immediately relaxes.':' chooses this bed as a favorite resting place.');
     r.icon='☾';
     r.visualAction='sleep';
     r.travelObject=bed;
@@ -211,19 +270,19 @@ function performAction(type,action,opts={}){
     const now=Date.now(),cool=Number(g.affectionCooldownUntil||0);
     if(now<cool){
       change(g,{affection:5});
-      msg=meta.name+' leans into the affection. The bond is already glowing from your recent attention.';
+      msg=(pet.name||meta.name)+' leans into the affection. The bond is already glowing from your recent attention.';
       r.rewardCooledDown=true;
     }else{
       change(g,{affection:28,bond:4});
       g.affectionCooldownUntil=now+10*60*1000;
-      msg=meta.name+' melts into the attention and your familiar bond brightens.';
+      msg=(pet.name||meta.name)+' melts into the attention and your familiar bond brightens.';
     }
     r.icon='♡';
   }else{
-    return {ok:false,guardian:type,action,message:'That Guardian-care action is not available yet.'};
+    return {ok:false,guardianId:pet.id,guardianType:pet.type,action,message:'That Guardian-care action is not available yet.'};
   }
 
-  logCare(type,action,msg);
+  logCare(pet,action,msg);
   r.message=msg;
   r.state=g;
   r.mood=moodInfo(g);
@@ -254,27 +313,43 @@ function buy(id){
   return {ok:true,item:it,balance:crystalBalance(),snapshot:snapshot()};
 }
 
+function eggSnapshot(){
+  return incubatingEggs().map(egg=>{
+    const meta=canon(egg.type);
+    const progress=Number(egg.progress||0),goal=Math.max(1,Number(egg.goal||1));
+    return {
+      id:egg.id,type:egg.type,name:meta.name,species:meta.species,icon:meta.icon,
+      progress,goal,pct:Math.min(100,Math.round(progress/goal*100)),
+      moonlightLeft:Math.max(0,goal-progress),source:egg.source||'mystery'
+    };
+  });
+}
+
 function snapshot(){
   const a=ensureAccount();
   applyDecay(a);
-  const guardians={};
-  for(const type of TYPES){
-    const g=a.guardianCare.guardians[type];
-    guardians[type]={
+  const roster=ownedPets().map(pet=>{
+    const g=a.guardianCare.guardians[pet.id],meta=canon(pet.type),fav=favoriteForPet(pet);
+    return {
+      petId:pet.id,type:pet.type,name:pet.name||meta.name,species:meta.species,icon:meta.icon,
+      phaser:!!window.V338_CANON?.[pet.type]?.phaser,
       ...g,
-      name:GUARDIANS[type].name,
-      favoriteItem:GUARDIANS[type].favoriteItem,
-      favoriteLabel:GUARDIANS[type].favoriteLabel,
-      favoriteOwned:favoriteOwned(type),
+      favoriteItem:fav.id,favoriteLabel:fav.label,favoriteOwned:favoriteOwned(pet),
       mood:moodInfo(g)
     };
-  }
+  });
+  const guardians={};
+  roster.forEach(x=>{guardians[x.petId]=x});
+  const byType={};
+  roster.forEach(x=>{if(!byType[x.type])byType[x.type]=x});
   return {
     schemaVersion:VERSION,
     crystals:crystalBalance(),
     inventory:{...a.guardianInventory},
     owned:[...a.guardianOwned],
-    guardians,
+    focusPetId:a.guardianCare.focusPetId,
+    roster,guardians,byType,
+    eggs:eggSnapshot(),
     catalog:CATALOG.filter(x=>!x.disabled).map(x=>({id:x.id,name:x.name,kind:x.kind,cost:x.cost,qty:x.qty||1,icon:x.icon}))
   };
 }
@@ -284,40 +359,71 @@ function meter(label,value,icon){
   return '<div class="majCareMeter"><span>'+icon+' '+label+'</span><b>'+n+'%</b><i><em style="width:'+n+'%"></em></i></div>';
 }
 
-function guardianCareHTML(type=activeGuardianType()){
-  const snap=snapshot(),g=snap.guardians[type]||snap.guardians.luna,meta=GUARDIANS[type]||GUARDIANS.luna;
+function selectCarePet(petId){
+  const a=ensureAccount();
+  if(!petById(petId))return;
+  a.guardianCare.focusPetId=petId;
+  saveCare();
+  try{render()}catch(_){}
+}
+
+function eggIncubatorHTML(snap){
+  if(!snap.eggs.length)return '<div class="majEggEmpty">✦ No Guardian egg is incubating right now. Keep studying and opening rewards to discover another.</div>';
+  return '<div class="majEggIncubator"><div><div class="eyebrow">CELESTIAL INCUBATOR</div><h3>'+snap.eggs.length+' Guardian Egg'+(snap.eggs.length===1?'':'s')+' Growing</h3><p>Correct answers add moonlight. The egg hatches through studying—not purchases.</p></div>'+
+    '<div class="majEggGrid">'+snap.eggs.map(e=>'<article><span class="majEgg">🥚</span><div><b>'+E(e.species)+' Egg</b><small>'+e.progress+'/'+e.goal+' moonlight • '+e.moonlightLeft+' left</small><i><em style="width:'+e.pct+'%"></em></i></div></article>').join('')+'</div></div>';
+}
+
+function guardianCareHTML(target){
+  const snap=snapshot();
+  if(!snap.roster.length){
+    return '<section class="majGuardianCare"><div class="majCareHead"><div><div class="eyebrow">FAMILIAR CARE</div><h2>Your first Guardian is still waiting to awaken</h2><p>Study to hatch a Guardian, then their personal care room will appear here.</p></div></div>'+eggIncubatorHTML(snap)+'</section>';
+  }
+
+  const requested=resolvePet(target);
+  const focus=petById(requested?.id||snap.focusPetId)||activePetSafe()||ownedPets()[0];
+  if(focus&&snap.focusPetId!==focus.id){
+    ensureAccount().guardianCare.focusPetId=focus.id;
+  }
+  const g=snap.guardians[focus.id],meta=canon(focus.type);
   const meal=snap.inventory['moonberry-meal']||0,treat=snap.inventory['starlight-treat']||0,brush=snap.owned.includes('moon-silver-brush');
-  const toy=bestToy(type),toyName=CATALOG.find(x=>x.id===toy)?.name||'Sanctuary Ribbon Toy';
-  return '<section class="majGuardianCare" data-guardian="'+escCare(type)+'">'+
-    '<div class="majCareHead"><div><div class="eyebrow">FAMILIAR CARE • SANCTUARY BOND</div><h2>'+escCare(meta.name)+' is '+escCare(g.mood.label)+'</h2><p>Care supports your bond; studying remains what drives XP and evolution.</p></div><div class="majBondSeal"><span>'+escCare(meta.icon)+'</span><b>'+Math.round(g.bond)+' Bond</b></div></div>'+
+  const toy=bestToy(focus),toyName=CATALOG.find(x=>x.id===toy)?.name||'Sanctuary Ribbon Toy';
+
+  const rosterTabs=snap.roster.map(r=>'<button class="majGuardianTab '+(r.petId===focus.id?'active':'')+'" onclick="majickSelectCareGuardian(\''+E(r.petId)+'\')"><span>'+E(r.icon||'✦')+'</span><b>'+E(r.name)+'</b><small>'+E(r.mood?.label||'Guardian')+'</small></button>').join('');
+
+  return '<section class="majGuardianCare" data-guardian-id="'+E(focus.id)+'">'+
+    '<div class="majGuardianRoster">'+rosterTabs+'</div>'+
+    '<div class="majCareHead"><div><div class="eyebrow">FAMILIAR CARE • SANCTUARY BOND</div><h2>'+E(g.name)+' is '+E(g.mood.label)+'</h2><p>'+E(g.species)+' • Care supports your bond; studying remains what drives XP, crystals, egg moonlight, and evolution.</p></div><div class="majBondSeal"><span>'+E(meta.icon)+'</span><b>'+Math.round(g.bond)+' Bond</b></div></div>'+
     '<div class="majCareGrid">'+
       '<div class="majCareMeters">'+
         meter('Hunger',g.hunger,'✦')+meter('Hydration',g.hydration,'◌')+meter('Energy',g.energy,'☾')+
         meter('Fun',g.fun,'☆')+meter('Grooming',g.grooming,'✧')+meter('Affection',g.affection,'♡')+
       '</div>'+
       '<div class="majCareActions">'+
-        '<button onclick="majickCareAction(\''+type+'\',\'feed\')">Feed <small>Meal × '+meal+'</small></button>'+
-        '<button onclick="majickCareAction(\''+type+'\',\'water\')">Fresh Water <small>Free</small></button>'+
-        '<button onclick="majickCareAction(\''+type+'\',\'treat\')">Give Treat <small>Treat × '+treat+'</small></button>'+
-        '<button onclick="majickCareAction(\''+type+'\',\'groom\')">Brush & Groom <small>'+(brush?'Brush owned':'Needs brush')+'</small></button>'+
-        '<button onclick="majickCareAction(\''+type+'\',\'play\')">Play <small>'+escCare(toyName)+'</small></button>'+
-        '<button onclick="majickCareAction(\''+type+'\',\'affection\')">Affection <small>Bond moment</small></button>'+
+        '<button onclick="majickCareAction(\''+E(focus.id)+'\',\'feed\')">Feed <small>Meal × '+meal+'</small></button>'+
+        '<button onclick="majickCareAction(\''+E(focus.id)+'\',\'water\')">Fresh Water <small>Free</small></button>'+
+        '<button onclick="majickCareAction(\''+E(focus.id)+'\',\'treat\')">Give Treat <small>Treat × '+treat+'</small></button>'+
+        '<button onclick="majickCareAction(\''+E(focus.id)+'\',\'groom\')">Brush & Groom <small>'+(brush?'Brush owned':'Needs brush')+'</small></button>'+
+        '<button onclick="majickCareAction(\''+E(focus.id)+'\',\'play\')">Play <small>'+E(toyName)+'</small></button>'+
+        '<button onclick="majickCareAction(\''+E(focus.id)+'\',\'affection\')">Affection <small>Bond moment</small></button>'+
         '<button class="majCareSanctuary" onclick="navigate(\'companions\')">Use Sanctuary Bed <small>Rest + bond</small></button>'+
       '</div>'+
     '</div>'+
-    '<div class="majFavorite"><span>Favorite item</span><b>'+escCare(meta.favoriteLabel)+'</b><em>'+(g.favoriteOwned?'Owned • favorite-play bonus active':'Find it in the Moon Crystal Boutique')+'</em></div>'+
+    '<div class="majFavorite"><span>Favorite item</span><b>'+E(g.favoriteLabel)+'</b><em>'+(g.favoriteOwned?'Owned • favorite-play bonus active':'Find it in the Moon Crystal Boutique')+'</em></div>'+
+    eggIncubatorHTML(snap)+
   '</section>';
 }
 
 function catalogHTML(){
   const snap=snapshot();
   return '<section class="majCareShop">'+
-    '<div class="majCareShopHead"><div><div class="eyebrow">FAMILIAR PROVISIONS • MOON CRYSTAL BOUTIQUE</div><h2>Care for the Guardians you study beside</h2><p>Study sessions earn crystals. Crystals become meals, treats, toys, grooming tools, accessories, and Sanctuary comforts.</p></div><span class="rankBadge">◆ '+snap.crystals+' crystals</span></div>'+
-    '<div class="majCareInventory"><span>✦ Meals × '+(snap.inventory['moonberry-meal']||0)+'</span><span>☆ Treats × '+(snap.inventory['starlight-treat']||0)+'</span><span>✧ Brush '+(snap.owned.includes('moon-silver-brush')?'owned':'not owned')+'</span><span>♡ Toys '+snap.owned.filter(id=>CATALOG.some(x=>x.id===id&&x.kind==='toy')).length+'</span></div>'+
+    '<div class="majCareShopHead"><div><div class="eyebrow">FAMILIAR PROVISIONS • MOON CRYSTAL BOUTIQUE</div><h2>Care for the Guardians you have actually bonded with</h2><p>Study sessions earn crystals. Spend them on food, treats, toys, grooming tools, accessories, and Sanctuary comforts. Eggs hatch from study moonlight, never from purchases.</p></div><span class="rankBadge">◆ '+snap.crystals+' crystals</span></div>'+
+    '<div class="majCareInventory"><span>✦ Meals × '+(snap.inventory['moonberry-meal']||0)+'</span><span>☆ Treats × '+(snap.inventory['starlight-treat']||0)+'</span><span>✧ Brush '+(snap.owned.includes('moon-silver-brush')?'owned':'not owned')+'</span><span>♡ Toys '+snap.owned.filter(id=>CATALOG.some(x=>x.id===id&&x.kind==='toy')).length+'</span><span>🐾 Guardians '+snap.roster.length+'</span><span>🥚 Eggs '+snap.eggs.length+'</span></div>'+
     '<div class="majCareShopGrid">'+CATALOG.filter(x=>!x.disabled).map(it=>{
       const owned=it.kind!=='consumable'&&snap.owned.includes(it.id);
       const count=it.kind==='consumable'?(snap.inventory[it.id]||0):null;
-      return '<article class="'+(owned?'owned':'')+'"><span class="majShopIcon">'+it.icon+'</span><h3>'+escCare(it.name)+'</h3><p>'+escCare(it.desc)+'</p>'+
+      const favorites=snap.roster.filter(g=>g.favoriteItem===it.id).map(g=>g.name);
+      return '<article class="'+(owned?'owned':'')+'"><span class="majShopIcon">'+it.icon+'</span><h3>'+E(it.name)+'</h3><p>'+E(it.desc)+'</p>'+
+        (favorites.length?'<div class="majShopFavorite">♡ Favorite of '+E(favorites.join(', '))+'</div>':'')+
         '<small>'+(it.kind==='consumable'?'Inventory: '+count:'Permanent unlock')+'</small>'+
         '<footer><b>◆ '+it.cost+'</b><button class="btn '+(owned?'good':'violet')+'" onclick="majickBuyCareItem(\''+it.id+'\')" '+(owned?'disabled':'')+'>'+(owned?'Owned':it.kind==='consumable'?'Buy bundle':'Unlock')+'</button></footer></article>';
     }).join('')+'</div>'+
@@ -328,11 +434,12 @@ function toastFromResult(r){
   try{
     if(r.ok)rewardToast((r.icon||'✦')+' '+(r.name||'Guardian')+' care',r.message);
     else rewardToast('Moon Crystal Boutique',r.message);
-  }catch(_){ if(!r.ok)alert(r.message); }
+  }catch(_){if(!r.ok)alert(r.message)}
 }
 
-window.majickCareAction=function(type,action,opts={}){
-  const r=performAction(type,action,opts);
+window.majickSelectCareGuardian=function(petId){selectCarePet(petId)};
+window.majickCareAction=function(target,action,opts={}){
+  const r=performAction(target,action,opts);
   toastFromResult(r);
   if(r.needsShop){try{navigate('vault')}catch(_){}}
   try{render()}catch(_){}
@@ -341,7 +448,7 @@ window.majickCareAction=function(type,action,opts={}){
 };
 window.majickBuyCareItem=function(id){
   const r=buy(id);
-  if(!r.ok){try{alert(r.message)}catch(_){};return r;}
+  if(!r.ok){try{alert(r.message)}catch(_){};return r}
   try{render()}catch(_){}
   broadcastState();
   return r;
@@ -351,7 +458,7 @@ const oldCompanion=window.companionHTML;
 if(typeof oldCompanion==='function'){
   window.companionHTML=function(){
     const base=oldCompanion();
-    return base+guardianCareHTML(activeGuardianType());
+    return base+guardianCareHTML();
   };
 }
 const oldVault=window.vaultHTML;
@@ -380,7 +487,8 @@ window.addEventListener('message',ev=>{
     return;
   }
   if(d.type==='MAJICK_CARE_ACTION_V3317'){
-    const r=performAction(d.guardian,d.action,{objectId:d.objectId,itemId:d.itemId});
+    const target=d.guardianId||d.guardianType||d.guardian;
+    const r=performAction(target,d.action,{objectId:d.objectId,itemId:d.itemId});
     const payload={type:'MAJICK_CARE_RESULT_V3317',result:r,snapshot:snapshot()};
     try{ev.source?.postMessage(payload,location.origin)}catch(_){}
     broadcastState();
@@ -398,7 +506,7 @@ window.addEventListener('message',ev=>{
 ensureAccount();
 setTimeout(()=>broadcastState(),200);
 window.MajickGuardianCare={
-  ensure:ensureAccount,state,snapshot,performAction,buy,catalog:CATALOG,guardians:GUARDIANS,
-  guardianCareHTML,catalogHTML,broadcastState,moodInfo,bestToy,assignedBed
+  ensure:ensureAccount,state,snapshot,performAction,buy,catalog:CATALOG,
+  ownedPets,incubatingEggs,guardianCareHTML,catalogHTML,broadcastState,moodInfo,bestToy,assignedBed,canon
 };
 })();
