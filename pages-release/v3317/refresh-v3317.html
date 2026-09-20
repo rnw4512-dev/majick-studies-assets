@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="refresh" content="4; url=./?majick_release=3317&fresh=reset54">
 <title>Majick Studies — Refreshing V3.3.17</title>
 <style>
   html,body{height:100%;margin:0;background:#120a1d;color:#f7e4b0;font-family:system-ui,-apple-system,Segoe UI,sans-serif}
@@ -12,6 +13,8 @@
   p{color:#d9cfe3;line-height:1.55}
   .sigil{font-size:54px;margin-bottom:8px}
   .status{margin-top:16px;color:#ffe3a0;font-weight:800}
+  .open{display:inline-block;margin-top:18px;padding:12px 18px;border-radius:12px;background:linear-gradient(135deg,#b04e91,#8a5fd3);color:white;text-decoration:none;font-weight:900}
+  .small{font-size:12px;color:#a99ab8;margin-top:12px}
 </style>
 </head>
 <body>
@@ -20,29 +23,57 @@
   <h1>Refreshing Majick Studies</h1>
   <p>This one-time launcher clears older Majick Studies caches and removes the old service worker so V3.3.17 can load cleanly.</p>
   <div class="status" id="status">Preparing V3.3.17…</div>
+  <a class="open" href="./?majick_release=3317&fresh=manual54">Open V3.3.17 Now</a>
+  <div class="small">This page will also continue automatically after a few seconds.</div>
 </div>
 <script>
-(async()=>{
+(function(){
   const status=document.getElementById('status');
-  try{
-    if('serviceWorker' in navigator){
-      const regs=await navigator.serviceWorker.getRegistrations();
-      await Promise.all(regs.map(r=>r.unregister()));
-    }
-    if('caches' in window){
-      const keys=await caches.keys();
-      await Promise.all(keys.filter(k=>k.startsWith('majick-studies-')).map(k=>caches.delete(k)));
-    }
+  const target='./?majick_release=3317&fresh='+Date.now();
+  let redirected=false;
+  const go=()=>{
+    if(redirected)return;
+    redirected=true;
+    status.textContent='Opening V3.3.17…';
+    window.location.replace(target);
+  };
+
+  // Absolute safety: never allow this page to hang.
+  setTimeout(go,2500);
+
+  (async()=>{
+    status.textContent='Clearing old Majick cache…';
+
+    const timeout=(p,ms)=>Promise.race([
+      p,
+      new Promise(resolve=>setTimeout(resolve,ms))
+    ]);
+
     try{
-      sessionStorage.setItem('majick_v3317_cache_reset',new Date().toISOString());
+      if('serviceWorker' in navigator){
+        const regs=await timeout(navigator.serviceWorker.getRegistrations(),700);
+        if(Array.isArray(regs)){
+          await timeout(Promise.allSettled(regs.map(r=>r.unregister())),700);
+        }
+      }
     }catch(_){}
-    status.textContent='Cache cleared. Opening V3.3.17…';
-    const stamp=Date.now();
-    location.replace('./?majick_release=3317&fresh='+stamp);
-  }catch(err){
-    status.textContent='Opening V3.3.17 with a fresh URL…';
-    setTimeout(()=>location.replace('./?majick_release=3317&fresh='+Date.now()),250);
-  }
+
+    try{
+      if('caches' in window){
+        const keys=await timeout(caches.keys(),700);
+        if(Array.isArray(keys)){
+          await timeout(Promise.allSettled(
+            keys.filter(k=>String(k).startsWith('majick-studies-')).map(k=>caches.delete(k))
+          ),700);
+        }
+      }
+    }catch(_){}
+
+    try{localStorage.removeItem('majick_sw_version')}catch(_){}
+    try{sessionStorage.setItem('majick_v3317_cache_reset',new Date().toISOString())}catch(_){}
+
+    go();
+  })();
 })();
 </script>
 </body>
