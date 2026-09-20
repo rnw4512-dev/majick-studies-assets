@@ -371,3 +371,27 @@ Current estimate:
    - richer dark-academia textures and ornament
    - refined typography, lighting, and transitions
    - keep Guardians cute/fluffy against the mature environment
+
+## Run #80 — Study Now XP snag + Guardian Care release
+- GitHub Pages run #80 completed **successfully** and deployed.
+- Root cause of the Study Now snag was identified exactly:
+  - legacy inline `prog()` returned `S.progress[S.activeCourse]` with no fallback;
+  - during first render of a newly initialized/switched course, that record could briefly be undefined;
+  - Study Now then read `prog().xp`, causing `Cannot read properties of undefined (reading 'xp')`;
+  - Reload appeared to fix it because the course-progress record existed by the second render.
+- Permanent fix:
+  - assembled `prog()` now synchronously creates/normalizes the active course progress object before XP, crystals, streaks, answers, inventory or chests are read;
+  - release verification fails if the unsafe legacy `prog(){return S.progress[S.activeCourse]}` implementation ever returns.
+- Run #80 verifier explicitly passed:
+  - `Study progress state hardening verified: XP/crystal reads cannot see undefined progress`
+  - `Guardian care + Moon Crystal economy contract verified`
+  - owned-roster model: `pet.id`
+  - egg model: incubator until hatch
+  - 6 care stations verified
+- Guardian Care release now includes roster-driven hatched Guardians and separate incubating eggs.
+- Phaser freeze protections remain intact:
+  - protected 33 motion originals unchanged;
+  - runtime motion: 2,205,848 bytes;
+  - runtime furniture: 449,014 bytes;
+  - total startup image budget: 2,907,938 bytes (~2.77 MiB).
+- This is now the active verified live build.
