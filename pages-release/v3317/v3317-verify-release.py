@@ -196,8 +196,12 @@ for oid,slot in (('moonstone-crystal-bed','bed-west'),('amethyst-crystal-bed','b
 if obj_manifest.get('interactionPolicy',{}).get('persistedLayoutKey')!='majick-sanctuary-layout-v2':
     fail('Sanctuary layout persistence key changed unexpectedly')
 
-if "specialInteractionBeforePanelAction:true" not in v3317:
-    fail('V3.3.17 does not protect bed/special interactions before generic panel actions')
+assign_idx=v3317.find("if(obj.interaction==='assign-rest')")
+panel_idx=v3317.find("const panel=obj.panelAction")
+if assign_idx<0 or panel_idx<0 or assign_idx>panel_idx:
+    fail('V3.3.17 does not evaluate assign-rest before generic panelAction')
+if obj_manifest.get('interactionPolicy',{}).get('specialInteractionBeforePanelAction') is not True:
+    fail('Object manifest does not require special interactions before panelAction')
 if "v3317CheckCoreObjects" not in v3317:
     fail('V3.3.17 core-object runtime health check is missing')
 if "hitW=Math.max(150" not in v3317:
