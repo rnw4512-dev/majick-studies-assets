@@ -24,6 +24,17 @@ for marker in ('function register(type,meta)','function dynamicSources()','windo
 state=(site/'majick-state-core.js').read_text(encoding='utf-8')
 for marker in ('window.prog=safeProg','window.course=safeCourse',"const SHARED=['xp','crystals','chests']",'bindSharedField'):
     if marker not in state: fail('state core missing '+marker)
+main_bridge=(site/'v3317-main.js').read_text(encoding='utf-8')
+if 'V3.3.18 Stability Reset' not in main_bridge: fail('main bridge does not identify Stability Reset')
+if 'CANON[' in main_bridge: fail('main bridge still contains fixed Guardian CANON lookup')
+if "const meta=registry()?.get?.(p.type);" not in main_bridge: fail('Guardian payload is not registry-driven')
+if r'\\nconst canonOf' in main_bridge: fail('escaped newline leaked into JavaScript source')
+
+san_bridge=(site/'sanctuary'/'v3317-sanctuary.js').read_text(encoding='utf-8')
+if 'PROTECTED_MOTION_TYPES()' not in san_bridge: fail('Sanctuary motion loop is not registry-driven')
+care=(site/'guardian-care-economy.js').read_text(encoding='utf-8')
+if 'window.MajickGuardianRegistry?.get?.(type)' not in care: fail('Guardian care does not use the shared registry')
+
 for path in (site/'guardian-registry.js',site/'majick-state-core.js',site/'guardian-care-economy.js',site/'v3317-main.js',site/'sanctuary'/'v3317-sanctuary.js'):
     r=subprocess.run(['node','--check',str(path)],capture_output=True,text=True)
     if r.returncode: fail(path.name+' syntax: '+r.stderr)
