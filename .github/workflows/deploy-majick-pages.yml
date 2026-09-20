@@ -16,7 +16,7 @@ on:
       - 'pages-release/v3317/**'
       - 'sanctuary/assets/objects/**'
       - 'sanctuary/assets/evolutions/**'
-      - 'sanctuary/assets/majick-v3317-evolution-repair.zip'
+      - 'sanctuary/assets/majick-v3317-evolution-repair-small.zip'
       - 'sanctuary/assets/majick-v3315-art-sync.zip'
       - '.github/workflows/deploy-majick-pages.yml'
   workflow_dispatch:
@@ -78,6 +78,7 @@ jobs:
           test -s pages-release/v3315/study-material/AddStudyMaterialPage.js
           test -s sanctuary/assets/evolutions/evolution-manifest.json
           test -s sanctuary/assets/evolutions/normalize-evolution-art.py
+          test -s sanctuary/assets/majick-v3317-evolution-repair-small.zip
           test -s pages-release/v3316/courseManager.js
           test -s pages-release/v3316/v3316-main.js
           test -s pages-release/v3316/v3316-main.css
@@ -87,7 +88,7 @@ jobs:
           test -s sanctuary/assets/objects/objects-manifest.json
           test -s sanctuary/assets/objects/generate-object-library.py
 
-      - name: Assemble Majick Studies V3.3.16
+      - name: Assemble Majick Studies V3.3.17
         shell: bash
         run: |
           set -euo pipefail
@@ -155,13 +156,11 @@ jobs:
           fi
 
           # V3.3.17 corrected individual Guardian evolution assets.
-          if [ -s sanctuary/assets/majick-v3317-evolution-repair.zip ]; then
-            rm -rf /tmp/majick-v3317-evolution-repair
-            mkdir -p /tmp/majick-v3317-evolution-repair
-            unzip -oq sanctuary/assets/majick-v3317-evolution-repair.zip -d /tmp/majick-v3317-evolution-repair
-            test -d /tmp/majick-v3317-evolution-repair/sanctuary/assets/evolutions
-            cp -a /tmp/majick-v3317-evolution-repair/sanctuary/assets/evolutions/. sanctuary/assets/evolutions/
-          fi
+          rm -rf /tmp/majick-v3317-evolution-repair
+          mkdir -p /tmp/majick-v3317-evolution-repair
+          unzip -oq sanctuary/assets/majick-v3317-evolution-repair-small.zip -d /tmp/majick-v3317-evolution-repair
+          test -d /tmp/majick-v3317-evolution-repair/sanctuary/assets/evolutions
+          cp -a /tmp/majick-v3317-evolution-repair/sanctuary/assets/evolutions/. sanctuary/assets/evolutions/
 
           # V3.3.15 adds Notes Forge and one shared Guardian stage resolver.
           cp pages-release/v3315/v3315-main.js _site/v3315-main.js
@@ -299,7 +298,14 @@ jobs:
           test -s _site/sanctuary/v3317-sanctuary.js
           grep -q "v3317-sanctuary.js" _site/sanctuary/index.html
           node --check _site/sanctuary/v3317-sanctuary.js
-          echo "Majick Studies V3.3.16 assembled successfully."
+          test "$(find _site/sanctuary/assets/evolutions -type f -name '*.webp' | wc -l)" -ge 60
+          test -s _site/sanctuary/assets/evolutions/velora/new-bond/walk.webp
+          test -s _site/sanctuary/assets/evolutions/velora/ascendant/play.webp
+          test -s _site/sanctuary/assets/evolutions/cascade/celestial/sleep.webp
+          test -s _site/sanctuary/assets/evolutions/solstice/guardian/walk.webp
+          test -s _site/sanctuary/assets/evolutions/aurelia/apprentice/play.webp
+          echo "Verified 60 corrected V3.3.17 evolution action assets"
+          echo "Majick Studies V3.3.17 assembled successfully."
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
 
