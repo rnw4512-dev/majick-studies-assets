@@ -55,7 +55,7 @@ d.update({
  'runtime_architecture':'legacy foundation compiled to one authoritative runtime; no deploy-time JavaScript body rewriting',
  'sanctuary_runtime':'Base Game.js + protected V3.3.10 movement + one V3.3.17 Sanctuary bridge',
  'state_runtime':'MajickStateCore owns shared XP/crystals/chests and safe course progress compatibility',
- 'guardian_runtime':'MajickGuardianRegistry owns all ten Guardian identities; care is roster-driven by pet.id'
+ 'guardian_runtime':'MajickGuardianRegistry contains the current baseline canon and dynamically accepts future Guardians; care is roster-driven by pet.id'
 })
 ap.write_text(json.dumps(d,indent=2),encoding='utf-8')
 print('Majick Stability Reset build applied without JavaScript body rewriting')
