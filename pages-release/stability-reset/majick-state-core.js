@@ -34,7 +34,7 @@ function ensureCourses(){
   if(!st)return null;
   st.courses=(st.courses&&typeof st.courses==='object'&&!Array.isArray(st.courses))?st.courses:{};
   st.progress=(st.progress&&typeof st.progress==='object'&&!Array.isArray(st.progress))?st.progress:{};
-  if(!st.activeCourse||!st.courses[st.activeCourse])st.activeCourse=Object.keys(st.courses)[0]||st.activeCourse||'PMFC';
+  if(!st.activeCourse||!st.courses[st.activeCourse])st.activeCourse=Object.keys(st.courses)[0]||st.activeCourse||'D755';
   return st;
 }
 function initialSharedValue(key){
