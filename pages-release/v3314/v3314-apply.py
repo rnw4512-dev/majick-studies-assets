@@ -25,6 +25,7 @@ p=re.sub(r"\n\s*// V3\.3\.13 optional final sanctuary art\..*?this\.load\.image\
 pre.write_text(p,encoding='utf-8')
 
 idx=root/'index.html';s=idx.read_text(encoding='utf-8')
+if 'v3314-main.css' not in s:s=s.replace('</head>','<link rel="stylesheet" href="./v3314-main.css?v=3314">\n</head>',1)
 if 'v3314-main.js' not in s:s=s.replace('</body>','<script src="./v3314-main.js?v=3314"></script>\n</body>',1)
 s=s.replace('Living Familiars • V3.3.13 Sanctuary Restore','Living Familiars • V3.3.14 One Sanctuary')
 idx.write_text(s,encoding='utf-8')
