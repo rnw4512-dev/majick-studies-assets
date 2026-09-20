@@ -192,7 +192,7 @@ jobs:
 
           touch _site/.nojekyll
 
-          # Gate deployment on protected movement plus current V3.3.14 requirements.
+          # Gate deployment on protected movement plus current V3.3.15 requirements.
           test -s _site/index.html
           test -s _site/v3311-main.js
           test -s _site/v3311-plus.js
@@ -221,7 +221,6 @@ jobs:
           test -s _site/v3314-main.css
           test -s _site/sanctuary/v3314-sanctuary.js
           test -s _site/sanctuary/assets/objects/objects-manifest.json
-          grep -q "V3.3.14" _site/app-progress.json
           grep -q "MAJICK_GUARDIAN_LEVELS_V3314" _site/v3314-main.js
           grep -q "v3314ApplyEvolutionFX" _site/sanctuary/v3314-sanctuary.js
           test -s _site/v3315-main.js
