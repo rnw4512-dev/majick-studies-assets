@@ -47,9 +47,12 @@ h=idx.read_text(encoding='utf-8')
 for js in ('v3313-main.js','v3314-main.js','v3315-main.js','v3316-main.js'):
     h=re.sub(r'\s*<script[^>]+src=["\']\./'+re.escape(js)+r'[^"\']*["\'][^>]*></script>\s*','\n',h)
 
-# Reinsert one clean V3.3.17 bridge at the end.
+# Reinsert Guardian care/economy + one clean V3.3.17 bridge at the end.
+h=re.sub(r'\s*<script[^>]+src=["\']\./guardian-care-economy\.js[^"\']*["\'][^>]*></script>\s*','\n',h)
 h=re.sub(r'\s*<script[^>]+src=["\']\./v3317-main\.js[^"\']*["\'][^>]*></script>\s*','\n',h)
-h=h.replace('</body>','<script src="./v3317-main.js?v=3317-clean"></script>\n</body>',1)
+h=re.sub(r'\s*<link[^>]+href=["\']\./guardian-care-economy\.css[^"\']*["\'][^>]*>\s*','\n',h)
+h=h.replace('</head>','<link rel="stylesheet" href="./guardian-care-economy.css?v=3317-care">\n</head>',1)
+h=h.replace('</body>','<script src="./guardian-care-economy.js?v=3317-care"></script>\n<script src="./v3317-main.js?v=3317-clean"></script>\n</body>',1)
 idx.write_text(h,encoding='utf-8')
 
 for p in ('v3313-main.js','v3314-main.js','v3315-main.js','v3316-main.js'):
@@ -63,7 +66,7 @@ ap=root/'app-progress.json'
 d=json.loads(ap.read_text(encoding='utf-8'))
 d.update({
   'version':'V3.3.17',
-  'release_name':'Clean Sanctuary Consolidation + Guardian Repair + Course Realms',
+  'release_name':'Clean Sanctuary + Guardian Care Economy + Course Realms',
   'overall_full_vision_percent':88,
   'usable_study_app_percent':92,
   'sanctuary_runtime':'Base Game.js + V3.3.10 movement restore + one clean V3.3.17 runtime',
@@ -83,7 +86,9 @@ d.update({
     'V3.3.10 remains the only movement-method override layer.',
     'V3.3.17 is the only post-movement Sanctuary runtime.',
     'Final-clean evolution action art remains stage-specific and additive.',
-    'Manifest furniture uses the base drag/edit/save system.'
+    'Manifest furniture uses the base drag/edit/save system.',
+    'Guardian care is roster-driven from actual hatched pet records; eggs stay incubating until hatch.',
+    'Moon Crystal purchases and Guardian-care state persist at account level across courses.'
   ] + d.get('protected_rules',[])))
 })
 ap.write_text(json.dumps(d,indent=2),encoding='utf-8')
