@@ -101,6 +101,26 @@ if unsafe_prog not in h:
     raise RuntimeError('Unsafe legacy prog() signature not found; refusing to publish without state hardening')
 h=h.replace(unsafe_prog,safe_prog,1)
 
+# ------------------------------------------------------------------
+# ONE ERROR SURFACE:
+# Legacy render layers used to swallow the same exception and paint their own
+# error screens. Re-throw so the V3.3.17 boundary owns recovery consistently.
+# ------------------------------------------------------------------
+h,n1=re.subn(
+    r"catch\(e\)\{console\.error\(e\);document\.getElementById\('app'\)\.innerHTML=`<main class=\"main\"><div class=\"content\"><div class=\"error\"><h2>The app caught an error instead of going blank\.</h2>[\s\S]*?</main>`\}\}",
+    "catch(e){console.error(e);throw e}",
+    h,
+    count=1
+)
+h,n2=re.subn(
+    r"catch\(e\)\{console\.error\('V5 safe render',e\);let app=document\.getElementById\('app'\);if\(app\)app\.innerHTML=`<main class=\"main\"><div class=\"content\"><div class=\"card v5Safe\">[\s\S]*?</main>`\}\}",
+    "catch(e){console.error('V5 safe render',e);throw e}",
+    h,
+    count=1
+)
+if n1!=1 or n2!=1:
+    raise RuntimeError(f'Legacy error-surface cleanup mismatch: base={n1}, v5={n2}')
+
 # Reinsert Guardian care/economy + one clean V3.3.17 bridge at the end.
 h=re.sub(r'\s*<script[^>]+src=["\']\./guardian-care-economy\.js[^"\']*["\'][^>]*></script>\s*','\n',h)
 h=re.sub(r'\s*<script[^>]+src=["\']\./v3317-main\.js[^"\']*["\'][^>]*></script>\s*','\n',h)
