@@ -1,6 +1,6 @@
 from pathlib import Path
 from PIL import Image
-import re,sys,shutil
+import json,re,sys,shutil
 
 root=Path(sys.argv[1])
 san=root/'sanctuary'
@@ -24,17 +24,12 @@ def convert(src,dst,max_dim,quality=82):
 for src in motion.glob('*.png'):
     convert(src,runtime_motion/(src.stem+'.webp'),512,80)
 
-# Only the objects that Preloader currently loads need startup-optimized copies.
+# Optimize exactly the objects the manifest marks for Phaser startup.
+manifest_path=objects/'objects-manifest.json'
+manifest=json.loads(manifest_path.read_text(encoding='utf-8'))
 preload_names=[
-    'enchanted-bookstack.webp',
-    'moonlit-study-desk.webp',
-    'celestial-telescope.webp',
-    'crystal-focus-pedestal.webp',
-    'moonstone-canopy-bed.webp',
-    'amethyst-crystal-bed.webp',
-    'study-apothecary.webp',
-    'familiar-lounge.webp',
-    'magic-mirror.webp',
+    o['filename'] for o in manifest.get('objects',[])
+    if o.get('enabled',True) and o.get('preload') and o.get('filename')
 ]
 for name in preload_names:
     src=objects/name
@@ -48,17 +43,15 @@ pre=san/'Preloader.js'
 s=pre.read_text(encoding='utf-8')
 s=s.replace("const base = './assets/motion/';","const base = './assets/runtime-motion/';")
 s=re.sub(r"base \+ '([^']+)\.png'",r"base + '\1.webp'",s)
-s=s.replace("'./assets/objects/enchanted-bookstack.webp?v=3314'","'./assets/runtime-objects/enchanted-bookstack.webp?v=3317-fast'")
-s=s.replace("'./assets/objects/moonlit-study-desk.webp?v=3314'","'./assets/runtime-objects/moonlit-study-desk.webp?v=3317-fast'")
-s=s.replace("'./assets/objects/celestial-telescope.webp?v=3314'","'./assets/runtime-objects/celestial-telescope.webp?v=3317-fast'")
-s=s.replace("'./assets/objects/crystal-focus-pedestal.webp?v=3314'","'./assets/runtime-objects/crystal-focus-pedestal.webp?v=3317-fast'")
-s=s.replace("'./assets/objects/moonstone-canopy-bed.webp?v=3314'","'./assets/runtime-objects/moonstone-canopy-bed.webp?v=3317-fast'")
-s=s.replace("'./assets/objects/amethyst-crystal-bed.webp?v=3314'","'./assets/runtime-objects/amethyst-crystal-bed.webp?v=3317-fast'")
-s=s.replace("'./assets/objects/study-apothecary.webp?v=3314'","'./assets/runtime-objects/study-apothecary.webp?v=3317-fast'")
-s=s.replace("'./assets/objects/familiar-lounge.webp?v=3314'","'./assets/runtime-objects/familiar-lounge.webp?v=3317-fast'")
-s=s.replace("'./assets/objects/magic-mirror.webp?v=3314'","'./assets/runtime-objects/magic-mirror.webp?v=3317-fast'")
+for name in preload_names:
+    s=re.sub(
+        r"(['\"])\./assets/objects/"+re.escape(name)+r"\?v=[^'\"]+\1",
+        lambda m: m.group(1)+'./assets/runtime-objects/'+name+'?v=3317-fast'+m.group(1),
+        s
+    )
 pre.write_text(s,encoding='utf-8')
 
 print('V3.3.17 Phaser runtime assets optimized safely')
 print('motion runtime files:',len(list(runtime_motion.glob('*.webp'))))
 print('object runtime files:',len(list(runtime_objects.glob('*.webp'))))
+print('manifest preload objects:',len(preload_names))
