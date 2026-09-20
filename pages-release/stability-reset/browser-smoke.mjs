@@ -384,9 +384,14 @@ try{
 
   await page.evaluate(()=>navigate('learninglab'));
   await page.waitForSelector('[data-tutor-tab="path"]',{timeout:10000});
-  const pathTitles=await page.evaluate(()=>MajickCourseTutor.sections('D772')[0].lessons.map(x=>x.title));
-  await assert(pathTitles.join('|')==='Understanding Data Collection Methods|Recognizing Bias in Data Collection|Unveiling Data Misrepresentations|Conclusions About Data Findings|Section 1 Review','D772 Section 1 learning path order is wrong');
+  const d772Path=await page.evaluate(()=>({
+    sections:MajickCourseTutor.sections('D772').map(s=>({id:s.id,title:s.title,lessons:s.lessons.map(x=>x.title)}))
+  }));
+  await assert(d772Path.sections.length===1,'D772 must have exactly one canonical section; duplicate auto-sections were created');
+  await assert(d772Path.sections[0].id==='d772-section-1'&&d772Path.sections[0].title==='Section 1: Assessing Research and Data Credibility','D772 canonical Section 1 metadata is wrong');
+  await assert(d772Path.sections[0].lessons.join('|')==='Understanding Data Collection Methods|Recognizing Bias in Data Collection|Unveiling Data Misrepresentations|Conclusions About Data Findings|Section 1 Review','D772 Section 1 learning path order is wrong');
   await page.waitForSelector('#courseTutorPath .pathSection',{timeout:10000});
+  await assert(await page.locator('#courseTutorPath .pathSection').count()===1,'D772 Course Path rendered repeated/extra sections');
   await assert(await page.getByText('Section 1: Assessing Research and Data Credibility',{exact:true}).count()>=1,'D772 Section 1 path is not visible');
   await page.getByText('Understanding Data Collection Methods',{exact:true}).first().click();
   await page.waitForSelector('#courseTutorLesson .tutorChapterBlock',{timeout:10000});

@@ -255,10 +255,10 @@ function dynamicSections(id,sourceRows){
 }
 function sections(id=cid()){
   const sourceRows=rows(id);
-  const out=[];
-  if(id==='D772')out.push(JSON.parse(JSON.stringify(D772_SECTION_ONE)));
-  out.push(...dynamicSections(id,sourceRows));
-  return out;
+  // D772 has one official path right now: Section 1. Uploaded material is
+  // sorted into these lessons; it must never create duplicate auto-sections.
+  if(id==='D772')return [JSON.parse(JSON.stringify(D772_SECTION_ONE))];
+  return dynamicSections(id,sourceRows);
 }
 function rowHasLesson(row,lessonId,id=cid()){
   if(id==='D772'){
@@ -409,6 +409,7 @@ function show(name){
   const panel=document.querySelector('.learnPanel[data-panel="'+name+'"]');if(panel)panel.hidden=false;
   document.querySelectorAll('.learnTabs button').forEach(b=>b.classList.remove('active'));
   document.querySelector('[data-tutor-tab="'+name+'"]')?.classList.add('active');
+  document.querySelector('.learnLab')?.classList.toggle('tutorFocus',name==='path'||name==='tutor');
   if(name==='path')renderPath();
   if(name==='tutor')renderTutor();
 }
@@ -416,7 +417,10 @@ function renderPath(){
   const box=document.getElementById('courseTutorPath');if(!box)return;
   const id=cid(),secs=sections(id);
   const active=selectedLesson(id);
-  box.innerHTML='<div class="tutorHero"><div><span>MAJICK COURSE TUTOR • '+E(id)+'</span><h3>Learn the course in order. Prove each lesson at higher rigor.</h3><p>Your uploaded notes automatically fill this path. Repeated material is deduplicated in the tutor chapter and the active question bank.</p></div><button class="btn primary" id="continueTutor">'+(active?'Continue '+E(active.short||active.title):'Open Tutor')+' →</button></div>'+
+  const pathHero=id==='D772'
+    ? '<div class="tutorHero tutorHeroCompact"><div><span>D772 • SECTION 1 COURSE PATH</span><h3>Four lessons. One Section 1 review.</h3><p>Choose the lesson you need. Your uploaded notes stay intact and are sorted into the correct lesson below.</p></div><button class="btn primary" id="continueTutor">'+(active?'Continue '+E(active.short||active.title):'Open Tutor')+' →</button></div>'
+    : '<div class="tutorHero"><div><span>MAJICK COURSE TUTOR • '+E(id)+'</span><h3>Learn the course in order. Prove each lesson at higher rigor.</h3><p>Your uploaded notes automatically fill this path. Repeated material is deduplicated in the tutor chapter and the active question bank.</p></div><button class="btn primary" id="continueTutor">'+(active?'Continue '+E(active.short||active.title):'Open Tutor')+' →</button></div>';
+  box.innerHTML=pathHero+
     secs.map(sec=>{
       const sp=sectionProgress(sec,id);
       return '<section class="pathSection"><div class="pathSectionHead"><div><span>LEARNING PATH</span><h3>'+E(sec.title)+'</h3></div><div class="pathProgress"><b>'+sp.pct+'%</b><small>'+ (sp.ready?'section material loaded':'add lesson notes as you go')+'</small></div></div><div class="pathRail">'+sec.lessons.map((lesson,i)=>{
