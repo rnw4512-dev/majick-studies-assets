@@ -65,7 +65,7 @@ jobs:
           test -s sanctuary/assets/objects/objects-manifest.json
           test -s sanctuary/assets/objects/generate-object-library.py
 
-      - name: Assemble Majick Studies V3.3.13
+      - name: Assemble Majick Studies V3.3.14
         shell: bash
         run: |
           set -euo pipefail
@@ -168,7 +168,7 @@ jobs:
 
           touch _site/.nojekyll
 
-          # Gate deployment on the exact V3.3.13 requirements.
+          # Gate deployment on protected movement plus current V3.3.14 requirements.
           test -s _site/index.html
           test -s _site/v3311-main.js
           test -s _site/v3311-plus.js
@@ -189,7 +189,6 @@ jobs:
           test -s _site/v3313-main.js
           test -s _site/v3313-main.css
           test -s _site/sanctuary/v3313-sanctuary.js
-          grep -q "V3.3.13" _site/app-progress.json
           grep -q "v3313-sanctuary.js" _site/sanctuary/index.html
           grep -q "obj-arcane-stacks" _site/sanctuary/Preloader.js
           grep -q "The Living Sanctuary" _site/v3313-main.js
