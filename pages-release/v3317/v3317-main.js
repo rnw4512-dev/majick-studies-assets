@@ -1,9 +1,9 @@
-// Majick Studies V3.3.19 Learning Intelligence — AUTHORITATIVE MAIN APP BRIDGE
+// Majick Studies V3.3.28 Section 1 Master Tutor — AUTHORITATIVE MAIN APP BRIDGE
 (function(){
 'use strict';
 
-const RELEASE_LABEL='Moonlit Collegium • V3.3.27';
-const RELEASE_TITLE='Majick Studies — V3.3.27 Moonlit Collegium';
+const RELEASE_LABEL='Moonlit Collegium • V3.3.28';
+const RELEASE_TITLE='Majick Studies — V3.3.28 Moonlit Collegium';
 const registry=()=>window.MajickGuardianRegistry;
 const canonOf=type=>registry()?.get?.(type)?.canon||String(type||'').toLowerCase();
 const STAGE_SLUGS=['new-bond','apprentice','guardian','ascendant','celestial'];
@@ -211,14 +211,14 @@ function applyReleaseBadge(){
   const pill=document.querySelector('.top .pill');
   if(pill&&pill.textContent!==RELEASE_LABEL)pill.textContent=RELEASE_LABEL;
   if(document.title!==RELEASE_TITLE)document.title=RELEASE_TITLE;
-  if(document.documentElement.dataset.majickVersion!=='3.3.27-moonlit-collegium'){
-    document.documentElement.dataset.majickVersion='3.3.27-moonlit-collegium';
+  if(document.documentElement.dataset.majickVersion!=='3.3.28-section-one-master'){
+    document.documentElement.dataset.majickVersion='3.3.28-section-one-master';
   }
 }
 
 function showRuntimeNotice(error){
   const message=String(error?.message||error||'Unknown runtime error');
-  console.error('Majick V3.3.27 runtime error',error);
+  console.error('Majick V3.3.28 runtime error',error);
   if(document.getElementById('v3317RuntimeNotice'))return;
   try{
     const n=document.createElement('div');
