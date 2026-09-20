@@ -3,6 +3,15 @@
 const PASS_XP=500;
 const SHARED=['xp','crystals','chests'];
 const COURSE_CATALOG={
+  D755:{
+    id:'D755',
+    title:'Assessment for Special Education',
+    version:'majick-course-1',
+    concepts:[{id:'uploaded-notes',title:'Uploaded Course Material',section:'course',priority:'core'}],
+    glossary:{},questionBank:[],misconceptionCatalog:[],
+    preassessmentProfile:{priorityConcepts:['uploaded-notes']},
+    studySections:[],sources:[],localGenerated:true,catalogSeed:true
+  },
   D772:{
     id:'D772',
     title:'Statistical Data Literacy',
@@ -74,15 +83,80 @@ function activeProgress(){
   S.progress[cid]=normalizeProgressRow(S.progress[cid],cid);
   return S.progress[cid];
 }
+function mergeUniqueRows(a,b){
+  const out=[],seen=new Set();
+  for(const row of [...(Array.isArray(a)?a:[]),...(Array.isArray(b)?b:[])]){
+    const key=String(row?.id||row?.qid||JSON.stringify(row));
+    if(seen.has(key))continue;
+    seen.add(key);out.push(row);
+  }
+  return out;
+}
+function migrateLegacyAssessmentCourse(){
+  if(!window.S)return;
+  const legacyId='PMFC',targetId='D755';
+  const legacyCourse=S.courses?.[legacyId];
+  const existingCourse=S.courses?.[targetId];
+
+  if(legacyCourse){
+    if(!existingCourse){
+      S.courses[targetId]=legacyCourse;
+    }else{
+      existingCourse.questionBank=mergeUniqueRows(legacyCourse.questionBank,existingCourse.questionBank);
+      existingCourse.concepts=mergeUniqueRows(legacyCourse.concepts,existingCourse.concepts);
+      existingCourse.misconceptionCatalog=mergeUniqueRows(legacyCourse.misconceptionCatalog,existingCourse.misconceptionCatalog);
+      existingCourse.studySections=mergeUniqueRows(legacyCourse.studySections,existingCourse.studySections);
+      existingCourse.sources=mergeUniqueRows(legacyCourse.sources,existingCourse.sources);
+      existingCourse.glossary=Object.assign({},legacyCourse.glossary||{},existingCourse.glossary||{});
+    }
+    S.courses[targetId].id=targetId;
+    S.courses[targetId].title='Assessment for Special Education';
+    S.courses[targetId].catalogSeed=false;
+    delete S.courses[legacyId];
+  }
+
+  if(S.progress?.[legacyId]){
+    if(!S.progress[targetId])S.progress[targetId]=S.progress[legacyId];
+    else{
+      const target=S.progress[targetId],legacy=S.progress[legacyId];
+      for(const key of ['answers','explanations','repair','spacedQueue','charms','cosmetics','questionMemory','sessionHistory','masteryRewarded','helpHistory','familyMemory','urgentRepair','v5SessionHistory','errorTags','strategyHistory']){
+        target[key]=mergeUniqueRows(legacy[key],target[key]);
+      }
+      target.streak=Math.max(Number(target.streak||0),Number(legacy.streak||0));
+      target.lastDay=target.lastDay||legacy.lastDay||'';
+    }
+    delete S.progress[legacyId];
+  }
+
+  S.majickCourseRecords=S.majickCourseRecords||{};
+  if(S.majickCourseRecords[legacyId]){
+    if(!S.majickCourseRecords[targetId])S.majickCourseRecords[targetId]=S.majickCourseRecords[legacyId];
+    S.majickCourseRecords[targetId].courseId=targetId;
+    S.majickCourseRecords[targetId].title='Assessment for Special Education';
+    delete S.majickCourseRecords[legacyId];
+  }
+
+  S.majickCourseUI=S.majickCourseUI||{};
+  if(S.majickCourseUI[legacyId]&&!S.majickCourseUI[targetId])S.majickCourseUI[targetId]=S.majickCourseUI[legacyId];
+  delete S.majickCourseUI[legacyId];
+
+  if(S.activeCourse===legacyId)S.activeCourse=targetId;
+}
+
 function ensure(){
   if(!window.S)return;
   S.courses=(S.courses&&typeof S.courses==='object'&&!Array.isArray(S.courses))?S.courses:{};
   S.progress=(S.progress&&typeof S.progress==='object'&&!Array.isArray(S.progress))?S.progress:{};
 
+  migrateLegacyAssessmentCourse();
+
   // Seed official courses without replacing an existing learner-owned version
   // and without changing the user's active class.
   for(const [cid,template] of Object.entries(COURSE_CATALOG)){
     if(!S.courses[cid])S.courses[cid]=clone(template);
+  }
+  if(!S.courses?.[S.activeCourse]){
+    S.activeCourse=S.courses?.D755?'D755':Object.keys(S.courses||{})[0]||'D755';
   }
   normalizeAllProgress();
   S.majickCourseRecords=S.majickCourseRecords||{};
@@ -264,6 +338,20 @@ function decorateSelector(){
 }
 
 ensure();mirrorAccount();
+
+async function migrateLegacyMaterialSources(){
+  try{
+    if(!window.MajickMaterialStore?.migrateCourseId)return;
+    const result=await window.MajickMaterialStore.migrateCourseId('PMFC','D755');
+    if(result?.migrated){
+      const d755=S.courses?.D755;
+      if(d755)await window.MajickMaterialStore.syncQuestions(d755,'D755');
+      try{window.save()}catch(_){}
+    }
+  }catch(e){console.warn('Majick D755 Notes Forge migration',e)}
+}
+migrateLegacyMaterialSources();
+
 const materialPage=window.AddStudyMaterialPage;
 const oldMaterialRender=materialPage?.render;
 const oldMaterialBind=materialPage?.bind;
@@ -275,5 +363,5 @@ if(materialPage&&typeof oldMaterialRender==='function'){
   };
   window.v3315BindStudyMaterialPage=materialPage.bind;
 }
-window.MajickCourseManager={ensure,captureAccount,mirrorAccount,normalizeProgressRow,normalizeAllProgress,createCourse,passCourse,currentStatus,panelHTML,bindPanel,decorateSelector,record,PASS_XP};
+window.MajickCourseManager={ensure,captureAccount,mirrorAccount,normalizeProgressRow,normalizeAllProgress,migrateLegacyAssessmentCourse,migrateLegacyMaterialSources,createCourse,passCourse,currentStatus,panelHTML,bindPanel,decorateSelector,record,PASS_XP,COURSE_CATALOG};
 })();
