@@ -1,7 +1,0 @@
-/* V3.3.18 — one authoritative Sanctuary owner */
-.v3318HomeSanctuary{grid-column:1/-1;min-width:0}
-.v3318Phase{border:1px solid rgba(238,201,132,.34)!important;box-shadow:0 22px 55px rgba(6,3,15,.34)!important}
-.v3318Phase .phase4Frame{width:100%;min-height:560px;height:min(68vh,720px);aspect-ratio:auto!important;border:0;background:#100916}
-.v3318Phase .phase4Top{background:linear-gradient(90deg,rgba(22,10,34,.98),rgba(49,27,66,.94))}
-.v3318Phase .phase4Help{padding:10px 16px;color:#cdbfd8;background:#120a19;font-size:12px}
-@media(max-width:900px){.v3318Phase .phase4Frame{height:560px;min-height:520px}}
