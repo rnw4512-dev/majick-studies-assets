@@ -42,8 +42,17 @@ function objectArt(scene,key,width){
 }
 function activateObject(scene,obj){
   if(!obj)return;
-  const panel=obj.panelAction;
-  if(panel&&typeof scene[panel]==='function')return scene[panel]();
+
+  // Interaction-specific behavior must win before a generic panel action.
+  if(obj.interaction==='assign-rest'){
+    return scene.openFamiliarObjectPicker?.(obj.placement?.slot||obj.id);
+  }
+  if(obj.interaction==='progress-mirror'){
+    return scene.showMirrorPanel?.();
+  }
+  if(obj.interaction==='guardian-care'){
+    return route(scene,'companions',{objectId:obj.id});
+  }
 
   switch(obj.id){
     case 'arcane-stacks': return scene.openArcaneStacks?.();
@@ -55,10 +64,13 @@ function activateObject(scene,obj){
     case 'magic-mirror': return scene.showMirrorPanel?.();
   }
 
-  if(obj.interaction==='assign-rest')return scene.openFamiliarObjectPicker?.(obj.placement?.slot||obj.id);
-  if(obj.interaction==='progress-mirror')return scene.showMirrorPanel?.();
-  if(obj.interaction==='guardian-care')return route(scene,'companions',{objectId:obj.id});
-  if(obj.interaction==='open-route')return route(scene,obj.destination,{objectId:obj.id});
+  const panel=obj.panelAction;
+  if(panel&&typeof scene[panel]==='function'){
+    return scene[panel]();
+  }
+  if(obj.interaction==='open-route'){
+    return route(scene,obj.destination,{objectId:obj.id});
+  }
   if(obj.interaction==='world-navigation'){
     if(obj.destination)return route(scene,obj.destination,{objectId:obj.id});
     return scene.showToast?.(obj.displayName,'This Sanctuary path is not unlocked yet.');
@@ -143,14 +155,41 @@ Game.prototype.createDecor=function(){
     item.setData('manifestObject',obj);
     item.setData('blocksWalking',!!obj.blocksWalking);
 
-    // Base createMovableDecor already supplies edit-mode drag + saved positions.
-    item.setDepth(30+Math.round(item.y/30));
-    item.on('drag',()=>item.setDepth(30+Math.round(item.y/30)));
-    item.on('dragend',()=>item.setDepth(30+Math.round(item.y/30)));
+    // Match the clickable/drag target to the visible furniture instead of
+    // inheriting the old generic 170x140 rectangle.
+    const hitW=Math.max(150,Math.min(430,width+28));
+    const hitH=Math.max(140,Math.min(360,width*.82));
+    try{
+      item.removeInteractive();
+      item.setSize(hitW,hitH);
+      item.setInteractive(
+        new Phaser.Geom.Rectangle(-hitW/2,-hitH+60,hitW,hitH),
+        Phaser.Geom.Rectangle.Contains
+      );
+      item.input.cursor='pointer';
+      if(this.editMode)this.input.setDraggable(item);
+    }catch(e){
+      console.warn('V3.3.17 object hit area',obj.id,e);
+    }
+
+    // Base createMovableDecor supplies edit-mode drag + saved positions.
+    const syncDepth=()=>item.setDepth(30+Math.round(item.y/30));
+    syncDepth();
+    item.on('drag',syncDepth);
+    item.on('dragend',syncDepth);
   });
 };
 Game.prototype.getSanctuaryObjectManifest=function(){return manifest(this)};
 Game.prototype.getSanctuaryObject=function(id){return (manifest(this).objects||[]).find(o=>o.id===id)||null};
+
+const baseToggleEdit=Game.prototype.toggleEditMode;
+Game.prototype.toggleEditMode=function(){
+  const result=baseToggleEdit?.call(this);
+  if(this.editModeText){
+    this.editModeText.setText(this.editMode?'✓ DONE EDITING':'✦ EDIT SANCTUARY');
+  }
+  return result;
+};
 
 // -----------------------------------------------------------------------------
 // EVOLVED VISUALS — movement remains controlled by the protected Phase 4 mover.
@@ -254,6 +293,23 @@ Game.prototype.playFamiliarObjectReaction=function(def,obj,token){
   return result;
 };
 
+Game.prototype.v3317CheckCoreObjects=function(){
+  const required=[
+    'arcane-stacks','moonlit-study-desk','observatory-telescope',
+    'crystal-focus-pedestal','moonstone-crystal-bed','amethyst-crystal-bed',
+    'study-apothecary','familiar-lounge','magic-mirror'
+  ];
+  const present=new Set((this.decorItems||[]).map(x=>x.getData?.('objectId')).filter(Boolean));
+  const missing=required.filter(id=>!present.has(id));
+  if(missing.length){
+    console.warn('V3.3.17 missing core Sanctuary objects',missing);
+    this.hudStatusText?.setText('Sanctuary loaded with '+missing.length+' object warning'+(missing.length===1?'':'s'));
+  }else{
+    this.hudStatusText?.setText('Sanctuary ready • 9 interactive objects');
+  }
+  return {ok:!missing.length,missing};
+};
+
 function hideLegacyLabels(scene){
   ['lunaName','lunaType','emberName','emberType','novaName','novaType','mallowName','mallowType']
     .forEach(k=>{if(scene[k])scene[k].setVisible(false).setAlpha(0)});
@@ -283,6 +339,7 @@ Game.prototype.create=function(){
     this.v3317UpdateGuardianVisuals();
   }});
   this.time.delayedCall(250,()=>this.v3317UpdateGuardianVisuals());
+  this.time.delayedCall(320,()=>this.v3317CheckCoreObjects());
 
   try{window.parent?.postMessage({type:'MAJICK_SANCTUARY_READY_V3317'},location.origin)}catch(_){}
 };
