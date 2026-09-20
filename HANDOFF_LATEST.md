@@ -129,3 +129,14 @@ The user may upload approved art bundles only when explicitly instructed.
 - The V3.3.17 layer uses the existing protected Phase 4 movement coordinates and overlays the correct evolved Guardian stage/action art.
 - If the V3.3.17 assets are missing or fail to load, the original protected Phase 4 sprite remains the fallback.
 - The user only needs to upload the single repair ZIP to `sanctuary/assets/`; do not unzip manually and do not touch `sanctuary/assets/motion/`.
+
+## V3.3.17 corrected Guardian asset repair
+- User uploaded: `sanctuary/assets/majick-v3317-evolution-repair-small.zip`.
+- This is now the ONLY evolution-action ZIP the deployment should use.
+- It contains 60 individual transparent WebPs: 4 Guardians × 5 stages × walk/play/sleep.
+- Deployment extracts those files into `sanctuary/assets/evolutions/<guardian>/<stage>/<action>.webp`.
+- V3.3.17 uses original Phase 4 movement coordinates/behavior as the controller and overlays the correct stage-specific visual.
+- V3.3.15 emergency restore now yields when V3.3.17 is active so the two layers do not fight over sprite opacity.
+- V3.3.17 Guardian visual size target was increased to approximately 230–360 px high in the Sanctuary.
+- The build now verifies at least 60 evolution WebPs plus representative files from Velora, Cascade, Solstice, and Aurelia before deployment.
+- Current deployment: GitHub Pages run #48, commit `b6f501b7eca6afd5bb6841fceccd5d37b0e080ad`, assembling V3.3.17 at last check.
