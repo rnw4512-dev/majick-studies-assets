@@ -26,16 +26,15 @@ window.v3313CurrentImage=window.v3312CurrentGuardianImage;
 
 function homeSanctuary(){
   if(!window.S||S.screen!=='home'||typeof window.phase4SanctuaryHTML!=='function')return;
-  const habitat=document.querySelector('.masHabitat,.majHabitat');
+  const habitat=document.querySelector('.masHabitat,.majHabitat,.v3313Portal');
   if(!habitat)return;
-  const outer=habitat.closest('.masPanel,.majHabitatPanel')||habitat;
-  if(outer.classList?.contains('v3316HomeSanctuary'))return;
+  if(habitat.classList?.contains('v3316HomeSanctuary'))return;
   const wrap=document.createElement('section');
   wrap.className='v3316HomeSanctuary';
   let html=window.phase4SanctuaryHTML();
   html=html.replace(/context=companions/g,'context=home');
   wrap.innerHTML=html;
-  outer.replaceWith(wrap);
+  habitat.replaceWith(wrap);
   setTimeout(()=>window.v3314PushGuardianLevels?.(),160);
 }
 window.v3316UpgradeHomeSanctuary=homeSanctuary;
@@ -49,7 +48,7 @@ window.render=function(){
   const pill=document.querySelector('.top .pill');if(pill)pill.textContent='Living Familiars • V3.3.16 Course Realms';
   document.title='Majick Studies — Course Realms';
 };
-const obs=new MutationObserver(()=>{if(window.S?.screen==='home'&&document.querySelector('.masHabitat,.majHabitat'))homeSanctuary()});
+const obs=new MutationObserver(()=>{if(window.S?.screen==='home'&&document.querySelector('.masHabitat,.majHabitat,.v3313Portal'))homeSanctuary()});
 obs.observe(document.documentElement,{childList:true,subtree:true});
 try{window.MajickCourseManager?.ensure();render()}catch(e){console.error('V3.3.16 boot',e)}
 })();
