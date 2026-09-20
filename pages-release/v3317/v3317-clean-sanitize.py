@@ -47,6 +47,48 @@ h=idx.read_text(encoding='utf-8')
 for js in ('v3313-main.js','v3314-main.js','v3315-main.js','v3316-main.js'):
     h=re.sub(r'\s*<script[^>]+src=["\']\./'+re.escape(js)+r'[^"\']*["\'][^>]*></script>\s*','\n',h)
 
+# ------------------------------------------------------------------
+# STUDY STATE HARDENING:
+# The legacy inline prog() returned undefined when a newly selected course did
+# not yet have a progress row. Study Now then crashed on prog().xp until reload.
+# Create the per-course record synchronously before any XP/crystal/streak read.
+# ------------------------------------------------------------------
+unsafe_prog="function course(){return S.courses[S.activeCourse]||BUILTIN} function prog(){return S.progress[S.activeCourse]}"
+safe_prog="""function course(){
+  S.courses=S.courses||{PMFC:BUILTIN};
+  if(!S.courses[S.activeCourse]){
+    S.activeCourse=Object.keys(S.courses)[0]||'PMFC';
+  }
+  return S.courses[S.activeCourse]||BUILTIN;
+}
+function prog(){
+  S.progress=S.progress||{};
+  course();
+  let p=S.progress[S.activeCourse];
+  if(!p){
+    p=S.progress[S.activeCourse]={
+      answers:[],explanations:[],repair:[],spacedQueue:[],
+      streak:0,lastDay:'',bossWins:0,xp:0,crystals:0,charms:[],chests:0,
+      inventory:{streakShield:0,clueCharm:0,bossShield:0,oracleTicket:0},
+      cosmetics:[],eliminationWins:0,voicePractices:0
+    };
+  }
+  p.answers=Array.isArray(p.answers)?p.answers:[];
+  p.explanations=Array.isArray(p.explanations)?p.explanations:[];
+  p.repair=Array.isArray(p.repair)?p.repair:[];
+  p.spacedQueue=Array.isArray(p.spacedQueue)?p.spacedQueue:[];
+  p.charms=Array.isArray(p.charms)?p.charms:[];
+  p.inventory=p.inventory||{streakShield:0,clueCharm:0,bossShield:0,oracleTicket:0};
+  p.xp=Number(p.xp||0);
+  p.crystals=Number(p.crystals||0);
+  p.chests=Number(p.chests||0);
+  p.streak=Number(p.streak||0);
+  return p;
+}"""
+if unsafe_prog not in h:
+    raise RuntimeError('Unsafe legacy prog() signature not found; refusing to publish without state hardening')
+h=h.replace(unsafe_prog,safe_prog,1)
+
 # Reinsert Guardian care/economy + one clean V3.3.17 bridge at the end.
 h=re.sub(r'\s*<script[^>]+src=["\']\./guardian-care-economy\.js[^"\']*["\'][^>]*></script>\s*','\n',h)
 h=re.sub(r'\s*<script[^>]+src=["\']\./v3317-main\.js[^"\']*["\'][^>]*></script>\s*','\n',h)
