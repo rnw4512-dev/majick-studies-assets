@@ -2,8 +2,8 @@
 (function(){
 'use strict';
 
-const RELEASE_LABEL='Living Familiars • V3.3.18 Stability Reset';
-const RELEASE_TITLE='Majick Studies — V3.3.18 Stability Reset';
+const RELEASE_LABEL='Learning Intelligence • V3.3.19';
+const RELEASE_TITLE='Majick Studies — V3.3.19 Learning Intelligence';
 const registry=()=>window.MajickGuardianRegistry;
 const canonOf=type=>registry()?.get?.(type)?.canon||String(type||'').toLowerCase();
 const STAGE_SLUGS=['new-bond','apprentice','guardian','ascendant','celestial'];
@@ -54,7 +54,7 @@ window.v334Portrait=function(p,variant='card'){
 const previousScreenHTML=window.screenHTML;
 if(typeof previousScreenHTML==='function'){
   window.screenHTML=function(){
-    if(window.S?.screen==='addmaterial'&&window.AddStudyMaterialPage)return window.AddStudyMaterialPage.render();
+    if(window.S?.screen==='learninglab'&&window.MajickLearningLab)return window.MajickLearningLab.render();\n    if(window.S?.screen==='addmaterial'&&window.AddStudyMaterialPage)return window.AddStudyMaterialPage.render();
     return previousScreenHTML();
   };
 }
@@ -62,7 +62,7 @@ const previousSideHTML=window.sideHTML;
 if(typeof previousSideHTML==='function'){
   window.sideHTML=function(){
     let h=previousSideHTML();
-    if(!h.includes('data-nav="addmaterial"')){
+    if(!h.includes('data-nav="learninglab"')){\n      const learn='<button data-nav="learninglab" class="'+(window.S?.screen==='learninglab'?'active':'')+'" onclick="navigate(\\'learninglab\\')"><span>✦</span><span class="label">Learn Lab</span></button>';\n      const target='<button data-nav="livinggrimoire"';\n      const at=h.indexOf(target);\n      if(at>=0)h=h.slice(0,at)+learn+h.slice(at);else h+=learn;\n    }\n    if(!h.includes('data-nav="addmaterial"')){
       const button='<button data-nav="addmaterial" class="'+(window.S?.screen==='addmaterial'?'active':'')+'" onclick="navigate(\'addmaterial\')"><span>✦</span><span class="label">Study Material</span></button>';
       const target='<button data-nav="livinggrimoire"';
       const at=h.indexOf(target);
@@ -178,7 +178,7 @@ function applyReleaseBadge(){
 
 function showRuntimeNotice(error){
   const message=String(error?.message||error||'Unknown runtime error');
-  console.error('Majick V3.3.18 runtime error',error);
+  console.error('Majick V3.3.19 runtime error',error);
   if(document.getElementById('v3317RuntimeNotice'))return;
   try{
     const n=document.createElement('div');
@@ -216,7 +216,7 @@ if(previousRender){
     return result;
   };
 }else{
-  console.error('Majick V3.3.18: base render function was missing; refusing to install a broken wrapper.');
+  console.error('Majick V3.3.19: base render function was missing; refusing to install a broken wrapper.');
 }
 
 const observer=new MutationObserver(()=>{

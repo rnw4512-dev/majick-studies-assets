@@ -39,7 +39,7 @@ try{
   await assert(boot.hasRender,'render() unavailable after boot');
   await assert(boot.hasState,'MajickStateCore unavailable after boot');
   await assert(boot.hasRegistry,'Guardian registry unavailable after boot');
-  await assert(boot.version==='3.3.18-stability','wrong deployed runtime version: '+boot.version);
+  await assert(boot.version==='3.3.19-learning','wrong deployed runtime version: '+boot.version);
   await assert(boot.guardians.length>=10,'baseline Guardian registry unexpectedly shrank');
 
   // Recreate the exact class-progress failure that previously required Reload.
@@ -78,6 +78,42 @@ try{
 
   // Continue this smoke from D755 so the existing Assessment course remains intact.
   await assert((await page.locator('.courseSelect').inputValue())==='D755','visible class selector did not return to D755');
+
+  // Learn Mode must work for every class and keep learning state course-specific.
+  await page.evaluate(()=>{switchCourse('D755');navigate('learninglab');});
+  await page.waitForSelector('.learnLab[data-course="D755"]',{timeout:10000});
+  const d755Learn=await page.evaluate(()=>MajickLearningLab.model('D755'));
+  await assert(d755Learn.vocab.length>=8,'D755 Learn Mode has no usable vocabulary');
+  await assert(d755Learn.lessons.length>=2,'D755 Learn Mode has no usable explanations');
+  await page.locator('[data-learn-tab="vocab"]').click();
+  await page.waitForSelector('.vocabCard',{timeout:8000});
+  await page.locator('#learnStartVocabGame').click();
+  await page.waitForSelector('[data-vocab-answer]',{timeout:8000});
+  const gameCorrect=await page.evaluate(()=>MajickLearningLab.gameSnapshot()?.current?.correct);
+  await assert(!!gameCorrect,'D755 vocab game did not start');
+  await page.locator('[data-vocab-answer]').filter({hasText:gameCorrect}).first().click();
+  await page.waitForTimeout(100);
+
+  await page.evaluate(()=>{switchCourse('D772');navigate('learninglab');});
+  await page.waitForSelector('.learnLab[data-course="D772"]',{timeout:10000});
+  const d772Learn=await page.evaluate(()=>MajickLearningLab.model('D772'));
+  await assert(d772Learn.vocab.some(v=>v.term.toLowerCase()==='mean'),'D772 Learn Mode missing statistics vocabulary');
+  await assert(d772Learn.lessons.length>=5,'D772 Learn Mode missing visual starter lessons');
+  const toolCheck=await page.evaluate(()=>({
+    calc:MajickLearningLab.calculateExpression('(12+8)/4'),
+    stats:MajickLearningLab.stats([12,14,14,18,22]),
+    probability:MajickLearningLab.probability(2,6)
+  }));
+  await assert(toolCheck.calc.ok&&toolCheck.calc.value===5,'Learning Lab calculator failed');
+  await assert(toolCheck.stats.ok&&toolCheck.stats.mean===16&&toolCheck.stats.median===14,'D772 stats lab failed');
+  await assert(toolCheck.probability.ok&&toolCheck.probability.fraction==='1/3','D772 probability lab failed');
+
+  const isolatedLearning=await page.evaluate(()=>{
+    MajickLearningLab.setScratchpad('D755','D755_ONLY');
+    MajickLearningLab.setScratchpad('D772','D772_ONLY');
+    return {d755:MajickLearningLab.state('D755').scratch,d772:MajickLearningLab.state('D772').scratch};
+  });
+  await assert(isolatedLearning.d755==='D755_ONLY'&&isolatedLearning.d772==='D772_ONLY','Learning Lab state crossed courses');
 
   // A real correct study answer must reward the shared account and persist through reload.
   const studyReward=await page.evaluate(()=>{

@@ -73,6 +73,8 @@ OVERLAYS=[
     ("pages-release/stability-reset/v3312-ui-compat.js","v3312-ui-compat.js"),
     ("pages-release/stability-reset/guardian-registry.js","guardian-registry.js"),
     ("pages-release/stability-reset/majick-state-core.js","majick-state-core.js"),
+    ("pages-release/v3319/learning-lab.js","learning-lab.js"),
+    ("pages-release/v3319/learning-lab.css","learning-lab.css"),
     ("pages-release/v3315/study-material/materialParser.js","study-material/materialParser.js"),
     ("pages-release/v3315/study-material/materialStoreModel.js","study-material/materialStoreModel.js"),
     ("pages-release/v3315/study-material/questionBuilder.js","study-material/questionBuilder.js"),
@@ -153,13 +155,24 @@ for src_name,(dst_name,expected_hash,expected_bytes) in PINNED_MOTION.items():
 progress=site/"app-progress.json"
 if progress.exists():
     data=json.loads(progress.read_text(encoding="utf-8"))
-    data["version"]="V3.3.18 Stability Reset"
+    data["version"]="V3.3.19 Learning Intelligence"
+    data["learning_intelligence"]="course-aware Learn Mode, vocabulary game, guided practice, mastery, calculator, D772 statistics labs"
     data["build_foundation"]="V3.3.18 Golden Baseline"
     data["golden_baseline_source_commit"]=manifest.get("source_commit")
     data["golden_baseline_source_run_id"]=manifest.get("source_run_id")
     data["historical_patch_chain"]="retired from deployment"
     data["current_overlay_commit"]=os.environ.get("GITHUB_SHA","")
     progress.write_text(json.dumps(data,indent=2),encoding="utf-8")
+
+index=site/"index.html"
+html=index.read_text(encoding="utf-8")
+html=html.replace('<link rel="stylesheet" href="./learning-lab.css?v=3319">','').replace('<script src="./learning-lab.js?v=3319"></script>','')
+html=html.replace('</head>','<link rel="stylesheet" href="./learning-lab.css?v=3319">\\n</head>',1)
+main_tag='<script src="./v3317-main.js?v=stability-1"></script>'
+if main_tag not in html:
+    fail("authoritative main runtime tag missing while installing Learning Lab")
+html=html.replace(main_tag,'<script src="./learning-lab.js?v=3319"></script>\\n'+main_tag,1)
+index.write_text(html,encoding="utf-8")
 
 (site/".nojekyll").touch()
 print("GOLDEN BASELINE BUILD PREPARED")
