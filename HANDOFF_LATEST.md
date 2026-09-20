@@ -171,3 +171,47 @@ The user may upload approved art bundles only when explicitly instructed.
 - Launcher includes a visible "Open V3.3.17 Now" link as a third fallback.
 - Service-worker unregister and cache deletion are attempted with short timeouts and cannot block navigation.
 - Current deployment: GitHub Pages run #55, commit `1df9af87ff07a765e377b170661741726c470da7`, assembling at last check.
+
+## How close are we to done?
+These numbers are release-readiness estimates, not marketing numbers.
+
+- **Core study app:** 92%
+  - Main navigation, Study Now, course selection, Guardian/account progression, and most study flows exist.
+  - Remaining work is mostly regression testing and making sure newer release layers do not overwrite older working screens.
+
+- **Study Material / Notes Forge:** 88%
+  - Upload/paste flow, parsing modules, source storage, question building, and course isolation are implemented.
+  - Still needs full live testing with PDF/DOCX/paste inputs and confirmation that generated questions stay isolated to the selected course.
+
+- **Course system / pass-a-class flow:** 90%
+  - New-course creation, fresh per-course streaks, persistent account XP, and course completion logic are implemented.
+  - Still needs live end-to-end testing after the shell/runtime issue is stable.
+
+- **Living Sanctuary / Phaser 4:** 72%
+  - Original Phase 4 movement system is preserved.
+  - Object manifest, evolution manifest, furniture routing, stage resolver, and corrected 60 evolution action assets exist.
+  - Biggest remaining work: make the live Sanctuary consistently load, confirm evolved visuals follow movement correctly, confirm play/sleep interactions, and eliminate shell/cache conflicts.
+
+- **Guardian profile/evolution presentation:** 82%
+  - Canon names, level bands, approved stage art, and larger profile presentation are implemented.
+  - Still needs visual QA after cache/runtime repair.
+
+- **Overall Majick Studies release readiness:** **84%**
+  - We are past the foundation/build stage.
+  - The remaining work is mainly **stability, visual QA, and integration testing**, not rebuilding the app from scratch.
+  - The project should not be called finished until the live site opens cleanly, reports the current version, Sanctuary works without a snag modal, evolved Guardians display correctly, and Notes Forge passes live document tests.
+
+### Definition of “done”
+Majick Studies is ready to call finished when all of these are true:
+1. Live app opens cleanly with the current release label.
+2. No old service-worker/shell version takes over.
+3. Home and Companions both show the real Phaser Sanctuary.
+4. Original Phase 4 movement remains stable.
+5. Current-stage Guardian visuals display at the correct size.
+6. Walk/play/sleep interactions work without hiding or shrinking Guardians.
+7. Study Material accepts PDF, DOCX, TXT, MD, and pasted notes in the live app.
+8. Generated questions, vocabulary, explanations, and repair material save only to the selected course.
+9. New courses start a fresh streak while overall XP/Guardian growth persists.
+10. Passing a course records completion and awards completion XP once.
+11. All major screens pass one complete click-through regression test.
+12. HANDOFF_LATEST.md and CURRENT_BUILD.md match the deployed release.
