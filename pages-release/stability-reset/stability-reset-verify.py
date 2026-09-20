@@ -4,7 +4,7 @@ site=Path(sys.argv[1])
 def fail(msg): raise SystemExit('STABILITY RESET VERIFY FAILED: '+msg)
 main=(site/'index.html').read_text(encoding='utf-8')
 san=(site/'sanctuary'/'index.html').read_text(encoding='utf-8')
-for f in ('v3310-ui-compat.js','v3312-ui-compat.js','guardian-registry.js','majick-state-core.js','learning-lab.js','learning-lab.css','guardian-care-economy.js','v3317-main.js','sanctuary/v3317-sanctuary.js'):
+for f in ('v3310-ui-compat.js','v3312-ui-compat.js','guardian-registry.js','majick-state-core.js','learning-lab.js','learning-lab.css','guardian-care-economy.js','v3317-main.js','sanctuary/v3317-sanctuary.js','sanctuary/v3320-sanctuary-life.js'):
     p=site/f
     if not p.exists() or not p.stat().st_size: fail('missing '+f)
 for old in ('v3310-main.js','v3312-main.js','v3313-main.js','v3314-main.js','v3315-main.js','v3316-main.js'):
@@ -16,6 +16,8 @@ pos=[main.find(x) for x in order]
 if any(x<0 for x in pos) or pos!=sorted(pos): fail('main runtime load order is wrong')
 if san.find('guardian-registry.js')<0 or san.find('v3317-sanctuary.js')<0: fail('Sanctuary registry/bridge missing')
 if san.find('guardian-registry.js')>san.find('v3317-sanctuary.js'): fail('Sanctuary registry loads after bridge')
+if san.find('v3320-sanctuary-life.js')<0: fail('Sanctuary Home runtime missing')
+if san.find('v3317-sanctuary.js')>san.find('v3320-sanctuary-life.js'): fail('Sanctuary Home loads before V3.3.17 bridge')
 for compat_name in ('v3310-ui-compat.js','v3312-ui-compat.js'):
     compat=(site/compat_name).read_text(encoding='utf-8')
     if 'window.render=function' in compat or 'render=function' in compat or 'const prevRender=render' in compat or 'const render12=window.render' in compat:
@@ -41,10 +43,15 @@ for marker in ("window.MajickLearningLab","startVocabGame","calculateExpression"
     if marker not in learning: fail('Learning Lab missing '+marker)
 if 'learning-lab.js?v=3319' not in main or 'learning-lab.css?v=3319' not in main:
     fail('Learning Lab assets are not installed in index.html')
+san_life=(site/'sanctuary'/'v3320-sanctuary-life.js').read_text(encoding='utf-8')
+for marker in ("window.MajickSanctuaryLife","v3320BuildHomeHud","v3320SnapDecorItem","guardian-food-bowl","bedAssignments"):
+    if marker not in san_life: fail('Sanctuary Home missing '+marker)
+if 'v3320-sanctuary-life.js?v=3320' not in san:
+    fail('Sanctuary Home asset is not installed in sanctuary/index.html')
 care=(site/'guardian-care-economy.js').read_text(encoding='utf-8')
 if 'window.MajickGuardianRegistry?.get?.(type)' not in care: fail('Guardian care does not use the shared registry')
 
-for path in (site/'guardian-registry.js',site/'majick-state-core.js',site/'learning-lab.js',site/'guardian-care-economy.js',site/'v3317-main.js',site/'sanctuary'/'v3317-sanctuary.js'):
+for path in (site/'guardian-registry.js',site/'majick-state-core.js',site/'learning-lab.js',site/'guardian-care-economy.js',site/'v3317-main.js',site/'sanctuary'/'v3317-sanctuary.js',site/'sanctuary'/'v3320-sanctuary-life.js'):
     r=subprocess.run(['node','--check',str(path)],capture_output=True,text=True)
     if r.returncode: fail(path.name+' syntax: '+r.stderr)
 print('STABILITY RESET VERIFY PASSED')

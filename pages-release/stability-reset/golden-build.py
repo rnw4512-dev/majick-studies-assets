@@ -84,6 +84,7 @@ OVERLAYS=[
     ("pages-release/v3317/guardian-care-economy.css","guardian-care-economy.css"),
     ("pages-release/v3317/v3317-main.js","v3317-main.js"),
     ("pages-release/v3317/v3317-sanctuary.js","sanctuary/v3317-sanctuary.js"),
+    ("pages-release/v3320/sanctuary-life.js","sanctuary/v3320-sanctuary-life.js"),
 ]
 for src_rel,dst_rel in OVERLAYS:
     src=repo/src_rel
@@ -157,6 +158,8 @@ if progress.exists():
     data=json.loads(progress.read_text(encoding="utf-8"))
     data["version"]="V3.3.19 Learning Intelligence"
     data["learning_intelligence"]="course-aware Learn Mode, vocabulary game, guided practice, mastery, calculator, D772 statistics labs"
+    data["sanctuary_version"]="V3.3.20 Sanctuary Home"
+    data["sanctuary_home"]="Guardian needs HUD, object-aware care travel, exclusive beds, visible care inventory, safe furniture snapping"
     data["build_foundation"]="V3.3.18 Golden Baseline"
     data["golden_baseline_source_commit"]=manifest.get("source_commit")
     data["golden_baseline_source_run_id"]=manifest.get("source_run_id")
@@ -173,6 +176,15 @@ if main_tag not in html:
     fail("authoritative main runtime tag missing while installing Learning Lab")
 html=html.replace(main_tag,'<script src="./learning-lab.js?v=3319"></script>\\n'+main_tag,1)
 index.write_text(html,encoding="utf-8")
+
+san_index=site/"sanctuary"/"index.html"
+san_html=san_index.read_text(encoding="utf-8")
+san_html=san_html.replace('<script src="./v3320-sanctuary-life.js?v=3320"></script>','')
+san_tag='<script src="./v3317-sanctuary.js?v=stability-1"></script>'
+if san_tag not in san_html:
+    fail("authoritative Sanctuary runtime tag missing while installing Sanctuary Home")
+san_html=san_html.replace(san_tag,san_tag+'\\n<script src="./v3320-sanctuary-life.js?v=3320"></script>',1)
+san_index.write_text(san_html,encoding="utf-8")
 
 (site/".nojekyll").touch()
 print("GOLDEN BASELINE BUILD PREPARED")

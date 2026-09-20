@@ -6,6 +6,7 @@ on:
     paths:
       - 'pages-release/stability-reset/**'
       - 'pages-release/v3319/**'
+      - 'pages-release/v3320/**'
       - 'pages-release/v3315/study-material/**'
       - 'pages-release/v3316/courseManager.js'
       - 'pages-release/v3317/v3317-main.js'
@@ -60,6 +61,7 @@ jobs:
           test -s pages-release/stability-reset/majick-state-core.js
           test -s pages-release/v3319/learning-lab.js
           test -s pages-release/v3319/learning-lab.css
+          test -s pages-release/v3320/sanctuary-life.js
           test -s pages-release/v3315/study-material/materialParser.js
           test -s pages-release/v3315/study-material/materialStoreModel.js
           test -s pages-release/v3315/study-material/questionBuilder.js
@@ -85,6 +87,7 @@ jobs:
           node --check pages-release/stability-reset/guardian-registry.js
           node --check pages-release/stability-reset/majick-state-core.js
           node --check pages-release/v3319/learning-lab.js
+          node --check pages-release/v3320/sanctuary-life.js
           node --check pages-release/v3317/v3317-main.js
           node --check pages-release/v3317/v3317-sanctuary.js
           node --check pages-release/v3317/guardian-care-economy.js
@@ -169,6 +172,7 @@ jobs:
           cmp pages-release/v3316/courseManager.js _site/courseManager.js
           cmp pages-release/v3317/v3317-main.js _site/v3317-main.js
           cmp pages-release/v3317/v3317-sanctuary.js _site/sanctuary/v3317-sanctuary.js
+          cmp pages-release/v3320/sanctuary-life.js _site/sanctuary/v3320-sanctuary-life.js
           cmp pages-release/v3317/guardian-care-economy.js _site/guardian-care-economy.js
 
           # Golden architecture and protected assets.
@@ -176,6 +180,8 @@ jobs:
           grep -q '"version": "V3.3.19 Learning Intelligence"' _site/app-progress.json
           grep -q 'learning-lab.js?v=3319' _site/index.html
           grep -q 'learning-lab.css?v=3319' _site/index.html
+          grep -q '"sanctuary_version": "V3.3.20 Sanctuary Home"' _site/app-progress.json
+          grep -q 'v3320-sanctuary-life.js?v=3320' _site/sanctuary/index.html
           grep -q '"historical_patch_chain": "retired from deployment"' _site/app-progress.json
           test "$(find _site/sanctuary/assets/motion -type f -name '*.png' | wc -l)" -eq 33
           test "$(find _site/sanctuary/assets/runtime-motion -type f -name '*.webp' | wc -l)" -eq 33
@@ -195,6 +201,7 @@ jobs:
           node --check _site/guardian-care-economy.js
           node --check _site/v3317-main.js
           node --check _site/sanctuary/v3317-sanctuary.js
+          node --check _site/sanctuary/v3320-sanctuary-life.js
           node --check _site/study-material/materialParser.js
           node --check _site/study-material/materialStoreModel.js
           node --check _site/study-material/questionBuilder.js

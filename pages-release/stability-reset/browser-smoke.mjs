@@ -376,21 +376,24 @@ try{
       const after=MajickGuardianCare.snapshot().crystals;
       purchases.push({id,cost:item?.cost||0,ok:result.ok,before,after});
     }
-    const actions={
-      feed:MajickGuardianCare.performAction(pet.petId,'feed'),
-      water:MajickGuardianCare.performAction(pet.petId,'water'),
-      treat:MajickGuardianCare.performAction(pet.petId,'treat'),
-      groom:MajickGuardianCare.performAction(pet.petId,'groom'),
-      play:MajickGuardianCare.performAction(pet.petId,'play',{itemId:favorite}),
-      sleep:MajickGuardianCare.performAction(pet.petId,'sleep',{objectId:'moonstone-crystal-bed'}),
-      affection:MajickGuardianCare.performAction(pet.petId,'affection')
-    };
+    const feed=MajickGuardianCare.performAction(pet.petId,'feed',{objectId:'guardian-food-bowl'});
+    const water=MajickGuardianCare.performAction(pet.petId,'water',{objectId:'guardian-water-basin'});
+    const treat=MajickGuardianCare.performAction(pet.petId,'treat',{objectId:'guardian-treat-jar'});
+    const groom=MajickGuardianCare.performAction(pet.petId,'groom',{objectId:'guardian-brush'});
+    const play=MajickGuardianCare.performAction(pet.petId,'play',{itemId:favorite,objectId:'guardian-toy-basket'});
+    const sleepFirst=MajickGuardianCare.performAction(pet.petId,'sleep',{objectId:'moonstone-crystal-bed'});
+    const sleepMove=MajickGuardianCare.performAction(pet.petId,'sleep',{objectId:'amethyst-crystal-bed'});
+    const sleep=MajickGuardianCare.performAction(pet.petId,'sleep',{objectId:'moonstone-crystal-bed'});
+    const affection=MajickGuardianCare.performAction(pet.petId,'affection');
+    const actions={feed,water,treat,groom,play,sleep,affection};
     save();
     return {
       ok:true,petId:pet.petId,favorite,purchases,
-      actions:Object.fromEntries(Object.entries(actions).map(([k,v])=>[k,{ok:v.ok,favoriteBonus:v.favoriteBonus||false}])),
+      actions:Object.fromEntries(Object.entries(actions).map(([k,v])=>[k,{ok:v.ok,favoriteBonus:v.favoriteBonus||false,travelObject:v.travelObject||null}])),
+      sleepMoveOk:!!sleepFirst.ok&&!!sleepMove.ok&&!!sleep.ok,
       snapshot:MajickGuardianCare.snapshot(),
-      bed:S.v3311?.sanctuaryState?.bedAssignments?.['moonstone-crystal-bed']||null
+      bed:S.v3311?.sanctuaryState?.bedAssignments?.['moonstone-crystal-bed']||null,
+      otherBed:S.v3311?.sanctuaryState?.bedAssignments?.['amethyst-crystal-bed']||null
     };
   });
   await assert(careFlow.ok,'no owned Guardian was available for care testing');
@@ -402,7 +405,11 @@ try{
     await assert(result.ok,'Guardian care action failed: '+action);
   }
   await assert(careFlow.actions.play.favoriteBonus===true,'owned favorite item did not trigger the Guardian bond bonus');
+  await assert(careFlow.actions.feed.travelObject==='guardian-food-bowl','feeding did not route the Guardian to the food bowl');
+  await assert(careFlow.actions.play.travelObject==='guardian-toy-basket','play did not route the Guardian to the toy area');
+  await assert(careFlow.sleepMoveOk,'Guardian could not move between Sanctuary beds');
   await assert(careFlow.bed===careFlow.petId,'Guardian bed assignment was not stored by pet id');
+  await assert(careFlow.otherBed===null,'moving beds left a stale double assignment');
 
   await page.reload({waitUntil:'domcontentloaded'});
   await page.waitForFunction(()=>typeof window.render==='function'&&!!window.MajickGuardianCare&&!!window.MajickStateCore,{timeout:15000});
@@ -426,13 +433,37 @@ try{
   const frame=page.frames().find(f=>f.url().includes('/sanctuary/'));
   await assert(!!frame,'Sanctuary iframe did not load');
   await frame.waitForFunction(()=>typeof window.Game!=='undefined'||document.querySelector('canvas'),{timeout:20000});
+  await frame.waitForFunction(()=>window.MajickSanctuaryLife?.VERSION==='3.3.20',{timeout:12000});
+  await frame.waitForFunction(()=>!!window.majickPhaserGame?.scene?.getScene?.('Game'),{timeout:20000});
+  await frame.waitForFunction(()=>Number(window.majickPhaserGame?.scene?.getScene?.('Game')?.v3317CareState?.roster?.length||0)>0,{timeout:12000});
   const san=await frame.evaluate(()=>({
     hasGame:typeof window.Game!=='undefined',
     hasCanvas:!!document.querySelector('canvas'),
-    hasRegistry:!!window.MajickGuardianRegistry
+    hasRegistry:!!window.MajickGuardianRegistry,
+    sanctuaryLife:window.MajickSanctuaryLife?.VERSION||null
   }));
   await assert(san.hasGame||san.hasCanvas,'Phaser Sanctuary did not initialize');
   await assert(san.hasRegistry,'Guardian registry unavailable inside Sanctuary');
+  await assert(san.sanctuaryLife==='3.3.20','Sanctuary Home runtime did not load');
+
+  const sanctuaryHome=await frame.evaluate(()=>{
+    const scene=window.majickPhaserGame?.scene?.getScene?.('Game');
+    scene.v3320ApplyCareSnapshot?.(scene.v3317CareState);
+    const food=scene.getObjectInteractionDef?.('guardian-food-bowl');
+    const movable=(scene.decorItems||[]).find(x=>(x.getData?.('objectId')||x.getData?.('decorId'))==='arcane-stacks');
+    if(movable){movable.x=427;movable.y=773}
+    const snapped=scene.v3320SnapDecorItem?.(movable);
+    return {
+      inspect:window.MajickSanctuaryLife.inspect(scene),
+      food:{id:food?.id||null,mode:food?.mode||null,x:food?.x||0,y:food?.y||0},
+      snapped
+    };
+  });
+  await assert(sanctuaryHome.inspect.hud,'Guardian Home HUD did not initialize');
+  await assert(sanctuaryHome.inspect.guardianLabels>=1,'moving Guardian has no visible identity/needs label');
+  await assert(Object.keys(sanctuaryHome.inspect.badges||{}).length>=6,'care furniture status badges did not initialize');
+  await assert(sanctuaryHome.food.id==='guardian-food-bowl'&&sanctuaryHome.food.mode==='delight','food bowl is not a physical Guardian interaction target');
+  await assert(sanctuaryHome.snapped?.x%20===0&&sanctuaryHome.snapped?.y%20===0,'edit-mode furniture snapping is not active');
 
   // Sanctuary edit positions must be backed by persistent layout storage.
   const layoutWrite=await frame.evaluate(()=>{

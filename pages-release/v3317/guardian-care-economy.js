@@ -297,8 +297,21 @@ function performAction(target,action,opts={}){
     S.v3311=S.v3311||{};
     S.v3311.sanctuaryState=S.v3311.sanctuaryState||{bedAssignments:{}};
     S.v3311.sanctuaryState.bedAssignments=S.v3311.sanctuaryState.bedAssignments||{};
-    const already=S.v3311.sanctuaryState.bedAssignments[bed]===pet.id||S.v3311.sanctuaryState.bedAssignments[bed]===pet.type;
-    S.v3311.sanctuaryState.bedAssignments[bed]=pet.id;
+    const beds=S.v3311.sanctuaryState.bedAssignments;
+    const already=beds[bed]===pet.id||beds[bed]===pet.type;
+
+    // A Guardian owns one active bed at a time. Moving beds clears the old slot
+    // instead of leaving stale double assignments behind.
+    for(const [slot,guardian] of Object.entries(beds)){
+      if(slot!==bed&&(guardian===pet.id||guardian===pet.type))delete beds[slot];
+    }
+    const displaced=beds[bed];
+    if(displaced&&displaced!==pet.id&&displaced!==pet.type){
+      const other=resolvePet(displaced);
+      const otherState=other?a.guardianCare.guardians[other.id]:null;
+      if(otherState?.preferredBed===bed)otherState.preferredBed=null;
+    }
+    beds[bed]=pet.id;
     change(g,{energy:48,affection:3,bond:already?5:2});
     g.preferredBed=bed;
     msg=(pet.name||meta.name)+(already?' settles into their familiar bed and immediately relaxes.':' chooses this bed as a favorite resting place.');
@@ -319,6 +332,13 @@ function performAction(target,action,opts={}){
     r.icon='♡';
   }else{
     return {ok:false,guardianId:pet.id,guardianType:pet.type,action,message:'That Guardian-care action is not available yet.'};
+  }
+
+  // When care starts from a physical Sanctuary object, send moving Guardians
+  // to that exact object before their reaction. The movement controller itself
+  // remains untouched.
+  if(action!=='sleep'&&opts.objectId&&['feed','water','treat','groom','play'].includes(action)){
+    r.travelObject=String(opts.objectId);
   }
 
   logCare(pet,action,msg);
@@ -378,6 +398,7 @@ function snapshot(){
       phaser:!!window.V338_CANON?.[pet.type]?.phaser,
       ...g,
       favoriteItem:fav.id,favoriteLabel:fav.label,favoriteOwned:favoriteOwned(pet),
+      playItem:bestToy(pet),
       mood:moodInfo(g)
     };
   });
@@ -392,6 +413,7 @@ function snapshot(){
     owned:[...normalizeOwnedCollection(a)],
     focusPetId:a.guardianCare.focusPetId,
     roster,guardians,byType,
+    bedAssignments:{...(S?.v3311?.sanctuaryState?.bedAssignments||{})},
     eggs:eggSnapshot(),
     catalog:CATALOG.filter(x=>!x.disabled).map(x=>({id:x.id,name:x.name,kind:x.kind,cost:x.cost,qty:x.qty||1,icon:x.icon}))
   };

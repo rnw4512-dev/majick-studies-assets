@@ -107,12 +107,12 @@ function sanctuaryMarkup(context){
   if(location.protocol==='file:'){
     return '<section class="phase4Wrap"><div class="phase4Top"><b>✦ Phaser 4 Living Sanctuary</b><br><span>Open Majick Studies through GitHub Pages so Phaser can load.</span></div></section>';
   }
-  const q='?v=3318-stability&context='+encodeURIComponent(context||'app');
+  const q='?v=3320-sanctuary-home&context='+encodeURIComponent(context||'app');
   return '<section class="phase4Wrap v3317Phase" aria-label="Phaser 4 Living Sanctuary">'+
-    '<div class="phase4Top"><div><b>✦ Living Sanctuary • V3.3.18</b><br><span>Protected Phase 4 movement • final-clean evolution art • manifest furniture</span></div>'+
+    '<div class="phase4Top"><div><b>✦ Living Sanctuary • V3.3.20</b><br><span>Protected Guardian movement • care-aware home • movable furniture</span></div>'+
     '<div class="phase4Actions"><button class="btn ghost" onclick="phase4OpenFullscreen()">Full Sanctuary</button><button class="btn primary" onclick="navigate(\'addmaterial\')">Add Study Material</button></div></div>'+
     '<iframe class="phase4Frame v3317SanctuaryFrame" src="sanctuary/index.html'+q+'" title="Majick Studies Living Sanctuary" loading="eager" allow="fullscreen" onload="setTimeout(()=>v3317PushGuardianLevels(),120)"></iframe>'+
-    '<div class="phase4Help">Click furniture to use it • Edit Sanctuary lets you drag objects • Guardians keep the protected Phase 4 movement engine.</div>'+
+    '<div class="phase4Help">Care objects call Guardians across the room • beds remember their Guardian • Edit Sanctuary snaps furniture safely into place.</div>'+
   '</section>';
 }
 window.phase4SanctuaryHTML=function(){return sanctuaryMarkup('companions')};
