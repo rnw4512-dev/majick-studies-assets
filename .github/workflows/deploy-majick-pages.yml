@@ -93,6 +93,7 @@ jobs:
           test -s pages-release/v3317/v3317-clean-sanitize.py
           test -s pages-release/v3317/v3317-optimize-phaser.py
           test -s pages-release/v3317/v3317-verify-release.py
+          test -s pages-release/v3317/v3317-migration-smoke.js
           test -s pages-release/v3316/enlarge-approved-stage-art.py
           test -s sanctuary/assets/objects/objects-manifest.json
           test -s sanctuary/assets/objects/generate-object-library.py
@@ -104,6 +105,8 @@ jobs:
           node --check pages-release/v3317/v3317-main.js
           node --check pages-release/v3317/v3317-sanctuary.js
           node --check pages-release/v3317/guardian-care-economy.js
+          node --check pages-release/v3317/v3317-migration-smoke.js
+          node pages-release/v3317/v3317-migration-smoke.js
 
       - name: Assemble Majick Studies V3.3.17
         shell: bash
