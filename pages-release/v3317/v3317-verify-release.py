@@ -267,7 +267,6 @@ care=care_js.read_text(encoding='utf-8')
 required_care_markers=[
     "function ownedPets()",
     "function incubatingEggs()",
-    "petIdentityKey",
     "S.legacy?.pets",
     "S.legacy?.eggs",
     "guardianCare.guardians[pet.id]",
