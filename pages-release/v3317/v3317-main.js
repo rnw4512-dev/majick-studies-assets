@@ -4,7 +4,7 @@
 
 const RELEASE_LABEL='Living Familiars • V3.3.17 Clean Sanctuary';
 const RELEASE_TITLE='Majick Studies — V3.3.17 Clean Sanctuary';
-const CANON={luna:'velora',ember:'cascade',nova:'solstice',mallow:'aurelia'};
+const registry=()=>window.MajickGuardianRegistry;\nconst canonOf=type=>registry()?.get?.(type)?.canon||String(type||'').toLowerCase();
 const STAGE_SLUGS=['new-bond','apprentice','guardian','ascendant','celestial'];
 const STAGE_NAMES=['New Bond','Apprentice','Guardian','Ascendant','Celestial'];
 
@@ -25,7 +25,7 @@ function stageForPet(p){
   return {level,index,slug:STAGE_SLUGS[index],name:STAGE_NAMES[index]};
 }
 function approvedStageImage(type,index){
-  const canon=CANON[type]||type;
+  const canon=canonOf(type);
   const i=Math.max(0,Math.min(4,Number(index)||0));
   return 'assets/familiars/evolution_stages/'+canon+'-'+STAGE_SLUGS[i]+'.webp?v=3317-clean';
 }
@@ -38,10 +38,10 @@ window.v3313CurrentImage=window.v3312CurrentGuardianImage;
 // Approved UI portraits only. Walk/play/sleep art stays inside Phaser.
 const priorPortrait=window.v334Portrait;
 window.v334Portrait=function(p,variant='card'){
-  if(!p||!CANON[p.type])return priorPortrait?priorPortrait(p,variant):'';
+  if(!p||!registry()?.get?.(p.type))return priorPortrait?priorPortrait(p,variant):'';
   let c=null;
   try{c=typeof v338Canon==='function'?v338Canon(p.type):(window.V338_CANON||{})[p.type]}catch(_){}
-  const st=stageForPet(p),name=c?.display||p.name||CANON[p.type],src=approvedStageImage(p.type,st.index);
+  const st=stageForPet(p),name=c?.display||p.name||registry()?.get?.(p.type)?.name||canonOf(p.type),src=approvedStageImage(p.type,st.index);
   const fallback=c?.portrait||'';
   const priority=(variant==='sidebar'||variant==='study')?'eager':'lazy';
   return '<div class="familiarPortrait '+variant+' v3317ApprovedPortrait" data-pet-type="'+E(p.type)+'" data-stage="'+st.slug+'" style="--pet-accent:'+E(c?.accent||'#b99cff')+'" title="'+E(name+' • '+st.name)+'">'+
@@ -78,7 +78,7 @@ function guardianPayload(){
     const st=stageForPet(p);
     out[p.type]={
       type:p.type,
-      canon:CANON[p.type],
+      canon:meta.canon,
       level:st.level,
       stageIndex:st.index,
       stageSlug:st.slug,
