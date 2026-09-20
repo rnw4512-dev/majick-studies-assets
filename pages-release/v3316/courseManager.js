@@ -2,6 +2,17 @@
 'use strict';
 const PASS_XP=500;
 const SHARED=['xp','crystals','chests'];
+const COURSE_CATALOG={
+  D772:{
+    id:'D772',
+    title:'Statistical Data Literacy',
+    version:'majick-course-1',
+    concepts:[{id:'uploaded-notes',title:'Uploaded Course Material',section:'course',priority:'core'}],
+    glossary:{},questionBank:[],misconceptionCatalog:[],
+    preassessmentProfile:{priorityConcepts:['uploaded-notes']},
+    studySections:[],sources:[],localGenerated:true,catalogSeed:true
+  }
+};
 const E=s=>{try{return esc(String(s??''))}catch(_){return String(s??'').replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]))}};
 const clone=x=>{try{return JSON.parse(JSON.stringify(x))}catch(_){return x}};
 
@@ -67,6 +78,12 @@ function ensure(){
   if(!window.S)return;
   S.courses=(S.courses&&typeof S.courses==='object'&&!Array.isArray(S.courses))?S.courses:{};
   S.progress=(S.progress&&typeof S.progress==='object'&&!Array.isArray(S.progress))?S.progress:{};
+
+  // Seed official courses without replacing an existing learner-owned version
+  // and without changing the user's active class.
+  for(const [cid,template] of Object.entries(COURSE_CATALOG)){
+    if(!S.courses[cid])S.courses[cid]=clone(template);
+  }
   normalizeAllProgress();
   S.majickCourseRecords=S.majickCourseRecords||{};
   S.majickCourseUI=S.majickCourseUI||{};
@@ -85,8 +102,12 @@ function ensure(){
       p.__majickSharedReady=true;
     }
     S.majickCourseRecords[cid]=S.majickCourseRecords[cid]||{
-      courseId:cid,title:c?.title||cid,status:'active',startedAt:new Date().toISOString(),
-      passedAt:null,completionXp:0
+      courseId:cid,
+      title:c?.title||cid,
+      status:c?.catalogSeed?'available':'active',
+      startedAt:c?.catalogSeed?null:new Date().toISOString(),
+      passedAt:null,
+      completionXp:0
     };
   }
 }
@@ -133,6 +154,11 @@ window.switchCourse=function(id){
   saveCourseUI(S.activeCourse);
   captureAccount();mirrorAccount();
   S.activeCourse=id;
+  const record=S.majickCourseRecords?.[id];
+  if(record?.status==='available'){
+    record.status='active';
+    record.startedAt=record.startedAt||new Date().toISOString();
+  }
   S.progress[id]=S.progress[id]||blankProgress();
   for(const k of SHARED)S.progress[id][k]=Number(S.majickAccount[k]||0);
   S.progress[id].__majickSharedReady=true;
@@ -220,10 +246,21 @@ function bindPanel(){
 function decorateSelector(){
   ensure();
   const sel=document.querySelector('.courseSelect');if(!sel)return;
-  [...sel.options].forEach(o=>{
-    const r=S.majickCourseRecords?.[o.value];
-    if(r?.status==='passed'&&!o.textContent.startsWith('✓ '))o.textContent='✓ '+o.textContent;
-  });
+
+  // The shell may have been rendered from an older course list. Reconcile the
+  // selector with the authoritative course registry every time it appears.
+  for(const [cid,c] of Object.entries(S.courses||{})){
+    let option=[...sel.options].find(o=>o.value===cid);
+    if(!option){
+      option=document.createElement('option');
+      option.value=cid;
+      sel.appendChild(option);
+    }
+    const r=S.majickCourseRecords?.[cid];
+    const prefix=r?.status==='passed'?'✓ ':r?.status==='available'?'＋ ':'';
+    option.textContent=prefix+cid+' • '+(c?.title||cid);
+    option.selected=cid===S.activeCourse;
+  }
 }
 
 ensure();mirrorAccount();
