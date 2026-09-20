@@ -18,7 +18,9 @@ if san.find('guardian-registry.js')<0 or san.find('v3317-sanctuary.js')<0: fail(
 if san.find('guardian-registry.js')>san.find('v3317-sanctuary.js'): fail('Sanctuary registry loads after bridge')
 registry=(site/'guardian-registry.js').read_text(encoding='utf-8')
 for name in ('velora','cascade','solstice','aurelia','vesper','briar','zephyr','prism','rook','solara'):
-    if "canon:'"+name+"'" not in registry: fail('Guardian registry missing '+name)
+    if "canon:'"+name+"'" not in registry: fail('baseline Guardian registry missing '+name)
+for marker in ('function register(type,meta)','function dynamicSources()','window.V338_CANON','window.S?.legacy?.pets','window.S?.legacy?.eggs'):
+    if marker not in registry: fail('extensible Guardian registry missing '+marker)
 state=(site/'majick-state-core.js').read_text(encoding='utf-8')
 for marker in ('window.prog=safeProg','window.course=safeCourse',"const SHARED=['xp','crystals','chests']",'bindSharedField'):
     if marker not in state: fail('state core missing '+marker)
@@ -27,5 +29,5 @@ for path in (site/'guardian-registry.js',site/'majick-state-core.js',site/'guard
     if r.returncode: fail(path.name+' syntax: '+r.stderr)
 print('STABILITY RESET VERIFY PASSED')
 print('single main runtime order:', ' -> '.join(order))
-print('ten-Guardian registry verified')
+print('baseline Guardian canon + open-ended future registry verified')
 print('shared account state compatibility verified')
