@@ -4,18 +4,22 @@ site=Path(sys.argv[1])
 def fail(msg): raise SystemExit('STABILITY RESET VERIFY FAILED: '+msg)
 main=(site/'index.html').read_text(encoding='utf-8')
 san=(site/'sanctuary'/'index.html').read_text(encoding='utf-8')
-for f in ('guardian-registry.js','majick-state-core.js','guardian-care-economy.js','v3317-main.js','sanctuary/v3317-sanctuary.js'):
+for f in ('v3310-ui-compat.js','v3312-ui-compat.js','guardian-registry.js','majick-state-core.js','guardian-care-economy.js','v3317-main.js','sanctuary/v3317-sanctuary.js'):
     p=site/f
     if not p.exists() or not p.stat().st_size: fail('missing '+f)
-for old in ('v3313-main.js','v3314-main.js','v3315-main.js','v3316-main.js'):
+for old in ('v3310-main.js','v3312-main.js','v3313-main.js','v3314-main.js','v3315-main.js','v3316-main.js'):
     if old in main: fail('obsolete main runtime still loaded: '+old)
 for old in ('v3311-sanctuary.js','v3312-sanctuary.js','v3313-sanctuary.js','v3314-sanctuary.js','v3315-sanctuary.js'):
     if old in san: fail('obsolete Sanctuary runtime still loaded: '+old)
-order=['guardian-registry.js','majick-state-core.js','guardian-care-economy.js','v3317-main.js']
+order=['v3310-ui-compat.js','v3312-ui-compat.js','guardian-registry.js','majick-state-core.js','guardian-care-economy.js','v3317-main.js']
 pos=[main.find(x) for x in order]
 if any(x<0 for x in pos) or pos!=sorted(pos): fail('main runtime load order is wrong')
 if san.find('guardian-registry.js')<0 or san.find('v3317-sanctuary.js')<0: fail('Sanctuary registry/bridge missing')
 if san.find('guardian-registry.js')>san.find('v3317-sanctuary.js'): fail('Sanctuary registry loads after bridge')
+for compat_name in ('v3310-ui-compat.js','v3312-ui-compat.js'):
+    compat=(site/compat_name).read_text(encoding='utf-8')
+    if 'window.render=function' in compat or 'render=function' in compat or 'const prevRender=render' in compat or 'const render12=window.render' in compat:
+        fail(compat_name+' still owns global render')
 registry=(site/'guardian-registry.js').read_text(encoding='utf-8')
 for name in ('velora','cascade','solstice','aurelia','vesper','briar','zephyr','prism','rook','solara'):
     if "canon:'"+name+"'" not in registry: fail('baseline Guardian registry missing '+name)
