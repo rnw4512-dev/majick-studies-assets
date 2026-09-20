@@ -9,6 +9,7 @@ on:
       - 'pages-release/v3310/**'
       - 'pages-release/v3311/**'
       - 'pages-release/v3312/**'
+      - 'sanctuary/assets/objects/**'
       - '.github/workflows/deploy-majick-pages.yml'
   workflow_dispatch:
 
@@ -133,6 +134,12 @@ jobs:
           cp mallow-sleep.png _site/sanctuary/assets/motion/mallow-sleep.png
           cp mallow-land.png _site/sanctuary/assets/motion/mallow-land.png
           cp mallow-binky.png _site/sanctuary/assets/motion/mallow-binky.png
+
+          # Optional final object art: drop files into sanctuary/assets/objects and they publish automatically.
+          if [ -d sanctuary/assets/objects ]; then
+            mkdir -p _site/sanctuary/assets/objects
+            cp -a sanctuary/assets/objects/. _site/sanctuary/assets/objects/
+          fi
 
           touch _site/.nojekyll
 
