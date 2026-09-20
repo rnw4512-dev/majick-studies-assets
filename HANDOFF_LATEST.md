@@ -154,3 +154,11 @@ The user may upload approved art bundles only when explicitly instructed.
 - Deployment SUCCESS: GitHub Pages run #52 (`98dd087d11739b1c48f88de71eaccc17b939ccea`) completed successfully. V3.3.17 is now the authoritative main shell and Sanctuary release.
 
 - Run #52 passed assembly, Pages configuration, artifact upload, and GitHub Pages deployment.
+
+## V3.3.17 cache-reset launcher
+- GitHub Pages run #54 completed successfully.
+- Deployed launcher: `/refresh-v3317.html`.
+- The launcher unregisters old service workers, deletes all `majick-studies-*` browser caches, then redirects to a fresh V3.3.17 URL.
+- Use this launcher when the browser still shows V3.3.8 or V3.3.15 after a successful deployment.
+- Screenshot at 2026-09-20 00:08 showed a mixed cached shell: V3.3.15 Notes Forge header plus the legacy Conservatory and runtime snag modal.
+- Next action: open `https://rnw4512-dev.github.io/majick-studies-assets/refresh-v3317.html` once, let it redirect, then test the live app before changing more code.
