@@ -259,17 +259,7 @@ jobs:
             test -s _site/sanctuary/assets/objects/enchanted-bookstack.webp
             test -s _site/sanctuary/assets/objects/moonstone-canopy-bed.webp
           fi
-          python - <<'PY'
-from PIL import Image
-from pathlib import Path
-root=Path('_site/assets/familiars/evolution_stages')
-for name in ('velora','cascade','solstice','aurelia'):
-    for stage in ('new-bond','apprentice','guardian','ascendant','celestial'):
-        p=root/f'{name}-{stage}.webp'
-        assert p.exists(), p
-        assert Image.open(p).size==(640,1000), (p,Image.open(p).size)
-print('Approved Guardian portraits verified at 640x1000')
-PY
+          python -c "from PIL import Image; from pathlib import Path; root=Path('_site/assets/familiars/evolution_stages'); paths=[root/f'{n}-{s}.webp' for n in ('velora','cascade','solstice','aurelia') for s in ('new-bond','apprentice','guardian','ascendant','celestial')]; [(_ for _ in ()).throw(AssertionError(f'{p} missing')) for p in paths if not p.exists()]; [(_ for _ in ()).throw(AssertionError(f'{p} size {Image.open(p).size}')) for p in paths if Image.open(p).size!=(640,1000)]; print('Approved Guardian portraits verified at 640x1000')"
           test -s _site/study-material/materialParser.js
           test -s _site/study-material/materialStoreModel.js
           test -s _site/study-material/questionBuilder.js
