@@ -1,7 +1,7 @@
 # Majick Studies — CURRENT BUILD SOURCE OF TRUTH
 
-Last updated: 2026-09-19
-Current target release: V3.3.16 / hotfix V3317
+Last updated: 2026-09-20
+Current target release: V3.3.28 — Section 1 Master Tutor
 
 ## How to resume in a new ChatGPT chat
 Say: **"Continue Majick Studies from CURRENT_BUILD.md in rnw4512-dev/majick-studies-assets."**
@@ -87,6 +87,27 @@ Course manager:
 2. Enlarge approved stage portraits in UI cards.
 3. Do NOT use V3.3.15 generated action sheets for movement.
 4. Rebuild true individual stage/action art later from approved Guardian references — one Guardian/action asset at a time, not sprite-sheet slicing shortcuts.
+
+
+## V3.3.28 — D772 Section 1 Master Tutor
+- D772 has **exactly one course section**: **Section 1: Assessing Research and Data Credibility**.
+- There is **no Section 2** in the current D772 course structure.
+- Section 1 contains:
+  - Lesson 1 — Understanding Data Collection Methods
+  - Lesson 2 — Recognizing Bias in Data Collection
+  - Lesson 3 — Unveiling Data Misrepresentations
+  - Lesson 4 — Conclusions About Data Findings
+  - Section 1: Summary and Test
+- The final Summary/Test is a section review, **not Lesson 5**; its internal lesson number is null.
+- Authoritative Section 1 master teaching content is built directly into the Course Tutor for all four lessons plus the final review.
+- Supplemental uploaded notes remain course-isolated and de-duplicated; they cannot create additional D772 sections.
+- Built-in Tutor content includes the major course concepts, vocabulary, reasoning cues, memory aids, and Section 1 evidence-evaluation path from the learner-provided complete Section 1 notes.
+- Regression coverage now fails if:
+  - more than one D772 section appears,
+  - a Section 2 appears,
+  - the review is numbered Lesson 5,
+  - the built-in Section 1 master content is missing.
+- Guardian/Sanctuary movement remains protected and unchanged.
 
 ## DESIGN NORTH STAR — Adult Magical College Fantasy
 
