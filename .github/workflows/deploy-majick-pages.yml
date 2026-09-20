@@ -99,6 +99,7 @@ jobs:
           test -s pages-release/stability-reset/majick-state-core.js
           test -s pages-release/stability-reset/stability-reset-build.py
           test -s pages-release/stability-reset/stability-reset-verify.py
+          test -s pages-release/stability-reset/browser-smoke.mjs
           test -s pages-release/v3316/enlarge-approved-stage-art.py
           test -s sanctuary/assets/objects/objects-manifest.json
           test -s sanctuary/assets/objects/generate-object-library.py
@@ -375,6 +376,29 @@ jobs:
           python pages-release/stability-reset/stability-reset-verify.py _site
           echo "Verified protected motion + evolution action assets under Stability Reset"
           echo "Majick Studies V3.3.18 Stability Reset assembled successfully."
+
+      - name: Browser smoke test Stability Reset
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m http.server 4173 --directory _site >/tmp/majick-http.log 2>&1 &
+          SERVER_PID=$!
+          trap 'kill $SERVER_PID 2>/dev/null || true' EXIT
+          python - <<'PY'
+          import time,urllib.request
+          for _ in range(40):
+              try:
+                  urllib.request.urlopen('http://127.0.0.1:4173/',timeout=1).read(32)
+                  break
+              except Exception:
+                  time.sleep(.25)
+          else:
+              raise SystemExit('local Majick server did not start')
+          PY
+          npm install --no-save --no-package-lock playwright@1.55.0
+          npx playwright install --with-deps chromium
+          MAJICK_BASE_URL=http://127.0.0.1:4173/ node pages-release/stability-reset/browser-smoke.mjs
+
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
 
