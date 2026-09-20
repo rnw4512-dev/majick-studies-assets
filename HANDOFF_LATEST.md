@@ -427,3 +427,26 @@ Current estimate:
   - `Single V3.3.17 recovery surface verified`
 - Removed stacked legacy error surfaces. Runtime failures now route to the single V3.3.17 recovery dialog.
 - Phaser startup budget remains safe at **2,907,938 bytes (~2.77 MiB)**.
+
+## Run #83 — Single render owner repair
+- GitHub Pages run #83 completed **successfully** and deployed.
+- Fixed fatal startup error: `oldRender is not a function`.
+- Root cause:
+  - V3.3.11 main and V3.3.11 plus were still wrapping `window.render`;
+  - CourseManager also wrapped the Study Material renderer;
+  - V3.3.17 already owns final rendering, so the legacy render-hijack chain was brittle and could capture a non-function reference during startup.
+- Repair:
+  - removed the obsolete V3.3.11 main render hijack;
+  - removed the obsolete V3.3.11 plus render hijack;
+  - kept Living Grimoire/evolution functionality without re-wrapping global render;
+  - CourseManager now wraps Study Material only when the previous renderer is actually a function;
+  - V3.3.17 now guards its base renderer before installing the final render bridge.
+- Permanent verifier rule added: published builds fail if legacy `oldRender()` global-render hijacks return.
+- Run #83 verifier explicitly passed:
+  - `V3.3.17 migration smoke passed`
+  - `V3.3.17 RELEASE VERIFIER PASSED`
+  - `Single render owner verified: V3.3.17 only`
+  - `Guardian care + Moon Crystal economy contract verified`
+  - `Study progress state hardening verified`
+  - `Legacy save migration verified`
+- Phaser startup budget remains safe at 2,907,938 bytes (~2.77 MiB).
