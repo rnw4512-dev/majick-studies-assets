@@ -344,14 +344,18 @@ print('care stations verified:',len(care_objects))
 main_html=(site/'index.html').read_text(encoding='utf-8')
 if "function prog(){" not in main_html:
     fail('Safe prog() function is missing from assembled app')
-if "let p=S.progress[S.activeCourse];" not in main_html:
-    fail('prog() does not read the active course safely')
-if "p=S.progress[S.activeCourse]={" not in main_html:
-    fail('prog() does not synchronously create missing course progress')
+if "function v3317NormalizeProgressRow(row)" not in main_html:
+    fail('Progress row normalizer is missing before prog()')
+if "function v3317NormalizeAllProgressState()" not in main_html:
+    fail('All-course progress normalizer is missing before prog()')
+if "v3317NormalizeAllProgressState();" not in main_html:
+    fail('All-course progress normalizer is not executed')
+if "S.progress[S.activeCourse]=v3317NormalizeProgressRow(S.progress[S.activeCourse]);" not in main_html:
+    fail('prog() does not normalize the active course before returning it')
 if "p.xp=Number(p.xp||0);" not in main_html:
-    fail('prog() does not normalize XP before reads')
+    fail('progress rows do not normalize XP before reads')
 if "p.crystals=Number(p.crystals||0);" not in main_html:
-    fail('prog() does not normalize crystals before reads')
+    fail('progress rows do not normalize crystals before reads')
 if "function prog(){return S.progress[S.activeCourse]}" in main_html:
     fail('Unsafe legacy prog() returned to the assembled app')
 print('Study progress state hardening verified: XP/crystal reads cannot see undefined progress')
