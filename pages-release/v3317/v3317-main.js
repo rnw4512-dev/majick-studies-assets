@@ -167,9 +167,11 @@ async function retireOldMajickCaches(){
 
 function applyReleaseBadge(){
   const pill=document.querySelector('.top .pill');
-  if(pill)pill.textContent=RELEASE_LABEL;
-  document.title=RELEASE_TITLE;
-  document.documentElement.dataset.majickVersion='3.3.17-clean';
+  if(pill&&pill.textContent!==RELEASE_LABEL)pill.textContent=RELEASE_LABEL;
+  if(document.title!==RELEASE_TITLE)document.title=RELEASE_TITLE;
+  if(document.documentElement.dataset.majickVersion!=='3.3.17-clean'){
+    document.documentElement.dataset.majickVersion='3.3.17-clean';
+  }
 }
 
 function showRuntimeNotice(error){
