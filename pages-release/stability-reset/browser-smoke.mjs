@@ -116,7 +116,22 @@ try{
   await assert(isolatedLearning.d755==='D755_ONLY'&&isolatedLearning.d772==='D772_ONLY','Learning Lab state crossed courses');
 
   // A real correct study answer must reward the shared account and persist through reload.
+  // D772 is intentionally blank until the learner uploads material, so seed one
+  // browser-only regression question instead of treating an empty new course as broken.
   const studyReward=await page.evaluate(()=>{
+    const c=course();
+    c.questionBank=Array.isArray(c.questionBank)?c.questionBank:[];
+    if(!c.questionBank.length){
+      c.questionBank.push({
+        id:'__browser_reward_check',
+        topicId:'browser-regression',
+        type:'mcq',
+        prompt:'Which value is the median of 2, 4, 9?',
+        options:['2','4','5','9'],
+        answer:'4',
+        why:'The ordered middle value is 4.'
+      });
+    }
     const before={
       xp:Number(MajickStateCore.ensureAccount()?.xp||0),
       crystals:Number(MajickStateCore.ensureAccount()?.crystals||0),
