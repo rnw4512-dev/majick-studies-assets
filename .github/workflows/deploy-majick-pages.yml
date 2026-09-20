@@ -13,8 +13,10 @@ on:
       - 'pages-release/v3314/**'
       - 'pages-release/v3315/**'
       - 'pages-release/v3316/**'
+      - 'pages-release/v3317/**'
       - 'sanctuary/assets/objects/**'
       - 'sanctuary/assets/evolutions/**'
+      - 'sanctuary/assets/majick-v3317-evolution-repair.zip'
       - 'sanctuary/assets/majick-v3315-art-sync.zip'
       - '.github/workflows/deploy-majick-pages.yml'
   workflow_dispatch:
@@ -80,6 +82,7 @@ jobs:
           test -s pages-release/v3316/v3316-main.js
           test -s pages-release/v3316/v3316-main.css
           test -s pages-release/v3316/v3316-apply.py
+          test -s pages-release/v3317/v3317-sanctuary.js
           test -s pages-release/v3316/enlarge-approved-stage-art.py
           test -s sanctuary/assets/objects/objects-manifest.json
           test -s sanctuary/assets/objects/generate-object-library.py
@@ -151,6 +154,15 @@ jobs:
             cp -a /tmp/majick-v3315-art-sync/sanctuary/assets/objects/. sanctuary/assets/objects/
           fi
 
+          # V3.3.17 corrected individual Guardian evolution assets.
+          if [ -s sanctuary/assets/majick-v3317-evolution-repair.zip ]; then
+            rm -rf /tmp/majick-v3317-evolution-repair
+            mkdir -p /tmp/majick-v3317-evolution-repair
+            unzip -oq sanctuary/assets/majick-v3317-evolution-repair.zip -d /tmp/majick-v3317-evolution-repair
+            test -d /tmp/majick-v3317-evolution-repair/sanctuary/assets/evolutions
+            cp -a /tmp/majick-v3317-evolution-repair/sanctuary/assets/evolutions/. sanctuary/assets/evolutions/
+          fi
+
           # V3.3.15 adds Notes Forge and one shared Guardian stage resolver.
           cp pages-release/v3315/v3315-main.js _site/v3315-main.js
           cp pages-release/v3315/v3315-main.css _site/v3315-main.css
@@ -170,6 +182,8 @@ jobs:
           cp pages-release/v3316/v3316-main.css _site/v3316-main.css
           python pages-release/v3316/v3316-apply.py _site
           python pages-release/v3316/enlarge-approved-stage-art.py _site/assets/familiars/evolution_stages
+          cp pages-release/v3317/v3317-sanctuary.js _site/sanctuary/v3317-sanctuary.js
+          python -c "from pathlib import Path; p=Path('_site/sanctuary/index.html'); s=p.read_text(); tag='<script src=\"./v3317-sanctuary.js?v=3317\"></script>'; s=s if tag in s else s.replace('</body>',tag+'\\n</body>',1); p.write_text(s)"
 
           # HARD RULE: copy the original Phase 4 images byte-for-byte; never regenerate them.
           mkdir -p _site/sanctuary/assets/motion
@@ -282,6 +296,9 @@ jobs:
           grep -q "v3316ApprovedPortrait" _site/v3316-main.js
           node --check _site/courseManager.js
           node --check _site/v3316-main.js
+          test -s _site/sanctuary/v3317-sanctuary.js
+          grep -q "v3317-sanctuary.js" _site/sanctuary/index.html
+          node --check _site/sanctuary/v3317-sanctuary.js
           echo "Majick Studies V3.3.16 assembled successfully."
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
