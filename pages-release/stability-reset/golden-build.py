@@ -183,11 +183,11 @@ html=html.replace('./guardian-care-economy.css?v=stability-1','./guardian-care-e
 html=html.replace('./majick-state-core.js?v=stability-1','./majick-state-core.js?v=3322-recovery')
 html=html.replace('./guardian-care-economy.js?v=stability-1','./guardian-care-economy.js?v=3322-recovery')
 html=html.replace('./v3317-main.js?v=stability-1','./v3317-main.js?v=3322-recovery')
-html=html.replace('</head>','<link rel="stylesheet" href="./learning-lab.css?v=3319">\\n<link rel="stylesheet" href="./learning-plan.css?v=3324">\\n</head>',1)
+html=html.replace('</head>','<link rel="stylesheet" href="./learning-lab.css?v=3319">\\n<link rel="stylesheet" href="./learning-plan.css?v=3324">\\n<link rel="stylesheet" href="./course-tutor.css?v=3326">\\n</head>',1)
 main_tag='<script src="./v3317-main.js?v=3322-recovery"></script>'
 if main_tag not in html:
     fail("authoritative main runtime tag missing while installing recovery")
-html=html.replace(main_tag,'<script src="./learning-lab.js?v=3319"></script>\\n<script src="./learning-plan.js?v=3324"></script>\\n'+main_tag+'\\n<script src="./v3322-main-recovery.js?v=3322"></script>',1)
+html=html.replace(main_tag,'<script src="./learning-lab.js?v=3319"></script>\\n<script src="./learning-plan.js?v=3324"></script>\\n<script src="./course-tutor.js?v=3326"></script>\\n'+main_tag+'\\n<script src="./v3322-main-recovery.js?v=3322"></script>',1)
 index.write_text(html,encoding="utf-8")
 
 san_index=site/"sanctuary"/"index.html"
