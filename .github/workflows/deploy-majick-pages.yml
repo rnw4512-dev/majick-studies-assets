@@ -7,6 +7,7 @@ on:
       - 'pages-release/majick-pages-site.zip'
       - 'pages-release/v339-patch.b64.part*'
       - 'pages-release/v3310/**'
+      - 'pages-release/v3311-patch.zip'
       - '.github/workflows/deploy-majick-pages.yml'
   workflow_dispatch:
 
@@ -39,13 +40,14 @@ jobs:
           test -s pages-release/v3310/v3310-main.css
           test -s pages-release/v3310/v3310-sanctuary.js
           test -s pages-release/v3310/v3310-apply.py
+          test -s pages-release/v3311-patch.zip
 
-      - name: Assemble Majick Studies V3.3.10
+      - name: Assemble Majick Studies V3.3.11
         shell: bash
         run: |
           set -euo pipefail
-          rm -rf _site _patch339 /tmp/v339-patch.zip /tmp/v339-patch.b64
-          mkdir -p _site _patch339
+          rm -rf _site _patch339 _patch3311 /tmp/v339-patch.zip /tmp/v339-patch.b64
+          mkdir -p _site _patch339 _patch3311
 
           # Stable V3.3.8 base.
           unzip -oq pages-release/majick-pages-site.zip -d _site
@@ -62,6 +64,15 @@ jobs:
           cp pages-release/v3310/v3310-main.css _site/v3310-main.css
           cp pages-release/v3310/v3310-sanctuary.js _site/sanctuary/v3310-sanctuary.js
           python pages-release/v3310/v3310-apply.py _site
+
+          # V3.3.11 adds the Living Grimoire, Evolution Photo System and campus links around the protected Phaser movers.
+          python -m pip install --quiet pillow
+          unzip -t pages-release/v3311-patch.zip
+          unzip -oq pages-release/v3311-patch.zip -d _patch3311
+          cp _patch3311/v3311-main.js _site/v3311-main.js
+          cp _patch3311/v3311-main.css _site/v3311-main.css
+          cp _patch3311/v3311-sanctuary.js _site/sanctuary/v3311-sanctuary.js
+          python _patch3311/v3311-apply.py _site
 
           # Preserve the hand-built Phase 4 images exactly as uploaded.
           mkdir -p _site/sanctuary/assets/motion
@@ -115,10 +126,16 @@ jobs:
           test -s _site/sanctuary/assets/motion/ember-slither-1.png
           test -s _site/sanctuary/assets/motion/nova-run.png
           test -s _site/sanctuary/assets/motion/mallow-fly-1.png
-          grep -q "V3.3.10" _site/app-progress.json
-          grep -q "v3310-sanctuary.js" _site/sanctuary/index.html
-          grep -q "V3.3.10" _site/v3310-main.js
-          echo "Majick Studies V3.3.10 assembled successfully."
+          test -s _site/v3311-main.js
+          test -s _site/v3311-main.css
+          test -s _site/sanctuary/v3311-sanctuary.js
+          test "$(find _site/assets/familiars/evolution_stages -type f -name '*.webp' | wc -l)" -eq 50
+          test -s _site/assets/familiars/evolution_stages/velora-ascendant.webp
+          test -s _site/assets/familiars/evolution_stages/solara-celestial.webp
+          grep -q "V3.3.11" _site/app-progress.json
+          grep -q "v3311-sanctuary.js" _site/sanctuary/index.html
+          grep -q "Living Grimoire" _site/v3311-main.js
+          echo "Majick Studies V3.3.11 assembled successfully with 50 evolution stage images."
 
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
