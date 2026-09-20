@@ -389,3 +389,15 @@ if "owned:[...a.guardianOwned]" in care:
     fail('Unsafe direct Guardian ownership spread returned')
 
 print('Legacy save migration verified: malformed progress + Guardian ownership are normalized safely')
+
+
+# 13) Only V3.3.17 may own runtime recovery UI.
+if "The app caught an error instead of going blank." in main_html:
+    fail('Legacy base render error panel is still present')
+if "Safe Study Mode</h2>" in main_html:
+    fail('Legacy V5 safe-render panel is still present')
+if "catch(e){console.error(e);throw e}" not in main_html:
+    fail('Base render does not rethrow to the V3.3.17 recovery boundary')
+if "console.error('V5 safe render',e);throw e" not in main_html:
+    fail('V5 render does not rethrow to the V3.3.17 recovery boundary')
+print('Single V3.3.17 recovery surface verified')
