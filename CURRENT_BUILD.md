@@ -87,3 +87,76 @@ Course manager:
 2. Enlarge approved stage portraits in UI cards.
 3. Do NOT use V3.3.15 generated action sheets for movement.
 4. Rebuild true individual stage/action art later from approved Guardian references — one Guardian/action asset at a time, not sprite-sheet slicing shortcuts.
+
+## DESIGN NORTH STAR — Adult Magical College Fantasy
+
+Majick Studies should feel like the user is attending a **dark, high-fantasy adult magical college** while completing real WGU coursework.
+
+The experience target is:
+- **Adult Hogwarts / magical university**, not a children's school.
+- **Dark academia + high fantasy + adult magical-girl energy**.
+- Elegant, moody, romantic, celestial, slightly sexy, polished, and immersive without becoming explicit.
+- The Sanctuary should feel like a **magical dorm / familiar residence**: beds, study furniture, moonlight, books, crystals, celestial objects, and lived-in personal space.
+- The four Guardians are **pets/familiars the user cares for**, not just profile icons.
+- Guardians should be fed, rested, played with, brushed/cared for, given treats, and given furniture/toys/items.
+- XP, crystals, streaks, course progress, and achievements should feed a visible **game economy** that lets the user unlock/buy/craft Sanctuary objects and Guardian-care items.
+- The study experience should feel like **playing a fantasy game that happens to teach the course**:
+  - trivia / challenge games
+  - adaptive questions
+  - matching / recall / boss-style study
+  - vocabulary and misconception repair
+  - Notes Forge from the user's real course materials
+  - visible progression, rewards, Guardian growth, and world unlocks
+- Real academic data must remain course-specific, while account-level XP/Guardian growth and long-term magical-world progression persist across classes.
+- The visual tone should stay whimsical and cute where the Guardians are concerned, while the world itself feels mature, mysterious, magical, and academically prestigious.
+- Avoid generic SaaS/dashboard feeling whenever a more immersive in-world interaction can serve the same function.
+- Avoid childish classroom styling.
+- Avoid flat placeholder art or furniture that does not feel like it belongs in the same world.
+- Every new feature should answer: **Does this make Majick Studies feel more like living and studying inside this magical college, or is it just another app screen?**
+
+### Experience completion score
+Track this separately from technical release readiness.
+
+Current estimate:
+- Dark magical-college visual identity: **88%**
+- Sanctuary / dorm-room atmosphere: **82%**
+- Guardian pet-care fantasy: **58%**
+- Study-game / trivia fantasy integration: **82%**
+- XP / crystals / rewards economy: **68%**
+- Course-world continuity and progression: **84%**
+- Adult magical-girl / high-fantasy polish across all screens: **74%**
+- Overall fantasy-world experience realization: **77%**
+
+### Biggest experience gaps
+1. **Guardian care loop** is not complete enough yet.
+   - feeding
+   - water
+   - treats
+   - brushing/grooming
+   - play/toys
+   - sleep/rest
+   - affection/bond reactions
+   - visible needs/status
+2. **Crystal economy** needs a stronger spend loop.
+   - buy/unlock Sanctuary objects
+   - buy Guardian food/treats/toys
+   - cosmetic/decor rewards
+   - meaningful reasons to earn crystals through study
+3. **Sanctuary needs to feel more lived-in and customizable.**
+   - reliable furniture dragging/saving
+   - object inventory / placement
+   - more final-quality decor
+   - Guardian-object interactions
+   - room upgrades / unlockable zones
+4. **Study screens need more in-world framing.**
+   - make quizzes feel like trials, classes, duels, rituals, constellations, archives, or exams inside the magical college
+   - reduce generic dashboard moments
+5. **Magical college progression needs stronger ceremony.**
+   - entering a new WGU course should feel like enrolling in a new magical class
+   - passing a course should feel like completing a term/course rite
+   - unlocks, badges, dorm upgrades, and Guardian evolution should reinforce progression
+6. **Adult magical-girl polish** is not yet consistently expressed on every screen.
+   - more celestial fashion/editorial elegance
+   - richer dark-academia textures and ornament
+   - refined typography, lighting, and transitions
+   - keep Guardians cute/fluffy against the mature environment
