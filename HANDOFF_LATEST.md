@@ -241,8 +241,9 @@ Majick Studies is ready to call finished when all of these are true:
 ## Final clean Guardian bundle prepared
 - A new binary bundle was rebuilt from the original four Guardian action sheets using adaptive stage/action extraction and stray-fragment cleanup.
 - File prepared for user upload: `majick-v3317-evolution-final-clean.zip`.
-- Size: about 7.22 MB.
+- Size: about 7.21 MB.
 - Contents: 60 individual 1024×1024 WebPs at `sanctuary/assets/evolutions/<guardian>/<stage>/<walk|play|sleep>.webp`.
 - This bundle replaces the visually flawed `majick-v3317-evolution-repair-small.zip` once uploaded.
 - Deployment workflow now automatically prefers `sanctuary/assets/majick-v3317-evolution-final-clean.zip` when present and falls back to the older repair ZIP only if the final-clean bundle is absent.
+- Solstice Celestial play received a final manual bottom-fragment trim before the ZIP was repacked.
 - No files in `sanctuary/assets/motion/` are changed.
