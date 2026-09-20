@@ -98,6 +98,21 @@ async function remove(id){
   }
 }
 
+async function migrateCourseId(fromCourseId,toCourseId){
+  fromCourseId=String(fromCourseId||'').trim();
+  toCourseId=String(toCourseId||'').trim();
+  if(!fromCourseId||!toCourseId||fromCourseId===toCourseId)return {migrated:0};
+  const rows=await list(fromCourseId);
+  let migrated=0;
+  for(const row of rows){
+    if(row.courseId!==fromCourseId)continue;
+    row.courseId=toCourseId;
+    await save(row);
+    migrated++;
+  }
+  return {migrated};
+}
+
 async function setActive(id,active){
   const row=await get(id);
   if(!row)return null;
@@ -180,6 +195,7 @@ window.MajickMaterialStore={
   newRecord,
   syncQuestions,
   injectQuestions,
+  migrateCourseId,
   isNotesForgeQuestion
 };
 })();
