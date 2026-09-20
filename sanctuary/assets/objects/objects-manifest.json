@@ -29,7 +29,7 @@
       "hoverAnimation": true,
       "preload": true,
       "enabled": true,
-      "artStatus": "final-generated",
+      "artStatus": "final-generated-awaiting-binary-sync",
       "replaceableWithoutCode": true,
       "placement": {
         "x": 245,
@@ -59,14 +59,14 @@
       "category": "core",
       "scale": 1,
       "interaction": "open-route",
-      "destination": "mission",
+      "destination": "addmaterial",
       "unlockRequirement": null,
       "blocksWalking": true,
       "glow": true,
       "hoverAnimation": true,
       "preload": true,
       "enabled": true,
-      "artStatus": "final-generated",
+      "artStatus": "final-generated-awaiting-binary-sync",
       "replaceableWithoutCode": true,
       "placement": {
         "x": 1015,
@@ -90,7 +90,7 @@
       "studyIntegration": {
         "primaryFeature": "add-study-material",
         "routeWhenAvailable": "addmaterial",
-        "currentSafeFallback": "mission",
+        "currentSafeFallback": null,
         "acceptedSources": [
           "pdf",
           "docx",
@@ -121,7 +121,7 @@
       "hoverAnimation": true,
       "preload": true,
       "enabled": true,
-      "artStatus": "final-generated",
+      "artStatus": "final-generated-awaiting-binary-sync",
       "replaceableWithoutCode": true,
       "placement": {
         "x": 1285,
@@ -194,7 +194,7 @@
       "hoverAnimation": true,
       "preload": true,
       "enabled": true,
-      "artStatus": "final-generated",
+      "artStatus": "final-generated-awaiting-binary-sync",
       "replaceableWithoutCode": true,
       "placement": {
         "x": 730,
@@ -341,7 +341,7 @@
       "hoverAnimation": true,
       "preload": true,
       "enabled": true,
-      "artStatus": "final-generated",
+      "artStatus": "final-generated-awaiting-binary-sync",
       "replaceableWithoutCode": true,
       "placement": {
         "x": 1630,
