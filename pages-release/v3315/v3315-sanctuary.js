@@ -41,6 +41,23 @@ Game.prototype.v3315ResolveStage=function(level){return resolveStage(this,level)
 Game.prototype.v3315GuardianState=function(type){return state(this,type)};
 Game.prototype.v3315EvolutionAsset=function(type,action){return asset(this,type,action||'walk')};
 
+// V3.3.15 NOTES FORGE DESK: keep the fallback/procedural desk useful too.
+Game.prototype.openStudyDesk=function(){
+  this.createSparkles?.(1080,610,12);
+  this.showInteractionPanel?.(
+    'Moonlit Study Desk',
+    'Notes Forge + Study Workspace',
+    'Add your own WGU notes or documents, turn them into practice, or continue studying.',
+    [
+      {label:'ADD STUDY MATERIAL',primary:true,run:()=>this.sendToStudyApp('MAJICK_OPEN_ROUTE_V3311',{route:'addmaterial'})},
+      {label:'CONTINUE STUDYING',run:()=>this.sendToStudyApp('MAJICK_OPEN_ROUTE_V3311',{route:'mission'})},
+      {label:'OPEN MY JOURNAL',run:()=>this.sendToStudyApp('MAJICK_OPEN_ROUTE_V3311',{route:'journal'})},
+      {label:'OPEN LIVING GRIMOIRE',run:()=>this.sendToStudyApp('MAJICK_OPEN_ROUTE_V3311',{route:'livinggrimoire'})},
+      {label:'STUDY WITH FAMILIAR',run:()=>this.openFamiliarObjectPicker?.('desk')}
+    ]
+  );
+};
+
 Game.prototype.v3315EnsureEvolutionTexture=function(type,action,done){
   const k=key(this,type,action),src=asset(this,type,action);
   if(!k||!src){done?.(null);return;}
