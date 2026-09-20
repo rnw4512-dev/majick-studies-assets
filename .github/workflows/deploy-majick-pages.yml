@@ -420,3 +420,20 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
+      - name: Verify live Pages deployment in Chromium
+        shell: bash
+        run: |
+          set -euo pipefail
+          LIVE_URL="${{ steps.deployment.outputs.page_url }}"
+          echo "Verifying deployed Majick Studies at $LIVE_URL"
+          for attempt in 1 2 3 4 5 6; do
+            if MAJICK_BASE_URL="${LIVE_URL}?smoke=${GITHUB_SHA}-${attempt}" node pages-release/stability-reset/browser-smoke.mjs; then
+              echo "LIVE MAJICK BROWSER SMOKE PASSED"
+              exit 0
+            fi
+            echo "Live Pages build not ready on attempt $attempt; retrying after propagation delay."
+            sleep 5
+          done
+          echo "Live Pages deployment never passed the V3.3.18 browser gate."
+          exit 1
