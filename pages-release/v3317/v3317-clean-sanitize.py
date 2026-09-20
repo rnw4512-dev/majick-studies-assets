@@ -61,30 +61,42 @@ safe_prog="""function course(){
   }
   return S.courses[S.activeCourse]||BUILTIN;
 }
-function prog(){
-  S.progress=S.progress||{};
-  course();
-  let p=S.progress[S.activeCourse];
-  if(!p){
-    p=S.progress[S.activeCourse]={
-      answers:[],explanations:[],repair:[],spacedQueue:[],
-      streak:0,lastDay:'',bossWins:0,xp:0,crystals:0,charms:[],chests:0,
-      inventory:{streakShield:0,clueCharm:0,bossShield:0,oracleTicket:0},
-      cosmetics:[],eliminationWins:0,voicePractices:0
-    };
-  }
+function v3317NormalizeProgressRow(row){
+  const p=(row&&typeof row==='object'&&!Array.isArray(row))?row:{
+    answers:[],explanations:[],repair:[],spacedQueue:[],
+    streak:0,lastDay:'',bossWins:0,xp:0,crystals:0,charms:[],chests:0,
+    inventory:{streakShield:0,clueCharm:0,bossShield:0,oracleTicket:0},
+    cosmetics:[],eliminationWins:0,voicePractices:0
+  };
   p.answers=Array.isArray(p.answers)?p.answers:[];
   p.explanations=Array.isArray(p.explanations)?p.explanations:[];
   p.repair=Array.isArray(p.repair)?p.repair:[];
   p.spacedQueue=Array.isArray(p.spacedQueue)?p.spacedQueue:[];
   p.charms=Array.isArray(p.charms)?p.charms:[];
-  p.inventory=p.inventory||{streakShield:0,clueCharm:0,bossShield:0,oracleTicket:0};
+  p.inventory=(p.inventory&&typeof p.inventory==='object'&&!Array.isArray(p.inventory))
+    ?p.inventory:{streakShield:0,clueCharm:0,bossShield:0,oracleTicket:0};
   p.xp=Number(p.xp||0);
   p.crystals=Number(p.crystals||0);
   p.chests=Number(p.chests||0);
   p.streak=Number(p.streak||0);
   return p;
-}"""
+}
+function v3317NormalizeAllProgressState(){
+  S.progress=(S.progress&&typeof S.progress==='object'&&!Array.isArray(S.progress))?S.progress:{};
+  for(const [cid,row] of Object.entries(S.progress)){
+    S.progress[cid]=v3317NormalizeProgressRow(row);
+  }
+  for(const cid of Object.keys(S.courses||{})){
+    S.progress[cid]=v3317NormalizeProgressRow(S.progress[cid]);
+  }
+}
+function prog(){
+  v3317NormalizeAllProgressState();
+  course();
+  S.progress[S.activeCourse]=v3317NormalizeProgressRow(S.progress[S.activeCourse]);
+  return S.progress[S.activeCourse];
+}
+v3317NormalizeAllProgressState();"""
 if unsafe_prog not in h:
     raise RuntimeError('Unsafe legacy prog() signature not found; refusing to publish without state hardening')
 h=h.replace(unsafe_prog,safe_prog,1)
