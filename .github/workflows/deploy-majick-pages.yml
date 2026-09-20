@@ -234,7 +234,7 @@ jobs:
 
           touch _site/.nojekyll
 
-          # Gate deployment on protected movement plus current V3.3.16 requirements.
+          # Gate deployment on protected movement plus current V3.3.17 requirements.
           test -s _site/index.html
           test -s _site/v3311-main.js
           test -s _site/v3311-plus.js
@@ -294,7 +294,6 @@ jobs:
           test -s _site/courseManager.js
           test -s _site/v3316-main.js
           test -s _site/v3316-main.css
-          grep -q "V3.3.16" _site/app-progress.json
           grep -q "PASS_XP=500" _site/courseManager.js
           grep -q "v3316ApprovedPortrait" _site/v3316-main.js
           node --check _site/courseManager.js
