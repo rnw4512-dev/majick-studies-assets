@@ -54,7 +54,7 @@ Game.prototype.v3317EnsureSkin=function(type){
   this.v3317LoadAction(type,'walk',k=>{
     if(!k||!pet?.active)return;
     const img=this.add.image(pet.x,pet.y,k).setOrigin(.5,1).setDepth((pet.depth||70)+2);
-    const targetH=Math.max(150,Math.min(250,(pet.displayHeight||150)*1.45));
+    const targetH=Math.max(230,Math.min(360,(pet.displayHeight||150)*1.85));
     const sc=targetH/Math.max(1,img.height);
     img.setScale(sc);
     this['v3317Skin_'+type]=img;
@@ -86,7 +86,7 @@ Game.prototype.v3317ShowAction=function(type,action,duration){
     const old=this['v3317Action_'+type];
     try{old?.destroy()}catch(_){}
     const img=this.add.image(pet.x,pet.y,k).setOrigin(.5,1).setDepth((pet.depth||70)+3);
-    const targetH=Math.max(150,Math.min(250,(pet.displayHeight||150)*1.45));
+    const targetH=Math.max(230,Math.min(360,(pet.displayHeight||150)*1.85));
     img.setScale(targetH/Math.max(1,img.height));
     this['v3317Action_'+type]=img;
     pet.setAlpha(0.01).setVisible(true);
@@ -103,7 +103,7 @@ Game.prototype.v3317ShowAction=function(type,action,duration){
 const baseStart=Game.prototype.startFamiliarObjectInteraction;
 if(typeof baseStart==='function'){
   Game.prototype.startFamiliarObjectInteraction=function(type,obj){
-    const id=String(obj?.getData?.('objectId')||obj?.getData?.('id')||'');
+    const id=typeof obj==='string'?obj:String(obj?.getData?.('objectId')||obj?.getData?.('id')||'');
     const a=/bed|nest|cushion|rest/i.test(id)?'sleep':'play';
     this.v3317ShowAction(type,a,a==='sleep'?3200:2000);
     return baseStart.apply(this,arguments);
@@ -112,6 +112,7 @@ if(typeof baseStart==='function'){
 
 const prevCreate=Game.prototype.create;
 Game.prototype.create=function(){
+  this.__v3317Active=true;
   prevCreate.call(this);
   this.time.addEvent({delay:90,loop:true,callback:()=>this.v3317UpdateSkins()});
   this.time.delayedCall(240,()=>this.v3317UpdateSkins());
