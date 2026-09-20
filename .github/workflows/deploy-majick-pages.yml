@@ -88,6 +88,7 @@ jobs:
           test -s pages-release/v3317/v3317-main.js
           test -s pages-release/v3317/v3317-apply.py
           test -s pages-release/v3317/refresh-v3317.html
+          test -s pages-release/v3317/v3317-clean-sanitize.py
           test -s pages-release/v3316/enlarge-approved-stage-art.py
           test -s sanctuary/assets/objects/objects-manifest.json
           test -s sanctuary/assets/objects/generate-object-library.py
@@ -198,6 +199,10 @@ jobs:
           cp pages-release/v3317/refresh-v3317.html _site/refresh-v3317.html
           python -c "from pathlib import Path; p=Path('_site/sanctuary/index.html'); s=p.read_text(); tag='<script src=\"./v3317-sanctuary.js?v=3317\"></script>'; s=s if tag in s else s.replace('</body>',tag+'\\n</body>',1); p.write_text(s)"
 
+          # CLEAN RUNTIME: preserve the working V3.3.17 feature set but remove
+          # duplicate Sanctuary/main wrappers from the published app.
+          python pages-release/v3317/v3317-clean-sanitize.py _site
+
           # HARD RULE: copy the original Phase 4 images byte-for-byte; never regenerate them.
           mkdir -p _site/sanctuary/assets/motion
           cp luna-idle.png _site/sanctuary/assets/motion/luna-idle.png
@@ -250,7 +255,6 @@ jobs:
           test -s _site/v3311-plus.js
           test -s _site/v3311-main.css
           test -s _site/v3311-plus.css
-          test -s _site/sanctuary/v3311-sanctuary.js
           test -s _site/sanctuary/assets/motion/luna-walk-1.png
           test -s _site/sanctuary/assets/motion/ember-slither-1.png
           test -s _site/sanctuary/assets/motion/nova-run.png
@@ -261,22 +265,12 @@ jobs:
           test -s _site/assets/familiars/evolution_stages/solara-celestial.webp
           test -s _site/v3312-main.js
           test -s _site/v3312-main.css
-          test -s _site/sanctuary/v3312-sanctuary.js
-          test -s _site/v3313-main.js
           test -s _site/v3313-main.css
-          test -s _site/sanctuary/v3313-sanctuary.js
-          grep -q "v3313-sanctuary.js" _site/sanctuary/index.html
           grep -q "obj-arcane-stacks" _site/sanctuary/Preloader.js
           grep -q "The Living Sanctuary" _site/v3313-main.js
-          test -s _site/v3314-main.js
           test -s _site/v3314-main.css
-          test -s _site/sanctuary/v3314-sanctuary.js
           test -s _site/sanctuary/assets/objects/objects-manifest.json
-          grep -q "MAJICK_GUARDIAN_LEVELS_V3314" _site/v3314-main.js
-          grep -q "v3314ApplyEvolutionFX" _site/sanctuary/v3314-sanctuary.js
-          test -s _site/v3315-main.js
           test -s _site/v3315-main.css
-          test -s _site/sanctuary/v3315-sanctuary.js
           test -s _site/sanctuary/assets/evolutions/evolution-manifest.json
           if [ -s sanctuary/assets/majick-v3315-art-sync.zip ]; then
             test -s _site/sanctuary/assets/objects/magic-mirror.webp
@@ -290,11 +284,8 @@ jobs:
           test -s _site/study-material/materialStoreModel.js
           test -s _site/study-material/questionBuilder.js
           test -s _site/study-material/AddStudyMaterialPage.js
-          grep -q "addmaterial" _site/v3315-main.js
           grep -q "majick-evolution-manifest" _site/sanctuary/Preloader.js
           grep -q "Add Study Material" _site/study-material/AddStudyMaterialPage.js
-          node --check _site/v3315-main.js
-          node --check _site/sanctuary/v3315-sanctuary.js
           node --check _site/study-material/materialParser.js
           node --check _site/study-material/materialStoreModel.js
           node --check _site/study-material/questionBuilder.js
@@ -302,17 +293,29 @@ jobs:
           test "$(find _site/sanctuary/assets/objects -type f -name '*.webp' | wc -l)" -ge 80
           test "$(find _site/sanctuary/assets/motion -type f -name '*.png' | wc -l)" -eq 33
           test -s _site/courseManager.js
-          test -s _site/v3316-main.js
           test -s _site/v3316-main.css
           grep -q "PASS_XP=500" _site/courseManager.js
-          grep -q "v3316ApprovedPortrait" _site/v3316-main.js
           node --check _site/courseManager.js
-          node --check _site/v3316-main.js
           test -s _site/sanctuary/v3317-sanctuary.js
           test -s _site/v3317-main.js
           test -s _site/refresh-v3317.html
-          grep -q "v3317-sanctuary.js" _site/sanctuary/index.html
-          grep -q "v3317-main.js?v=3317" _site/index.html
+          grep -q "v3310-sanctuary.js" _site/sanctuary/index.html
+          grep -q "v3317-sanctuary.js?v=3317-clean" _site/sanctuary/index.html
+          grep -q "v3317-main.js?v=3317-clean" _site/index.html
+          for old in v3311-sanctuary.js v3312-sanctuary.js v3313-sanctuary.js v3314-sanctuary.js v3315-sanctuary.js; do
+            if grep -q "$old" _site/sanctuary/index.html; then
+              echo "Old Sanctuary wrapper still loaded: $old"; exit 1
+            fi
+            if [ -e "_site/sanctuary/$old" ]; then
+              echo "Old Sanctuary wrapper still published: $old"; exit 1
+            fi
+          done
+          for old in v3313-main.js v3314-main.js v3315-main.js v3316-main.js; do
+            if grep -q "$old" _site/index.html; then
+              echo "Old main Sanctuary bridge still loaded: $old"; exit 1
+            fi
+          done
+          grep -q "Base Game.js + V3.3.10 movement restore + one clean V3.3.17 runtime" _site/app-progress.json
           grep -q "V3.3.17" _site/app-progress.json
           grep -q "majick-studies-retired-v3317" _site/service-worker.js
           if grep -q 'navigator.serviceWorker.register("./service-worker.js")' _site/index.html; then
