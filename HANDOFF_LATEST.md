@@ -175,7 +175,7 @@ The user may upload approved art bundles only when explicitly instructed.
 ## How close are we to done?
 These numbers are release-readiness estimates, not marketing numbers.
 
-- **Core study app:** 92%
+- **Core study app:** 93%
   - Main navigation, Study Now, course selection, Guardian/account progression, and most study flows exist.
   - Remaining work is mostly regression testing and making sure newer release layers do not overwrite older working screens.
 
@@ -187,7 +187,7 @@ These numbers are release-readiness estimates, not marketing numbers.
   - New-course creation, fresh per-course streaks, persistent account XP, and course completion logic are implemented.
   - Still needs live end-to-end testing after the shell/runtime issue is stable.
 
-- **Living Sanctuary / Phaser 4:** 80%
+- **Living Sanctuary / Phaser 4:** 84%
   - Original Phase 4 movement system is preserved.
   - Object manifest, evolution manifest, furniture routing, stage resolver, and corrected 60 evolution action assets exist.
   - Biggest remaining work: make the live Sanctuary consistently load, confirm evolved visuals follow movement correctly, confirm play/sleep interactions, and eliminate shell/cache conflicts.
@@ -196,7 +196,7 @@ These numbers are release-readiness estimates, not marketing numbers.
   - Canon names, level bands, approved stage art, and larger profile presentation are implemented.
   - Still needs visual QA after cache/runtime repair.
 
-- **Overall Majick Studies release readiness:** **88%**
+- **Overall Majick Studies release readiness:** **89%**
   - We are past the foundation/build stage.
   - The remaining work is mainly **stability, visual QA, and integration testing**, not rebuilding the app from scratch.
   - The project should not be called finished until the live site opens cleanly, reports the current version, Sanctuary works without a snag modal, evolved Guardians display correctly, and Notes Forge passes live document tests.
@@ -271,3 +271,30 @@ Majick Studies is ready to call finished when all of these are true:
   - app-progress reports `V3.3.17 Guardian Repair + Course Realms + Stability Hotfix`
 - The final-clean Guardian bundle is now the deployed source of truth for stage-specific evolution action art.
 - Protected original 33 Phase 4 movement PNGs remain untouched and remain the movement controller.
+
+## Run #74 Phaser freeze-prevention release
+- GitHub Pages run #74 completed **successfully** and deployed.
+- This release added permanent anti-freeze and anti-regression gates before Pages publication.
+- The release verifier passed with these exact results:
+  - 33 protected Phase 4 motion PNGs are byte-for-byte identical to the repository originals.
+  - Phaser runtime motion bundle: **2,205,848 bytes** (~2.10 MiB).
+  - Phaser runtime furniture bundle: **399,500 bytes** (~0.38 MiB).
+  - Total startup image budget: **2,858,424 bytes** (~2.73 MiB).
+  - Previous full-size motion preload was ~53 MiB compressed and ~198 MiB decoded; Phaser no longer loads those originals at startup.
+  - Runtime motion uses 33 derived 512x512 WebPs under the same Phaser texture keys.
+  - Final-clean Guardian evolution action WebPs remain in `assets/evolutions/` and load on demand; they are no longer rebuilt during CI.
+  - Only 9 placed/preloaded Sanctuary objects are generated for startup. The full ~95-object manifest remains the source of truth, and uploaded final art still passes through unchanged.
+- Exact published Sanctuary script chain verified:
+  1. `phaser.min.js`
+  2. `Boot.js`
+  3. `MainMenu.js`
+  4. `Preloader.js`
+  5. `Game.js`
+  6. `v3310-sanctuary.js?v=3310`
+  7. `v3317-sanctuary.js?v=3317-clean`
+  8. `bridge.js`
+- V3.3.11–V3.3.15 Sanctuary wrappers remain prohibited from the published runtime.
+- The V3.3.17 release badge now writes only when its value actually changes, preventing a MutationObserver feedback loop.
+- The old V3.3.10 live-scene startup restart was removed from the published copy; all movement methods remain.
+- GitHub Pages deploy occurs only after the full release verifier passes. A failed future verification cannot replace the last successfully deployed live site.
+- This freeze-prevention rule is now permanent for future Sanctuary work.
