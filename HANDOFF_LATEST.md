@@ -187,16 +187,16 @@ These numbers are release-readiness estimates, not marketing numbers.
   - New-course creation, fresh per-course streaks, persistent account XP, and course completion logic are implemented.
   - Still needs live end-to-end testing after the shell/runtime issue is stable.
 
-- **Living Sanctuary / Phaser 4:** 74%
+- **Living Sanctuary / Phaser 4:** 76%
   - Original Phase 4 movement system is preserved.
   - Object manifest, evolution manifest, furniture routing, stage resolver, and corrected 60 evolution action assets exist.
   - Biggest remaining work: make the live Sanctuary consistently load, confirm evolved visuals follow movement correctly, confirm play/sleep interactions, and eliminate shell/cache conflicts.
 
-- **Guardian profile/evolution presentation:** 84%
+- **Guardian profile/evolution presentation:** 86%
   - Canon names, level bands, approved stage art, and larger profile presentation are implemented.
   - Still needs visual QA after cache/runtime repair.
 
-- **Overall Majick Studies release readiness:** **85%**
+- **Overall Majick Studies release readiness:** **86%**
   - We are past the foundation/build stage.
   - The remaining work is mainly **stability, visual QA, and integration testing**, not rebuilding the app from scratch.
   - The project should not be called finished until the live site opens cleanly, reports the current version, Sanctuary works without a snag modal, evolved Guardians display correctly, and Notes Forge passes live document tests.
@@ -237,3 +237,12 @@ Majick Studies is ready to call finished when all of these are true:
   - Aurelia: all 15 states clean
   - Solstice: essentially clean, with one tiny residual fragment identified for final cleanup
 - The protected original 33 Phase 4 motion PNGs remain untouched and continue to be the movement controller.
+
+## Final clean Guardian bundle prepared
+- A new binary bundle was rebuilt from the original four Guardian action sheets using adaptive stage/action extraction and stray-fragment cleanup.
+- File prepared for user upload: `majick-v3317-evolution-final-clean.zip`.
+- Size: about 7.22 MB.
+- Contents: 60 individual 1024×1024 WebPs at `sanctuary/assets/evolutions/<guardian>/<stage>/<walk|play|sleep>.webp`.
+- This bundle replaces the visually flawed `majick-v3317-evolution-repair-small.zip` once uploaded.
+- Deployment workflow now automatically prefers `sanctuary/assets/majick-v3317-evolution-final-clean.zip` when present and falls back to the older repair ZIP only if the final-clean bundle is absent.
+- No files in `sanctuary/assets/motion/` are changed.
