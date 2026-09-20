@@ -64,6 +64,21 @@ try{
   const snag=await page.locator('#v3317RuntimeNotice').count();
   await assert(snag===0,'Study Now produced the runtime snag notice');
 
+  // The actual class selector must expose both official WGU courses and toggle them.
+  await page.evaluate(()=>{S.screen='home';render();});
+  await page.waitForSelector('.courseSelect',{timeout:10000});
+  const courseOptions=await page.locator('.courseSelect option').evaluateAll(opts=>opts.map(o=>({value:o.value,text:o.textContent})));
+  await assert(courseOptions.some(o=>o.value==='D755'&&o.text.includes('Assessment for Special Education')),'D755 missing from visible class selector');
+  await assert(courseOptions.some(o=>o.value==='D772'&&o.text.includes('Statistical Data Literacy')),'D772 missing from visible class selector');
+
+  await page.locator('.courseSelect').selectOption('D772');
+  await page.waitForFunction(()=>window.S?.activeCourse==='D772',{timeout:8000});
+  await page.locator('.courseSelect').selectOption('D755');
+  await page.waitForFunction(()=>window.S?.activeCourse==='D755',{timeout:8000});
+
+  // Continue this smoke from D755 so the existing Assessment course remains intact.
+  await assert((await page.locator('.courseSelect').inputValue())==='D755','visible class selector did not return to D755');
+
   // A real correct study answer must reward the shared account and persist through reload.
   const studyReward=await page.evaluate(()=>{
     const before={
