@@ -101,6 +101,25 @@ S.majickAccount={xp:0,crystals:0,chests:0,schemaVersion:2};
 const recovered=MajickStateCore.ensureAccount();
 assert(recovered.xp===4000,'lost Majick XP was not restored to 4000');
 assert(recovered.crystals===150,'lost Moon Crystals were not restored to 150');
+
+S.legacy={
+  activePetId:'pet_cascade',
+  pets:[
+    {id:'pet_velora',type:'luna',name:'Velora',bond:122,level:8},
+    {id:'pet_solstice',type:'nova',name:'Solstice',bond:78,level:5},
+    {id:'pet_cascade',type:'ember',name:'Cascade',bond:4,level:1}
+  ],
+  eggs:[{id:'stale_ember_egg',type:'ember',progress:20,goal:20}]
+};
+S.majickAccount={xp:275,crystals:42,chests:0,schemaVersion:3};
+const merged=MajickStateCore.ensureAccount();
+assert(merged.xp===4275,'old and new XP were not merged together after Cascade hatched');
+assert(merged.crystals===42,'nonzero current crystal balance was incorrectly refilled');
+assert(merged.progressMergeV3323?.applied===true,'progress merge marker missing');
+assert(S.legacy.eggs.every(e=>e.type!=='ember'),'hatched Cascade remained duplicated in the egg incubator');
+merged.xp=4301;
+MajickStateCore.ensureAccount();
+assert(merged.xp===4301,'progress merge ran more than once');
 assert(recovered.balanceRecoveryV3322?.applied===true,'balance recovery marker was not stored');
 recovered.crystals=90;
 recovered.xp=3900;

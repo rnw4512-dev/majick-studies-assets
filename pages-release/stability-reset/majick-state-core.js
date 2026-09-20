@@ -3,6 +3,7 @@
 'use strict';
 const SHARED=['xp','crystals','chests'];
 const BALANCE_RECOVERY_V3322={xp:4000,crystals:150};
+const PROGRESS_MERGE_V3323={historicalXp:4000,zeroCrystalRestore:150};
 function stateRef(){
   try{
     if(typeof S!=='undefined'&&S&&typeof S==='object')return S;
@@ -51,12 +52,61 @@ function initialSharedValue(key){
   }
   return best;
 }
-function recoverySignature(st){
+function guardianProgressSignature(st){
   const pets=Array.isArray(st?.legacy?.pets)?st.legacy.pets.filter(Boolean):[];
   const eggs=Array.isArray(st?.legacy?.eggs)?st.legacy.eggs.filter(Boolean):[];
   const types=new Set(pets.map(p=>String(p?.type||'')));
   const eggTypes=new Set(eggs.map(e=>String(e?.type||'')));
-  return pets.length===2&&types.has('luna')&&types.has('nova')&&eggTypes.has('ember');
+  const beforeCascadeHatch=pets.length===2&&types.has('luna')&&types.has('nova')&&eggTypes.has('ember');
+  const afterCascadeHatch=types.has('luna')&&types.has('nova')&&types.has('ember');
+  return beforeCascadeHatch||afterCascadeHatch;
+}
+function recoverySignature(st){return guardianProgressSignature(st)}
+function reconcileHatchedGuardians(st){
+  if(!st?.legacy||!Array.isArray(st.legacy.pets))return false;
+  st.legacy.eggs=Array.isArray(st.legacy.eggs)?st.legacy.eggs:[];
+  const hatched=new Set(st.legacy.pets.filter(Boolean).map(p=>String(p?.type||'')).filter(Boolean));
+  const before=st.legacy.eggs.length;
+  st.legacy.eggs=st.legacy.eggs.filter(e=>!hatched.has(String(e?.type||'')));
+  return st.legacy.eggs.length!==before;
+}
+function applyProgressMergeV3323(st,account){
+  if(!st||!account||account.progressMergeV3323?.applied)return false;
+  if(!guardianProgressSignature(st))return false;
+
+  reconcileHatchedGuardians(st);
+
+  // If V3.3.22 already restored the historical balance, current XP already
+  // includes the old 4,000 and any subsequent earnings. Never add it twice.
+  const oldRecoveryApplied=account.balanceRecoveryV3322?.applied===true;
+  const currentXp=plainNumber(account.xp);
+  const currentCrystals=plainNumber(account.crystals);
+  let mergedXp=currentXp;
+  let crystals=currentCrystals;
+
+  if(!oldRecoveryApplied&&currentXp<PROGRESS_MERGE_V3323.historicalXp){
+    // A nonzero value below the historical baseline is treated as XP earned
+    // after the loss; merge it on top of the known 4,000 once.
+    mergedXp=PROGRESS_MERGE_V3323.historicalXp+Math.max(0,currentXp);
+  }
+  if(!oldRecoveryApplied&&currentCrystals<=0){
+    crystals=PROGRESS_MERGE_V3323.zeroCrystalRestore;
+  }
+
+  account.xp=mergedXp;
+  account.crystals=crystals;
+  account.progressMergeV3323={
+    applied:true,
+    appliedAt:new Date().toISOString(),
+    historicalXp:PROGRESS_MERGE_V3323.historicalXp,
+    newXpBeforeMerge:currentXp,
+    mergedXp,
+    crystalsBeforeMerge:currentCrystals,
+    crystalsAfterMerge:crystals,
+    inheritedV3322:oldRecoveryApplied,
+    rosterTypes:(st.legacy.pets||[]).map(p=>String(p?.type||'')).filter(Boolean)
+  };
+  return mergedXp!==currentXp||crystals!==currentCrystals;
 }
 function applyBalanceRecovery(st,account){
   if(!st||!account||account.balanceRecoveryV3322?.applied)return false;
@@ -89,7 +139,9 @@ function ensureAccount(){
   st.majickAccount=(st.majickAccount&&typeof st.majickAccount==='object'&&!Array.isArray(st.majickAccount))?st.majickAccount:{};
   for(const key of SHARED)st.majickAccount[key]=initialSharedValue(key);
   applyBalanceRecovery(st,st.majickAccount);
-  st.majickAccount.schemaVersion=Math.max(3,plainNumber(st.majickAccount.schemaVersion));
+  applyProgressMergeV3323(st,st.majickAccount);
+  reconcileHatchedGuardians(st);
+  st.majickAccount.schemaVersion=Math.max(4,plainNumber(st.majickAccount.schemaVersion));
   return st.majickAccount;
 }
 function bindSharedField(row,key){
@@ -157,8 +209,8 @@ function install(){
   // One compatibility surface for all legacy code. Shared values route to majickAccount.
   window.prog=safeProg;
   window.course=safeCourse;
-  window.MajickStateCore={version:3,SHARED,BALANCE_RECOVERY_V3322,stateRef,exposeState,blankProgress,normalizeProgressRow,normalizeAll,ensureAccount,applyBalanceRecovery,recoverySignature,safeProg,safeCourse,install};
-  document.documentElement.dataset.majickStateCore='3';
+  window.MajickStateCore={version:4,SHARED,BALANCE_RECOVERY_V3322,PROGRESS_MERGE_V3323,stateRef,exposeState,blankProgress,normalizeProgressRow,normalizeAll,ensureAccount,applyBalanceRecovery,applyProgressMergeV3323,reconcileHatchedGuardians,guardianProgressSignature,recoverySignature,safeProg,safeCourse,install};
+  document.documentElement.dataset.majickStateCore='4';
   return true;
 }
 if(!install())window.addEventListener('DOMContentLoaded',install,{once:true});

@@ -46,11 +46,11 @@ try{
     // Create the exact affected ownership signature without adding any unowned Guardian.
     S.legacy=S.legacy||{};
     S.legacy.pets=[
-      {id:'pet_velora',type:'luna',name:'Velora',bond:122},
-      {id:'pet_solstice',type:'nova',name:'Solstice',bond:78}
+      {id:'pet_velora',type:'luna',name:'Velora',bond:122,level:8},
+      {id:'pet_solstice',type:'nova',name:'Solstice',bond:78,level:5}
     ];
     S.legacy.activePetId='pet_velora';
-    S.legacy.eggs=[{id:'egg_ember',type:'ember',progress:0,goal:20,source:'study'}];
+    S.legacy.eggs=[{id:'egg_ember',type:'ember',progress:19,goal:20,source:'study'}];
     S.majickAccount={xp:0,crystals:0,chests:0,schemaVersion:2};
     const account=MajickStateCore.ensureAccount();
     const first={xp:account.xp,crystals:account.crystals,marker:!!account.balanceRecoveryV3322?.applied};
@@ -66,6 +66,28 @@ try{
   await assert(balanceRecovery.first.xp===4000&&balanceRecovery.first.crystals===150,'lost account balance was not restored');
   await assert(balanceRecovery.first.marker,'one-time balance recovery marker missing');
   await assert(balanceRecovery.second.xp===3991&&balanceRecovery.second.crystals===91,'recovery refilled after the one-time repair');
+
+  const hatchedMerge=await page.evaluate(()=>{
+    S.legacy.pets=[
+      {id:'pet_velora',type:'luna',name:'Velora',bond:122,level:8},
+      {id:'pet_solstice',type:'nova',name:'Solstice',bond:78,level:5},
+      {id:'pet_cascade',type:'ember',name:'Cascade',bond:5,level:1}
+    ];
+    S.legacy.eggs=[{id:'stale_ember',type:'ember',progress:20,goal:20}];
+    S.legacy.activePetId='pet_cascade';
+    S.majickAccount={xp:321,crystals:64,chests:0,schemaVersion:3};
+    const a=MajickStateCore.ensureAccount();
+    const first={xp:a.xp,crystals:a.crystals,marker:!!a.progressMergeV3323?.applied,eggs:S.legacy.eggs.map(e=>e.type)};
+    a.xp+=17;
+    MajickStateCore.ensureAccount();
+    return {first,after:a.xp,roster:S.legacy.pets.map(p=>p.type)};
+  });
+  await assert(hatchedMerge.first.xp===4321,'historical 4000 XP was not merged with post-loss XP after Cascade hatched');
+  await assert(hatchedMerge.first.crystals===64,'current nonzero crystal balance was changed during XP merge');
+  await assert(hatchedMerge.first.marker,'V3.3.23 progress merge marker missing');
+  await assert(!hatchedMerge.first.eggs.includes('ember'),'Cascade remained in the egg list after hatch reconciliation');
+  await assert(hatchedMerge.after===4338,'new XP after the merge did not continue accumulating normally');
+  await assert(hatchedMerge.roster.includes('luna')&&hatchedMerge.roster.includes('nova')&&hatchedMerge.roster.includes('ember'),'hatched Guardian roster was not preserved');
 
   // Recreate the exact class-progress failure that previously required Reload.
   const repaired=await page.evaluate(()=>{
