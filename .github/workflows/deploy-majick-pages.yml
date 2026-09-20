@@ -9,6 +9,7 @@ on:
       - 'pages-release/v3310/**'
       - 'pages-release/v3311/**'
       - 'pages-release/v3312/**'
+      - 'pages-release/v3313/**'
       - 'sanctuary/assets/objects/**'
       - '.github/workflows/deploy-majick-pages.yml'
   workflow_dispatch:
@@ -52,8 +53,12 @@ jobs:
           test -s pages-release/v3312/v3312-main.css
           test -s pages-release/v3312/v3312-sanctuary.js
           test -s pages-release/v3312/v3312-apply.py
+          test -s pages-release/v3313/v3313-main.js
+          test -s pages-release/v3313/v3313-main.css
+          test -s pages-release/v3313/v3313-sanctuary.js
+          test -s pages-release/v3313/v3313-apply.py
 
-      - name: Assemble Majick Studies V3.3.12
+      - name: Assemble Majick Studies V3.3.13
         shell: bash
         run: |
           set -euo pipefail
@@ -95,6 +100,12 @@ jobs:
           cp pages-release/v3312/v3312-main.css _site/v3312-main.css
           cp pages-release/v3312/v3312-sanctuary.js _site/sanctuary/v3312-sanctuary.js
           python pages-release/v3312/v3312-apply.py _site
+
+          # V3.3.13 restores the real Phaser sanctuary and wires optional final object art.
+          cp pages-release/v3313/v3313-main.js _site/v3313-main.js
+          cp pages-release/v3313/v3313-main.css _site/v3313-main.css
+          cp pages-release/v3313/v3313-sanctuary.js _site/sanctuary/v3313-sanctuary.js
+          python pages-release/v3313/v3313-apply.py _site
 
           # HARD RULE: copy the original Phase 4 images byte-for-byte; never regenerate them.
           mkdir -p _site/sanctuary/assets/motion
@@ -143,7 +154,7 @@ jobs:
 
           touch _site/.nojekyll
 
-          # Gate deployment on the exact V3.3.12 requirements.
+          # Gate deployment on the exact V3.3.13 requirements.
           test -s _site/index.html
           test -s _site/v3311-main.js
           test -s _site/v3311-plus.js
@@ -161,13 +172,16 @@ jobs:
           test -s _site/v3312-main.js
           test -s _site/v3312-main.css
           test -s _site/sanctuary/v3312-sanctuary.js
-          grep -q "V3.3.12" _site/app-progress.json
-          grep -q "v3312-sanctuary.js" _site/sanctuary/index.html
-          grep -q "luna:'velora'" _site/v3312-main.js
-          grep -q "53 MB" _site/app-progress.json
-          test "$(find _site/assets/familiars/evolution_stages -type f -name '*.webp' | wc -l)" -eq 50
-          python -c "import re; s=open('_site/service-worker.js',encoding='utf-8').read(); m=re.search(r'const ASSETS=\\[(.*?)\\];',s,re.S); assert m; items=re.findall(r\"['\\\"]([^'\\\"]+)['\\\"]\",m.group(1)); assert len(items)<=20, len(items); assert not any('/assets/motion/' in x for x in items); assert not any('/evolution_stages/' in x for x in items); print('V3.3.12 lightweight precache:',len(items),'assets')"
-          echo "Majick Studies V3.3.12 assembled successfully."
+          test -s _site/v3313-main.js
+          test -s _site/v3313-main.css
+          test -s _site/sanctuary/v3313-sanctuary.js
+          grep -q "V3.3.13" _site/app-progress.json
+          grep -q "v3313-sanctuary.js" _site/sanctuary/index.html
+          grep -q "obj-arcane-stacks" _site/sanctuary/Preloader.js
+          grep -q "The Living Sanctuary" _site/v3313-main.js
+          grep -q "No rewriting Velora" _site/app-progress.json
+          test "$(find _site/sanctuary/assets/motion -type f -name '*.png' | wc -l)" -eq 33
+          echo "Majick Studies V3.3.13 assembled successfully."
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
 
