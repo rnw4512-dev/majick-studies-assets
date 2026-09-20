@@ -395,16 +395,18 @@ try{
   await page.evaluate(()=>navigate('learninglab'));
   await page.waitForSelector('[data-tutor-tab="path"]',{timeout:10000});
   const d772Path=await page.evaluate(()=>({
-    sections:MajickCourseTutor.sections('D772').map(s=>({id:s.id,title:s.title,lessons:s.lessons.map(x=>x.title)}))
+    sections:MajickCourseTutor.sections('D772').map(s=>({id:s.id,title:s.title,lessons:s.lessons.map(x=>x.title)})),
+    reviewMeta:MajickCourseTutor.D772_SECTION_ONE.lessons.find(x=>x.review)||null,
+    contentCount:Object.keys(MajickCourseTutor.D772_SECTION_ONE_CONTENT||{}).length,
+    hasSection2:MajickCourseTutor.sections('D772').some(s=>/Section\\s*2/i.test(s.title||''))
   }));
   await assert(d772Path.sections.length===1,'D772 must have exactly one canonical section; Section 2 or duplicate auto-sections were created');
   await assert(d772Path.sections[0].id==='d772-section-1'&&d772Path.sections[0].title==='Section 1: Assessing Research and Data Credibility','D772 canonical Section 1 metadata is wrong');
   await assert(d772Path.sections[0].lessons.join('|')==='Understanding Data Collection Methods|Recognizing Bias in Data Collection|Unveiling Data Misrepresentations|Conclusions About Data Findings|Section 1: Summary and Test','D772 Section 1 learning path order is wrong');
   await assert(d772Path.sections[0].lessons.length===5,'D772 Section 1 must contain four lessons plus one Summary/Test');
-  const reviewMeta=MajickCourseTutor.D772_SECTION_ONE.lessons.find(x=>x.review);
-  await assert(reviewMeta?.number==null&&reviewMeta?.title==='Section 1: Summary and Test','Section 1 review was incorrectly numbered as Lesson 5');
-  await assert(!MajickCourseTutor.sections('D772').some(s=>/Section\\s*2/i.test(s.title||'')),'D772 incorrectly exposes a Section 2');
-  await assert(Object.keys(MajickCourseTutor.D772_SECTION_ONE_CONTENT||{}).length===5,'built-in D772 Section 1 master content is incomplete');
+  await assert(d772Path.reviewMeta?.number==null&&d772Path.reviewMeta?.title==='Section 1: Summary and Test','Section 1 review was incorrectly numbered as Lesson 5');
+  await assert(!d772Path.hasSection2,'D772 incorrectly exposes a Section 2');
+  await assert(d772Path.contentCount===5,'built-in D772 Section 1 master content is incomplete');
   await page.waitForSelector('#courseTutorPath .pathSection',{timeout:10000});
   await assert(await page.locator('#courseTutorPath .pathSection').count()===1,'D772 Course Path rendered repeated/extra sections');
   await assert(await page.getByText('Section 1: Assessing Research and Data Credibility',{exact:true}).count()>=1,'D772 Section 1 path is not visible');
