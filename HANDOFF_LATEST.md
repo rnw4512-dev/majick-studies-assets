@@ -450,3 +450,30 @@ Current estimate:
   - `Study progress state hardening verified`
   - `Legacy save migration verified`
 - Phaser startup budget remains safe at 2,907,938 bytes (~2.77 MiB).
+
+## Run #84 — Base renderer / inline-script repair
+- GitHub Pages run #84 completed **successfully** and deployed.
+- Fixed fatal startup error: `Base render function is unavailable.`
+- Exact root cause:
+  - V3.3.17 clean sanitizer removed legacy error UIs with regex replacements;
+  - two replacement strings accidentally restored only one closing brace instead of the original two;
+  - this left the base inline app script and the V5 inline script with `SyntaxError: Unexpected end of input`;
+  - because the base inline script could not parse, its `render()` function never existed.
+- Repair:
+  - restored the two missing closing braces in `v3317-clean-sanitize.py`;
+  - retained the single V3.3.17 recovery boundary;
+  - retained removal of obsolete render hijacks;
+  - added mandatory final-artifact inline-script syntax verification.
+- Permanent release gate now:
+  - extracts every inline `<script>` from final assembled `index.html`;
+  - runs `node --check` on every classic inline script;
+  - fails deployment if any inline script is invalid;
+  - proves the base `render()` declaration occurs before `v3317-main.js` loads.
+- Run #84 explicitly passed:
+  - `V3.3.17 migration smoke passed`
+  - `V3.3.17 RELEASE VERIFIER PASSED`
+  - `Single render owner verified: V3.3.17 only`
+  - `Inline JavaScript syntax verified: 17 scripts`
+  - `Base render order verified: inline script 0 before V3.3.17 script 28`
+  - `Majick Studies V3.3.17 assembled successfully.`
+- This is now the active verified live build.
