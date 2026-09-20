@@ -40,6 +40,34 @@ const NEED_KEYS=['hunger','hydration','energy','fun','grooming','affection'];
 const clamp=(n,min=0,max=100)=>Math.max(min,Math.min(max,Number(n)||0));
 const E=s=>{try{return esc(String(s??''))}catch(_){return String(s??'').replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]))}};
 
+function normalizeOwnedCollection(a){
+  const raw=a?.guardianOwned;
+  let next=[];
+  if(Array.isArray(raw))next=raw;
+  else if(raw instanceof Set)next=[...raw];
+  else if(typeof raw==='string'&&raw.trim())next=[raw.trim()];
+  else if(raw&&typeof raw==='object'){
+    if(Array.isArray(raw.items))next=raw.items;
+    else next=Object.entries(raw).filter(([,v])=>!!v).map(([k])=>k);
+  }
+  next=[...new Set(next.filter(Boolean).map(String))];
+  a.guardianOwned=next;
+  return next;
+}
+function normalizeGuardianInventory(a){
+  const raw=a?.guardianInventory;
+  if(raw&&typeof raw==='object'&&!Array.isArray(raw)){
+    a.guardianInventory=raw;
+    return raw;
+  }
+  const next={};
+  if(Array.isArray(raw)){
+    for(const id of raw)next[String(id)]=(Number(next[String(id)]||0)+1);
+  }
+  a.guardianInventory=next;
+  return next;
+}
+
 function canon(type){
   try{
     const c=window.V338_CANON?.[type]||window.v338Canon?.(type);
@@ -88,9 +116,9 @@ function ensureAccount(){
   a.guardianCare.schemaVersion=VERSION;
   a.guardianCare.guardians=a.guardianCare.guardians||{};
   a.guardianCare.log=Array.isArray(a.guardianCare.log)?a.guardianCare.log:[];
-  a.guardianInventory=a.guardianInventory||{};
-  a.guardianOwned=Array.isArray(a.guardianOwned)?a.guardianOwned:[];
-  if(!a.guardianOwned.includes('starter-ribbon-toy'))a.guardianOwned.push('starter-ribbon-toy');
+  normalizeGuardianInventory(a);
+  const owned=normalizeOwnedCollection(a);
+  if(!owned.includes('starter-ribbon-toy'))owned.push('starter-ribbon-toy');
 
   const pets=ownedPets();
   for(const pet of pets){
@@ -152,10 +180,12 @@ function crystalBalance(){
   try{return Number(prog()?.crystals||0)}catch(_){return Number(S?.majickAccount?.crystals||0)}
 }
 function inventoryCount(id){
-  return Number(ensureAccount().guardianInventory[id]||0);
+  const a=ensureAccount();
+  return Number(normalizeGuardianInventory(a)[id]||0);
 }
 function owns(id){
-  return ensureAccount().guardianOwned.includes(id);
+  const a=ensureAccount();
+  return normalizeOwnedCollection(a).includes(id);
 }
 function saveCare(){
   const a=ensureAccount();
@@ -173,18 +203,18 @@ function logCare(pet,action,message){
   g.lastAction=action;
 }
 function consume(id,n=1){
-  const a=ensureAccount(),have=Number(a.guardianInventory[id]||0);
+  const a=ensureAccount(),inv=normalizeGuardianInventory(a),have=Number(inv[id]||0);
   if(have<n)return false;
-  a.guardianInventory[id]=have-n;
+  inv[id]=have-n;
   return true;
 }
 function addOwned(id){
-  const a=ensureAccount();
-  if(!a.guardianOwned.includes(id))a.guardianOwned.push(id);
+  const a=ensureAccount(),owned=normalizeOwnedCollection(a);
+  if(!owned.includes(id))owned.push(id);
 }
 function addInventory(id,n){
-  const a=ensureAccount();
-  a.guardianInventory[id]=Number(a.guardianInventory[id]||0)+Number(n||0);
+  const a=ensureAccount(),inv=normalizeGuardianInventory(a);
+  inv[id]=Number(inv[id]||0)+Number(n||0);
 }
 function change(g,changes){
   for(const [k,v] of Object.entries(changes)){
@@ -345,8 +375,8 @@ function snapshot(){
   return {
     schemaVersion:VERSION,
     crystals:crystalBalance(),
-    inventory:{...a.guardianInventory},
-    owned:[...a.guardianOwned],
+    inventory:{...normalizeGuardianInventory(a)},
+    owned:[...normalizeOwnedCollection(a)],
     focusPetId:a.guardianCare.focusPetId,
     roster,guardians,byType,
     eggs:eggSnapshot(),
@@ -506,7 +536,7 @@ window.addEventListener('message',ev=>{
 ensureAccount();
 setTimeout(()=>broadcastState(),200);
 window.MajickGuardianCare={
-  ensure:ensureAccount,state,snapshot,performAction,buy,catalog:CATALOG,
+  ensure:ensureAccount,state,snapshot,performAction,buy,catalog:CATALOG,normalizeOwnedCollection,normalizeGuardianInventory,
   ownedPets,incubatingEggs,guardianCareHTML,catalogHTML,broadcastState,moodInfo,bestToy,assignedBed,canon
 };
 })();
