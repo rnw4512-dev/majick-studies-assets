@@ -10,6 +10,7 @@ on:
       - 'pages-release/v3311/**'
       - 'pages-release/v3312/**'
       - 'pages-release/v3313/**'
+      - 'pages-release/v3314/**'
       - 'sanctuary/assets/objects/**'
       - '.github/workflows/deploy-majick-pages.yml'
   workflow_dispatch:
@@ -57,6 +58,12 @@ jobs:
           test -s pages-release/v3313/v3313-main.css
           test -s pages-release/v3313/v3313-sanctuary.js
           test -s pages-release/v3313/v3313-apply.py
+          test -s pages-release/v3314/v3314-main.js
+          test -s pages-release/v3314/v3314-main.css
+          test -s pages-release/v3314/v3314-sanctuary.js
+          test -s pages-release/v3314/v3314-apply.py
+          test -s sanctuary/assets/objects/objects-manifest.json
+          test -s sanctuary/assets/objects/generate-object-library.py
 
       - name: Assemble Majick Studies V3.3.13
         shell: bash
@@ -107,6 +114,14 @@ jobs:
           cp pages-release/v3313/v3313-sanctuary.js _site/sanctuary/v3313-sanctuary.js
           python pages-release/v3313/v3313-apply.py _site
 
+          # V3.3.14 makes every Sanctuary view use the same Phaser world and moves objects/evolution visuals to data-driven layers.
+          cp pages-release/v3314/v3314-main.js _site/v3314-main.js
+          cp pages-release/v3314/v3314-main.css _site/v3314-main.css
+          cp pages-release/v3314/v3314-sanctuary.js _site/sanctuary/v3314-sanctuary.js
+          mkdir -p _site/sanctuary/assets/objects
+          cp sanctuary/assets/objects/objects-manifest.json _site/sanctuary/assets/objects/objects-manifest.json
+          python pages-release/v3314/v3314-apply.py _site
+
           # HARD RULE: copy the original Phase 4 images byte-for-byte; never regenerate them.
           mkdir -p _site/sanctuary/assets/motion
           cp luna-idle.png _site/sanctuary/assets/motion/luna-idle.png
@@ -146,11 +161,10 @@ jobs:
           cp mallow-land.png _site/sanctuary/assets/motion/mallow-land.png
           cp mallow-binky.png _site/sanctuary/assets/motion/mallow-binky.png
 
-          # Optional final object art: drop files into sanctuary/assets/objects and they publish automatically.
-          if [ -d sanctuary/assets/objects ]; then
-            mkdir -p _site/sanctuary/assets/objects
-            cp -a sanctuary/assets/objects/. _site/sanctuary/assets/objects/
-          fi
+          # Full manifest object library. Generate starter WebPs only when a final replacement file is not present.
+          python sanctuary/assets/objects/generate-object-library.py sanctuary/assets/objects
+          mkdir -p _site/sanctuary/assets/objects
+          cp -a sanctuary/assets/objects/. _site/sanctuary/assets/objects/
 
           touch _site/.nojekyll
 
@@ -180,8 +194,16 @@ jobs:
           grep -q "obj-arcane-stacks" _site/sanctuary/Preloader.js
           grep -q "The Living Sanctuary" _site/v3313-main.js
           grep -q "No rewriting Velora" _site/app-progress.json
+          test -s _site/v3314-main.js
+          test -s _site/v3314-main.css
+          test -s _site/sanctuary/v3314-sanctuary.js
+          test -s _site/sanctuary/assets/objects/objects-manifest.json
+          grep -q "V3.3.14" _site/app-progress.json
+          grep -q "MAJICK_GUARDIAN_LEVELS_V3314" _site/v3314-main.js
+          grep -q "v3314ApplyEvolutionFX" _site/sanctuary/v3314-sanctuary.js
+          test "$(find _site/sanctuary/assets/objects -type f -name '*.webp' | wc -l)" -ge 80
           test "$(find _site/sanctuary/assets/motion -type f -name '*.png' | wc -l)" -eq 33
-          echo "Majick Studies V3.3.13 assembled successfully."
+          echo "Majick Studies V3.3.14 assembled successfully."
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
 
