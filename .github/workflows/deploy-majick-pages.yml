@@ -7,7 +7,7 @@ on:
       - 'pages-release/majick-pages-site.zip'
       - 'pages-release/v339-patch.b64.part*'
       - 'pages-release/v3310/**'
-      - 'pages-release/v3311-patch.zip'
+      - 'pages-release/v3311/**'
       - '.github/workflows/deploy-majick-pages.yml'
   workflow_dispatch:
 
@@ -40,41 +40,51 @@ jobs:
           test -s pages-release/v3310/v3310-main.css
           test -s pages-release/v3310/v3310-sanctuary.js
           test -s pages-release/v3310/v3310-apply.py
-          test -s pages-release/v3311-patch.zip
+          test -s pages-release/v3311/v3311-main.js
+          test -s pages-release/v3311/v3311-main.css
+          test -s pages-release/v3311/v3311-plus.js
+          test -s pages-release/v3311/v3311-plus.css
+          test -s pages-release/v3311/v3311-sanctuary.js
+          test -s pages-release/v3311/v3311-apply.py
 
       - name: Assemble Majick Studies V3.3.11
         shell: bash
         run: |
           set -euo pipefail
-          rm -rf _site _patch339 _patch3311 /tmp/v339-patch.zip /tmp/v339-patch.b64
-          mkdir -p _site _patch339 _patch3311
+          rm -rf _site _patch339 /tmp/v339-patch.zip /tmp/v339-patch.b64
+          mkdir -p _site _patch339
 
-          # Stable V3.3.8 base.
+          # Stable website base.
           unzip -oq pages-release/majick-pages-site.zip -d _site
 
-          # Reapply the V3.3.9 layer that already deployed successfully.
-          cat pages-release/v339-patch.b64.part01               pages-release/v339-patch.b64.part02               pages-release/v339-patch.b64.part03               pages-release/v339-patch.b64.part04               pages-release/v339-patch.b64.part05               | tr -d '\r\n' > /tmp/v339-patch.b64
+          # Reapply V3.3.9.
+          cat pages-release/v339-patch.b64.part01 \
+              pages-release/v339-patch.b64.part02 \
+              pages-release/v339-patch.b64.part03 \
+              pages-release/v339-patch.b64.part04 \
+              pages-release/v339-patch.b64.part05 \
+              | tr -d '\r\n' > /tmp/v339-patch.b64
           base64 --decode /tmp/v339-patch.b64 > /tmp/v339-patch.zip
           unzip -t /tmp/v339-patch.zip
           unzip -oq /tmp/v339-patch.zip -d _patch339
           python _patch339/apply_patch.py _site
 
-          # V3.3.10 is text-only code around the original sprite art.
+          # Reapply the confirmed-working V3.3.10 motion-restore layer.
           cp pages-release/v3310/v3310-main.js _site/v3310-main.js
           cp pages-release/v3310/v3310-main.css _site/v3310-main.css
           cp pages-release/v3310/v3310-sanctuary.js _site/sanctuary/v3310-sanctuary.js
           python pages-release/v3310/v3310-apply.py _site
 
-          # V3.3.11 adds the Living Grimoire, Evolution Photo System and campus links around the protected Phaser movers.
+          # V3.3.11 works around the protected Phaser movers.
+          cp pages-release/v3311/v3311-main.js _site/v3311-main.js
+          cp pages-release/v3311/v3311-main.css _site/v3311-main.css
+          cp pages-release/v3311/v3311-plus.js _site/v3311-plus.js
+          cp pages-release/v3311/v3311-plus.css _site/v3311-plus.css
+          cp pages-release/v3311/v3311-sanctuary.js _site/sanctuary/v3311-sanctuary.js
           python -m pip install --quiet pillow
-          unzip -t pages-release/v3311-patch.zip
-          unzip -oq pages-release/v3311-patch.zip -d _patch3311
-          cp _patch3311/v3311-main.js _site/v3311-main.js
-          cp _patch3311/v3311-main.css _site/v3311-main.css
-          cp _patch3311/v3311-sanctuary.js _site/sanctuary/v3311-sanctuary.js
-          python _patch3311/v3311-apply.py _site
+          python pages-release/v3311/v3311-apply.py _site
 
-          # Preserve the hand-built Phase 4 images exactly as uploaded.
+          # HARD RULE: copy the original Phase 4 images byte-for-byte; never regenerate them.
           mkdir -p _site/sanctuary/assets/motion
           cp luna-idle.png _site/sanctuary/assets/motion/luna-idle.png
           cp luna-walk-1.png _site/sanctuary/assets/motion/luna-walk-1.png
@@ -115,27 +125,26 @@ jobs:
 
           touch _site/.nojekyll
 
-          # Fail loudly before publishing if any motion or patch dependency is missing.
+          # Gate deployment on the exact V3.3.11 requirements.
           test -s _site/index.html
-          test -s _site/v339-main.js
-          test -s _site/v3310-main.js
-          test -s _site/v3310-main.css
-          test -s _site/sanctuary/Preloader.js
-          test -s _site/sanctuary/v3310-sanctuary.js
+          test -s _site/v3311-main.js
+          test -s _site/v3311-plus.js
+          test -s _site/v3311-main.css
+          test -s _site/v3311-plus.css
+          test -s _site/sanctuary/v3311-sanctuary.js
           test -s _site/sanctuary/assets/motion/luna-walk-1.png
           test -s _site/sanctuary/assets/motion/ember-slither-1.png
           test -s _site/sanctuary/assets/motion/nova-run.png
           test -s _site/sanctuary/assets/motion/mallow-fly-1.png
-          test -s _site/v3311-main.js
-          test -s _site/v3311-main.css
-          test -s _site/sanctuary/v3311-sanctuary.js
           test "$(find _site/assets/familiars/evolution_stages -type f -name '*.webp' | wc -l)" -eq 50
+          test -s _site/assets/familiars/evolution_stages/velora-new-bond.webp
           test -s _site/assets/familiars/evolution_stages/velora-ascendant.webp
           test -s _site/assets/familiars/evolution_stages/solara-celestial.webp
           grep -q "V3.3.11" _site/app-progress.json
           grep -q "v3311-sanctuary.js" _site/sanctuary/index.html
-          grep -q "Living Grimoire" _site/v3311-main.js
-          echo "Majick Studies V3.3.11 assembled successfully with 50 evolution stage images."
+          grep -q "Majick Living Grimoire" _site/v3311-plus.js
+          grep -q "Additive defaults only" _site/app-progress.json
+          echo "Majick Studies V3.3.11 assembled successfully."
 
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
