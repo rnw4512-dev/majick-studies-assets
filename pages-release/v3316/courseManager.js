@@ -6,27 +6,42 @@ const E=s=>{try{return esc(String(s??''))}catch(_){return String(s??'').replace(
 const clone=x=>{try{return JSON.parse(JSON.stringify(x))}catch(_){return x}};
 
 function blankProgress(){
+  if(window.MajickStateCore?.blankProgress)return window.MajickStateCore.blankProgress();
   return {
-    answers:[],explanations:[],repair:[],spacedQueue:[],streak:0,lastDay:'',
-    bossWins:0,xp:0,crystals:0,charms:[],chests:0,
-    inventory:{streakShield:0,clueCharm:0,bossShield:0,oracleTicket:0},
-    cosmetics:[],eliminationWins:0,voicePractices:0
+    answers:[],explanations:[],repair:[],spacedQueue:[],charms:[],cosmetics:[],
+    questionMemory:[],sessionHistory:[],masteryRewarded:[],helpHistory:[],familyMemory:[],
+    urgentRepair:[],v5SessionHistory:[],errorTags:[],strategyHistory:[],
+    distractorHistory:{},flaggedQuestions:{},masteryProofs:{},sourceCoverage:{},
+    questionExposure:{},aiCache:{},
+    streak:0,lastDay:'',bossWins:0,xp:0,crystals:0,chests:0,bestCombo:0,
+    aiGeneratedCount:0,petAbilityUses:0,eliminationWins:0,voicePractices:0,
+    dailyClaimed:'',weeklyClaimed:'',
+    inventory:{streakShield:0,clueCharm:0,bossShield:0,oracleTicket:0}
   };
 }
 function normalizeProgressRow(row,cid=''){
+  if(window.MajickStateCore?.normalizeProgressRow){
+    return window.MajickStateCore.normalizeProgressRow(row,cid);
+  }
   const p=(row&&typeof row==='object'&&!Array.isArray(row))?row:blankProgress();
-  p.answers=Array.isArray(p.answers)?p.answers:[];
-  p.explanations=Array.isArray(p.explanations)?p.explanations:[];
-  p.repair=Array.isArray(p.repair)?p.repair:[];
-  p.spacedQueue=Array.isArray(p.spacedQueue)?p.spacedQueue:[];
-  p.charms=Array.isArray(p.charms)?p.charms:[];
+  const arrays=[
+    'answers','explanations','repair','spacedQueue','charms','cosmetics',
+    'questionMemory','sessionHistory','masteryRewarded','helpHistory','familyMemory',
+    'urgentRepair','v5SessionHistory','errorTags','strategyHistory'
+  ];
+  for(const key of arrays)p[key]=Array.isArray(p[key])?p[key]:[];
+  const objects=['distractorHistory','flaggedQuestions','masteryProofs','sourceCoverage','questionExposure','aiCache'];
+  for(const key of objects)p[key]=(p[key]&&typeof p[key]==='object'&&!Array.isArray(p[key]))?p[key]:{};
   p.inventory=(p.inventory&&typeof p.inventory==='object'&&!Array.isArray(p.inventory))
-    ?p.inventory:{streakShield:0,clueCharm:0,bossShield:0,oracleTicket:0};
-  p.streak=Number(p.streak||0);
-  p.bossWins=Number(p.bossWins||0);
-  p.xp=Number(p.xp||0);
-  p.crystals=Number(p.crystals||0);
-  p.chests=Number(p.chests||0);
+    ?Object.assign({streakShield:0,clueCharm:0,bossShield:0,oracleTicket:0},p.inventory)
+    :{streakShield:0,clueCharm:0,bossShield:0,oracleTicket:0};
+  for(const key of ['streak','bossWins','bestCombo','aiGeneratedCount','petAbilityUses','eliminationWins','voicePractices']){
+    p[key]=Number(p[key]||0);
+  }
+  for(const key of SHARED)p[key]=Number(p[key]||0);
+  p.lastDay=typeof p.lastDay==='string'?p.lastDay:'';
+  p.dailyClaimed=typeof p.dailyClaimed==='string'?p.dailyClaimed:'';
+  p.weeklyClaimed=typeof p.weeklyClaimed==='string'?p.weeklyClaimed:'';
   if(cid)p.courseId=cid;
   return p;
 }
