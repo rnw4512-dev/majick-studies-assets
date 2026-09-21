@@ -1,3 +1,14 @@
+## V3.3.36 — Render Loop Fix
+- Fixed the Chrome **Page Unresponsive** failure reproduced on D772 Study Now.
+- Root cause: the universal Back button was managed from a page-wide `MutationObserver`; `ensureBackButton()` rewrote the existing button's `innerHTML` on every observer callback, which triggered the observer again and created an infinite DOM-mutation loop.
+- `ensureBackButton()` is now idempotent:
+  - existing Back button is returned without DOM mutation;
+  - new markup is written only when the button is first created;
+  - Home still removes the button normally.
+- The deployment gate now fails if the recursion guard is missing or if the old `existing || createElement` mutation pattern returns.
+- V3.3.35 D772 self-populating WGU question-bank protection remains in force.
+- WGU Practice runtime and cache-busting advanced to V3.3.36.
+
 # Majick Studies — CURRENT BUILD SOURCE OF TRUTH
 
 Last updated: 2026-09-20
