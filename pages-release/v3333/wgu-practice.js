@@ -1,6 +1,6 @@
 (()=>{
 'use strict';
-const VERSION='3.3.33';
+const VERSION='3.3.34';
 const E=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
 const LESSON_NAMES={
   'd772-s1-l1':'Lesson 1 — Understanding Data Collection Methods',
@@ -158,6 +158,23 @@ startMixed=function(){
   if(activeD772())return startOA();
   return originalStartMixed.apply(this,arguments);
 };
-window.MajickWGUPractice={VERSION,select,submit,startOA,visualHtml,whyList,balancedOA,isD772Question};
-document.documentElement.dataset.majickWguPractice='3.3.33';
+function bootD772Practice(){
+  try{
+    if(!activeD772())return;
+    // A saved pre-Practice-Lab mission can otherwise keep rendering the old Study Now UI forever.
+    if(window.session&&(!isD772Question(window.session.current)||window.session.opts?.kind==='legacy-d772')){
+      try{session=null}catch(_){}
+      try{window.session=null}catch(_){}
+    }
+    try{window.v3331RefreshD772Practice?.()}catch(_){}
+    if(window.S?.screen==='mission'){
+      setTimeout(()=>{
+        try{if(typeof window.render==='function')window.render()}catch(e){console.warn('D772 Practice Lab boot render',e)}
+      },0);
+    }
+  }catch(e){console.warn('D772 Practice Lab boot',e)}
+}
+window.MajickWGUPractice={VERSION,select,submit,startOA,visualHtml,whyList,balancedOA,isD772Question,bootD772Practice};
+document.documentElement.dataset.majickWguPractice='3.3.34';
+bootD772Practice();
 })();
