@@ -13,6 +13,7 @@ on:
       - 'pages-release/v3325/**'
       - 'pages-release/v3326/**'
       - 'pages-release/v3327/**'
+      - 'pages-release/v3333/**'
       - 'pages-release/v3315/study-material/**'
       - 'pages-release/v3316/courseManager.js'
       - 'pages-release/v3317/v3317-main.js'
@@ -73,6 +74,8 @@ jobs:
           test -s pages-release/v3326/course-tutor.css
           test -s pages-release/v3327/magical-college-home.js
           test -s pages-release/v3327/magical-college-home.css
+          test -s pages-release/v3333/wgu-practice.js
+          test -s pages-release/v3333/wgu-practice.css
           test -s pages-release/v3320/sanctuary-life.js
           test -s pages-release/v3321/sanctuary-customize.js
           test -s pages-release/v3322/main-recovery.js
@@ -106,6 +109,7 @@ jobs:
           node --check pages-release/v3324/learning-plan.js
           node --check pages-release/v3326/course-tutor.js
           node --check pages-release/v3327/magical-college-home.js
+          node --check pages-release/v3333/wgu-practice.js
           node --check pages-release/v3320/sanctuary-life.js
           node --check pages-release/v3321/sanctuary-customize.js
           node --check pages-release/v3322/main-recovery.js
@@ -198,6 +202,8 @@ jobs:
           cmp pages-release/v3326/course-tutor.css _site/course-tutor.css
           cmp pages-release/v3327/magical-college-home.js _site/magical-college-home.js
           cmp pages-release/v3327/magical-college-home.css _site/magical-college-home.css
+          cmp pages-release/v3333/wgu-practice.js _site/wgu-practice.js
+          cmp pages-release/v3333/wgu-practice.css _site/wgu-practice.css
           cmp pages-release/v3316/courseManager.js _site/courseManager.js
           cmp pages-release/v3317/v3317-main.js _site/v3317-main.js
           cmp pages-release/v3317/v3317-sanctuary.js _site/sanctuary/v3317-sanctuary.js
@@ -210,7 +216,7 @@ jobs:
 
           # Golden architecture and protected assets.
           grep -q '"build_foundation": "V3.3.18 Golden Baseline"' _site/app-progress.json
-          grep -q '"version": "V3.3.32 WGU Terminology Lock"' _site/app-progress.json
+          grep -q '"version": "V3.3.33 WGU Practice Lab"' _site/app-progress.json
           grep -q 'learning-lab.js?v=3319' _site/index.html
           grep -q 'learning-lab.css?v=3319' _site/index.html
           grep -q 'learning-plan.js?v=3324' _site/index.html
@@ -219,6 +225,8 @@ jobs:
           grep -q 'course-tutor.css?v=3326' _site/index.html
           grep -q 'magical-college-home.js?v=3327' _site/index.html
           grep -q 'magical-college-home.css?v=3327' _site/index.html
+          grep -q 'wgu-practice.js?v=3333' _site/index.html
+          grep -q 'wgu-practice.css?v=3333' _site/index.html
           grep -q '"sanctuary_version": "V3.3.25 Single Guardian Visual Authority"' _site/app-progress.json
           grep -q 'majick-state-core.js?v=3322-recovery' _site/index.html
           grep -q 'guardian-care-economy.js?v=3322-recovery' _site/index.html
@@ -246,6 +254,7 @@ jobs:
           node --check _site/learning-plan.js
           node --check _site/course-tutor.js
           node --check _site/magical-college-home.js
+          node --check _site/wgu-practice.js
           node --check _site/courseManager.js
           node --check _site/guardian-care-economy.js
           node --check _site/v3317-main.js
@@ -268,7 +277,7 @@ jobs:
           PY
 
           python pages-release/stability-reset/stability-reset-verify.py _site
-          echo "Majick Studies V3.3.32 Golden Baseline overlay assembly passed."
+          echo "Majick Studies V3.3.33 Golden Baseline overlay assembly passed."
 
       - name: Browser regression gate
         timeout-minutes: 8
