@@ -44,7 +44,7 @@ try:
 except Exception as e:
     fail('app-progress.json unreadable: '+str(e))
 release=str(progress.get('version') or '').strip()
-match=re.search(r'V(\\d+\\.\\d+\\.\\d+)',release)
+match=re.search(r'V(\d+\.\d+\.\d+)',release)
 if not match: fail('app-progress.json has no semantic release version')
 current_version=match.group(1)
 if ('V'+current_version) not in main_bridge:
