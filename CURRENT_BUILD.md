@@ -1,7 +1,7 @@
 # Majick Studies — CURRENT BUILD SOURCE OF TRUTH
 
 Last updated: 2026-09-20
-Current target release: V3.3.31 — WGU Concept Practice
+Current target release: V3.3.32 — WGU Terminology Lock
 
 ## How to resume in a new ChatGPT chat
 Say: **"Continue Majick Studies from CURRENT_BUILD.md in rnw4512-dev/majick-studies-assets."**
@@ -88,6 +88,28 @@ Course manager:
 3. Do NOT use V3.3.15 generated action sheets for movement.
 4. Rebuild true individual stage/action art later from approved Guardian references — one Guardian/action asset at a time, not sprite-sheet slicing shortcuts.
 
+
+## V3.3.32 — WGU Terminology Lock
+- D772 now preserves the terminology used in the learner-provided WGU Section 1 course notes instead of substituting Majick synonyms.
+- Official terminology is primary in prompts, answer choices, Tutor vocabulary, and rationales.
+- Memory cues remain secondary aids and must never replace the WGU term.
+- Every curated D772 question now carries a `wguTerm` field and explains:
+  - **WGU terminology**
+  - **What WGU is testing**
+  - **WGU clue to notice**
+- Locked examples include:
+  - Random sampling vs. **randomization**
+  - Representative sample / non-representative sample
+  - Sampling frame / sampling frame error
+  - Non-response bias / response bias / voluntary response bias
+  - Perceived lack of anonymity
+  - Statistical significance
+  - Misrepresenting data / falsifying data
+  - Association / causal relationship / confounding variable
+  - Linear / nonlinear / no pattern-no correlation
+  - Positive correlation / negative correlation / strength / outlier
+- Non-course labels such as “convenience bias,” “cluster bias,” and “randomized controlled trial” are blocked from the D772 curated bank.
+- Browser regression fails if WGU terminology metadata is missing or blocked substitute language returns.
 
 ## V3.3.31 — WGU Concept Practice
 - Retired the old D772 Notes Forge question style that asked meta-memory prompts such as:
