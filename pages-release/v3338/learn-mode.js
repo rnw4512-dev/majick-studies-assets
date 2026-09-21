@@ -601,7 +601,8 @@ if(typeof baseBind==='function'){
 patchScreenHTML();
 window.MajickInstruction={
  VERSION,LESSONS,PHASES,show,render,selectLesson,beginLesson,setPhase,answer,saveExplanation,explainAloud,tutorAction,
- startCheckpoint,checkpointSelect,checkpointSubmit,checkpointNext,repairCheckpoint,nextLesson,anchorWallHtml,decorateGrimoire,state:progress,current
+ startCheckpoint,checkpointSelect,checkpointSubmit,checkpointNext,repairCheckpoint,nextLesson,anchorWallHtml,decorateGrimoire,
+ classroomHtml,openingHtml,checkpointHtml,checkpointResultHtml,unlockedAnchors,state:progress,current
 };
 document.documentElement.dataset.majickLearnMode=VERSION;
 })();
