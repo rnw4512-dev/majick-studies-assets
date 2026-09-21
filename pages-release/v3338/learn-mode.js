@@ -600,7 +600,7 @@ if(typeof baseBind==='function'){
 }
 patchScreenHTML();
 window.MajickInstruction={
- VERSION,LESSONS,PHASES,show,render,selectLesson,beginLesson,setPhase,answer,saveExplanation,explainAloud,tutorAction,
+ VERSION,LESSONS,PHASES,show,render,selectLesson,beginLesson,setPhase,answer,saveExplanation,explainAloud,tutorAction,completeConcept,
  startCheckpoint,checkpointSelect,checkpointSubmit,checkpointNext,repairCheckpoint,nextLesson,anchorWallHtml,decorateGrimoire,
  classroomHtml,openingHtml,checkpointHtml,checkpointResultHtml,unlockedAnchors,state:progress,current
 };
