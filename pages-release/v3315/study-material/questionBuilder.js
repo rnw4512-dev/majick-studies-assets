@@ -231,6 +231,75 @@ const D772_WGU_BIAS_CHECKS=[
 ];
 
 
+const D772_VISUALS={
+  'truncated axis':{type:'truncated-bar'},
+  'two-dimensional icons':{type:'icons'},
+  'scatterplot shape':{type:'scatter',pattern:'nonlinear'},
+  'positive correlation':{type:'scatter',pattern:'positive'},
+  'negative correlation':{type:'scatter',pattern:'negative'},
+  'strength':{type:'scatter',pattern:'strong-positive'},
+  'outlier':{type:'scatter',pattern:'outlier'}
+};
+const D772_CHOICE_COACH={
+  'Sample Survey':'This would fit when participants provide self-reported information by answering questions.',
+  'Observational study':'This would fit when researchers observe naturally occurring variables without imposing a treatment.',
+  'Experiment':'This would fit when researchers deliberately impose a treatment or condition and compare outcomes.',
+  'Cluster Sample':'This would fit when entire randomly selected groups are included: ALL FROM SOME groups.',
+  'Stratified sample':'This would fit when some individuals are randomly selected from every subgroup: SOME FROM ALL groups.',
+  'Systematic sample':'This would fit when a random start is followed by selecting every nth individual.',
+  'Simple random sample':'This would fit when selection is made entirely by chance without first dividing the population into groups.',
+  'Random sampling':'Random sampling concerns who enters the sample, not which treatment group a participant receives.',
+  'Randomization':'Randomization concerns which experimental group or treatment a participant receives.',
+  'Single-blind':'This means participants do not know their treatment assignment, while interacting researchers may know.',
+  'Double-blind':'This means both participants and interacting researchers do not know treatment assignments.',
+  'Control group':'A control group provides a comparison baseline; it is not a description of who knows the treatment assignment.',
+  'Replication':'Replication uses enough observations or repeats a study; it is not a blinding condition.',
+  'Sampling bias':'This fits when the selection process systematically overrepresents or underrepresents parts of the population.',
+  'Response bias':'This fits when people already in the sample give inaccurate or distorted answers.',
+  'Non-response bias':'This fits when selected individuals fail or refuse to respond and differ systematically from responders.',
+  'Voluntary response bias':'This fits when people choose themselves into the responding sample and strong opinions may be overrepresented.',
+  'Loaded question':'This fits when the wording itself pushes respondents toward a particular answer.',
+  'Perceived lack of anonymity':'This fits when fear that an answer can be identified changes what a participant reports.',
+  'Self-interest study':'This fits when the researcher or sponsor has a personal or financial stake in a favorable result.',
+  'Sampling frame error':'This fits when the list used to draw the sample does not cover the entire target population.',
+  'Convenience sample':'This fits when the researcher selects people because they are easiest to reach.',
+  'Volunteer sample':'This fits when individuals select themselves to participate.',
+  'Fabricating data sets':'This means inventing observations or results that were never actually collected.',
+  'Altering existing data':'This means changing values that were actually collected.',
+  'Intentionally omitting relevant data':'This means removing valid inconvenient observations to shape the conclusion.',
+  'Duplicating data':'This means copying observations and counting them as if they were new independent data.',
+  'Legitimate data exclusion':'This would require a defensible, transparent rule applied consistently rather than removing data because the result is inconvenient.',
+  'Positive correlation':'This describes a linear trend in which values tend to rise together.',
+  'Negative correlation':'This describes a linear trend in which one variable tends to decrease as the other increases.',
+  'No correlation':'This fits when the scatterplot has no discernible pattern.',
+  'Nonlinear relationship':'This fits when the variables show a clear curved or non-straight pattern.',
+  'Strong positive relationship':'This requires both a positive direction and points that lie close to the overall linear pattern.',
+  'Weak positive relationship':'This requires a positive direction with points spread widely around the overall pattern.',
+  'Strong negative relationship':'This requires a negative direction and points that lie close to the overall pattern.',
+  'Outlier':'An outlier is one point that lies noticeably away from the overall scatterplot pattern.',
+  'Confounding variable':'A confounding variable is associated with both the explanatory and response variables and can distort their apparent relationship.',
+  'Response variable':'The response variable is the measured outcome.',
+  'Explanatory variable':'The explanatory variable is used to explain or predict changes in the response variable.',
+  'A causal relationship':'A causal relationship requires evidence that a change in one variable produces an effect in the other; association alone is not enough.',
+  'A strong association':'A scatterplot can support a strong association even when it cannot establish causation.',
+  'The effect must be large':'Statistical significance does not tell you that the effect is large.',
+  'The study must be unbiased':'Statistical significance does not prove that the sampling or study design is unbiased.',
+  'The result proves the hypothesis with certainty':'Statistical significance does not prove a hypothesis with certainty.',
+  'The effect must be educationally important':'A statistically significant result can still be too small to matter in practice.',
+  'The study proves causation':'Statistical significance by itself does not establish a causal relationship.',
+  'The result must be due to sampling bias':'A small effect does not automatically imply sampling bias.',
+  'The use of a 3-D perspective distorts the display':'This would fit a tilted or three-dimensional display, not a graph whose main distortion comes from the axis scale.',
+  'The sample size is too small to support the graph':'Sample size concerns the reliability of estimates; it does not explain a visual exaggeration created by the axis.',
+  'The data were duplicated':'Duplicating data changes the research record; it is different from visually exaggerating real values.',
+  'Increase the sample size':'This directly reduces the influence of random variation when the main problem is an extremely small sample.',
+  'Use a different sampling frame':'This would address an incomplete or inappropriate list used for selection, not merely a very small sample.',
+  'Add a placebo group':'A placebo can help separate treatment effects from expectations, but it does not fix the instability of a six-person sample.',
+  'Use a double-blind design':'Blinding can reduce expectation effects, but it does not fix the random variation caused by an extremely small sample.'
+};
+function d772ChoiceCoach(option){
+  return D772_CHOICE_COACH[option]||'This choice would require a different defining feature than the one described in the scenario.';
+}
+
 function d772Questions(sourceId='d772-master-section-1'){
   const selected=[
     ...D772_WGU_CHECKS.filter(x=>x.lesson!==2),
@@ -261,6 +330,8 @@ function d772Questions(sourceId='d772-master-section-1'){
       oaStyle:true,
       adaptive:true,
       questionStyle:'wgu-course-scenario',
+      visual:D772_VISUALS[x.concept]?Object.assign({},D772_VISUALS[x.concept]):null,
+      choiceCoach:Object.fromEntries((x.options||[]).map(o=>[o,d772ChoiceCoach(o)])),
       learningPathLessonId:meta.id,
       learningPathLessonTitle:meta.title,
       learningPathSectionId:D772_SECTION_ID
@@ -462,5 +533,5 @@ function build(text,opts){
   };
 }
 
-window.MajickQuestionBuilder={TARGET,build,sentenceList,keyWords,vocabulary,passages,d772Questions,isLowValueMetaQuestion,D772_SCENARIO_BANK,D772_WGU_CHECKS,D772_WGU_BIAS_CHECKS,D772_WGU_TERMS};
+window.MajickQuestionBuilder={TARGET,build,sentenceList,keyWords,vocabulary,passages,d772Questions,isLowValueMetaQuestion,D772_SCENARIO_BANK,D772_WGU_CHECKS,D772_WGU_BIAS_CHECKS,D772_WGU_TERMS,D772_VISUALS,D772_CHOICE_COACH};
 })();
