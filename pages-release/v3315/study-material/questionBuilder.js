@@ -94,7 +94,7 @@ const D772_SCENARIO_BANK=[
 function d772Questions(sourceId='d772-master-section-1'){
   return D772_SCENARIO_BANK.map((x,i)=>{
     const meta=D772_LESSONS[x.lesson];
-    const why=x.why+' WGU clue: '+x.clue;
+    const why='What WGU is testing: '+String(x.why||'').replace(/^WGU is testing\s*/i,'')+' Clue to notice: '+x.clue;
     return {
       id:'d772_wgu_'+x.lesson+'_'+slug(x.concept)+'_'+i,
       topicId:'d772-'+slug(x.concept),
