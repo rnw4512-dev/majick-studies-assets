@@ -217,8 +217,26 @@ D772_WGU_CHECKS.push(
 );
 
 
+const D772_WGU_BIAS_CHECKS=[
+  d772Item(2,'response bias',3,'A college professor wants to know how much time students believe is necessary to complete assigned homework each week. All students are required to complete the survey during class. Which type of bias is most likely present in this scenario?',['Loaded question','Response bias','Self-interest study','Non-response bias'],'Response bias','WGU is testing whether participants may provide inaccurate answers because of the setting or pressure created by the person collecting the data.','The concern is the accuracy of the responses, not who was selected.'),
+  d772Item(2,'self-interest study',3,'A company that sells a weight-loss supplement conducts a study and concludes that its own product is highly effective. Which type of bias is most likely present in this scenario?',['Non-response bias','Loaded question','Self-interest study','Response bias'],'Self-interest study','WGU is testing whether the researcher or sponsor has a personal or financial stake in the outcome.','The organization benefits if the study reaches a favorable conclusion.'),
+  d772Item(2,'voluntary response bias',3,'A campaign emails a poll to potential voters and asks recipients to choose whether to respond. Which type of bias is most likely present in this scenario?',['Sampling bias','Voluntary response bias','Non-response bias','Loaded question'],'Voluntary response bias','WGU is testing self-selection. People with stronger opinions may be more likely to choose to participate.','People decide for themselves whether to enter the responding group.'),
+  d772Item(2,'lack of anonymity',3,'Employees are asked how they feel about their supervisor’s leadership style while the supervisor is present in the room. Which type of bias is most likely present in this scenario?',['Perceived lack of anonymity','Self-interest study','Loaded question','Sampling bias'],'Perceived lack of anonymity','WGU is testing whether fear of identification can influence what participants report.','The setting may make employees feel that honest criticism can be traced back to them.'),
+  d772Item(2,'non-response bias',3,'A survey about a sensitive health topic has a low response rate because many selected participants choose not to respond. Which type of bias is most likely present in this scenario?',['Self-interest study','Non-response bias','Response bias','Loaded question'],'Non-response bias','WGU is testing what happens when selected individuals do not respond.','They were selected for the survey but failed or refused to participate.'),
+  d772Item(2,'loaded question',3,'A survey asks, “Do you believe people should continue eating meat even though it leads to the suffering of helpless animals?” Which type of bias is most likely present in this scenario?',['Non-response bias','Self-interest study','Loaded question','Response bias'],'Loaded question','WGU is testing whether the wording pushes respondents toward a particular answer.','Emotionally charged wording signals a loaded question.'),
+  d772Item(2,'sampling bias',3,'A study of a new weight-loss program recruits participants only from a local gym. Which type of bias is most likely present in this scenario?',['Response bias','Sampling bias','Voluntary response bias','Non-response bias'],'Sampling bias','WGU is testing whether the selected sample is representative of the target population.','Gym members may differ systematically from the broader population.'),
+  d772Item(2,'sampling frame error',3,'A university wants to survey all students but chooses its sample from a housing directory that lists only students who live on campus. Which type of problem is most likely present?',['Sampling frame error','Non-response bias','Response bias','Self-interest study'],'Sampling frame error','WGU is testing whether the list used to select the sample covers the full target population.','Students who live off campus cannot be selected from the sampling frame.'),
+  d772Item(2,'convenience sample',3,'A researcher wants opinions from shoppers at a mall and surveys only people standing near the researcher because they are easiest to reach. Which sampling problem is most likely present?',['Convenience sample','Voluntary response bias','Non-response bias','Sampling frame error'],'Convenience sample','WGU is testing whether participants were chosen because they were easy to access.','The researcher selects whoever is most convenient to reach.'),
+  d772Item(2,'response bias',4,'A survey asks participants how often they exercise. Some participants report exercising more often than they actually do because they want to appear healthier. Which type of bias is most likely present?',['Sampling bias','Response bias','Non-response bias','Voluntary response bias'],'Response bias','WGU is testing inaccurate answers from people who are already part of the sample.','Social desirability changes the reported answer.')
+];
+
+
 function d772Questions(sourceId='d772-master-section-1'){
-  return D772_WGU_CHECKS.map((raw,i)=>{
+  const selected=[
+    ...D772_WGU_CHECKS.filter(x=>x.lesson!==2),
+    ...D772_WGU_BIAS_CHECKS
+  ];
+  return selected.map((raw,i)=>{
     const x=wguQuestionLanguage(raw);
     const meta=D772_LESSONS[x.lesson];
     const why='WGU terminology: '+x.wguTerm+'. What WGU is testing: '+String(x.why||'').replace(/^WGU is testing\s*/i,'')+' WGU clue to notice: '+x.clue;
@@ -444,5 +462,5 @@ function build(text,opts){
   };
 }
 
-window.MajickQuestionBuilder={TARGET,build,sentenceList,keyWords,vocabulary,passages,d772Questions,isLowValueMetaQuestion,D772_SCENARIO_BANK,D772_WGU_CHECKS,D772_WGU_TERMS};
+window.MajickQuestionBuilder={TARGET,build,sentenceList,keyWords,vocabulary,passages,d772Questions,isLowValueMetaQuestion,D772_SCENARIO_BANK,D772_WGU_CHECKS,D772_WGU_BIAS_CHECKS,D772_WGU_TERMS};
 })();
