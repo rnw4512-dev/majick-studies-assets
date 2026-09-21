@@ -2,7 +2,7 @@
 'use strict';
 if(!window.MajickLearningLab||!window.MajickMaterialStore)return;
 
-const VERSION='3.3.31';
+const VERSION='3.3.32';
 const D772_SECTION_ONE={
   id:'d772-section-1',
   title:'Section 1: Assessing Research and Data Credibility',
@@ -42,7 +42,7 @@ const D772_SECTION_ONE_CONTENT={
       {title:'Population, sample, individuals, variables, and data',text:'Population means the entire group of interest; sample means the smaller group actually studied. A parameter describes a population, while a statistic describes a sample. Individuals are the people or objects described by the data. Variables are characteristics measured on those individuals, and data are the recorded values. Quantitative variables are meaningful numerical measurements; categorical variables are labels or groups.'},
       {title:'Random sampling methods',text:'Simple random sampling selects entirely by chance. Stratified sampling takes SOME FROM ALL subgroups. Cluster sampling takes ALL FROM SOME randomly selected groups. Systematic sampling chooses a random starting point and then every nth individual. Random sampling decides WHO enters the sample.'},
       {title:'Observational studies, surveys, and experiments',text:'Observational studies measure variables as they naturally occur. A sample survey is an observational study based on self-reported answers. An experiment deliberately imposes a treatment. The explanatory variable may explain or predict the outcome; the response variable is the measured outcome.'},
-      {title:'Strong experimental design',text:'Randomization assigns experimental units to treatments by chance. Replication uses enough observations or repeated studies. A control group gives a comparison baseline. A placebo is inactive; the placebo effect is a response caused by expectation. Single-blind means participants do not know treatment assignment; double-blind means participants and interacting researchers do not know. Random assignment decides WHERE participants go after they enter the study.'}
+      {title:'Strong experimental design',text:'Randomization assigns experimental units to treatments by chance. Replication uses enough observations or repeated studies. A control group gives a comparison baseline. A placebo is inactive; the placebo effect is a response caused by expectation. Single-blind means participants do not know treatment assignment; double-blind means participants and interacting researchers do not know. Randomization (random assignment) decides WHERE participants go after they enter the study.'}
     ],
     vocab:[
       ['Population','The entire group of individuals or objects the researcher wants to study.'],
@@ -54,19 +54,19 @@ const D772_SECTION_ONE_CONTENT={
       ['Quantitative variable','A variable whose values are meaningful numerical measurements.'],
       ['Categorical variable','A variable whose values are labels or categories.'],
       ['Simple random sample','A random sample in which every possible same-size subset has an equal chance of selection.'],
-      ['Stratified sample','Divide into strata and randomly sample some individuals from every stratum.'],
-      ['Cluster sample','Randomly select some natural groups and include everyone in the chosen groups.'],
-      ['Systematic sample','Choose a random start and then select every nth individual.'],
+      ['Stratified sampling','Divide the population into strata based on characteristics, then take a random sample from each stratum.'],
+      ['Cluster sampling','Divide the population into naturally occurring clusters, randomly choose a few clusters, then include everyone in the selected clusters.'],
+      ['Systematic sampling','Choose a random starting point, then select every nth individual.'],
       ['Observational study','Researchers observe variables without assigning a treatment.'],
       ['Sample survey','An observational study in which people self-report answers or opinions.'],
       ['Experiment','Researchers deliberately manipulate an explanatory variable and observe the response.'],
-      ['Randomization','Assigning experimental units to treatment groups by chance.'],
-      ['Replication','Using enough observations or repeating a study so results are not driven by a few unusual cases.'],
+      ['Randomization','Assigning experimental units to groups by chance.'],
+      ['Replication','Using a sufficiently large sample and/or reproducing the study to confirm findings.'],
       ['Control group','A comparison group that does not receive the experimental treatment.'],
       ['Placebo','An inactive treatment.'],
       ['Blinding','Keeping participants and/or researchers unaware of treatment assignment.']
     ],
-    memory:['Population = ALL; Sample = SOME.','Parameter → Population; Statistic → Sample.','Stratified = SOME FROM ALL; Cluster = ALL FROM SOME.','Random sampling = WHO enters; random assignment = WHERE they go.','Researcher changes something = experiment.']
+    memory:['Population = ALL; Sample = SOME.','Parameter → Population; Statistic → Sample.','Stratified = SOME FROM ALL; Cluster = ALL FROM SOME.','RANDOM SAMPLING = WHO? RANDOMIZATION = WHERE?','Researcher changes something = experiment.']
   },
   'd772-s1-l2':{
     overview:'Lesson 2 asks whether the data-collection process systematically favored certain people, answers, or outcomes. The fastest way to diagnose bias is to identify WHERE the distortion entered the study.',
@@ -77,19 +77,19 @@ const D772_SECTION_ONE_CONTENT={
       {title:'Wording and self-interest',text:'A loaded question nudges respondents toward a particular answer through wording. A self-interest study is a credibility concern when a researcher or sponsor has something to gain from a particular result. A conflict of interest is a reason for closer scrutiny, not automatic proof that the findings are false.'}
     ],
     vocab:[
-      ['Representative sample','A sample that reasonably reflects the characteristics of the target population.'],
-      ['Non-representative sample','A biased sample that does not accurately reflect the target population.'],
-      ['Volunteer sample','A non-random sample in which people select themselves to participate.'],
+      ['Representative sample','A subset that accurately reflects characteristics of the larger population.'],
+      ['Non-representative sample','A biased sample that fails to accurately reflect the population.'],
+      ['Volunteer sample','A non-random sample in which individuals select themselves to participate.'],
       ['Voluntary response bias','Bias caused when people with strong opinions or special interest are especially likely to volunteer.'],
       ['Convenience sample','A sample chosen because the individuals are easy to reach.'],
-      ['Sampling frame','The list of potential individuals from which a sample is selected.'],
-      ['Sampling frame error','A problem in which the sampling frame does not cover the full target population.'],
+      ['Sampling frame','The list of potential individuals from which the sample is drawn.'],
+      ['Sampling frame error','Occurs when the sampling frame does not represent the entire target population.'],
       ['Sampling bias','A selection problem that gives some population members a systematically different chance of inclusion.'],
       ['Non-response bias','Bias caused when selected nonresponders differ systematically from responders.'],
       ['Response bias','Inaccurate answers caused by pressure, misunderstanding, memory, fear, or other response effects.'],
       ['Perceived lack of anonymity','Response bias caused by fear that an honest answer can be linked back to the respondent.'],
       ['Loaded question','Question wording that pushes respondents toward a particular answer.'],
-      ['Self-interest study','A study in which the researcher or sponsor has a stake in a particular outcome.']
+      ['Self-interest study','Potential bias when researchers have a personal stake or interest in the outcome.']
     ],
     memory:['Sampling bias = wrong/unbalanced PEOPLE. Response bias = inaccurate ANSWERS.','Voluntary response = people choose themselves IN. Non-response = selected people stay OUT.','Convenience = researcher chooses easy people. Volunteer = people choose themselves.','A random sample cannot fix a bad sampling frame.']
   },
@@ -102,28 +102,28 @@ const D772_SECTION_ONE_CONTENT={
       {title:'Misrepresentation, fabrication, and falsification',text:'Misrepresentation presents information in a way likely to produce an incorrect conclusion. Fabrication invents data or results that never existed. Falsification manipulates the research record by altering values, changing instruments without disclosure, misreporting subject counts, intentionally selecting a biased sample, omitting inconvenient valid data, or duplicating observations. Transparent pre-established exclusion rules are different from secretly deleting results because they hurt a preferred conclusion.'}
     ],
     vocab:[
-      ['Statistical significance','Evidence that an observed result is unlikely to be explained by random chance alone under the statistical method used.'],
-      ['Practical significance','Whether the size of an effect is large or meaningful enough to matter in the real world.'],
+      ['Statistical significance','A claim that a set of observed data or an event is unlikely to have occurred by chance.'],
+      ['Practical significance','Whether the effect is large or meaningful enough to matter in practice.'],
       ['Misrepresenting data','Presenting real or partly real data in a way likely to mislead viewers or encourage an incorrect conclusion.'],
-      ['Fabricating data','Making up data or results that were never actually observed.'],
-      ['Falsifying data','Changing, omitting, manipulating, or otherwise distorting the research record.'],
+      ['Fabricating data sets','Making up data without actually obtaining those observations.'],
+      ['Falsifying data','Deliberately creating, changing, omitting, duplicating, or otherwise manipulating the research record.'],
       ['Truncated axis','A graph axis that begins close to the observed values rather than an appropriate baseline, potentially exaggerating visual differences.'],
-      ['Duplicating data','Counting copied observations as if they were new independent observations.']
+      ['Duplicating data','Copying observations and counting them multiple times to artificially inflate sample size.']
     ],
     memory:['Statistically significant = unlikely to be chance; practically significant = large or meaningful enough to matter.','Misrepresentation can use real data misleadingly; falsification changes or invents the research record.','Small sample = more random bounce. Large sample does not cure bias.','Bars compare length; pictures can trick your eye into comparing area.']
   },
   'd772-s1-l4':{
     overview:'Lesson 4 connects the study design to the conclusion you are allowed to make. The central rule is that association is not the same as causation, and a scatterplot shows a relationship but not why it exists.',
     teach:[
-      {title:'Association vs. causation',text:'Association means two variables are related. A causal relationship means a change in one variable directly produces an effect in the other. Observational studies can support association but cannot establish causation by themselves. A well-designed randomized experiment can support a causal conclusion when alternative explanations are appropriately controlled.'},
+      {title:'Association vs. causation',text:'Association means two variables are related. A causal relationship means a change in one variable directly produces an effect in the other. Observational studies can support association but cannot establish causation by themselves. A well-designed experiment can support a causal conclusion when the experiment controls alternative explanations.'},
       {title:'Confounding variables',text:'A confounding variable is related to both the explanatory and response variables and can make them appear directly connected. Ask whether a third variable could explain why the two measured variables occur together. Examples include sun exposure in sunscreen/skin-cancer data and season or temperature in ice-cream-sales/shark-attack data.'},
       {title:'Scatterplot shape, trend, strength, and outliers',text:'A scatterplot displays the relationship between two quantitative variables. Describe SHAPE first: linear, nonlinear, or no pattern. For a linear relationship describe TREND as positive or negative. Describe STRENGTH by how tightly the points follow the pattern. Identify OUTLIERS that sit noticeably away from the overall pattern. Nonlinear does not mean no relationship.'},
       {title:'Correlation still does not prove cause',text:'Even a very strong positive or negative scatterplot pattern does not prove that one variable causes the other. Confounding, reverse direction, or coincidence can produce correlation. Causal reasoning comes from the study design, especially manipulation, comparison/control, and random assignment.'}
     ],
     vocab:[
       ['Association','A relationship between two variables.'],
-      ['Causal relationship','A relationship in which a change in one variable directly produces an effect in another.'],
-      ['Confounding variable','A variable associated with both the explanatory and response variables that can distort the apparent relationship.'],
+      ['Causal relationship','A relationship in which one event or variable causes an effect on the other.'],
+      ['Confounding variable','A variable not accounted for that may influence the relationship because it is associated with both the explanatory and response variable.'],
       ['Scatterplot','A graph that displays the relationship between two quantitative variables.'],
       ['Linear relationship','A point pattern that roughly follows a straight line.'],
       ['Nonlinear relationship','A clear relationship whose pattern is curved or otherwise not well described by a straight line.'],
