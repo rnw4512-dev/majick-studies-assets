@@ -39,9 +39,30 @@ function ensureCourses(){
   if(!st.activeCourse||!st.courses[st.activeCourse])st.activeCourse=Object.keys(st.courses)[0]||st.activeCourse||'D755';
   return st;
 }
+function xpCandidates(st,account){
+  const values=[];
+  const add=v=>{const n=Number(v);if(Number.isFinite(n)&&n>=0)values.push(n)};
+  add(account?.xp);
+  add(account?.xpHighWater);
+  add(account?.lifetimeXpHighWater);
+  add(account?.progressMergeV3323?.mergedXp);
+  add(account?.balanceRecoveryV3322?.restoredTo?.xp);
+  add(st?.xp);
+  add(st?.totalXp);
+  add(st?.legacy?.xp);
+  add(st?.legacy?.totalXp);
+  for(const row of Object.values(st?.progress||{})){
+    if(row&&typeof row==='object')add(row.xp);
+  }
+  return values;
+}
 function initialSharedValue(key){
   const st=exposeState();
   const account=st?.majickAccount;
+  if(key==='xp'){
+    const values=xpCandidates(st,account);
+    return values.length?Math.max(...values):0;
+  }
   if(account&&Object.prototype.hasOwnProperty.call(account,key)){
     const n=Number(account[key]);
     if(Number.isFinite(n))return n;
@@ -137,12 +158,27 @@ function ensureAccount(){
   const st=exposeState();
   if(!st)return null;
   st.majickAccount=(st.majickAccount&&typeof st.majickAccount==='object'&&!Array.isArray(st.majickAccount))?st.majickAccount:{};
-  for(const key of SHARED)st.majickAccount[key]=initialSharedValue(key);
-  applyBalanceRecovery(st,st.majickAccount);
-  applyProgressMergeV3323(st,st.majickAccount);
+  const account=st.majickAccount;
+  const xpBefore=plainNumber(account.xp);
+  const recoveredXp=initialSharedValue('xp');
+  account.xp=Math.max(xpBefore,recoveredXp,plainNumber(account.xpHighWater),plainNumber(account.lifetimeXpHighWater));
+  for(const key of SHARED.filter(k=>k!=='xp'))account[key]=initialSharedValue(key);
+  applyBalanceRecovery(st,account);
+  applyProgressMergeV3323(st,account);
+  account.xpHighWater=Math.max(plainNumber(account.xpHighWater),plainNumber(account.xp));
+  account.lifetimeXpHighWater=account.xpHighWater;
+  if(account.xp>xpBefore&&xpBefore>0){
+    account.xpHighWaterRecoveryV3329={
+      applied:true,
+      appliedAt:new Date().toISOString(),
+      before:xpBefore,
+      restoredTo:plainNumber(account.xp),
+      reason:'recovered highest legitimate lifetime Majick XP from persisted history'
+    };
+  }
   reconcileHatchedGuardians(st);
-  st.majickAccount.schemaVersion=Math.max(4,plainNumber(st.majickAccount.schemaVersion));
-  return st.majickAccount;
+  account.schemaVersion=Math.max(5,plainNumber(account.schemaVersion));
+  return account;
 }
 function bindSharedField(row,key){
   const desc=Object.getOwnPropertyDescriptor(row,key);
@@ -152,7 +188,15 @@ function bindSharedField(row,key){
   Object.defineProperty(row,key,{
     enumerable:true,configurable:true,
     get:getter,
-    set(v){const a=ensureAccount();if(a)a[key]=plainNumber(v)}
+    set(v){
+      const a=ensureAccount();if(!a)return;
+      const next=plainNumber(v);
+      if(key==='xp'){
+        a.xp=Math.max(plainNumber(a.xp),plainNumber(a.xpHighWater),next);
+        a.xpHighWater=Math.max(plainNumber(a.xpHighWater),plainNumber(a.xp));
+        a.lifetimeXpHighWater=a.xpHighWater;
+      }else a[key]=next;
+    }
   });
 }
 function normalizeProgressRow(row,cid=''){
@@ -209,8 +253,8 @@ function install(){
   // One compatibility surface for all legacy code. Shared values route to majickAccount.
   window.prog=safeProg;
   window.course=safeCourse;
-  window.MajickStateCore={version:4,SHARED,BALANCE_RECOVERY_V3322,PROGRESS_MERGE_V3323,stateRef,exposeState,blankProgress,normalizeProgressRow,normalizeAll,ensureAccount,applyBalanceRecovery,applyProgressMergeV3323,reconcileHatchedGuardians,guardianProgressSignature,recoverySignature,safeProg,safeCourse,install};
-  document.documentElement.dataset.majickStateCore='4';
+  window.MajickStateCore={version:5,SHARED,BALANCE_RECOVERY_V3322,PROGRESS_MERGE_V3323,stateRef,exposeState,blankProgress,normalizeProgressRow,normalizeAll,ensureAccount,applyBalanceRecovery,applyProgressMergeV3323,reconcileHatchedGuardians,guardianProgressSignature,recoverySignature,safeProg,safeCourse,install};
+  document.documentElement.dataset.majickStateCore='5';
   return true;
 }
 if(!install())window.addEventListener('DOMContentLoaded',install,{once:true});
