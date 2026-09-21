@@ -39,7 +39,7 @@ try{
   await assert(boot.hasRender,'render() unavailable after boot');
   await assert(boot.hasState,'MajickStateCore unavailable after boot');
   await assert(boot.hasRegistry,'Guardian registry unavailable after boot');
-  await assert(boot.version==='3.3.30-xp-high-water','wrong deployed runtime version: '+boot.version);
+  await assert(boot.version==='3.3.31-wgu-concept-practice','wrong deployed runtime version: '+boot.version);
   await assert(boot.guardians.length>=10,'baseline Guardian registry unexpectedly shrank');
   await page.waitForSelector('.v3327Home',{timeout:10000});
   await assert(await page.locator('.v3327PortalHero').count()===1,'Moonlit Collegium did not render on the first app load');
@@ -443,6 +443,27 @@ try{
   await assert(d772Path.reviewMeta?.number==null&&d772Path.reviewMeta?.title==='Section 1: Summary and Test','Section 1 review was incorrectly numbered as Lesson 5');
   await assert(!d772Path.hasSection2,'D772 incorrectly exposes a Section 2');
   await assert(d772Path.contentCount===5,'built-in D772 Section 1 master content is incomplete');
+
+  const d772QuestionQuality=await page.evaluate(async()=>{
+    const built=MajickQuestionBuilder.d772Questions('smoke-d772');
+    await MajickMaterialStore.syncQuestions(S.courses.D772,'D772');
+    const bank=S.courses.D772.questionBank||[];
+    const bad=/according to your notes|from your notes|concept-and-evidence pairing|concept and evidence pairing|strongest evidence for the concept|best completes this statement/i;
+    return {
+      builtCount:built.length,
+      builtBad:built.filter(q=>bad.test(q.prompt||'')).length,
+      rationaleMissing:built.filter(q=>!/What WGU is testing:/i.test(q.why||'')||!/Clue to notice:/i.test(q.why||'')).length,
+      styleBad:built.filter(q=>q.questionStyle!=='wgu-concept-scenario').length,
+      bankCount:bank.length,
+      bankBad:bank.filter(q=>bad.test(q.prompt||'')).length,
+      nonCurated:bank.filter(q=>!String(q.id||'').startsWith('d772_wgu_')).length
+    };
+  });
+  await assert(d772QuestionQuality.builtCount>=40,'D772 curated WGU-style bank is too small');
+  await assert(d772QuestionQuality.builtBad===0&&d772QuestionQuality.bankBad===0,'D772 still contains note-matching/meta questions');
+  await assert(d772QuestionQuality.rationaleMissing===0,'D772 rationales do not explain what WGU is testing and the clue to notice');
+  await assert(d772QuestionQuality.styleBad===0&&d772QuestionQuality.nonCurated===0,'D772 active bank is not exclusively the curated WGU concept/scenario bank');
+  await assert(d772QuestionQuality.bankCount===d772QuestionQuality.builtCount,'D772 active bank does not match the curated bank');
   await page.waitForSelector('#courseTutorPath .pathSection',{timeout:10000});
   await assert(await page.locator('#courseTutorPath .pathSection').count()===1,'D772 Course Path rendered repeated/extra sections');
   await assert(await page.getByText('Section 1: Assessing Research and Data Credibility',{exact:true}).count()>=1,'D772 Section 1 path is not visible');
