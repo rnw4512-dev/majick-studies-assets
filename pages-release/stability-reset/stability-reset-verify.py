@@ -73,6 +73,11 @@ for marker in ("VERSION='3.3.38'","Teach → Visual → Worked Example","Arcane 
     if marker not in learn: fail('Learn Mode missing '+marker)
 if 'learn-mode.js?v=3338' not in main or 'learn-mode.css?v=3338' not in main:
     fail('V3.3.38 Learn Mode assets are not installed in index.html')
+learn=(site/'learn-mode.js').read_text(encoding='utf-8')
+for marker in ("VERSION='3.3.38'","Teach → Visual → Worked Example","Arcane Anchor Wall","ADAPTIVE REPAIR INSERTED","CAN I DO THIS?"):
+    if marker not in learn: fail('Learn Mode missing '+marker)
+if 'learn-mode.js?v=3338' not in main or 'learn-mode.css?v=3338' not in main:
+    fail('V3.3.38 Learn Mode assets are not installed in index.html')
 home=(site/'magical-college-home.js').read_text(encoding='utf-8')
 for marker in ("window.MajickCollegeDashboard","MOONLIT COLLEGIUM","ACADEMIC HALL","GUARDIAN HOUSE","ARCANE STUDENT RECORD"):
     if marker not in home: fail('Moonlit Collegium home missing '+marker)
