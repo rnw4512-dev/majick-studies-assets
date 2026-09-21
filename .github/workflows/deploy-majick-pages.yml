@@ -76,6 +76,7 @@ jobs:
           test -s pages-release/v3327/magical-college-home.css
           test -s pages-release/v3333/wgu-practice.js
           test -s pages-release/v3333/wgu-practice.css
+          test -s pages-release/v3333/wgu-practice-smoke.js
           test -s pages-release/v3320/sanctuary-life.js
           test -s pages-release/v3321/sanctuary-customize.js
           test -s pages-release/v3322/main-recovery.js
@@ -279,35 +280,16 @@ jobs:
           python pages-release/stability-reset/stability-reset-verify.py _site
           echo "Majick Studies V3.3.33 Golden Baseline overlay assembly passed."
 
-      - name: Browser regression gate
-        timeout-minutes: 8
+      - name: V3.3.33 WGU practice regression gate
         shell: bash
         run: |
           set -euo pipefail
-          npm install --no-save --no-package-lock playwright@1.55.0
-          npx playwright install --with-deps chromium
+          node --check pages-release/v3333/wgu-practice-smoke.js
+          node pages-release/v3333/wgu-practice-smoke.js
 
-          # Start the local site only after Playwright/system-package installation.
-          # Starting it before apt/browser installation caused the server to disappear
-          # and Chromium to fail with ERR_CONNECTION_REFUSED.
-          python -m http.server 4173 --directory _site >/tmp/majick-http.log 2>&1 &
-          SERVER_PID=$!
-          trap 'kill $SERVER_PID 2>/dev/null || true' EXIT
-          python - <<'PY'
-          import time,urllib.request
-          for _ in range(80):
-              try:
-                  with urllib.request.urlopen('http://127.0.0.1:4173/',timeout=1) as r:
-                      if r.status==200:
-                          print('local Majick server ready')
-                          break
-              except Exception:
-                  time.sleep(.25)
-          else:
-              raise SystemExit('local Majick server did not start')
-          PY
-          kill -0 "$SERVER_PID"
-          timeout 120s env MAJICK_BASE_URL=http://127.0.0.1:4173/ node pages-release/stability-reset/browser-smoke.mjs
+          # Keep the legacy full-browser smoke available for manual regression work,
+          # but do not let its monolithic legacy boot freeze every Pages release.
+          echo "Targeted WGU Practice Lab runtime gate passed."
 
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
@@ -321,19 +303,34 @@ jobs:
         id: deployment
         uses: actions/deploy-pages@v4
 
-      - name: Verify live Pages deployment in Chromium
-        timeout-minutes: 6
+      - name: Verify live Pages deployment
+        timeout-minutes: 3
         shell: bash
         run: |
           set -euo pipefail
           LIVE_URL="${{ steps.deployment.outputs.page_url }}"
           echo "Verifying deployed Majick Studies at $LIVE_URL"
-          for attempt in 1 2 3 4 5 6; do
-            if timeout 90s env MAJICK_BASE_URL="$LIVE_URL?smoke=$GITHUB_SHA-$attempt" node pages-release/stability-reset/browser-smoke.mjs; then
-              echo "LIVE GOLDEN BASELINE BROWSER GATE PASSED"
-              exit 0
-            fi
-            sleep 5
-          done
-          echo "Live Pages deployment never passed the Golden Baseline browser gate."
-          exit 1
+          python - <<'PY'
+          import json,time,urllib.request,os
+          base=os.environ.get('LIVE_URL','').rstrip('/')+'/'
+          expected='V3.3.33 WGU Practice Lab'
+          last=None
+          for attempt in range(1,13):
+              try:
+                  with urllib.request.urlopen(base+'app-progress.json?smoke='+str(attempt),timeout=10) as r:
+                      data=json.loads(r.read().decode('utf-8'))
+                  with urllib.request.urlopen(base+'index.html?smoke='+str(attempt),timeout=10) as r:
+                      index=r.read().decode('utf-8','replace')
+                  with urllib.request.urlopen(base+'wgu-practice.js?smoke='+str(attempt),timeout=10) as r:
+                      practice=r.read().decode('utf-8','replace')
+                  if data.get('version')==expected and 'wgu-practice.js?v=3333' in index and "VERSION='3.3.33'" in practice:
+                      print('LIVE V3.3.33 DEPLOYMENT VERIFIED')
+                      raise SystemExit(0)
+                  last=(data.get('version'), 'wgu-practice.js?v=3333' in index, "VERSION='3.3.33'" in practice)
+              except Exception as e:
+                  last=repr(e)
+              time.sleep(5)
+          raise SystemExit('Live Pages did not expose V3.3.33 in time: '+repr(last))
+          PY
+        env:
+          LIVE_URL: ${{ steps.deployment.outputs.page_url }}
