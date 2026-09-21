@@ -1,9 +1,9 @@
-// Majick Studies V3.3.37 Self-Paced Course Clock — AUTHORITATIVE MAIN APP BRIDGE
+// Majick Studies V3.3.38 Learn Mode Instruction Cycle — AUTHORITATIVE MAIN APP BRIDGE
 (function(){
 'use strict';
 
-const RELEASE_LABEL='Moonlit Collegium • V3.3.37';
-const RELEASE_TITLE='Majick Studies — V3.3.37 Moonlit Collegium';
+const RELEASE_LABEL='Moonlit Collegium • V3.3.38';
+const RELEASE_TITLE='Majick Studies — V3.3.38 Moonlit Collegium';
 const registry=()=>window.MajickGuardianRegistry;
 const canonOf=type=>registry()?.get?.(type)?.canon||String(type||'').toLowerCase();
 const STAGE_SLUGS=['new-bond','apprentice','guardian','ascendant','celestial'];
@@ -329,14 +329,14 @@ function applyReleaseBadge(){
   const pill=document.querySelector('.top .pill');
   if(pill&&pill.textContent!==RELEASE_LABEL)pill.textContent=RELEASE_LABEL;
   if(document.title!==RELEASE_TITLE)document.title=RELEASE_TITLE;
-  if(document.documentElement.dataset.majickVersion!=='3.3.37-self-paced-course-clock'){
-    document.documentElement.dataset.majickVersion='3.3.37-self-paced-course-clock';
+  if(document.documentElement.dataset.majickVersion!=='3.3.38-learn-mode-instruction-cycle'){
+    document.documentElement.dataset.majickVersion='3.3.38-learn-mode-instruction-cycle';
   }
 }
 
 function showRuntimeNotice(error){
   const message=String(error?.message||error||'Unknown runtime error');
-  console.error('Majick V3.3.37 runtime error',error);
+  console.error('Majick V3.3.38 runtime error',error);
   if(document.getElementById('v3317RuntimeNotice'))return;
   try{
     const n=document.createElement('div');
@@ -372,6 +372,7 @@ if(previousRender){
       setTimeout(()=>window.MajickLearningLab?.bind?.(),0);
     }
     if(window.S?.screen==='home')setTimeout(()=>window.lfUpgradeHomeHabitat(),0);
+    if(window.S?.screen==='livinggrimoire')setTimeout(()=>window.MajickInstruction?.decorateGrimoire?.(),0);
     setTimeout(()=>{window.v3317PushGuardianLevels();window.v3321PushFurnitureState();},140);
     hydrateGeneratedQuestions();
     applyReleaseBadge();
