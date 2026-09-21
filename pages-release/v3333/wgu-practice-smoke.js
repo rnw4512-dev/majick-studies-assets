@@ -53,18 +53,25 @@ vm.runInContext(qsrc,ctx,{filename:'questionBuilder.js'});
 assert(ctx.MajickQuestionBuilder,'question builder missing');
 
 const questions=ctx.MajickQuestionBuilder.d772Questions('smoke');
-ctx.S.courses.D772.questionBank=[...questions];
+ctx.S.courses.D772.questionBank=[];
 assert(questions.length>=40,'D772 bank too small');
 assert(questions.filter(q=>q.visual).length>=7,'visual question metadata missing');
 assert(questions.every(q=>(q.options||[]).every(o=>q.choiceCoach&&typeof q.choiceCoach[o]==='string'&&q.choiceCoach[o].length>20)),'answer-choice coaching incomplete');
 
 vm.runInContext(wsrc,ctx,{filename:'wgu-practice.js'});
-assert(ctx.MajickWGUPractice?.VERSION==='3.3.34','WGU practice runtime version wrong');
+assert(ctx.MajickWGUPractice?.VERSION==='3.3.35','WGU practice runtime version wrong');
 
 ctx.S.screen='mission';
 ctx.session={type:'adaptive',opts:{label:'Old D772 session',kind:'legacy-d772'},current:{id:'notes_old_question',prompt:'old'},questions:[],review:[]};
 ctx.MajickWGUPractice.bootD772Practice();
 assert(ctx.session===null,'stale pre-Practice-Lab D772 session was not cleared on boot');
+assert(ctx.S.courses.D772.questionBank.length>=40,'WGU Practice Lab did not self-populate the D772 bank');
+
+ctx.S.screen='mission';
+ctx.session=null;
+ctx.startAdaptive();
+assert(ctx.session&&ctx.session.current,'Adaptive Practice opened without a D772 question');
+assert(String(ctx.session.current.id||'').startsWith('d772_wgu_'),'Adaptive Practice did not use the curated WGU bank');
 
 const oa=ctx.MajickWGUPractice.balancedOA();
 assert(oa.length===30,'OA must contain exactly 30 questions');
@@ -105,6 +112,6 @@ assert(/Section 1 Practice Readiness by Lesson/.test(result),'lesson readiness m
 assert(/Concepts to Review/.test(result),'concept review breakdown missing');
 assert(/practice evidence, not a prediction/i.test(result),'readiness limitation missing');
 
-assert(ctx.document.documentElement.dataset.majickWguPractice==='3.3.34','runtime dataset marker missing');
+assert(ctx.document.documentElement.dataset.majickWguPractice==='3.3.35','runtime dataset marker missing');
 console.log('V3.3.33 WGU PRACTICE SMOKE PASSED');
 console.log(JSON.stringify({questions:questions.length,visuals:questions.filter(q=>q.visual).length,oa:oa.length,lessons:new Set(oa.map(q=>q.learningPathLessonId)).size}));
