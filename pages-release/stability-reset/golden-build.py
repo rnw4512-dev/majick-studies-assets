@@ -168,8 +168,8 @@ for src_name,(dst_name,expected_hash,expected_bytes) in PINNED_MOTION.items():
 progress=site/"app-progress.json"
 if progress.exists():
     data=json.loads(progress.read_text(encoding="utf-8"))
-    data["version"]="V3.3.33 WGU Practice Lab"
-    data["learning_intelligence"]="V3.3.33 WGU Practice Lab with protected lifetime Majick XP, official D772 Section 1 terminology, select-and-submit WGU-style practice, visual graph questions, answer-choice coaching, 30-question mixed OA simulation, concept readiness results, contextual Tutor help, and universal Back navigation"
+    data["version"]="V3.3.34 WGU Practice Boot Fix"
+    data["learning_intelligence"]="V3.3.34 WGU Practice Boot Fix with protected lifetime Majick XP, official D772 Section 1 terminology, select-and-submit WGU-style practice, visual graph questions, answer-choice coaching, 30-question mixed OA simulation, concept readiness results, forced stale-mission replacement, contextual Tutor help, and universal Back navigation"
     data["sanctuary_version"]="V3.3.25 Single Guardian Visual Authority"
     data["sanctuary_home"]="Guardian needs HUD, object-aware care travel, exclusive beds, visible care inventory, safe furniture snapping"
     data["sanctuary_customization"]="personal Guardian nooks, feeding/play zones, owned furniture storage, Cozy Dorm layout preset"
@@ -191,7 +191,7 @@ html=html.replace('</head>','<link rel="stylesheet" href="./learning-lab.css?v=3
 main_tag='<script src="./v3317-main.js?v=3322-recovery"></script>'
 if main_tag not in html:
     fail("authoritative main runtime tag missing while installing recovery")
-html=html.replace(main_tag,'<script src="./learning-lab.js?v=3319"></script>\\n<script src="./learning-plan.js?v=3324"></script>\\n<script src="./course-tutor.js?v=3326"></script>\\n'+main_tag+'\\n<script src="./magical-college-home.js?v=3327"></script>\\n<script src="./v3322-main-recovery.js?v=3322"></script>\\n<script src="./wgu-practice.js?v=3333"></script>',1)
+html=html.replace(main_tag,'<script src="./learning-lab.js?v=3319"></script>\\n<script src="./learning-plan.js?v=3324"></script>\\n<script src="./course-tutor.js?v=3326"></script>\\n<script src="./wgu-practice.js?v=3334"></script>\\n'+main_tag+'\\n<script src="./magical-college-home.js?v=3327"></script>\\n<script src="./v3322-main-recovery.js?v=3322"></script>',1)
 index.write_text(html,encoding="utf-8")
 
 san_index=site/"sanctuary"/"index.html"
