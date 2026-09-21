@@ -295,6 +295,7 @@ jobs:
         uses: actions/configure-pages@v5
 
       - name: Upload Pages artifact
+        id: pages_artifact
         uses: actions/upload-pages-artifact@v4
         with:
           path: _site
@@ -305,11 +306,17 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
-          # Prior runs were cancelled while deploy-pages was already active.
-          # Clear those build versions so a stale Pages deployment cannot block the new release.
-          for BUILD in             6a777abd14ec4fece39ee855bae3556f5d22158d             04d0bcafc01f258bcf33f1fde7e268dc75a89a7c
+          for BUILD in \
+            6a777abd14ec4fece39ee855bae3556f5d22158d \
+            04d0bcafc01f258bcf33f1fde7e268dc75a89a7c \
+            e25dd73d058f6bce22eb3297b6ab174848933523
           do
-            CODE="$(curl -sS -o /tmp/pages-cancel.json -w '%{http_code}'               -X POST               -H "Accept: application/vnd.github+json"               -H "Authorization: Bearer $GH_TOKEN"               -H "X-GitHub-Api-Version: 2026-03-10"               "https://api.github.com/repos/${GITHUB_REPOSITORY}/pages/deployments/${BUILD}/cancel" || true)"
+            CODE="$(curl -sS -o /tmp/pages-cancel.json -w '%{http_code}' \
+              -X POST \
+              -H "Accept: application/vnd.github+json" \
+              -H "Authorization: Bearer $GH_TOKEN" \
+              -H "X-GitHub-Api-Version: 2026-03-10" \
+              "https://api.github.com/repos/${GITHUB_REPOSITORY}/pages/deployments/${BUILD}/cancel" || true)"
             echo "Pages cancel ${BUILD}: HTTP ${CODE}"
             case "$CODE" in
               204|404|409|422) ;;
@@ -317,39 +324,107 @@ jobs:
             esac
           done
 
-      - name: Deploy to GitHub Pages
-        id: deployment
-        timeout-minutes: 3
-        uses: actions/deploy-pages@v4
+      - name: Request Pages OIDC token
+        id: pages_oidc
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const token = await core.getIDToken()
+            core.setSecret(token)
+            core.setOutput('token', token)
 
-      - name: Verify live Pages deployment
-        timeout-minutes: 3
+      - name: Create GitHub Pages deployment
+        id: deployment
         shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          OIDC_TOKEN: ${{ steps.pages_oidc.outputs.token }}
+          ARTIFACT_ID: ${{ steps.pages_artifact.outputs.artifact_id }}
         run: |
           set -euo pipefail
-          LIVE_URL="${{ steps.deployment.outputs.page_url }}"
-          echo "Verifying deployed Majick Studies at $LIVE_URL"
+          test -n "$ARTIFACT_ID"
+          test -n "$OIDC_TOKEN"
           python - <<'PY'
-          import json,time,urllib.request,os
-          base=os.environ.get('LIVE_URL','').rstrip('/')+'/'
-          expected='V3.3.33 WGU Practice Lab'
-          last=None
-          for attempt in range(1,13):
-              try:
-                  with urllib.request.urlopen(base+'app-progress.json?smoke='+str(attempt),timeout=10) as r:
-                      data=json.loads(r.read().decode('utf-8'))
-                  with urllib.request.urlopen(base+'index.html?smoke='+str(attempt),timeout=10) as r:
-                      index=r.read().decode('utf-8','replace')
-                  with urllib.request.urlopen(base+'wgu-practice.js?smoke='+str(attempt),timeout=10) as r:
-                      practice=r.read().decode('utf-8','replace')
-                  if data.get('version')==expected and 'wgu-practice.js?v=3333' in index and "VERSION='3.3.33'" in practice:
-                      print('LIVE V3.3.33 DEPLOYMENT VERIFIED')
-                      raise SystemExit(0)
-                  last=(data.get('version'), 'wgu-practice.js?v=3333' in index, "VERSION='3.3.33'" in practice)
-              except Exception as e:
-                  last=repr(e)
-              time.sleep(5)
-          raise SystemExit('Live Pages did not expose V3.3.33 in time: '+repr(last))
+          import json,os,urllib.request
+          repo=os.environ['GITHUB_REPOSITORY']
+          token=os.environ['GH_TOKEN']
+          oidc=os.environ['OIDC_TOKEN']
+          artifact=int(os.environ['ARTIFACT_ID'])
+          sha=os.environ['GITHUB_SHA']
+          payload=json.dumps({
+              'artifact_id':artifact,
+              'pages_build_version':sha,
+              'oidc_token':oidc,
+          }).encode('utf-8')
+          req=urllib.request.Request(
+              f'https://api.github.com/repos/{repo}/pages/deployments',
+              data=payload,
+              method='POST',
+              headers={
+                  'Accept':'application/vnd.github+json',
+                  'Authorization':'Bearer '+token,
+                  'X-GitHub-Api-Version':'2026-03-10',
+                  'Content-Type':'application/json',
+              },
+          )
+          with urllib.request.urlopen(req,timeout=30) as r:
+              response=json.loads(r.read().decode('utf-8'))
+          page_url=response.get('page_url') or 'https://rnw4512-dev.github.io/majick-studies-assets/'
+          status_url=response.get('status_url') or ''
+          deploy_id=response.get('id') or sha
+          print('Created Pages deployment:',deploy_id)
+          print('Pages status URL:',status_url)
+          print('Pages URL:',page_url)
+          out=os.environ['GITHUB_OUTPUT']
+          with open(out,'a',encoding='utf-8') as fh:
+              fh.write('page_url='+page_url+'\n')
+              fh.write('status_url='+status_url+'\n')
+              fh.write('deployment_id='+str(deploy_id)+'\n')
           PY
+
+      - name: Verify live Pages deployment
+        timeout-minutes: 12
+        shell: bash
         env:
           LIVE_URL: ${{ steps.deployment.outputs.page_url }}
+          STATUS_URL: ${{ steps.deployment.outputs.status_url }}
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          echo "Waiting for V3.3.33 at $LIVE_URL"
+          python - <<'PY'
+          import json,time,urllib.request,urllib.error,os
+          base=(os.environ.get('LIVE_URL') or 'https://rnw4512-dev.github.io/majick-studies-assets/').rstrip('/')+'/'
+          status_url=os.environ.get('STATUS_URL','')
+          token=os.environ.get('GH_TOKEN','')
+          expected='V3.3.33 WGU Practice Lab'
+          last=None
+          for attempt in range(1,121):
+              try:
+                  if status_url and attempt%3==1:
+                      req=urllib.request.Request(status_url,headers={
+                          'Accept':'application/vnd.github+json',
+                          'Authorization':'Bearer '+token,
+                          'X-GitHub-Api-Version':'2026-03-10',
+                      })
+                      with urllib.request.urlopen(req,timeout=10) as r:
+                          st=json.loads(r.read().decode('utf-8'))
+                      print('Pages deployment status:',st.get('status'))
+                  stamp=str(attempt)+'-'+str(int(time.time()))
+                  with urllib.request.urlopen(base+'app-progress.json?smoke='+stamp,timeout=10) as r:
+                      data=json.loads(r.read().decode('utf-8'))
+                  with urllib.request.urlopen(base+'index.html?smoke='+stamp,timeout=10) as r:
+                      index=r.read().decode('utf-8','replace')
+                  with urllib.request.urlopen(base+'wgu-practice.js?smoke='+stamp,timeout=10) as r:
+                      practice=r.read().decode('utf-8','replace')
+                  last=(data.get('version'), 'wgu-practice.js?v=3333' in index, "VERSION='3.3.33'" in practice)
+                  if last==(expected,True,True):
+                      print('LIVE V3.3.33 DEPLOYMENT VERIFIED')
+                      raise SystemExit(0)
+                  print('Live version not ready yet:',last)
+              except Exception as e:
+                  last=repr(e)
+                  print('Live check waiting:',last)
+              time.sleep(5)
+          raise SystemExit('Pages deployment was created and left active, but the live site did not expose V3.3.33 within 10 minutes: '+repr(last))
+          PY
