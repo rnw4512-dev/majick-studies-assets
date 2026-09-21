@@ -301,6 +301,7 @@ jobs:
 
       - name: Deploy to GitHub Pages
         id: deployment
+        timeout-minutes: 3
         uses: actions/deploy-pages@v4
 
       - name: Verify live Pages deployment
