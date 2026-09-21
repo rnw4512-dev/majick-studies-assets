@@ -1,6 +1,6 @@
 (()=>{
 'use strict';
-const VERSION='3.3.34';
+const VERSION='3.3.35';
 const E=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
 const LESSON_NAMES={
   'd772-s1-l1':'Lesson 1 — Understanding Data Collection Methods',
@@ -127,6 +127,41 @@ function oaResult(){
   const misses=conceptRows.filter(x=>x.correct<x.total);
   return '<div class="v3333Result"><section class="v3333ResultHero"><span class="v3333Eyebrow">SECTION 1 • OA SIMULATION COMPLETE</span><h2>'+score+'/'+total+' • '+acc+'%</h2><p>This is practice evidence, not a prediction of your OA score. Use the breakdown to decide what to review next.</p><div class="v3333ResultActions"><button class="btn primary" onclick="MajickWGUPractice.startOA()">Retake 30-question simulation</button><button class="btn ghost" onclick="session=null;navigate(\'learninglab\')">Return to Course Tutor</button></div></section><section class="v3333Readiness"><h3>Section 1 Practice Readiness by Lesson</h3><div class="v3333LessonGrid">'+lessons.map(r=>{const [label,cls]=statusFor(r.correct,r.total);const pct=r.total?Math.round(r.correct/r.total*100):0;return '<article><small>'+E(r.title)+'</small><b>'+r.correct+'/'+r.total+' • '+pct+'%</b><span class="'+cls+'">'+label+'</span></article>'}).join('')+'</div></section><section class="v3333Concepts"><h3>Concepts to Review</h3>'+(misses.length?misses.map(r=>'<article><div><b>'+E(r.term)+'</b><small>'+E(LESSON_NAMES[r.lessonId]||'Section 1')+'</small></div><span>'+r.correct+'/'+r.total+'</span></article>').join(''):'<p>No concepts were missed in this simulation.</p>')+'</section><details class="v3333Missed"><summary>Review missed questions ('+review.filter(x=>!x.correct).length+')</summary>'+review.filter(x=>!x.correct).map(x=>'<article><b>'+E(x.q.prompt)+'</b>'+visualHtml(x.q.visual)+'<p class="wrongText">You chose: '+E(x.chosen)+'</p><p><strong>Best answer:</strong> '+E(x.q.answer)+'</p><p>'+E(x.q.why||'')+'</p>'+whyList(x.q)+'</article>').join('')+'</details></div>';
 }
+function ensureD772Bank(){
+  try{
+    const builder=window.MajickQuestionBuilder;
+    if(!builder?.d772Questions)return 0;
+    if(!window.S?.courses?.D772)return 0;
+    const course=window.S.courses.D772;
+    const curated=builder.d772Questions('d772-master-section-1')
+      .filter(q=>!builder.isLowValueMetaQuestion?.(q));
+    course.questionBank=[...curated];
+    return curated.length;
+  }catch(e){
+    console.warn('D772 WGU bank ensure',e);
+    return 0;
+  }
+}
+const originalStartAdaptive=window.startAdaptive||startAdaptive;
+const originalStartClueHunter=window.startClueHunter||startClueHunter;
+const originalStartReason=window.startReason||startReason;
+function startD772Mode(original,args){
+  if(activeD772()){
+    const count=ensureD772Bank();
+    if(!count){
+      try{rewardToast?.('D772 practice unavailable','The WGU question bank could not be loaded.')}catch(_){}
+      return;
+    }
+  }
+  return original.apply(this,args);
+}
+startAdaptive=function(){return startD772Mode(originalStartAdaptive,arguments)};
+startClueHunter=function(){return startD772Mode(originalStartClueHunter,arguments)};
+startReason=function(){return startD772Mode(originalStartReason,arguments)};
+window.startAdaptive=startAdaptive;
+window.startClueHunter=startClueHunter;
+window.startReason=startReason;
+
 function missionLanding(){
   return '<div class="v3333Mission"><div class="v3333MissionHead"><span class="v3333Eyebrow">D772 • SECTION 1</span><h2>WGU-Style Practice</h2><p>Every mode uses the same WGU-language concept bank. The difference is how much support you receive while practicing.</p></div><div class="v3333MissionGrid"><button onclick="startAdaptive()"><span>Adaptive Practice</span><b>12 WGU-style scenarios</b><small>Targets concepts that need more practice.</small></button><button onclick="startClueHunter()"><span>Clue Training</span><b>10 WGU-style scenarios</b><small>Practice finding the words that control the answer.</small></button><button onclick="startReason()"><span>Reasoning Practice</span><b>10 WGU-style scenarios</b><small>Answer, then explain why the correct choice wins.</small></button><button class="oa" onclick="MajickWGUPractice.startOA()"><span>Section 1 OA Simulation</span><b>30 mixed questions</b><small>No hints. No lesson labels. Readiness breakdown at the end.</small></button></div></div>';
 }
@@ -146,7 +181,10 @@ resultHTML=function(){
   return originalResultHTML();
 };
 missionHTML=function(){
-  if(activeD772()&&!session)return missionLanding();
+  if(activeD772()){
+    ensureD772Bank();
+    if(!session)return missionLanding();
+  }
   return originalMissionHTML();
 };
 nextQuestion=function(){
@@ -166,6 +204,7 @@ function bootD772Practice(){
       try{session=null}catch(_){}
       try{window.session=null}catch(_){}
     }
+    ensureD772Bank();
     try{window.v3331RefreshD772Practice?.()}catch(_){}
     if(window.S?.screen==='mission'){
       setTimeout(()=>{
@@ -174,7 +213,7 @@ function bootD772Practice(){
     }
   }catch(e){console.warn('D772 Practice Lab boot',e)}
 }
-window.MajickWGUPractice={VERSION,select,submit,startOA,visualHtml,whyList,balancedOA,isD772Question,bootD772Practice};
-document.documentElement.dataset.majickWguPractice='3.3.34';
+window.MajickWGUPractice={VERSION,select,submit,startOA,visualHtml,whyList,balancedOA,isD772Question,ensureD772Bank,bootD772Practice};
+document.documentElement.dataset.majickWguPractice='3.3.35';
 bootD772Practice();
 })();
