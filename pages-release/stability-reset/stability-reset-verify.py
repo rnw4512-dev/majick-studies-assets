@@ -71,8 +71,8 @@ if 'course-tutor.js?v=3326' not in main or 'course-tutor.css?v=3326' not in main
 home=(site/'magical-college-home.js').read_text(encoding='utf-8')
 for marker in ("window.MajickCollegeDashboard","MOONLIT COLLEGIUM","ACADEMIC HALL","GUARDIAN HOUSE","ARCANE STUDENT RECORD"):
     if marker not in home: fail('Moonlit Collegium home missing '+marker)
-if 'magical-college-home.js?v=3327' not in main or 'magical-college-home.css?v=3327' not in main:
-    fail('Moonlit Collegium home assets are not installed')
+if 'magical-college-home.js?v=3337' not in main or 'magical-college-home.css?v=3337' not in main:
+    fail('Moonlit Collegium self-paced home assets are not installed')
 for marker in ("tagD772Generated","classifyD772Item","learningPathRepair","multiLesson"):
     if marker not in tutor: fail('D772 item-level notes repair missing '+marker)
 if 'learning-lab.js?v=3319' not in main or 'learning-lab.css?v=3319' not in main:
