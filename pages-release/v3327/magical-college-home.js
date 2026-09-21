@@ -48,7 +48,8 @@ function nextAcademicText(a){
 }
 function openTutor(){
   try{
-    S.screen='learninglab';save();render();
+    if(typeof navigate==='function')navigate('learninglab');
+    else {S.screen='learninglab';save();render()}
     setTimeout(()=>window.MajickCourseTutor?.show?.('tutor'),80);
   }catch(_){try{navigate('learninglab')}catch(__){}}
 }
