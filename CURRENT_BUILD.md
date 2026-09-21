@@ -1,3 +1,18 @@
+## V3.3.37 — Self-Paced Course Clock
+- Removed fixed-Sunday academic framing from the WGU experience.
+- Replaced **Sunday Readiness & Thinking Analytics** with **Course Readiness & Thinking Analytics**.
+- Replaced **Before Sunday** with **Before Your OA**.
+- Course pacing now defaults to a flexible **4–6 week window**:
+  - Week 4 = earliest preferred finish zone when mastery supports testing;
+  - Week 5 = normal target pace;
+  - Week 6 = efficiency guardrail, not a deadline.
+- The dashboard now shows a **Self-Paced Course Clock** based on the course start record.
+- If a learner is ready sooner, Majick explicitly encourages acceleration rather than waiting for the calendar.
+- If a course moves beyond the preferred 6-week window, Majick focuses the learner on remaining weak concepts without labeling the course late.
+- Weekly Guardian gameplay is labeled as a **7-Day Bonus** so it does not imply an academic due date.
+- Course pace defaults are stored per course so future pacing controls can be personalized without rewriting the course model.
+- Pages regression fails if the old Sunday wording returns or the self-paced clock is missing.
+
 ## V3.3.36 — Render Loop Fix
 - Fixed the Chrome **Page Unresponsive** failure reproduced on D772 Study Now.
 - Root cause: the universal Back button was managed from a page-wide `MutationObserver`; `ensureBackButton()` rewrote the existing button's `innerHTML` on every observer callback, which triggered the observer again and created an infinite DOM-mutation loop.
