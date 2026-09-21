@@ -193,6 +193,9 @@ async function syncQuestions(courseObj,courseId){
     const sourceName=activeRows[0]?.sourceName||'D772 Section 1 Master Notes';
     const curated=MajickQuestionBuilder.d772Questions(sourceId)
       .filter(q=>!MajickQuestionBuilder.isLowValueMetaQuestion?.(q));
+    // D772 Section 1 has one authoritative concept-first practice bank.
+    // Do not mix legacy generic questions back into Study Now.
+    courseObj.questionBank=[];
     for(const q of curated){
       courseObj.questionBank.push(Object.assign({},q,{
         courseId:'D772',
