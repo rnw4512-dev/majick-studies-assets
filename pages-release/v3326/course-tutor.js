@@ -2,7 +2,7 @@
 'use strict';
 if(!window.MajickLearningLab||!window.MajickMaterialStore)return;
 
-const VERSION='3.3.29';
+const VERSION='3.3.31';
 const D772_SECTION_ONE={
   id:'d772-section-1',
   title:'Section 1: Assessing Research and Data Credibility',
