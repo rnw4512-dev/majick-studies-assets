@@ -282,13 +282,20 @@ const LESSONS=[
 ];
 
 const REPAIRS={
+ 'parameter-statistic':{title:'Repair Lesson • Parameter vs. Statistic',body:'A parameter is a numerical value describing the population. A statistic is a numerical value describing the sample. Ask whether the number summarizes ALL or the smaller group actually studied.'},
  'stratified-cluster':{title:'Repair Lesson • Stratified vs. Cluster',body:'Both methods begin with groups. Stratified takes SOME FROM ALL groups. Cluster takes ALL FROM SOME selected groups.'},
+ 'observe-experiment':{title:'Repair Lesson • Observational Study vs. Experiment',body:'An observational study records variables as they naturally occur. An experiment deliberately imposes a treatment. Ask whether the researcher changed or assigned something.'},
  'voluntary-nonresponse':{title:'Repair Lesson • Voluntary Response vs. Non-Response',body:'Voluntary response: people choose themselves into the sample. Non-response: people were selected first, then fail or refuse to respond.'},
  'sampling-response':{title:'Repair Lesson • Sampling Bias vs. Response Bias',body:'Sampling bias changes WHO gets into the sample. Response bias changes WHAT people in the sample report.'},
  'statistical-practical':{title:'Repair Lesson • Statistical vs. Practical Significance',body:'Statistical significance asks whether chance is a plausible explanation. Practical significance asks whether the effect is large or meaningful enough to matter.'},
  'association-causation':{title:'Repair Lesson • Association vs. Causation',body:'Association means variables are related. Causation means one produces an effect in the other. Observational evidence alone does not establish causation.'},
  'sampling-randomization':{title:'Repair Lesson • WHO vs. WHERE',body:'Random sampling decides WHO enters the study. Randomization decides WHERE participants are placed after entering.'},
- 'fabrication-falsification':{title:'Repair Lesson • Fabrication vs. Falsification',body:'Fabrication invents observations. Falsification changes, omits, duplicates, or manipulates the research record.'}
+ 'fabrication-falsification':{title:'Repair Lesson • Fabrication vs. Falsification',body:'Fabrication invents observations. Falsification changes, omits, duplicates, or manipulates the research record.'},
+ 'selfinterest-fraud':{title:'Repair Lesson • Self-Interest vs. Proof of Fraud',body:'Self-interest creates a credibility concern because a researcher or sponsor has something to gain. It does not automatically prove that data were fabricated or falsified.'},
+ 'graph-scale':{title:'Repair Lesson • Read the Scale Before the Picture',body:'A bar chart can print correct values yet exaggerate their visual difference when the axis begins close to the data instead of an appropriate baseline. Inspect the axis before judging magnitude.'},
+ 'sample-size':{title:'Repair Lesson • Sample Size vs. Bias',body:'A small sample is more vulnerable to random variation. A larger sample can make estimates more stable, but it cannot repair systematic bias in who was selected or how data were collected.'},
+ 'confounder':{title:'Repair Lesson • Confounding Variable',body:'A confounding variable is associated with both the explanatory variable and the response variable. Ask whether a third factor could plausibly influence why the two measured variables occur together.'},
+ 'nonlinear-none':{title:'Repair Lesson • Nonlinear vs. No Relationship',body:'A nonlinear scatterplot can show a clear curved relationship. No pattern/no correlation means the points do not follow a discernible overall pattern. Curved does not mean unrelated.'}
 };
 
 function active(){return window.S?.activeCourse===COURSE}
