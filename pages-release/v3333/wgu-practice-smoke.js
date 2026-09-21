@@ -19,6 +19,13 @@ const ctx={
 ctx.render=()=>{};
 ctx.navigate=screen=>{ctx.S.screen=screen};
 ctx.startTest=()=>{throw new Error('legacy startTest should not be used for D772 OA')};
+function startStub(type,label,limit){
+  const qs=(ctx.S.courses.D772.questionBank||[]).slice(0,limit);
+  ctx.session={type,opts:{label,limit},index:1,score:0,questions:qs,current:qs[0]||null,answered:false,confidence:'sure',review:[],start:Date.now(),pendingChoice:null};
+}
+ctx.startAdaptive=()=>startStub('adaptive','Smart Mission',12);
+ctx.startClueHunter=()=>startStub('clue','Clue Hunter',10);
+ctx.startReason=()=>startStub('reason','Reason Ready',10);
 ctx.startMixed=()=> 'legacy-mixed';
 ctx.sessionHTML=()=>'<div>legacy session</div>';
 ctx.resultHTML=()=>'<div>legacy result</div>';
@@ -113,5 +120,5 @@ assert(/Concepts to Review/.test(result),'concept review breakdown missing');
 assert(/practice evidence, not a prediction/i.test(result),'readiness limitation missing');
 
 assert(ctx.document.documentElement.dataset.majickWguPractice==='3.3.35','runtime dataset marker missing');
-console.log('V3.3.33 WGU PRACTICE SMOKE PASSED');
+console.log('V3.3.35 WGU PRACTICE SMOKE PASSED');
 console.log(JSON.stringify({questions:questions.length,visuals:questions.filter(q=>q.visual).length,oa:oa.length,lessons:new Set(oa.map(q=>q.learningPathLessonId)).size}));
