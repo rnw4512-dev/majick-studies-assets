@@ -210,7 +210,7 @@ jobs:
 
           # Golden architecture and protected assets.
           grep -q '"build_foundation": "V3.3.18 Golden Baseline"' _site/app-progress.json
-          grep -q '"version": "V3.3.31 WGU Concept Practice"' _site/app-progress.json
+          grep -q '"version": "V3.3.32 WGU Terminology Lock"' _site/app-progress.json
           grep -q 'learning-lab.js?v=3319' _site/index.html
           grep -q 'learning-lab.css?v=3319' _site/index.html
           grep -q 'learning-plan.js?v=3324' _site/index.html
@@ -268,7 +268,7 @@ jobs:
           PY
 
           python pages-release/stability-reset/stability-reset-verify.py _site
-          echo "Majick Studies V3.3.31 Golden Baseline overlay assembly passed."
+          echo "Majick Studies V3.3.32 Golden Baseline overlay assembly passed."
 
       - name: Browser regression gate
         shell: bash
