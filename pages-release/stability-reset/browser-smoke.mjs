@@ -39,7 +39,7 @@ try{
   await assert(boot.hasRender,'render() unavailable after boot');
   await assert(boot.hasState,'MajickStateCore unavailable after boot');
   await assert(boot.hasRegistry,'Guardian registry unavailable after boot');
-  await assert(boot.version==='3.3.29-tutor-navigation','wrong deployed runtime version: '+boot.version);
+  await assert(boot.version==='3.3.30-xp-high-water','wrong deployed runtime version: '+boot.version);
   await assert(boot.guardians.length>=10,'baseline Guardian registry unexpectedly shrank');
   await page.waitForSelector('.v3327Home',{timeout:10000});
   await assert(await page.locator('.v3327PortalHero').count()===1,'Moonlit Collegium did not render on the first app load');
@@ -109,6 +109,33 @@ try{
     return !!p && Number.isFinite(Number(p.xp)) && Number.isFinite(Number(p.crystals)) && Array.isArray(p.answers);
   });
   await assert(repaired,'undefined active-course progress was not repaired synchronously');
+
+  // Lifetime XP must recover the highest legitimate saved total and never decrease.
+  const xpHighWater=await page.evaluate(()=>{
+    const original={
+      account:JSON.parse(JSON.stringify(S.majickAccount||{})),
+      active:S.activeCourse
+    };
+    const cid=S.activeCourse;
+    const row=S.progress[cid]||{};
+    Object.defineProperty(row,'xp',{value:4987,writable:true,configurable:true,enumerable:true});
+    S.progress[cid]=row;
+    S.majickAccount.xp=7;
+    S.majickAccount.xpHighWater=0;
+    S.majickAccount.lifetimeXpHighWater=0;
+    const recovered=MajickStateCore.ensureAccount();
+    const afterRecovery=Number(recovered.xp||0);
+    const p=MajickStateCore.normalizeProgressRow(S.progress[cid],cid);
+    S.progress[cid]=p;
+    p.xp=3;
+    const afterLowerWrite=Number(MajickStateCore.ensureAccount().xp||0);
+    S.majickAccount=original.account;
+    S.activeCourse=original.active;
+    MajickStateCore.normalizeAll();
+    return {afterRecovery,afterLowerWrite};
+  });
+  await assert(xpHighWater.afterRecovery===4987,'XP high-water repair did not restore the higher persisted total');
+  await assert(xpHighWater.afterLowerWrite===4987,'a stale lower course XP value reduced lifetime Majick XP');
 
   // Study Now must render after a deliberately damaged progress row.
   await page.evaluate(()=>{
