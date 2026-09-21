@@ -66,7 +66,7 @@ assert(questions.filter(q=>q.visual).length>=7,'visual question metadata missing
 assert(questions.every(q=>(q.options||[]).every(o=>q.choiceCoach&&typeof q.choiceCoach[o]==='string'&&q.choiceCoach[o].length>20)),'answer-choice coaching incomplete');
 
 vm.runInContext(wsrc,ctx,{filename:'wgu-practice.js'});
-assert(ctx.MajickWGUPractice?.VERSION==='3.3.35','WGU practice runtime version wrong');
+assert(ctx.MajickWGUPractice?.VERSION==='3.3.36','WGU practice runtime version wrong');
 
 ctx.S.screen='mission';
 ctx.session={type:'adaptive',opts:{label:'Old D772 session',kind:'legacy-d772'},current:{id:'notes_old_question',prompt:'old'},questions:[],review:[]};
@@ -119,6 +119,6 @@ assert(/Section 1 Practice Readiness by Lesson/.test(result),'lesson readiness m
 assert(/Concepts to Review/.test(result),'concept review breakdown missing');
 assert(/practice evidence, not a prediction/i.test(result),'readiness limitation missing');
 
-assert(ctx.document.documentElement.dataset.majickWguPractice==='3.3.35','runtime dataset marker missing');
-console.log('V3.3.35 WGU PRACTICE SMOKE PASSED');
+assert(ctx.document.documentElement.dataset.majickWguPractice==='3.3.36','runtime dataset marker missing');
+console.log('V3.3.36 WGU PRACTICE SMOKE PASSED');
 console.log(JSON.stringify({questions:questions.length,visuals:questions.filter(q=>q.visual).length,oa:oa.length,lessons:new Set(oa.map(q=>q.learningPathLessonId)).size}));
