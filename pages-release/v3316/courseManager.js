@@ -1,6 +1,7 @@
 (function(){
 'use strict';
 const PASS_XP=500;
+const COURSE_PACE={minWeeks:4,targetWeeks:5,maxWeeks:6};
 const SHARED=['xp','crystals','chests'];
 const COURSE_CATALOG={
   D755:{
@@ -181,8 +182,15 @@ function ensure(){
       status:c?.catalogSeed?'available':'active',
       startedAt:c?.catalogSeed?null:new Date().toISOString(),
       passedAt:null,
-      completionXp:0
+      completionXp:0,
+      paceMinWeeks:COURSE_PACE.minWeeks,
+      paceTargetWeeks:COURSE_PACE.targetWeeks,
+      paceMaxWeeks:COURSE_PACE.maxWeeks
     };
+    const paceRecord=S.majickCourseRecords[cid];
+    paceRecord.paceMinWeeks=Math.max(1,Number(paceRecord.paceMinWeeks||COURSE_PACE.minWeeks));
+    paceRecord.paceTargetWeeks=Math.max(paceRecord.paceMinWeeks,Number(paceRecord.paceTargetWeeks||COURSE_PACE.targetWeeks));
+    paceRecord.paceMaxWeeks=Math.max(paceRecord.paceTargetWeeks,Number(paceRecord.paceMaxWeeks||COURSE_PACE.maxWeeks));
   }
 }
 function captureAccount(){
@@ -273,7 +281,10 @@ function createCourse(code,title){
   S.progress[code].__majickSharedReady=true;
   S.majickCourseRecords[code]={
     courseId:code,title,status:'active',startedAt:new Date().toISOString(),
-    passedAt:null,completionXp:0
+    passedAt:null,completionXp:0,
+    paceMinWeeks:COURSE_PACE.minWeeks,
+    paceTargetWeeks:COURSE_PACE.targetWeeks,
+    paceMaxWeeks:COURSE_PACE.maxWeeks
   };
   saveCourseUI(S.activeCourse);
   S.activeCourse=code;
@@ -374,5 +385,5 @@ if(materialPage&&typeof oldMaterialRender==='function'){
   };
   window.v3315BindStudyMaterialPage=materialPage.bind;
 }
-window.MajickCourseManager={ensure,captureAccount,mirrorAccount,normalizeProgressRow,normalizeAllProgress,migrateLegacyAssessmentCourse,migrateLegacyMaterialSources,createCourse,passCourse,currentStatus,panelHTML,bindPanel,decorateSelector,record,PASS_XP,COURSE_CATALOG};
+window.MajickCourseManager={COURSE_PACE,ensure,captureAccount,mirrorAccount,normalizeProgressRow,normalizeAllProgress,migrateLegacyAssessmentCourse,migrateLegacyMaterialSources,createCourse,passCourse,currentStatus,panelHTML,bindPanel,decorateSelector,record,PASS_XP,COURSE_CATALOG};
 })();
