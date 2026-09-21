@@ -1,7 +1,7 @@
 # Majick Studies — CURRENT BUILD SOURCE OF TRUTH
 
 Last updated: 2026-09-20
-Current target release: V3.3.32 — WGU Terminology Lock
+Current target release: V3.3.33 — WGU Practice Lab
 
 ## How to resume in a new ChatGPT chat
 Say: **"Continue Majick Studies from CURRENT_BUILD.md in rnw4512-dev/majick-studies-assets."**
@@ -88,6 +88,33 @@ Course manager:
 3. Do NOT use V3.3.15 generated action sheets for movement.
 4. Rebuild true individual stage/action art later from approved Guardian references — one Guardian/action asset at a time, not sprite-sheet slicing shortcuts.
 
+
+## V3.3.33 — WGU Practice Lab
+- D772 practice now uses a WGU-style **select answer → Submit** interaction instead of treating a choice click as the final answer.
+- Added seven instructional visual-question surfaces grounded in Section 1 material:
+  - truncated-axis bar graph
+  - two-dimensional icon scaling
+  - nonlinear scatterplot
+  - positive-correlation scatterplot
+  - negative-correlation scatterplot
+  - strong positive relationship
+  - outlier
+- Every D772 answer choice now has **why-this-would-fit** coaching. After practice questions, the learner can expand **Why each answer is right or wrong** rather than seeing only the correct-answer rationale.
+- D772 Study Now modes all draw from the same curated WGU-language Section 1 scenario bank.
+- Added a **30-question Section 1 OA Simulation**:
+  - mixed across Lessons 1–4
+  - 30 unique questions
+  - no lesson labels
+  - no clues/hints during the simulation
+  - no crystal-confidence UI during the simulation
+  - WGU-style Submit interaction
+- OA results now show:
+  - overall practice score
+  - Section 1 practice readiness by lesson
+  - concepts to review
+  - missed-question review with answer-choice coaching
+- Practice readiness is explicitly described as practice evidence, not a prediction of the learner's OA score.
+- Browser regression now blocks deployment if visual questions, choice coaching, the 30-question mix, no-hint OA surface, or readiness breakdown disappear.
 
 ## V3.3.32 — WGU Terminology Lock
 - D772 now preserves the terminology used in the learner-provided WGU Section 1 course notes instead of substituting Majick synonyms.
