@@ -1,5 +1,5 @@
 from pathlib import Path
-import re,sys,subprocess,tempfile
+import json,re,sys,subprocess,tempfile
 site=Path(sys.argv[1])
 def fail(msg): raise SystemExit('STABILITY RESET VERIFY FAILED: '+msg)
 main=(site/'index.html').read_text(encoding='utf-8')
@@ -37,7 +37,18 @@ state=(site/'majick-state-core.js').read_text(encoding='utf-8')
 for marker in ('window.prog=safeProg','window.course=safeCourse',"const SHARED=['xp','crystals','chests']",'bindSharedField'):
     if marker not in state: fail('state core missing '+marker)
 main_bridge=(site/'v3317-main.js').read_text(encoding='utf-8')
-if 'V3.3.27 Moonlit Collegium' not in main_bridge: fail('main bridge does not identify V3.3.27 Moonlit Collegium')
+progress_path=site/'app-progress.json'
+if not progress_path.exists(): fail('app-progress.json missing')
+try:
+    progress=json.loads(progress_path.read_text(encoding='utf-8'))
+except Exception as e:
+    fail('app-progress.json unreadable: '+str(e))
+release=str(progress.get('version') or '').strip()
+match=re.search(r'V(\\d+\\.\\d+\\.\\d+)',release)
+if not match: fail('app-progress.json has no semantic release version')
+current_version=match.group(1)
+if ('V'+current_version) not in main_bridge:
+    fail('main bridge does not identify current release '+release)
 if 'CANON[' in main_bridge: fail('main bridge still contains fixed Guardian CANON lookup')
 if "const meta=registry()?.get?.(p.type);" not in main_bridge: fail('Guardian payload is not registry-driven')
 if r'\\nconst canonOf' in main_bridge: fail('escaped newline leaked into JavaScript source')
