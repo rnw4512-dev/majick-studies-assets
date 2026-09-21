@@ -38,20 +38,92 @@ function d772Item(lesson,concept,rigor,prompt,options,answer,why,clue){
   const meta=D772_LESSONS[lesson];
   return {lesson,concept,rigor,prompt,options,answer,why,clue,lessonId:meta.id,lessonTitle:meta.title};
 }
+const D772_WGU_TERMS={
+  'population vs. sample':'Population vs. sample',
+  'parameter vs. statistic':'Parameter vs. statistic',
+  'individual variable data':'Individuals vs. variables vs. data',
+  'quantitative vs. categorical':'Quantitative variables vs. categorical variables',
+  'stratified sampling':'Stratified sampling',
+  'cluster sampling':'Cluster sampling',
+  'systematic sampling':'Systematic sampling',
+  'observational vs. experiment':'Observational study vs. experiment',
+  'explanatory vs. response':'Explanatory variable vs. response variable',
+  'random sampling vs. assignment':'Random sampling vs. randomization',
+  'blinding':'Single-blind vs. double-blind',
+  'placebo effect':'Placebo vs. placebo effect',
+  'sampling bias':'Sampling bias',
+  'voluntary response bias':'Volunteer sample vs. voluntary response bias',
+  'convenience sample':'Convenience sample',
+  'sampling frame error':'Sampling frame vs. sampling frame error',
+  'non-response bias':'Non-response bias',
+  'response bias':'Response bias',
+  'lack of anonymity':'Perceived lack of anonymity',
+  'loaded question':'Loaded question',
+  'self-interest study':'Self-interest study',
+  'systematic sampling nuance':'Systematic sampling',
+  'truncated axis':'Misrepresenting data with a truncated axis',
+  'two-dimensional icons':'Misrepresenting data with scaled pictures/icons',
+  '3-D pie chart':'Misrepresenting data with a 3-D display',
+  'sample size':'Sample size and random chance',
+  'large biased sample':'Sample size vs. sampling bias',
+  'statistical significance':'Statistical significance',
+  'practical significance':'Statistical significance vs. practical significance',
+  'fabrication':'Fabricating data sets',
+  'falsification alteration':'Altering existing data / falsifying data',
+  'subject count misrepresentation':'Misrepresenting the number of subjects',
+  'intentional omission':'Intentionally omitting relevant data / falsifying data',
+  'duplicating data':'Duplicating data / falsifying data',
+  'secondary source misrepresentation':'Misrepresenting data',
+  'association vs. causation':'Association vs. causal relationship',
+  'confounding variable':'Confounding variable',
+  'experiment and causation':'Well-designed experiment and causal conclusion',
+  'scatterplot shape':'Scatterplot shape: linear, nonlinear, or no pattern/no correlation',
+  'positive correlation':'Positive correlation',
+  'negative correlation':'Negative correlation',
+  'strength':'Strength of the relationship',
+  'outlier':'Outlier',
+  'correlation not causation':'Association does not imply causation'
+};
+function wguChoiceLabel(value){
+  const exact={
+    'Simple random':'Simple random sample',
+    'Stratified':'Stratified sampling',
+    'Cluster':'Cluster sampling',
+    'Systematic':'Systematic sampling',
+    'Convenience':'Convenience sample',
+    'Loaded wording':'Loaded question',
+    'Double blinding':'Double-blind',
+    'Cluster bias':'Cluster sampling',
+    'Causal':'Causal relationship',
+    'Positive':'Positive correlation',
+    'Negative':'Negative correlation',
+    'Strong positive linear':'Strong positive relationship',
+    'Weak positive linear':'Weak positive relationship',
+    'Strong negative linear':'Strong negative relationship'
+  };
+  return exact[value]||value;
+}
+function wguQuestionLanguage(x){
+  const copy=Object.assign({},x);
+  copy.options=(x.options||[]).map(wguChoiceLabel);
+  copy.answer=wguChoiceLabel(x.answer);
+  copy.wguTerm=D772_WGU_TERMS[x.concept]||x.concept;
+  return copy;
+}
 const D772_SCENARIO_BANK=[
   d772Item(1,'population vs. sample',1,'A district wants to study all 5,000 teachers and surveys 400 of them. What is the population?',['All 5,000 teachers','The 400 surveyed teachers','Only teachers who responded','The average planning time'],'All 5,000 teachers','WGU is testing whether you can separate the full group of interest from the smaller group actually studied. The population is the entire group the researcher wants to understand.','Look for the words all, entire, or full group.'),
   d772Item(1,'population vs. sample',1,'A university has 20,000 students and randomly surveys 600. What is the sample?',['All 20,000 students','The 600 surveyed students','Every student on the roster','The university itself'],'The 600 surveyed students','WGU is testing population versus sample. The sample is the smaller group from which data are actually collected.','Ask: Who was actually measured or surveyed?'),
   d772Item(1,'parameter vs. statistic',2,'A random sample of 400 teachers has an average planning time of 7.5 hours. What does 7.5 represent?',['A parameter','A statistic','A population','A categorical variable'],'A statistic','WGU is testing parameter versus statistic. A numerical summary calculated from a sample is a statistic.','Sample number = statistic. Population number = parameter.'),
   d772Item(1,'individual variable data',2,'Researchers record each student’s age, height, grade level, and favorite subject. What is “height” in this study?',['An individual','A variable','The population','A statistic'],'A variable','WGU is testing whether you can distinguish who is studied from what is measured about them. Height is a characteristic measured on each student, so it is a variable.','Individual = who/what. Variable = what about them.'),
   d772Item(1,'quantitative vs. categorical',2,'A dataset records student ID number 10023. How should student ID be classified?',['Quantitative because it contains digits','Categorical because it is a label','A parameter','A response variable'],'Categorical because it is a label','WGU is testing whether the numbers have meaningful arithmetic value. Student ID uses digits only as a label, so averaging IDs would be meaningless.','Ask whether arithmetic on the number would make sense.'),
-  d772Item(1,'stratified sampling',2,'A district separates teachers into elementary, middle, and high school groups and randomly selects 40 teachers from each group. Which sampling method is used?',['Simple random','Stratified','Cluster','Systematic'],'Stratified','WGU is testing recognition of stratified sampling. The population is divided into groups and some people are randomly sampled from every group.','Stratified = SOME FROM ALL groups.'),
-  d772Item(1,'cluster sampling',2,'Researchers randomly choose five schools and survey every teacher in those schools. Which sampling method is used?',['Simple random','Stratified','Cluster','Systematic'],'Cluster','WGU is testing recognition of cluster sampling. Entire selected groups are included.','Cluster = ALL FROM SOME groups.'),
-  d772Item(1,'systematic sampling',2,'A researcher chooses a random starting point on a roster and then selects every 15th person. Which sampling method is used?',['Simple random','Stratified','Cluster','Systematic'],'Systematic','WGU is testing recognition of systematic sampling. The defining clue is a random start followed by every nth individual.','Every nth person = systematic.'),
+  d772Item(1,'stratified sampling',2,'A district separates teachers into elementary, middle, and high school groups and randomly selects 40 teachers from each group. Which sampling method is used?',['Simple random sample','Stratified sampling','Cluster sampling','Systematic sampling'],'Stratified sampling','WGU is testing recognition of stratified sampling. The population is divided into groups and some people are randomly sampled from every group.','Stratified = SOME FROM ALL groups.'),
+  d772Item(1,'cluster sampling',2,'Researchers randomly choose five schools and survey every teacher in those schools. Which sampling method is used?',['Simple random','Stratified','Cluster','Systematic'],'Cluster sampling','WGU is testing recognition of cluster sampling. Entire selected groups are included.','Cluster = ALL FROM SOME groups.'),
+  d772Item(1,'systematic sampling',2,'A researcher chooses a random starting point on a roster and then selects every 15th person. Which sampling method is used?',['Simple random','Stratified','Cluster','Systematic'],'Systematic sampling','WGU is testing recognition of systematic sampling. The defining clue is a random start followed by every nth individual.','Every nth person = systematic.'),
   d772Item(1,'observational vs. experiment',3,'Researchers record participants’ usual caffeine intake and exam scores without assigning caffeine amounts. What type of study is this?',['Experiment','Observational study','Randomized controlled trial','Double-blind study'],'Observational study','WGU is testing whether the researcher imposed a treatment. Because caffeine intake was only observed, this is observational.','No assigned treatment = observational.'),
   d772Item(1,'observational vs. experiment',3,'Researchers randomly assign participants to receive a medication or placebo and then compare outcomes. What type of study is this?',['Sample survey','Observational study','Experiment','Convenience sample'],'Experiment','WGU is testing whether a treatment was deliberately imposed. Randomly assigning medication or placebo makes this an experiment.','Researcher changes something = experiment.'),
   d772Item(1,'explanatory vs. response',2,'Researchers study whether tutoring hours affect final math scores. Which variable is the response variable?',['Tutoring hours','Final math score','Student ID','Assignment group'],'Final math score','WGU is testing explanatory versus response variables. The response variable is the outcome being measured.','Response = the outcome that responds.'),
   d772Item(1,'random sampling vs. assignment',3,'A study randomly selects people from a city and then randomly assigns those selected people to treatment groups. Which statement is correct?',['Both steps are random sampling','Both steps are random assignment','Selection is random sampling; group placement is random assignment','Selection is random assignment; group placement is random sampling'],'Selection is random sampling; group placement is random assignment','WGU is testing two different uses of randomness. Sampling determines who enters the study; assignment determines which treatment group they enter.','Random sampling = WHO. Random assignment = WHERE.'),
-  d772Item(1,'blinding',2,'Participants do not know whether they receive medication or placebo, but the researchers interacting with them do know. What design is this?',['Open-label','Single-blind','Double-blind','Cluster randomized'],'Single-blind','WGU is testing single-blind versus double-blind design. Only the participants are unaware of treatment assignment.','Single-blind = participants do not know.'),
+  d772Item(1,'blinding',2,'Participants do not know whether they receive medication or placebo, but the researchers interacting with them do know. What design is this?',['Control group','Single-blind','Double-blind','Placebo'],'Single-blind','WGU is testing single-blind versus double-blind design. Only the participants are unaware of treatment assignment.','Single-blind = participants do not know.'),
   d772Item(1,'blinding',2,'Neither participants nor the researchers interacting with them know treatment assignments. What design is this?',['Single-blind','Double-blind','Observational','Systematic'],'Double-blind','WGU is testing blinding. In a double-blind study, both participants and interacting researchers are unaware of treatment assignment.','Double-blind = participants + interacting researchers do not know.'),
   d772Item(1,'placebo effect',3,'A participant reports feeling better after receiving an inactive pill because they expected treatment to help. What best explains the improvement?',['Sampling bias','Placebo effect','Non-response bias','Replication'],'Placebo effect','WGU is testing placebo versus placebo effect. The inactive pill is the placebo; the improvement caused by expectation is the placebo effect.','Placebo = inactive treatment. Placebo effect = response from expectation.'),
 
@@ -60,7 +132,7 @@ const D772_SCENARIO_BANK=[
   d772Item(2,'convenience sample',2,'A professor surveys only students in her own class because they are easiest to reach. What type of sample is this?',['Cluster','Convenience','Stratified','Systematic'],'Convenience','WGU is testing how participants were selected. The researcher chose people because they were easy to access.','Researcher picks easy-to-reach people = convenience.'),
   d772Item(2,'sampling frame error',3,'A researcher wants to study all university students but randomly samples from a directory containing only students who live on campus. What is the main problem?',['The random selection was invalid','Sampling frame error','Response bias','Placebo effect'],'Sampling frame error','WGU is testing whether the list used for selection covers the target population. Commuter students are absent from the sampling frame.','A random draw cannot fix a list that leaves part of the population out.'),
   d772Item(2,'non-response bias',3,'A random sample of teachers is selected, but teachers with the lowest job satisfaction are much less likely to return the survey. What bias is present?',['Voluntary response bias','Non-response bias','Convenience bias','Loaded wording'],'Non-response bias','WGU is testing what happens after people are already selected. Selected people who do not respond differ systematically from those who do.','Selected people fail to respond = non-response.'),
-  d772Item(2,'response bias',3,'Participants exaggerate how often they exercise because they want to appear healthier. What type of bias is this?',['Sampling bias','Response bias','Cluster bias','Sampling frame error'],'Response bias','WGU is testing whether answers are accurate. The people are in the sample, but social pressure changes what they report.','Right people, inaccurate answers = response bias.'),
+  d772Item(2,'response bias',3,'Participants exaggerate how often they exercise because they want to appear healthier. What type of bias is this?',['Sampling bias','Response bias','Cluster sampling','Sampling frame error'],'Response bias','WGU is testing whether answers are accurate. The people are in the sample, but social pressure changes what they report.','Right people, inaccurate answers = response bias.'),
   d772Item(2,'lack of anonymity',3,'Employees are asked to rate their supervisor, but their names are printed on the surveys. Some employees give falsely positive ratings because they fear retaliation. What is the most specific problem?',['Convenience sampling','Perceived lack of anonymity','Systematic sampling','Random variation'],'Perceived lack of anonymity','WGU is testing a specific source of response bias. Fear that answers can be traced back to the respondent can distort responses.','No anonymity → fear → softened or dishonest answers.'),
   d772Item(2,'loaded question',3,'A survey asks, “Don’t you agree our excellent new program deserves more funding?” What is the primary problem?',['Non-response bias','Loaded question','Sampling frame error','Cluster sampling'],'Loaded question','WGU is testing whether wording pushes respondents toward an answer. Words such as “excellent” and “don’t you agree” signal biased wording.','Look for one-sided or emotionally loaded wording.'),
   d772Item(2,'self-interest study',4,'A supplement company funds its own study and reports that its supplement improves memory. What is the best evaluation?',['The result must be false','The study should be accepted without question','The financial stake is a credibility concern that calls for closer review of methods and reporting','The study is automatically an experiment'],'The financial stake is a credibility concern that calls for closer review of methods and reporting','WGU is testing how to interpret self-interest. A conflict of interest raises a credibility concern but does not automatically prove fraud.','Self-interest = reason for scrutiny, not automatic proof of false data.'),
@@ -83,18 +155,19 @@ const D772_SCENARIO_BANK=[
   d772Item(4,'association vs. causation',3,'An observational study finds that people who sleep more tend to have lower blood pressure. What conclusion is justified?',['More sleep definitely causes lower blood pressure','There is an association, but causation is not established','There is no relationship','The study is a randomized experiment'],'There is an association, but causation is not established','WGU is testing the limit of observational studies. They can show variables move together, but unmeasured factors may explain the relationship.','Observe = association. Experiment = causation may be justified.'),
   d772Item(4,'confounding variable',4,'People who use more sunscreen are also more likely to develop skin cancer in an observational study. Which factor could confound this association?',['Sun exposure','The color of the graph','Participant ID number','The sample mean'],'Sun exposure','WGU is testing confounding. People with more sun exposure may use more sunscreen and also have greater UV exposure, which affects skin-cancer risk.','Ask whether a third variable is connected to both measured variables.'),
   d772Item(4,'confounding variable',3,'Ice cream sales and shark attacks both rise during summer. Which variable best explains the association?',['Ice cream flavor','Temperature or season','Sampling frame','Placebo assignment'],'Temperature or season','WGU is testing whether a third variable can create an association. Warm weather increases both ice cream purchases and swimming activity.','A confounder can influence both variables without either causing the other.'),
-  d772Item(4,'experiment and causation',4,'A gardener randomly assigns similar plants to receive coffee grounds or no coffee grounds while keeping water and sunlight similar. The treatment group grows more. What conclusion may be supported?',['Only an association because all studies are observational','A causal effect of the coffee-ground treatment may be supported','Coffee grounds are a confounding variable','The result proves the effect for every plant species'],'A causal effect of the coffee-ground treatment may be supported','WGU is testing when causation may be justified. A treatment was imposed, groups were assigned, and other important conditions were controlled.','Manipulation + comparison + random assignment strengthens causal evidence.'),
+  d772Item(4,'experiment and causation',4,'A gardener randomly assigns similar plants to receive coffee grounds or no coffee grounds while keeping water and sunlight similar. The treatment group grows more. What conclusion may be supported?',['Only an association may be supported','A causal conclusion may be supported','Coffee grounds are a confounding variable','The result proves the effect for every plant species'],'A causal conclusion may be supported','WGU is testing when causation may be justified. A treatment was imposed, groups were assigned, and other important conditions were controlled.','Manipulation + comparison + random assignment strengthens causal evidence.'),
   d772Item(4,'scatterplot shape',2,'A scatterplot forms a clear J-shaped curve. How should the shape be described?',['Linear','Nonlinear','No relationship','Negative because it curves downward'],'Nonlinear','WGU is testing scatterplot shape. A clear curved pattern is nonlinear, not “no relationship.”','Nonlinear still means there can be a strong relationship.'),
-  d772Item(4,'positive correlation',2,'Points on a scatterplot generally rise from bottom-left to top-right. What is the trend?',['Positive','Negative','No correlation','Causal'],'Positive','WGU is testing direction of a linear relationship. Higher x-values tend to occur with higher y-values.','Positive = rises left to right.'),
-  d772Item(4,'negative correlation',2,'Points on a scatterplot generally fall from top-left to bottom-right. What is the trend?',['Positive','Negative','Nonlinear only','Causal'],'Negative','WGU is testing direction. As one variable increases, the other tends to decrease.','Negative = falls left to right.'),
-  d772Item(4,'strength',3,'A scatterplot’s points lie very close to an upward-sloping line. How should the relationship be described?',['Weak positive linear','Strong positive linear','Strong negative linear','No correlation'],'Strong positive linear','WGU is testing both direction and strength. The upward trend is positive, and the tight clustering makes it strong.','Direction tells positive/negative; tightness tells strength.'),
+  d772Item(4,'positive correlation',2,'Points on a scatterplot generally rise from bottom-left to top-right. What is the trend?',['Positive correlation','Negative correlation','No correlation','Causal relationship'],'Positive correlation','WGU is testing direction of a linear relationship. Higher x-values tend to occur with higher y-values.','Positive = rises left to right.'),
+  d772Item(4,'negative correlation',2,'Points on a scatterplot generally fall from top-left to bottom-right. What is the trend?',['Positive correlation','Negative correlation','Nonlinear','Causal relationship'],'Negative correlation','WGU is testing direction. As one variable increases, the other tends to decrease.','Negative = falls left to right.'),
+  d772Item(4,'strength',3,'A scatterplot’s points lie very close to an upward-sloping line. How should the relationship be described?',['Weak positive relationship','Strong positive relationship','Strong negative relationship','No correlation'],'Strong positive relationship','WGU is testing both direction and strength. The upward trend is positive, and the tight clustering makes it strong.','Direction tells positive/negative; tightness tells strength.'),
   d772Item(4,'outlier',2,'Most points follow a clear pattern, but one point sits far away from the rest. What is that point called?',['A parameter','An outlier','A control group','A confounder'],'An outlier','WGU is testing scatterplot vocabulary. An outlier lies noticeably away from the overall pattern and is not automatically an error.','Outlier = unusual point, not automatically bad data.'),
   d772Item(4,'correlation not causation',4,'A scatterplot shows a very strong positive correlation between two variables. What can the graph alone prove?',['One variable causes the other','Only that the variables have a strong association','That no confounding variable exists','That the study was randomized'],'Only that the variables have a strong association','WGU is testing whether you confuse strength of correlation with causation. Even a very tight pattern does not reveal why the relationship exists.','Strong correlation still does not prove causation.')
 ];
 function d772Questions(sourceId='d772-master-section-1'){
-  return D772_SCENARIO_BANK.map((x,i)=>{
+  return D772_SCENARIO_BANK.map((raw,i)=>{
+    const x=wguQuestionLanguage(raw);
     const meta=D772_LESSONS[x.lesson];
-    const why='What WGU is testing: '+String(x.why||'').replace(/^WGU is testing\s*/i,'')+' Clue to notice: '+x.clue;
+    const why='WGU terminology: '+x.wguTerm+'. What WGU is testing: '+String(x.why||'').replace(/^WGU is testing\s*/i,'')+' WGU clue to notice: '+x.clue;
     return {
       id:'d772_wgu_'+x.lesson+'_'+slug(x.concept)+'_'+i,
       topicId:'d772-'+slug(x.concept),
@@ -103,9 +176,10 @@ function d772Questions(sourceId='d772-master-section-1'){
       options:[...x.options],
       answer:x.answer,
       why,
-      wguSkill:x.concept,
+      wguSkill:x.wguTerm,
+      wguTerm:x.wguTerm,
       wguClue:x.clue,
-      testedConcept:x.concept,
+      testedConcept:x.wguTerm,
       sourceId,
       sourceExcerpt:'',
       passageId:null,
@@ -316,5 +390,5 @@ function build(text,opts){
   };
 }
 
-window.MajickQuestionBuilder={TARGET,build,sentenceList,keyWords,vocabulary,passages,d772Questions,isLowValueMetaQuestion,D772_SCENARIO_BANK};
+window.MajickQuestionBuilder={TARGET,build,sentenceList,keyWords,vocabulary,passages,d772Questions,isLowValueMetaQuestion,D772_SCENARIO_BANK,D772_WGU_TERMS};
 })();
