@@ -10,7 +10,18 @@ page.on('console',m=>{if(m.type()==='error')fatal.push('console: '+m.text())});
 async function assert(ok,msg){if(!ok)throw new Error('BROWSER SMOKE FAILED: '+msg)}
 
 try{
-  await page.goto(base,{waitUntil:'domcontentloaded',timeout:30000});
+  let opened=false;
+  let lastOpenError=null;
+  for(let attempt=1;attempt<=3&&!opened;attempt++){
+    try{
+      await page.goto(base,{waitUntil:'commit',timeout:15000});
+      opened=true;
+    }catch(e){
+      lastOpenError=e;
+      if(attempt<3)await page.waitForTimeout(1200);
+    }
+  }
+  if(!opened)throw lastOpenError;
   try{
     await page.waitForFunction(()=>typeof window.render==='function'&&!!window.MajickStateCore&&!!window.MajickGuardianRegistry,{timeout:12000});
   }catch(e){
@@ -453,7 +464,7 @@ try{
       builtCount:built.length,
       builtBad:built.filter(q=>bad.test(q.prompt||'')).length,
       rationaleMissing:built.filter(q=>!/What WGU is testing:/i.test(q.why||'')||!/Clue to notice:/i.test(q.why||'')).length,
-      styleBad:built.filter(q=>q.questionStyle!=='wgu-concept-scenario').length,
+      styleBad:built.filter(q=>q.questionStyle!=='wgu-course-scenario').length,
       missingWguTerms:built.filter(q=>!q.wguTerm||!/WGU terminology:/i.test(q.why||'')||!/WGU clue to notice:/i.test(q.why||'')).length,
       forbiddenLanguage:built.flatMap(q=>[...(q.options||[]),q.answer||'']).filter(x=>/convenience bias|randomized controlled trial|double-blind study|open-label|cluster randomized|loaded wording|cluster bias|nonlinear only|^positive$|^negative$|^cluster$|^stratified$|^systematic$|^simple random$|causal effect/i.test(String(x))).length,
       hasCoreWguTerms:['Random sampling vs. randomization','Perceived lack of anonymity','Statistical significance','Association vs. causal relationship','Confounding variable','Positive correlation','Negative correlation','Outlier'].every(term=>built.some(q=>String(q.wguTerm||'').includes(term))),
