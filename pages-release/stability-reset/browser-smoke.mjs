@@ -39,7 +39,7 @@ try{
   await assert(boot.hasRender,'render() unavailable after boot');
   await assert(boot.hasState,'MajickStateCore unavailable after boot');
   await assert(boot.hasRegistry,'Guardian registry unavailable after boot');
-  await assert(boot.version==='3.3.28-section-one-master','wrong deployed runtime version: '+boot.version);
+  await assert(boot.version==='3.3.29-tutor-navigation','wrong deployed runtime version: '+boot.version);
   await assert(boot.guardians.length>=10,'baseline Guardian registry unexpectedly shrank');
   await page.waitForSelector('.v3327Home',{timeout:10000});
   await assert(await page.locator('.v3327PortalHero').count()===1,'Moonlit Collegium did not render on the first app load');
@@ -150,6 +150,15 @@ try{
   await assert(collegiateHome.academic&&collegiateHome.guardian&&collegiateHome.sanctuary,'Home does not give academics and Guardian life equal presence');
   await assert(collegiateHome.guardianCards===3,'Home Guardian House does not match the three owned Guardians');
   await assert(/ACADEMIC RECORD/i.test(collegiateHome.record)&&/MAJICK RECORD/i.test(collegiateHome.record),'Home does not separate academic and Majick progress');
+
+  // Universal Back navigation must remember the previous screen without creating a dead-end loop.
+  await assert(await page.locator('#majickBackButton').count()===0,'Back button should stay out of the way on Home');
+  await page.evaluate(()=>{sessionStorage.removeItem('majick_nav_stack_v3329');navigate('guide')});
+  await page.waitForSelector('#majickBackButton',{timeout:8000});
+  await assert(await page.locator('#majickBackButton').isVisible(),'Universal Back button is not visible away from Home');
+  await page.locator('#majickBackButton').click();
+  await page.waitForFunction(()=>window.S?.screen==='home',{timeout:8000});
+  await assert(await page.locator('#majickBackButton').count()===0,'Back button did not clear after returning Home');
 
   // Continue this smoke from D755 so the existing Assessment course remains intact.
   await assert((await page.locator('.courseSelect').inputValue())==='D755','visible class selector did not return to D755');
@@ -422,6 +431,34 @@ try{
   await assert(tutorDepth.merged&&/Complete Lesson 1 Teaching Notes/.test(tutorDepth.mergedTitle),'D772 Lesson 1 was not combined into one complete teaching chapter');
   await assert(await page.locator('#courseTutorLesson .tutorOfficialTeaching').count()===1,'D772 Lesson 1 master teaching block did not render exactly once');
   await assert(tutorDepth.status==='Learning'&&tutorDepth.target===1,'new lesson did not begin at Learning / foundation rigor');
+
+  // Majick Tutor must provide four in-page help actions grounded in the current lesson.
+  await assert(await page.locator('[data-tutor-help]').count()===4,'Majick Tutor is missing one or more contextual help actions');
+  await page.locator('[data-tutor-help="simple"]').click();
+  await page.waitForSelector('#tutorAssistPanel:not([hidden])',{timeout:5000});
+  await assert(/four questions|full group/i.test(await page.locator('#tutorAssistPanel').innerText()),'Explain Simpler did not render Lesson 1 guidance');
+  await page.locator('#tutorAssistClose').click();
+
+  await page.locator('[data-tutor-help="example"]').click();
+  await assert(/5,000 teachers|stratified/i.test(await page.locator('#tutorAssistPanel').innerText()),'Give Me an Example did not render the Lesson 1 scenario');
+  await page.locator('#tutorAssistClose').click();
+
+  await page.locator('[data-tutor-help="quiz"]').click();
+  await page.waitForSelector('[data-tutor-quick-choice="2"]',{timeout:5000});
+  await page.locator('[data-tutor-quick-choice="2"]').click();
+  await assert(/Correct/i.test(await page.locator('.tutorQuickFeedback').innerText()),'Quiz Me on This Page did not score the built-in quick check');
+  await page.locator('#tutorAssistClose').click();
+
+  await page.locator('[data-tutor-help="mistakes"]').click();
+  await assert((await page.locator('#tutorAssistPanel').innerText()).length>40,'Related Mistakes did not render a repair surface');
+  await page.locator('#tutorAssistClose').click();
+
+  // When Tutor is open, universal Back should return to Course Path before leaving Learning Lab.
+  await page.waitForSelector('#majickBackButton',{timeout:5000});
+  await page.locator('#majickBackButton').click();
+  await assert(await page.locator('.learnPanel[data-panel="path"]:not([hidden])').count()===1,'Back from Tutor did not return to Course Path');
+  await page.getByText('Understanding Data Collection Methods',{exact:true}).first().click();
+  await page.waitForSelector('#courseTutorLesson .tutorChapterBlock',{timeout:5000});
 
   const tutorGrowth=await page.evaluate(()=>{
     const lesson=MajickCourseTutor.selectedLesson('D772');
