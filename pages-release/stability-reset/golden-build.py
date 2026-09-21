@@ -81,6 +81,8 @@ OVERLAYS=[
     ("pages-release/v3326/course-tutor.css","course-tutor.css"),
     ("pages-release/v3327/magical-college-home.js","magical-college-home.js"),
     ("pages-release/v3327/magical-college-home.css","magical-college-home.css"),
+    ("pages-release/v3333/wgu-practice.js","wgu-practice.js"),
+    ("pages-release/v3333/wgu-practice.css","wgu-practice.css"),
     ("pages-release/v3315/study-material/materialParser.js","study-material/materialParser.js"),
     ("pages-release/v3315/study-material/materialStoreModel.js","study-material/materialStoreModel.js"),
     ("pages-release/v3315/study-material/questionBuilder.js","study-material/questionBuilder.js"),
@@ -166,8 +168,8 @@ for src_name,(dst_name,expected_hash,expected_bytes) in PINNED_MOTION.items():
 progress=site/"app-progress.json"
 if progress.exists():
     data=json.loads(progress.read_text(encoding="utf-8"))
-    data["version"]="V3.3.32 WGU Terminology Lock"
-    data["learning_intelligence"]="V3.3.32 WGU Terminology Lock with protected lifetime Majick XP, one canonical D772 Section 1, official WGU course terminology across Tutor and practice, WGU-style concept/scenario questions with terminology-and-clue rationales, contextual Tutor help, universal Back navigation, and de-duplicated supplemental uploads"
+    data["version"]="V3.3.33 WGU Practice Lab"
+    data["learning_intelligence"]="V3.3.33 WGU Practice Lab with protected lifetime Majick XP, official D772 Section 1 terminology, select-and-submit WGU-style practice, visual graph questions, answer-choice coaching, 30-question mixed OA simulation, concept readiness results, contextual Tutor help, and universal Back navigation"
     data["sanctuary_version"]="V3.3.25 Single Guardian Visual Authority"
     data["sanctuary_home"]="Guardian needs HUD, object-aware care travel, exclusive beds, visible care inventory, safe furniture snapping"
     data["sanctuary_customization"]="personal Guardian nooks, feeding/play zones, owned furniture storage, Cozy Dorm layout preset"
@@ -185,11 +187,11 @@ html=html.replace('./guardian-care-economy.css?v=stability-1','./guardian-care-e
 html=html.replace('./majick-state-core.js?v=stability-1','./majick-state-core.js?v=3322-recovery')
 html=html.replace('./guardian-care-economy.js?v=stability-1','./guardian-care-economy.js?v=3322-recovery')
 html=html.replace('./v3317-main.js?v=stability-1','./v3317-main.js?v=3322-recovery')
-html=html.replace('</head>','<link rel="stylesheet" href="./learning-lab.css?v=3319">\\n<link rel="stylesheet" href="./learning-plan.css?v=3324">\\n<link rel="stylesheet" href="./course-tutor.css?v=3326">\\n<link rel="stylesheet" href="./magical-college-home.css?v=3327">\\n</head>',1)
+html=html.replace('</head>','<link rel="stylesheet" href="./learning-lab.css?v=3319">\\n<link rel="stylesheet" href="./learning-plan.css?v=3324">\\n<link rel="stylesheet" href="./course-tutor.css?v=3326">\\n<link rel="stylesheet" href="./magical-college-home.css?v=3327">\\n<link rel="stylesheet" href="./wgu-practice.css?v=3333">\\n</head>',1)
 main_tag='<script src="./v3317-main.js?v=3322-recovery"></script>'
 if main_tag not in html:
     fail("authoritative main runtime tag missing while installing recovery")
-html=html.replace(main_tag,'<script src="./learning-lab.js?v=3319"></script>\\n<script src="./learning-plan.js?v=3324"></script>\\n<script src="./course-tutor.js?v=3326"></script>\\n'+main_tag+'\\n<script src="./magical-college-home.js?v=3327"></script>\\n<script src="./v3322-main-recovery.js?v=3322"></script>',1)
+html=html.replace(main_tag,'<script src="./learning-lab.js?v=3319"></script>\\n<script src="./learning-plan.js?v=3324"></script>\\n<script src="./course-tutor.js?v=3326"></script>\\n'+main_tag+'\\n<script src="./magical-college-home.js?v=3327"></script>\\n<script src="./v3322-main-recovery.js?v=3322"></script>\\n<script src="./wgu-practice.js?v=3333"></script>',1)
 index.write_text(html,encoding="utf-8")
 
 san_index=site/"sanctuary"/"index.html"
