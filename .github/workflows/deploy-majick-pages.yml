@@ -271,6 +271,7 @@ jobs:
           echo "Majick Studies V3.3.32 Golden Baseline overlay assembly passed."
 
       - name: Browser regression gate
+        timeout-minutes: 8
         shell: bash
         run: |
           set -euo pipefail
@@ -305,6 +306,7 @@ jobs:
         uses: actions/deploy-pages@v4
 
       - name: Verify live Pages deployment in Chromium
+        timeout-minutes: 6
         shell: bash
         run: |
           set -euo pipefail
