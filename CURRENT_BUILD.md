@@ -1,3 +1,28 @@
+## V3.3.38 — Learn Mode Instruction Cycle
+- Rebuilt D772 Learn Mode around an actual instruction cycle:
+  **Teach → Visual → Worked Example → Your Turn → Feedback → New Scenario → Explain Why → Mastery Check**.
+- Learn Mode opens each lesson with **What am I learning?**, a WGU-aligned lesson goal, mental model, and 3–5 explicit skills.
+- D772 Section 1 is broken into **16 concept modules** across Lessons 1–4 so learners work one idea at a time rather than scrolling a notes dump.
+- Added meaningful instructional diagrams for sampling, study design, bias, misleading graphs, significance, research integrity, causation, confounders, and scatterplots.
+- Added a persistent **Majick Tutor** beside the lesson with:
+  - Explain This Differently
+  - Show Me Another Example
+  - What Would WGU Ask?
+  - Compare These Two
+  - I Still Don’t Get It
+- “I Still Don’t Get It” rotates teaching approaches instead of repeating the same paragraph.
+- Added tiny concept checks and transfer scenarios inside teaching.
+- Added **Explain Why** responses by typed explanation, reasoning choice, or explain-aloud acknowledgement, followed by a model explanation.
+- Added themed **Arcane Anchor Charts** / Stop & Remember cards that unlock during learning and automatically appear in the Living Grimoire Anchor Wall.
+- Repeated confusion on high-priority trap pairs inserts an adaptive comparison/repair lesson before continuing.
+- Every lesson ends with a **6-question WGU-style Can I Do This? checkpoint** and returns:
+  - Ready to move on
+  - One distinction to repair
+  - Needs another teaching pass
+- Learn Mode academic completion state is separate from Majick XP/crystals; the regression explicitly verifies that completing teaching does not alter lifetime XP.
+- Course Path, Course Tutor, Study Now, and the existing WGU Practice Lab remain available; Learn Mode becomes the default D772 Learning Lab experience.
+- Guardian/Sanctuary protected motion assets remain untouched.
+
 ## V3.3.37 — Self-Paced Course Clock
 - Removed fixed-Sunday academic framing from the WGU experience.
 - Replaced **Sunday Readiness & Thinking Analytics** with **Course Readiness & Thinking Analytics**.
