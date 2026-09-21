@@ -49,7 +49,7 @@ function render(){
       '<aside class="v3315ForgeCard">'+
         '<h3>3. What should Majick build?</h3>'+
         '<div class="v3315Checks">'+outputChecks()+'</div>'+
-        '<div class="v3315Count"><b>Adaptive question bank</b><small>Majick automatically targets about 100 rigorous questions for the active class and rebalances them as you add lessons.</small></div>'+
+        '<div class="v3315Count"><b>Adaptive question bank</b><small>D772 uses a quality-first WGU-style concept and scenario bank. Other courses build adaptive practice from active source notes.</small></div>'+
         '<button class="btn primary v3315ForgeButton" id="materialForgeBtn">✦ Forge Study Material</button>'+
         '<p class="v3315Small">Generated questions stay linked to the source that created them. Only active sources feed that course\'s practice bank.</p>'+
       '</aside>'+
