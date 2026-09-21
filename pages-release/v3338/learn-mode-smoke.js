@@ -38,8 +38,10 @@ const ctx={
  },
  document:{
    documentElement:{dataset:{}},
+   getElementById(){return null},
    querySelector(){return null},
    querySelectorAll(){return []},
+   createElement(){return {className:'',innerHTML:'',appendChild(){}}},
    body:{appendChild(){}}
  }
 };
