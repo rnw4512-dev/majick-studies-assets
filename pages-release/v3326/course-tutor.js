@@ -2,7 +2,7 @@
 'use strict';
 if(!window.MajickLearningLab||!window.MajickMaterialStore)return;
 
-const VERSION='3.3.28';
+const VERSION='3.3.29';
 const D772_SECTION_ONE={
   id:'d772-section-1',
   title:'Section 1: Assessing Research and Data Credibility',
@@ -142,6 +142,34 @@ const D772_SECTION_ONE_CONTENT={
     ],
     vocab:[],
     memory:['One Section 1. Four lessons. One final Summary and Test.','Follow the evidence from collection → bias → presentation → conclusion.']
+  }
+};
+
+const D772_TUTOR_HELP={
+  'd772-s1-l1':{
+    simple:'Think of Lesson 1 as four questions: Who is the full group? Who actually got studied? How were they chosen? Did the researcher only observe, or did they assign a treatment? Those answers tell you whether the sample and study design are strong enough for the claim.',
+    example:'A district wants to understand planning time for all 5,000 teachers. It divides teachers into elementary, middle, and high school groups and randomly chooses teachers from every group. The 5,000 teachers are the population, the selected teachers are the sample, and the method is stratified sampling because it takes SOME FROM ALL groups.',
+    quickCheck:{prompt:'A researcher randomly chooses 5 schools and surveys every teacher in those schools. Which sampling method is this?',choices:['Simple random','Stratified','Cluster','Systematic'],answer:2,rationale:'Cluster sampling chooses some whole groups and includes everyone in the selected groups: ALL FROM SOME.'}
+  },
+  'd772-s1-l2':{
+    simple:'Lesson 2 is about finding where the study became unfair. If the wrong people get selected, think sampling bias. If people choose themselves, think voluntary response. If selected people do not answer, think non-response. If people answer inaccurately, think response bias. If the wording pushes them, think loaded question.',
+    example:'A school asks only students who are currently buying lunch whether students like the lunch program. The sample leaves out students who avoid school lunch, so it may overrepresent students who already like it. That is a non-representative sample and a sampling-bias problem.',
+    quickCheck:{prompt:'A random sample is selected, but the people with the strongest negative experiences are much less likely to return the survey. What is the main bias?',choices:['Voluntary response bias','Non-response bias','Convenience sampling','Loaded question'],answer:1,rationale:'They were already selected. The distortion happens because selected people fail to respond, so this is non-response bias.'}
+  },
+  'd772-s1-l3':{
+    simple:'Lesson 3 asks whether the story told by the numbers is fair. Check the graph scale, sample size, meaning of “statistically significant,” and whether anyone changed, invented, hid, or duplicated data. A result can be real and still be presented in a misleading way.',
+    example:'Two schools have pass rates of 96% and 94%. A bar chart starts its y-axis at 92%, making one bar look dramatically taller. The numbers may be accurate, but the truncated axis exaggerates the visual difference and can mislead the reader.',
+    quickCheck:{prompt:'A study reports a statistically significant 0.2-point increase in test scores. What can you conclude?',choices:['The effect must be large','The effect must be educationally important','The result is unlikely to be due to random chance alone under the method used','The study is automatically unbiased'],answer:2,rationale:'Statistical significance concerns chance/uncertainty. It does not automatically mean the effect is large, important, or unbiased.'}
+  },
+  'd772-s1-l4':{
+    simple:'Lesson 4 asks what the evidence actually allows you to say. Observational studies can show association, but not causation by themselves. A well-designed randomized experiment can support a causal claim. For scatterplots, read SHAPE, then TREND, then STRENGTH, then OUTLIERS.',
+    example:'Ice cream sales and shark attacks both rise in summer. That does not mean ice cream causes shark attacks. Warm weather is a confounding variable because it increases ice cream purchases and also increases swimming and beach activity.',
+    quickCheck:{prompt:'An observational study finds that people who take vitamin D are healthier on average. Which conclusion is justified?',choices:['Vitamin D caused the better health','There is an association, but causation is not established','The variables have no relationship','The study is a randomized experiment'],answer:1,rationale:'Because no treatment was randomly assigned, the observational study can support association but cannot establish causation by itself.'}
+  },
+  'd772-s1-review':{
+    simple:'For the Section 1 test, follow the research chain from beginning to end: identify population/sample → sampling method → study type → experimental design → bias → graph/significance → research integrity → association or causation. Do not jump straight to the conclusion.',
+    example:'Suppose a company surveys volunteers, uses a truncated graph, and then claims its product causes improvement. You would question the voluntary-response sample, the misleading display, and the causal claim. Section 1 questions often stack several credibility problems in one scenario.',
+    quickCheck:{prompt:'Which sequence best matches the Section 1 credibility check?',choices:['Conclusion → graph → sample → population','Population/sample → collection/design → bias/display → supported conclusion','Vocabulary → formula → calculator → conclusion','Correlation → causation → sampling'],answer:1,rationale:'Section 1 follows the evidence from who was studied and how data were collected through bias/presentation and finally to the conclusion the evidence supports.'}
   }
 };
 
@@ -600,6 +628,69 @@ function visualHtml(lesson){
   const v=lesson.visual||['Learn','Practice','Apply','Review'];
   return '<div class="tutorVisual">'+v.map((x,i)=>'<div><span>'+E(x)+'</span></div>'+(i<v.length-1?'<b>→</b>':'')).join('')+'</div>';
 }
+function helpFor(lesson){return D772_TUTOR_HELP[lesson?.id]||null}
+function relatedMistakesHtml(lesson,id=cid()){
+  const qs=questionsForLesson(lesson,id),byId=new Map(qs.map(q=>[q.id,q]));
+  const wrong=(prog(id).answers||[]).filter(a=>a&&!a.correct&&byId.has(a.qid)).slice(-4).reverse();
+  if(wrong.length){
+    return '<div class="tutorAssistMistakes"><p>These are recent misses from this lesson. Re-read the clue that separates the concepts before answering again.</p>'+wrong.map((a,i)=>{const q=byId.get(a.qid)||{};return '<article><small>RECENT MISS '+(i+1)+'</small><b>'+E(q.prompt||'Lesson question')+'</b>'+(q.why?'<p>'+E(q.why)+'</p>':'')+'</article>'}).join('')+'</div>';
+  }
+  return '<div class="tutorAssistMistakes"><p>You do not have a recent wrong answer saved for this lesson yet. Watch these high-priority traps:</p><ul>'+(lesson.traps||[]).map(x=>'<li>'+E(x)+'</li>').join('')+'</ul></div>';
+}
+function quickQuizHtml(lesson,id=cid()){
+  const built=helpFor(lesson)?.quickCheck;
+  if(built){
+    return '<div class="tutorQuickQuiz"><p class="tutorQuickPrompt">'+E(built.prompt)+'</p><div class="tutorQuickChoices">'+built.choices.map((x,i)=>'<button type="button" data-tutor-quick-choice="'+i+'">'+String.fromCharCode(65+i)+'. '+E(x)+'</button>').join('')+'</div><div class="tutorQuickFeedback" aria-live="polite"></div></div>';
+  }
+  const q=questionsForLesson(lesson,id)[0];
+  if(q&&Array.isArray(q.choices)&&q.choices.length){
+    return '<div class="tutorQuickQuiz"><p class="tutorQuickPrompt">'+E(q.prompt||'Quick check')+'</p><div class="tutorQuickChoices">'+q.choices.map((x,i)=>'<button type="button" data-tutor-bank-choice="'+i+'">'+String.fromCharCode(65+i)+'. '+E(x)+'</button>').join('')+'</div><div class="tutorQuickFeedback" aria-live="polite"></div></div>';
+  }
+  return '<p>Lesson-specific adaptive questions will appear here after your question bank is available.</p>';
+}
+function renderTutorAssist(kind,lesson,ch,id=cid()){
+  const panel=document.getElementById('tutorAssistPanel');if(!panel)return;
+  const help=helpFor(lesson);
+  let title='',body='';
+  if(kind==='simple'){
+    title='Explain it simpler';
+    body='<p>'+E(help?.simple||lesson.goal||'Focus on the main idea, then identify the clue in the scenario that tells you which concept applies.')+'</p>';
+  }else if(kind==='example'){
+    title='Show me an example';
+    body='<p>'+E(help?.example||'Use the current lesson goal and compare it with one concrete example from your uploaded notes.')+'</p>';
+  }else if(kind==='mistakes'){
+    title='Related mistakes';
+    body=relatedMistakesHtml(lesson,id);
+  }else if(kind==='quiz'){
+    title='Quick check';
+    body=quickQuizHtml(lesson,id);
+  }
+  panel.hidden=false;
+  panel.innerHTML='<div class="tutorAssistHead"><div><small>MAJICK TUTOR • '+E(lessonNumberLabel(lesson))+'</small><h3>'+E(title)+'</h3></div><button type="button" id="tutorAssistClose" aria-label="Close tutor help">×</button></div><div class="tutorAssistBody">'+body+'</div>';
+  document.getElementById('tutorAssistClose')?.addEventListener('click',()=>{panel.hidden=true;panel.innerHTML=''});
+  if(kind==='quiz'&&help?.quickCheck){
+    panel.querySelectorAll('[data-tutor-quick-choice]').forEach(btn=>btn.addEventListener('click',()=>{
+      const picked=Number(btn.dataset.tutorQuickChoice),correct=picked===help.quickCheck.answer;
+      panel.querySelectorAll('[data-tutor-quick-choice]').forEach(x=>x.disabled=true);
+      const feedback=panel.querySelector('.tutorQuickFeedback');
+      if(feedback)feedback.innerHTML='<b>'+(correct?'✓ Correct':'Not yet')+'</b><p>'+E(help.quickCheck.rationale)+'</p>';
+      btn.classList.add(correct?'correct':'incorrect');
+    }));
+  }
+  if(kind==='quiz'&&!help?.quickCheck){
+    const q=questionsForLesson(lesson,id)[0];
+    if(q&&Array.isArray(q.choices)){
+      const correctIndex=q.choices.findIndex(x=>String(x)===String(q.answer));
+      panel.querySelectorAll('[data-tutor-bank-choice]').forEach(btn=>btn.addEventListener('click',()=>{
+        const picked=Number(btn.dataset.tutorBankChoice),correct=picked===correctIndex;
+        panel.querySelectorAll('[data-tutor-bank-choice]').forEach(x=>x.disabled=true);
+        const feedback=panel.querySelector('.tutorQuickFeedback');
+        if(feedback)feedback.innerHTML='<b>'+(correct?'✓ Correct':'Not yet')+'</b>'+(q.why?'<p>'+E(q.why)+'</p>':'');
+        btn.classList.add(correct?'correct':'incorrect');
+      }));
+    }
+  }
+}
 function officialTeachingHtml(official){
   if(!official)return '';
   return '<article class="tutorOfficialTeaching"><small>AUTHORITATIVE D772 • SECTION 1 MASTER NOTES</small><h4>'+E(official.overview)+'</h4>'+(official.teach||[]).map(x=>'<div class="tutorOfficialTopic"><b>'+E(x.title)+'</b><p>'+E(x.text)+'</p></div>').join('')+((official.memory||[]).length?'<div class="tutorMemoryCues"><small>MEMORY CUES</small><ul>'+official.memory.map(x=>'<li>'+E(x)+'</li>').join('')+'</ul></div>':'')+'</article>';
@@ -615,6 +706,7 @@ function renderTutor(){
   const sourceEvidence=officialTeachingHtml(ch.official)+uploadedEvidence||'<div class="tutorLocked">Upload notes for this lesson and Majick will build its teaching chapter here.</div>';
   box.innerHTML='<div class="tutorLessonHead"><div><button class="tutorBack" id="tutorBack">← Course Path</button><span>'+E(ch.section?.title||id)+' • '+E(lessonNumberLabel(lesson))+'</span><h2>'+E(lesson.title)+'</h2><p>'+E(lesson.goal||'Learn and apply this lesson.')+'</p></div><div class="masteryBadge '+statusClass(m.status)+'"><small>MASTERY</small><b>'+E(m.status)+'</b><span>'+m.accuracy+'% • target rigor '+m.targetRigor+'</span></div></div>'+
     '<div class="tutorNext"><b>What Majick wants you to do next:</b> '+E(nextStep(m))+'</div>'+
+    '<section class="tutorHelpBar" aria-label="Majick Tutor help"><div><small>ASK MAJICK ABOUT THIS LESSON</small><b>Use help without leaving the page</b></div><div class="tutorHelpButtons"><button type="button" data-tutor-help="simple">Explain Simpler</button><button type="button" data-tutor-help="example">Give Me an Example</button><button type="button" data-tutor-help="quiz">Quiz Me on This Page</button><button type="button" data-tutor-help="mistakes">Related Mistakes</button></div></section><section id="tutorAssistPanel" class="tutorAssistPanel" hidden></section>'+
     '<section class="tutorChapterBlock"><div class="tutorBlockTitle"><span>1</span><div><small>TEACH ME</small><h3>Build the idea before memorizing it</h3></div></div>'+sourceEvidence+'</section>'+
     '<section class="tutorChapterBlock"><div class="tutorBlockTitle"><span>2</span><div><small>SEE IT</small><h3>A visual thinking path</h3></div></div>'+visualHtml(lesson)+'</section>'+
     '<div class="tutorTwoCol"><section class="tutorChapterBlock"><div class="tutorBlockTitle"><span>3</span><div><small>VOCABULARY IN CONTEXT</small><h3>Words you need to recognize</h3></div></div>'+(ch.vocab.length?'<div class="tutorVocab">'+ch.vocab.slice(0,14).map(v=>'<details><summary>'+E(v.term)+'</summary><p>'+E(v.definition)+'</p></details>').join('')+'</div>':'<p class="tutorMuted">Vocabulary will populate from this lesson’s notes.</p>')+'</section>'+
@@ -625,6 +717,7 @@ function renderTutor(){
   document.getElementById('tutorBack')?.addEventListener('click',()=>show('path'));
   document.getElementById('tutorPractice')?.addEventListener('click',()=>startPractice(lesson,id));
   document.getElementById('tutorManageSources')?.addEventListener('click',()=>{try{navigate('addmaterial')}catch(_){}});
+  box.querySelectorAll('[data-tutor-help]').forEach(btn=>btn.addEventListener('click',()=>renderTutorAssist(btn.dataset.tutorHelp,lesson,ch,id)));
 }
 const baseRender=MajickLearningLab.render;
 MajickLearningLab.render=function(){
@@ -641,5 +734,5 @@ MajickLearningLab.bind=function(){
 };
 const baseRefresh=MajickLearningLab.refresh;
 MajickLearningLab.refresh=function(){baseRefresh();hydrate()};
-window.MajickCourseTutor={VERSION,D772_SECTION_ONE,D772_SECTION_ONE_CONTENT,hydrate,sections,classifySource,annotateSource,tagD772Generated,classifyD772Item,d772Segments,sourcesForLesson,questionsForLesson,mastery,sectionProgress,chapter,mergeLessonTeaching,officialD772Content,startPractice,show,renderPath,renderTutor,selectedLesson};
+window.MajickCourseTutor={VERSION,D772_SECTION_ONE,D772_SECTION_ONE_CONTENT,D772_TUTOR_HELP,hydrate,sections,classifySource,annotateSource,tagD772Generated,classifyD772Item,d772Segments,sourcesForLesson,questionsForLesson,mastery,sectionProgress,chapter,mergeLessonTeaching,officialD772Content,startPractice,show,renderPath,renderTutor,renderTutorAssist,selectedLesson};
 })();
