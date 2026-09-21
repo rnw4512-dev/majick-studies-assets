@@ -63,6 +63,7 @@ try{
   await assert(firstHeroLayout&&firstHeroLayout.copyWidth>firstHeroLayout.heroWidth*.55,'Moonlit Collegium hero copy is squeezed into the seal column');
   await assert(firstHeroLayout.sealX>firstHeroLayout.copyX,'Arcane Registrar seal is not positioned beside the course introduction');
 
+  console.log('SMOKE CHECKPOINT: boot/home passed');
   const balanceRecovery=await page.evaluate(()=>{
     // Create the exact affected ownership signature without adding any unowned Guardian.
     S.legacy=S.legacy||{};
@@ -201,6 +202,8 @@ try{
   // Continue this smoke from D755 so the existing Assessment course remains intact.
   await assert((await page.locator('.courseSelect').inputValue())==='D755','visible class selector did not return to D755');
 
+  console.log('SMOKE CHECKPOINT: account/navigation passed');
+
   // Real Study Guide and Grimoire buttons must be clickable, not blocked by Sanctuary layers.
   await page.evaluate(()=>navigate('guide'));
   await page.waitForSelector('.studyCard button',{timeout:10000});
@@ -249,7 +252,7 @@ try{
   const d772Learn=await page.evaluate(()=>MajickLearningLab.model('D772'));
   const planRuntime=await page.evaluate(()=>({ok:!!window.MajickLearningPlan,version:window.MajickLearningPlan?.VERSION||null,tutor:window.MajickCourseTutor?.VERSION||null}));
   await assert(planRuntime.ok&&planRuntime.version==='3.3.24','Adaptive Learning Plan runtime missing');
-  await assert(planRuntime.tutor==='3.3.26','Majick Course Tutor runtime missing');
+  await assert(planRuntime.tutor==='3.3.32','Majick Course Tutor runtime missing or stale: '+planRuntime.tutor);
   await assert(d772Learn.vocab.some(v=>v.term.toLowerCase()==='mean'),'D772 Learn Mode missing statistics vocabulary');
   await assert(d772Learn.lessons.length>=5,'D772 Learn Mode missing visual starter lessons');
   const toolCheck=await page.evaluate(()=>({
@@ -333,6 +336,7 @@ try{
   await assert(d772Ready.ok,'D772 was not seeded into Majick Studies');
   await assert(d772Ready.active==='D772'&&d772Ready.title==='Statistical Data Literacy','D772 course metadata is wrong');
 
+  console.log('SMOKE CHECKPOINT: learning/practice passed');
   await page.evaluate(()=>navigate('addmaterial'));
   await page.waitForSelector('#materialFile',{timeout:10000});
   await assert(await page.locator('#materialCourse').inputValue()==='D772','Add Study Material did not default to active D772');
@@ -455,6 +459,7 @@ try{
   await assert(!d772Path.hasSection2,'D772 incorrectly exposes a Section 2');
   await assert(d772Path.contentCount===5,'built-in D772 Section 1 master content is incomplete');
 
+  console.log('SMOKE CHECKPOINT: notes forge/D772 repair passed');
   const d772QuestionQuality=await page.evaluate(async()=>{
     const built=MajickQuestionBuilder.d772Questions('smoke-d772');
     await MajickMaterialStore.syncQuestions(S.courses.D772,'D772');
@@ -725,6 +730,8 @@ try{
   await assert(courseIsolation.accountBefore.xp===courseIsolation.accountMid.xp&&courseIsolation.accountMid.xp===courseIsolation.d772After.xp,'Majick XP changed merely from switching courses');
   await assert(courseIsolation.accountBefore.crystals===courseIsolation.accountMid.crystals&&courseIsolation.accountMid.crystals===courseIsolation.d772After.crystals,'Moon Crystals changed merely from switching courses');
 
+  console.log('SMOKE CHECKPOINT: D772 tutor/question quality passed');
+
   // Guardian care must be a functional loop, not decorative buttons.
   const careFlow=await page.evaluate(()=>{
     const initial=MajickGuardianCare.snapshot();
@@ -798,6 +805,8 @@ try{
   await assert(carePersist.favorite,'Guardian favorite-item ownership did not survive reload');
   await assert(carePersist.meal===2&&carePersist.treat===2,'consumable Guardian inventory did not persist expected quantities');
   await assert(carePersist.bond>0,'Guardian bond progress did not survive reload');
+
+  console.log('SMOKE CHECKPOINT: guardian care passed');
 
   // Companions must create the real Sanctuary iframe, not a dead static replacement.
   await page.evaluate(()=>{if(typeof navigate==='function')navigate('companions');else {S.screen='companions';render();}});
@@ -957,6 +966,7 @@ try{
   const jsFatal=fatal.filter(x=>!x.includes('Failed to load resource')&&!x.includes('404'));
   await assert(jsFatal.length===0,jsFatal.join(' | '));
 
+  console.log('SMOKE CHECKPOINT: sanctuary passed');
   console.log('MAJICK BROWSER SMOKE PASSED');
   console.log(JSON.stringify({boot,san,roster:care.snapshot?.roster?.length||0,eggs:care.snapshot?.eggs?.length||0},null,2));
 } finally {
