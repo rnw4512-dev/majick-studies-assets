@@ -1,6 +1,6 @@
 (function(){
 'use strict';
-const VERSION='3.3.27';
+const VERSION='3.3.37';
 
 function E(s){try{return esc(String(s??''))}catch(_){return String(s??'').replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]))}}
 function currentCourse(){try{return course()}catch(_){return S?.courses?.[S?.activeCourse]||{id:'',title:''}}}
@@ -34,6 +34,44 @@ function guardians(){
 }
 function account(){
   try{return MajickStateCore?.ensureAccount?.()||S?.majickAccount||{}}catch(_){return S?.majickAccount||{}}
+}
+function coursePace(a){
+  const record=window.S?.majickCourseRecords?.[a.id]||null;
+  const minWeeks=Math.max(1,Number(record?.paceMinWeeks||4));
+  const targetWeeks=Math.max(minWeeks,Number(record?.paceTargetWeeks||5));
+  const maxWeeks=Math.max(targetWeeks,Number(record?.paceMaxWeeks||6));
+  const started=record?.startedAt?new Date(record.startedAt):null;
+  const validStart=started&&!Number.isNaN(started.getTime());
+  const elapsedDays=validStart?Math.max(1,Math.floor((Date.now()-started.getTime())/86400000)+1):null;
+  const week=elapsedDays?Math.max(1,Math.ceil(elapsedDays/7)):null;
+  let phase='SELF-PACED';
+  let advice='Aim to complete the course in 4–6 weeks, but test sooner whenever your mastery and OA readiness support it.';
+  if(week!==null){
+    if(week<minWeeks){
+      phase='ACCELERATION WINDOW';
+      advice='Keep building mastery, but do not wait for the calendar. If you are genuinely OA-ready before Week '+minWeeks+', accelerate.';
+    }else if(week<=targetWeeks){
+      phase='TARGET FINISH WINDOW';
+      advice='You are in your preferred finish zone. Shift toward mixed OA practice and repair only the concepts that still need work.';
+    }else if(week<=maxWeeks){
+      phase='EFFICIENCY GUARDRAIL';
+      advice='Use this week as a guardrail, not a deadline. Avoid unnecessary new material and focus on remaining weak concepts plus OA readiness.';
+    }else{
+      phase='FOCUS & FINISH';
+      advice='This course is using more time than your preferred plan. Study only the remaining weak concepts and move toward the OA as soon as mastery supports it.';
+    }
+  }
+  return {record,minWeeks,targetWeeks,maxWeeks,elapsedDays,week,phase,advice};
+}
+function paceCard(a){
+  const p=coursePace(a);
+  const headline=p.week?'Week '+p.week+' of a ~'+p.targetWeeks+'-week target':'4–6 week self-paced target';
+  return '<div class="v3337PaceCard">'+
+    '<div class="v3337PaceTop"><div><small>SELF-PACED COURSE CLOCK</small><b>'+E(headline)+'</b></div><span>'+E(p.phase)+'</span></div>'+
+    '<div class="v3337PaceWindow"><i>Earliest preferred finish <b>Week '+p.minWeeks+'</b></i><i>Target <b>Week '+p.targetWeeks+'</b></i><i>Guardrail <b>Week '+p.maxWeeks+'</b></i></div>'+
+    '<p>'+E(p.advice)+'</p>'+
+    '<em>No fixed Sunday deadline • finish as soon as you are ready</em>'+
+  '</div>';
 }
 function nextAcademicText(a){
   const m=a.mastery;
@@ -96,6 +134,7 @@ function magicalHomeHTML(){
     '<div class="v3327HallGrid">'+
       '<section class="v3327Hall v3327AcademicHall"><header><div><small>ACADEMIC HALL</small><h3>Your Current Learning Path</h3></div><span class="v3327Status '+E(status.toLowerCase().replace(/\s+/g,'-'))+'">'+E(status)+'</span></header>'+
         '<div class="v3327CourseScroll"><small>'+E(sectionTitle)+'</small><h2>'+E(lessonTitle)+'</h2><p>'+E(nextAcademicText(a))+'</p></div>'+
+        paceCard(a)+
         '<div class="v3327AcademicMetrics"><div><b>'+readiness+'%</b><span>OA readiness</span></div><div><b>'+recent+'%</b><span>recent accuracy</span></div><div><b>R'+target+'</b><span>next rigor</span></div><div><b>'+answers+'</b><span>course answers</span></div></div>'+
         '<div class="v3327SectionProgress"><div><span>'+E(lessonNo)+'</span><b>'+sectionPct+'%</b></div><i><em style="width:'+sectionPct+'%"></em></i></div>'+
         '<div class="v3327Ritual"><small>TODAY’S ACADEMIC RITUAL</small><ol><li>Open the current Tutor chapter.</li><li>Read until you can explain the key idea without looking.</li><li>Complete adaptive practice at R'+target+'.</li><li>Repair any concept that drops into Needs Review.</li></ol></div>'+
@@ -129,7 +168,7 @@ if(typeof previousScreenHTML==='function'&&!previousScreenHTML.__v3327MoonlitHom
   moonlitScreenHTML.__v3327MoonlitHome=true;
   window.screenHTML=moonlitScreenHTML;
 }
-window.MajickCollegeDashboard={VERSION,academic,magicalHomeHTML};
+window.MajickCollegeDashboard={VERSION,academic,coursePace,paceCard,magicalHomeHTML};
 // The authoritative app runtime performs its first render before this overlay loads.
 // Re-render home once so Moonlit Collegium is the first screen, not a second-visit upgrade.
 if(window.S?.screen==='control'){
