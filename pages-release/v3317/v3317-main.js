@@ -1,9 +1,9 @@
-// Majick Studies V3.3.35 WGU Practice Bank Fix — AUTHORITATIVE MAIN APP BRIDGE
+// Majick Studies V3.3.36 Render Loop Fix — AUTHORITATIVE MAIN APP BRIDGE
 (function(){
 'use strict';
 
-const RELEASE_LABEL='Moonlit Collegium • V3.3.35';
-const RELEASE_TITLE='Majick Studies — V3.3.35 Moonlit Collegium';
+const RELEASE_LABEL='Moonlit Collegium • V3.3.36';
+const RELEASE_TITLE='Majick Studies — V3.3.36 Moonlit Collegium';
 const registry=()=>window.MajickGuardianRegistry;
 const canonOf=type=>registry()?.get?.(type)?.canon||String(type||'').toLowerCase();
 const STAGE_SLUGS=['new-bond','apprentice','guardian','ascendant','celestial'];
@@ -142,13 +142,18 @@ function ensureBackButton(){
     existing?.remove();
     return;
   }
-  const btn=existing||document.createElement('button');
+  // IMPORTANT: do not rewrite an existing Back button.
+  // This function is called from a MutationObserver; mutating the existing
+  // button here would trigger the observer again and create an infinite loop.
+  if(existing)return existing;
+  const btn=document.createElement('button');
   btn.id='majickBackButton';
   btn.type='button';
   btn.setAttribute('aria-label','Go back');
   btn.innerHTML='<span>←</span> Back';
   btn.onclick=window.majickBack;
-  if(!existing)document.body.appendChild(btn);
+  document.body.appendChild(btn);
+  return btn;
 }
 window.addEventListener('keydown',ev=>{
   if(ev.altKey&&ev.key==='ArrowLeft'){
@@ -324,14 +329,14 @@ function applyReleaseBadge(){
   const pill=document.querySelector('.top .pill');
   if(pill&&pill.textContent!==RELEASE_LABEL)pill.textContent=RELEASE_LABEL;
   if(document.title!==RELEASE_TITLE)document.title=RELEASE_TITLE;
-  if(document.documentElement.dataset.majickVersion!=='3.3.35-wgu-practice-bank'){
-    document.documentElement.dataset.majickVersion='3.3.35-wgu-practice-bank';
+  if(document.documentElement.dataset.majickVersion!=='3.3.36-render-loop-fix'){
+    document.documentElement.dataset.majickVersion='3.3.36-render-loop-fix';
   }
 }
 
 function showRuntimeNotice(error){
   const message=String(error?.message||error||'Unknown runtime error');
-  console.error('Majick V3.3.35 runtime error',error);
+  console.error('Majick V3.3.36 runtime error',error);
   if(document.getElementById('v3317RuntimeNotice'))return;
   try{
     const n=document.createElement('div');
