@@ -281,14 +281,9 @@ function refreshD772PracticeSync(){
     const builder=window.MajickQuestionBuilder;
     if(!c||!Array.isArray(c.questionBank)||!builder?.d772Questions)return {changed:false,reason:'bank-unavailable'};
     const before=c.questionBank.length;
-    const kept=c.questionBank.filter(q=>{
-      const id=String(q?.id||'');
-      if(id.startsWith('notes_')||id.startsWith('d772_wgu_'))return false;
-      if(lowValueD772Prompt(q))return false;
-      return true;
-    });
-    const curated=builder.d772Questions('d772-master-section-1');
-    c.questionBank=[...kept,...curated];
+    const curated=builder.d772Questions('d772-master-section-1')
+      .filter(q=>!builder.isLowValueMetaQuestion?.(q));
+    c.questionBank=[...curated];
     let clearedSession=false;
     if(sessionContainsLowValueD772()){
       try{window.session=null}catch(_){}
@@ -297,7 +292,7 @@ function refreshD772PracticeSync(){
       if(window.S?.screen==='mission')window.S.screen='learninglab';
       window.__majickD772PracticeRefreshNotice=true;
     }
-    return {changed:before!==c.questionBank.length||curated.length>0,removed:before-kept.length,added:curated.length,clearedSession};
+    return {changed:true,removed:before,added:curated.length,clearedSession};
   }catch(e){console.warn('D772 concept-bank refresh',e);return {changed:false,error:String(e)}}
 }
 window.v3331RefreshD772Practice=refreshD772PracticeSync;
