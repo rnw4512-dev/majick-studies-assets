@@ -189,11 +189,11 @@ html=html.replace('./guardian-care-economy.css?v=stability-1','./guardian-care-e
 html=html.replace('./majick-state-core.js?v=stability-1','./majick-state-core.js?v=3322-recovery')
 html=html.replace('./guardian-care-economy.js?v=stability-1','./guardian-care-economy.js?v=3322-recovery')
 html=html.replace('./v3317-main.js?v=stability-1','./v3317-main.js?v=3322-recovery')
-html=html.replace('</head>','<link rel="stylesheet" href="./learning-lab.css?v=3319">\\n<link rel="stylesheet" href="./learning-plan.css?v=3324">\\n<link rel="stylesheet" href="./course-tutor.css?v=3326">\\n<link rel="stylesheet" href="./magical-college-home.css?v=3337">\\n<link rel="stylesheet" href="./wgu-practice.css?v=3333">\\n</head>',1)
+html=html.replace('</head>','<link rel="stylesheet" href="./learning-lab.css?v=3319">\\n<link rel="stylesheet" href="./learning-plan.css?v=3324">\\n<link rel="stylesheet" href="./course-tutor.css?v=3326">\\n<link rel="stylesheet" href="./magical-college-home.css?v=3337">\\n<link rel="stylesheet" href="./wgu-practice.css?v=3333">\\n<link rel="stylesheet" href="./learn-mode.css?v=3338">\\n</head>',1)
 main_tag='<script src="./v3317-main.js?v=3322-recovery"></script>'
 if main_tag not in html:
     fail("authoritative main runtime tag missing while installing recovery")
-html=html.replace(main_tag,'<script src="./learning-lab.js?v=3319"></script>\\n<script src="./learning-plan.js?v=3324"></script>\\n<script src="./course-tutor.js?v=3326"></script>\\n<script src="./wgu-practice.js?v=3336"></script>\\n'+main_tag+'\\n<script src="./magical-college-home.js?v=3337"></script>\\n<script src="./v3322-main-recovery.js?v=3322"></script>',1)
+html=html.replace(main_tag,'<script src="./learning-lab.js?v=3319"></script>\\n<script src="./learning-plan.js?v=3324"></script>\\n<script src="./course-tutor.js?v=3326"></script>\\n<script src="./learn-mode.js?v=3338"></script>\\n<script src="./wgu-practice.js?v=3336"></script>\\n'+main_tag+'\\n<script src="./magical-college-home.js?v=3337"></script>\\n<script src="./v3322-main-recovery.js?v=3322"></script>',1)
 html=html.replace('Sunday Readiness & Thinking Analytics','Course Readiness & Thinking Analytics')
 html=html.replace('<h3>Before Sunday</h3>','<h3>Before Your OA</h3>')
 html=html.replace('<h3>🌌 Weekly Constellation Quest</h3>','<h3>🌌 Constellation Quest • 7-Day Bonus</h3>')
