@@ -299,6 +299,24 @@ jobs:
         with:
           path: _site
 
+      - name: Clear stale Pages deployments
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          # Prior runs were cancelled while deploy-pages was already active.
+          # Clear those build versions so a stale Pages deployment cannot block the new release.
+          for BUILD in             6a777abd14ec4fece39ee855bae3556f5d22158d             04d0bcafc01f258bcf33f1fde7e268dc75a89a7c
+          do
+            CODE="$(curl -sS -o /tmp/pages-cancel.json -w '%{http_code}'               -X POST               -H "Accept: application/vnd.github+json"               -H "Authorization: Bearer $GH_TOKEN"               -H "X-GitHub-Api-Version: 2026-03-10"               "https://api.github.com/repos/${GITHUB_REPOSITORY}/pages/deployments/${BUILD}/cancel" || true)"
+            echo "Pages cancel ${BUILD}: HTTP ${CODE}"
+            case "$CODE" in
+              204|404|409|422) ;;
+              *) cat /tmp/pages-cancel.json || true; echo "Unexpected Pages cancel response: $CODE"; exit 1 ;;
+            esac
+          done
+
       - name: Deploy to GitHub Pages
         id: deployment
         timeout-minutes: 3
