@@ -291,7 +291,7 @@ jobs:
           PY
           npm install --no-save --no-package-lock playwright@1.55.0
           npx playwright install --with-deps chromium
-          MAJICK_BASE_URL=http://127.0.0.1:4173/ node pages-release/stability-reset/browser-smoke.mjs
+          timeout 120s env MAJICK_BASE_URL=http://127.0.0.1:4173/ node pages-release/stability-reset/browser-smoke.mjs
 
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
@@ -313,7 +313,7 @@ jobs:
           LIVE_URL="${{ steps.deployment.outputs.page_url }}"
           echo "Verifying deployed Majick Studies at $LIVE_URL"
           for attempt in 1 2 3 4 5 6; do
-            if MAJICK_BASE_URL="$LIVE_URL?smoke=$GITHUB_SHA-$attempt" node pages-release/stability-reset/browser-smoke.mjs; then
+            if timeout 90s env MAJICK_BASE_URL="$LIVE_URL?smoke=$GITHUB_SHA-$attempt" node pages-release/stability-reset/browser-smoke.mjs; then
               echo "LIVE GOLDEN BASELINE BROWSER GATE PASSED"
               exit 0
             fi
