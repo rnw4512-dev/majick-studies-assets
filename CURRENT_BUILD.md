@@ -1,7 +1,7 @@
 # Majick Studies — CURRENT BUILD SOURCE OF TRUTH
 
 Last updated: 2026-09-20
-Current target release: V3.3.28 — Section 1 Master Tutor
+Current target release: V3.3.29 — Tutor Navigation
 
 ## How to resume in a new ChatGPT chat
 Say: **"Continue Majick Studies from CURRENT_BUILD.md in rnw4512-dev/majick-studies-assets."**
@@ -88,6 +88,22 @@ Course manager:
 3. Do NOT use V3.3.15 generated action sheets for movement.
 4. Rebuild true individual stage/action art later from approved Guardian references — one Guardian/action asset at a time, not sprite-sheet slicing shortcuts.
 
+
+## V3.3.29 — Tutor Navigation + In-Page Help
+- Added a universal **Back** button on every non-Home main-app screen.
+- Back uses a session navigation stack instead of blindly returning Home.
+- Inside Course Tutor, Back returns **Tutor → Course Path** before leaving Learning Lab.
+- **Alt + Left Arrow** triggers the same Back behavior for keyboard users.
+- Home's **Enter Course Tutor** route now participates in navigation history.
+- Added four contextual Majick Tutor actions on lesson pages:
+  - **Explain Simpler**
+  - **Give Me an Example**
+  - **Quiz Me on This Page**
+  - **Related Mistakes**
+- D772 Lessons 1–4 and the Section 1 Summary/Test have lesson-specific simple explanations, examples, and built-in quick checks.
+- Related Mistakes uses actual recent incorrect lesson answers when available; otherwise it shows the lesson's high-priority OA traps.
+- Browser regression coverage now verifies the universal Back button and all four Tutor help actions.
+- Protected Guardian movement and Sanctuary motion assets remain unchanged.
 
 ## V3.3.28 — D772 Section 1 Master Tutor
 - D772 has **exactly one course section**: **Section 1: Assessing Research and Data Credibility**.
