@@ -188,7 +188,18 @@ function ensure(){
 function captureAccount(){
   ensure();
   const p=activeProgress();if(!p)return;
-  for(const k of SHARED)S.majickAccount[k]=Number(p[k]??S.majickAccount[k]??0);
+  for(const k of SHARED){
+    const incoming=Number(p[k]??S.majickAccount[k]??0);
+    if(k==='xp'){
+      const current=Number(S.majickAccount?.xp||0);
+      const high=Number(S.majickAccount?.xpHighWater||S.majickAccount?.lifetimeXpHighWater||0);
+      S.majickAccount.xp=Math.max(current,high,Number.isFinite(incoming)?incoming:0);
+      S.majickAccount.xpHighWater=Math.max(high,S.majickAccount.xp);
+      S.majickAccount.lifetimeXpHighWater=S.majickAccount.xpHighWater;
+    }else{
+      S.majickAccount[k]=Number.isFinite(incoming)?incoming:Number(S.majickAccount[k]||0);
+    }
+  }
 }
 function mirrorAccount(){
   ensure();
