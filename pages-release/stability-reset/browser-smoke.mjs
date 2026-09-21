@@ -21,20 +21,9 @@ page.on('console',m=>{if(m.type()==='error')fatal.push('console: '+m.text())});
 async function assert(ok,msg){if(!ok)throw new Error('BROWSER SMOKE FAILED: '+msg)}
 
 try{
-  let opened=false;
-  let lastOpenError=null;
-  for(let attempt=1;attempt<=3&&!opened;attempt++){
-    try{
-      await page.goto(base,{waitUntil:'domcontentloaded',timeout:20000});
-      opened=true;
-    }catch(e){
-      lastOpenError=e;
-      if(attempt<3)await page.waitForTimeout(900);
-    }
-  }
-  if(!opened)throw lastOpenError;
+  await page.goto(base,{waitUntil:'commit',timeout:15000});
   try{
-    await page.waitForFunction(()=>typeof window.render==='function'&&!!window.MajickStateCore&&!!window.MajickGuardianRegistry,{timeout:12000});
+    await page.waitForFunction(()=>typeof window.render==='function'&&!!window.MajickStateCore&&!!window.MajickGuardianRegistry&&!!window.MajickWGUPractice,{timeout:30000});
   }catch(e){
     const diag=await page.evaluate(()=>({
       readyState:document.readyState,
