@@ -1,9 +1,9 @@
-// Majick Studies V3.3.31 WGU Concept Practice — AUTHORITATIVE MAIN APP BRIDGE
+// Majick Studies V3.3.32 WGU Terminology Lock — AUTHORITATIVE MAIN APP BRIDGE
 (function(){
 'use strict';
 
-const RELEASE_LABEL='Moonlit Collegium • V3.3.31';
-const RELEASE_TITLE='Majick Studies — V3.3.31 Moonlit Collegium';
+const RELEASE_LABEL='Moonlit Collegium • V3.3.32';
+const RELEASE_TITLE='Majick Studies — V3.3.32 Moonlit Collegium';
 const registry=()=>window.MajickGuardianRegistry;
 const canonOf=type=>registry()?.get?.(type)?.canon||String(type||'').toLowerCase();
 const STAGE_SLUGS=['new-bond','apprentice','guardian','ascendant','celestial'];
@@ -324,14 +324,14 @@ function applyReleaseBadge(){
   const pill=document.querySelector('.top .pill');
   if(pill&&pill.textContent!==RELEASE_LABEL)pill.textContent=RELEASE_LABEL;
   if(document.title!==RELEASE_TITLE)document.title=RELEASE_TITLE;
-  if(document.documentElement.dataset.majickVersion!=='3.3.31-wgu-concept-practice'){
-    document.documentElement.dataset.majickVersion='3.3.31-wgu-concept-practice';
+  if(document.documentElement.dataset.majickVersion!=='3.3.32-wgu-terminology-lock'){
+    document.documentElement.dataset.majickVersion='3.3.32-wgu-terminology-lock';
   }
 }
 
 function showRuntimeNotice(error){
   const message=String(error?.message||error||'Unknown runtime error');
-  console.error('Majick V3.3.31 runtime error',error);
+  console.error('Majick V3.3.32 runtime error',error);
   if(document.getElementById('v3317RuntimeNotice'))return;
   try{
     const n=document.createElement('div');
