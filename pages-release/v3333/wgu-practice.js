@@ -142,25 +142,26 @@ function ensureD772Bank(){
     return 0;
   }
 }
-const originalStartAdaptive=window.startAdaptive||startAdaptive;
-const originalStartClueHunter=window.startClueHunter||startClueHunter;
-const originalStartReason=window.startReason||startReason;
+const originalStartAdaptive=typeof window.startAdaptive==='function'?window.startAdaptive:null;
+const originalStartClueHunter=typeof window.startClueHunter==='function'?window.startClueHunter:null;
+const originalStartReason=typeof window.startReason==='function'?window.startReason:null;
 function startD772Mode(original,args){
   if(activeD772()){
     const count=ensureD772Bank();
     if(!count){
-      try{rewardToast?.('D772 practice unavailable','The WGU question bank could not be loaded.')}catch(_){}
+      try{window.rewardToast?.('D772 practice unavailable','The WGU question bank could not be loaded.')}catch(_){}
       return;
     }
   }
-  return original.apply(this,args);
+  if(typeof original!=='function')throw new Error('Legacy practice engine is unavailable.');
+  return original.apply(window,args);
 }
-startAdaptive=function(){return startD772Mode(originalStartAdaptive,arguments)};
-startClueHunter=function(){return startD772Mode(originalStartClueHunter,arguments)};
-startReason=function(){return startD772Mode(originalStartReason,arguments)};
-window.startAdaptive=startAdaptive;
-window.startClueHunter=startClueHunter;
-window.startReason=startReason;
+const wguStartAdaptive=function(){return startD772Mode(originalStartAdaptive,arguments)};
+const wguStartClueHunter=function(){return startD772Mode(originalStartClueHunter,arguments)};
+const wguStartReason=function(){return startD772Mode(originalStartReason,arguments)};
+window.startAdaptive=wguStartAdaptive;
+window.startClueHunter=wguStartClueHunter;
+window.startReason=wguStartReason;
 
 function missionLanding(){
   return '<div class="v3333Mission"><div class="v3333MissionHead"><span class="v3333Eyebrow">D772 • SECTION 1</span><h2>WGU-Style Practice</h2><p>Every mode uses the same WGU-language concept bank. The difference is how much support you receive while practicing.</p></div><div class="v3333MissionGrid"><button onclick="startAdaptive()"><span>Adaptive Practice</span><b>12 WGU-style scenarios</b><small>Targets concepts that need more practice.</small></button><button onclick="startClueHunter()"><span>Clue Training</span><b>10 WGU-style scenarios</b><small>Practice finding the words that control the answer.</small></button><button onclick="startReason()"><span>Reasoning Practice</span><b>10 WGU-style scenarios</b><small>Answer, then explain why the correct choice wins.</small></button><button class="oa" onclick="MajickWGUPractice.startOA()"><span>Section 1 OA Simulation</span><b>30 mixed questions</b><small>No hints. No lesson labels. Readiness breakdown at the end.</small></button></div></div>';
