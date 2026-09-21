@@ -14,39 +14,39 @@ const ctx={
   clearTimeout,
   document:{documentElement:{dataset:{}}},
   S:{activeCourse:'D772',screen:'mission',courses:{D772:{questionBank:[]}},progress:{D772:{answers:[],mistakes:[]}}},
-  session:null,
-  render(){},
-  navigate(screen){this.S.screen=screen},
-  startTest(){throw new Error('legacy startTest should not be used for D772 OA')},
-  startMixed(){return 'legacy-mixed'},
-  sessionHTML(){return '<div>legacy session</div>'},
-  resultHTML(){return '<div>legacy result</div>'},
-  missionHTML(){return '<div>legacy mission</div>'},
-  nextQuestion(){
-    if(!this.session)return;
-    const idx=(this.session.index||1);
-    if(idx>=this.session.questions.length){this.session.finished=true;return}
-    this.session.index=idx+1;
-    this.session.current=this.session.questions[idx];
-    this.session.answered=false;
-    this.session.chosen=null;
-    this.session.pendingChoice=null;
-  },
-  answerQ(choice){
-    const q=this.session.current;
-    this.session.chosen=choice;
-    this.session.answered=true;
-    this.session.review=this.session.review||[];
-    this.session.review.push({q,chosen:choice,correct:choice===q.answer});
-    if(choice===q.answer)this.session.score=(this.session.score||0)+1;
-  },
-  continueSession(){this.nextQuestion()},
-  setConfidence(v){if(this.session)this.session.confidence=v},
-  saveReason(){},
-  cleanPrompt(s){return String(s||'')},
-  clueHTML(){return '<div>clue</div>'},
-  stats(){return {}}
+  session:null
 };
+ctx.render=()=>{};
+ctx.navigate=screen=>{ctx.S.screen=screen};
+ctx.startTest=()=>{throw new Error('legacy startTest should not be used for D772 OA')};
+ctx.startMixed=()=> 'legacy-mixed';
+ctx.sessionHTML=()=>'<div>legacy session</div>';
+ctx.resultHTML=()=>'<div>legacy result</div>';
+ctx.missionHTML=()=>'<div>legacy mission</div>';
+ctx.nextQuestion=()=>{
+  if(!ctx.session)return;
+  const idx=(ctx.session.index||1);
+  if(idx>=ctx.session.questions.length){ctx.session.finished=true;return}
+  ctx.session.index=idx+1;
+  ctx.session.current=ctx.session.questions[idx];
+  ctx.session.answered=false;
+  ctx.session.chosen=null;
+  ctx.session.pendingChoice=null;
+};
+ctx.answerQ=choice=>{
+  const q=ctx.session.current;
+  ctx.session.chosen=choice;
+  ctx.session.answered=true;
+  ctx.session.review=ctx.session.review||[];
+  ctx.session.review.push({q,chosen:choice,correct:choice===q.answer});
+  if(choice===q.answer)ctx.session.score=(ctx.session.score||0)+1;
+};
+ctx.continueSession=()=>ctx.nextQuestion();
+ctx.setConfidence=v=>{if(ctx.session)ctx.session.confidence=v};
+ctx.saveReason=()=>{};
+ctx.cleanPrompt=s=>String(s||'');
+ctx.clueHTML=()=>'<div>clue</div>';
+ctx.stats=()=>({});
 ctx.window=ctx;
 vm.createContext(ctx);
 vm.runInContext(qsrc,ctx,{filename:'questionBuilder.js'});
