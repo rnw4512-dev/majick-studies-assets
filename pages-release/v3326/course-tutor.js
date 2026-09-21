@@ -695,6 +695,25 @@ function officialTeachingHtml(official){
   if(!official)return '';
   return '<article class="tutorOfficialTeaching"><small>AUTHORITATIVE D772 • SECTION 1 MASTER NOTES</small><h4>'+E(official.overview)+'</h4>'+(official.teach||[]).map(x=>'<div class="tutorOfficialTopic"><b>'+E(x.title)+'</b><p>'+E(x.text)+'</p></div>').join('')+((official.memory||[]).length?'<div class="tutorMemoryCues"><small>MEMORY CUES</small><ul>'+official.memory.map(x=>'<li>'+E(x)+'</li>').join('')+'</ul></div>':'')+'</article>';
 }
+function openLesson(lessonId,helpKind=null,id='D772'){
+  try{
+    if(window.S?.activeCourse!==id&&typeof window.switchCourse==='function')window.switchCourse(id);
+    const lesson=sections(id).flatMap(s=>s.lessons).find(l=>l.id===lessonId)||selectedLesson(id);
+    if(!lesson)return;
+    const st=tutorState(id);
+    st.selectedLesson=lesson.id;
+    try{save()}catch(_){}
+    if(typeof navigate==='function')navigate('learninglab');
+    else {S.screen='learninglab';render()}
+    setTimeout(()=>{
+      show('tutor');
+      if(helpKind){
+        const ch=chapter(lesson,id);
+        renderTutorAssist(helpKind,lesson,ch,id);
+      }
+    },120);
+  }catch(e){console.warn('Open Majick Tutor lesson',e)}
+}
 function renderTutor(){
   const box=document.getElementById('courseTutorLesson');if(!box)return;
   const id=cid(),lesson=selectedLesson(id);
@@ -734,5 +753,5 @@ MajickLearningLab.bind=function(){
 };
 const baseRefresh=MajickLearningLab.refresh;
 MajickLearningLab.refresh=function(){baseRefresh();hydrate()};
-window.MajickCourseTutor={VERSION,D772_SECTION_ONE,D772_SECTION_ONE_CONTENT,D772_TUTOR_HELP,hydrate,sections,classifySource,annotateSource,tagD772Generated,classifyD772Item,d772Segments,sourcesForLesson,questionsForLesson,mastery,sectionProgress,chapter,mergeLessonTeaching,officialD772Content,startPractice,show,renderPath,renderTutor,renderTutorAssist,selectedLesson};
+window.MajickCourseTutor={VERSION,D772_SECTION_ONE,D772_SECTION_ONE_CONTENT,D772_TUTOR_HELP,hydrate,sections,classifySource,annotateSource,tagD772Generated,classifyD772Item,d772Segments,sourcesForLesson,questionsForLesson,mastery,sectionProgress,chapter,mergeLessonTeaching,officialD772Content,startPractice,show,renderPath,renderTutor,renderTutorAssist,openLesson,selectedLesson};
 })();
