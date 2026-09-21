@@ -1,9 +1,9 @@
-// Majick Studies V3.3.30 XP High-Water Repair — AUTHORITATIVE MAIN APP BRIDGE
+// Majick Studies V3.3.31 WGU Concept Practice — AUTHORITATIVE MAIN APP BRIDGE
 (function(){
 'use strict';
 
-const RELEASE_LABEL='Moonlit Collegium • V3.3.30';
-const RELEASE_TITLE='Majick Studies — V3.3.30 Moonlit Collegium';
+const RELEASE_LABEL='Moonlit Collegium • V3.3.31';
+const RELEASE_TITLE='Majick Studies — V3.3.31 Moonlit Collegium';
 const registry=()=>window.MajickGuardianRegistry;
 const canonOf=type=>registry()?.get?.(type)?.canon||String(type||'').toLowerCase();
 const STAGE_SLUGS=['new-bond','apprentice','guardian','ascendant','celestial'];
@@ -262,6 +262,46 @@ if(!window.__v3317Bridge){
   });
 }
 
+
+function lowValueD772Prompt(q){
+  const p=String(q?.prompt||'').toLowerCase();
+  return /according to your notes|from your notes|concept-and-evidence pairing|concept and evidence pairing|strongest evidence for the concept|best completes this statement/.test(p);
+}
+function sessionContainsLowValueD772(){
+  try{
+    if(!window.session)return false;
+    const text=JSON.stringify(window.session);
+    return /according to your notes|from your notes|concept-and-evidence pairing|concept and evidence pairing|strongest evidence for the concept|best completes this statement/i.test(text);
+  }catch(_){return false}
+}
+function refreshD772PracticeSync(){
+  try{
+    if(window.S?.activeCourse!=='D772')return {changed:false,reason:'not-d772'};
+    const c=window.S?.courses?.D772;
+    const builder=window.MajickQuestionBuilder;
+    if(!c||!Array.isArray(c.questionBank)||!builder?.d772Questions)return {changed:false,reason:'bank-unavailable'};
+    const before=c.questionBank.length;
+    const kept=c.questionBank.filter(q=>{
+      const id=String(q?.id||'');
+      if(id.startsWith('notes_')||id.startsWith('d772_wgu_'))return false;
+      if(lowValueD772Prompt(q))return false;
+      return true;
+    });
+    const curated=builder.d772Questions('d772-master-section-1');
+    c.questionBank=[...kept,...curated];
+    let clearedSession=false;
+    if(sessionContainsLowValueD772()){
+      try{window.session=null}catch(_){}
+      try{session=null}catch(_){}
+      clearedSession=true;
+      if(window.S?.screen==='mission')window.S.screen='learninglab';
+      window.__majickD772PracticeRefreshNotice=true;
+    }
+    return {changed:before!==c.questionBank.length||curated.length>0,removed:before-kept.length,added:curated.length,clearedSession};
+  }catch(e){console.warn('D772 concept-bank refresh',e);return {changed:false,error:String(e)}}
+}
+window.v3331RefreshD772Practice=refreshD772PracticeSync;
+
 async function hydrateGeneratedQuestions(){
   try{
     if(!window.MajickMaterialStore||typeof course!=='function')return;
@@ -289,14 +329,14 @@ function applyReleaseBadge(){
   const pill=document.querySelector('.top .pill');
   if(pill&&pill.textContent!==RELEASE_LABEL)pill.textContent=RELEASE_LABEL;
   if(document.title!==RELEASE_TITLE)document.title=RELEASE_TITLE;
-  if(document.documentElement.dataset.majickVersion!=='3.3.30-xp-high-water'){
-    document.documentElement.dataset.majickVersion='3.3.30-xp-high-water';
+  if(document.documentElement.dataset.majickVersion!=='3.3.31-wgu-concept-practice'){
+    document.documentElement.dataset.majickVersion='3.3.31-wgu-concept-practice';
   }
 }
 
 function showRuntimeNotice(error){
   const message=String(error?.message||error||'Unknown runtime error');
-  console.error('Majick V3.3.30 runtime error',error);
+  console.error('Majick V3.3.31 runtime error',error);
   if(document.getElementById('v3317RuntimeNotice'))return;
   try{
     const n=document.createElement('div');
@@ -321,6 +361,7 @@ window.addEventListener('unhandledrejection',ev=>console.warn('Majick promise wa
 const previousRender=typeof window.render==='function'?window.render:null;
 if(previousRender){
   window.render=function(){
+    const practiceRefresh=refreshD772PracticeSync();
     const result=previousRender.apply(this,arguments);
     try{window.MajickCourseManager?.decorateSelector?.()}catch(_){}
     if(window.S?.screen==='addmaterial'){
@@ -335,6 +376,10 @@ if(previousRender){
     hydrateGeneratedQuestions();
     applyReleaseBadge();
     setTimeout(ensureBackButton,0);
+    if(window.__majickD772PracticeRefreshNotice){
+      window.__majickD772PracticeRefreshNotice=false;
+      setTimeout(()=>{try{rewardToast('✦ D772 Practice Refreshed','Old note-matching questions were removed. Practice now tests the statistical concept and the clue WGU wants you to recognize.')}catch(_){}},0);
+    }
     if(window.__majickXpRecoveryPending&&!window.__majickXpRecoveryPersisting){
       const repair=window.__majickXpRecoveryPending;
       window.__majickXpRecoveryPending=null;
