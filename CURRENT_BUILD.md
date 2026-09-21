@@ -1,7 +1,7 @@
 # Majick Studies — CURRENT BUILD SOURCE OF TRUTH
 
 Last updated: 2026-09-20
-Current target release: V3.3.29 — Tutor Navigation
+Current target release: V3.3.30 — XP High-Water Repair
 
 ## How to resume in a new ChatGPT chat
 Say: **"Continue Majick Studies from CURRENT_BUILD.md in rnw4512-dev/majick-studies-assets."**
@@ -88,6 +88,19 @@ Course manager:
 3. Do NOT use V3.3.15 generated action sheets for movement.
 4. Rebuild true individual stage/action art later from approved Guardian references — one Guardian/action asset at a time, not sprite-sheet slicing shortcuts.
 
+
+## V3.3.30 — XP High-Water Repair
+- Fixed regression where overall Majick XP could collapse to a small current-course value (for example, 7) even when the learner had thousands of lifetime XP.
+- Root cause: shared-account initialization trusted an existing low `majickAccount.xp` before comparing it with higher persisted course/history values.
+- Lifetime XP now uses a monotonic **high-water** model:
+  - recover the highest legitimate value from account XP, persisted course XP, prior recovery records, and stored XP high-water fields;
+  - course switching/saving cannot lower lifetime XP;
+  - future XP writes can increase lifetime XP but cannot reduce it.
+- Moon Crystals and chests remain spendable; monotonic protection applies only to lifetime XP.
+- Successful XP recovery is immediately persisted and surfaces a **Majick XP Restored** notice.
+- State schema advanced to version 5.
+- Added a regression simulation for the exact failure: account XP = 7, persisted XP = 4,987; expected result = 4,987 and a later stale write cannot lower it.
+- Fixed the Pages workflow's stale V3.3.27 version gate so current overlays can deploy.
 
 ## V3.3.29 — Tutor Navigation + In-Page Help
 - Added a universal **Back** button on every non-Home main-app screen.
