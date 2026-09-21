@@ -184,8 +184,36 @@ async function syncQuestions(courseObj,courseId){
     .sort((a,b)=>String(b.createdAt||'').localeCompare(String(a.createdAt||'')));
 
   const before=courseObj.questionBank.length;
-  courseObj.questionBank=courseObj.questionBank.filter(q=>!isNotesForgeQuestion(q));
+  courseObj.questionBank=courseObj.questionBank.filter(q=>!isNotesForgeQuestion(q)&&!String(q?.id||'').startsWith('d772_wgu_'));
   const removed=before-courseObj.questionBank.length;
+
+  // D772 uses the curated concept-and-scenario bank instead of generic note-matching prompts.
+  if(String(courseId)==='D772'&&window.MajickQuestionBuilder?.d772Questions){
+    const sourceId=activeRows[0]?.id||'d772-master-section-1';
+    const sourceName=activeRows[0]?.sourceName||'D772 Section 1 Master Notes';
+    const curated=MajickQuestionBuilder.d772Questions(sourceId)
+      .filter(q=>!MajickQuestionBuilder.isLowValueMetaQuestion?.(q));
+    for(const q of curated){
+      courseObj.questionBank.push(Object.assign({},q,{
+        courseId:'D772',
+        sourceId,
+        sourceName,
+        sourceType:activeRows[0]?.sourceType||'built-in-master-notes',
+        managedBy:'d772-wgu-concept-bank',
+        bankTarget:curated.length
+      }));
+    }
+    return {
+      added:curated.length,
+      removed,
+      total:curated.length,
+      available:curated.length,
+      target:curated.length,
+      activeSources:activeRows.length,
+      rigorMix:[1,2,3,4].reduce((o,r)=>(o[r]=curated.filter(q=>Number(q.rigorLevel||1)===r).length,o),{}),
+      questionStyle:'wgu-concept-scenario'
+    };
+  }
 
   const target=100;
   const quotas={1:20,2:30,3:30,4:20};
