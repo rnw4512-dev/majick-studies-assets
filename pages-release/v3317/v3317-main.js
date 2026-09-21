@@ -335,6 +335,18 @@ if(previousRender){
     hydrateGeneratedQuestions();
     applyReleaseBadge();
     setTimeout(ensureBackButton,0);
+    if(window.__majickXpRecoveryPending&&!window.__majickXpRecoveryPersisting){
+      const repair=window.__majickXpRecoveryPending;
+      window.__majickXpRecoveryPending=null;
+      window.__majickXpRecoveryPersisting=true;
+      setTimeout(()=>{
+        try{
+          if(typeof save==='function')save();
+          if(typeof rewardToast==='function')rewardToast('✦ Majick XP Restored',Math.round(Number(repair.restoredTo)||0)+' lifetime XP recovered and protected.');
+        }catch(e){console.warn('Majick XP recovery persistence',e)}
+        finally{window.__majickXpRecoveryPersisting=false}
+      },0);
+    }
     return result;
   };
 }else{
