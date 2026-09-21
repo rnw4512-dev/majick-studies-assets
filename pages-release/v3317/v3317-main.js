@@ -1,9 +1,9 @@
-// Majick Studies V3.3.28 Section 1 Master Tutor — AUTHORITATIVE MAIN APP BRIDGE
+// Majick Studies V3.3.29 Tutor Navigation — AUTHORITATIVE MAIN APP BRIDGE
 (function(){
 'use strict';
 
-const RELEASE_LABEL='Moonlit Collegium • V3.3.28';
-const RELEASE_TITLE='Majick Studies — V3.3.28 Moonlit Collegium';
+const RELEASE_LABEL='Moonlit Collegium • V3.3.29';
+const RELEASE_TITLE='Majick Studies — V3.3.29 Moonlit Collegium';
 const registry=()=>window.MajickGuardianRegistry;
 const canonOf=type=>registry()?.get?.(type)?.canon||String(type||'').toLowerCase();
 const STAGE_SLUGS=['new-bond','apprentice','guardian','ascendant','celestial'];
@@ -78,6 +78,84 @@ if(typeof previousSideHTML==='function'){
     return h;
   };
 }
+
+const NAV_STACK_KEY='majick_nav_stack_v3329';
+let suppressNavHistory=false;
+function readNavStack(){
+  try{const value=JSON.parse(sessionStorage.getItem(NAV_STACK_KEY)||'[]');return Array.isArray(value)?value.filter(Boolean).slice(-30):[]}
+  catch(_){return []}
+}
+function writeNavStack(stack){
+  try{sessionStorage.setItem(NAV_STACK_KEY,JSON.stringify((stack||[]).filter(Boolean).slice(-30)))}catch(_){}
+}
+function tutorPanelOpen(){
+  return !!document.querySelector('.learnPanel[data-panel="tutor"]:not([hidden])');
+}
+const previousNavigate=typeof window.navigate==='function'?window.navigate:null;
+if(previousNavigate&&!previousNavigate.__v3329Navigation){
+  const majickNavigate=function(route){
+    const current=window.S?.screen||null;
+    const next=String(route||'');
+    if(!suppressNavHistory&&current&&next&&current!==next){
+      const stack=readNavStack();
+      if(stack[stack.length-1]!==current)stack.push(current);
+      writeNavStack(stack);
+    }
+    return previousNavigate.apply(this,arguments);
+  };
+  majickNavigate.__v3329Navigation=true;
+  window.navigate=majickNavigate;
+}
+window.majickBack=function(){
+  if(window.S?.screen==='learninglab'&&tutorPanelOpen()&&window.MajickCourseTutor?.show){
+    window.MajickCourseTutor.show('path');
+    ensureBackButton();
+    return;
+  }
+  const current=window.S?.screen||'home';
+  const stack=readNavStack();
+  let target=null;
+  while(stack.length&&!target){
+    const candidate=stack.pop();
+    if(candidate&&candidate!==current)target=candidate;
+  }
+  writeNavStack(stack);
+  target=target||'home';
+  try{
+    suppressNavHistory=true;
+    if(previousNavigate)previousNavigate(target);
+    else if(window.S){S.screen=target;save?.();render?.()}
+  }catch(e){console.warn('Majick back navigation',e)}
+  finally{suppressNavHistory=false}
+};
+function ensureBackStyles(){
+  if(document.getElementById('v3329BackStyles'))return;
+  const style=document.createElement('style');
+  style.id='v3329BackStyles';
+  style.textContent='#majickBackButton{position:fixed;z-index:95;top:70px;left:268px;display:inline-flex;align-items:center;gap:7px;cursor:pointer;border:1px solid rgba(198,160,214,.34);border-radius:999px;background:rgba(20,12,28,.94);color:#eadff0;padding:8px 12px;font:750 11px/1 Arial,sans-serif;box-shadow:0 12px 30px rgba(3,1,8,.28);backdrop-filter:blur(10px)}#majickBackButton:hover,#majickBackButton:focus-visible{border-color:#c09bd2;background:#2a1934;outline:none;box-shadow:0 0 0 2px rgba(192,155,210,.15),0 12px 30px rgba(3,1,8,.28)}#majickBackButton span{color:#d6b66e}@media(max-width:900px){#majickBackButton{left:14px;top:66px;padding:7px 10px}}';
+  document.head.appendChild(style);
+}
+function ensureBackButton(){
+  ensureBackStyles();
+  const existing=document.getElementById('majickBackButton');
+  if(window.S?.screen==='home'){
+    existing?.remove();
+    return;
+  }
+  const btn=existing||document.createElement('button');
+  btn.id='majickBackButton';
+  btn.type='button';
+  btn.setAttribute('aria-label','Go back');
+  btn.innerHTML='<span>←</span> Back';
+  btn.onclick=window.majickBack;
+  if(!existing)document.body.appendChild(btn);
+}
+window.addEventListener('keydown',ev=>{
+  if(ev.altKey&&ev.key==='ArrowLeft'){
+    ev.preventDefault();
+    window.majickBack?.();
+  }
+});
 
 function guardianPayload(){
   const out={};
@@ -211,14 +289,14 @@ function applyReleaseBadge(){
   const pill=document.querySelector('.top .pill');
   if(pill&&pill.textContent!==RELEASE_LABEL)pill.textContent=RELEASE_LABEL;
   if(document.title!==RELEASE_TITLE)document.title=RELEASE_TITLE;
-  if(document.documentElement.dataset.majickVersion!=='3.3.28-section-one-master'){
-    document.documentElement.dataset.majickVersion='3.3.28-section-one-master';
+  if(document.documentElement.dataset.majickVersion!=='3.3.29-tutor-navigation'){
+    document.documentElement.dataset.majickVersion='3.3.29-tutor-navigation';
   }
 }
 
 function showRuntimeNotice(error){
   const message=String(error?.message||error||'Unknown runtime error');
-  console.error('Majick V3.3.28 runtime error',error);
+  console.error('Majick V3.3.29 runtime error',error);
   if(document.getElementById('v3317RuntimeNotice'))return;
   try{
     const n=document.createElement('div');
@@ -256,6 +334,7 @@ if(previousRender){
     setTimeout(()=>{window.v3317PushGuardianLevels();window.v3321PushFurnitureState();},140);
     hydrateGeneratedQuestions();
     applyReleaseBadge();
+    setTimeout(ensureBackButton,0);
     return result;
   };
 }else{
@@ -264,6 +343,7 @@ if(previousRender){
 
 const observer=new MutationObserver(()=>{
   applyReleaseBadge();
+  ensureBackButton();
   if(window.S?.screen==='home'&&!document.querySelector('.v3317HomeSanctuary')){
     try{window.lfUpgradeHomeHabitat()}catch(_){}
   }
