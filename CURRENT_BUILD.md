@@ -1,7 +1,7 @@
 # Majick Studies — CURRENT BUILD SOURCE OF TRUTH
 
 Last updated: 2026-09-20
-Current target release: V3.3.30 — XP High-Water Repair
+Current target release: V3.3.31 — WGU Concept Practice
 
 ## How to resume in a new ChatGPT chat
 Say: **"Continue Majick Studies from CURRENT_BUILD.md in rnw4512-dev/majick-studies-assets."**
@@ -88,6 +88,25 @@ Course manager:
 3. Do NOT use V3.3.15 generated action sheets for movement.
 4. Rebuild true individual stage/action art later from approved Guardian references — one Guardian/action asset at a time, not sprite-sheet slicing shortcuts.
 
+
+## V3.3.31 — WGU Concept Practice
+- Retired the old D772 Notes Forge question style that asked meta-memory prompts such as:
+  - “according to your notes”
+  - “concept-and-evidence pairing”
+  - “strongest evidence for the concept”
+  - generic sentence-completion prompts
+- D772 Study Now now uses one authoritative **Section 1 WGU concept/scenario bank** built from the learner-provided course material.
+- Current curated D772 bank: 48 quality-first questions across Lessons 1–4.
+- Questions focus on decisions WGU expects the learner to make: identify the concept, diagnose the flaw/bias, interpret the study design or graph, and choose the conclusion justified by the evidence.
+- Every D772 rationale explicitly includes:
+  - **What WGU is testing**
+  - **Clue to notice**
+- Every curated question carries lesson, concept, rigor, OA-style, and learning-path metadata.
+- Generic Notes Forge questions are no longer mixed into D772.
+- A synchronous pre-render bank refresh removes old D772 questions before Study Now can render them.
+- If an in-progress D772 session still contains a retired note-matching prompt, the stale session is cleared and the learner is returned to the refreshed learning flow.
+- Browser regression fails if any retired meta-question prompt reappears or if D772 contains non-curated active questions.
+- Screenshot evidence from the learner showed the live app was still on V3.3.27 when this issue was reported; V3.3.31 is the corrected target.
 
 ## V3.3.30 — XP High-Water Repair
 - Fixed regression where overall Majick XP could collapse to a small current-course value (for example, 7) even when the learner had thousands of lifetime XP.
