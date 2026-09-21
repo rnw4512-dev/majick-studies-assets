@@ -1,6 +1,6 @@
 (()=>{
 'use strict';
-const VERSION='3.3.35';
+const VERSION='3.3.36';
 const E=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
 const LESSON_NAMES={
   'd772-s1-l1':'Lesson 1 — Understanding Data Collection Methods',
@@ -215,6 +215,6 @@ function bootD772Practice(){
   }catch(e){console.warn('D772 Practice Lab boot',e)}
 }
 window.MajickWGUPractice={VERSION,select,submit,startOA,visualHtml,whyList,balancedOA,isD772Question,ensureD772Bank,bootD772Practice};
-document.documentElement.dataset.majickWguPractice='3.3.35';
+document.documentElement.dataset.majickWguPractice='3.3.36';
 bootD772Practice();
 })();
