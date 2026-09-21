@@ -2,7 +2,18 @@ import { chromium } from 'playwright';
 
 const base=process.env.MAJICK_BASE_URL||'http://127.0.0.1:4173/';
 const browser=await chromium.launch({headless:true});
-const page=await browser.newPage({viewport:{width:1440,height:1000}});
+const context=await browser.newContext({viewport:{width:1440,height:1000},serviceWorkers:'block'});
+const page=await context.newPage();
+const lightBootRoute=async route=>{
+  const req=route.request();
+  const url=req.url();
+  const type=req.resourceType();
+  // The main smoke tests study/runtime logic first. Do not boot the 80MB+ Sanctuary
+  // or decorative media until the dedicated Sanctuary section near the end.
+  if(url.includes('/sanctuary/')||['image','media','font'].includes(type))return route.abort();
+  return route.continue();
+};
+await page.route('**/*',lightBootRoute);
 const fatal=[];
 page.on('pageerror',e=>fatal.push('pageerror: '+e.message));
 page.on('console',m=>{if(m.type()==='error')fatal.push('console: '+m.text())});
@@ -14,11 +25,11 @@ try{
   let lastOpenError=null;
   for(let attempt=1;attempt<=3&&!opened;attempt++){
     try{
-      await page.goto(base,{waitUntil:'commit',timeout:15000});
+      await page.goto(base,{waitUntil:'domcontentloaded',timeout:20000});
       opened=true;
     }catch(e){
       lastOpenError=e;
-      if(attempt<3)await page.waitForTimeout(1200);
+      if(attempt<3)await page.waitForTimeout(900);
     }
   }
   if(!opened)throw lastOpenError;
@@ -851,6 +862,8 @@ try{
   console.log('SMOKE CHECKPOINT: guardian care passed');
 
   // Companions must create the real Sanctuary iframe, not a dead static replacement.
+  // Heavy media was intentionally blocked during academic/runtime checks; enable it now.
+  await page.unroute('**/*',lightBootRoute);
   await page.evaluate(()=>{if(typeof navigate==='function')navigate('companions');else {S.screen='companions';render();}});
   await page.waitForSelector('.majCareDock',{timeout:10000});
   const careDock=await page.evaluate(()=>({
