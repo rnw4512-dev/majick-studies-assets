@@ -175,6 +175,7 @@ function ensureAccount(){
       restoredTo:plainNumber(account.xp),
       reason:'recovered highest legitimate lifetime Majick XP from persisted history'
     };
+    window.__majickXpRecoveryPending={before:xpBefore,restoredTo:plainNumber(account.xp)};
   }
   reconcileHatchedGuardians(st);
   account.schemaVersion=Math.max(5,plainNumber(account.schemaVersion));
