@@ -39,7 +39,7 @@ try{
   await assert(boot.hasRender,'render() unavailable after boot');
   await assert(boot.hasState,'MajickStateCore unavailable after boot');
   await assert(boot.hasRegistry,'Guardian registry unavailable after boot');
-  await assert(boot.version==='3.3.31-wgu-concept-practice','wrong deployed runtime version: '+boot.version);
+  await assert(boot.version==='3.3.32-wgu-terminology-lock','wrong deployed runtime version: '+boot.version);
   await assert(boot.guardians.length>=10,'baseline Guardian registry unexpectedly shrank');
   await page.waitForSelector('.v3327Home',{timeout:10000});
   await assert(await page.locator('.v3327PortalHero').count()===1,'Moonlit Collegium did not render on the first app load');
@@ -454,6 +454,9 @@ try{
       builtBad:built.filter(q=>bad.test(q.prompt||'')).length,
       rationaleMissing:built.filter(q=>!/What WGU is testing:/i.test(q.why||'')||!/Clue to notice:/i.test(q.why||'')).length,
       styleBad:built.filter(q=>q.questionStyle!=='wgu-concept-scenario').length,
+      missingWguTerms:built.filter(q=>!q.wguTerm||!/WGU terminology:/i.test(q.why||'')||!/WGU clue to notice:/i.test(q.why||'')).length,
+      forbiddenLanguage:built.flatMap(q=>[...(q.options||[]),q.answer||'']).filter(x=>/convenience bias|randomized controlled trial|double-blind study|open-label|cluster randomized|loaded wording|cluster bias|nonlinear only|^positive$|^negative$|^cluster$|^stratified$|^systematic$|^simple random$|causal effect/i.test(String(x))).length,
+      hasCoreWguTerms:['Random sampling vs. randomization','Perceived lack of anonymity','Statistical significance','Association vs. causal relationship','Confounding variable','Positive correlation','Negative correlation','Outlier'].every(term=>built.some(q=>String(q.wguTerm||'').includes(term))),
       bankCount:bank.length,
       bankBad:bank.filter(q=>bad.test(q.prompt||'')).length,
       nonCurated:bank.filter(q=>!String(q.id||'').startsWith('d772_wgu_')).length
@@ -462,6 +465,9 @@ try{
   await assert(d772QuestionQuality.builtCount>=40,'D772 curated WGU-style bank is too small');
   await assert(d772QuestionQuality.builtBad===0&&d772QuestionQuality.bankBad===0,'D772 still contains note-matching/meta questions');
   await assert(d772QuestionQuality.rationaleMissing===0,'D772 rationales do not explain what WGU is testing and the clue to notice');
+  await assert(d772QuestionQuality.missingWguTerms===0,'D772 questions are missing official WGU terminology labels');
+  await assert(d772QuestionQuality.forbiddenLanguage===0,'D772 answer choices drifted away from WGU course terminology');
+  await assert(d772QuestionQuality.hasCoreWguTerms,'D772 core WGU terminology set is incomplete');
   await assert(d772QuestionQuality.styleBad===0&&d772QuestionQuality.nonCurated===0,'D772 active bank is not exclusively the curated WGU concept/scenario bank');
   await assert(d772QuestionQuality.bankCount===d772QuestionQuality.builtCount,'D772 active bank does not match the curated bank');
   await page.waitForSelector('#courseTutorPath .pathSection',{timeout:10000});
