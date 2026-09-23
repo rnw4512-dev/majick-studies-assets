@@ -1,3 +1,34 @@
+## V3.3.39 — D755 Retake Studio
+- Built **D755 • Assessment for Special Education** as a dedicated retake-prep course instead of a generic uploaded-notes shell.
+- Grounded in the learner-provided Section 1, Section 2, and Section 3 materials plus the three WGU section quizzes.
+- Three instructional sections:
+  - Section 1 — Assessment Foundations, Data Sources, and MTSS
+  - Section 2 — Interpreting Assessment Results and Making Educational Decisions
+  - Section 3 — Evaluation Communication and Measurable Outcomes
+- 16 instruction-cycle concepts using **Teach → Anchor → Worked Example → Your Turn → New Scenario → Explain Why → Complete**.
+- 48 curated WGU-style scenario questions, 16 per section.
+- Added a **30-question Retake Diagnostic** with a balanced 10/10/10 section mix.
+- Added a **40-question Mock OA** with a 14/13/13 section mix.
+- Added 8-question section mastery checks with:
+  - Ready to move on
+  - One distinction to repair
+  - Needs another teaching pass
+- Added a 10-pattern **WGU Trap Library** covering:
+  - one-score thinking
+  - screening vs. progress monitoring
+  - MTSS vs. diagnosis
+  - strengths + needs
+  - disability label vs. individualized plan
+  - consent before initial evaluation
+  - graph selection
+  - composite vs. subtest interpretation
+  - transparent communication
+  - data-based measurable goals
+- D755 anchor charts unlock during instruction and are added to the Living Grimoire.
+- Academic D755 mastery remains separate from account-level Majick XP.
+- The existing PMFC → D755 migration remains authoritative, so no duplicate Assessment for Special Education course is created.
+- Release regression verifies section counts, question counts, diagnostic/mock quotas, section checks, anchor charts, tutor integration, and XP protection.
+
 ## V3.3.38 — Learn Mode Instruction Cycle
 - Rebuilt D772 Learn Mode around an actual instruction cycle:
   **Teach → Visual → Worked Example → Your Turn → Feedback → New Scenario → Explain Why → Mastery Check**.
