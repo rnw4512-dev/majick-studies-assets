@@ -486,6 +486,10 @@ function anchorsView(){
  const st=prog(),rows=[];for(const s of SECTIONS)for(const c of s.concepts)if(st.anchors[c.id])rows.push([s,c]);
  return '<section class="d755Library"><header><small>D755 • ARCANE ANCHOR WALL</small><h1>Your Retake Memory Wall</h1><p>Charts unlock as you reach each concept. They use the course terminology first and memory cues second.</p></header>'+(rows.length?'<div class="anchorGrid">'+rows.map(([s,c])=>anchor(c,s)).join('')+'</div>':'<div class="d755Empty">No charts unlocked yet. Begin a section and reach the Anchor stage.</div>')+'</section>';
 }
+function grimoireWall(){
+ const st=prog(),rows=[];for(const s of SECTIONS)for(const c of s.concepts)if(st.anchors[c.id])rows.push([s,c]);
+ return '<section class="d755GrimoireWall"><header><small>THE ARCANE STACKS • D755</small><h2>Assessment Anchor Wall</h2><p>Your unlocked Assessment for Special Education charts travel with you into the Living Grimoire.</p></header>'+(rows.length?'<div class="anchorGrid">'+rows.map(([s,c])=>anchor(c,s)).join('')+'</div>':'<div class="d755Empty">No D755 anchor charts unlocked yet.</div>')+'</section>';
+}
 function learnView(){
  const {st,section,concept,idx}=current();
  if(st.mode==='sectionOpening')return opening(section);
@@ -532,6 +536,16 @@ function bindInside(root){
  root.querySelector('[data-d755-repair-section]')?.addEventListener('click',()=>{const st=prog();st.mode='learn';st.conceptIndex=0;st.phase=0;save();render()});
  root.querySelector('[data-d755-retake-section]')?.addEventListener('click',startSectionCheck);
 }
+const previousScreenHTML=window.screenHTML;
+if(typeof previousScreenHTML==='function'&&!previousScreenHTML.__d755Grimoire){
+ const wrapped=function(){
+   const h=previousScreenHTML.apply(this,arguments);
+   if(window.S?.screen==='livinggrimoire'&&active())return h+'<div class="d755GrimoireInline">'+grimoireWall()+'</div>';
+   return h;
+ };
+ wrapped.__d755Grimoire=true;
+ window.screenHTML=wrapped;
+}
 const oldRender=window.MajickLearningLab?.render;
 if(typeof oldRender==='function'){
  window.MajickLearningLab.render=function(){
@@ -553,6 +567,6 @@ if(typeof oldBind==='function'){
  };
 }
 ensureBank();
-window.MajickD755Retake={VERSION,COURSE,SECTIONS,TRAPS,BANK,ensureBank,show,render,shell,state:prog,current,startExam,examSubmit,examNext,startSectionCheck,checkSubmit,checkNext};
+window.MajickD755Retake={VERSION,COURSE,SECTIONS,TRAPS,BANK,ensureBank,show,render,shell,state:prog,current,startExam,examSubmit,examNext,startSectionCheck,checkSubmit,checkNext,anchorsView,grimoireWall};
 document.documentElement.dataset.majickD755Retake=VERSION;
 })();
