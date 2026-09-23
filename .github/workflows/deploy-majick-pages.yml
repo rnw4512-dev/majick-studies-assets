@@ -15,6 +15,7 @@ on:
       - 'pages-release/v3327/**'
       - 'pages-release/v3333/**'
       - 'pages-release/v3338/**'
+      - 'pages-release/v3339/**'
       - 'pages-release/v3315/study-material/**'
       - 'pages-release/v3316/courseManager.js'
       - 'pages-release/v3317/v3317-main.js'
@@ -81,6 +82,9 @@ jobs:
           test -s pages-release/v3338/learn-mode.js
           test -s pages-release/v3338/learn-mode.css
           test -s pages-release/v3338/learn-mode-smoke.js
+          test -s pages-release/v3339/d755-retake.js
+          test -s pages-release/v3339/d755-retake.css
+          test -s pages-release/v3339/d755-retake-smoke.js
           test -s pages-release/v3320/sanctuary-life.js
           test -s pages-release/v3321/sanctuary-customize.js
           test -s pages-release/v3322/main-recovery.js
@@ -117,6 +121,8 @@ jobs:
           node --check pages-release/v3333/wgu-practice.js
           node --check pages-release/v3338/learn-mode.js
           node --check pages-release/v3338/learn-mode-smoke.js
+          node --check pages-release/v3339/d755-retake.js
+          node --check pages-release/v3339/d755-retake-smoke.js
           node --check pages-release/v3320/sanctuary-life.js
           node --check pages-release/v3321/sanctuary-customize.js
           node --check pages-release/v3322/main-recovery.js
@@ -213,6 +219,8 @@ jobs:
           cmp pages-release/v3333/wgu-practice.css _site/wgu-practice.css
           cmp pages-release/v3338/learn-mode.js _site/learn-mode.js
           cmp pages-release/v3338/learn-mode.css _site/learn-mode.css
+          cmp pages-release/v3339/d755-retake.js _site/d755-retake.js
+          cmp pages-release/v3339/d755-retake.css _site/d755-retake.css
           cmp pages-release/v3316/courseManager.js _site/courseManager.js
           cmp pages-release/v3317/v3317-main.js _site/v3317-main.js
           cmp pages-release/v3317/v3317-sanctuary.js _site/sanctuary/v3317-sanctuary.js
@@ -225,7 +233,7 @@ jobs:
 
           # Golden architecture and protected assets.
           grep -q '"build_foundation": "V3.3.18 Golden Baseline"' _site/app-progress.json
-          grep -q '"version": "V3.3.38 Learn Mode Instruction Cycle"' _site/app-progress.json
+          grep -q '"version": "V3.3.39 D755 Retake Studio"' _site/app-progress.json
           grep -q 'learning-lab.js?v=3319' _site/index.html
           grep -q 'learning-lab.css?v=3319' _site/index.html
           grep -q 'learning-plan.js?v=3324' _site/index.html
@@ -238,6 +246,13 @@ jobs:
           grep -q 'wgu-practice.css?v=3333' _site/index.html
           grep -q 'learn-mode.js?v=3338' _site/index.html
           grep -q 'learn-mode.css?v=3338' _site/index.html
+          grep -q 'd755-retake.js?v=3339' _site/index.html
+          grep -q 'd755-retake.css?v=3339' _site/index.html
+          grep -q "VERSION='3.3.39'" _site/d755-retake.js
+          grep -q '30-Question Retake Diagnostic' _site/d755-retake.js
+          grep -q '40-question mixed simulation' _site/d755-retake.js
+          grep -q 'WGU TRAP LIBRARY' _site/d755-retake.js
+          grep -q 'Assessment Anchor Wall' _site/d755-retake.js
           grep -q 'Teach → Visual → Worked Example' _site/learn-mode.js
           grep -q 'Arcane Anchor Wall' _site/learn-mode.js
           grep -q 'SELF-PACED COURSE CLOCK' _site/magical-college-home.js
@@ -281,6 +296,7 @@ jobs:
           node --check _site/magical-college-home.js
           node --check _site/wgu-practice.js
           node --check _site/learn-mode.js
+          node --check _site/d755-retake.js
           node --check _site/courseManager.js
           node --check _site/guardian-care-economy.js
           node --check _site/v3317-main.js
@@ -303,9 +319,9 @@ jobs:
           PY
 
           python pages-release/stability-reset/stability-reset-verify.py _site
-          echo "Majick Studies V3.3.38 Golden Baseline overlay assembly passed."
+          echo "Majick Studies V3.3.39 Golden Baseline overlay assembly passed."
 
-      - name: V3.3.38 academic regression gate
+      - name: V3.3.39 academic regression gate
         shell: bash
         run: |
           set -euo pipefail
@@ -324,10 +340,11 @@ jobs:
           PY
           node pages-release/v3333/wgu-practice-smoke.js
           node pages-release/v3338/learn-mode-smoke.js
+          node pages-release/v3339/d755-retake-smoke.js
 
           # Keep the legacy full-browser smoke available for manual regression work,
           # but do not let its monolithic legacy boot freeze every Pages release.
-          echo "Targeted WGU Practice + Learn Mode runtime gates passed."
+          echo "Targeted WGU Practice + D772 Learn Mode + D755 Retake Studio runtime gates passed."
 
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
@@ -429,13 +446,13 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
-          echo "Waiting for V3.3.38 at $LIVE_URL"
+          echo "Waiting for V3.3.39 at $LIVE_URL"
           python - <<'PY'
           import json,time,urllib.request,urllib.error,os
           base=(os.environ.get('LIVE_URL') or 'https://rnw4512-dev.github.io/majick-studies-assets/').rstrip('/')+'/'
           status_url=os.environ.get('STATUS_URL','')
           token=os.environ.get('GH_TOKEN','')
-          expected='V3.3.38 Learn Mode Instruction Cycle'
+          expected='V3.3.39 D755 Retake Studio'
           last=None
           for attempt in range(1,121):
               try:
@@ -459,6 +476,8 @@ jobs:
                       home=r.read().decode('utf-8','replace')
                   with urllib.request.urlopen(base+'learn-mode.js?smoke='+stamp,timeout=10) as r:
                       learn=r.read().decode('utf-8','replace')
+                  with urllib.request.urlopen(base+'d755-retake.js?smoke='+stamp,timeout=10) as r:
+                      d755=r.read().decode('utf-8','replace')
                   last=(
                       data.get('version'),
                       'wgu-practice.js?v=3336' in index,
@@ -468,16 +487,20 @@ jobs:
                       'learn-mode.js?v=3338' in index,
                       "VERSION='3.3.38'" in learn,
                       'Arcane Anchor Wall' in learn,
+                      'd755-retake.js?v=3339' in index,
+                      "VERSION='3.3.39'" in d755,
+                      '30-Question Retake Diagnostic' in d755,
+                      '40-question mixed simulation' in d755,
                       'Sunday Readiness & Thinking Analytics' not in index,
                       '<h3>Before Sunday</h3>' not in index,
                   )
-                  if last==(expected,True,True,True,True,True,True,True,True,True):
-                      print('LIVE V3.3.38 DEPLOYMENT VERIFIED')
+                  if last==(expected,True,True,True,True,True,True,True,True,True,True,True,True,True):
+                      print('LIVE V3.3.39 DEPLOYMENT VERIFIED')
                       raise SystemExit(0)
                   print('Live version not ready yet:',last)
               except Exception as e:
                   last=repr(e)
                   print('Live check waiting:',last)
               time.sleep(5)
-          raise SystemExit('Pages deployment was created and left active, but the live site did not expose V3.3.38 within 10 minutes: '+repr(last))
+          raise SystemExit('Pages deployment was created and left active, but the live site did not expose V3.3.39 within 10 minutes: '+repr(last))
           PY
