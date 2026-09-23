@@ -1,9 +1,9 @@
-// Majick Studies V3.3.38 Learn Mode Instruction Cycle — AUTHORITATIVE MAIN APP BRIDGE
+// Majick Studies V3.3.39 D755 Retake Studio — AUTHORITATIVE MAIN APP BRIDGE
 (function(){
 'use strict';
 
-const RELEASE_LABEL='Moonlit Collegium • V3.3.38';
-const RELEASE_TITLE='Majick Studies — V3.3.38 Moonlit Collegium';
+const RELEASE_LABEL='Moonlit Collegium • V3.3.39';
+const RELEASE_TITLE='Majick Studies — V3.3.39 Moonlit Collegium';
 const registry=()=>window.MajickGuardianRegistry;
 const canonOf=type=>registry()?.get?.(type)?.canon||String(type||'').toLowerCase();
 const STAGE_SLUGS=['new-bond','apprentice','guardian','ascendant','celestial'];
@@ -329,14 +329,14 @@ function applyReleaseBadge(){
   const pill=document.querySelector('.top .pill');
   if(pill&&pill.textContent!==RELEASE_LABEL)pill.textContent=RELEASE_LABEL;
   if(document.title!==RELEASE_TITLE)document.title=RELEASE_TITLE;
-  if(document.documentElement.dataset.majickVersion!=='3.3.38-learn-mode-instruction-cycle'){
-    document.documentElement.dataset.majickVersion='3.3.38-learn-mode-instruction-cycle';
+  if(document.documentElement.dataset.majickVersion!=='3.3.39-d755-retake-studio'){
+    document.documentElement.dataset.majickVersion='3.3.39-d755-retake-studio';
   }
 }
 
 function showRuntimeNotice(error){
   const message=String(error?.message||error||'Unknown runtime error');
-  console.error('Majick V3.3.38 runtime error',error);
+  console.error('Majick V3.3.39 runtime error',error);
   if(document.getElementById('v3317RuntimeNotice'))return;
   try{
     const n=document.createElement('div');
