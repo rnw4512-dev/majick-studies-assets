@@ -45,7 +45,7 @@ assert(/data-panel="d755retake"/.test(shell),'Retake Studio panel not injected')
 const xpBefore=ctx.S.progress.D755.xp;
 let st=M.state();
 assert(st.mode==='home','D755 should enter Retake Studio at home');
-assert(/30-question/i.test(M.shell()),'Retake Studio does not expose 30-question diagnostic');
+assert(/Retake Diagnostic/.test(M.shell())&&/30 mixed WGU-style scenarios/.test(M.shell()),'Retake Studio does not expose the 30-question diagnostic entry point');
 
 M.startExam('diagnostic');
 st=M.state();
