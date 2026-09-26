@@ -386,14 +386,31 @@ function buy(id){
   return {ok:true,item:it,balance:crystalBalance(),snapshot:snapshot()};
 }
 
+function focusedEggId(){
+  try{return window.MajickStudyProgress?.inspect?.()?.focusEggId||window.S?.majickAccount?.guardianIncubator?.focusEggId||incubatingEggs()[0]?.id||null}
+  catch(_){return window.S?.majickAccount?.guardianIncubator?.focusEggId||incubatingEggs()[0]?.id||null}
+}
+function focusEgg(id){
+  const key=String(id||'');
+  if(!incubatingEggs().some(e=>e.id===key))return false;
+  if(window.MajickStudyProgress?.setFocusedEgg)window.MajickStudyProgress.setFocusedEgg(key);
+  else{
+    const a=ensureAccount();
+    a.guardianIncubator=a.guardianIncubator||{version:'3.3.45',focusEggId:null,lastFocusAt:0};
+    a.guardianIncubator.focusEggId=key;a.guardianIncubator.lastFocusAt=Date.now();saveCare();
+  }
+  try{render()}catch(_){}
+  return true;
+}
 function eggSnapshot(){
+  const focus=focusedEggId();
   return incubatingEggs().map(egg=>{
     const meta=canon(egg.type);
     const progress=Number(egg.progress||0),goal=Math.max(1,Number(egg.goal||1));
     return {
       id:egg.id,type:egg.type,name:meta.name,species:meta.species,icon:meta.icon,
       progress,goal,pct:Math.min(100,Math.round(progress/goal*100)),
-      moonlightLeft:Math.max(0,goal-progress),source:egg.source||'mystery'
+      moonlightLeft:Math.max(0,goal-progress),source:egg.source||'mystery',focused:egg.id===focus
     };
   });
 }
@@ -444,8 +461,8 @@ function selectCarePet(petId){
 
 function eggIncubatorHTML(snap){
   if(!snap.eggs.length)return '<div class="majEggEmpty">✦ No Guardian egg is incubating right now. Keep studying and opening rewards to discover another.</div>';
-  return '<div class="majEggIncubator"><div><div class="eyebrow">CELESTIAL INCUBATOR</div><h3>'+snap.eggs.length+' Guardian Egg'+(snap.eggs.length===1?'':'s')+' Growing</h3><p>Correct answers add moonlight. The egg hatches through studying—not purchases.</p></div>'+
-    '<div class="majEggGrid">'+snap.eggs.map(e=>'<article><span class="majEgg">🥚</span><div><b>'+E(e.species)+' Egg</b><small>'+e.progress+'/'+e.goal+' moonlight • '+e.moonlightLeft+' left</small><i><em style="width:'+e.pct+'%"></em></i></div></article>').join('')+'</div></div>';
+  return '<div class="majEggIncubator"><div><div class="eyebrow">CELESTIAL INCUBATOR</div><h3>'+snap.eggs.length+' Guardian Egg'+(snap.eggs.length===1?'':'s')+' Growing</h3><p>Each egg keeps its own moonlight. Choose which egg your correct answers should grow; earning a new egg never replaces one already here.</p></div>'+
+    '<div class="majEggGrid">'+snap.eggs.map(e=>'<article class="'+(e.focused?'focused':'')+'" data-egg-id="'+E(e.id)+'"><button type="button" class="majEggFocus" onclick="majickFocusEgg(\''+E(e.id)+'\')" aria-pressed="'+(e.focused?'true':'false')+'"><span class="majEgg">🥚</span><div><b>'+E(e.species)+' Egg</b><small>'+e.progress+'/'+e.goal+' moonlight • '+e.moonlightLeft+' left</small><i><em style="width:'+e.pct+'%"></em></i><em class="majEggFocusLabel">'+(e.focused?'✦ Study focus':'Focus this egg')+'</em></div></button></article>').join('')+'</div></div>';
 }
 
 function guardianCareHTML(target){
@@ -513,6 +530,12 @@ function toastFromResult(r){
 }
 
 window.majickSelectCareGuardian=function(petId){selectCarePet(petId)};
+window.majickFocusEgg=function(eggId){
+  const ok=focusEgg(eggId);
+  if(ok){try{rewardToast('🥚 Incubator focus changed','Correct study answers will now grow this egg.')}catch(_){}}
+  broadcastState();
+  return ok;
+};
 window.majickCareAction=function(target,action,opts={}){
   const r=performAction(target,action,opts);
   toastFromResult(r);
@@ -609,6 +632,6 @@ ensureAccount();
 setTimeout(()=>broadcastState(),200);
 window.MajickGuardianCare={
   ensure:ensureAccount,state,snapshot,performAction,buy,catalog:CATALOG,normalizeOwnedCollection,normalizeGuardianInventory,
-  ownedPets,incubatingEggs,guardianCareHTML,compactCareDockHTML,catalogHTML,broadcastState,moodInfo,bestToy,assignedBed,canon
+  ownedPets,incubatingEggs,guardianCareHTML,compactCareDockHTML,catalogHTML,broadcastState,moodInfo,bestToy,assignedBed,canon,focusEgg,focusedEggId
 };
 })();
