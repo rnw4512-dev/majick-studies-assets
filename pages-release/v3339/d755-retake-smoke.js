@@ -36,6 +36,10 @@ for(const n of [1,2,3])assert(M.BANK.filter(q=>q.section===n).length===18,'Secti
 assert(new Set(M.BANK.map(q=>q.id)).size===54,'Question IDs must be unique');
 assert(M.BANK.every(q=>Array.isArray(q.options)&&q.options.length===4&&q.options.includes(q.answer)),'Every question must have four choices and a valid answer');
 assert(M.BANK.every(q=>q.style==='wgu-course-scenario'&&q.source==='d755-teacher-focus-2026-09-26'&&q.teacherFocus===true),'Teacher-focus question metadata missing');
+assert(M.BANK.every(q=>q.topicId&&Number(q.difficulty)>=1&&q.format==='scenario'),'Game Realm question metadata missing');
+const realmTopics=new Set(ctx.S.courses.D755.concepts.map(x=>x.id));
+assert(M.BANK.every(q=>realmTopics.has(q.topicId)),'A D755 question points to a Game Realm topic that does not exist');
+assert(Array.isArray(ctx.S.courses.D755.misconceptionCatalog)&&ctx.S.courses.D755.misconceptionCatalog.length>=8,'D755 Game Realm misconception catalog missing');
 assert(ctx.S.courses.D755.questionBank.length===54,'Teacher-focus D755 bank did not self-install');
 assert(M.BANK.some(q=>/four most recent progress-monitoring points/.test(q.prompt)&&q.visual==='four-below'),'Four-point rule data question missing');
 assert(M.BANK.some(q=>/Predictive validity/.test(q.answer)),'Predictive validity question missing');
