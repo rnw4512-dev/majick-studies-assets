@@ -1,4 +1,13 @@
 ## V3.3.42 — Sanctuary Alive: Personal Nooks
+- **Game Realm compatibility / shared Guardian progress**
+  - D755 teacher-focus questions now expose Game Realm `topicId`, difficulty, format, clue, and misconception metadata.
+  - Boss Battle / Weak-Pair / adaptive Realm modes can use the modern D755 bank instead of receiving incomplete question objects.
+  - Added a shared Guardian study-progress bridge for D755 Retake and D772 Learn.
+  - Previously saved answers from those newer engines are reconciled once into Guardian study XP, bond, egg moonlight, and canonical answer history.
+  - Reconciliation is idempotent: reloads do not award the same saved answer twice.
+  - Existing Game Realm answers keep their original reward path and are not retroactively duplicated.
+  - Guardian reconciliation does not change lifetime Majick XP.
+
 - Every hatched Guardian now resolves to a **distinct bed**.
   - Guardian 1 defaults to Moonstone Bed.
   - Guardian 2 defaults to Amethyst Bed.
