@@ -230,7 +230,7 @@ function questText(p){
 }
 function selectorHtml(active){
   const rows=pets();if(rows.length<2)return '';
-  return '<div class="v3341GuardianSelector">'+rows.map(p=>{const m=guardianMeta(p);return '<button type="button" class="'+(p.id===active.id?'active':'')+'" onclick="MajickGuardianCore.select('+JSON.stringify(p.id)+')" title="Study with '+E(m.name)+'">'+(m.image?'<img src="'+E(m.image)+'" alt="">':'<span>'+E(m.icon)+'</span>')+'<small>'+E(m.name)+'</small></button>'}).join('')+'</div>';
+  return '<div class="v3341GuardianSelector">'+rows.map(p=>{const m=guardianMeta(p);return '<button type="button" class="'+(p.id===active.id?'active':'')+'" data-guardian-id="'+E(p.id)+'" onclick="MajickGuardianCore.select(this.dataset.guardianId)" title="Study with '+E(m.name)+'">'+(m.image?'<img src="'+E(m.image)+'" alt="">':'<span>'+E(m.icon)+'</span>')+'<small>'+E(m.name)+'</small></button>'}).join('')+'</div>';
 }
 function guardianHeroHtml(){
   const p=activePet();if(!p)return '<div class="v3341GuardianHero empty"><span>✦</span><b>Your Study Guardian is waiting to awaken</b><button onclick="navigate(\'companions\')">Visit Guardian House</button></div>';
