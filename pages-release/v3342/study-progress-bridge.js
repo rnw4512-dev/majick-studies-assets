@@ -14,6 +14,24 @@ function ledger(){
   return a.studyProgressBridge;
 }
 function pets(){return (window.S?.legacy?.pets||[]).filter(Boolean)}
+function eggs(){return (window.S?.legacy?.eggs||[]).filter(Boolean)}
+function incubatorState(){
+  const a=account();if(!a)return {focusEggId:null};
+  a.guardianIncubator=a.guardianIncubator||{version:'3.3.45',focusEggId:null,lastFocusAt:0};
+  const rows=eggs();
+  if(!rows.length){a.guardianIncubator.focusEggId=null;return a.guardianIncubator}
+  if(!rows.some(e=>e.id===a.guardianIncubator.focusEggId))a.guardianIncubator.focusEggId=rows[0].id;
+  return a.guardianIncubator;
+}
+function focusedEgg(){
+  const rows=eggs();if(!rows.length)return null;
+  const inc=incubatorState();
+  return rows.find(e=>e.id===inc.focusEggId)||rows[0];
+}
+function setFocusedEgg(id){
+  const row=eggs().find(e=>e.id===String(id||''));if(!row)return false;
+  const inc=incubatorState();inc.focusEggId=row.id;inc.lastFocusAt=Date.now();save();return true;
+}
 function activePet(){
   const rows=pets();if(!rows.length)return null;
   const id=window.S?.legacy?.activePetId||window.MajickGuardianCare?.snapshot?.()?.focusPetId;
@@ -66,10 +84,16 @@ function awardGuardians(evt){
     p.lastGain=gain;p.lastGainAt=Date.now();
     p.bond=Math.max(0,Number(p.bond||0))+(correct?(isActive?(hard?4:3):1):(isActive?1:0));
   }
-  const egg=window.S?.legacy?.eggs?.[0];
+  const egg=focusedEgg();
   if(correct&&egg){
     egg.progress=Math.max(0,Number(egg.progress||0))+(hard?3:2);
+    const beforeId=egg.id;
     hatchIfReady(egg);
+    const rows=eggs();
+    if(!rows.some(e=>e.id===beforeId)){
+      const inc=incubatorState();
+      inc.focusEggId=rows[0]?.id||null;
+    }
   }
   if(window.S?.legacy)window.S.legacy.lastPetXPGains={active:activeGain,shared:sharedGain,at:Date.now(),correct,hard,source:evt.source||'study'};
 }
@@ -154,10 +178,11 @@ function inspect(){
     events:Object.keys(l.events||{}).length,
     reconciledCount:Number(l.reconciledCount||0),
     pets:rows.map(p=>({id:p.id,type:p.type,name:p.name,studyXP:Number(p.studyXP||0),bond:Number(p.bond||0)})),
-    egg:(window.S?.legacy?.eggs||[])[0]||null
+    focusEggId:incubatorState().focusEggId,
+    eggs:eggs().map(e=>({id:e.id,type:e.type,progress:Number(e.progress||0),goal:Number(e.goal||1),focused:e.id===incubatorState().focusEggId}))
   };
 }
 setTimeout(()=>{wrapLegacyRecord();reconcileHistorical()},60);
-window.MajickStudyProgress={VERSION,creditAnswer,reconcileHistorical,inspect,wrapLegacyRecord};
+window.MajickStudyProgress={VERSION,creditAnswer,reconcileHistorical,inspect,wrapLegacyRecord,setFocusedEgg,focusedEgg,eggs};
 document.documentElement.dataset.majickStudyProgress=VERSION;
 })();
