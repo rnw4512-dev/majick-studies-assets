@@ -4,14 +4,14 @@ site=Path(sys.argv[1])
 def fail(msg): raise SystemExit('STABILITY RESET VERIFY FAILED: '+msg)
 main=(site/'index.html').read_text(encoding='utf-8')
 san=(site/'sanctuary'/'index.html').read_text(encoding='utf-8')
-for f in ('v3310-ui-compat.js','v3312-ui-compat.js','guardian-registry.js','majick-state-core.js','learning-lab.js','learning-lab.css','learning-plan.js','learning-plan.css','course-tutor.js','course-tutor.css','learn-mode.js','learn-mode.css','d755-retake.js','d755-retake.css','magical-college-home.js','magical-college-home.css','guardian-care-economy.js','v3317-main.js','sanctuary/v3317-sanctuary.js','sanctuary/v3320-sanctuary-life.js','sanctuary/v3321-sanctuary-customize.js','v3322-main-recovery.js','sanctuary/v3322-sanctuary-recovery.js','sanctuary/v3325-sanctuary-visual-authority.js'):
+for f in ('v3310-ui-compat.js','v3312-ui-compat.js','guardian-registry.js','majick-state-core.js','learning-lab.js','learning-lab.css','learning-plan.js','learning-plan.css','course-tutor.js','course-tutor.css','learn-mode.js','learn-mode.css','d755-retake.js','d755-retake.css','guardian-core.js','guardian-core.css','magical-college-home.js','magical-college-home.css','guardian-care-economy.js','v3317-main.js','sanctuary/v3317-sanctuary.js','sanctuary/v3320-sanctuary-life.js','sanctuary/v3321-sanctuary-customize.js','v3322-main-recovery.js','sanctuary/v3322-sanctuary-recovery.js','sanctuary/v3325-sanctuary-visual-authority.js','sanctuary/guardian-core-sanctuary.js'):
     p=site/f
     if not p.exists() or not p.stat().st_size: fail('missing '+f)
 for old in ('v3310-main.js','v3312-main.js','v3313-main.js','v3314-main.js','v3315-main.js','v3316-main.js'):
     if old in main: fail('obsolete main runtime still loaded: '+old)
 for old in ('v3311-sanctuary.js','v3312-sanctuary.js','v3313-sanctuary.js','v3314-sanctuary.js','v3315-sanctuary.js'):
     if old in san: fail('obsolete Sanctuary runtime still loaded: '+old)
-order=['v3310-ui-compat.js','v3312-ui-compat.js','guardian-registry.js','majick-state-core.js','guardian-care-economy.js','learning-lab.js','learning-plan.js','course-tutor.js','learn-mode.js','d755-retake.js','v3317-main.js','magical-college-home.js','v3322-main-recovery.js']
+order=['v3310-ui-compat.js','v3312-ui-compat.js','guardian-registry.js','majick-state-core.js','guardian-care-economy.js','learning-lab.js','learning-plan.js','course-tutor.js','learn-mode.js','d755-retake.js','v3317-main.js','magical-college-home.js','v3322-main-recovery.js','guardian-core.js']
 pos=[main.find(x) for x in order]
 if any(x<0 for x in pos) or pos!=sorted(pos): fail('main runtime load order is wrong')
 if san.find('guardian-registry.js')<0 or san.find('v3317-sanctuary.js')<0: fail('Sanctuary registry/bridge missing')
@@ -24,6 +24,8 @@ if san.find('v3322-sanctuary-recovery.js')<0: fail('Sanctuary recovery runtime m
 if san.find('v3321-sanctuary-customize.js')>san.find('v3322-sanctuary-recovery.js'): fail('Sanctuary recovery loads before customization')
 if san.find('v3325-sanctuary-visual-authority.js')<0: fail('Guardian visual authority runtime missing')
 if san.find('v3322-sanctuary-recovery.js')>san.find('v3325-sanctuary-visual-authority.js'): fail('Guardian visual authority loads before recovery')
+if san.find('guardian-core-sanctuary.js')<0: fail('Guardian Core Sanctuary runtime missing')
+if san.find('v3325-sanctuary-visual-authority.js')>san.find('guardian-core-sanctuary.js'): fail('Guardian Core loads before visual authority')
 for compat_name in ('v3310-ui-compat.js','v3312-ui-compat.js'):
     compat=(site/compat_name).read_text(encoding='utf-8')
     if 'window.render=function' in compat or 'render=function' in compat or 'const prevRender=render' in compat or 'const render12=window.render' in compat:
@@ -78,6 +80,11 @@ for marker in ("VERSION='3.3.40'","Assessment for Special Education","30-Questio
     if marker not in d755: fail('D755 Retake Studio missing '+marker)
 if 'd755-retake.js?v=3340' not in main or 'd755-retake.css?v=3340' not in main:
     fail('V3.3.40 Teacher-Focus D755 Questions assets are not installed in index.html')
+guardian=(site/'guardian-core.js').read_text(encoding='utf-8')
+for marker in ("VERSION='3.3.41'","ACTIVE STUDY GUARDIAN","guardianJourney","finishDebriefEnabled","MAJICK_STUDY_GUARDIAN_REACTION_V3341","course-pass"):
+    if marker not in guardian: fail('Guardian Core missing '+marker)
+if 'guardian-core.js?v=3341' not in main or 'guardian-core.css?v=3341' not in main:
+    fail('V3.3.41 Guardian Core assets are not installed in index.html')
 learn=(site/'learn-mode.js').read_text(encoding='utf-8')
 for marker in ("VERSION='3.3.38'","Teach → Visual → Worked Example","Arcane Anchor Wall","ADAPTIVE REPAIR INSERTED","CAN I DO THIS?"):
     if marker not in learn: fail('Learn Mode missing '+marker)
@@ -117,10 +124,15 @@ if 'v3322-sanctuary-recovery.js?v=3322' not in san:
     fail('Sanctuary recovery asset is not installed')
 if 'v3325-sanctuary-visual-authority.js?v=3325' not in san:
     fail('Guardian visual authority asset is not installed')
+guardian_san=(site/'sanctuary'/'guardian-core-sanctuary.js').read_text(encoding='utf-8')
+for marker in ("VERSION='3.3.41'","window.MajickGuardianCoreSanctuary","Game.prototype.v3317UpdateGuardianVisuals","controllerVisible"):
+    if marker not in guardian_san: fail('Guardian Core Sanctuary missing '+marker)
+if 'guardian-core-sanctuary.js?v=3341' not in san:
+    fail('Guardian Core Sanctuary asset is not installed')
 care=(site/'guardian-care-economy.js').read_text(encoding='utf-8')
 if 'window.MajickGuardianRegistry?.get?.(type)' not in care: fail('Guardian care does not use the shared registry')
 
-for path in (site/'guardian-registry.js',site/'majick-state-core.js',site/'learning-lab.js',site/'learn-mode.js',site/'d755-retake.js',site/'guardian-care-economy.js',site/'v3317-main.js',site/'sanctuary'/'v3317-sanctuary.js',site/'sanctuary'/'v3320-sanctuary-life.js',site/'sanctuary'/'v3321-sanctuary-customize.js',site/'v3322-main-recovery.js',site/'sanctuary'/'v3322-sanctuary-recovery.js',site/'sanctuary'/'v3325-sanctuary-visual-authority.js'):
+for path in (site/'guardian-registry.js',site/'majick-state-core.js',site/'learning-lab.js',site/'learn-mode.js',site/'d755-retake.js',site/'guardian-core.js',site/'guardian-care-economy.js',site/'v3317-main.js',site/'sanctuary'/'v3317-sanctuary.js',site/'sanctuary'/'v3320-sanctuary-life.js',site/'sanctuary'/'v3321-sanctuary-customize.js',site/'v3322-main-recovery.js',site/'sanctuary'/'v3322-sanctuary-recovery.js',site/'sanctuary'/'v3325-sanctuary-visual-authority.js',site/'sanctuary'/'guardian-core-sanctuary.js'):
     r=subprocess.run(['node','--check',str(path)],capture_output=True,text=True)
     if r.returncode: fail(path.name+' syntax: '+r.stderr)
 print('STABILITY RESET VERIFY PASSED')
