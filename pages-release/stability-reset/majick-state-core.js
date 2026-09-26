@@ -86,10 +86,27 @@ function recoverySignature(st){return guardianProgressSignature(st)}
 function reconcileHatchedGuardians(st){
   if(!st?.legacy||!Array.isArray(st.legacy.pets))return false;
   st.legacy.eggs=Array.isArray(st.legacy.eggs)?st.legacy.eggs:[];
-  const hatched=new Set(st.legacy.pets.filter(Boolean).map(p=>String(p?.type||'')).filter(Boolean));
-  const before=st.legacy.eggs.length;
-  st.legacy.eggs=st.legacy.eggs.filter(e=>!hatched.has(String(e?.type||'')));
-  return st.legacy.eggs.length!==before;
+  // Hatching removes the exact egg ID in hatchEgg(). Species can occur again
+  // in a later earned egg, so ownership is never evidence that an egg is stale.
+  return false;
+}
+function restoreThreeEggs(st,account){
+  if(account.eggRestorationV3344?.applied)return false;
+  st.legacy=st.legacy||{};
+  const eggs=st.legacy.eggs=Array.isArray(st.legacy.eggs)?st.legacy.eggs:[];
+  const existing=new Set(eggs.map(e=>String(e?.type||'')));
+  const owned=new Set((st.legacy.pets||[]).map(p=>String(p?.type||'')));
+  const candidates=['mallow','ember','nova','vesper','briar','zephyr','prism','rook','solara','luna'];
+  const added=[];
+  while(eggs.length<3){
+    const type=candidates.find(t=>!owned.has(t)&&!existing.has(t))||candidates.find(t=>!existing.has(t))||'vesper';
+    const egg={id:'restored_3344_'+added.length,type,progress:0,goal:22,source:'guardian-restoration',createdAt:Date.now()};
+    if(eggs.some(e=>e?.id===egg.id))egg.id+='_'+Date.now();
+    eggs.push(egg);existing.add(type);added.push(egg.id);
+  }
+  account.eggRestorationV3344={applied:true,at:new Date().toISOString(),added,eggCount:eggs.length};
+  if(added.length)window.__majickEggRestorePending={added:added.length,total:eggs.length};
+  return added.length>0;
 }
 function applyProgressMergeV3323(st,account){
   if(!st||!account||account.progressMergeV3323?.applied)return false;
@@ -178,6 +195,7 @@ function ensureAccount(){
     window.__majickXpRecoveryPending={before:xpBefore,restoredTo:plainNumber(account.xp)};
   }
   reconcileHatchedGuardians(st);
+  restoreThreeEggs(st,account);
   account.schemaVersion=Math.max(5,plainNumber(account.schemaVersion));
   return account;
 }

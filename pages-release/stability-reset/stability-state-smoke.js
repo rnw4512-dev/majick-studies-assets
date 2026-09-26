@@ -85,7 +85,7 @@ assert(S.majickAccount.crystals===beforeBuy-6,'care shop charged crystals more t
 assert(S.progress.D772.crystals===beforeBuy-6,'active course did not mirror post-purchase balance');
 assert(S.progress.D755.crystals===beforeBuy-6,'other course did not mirror post-purchase balance');
 assert(snap.roster.some(g=>g.type==='nyx'),'future Guardian missing from care roster');
-assert(snap.eggs.length===1&&snap.eggs[0].type==='aurora-moth','future egg missing from incubator snapshot');
+assert(snap.eggs.length===3&&snap.eggs.some(e=>e.type==='aurora-moth'),'future egg missing from incubator snapshot or restoration failed');
 
 // V3.3.22 one-time user balance recovery: only the affected two-Guardian + Pocket Dragon egg
 // save signature is eligible, and the marker prevents later spending from being refilled.
@@ -116,9 +116,16 @@ const merged=MajickStateCore.ensureAccount();
 assert(merged.xp===4275,'old and new XP were not merged together after Cascade hatched');
 assert(merged.crystals===42,'nonzero current crystal balance was incorrectly refilled');
 assert(merged.progressMergeV3323?.applied===true,'progress merge marker missing');
-assert(S.legacy.eggs.every(e=>e.type!=='ember'),'hatched Cascade remained duplicated in the egg incubator');
+assert(S.legacy.eggs.length===3,'one-time egg restoration should bring the incubator to three eggs');
+assert(S.legacy.eggs.some(e=>e.id==='stale_ember_egg'),'an earned egg with the same species as a Guardian must be preserved');
+assert(merged.eggRestorationV3344?.added.length===2,'only the missing eggs should be granted');
+const eggIds=S.legacy.eggs.map(e=>e.id);
 merged.xp=4301;
 MajickStateCore.ensureAccount();
+assert(JSON.stringify(S.legacy.eggs.map(e=>e.id))===JSON.stringify(eggIds),'reload must not duplicate restored eggs');
+S.legacy.eggs[0].progress=9;
+MajickStateCore.ensureAccount();
+assert(S.legacy.eggs.length===3&&S.legacy.eggs[0].progress===9,'existing egg moonlight must remain intact');
 assert(merged.xp===4301,'progress merge ran more than once');
 assert(recovered.balanceRecoveryV3322?.applied===true,'balance recovery marker was not stored');
 recovered.crystals=90;

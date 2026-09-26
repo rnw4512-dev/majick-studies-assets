@@ -1,9 +1,9 @@
-// Majick Studies V3.3.43 Guardian Personality and Game Realm — AUTHORITATIVE MAIN APP BRIDGE
+// Majick Studies V3.3.44 Guardian Egg Restoration — AUTHORITATIVE MAIN APP BRIDGE
 (function(){
 'use strict';
 
-const RELEASE_LABEL='Moonlit Collegium • V3.3.43';
-const RELEASE_TITLE='Majick Studies — V3.3.43 Moonlit Collegium';
+const RELEASE_LABEL='Moonlit Collegium • V3.3.44';
+const RELEASE_TITLE='Majick Studies — V3.3.44 Moonlit Collegium';
 const registry=()=>window.MajickGuardianRegistry;
 const canonOf=type=>registry()?.get?.(type)?.canon||String(type||'').toLowerCase();
 const STAGE_SLUGS=['new-bond','apprentice','guardian','ascendant','celestial'];
@@ -336,7 +336,7 @@ function applyReleaseBadge(){
 
 function showRuntimeNotice(error){
   const message=String(error?.message||error||'Unknown runtime error');
-  console.error('Majick V3.3.43 runtime error',error);
+  console.error('Majick V3.3.44 runtime error',error);
   if(document.getElementById('v3317RuntimeNotice'))return;
   try{
     const n=document.createElement('div');
@@ -391,6 +391,18 @@ if(previousRender){
           if(typeof rewardToast==='function')rewardToast('✦ Majick XP Restored',Math.round(Number(repair.restoredTo)||0)+' lifetime XP recovered and protected.');
         }catch(e){console.warn('Majick XP recovery persistence',e)}
         finally{window.__majickXpRecoveryPersisting=false}
+      },0);
+    }
+    if(window.__majickEggRestorePending&&!window.__majickEggRestorePersisting){
+      const restored=window.__majickEggRestorePending;
+      window.__majickEggRestorePending=null;
+      window.__majickEggRestorePersisting=true;
+      setTimeout(()=>{
+        try{
+          if(typeof save==='function')save();
+          if(typeof rewardToast==='function')rewardToast('🥚 Guardian Eggs Restored',restored.total+' eggs are in your incubator and can earn moonlight.');
+        }catch(e){console.warn('Majick egg restoration persistence',e)}
+        finally{window.__majickEggRestorePersisting=false}
       },0);
     }
     return result;
