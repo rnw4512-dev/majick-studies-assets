@@ -172,8 +172,8 @@ for src_name,(dst_name,expected_hash,expected_bytes) in PINNED_MOTION.items():
 progress=site/"app-progress.json"
 if progress.exists():
     data=json.loads(progress.read_text(encoding="utf-8"))
-    data["version"]="V3.3.39 D755 Retake Studio"
-    data["learning_intelligence"]="V3.3.39 D755 Retake Studio with protected lifetime Majick XP, D755 three-section instruction cycle, 48 curated WGU-style assessment questions, 30-question retake diagnostic, 40-question mock OA, section mastery checks, adaptive WGU trap repair, Living Grimoire anchor charts, D772 Learn Mode, and 4–6 week course pacing"
+    data["version"]="V3.3.40 Teacher-Focus D755 Questions"
+    data["learning_intelligence"]="V3.3.40 Teacher-Focus D755 Questions with protected lifetime Majick XP, 54 instructor-grounded WGU-style D755 scenarios, goal/trend-line and four-point-rule visuals, student-journey sequencing, MTSS/RTI/PBIS/SEL/validity/reliability/bias drills, evaluation and two-pronged eligibility reasoning, PLAAFP and C-B-C measurable-goal questions, 30-question diagnostic, 40-question mock OA, and section mastery checks"
     data["sanctuary_version"]="V3.3.25 Single Guardian Visual Authority"
     data["sanctuary_home"]="Guardian needs HUD, object-aware care travel, exclusive beds, visible care inventory, safe furniture snapping"
     data["sanctuary_customization"]="personal Guardian nooks, feeding/play zones, owned furniture storage, Cozy Dorm layout preset"
@@ -186,16 +186,16 @@ if progress.exists():
 
 index=site/"index.html"
 html=index.read_text(encoding="utf-8")
-html=html.replace('<link rel="stylesheet" href="./learning-lab.css?v=3319">','').replace('<link rel="stylesheet" href="./learning-plan.css?v=3324">','').replace('<link rel="stylesheet" href="./course-tutor.css?v=3326">','').replace('<link rel="stylesheet" href="./magical-college-home.css?v=3337">','').replace('<link rel="stylesheet" href="./learn-mode.css?v=3338">','').replace('<link rel="stylesheet" href="./d755-retake.css?v=3339">','').replace('<script src="./learning-lab.js?v=3319"></script>','').replace('<script src="./learning-plan.js?v=3324"></script>','').replace('<script src="./course-tutor.js?v=3326"></script>','').replace('<script src="./magical-college-home.js?v=3337"></script>','').replace('<script src="./learn-mode.js?v=3338"></script>','').replace('<script src="./d755-retake.js?v=3339"></script>','').replace('<script src="./v3322-main-recovery.js?v=3322"></script>','')
+html=html.replace('<link rel="stylesheet" href="./learning-lab.css?v=3319">','').replace('<link rel="stylesheet" href="./learning-plan.css?v=3324">','').replace('<link rel="stylesheet" href="./course-tutor.css?v=3326">','').replace('<link rel="stylesheet" href="./magical-college-home.css?v=3337">','').replace('<link rel="stylesheet" href="./learn-mode.css?v=3338">','').replace('<link rel="stylesheet" href="./d755-retake.css?v=3340">','').replace('<script src="./learning-lab.js?v=3319"></script>','').replace('<script src="./learning-plan.js?v=3324"></script>','').replace('<script src="./course-tutor.js?v=3326"></script>','').replace('<script src="./magical-college-home.js?v=3337"></script>','').replace('<script src="./learn-mode.js?v=3338"></script>','').replace('<script src="./d755-retake.js?v=3340"></script>','').replace('<script src="./v3322-main-recovery.js?v=3322"></script>','')
 html=html.replace('./guardian-care-economy.css?v=stability-1','./guardian-care-economy.css?v=3322-recovery')
 html=html.replace('./majick-state-core.js?v=stability-1','./majick-state-core.js?v=3322-recovery')
 html=html.replace('./guardian-care-economy.js?v=stability-1','./guardian-care-economy.js?v=3322-recovery')
 html=html.replace('./v3317-main.js?v=stability-1','./v3317-main.js?v=3322-recovery')
-html=html.replace('</head>','<link rel="stylesheet" href="./learning-lab.css?v=3319">\\n<link rel="stylesheet" href="./learning-plan.css?v=3324">\\n<link rel="stylesheet" href="./course-tutor.css?v=3326">\\n<link rel="stylesheet" href="./magical-college-home.css?v=3337">\\n<link rel="stylesheet" href="./wgu-practice.css?v=3333">\\n<link rel="stylesheet" href="./learn-mode.css?v=3338">\\n<link rel="stylesheet" href="./d755-retake.css?v=3339">\\n</head>',1)
+html=html.replace('</head>','<link rel="stylesheet" href="./learning-lab.css?v=3319">\\n<link rel="stylesheet" href="./learning-plan.css?v=3324">\\n<link rel="stylesheet" href="./course-tutor.css?v=3326">\\n<link rel="stylesheet" href="./magical-college-home.css?v=3337">\\n<link rel="stylesheet" href="./wgu-practice.css?v=3333">\\n<link rel="stylesheet" href="./learn-mode.css?v=3338">\\n<link rel="stylesheet" href="./d755-retake.css?v=3340">\\n</head>',1)
 main_tag='<script src="./v3317-main.js?v=3322-recovery"></script>'
 if main_tag not in html:
     fail("authoritative main runtime tag missing while installing recovery")
-html=html.replace(main_tag,'<script src="./learning-lab.js?v=3319"></script>\\n<script src="./learning-plan.js?v=3324"></script>\\n<script src="./course-tutor.js?v=3326"></script>\\n<script src="./learn-mode.js?v=3338"></script>\\n<script src="./d755-retake.js?v=3339"></script>\\n<script src="./wgu-practice.js?v=3336"></script>\\n'+main_tag+'\\n<script src="./magical-college-home.js?v=3337"></script>\\n<script src="./v3322-main-recovery.js?v=3322"></script>',1)
+html=html.replace(main_tag,'<script src="./learning-lab.js?v=3319"></script>\\n<script src="./learning-plan.js?v=3324"></script>\\n<script src="./course-tutor.js?v=3326"></script>\\n<script src="./learn-mode.js?v=3338"></script>\\n<script src="./d755-retake.js?v=3340"></script>\\n<script src="./wgu-practice.js?v=3336"></script>\\n'+main_tag+'\\n<script src="./magical-college-home.js?v=3337"></script>\\n<script src="./v3322-main-recovery.js?v=3322"></script>',1)
 html=html.replace('Sunday Readiness & Thinking Analytics','Course Readiness & Thinking Analytics')
 html=html.replace('<h3>Before Sunday</h3>','<h3>Before Your OA</h3>')
 html=html.replace('<h3>🌌 Weekly Constellation Quest</h3>','<h3>🌌 Constellation Quest • 7-Day Bonus</h3>')
