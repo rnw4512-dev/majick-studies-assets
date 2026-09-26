@@ -126,6 +126,13 @@ assert(JSON.stringify(S.legacy.eggs.map(e=>e.id))===JSON.stringify(eggIds),'relo
 S.legacy.eggs[0].progress=9;
 MajickStateCore.ensureAccount();
 assert(S.legacy.eggs.length===3&&S.legacy.eggs[0].progress===9,'existing egg moonlight must remain intact');
+const newlyEarned={id:'egg_newly_earned_after_restore',type:'zephyr',progress:4,goal:22,source:'earned'};
+S.legacy.eggs.push(newlyEarned);
+const fourEggIds=S.legacy.eggs.map(e=>e.id);
+MajickStateCore.ensureAccount();
+assert(S.legacy.eggs.length===4,'a newly earned egg must never be removed by restoration or reconciliation');
+assert(JSON.stringify(S.legacy.eggs.map(e=>e.id))===JSON.stringify(fourEggIds),'reload changed or reordered the earned egg inventory');
+assert(S.legacy.eggs.find(e=>e.id==='egg_newly_earned_after_restore')?.progress===4,'newly earned egg moonlight progress was not preserved');
 assert(merged.xp===4301,'progress merge ran more than once');
 assert(recovered.balanceRecoveryV3322?.applied===true,'balance recovery marker was not stored');
 recovered.crystals=90;
