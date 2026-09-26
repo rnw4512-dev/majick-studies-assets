@@ -5,7 +5,7 @@ const src=fs.readFileSync(process.cwd()+'/pages-release/v3342/sanctuary-alive.js
 
 function obj(x=0,y=0){
   return {x,y,width:300,height:160,visible:true,active:true,alpha:1,depth:0,data:{},events:{},
-    setDepth(v){this.depth=v;return this},setScale(){return this},setTint(){return this},setOrigin(){return this},
+    setDepth(v){this.depth=v;return this},setScale(){return this},setTint(){return this},setOrigin(){return this},setStrokeStyle(){return this},
     setInteractive(){return this},on(ev,fn){this.events[ev]=fn;return this},setSize(){return this},
     setData(k,v){this.data[k]=v;return this},getData(k){return this.data[k]},add(){return this},destroy(){this.destroyed=true},
     setVisible(v){this.visible=!!v;return this},setAlpha(v){this.alpha=Number(v);return this}
