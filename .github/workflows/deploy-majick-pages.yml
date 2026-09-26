@@ -259,7 +259,7 @@ jobs:
 
           # Golden architecture and protected assets.
           grep -q '"build_foundation": "V3.3.18 Golden Baseline"' _site/app-progress.json
-          grep -q '"version": "V3.3.42 Sanctuary Alive — Personal Nooks"' _site/app-progress.json
+          grep -q '"version": "V3.3.42 Sanctuary Alive Personal Nooks"' _site/app-progress.json
           grep -q 'learning-lab.js?v=3319' _site/index.html
           grep -q 'learning-lab.css?v=3319' _site/index.html
           grep -q 'learning-plan.js?v=3324' _site/index.html
@@ -311,7 +311,7 @@ jobs:
             echo "Legacy Before Sunday deadline returned."
             exit 1
           fi
-          grep -q '"sanctuary_version": "V3.3.42 Sanctuary Alive — Personal Nooks"' _site/app-progress.json
+          grep -q '"sanctuary_version": "V3.3.42 Sanctuary Alive Personal Nooks"' _site/app-progress.json
           grep -q 'majick-state-core.js?v=3322-recovery' _site/index.html
           grep -q 'guardian-care-economy.js?v=3322-recovery' _site/index.html
           grep -q 'v3317-main.js?v=3322-recovery' _site/index.html
@@ -514,7 +514,7 @@ jobs:
           base=(os.environ.get('LIVE_URL') or 'https://rnw4512-dev.github.io/majick-studies-assets/').rstrip('/')+'/'
           status_url=os.environ.get('STATUS_URL','')
           token=os.environ.get('GH_TOKEN','')
-          expected='V3.3.42 Sanctuary Alive — Personal Nooks'
+          expected='V3.3.42 Sanctuary Alive Personal Nooks'
           last=None
           for attempt in range(1,121):
               try:
