@@ -135,7 +135,7 @@ for marker in ("VERSION='3.3.41'","window.MajickGuardianCoreSanctuary","Game.pro
 if 'guardian-core-sanctuary.js?v=3341' not in san:
     fail('Guardian Core Sanctuary asset is not installed')
 alive=(site/'sanctuary'/'sanctuary-alive.js').read_text(encoding='utf-8')
-for marker in ("VERSION='3.3.42'","guardian-bed-","v3342BuildPersonalNooks","v3342RunLifeBeat","v3342EvolutionCeremony","favorite keepsake"):
+for marker in ("VERSION='3.3.42'","guardian-bed-","v3342BuildPersonalNooks","v3342RunLifeBeat","v3342EvolutionCeremony","makeKeepsake","makeComfortSpot"):
     if marker not in alive: fail('Sanctuary Alive missing '+marker)
 if 'sanctuary-alive.js?v=3342' not in san:
     fail('Sanctuary Alive asset is not installed')
