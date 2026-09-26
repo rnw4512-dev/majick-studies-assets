@@ -6,7 +6,7 @@ const src=fs.readFileSync(process.cwd()+'/pages-release/v3342/sanctuary-alive.js
 function obj(x=0,y=0){
   return {x,y,width:300,height:160,visible:true,active:true,alpha:1,depth:0,data:{},events:{},
     setDepth(v){this.depth=v;return this},setScale(){return this},setTint(){return this},setOrigin(){return this},setStrokeStyle(){return this},
-    setInteractive(){return this},on(ev,fn){this.events[ev]=fn;return this},setSize(){return this},
+    setInteractive(){return this},on(ev,fn){this.events[ev]=fn;return this},setSize(){return this},setPosition(x,y){this.x=x;this.y=y;return this},
     setData(k,v){this.data[k]=v;return this},getData(k){return this.data[k]},add(){return this},destroy(){this.destroyed=true},
     setVisible(v){this.visible=!!v;return this},setAlpha(v){this.alpha=Number(v);return this}
   };
@@ -51,6 +51,7 @@ Game.prototype.getSanctuaryObject=function(){return null};
 Game.prototype.v3317CareRequest=function(){};
 Game.prototype.v3317ShowAction=function(){};
 Game.prototype.showPetMessage=function(){};
+Game.prototype.v3317CareReaction=function(result){return result};
 
 const ctx={
   console,Math,Date,JSON,Game,
@@ -76,6 +77,15 @@ assert(beds[1]==='bed-east','Second Guardian should use east bed by default');
 assert(/^guardian-bed-/.test(beds[2]),'Third Guardian needs an expandable personal bed');
 assert(inspect.personalBeds.length===1,'Third Guardian personal bed was not created');
 assert(inspect.nookItems.length===6,'Each Guardian should receive a keepsake and comfort item');
+const originalKeepsake=scene.v3342Nooks[0].keep;
+scene.decorItems[0].setPosition(850,760);
+scene.v3342SyncNooks();
+assert(originalKeepsake.x===730&&originalKeepsake.y===778,'Keepsake should follow its Guardian bed');
+assert(scene.v3342Nooks[0].label.x===850,'Nook label should follow the moved bed');
+const oldThirdBed=scene.v3342PersonalBeds[beds[2]].item;
+scene.v3342BuildPersonalNooks();
+assert(oldThirdBed.destroyed&&!scene.decorItems.includes(oldThirdBed),'Rebuild must remove destroyed bed from room objects');
+assert(scene.decorItems.filter(x=>x.getData?.('objectId')===beds[2]).length===1,'Rebuild must retain exactly one active personal bed');
 
 const third=scene.v3317CareState.roster[2];
 const target=scene.v3342RoutineTarget(third,2);
@@ -84,6 +94,14 @@ assert(M.PROFILES.luna.preferences.includes('arcane-stacks'),'Velora personality
 assert(M.PROFILES.ember.preferences.includes('guardian-play-rug'),'Cascade personality preferences missing');
 assert(M.PROFILES.nova.preferences.includes('observatory-telescope'),'Solstice personality preferences missing');
 assert(M.PROFILES.mallow.preferences.includes('guardian-play-rug'),'Aurelia personality preferences missing');
+assert(new Set(['luna','ember','nova','mallow'].map(t=>M.PERSONALITY[t].study)).size===4,'Canon study reactions should be distinct');
+const reaction=scene.v3317CareReaction({guardianType:'ember',action:'treat',ok:true,message:'Generic'});
+assert(reaction.message===M.PERSONALITY.ember.care.treat,'Cascade treat should trigger her own reaction');
+const failed=scene.v3317CareReaction({guardianType:'ember',action:'treat',ok:false,message:'No treats left'});
+assert(failed.message==='No treats left','Failed care should retain its error');
+const first=scene.v3342RoutineTarget(scene.v3317CareState.roster[0],0);
+const second=scene.v3342RoutineTarget(scene.v3317CareState.roster[0],0);
+assert(first.id==='arcane-stacks'&&second.id==='magic-mirror','Velora should follow her own rotating room routine');
 
 console.log('V3.3.42 SANCTUARY ALIVE SMOKE PASSED');
 console.log(JSON.stringify({version:M.VERSION,beds,personalBeds:inspect.personalBeds,nookItems:inspect.nookItems.length,target}));

@@ -18,6 +18,7 @@ on:
       - 'pages-release/v3339/**'
       - 'pages-release/v3341/**'
       - 'pages-release/v3342/**'
+      - 'pages-release/v3343/**'
       - 'pages-release/v3315/study-material/**'
       - 'pages-release/v3316/courseManager.js'
       - 'pages-release/v3317/v3317-main.js'
@@ -99,6 +100,9 @@ jobs:
           test -s pages-release/v3342/guardian-life-main-smoke.js
           test -s pages-release/v3342/study-progress-bridge.js
           test -s pages-release/v3342/study-progress-bridge-smoke.js
+          test -s pages-release/v3343/game-realm.js
+          test -s pages-release/v3343/game-realm.css
+          test -s pages-release/v3343/game-realm-smoke.js
           test -s pages-release/v3320/sanctuary-life.js
           test -s pages-release/v3321/sanctuary-customize.js
           test -s pages-release/v3322/main-recovery.js
@@ -147,6 +151,8 @@ jobs:
           node --check pages-release/v3342/guardian-life-main-smoke.js
           node --check pages-release/v3342/study-progress-bridge.js
           node --check pages-release/v3342/study-progress-bridge-smoke.js
+          node --check pages-release/v3343/game-realm.js
+          node --check pages-release/v3343/game-realm-smoke.js
           node --check pages-release/v3320/sanctuary-life.js
           node --check pages-release/v3321/sanctuary-customize.js
           node --check pages-release/v3322/main-recovery.js
@@ -264,7 +270,7 @@ jobs:
 
           # Golden architecture and protected assets.
           grep -q '"build_foundation": "V3.3.18 Golden Baseline"' _site/app-progress.json
-          grep -q '"version": "V3.3.42 Sanctuary Alive Personal Nooks"' _site/app-progress.json
+          grep -q '"version": "V3.3.43 Guardian Personality and Game Realm"' _site/app-progress.json
           grep -q 'learning-lab.js?v=3319' _site/index.html
           grep -q 'learning-lab.css?v=3319' _site/index.html
           grep -q 'learning-plan.js?v=3324' _site/index.html
@@ -288,6 +294,10 @@ jobs:
           grep -q 'MAJICK_STUDY_GUARDIAN_REACTION_V3341' _site/guardian-core.js
           grep -q 'guardian-life-main.js?v=3342' _site/index.html
           grep -q 'guardian-life-main.css?v=3342' _site/index.html
+          cmp pages-release/v3343/game-realm.js _site/game-realm.js
+          cmp pages-release/v3343/game-realm.css _site/game-realm.css
+          grep -q 'game-realm.js?v=3343' _site/index.html
+          grep -q 'game-realm.css?v=3343' _site/index.html
           grep -q "VERSION='3.3.42'" _site/guardian-life-main.js
           grep -q 'Personal Crystal Nest' _site/guardian-life-main.js
           grep -q 'MAJICK_GUARDIAN_EVOLUTION_V3342' _site/guardian-life-main.js
@@ -418,6 +428,7 @@ jobs:
           node pages-release/v3342/sanctuary-alive-smoke.js
           node pages-release/v3342/guardian-life-main-smoke.js
           node pages-release/v3342/study-progress-bridge-smoke.js
+          node pages-release/v3343/game-realm-smoke.js
 
           # Keep the legacy full-browser smoke available for manual regression work,
           # but do not let its monolithic legacy boot freeze every Pages release.
@@ -523,13 +534,13 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
-          echo "Waiting for V3.3.42 at $LIVE_URL"
+          echo "Waiting for V3.3.43 at $LIVE_URL"
           python - <<'PY'
           import json,time,urllib.request,urllib.error,os
           base=(os.environ.get('LIVE_URL') or 'https://rnw4512-dev.github.io/majick-studies-assets/').rstrip('/')+'/'
           status_url=os.environ.get('STATUS_URL','')
           token=os.environ.get('GH_TOKEN','')
-          expected='V3.3.42 Sanctuary Alive Personal Nooks'
+          expected='V3.3.43 Guardian Personality and Game Realm'
           last=None
           for attempt in range(1,121):
               try:
@@ -567,6 +578,8 @@ jobs:
                       sanctuary_alive=r.read().decode('utf-8','replace')
                   with urllib.request.urlopen(base+'sanctuary/index.html?smoke='+stamp,timeout=10) as r:
                       san_index=r.read().decode('utf-8','replace')
+                  with urllib.request.urlopen(base+'game-realm.js?smoke='+stamp,timeout=10) as r:
+                      game_realm=r.read().decode('utf-8','replace')
                   last=(
                       data.get('version'),
                       'wgu-practice.js?v=3336' in index,
@@ -604,8 +617,8 @@ jobs:
                       'Sunday Readiness & Thinking Analytics' not in index,
                       '<h3>Before Sunday</h3>' not in index,
                   )
-                  if last==(expected,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True):
-                      print('LIVE V3.3.42 DEPLOYMENT VERIFIED')
+                  if last==(expected,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True) and 'game-realm.js?v=3343' in index and 'realmWordBank' in game_realm:
+                      print('LIVE V3.3.43 DEPLOYMENT VERIFIED')
                       raise SystemExit(0)
                   print('Live version not ready yet:',last)
               except Exception as e:

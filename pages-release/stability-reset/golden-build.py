@@ -93,6 +93,8 @@ OVERLAYS=[
     ("pages-release/v3342/sanctuary-alive.js","sanctuary/sanctuary-alive.js"),
     ("pages-release/v3342/guardian-life-main.js","guardian-life-main.js"),
     ("pages-release/v3342/guardian-life-main.css","guardian-life-main.css"),
+    ("pages-release/v3343/game-realm.js","game-realm.js"),
+    ("pages-release/v3343/game-realm.css","game-realm.css"),
     ("pages-release/v3342/study-progress-bridge.js","study-progress-bridge.js"),
     ("pages-release/v3315/study-material/materialParser.js","study-material/materialParser.js"),
     ("pages-release/v3315/study-material/materialStoreModel.js","study-material/materialStoreModel.js"),
@@ -179,7 +181,7 @@ for src_name,(dst_name,expected_hash,expected_bytes) in PINNED_MOTION.items():
 progress=site/"app-progress.json"
 if progress.exists():
     data=json.loads(progress.read_text(encoding="utf-8"))
-    data["version"]="V3.3.42 Sanctuary Alive Personal Nooks"
+    data["version"]="V3.3.43 Guardian Personality and Game Realm"
     data["learning_intelligence"]="V3.3.42 Sanctuary Alive with protected lifetime Majick XP, one distinct bed and personal nook per hatched Guardian, favorite keepsakes and comfort spots, need-driven and personality-driven room routines, physical travel to care stations, expandable Guardian beds beyond the original two slots, evolution ceremonies and permanent evolution memories, visible protected Phaser movement, shared Guardian progression across Game Realm/D755 Retake/D772 Learn, retroactive credit for previously uncredited study answers, Study Guardian bond quests, optional Finish Debrief, D755 teacher-focus questions, and D772 instruction cycles"
     data["sanctuary_version"]="V3.3.42 Sanctuary Alive Personal Nooks"
     data["sanctuary_home"]="Every hatched Guardian has a distinct bed and personal nook, favorite keepsake and comfort item, need-driven and personality-driven room routines, physical care travel, visible protected Phaser movement, evolved idle/action art, evolution ceremony, Guardian vocal reactions, care inventory, and room-safe furniture layout"
@@ -208,6 +210,8 @@ html=html.replace('<h3>Before Sunday</h3>','<h3>Before Your OA</h3>')
 html=html.replace('<h3>🌌 Weekly Constellation Quest</h3>','<h3>🌌 Constellation Quest • 7-Day Bonus</h3>')
 html=html.replace('concept stars visited this week.','concept stars visited during this 7-day bonus cycle.')
 html=html.replace('<p><b>Final Moon Review</b> for the last targeted pass.</p>','<p><b>Final Moon Review</b> for the last targeted pass.</p><p><small>Self-paced: take the OA when your mastery supports it. The 4–6 week window is a planning guardrail, not a deadline.</small></p>')
+html=html.replace('</head>','<link rel="stylesheet" href="./game-realm.css?v=3343">\n</head>',1)
+html=html.replace('</body>','<script src="./game-realm.js?v=3343"></script>\n</body>',1)
 index.write_text(html,encoding="utf-8")
 
 san_index=site/"sanctuary"/"index.html"

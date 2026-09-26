@@ -22,6 +22,12 @@ const MOVE={
   mallow:{tween:'mallowMoveTween',timer:'mallowNextTimer',resume:'chooseMallowBehavior'}
 };
 const STAGE_NAMES={'new-bond':'New Bond','apprentice':'Apprentice','guardian':'Guardian','ascendant':'Ascendant','celestial':'Celestial'};
+const PERSONALITY={
+  luna:{care:{feed:'Velora enjoys a quiet meal.',treat:'Velora takes a treat back to her books.',play:'Velora bats at her velvet cushion.',affection:'Velora leans in for a gentle cuddle.'},study:'Velora settles beside the books to study with you.'},
+  ember:{care:{feed:'Cascade investigates every crumb.',treat:'Cascade does a delighted little hop.',play:'Cascade races after the rune puzzle.',affection:'Cascade curls up beside you.'},study:'Cascade celebrates with a playful spark.'},
+  nova:{care:{feed:'Solstice inspects the bowl.',treat:'Solstice proudly carries off the treat.',play:'Solstice chases the comet ball.',affection:'Solstice stays close and watches the stars.'},study:'Solstice looks up from the telescope and cheers you on.'},
+  mallow:{care:{feed:'Aurelia enjoys a cozy snack.',treat:'Aurelia wiggles with delight.',play:'Aurelia snuggles her moonflower plush.',affection:'Aurelia nestles against you.'},study:'Aurelia gives you a soft, happy flutter.'}
+};
 
 function roster(scene){return Array.isArray(scene?.v3317CareState?.roster)?scene.v3317CareState.roster:[]}
 function profile(g){
@@ -116,7 +122,7 @@ function makeKeepsake(scene,g,bed,index){
   const icon=scene.add.text(0,-4,p.icon,{fontFamily:'Georgia',fontSize:'17px',color:'#fff0c7'}).setOrigin(.5);
   c.add([plate,orb,icon]);
   c.setSize?.(100,70);c.setInteractive?.({useHandCursor:true});
-  c.on?.('pointerup',()=>scene.v3342TravelGuardian?.(g.type,{x,y},'play',p.name+' visits '+p.favorite+'.'));
+  c.on?.('pointerup',()=>scene.v3342TravelGuardian?.(g.type,{x:c.x,y:c.y},'play',PERSONALITY[g.type]?.care?.play||p.name+' visits '+p.favorite+'.'));
   const tag=scene.add.text(x,y+48,p.favorite,{fontFamily:'Arial',fontSize:'8px',color:'#bba9c0'}).setOrigin(.5).setDepth(88);
   return {item:c,tag,x,y,label:p.favorite};
 }
@@ -126,19 +132,40 @@ function makeComfortSpot(scene,g,bed,index){
   const rug=scene.add.ellipse(0,0,118,52,p.accent,.22).setStrokeStyle(2,p.accent,.55);
   const dots=[-26,0,26].map(dx=>scene.add.circle(dx,-2,5,0xe9d8ef,.55));
   c.add([rug,...dots]);c.setSize?.(125,58);c.setInteractive?.({useHandCursor:true});
-  c.on?.('pointerup',()=>scene.v3342TravelGuardian?.(g.type,{x,y},'play',p.name+' settles into their comfort spot.'));
+  c.on?.('pointerup',()=>scene.v3342TravelGuardian?.(g.type,{x:c.x,y:c.y},'play',p.name+' settles into their comfort spot.'));
   return {item:c,x,y,label:'Comfort Spot'};
 }
 Game.prototype.v3342ClearNooks=function(){
+  const generated=new Set(Object.values(this.v3342PersonalBeds||{}).map(x=>x.item));
+  if(generated.size)this.decorItems=(this.decorItems||[]).filter(item=>!generated.has(item));
   for(const x of Object.values(this.v3342PersonalBeds||{})){try{x.item?.destroy?.()}catch(_){}try{x.tag?.destroy?.()}catch(_){}}
   for(const x of (this.v3342NookItems||[])){try{x.item?.destroy?.()}catch(_){}try{x.tag?.destroy?.()}catch(_){}}
   for(const x of (this.v3342NookLabels||[])){try{x.destroy?.()}catch(_){}}
   this.v3342PersonalBeds={};this.v3342NookItems=[];this.v3342NookLabels=[];
 };
+Game.prototype.v3342SyncNooks=function(){
+  for(const nook of this.v3342Nooks||[]){
+    const bed=nook.bed?.item;if(!bed?.active)continue;
+    const x=Number(bed.x),y=Number(bed.y);
+    if(!Number.isFinite(x)||!Number.isFinite(y))continue;
+    nook.bed.x=x;nook.bed.y=y;
+    if(this.v3342PersonalBeds?.[nook.bed.slot]){
+      this.v3342PersonalBeds[nook.bed.slot].x=x;
+      this.v3342PersonalBeds[nook.bed.slot].y=y;
+      nook.bed.tag?.setPosition?.(x,y-105);
+    }
+    nook.label?.setPosition?.(x,y-140);
+    for(const [part,dx,dy,tagY] of [[nook.keep,nook.side*120,18,48],[nook.comfort,-nook.side*115,82,null]]){
+      part.x=x+dx;part.y=y+dy;
+      part.item?.setPosition?.(part.x,part.y);
+      if(tagY!==null)part.tag?.setPosition?.(part.x,part.y+tagY);
+    }
+  }
+};
 Game.prototype.v3342BuildPersonalNooks=function(){
   this.v3342ClearNooks?.();
   const rs=roster(this),used=[];
-  this.v3342PersonalBeds={};this.v3342NookItems=[];this.v3342NookLabels=[];
+  this.v3342PersonalBeds={};this.v3342NookItems=[];this.v3342NookLabels=[];this.v3342Nooks=[];
   rs.forEach((g,index)=>{
     const slot=assignedBed(this,g,index),p=profile(g);
     let item=findDecor(this,slot),pos;
@@ -158,10 +185,12 @@ Game.prototype.v3342BuildPersonalNooks=function(){
       fontFamily:'Arial',fontStyle:'bold',fontSize:'9px',color:'#ead9ef',backgroundColor:'#190f22d9',padding:{x:8,y:4}
     }).setOrigin(.5).setDepth(87);
     this.v3342NookLabels.push(label);
+    this.v3342Nooks.push({bed:{...bedRef,tag:this.v3342PersonalBeds[slot]?.tag},keep,comfort,label,side:index%2===0?-1:1});
   });
   return {guardians:rs.length,beds:rs.map((g,i)=>assignedBed(this,g,i)),nooks:used};
 };
 Game.prototype.v3342ObjectPoint=function(id){
+  this.v3342SyncNooks?.();
   const personal=this.v3342PersonalBeds?.[id];if(personal)return {x:personal.x,y:personal.y,id};
   const item=findDecor(this,id);if(item)return {x:Number(item.x||0),y:Number(item.y||0),id};
   const meta=this.getSanctuaryObject?.(id);if(meta?.placement)return {x:Number(meta.placement.x||this.worldWidth/2),y:Number(meta.placement.y||760),id};
@@ -200,7 +229,18 @@ Game.prototype.v3342RoutineTarget=function(g,index){
   if(n.fun<54)return {id:'guardian-play-rug',action:'play',why:'wants to play'};
   if(n.grooming<45)return {id:'guardian-brush',action:'play',why:'visits the grooming station'};
   const p=profile(g),prefs=p.preferences||[];
-  return {id:prefs[Math.floor(Math.random()*prefs.length)]||assignedBed(this,g,index),action:Math.random()<.22?'sleep':'play',why:p.trait+' routine'};
+  this.v3342RoutineSteps=this.v3342RoutineSteps||{};
+  const step=this.v3342RoutineSteps[g.petId]||0;
+  this.v3342RoutineSteps[g.petId]=step+1;
+  const id=prefs[step%prefs.length]||assignedBed(this,g,index);
+  return {id,action:id===assignedBed(this,g,index)?'sleep':'play',why:p.trait+' routine'};
+};
+const basePersonalityCare=Game.prototype.v3317CareReaction;
+Game.prototype.v3317CareReaction=function(result){
+  const type=result?.guardianType;
+  const line=result?.ok!==false&&roster(this).some(g=>g.type===type)?PERSONALITY[type]?.care?.[result.action]:null;
+  const personalized=line?{...result,message:line}:result;
+  return basePersonalityCare?.call(this,personalized);
 };
 Game.prototype.v3342RunLifeBeat=function(){
   if(this.editMode)return false;
@@ -243,6 +283,12 @@ Game.prototype.create=function(){
   this.v3342LifeTimer=this.time.addEvent({delay:7600,loop:true,callback:()=>this.v3342RunLifeBeat()});
   return r;
 };
+const baseUpdate=Game.prototype.update;
+Game.prototype.update=function(){
+  const result=baseUpdate?.apply(this,arguments);
+  this.v3342SyncNooks?.();
+  return result;
+};
 const baseApply=Game.prototype.v3320ApplyCareSnapshot;
 Game.prototype.v3320ApplyCareSnapshot=function(snapshot){
   const before=JSON.stringify((this.v3317CareState?.roster||[]).map(g=>[g.petId,g.preferredBed]));
@@ -274,6 +320,13 @@ function inspect(scene){
     hasLifeTimer:!!s?.v3342LifeTimer
   };
 }
-window.MajickSanctuaryAlive={VERSION,PROFILES,profile,assignedBed,inspect};
+window.addEventListener('message',ev=>{
+  if(ev.origin!==location.origin||ev.data?.type!=='MAJICK_STUDY_GUARDIAN_REACTION_V3341')return;
+  const scene=window.majickPhaserGame?.scene?.getScene?.('Game'),type=ev.data.guardianType;
+  if(!scene||!roster(scene).some(g=>g.type===type))return;
+  const line=PERSONALITY[type]?.study;
+  if(line)scene.showPetMessage?.(scene[type],line,'#e7d2f5');
+});
+window.MajickSanctuaryAlive={VERSION,PROFILES,PERSONALITY,profile,assignedBed,inspect};
 document.documentElement.dataset.majickSanctuaryAlive=VERSION;
 })();

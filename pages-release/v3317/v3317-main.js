@@ -1,9 +1,9 @@
-// Majick Studies V3.3.42 Sanctuary Alive — AUTHORITATIVE MAIN APP BRIDGE
+// Majick Studies V3.3.43 Guardian Personality and Game Realm — AUTHORITATIVE MAIN APP BRIDGE
 (function(){
 'use strict';
 
-const RELEASE_LABEL='Moonlit Collegium • V3.3.42';
-const RELEASE_TITLE='Majick Studies — V3.3.42 Moonlit Collegium';
+const RELEASE_LABEL='Moonlit Collegium • V3.3.43';
+const RELEASE_TITLE='Majick Studies — V3.3.43 Moonlit Collegium';
 const registry=()=>window.MajickGuardianRegistry;
 const canonOf=type=>registry()?.get?.(type)?.canon||String(type||'').toLowerCase();
 const STAGE_SLUGS=['new-bond','apprentice','guardian','ascendant','celestial'];
@@ -336,7 +336,7 @@ function applyReleaseBadge(){
 
 function showRuntimeNotice(error){
   const message=String(error?.message||error||'Unknown runtime error');
-  console.error('Majick V3.3.42 runtime error',error);
+  console.error('Majick V3.3.43 runtime error',error);
   if(document.getElementById('v3317RuntimeNotice'))return;
   try{
     const n=document.createElement('div');
