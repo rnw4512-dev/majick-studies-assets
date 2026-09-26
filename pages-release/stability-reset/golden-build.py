@@ -177,8 +177,8 @@ if progress.exists():
     data=json.loads(progress.read_text(encoding="utf-8"))
     data["version"]="V3.3.41 Guardian Core Restoration"
     data["learning_intelligence"]="V3.3.41 Guardian Core Restoration with protected lifetime Majick XP, visible protected Phaser Guardian movement, active Study Guardian across Home/Learn/Practice/Sanctuary, Guardian bond quests and study memories, course-pass celebration, Guardian-specific synthesized vocal reactions, magical spark feedback, optional Finish Debrief control, D755 teacher-focus questions, D772 instruction cycle, and 4–6 week self-paced course pacing"
-    data["sanctuary_version"]="V3.3.25 Single Guardian Visual Authority"
-    data["sanctuary_home"]="Guardian needs HUD, object-aware care travel, exclusive beds, visible care inventory, safe furniture snapping"
+    data["sanctuary_version"]="V3.3.41 Guardian Core Restoration"
+    data["sanctuary_home"]="Visible protected Phaser movement while traveling, evolved idle/action art, Guardian-specific vocal reactions, magical spark feedback, Guardian needs HUD, object-aware care travel, exclusive beds, visible care inventory, safe furniture snapping"
     data["sanctuary_customization"]="personal Guardian nooks, feeding/play zones, owned furniture storage, Cozy Dorm layout preset"
     data["build_foundation"]="V3.3.18 Golden Baseline"
     data["golden_baseline_source_commit"]=manifest.get("source_commit")
