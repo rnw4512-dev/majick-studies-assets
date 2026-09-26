@@ -357,7 +357,9 @@ function checkpointSelect(v){const st=progress();if(!st?.checkpoint||st.checkpoi
 function checkpointSubmit(){
  const {st,lesson}=current(),cp=st.checkpoint;if(!cp||cp.submitted||!cp.selected)return;
  const qs=checkpointQuestions(lesson,cp),q=qs[cp.index];if(!q)return;
- cp.submitted=true;cp.answers.push({qid:q.id,chosen:cp.selected,correct:cp.selected===q.answer,wguTerm:q.wguTerm||q.testedConcept||''});
+ const correct=cp.selected===q.answer,at=Date.now();
+ cp.submitted=true;cp.answers.push({qid:q.id,chosen:cp.selected,correct,wguTerm:q.wguTerm||q.testedConcept||'',at});
+ window.MajickStudyProgress?.creditAnswer?.({key:'D772:learn-checkpoint:'+lesson.id+':'+q.id+':'+at,course:'D772',source:'d772-learn-checkpoint',qid:q.id,topicId:q.topicId||q.learningPathLessonId||lesson.id,correct,difficulty:q.difficulty||3,chosen:cp.selected,answer:q.answer,at});
  persist();render();
 }
 function checkpointNext(){
@@ -388,8 +390,10 @@ function responseKey(kind,concept){return concept.id+':'+kind}
 function answer(kind,choice){
  const {st,concept}=current(),q=kind==='transfer'?concept.transfer:concept.check,key=responseKey(kind,concept);
  const correct=choice===q.answer;
- st.responses[key]={choice,correct,at:Date.now()};
+ const at=Date.now();
+ st.responses[key]={choice,correct,at};
  st.currentFeedback={kind,correct,answer:q.answer,why:q.why};
+ window.MajickStudyProgress?.creditAnswer?.({key:'D772:learn:'+key+':'+at,course:'D772',source:'d772-learn',qid:'d772_learn_'+concept.id+'_'+kind,topicId:concept.id,correct,difficulty:3,chosen:choice,answer:q.answer,at});
  if(!correct&&concept.check?.repair){
    const rk=concept.check.repair;st.confusions[rk]=Number(st.confusions[rk]||0)+1;
  }
