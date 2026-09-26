@@ -21,4 +21,6 @@
 @keyframes v3341GuardianHop{0%,100%{transform:translateY(0) scale(1)}38%{transform:translateY(-8px) scale(1.035)}68%{transform:translateY(1px) scale(.99)}}
 .v3327PortalHero:has(.v3341GuardianHero){grid-template-columns:minmax(0,1fr) minmax(340px,440px)}
 @media(max-width:1050px){.v3327PortalHero:has(.v3341GuardianHero){grid-template-columns:1fr}.v3341GuardianHero{min-width:0;max-width:650px}.v3341StudyGuardian{grid-template-columns:52px minmax(0,1fr) auto}}
-@media(max-width:620px){.v3341GuardianHero{grid-template-columns:95px minmax(0,1fr);padding:11px}.v3341GuardianHeroPortrait{width:92px;height:112px}.v3341GuardianHeroCopy h3{font-size:21px}.v3341GuardianHeroActions button{flex:1 1 120px}.v3341StudyGuardian{grid-template-columns:48px minmax(0,1fr)}.v3341StudyGuardian>button{grid-column:1/-1}.v3341StudyGuardianPortrait{width:46px;height:46px}}
+@media(max-width:620px){.v3341GuardianHero{grid-template-columns:95px minmax(0,1fr);padding:11px}.v3341GuardianHeroPortrait{width:92px;height:112px}.v3341GuardianHeroCopy h3{font-size:21px}.v3341GuardianHeroActions button{flex:1 1 120px}.v3341StudyGuardian{grid-template-columns:48px minmax(0,1fr)}.v3341StudyGuardianTools{grid-column:1/-1;grid-template-columns:1fr 1fr}.v3341StudyGuardianPortrait{width:46px;height:46px}}
+
+.v3341StudyGuardianTools{display:grid;gap:5px}.v3341StudyGuardianTools button{cursor:pointer;padding:7px 9px;border:1px solid rgba(190,151,205,.2);border-radius:9px;background:#1c1322;color:#d8cadd;font-size:8px;font-weight:800}
