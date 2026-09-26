@@ -1,3 +1,36 @@
+## V3.3.41 — Guardian Core Restoration
+- Re-centered Majick around the Guardian companion loop without changing academic mastery rules.
+- Added a persistent **Active Study Guardian** used across Home, Learn Mode, Practice, and Sanctuary.
+- Home now gives the active Guardian a prominent central-dashboard role instead of a small side card.
+- Added Study Guardian switching for owned Guardians.
+- Added **Bond Quests** powered by real study actions:
+  - correct answer = study reaction + bond/quest progress
+  - concept completion = stronger reaction + bond/quest progress
+  - mastery checkpoint = major reaction + bond/quest progress
+  - course pass = Guardian celebration + permanent memory
+- Added persistent Guardian study memories, including concept, mastery, Bond Quest, and course-pass milestones.
+- Added magical spark bursts and Guardian-specific synthesized vocal reactions using Web Audio; no external audio asset is required.
+- Added separate persistent sound On/Off control.
+- Added persistent **Finish Debrief On/Off** control:
+  - On keeps the reflection/debrief prompts.
+  - Off changes the stop action to **Finish session** and hides the after-test debrief box while still saving study analytics.
+- Restored visible Phaser movement:
+  - the 33 protected original motion files remain byte-for-byte locked;
+  - while a Guardian is physically moving, the protected Phaser controller is visible;
+  - when settled, approved evolved art resumes as the idle visual;
+  - explicit play/sleep action art remains authoritative during those actions.
+- Added Sanctuary study-reaction bridge so correct answers, concept completion, mastery, and course milestones can trigger Guardian effects in the Phaser room.
+- Added Guardian movement watchdog/recovery without modifying protected motion art.
+- Added deterministic regression gates for:
+  - Study Guardian resolution and Home prominence
+  - Bond Quest progression
+  - study memories
+  - Finish Debrief persistence
+  - academic XP separation
+  - visible Phaser movement
+  - evolved idle/action visual handoff
+- Golden build requires Guardian Core to load after existing recovery/visual-authority layers.
+
 ## V3.3.40 — Teacher-Focus D755 Questions
 - Rebuilt the active D755 question bank from the instructor OA review and Student Journey process materials.
 - Active bank: **54 new questions, 18 per course section**.
