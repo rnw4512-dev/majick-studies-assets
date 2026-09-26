@@ -1,0 +1,5 @@
+
+/* V3.3.42 — Guardian personal nook summary */
+.v3342NookSummary{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-top:8px;padding:7px 9px;border:1px solid rgba(214,181,108,.14);border-radius:9px;background:rgba(214,181,108,.04)}
+.v3342NookSummary small{width:100%;color:#a58b55;font-size:7px;font-weight:900;letter-spacing:.11em}
+.v3342NookSummary span{padding:4px 6px;border:1px solid rgba(187,145,201,.13);border-radius:999px;background:#120c17;color:#b7a8bc;font-size:7px}
