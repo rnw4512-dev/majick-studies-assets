@@ -277,8 +277,9 @@ function realmTopic(section,concept){
    return 's2-decisions';
  }
  if(/plaaft|goal writing|progress reporting/.test(t))return 's3-goals';
- if(/services|lre|accommodations|services schedule/.test(t))return 's3-iep';
+ if(/services|lre|accommodations|services schedule|iep team/.test(t))return 's3-eval-meeting';
  if(/communication|collaboration|ethics|law/.test(t))return 's3-communication';
+ if(/visual|graph/.test(t))return 's3-visuals';
  return 's3-timeline';
 }
 function q(id,section,concept,prompt,options,answer,why,trap,visual){
