@@ -67,6 +67,32 @@ function settings(){
   a.guardianAudio=a.guardianAudio||{enabled:true,guardian:true,magic:true,volume:.58};
   return a.guardianAudio;
 }
+function studyPrefs(){
+  const a=account();if(!a)return {finishDebriefEnabled:true};
+  a.studyPreferences=a.studyPreferences||{};
+  if(typeof a.studyPreferences.finishDebriefEnabled!=='boolean')a.studyPreferences.finishDebriefEnabled=true;
+  return a.studyPreferences;
+}
+function debriefEnabled(){return studyPrefs().finishDebriefEnabled!==false}
+function applyDebriefPreference(){
+  const enabled=debriefEnabled();
+  document.querySelectorAll?.('.mcPanel').forEach(panel=>{
+    const h=panel.querySelector?.('h3');
+    if(h?.textContent?.trim()==='After-test debrief')panel.style.display=enabled?'':'none';
+  });
+  const stop=document.getElementById?.('ascStop');
+  if(stop){
+    const finish=[...stop.querySelectorAll?.('button')||[]].find(b=>/Finish/i.test(b.textContent||''));
+    if(finish)finish.textContent=enabled?'Finish & debrief':'Finish session';
+  }
+  document.querySelectorAll?.('[data-v3341-debrief-label]').forEach(x=>x.textContent=enabled?'Debrief on':'Debrief off');
+  return enabled;
+}
+function toggleDebrief(){
+  const p=studyPrefs();p.finishDebriefEnabled=!debriefEnabled();saveState();
+  applyDebriefPreference();decorate();
+  return p.finishDebriefEnabled;
+}
 function toggleSound(){
   const s=settings();s.enabled=!s.enabled;saveState();
   if(s.enabled){unlockAudio();sound('hello',activePet()?.type)}
@@ -209,7 +235,7 @@ function guardianHeroHtml(){
     '<div class="v3341GuardianHeroPortrait">'+(m.image?'<img src="'+E(m.image)+'" alt="'+E(m.name)+'">':'<span>'+E(m.icon)+'</span>')+'<i>✦</i></div>'+
     '<div class="v3341GuardianHeroCopy"><small>ACTIVE STUDY GUARDIAN</small><h3>'+E(m.name)+'</h3><p>'+E(m.stage)+' • '+E(m.mood)+' • Bond '+m.bond+'</p>'+
       '<div class="v3341BondQuest"><div><span>Current Bond Quest</span><b>'+q.progress+' / '+q.target+'</b></div><i><em style="width:'+(q.progress/q.target*100)+'%"></em></i><small>Correct answers and completed concepts fill this. Complete it for +2 Bond.</small></div>'+
-      '<div class="v3341GuardianHeroActions"><button class="primary" onclick="MajickGuardianCore.study()">Study with '+E(m.name)+'</button><button onclick="navigate(\'companions\')">Visit Sanctuary</button><button onclick="MajickGuardianCore.toggleSound()">'+(s.enabled?'🔊 Sound on':'🔇 Sound off')+'</button></div>'+
+      '<div class="v3341GuardianHeroActions"><button class="primary" onclick="MajickGuardianCore.study()">Study with '+E(m.name)+'</button><button onclick="navigate(\'companions\')">Visit Sanctuary</button><button onclick="MajickGuardianCore.toggleSound()">'+(s.enabled?'🔊 Sound on':'🔇 Sound off')+'</button><button onclick="MajickGuardianCore.toggleDebrief()">📝 <span data-v3341-debrief-label>'+(debriefEnabled()?'Debrief on':'Debrief off')+'</span></button></div>'+
       selectorHtml(p)+'<div class="v3341ReactionLine">'+E(m.name)+' is ready to study beside you.</div>'+
     '</div>'+
   '</section>';
@@ -217,7 +243,7 @@ function guardianHeroHtml(){
 function studyDockHtml(){
   const p=activePet();if(!p)return '';
   const m=guardianMeta(p),q=questText(p);
-  return '<aside class="v3341StudyGuardian"><div class="v3341StudyGuardianPortrait">'+(m.image?'<img src="'+E(m.image)+'" alt="'+E(m.name)+'">':'<span>'+E(m.icon)+'</span>')+'<i>✦</i></div><div><small>STUDYING WITH</small><b>'+E(m.name)+'</b><span>'+E(m.mood)+' • Bond '+m.bond+' • Quest '+q.progress+'/'+q.target+'</span><em class="v3341ReactionLine">Your Guardian reacts to your study progress.</em></div><button onclick="MajickGuardianCore.cycle()">Switch</button></aside>';
+  return '<aside class="v3341StudyGuardian"><div class="v3341StudyGuardianPortrait">'+(m.image?'<img src="'+E(m.image)+'" alt="'+E(m.name)+'">':'<span>'+E(m.icon)+'</span>')+'<i>✦</i></div><div><small>STUDYING WITH</small><b>'+E(m.name)+'</b><span>'+E(m.mood)+' • Bond '+m.bond+' • Quest '+q.progress+'/'+q.target+'</span><em class="v3341ReactionLine">Your Guardian reacts to your study progress.</em></div><div class="v3341StudyGuardianTools"><button onclick="MajickGuardianCore.cycle()">Switch</button><button onclick="MajickGuardianCore.toggleDebrief()">📝 <span data-v3341-debrief-label>'+(debriefEnabled()?'Debrief on':'Debrief off')+'</span></button></div></aside>';
 }
 function decorateHome(){
   const hero=document.querySelector('.v3327PortalHero');if(!hero)return;
@@ -278,16 +304,28 @@ function wrapCare(){
   const old=window.majickCareAction;if(typeof old!=='function'||old.__v3341)return;
   const fn=function(){const r=old.apply(this,arguments);if(r?.ok)react('care',{action:arguments[1]});return r};fn.__v3341=true;window.majickCareAction=fn;
 }
+function wrapDebrief(){
+  const old=window.ascStopRule;
+  if(typeof old==='function'&&!old.__v3341Debrief){
+    const fn=function(){
+      const r=old.apply(this,arguments);
+      setTimeout(applyDebriefPreference,0);
+      return r;
+    };
+    fn.__v3341Debrief=true;
+    window.ascStopRule=fn;
+  }
+}
 function recentMemories(limit=4){
   const p=activePet();return journey().memories.filter(m=>m.petId===p?.id).slice(0,limit);
 }
 document.addEventListener('pointerdown',()=>unlockAudio(),{once:true,capture:true});
 const previousRender=window.render;
 if(typeof previousRender==='function'&&!previousRender.__v3341){
-  const wrapped=function(){const r=previousRender.apply(this,arguments);setTimeout(()=>{wrapCare();decorate()},0);return r};
+  const wrapped=function(){const r=previousRender.apply(this,arguments);setTimeout(()=>{wrapCare();wrapDebrief();applyDebriefPreference();decorate()},0);return r};
   wrapped.__v3341=true;window.render=wrapped;
 }
-setTimeout(()=>{wrapCare();decorate();observeReactions()},0);
-window.MajickGuardianCore={VERSION,activePet,meta:guardianMeta,select:setActive,cycle,study,react,sound,sparks,toggleSound,settings,journey:guardianJourney,recentMemories,decorate,guardianHeroHtml,studyDockHtml};
+setTimeout(()=>{wrapCare();wrapDebrief();applyDebriefPreference();decorate();observeReactions()},0);
+window.MajickGuardianCore={VERSION,activePet,meta:guardianMeta,select:setActive,cycle,study,react,sound,sparks,toggleSound,settings,studyPrefs,debriefEnabled,toggleDebrief,applyDebriefPreference,journey:guardianJourney,recentMemories,decorate,guardianHeroHtml,studyDockHtml};
 document.documentElement.dataset.majickGuardianCore=VERSION;
 })();
