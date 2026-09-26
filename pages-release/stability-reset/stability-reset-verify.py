@@ -74,10 +74,10 @@ for marker in ("VERSION='3.3.38'","Teach → Visual → Worked Example","Arcane 
 if 'learn-mode.js?v=3338' not in main or 'learn-mode.css?v=3338' not in main:
     fail('V3.3.38 Learn Mode assets are not installed in index.html')
 d755=(site/'d755-retake.js').read_text(encoding='utf-8')
-for marker in ("VERSION='3.3.39'","Assessment for Special Education","30-Question Retake Diagnostic","40-question mixed simulation","WGU TRAP LIBRARY","d755-retake-master"):
+for marker in ("VERSION='3.3.40'","Assessment for Special Education","30-Question Retake Diagnostic","40-question mixed simulation","WGU TRAP LIBRARY","d755-teacher-focus-2026-09-26","four most recent progress-monitoring points","Predictive validity","General Outcome Measurement","PLAAFP","MEASURABLE ANNUAL GOAL • C-B-C"):
     if marker not in d755: fail('D755 Retake Studio missing '+marker)
-if 'd755-retake.js?v=3339' not in main or 'd755-retake.css?v=3339' not in main:
-    fail('V3.3.39 D755 Retake Studio assets are not installed in index.html')
+if 'd755-retake.js?v=3340' not in main or 'd755-retake.css?v=3340' not in main:
+    fail('V3.3.40 Teacher-Focus D755 Questions assets are not installed in index.html')
 learn=(site/'learn-mode.js').read_text(encoding='utf-8')
 for marker in ("VERSION='3.3.38'","Teach → Visual → Worked Example","Arcane Anchor Wall","ADAPTIVE REPAIR INSERTED","CAN I DO THIS?"):
     if marker not in learn: fail('Learn Mode missing '+marker)
