@@ -135,9 +135,11 @@ function sound(kind,type){
   try{if(ctx.state==='suspended')ctx.resume?.()}catch(_){}
   const now=ctx.currentTime+.01,vol=Math.max(.1,Math.min(1,Number(s.volume)||.58));
   const guardian=s.guardian!==false,magic=s.magic!==false;
-  if((kind==='correct'||kind==='concept'||kind==='mastery')&&magic){
-    tone(ctx,kind==='mastery'?523:659,now,.16,.035*vol,'sine',kind==='mastery'?784:880);
-    tone(ctx,kind==='mastery'?659:784,now+.11,.2,.027*vol,'triangle',kind==='mastery'?988:1046);
+  if((kind==='correct'||kind==='concept'||kind==='mastery'||kind==='course-pass')&&magic){
+    const big=kind==='mastery'||kind==='course-pass';
+    tone(ctx,big?523:659,now,.16,.035*vol,'sine',big?784:880);
+    tone(ctx,big?659:784,now+.11,.2,.027*vol,'triangle',big?988:1046);
+    if(kind==='course-pass')tone(ctx,784,now+.28,.28,.03*vol,'sine',1568);
   }
   if(!guardian)return;
   const t=String(type||activePet()?.type||'');
@@ -197,6 +199,7 @@ function react(kind,meta={}){
   if(kind==='correct'){bond=1;quest=1;msg='Nice reasoning!'}
   else if(kind==='concept'){bond=3;quest=2;msg='Concept mastered together.'}
   else if(kind==='mastery'){bond=5;quest=3;msg='A major study milestone!'}
+  else if(kind==='course-pass'){bond=12;quest=5;msg='Course passed together!';addMemory(p,'Passed '+COURSE_LABEL()+' with you.','course-pass')}
   else if(kind==='care'){bond=0;msg='Bond moment.'}
   gj.studyMoments=Number(gj.studyMoments||0)+1;gj.lastReactionAt=now;
   if(quest){
@@ -213,10 +216,11 @@ function react(kind,meta={}){
   if(kind==='correct')courseRow.correct++;
   if(kind==='concept'){courseRow.concepts++;addMemory(p,'Completed a '+COURSE_LABEL()+' concept with you.','concept')}
   if(kind==='mastery'){courseRow.mastery++;addMemory(p,'Reached a '+COURSE_LABEL()+' mastery checkpoint with you.','mastery')}
+  if(kind==='course-pass'){courseRow.passed=true;courseRow.passedAt=new Date().toISOString()}
   saveState();sound(kind,p.type);
   const dock=document.querySelector('.v3341StudyGuardian,.v3341GuardianHero');
   if(dock){dock.classList.remove('reacting');void dock.offsetWidth;dock.classList.add('reacting');const line=dock.querySelector('.v3341ReactionLine');if(line)line.textContent=msg}
-  sparks(dock?.querySelector?.('.v3341StudyGuardianPortrait,.v3341GuardianHeroPortrait')||dock,kind==='mastery'?28:kind==='concept'?22:14);
+  sparks(dock?.querySelector?.('.v3341StudyGuardianPortrait,.v3341GuardianHeroPortrait')||dock,kind==='course-pass'?38:kind==='mastery'?28:kind==='concept'?22:14);
   broadcastReaction(kind,p,meta);
   setTimeout(()=>decorate(),180);
 }
@@ -236,7 +240,7 @@ function guardianHeroHtml(){
     '<div class="v3341GuardianHeroCopy"><small>ACTIVE STUDY GUARDIAN</small><h3>'+E(m.name)+'</h3><p>'+E(m.stage)+' • '+E(m.mood)+' • Bond '+m.bond+'</p>'+
       '<div class="v3341BondQuest"><div><span>Current Bond Quest</span><b>'+q.progress+' / '+q.target+'</b></div><i><em style="width:'+(q.progress/q.target*100)+'%"></em></i><small>Correct answers and completed concepts fill this. Complete it for +2 Bond.</small></div>'+
       '<div class="v3341GuardianHeroActions"><button class="primary" onclick="MajickGuardianCore.study()">Study with '+E(m.name)+'</button><button onclick="navigate(\'companions\')">Visit Sanctuary</button><button onclick="MajickGuardianCore.toggleSound()">'+(s.enabled?'🔊 Sound on':'🔇 Sound off')+'</button><button onclick="MajickGuardianCore.toggleDebrief()">📝 <span data-v3341-debrief-label>'+(debriefEnabled()?'Debrief on':'Debrief off')+'</span></button></div>'+
-      selectorHtml(p)+'<div class="v3341ReactionLine">'+E(m.name)+' is ready to study beside you.</div>'+
+      selectorHtml(p)+'<div class="v3341ReactionLine">'+E(m.name)+' is ready to study beside you.</div>'+((recentMemories(2).length)?'<div class="v3341GuardianMemories"><small>RECENT MEMORIES</small>'+recentMemories(2).map(x=>'<span>✦ '+E(x.text)+'</span>').join('')+'</div>':'')+
     '</div>'+
   '</section>';
 }
@@ -286,13 +290,14 @@ function observeReactions(){
   window.__v3341Observer=new MutationObserver(records=>{
     for(const rec of records)for(const node of rec.addedNodes){
       if(!(node instanceof Element))continue;
-      const candidates=[node,...node.querySelectorAll?.('.v3333Feedback.correct,.v3338Feedback.correct,.d755Feedback.correct,.conceptComplete,.d755Stage.complete,.v3338CheckpointResult.ready')||[]];
+      const candidates=[node,...(node.querySelectorAll?.('.v3333Feedback.correct,.v3338Feedback.correct,.d755Feedback.correct,.conceptComplete,.d755Stage.complete,.v3338CheckpointResult.ready,.v3316PassOverlay')||[])];
       for(const el of candidates){
         if(seenNodes.has(el))continue;
         let kind=null;
         if(el.matches?.('.v3333Feedback.correct,.v3338Feedback.correct,.d755Feedback.correct'))kind='correct';
         else if(el.matches?.('.conceptComplete,.d755Stage.complete'))kind='concept';
         else if(el.matches?.('.v3338CheckpointResult.ready'))kind='mastery';
+        else if(el.matches?.('.v3316PassOverlay')||el.querySelector?.('.v3316PassOverlay'))kind='course-pass';
         if(kind){seenNodes.add(el);react(kind,{screen:window.S?.screen})}
       }
     }
