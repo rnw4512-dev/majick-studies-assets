@@ -250,7 +250,10 @@ function assignedBed(pet){
     const found=Object.entries(beds).find(([,guardian])=>guardian===pet.id||guardian===pet.type);
     if(found)return found[0];
   }catch(_){}
-  return Number(ownedPets().findIndex(p=>p.id===pet.id))%2===0?'bed-west':'bed-east';
+  const idx=Math.max(0,ownedPets().findIndex(p=>p.id===pet.id));
+  if(idx===0)return 'bed-west';
+  if(idx===1)return 'bed-east';
+  return 'guardian-bed-'+String(pet.id||pet.type||idx).replace(/[^a-zA-Z0-9_-]/g,'-');
 }
 function resultBase(pet,action){
   const g=state(pet),meta=canon(pet.type);
@@ -337,8 +340,15 @@ function performAction(target,action,opts={}){
   // When care starts from a physical Sanctuary object, send moving Guardians
   // to that exact object before their reaction. The movement controller itself
   // remains untouched.
-  if(action!=='sleep'&&opts.objectId&&['feed','water','treat','groom','play'].includes(action)){
-    r.travelObject=String(opts.objectId);
+  if(action!=='sleep'&&['feed','water','treat','groom','play'].includes(action)){
+    const defaults={
+      feed:'guardian-food-bowl',
+      water:'guardian-water-basin',
+      treat:'guardian-treat-jar',
+      groom:'guardian-brush',
+      play:'guardian-play-rug'
+    };
+    r.travelObject=String(opts.objectId||defaults[action]||'');
   }
 
   logCare(pet,action,msg);
