@@ -261,8 +261,29 @@ const TRAPS=[
  {id:'communication',title:'Clear Does Not Mean Incomplete',wrong:'Hide limitations, omit concerns, or use vague summaries to keep communication simple.',right:'Present relevant findings, interpretations, limitations, and next steps in understandable language while inviting family questions.'}
 ];
 
+function realmTopic(section,concept){
+ const t=String(concept||'').toLowerCase();
+ if(section===1){
+   if(/assessment purpose|formal informal|criterion cbm/.test(t))return 's1-assessment-types';
+   if(/data sources|qualitative quantitative/.test(t))return 's1-data-sources';
+   if(/screening|tier movement|rti discrepancy/.test(t))return 's1-mtss';
+   if(/pre-referral|pbis sel/.test(t))return 's1-prereferral';
+   return 's1-quality-law';
+ }
+ if(section===2){
+   if(/percentile|standard score|score profile/.test(t))return 's2-score-types';
+   if(/mastery gom|multiple data|family collaboration/.test(t))return 's2-multiple-data';
+   if(/referral|mdt|consent|eligibility|assessment plan/.test(t))return 's2-eligibility';
+   return 's2-decisions';
+ }
+ if(/plaaft|goal writing|progress reporting/.test(t))return 's3-goals';
+ if(/services|lre|accommodations|services schedule/.test(t))return 's3-iep';
+ if(/communication|collaboration|ethics|law/.test(t))return 's3-communication';
+ return 's3-timeline';
+}
 function q(id,section,concept,prompt,options,answer,why,trap,visual){
- return {id:'d755_wgu_'+id,course:COURSE,section,concept,prompt,options,answer,why,trap:trap||'',visual:visual||'',teacherFocus:true,style:'wgu-course-scenario',source:'d755-teacher-focus-2026-09-26'};
+ const topicId=realmTopic(section,concept);
+ return {id:'d755_wgu_'+id,course:COURSE,section,concept,topicId,difficulty:visual?4:3,format:'scenario',prompt,options,answer,why,keyClue:why,trap:trap||'',visual:visual||'',teacherFocus:true,style:'wgu-course-scenario',source:'d755-teacher-focus-2026-09-26'};
 }
 const BANK=[
  // SECTION 1 — DATA ANALYSIS, PRE-REFERRAL, MTSS/RTI, ASSESSMENT QUALITY
@@ -355,6 +376,7 @@ function ensureBank(){
  S.courses[COURSE].concepts=SECTIONS.flatMap(s=>s.concepts.map(c=>({id:c.id,title:c.title,section:'section-'+s.number,priority:'core'})));
  S.courses[COURSE].glossary=S.courses[COURSE].glossary||{};
  for(const s of SECTIONS)for(const c of s.concepts)for(const t of c.terms)if(!S.courses[COURSE].glossary[t])S.courses[COURSE].glossary[t]=c.teach.split('.')[0]+'.';
+ S.courses[COURSE].misconceptionCatalog=TRAPS.map(t=>({id:'d755-trap-'+t.id,label:t.title,topics:[...new Set(BANK.filter(q=>q.trap===t.id).map(q=>q.topicId))],repair:t.right})).filter(x=>x.topics.length);
  return BANK.length;
 }
 function go(mode){const st=prog();st.mode=mode;st.feedback=null;save();render()}
@@ -365,8 +387,10 @@ function key(kind,c){return c.id+':'+kind}
 function answer(kind,choice){
  const {st,concept}=current(),item=kind==='transfer'?concept.transfer:concept.check;
  const correct=choice===item.answer;
- st.responses[key(kind,concept)]={choice,correct,at:Date.now()};
+ const at=Date.now();
+ st.responses[key(kind,concept)]={choice,correct,at};
  st.feedback={kind,correct,why:item.why,answer:item.answer};
+ window.MajickStudyProgress?.creditAnswer?.({key:'D755:learn:'+key(kind,concept)+':'+at,course:'D755',source:'d755-learn',qid:'d755_learn_'+concept.id+'_'+kind,topicId:concept.id,correct,difficulty:3,chosen:choice,answer:item.answer,at});
  if(!correct){
    const trap=(BANK.find(q=>q.concept===concept.id)?.trap)||concept.repair||'';
    if(trap)st.confusions[trap]=Number(st.confusions[trap]||0)+1;
@@ -452,7 +476,7 @@ function startExam(mode){
 function examObj(mode){const st=prog();return st[mode]}
 function examQuestions(obj){const by=new Map(BANK.map(q=>[q.id,q]));return (obj?.ids||[]).map(id=>by.get(id)).filter(Boolean)}
 function examSelect(mode,v){const o=examObj(mode);if(!o||o.submitted)return;o.selected=v;render()}
-function examSubmit(mode){const st=prog(),o=st[mode],qs=examQuestions(o),item=qs[o.index];if(!o||!item||!o.selected)return;o.submitted=true;o.answers.push({id:item.id,section:item.section,concept:item.concept,trap:item.trap,chosen:o.selected,correct:o.selected===item.answer});save();render()}
+function examSubmit(mode){const st=prog(),o=st[mode],qs=examQuestions(o),item=qs[o.index];if(!o||!item||!o.selected)return;const correct=o.selected===item.answer,at=Date.now();o.submitted=true;o.answers.push({id:item.id,section:item.section,concept:item.concept,trap:item.trap,chosen:o.selected,correct,at});window.MajickStudyProgress?.creditAnswer?.({key:'D755:'+mode+':'+item.id+':'+at,course:'D755',source:'d755-'+mode,qid:item.id,topicId:item.topicId||realmTopic(item.section,item.concept),correct,difficulty:item.difficulty||4,chosen:o.selected,answer:item.answer,at});save();render()}
 function examNext(mode){
  const st=prog(),o=st[mode],qs=examQuestions(o);if(!o)return;
  if(o.index<qs.length-1){o.index++;o.selected=null;o.submitted=false;save();render();return}
@@ -499,7 +523,7 @@ function checkView(){
  return '<section class="d755Exam"><header><div><small>SECTION '+section.number+' • CAN I DO THIS?</small><h2>Section Mastery Check</h2></div><span>'+(o.index+1)+' / '+qs.length+'</span></header><article><h3>'+E(item.prompt)+'</h3>'+teacherVisual(item)+'<div class="d755Choices">'+item.options.map((x,i)=>'<button '+(o.submitted?'disabled':'')+' class="'+(o.submitted?(x===item.answer?'correct':x===o.selected?'wrong':''):o.selected===x?'selected':'')+'" data-d755-check-choice data-choice="'+E(x)+'"><i>'+String.fromCharCode(65+i)+'</i><span>'+E(x)+'</span></button>').join('')+'</div>'+(o.submitted?'<div class="d755Feedback '+(o.selected===item.answer?'correct':'repair')+'"><b>'+(o.selected===item.answer?'✓ Correct':'Review this decision')+'</b><p>'+E(item.why)+'</p></div>':'')+'<footer>'+(!o.submitted?'<button class="btn primary" '+(o.selected?'':'disabled')+' data-d755-check-submit>Submit</button>':'<button class="btn primary" data-d755-check-next>'+(o.index<qs.length-1?'Next →':'See mastery result →')+'</button>')+'</footer></article></section>';
 }
 function checkSelect(v){const st=prog(),o=st.sectionCheck;if(!o||o.submitted)return;o.selected=v;render()}
-function checkSubmit(){const st=prog(),o=st.sectionCheck,qs=examQuestions(o),item=qs[o.index];if(!o||!item||!o.selected)return;o.submitted=true;o.answers.push({id:item.id,section:item.section,concept:item.concept,trap:item.trap,chosen:o.selected,correct:o.selected===item.answer});save();render()}
+function checkSubmit(){const st=prog(),o=st.sectionCheck,qs=examQuestions(o),item=qs[o.index];if(!o||!item||!o.selected)return;const correct=o.selected===item.answer,at=Date.now();o.submitted=true;o.answers.push({id:item.id,section:item.section,concept:item.concept,trap:item.trap,chosen:o.selected,correct,at});window.MajickStudyProgress?.creditAnswer?.({key:'D755:section-check:'+o.section+':'+item.id+':'+at,course:'D755',source:'d755-section-check',qid:item.id,topicId:item.topicId||realmTopic(item.section,item.concept),correct,difficulty:item.difficulty||4,chosen:o.selected,answer:item.answer,at});save();render()}
 function checkNext(){
  const st=prog(),o=st.sectionCheck,qs=examQuestions(o);if(o.index<qs.length-1){o.index++;o.selected=null;o.submitted=false;save();render();return}
  const score=o.answers.filter(x=>x.correct).length,total=qs.length,status=score>=7?'Ready to move on':score>=6?'One distinction to repair':'Needs another teaching pass';
