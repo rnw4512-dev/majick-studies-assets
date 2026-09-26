@@ -24,3 +24,7 @@
 @media(max-width:620px){.v3341GuardianHero{grid-template-columns:95px minmax(0,1fr);padding:11px}.v3341GuardianHeroPortrait{width:92px;height:112px}.v3341GuardianHeroCopy h3{font-size:21px}.v3341GuardianHeroActions button{flex:1 1 120px}.v3341StudyGuardian{grid-template-columns:48px minmax(0,1fr)}.v3341StudyGuardianTools{grid-column:1/-1;grid-template-columns:1fr 1fr}.v3341StudyGuardianPortrait{width:46px;height:46px}}
 
 .v3341StudyGuardianTools{display:grid;gap:5px}.v3341StudyGuardianTools button{cursor:pointer;padding:7px 9px;border:1px solid rgba(190,151,205,.2);border-radius:9px;background:#1c1322;color:#d8cadd;font-size:8px;font-weight:800}
+
+.v3341GuardianMemories{display:grid;gap:4px;margin-top:8px;padding:8px 9px;border-left:3px solid rgba(220,187,112,.58);background:rgba(220,187,112,.045)}
+.v3341GuardianMemories small{color:#a98f59;font-size:7px;font-weight:900;letter-spacing:.12em}
+.v3341GuardianMemories span{color:#a99aac;font-size:7px;line-height:1.4}
