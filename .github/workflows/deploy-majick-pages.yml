@@ -97,6 +97,8 @@ jobs:
           test -s pages-release/v3342/guardian-life-main.css
           test -s pages-release/v3342/sanctuary-alive-smoke.js
           test -s pages-release/v3342/guardian-life-main-smoke.js
+          test -s pages-release/v3342/study-progress-bridge.js
+          test -s pages-release/v3342/study-progress-bridge-smoke.js
           test -s pages-release/v3320/sanctuary-life.js
           test -s pages-release/v3321/sanctuary-customize.js
           test -s pages-release/v3322/main-recovery.js
@@ -143,6 +145,8 @@ jobs:
           node --check pages-release/v3342/guardian-life-main.js
           node --check pages-release/v3342/sanctuary-alive-smoke.js
           node --check pages-release/v3342/guardian-life-main-smoke.js
+          node --check pages-release/v3342/study-progress-bridge.js
+          node --check pages-release/v3342/study-progress-bridge-smoke.js
           node --check pages-release/v3320/sanctuary-life.js
           node --check pages-release/v3321/sanctuary-customize.js
           node --check pages-release/v3322/main-recovery.js
@@ -247,6 +251,7 @@ jobs:
           cmp pages-release/v3342/sanctuary-alive.js _site/sanctuary/sanctuary-alive.js
           cmp pages-release/v3342/guardian-life-main.js _site/guardian-life-main.js
           cmp pages-release/v3342/guardian-life-main.css _site/guardian-life-main.css
+          cmp pages-release/v3342/study-progress-bridge.js _site/study-progress-bridge.js
           cmp pages-release/v3316/courseManager.js _site/courseManager.js
           cmp pages-release/v3317/v3317-main.js _site/v3317-main.js
           cmp pages-release/v3317/v3317-sanctuary.js _site/sanctuary/v3317-sanctuary.js
@@ -287,6 +292,11 @@ jobs:
           grep -q 'Personal Crystal Nest' _site/guardian-life-main.js
           grep -q 'MAJICK_GUARDIAN_EVOLUTION_V3342' _site/guardian-life-main.js
           grep -q '+10 Bond' _site/guardian-life-main.js
+          grep -q 'study-progress-bridge.js?v=3342' _site/index.html
+          grep -q "VERSION='3.3.42'" _site/study-progress-bridge.js
+          grep -q 'reconcileHistorical' _site/study-progress-bridge.js
+          grep -q 'guardianBridgeKey' _site/study-progress-bridge.js
+          grep -q 'studyProgressBridge' _site/study-progress-bridge.js
           grep -q "VERSION='3.3.40'" _site/d755-retake.js
           grep -q '30-Question Retake Diagnostic' _site/d755-retake.js
           grep -q '40-question mixed simulation' _site/d755-retake.js
@@ -297,6 +307,9 @@ jobs:
           grep -q 'Predictive validity' _site/d755-retake.js
           grep -q 'General Outcome Measurement' _site/d755-retake.js
           grep -q 'MEASURABLE ANNUAL GOAL • C-B-C' _site/d755-retake.js
+          grep -q 'realmTopic' _site/d755-retake.js
+          grep -q 'misconceptionCatalog' _site/d755-retake.js
+          grep -q 'MajickStudyProgress' _site/d755-retake.js
           grep -q 'Teach → Visual → Worked Example' _site/learn-mode.js
           grep -q 'Arcane Anchor Wall' _site/learn-mode.js
           grep -q 'SELF-PACED COURSE CLOCK' _site/magical-college-home.js
@@ -355,6 +368,7 @@ jobs:
           node --check _site/sanctuary/guardian-core-sanctuary.js
           node --check _site/sanctuary/sanctuary-alive.js
           node --check _site/guardian-life-main.js
+          node --check _site/study-progress-bridge.js
           node --check _site/courseManager.js
           node --check _site/guardian-care-economy.js
           node --check _site/v3317-main.js
@@ -403,6 +417,7 @@ jobs:
           node pages-release/v3341/guardian-core-sanctuary-smoke.js
           node pages-release/v3342/sanctuary-alive-smoke.js
           node pages-release/v3342/guardian-life-main-smoke.js
+          node pages-release/v3342/study-progress-bridge-smoke.js
 
           # Keep the legacy full-browser smoke available for manual regression work,
           # but do not let its monolithic legacy boot freeze every Pages release.
@@ -544,6 +559,8 @@ jobs:
                       guardian=r.read().decode('utf-8','replace')
                   with urllib.request.urlopen(base+'guardian-life-main.js?smoke='+stamp,timeout=10) as r:
                       guardian_life=r.read().decode('utf-8','replace')
+                  with urllib.request.urlopen(base+'study-progress-bridge.js?smoke='+stamp,timeout=10) as r:
+                      study_bridge=r.read().decode('utf-8','replace')
                   with urllib.request.urlopen(base+'sanctuary/guardian-core-sanctuary.js?smoke='+stamp,timeout=10) as r:
                       guardian_san=r.read().decode('utf-8','replace')
                   with urllib.request.urlopen(base+'sanctuary/sanctuary-alive.js?smoke='+stamp,timeout=10) as r:
@@ -575,6 +592,11 @@ jobs:
                       'guardian-life-main.js?v=3342' in index,
                       "VERSION='3.3.42'" in guardian_life,
                       'Personal Crystal Nest' in guardian_life,
+                      'study-progress-bridge.js?v=3342' in index,
+                      "VERSION='3.3.42'" in study_bridge,
+                      'reconcileHistorical' in study_bridge,
+                      'guardianBridgeKey' in study_bridge,
+                      'realmTopic' in d755,
                       'sanctuary-alive.js?v=3342' in san_index,
                       "VERSION='3.3.42'" in sanctuary_alive,
                       'v3342BuildPersonalNooks' in sanctuary_alive,
@@ -582,7 +604,7 @@ jobs:
                       'Sunday Readiness & Thinking Analytics' not in index,
                       '<h3>Before Sunday</h3>' not in index,
                   )
-                  if last==(expected,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True):
+                  if last==(expected,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True):
                       print('LIVE V3.3.42 DEPLOYMENT VERIFIED')
                       raise SystemExit(0)
                   print('Live version not ready yet:',last)
