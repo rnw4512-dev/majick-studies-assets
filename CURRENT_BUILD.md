@@ -1,3 +1,32 @@
+## V3.3.40 — Teacher-Focus D755 Questions
+- Rebuilt the active D755 question bank from the instructor OA review and Student Journey process materials.
+- Active bank: **54 new questions, 18 per course section**.
+- Shifted question design away from isolated vocabulary recall toward:
+  - interpret multiple data sources
+  - identify root cause
+  - choose the next educational decision
+  - determine MTSS tier movement
+  - read goal/trend lines and apply the four-point rule
+  - sequence pre-referral → referral → MDT/evaluation → eligibility → IEP
+  - apply the two-pronged eligibility test
+  - distinguish PBIS vs. SEL and RTI vs. Discrepancy
+  - apply content/construct/predictive validity
+  - apply test-retest/inter-rater/internal-consistency reliability
+  - identify and mitigate language/cultural/disability bias
+  - distinguish mastery measurement vs. General Outcome Measurement
+  - interpret score profiles
+  - use PLAAFP data to write measurable C-B-C annual goals
+  - make collaborative, ethical, family-centered decisions
+- Added instructional question visuals for:
+  - four points below / above / around the goal line
+  - student journey sequence
+  - score profile interpretation
+  - measurable annual goal C-B-C structure
+- Diagnostic remains 30 questions with 10 per section.
+- Mock OA remains 40 mixed questions.
+- Section mastery checks remain 8 questions.
+- Academic mastery remains separate from Majick XP.
+
 ## V3.3.39 — D755 Retake Studio
 - Built **D755 • Assessment for Special Education** as a dedicated retake-prep course instead of a generic uploaded-notes shell.
 - Grounded in the learner-provided Section 1, Section 2, and Section 3 materials plus the three WGU section quizzes.
