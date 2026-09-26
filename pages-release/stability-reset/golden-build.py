@@ -189,7 +189,7 @@ if progress.exists():
 
 index=site/"index.html"
 html=index.read_text(encoding="utf-8")
-html=html.replace('<link rel="stylesheet" href="./learning-lab.css?v=3319">','').replace('<link rel="stylesheet" href="./learning-plan.css?v=3324">','').replace('<link rel="stylesheet" href="./course-tutor.css?v=3326">','').replace('<link rel="stylesheet" href="./magical-college-home.css?v=3337">','').replace('<link rel="stylesheet" href="./learn-mode.css?v=3338">','').replace('<link rel="stylesheet" href="./d755-retake.css?v=3340">','').replace('<link rel="stylesheet" href="./guardian-core.css?v=3341">','').replace('<script src="./learning-lab.js?v=3319"></script>','').replace('<script src="./learning-plan.js?v=3324"></script>','').replace('<script src="./course-tutor.js?v=3326"></script>','').replace('<script src="./magical-college-home.js?v=3337"></script>','').replace('<script src="./learn-mode.js?v=3338"></script>','').replace('<script src="./d755-retake.js?v=3340"></script>','').replace('<script src="./guardian-core.js?v=3341"></script>','').replace('<script src="./v3322-main-recovery.js?v=3322"></script>','').replace('<script src="./guardian-core.js?v=3341"></script>','')
+html=html.replace('<link rel="stylesheet" href="./learning-lab.css?v=3319">','').replace('<link rel="stylesheet" href="./learning-plan.css?v=3324">','').replace('<link rel="stylesheet" href="./course-tutor.css?v=3326">','').replace('<link rel="stylesheet" href="./magical-college-home.css?v=3337">','').replace('<link rel="stylesheet" href="./learn-mode.css?v=3338">','').replace('<link rel="stylesheet" href="./d755-retake.css?v=3340">','').replace('<link rel="stylesheet" href="./guardian-core.css?v=3341">','').replace('<script src="./learning-lab.js?v=3319"></script>','').replace('<script src="./learning-plan.js?v=3324"></script>','').replace('<script src="./course-tutor.js?v=3326"></script>','').replace('<script src="./magical-college-home.js?v=3337"></script>','').replace('<script src="./learn-mode.js?v=3338"></script>','').replace('<script src="./d755-retake.js?v=3340"></script>','').replace('<script src="./guardian-core.js?v=3341"></script>','').replace('<script src="./v3322-main-recovery.js?v=3322"></script>','')
 html=html.replace('./guardian-care-economy.css?v=stability-1','./guardian-care-economy.css?v=3322-recovery')
 html=html.replace('./majick-state-core.js?v=stability-1','./majick-state-core.js?v=3322-recovery')
 html=html.replace('./guardian-care-economy.js?v=stability-1','./guardian-care-economy.js?v=3322-recovery')
@@ -198,7 +198,7 @@ html=html.replace('</head>','<link rel="stylesheet" href="./learning-lab.css?v=3
 main_tag='<script src="./v3317-main.js?v=3322-recovery"></script>'
 if main_tag not in html:
     fail("authoritative main runtime tag missing while installing recovery")
-html=html.replace(main_tag,'<script src="./learning-lab.js?v=3319"></script>\\n<script src="./learning-plan.js?v=3324"></script>\\n<script src="./course-tutor.js?v=3326"></script>\\n<script src="./learn-mode.js?v=3338"></script>\\n<script src="./d755-retake.js?v=3340"></script>\\n<script src="./wgu-practice.js?v=3336"></script>\\n'+main_tag+'\\n<script src="./magical-college-home.js?v=3337"></script>\\n<script src="./v3322-main-recovery.js?v=3322"></script>',1)
+html=html.replace(main_tag,'<script src="./learning-lab.js?v=3319"></script>\\n<script src="./learning-plan.js?v=3324"></script>\\n<script src="./course-tutor.js?v=3326"></script>\\n<script src="./learn-mode.js?v=3338"></script>\\n<script src="./d755-retake.js?v=3340"></script>\\n<script src="./wgu-practice.js?v=3336"></script>\\n'+main_tag+'\\n<script src="./magical-college-home.js?v=3337"></script>\\n<script src="./v3322-main-recovery.js?v=3322"></script>\\n<script src="./guardian-core.js?v=3341"></script>',1)
 html=html.replace('Sunday Readiness & Thinking Analytics','Course Readiness & Thinking Analytics')
 html=html.replace('<h3>Before Sunday</h3>','<h3>Before Your OA</h3>')
 html=html.replace('<h3>🌌 Weekly Constellation Quest</h3>','<h3>🌌 Constellation Quest • 7-Day Bonus</h3>')
@@ -208,13 +208,13 @@ index.write_text(html,encoding="utf-8")
 
 san_index=site/"sanctuary"/"index.html"
 san_html=san_index.read_text(encoding="utf-8")
-san_html=san_html.replace('<script src="./v3320-sanctuary-life.js?v=3320"></script>','').replace('<script src="./v3321-sanctuary-customize.js?v=3321"></script>','').replace('<script src="./v3322-sanctuary-recovery.js?v=3322"></script>','').replace('<script src="./v3325-sanctuary-visual-authority.js?v=3325"></script>','').replace('<script src="./guardian-core-sanctuary.js?v=3341"></script>','').replace('<script src="./guardian-core-sanctuary.js?v=3341"></script>','')
+san_html=san_html.replace('<script src="./v3320-sanctuary-life.js?v=3320"></script>','').replace('<script src="./v3321-sanctuary-customize.js?v=3321"></script>','').replace('<script src="./v3322-sanctuary-recovery.js?v=3322"></script>','').replace('<script src="./v3325-sanctuary-visual-authority.js?v=3325"></script>','').replace('<script src="./guardian-core-sanctuary.js?v=3341"></script>','')
 san_html=san_html.replace('../guardian-registry.js?v=stability-1','../guardian-registry.js?v=3322-recovery')
 san_html=san_html.replace('./v3317-sanctuary.js?v=stability-1','./v3317-sanctuary.js?v=3322-recovery')
 san_tag='<script src="./v3317-sanctuary.js?v=3322-recovery"></script>'
 if san_tag not in san_html:
     fail("authoritative Sanctuary runtime tag missing while installing Sanctuary recovery")
-san_html=san_html.replace(san_tag,san_tag+'\\n<script src="./v3320-sanctuary-life.js?v=3322-recovery"></script>\\n<script src="./v3321-sanctuary-customize.js?v=3322-recovery"></script>\\n<script src="./v3322-sanctuary-recovery.js?v=3322"></script>\\n<script src="./v3325-sanctuary-visual-authority.js?v=3325"></script>',1)
+san_html=san_html.replace(san_tag,san_tag+'\\n<script src="./v3320-sanctuary-life.js?v=3322-recovery"></script>\\n<script src="./v3321-sanctuary-customize.js?v=3322-recovery"></script>\\n<script src="./v3322-sanctuary-recovery.js?v=3322"></script>\\n<script src="./v3325-sanctuary-visual-authority.js?v=3325"></script>\\n<script src="./guardian-core-sanctuary.js?v=3341"></script>',1)
 san_index.write_text(san_html,encoding="utf-8")
 
 (site/".nojekyll").touch()
