@@ -89,7 +89,7 @@ function bankQ(course,qid){
 function addD755(out){
   const p=window.S?.progress?.D755,st=p?.d755Retake;if(!st)return;
   for(const [k,r] of Object.entries(st.responses||{})){
-    if(!r)return;
+    if(!r)continue;
     const topicId=k.split(':')[0]||'s1-data-sources';
     out.push({key:'hist:D755:learn:'+k+':'+Number(r.at||0),course:'D755',source:'d755-learn',qid:'d755_learn_'+k.replace(':','_'),topicId,correct:!!r.correct,difficulty:3,chosen:r.choice||'',at:Number(r.at||0)||Date.now(),historical:true});
   }
