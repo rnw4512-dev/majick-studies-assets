@@ -33,3 +33,27 @@
 @media(max-width:1180px){.d755Grid{grid-template-columns:220px minmax(0,1fr)}.d755Tutor{position:relative;top:auto;grid-column:1/-1}.d755Tutor .buttons{grid-template-columns:repeat(5,1fr)}}
 @media(max-width:860px){.d755Grid{grid-template-columns:1fr}.d755Rail{position:relative;top:auto;display:grid;grid-template-columns:repeat(2,1fr)}.railHead{grid-column:1/-1}.d755Phases{grid-template-columns:repeat(4,1fr)}.d755SectionCards,.sectionResults,.trapGrid,.anchorGrid{grid-template-columns:1fr}.d755Tutor{grid-column:auto}.d755Tutor .buttons{grid-template-columns:1fr 1fr}}
 @media(max-width:560px){.d755Header{align-items:flex-start;flex-direction:column;padding:16px}.d755Rail{grid-template-columns:1fr}.d755Phases{grid-template-columns:repeat(2,1fr)}.d755Home,.d755Opening,.d755Stage,.d755ExamIntro,.d755Result,.d755Library{padding:16px}.d755HomeStats{grid-template-columns:1fr}.d755Home h1,.d755Opening h1,.d755Stage h2,.d755Result h1,.d755Library h1{font-size:21px}.d755Diagram{grid-template-columns:1fr}.d755Tutor .buttons{grid-template-columns:1fr}}
+
+
+/* V3.3.40 teacher-focus question visuals */
+.d755QuestionVisual{margin:14px 0;padding:14px;border:1px solid rgba(222,192,119,.2);border-radius:12px;background:linear-gradient(145deg,#f8f2e7,#eadfce);color:#443945}
+.d755QuestionVisual>small{display:block;margin-bottom:8px;color:#765a69;font-size:7px;font-weight:900;letter-spacing:.12em}
+.d755QuestionVisual svg{display:block;width:min(100%,520px);margin:0 auto 8px}
+.d755QuestionVisual svg .axis{stroke:#625566;stroke-width:2}
+.d755QuestionVisual svg .goal{stroke:#6787aa;stroke-width:4}
+.d755QuestionVisual svg .dataLine{fill:none;stroke:#9d5265;stroke-width:3}
+.d755QuestionVisual svg .point{fill:#9d5265;stroke:#fff7eb;stroke-width:2}
+.d755QuestionVisual svg text{fill:#5c5260;font:700 11px Arial,sans-serif}
+.d755QuestionVisual>b{display:block;text-align:center;color:#5b475b;font-size:9px}
+.d755QuestionVisual.journey>div{display:flex;gap:6px;align-items:center;flex-wrap:wrap;justify-content:center}
+.d755QuestionVisual.journey span{padding:7px 9px;border:1px solid #c9bac8;border-radius:8px;background:#fffaf3;font-size:8px;font-weight:700;text-align:center}
+.d755QuestionVisual.journey i{color:#805f88;font-style:normal;font-weight:900}
+.d755QuestionVisual.profile table{width:100%;border-collapse:collapse;background:#fffaf3;font-size:9px}
+.d755QuestionVisual.profile th,.d755QuestionVisual.profile td{padding:7px;border:1px solid #d6c9d3;text-align:left}
+.d755QuestionVisual.profile th{background:#eee3e8;color:#5c465e}
+.d755QuestionVisual.profile tr.focus{background:#f3d9dc;font-weight:900}
+.d755QuestionVisual.cbc>div{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.d755QuestionVisual.cbc span{display:grid;gap:3px;padding:12px;border:1px solid #c8b9c7;border-radius:10px;background:#fffaf3;text-align:center}
+.d755QuestionVisual.cbc b{display:grid;place-items:center;width:28px;height:28px;margin:auto;border:1px solid #8b668f;border-radius:50%;color:#76517c;font:700 16px Georgia,serif}
+.d755QuestionVisual.cbc em{color:#766a76;font-size:8px;font-style:normal;line-height:1.35}
+@media(max-width:560px){.d755QuestionVisual.cbc>div{grid-template-columns:1fr}.d755QuestionVisual.journey i{transform:rotate(90deg)}}
