@@ -1,3 +1,39 @@
+## V3.3.42 — Sanctuary Alive: Personal Nooks
+- Every hatched Guardian now resolves to a **distinct bed**.
+  - Guardian 1 defaults to Moonstone Bed.
+  - Guardian 2 defaults to Amethyst Bed.
+  - Guardian 3+ receives an expandable personal crystal bed/nest ID instead of sharing one of the original two.
+- Every Guardian nook includes:
+  - assigned bed
+  - named favorite keepsake
+  - comfort spot
+  - Guardian name/personality marker
+- Canon Guardian room preferences:
+  - Velora — books, mirror, quiet play/rest
+  - Cascade — focus crystal, play rug, toy basket
+  - Solstice — telescope, play rug, books
+  - Aurelia — play rug, feeding nook, cozy/book area
+- Future Guardians receive a safe default personality/home template until custom profiles are added.
+- Guardian care now routes to the actual physical room:
+  - Feed → food bowl
+  - Water → water basin
+  - Treat → treat jar
+  - Groom → grooming brush
+  - Play → play rug
+  - Sleep → that Guardian’s own bed
+- Added autonomous Sanctuary life beats:
+  - low energy → own bed
+  - hunger → food area
+  - thirst → water basin
+  - low fun → play area
+  - grooming need → grooming station
+  - otherwise → personality-preferred room objects
+- Autonomous room visits are visual behavior only; they do not silently change care stats.
+- Added evolution ceremony for New Bond → Apprentice → Guardian → Ascendant → Celestial.
+- Evolution records a permanent Guardian memory and awards +10 Guardian Bond without changing academic XP.
+- Sanctuary Alive loads after Guardian Core so protected Phaser movement remains the motion authority.
+- Regression requires three Guardians to produce three unique bed IDs and verifies the third Guardian’s low-energy routine targets its own bed.
+
 ## V3.3.41 — Guardian Core Restoration
 - Re-centered Majick around the Guardian companion loop without changing academic mastery rules.
 - Added a persistent **Active Study Guardian** used across Home, Learn Mode, Practice, and Sanctuary.
