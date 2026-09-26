@@ -16,6 +16,7 @@ on:
       - 'pages-release/v3333/**'
       - 'pages-release/v3338/**'
       - 'pages-release/v3339/**'
+      - 'pages-release/v3341/**'
       - 'pages-release/v3315/study-material/**'
       - 'pages-release/v3316/courseManager.js'
       - 'pages-release/v3317/v3317-main.js'
@@ -85,6 +86,11 @@ jobs:
           test -s pages-release/v3339/d755-retake.js
           test -s pages-release/v3339/d755-retake.css
           test -s pages-release/v3339/d755-retake-smoke.js
+          test -s pages-release/v3341/guardian-core.js
+          test -s pages-release/v3341/guardian-core.css
+          test -s pages-release/v3341/guardian-core-sanctuary.js
+          test -s pages-release/v3341/guardian-core-smoke.js
+          test -s pages-release/v3341/guardian-core-sanctuary-smoke.js
           test -s pages-release/v3320/sanctuary-life.js
           test -s pages-release/v3321/sanctuary-customize.js
           test -s pages-release/v3322/main-recovery.js
@@ -123,6 +129,10 @@ jobs:
           node --check pages-release/v3338/learn-mode-smoke.js
           node --check pages-release/v3339/d755-retake.js
           node --check pages-release/v3339/d755-retake-smoke.js
+          node --check pages-release/v3341/guardian-core.js
+          node --check pages-release/v3341/guardian-core-sanctuary.js
+          node --check pages-release/v3341/guardian-core-smoke.js
+          node --check pages-release/v3341/guardian-core-sanctuary-smoke.js
           node --check pages-release/v3320/sanctuary-life.js
           node --check pages-release/v3321/sanctuary-customize.js
           node --check pages-release/v3322/main-recovery.js
@@ -221,6 +231,9 @@ jobs:
           cmp pages-release/v3338/learn-mode.css _site/learn-mode.css
           cmp pages-release/v3339/d755-retake.js _site/d755-retake.js
           cmp pages-release/v3339/d755-retake.css _site/d755-retake.css
+          cmp pages-release/v3341/guardian-core.js _site/guardian-core.js
+          cmp pages-release/v3341/guardian-core.css _site/guardian-core.css
+          cmp pages-release/v3341/guardian-core-sanctuary.js _site/sanctuary/guardian-core-sanctuary.js
           cmp pages-release/v3316/courseManager.js _site/courseManager.js
           cmp pages-release/v3317/v3317-main.js _site/v3317-main.js
           cmp pages-release/v3317/v3317-sanctuary.js _site/sanctuary/v3317-sanctuary.js
@@ -233,7 +246,7 @@ jobs:
 
           # Golden architecture and protected assets.
           grep -q '"build_foundation": "V3.3.18 Golden Baseline"' _site/app-progress.json
-          grep -q '"version": "V3.3.40 Teacher-Focus D755 Questions"' _site/app-progress.json
+          grep -q '"version": "V3.3.41 Guardian Core Restoration"' _site/app-progress.json
           grep -q 'learning-lab.js?v=3319' _site/index.html
           grep -q 'learning-lab.css?v=3319' _site/index.html
           grep -q 'learning-plan.js?v=3324' _site/index.html
@@ -248,6 +261,13 @@ jobs:
           grep -q 'learn-mode.css?v=3338' _site/index.html
           grep -q 'd755-retake.js?v=3340' _site/index.html
           grep -q 'd755-retake.css?v=3340' _site/index.html
+          grep -q 'guardian-core.js?v=3341' _site/index.html
+          grep -q 'guardian-core.css?v=3341' _site/index.html
+          grep -q "VERSION='3.3.41'" _site/guardian-core.js
+          grep -q 'ACTIVE STUDY GUARDIAN' _site/guardian-core.js
+          grep -q 'finishDebriefEnabled' _site/guardian-core.js
+          grep -q 'guardianJourney' _site/guardian-core.js
+          grep -q 'MAJICK_STUDY_GUARDIAN_REACTION_V3341' _site/guardian-core.js
           grep -q "VERSION='3.3.40'" _site/d755-retake.js
           grep -q '30-Question Retake Diagnostic' _site/d755-retake.js
           grep -q '40-question mixed simulation' _site/d755-retake.js
@@ -272,7 +292,7 @@ jobs:
             echo "Legacy Before Sunday deadline returned."
             exit 1
           fi
-          grep -q '"sanctuary_version": "V3.3.25 Single Guardian Visual Authority"' _site/app-progress.json
+          grep -q '"sanctuary_version": "V3.3.41 Guardian Core Restoration"' _site/app-progress.json
           grep -q 'majick-state-core.js?v=3322-recovery' _site/index.html
           grep -q 'guardian-care-economy.js?v=3322-recovery' _site/index.html
           grep -q 'v3317-main.js?v=3322-recovery' _site/index.html
@@ -281,6 +301,10 @@ jobs:
           grep -q 'v3321-sanctuary-customize.js?v=3322-recovery' _site/sanctuary/index.html
           grep -q 'v3322-sanctuary-recovery.js?v=3322' _site/sanctuary/index.html
           grep -q 'v3325-sanctuary-visual-authority.js?v=3325' _site/sanctuary/index.html
+          grep -q 'guardian-core-sanctuary.js?v=3341' _site/sanctuary/index.html
+          grep -q "VERSION='3.3.41'" _site/sanctuary/guardian-core-sanctuary.js
+          grep -q 'Game.prototype.v3317UpdateGuardianVisuals' _site/sanctuary/guardian-core-sanctuary.js
+          grep -q 'controllerVisible' _site/sanctuary/guardian-core-sanctuary.js
           grep -q '"historical_patch_chain": "retired from deployment"' _site/app-progress.json
           test "$(find _site/sanctuary/assets/motion -type f -name '*.png' | wc -l)" -eq 33
           test "$(find _site/sanctuary/assets/runtime-motion -type f -name '*.webp' | wc -l)" -eq 33
@@ -302,6 +326,8 @@ jobs:
           node --check _site/wgu-practice.js
           node --check _site/learn-mode.js
           node --check _site/d755-retake.js
+          node --check _site/guardian-core.js
+          node --check _site/sanctuary/guardian-core-sanctuary.js
           node --check _site/courseManager.js
           node --check _site/guardian-care-economy.js
           node --check _site/v3317-main.js
@@ -324,9 +350,9 @@ jobs:
           PY
 
           python pages-release/stability-reset/stability-reset-verify.py _site
-          echo "Majick Studies V3.3.40 Golden Baseline overlay assembly passed."
+          echo "Majick Studies V3.3.41 Golden Baseline overlay assembly passed."
 
-      - name: V3.3.40 academic regression gate
+      - name: V3.3.41 Guardian Core regression gate
         shell: bash
         run: |
           set -euo pipefail
@@ -346,10 +372,12 @@ jobs:
           node pages-release/v3333/wgu-practice-smoke.js
           node pages-release/v3338/learn-mode-smoke.js
           node pages-release/v3339/d755-retake-smoke.js
+          node pages-release/v3341/guardian-core-smoke.js
+          node pages-release/v3341/guardian-core-sanctuary-smoke.js
 
           # Keep the legacy full-browser smoke available for manual regression work,
           # but do not let its monolithic legacy boot freeze every Pages release.
-          echo "Targeted WGU Practice + D772 Learn Mode + D755 Retake Studio runtime gates passed."
+          echo "Targeted academics + Guardian Core + Phaser visibility runtime gates passed."
 
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
@@ -451,13 +479,13 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
-          echo "Waiting for V3.3.40 at $LIVE_URL"
+          echo "Waiting for V3.3.41 at $LIVE_URL"
           python - <<'PY'
           import json,time,urllib.request,urllib.error,os
           base=(os.environ.get('LIVE_URL') or 'https://rnw4512-dev.github.io/majick-studies-assets/').rstrip('/')+'/'
           status_url=os.environ.get('STATUS_URL','')
           token=os.environ.get('GH_TOKEN','')
-          expected='V3.3.40 Teacher-Focus D755 Questions'
+          expected='V3.3.41 Guardian Core Restoration'
           last=None
           for attempt in range(1,121):
               try:
@@ -483,6 +511,12 @@ jobs:
                       learn=r.read().decode('utf-8','replace')
                   with urllib.request.urlopen(base+'d755-retake.js?smoke='+stamp,timeout=10) as r:
                       d755=r.read().decode('utf-8','replace')
+                  with urllib.request.urlopen(base+'guardian-core.js?smoke='+stamp,timeout=10) as r:
+                      guardian=r.read().decode('utf-8','replace')
+                  with urllib.request.urlopen(base+'sanctuary/guardian-core-sanctuary.js?smoke='+stamp,timeout=10) as r:
+                      guardian_san=r.read().decode('utf-8','replace')
+                  with urllib.request.urlopen(base+'sanctuary/index.html?smoke='+stamp,timeout=10) as r:
+                      san_index=r.read().decode('utf-8','replace')
                   last=(
                       data.get('version'),
                       'wgu-practice.js?v=3336' in index,
@@ -498,16 +532,23 @@ jobs:
                       'd755-teacher-focus-2026-09-26' in d755,
                       'MEASURABLE ANNUAL GOAL • C-B-C' in d755,
                       '40-question mixed simulation' in d755,
+                      'guardian-core.js?v=3341' in index,
+                      "VERSION='3.3.41'" in guardian,
+                      'ACTIVE STUDY GUARDIAN' in guardian,
+                      'finishDebriefEnabled' in guardian,
+                      'guardian-core-sanctuary.js?v=3341' in san_index,
+                      "VERSION='3.3.41'" in guardian_san,
+                      'controllerVisible' in guardian_san,
                       'Sunday Readiness & Thinking Analytics' not in index,
                       '<h3>Before Sunday</h3>' not in index,
                   )
-                  if last==(expected,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True):
-                      print('LIVE V3.3.40 DEPLOYMENT VERIFIED')
+                  if last==(expected,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True):
+                      print('LIVE V3.3.41 DEPLOYMENT VERIFIED')
                       raise SystemExit(0)
                   print('Live version not ready yet:',last)
               except Exception as e:
                   last=repr(e)
                   print('Live check waiting:',last)
               time.sleep(5)
-          raise SystemExit('Pages deployment was created and left active, but the live site did not expose V3.3.40 within 10 minutes: '+repr(last))
+          raise SystemExit('Pages deployment was created and left active, but the live site did not expose V3.3.41 within 10 minutes: '+repr(last))
           PY
