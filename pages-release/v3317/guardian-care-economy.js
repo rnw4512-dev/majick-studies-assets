@@ -410,7 +410,8 @@ function eggSnapshot(){
     return {
       id:egg.id,type:egg.type,name:meta.name,species:meta.species,icon:meta.icon,
       progress,goal,pct:Math.min(100,Math.round(progress/goal*100)),
-      moonlightLeft:Math.max(0,goal-progress),source:egg.source||'mystery',focused:egg.id===focus
+      moonlightLeft:Math.max(0,goal-progress),source:egg.source||'mystery',focused:egg.id===focus,
+      stage:progress>=goal?'ready':progress/goal>=.95?'almost':progress/goal>=.75?'cracking':progress/goal>=.5?'awakening':progress/goal>=.25?'warming':'dormant'
     };
   });
 }
@@ -462,7 +463,7 @@ function selectCarePet(petId){
 function eggIncubatorHTML(snap){
   if(!snap.eggs.length)return '<div class="majEggEmpty">✦ No Guardian egg is incubating right now. Keep studying and opening rewards to discover another.</div>';
   return '<div class="majEggIncubator"><div><div class="eyebrow">CELESTIAL INCUBATOR</div><h3>'+snap.eggs.length+' Guardian Egg'+(snap.eggs.length===1?'':'s')+' Growing</h3><p>Each egg keeps its own moonlight. Choose which egg your correct answers should grow; earning a new egg never replaces one already here.</p></div>'+
-    '<div class="majEggGrid">'+snap.eggs.map(e=>'<article class="'+(e.focused?'focused':'')+'" data-egg-id="'+E(e.id)+'"><button type="button" class="majEggFocus" onclick="majickFocusEgg(\''+E(e.id)+'\')" aria-pressed="'+(e.focused?'true':'false')+'"><span class="majEgg">🥚</span><div><b>'+E(e.species)+' Egg</b><small>'+e.progress+'/'+e.goal+' moonlight • '+e.moonlightLeft+' left</small><i><em style="width:'+e.pct+'%"></em></i><em class="majEggFocusLabel">'+(e.focused?'✦ Study focus':'Focus this egg')+'</em></div></button></article>').join('')+'</div></div>';
+    '<div class="majEggGrid">'+snap.eggs.map(e=>'<article class="majEggCard '+E(e.stage)+' '+(e.focused?'focused':'')+'" data-egg-id="'+E(e.id)+'"><button type="button" class="majEggFocus" onclick="majickFocusEgg(\''+E(e.id)+'\')" aria-pressed="'+(e.focused?'true':'false')+'"><span class="majEgg majEgg-'+E(e.type)+'" aria-hidden="true">'+E(e.icon)+'</span><div><b>'+E(e.species)+' Egg</b><small>'+E(({dormant:'Dormant',warming:'Warming',awakening:'Awakening',cracking:'Cracking',almost:'Almost Ready',ready:'Ready to Hatch'})[e.stage])+' • '+e.progress+'/'+e.goal+' moonlight</small><i><em style="width:'+e.pct+'%"></em></i><em class="majEggFocusLabel">'+(e.stage==='ready'?'✦ Open hatch ceremony':e.focused?'✦ Study focus':'Focus this egg')+'</em></div></button></article>').join('')+'</div></div>';
 }
 
 function guardianCareHTML(target){
@@ -531,6 +532,7 @@ function toastFromResult(r){
 
 window.majickSelectCareGuardian=function(petId){selectCarePet(petId)};
 window.majickFocusEgg=function(eggId){
+  if(incubatingEggs().find(e=>e.id===eggId&&Number(e.progress||0)>=Number(e.goal||1))){window.MajickCelestialIncubator?.show?.();return}
   const ok=focusEgg(eggId);
   if(ok){try{rewardToast('🥚 Incubator focus changed','Correct study answers will now grow this egg.')}catch(_){}}
   broadcastState();

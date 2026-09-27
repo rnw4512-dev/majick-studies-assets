@@ -69,6 +69,7 @@ function canonicalAnswer(evt){
 function hatchIfReady(egg){
   if(!egg||Number(egg.progress||0)<Number(egg.goal||1))return;
   try{
+    if(window.MajickCelestialIncubator?.queue){window.MajickCelestialIncubator.queue(egg);return}
     if(typeof window.hatchEgg==='function'){window.hatchEgg(egg);return}
   }catch(_){}
   egg.progress=Math.min(Number(egg.progress||0),Number(egg.goal||1));
@@ -86,13 +87,23 @@ function awardGuardians(evt){
   }
   const egg=focusedEgg();
   if(correct&&egg){
+    if(Number(egg.progress||0)>=Number(egg.goal||1)){
+      hatchIfReady(egg);
+      const next=eggs().find(e=>Number(e.progress||0)<Number(e.goal||1));
+      if(next){incubatorState().focusEggId=next.id;next.progress=Math.max(0,Number(next.progress||0))+(hard?3:2);hatchIfReady(next)}
+    }else{
     egg.progress=Math.max(0,Number(egg.progress||0))+(hard?3:2);
+    const beforePct=Math.floor(Math.min(99,(Number(egg.progress||0)-(hard?3:2))/Math.max(1,Number(egg.goal||1))*100));
+    const afterPct=Math.floor(Math.min(100,Number(egg.progress||0)/Math.max(1,Number(egg.goal||1))*100));
+    const milestone=[25,50,75,95].find(n=>beforePct<n&&afterPct>=n);
+    if(milestone)try{window.rewardToast?.(milestone>=95?'Almost ready!':milestone>=75?'The shell is cracking!':'The egg is awakening!',(hard?3:2)+' moonlight earned')}catch(_){}
     const beforeId=egg.id;
     hatchIfReady(egg);
     const rows=eggs();
     if(!rows.some(e=>e.id===beforeId)){
       const inc=incubatorState();
       inc.focusEggId=rows[0]?.id||null;
+    }
     }
   }
   if(window.S?.legacy)window.S.legacy.lastPetXPGains={active:activeGain,shared:sharedGain,at:Date.now(),correct,hard,source:evt.source||'study'};
@@ -182,6 +193,49 @@ function inspect(){
     eggs:eggs().map(e=>({id:e.id,type:e.type,progress:Number(e.progress||0),goal:Number(e.goal||1),focused:e.id===incubatorState().focusEggId}))
   };
 }
+// Keep the exact egg in the save until its reveal is acknowledged. Queue IDs are
+// derived from saved eggs, so a reload can resume without replaying a hatch.
+function readyEggs(){return eggs().filter(e=>Number(e.progress||0)>=Math.max(1,Number(e.goal||1)))}
+function queueHatch(egg){
+  if(!egg||!eggs().some(e=>e.id===egg.id))return;
+  egg.progress=Math.max(Number(egg.progress||0),Math.max(1,Number(egg.goal||1)));
+  save();showHatch();
+}
+function showHatch(){
+  if(typeof document?.getElementById!=='function')return;
+  if(document.getElementById('majCelestialHatch'))return;
+  const egg=readyEggs()[0];if(!egg)return;
+  const meta=window.MajickGuardianCare?.canon?.(egg.type)||{};
+  const host=document.createElement('div');host.id='majCelestialHatch';host.className='majHatchBackdrop';
+  host.innerHTML='<section class="majHatchDialog" role="dialog" aria-modal="true" aria-labelledby="majHatchTitle" tabindex="-1">'+
+    '<div class="majHatchStars" aria-hidden="true">✦ · ⋆ · ✧ · ✦</div><div class="majHatchShell" aria-hidden="true">'+String(meta.icon||'✦').replace(/[&<>]/g,'')+'</div>'+
+    '<p class="majHatchKicker">A new bond is beginning</p><h2 id="majHatchTitle">'+String(meta.name||'A Guardian').replace(/[&<>]/g,'')+' is ready to hatch</h2>'+
+    '<p>The shell is glowing with moonlight. Reveal your Guardian when you are ready.</p><button type="button" id="majHatchReveal">Reveal Guardian</button></section>';
+  document.body.appendChild(host);host.querySelector('.majHatchDialog').focus();
+  host.querySelector('#majHatchReveal').onclick=()=>completeHatch(egg.id);
+}
+function completeHatch(id){
+  const egg=eggs().find(e=>e.id===id&&Number(e.progress||0)>=Math.max(1,Number(e.goal||1)));
+  if(!egg)return;
+  const a=account(),inc=incubatorState();
+  inc.completed=inc.completed||{};
+  if(inc.completed[id])return;
+  const meta=window.MajickGuardianCare?.canon?.(egg.type)||{};
+  const pet={id:'pet_'+Date.now()+'_'+Math.random().toString(36).slice(2,7),type:egg.type,name:meta.name||meta.species||egg.type,bond:0,hatched:true,hatchedAt:Date.now(),accessory:'',sourceEggId:id};
+  // Mark the exact egg and create its Guardian in one save operation.
+  inc.completed[id]=pet.id;window.S.legacy.pets.push(pet);
+  window.S.legacy.eggs=eggs().filter(e=>e.id!==id);
+  if(inc.focusEggId===id)inc.focusEggId=window.S.legacy.eggs[0]?.id||null;
+  window.S.legacy.activePetId=pet.id;save();
+  const dialog=document.querySelector('#majCelestialHatch .majHatchDialog');
+  if(dialog)dialog.innerHTML='<div class="majHatchStars" aria-hidden="true">✦ · ⋆ · ✧ · ✦</div><div class="majHatchReveal" aria-hidden="true">'+String(meta.icon||'✦').replace(/[&<>]/g,'')+'</div><h2>'+String(pet.name).replace(/[&<>]/g,'')+' has hatched!</h2><p>A new Guardian has awakened in your Sanctuary.</p><button type="button" id="majHatchContinue">Welcome '+String(pet.name).replace(/[&<>]/g,'')+'</button>';
+  document.getElementById('majHatchContinue').onclick=()=>{document.getElementById('majCelestialHatch')?.remove();try{window.render?.()}catch(_){};setTimeout(showHatch,250)};
+  try{window.MajickGuardianCare?.broadcastState?.();window.glitterBurst?.(80)}catch(_){}
+}
+window.MajickCelestialIncubator={queue:queueHatch,show:showHatch,complete:completeHatch,readyEggs};
+// Legacy practice can call hatchEgg directly. Route it through the same saved ceremony.
+if(typeof window.hatchEgg==='function')window.hatchEgg=queueHatch;
+setTimeout(showHatch,900);
 setTimeout(()=>{wrapLegacyRecord();reconcileHistorical()},60);
 window.MajickStudyProgress={VERSION,creditAnswer,reconcileHistorical,inspect,wrapLegacyRecord,setFocusedEgg,focusedEgg,eggs};
 document.documentElement.dataset.majickStudyProgress=VERSION;

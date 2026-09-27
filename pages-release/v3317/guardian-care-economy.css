@@ -22,6 +22,24 @@
 .majShopFavorite{margin:3px 0 8px;color:#e5c9ee;font-size:10px;font-weight:700}
 @media(max-width:620px){.majGuardianRoster{display:grid;grid-template-columns:1fr 1fr}.majGuardianTab{min-width:0}.majEggGrid{grid-template-columns:1fr}}
 
+/* Celestial Incubator: each shell changes as its own moonlight grows. */
+.majEggGrid article.majEggCard{display:block;border:1px solid rgba(190,166,228,.16)}
+.majEggGrid article.focused{border-color:#e9cd8f;box-shadow:0 0 18px rgba(229,192,122,.15)}
+.majEggFocus{display:grid;grid-template-columns:65px 1fr;gap:12px;align-items:center;width:100%;border:0;background:transparent;color:#f3eafa;text-align:left;cursor:pointer;padding:4px;font:inherit}
+.majEggFocus small{font-size:14px;color:#dfd1e8;line-height:1.4}.majEggFocusLabel{display:block;margin-top:7px;color:#f2d99f;font-style:normal;font-size:14px}
+.majEgg{display:grid;place-items:center;width:58px;height:70px;border:2px solid currentColor;border-radius:49% 49% 45% 45%;font:26px Georgia,serif;color:#d9cefc;background:radial-gradient(circle at 45% 65%,rgba(224,208,255,.24),#272041 72%);box-shadow:inset -8px -10px 16px rgba(0,0,0,.3)}
+.majEgg-ember,.majEgg-solara{color:#f4b974;background:radial-gradient(circle,#9e4d39,#342035 72%)}.majEgg-nova,.majEgg-vesper{color:#b9d7ff;background:radial-gradient(circle,#55669d,#202341 72%)}.majEgg-mallow,.majEgg-briar{color:#f1bbdf;background:radial-gradient(circle,#a46591,#38223d 72%)}.majEgg-prism,.majEgg-zephyr{color:#a3efe6;background:radial-gradient(circle,#467d91,#1c3441 72%)}
+.majEggCard.warming .majEgg{box-shadow:0 0 14px currentColor,inset -8px -10px 16px rgba(0,0,0,.3)}
+.majEggCard.awakening .majEgg,.majEggCard.cracking .majEgg,.majEggCard.almost .majEgg,.majEggCard.ready .majEgg{animation:majEggGlow 2.2s ease-in-out infinite alternate}
+.majEggCard.cracking .majEgg,.majEggCard.almost .majEgg,.majEggCard.ready .majEgg{background-image:linear-gradient(125deg,transparent 43%,rgba(255,244,205,.85) 45%,transparent 47%,transparent 62%,rgba(255,244,205,.65) 64%,transparent 66%)}
+.majEggCard.almost .majEgg,.majEggCard.ready .majEgg{animation:majEggGlow .65s ease-in-out infinite alternate}
+@keyframes majEggGlow{to{filter:brightness(1.65);transform:translateY(-3px);box-shadow:0 0 24px currentColor}}
+.majHatchBackdrop{position:fixed;inset:0;z-index:100000;display:grid;place-items:center;padding:18px;background:rgba(7,5,20,.9);backdrop-filter:blur(8px)}
+.majHatchDialog{width:min(440px,100%);box-sizing:border-box;text-align:center;padding:35px 26px;border:1px solid #d8b77c;border-radius:24px;background:radial-gradient(circle at top,#43315b,#171126 72%);box-shadow:0 0 80px rgba(195,142,240,.27);color:#f7eefa}
+.majHatchStars{color:#f1d497;letter-spacing:18px;font-size:22px}.majHatchShell{display:grid;place-items:center;margin:18px auto;width:118px;height:150px;border:3px solid #ecd6ab;border-radius:50%;font-size:56px;box-shadow:0 0 36px #b895d7,inset 0 0 34px #805a9f;animation:majEggGlow 1s ease-in-out infinite alternate}.majHatchReveal{font-size:85px;color:#f7daa0;filter:drop-shadow(0 0 25px #f4ce91)}
+.majHatchDialog h2{font:28px/1.2 Georgia,serif;color:#f3dca7}.majHatchDialog p{font-size:16px;line-height:1.5}.majHatchKicker{letter-spacing:.12em;text-transform:uppercase;color:#ecd19b}.majHatchDialog button{padding:12px 22px;border:1px solid #f4d997;border-radius:12px;background:#684b83;color:white;font:700 16px system-ui;cursor:pointer}
+@media(prefers-reduced-motion:reduce){.majEgg,.majHatchShell{animation:none!important}}
+
 /* V3.3.22 compact care dock — keeps the Sanctuary visible instead of pushing care below it */
 .majCareDock{margin:0 0 14px;padding:13px 14px;border:1px solid rgba(235,204,145,.28);border-radius:18px;background:linear-gradient(135deg,rgba(31,17,42,.97),rgba(20,13,31,.97));box-shadow:0 12px 34px rgba(8,3,14,.24);display:grid;grid-template-columns:minmax(0,1fr) auto;gap:14px;align-items:center;color:#eee5f6}
 .majCareDockCopy{min-width:0}.majCareDockTitle{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}.majCareDockTitle b{font:700 20px/1.2 Georgia,serif;color:#f2d7a1}.majCareDockTitle span{font-size:11px;color:#cfc0d8}
