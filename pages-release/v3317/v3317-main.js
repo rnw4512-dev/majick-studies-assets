@@ -1,9 +1,9 @@
-// Majick Studies V3.3.46 Living Collegium — AUTHORITATIVE MAIN APP BRIDGE
+// Majick Studies V3.3.47 Collegium Atmospheres — AUTHORITATIVE MAIN APP BRIDGE
 (function(){
 'use strict';
 
-const RELEASE_LABEL='Living Collegium • V3.3.46';
-const RELEASE_TITLE='Majick Studies — V3.3.46 Living Collegium';
+const RELEASE_LABEL='Collegium Atmospheres • V3.3.47';
+const RELEASE_TITLE='Majick Studies — V3.3.47 Collegium Atmospheres';
 const registry=()=>window.MajickGuardianRegistry;
 const canonOf=type=>registry()?.get?.(type)?.canon||String(type||'').toLowerCase();
 const STAGE_SLUGS=['new-bond','apprentice','guardian','ascendant','celestial'];
