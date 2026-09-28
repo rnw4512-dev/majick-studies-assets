@@ -263,6 +263,8 @@ jobs:
           cmp pages-release/v3342/guardian-life-main.js _site/guardian-life-main.js
           cmp pages-release/v3342/guardian-life-main.css _site/guardian-life-main.css
           cmp pages-release/v3342/study-progress-bridge.js _site/study-progress-bridge.js
+          cmp pages-release/v3346/living-collegium.js _site/living-collegium.js
+          cmp pages-release/v3346/living-collegium.css _site/living-collegium.css
           cmp pages-release/v3316/courseManager.js _site/courseManager.js
           cmp pages-release/v3317/v3317-main.js _site/v3317-main.js
           cmp pages-release/v3317/v3317-sanctuary.js _site/sanctuary/v3317-sanctuary.js
@@ -275,7 +277,9 @@ jobs:
 
           # Golden architecture and protected assets.
           grep -q '"build_foundation": "V3.3.18 Golden Baseline"' _site/app-progress.json
-          grep -q '"version": "V3.3.44 Guardian Egg Restoration"' _site/app-progress.json
+          grep -q '"version": "V3.3.46 Living Collegium"' _site/app-progress.json
+          grep -q 'living-collegium.js?v=3346' _site/index.html
+          grep -q 'living-collegium.css?v=3346' _site/index.html
           grep -q 'learning-lab.js?v=3319' _site/index.html
           grep -q 'learning-lab.css?v=3319' _site/index.html
           grep -q 'learning-plan.js?v=3324' _site/index.html
@@ -341,8 +345,8 @@ jobs:
           fi
           grep -q '"sanctuary_version": "V3.3.42 Sanctuary Alive Personal Nooks"' _site/app-progress.json
           grep -q 'majick-state-core.js?v=3322-recovery' _site/index.html
-          grep -q 'guardian-care-economy.js?v=3322-recovery' _site/index.html
-          grep -q 'v3317-main.js?v=3322-recovery' _site/index.html
+          grep -q 'guardian-care-economy.js?v=3346-living' _site/index.html
+          grep -q 'v3317-main.js?v=3346-living' _site/index.html
           grep -q 'v3322-main-recovery.js?v=3322' _site/index.html
           grep -q 'v3320-sanctuary-life.js?v=3322-recovery' _site/sanctuary/index.html
           grep -q 'v3321-sanctuary-customize.js?v=3322-recovery' _site/sanctuary/index.html
@@ -540,13 +544,13 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
-          echo "Waiting for V3.3.44 at $LIVE_URL"
+          echo "Waiting for V3.3.46 at $LIVE_URL"
           python - <<'PY'
           import json,time,urllib.request,urllib.error,os
           base=(os.environ.get('LIVE_URL') or 'https://rnw4512-dev.github.io/majick-studies-assets/').rstrip('/')+'/'
           status_url=os.environ.get('STATUS_URL','')
           token=os.environ.get('GH_TOKEN','')
-          expected='V3.3.44 Guardian Egg Restoration'
+          expected='V3.3.46 Living Collegium'
           last=None
           for attempt in range(1,121):
               try:
@@ -586,6 +590,8 @@ jobs:
                       san_index=r.read().decode('utf-8','replace')
                   with urllib.request.urlopen(base+'game-realm.js?smoke='+stamp,timeout=10) as r:
                       game_realm=r.read().decode('utf-8','replace')
+                  with urllib.request.urlopen(base+'living-collegium.js?smoke='+stamp,timeout=10) as r:
+                      living=r.read().decode('utf-8','replace')
                   last=(
                       data.get('version'),
                       'wgu-practice.js?v=3336' in index,
@@ -623,13 +629,13 @@ jobs:
                       'Sunday Readiness & Thinking Analytics' not in index,
                       '<h3>Before Sunday</h3>' not in index,
                   )
-                  if last==(expected,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True) and 'game-realm.js?v=3343' in index and 'realmWordBank' in game_realm:
-                      print('LIVE V3.3.44 DEPLOYMENT VERIFIED')
+                  if last==(expected,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True) and 'game-realm.js?v=3343' in index and 'realmWordBank' in game_realm and 'living-collegium.js?v=3346' in index and "VERSION='3.3.46'" in living:
+                      print('LIVE V3.3.46 DEPLOYMENT VERIFIED')
                       raise SystemExit(0)
                   print('Live version not ready yet:',last)
               except Exception as e:
                   last=repr(e)
                   print('Live check waiting:',last)
               time.sleep(5)
-          raise SystemExit('Pages deployment was created and left active, but the live site did not expose V3.3.42 within 10 minutes: '+repr(last))
+          raise SystemExit('Pages deployment was created and left active, but the live site did not expose V3.3.46 within 10 minutes: '+repr(last))
           PY
