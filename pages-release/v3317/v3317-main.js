@@ -1,9 +1,9 @@
-// Majick Studies V3.3.47 Collegium Atmospheres — AUTHORITATIVE MAIN APP BRIDGE
+// Majick Studies V3.3.48 Sanctuary Roster — AUTHORITATIVE MAIN APP BRIDGE
 (function(){
 'use strict';
 
-const RELEASE_LABEL='Collegium Atmospheres • V3.3.47';
-const RELEASE_TITLE='Majick Studies — V3.3.47 Collegium Atmospheres';
+const RELEASE_LABEL='Sanctuary Roster • V3.3.48';
+const RELEASE_TITLE='Majick Studies — V3.3.48 Sanctuary Roster';
 const registry=()=>window.MajickGuardianRegistry;
 const canonOf=type=>registry()?.get?.(type)?.canon||String(type||'').toLowerCase();
 const STAGE_SLUGS=['new-bond','apprentice','guardian','ascendant','celestial'];
@@ -42,8 +42,10 @@ window.v334Portrait=function(p,variant='card'){
   if(!p||!registry()?.get?.(p.type))return priorPortrait?priorPortrait(p,variant):'';
   let c=null;
   try{c=typeof v338Canon==='function'?v338Canon(p.type):(window.V338_CANON||{})[p.type]}catch(_){}
-  const st=stageForPet(p),name=c?.display||p.name||registry()?.get?.(p.type)?.name||canonOf(p.type),src=approvedStageImage(p.type,st.index);
-  const fallback=c?.portrait||'';
+  const st=stageForPet(p),name=p.name||c?.display||registry()?.get?.(p.type)?.name||canonOf(p.type);
+  // Evolution sheets contain several panels and captions. Use the single-character art in compact portraits.
+  const fallback=c?.portrait||'assets/familiars/canon/'+canonOf(p.type)+'-guardian.webp';
+  const src=variant==='evolution'?approvedStageImage(p.type,st.index):fallback;
   const priority=(variant==='sidebar'||variant==='study')?'eager':'lazy';
   return '<div class="familiarPortrait '+variant+' v3317ApprovedPortrait" data-pet-type="'+E(p.type)+'" data-stage="'+st.slug+'" style="--pet-accent:'+E(c?.accent||'#b99cff')+'" title="'+E(name+' • '+st.name)+'">'+
     '<img src="'+src+'" data-fallback="'+E(fallback)+'" loading="'+priority+'" decoding="async" '+(priority==='eager'?'fetchpriority="high"':'')+' onerror="this.onerror=null;if(this.dataset.fallback)this.src=this.dataset.fallback" alt="'+E(name+', '+st.name)+'">'+
@@ -205,9 +207,9 @@ function sanctuaryMarkup(context){
   if(location.protocol==='file:'){
     return '<section class="phase4Wrap"><div class="phase4Top"><b>✦ Phaser 4 Living Sanctuary</b><br><span>Open Majick Studies through GitHub Pages so Phaser can load.</span></div></section>';
   }
-  const q='?v=3325-guardian-visual&context='+encodeURIComponent(context||'app');
+  const q='?v=3348-sanctuary-roster&context='+encodeURIComponent(context||'app');
   return '<section class="phase4Wrap v3317Phase" aria-label="Phaser 4 Living Sanctuary">'+
-    '<div class="phase4Top"><div><b>✦ Living Sanctuary • V3.3.25</b><br><span>Protected Guardian movement • personalized nooks • furniture storage</span></div>'+
+    '<div class="phase4Top"><div><b>✦ Living Sanctuary • V3.3.48</b><br><span>Protected Guardian movement • personalized nooks • furniture storage</span></div>'+
     '<div class="phase4Actions"><button class="btn ghost" onclick="phase4OpenFullscreen()">Full Sanctuary</button><button class="btn primary" onclick="navigate(\'addmaterial\')">Add Study Material</button></div></div>'+
     '<iframe class="phase4Frame v3317SanctuaryFrame" src="sanctuary/index.html'+q+'" title="Majick Studies Living Sanctuary" loading="eager" allow="fullscreen" onload="setTimeout(()=>{v3317PushGuardianLevels();v3321PushFurnitureState();},120)"></iframe>'+
     '<div class="phase4Help">Personal Guardian nooks • feeding + play zones • store/place owned furniture • Cozy Dorm layout preset.</div>'+

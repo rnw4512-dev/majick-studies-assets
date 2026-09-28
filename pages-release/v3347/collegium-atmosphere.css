@@ -17,3 +17,8 @@ body[data-majick-room=companions] .phase4Wrap{border-color:rgba(225,177,116,.48)
 body[data-majick-room=companions] .lcScene{background:radial-gradient(ellipse at 88% 8%,rgba(218,151,88,.19),transparent 48%),linear-gradient(145deg,#24192d,#16111f)}
 @media(max-width:700px){.caAmbience{width:100%;order:3}.learnLab{padding:10px!important}}
 @media(prefers-reduced-motion:reduce){body[data-majick-room] .content:before{background-attachment:scroll}}
+/* A Guardian's full name and portrait must remain legible in the sidebar. */
+.sidefoot.unifiedFamiliarSide .copy b{white-space:normal;overflow:visible;text-overflow:clip;overflow-wrap:anywhere;line-height:1.2}
+.sidefoot.unifiedFamiliarSide .familiarRole{max-width:100%;white-space:normal;line-height:1.35}
+.sidefoot.unifiedFamiliarSide .rewardStrip{gap:6px}
+.sidefoot.unifiedFamiliarSide .rewardChip{padding:6px 8px}

@@ -1,6 +1,6 @@
 (()=>{
  'use strict';
- const VERSION='3.3.47';
+ const VERSION='3.3.48';
  const ROOMS={home:'College entrance',learninglab:'Candlelit classroom',livinggrimoire:'Working grimoire',companions:'Guardian residence'};
  let ctx,timer,enabled=false;
  function room(){return Object.hasOwn(ROOMS,window.S?.screen)?window.S.screen:'home'}
@@ -27,7 +27,7 @@
  function decorate(){
    const r=room();document.body.dataset.majickRoom=r;
    const top=document.querySelector('.top');if(!top)return;
-   const pill=top.querySelector('.pill');if(pill)pill.textContent='Collegium Atmospheres • V'+VERSION;
+   const pill=top.querySelector('.pill');if(pill)pill.textContent='Sanctuary Roster • V'+VERSION;
    let b=top.querySelector('.caAmbience');
    if(!b){b=document.createElement('button');b.type='button';b.className='caAmbience';b.addEventListener('click',toggle);top.append(b)}
    b.textContent=(enabled?'♫ ':'♪ ')+ROOMS[r]+' · ambience '+(enabled?'on':'off');
