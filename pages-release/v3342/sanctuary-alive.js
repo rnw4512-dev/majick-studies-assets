@@ -26,8 +26,15 @@ const PERSONALITY={
   luna:{care:{feed:'Velora enjoys a quiet meal.',treat:'Velora takes a treat back to her books.',play:'Velora bats at her velvet cushion.',affection:'Velora leans in for a gentle cuddle.'},study:'Velora settles beside the books to study with you.'},
   ember:{care:{feed:'Cascade investigates every crumb.',treat:'Cascade does a delighted little hop.',play:'Cascade races after the rune puzzle.',affection:'Cascade curls up beside you.'},study:'Cascade celebrates with a playful spark.'},
   nova:{care:{feed:'Solstice inspects the bowl.',treat:'Solstice proudly carries off the treat.',play:'Solstice chases the comet ball.',affection:'Solstice stays close and watches the stars.'},study:'Solstice looks up from the telescope and cheers you on.'},
-  mallow:{care:{feed:'Aurelia enjoys a cozy snack.',treat:'Aurelia wiggles with delight.',play:'Aurelia snuggles her moonflower plush.',affection:'Aurelia nestles against you.'},study:'Aurelia gives you a soft, happy flutter.'}
+  mallow:{care:{feed:'Aurelia enjoys a cozy snack.',treat:'Aurelia wiggles with delight.',play:'Aurelia snuggles her moonflower plush.',affection:'Aurelia nestles against you.'},study:'Aurelia gives you a soft, happy flutter.'},
+  vesper:{care:{play:'Vesper follows the feather with a thoughtful turn, then gives one pleased trill.',affection:'Vesper lowers their head and stays beside your hand.'}},
+  briar:{care:{play:'Briar nudges the moonvine plush and settles among the leaves.',affection:'Briar leans closer and gives a quiet, trusting nuzzle.'}},
+  zephyr:{care:{play:'Zephyr dashes after the ribbon and returns for another round.',affection:'Zephyr pauses just long enough for a delighted cuddle.'}},
+  prism:{care:{play:'Prism follows the crystal orb in slow shimmering circles.',affection:'Prism makes a small ripple and lingers near you.'}},
+  rook:{care:{play:'Rook studies the rune tokens, then makes a surprisingly clever move.',affection:'Rook accepts the attention with a solemn nod.'}},
+  solara:{care:{play:'Solara nudges the sunburst ball into a warm patch of light.',affection:'Solara curls up beside you, bright and content.'}}
 };
+const TOY_ICONS={'starter-ribbon-toy':'🎐','comet-ball':'◉','celestial-feather-wand':'✧','moonflower-plush':'❀','rune-puzzle':'◇','moonvine-plush':'❀','ribbon-comet':'🎐','crystal-bubble-orb':'◌','strategy-rune-tokens':'♟','sunburst-ball':'☀','velvet-moon-cushion':'☾'};
 
 function roster(scene){return Array.isArray(scene?.v3317CareState?.roster)?scene.v3317CareState.roster:[]}
 function profile(g){
@@ -115,16 +122,18 @@ function makePersonalBed(scene,g,slot,pos){
 }
 function makeKeepsake(scene,g,bed,index){
   const p=profile(g),angle=index%2===0?-1:1;
+  const toy=g.favoriteOwned?g.favoriteItem:(g.playItem||'starter-ribbon-toy');
+  const toyName=g.favoriteOwned?p.favorite:'Sanctuary Ribbon Toy';
   const x=bed.x+angle*120,y=bed.y+18;
   const c=scene.add.container(x,y).setDepth(56);
   const plate=scene.add.ellipse(0,17,92,28,0x21152a,.96).setStrokeStyle(2,p.accent,.6);
   const orb=scene.add.circle(0,-2,18,p.accent,.42).setStrokeStyle(2,0xf0d8ff,.5);
-  const icon=scene.add.text(0,-4,p.icon,{fontFamily:'Georgia',fontSize:'17px',color:'#fff0c7'}).setOrigin(.5);
+  const icon=scene.add.text(0,-4,TOY_ICONS[toy]||p.icon,{fontFamily:'Georgia',fontSize:'17px',color:'#fff0c7'}).setOrigin(.5);
   c.add([plate,orb,icon]);
   c.setSize?.(100,70);c.setInteractive?.({useHandCursor:true});
-  c.on?.('pointerup',()=>scene.v3342TravelGuardian?.(g.type,{x:c.x,y:c.y},'play',PERSONALITY[g.type]?.care?.play||p.name+' visits '+p.favorite+'.'));
-  const tag=scene.add.text(x,y+48,p.favorite,{fontFamily:'Arial',fontSize:'8px',color:'#bba9c0'}).setOrigin(.5).setDepth(88);
-  return {item:c,tag,x,y,label:p.favorite};
+  c.on?.('pointerup',()=>scene.v3317CareRequest?.(g.petId,'play',{itemId:toy,objectId:'guardian-play-rug'}));
+  const tag=scene.add.text(x,y+48,toyName,{fontFamily:'Arial',fontSize:'8px',color:'#bba9c0'}).setOrigin(.5).setDepth(88);
+  return {item:c,tag,x,y,label:toyName};
 }
 function makeComfortSpot(scene,g,bed,index){
   const p=profile(g),x=bed.x+(index%2===0?115:-115),y=bed.y+82;

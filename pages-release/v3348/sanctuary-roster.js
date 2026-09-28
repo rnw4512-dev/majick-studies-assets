@@ -6,6 +6,7 @@
  const ORIGINAL=new Set(['luna','ember','nova','mallow']);
  const STAGES=['new-bond','apprentice','guardian','ascendant','celestial'];
  const MOVES={luna:'lunaWalk',ember:'emberWalk',nova:'novaRun',mallow:'mallowHop'};
+ const TOYS={'starter-ribbon-toy':'🎐','comet-ball':'◉','celestial-feather-wand':'✧','moonflower-plush':'❀','rune-puzzle':'◇','moonvine-plush':'❀','ribbon-comet':'🎐','crystal-bubble-orb':'◌','strategy-rune-tokens':'♟','sunburst-ball':'☀','velvet-moon-cushion':'☾'};
  function roster(scene){return Array.isArray(scene?.v3317CareState?.roster)?scene.v3317CareState.roster:[]}
  function stage(g,scene){
    const state=scene?.v3317GuardianStates?.[g.type]||{};
@@ -62,6 +63,17 @@
      if(pet.active)this.time.delayedCall(1800+Math.random()*3000,()=>this.v3348Roam(type));
    }});
    return true;
+ };
+ const careReaction=Game.prototype.v3317CareReaction;
+ Game.prototype.v3317CareReaction=function(result){
+   const response=careReaction?.call(this,result);
+   if(result?.ok===false||result?.action!=='play')return response;
+   const pet=this[result.guardianType];if(!pet?.active)return response;
+   const glyph=TOYS[result.itemId]||'✦';
+   const toy=this.add.text(pet.x,pet.y-110,glyph,{fontFamily:'Georgia',fontSize:'44px',color:'#ffe5ad',stroke:'#21102d',strokeThickness:4}).setOrigin(.5).setDepth(505);
+   this.tweens.add({targets:toy,x:pet.x+62,y:pet.y-200,alpha:0,angle:result.favoriteBonus?35:15,duration:1700,ease:'Sine.out',onComplete:()=>toy.destroy()});
+   if(result.favoriteBonus)this.createSparkles?.(pet.x,pet.y-120,20);
+   return response;
  };
  const travel=Game.prototype.v3342TravelGuardian;
  Game.prototype.v3342TravelGuardian=function(type,target,action,bubble){

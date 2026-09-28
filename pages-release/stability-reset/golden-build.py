@@ -186,7 +186,7 @@ for src_name,(dst_name,expected_hash,expected_bytes) in PINNED_MOTION.items():
 progress=site/"app-progress.json"
 if progress.exists():
     data=json.loads(progress.read_text(encoding="utf-8"))
-    data["version"]="V3.3.48 Sanctuary Roster"
+    data["version"]="V3.3.49 Guardian Moments"
     data["learning_intelligence"]="V3.3.42 Sanctuary Alive with protected lifetime Majick XP, one distinct bed and personal nook per hatched Guardian, favorite keepsakes and comfort spots, need-driven and personality-driven room routines, physical travel to care stations, expandable Guardian beds beyond the original two slots, evolution ceremonies and permanent evolution memories, visible protected Phaser movement, shared Guardian progression across Game Realm/D755 Retake/D772 Learn, retroactive credit for previously uncredited study answers, Study Guardian bond quests, optional Finish Debrief, D755 teacher-focus questions, and D772 instruction cycles"
     data["sanctuary_version"]="V3.3.42 Sanctuary Alive Personal Nooks"
     data["sanctuary_home"]="Every hatched Guardian has a distinct bed and personal nook, favorite keepsake and comfort item, need-driven and personality-driven room routines, physical care travel, visible protected Phaser movement, evolved idle/action art, evolution ceremony, Guardian vocal reactions, care inventory, and room-safe furniture layout"
@@ -204,9 +204,9 @@ html=html.replace('<link rel="stylesheet" href="./learning-lab.css?v=3319">','')
 html=html.replace('./guardian-care-economy.css?v=stability-1','./guardian-care-economy.css?v=3322-recovery')
 html=html.replace('./majick-state-core.js?v=stability-1','./majick-state-core.js?v=3322-recovery')
 html=html.replace('./guardian-care-economy.js?v=stability-1','./guardian-care-economy.js?v=3346-living')
-html=html.replace('./v3317-main.js?v=stability-1','./v3317-main.js?v=3348-roster')
+html=html.replace('./v3317-main.js?v=stability-1','./v3317-main.js?v=3349-moments')
 html=html.replace('</head>','<link rel="stylesheet" href="./learning-lab.css?v=3319">\\n<link rel="stylesheet" href="./learning-plan.css?v=3324">\\n<link rel="stylesheet" href="./course-tutor.css?v=3326">\\n<link rel="stylesheet" href="./magical-college-home.css?v=3337">\\n<link rel="stylesheet" href="./wgu-practice.css?v=3333">\\n<link rel="stylesheet" href="./learn-mode.css?v=3338">\\n<link rel="stylesheet" href="./d755-retake.css?v=3340">\\n<link rel="stylesheet" href="./guardian-core.css?v=3341">\\n<link rel="stylesheet" href="./guardian-life-main.css?v=3342">\\n</head>',1)
-main_tag='<script src="./v3317-main.js?v=3348-roster"></script>'
+main_tag='<script src="./v3317-main.js?v=3349-moments"></script>'
 if main_tag not in html:
     fail("authoritative main runtime tag missing while installing recovery")
 html=html.replace(main_tag,'<script src="./learning-lab.js?v=3319"></script>\\n<script src="./learning-plan.js?v=3324"></script>\\n<script src="./course-tutor.js?v=3326"></script>\\n<script src="./learn-mode.js?v=3338"></script>\\n<script src="./d755-retake.js?v=3340"></script>\\n<script src="./wgu-practice.js?v=3336"></script>\\n'+main_tag+'\\n<script src="./magical-college-home.js?v=3337"></script>\\n<script src="./v3322-main-recovery.js?v=3322"></script>\\n<script src="./guardian-core.js?v=3341"></script>\\n<script src="./study-progress-bridge.js?v=3342"></script>\\n<script src="./guardian-life-main.js?v=3342"></script>',1)
@@ -217,7 +217,7 @@ html=html.replace('concept stars visited this week.','concept stars visited duri
 html=html.replace('<p><b>Final Moon Review</b> for the last targeted pass.</p>','<p><b>Final Moon Review</b> for the last targeted pass.</p><p><small>Self-paced: take the OA when your mastery supports it. The 4–6 week window is a planning guardrail, not a deadline.</small></p>')
 html=html.replace('</head>','<link rel="stylesheet" href="./game-realm.css?v=3343">\n</head>',1)
 html=html.replace('</head>','<link rel="stylesheet" href="./living-collegium.css?v=3346">\n</head>',1)
-html=html.replace('</body>','<script src="./game-realm.js?v=3343"></script>\n<script src="./living-collegium.js?v=3346"></script>\n<script src="./collegium-atmosphere.js?v=3348-roster"></script>\n</body>',1)
+html=html.replace('</body>','<script src="./game-realm.js?v=3343"></script>\n<script src="./living-collegium.js?v=3346"></script>\n<script src="./collegium-atmosphere.js?v=3349-moments"></script>\n</body>',1)
 html=html.replace('</head>','<link rel="stylesheet" href="./collegium-atmosphere.css?v=3348-roster">\n</head>',1)
 index.write_text(html,encoding="utf-8")
 
@@ -229,8 +229,8 @@ san_html=san_html.replace('./v3317-sanctuary.js?v=stability-1','./v3317-sanctuar
 san_tag='<script src="./v3317-sanctuary.js?v=3322-recovery"></script>'
 if san_tag not in san_html:
     fail("authoritative Sanctuary runtime tag missing while installing Sanctuary recovery")
-san_html=san_html.replace(san_tag,san_tag+'\\n<script src="./v3320-sanctuary-life.js?v=3322-recovery"></script>\\n<script src="./v3321-sanctuary-customize.js?v=3322-recovery"></script>\\n<script src="./v3322-sanctuary-recovery.js?v=3322"></script>\\n<script src="./v3325-sanctuary-visual-authority.js?v=3325"></script>\\n<script src="./guardian-core-sanctuary.js?v=3341"></script>\\n<script src="./sanctuary-alive.js?v=3342"></script>',1)
-san_html=san_html.replace('<script src="./sanctuary-alive.js?v=3342"></script>','<script src="./sanctuary-alive.js?v=3342"></script>\n<script src="./sanctuary-roster.js?v=3348"></script>',1)
+san_html=san_html.replace(san_tag,san_tag+'\\n<script src="./v3320-sanctuary-life.js?v=3322-recovery"></script>\\n<script src="./v3321-sanctuary-customize.js?v=3322-recovery"></script>\\n<script src="./v3322-sanctuary-recovery.js?v=3322"></script>\\n<script src="./v3325-sanctuary-visual-authority.js?v=3325"></script>\\n<script src="./guardian-core-sanctuary.js?v=3341"></script>\\n<script src="./sanctuary-alive.js?v=3349-moments"></script>',1)
+san_html=san_html.replace('<script src="./sanctuary-alive.js?v=3349-moments"></script>','<script src="./sanctuary-alive.js?v=3349-moments"></script>\n<script src="./sanctuary-roster.js?v=3349-moments"></script>',1)
 san_index.write_text(san_html,encoding="utf-8")
 
 (site/".nojekyll").touch()

@@ -131,7 +131,7 @@ for marker in ("window.MajickSanctuaryRecovery","v3322SyncOwnedGuardians","v3322
 visual=(site/'sanctuary'/'v3325-sanctuary-visual-authority.js').read_text(encoding='utf-8')
 for marker in ("window.MajickGuardianVisualAuthority","v3325SyncOwnedVisuals","v3325BaseScale","totalVisible"):
     if marker not in visual: fail('Guardian visual authority missing '+marker)
-for marker in ('majick-state-core.js?v=3322-recovery','guardian-care-economy.js?v=3346-living','v3317-main.js?v=3348-roster','v3322-main-recovery.js?v=3322'):
+for marker in ('majick-state-core.js?v=3322-recovery','guardian-care-economy.js?v=3346-living','v3317-main.js?v=3349-moments','v3322-main-recovery.js?v=3322'):
     if marker not in main: fail('main cache-bust/runtime missing '+marker)
 if 'v3322-sanctuary-recovery.js?v=3322' not in san:
     fail('Sanctuary recovery asset is not installed')
@@ -145,7 +145,7 @@ if 'guardian-core-sanctuary.js?v=3341' not in san:
 alive=(site/'sanctuary'/'sanctuary-alive.js').read_text(encoding='utf-8')
 for marker in ("VERSION='3.3.42'","guardian-bed-","v3342BuildPersonalNooks","v3342RunLifeBeat","v3342EvolutionCeremony","makeKeepsake","makeComfortSpot"):
     if marker not in alive: fail('Sanctuary Alive missing '+marker)
-if 'sanctuary-alive.js?v=3342' not in san:
+if 'sanctuary-alive.js?v=3349-moments' not in san:
     fail('Sanctuary Alive asset is not installed')
 if san.find('guardian-core-sanctuary.js')>san.find('sanctuary-alive.js'): fail('Sanctuary Alive loads before Guardian Core Sanctuary')
 care=(site/'guardian-care-economy.js').read_text(encoding='utf-8')
