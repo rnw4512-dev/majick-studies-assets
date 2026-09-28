@@ -3,7 +3,6 @@
  const VERSION='3.3.47';
  const ROOMS={home:'College entrance',learninglab:'Candlelit classroom',livinggrimoire:'Working grimoire',companions:'Guardian residence'};
  let ctx,timer,enabled=false;
- try{enabled=localStorage.getItem('majick-ambience')==='on'}catch(_){}
  function room(){return Object.hasOwn(ROOMS,window.S?.screen)?window.S.screen:'home'}
  function stop(){clearTimeout(timer);timer=null}
  function tone(){
@@ -17,7 +16,6 @@
  }
  async function toggle(){
    enabled=!enabled;
-   try{localStorage.setItem('majick-ambience',enabled?'on':'off')}catch(_){}
    stop();
    if(enabled){
      const Audio=window.AudioContext||window.webkitAudioContext;
