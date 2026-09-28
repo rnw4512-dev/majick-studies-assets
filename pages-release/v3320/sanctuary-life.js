@@ -46,7 +46,7 @@ function findDecor(scene,idOrSlot){
 }
 function objectId(item){return item?.getData?.('objectId')||item?.getData?.('decorId')||''}
 function objectMeta(item){return item?.getData?.('manifestObject')||null}
-function petForGuardian(scene,g){return g?.type?scene?.[g.type]:null}
+function petForGuardian(scene,g){return (g?.petId&&scene?.v3348PetById?.[g.petId])||(g?.type?scene?.[g.type]:null)}
 
 Game.prototype.v3320CareObjectDef=function(id){
   const spec=CARE_OBJECTS[id];

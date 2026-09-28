@@ -1,0 +1,5 @@
+.v3350RoomAudit{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:8px 14px;background:rgba(36,24,47,.96);border-bottom:1px solid rgba(212,183,130,.24);color:#e7d9eb;font:600 .83rem/1.4 system-ui}
+.v3350RoomAudit[data-status=ready]{color:#d7e9d7}.v3350RoomAudit[data-status=missing]{color:#f3d8ad}
+.v3350RoomAudit button{flex:none;border:1px solid #d2aa76;border-radius:8px;background:#58405d;color:white;padding:7px 10px;font:700 .82rem system-ui;cursor:pointer}
+.v3350RoomAudit button:focus-visible{outline:2px solid #f1d08e;outline-offset:2px}
+@media(max-width:600px){.v3350RoomAudit{align-items:flex-start;flex-direction:column}.v3350RoomAudit button{width:100%}}

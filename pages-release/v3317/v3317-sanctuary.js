@@ -174,13 +174,13 @@ Game.prototype.openGuardianCarePanel=function(target){
 Game.prototype.v3317CareReaction=function(result){
   if(!result?.guardianId&&!result?.guardianType)return;
   const type=result.guardianType;
-  const pet=type?this[type]:null;
+  const pet=this.v3348PetById?.[result.guardianId]||(type?this[type]:null);
 
   if(pet?.active){
-    if(result.travelObject){
+    if(result.travelObject&&pet===this[type]){
       this.__v3317CareSkipBed=type+'|'+result.travelObject;
       this.startFamiliarObjectInteraction?.(type,result.travelObject);
-    }else{
+    }else if(pet===this[type]){
       this.v3317ShowAction?.(type,result.visualAction==='sleep'?'sleep':'play',result.action==='affection'?2200:2900);
     }
 

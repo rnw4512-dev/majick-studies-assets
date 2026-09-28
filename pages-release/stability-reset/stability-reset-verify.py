@@ -115,7 +115,7 @@ if 'learning-lab.js?v=3319' not in main or 'learning-lab.css?v=3319' not in main
 san_life=(site/'sanctuary'/'v3320-sanctuary-life.js').read_text(encoding='utf-8')
 for marker in ("window.MajickSanctuaryLife","v3320BuildHomeHud","v3320SnapDecorItem","guardian-food-bowl","bedAssignments"):
     if marker not in san_life: fail('Sanctuary Home missing '+marker)
-if 'v3320-sanctuary-life.js?v=3322-recovery' not in san:
+if 'v3320-sanctuary-life.js?v=3350-room' not in san:
     fail('Sanctuary Home asset is not cache-busted in sanctuary/index.html')
 san_custom=(site/'sanctuary'/'v3321-sanctuary-customize.js').read_text(encoding='utf-8')
 for marker in ("window.MajickSanctuaryCustomize","v3321SetPlaced","v3321ApplyPreset","v3321BuildFurnitureManager","COZY_DORM"):
@@ -131,7 +131,7 @@ for marker in ("window.MajickSanctuaryRecovery","v3322SyncOwnedGuardians","v3322
 visual=(site/'sanctuary'/'v3325-sanctuary-visual-authority.js').read_text(encoding='utf-8')
 for marker in ("window.MajickGuardianVisualAuthority","v3325SyncOwnedVisuals","v3325BaseScale","totalVisible"):
     if marker not in visual: fail('Guardian visual authority missing '+marker)
-for marker in ('majick-state-core.js?v=3322-recovery','guardian-care-economy.js?v=3346-living','v3317-main.js?v=3349-moments','v3322-main-recovery.js?v=3322'):
+for marker in ('majick-state-core.js?v=3322-recovery','guardian-care-economy.js?v=3346-living','v3317-main.js?v=3350-room','v3322-main-recovery.js?v=3322'):
     if marker not in main: fail('main cache-bust/runtime missing '+marker)
 if 'v3322-sanctuary-recovery.js?v=3322' not in san:
     fail('Sanctuary recovery asset is not installed')
