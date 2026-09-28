@@ -67,6 +67,13 @@
  const careReaction=Game.prototype.v3317CareReaction;
  Game.prototype.v3317CareReaction=function(result){
    const response=careReaction?.call(this,result);
+   if(result?.ok!==false&&this.v3348Sprites?.[result?.guardianType]?.active){
+     if(result.travelObject)this.v3342TravelGuardian(result.guardianType,result.travelObject,result.visualAction||result.action,result.message);
+     else if(result.action==='affection'){
+       const pet=this.v3348Sprites[result.guardianType];
+       this.tweens.add({targets:pet,y:pet.y-24,duration:340,yoyo:true,ease:'Sine.inOut'});
+     }
+   }
    if(result?.ok===false||result?.action!=='play')return response;
    const pet=this[result.guardianType];if(!pet?.active)return response;
    const glyph=TOYS[result.itemId]||'✦';
