@@ -27,6 +27,7 @@
  function decorate(){
    const r=room();document.body.dataset.majickRoom=r;
    const top=document.querySelector('.top');if(!top)return;
+   const pill=top.querySelector('.pill');if(pill)pill.textContent='Collegium Atmospheres • V'+VERSION;
    let b=top.querySelector('.caAmbience');
    if(!b){b=document.createElement('button');b.type='button';b.className='caAmbience';b.addEventListener('click',toggle);top.append(b)}
    b.textContent=(enabled?'♫ ':'♪ ')+ROOMS[r]+' · ambience '+(enabled?'on':'off');
