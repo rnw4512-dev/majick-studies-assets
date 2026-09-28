@@ -1,0 +1,15 @@
+const fs=require('fs'),vm=require('vm'),assert=require('assert');
+const source=fs.readFileSync(__dirname+'/living-collegium.js','utf8');
+const state={legacy:{pets:[{id:'p1',type:'luna',name:'Velora'},{id:'p2',type:'nova',name:'Solstice'}],eggs:[{id:'new-egg',type:'ember',progress:7,goal:22}]},majickAccount:{guardianCare:{log:[]}}};
+const context={window:{S:state},document:{querySelector(){return null},title:''},setTimeout(){}};
+vm.createContext(context);vm.runInContext(source,context);
+const app=context.window.MajickLivingCollegium;
+assert.equal(app.VERSION,'3.3.46');
+assert.notEqual(app.persona('luna').place,app.persona('nova').place);
+assert.equal((app.sceneHTML().match(/class="lcGuardianMoment"/g)||[]).length,2,'Only owned Guardians get moments');
+assert(!app.sceneHTML().includes('new-egg'),'An egg must not appear as an owned Guardian');
+state.legacy.pets.push({id:'p3',type:'ember',name:'Cascade'});
+assert.equal((app.sceneHTML().match(/class="lcGuardianMoment"/g)||[]).length,3,'A newly hatched Guardian joins automatically');
+state.legacy.pets[2].name='<script>alert(1)</script>';
+assert(!app.sceneHTML().includes('<script>'),'Guardian names must be escaped');
+console.log('V3.3.46 LIVING COLLEGIUM SMOKE PASSED');

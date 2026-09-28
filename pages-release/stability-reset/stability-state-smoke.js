@@ -77,6 +77,11 @@ for(const key of ['distractorHistory','flaggedQuestions','masteryProofs','source
 run('pages-release/v3317/guardian-care-economy.js');
 const snap=MajickGuardianCare.snapshot();
 assert(snap.roster.length===2,'care roster must use actual two hatched Guardians');
+const veloraCare=S.majickAccount.guardianCare.guardians.pet_velora;
+veloraCare.fun=73;
+S.majickAccount.guardianCare.lastDecayAt=Date.now()-14*24*3600000;
+MajickGuardianCare.snapshot();
+assert(veloraCare.fun===73,'time away from the app must not lower Guardian care');
 
 const beforeBuy=S.majickAccount.crystals;
 const purchased=MajickGuardianCare.buy('moonberry-meal');

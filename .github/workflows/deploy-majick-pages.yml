@@ -19,6 +19,7 @@ on:
       - 'pages-release/v3341/**'
       - 'pages-release/v3342/**'
       - 'pages-release/v3343/**'
+      - 'pages-release/v3346/**'
       - 'pages-release/v3315/study-material/**'
       - 'pages-release/v3316/courseManager.js'
       - 'pages-release/v3317/v3317-main.js'
@@ -117,6 +118,8 @@ jobs:
           test -s pages-release/v3317/v3317-sanctuary.js
           test -s pages-release/v3317/guardian-care-economy.js
           test -s pages-release/v3317/guardian-care-economy.css
+          test -s pages-release/v3346/living-collegium.js
+          test -s pages-release/v3346/living-collegium.css
           test -s pages-release/v3317/v3317-optimize-phaser.py
           test -s sanctuary/assets/objects/objects-manifest.json
           test -s sanctuary/assets/objects/generate-object-library.py
@@ -152,6 +155,8 @@ jobs:
           node --check pages-release/v3342/study-progress-bridge.js
           node --check pages-release/v3342/study-progress-bridge-smoke.js
           node --check pages-release/v3343/game-realm.js
+          node --check pages-release/v3346/living-collegium.js
+          node --check pages-release/v3346/living-collegium-smoke.js
           node --check pages-release/v3343/game-realm-smoke.js
           node --check pages-release/v3320/sanctuary-life.js
           node --check pages-release/v3321/sanctuary-customize.js
@@ -429,6 +434,7 @@ jobs:
           node pages-release/v3342/guardian-life-main-smoke.js
           node pages-release/v3342/study-progress-bridge-smoke.js
           node pages-release/v3343/game-realm-smoke.js
+          node pages-release/v3346/living-collegium-smoke.js
 
           # Keep the legacy full-browser smoke available for manual regression work,
           # but do not let its monolithic legacy boot freeze every Pages release.

@@ -1,9 +1,9 @@
-// Majick Studies V3.3.44 Guardian Egg Restoration — AUTHORITATIVE MAIN APP BRIDGE
+// Majick Studies V3.3.46 Living Collegium — AUTHORITATIVE MAIN APP BRIDGE
 (function(){
 'use strict';
 
-const RELEASE_LABEL='Moonlit Collegium • V3.3.44';
-const RELEASE_TITLE='Majick Studies — V3.3.44 Moonlit Collegium';
+const RELEASE_LABEL='Living Collegium • V3.3.46';
+const RELEASE_TITLE='Majick Studies — V3.3.46 Living Collegium';
 const registry=()=>window.MajickGuardianRegistry;
 const canonOf=type=>registry()?.get?.(type)?.canon||String(type||'').toLowerCase();
 const STAGE_SLUGS=['new-bond','apprentice','guardian','ascendant','celestial'];

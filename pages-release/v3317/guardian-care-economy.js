@@ -34,7 +34,6 @@ const CATALOG=[
 ];
 
 const DEFAULT_NEEDS={hunger:82,hydration:86,energy:84,fun:78,grooming:86,affection:82,bond:0};
-const DECAY_PER_HOUR={hunger:1.15,hydration:1.35,energy:.8,fun:.55,grooming:.24,affection:.30};
 const NEED_KEYS=['hunger','hydration','energy','fun','grooming','affection'];
 
 const clamp=(n,min=0,max=100)=>Math.max(min,Math.min(max,Number(n)||0));
@@ -148,19 +147,9 @@ function ensureAccount(){
 
 function applyDecay(a){
   if(!a?.guardianCare)return;
-  const care=a.guardianCare;
-  const now=Date.now();
-  const last=Number(care.lastDecayAt||now);
-  const hours=Math.min(36,Math.max(0,(now-last)/3600000));
-  if(hours<.05)return;
-  const ids=new Set(ownedPets().map(p=>p.id));
-  for(const [id,g] of Object.entries(care.guardians||{})){
-    if(!ids.has(id))continue;
-    for(const [k,rate] of Object.entries(DECAY_PER_HOUR)){
-      g[k]=clamp(g[k]-hours*rate,25,100);
-    }
-  }
-  care.lastDecayAt=now;
+  // Guardian care is optional. Returning after days away must not lower needs
+  // or make the player repay a hidden care debt.
+  a.guardianCare.lastDecayAt=Date.now();
 }
 
 function state(target){
@@ -634,6 +623,6 @@ ensureAccount();
 setTimeout(()=>broadcastState(),200);
 window.MajickGuardianCare={
   ensure:ensureAccount,state,snapshot,performAction,buy,catalog:CATALOG,normalizeOwnedCollection,normalizeGuardianInventory,
-  ownedPets,incubatingEggs,guardianCareHTML,compactCareDockHTML,catalogHTML,broadcastState,moodInfo,bestToy,assignedBed,canon,focusEgg,focusedEggId
+  ownedPets,incubatingEggs,guardianCareHTML,compactCareDockHTML,catalogHTML,broadcastState,moodInfo,bestToy,assignedBed,canon,focusEgg,focusedEggId,eggIncubatorHTML
 };
 })();
