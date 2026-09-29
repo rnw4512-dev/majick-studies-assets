@@ -46,6 +46,10 @@ context.startRuneSort();
 assert.equal(context.session.type,'runesort','Rune Sort should start its own session type');
 assert.ok(context.session.categories.length>=2,'Rune Sort needs multiple sort categories');
 const firstRune=context.session.items[0];
+const wrongRuneCategory=context.session.categories.find(x=>x!==firstRune.section);
+context.runeSortPick(0,wrongRuneCategory);
+assert.equal(context.session.items[0].ok,false,'Rune Sort should reject a wrong destination');
+assert.ok(context.session.items[0].tried.includes(wrongRuneCategory),'Rune Sort should remember wrong destinations');
 context.runeSortPick(0,firstRune.section);
 assert.equal(context.session.items[0].ok,true,'Rune Sort should lock a correct category');
 context.finishRuneSort();
@@ -55,6 +59,7 @@ context.startOracleLens();
 assert.equal(context.session.type,'oraclelens','Oracle Lens should start its own session type');
 context.oracleChooseLens(context.session.correctLens);
 assert.equal(context.session.lensCorrect,true,'Oracle Lens should recognize the controlling clue');
+assert.equal(context.session.clarityStreak,1,'Oracle Lens should build a clarity streak');
 context.oracleAnswer(context.session.current.answer);
 assert.equal(context.session.answered,true,'Oracle Lens answer should resolve after a lens is chosen');
 
@@ -81,6 +86,7 @@ context.hexJudge(context.session.claimValid?'valid':'hexed');
 context.hexRepair(context.session.current.answer);
 assert.equal(context.session.answered,true,'Hex Breaker should resolve after judgment and repair');
 assert.ok(context.session.judgmentScore>=1,'Hex Breaker should score a correct validity judgment');
+assert.equal(context.session.breakStreak,1,'Hex Breaker should build a successful break streak');
 
 assert.equal(context.document.documentElement.dataset.majickRealmVariety,'3352','Game Realm dataset marker missing');
 console.log('GAME REALM OVERHAUL SMOKE PASSED');
