@@ -1,6 +1,7 @@
 (()=>{
 'use strict';
-const VERSION='3.3.50-celebration';
+const VERSION='3.3.42';
+const CELEBRATION_VERSION='3.3.50';
 const E=v=>String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
 const STAGE={'new-bond':'New Bond','apprentice':'Apprentice','guardian':'Guardian','ascendant':'Ascendant','celestial':'Celestial'};
 const STAGE_ORDER=['new-bond','apprentice','guardian','ascendant','celestial'];
@@ -161,6 +162,6 @@ if(typeof oldRender==='function'&&!oldRender.__v3342){
   const fn=function(){const r=oldRender.apply(this,arguments);setTimeout(decorate,0);return r};fn.__v3342=true;window.render=fn;
 }
 setTimeout(decorate,0);
-window.MajickGuardianLife={VERSION,recordEvolution,nookSummary,decorate,showEvolutionCeremony,profiles:CELEBRATION,stageCelebrations:STAGE_CELEBRATION};
+window.MajickGuardianLife={VERSION,CELEBRATION_VERSION,recordEvolution,nookSummary,decorate,showEvolutionCeremony,profiles:CELEBRATION,stageCelebrations:STAGE_CELEBRATION};
 document.documentElement.dataset.majickGuardianLife=VERSION;
 })();
