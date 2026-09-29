@@ -37,7 +37,7 @@ function guardianMeta(p){
   })();
   const snap=careSnapshot();
   const g=snap?.guardians?.[p.id]||snap?.byType?.[type]||snap?.byType?.[p.type]||{};
-  return {pet:p,id:p.id,type,sourceType:p.type,name,level,stage,image,bond:Math.round(Number(g.bond??p.bond??0)),mood:g.mood?.label||'Bonded',icon:g.icon||reg.icon||'✦',species:reg.species||'Guardian',role:reg.role||'Study Keeper',personality:reg.personality||'',accent:reg.accent||'#b79ad9'};
+  return {pet:p,id:p.id,type,sourceType:p.type,name,level,stage,image,bond:Math.round(Number(g.bond??p.bond??0)),mood:g.mood?.label||'Bonded',icon:g.icon||reg.icon||'✦',species:reg.species||'Guardian',role:reg.role||'Study Keeper',personality:reg.personality||'',accent:reg.accent||'#b79ad9',hue:Number(reg.hue||0),variantIndex:Number(reg.variantIndex||0)};
 }
 function journey(){
   const a=account();if(!a)return {guardians:{},memories:[]};
@@ -237,14 +237,14 @@ function questText(p){
 }
 function selectorHtml(active){
   const rows=pets();if(rows.length<2)return '';
-  return '<div class="v3341GuardianSelector">'+rows.map(p=>{const m=guardianMeta(p);return '<button type="button" class="'+(p.id===active.id?'active':'')+'" data-guardian-id="'+E(p.id)+'" onclick="MajickGuardianCore.select(this.dataset.guardianId)" title="Study with '+E(m.name)+'">'+(m.image?'<img src="'+E(m.image)+'" alt="">':'<span>'+E(m.icon)+'</span>')+'<small>'+E(m.name)+'</small></button>'}).join('')+'</div>';
+  return '<div class="v3341GuardianSelector">'+rows.map(p=>{const m=guardianMeta(p);return '<button type="button" class="'+(p.id===active.id?'active':'')+'" data-guardian-id="'+E(p.id)+'" onclick="MajickGuardianCore.select(this.dataset.guardianId)" title="Study with '+E(m.name)+'" style="--guardian-accent:'+E(m.accent)+'">'+(m.image?'<img src="'+E(m.image)+'" alt="" style="filter:hue-rotate('+m.hue+'deg)">':'<span>'+E(m.icon)+'</span>')+'<small>'+E(m.name)+'</small></button>'}).join('')+'</div>';
 }
 function guardianHeroHtml(){
   const p=activePet();if(!p)return '<div class="v3341GuardianHero empty"><span>✦</span><b>Your Study Guardian is waiting to awaken</b><button onclick="navigate(\'companions\')">Visit Guardian House</button></div>';
   const m=guardianMeta(p),q=questText(p),s=settings();
   return '<section class="v3341GuardianHero">'+
-    '<div class="v3341GuardianHeroPortrait">'+(m.image?'<img src="'+E(m.image)+'" alt="'+E(m.name)+'">':'<span>'+E(m.icon)+'</span>')+'<i>✦</i></div>'+
-    '<div class="v3341GuardianHeroCopy"><small>ACTIVE STUDY GUARDIAN</small><h3>'+E(m.name)+'</h3><p>'+E(m.stage)+' • '+E(m.mood)+' • Bond '+m.bond+'</p>'+
+    '<div class="v3341GuardianHeroPortrait" style="--guardian-accent:'+E(m.accent)+'">'+(m.image?'<img src="'+E(m.image)+'" alt="'+E(m.name)+'" style="filter:hue-rotate('+m.hue+'deg)">':'<span>'+E(m.icon)+'</span>')+'<i>✦</i></div>'+
+    '<div class="v3341GuardianHeroCopy"><small>ACTIVE STUDY GUARDIAN</small><h3>'+E(m.name)+'</h3><p>'+E(m.species)+' • '+E(m.stage)+' • '+E(m.mood)+' • Bond '+m.bond+'</p><p class="v3341GuardianPersonality">'+E(m.personality)+'</p>'+
       '<div class="v3341BondQuest"><div><span>Current Bond Quest</span><b>'+q.progress+' / '+q.target+'</b></div><i><em style="width:'+(q.progress/q.target*100)+'%"></em></i><small>Correct answers and completed concepts fill this. Complete it for +2 Bond.</small></div>'+
       '<div class="v3341GuardianHeroActions"><button class="primary" onclick="MajickGuardianCore.study()">Study with '+E(m.name)+'</button><button onclick="navigate(\'companions\')">Visit Sanctuary</button><button onclick="MajickGuardianCore.toggleSound()">'+(s.enabled?'🔊 Sound on':'🔇 Sound off')+'</button><button onclick="MajickGuardianCore.toggleDebrief()">📝 <span data-v3341-debrief-label>'+(debriefEnabled()?'Debrief on':'Debrief off')+'</span></button></div>'+
       selectorHtml(p)+'<div class="v3341ReactionLine">'+E(m.name)+' is ready to study beside you.</div>'+((recentMemories(2).length)?'<div class="v3341GuardianMemories"><small>RECENT MEMORIES</small>'+recentMemories(2).map(x=>'<span>✦ '+E(x.text)+'</span>').join('')+'</div>':'')+
@@ -254,7 +254,7 @@ function guardianHeroHtml(){
 function studyDockHtml(){
   const p=activePet();if(!p)return '';
   const m=guardianMeta(p),q=questText(p);
-  return '<aside class="v3341StudyGuardian"><div class="v3341StudyGuardianPortrait">'+(m.image?'<img src="'+E(m.image)+'" alt="'+E(m.name)+'">':'<span>'+E(m.icon)+'</span>')+'<i>✦</i></div><div><small>STUDYING WITH</small><b>'+E(m.name)+'</b><span>'+E(m.mood)+' • Bond '+m.bond+' • Quest '+q.progress+'/'+q.target+'</span><em class="v3341ReactionLine">Your Guardian reacts to your study progress.</em></div><div class="v3341StudyGuardianTools"><button onclick="MajickGuardianCore.cycle()">Switch</button><button onclick="MajickGuardianCore.toggleDebrief()">📝 <span data-v3341-debrief-label>'+(debriefEnabled()?'Debrief on':'Debrief off')+'</span></button></div></aside>';
+  return '<aside class="v3341StudyGuardian"><div class="v3341StudyGuardianPortrait" style="--guardian-accent:'+E(m.accent)+'">'+(m.image?'<img src="'+E(m.image)+'" alt="'+E(m.name)+'" style="filter:hue-rotate('+m.hue+'deg)">':'<span>'+E(m.icon)+'</span>')+'<i>✦</i></div><div><small>STUDYING WITH</small><b>'+E(m.name)+'</b><span>'+E(m.species)+' • '+E(m.mood)+' • Bond '+m.bond+' • Quest '+q.progress+'/'+q.target+'</span><em class="v3341ReactionLine">Your Guardian reacts to your study progress.</em></div><div class="v3341StudyGuardianTools"><button onclick="MajickGuardianCore.cycle()">Switch</button><button onclick="MajickGuardianCore.toggleDebrief()">📝 <span data-v3341-debrief-label>'+(debriefEnabled()?'Debrief on':'Debrief off')+'</span></button></div></aside>';
 }
 function decorateHome(){
   const hero=document.querySelector('.v3327PortalHero');if(!hero)return;

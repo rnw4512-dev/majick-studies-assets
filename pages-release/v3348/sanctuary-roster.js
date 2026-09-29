@@ -18,6 +18,16 @@
  function canon(g){return identity(g)?.canon||String(g.type).replace(/[^a-z0-9-]/gi,'').toLowerCase()}
  function imageKey(g){return 'v3348-'+canon(g)+'-room'}
  function imageURL(g){return '../assets/familiars/canon/'+canon(g)+'-guardian.webp?v=3348'}
+ function tintValue(meta){
+   const hex=String(meta?.accent||'').replace('#','');
+   const n=parseInt(hex,16);
+   return Number.isFinite(n)?n:null;
+ }
+ function applyIndividualTint(target,meta){
+   const tint=tintValue(meta);
+   if(!target?.setTint||tint==null)return;
+   try{target.setTint(tint)}catch(_){}
+ }
  function point(scene,g,index){
    const bed=scene.v3342Nooks?.[index]?.bed;
    if(bed)return {x:Math.max(160,Math.min((scene.worldWidth||2400)-160,bed.x+80)),y:Math.max(370,bed.y-80)};
@@ -28,7 +38,7 @@
      const type=resolvedType(g),meta=identity(g)||{};
      const pet=scene.v3348PetById?.[g.petId],walk=scene['v3317Walk_'+type],action=scene['v3317Action_'+type];
      const visible=pet?.active&&((pet.visible!==false&&Number(pet.alpha??1)>.05)||(ORIGINAL.has(type)&&String(g.type||'')===type&&((walk?.active&&walk.visible!==false)||(action?.active&&action.visible!==false))));
-     return {petId:g.petId,name:meta.name||g.name,type,canon:meta.canon||canon(g),present:!!visible};
+     return {petId:g.petId,name:meta.name||g.name,type,canon:meta.canon||canon(g),species:meta.species||g.species,accent:meta.accent||g.accent,personality:meta.personality||g.personality,variantIndex:meta.variantIndex||0,present:!!visible};
    });
    try{window.parent?.postMessage({type:'MAJICK_SANCTUARY_ROSTER_V3350',rows},location.origin)}catch(_){}
    return rows;
@@ -42,8 +52,9 @@
      ?scene.add.text(p.x,p.y,g.icon||'✦',{fontFamily:'Georgia',fontSize:'80px',color:'#f2d9ff'}).setOrigin(.5,1).setDepth(80)
      :scene.add.image(p.x,p.y,key).setOrigin(.5,1).setDepth(80);
    if(key!=='v3350-placeholder')pet.setScale(Math.min(.7,Math.max(.15,240/Math.max(1,pet.height))));
-   pet.setInteractive({useHandCursor:true});pet.on('pointerup',()=>{if(!scene.editMode)scene.openGuardianCarePanel?.(g.petId)});
    const meta=identity(g)||{},type=resolvedType(g);
+   applyIndividualTint(pet,meta);
+   pet.setInteractive({useHandCursor:true});pet.on('pointerup',()=>{if(!scene.editMode)scene.openGuardianCarePanel?.(g.petId)});
    pet.setData('guardianId',g.petId);pet.setData('guardianName',meta.name||g.name);pet.setData('guardianType',type);pet.v3350Texture=key;
    scene.v3348Sprites[g.petId]=pet;scene.v3348PetById[g.petId]=pet;
    if(!scene[type]||!scene[type].active)scene[type]=pet;
@@ -62,7 +73,13 @@
      const type=resolvedType(g),first=!seenTypes.has(type);seenTypes.add(type);
      // Only reuse an original protected Phaser body when saved type and canon identity agree.
      if(first&&ORIGINAL.has(type)&&String(g.type||'')===type){
-       if(this[type]?.active)this.v3348PetById[g.petId]=this[type];
+       const meta=identity(g)||{};
+       if(this[type]?.active){
+         applyIndividualTint(this[type],meta);
+         applyIndividualTint(this['v3317Walk_'+type],meta);
+         applyIndividualTint(this['v3317Action_'+type],meta);
+         this.v3348PetById[g.petId]=this[type];
+       }
        return;
      }
      const primary=imageKey(g,this),key=this.v3348Fallback[primary]||primary,existing=this.v3348Sprites[g.petId];

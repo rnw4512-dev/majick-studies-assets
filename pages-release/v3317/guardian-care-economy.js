@@ -422,7 +422,7 @@ function snapshot(){
   const roster=ownedPets().map(pet=>{
     const g=a.guardianCare.guardians[pet.id],meta=identityForPet(pet),fav=favoriteForPet(pet),type=meta.type||pet.type;
     return {
-      petId:pet.id,type,sourceType:pet.type,canon:meta.canon||type,name:meta.name||pet.name,species:meta.species,role:meta.role||'Study Keeper',personality:meta.personality||'',accent:meta.accent||'#b79ad9',icon:meta.icon,
+      petId:pet.id,type,sourceType:pet.type,canon:meta.canon||type,name:meta.name||pet.name,species:meta.species,role:meta.role||'Study Keeper',personality:meta.personality||'',accent:meta.accent||'#b79ad9',hue:Number(meta.hue||0),variantIndex:Number(meta.variantIndex||0),icon:meta.icon,
       phaser:!!window.V338_CANON?.[type]?.phaser||!!meta.hasProtectedMotion,
       ...g,
       favoriteItem:fav.id,favoriteLabel:fav.label,favoriteOwned:favoriteOwned(pet),
