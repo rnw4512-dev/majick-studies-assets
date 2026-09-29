@@ -226,3 +226,19 @@
 .realmGauntlet.phase-three .realmBossHUD{border-color:rgba(226,109,118,.34);box-shadow:0 0 28px rgba(186,74,94,.07),inset 0 0 30px rgba(185,70,94,.06)}.realmGauntlet.phase-three .bossBar i{background:linear-gradient(90deg,#b64e69,#e68a66);box-shadow:0 0 16px rgba(232,113,93,.25)}.realmGauntlet.phase-three .bossSigil{animation:realmBossPulse .8s ease-in-out infinite alternate}
 @keyframes realmBossPulse{from{transform:scale(.96);filter:brightness(.95)}to{transform:scale(1.08);filter:brightness(1.25)}}
 @media(max-width:720px){.realmProgressNodes{grid-template-columns:repeat(2,1fr)}.realmProgressNodes>div:last-child{grid-column:1/-1}.realmMiniHUD{justify-content:flex-start}}
+
+/* V3.3.54 Realm result + Guardian feedback */
+.realmNewBest{display:inline-flex;align-items:center;justify-content:center;margin:0 auto 12px;padding:8px 14px;border:1px solid rgba(244,212,131,.34);border-radius:999px;background:linear-gradient(90deg,rgba(137,91,171,.2),rgba(222,177,98,.14));color:#ffe4a6;font:900 10px Arial,sans-serif;letter-spacing:.16em;box-shadow:0 0 24px rgba(227,182,101,.12);animation:realmBestPulse 1.2s ease-in-out infinite alternate}
+.realmResultStats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:18px 0}
+.realmResultStats>div{padding:13px 12px;border:1px solid rgba(190,156,211,.16);border-radius:14px;background:#160f1d;text-align:center}
+.realmResultStats small{display:block;margin-bottom:5px;color:#9e8aa8;font:900 8px Arial,sans-serif;letter-spacing:.13em;text-transform:uppercase}
+.realmResultStats b{color:#f9eec7;font:800 18px Georgia,serif}
+.realmResultGuardian{display:flex;align-items:center;justify-content:center;gap:12px;margin:14px auto 18px;padding:12px 14px;max-width:620px;border:1px solid rgba(183,154,205,.18);border-radius:16px;background:linear-gradient(90deg,rgba(121,88,155,.08),rgba(62,41,80,.12));text-align:left}
+.realmResultGuardian img{width:54px;height:54px;object-fit:contain;filter:drop-shadow(0 8px 14px rgba(0,0,0,.28))}
+.realmResultGuardian>span{display:grid;place-items:center;width:48px;height:48px;border-radius:50%;background:#21142b;color:#d7c1e4;font-size:22px}
+.realmResultGuardian b{display:block;color:#f2e3f7;font-size:13px}
+.realmResultGuardian p{margin:3px 0 0;color:#b9a9c2;font:italic 11px/1.4 Georgia,serif}
+.realmGuardianBanner p{transition:opacity .18s ease}
+.realmGauntlet.phase-three .realmGuardianBanner,.realmOracle .realmGuardianBanner,.realmHexBreaker .realmGuardianBanner,.realmRuneSort .realmGuardianBanner{box-shadow:0 12px 30px rgba(0,0,0,.12),inset 0 0 24px color-mix(in srgb,var(--guardian-accent) 8%,transparent)}
+@keyframes realmBestPulse{from{transform:scale(.985);filter:brightness(.95)}to{transform:scale(1.015);filter:brightness(1.14)}}
+@media(max-width:650px){.realmResultStats{grid-template-columns:1fr}.realmResultGuardian{align-items:flex-start}}
