@@ -32,3 +32,23 @@
 @keyframes majAura{from{transform:translate(-50%,-50%) scale(.94);opacity:.7}to{transform:translate(-50%,-50%) scale(1.06);opacity:1}}
 @keyframes majTwinkle{from{opacity:.12;transform:scale(.75)}to{opacity:.7;transform:scale(1.35)}}
 @media(max-width:760px){.majEvoBackdrop{padding:10px}.majEvoCard{min-height:auto;padding:22px 14px 26px;border-radius:24px}.majEvoArtWrap{height:260px}.majEvoArt{height:250px}.majEvoRewards{grid-template-columns:repeat(2,1fr)}.majEvoPath{gap:5px}.majEvoStage{font-size:8px;padding:6px 8px}.majEvoPath>i{display:none}}
+
+.majEvoStageHeadline{margin:2px 0 0;color:#d8b9e8;font:800 12px/1.2 Arial,sans-serif;letter-spacing:.16em;text-transform:uppercase;opacity:.92}
+.majEvo-apprentice .majEvoCard{box-shadow:0 0 0 1px rgba(194,139,226,.18),0 32px 90px rgba(0,0,0,.55),0 0 90px rgba(161,102,209,.22)}
+.majEvo-guardian .majEvoCard{border-color:rgba(255,220,148,.62);box-shadow:0 0 0 1px rgba(255,229,167,.14),0 34px 100px rgba(0,0,0,.58),0 0 115px rgba(220,164,91,.23)}
+.majEvo-guardian .majEvoAura{width:590px;height:590px;background:radial-gradient(circle,rgba(255,236,175,.36),rgba(192,119,255,.2) 35%,rgba(84,28,118,.03) 66%,transparent 74%)}
+.majEvo-guardian .majEvoKicker,.majEvo-guardian .majEvoStageHeadline{color:#f5d78a}
+.majEvo-ascendant{background:radial-gradient(circle at 50% 26%,rgba(129,71,185,.42),rgba(8,3,15,.95) 64%)}
+.majEvo-ascendant .majEvoCard{border-color:rgba(239,198,255,.72);box-shadow:0 0 0 1px rgba(239,198,255,.18),0 36px 110px rgba(0,0,0,.6),0 0 145px rgba(178,102,255,.28)}
+.majEvo-ascendant .majEvoAura{width:650px;height:650px;background:radial-gradient(circle,rgba(255,242,194,.38),rgba(202,132,255,.29) 35%,rgba(95,34,138,.06) 66%,transparent 75%)}
+.majEvo-ascendant .majEvoArt{filter:drop-shadow(0 24px 34px rgba(0,0,0,.38)) drop-shadow(0 0 32px rgba(229,192,255,.5))}
+.majEvo-ascendant .majEvoBadge{transform:scale(1.04)}
+.majEvo-celestial{background:radial-gradient(circle at 50% 22%,rgba(246,212,126,.22),rgba(137,70,191,.38) 38%,rgba(7,3,14,.97) 70%)}
+.majEvo-celestial .majEvoCard{width:min(1040px,95vw);border-color:rgba(255,231,164,.86);box-shadow:0 0 0 1px rgba(255,239,192,.2),0 38px 120px rgba(0,0,0,.62),0 0 180px rgba(239,196,105,.3)}
+.majEvo-celestial .majEvoAura{width:760px;height:760px;background:radial-gradient(circle,rgba(255,249,213,.54),rgba(255,211,121,.28) 26%,rgba(197,121,255,.24) 48%,rgba(83,32,119,.03) 72%,transparent 78%)}
+.majEvo-celestial .majEvoArtWrap{height:360px}
+.majEvo-celestial .majEvoArt{height:350px;width:min(470px,78vw);filter:drop-shadow(0 26px 38px rgba(0,0,0,.4)) drop-shadow(0 0 40px rgba(255,229,159,.52));animation:majGuardianCelestial 1.25s cubic-bezier(.16,.85,.18,1) both}
+.majEvo-celestial .majEvoKicker{font-size:14px;color:#ffe8a8}.majEvo-celestial .majEvoStageHeadline{font-size:13px;color:#ffe6a0}
+.majEvo-celestial .majEvoBadge{background:linear-gradient(90deg,rgba(102,58,134,.9),rgba(187,124,175,.92),rgba(151,105,75,.92),rgba(102,58,134,.9));box-shadow:0 0 34px rgba(255,218,142,.24)}
+.majEvo-celestial .majEvoWelcome{background:linear-gradient(135deg,#c96bad,#8e5cc0,#b58b4b);box-shadow:0 16px 40px rgba(99,42,129,.3),0 0 30px rgba(255,220,150,.2)}
+@keyframes majGuardianCelestial{0%{opacity:0;transform:scale(.55) translateY(36px) rotate(-2deg);filter:blur(8px) brightness(1.8)}55%{opacity:1;transform:scale(1.08) translateY(-8px);filter:blur(0) brightness(1.18)}78%{transform:scale(.98) translateY(2px)}100%{transform:scale(1) translateY(0);filter:drop-shadow(0 26px 38px rgba(0,0,0,.4)) drop-shadow(0 0 40px rgba(255,229,159,.52))}}
