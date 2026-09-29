@@ -242,3 +242,39 @@
 .realmGauntlet.phase-three .realmGuardianBanner,.realmOracle .realmGuardianBanner,.realmHexBreaker .realmGuardianBanner,.realmRuneSort .realmGuardianBanner{box-shadow:0 12px 30px rgba(0,0,0,.12),inset 0 0 24px color-mix(in srgb,var(--guardian-accent) 8%,transparent)}
 @keyframes realmBestPulse{from{transform:scale(.985);filter:brightness(.95)}to{transform:scale(1.015);filter:brightness(1.14)}}
 @media(max-width:650px){.realmResultStats{grid-template-columns:1fr}.realmResultGuardian{align-items:flex-start}}
+
+/* V3.3.55 trial clarity guides */
+.realmTrialGuide{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:10px;
+  margin:0 0 14px;
+}
+.realmTrialGuide>div{
+  min-height:78px;
+  padding:12px 13px;
+  border:1px solid rgba(188,155,207,.16);
+  border-radius:14px;
+  background:linear-gradient(180deg,rgba(26,17,34,.92),rgba(18,12,25,.94));
+}
+.realmTrialGuide small{
+  display:block;
+  margin-bottom:6px;
+  color:#a990b7;
+  font:900 8px Arial,sans-serif;
+  letter-spacing:.14em;
+}
+.realmTrialGuide b{
+  display:block;
+  color:#f3e7f6;
+  font:700 12px/1.45 Arial,sans-serif;
+}
+.realmRuneSort .realmTrialGuide>div:first-child{border-color:rgba(126,198,219,.2)}
+.realmOracle .realmTrialGuide>div:first-child{border-color:rgba(170,148,231,.22)}
+.realmConstellation .realmTrialGuide>div:first-child{border-color:rgba(171,190,238,.22)}
+.realmHexBreaker .realmTrialGuide>div:first-child{border-color:rgba(220,119,166,.22)}
+.realmGauntlet .realmTrialGuide>div:first-child{border-color:rgba(225,174,101,.22)}
+@media(max-width:760px){
+  .realmTrialGuide{grid-template-columns:1fr}
+  .realmTrialGuide>div{min-height:auto;padding:10px 12px}
+}
