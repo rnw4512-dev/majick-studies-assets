@@ -12,6 +12,13 @@
   };
   const percent=(n,d)=>Math.round((Number(n||0)/Math.max(1,Number(d||0)))*100);
 
+  function categoryLabel(value){
+    const raw=String(value??'').trim();
+    if(/^\d+$/.test(raw))return 'Section '+raw;
+    if(/^section\s*\d+$/i.test(raw))return raw.replace(/^section\s*/i,'Section ');
+    return raw||'Course Section';
+  }
+
   function guardian(){
     try{
       const p=globalThis.MajickGuardianCore?.activePet?.()||globalThis.activePet?.();
@@ -166,12 +173,12 @@
     if(categories.length<2)return null;
     const items=[];
     categories.forEach(cat=>shuffleCopy(groups.get(cat)).slice(0,2).forEach(q=>items.push({id:q.id,prompt:q.prompt,section:cat,choice:null,ok:null,rewarded:false})));
-    return {categories,items:shuffleCopy(items).slice(0,8)};
+    return {categories,categoryLabels:Object.fromEntries(categories.map(c=>[c,categoryLabel(c)])),items:shuffleCopy(items).slice(0,8)};
   }
   globalThis.startRuneSort=function(){
     const built=buildRuneSort();
     if(!built){try{alert('Rune Sort needs at least two course sections with enough questions. Try another Realm for this course.')}catch(_){}return}
-    session={type:'runesort',opts:{label:'Rune Sort'},categories:built.categories,items:built.items,score:0,finished:false};
+    session={type:'runesort',opts:{label:'Rune Sort'},categories:built.categories,categoryLabels:built.categoryLabels||{},items:built.items,score:0,finished:false};
     if(globalThis.S)S.screen='mission';render?.();
   };
   globalThis.runeSortPick=function(i,cat){
@@ -194,8 +201,8 @@
     const done=session.items.filter(x=>x.ok).length;
     return '<div class="qwrap realmMode realmRuneSort">'+realmScene('runesort')+guardianBanner('Sort the runes. I will react when the pattern clicks.')+
       '<div class="qtop"><span class="qbadge">ᚱ Rune Sort</span><b>'+done+'/'+session.items.length+' locked</b></div>'+
-      '<div class="card"><p>Choose the section each prompt belongs to. Correct runes lock into place.</p>'+
-      '<div class="realmSortBoard">'+session.items.map((x,i)=>'<article class="realmSortRune '+(x.ok?'locked':x.choice?'miss':'')+'"><b>'+E(x.prompt)+'</b><div class="realmSortChoices">'+session.categories.map(cat=>'<button '+(x.ok?'disabled':'')+' data-cat="'+E(cat)+'" onclick="runeSortPick('+i+',this.dataset.cat)">'+E(cat)+'</button>').join('')+'</div>'+(x.choice?'<small class="'+(x.ok?'strong':'weak')+'">'+(x.ok?'✓ Rune locked':'Not this section — try again')+'</small>':'')+'</article>').join('')+'</div>'+
+      '<div class="card"><div class="realmSortLegend"><small>SORT DESTINATIONS</small><div>'+session.categories.map(cat=>'<span><i>ᚱ</i>'+E(session.categoryLabels?.[cat]||categoryLabel(cat))+'</span>').join('')+'</div></div><p>Choose which course section each prompt belongs to. Correct runes lock into place.</p>'+
+      '<div class="realmSortBoard">'+session.items.map((x,i)=>'<article class="realmSortRune '+(x.ok?'locked':x.choice?'miss':'')+'"><b>'+E(x.prompt)+'</b><div class="realmSortChoices">'+session.categories.map(cat=>'<button '+(x.ok?'disabled':'')+' data-cat="'+E(cat)+'" onclick="runeSortPick('+i+',this.dataset.cat)">'+E(session.categoryLabels?.[cat]||categoryLabel(cat))+'</button>').join('')+'</div>'+(x.choice?'<small class="'+(x.ok?'strong':'weak')+'">'+(x.ok?'✓ Rune locked':'Not this section — try again')+'</small>':'')+'</article>').join('')+'</div>'+
       '<button class="btn violet" onclick="finishRuneSort()">Finish Rune Sort</button></div></div>';
   }
 
