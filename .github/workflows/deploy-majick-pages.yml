@@ -1,4 +1,5 @@
 name: Deploy Majick Studies Golden Baseline to GitHub Pages
+# V3.3.52 forced publish after Game Realm hotfix
 
 on:
   push:
