@@ -45,8 +45,9 @@ vm.createContext(ctx);
 vm.runInContext(src,ctx,{filename:'guardian-life-main.js'});
 
 const M=ctx.MajickGuardianLife;
-assert(M&&M.VERSION==='3.3.50-celebration','Guardian Life version missing');
-assert(ctx.document.documentElement.dataset.majickGuardianLife==='3.3.50-celebration','Guardian Life dataset marker missing');
+assert(M&&M.VERSION==='3.3.42','Guardian Life version missing');
+assert(ctx.document.documentElement.dataset.majickGuardianLife==='3.3.42','Guardian Life dataset marker missing');
+assert(M.CELEBRATION_VERSION==='3.3.50','Guardian celebration feature marker missing');
 assert(Object.keys(M.profiles||{}).length===10,'All ten Guardian celebration profiles should exist');
 assert(M.stageCelebrations?.celestial?.headline==='Celestial Form Achieved','Celestial celebration profile missing');
 
