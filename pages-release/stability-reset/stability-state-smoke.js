@@ -50,6 +50,10 @@ run('pages-release/stability-reset/majick-state-core.js');
 assert(MajickGuardianRegistry.get('luna')?.name==='Velora','baseline Guardian missing');
 assert(MajickGuardianRegistry.get('nyx')?.name==='Nyx','future Guardian from V338_CANON not discovered');
 assert(MajickGuardianRegistry.get('aurora-moth')?.type==='aurora-moth','future egg Guardian type not discovered');
+assert(MajickGuardianRegistry.getFor({type:'luna',name:'Briar'})?.type==='briar','canon name must override stale legacy type');
+assert(MajickGuardianRegistry.getFor({type:'ember',name:'Vesper'})?.canon==='vesper','Vesper must not inherit Cascade art from stale type');
+assert(MajickGuardianRegistry.getFor({type:'nova',name:'Solara'})?.species==='Sunrise Hedgehog','Solara identity profile missing');
+assert(MajickGuardianRegistry.getFor({type:'mallow',name:'Rook'})?.role==='Strategy Keeper','Rook role profile missing');
 
 MajickStateCore.normalizeAll();
 assert(prog()===S.progress.D772,'safe prog does not return active course');
