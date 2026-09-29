@@ -284,10 +284,26 @@
       const a=aEl.getBoundingClientRect(),b=bEl.getBoundingClientRect();
       const x1=(a.left-gridRect.left)+(a.width/2),y1=(a.top-gridRect.top)+(a.height/2);
       const x2=(b.left-gridRect.left)+(b.width/2),y2=(b.top-gridRect.top)+(b.height/2);
-      return '<line x1="'+x1+'" y1="'+y1+'" x2="'+x2+'" y2="'+y2+'" class="realmConstellationLine"></line>'+
+      const dx=x2-x1,dy=y2-y1,len=Math.max(1,Math.sqrt(dx*dx+dy*dy));
+      const sparkle1=.28,sparkle2=.62;
+      const sx1=x1+dx*sparkle1,sy1=y1+dy*sparkle1,sx2=x1+dx*sparkle2,sy2=y1+dy*sparkle2;
+      return '<line x1="'+x1+'" y1="'+y1+'" x2="'+x2+'" y2="'+y2+'" pathLength="1" class="realmConstellationLine newlyDrawn"></line>'+
         '<circle cx="'+x1+'" cy="'+y1+'" r="7" class="realmConstellationNode"></circle>'+
-        '<circle cx="'+x2+'" cy="'+y2+'" r="7" class="realmConstellationNode"></circle>';
+        '<circle cx="'+x2+'" cy="'+y2+'" r="7" class="realmConstellationNode"></circle>'+
+        '<circle cx="'+sx1+'" cy="'+sy1+'" r="3.5" class="realmConstellationSparkle sparkOne"></circle>'+
+        '<circle cx="'+sx2+'" cy="'+sy2+'" r="2.8" class="realmConstellationSparkle sparkTwo"></circle>';
     }).join('');
+  }
+  function showConstellationCompletion(){
+    if(typeof document==='undefined')return;
+    const wrap=document.querySelector?.('.realmConstellationWrap');
+    if(!wrap)return;
+    wrap.classList.add('complete');
+    const finale=document.createElement('div');
+    finale.className='realmConstellationFinale';
+    finale.innerHTML='<span class="finalStar fs1">✦</span><span class="finalStar fs2">✧</span><span class="finalStar fs3">✦</span><span class="finalStar fs4">✧</span><span class="finalStar fs5">✦</span><span class="finalStar fs6">✧</span><svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><polyline points="12,72 28,34 48,58 66,24 86,44 70,78 42,82 12,72" class="realmFinalConstellationLine"></polyline></svg><b>CONSTELLATION COMPLETE</b>';
+    wrap.appendChild(finale);
+    globalThis.setTimeout?.(()=>finale.classList.add('show'),30);
   }
   function renderKeepScroll(){
     const w=globalThis.window||globalThis;
@@ -331,21 +347,37 @@
       guardianReact('correct',{mode:'constellation',qid:a.qid});
 
       if(session.matched>=session.cards.length/2){
-        session.finished=true;
         const total=session.cards.length/2;
         const efficiency=Math.max(1,total*2-session.moves+total);
         recordRealm('constellation',efficiency,total*2,true);
         addReward('Memory Constellation completed',16,1);
         guardianReact('concept',{mode:'constellation'});
+        session.completing=true;
       }
 
       renderKeepScroll();
-      setTimeout(()=>{
-        if(session?.type==='constellation'){
-          session.burst=[];
-          renderKeepScroll();
-        }
-      },900);
+
+      if(session.completing){
+        setTimeout(()=>{
+          if(session?.type==='constellation'){
+            showConstellationCompletion();
+            setTimeout(()=>{
+              if(session?.type==='constellation'){
+                session.finished=true;
+                session.completing=false;
+                renderKeepScroll();
+              }
+            },1500);
+          }
+        },220);
+      }else{
+        setTimeout(()=>{
+          if(session?.type==='constellation'){
+            session.burst=[];
+            renderKeepScroll();
+          }
+        },900);
+      }
       return;
     }
 
