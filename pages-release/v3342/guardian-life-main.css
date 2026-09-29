@@ -52,3 +52,43 @@
 .majEvo-celestial .majEvoBadge{background:linear-gradient(90deg,rgba(102,58,134,.9),rgba(187,124,175,.92),rgba(151,105,75,.92),rgba(102,58,134,.9));box-shadow:0 0 34px rgba(255,218,142,.24)}
 .majEvo-celestial .majEvoWelcome{background:linear-gradient(135deg,#c96bad,#8e5cc0,#b58b4b);box-shadow:0 16px 40px rgba(99,42,129,.3),0 0 30px rgba(255,220,150,.2)}
 @keyframes majGuardianCelestial{0%{opacity:0;transform:scale(.55) translateY(36px) rotate(-2deg);filter:blur(8px) brightness(1.8)}55%{opacity:1;transform:scale(1.08) translateY(-8px);filter:blur(0) brightness(1.18)}78%{transform:scale(.98) translateY(2px)}100%{transform:scale(1) translateY(0);filter:drop-shadow(0 26px 38px rgba(0,0,0,.4)) drop-shadow(0 0 40px rgba(255,229,159,.52))}}
+
+/* Evolved Guardian art centerpiece */
+.majEvoCard{padding-top:24px}
+.majEvoArtStage{position:relative;display:grid;place-items:center;min-height:430px;margin:4px auto 8px;isolation:isolate}
+.majEvoArtWrap{position:relative;z-index:3;width:min(610px,82vw);height:410px;display:grid;place-items:center;overflow:visible}
+.majEvoArt{display:block;width:auto;height:auto;max-width:100%;max-height:100%;object-fit:contain;object-position:center center;transform-origin:50% 78%;filter:drop-shadow(0 24px 36px rgba(0,0,0,.42)) drop-shadow(0 0 30px rgba(230,190,255,.32));animation:majGuardianRise 1s cubic-bezier(.2,.8,.2,1) both}
+.majEvoArt.portrait{max-height:408px;max-width:500px}
+.majEvoArt.square{max-height:400px;max-width:560px}
+.majEvoArt.landscape{max-width:610px;max-height:360px}
+.majEvoArtCaption{position:absolute;z-index:5;bottom:4px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;gap:1px;min-width:230px;padding:8px 18px;border:1px solid rgba(246,220,159,.25);border-radius:999px;background:rgba(17,7,27,.72);box-shadow:0 10px 26px rgba(0,0,0,.28);backdrop-filter:blur(8px)}
+.majEvoArtCaption strong{color:#fbe9bb;font:700 16px Georgia,serif;letter-spacing:.03em}
+.majEvoArtCaption span{color:#bda9c5;font:800 8px Arial,sans-serif;letter-spacing:.15em;text-transform:uppercase}
+.majEvoSigil{position:absolute;z-index:1;top:45%;left:50%;transform:translate(-50%,-50%);font-size:210px;line-height:1;color:rgba(255,234,181,.055);text-shadow:0 0 40px rgba(218,170,255,.08);user-select:none}
+.majEvoHalo{position:absolute;z-index:0;left:50%;top:47%;border-radius:50%;transform:translate(-50%,-50%);pointer-events:none}
+.majEvoHaloOne{width:420px;height:420px;border:1px solid rgba(240,210,151,.14);box-shadow:inset 0 0 60px rgba(237,209,148,.06),0 0 45px rgba(178,111,223,.08);animation:majHaloSpin 18s linear infinite}
+.majEvoHaloTwo{width:330px;height:330px;border:1px dashed rgba(206,165,234,.17);box-shadow:0 0 34px rgba(193,136,228,.06);animation:majHaloSpinReverse 14s linear infinite}
+.majEvoArtStage::after{content:'';position:absolute;z-index:2;left:50%;bottom:34px;width:min(450px,72vw);height:52px;transform:translateX(-50%);border-radius:50%;background:radial-gradient(ellipse,rgba(236,197,122,.18),rgba(151,92,188,.08) 48%,transparent 72%);filter:blur(7px)}
+.majEvoBadge{margin-top:2px}
+.majEvo-apprentice .majEvoArtStage{min-height:430px}
+.majEvo-guardian .majEvoArtStage{min-height:450px}
+.majEvo-guardian .majEvoArtWrap{height:430px;width:min(650px,84vw)}
+.majEvo-guardian .majEvoArt.portrait{max-height:428px}.majEvo-guardian .majEvoArt.square{max-height:420px}.majEvo-guardian .majEvoArt.landscape{max-width:650px;max-height:385px}
+.majEvo-ascendant .majEvoArtStage{min-height:470px}
+.majEvo-ascendant .majEvoArtWrap{height:450px;width:min(690px,86vw)}
+.majEvo-ascendant .majEvoArt.portrait{max-height:448px}.majEvo-ascendant .majEvoArt.square{max-height:440px}.majEvo-ascendant .majEvoArt.landscape{max-width:690px;max-height:405px}
+.majEvo-celestial .majEvoArtStage{min-height:500px}
+.majEvo-celestial .majEvoArtWrap{height:480px;width:min(740px,88vw)}
+.majEvo-celestial .majEvoArt.portrait{max-height:478px;max-width:580px}.majEvo-celestial .majEvoArt.square{max-height:468px;max-width:640px}.majEvo-celestial .majEvoArt.landscape{max-width:740px;max-height:430px}
+.majEvo-celestial .majEvoSigil{font-size:250px;color:rgba(255,239,192,.07)}
+.majEvo-celestial .majEvoHaloOne{width:500px;height:500px;border-color:rgba(255,228,163,.22)}
+.majEvo-celestial .majEvoHaloTwo{width:390px;height:390px;border-color:rgba(221,180,245,.24)}
+@keyframes majHaloSpin{from{transform:translate(-50%,-50%) rotate(0deg)}to{transform:translate(-50%,-50%) rotate(360deg)}}
+@keyframes majHaloSpinReverse{from{transform:translate(-50%,-50%) rotate(360deg)}to{transform:translate(-50%,-50%) rotate(0deg)}}
+@media(max-width:760px){
+  .majEvoArtStage{min-height:330px}
+  .majEvoArtWrap,.majEvo-guardian .majEvoArtWrap,.majEvo-ascendant .majEvoArtWrap,.majEvo-celestial .majEvoArtWrap{width:88vw;height:315px}
+  .majEvoArt.portrait,.majEvoArt.square,.majEvoArt.landscape,.majEvo-guardian .majEvoArt.portrait,.majEvo-guardian .majEvoArt.square,.majEvo-guardian .majEvoArt.landscape,.majEvo-ascendant .majEvoArt.portrait,.majEvo-ascendant .majEvoArt.square,.majEvo-ascendant .majEvoArt.landscape,.majEvo-celestial .majEvoArt.portrait,.majEvo-celestial .majEvoArt.square,.majEvo-celestial .majEvoArt.landscape{max-width:86vw;max-height:305px}
+  .majEvoSigil{font-size:150px}.majEvoHaloOne{width:300px;height:300px}.majEvoHaloTwo{width:240px;height:240px}
+  .majEvoArtCaption{bottom:-2px}
+}
