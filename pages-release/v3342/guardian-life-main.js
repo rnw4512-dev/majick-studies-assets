@@ -35,6 +35,14 @@ function stageImage(p,stage){
     return window.v3312StageImage?.(p.type,idx)||window.v3312CurrentGuardianImage?.(p)||'';
   }catch(_){return ''}
 }
+function fitEvolutionArt(img){
+  if(!img)return;
+  const w=Number(img.naturalWidth||0),h=Number(img.naturalHeight||0);
+  img.classList.remove('portrait','landscape','square');
+  if(!w||!h)return;
+  const ratio=w/h;
+  img.classList.add(ratio>1.18?'landscape':ratio<.84?'portrait':'square');
+}
 function celebrationFor(p){
   const type=String(p?.type||'').toLowerCase();
   const reg=window.MajickGuardianRegistry?.get?.(type)||{};
@@ -68,7 +76,13 @@ function showEvolutionCeremony(d,p){
     '<section class="majEvoCard" role="dialog" aria-modal="true" aria-labelledby="majEvoTitle">'+
       '<div class="majEvoAura" aria-hidden="true"></div>'+
       '<p class="majEvoKicker">'+E(celebration.sigil)+' GUARDIAN EVOLUTION '+E(celebration.sigil)+'</p>'+<div class="majEvoStageHeadline">'+E(stageCelebration.headline)+'</div>'+
-      '<div class="majEvoArtWrap">'+(img?'<img class="majEvoArt" src="'+E(img)+'" alt="'+E(name+', '+(STAGE[stage]||stage))+'">':'<div class="majEvoFallback">✦</div>')+'</div>'+
+      '<div class="majEvoArtStage">'+
+        '<div class="majEvoHalo majEvoHaloOne" aria-hidden="true"></div>'+
+        '<div class="majEvoHalo majEvoHaloTwo" aria-hidden="true"></div>'+
+        '<div class="majEvoSigil" aria-hidden="true">'+E(celebration.sigil)+'</div>'+
+        '<div class="majEvoArtWrap">'+(img?'<img class="majEvoArt" src="'+E(img)+'" alt="'+E(name+', '+(STAGE[stage]||stage))+'">':'<div class="majEvoFallback">✦</div>')+'</div>'+
+        '<div class="majEvoArtCaption"><strong>'+E(name)+'</strong><span>'+E(celebration.role)+'</span></div>'+
+      '</div>'+
       '<div class="majEvoBadge"><span>'+E(celebration.sigil)+' '+E(STAGE[stage]||stage)+' '+E(celebration.sigil)+'</span><small>'+E(celebration.role)+' • STAGE '+E(STAGE_ROMAN[stage]||'')+' AWAKENED</small></div>'+
       '<h2 id="majEvoTitle">'+E(name)+' became '+((stage==='apprentice'||stage==='ascendant')?'an ':'a ')+E(STAGE[stage]||stage)+'!</h2>'+
       '<p class="majEvoLead">'+E(stageCelebration.lead)+' Your studies strengthened '+E(name)+"'s bond enough to awaken this form.</p>"+
@@ -84,6 +98,11 @@ function showEvolutionCeremony(d,p){
       '<button type="button" class="majEvoWelcome">Welcome Home ✦</button>'+
     '</section>';
   document.body.appendChild(host);
+  const art=host.querySelector('.majEvoArt');
+  if(art){
+    const fit=()=>fitEvolutionArt(art);
+    if(art.complete)fit(); else art.addEventListener('load',fit,{once:true});
+  }
 
   requestAnimationFrame(()=>host.classList.add('show'));
   const btn=host.querySelector('.majEvoWelcome');
