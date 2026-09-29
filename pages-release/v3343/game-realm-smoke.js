@@ -1,14 +1,27 @@
 const fs=require('fs'),vm=require('vm'),assert=require('assert');
 const src=fs.readFileSync(__dirname+'/game-realm.js','utf8');
-const context={document:{documentElement:{dataset:{}}},session:{type:'moonword',items:[
-  {term:'Sample',def:'Part of a population',choice:'Sample',ok:true},
-  {term:'Sample',def:'The selected individuals',choice:'Population',ok:false},
-  {term:'Population',def:'The full group',choice:null,ok:null}
-]},
-  prog:()=>({answers:[]}),questionPool:()=>[],resultHTML:()=>'',esc:s=>String(s),
-  pickAdaptive:pool=>pool[0],moonwordPick:(i,v)=>{context.session.items[i].choice=v;context.session.items[i].ok=v===context.session.items[i].term}
+const state={answers:[],xp:0,crystals:0,realmRecords:{}};
+const context={
+  document:{documentElement:{dataset:{}}},
+  S:{screen:'games'},
+  session:{type:'moonword',items:[
+    {term:'Sample',def:'Part of a population',choice:'Sample',ok:true},
+    {term:'Sample',def:'The selected individuals',choice:'Population',ok:false},
+    {term:'Population',def:'The full group',choice:null,ok:null}
+  ]},
+  prog:()=>state,
+  questionPool:()=>[],
+  resultHTML:()=>'',esc:s=>String(s),
+  pickAdaptive:pool=>pool[0],
+  moonwordPick:(i,v)=>{context.session.items[i].choice=v;context.session.items[i].ok=v===context.session.items[i].term},
+  render:()=>{},save:()=>{},alert:()=>{},
+  record:(q,chosen,correct,confidence,mode)=>state.answers.push({qid:q.id,chosen,correct,confidence,mode}),
+  grantMoonlight:()=>{state.xp+=1},
+  sparkle:()=>{},playChime:()=>{}
 };
+context.globalThis=context;
 vm.createContext(context);vm.runInContext(src,context);
+
 let html=context.moonwordHTML();
 assert.match(html,/1\/2 used/,'Word with two clues must remain available after its first use');
 assert.doesNotMatch(html,/realmWord used[^>]*><span>Sample/,'Repeated term must not be crossed off early');
@@ -18,4 +31,41 @@ context.session={type:'boss',questions:['q1']};
 assert.equal(context.pickAdaptive([{id:'q1'},{id:'q2'}]).id,'q2','Do not repeat an in-session question when another is available');
 context.session.questions=['q1','q2'];
 assert.ok(context.pickAdaptive([{id:'q1'},{id:'q2'}]),'Small question pools must still work after exhaustion');
-console.log('GAME REALM SMOKE PASSED');
+
+const pool=[
+  {id:'a1',section:'Data Collection',prompt:'Which method uses equal selection probability?',options:['SRS','Cluster'],answer:'SRS',keyClue:'equal selection probability',why:'SRS gives equal selection probability.',difficulty:2},
+  {id:'a2',section:'Data Collection',prompt:'Which study observes without imposing treatment?',options:['Observational','Experiment'],answer:'Observational',keyClue:'without imposing treatment',why:'Observational studies do not impose treatments.',difficulty:2},
+  {id:'b1',section:'Bias',prompt:'Which bias comes from loaded wording?',options:['Response bias','Sampling bias'],answer:'Response bias',keyClue:'loaded wording',why:'Loaded wording creates response bias.',difficulty:3},
+  {id:'b2',section:'Bias',prompt:'Which bias occurs with volunteers?',options:['Voluntary response bias','Nonresponse bias'],answer:'Voluntary response bias',keyClue:'volunteers choose themselves',why:'Volunteers self-select.',difficulty:3},
+  {id:'c1',section:'Graphs',prompt:'What makes a truncated axis misleading?',options:['Exaggerates differences','Adds categories'],answer:'Exaggerates differences',keyClue:'axis does not begin at zero',why:'A truncated axis exaggerates visual differences.',difficulty:4},
+  {id:'c2',section:'Graphs',prompt:'Why can 3D pie charts mislead?',options:['Perspective distorts area','They have labels'],answer:'Perspective distorts area',keyClue:'3D perspective changes apparent size',why:'Perspective changes perceived slice size.',difficulty:4}
+];
+context.questionPool=()=>pool;
+
+context.startRuneSort();
+assert.equal(context.session.type,'runesort','Rune Sort should start its own session type');
+assert.ok(context.session.categories.length>=2,'Rune Sort needs multiple sort categories');
+const firstRune=context.session.items[0];
+context.runeSortPick(0,firstRune.section);
+assert.equal(context.session.items[0].ok,true,'Rune Sort should lock a correct category');
+context.finishRuneSort();
+assert.equal(context.session.finished,true,'Rune Sort finish should end the trial');
+
+context.startOracleLens();
+assert.equal(context.session.type,'oraclelens','Oracle Lens should start its own session type');
+context.oracleChooseLens(context.session.correctLens);
+assert.equal(context.session.lensCorrect,true,'Oracle Lens should recognize the controlling clue');
+context.oracleAnswer(context.session.current.answer);
+assert.equal(context.session.answered,true,'Oracle Lens answer should resolve after a lens is chosen');
+
+context.startGuardianGauntlet();
+assert.equal(context.session.type,'gauntlet','Guardian Gauntlet should start its own session type');
+const hp=context.session.playerHP;
+const wrong=context.session.current.options.find(x=>x!==context.session.current.answer);
+context.gauntletAnswer(wrong);
+assert.equal(context.session.playerHP,hp,'First Gauntlet miss should be absorbed by Guardian shield');
+assert.equal(context.session.shieldUsed,true,'Guardian shield should be consumed on first miss');
+
+assert.equal(context.document.documentElement.dataset.majickRealmVariety,'3351','Game Realm dataset marker missing');
+console.log('GAME REALM OVERHAUL SMOKE PASSED');
+console.log(JSON.stringify({runeCategories:context.session.categories?.length||0,answers:state.answers.length,xp:state.xp}));
