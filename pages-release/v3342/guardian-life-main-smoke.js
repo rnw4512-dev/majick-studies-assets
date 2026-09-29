@@ -47,6 +47,8 @@ vm.runInContext(src,ctx,{filename:'guardian-life-main.js'});
 const M=ctx.MajickGuardianLife;
 assert(M&&M.VERSION==='3.3.50-celebration','Guardian Life version missing');
 assert(ctx.document.documentElement.dataset.majickGuardianLife==='3.3.50-celebration','Guardian Life dataset marker missing');
+assert(Object.keys(M.profiles||{}).length===10,'All ten Guardian celebration profiles should exist');
+assert(M.stageCelebrations?.celestial?.headline==='Celestial Form Achieved','Celestial celebration profile missing');
 
 const nook=M.nookSummary();
 assert(nook.bed==='Personal Crystal Nest','Third Guardian should show an expandable personal bed on Home');
