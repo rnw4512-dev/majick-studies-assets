@@ -92,3 +92,19 @@
   .majEvoSigil{font-size:150px}.majEvoHaloOne{width:300px;height:300px}.majEvoHaloTwo{width:240px;height:240px}
   .majEvoArtCaption{bottom:-2px}
 }
+
+/* Evolution reveal enhancements */
+.majEvoTransform{display:grid;grid-template-columns:minmax(110px,160px) 110px minmax(110px,160px);align-items:center;justify-content:center;gap:16px;margin:12px auto 16px;max-width:600px}
+.majEvoBefore,.majEvoAfter{display:grid;place-items:center;gap:6px;padding:10px;border:1px solid rgba(211,174,226,.15);border-radius:18px;background:rgba(255,255,255,.025)}
+.majEvoBefore img,.majEvoAfter img{width:110px;height:110px;object-fit:contain;filter:drop-shadow(0 8px 16px rgba(0,0,0,.28))}
+.majEvoBefore{opacity:.72;filter:saturate(.8)}
+.majEvoAfter{border-color:rgba(244,208,126,.42);box-shadow:0 0 22px rgba(240,193,111,.12)}
+.majEvoBefore small,.majEvoAfter small{font:800 9px Arial,sans-serif;letter-spacing:.12em;text-transform:uppercase;color:#b8a9bf}
+.majEvoAfter small{color:#f4d98f}
+.majEvoTransformArrow{display:flex;flex-direction:column;align-items:center;gap:2px;color:#d7b3e6}.majEvoTransformArrow span{color:#f0d084}.majEvoTransformArrow b{font:900 9px Arial,sans-serif;letter-spacing:.18em}
+.majEvoMemoryCard{display:flex;align-items:center;gap:14px;max-width:620px;margin:12px auto 14px;padding:12px 16px;border:1px solid rgba(246,220,159,.18);border-radius:18px;background:linear-gradient(90deg,rgba(85,46,103,.32),rgba(30,16,42,.45))}
+.majEvoMemoryIcon{display:grid;place-items:center;width:46px;height:46px;border-radius:50%;background:rgba(244,208,126,.1);border:1px solid rgba(244,208,126,.28);color:#f6d985;font-size:21px}
+.majEvoMemoryCard div{text-align:left}.majEvoMemoryCard small{display:block;color:#b99ec4;font:800 8px Arial,sans-serif;letter-spacing:.16em}.majEvoMemoryCard b{display:block;margin-top:2px;color:#f6e8f8;font:700 14px Georgia,serif}.majEvoMemoryCard p{margin:3px 0 0;color:#93869a;font:600 9px Arial,sans-serif}
+.majEvoActions{display:flex;justify-content:center;gap:10px;flex-wrap:wrap}
+.majEvoSanctuary{min-width:280px;padding:17px 24px;border:1px solid rgba(214,181,108,.28);border-radius:18px;background:rgba(255,255,255,.035);color:#e8d7ec;font:800 15px Arial,sans-serif;cursor:pointer;transition:transform .18s ease,background .18s ease}.majEvoSanctuary:hover,.majEvoSanctuary:focus-visible{transform:translateY(-2px);background:rgba(202,154,226,.09);outline:none}
+@media(max-width:760px){.majEvoTransform{grid-template-columns:1fr 52px 1fr;gap:8px}.majEvoBefore img,.majEvoAfter img{width:82px;height:82px}.majEvoTransformArrow b{font-size:7px}.majEvoMemoryCard{padding:10px 12px}.majEvoActions{flex-direction:column}.majEvoWelcome,.majEvoSanctuary{width:100%;min-width:0}}
