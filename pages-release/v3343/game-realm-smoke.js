@@ -44,6 +44,7 @@ context.questionPool=()=>pool;
 
 context.startRuneSort();
 assert.equal(context.session.type,'runesort','Rune Sort should start its own session type');
+assert.match(context.sessionHTML(),/YOUR GOAL/,'Rune Sort should explain the trial goal');
 assert.ok(context.session.categories.length>=2,'Rune Sort needs multiple sort categories');
 const firstRune=context.session.items[0];
 const wrongRuneCategory=context.session.categories.find(x=>x!==firstRune.section);
@@ -68,6 +69,7 @@ assert.ok(context.session.guardianMessage,'Oracle Lens should surface active Gua
 
 context.startGuardianGauntlet();
 assert.equal(context.session.type,'gauntlet','Guardian Gauntlet should start its own session type');
+assert.match(context.sessionHTML(),/GUARDIAN HELP/,'Guardian Gauntlet should explain Guardian help');
 const hp=context.session.playerHP;
 const wrong=context.session.current.options.find(x=>x!==context.session.current.answer);
 context.gauntletAnswer(wrong);
