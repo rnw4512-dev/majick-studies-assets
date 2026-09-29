@@ -81,6 +81,14 @@ for(const key of ['distractorHistory','flaggedQuestions','masteryProofs','source
 run('pages-release/v3317/guardian-care-economy.js');
 const snap=MajickGuardianCare.snapshot();
 assert(snap.roster.length===2,'care roster must use actual two hatched Guardians');
+S.legacy.pets.push({id:'pet_briar_stale',type:'luna',name:'Briar',bond:9});
+MajickGuardianCare.ensure();
+const canonSnap=MajickGuardianCare.snapshot();
+const briarRow=canonSnap.roster.find(x=>x.petId==='pet_briar_stale');
+assert(briarRow?.type==='briar','care snapshot must resolve Briar from canon name instead of stale luna type');
+assert(briarRow?.species==='Moonlit Fawn','care snapshot must publish Briar species');
+assert(briarRow?.name==='Briar','care snapshot must publish canon Guardian name');
+S.legacy.pets=S.legacy.pets.filter(x=>x.id!=='pet_briar_stale');
 const veloraCare=S.majickAccount.guardianCare.guardians.pet_velora;
 veloraCare.fun=73;
 S.majickAccount.guardianCare.lastDecayAt=Date.now()-14*24*3600000;
