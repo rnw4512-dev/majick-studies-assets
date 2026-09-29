@@ -12,6 +12,13 @@
   };
   const percent=(n,d)=>Math.round((Number(n||0)/Math.max(1,Number(d||0)))*100);
 
+  function categoryLabel(value){
+    const raw=String(value??'').trim();
+    if(/^\d+$/.test(raw))return 'Section '+raw;
+    if(/^section\s*\d+$/i.test(raw))return raw.replace(/^section\s*/i,'Section ');
+    return raw||'Course Section';
+  }
+
   function guardian(){
     try{
       const p=globalThis.MajickGuardianCore?.activePet?.()||globalThis.activePet?.();
@@ -94,6 +101,27 @@
     return '<div class="qwrap realmMoonword"><div class="qtop"><span class="qbadge">🧩 Moon Crystal Words</span><b>'+items.filter(x=>x.ok).length+'/'+items.length+'</b></div><div class="card"><p>Match each clue. A word is crossed off when all its clues are correct.</p><h3>Word bank</h3><ul class="realmWordBank" aria-label="Available crossword words">'+bank+'</ul>'+clues+'<button class="btn violet" style="margin-top:12px" onclick="finishMoonword()">Finish</button></div></div>';
   };
 
+
+  function realmScene(kind){
+    const map={
+      runesort:{place:'Runestone Atrium',subtitle:'Ancient sorting runes drift through a moonlit collegiate hall.',icon:'ᚱ',
+        art:'<div class="realmSceneArt runeArt"><span class="pillar p1">ᚱ</span><span class="pillar p2">ᚾ</span><span class="pillar p3">ᛟ</span><span class="floorRune">✦</span><i class="floatRune r1">ᚨ</i><i class="floatRune r2">ᛃ</i><i class="floatRune r3">ᛗ</i></div>'},
+      oraclelens:{place:'Oracle Observatory',subtitle:'Celestial lenses and suspended constellations reveal the clue that matters most.',icon:'◉',
+        art:'<div class="realmSceneArt oracleArt"><span class="bigLens"></span><span class="scopeArm"></span><i class="star s1">✦</i><i class="star s2">✧</i><i class="star s3">✦</i><i class="star s4">✧</i><span class="orbit o1"></span><span class="orbit o2"></span></div>'},
+      constellation:{place:'Constellation Garden',subtitle:'Memory stars bloom across a midnight garden as each concept finds its pair.',icon:'✧',
+        art:'<div class="realmSceneArt gardenArt"><span class="moonDisc"></span><i class="vine v1"></i><i class="vine v2"></i><i class="flower f1">✦</i><i class="flower f2">✧</i><i class="flower f3">✦</i><span class="starPath sp1"></span><span class="starPath sp2"></span></div>'},
+      hexbreaker:{place:'Hexed Archive',subtitle:'Corrupted scrolls pulse between shadowed shelves until you expose the faulty claim.',icon:'⬡',
+        art:'<div class="realmSceneArt archiveArt"><span class="shelf sh1"></span><span class="shelf sh2"></span><span class="scroll sc1">≋</span><span class="scroll sc2">≋</span><span class="curseSigil">⬡</span><i class="ember e1">✦</i><i class="ember e2">✧</i></div>'},
+      gauntlet:{place:'Guardian Trial Arena',subtitle:'A warded dueling chamber where your Guardian fights beside you against a living boss sigil.',icon:'♛',
+        art:'<div class="realmSceneArt arenaArt"><span class="arenaRing ar1"></span><span class="arenaRing ar2"></span><span class="bossSigil">♛</span><i class="arenaSpark a1">✦</i><i class="arenaSpark a2">✦</i><i class="arenaSpark a3">✧</i></div>'}
+    };
+    const m=map[kind]||map.runesort;
+    return '<section class="realmScene realmScene-'+kind+'">'+
+      '<div class="realmSceneCopy"><small>MAGICAL LOCATION</small><h2>'+E(m.icon)+' '+E(m.place)+'</h2><p>'+E(m.subtitle)+'</p></div>'+
+      m.art+
+    '</section>';
+  }
+
   function guardianBanner(message){
     const g=guardian();if(!g)return '';
     return '<aside class="realmGuardianBanner" style="--guardian-accent:'+E(g.accent||'#b79ad9')+'">'+
@@ -145,12 +173,12 @@
     if(categories.length<2)return null;
     const items=[];
     categories.forEach(cat=>shuffleCopy(groups.get(cat)).slice(0,2).forEach(q=>items.push({id:q.id,prompt:q.prompt,section:cat,choice:null,ok:null,rewarded:false})));
-    return {categories,items:shuffleCopy(items).slice(0,8)};
+    return {categories,categoryLabels:Object.fromEntries(categories.map(c=>[c,categoryLabel(c)])),items:shuffleCopy(items).slice(0,8)};
   }
   globalThis.startRuneSort=function(){
     const built=buildRuneSort();
     if(!built){try{alert('Rune Sort needs at least two course sections with enough questions. Try another Realm for this course.')}catch(_){}return}
-    session={type:'runesort',opts:{label:'Rune Sort'},categories:built.categories,items:built.items,score:0,finished:false};
+    session={type:'runesort',opts:{label:'Rune Sort'},categories:built.categories,categoryLabels:built.categoryLabels||{},items:built.items,score:0,finished:false};
     if(globalThis.S)S.screen='mission';render?.();
   };
   globalThis.runeSortPick=function(i,cat){
@@ -171,10 +199,10 @@
   function runeSortHTML(){
     if(session.finished)return realmResultHTML('Rune Sort','runesort',session.score,session.items.length,session.score===session.items.length,'You sorted '+session.score+' of '+session.items.length+' runes correctly.');
     const done=session.items.filter(x=>x.ok).length;
-    return '<div class="qwrap realmMode realmRuneSort">'+guardianBanner('Sort the runes. I will react when the pattern clicks.')+
+    return '<div class="qwrap realmMode realmRuneSort">'+realmScene('runesort')+guardianBanner('Sort the runes. I will react when the pattern clicks.')+
       '<div class="qtop"><span class="qbadge">ᚱ Rune Sort</span><b>'+done+'/'+session.items.length+' locked</b></div>'+
-      '<div class="card"><p>Choose the section each prompt belongs to. Correct runes lock into place.</p>'+
-      '<div class="realmSortBoard">'+session.items.map((x,i)=>'<article class="realmSortRune '+(x.ok?'locked':x.choice?'miss':'')+'"><b>'+E(x.prompt)+'</b><div class="realmSortChoices">'+session.categories.map(cat=>'<button '+(x.ok?'disabled':'')+' data-cat="'+E(cat)+'" onclick="runeSortPick('+i+',this.dataset.cat)">'+E(cat)+'</button>').join('')+'</div>'+(x.choice?'<small class="'+(x.ok?'strong':'weak')+'">'+(x.ok?'✓ Rune locked':'Not this section — try again')+'</small>':'')+'</article>').join('')+'</div>'+
+      '<div class="card"><div class="realmSortLegend"><small>SORT DESTINATIONS</small><div>'+session.categories.map(cat=>'<span><i>ᚱ</i>'+E(session.categoryLabels?.[cat]||categoryLabel(cat))+'</span>').join('')+'</div></div><p>Choose which course section each prompt belongs to. Correct runes lock into place.</p>'+
+      '<div class="realmSortBoard">'+session.items.map((x,i)=>'<article class="realmSortRune '+(x.ok?'locked':x.choice?'miss':'')+'"><b>'+E(x.prompt)+'</b><div class="realmSortChoices">'+session.categories.map(cat=>'<button '+(x.ok?'disabled':'')+' data-cat="'+E(cat)+'" onclick="runeSortPick('+i+',this.dataset.cat)">'+E(session.categoryLabels?.[cat]||categoryLabel(cat))+'</button>').join('')+'</div>'+(x.choice?'<small class="'+(x.ok?'strong':'weak')+'">'+(x.ok?'✓ Rune locked':'Not this section — try again')+'</small>':'')+'</article>').join('')+'</div>'+
       '<button class="btn violet" onclick="finishRuneSort()">Finish Rune Sort</button></div></div>';
   }
 
@@ -218,7 +246,7 @@
   function oracleHTML(){
     if(session.finished)return realmResultHTML('Oracle Lens','oraclelens',session.score,session.limit,session.score===session.limit,'You answered '+session.score+'/'+session.limit+' correctly and found '+session.clarity+' controlling clues.');
     const q=session.current;
-    return '<div class="qwrap realmMode realmOracle">'+guardianBanner('Find what actually controls the answer before you commit.')+
+    return '<div class="qwrap realmMode realmOracle">'+realmScene('oraclelens')+guardianBanner('Find what actually controls the answer before you commit.')+
       '<div class="qtop"><span class="qbadge">◉ Oracle Lens</span><b>Round '+session.round+'/'+session.limit+'</b></div>'+
       '<div class="card"><div class="tiny">'+E(q.section||'Mixed')+' • Difficulty '+Number(q.difficulty||1)+'</div><div class="question">'+E(q.prompt)+'</div>'+
       '<h3>1. Which clue should the Oracle focus on?</h3><div class="realmLensChoices">'+session.lenses.map(l=>'<button class="'+(session.lensChoice===l?(session.lensCorrect?'correct':'selected'):'')+'" '+(session.answered?'disabled':'')+' data-lens="'+E(l)+'" onclick="oracleChooseLens(this.dataset.lens)">'+E(l)+'</button>').join('')+'</div>'+
@@ -280,7 +308,7 @@
   function constellationHTML(){
     const total=session.cards.length/2;
     if(session.finished)return realmResultHTML('Memory Constellation','constellation',session.matched,total,true,'You linked all '+total+' concept pairs in '+session.moves+' moves.');
-    return '<div class="qwrap realmMode realmConstellation">'+guardianBanner('Find the clue that belongs with its answer. I will light each star when you connect them.')+
+    return '<div class="qwrap realmMode realmConstellation">'+realmScene('constellation')+guardianBanner('Find the clue that belongs with its answer. I will light each star when you connect them.')+
       '<div class="qtop"><span class="qbadge">✧ Memory Constellation</span><b>'+session.matched+'/'+total+' stars linked • '+session.moves+' moves</b></div>'+
       '<div class="card"><p>Turn over two cards. Match a controlling clue with its correct answer.</p>'+
       '<div class="realmConstellationGrid">'+session.cards.map((c,i)=>{
@@ -344,7 +372,7 @@
     if(session.finished)return realmResultHTML('Hex Breaker','hexbreaker',session.score,session.limit,session.score===session.limit,'You fully broke '+session.score+'/'+session.limit+' hexes. Judgment: '+session.judgmentScore+'/'+session.limit+' • Repairs: '+session.repairScore+'/'+session.limit+'.');
     const q=session.current;
     const judgementCorrect=session.judgment!=null&&((session.judgment==='valid')===session.claimValid);
-    return '<div class="qwrap realmMode realmHexBreaker">'+guardianBanner('Do not trust every glowing claim. Decide whether it is sound before you repair it.')+
+    return '<div class="qwrap realmMode realmHexBreaker">'+realmScene('hexbreaker')+guardianBanner('Do not trust every glowing claim. Decide whether it is sound before you repair it.')+
       '<div class="qtop"><span class="qbadge">⬡ Hex Breaker</span><b>Hex '+session.round+'/'+session.limit+'</b></div>'+
       '<div class="card"><div class="tiny">'+E(q.section||'Mixed')+' • '+E(q.prompt)+'</div>'+
       '<div class="realmHexClaim"><small>ENCHANTED CLAIM</small><blockquote>'+E(session.claim)+'</blockquote></div>'+
@@ -395,7 +423,7 @@
   function gauntletHTML(){
     if(session.finished)return realmResultHTML('Guardian Gauntlet','gauntlet',session.score,Math.max(1,session.round),session.won,session.won?(session.guardianName+' helped you break the boss ward.'):'The boss ward held this time. Your run still added practice data.');
     const q=session.current;
-    return '<div class="qwrap realmMode realmGauntlet">'+guardianBanner(session.shieldUsed?'The shield is spent. I am still with you.':'I can absorb one missed answer for you this run.')+
+    return '<div class="qwrap realmMode realmGauntlet">'+realmScene('gauntlet')+guardianBanner(session.shieldUsed?'The shield is spent. I am still with you.':'I can absorb one missed answer for you this run.')+
       '<div class="qtop"><span class="qbadge">♛ Guardian Gauntlet</span><div><span class="hearts">'+('💗'.repeat(session.playerHP))+'</span> <span class="comboGlow">✦ x'+Math.max(1,session.combo)+'</span></div></div>'+
       '<div class="realmBossHUD"><div><b>Boss Ward</b><div class="bossBar"><i style="width:'+session.bossHP+'%"></i></div><small>'+session.bossHP+'% remaining</small></div><span class="realmShield '+(session.shieldUsed?'spent':'ready')+'">'+(session.shieldUsed?'◇ Shield spent':'◇ Guardian shield ready')+'</span></div>'+
       '<div class="card"><div class="tiny">'+E(q.section||'Mixed')+' • Difficulty '+Number(q.difficulty||1)+' • Round '+session.round+'/'+session.limit+'</div><div class="question">'+E(q.prompt)+'</div>'+
