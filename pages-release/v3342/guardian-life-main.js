@@ -5,6 +5,18 @@ const E=v=>String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt
 const STAGE={'new-bond':'New Bond','apprentice':'Apprentice','guardian':'Guardian','ascendant':'Ascendant','celestial':'Celestial'};
 const STAGE_ORDER=['new-bond','apprentice','guardian','ascendant','celestial'];
 const STAGE_ROMAN={'new-bond':'I','apprentice':'II','guardian':'III','ascendant':'IV','celestial':'V'};
+const CELEBRATION={
+  luna:{display:'Velora',sigil:'☾',role:'Moon Cat',line:'Velora’s quiet confidence has deepened. Expect more thoughtful pauses, cozy routines, and calm companionship.'},
+  ember:{display:'Cascade',sigil:'◇',role:'Pocket Dragon',line:'Cascade’s spark has grown steadier. Expect bolder play, focused curiosity, and more energetic Sanctuary reactions.'},
+  nova:{display:'Solstice',sigil:'✦',role:'Star Fox',line:'Solstice’s star-sense has brightened. Expect more exploration, telescope curiosity, and quick bursts of discovery.'},
+  mallow:{display:'Aurelia',sigil:'♡',role:'Winged Bunny',line:'Aurelia’s gentle magic has opened further. Expect warmer affection, cozy nesting, and more playful social moments.'},
+  vesper:{display:'Vesper',sigil:'✧',role:'Insight Keeper',line:'Vesper’s insight has sharpened. Expect more watchful pauses, magical reactions, and thoughtful curiosity.'},
+  briar:{display:'Briar',sigil:'❀',role:'Moonlit Fawn',line:'Briar’s curiosity is blooming into confidence. Expect more exploring, investigating, and quiet discoveries.'},
+  zephyr:{display:'Zephyr',sigil:'☾',role:'Momentum Keeper',line:'Zephyr’s momentum is building. Expect more energetic roaming, playful movement, and quick reactions.'},
+  prism:{display:'Prism',sigil:'◇',role:'Crystal Axolotl',line:'Prism’s imagination is awakening. Expect more fascination with crystals, light, and unusual Sanctuary objects.'},
+  rook:{display:'Rook',sigil:'✦',role:'Strategy Keeper',line:'Rook’s strategy is taking shape. Expect more observant pauses, deliberate movement, and favorite lookout spots.'},
+  solara:{display:'Solara',sigil:'☀',role:'Courage Keeper',line:'Solara’s courage is glowing brighter. Expect warmer reactions, bold exploration, and cheerful bursts of energy.'}
+};
 
 function account(){try{return window.MajickStateCore?.ensureAccount?.()||window.S?.majickAccount||null}catch(_){return window.S?.majickAccount||null}}
 function pets(){return (window.S?.legacy?.pets||[]).filter(Boolean)}
@@ -16,17 +28,14 @@ function stageImage(p,stage){
     return window.v3312StageImage?.(p.type,idx)||window.v3312CurrentGuardianImage?.(p)||'';
   }catch(_){return ''}
 }
+function celebrationFor(p){
+  const type=String(p?.type||'').toLowerCase();
+  const reg=window.MajickGuardianRegistry?.get?.(type)||{};
+  return CELEBRATION[type]||{display:p?.name||reg.name||'Guardian',sigil:reg.icon||'✦',role:reg.species||'Guardian',line:(p?.name||reg.name||'Your Guardian')+' has awakened a new layer of personality and Sanctuary behavior.'};
+}
 function personalityLine(p,stage){
-  const name=p?.name||'Your Guardian';
-  const map={
-    briar:'Curiosity is blooming into confidence. Expect more exploring, investigating, and quiet discoveries.',
-    vesper:'Insight has sharpened. Expect more watchful pauses, magical reactions, and thoughtful curiosity.',
-    zephyr:'Momentum is building. Expect more energetic roaming, playful movement, and quick reactions.',
-    prism:'Imagination is awakening. Expect more fascination with crystals, light, and unusual Sanctuary objects.',
-    rook:'Strategy is taking shape. Expect more observant pauses, deliberate movement, and favorite lookout spots.',
-    solara:'Courage is glowing brighter. Expect warmer reactions, bold exploration, and cheerful bursts of energy.'
-  };
-  return map[String(p?.type||'').toLowerCase()] || (name+' has awakened new Sanctuary behavior at the '+(STAGE[stage]||stage)+' stage.');
+  const c=celebrationFor(p);
+  return c.line+' '+c.display+' has reached '+(STAGE[stage]||stage)+'.';
 }
 function stagePath(stage){
   return STAGE_ORDER.map(s=>{
@@ -41,6 +50,7 @@ function showEvolutionCeremony(d,p){
   const name=String(d.name||p?.name||'Guardian');
   const img=stageImage(p,stage);
   const oldStage=STAGE[d.previousStage]||'New Bond';
+  const celebration=celebrationFor(p);
 
   const host=document.createElement('div');
   host.id='majEvolutionCelebration';
@@ -49,9 +59,9 @@ function showEvolutionCeremony(d,p){
     '<div class="majEvoStars" aria-hidden="true">'+Array.from({length:28},(_,i)=>'<i style="--i:'+i+'">✦</i>').join('')+'</div>'+
     '<section class="majEvoCard" role="dialog" aria-modal="true" aria-labelledby="majEvoTitle">'+
       '<div class="majEvoAura" aria-hidden="true"></div>'+
-      '<p class="majEvoKicker">✦ GUARDIAN EVOLUTION ✦</p>'+
+      '<p class="majEvoKicker">'+E(celebration.sigil)+' GUARDIAN EVOLUTION '+E(celebration.sigil)+'</p>'+
       '<div class="majEvoArtWrap">'+(img?'<img class="majEvoArt" src="'+E(img)+'" alt="'+E(name+', '+(STAGE[stage]||stage))+'">':'<div class="majEvoFallback">✦</div>')+'</div>'+
-      '<div class="majEvoBadge"><span>☾ '+E(STAGE[stage]||stage)+' ☾</span><small>STAGE '+E(STAGE_ROMAN[stage]||'')+' AWAKENED</small></div>'+
+      '<div class="majEvoBadge"><span>'+E(celebration.sigil)+' '+E(STAGE[stage]||stage)+' '+E(celebration.sigil)+'</span><small>'+E(celebration.role)+' • STAGE '+E(STAGE_ROMAN[stage]||'')+' AWAKENED</small></div>'+
       '<h2 id="majEvoTitle">'+E(name)+' became '+((stage==='apprentice'||stage==='ascendant')?'an ':'a ')+E(STAGE[stage]||stage)+'!</h2>'+
       '<p class="majEvoLead">Your studies strengthened '+E(name)+"'s bond enough to awaken a new form.</p>"+
       '<div class="majEvoPath">'+stagePath(stage)+'</div>'+
@@ -85,6 +95,7 @@ function recordEvolution(d){
   row.evolutions=row.evolutions||{};
   const stage=String(d.stage||'');if(!stage)return false;
   const already=!!row.evolutions[stage];
+  if(already)return false;
   if(!already){
     const at=new Date().toISOString();row.evolutions[stage]=at;row.latestStage=stage;row.latestStageAt=at;
     const key=p.id+'|evolution|'+stage;
