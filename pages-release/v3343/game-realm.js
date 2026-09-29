@@ -270,52 +270,108 @@
     });
     return shuffleCopy(cards);
   }
+  function updateConstellationLinks(){
+    if(!session||session.type!=='constellation'||typeof document==='undefined')return;
+    const grid=document.querySelector?.('.realmConstellationGrid');
+    const layer=document.querySelector?.('.realmConstellationLinks');
+    if(!grid||!layer||typeof grid.getBoundingClientRect!=='function')return;
+    const gridRect=grid.getBoundingClientRect();
+    const links=Array.isArray(session.links)?session.links:[];
+    layer.innerHTML=links.map(link=>{
+      const aEl=grid.querySelector?.('[data-card-index="'+link.a+'"]');
+      const bEl=grid.querySelector?.('[data-card-index="'+link.b+'"]');
+      if(!aEl||!bEl)return '';
+      const a=aEl.getBoundingClientRect(),b=bEl.getBoundingClientRect();
+      const x1=(a.left-gridRect.left)+(a.width/2),y1=(a.top-gridRect.top)+(a.height/2);
+      const x2=(b.left-gridRect.left)+(b.width/2),y2=(b.top-gridRect.top)+(b.height/2);
+      return '<line x1="'+x1+'" y1="'+y1+'" x2="'+x2+'" y2="'+y2+'" class="realmConstellationLine"></line>'+
+        '<circle cx="'+x1+'" cy="'+y1+'" r="7" class="realmConstellationNode"></circle>'+
+        '<circle cx="'+x2+'" cy="'+y2+'" r="7" class="realmConstellationNode"></circle>';
+    }).join('');
+  }
+  function renderKeepScroll(){
+    const w=globalThis.window||globalThis;
+    const y=Number(w?.scrollY||w?.pageYOffset||0);
+    render?.();
+    const after=()=>{
+      try{w?.scrollTo?.(0,y)}catch(_){}
+      updateConstellationLinks();
+    };
+    if(typeof globalThis.requestAnimationFrame==='function')globalThis.requestAnimationFrame(after);
+    else after();
+  }
   globalThis.startMemoryConstellation=function(){
     const cards=buildConstellation();
     if(!cards){try{alert('Memory Constellation needs at least four usable course questions. Try another Realm for this course.')}catch(_){}return}
-    session={type:'constellation',opts:{label:'Memory Constellation'},cards,open:[],matched:0,moves:0,finished:false,score:0};
-    if(globalThis.S)S.screen='mission';render?.();
+    session={type:'constellation',opts:{label:'Memory Constellation'},cards,open:[],matched:0,moves:0,finished:false,score:0,busy:false,links:[],burst:[]};
+    if(globalThis.S)S.screen='mission';
+    renderKeepScroll();
   };
   globalThis.constellationPick=function(i){
-    if(!session||session.type!=='constellation'||session.finished)return;
-    const card=session.cards?.[i];if(!card||card.matched||session.open.includes(i)||session.open.length>=2)return;
+    if(!session||session.type!=='constellation'||session.finished||session.busy)return;
+    const card=session.cards?.[i];
+    if(!card||card.matched||session.open.includes(i)||session.open.length>=2)return;
     session.open.push(i);
-    if(session.open.length===2){
-      session.moves++;
-      const [a,b]=session.open.map(x=>session.cards[x]);
-      if(a.pair===b.pair&&a.kind!==b.kind){
-        a.matched=b.matched=true;
-        session.matched++;
-        session.score++;
-        session.open=[];
-        guardianReact('correct',{mode:'constellation',qid:a.qid});
-        if(session.matched>=session.cards.length/2){
-          session.finished=true;
-          const total=session.cards.length/2;
-          const efficiency=Math.max(1,total*2-session.moves+total);
-          recordRealm('constellation',efficiency,total*2,true);
-          addReward('Memory Constellation completed',16,1);
-          guardianReact('concept',{mode:'constellation'});
-        }
-      }else{
-        setTimeout(()=>{
-          if(session?.type==='constellation'){session.open=[];render?.()}
-        },650);
+    if(session.open.length===1){renderKeepScroll();return}
+
+    session.moves++;
+    session.busy=true;
+    const [aIndex,bIndex]=session.open;
+    const a=session.cards[aIndex],b=session.cards[bIndex];
+    const isMatch=a.pair===b.pair&&a.kind!==b.kind;
+
+    if(isMatch){
+      a.matched=b.matched=true;
+      session.matched++;
+      session.score++;
+      session.links.push({a:aIndex,b:bIndex,pair:a.pair});
+      session.burst=[aIndex,bIndex];
+      session.open=[];
+      session.busy=false;
+      guardianReact('correct',{mode:'constellation',qid:a.qid});
+
+      if(session.matched>=session.cards.length/2){
+        session.finished=true;
+        const total=session.cards.length/2;
+        const efficiency=Math.max(1,total*2-session.moves+total);
+        recordRealm('constellation',efficiency,total*2,true);
+        addReward('Memory Constellation completed',16,1);
+        guardianReact('concept',{mode:'constellation'});
       }
+
+      renderKeepScroll();
+      setTimeout(()=>{
+        if(session?.type==='constellation'){
+          session.burst=[];
+          renderKeepScroll();
+        }
+      },900);
+      return;
     }
-    render?.();
+
+    renderKeepScroll();
+    setTimeout(()=>{
+      if(session?.type==='constellation'){
+        session.open=[];
+        session.busy=false;
+        renderKeepScroll();
+      }
+    },3000);
   };
   function constellationHTML(){
     const total=session.cards.length/2;
     if(session.finished)return realmResultHTML('Memory Constellation','constellation',session.matched,total,true,'You linked all '+total+' concept pairs in '+session.moves+' moves.');
-    return '<div class="qwrap realmMode realmConstellation">'+realmScene('constellation')+guardianBanner('Find the clue that belongs with its answer. I will light each star when you connect them.')+
+    return '<div class="qwrap realmMode realmConstellation">'+realmScene('constellation')+guardianBanner('Find the clue that belongs with its answer. Matched stars will stay connected.')+
       '<div class="qtop"><span class="qbadge">✧ Memory Constellation</span><b>'+session.matched+'/'+total+' stars linked • '+session.moves+' moves</b></div>'+
-      '<div class="card"><p>Turn over two cards. Match a controlling clue with its correct answer.</p>'+
+      '<div class="card"><p>Turn over two cards. Match a <b>CLUE</b> with its correct <b>ANSWER</b>. If they do not match, both cards stay open for about 3 seconds so you can read them.</p>'+
+      '<div class="realmConstellationWrap"><svg class="realmConstellationLinks" aria-hidden="true"></svg>'+
       '<div class="realmConstellationGrid">'+session.cards.map((c,i)=>{
         const open=session.open.includes(i)||c.matched;
-        return '<button class="realmStarCard '+(open?'open ':'')+(c.matched?'matched':'')+'" '+(c.matched?'disabled':'')+' onclick="constellationPick('+i+')" aria-label="'+E(open?c.text:'Hidden constellation card')+'">'+
-          '<span class="realmStarFront">✦</span><span class="realmStarBack"><small>'+E(c.kind==='clue'?'CLUE':'ANSWER')+'</small><b>'+E(c.text)+'</b></span></button>';
-      }).join('')+'</div></div></div>';
+        const burst=(session.burst||[]).includes(i);
+        return '<button class="realmStarCard '+(open?'open ':'')+(c.matched?'matched ':'')+(burst?'burst':'')+'" data-card-index="'+i+'" '+(c.matched?'disabled':'')+' onclick="constellationPick('+i+')" aria-label="'+E(open?c.text:'Hidden constellation card')+'">'+
+          '<span class="realmStarFront">✦</span><span class="realmStarBack"><small>'+E(c.kind==='clue'?'CLUE':'ANSWER')+'</small><b>'+E(c.text)+'</b></span>'+
+          '<span class="realmStarBurst" aria-hidden="true">✦ ✧ ✦</span></button>';
+      }).join('')+'</div></div></div></div>';
   }
 
   /* ---------- Hex Breaker ---------- */
