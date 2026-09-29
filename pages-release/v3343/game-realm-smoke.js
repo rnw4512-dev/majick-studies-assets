@@ -54,6 +54,8 @@ context.runeSortPick(0,firstRune.section);
 assert.equal(context.session.items[0].ok,true,'Rune Sort should lock a correct category');
 context.finishRuneSort();
 assert.equal(context.session.finished,true,'Rune Sort finish should end the trial');
+assert.ok(context.session.recordOutcome,'Rune Sort should retain its Realm record outcome');
+assert.equal(context.session.recordOutcome.newBest,true,'First successful Rune Sort score should count as a new Realm best');
 
 context.startOracleLens();
 assert.equal(context.session.type,'oraclelens','Oracle Lens should start its own session type');
@@ -62,6 +64,7 @@ assert.equal(context.session.lensCorrect,true,'Oracle Lens should recognize the 
 assert.equal(context.session.clarityStreak,1,'Oracle Lens should build a clarity streak');
 context.oracleAnswer(context.session.current.answer);
 assert.equal(context.session.answered,true,'Oracle Lens answer should resolve after a lens is chosen');
+assert.ok(context.session.guardianMessage,'Oracle Lens should surface active Guardian feedback');
 
 context.startGuardianGauntlet();
 assert.equal(context.session.type,'gauntlet','Guardian Gauntlet should start its own session type');
@@ -69,6 +72,7 @@ const hp=context.session.playerHP;
 const wrong=context.session.current.options.find(x=>x!==context.session.current.answer);
 context.gauntletAnswer(wrong);
 assert.equal(context.session.playerHP,hp,'First Gauntlet miss should be absorbed by Guardian shield');
+assert.ok(context.session.guardianMessage,'Guardian Gauntlet should surface Guardian shield feedback');
 assert.equal(context.session.shieldUsed,true,'Guardian shield should be consumed on first miss');
 
 context.startMemoryConstellation();

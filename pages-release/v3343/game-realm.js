@@ -30,18 +30,53 @@
   function guardianReact(kind,meta={}){
     try{globalThis.MajickGuardianCore?.react?.(kind,{realm:true,...meta})}catch(_){}
   }
+  function guardianLine(kind,detail=''){
+    const g=guardian(),name=g?.name||'Your Guardian';
+    const lines={
+      correct:[
+        name+' sparks with approval — that one landed.',
+        name+' brightens beside you. Keep the pattern going.',
+        name+' reacts instantly: strong read.'
+      ],
+      miss:[
+        name+' stays close. Use the clue and try the next move.',
+        name+' steadies the trial — one miss does not break the run.',
+        name+' watches the pattern with you. Re-read what controls the answer.'
+      ],
+      streak:[
+        name+' is glowing now — your streak is building.',
+        name+' leans into the momentum. Keep it going.',
+        name+' is fully locked in with you.'
+      ],
+      shield:[
+        name+' throws up a ward and blocks the hit!',
+        name+' jumps between you and the boss sigil — shield used.',
+        name+' catches the strike before it reaches you.'
+      ],
+      finish:[
+        name+' celebrates the completed trial with you.',
+        name+' settles beside the finished sigil — run complete.',
+        name+' gives one last bright reaction as the trial closes.'
+      ]
+    };
+    const list=lines[kind]||lines.correct;
+    const seed=(Number(session?.round||session?.moves||session?.score||0)+String(name).length)%list.length;
+    return list[seed]+(detail?' '+detail:'');
+  }
   function recordRealm(id,score,total,won=false){
     try{
       const p=prog();p.realmRecords=p.realmRecords||{};
       const row=p.realmRecords[id]||{plays:0,best:0,wins:0,last:0};
+      const previousBest=Number(row.best||0);
       row.plays=Number(row.plays||0)+1;
       row.last=total?score/total:0;
-      row.best=Math.max(Number(row.best||0),row.last);
+      row.best=Math.max(previousBest,row.last);
       if(won)row.wins=Number(row.wins||0)+1;
       row.at=Date.now();
       p.realmRecords[id]=row;
       save?.();
-    }catch(_){}
+      return {previousBest,best:row.best,newBest:row.last>previousBest&&row.last>0,plays:row.plays,wins:row.wins};
+    }catch(_){return null}
   }
   function addReward(label,xp=0,cr=0){
     try{
@@ -214,21 +249,24 @@
     x.attempts=Number(x.attempts||0)+1;
     x.tried=Array.isArray(x.tried)?x.tried:[];
     if(!x.ok&&!x.tried.includes(cat))x.tried.push(cat);
-    if(x.ok&&!x.rewarded){x.rewarded=true;session.score++;guardianReact('correct',{mode:'runesort',qid:x.id})}
+    if(x.ok&&!x.rewarded){
+      x.rewarded=true;session.score++;guardianReact('correct',{mode:'runesort',qid:x.id});
+      session.guardianMessage=guardianLine(session.score>=3?'streak':'correct');
+    }else if(!x.ok) session.guardianMessage=guardianLine('miss');
     render?.();
   };
   globalThis.finishRuneSort=function(){
     if(!session||session.type!=='runesort')return;
     session.finished=true;
     const total=session.items.length,score=session.items.filter(x=>x.ok).length;
-    session.score=score;recordRealm('runesort',score,total,score===total);
+    session.score=score;session.recordOutcome=recordRealm('runesort',score,total,score===total);
     if(score>=Math.ceil(total*.75)){addReward('Rune Sort cleared',12,1);guardianReact('concept',{mode:'runesort'})}
     render?.();
   };
   function runeSortHTML(){
     if(session.finished)return realmResultHTML('Rune Sort','runesort',session.score,session.items.length,session.score===session.items.length,'You sorted '+session.score+' of '+session.items.length+' runes correctly.');
     const done=session.items.filter(x=>x.ok).length;
-    return '<div class="qwrap realmMode realmRuneSort">'+realmScene('runesort')+guardianBanner('Sort the runes. I will react when the pattern clicks.')+
+    return '<div class="qwrap realmMode realmRuneSort">'+realmScene('runesort')+guardianBanner(session.guardianMessage||'Sort the runes. I will react when the pattern clicks.')+
       '<div class="qtop"><span class="qbadge">ᚱ Rune Sort</span><b>'+done+'/'+session.items.length+' locked</b></div>'+
       '<div class="card"><div class="realmSortLegend"><small>SORT DESTINATIONS</small><div>'+session.categories.map(cat=>'<span><i>ᚱ</i>'+E(session.categoryLabels?.[cat]||categoryLabel(cat))+'</span>').join('')+'</div></div><p>Choose which course section each prompt belongs to. Correct runes lock into place.</p>'+
       '<div class="realmSortBoard">'+session.items.map((x,i)=>'<article class="realmSortRune '+(x.ok?'locked':x.choice?'miss':'')+'"><b>'+E(x.prompt)+'</b><div class="realmSortChoices">'+session.categories.map(cat=>{
@@ -269,13 +307,14 @@
     const q=session.current,correct=chosen===q.answer;
     session.chosen=chosen;session.answered=true;session.score+=correct?1:0;session.questions.push(q.id);
     recordAnswer(q,chosen,correct,'oraclelens');
+    session.guardianMessage=guardianLine(correct?(session.clarityStreak>=2?'streak':'correct'):'miss');
     render?.();
   };
   globalThis.oracleNext=function(){
     if(!session||session.type!=='oraclelens')return;
     if(session.round>=session.limit){
       session.finished=true;
-      recordRealm('oraclelens',session.score,session.limit,session.score===session.limit);
+      session.recordOutcome=recordRealm('oraclelens',session.score,session.limit,session.score===session.limit);
       if(session.score>=6){addReward('Oracle Lens cleared',15,1);guardianReact('concept',{mode:'oraclelens'})}
     }else nextOracle();
     render?.();
@@ -283,7 +322,7 @@
   function oracleHTML(){
     if(session.finished)return realmResultHTML('Oracle Lens','oraclelens',session.score,session.limit,session.score===session.limit,'You answered '+session.score+'/'+session.limit+' correctly and found '+session.clarity+' controlling clues.');
     const q=session.current;
-    return '<div class="qwrap realmMode realmOracle">'+realmScene('oraclelens')+guardianBanner('Find what actually controls the answer before you commit.')+
+    return '<div class="qwrap realmMode realmOracle">'+realmScene('oraclelens')+guardianBanner(session.guardianMessage||'Find what actually controls the answer before you commit.')+
       '<div class="qtop"><span class="qbadge">◉ Oracle Lens</span><div class="realmMiniHUD"><span>Round '+session.round+'/'+session.limit+'</span><span>Clarity ✦ '+session.clarityStreak+'</span></div></div>'+
       '<div class="card"><div class="tiny">'+E(q.section||'Mixed')+' • Difficulty '+Number(q.difficulty||1)+'</div><div class="question">'+E(q.prompt)+'</div>'+
       '<h3>1. Which clue should the Oracle focus on?</h3><div class="realmLensChoices">'+session.lenses.map(l=>'<button class="'+(session.lensChoice===l?(session.lensCorrect?'correct':'selected'):'')+'" '+(session.answered?'disabled':'')+' data-lens="'+E(l)+'" onclick="oracleChooseLens(this.dataset.lens)">'+E(l)+'</button>').join('')+'</div>'+
@@ -382,11 +421,12 @@
       session.open=[];
       session.busy=false;
       guardianReact('correct',{mode:'constellation',qid:a.qid});
+      session.guardianMessage=guardianLine(session.matched>=3?'streak':'correct');
 
       if(session.matched>=session.cards.length/2){
         const total=session.cards.length/2;
         const efficiency=Math.max(1,total*2-session.moves+total);
-        recordRealm('constellation',efficiency,total*2,true);
+        session.recordOutcome=recordRealm('constellation',efficiency,total*2,true);
         addReward('Memory Constellation completed',16,1);
         guardianReact('concept',{mode:'constellation'});
         session.completing=true;
@@ -430,7 +470,7 @@
   function constellationHTML(){
     const total=session.cards.length/2;
     if(session.finished)return realmResultHTML('Memory Constellation','constellation',session.matched,total,true,'You linked all '+total+' concept pairs in '+session.moves+' moves.');
-    return '<div class="qwrap realmMode realmConstellation">'+realmScene('constellation')+guardianBanner('Find the clue that belongs with its answer. Matched stars will stay connected.')+
+    return '<div class="qwrap realmMode realmConstellation">'+realmScene('constellation')+guardianBanner(session.guardianMessage||'Find the clue that belongs with its answer. Matched stars will stay connected.')+
       '<div class="qtop"><span class="qbadge">✧ Memory Constellation</span><b>'+session.matched+'/'+total+' stars linked • '+session.moves+' moves</b></div>'+
       '<div class="card"><p>Turn over two cards. Match a <b>CLUE</b> with its correct <b>ANSWER</b>. If they do not match, both cards stay open for about 3 seconds so you can read them.</p>'+
       '<div class="realmConstellationWrap"><svg class="realmConstellationLinks" aria-hidden="true"></svg>'+
@@ -485,14 +525,16 @@
       session.breakStreak=Number(session.breakStreak||0)+1;
       session.bestBreakStreak=Math.max(Number(session.bestBreakStreak||0),session.breakStreak);
     }else session.breakStreak=0;
-    recordAnswer(q,session.claimValid?session.claim:value,judgmentCorrect&&repairCorrect,'hexbreaker');
+    const fullyCorrect=judgmentCorrect&&repairCorrect;
+    recordAnswer(q,session.claimValid?session.claim:value,fullyCorrect,'hexbreaker');
+    session.guardianMessage=guardianLine(fullyCorrect?(session.breakStreak>=2?'streak':'correct'):'miss');
     render?.();
   };
   globalThis.hexNext=function(){
     if(!session||session.type!=='hexbreaker')return;
     if(session.round>=session.limit){
       session.finished=true;
-      recordRealm('hexbreaker',session.score,session.limit,session.score===session.limit);
+      session.recordOutcome=recordRealm('hexbreaker',session.score,session.limit,session.score===session.limit);
       if(session.score>=6){addReward('Hex Breaker cleared',18,1);guardianReact('concept',{mode:'hexbreaker'})}
     }else nextHex();
     render?.();
@@ -501,7 +543,7 @@
     if(session.finished)return realmResultHTML('Hex Breaker','hexbreaker',session.score,session.limit,session.score===session.limit,'You fully broke '+session.score+'/'+session.limit+' hexes. Judgment: '+session.judgmentScore+'/'+session.limit+' • Repairs: '+session.repairScore+'/'+session.limit+'.');
     const q=session.current;
     const judgementCorrect=session.judgment!=null&&((session.judgment==='valid')===session.claimValid);
-    return '<div class="qwrap realmMode realmHexBreaker">'+realmScene('hexbreaker')+guardianBanner('Do not trust every glowing claim. Decide whether it is sound before you repair it.')+
+    return '<div class="qwrap realmMode realmHexBreaker">'+realmScene('hexbreaker')+guardianBanner(session.guardianMessage||'Do not trust every glowing claim. Decide whether it is sound before you repair it.')+
       '<div class="qtop"><span class="qbadge">⬡ Hex Breaker</span><div class="realmMiniHUD"><span>Hex '+session.round+'/'+session.limit+'</span><span>Break streak ✦ '+session.breakStreak+'</span></div></div>'+
       '<div class="card"><div class="tiny">'+E(q.section||'Mixed')+' • '+E(q.prompt)+'</div>'+
       '<div class="realmHexClaim"><small>ENCHANTED CLAIM</small><blockquote>'+E(session.claim)+'</blockquote></div>'+
@@ -524,7 +566,7 @@
   }
   globalThis.startGuardianGauntlet=function(){
     const g=guardian();
-    session={type:'gauntlet',opts:{label:'Guardian Gauntlet'},round:0,limit:12,score:0,combo:0,playerHP:5,bossHP:100,shield:true,shieldUsed:false,finished:false,won:false,questions:[],guardianName:g?.name||'Guardian'};
+    session={type:'gauntlet',opts:{label:'Guardian Gauntlet'},round:0,limit:12,score:0,combo:0,maxCombo:0,playerHP:5,bossHP:100,shield:true,shieldUsed:false,finished:false,won:false,questions:[],guardianName:g?.name||'Guardian'};
     nextGauntlet();if(globalThis.S)S.screen='mission';render?.();
   };
   globalThis.gauntletAnswer=function(chosen){
@@ -532,17 +574,23 @@
     const q=session.current,correct=chosen===q.answer;
     session.chosen=chosen;session.answered=true;
     if(correct){
-      session.score++;session.combo++;
+      session.score++;session.combo++;session.maxCombo=Math.max(Number(session.maxCombo||0),session.combo);
+      session.guardianMessage=guardianLine(session.combo>=3?'streak':'correct');
       const dmg=10+Math.min(10,Number(q.difficulty||1)*2)+Math.min(6,session.combo);
       session.bossHP=Math.max(0,session.bossHP-dmg);
     }else{
       session.combo=0;
-      if(session.shield&&!session.shieldUsed){session.shieldUsed=true;guardianReact('care',{mode:'gauntlet',shield:true})}
-      else session.playerHP=Math.max(0,session.playerHP-1);
+      if(session.shield&&!session.shieldUsed){
+        session.shieldUsed=true;guardianReact('care',{mode:'gauntlet',shield:true});
+        session.guardianMessage=guardianLine('shield');
+      } else {
+        session.playerHP=Math.max(0,session.playerHP-1);
+        session.guardianMessage=guardianLine('miss');
+      }
     }
     recordAnswer(q,chosen,correct,'gauntlet');
-    if(session.bossHP<=0){session.finished=true;session.won=true;recordRealm('gauntlet',session.score,session.round,true);addReward('Guardian Gauntlet victory',24,2);guardianReact('mastery',{mode:'gauntlet'})}
-    else if(session.playerHP<=0||session.round>=session.limit){session.finished=true;session.won=session.bossHP<=0;recordRealm('gauntlet',session.score,session.round,session.won);if(session.score>=7)addReward('Guardian Gauntlet run',14,1)}
+    if(session.bossHP<=0){session.finished=true;session.won=true;session.recordOutcome=recordRealm('gauntlet',session.score,session.round,true);addReward('Guardian Gauntlet victory',24,2);guardianReact('mastery',{mode:'gauntlet'})}
+    else if(session.playerHP<=0||session.round>=session.limit){session.finished=true;session.won=session.bossHP<=0;session.recordOutcome=recordRealm('gauntlet',session.score,session.round,session.won);if(session.score>=7)addReward('Guardian Gauntlet run',14,1)}
     render?.();
   };
   globalThis.gauntletNext=function(){
@@ -552,7 +600,7 @@
   function gauntletHTML(){
     if(session.finished)return realmResultHTML('Guardian Gauntlet','gauntlet',session.score,Math.max(1,session.round),session.won,session.won?(session.guardianName+' helped you break the boss ward.'):'The boss ward held this time. Your run still added practice data.');
     const q=session.current,phase=bossPhase(session.bossHP);
-    return '<div class="qwrap realmMode realmGauntlet '+phase.className+'">'+realmScene('gauntlet')+guardianBanner(session.shieldUsed?'The shield is spent. I am still with you.':'I can absorb one missed answer for you this run.')+
+    return '<div class="qwrap realmMode realmGauntlet '+phase.className+'">'+realmScene('gauntlet')+guardianBanner(session.guardianMessage||(session.shieldUsed?'The shield is spent. I am still with you.':'I can absorb one missed answer for you this run.'))+
       '<div class="qtop"><span class="qbadge">♛ Guardian Gauntlet</span><div><span class="hearts">'+('💗'.repeat(session.playerHP))+'</span> <span class="comboGlow">✦ x'+Math.max(1,session.combo)+'</span></div></div>'+
       '<div class="realmBossHUD"><div><div class="realmBossPhase"><small>'+E(phase.name)+'</small><b>Boss Ward</b><em>'+E(phase.line)+'</em></div><div class="bossBar"><i style="width:'+session.bossHP+'%"></i></div><small>'+session.bossHP+'% remaining</small></div><span class="realmShield '+(session.shieldUsed?'spent':'ready')+'">'+(session.shieldUsed?'◇ Shield spent':'◇ Guardian shield ready')+'</span></div>'+
       '<div class="card"><div class="tiny">'+E(q.section||'Mixed')+' • Difficulty '+Number(q.difficulty||1)+' • Round '+session.round+'/'+session.limit+'</div><div class="question">'+E(q.prompt)+'</div>'+
@@ -561,11 +609,25 @@
       '</div></div>';
   }
 
+  function realmResultStats(id){
+    if(!session)return [];
+    if(id==='runesort'){
+      const attempts=(session.items||[]).reduce((n,x)=>n+Number(x.attempts||0),0);
+      return [['Runes locked',session.score+'/'+(session.items?.length||0)],['Total attempts',attempts],['First-try locks',(session.items||[]).filter(x=>x.ok&&Number(x.attempts||0)===1).length]];
+    }
+    if(id==='oraclelens')return [['Answers',session.score+'/'+session.limit],['Clues aligned',session.clarity+'/'+session.limit],['Best clarity streak',session.bestClarityStreak||0]];
+    if(id==='constellation')return [['Pairs linked',session.matched+'/'+(session.cards?.length/2||0)],['Moves',session.moves],['Glowing links',session.links?.length||0]];
+    if(id==='hexbreaker')return [['Hexes broken',session.score+'/'+session.limit],['Correct judgments',session.judgmentScore+'/'+session.limit],['Best break streak',session.bestBreakStreak||0]];
+    return [['Boss damage',Math.max(0,100-Number(session.bossHP||0))+'%'],['Best combo','x'+Math.max(1,Number(session.maxCombo||0))],['Hearts left',session.playerHP||0]];
+  }
   function realmResultHTML(title,id,score,total,won,detail){
-    const acc=percent(score,total),g=guardian();
+    const acc=percent(score,total),g=guardian(),outcome=session?.recordOutcome||null,stats=realmResultStats(id);
     return '<div class="qwrap realmMode realmResult">'+
-      '<section class="realmResultHero"><small>'+(won?'TRIAL CLEARED':'TRIAL COMPLETE')+'</small><h2>'+E(title)+'</h2><div class="realmResultScore">'+score+'/'+total+' <span>'+acc+'%</span></div><p>'+E(detail)+'</p>'+
-      (g?'<p class="realmResultGuardian">'+E(g.name)+' • '+E(g.personality||g.role||'Realm partner')+'</p>':'')+
+      '<section class="realmResultHero">'+
+      (outcome?.newBest?'<div class="realmNewBest">✦ NEW REALM BEST ✦</div>':'')+
+      '<small>'+(won?'TRIAL CLEARED':'TRIAL COMPLETE')+'</small><h2>'+E(title)+'</h2><div class="realmResultScore">'+score+'/'+total+' <span>'+acc+'%</span></div><p>'+E(detail)+'</p>'+
+      '<div class="realmResultStats">'+stats.map(([label,value])=>'<div><small>'+E(label)+'</small><b>'+E(value)+'</b></div>').join('')+'</div>'+
+      (g?'<div class="realmResultGuardian">'+(g.image?'<img src="'+E(g.image)+'" alt="'+E(g.name)+'" style="filter:hue-rotate('+Number(g.hue||0)+'deg)">':'<span>'+E(g.icon||'✦')+'</span>')+'<div><b>'+E(g.name)+'</b><p>'+E(guardianLine('finish'))+'</p></div></div>':'')+
       '<div class="heroBtns"><button class="btn primary" onclick="'+(id==='runesort'?'startRuneSort()':id==='oraclelens'?'startOracleLens()':id==='constellation'?'startMemoryConstellation()':id==='hexbreaker'?'startHexBreaker()':'startGuardianGauntlet()')+'">Play again</button><button class="btn secondary" onclick="session=null;navigate(\'games\')">Back to Game Realm</button></div></section></div>';
   }
 

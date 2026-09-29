@@ -330,8 +330,8 @@ jobs:
           grep -q 'guardian-life-main.css?v=3342' _site/index.html
           cmp pages-release/v3343/game-realm.js _site/game-realm.js
           cmp pages-release/v3343/game-realm.css _site/game-realm.css
-          grep -q 'game-realm.js?v=3352-enhance' _site/index.html
-          grep -q 'game-realm.css?v=3352-enhance' _site/index.html
+          grep -q 'game-realm.js?v=3354-feedback' _site/index.html
+          grep -q 'game-realm.css?v=3354-feedback' _site/index.html
           grep -q "VERSION='3.3.42'" _site/guardian-life-main.js
           grep -q 'Personal Crystal Nest' _site/guardian-life-main.js
           grep -q 'MAJICK_GUARDIAN_EVOLUTION_V3342' _site/guardian-life-main.js
@@ -657,7 +657,7 @@ jobs:
                       'Sunday Readiness & Thinking Analytics' not in index,
                       '<h3>Before Sunday</h3>' not in index,
                   )
-                  if last==(expected,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True) and 'game-realm.js?v=3352-enhance' in index and 'realmWordBank' in game_realm and 'living-collegium.js?v=3346' in index and "VERSION='3.3.46'" in living and 'collegium-atmosphere.js?v=3350-room' in index and 'sanctuary-roster.js?v=3350-room' in san_index and 'sanctuary-audit.js?v=3350' in index:
+                  if last==(expected,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True) and 'game-realm.js?v=3354-feedback' in index and 'realmWordBank' in game_realm and 'living-collegium.js?v=3346' in index and "VERSION='3.3.46'" in living and 'collegium-atmosphere.js?v=3350-room' in index and 'sanctuary-roster.js?v=3350-room' in san_index and 'sanctuary-audit.js?v=3350' in index:
                       print('LIVE V3.3.52 DEPLOYMENT VERIFIED')
                       raise SystemExit(0)
                   print('Live version not ready yet:',last)
