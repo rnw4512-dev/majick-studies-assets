@@ -138,3 +138,9 @@
   .realmSceneArt{min-height:150px;margin-top:8px}
   .realmSceneCopy h2{font-size:28px}
 }
+
+.realmSortLegend{margin:0 0 16px;padding:13px 14px;border:1px solid rgba(139,199,218,.17);border-radius:14px;background:rgba(12,25,34,.42)}
+.realmSortLegend>small{display:block;margin-bottom:8px;color:#a9d6e5;font:900 8px/1 Arial,sans-serif;letter-spacing:.15em}
+.realmSortLegend>div{display:flex;flex-wrap:wrap;gap:8px}
+.realmSortLegend span{display:inline-flex;align-items:center;gap:6px;padding:7px 10px;border:1px solid rgba(142,205,225,.2);border-radius:999px;background:#14232d;color:#e7f6fb;font:800 10px Arial,sans-serif}
+.realmSortLegend i{font-style:normal;color:#9edced;text-shadow:0 0 10px rgba(121,202,228,.55)}
