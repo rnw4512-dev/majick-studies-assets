@@ -45,8 +45,8 @@ vm.createContext(ctx);
 vm.runInContext(src,ctx,{filename:'guardian-life-main.js'});
 
 const M=ctx.MajickGuardianLife;
-assert(M&&M.VERSION==='3.3.42','Guardian Life version missing');
-assert(ctx.document.documentElement.dataset.majickGuardianLife==='3.3.42','Guardian Life dataset marker missing');
+assert(M&&M.VERSION==='3.3.50-celebration','Guardian Life version missing');
+assert(ctx.document.documentElement.dataset.majickGuardianLife==='3.3.50-celebration','Guardian Life dataset marker missing');
 
 const nook=M.nookSummary();
 assert(nook.bed==='Personal Crystal Nest','Third Guardian should show an expandable personal bed on Home');
@@ -63,5 +63,5 @@ assert(M.recordEvolution({guardianId:'p3',guardianType:'nova',name:'Solstice',pr
 assert(account.guardianJourney.memories.length===count,'Duplicate evolution memory was added');
 assert(ctx.S.progress.D755.xp===xpBefore,'Evolution reward must not change academic XP');
 
-console.log('V3.3.42 GUARDIAN LIFE MAIN SMOKE PASSED');
+console.log('V3.3.50 GUARDIAN EVOLUTION CELEBRATION SMOKE PASSED');
 console.log(JSON.stringify({version:M.VERSION,nook,bond:account.guardianCare.guardians.p3.bond,memories:count,xp:ctx.S.progress.D755.xp}));
