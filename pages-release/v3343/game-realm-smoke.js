@@ -95,5 +95,6 @@ assert.ok(context.session.judgmentScore>=1,'Hex Breaker should score a correct v
 assert.equal(context.session.breakStreak,1,'Hex Breaker should build a successful break streak');
 
 assert.equal(context.document.documentElement.dataset.majickRealmVariety,'3352','Game Realm dataset marker missing');
+assert.match(context.sessionHTML(),/YOUR GOAL|GUARDIAN HELP|qwrap/,'Featured Realm session should still render after accessibility pass');
 console.log('GAME REALM OVERHAUL SMOKE PASSED');
 console.log(JSON.stringify({answers:state.answers.length,xp:state.xp,realmRecords:Object.keys(state.realmRecords)}));
