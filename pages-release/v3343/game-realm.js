@@ -2,7 +2,7 @@
 (()=>{
   'use strict';
 
-  const VERSION='3.3.51-realm';
+  const VERSION='3.3.52-realm';
   const normalize=v=>String(v||'').trim().toLocaleLowerCase();
   const E=v=>{try{return esc(String(v??''))}catch(_){return String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}};
   const shuffleCopy=a=>{
@@ -119,12 +119,13 @@
         '<section class="realmHero"><div><small>THE MAJICK GAME REALM</small><h2>Train the skill, not just the answer.</h2><p>Featured trials now use different mechanics. Your active Guardian joins the run, and question repetition is suppressed until the pool needs to recycle.</p></div>'+
         (g?'<div class="realmHeroGuardian" style="--guardian-accent:'+E(g.accent||'#b79ad9')+'">'+(g.image?'<img src="'+E(g.image)+'" alt="'+E(g.name)+'" style="filter:hue-rotate('+Number(g.hue||0)+'deg)">':'<span>'+E(g.icon||'✦')+'</span>')+'<div><small>ENTERING WITH</small><b>'+E(g.name)+'</b><em>'+E(g.personality||g.role||'Study Guardian')+'</em></div></div>':'')+
         '</section>'+
-        '<div class="realmStats"><span>ᚱ '+E(bestText('runesort'))+' Rune Sort</span><span>◉ '+E(bestText('oraclelens'))+' Oracle Lens</span><span>♛ '+E(bestText('gauntlet'))+' Gauntlet</span></div>'+
+        '<div class="realmStats"><span>ᚱ '+E(bestText('runesort'))+' Rune Sort</span><span>◉ '+E(bestText('oraclelens'))+' Oracle Lens</span><span>♛ '+E(bestText('gauntlet'))+' Gauntlet</span><span>✧ '+E(bestText('constellation'))+' Constellation</span><span>⬡ '+E(bestText('hexbreaker'))+' Hex Breaker</span></div>'+
         '<div class="realmFeaturedGrid">'+
           gameCard('ᚱ','Rune Sort','Sort real course prompts into the correct sections. Pattern recognition without another answer-card loop.','startRuneSort()')+
           gameCard('◉','Oracle Lens','Identify the controlling clue first, then answer through that clue.','startOracleLens()')+
           gameCard('♛','Guardian Gauntlet','A multi-round boss run with hearts, boss HP, combos, and one Guardian shield.','startGuardianGauntlet()')+
-          gameCard('✧','Memory Constellation','Use the improved matching game while the full constellation board is being expanded.','startMatch()','CLASSIC+')+
+          gameCard('✧','Memory Constellation','Match controlling clues to the correct answers and build a glowing constellation.','startMemoryConstellation()')+
+          gameCard('⬡','Hex Breaker','Judge a claim, expose the misconception, and repair it with the correct concept.','startHexBreaker()')+
         '</div>'+
         '<details class="realmClassic"><summary><span>Classic Trials</span><small>All previous Game Realm modes are still available</small></summary><div class="realmClassicBody">'+baseGamesHTML()+'</div></details>'+
       '</div>';
@@ -227,6 +228,137 @@
       '</div></div>';
   }
 
+
+  /* ---------- Memory Constellation ---------- */
+  function buildConstellation(){
+    const pool=(typeof questionPool==='function'?questionPool():[]).filter(q=>q?.prompt&&q?.answer);
+    const chosen=shuffleCopy(pool).slice(0,6);
+    if(chosen.length<4)return null;
+    const cards=[];
+    chosen.forEach((q,i)=>{
+      const clue=String(q.keyClue||q.prompt||'').trim();
+      cards.push({id:'c'+i+'a',pair:i,kind:'clue',text:clue,qid:q.id,matched:false});
+      cards.push({id:'c'+i+'b',pair:i,kind:'answer',text:String(q.answer),qid:q.id,matched:false});
+    });
+    return shuffleCopy(cards);
+  }
+  globalThis.startMemoryConstellation=function(){
+    const cards=buildConstellation();
+    if(!cards){try{alert('Memory Constellation needs at least four usable course questions. Try another Realm for this course.')}catch(_){}return}
+    session={type:'constellation',opts:{label:'Memory Constellation'},cards,open:[],matched:0,moves:0,finished:false,score:0};
+    if(globalThis.S)S.screen='mission';render?.();
+  };
+  globalThis.constellationPick=function(i){
+    if(!session||session.type!=='constellation'||session.finished)return;
+    const card=session.cards?.[i];if(!card||card.matched||session.open.includes(i)||session.open.length>=2)return;
+    session.open.push(i);
+    if(session.open.length===2){
+      session.moves++;
+      const [a,b]=session.open.map(x=>session.cards[x]);
+      if(a.pair===b.pair&&a.kind!==b.kind){
+        a.matched=b.matched=true;
+        session.matched++;
+        session.score++;
+        session.open=[];
+        guardianReact('correct',{mode:'constellation',qid:a.qid});
+        if(session.matched>=session.cards.length/2){
+          session.finished=true;
+          const total=session.cards.length/2;
+          const efficiency=Math.max(1,total*2-session.moves+total);
+          recordRealm('constellation',efficiency,total*2,true);
+          addReward('Memory Constellation completed',16,1);
+          guardianReact('concept',{mode:'constellation'});
+        }
+      }else{
+        setTimeout(()=>{
+          if(session?.type==='constellation'){session.open=[];render?.()}
+        },650);
+      }
+    }
+    render?.();
+  };
+  function constellationHTML(){
+    const total=session.cards.length/2;
+    if(session.finished)return realmResultHTML('Memory Constellation','constellation',session.matched,total,true,'You linked all '+total+' concept pairs in '+session.moves+' moves.');
+    return '<div class="qwrap realmMode realmConstellation">'+guardianBanner('Find the clue that belongs with its answer. I will light each star when you connect them.')+
+      '<div class="qtop"><span class="qbadge">✧ Memory Constellation</span><b>'+session.matched+'/'+total+' stars linked • '+session.moves+' moves</b></div>'+
+      '<div class="card"><p>Turn over two cards. Match a controlling clue with its correct answer.</p>'+
+      '<div class="realmConstellationGrid">'+session.cards.map((c,i)=>{
+        const open=session.open.includes(i)||c.matched;
+        return '<button class="realmStarCard '+(open?'open ':'')+(c.matched?'matched':'')+'" '+(c.matched?'disabled':'')+' onclick="constellationPick('+i+')" aria-label="'+E(open?c.text:'Hidden constellation card')+'">'+
+          '<span class="realmStarFront">✦</span><span class="realmStarBack"><small>'+E(c.kind==='clue'?'CLUE':'ANSWER')+'</small><b>'+E(c.text)+'</b></span></button>';
+      }).join('')+'</div></div></div>';
+  }
+
+  /* ---------- Hex Breaker ---------- */
+  function nextHex(){
+    const pool=(typeof questionPool==='function'?questionPool():[]).filter(q=>q?.prompt&&q?.options?.length>=2&&q?.answer);
+    const q=pickAdaptive(pool);if(!q)return false;
+    const wrongs=q.options.filter(o=>o!==q.answer);
+    const makeValid=Math.random()<.35||!wrongs.length;
+    const claim=makeValid?q.answer:wrongs[Math.floor(Math.random()*wrongs.length)];
+    session.current=q;
+    session.claim=claim;
+    session.claimValid=claim===q.answer;
+    session.judgment=null;
+    session.repair=null;
+    session.answered=false;
+    session.round++;
+    session.questions.push(q.id);
+    return true;
+  }
+  globalThis.startHexBreaker=function(){
+    session={type:'hexbreaker',opts:{label:'Hex Breaker'},round:0,limit:8,score:0,judgmentScore:0,repairScore:0,finished:false,questions:[]};
+    nextHex();if(globalThis.S)S.screen='mission';render?.();
+  };
+  globalThis.hexJudge=function(value){
+    if(!session||session.type!=='hexbreaker'||session.answered)return;
+    session.judgment=value;
+    render?.();
+  };
+  globalThis.hexRepair=function(value){
+    if(!session||session.type!=='hexbreaker'||session.answered||session.judgment==null)return;
+    const q=session.current;
+    const judgedValid=session.judgment==='valid';
+    const judgmentCorrect=judgedValid===session.claimValid;
+    let repairCorrect=true;
+    if(!session.claimValid)repairCorrect=value===q.answer;
+    session.repair=value;
+    session.answered=true;
+    if(judgmentCorrect)session.judgmentScore++;
+    if(repairCorrect)session.repairScore++;
+    if(judgmentCorrect&&repairCorrect)session.score++;
+    recordAnswer(q,session.claimValid?session.claim:value,judgmentCorrect&&repairCorrect,'hexbreaker');
+    render?.();
+  };
+  globalThis.hexNext=function(){
+    if(!session||session.type!=='hexbreaker')return;
+    if(session.round>=session.limit){
+      session.finished=true;
+      recordRealm('hexbreaker',session.score,session.limit,session.score===session.limit);
+      if(session.score>=6){addReward('Hex Breaker cleared',18,1);guardianReact('concept',{mode:'hexbreaker'})}
+    }else nextHex();
+    render?.();
+  };
+  function hexBreakerHTML(){
+    if(session.finished)return realmResultHTML('Hex Breaker','hexbreaker',session.score,session.limit,session.score===session.limit,'You fully broke '+session.score+'/'+session.limit+' hexes. Judgment: '+session.judgmentScore+'/'+session.limit+' • Repairs: '+session.repairScore+'/'+session.limit+'.');
+    const q=session.current;
+    const judgementCorrect=session.judgment!=null&&((session.judgment==='valid')===session.claimValid);
+    return '<div class="qwrap realmMode realmHexBreaker">'+guardianBanner('Do not trust every glowing claim. Decide whether it is sound before you repair it.')+
+      '<div class="qtop"><span class="qbadge">⬡ Hex Breaker</span><b>Hex '+session.round+'/'+session.limit+'</b></div>'+
+      '<div class="card"><div class="tiny">'+E(q.section||'Mixed')+' • '+E(q.prompt)+'</div>'+
+      '<div class="realmHexClaim"><small>ENCHANTED CLAIM</small><blockquote>'+E(session.claim)+'</blockquote></div>'+
+      '<h3>1. Is this claim valid or hexed?</h3><div class="realmHexJudge">'+
+        '<button class="'+(session.judgment==='valid'?'selected':'')+'" '+(session.answered?'disabled':'')+' onclick="hexJudge(\\'valid\\')">✓ Valid</button>'+
+        '<button class="'+(session.judgment==='hexed'?'selected':'')+'" '+(session.answered?'disabled':'')+' onclick="hexJudge(\\'hexed\\')">⬡ Hexed</button></div>'+
+      (session.judgment!=null?'<p class="'+(judgementCorrect?'strong':'weak')+'">'+(judgementCorrect?'Your diagnosis is on target.':'The claim is '+(session.claimValid?'valid':'hexed')+'.')+'</p>':'')+
+      (!session.claimValid&&session.judgment!=null?
+        '<h3>2. Break the hex: choose the correct repair.</h3><div class="realmHexRepairs">'+q.options.map(o=>'<button '+(session.answered?'disabled':'')+' onclick="hexRepair('+JSON.stringify(o)+')">'+E(o)+'</button>').join('')+'</div>':
+        session.claimValid&&session.judgment!=null&&!session.answered?'<button class="btn violet" onclick="hexRepair('+JSON.stringify(q.answer)+')">Seal this valid claim ✦</button>':'')+
+      (session.answered?'<div class="realmHexFeedback"><b class="'+(session.score>=session.round?'strong':'')+'">'+(judgementCorrect&&((session.claimValid)||(session.repair===q.answer))?'✦ Hex broken':'Review the repair')+'</b><p>'+E(q.why||q.distractorCoach||'Compare the claim with the exact concept the question is testing.')+'</p><button class="btn violet" onclick="hexNext()">Next hex →</button></div>':'')+
+      '</div></div>';
+  }
+
   /* ---------- Guardian Gauntlet ---------- */
   function nextGauntlet(){
     const pool=(typeof questionPool==='function'?questionPool({hard:true}):[]).filter(q=>q?.prompt&&q?.options?.length>=2);
@@ -277,7 +409,7 @@
     return '<div class="qwrap realmMode realmResult">'+
       '<section class="realmResultHero"><small>'+(won?'TRIAL CLEARED':'TRIAL COMPLETE')+'</small><h2>'+E(title)+'</h2><div class="realmResultScore">'+score+'/'+total+' <span>'+acc+'%</span></div><p>'+E(detail)+'</p>'+
       (g?'<p class="realmResultGuardian">'+E(g.name)+' • '+E(g.personality||g.role||'Realm partner')+'</p>':'')+
-      '<div class="heroBtns"><button class="btn primary" onclick="'+(id==='runesort'?'startRuneSort()':id==='oraclelens'?'startOracleLens()':'startGuardianGauntlet()')+'">Play again</button><button class="btn secondary" onclick="session=null;navigate(\'games\')">Back to Game Realm</button></div></section></div>';
+      '<div class="heroBtns"><button class="btn primary" onclick="'+(id==='runesort'?'startRuneSort()':id==='oraclelens'?'startOracleLens()':id==='constellation'?'startMemoryConstellation()':id==='hexbreaker'?'startHexBreaker()':'startGuardianGauntlet()')+'">Play again</button><button class="btn secondary" onclick="session=null;navigate(\'games\')">Back to Game Realm</button></div></section></div>';
   }
 
   const baseSessionHTML=typeof sessionHTML==='function'?sessionHTML:null;
@@ -285,6 +417,8 @@
     sessionHTML=function(){
       if(session?.type==='runesort')return runeSortHTML();
       if(session?.type==='oraclelens')return oracleHTML();
+      if(session?.type==='constellation')return constellationHTML();
+      if(session?.type==='hexbreaker')return hexBreakerHTML();
       if(session?.type==='gauntlet')return gauntletHTML();
       return baseSessionHTML();
     };
@@ -294,6 +428,7 @@
     VERSION,
     guardian,
     buildRuneSort,
+    buildConstellation,
     inspect(){
       return {
         version:VERSION,
@@ -303,5 +438,5 @@
       };
     }
   };
-  document.documentElement.dataset.majickRealmVariety='3351';
+  document.documentElement.dataset.majickRealmVariety='3352';
 })();
