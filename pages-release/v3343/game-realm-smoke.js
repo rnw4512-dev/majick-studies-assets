@@ -17,7 +17,7 @@ const context={
   render:()=>{},save:()=>{},alert:()=>{},
   record:(q,chosen,correct,confidence,mode)=>state.answers.push({qid:q.id,chosen,correct,confidence,mode}),
   grantMoonlight:()=>{state.xp+=1},
-  sparkle:()=>{},playChime:()=>{}
+  sparkle:()=>{},playChime:()=>{},setTimeout:(fn)=>{fn();return 0}
 };
 context.globalThis=context;
 vm.createContext(context);vm.runInContext(src,context);
@@ -66,6 +66,22 @@ context.gauntletAnswer(wrong);
 assert.equal(context.session.playerHP,hp,'First Gauntlet miss should be absorbed by Guardian shield');
 assert.equal(context.session.shieldUsed,true,'Guardian shield should be consumed on first miss');
 
-assert.equal(context.document.documentElement.dataset.majickRealmVariety,'3351','Game Realm dataset marker missing');
+context.startMemoryConstellation();
+assert.equal(context.session.type,'constellation','Memory Constellation should start its own session type');
+assert.ok(context.session.cards.length>=8,'Memory Constellation should build at least four pairs');
+const p0=context.session.cards[0].pair;
+const mate=context.session.cards.findIndex((c,i)=>i!==0&&c.pair===p0);
+context.constellationPick(0);
+context.constellationPick(mate);
+assert.equal(context.session.matched,1,'Memory Constellation should lock a correct clue-answer pair');
+
+context.startHexBreaker();
+assert.equal(context.session.type,'hexbreaker','Hex Breaker should start its own session type');
+context.hexJudge(context.session.claimValid?'valid':'hexed');
+context.hexRepair(context.session.current.answer);
+assert.equal(context.session.answered,true,'Hex Breaker should resolve after judgment and repair');
+assert.ok(context.session.judgmentScore>=1,'Hex Breaker should score a correct validity judgment');
+
+assert.equal(context.document.documentElement.dataset.majickRealmVariety,'3352','Game Realm dataset marker missing');
 console.log('GAME REALM OVERHAUL SMOKE PASSED');
-console.log(JSON.stringify({runeCategories:context.session.categories?.length||0,answers:state.answers.length,xp:state.xp}));
+console.log(JSON.stringify({answers:state.answers.length,xp:state.xp,realmRecords:Object.keys(state.realmRecords)}));
