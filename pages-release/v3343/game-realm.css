@@ -162,3 +162,53 @@
 @keyframes realmLinePulse{0%,100%{opacity:.7;stroke-width:3.5}50%{opacity:1;stroke-width:5}}
 @keyframes realmNodePulse{0%,100%{opacity:.7}50%{opacity:1}}
 @media(max-width:600px){.realmStarCard{min-height:150px}.realmStarBack b{font-size:14px}}
+
+/* Animated Memory Constellation connections + finale */
+.realmConstellationLine.newlyDrawn{
+  stroke-dasharray:1;
+  stroke-dashoffset:1;
+  animation:realmLineDraw .65s ease-out forwards,realmLinePulse 2.2s .65s ease-in-out infinite;
+}
+.realmConstellationSparkle{
+  fill:#fff7d8;
+  opacity:0;
+  filter:drop-shadow(0 0 5px rgba(255,246,211,.95)) drop-shadow(0 0 11px rgba(183,158,255,.85));
+}
+.realmConstellationSparkle.sparkOne{animation:realmSparkTrail 1.15s .15s ease-out forwards}
+.realmConstellationSparkle.sparkTwo{animation:realmSparkTrail 1.15s .38s ease-out forwards}
+.realmConstellationFinale{
+  position:absolute;inset:0;z-index:5;pointer-events:none;opacity:0;transform:scale(.94);
+  display:grid;place-items:center;border-radius:24px;
+  background:radial-gradient(circle at 50% 50%,rgba(196,174,255,.18),rgba(35,24,58,.78) 46%,rgba(14,10,25,.94) 78%);
+  backdrop-filter:blur(3px);
+  transition:opacity .3s ease,transform .45s cubic-bezier(.2,.8,.2,1);
+}
+.realmConstellationFinale.show{opacity:1;transform:scale(1)}
+.realmConstellationFinale svg{position:absolute;inset:7%;width:86%;height:86%;overflow:visible}
+.realmFinalConstellationLine{
+  fill:none;stroke:#d8c8ff;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;
+  stroke-dasharray:100;stroke-dashoffset:100;
+  filter:drop-shadow(0 0 5px rgba(226,213,255,.95)) drop-shadow(0 0 12px rgba(165,133,255,.7));
+  animation:realmFinalDraw 1.05s .18s ease-out forwards;
+}
+.realmConstellationFinale b{
+  position:relative;z-index:3;margin-top:170px;padding:9px 16px;border:1px solid rgba(240,226,255,.28);
+  border-radius:999px;background:rgba(20,14,35,.7);color:#fff1c7;font:900 11px Arial,sans-serif;letter-spacing:.18em;
+  box-shadow:0 0 28px rgba(180,150,255,.18)
+}
+.realmConstellationFinale .finalStar{
+  position:absolute;z-index:3;color:#fff4d4;text-shadow:0 0 12px rgba(255,246,220,.95),0 0 24px rgba(181,152,255,.8);
+  animation:realmFinalStar 1.3s ease-in-out infinite alternate
+}
+.realmConstellationFinale .fs1{left:12%;top:66%}.realmConstellationFinale .fs2{left:27%;top:26%;animation-delay:.15s}
+.realmConstellationFinale .fs3{left:47%;top:53%;animation-delay:.3s}.realmConstellationFinale .fs4{left:65%;top:17%;animation-delay:.45s}
+.realmConstellationFinale .fs5{left:84%;top:39%;animation-delay:.6s}.realmConstellationFinale .fs6{left:68%;top:76%;animation-delay:.75s}
+
+@keyframes realmLineDraw{from{stroke-dashoffset:1}to{stroke-dashoffset:0}}
+@keyframes realmSparkTrail{
+  0%{opacity:0;transform:scale(.5)}
+  30%{opacity:1;transform:scale(1.35)}
+  100%{opacity:0;transform:scale(.7)}
+}
+@keyframes realmFinalDraw{to{stroke-dashoffset:0}}
+@keyframes realmFinalStar{from{transform:scale(.85);opacity:.55}to{transform:scale(1.25);opacity:1}}
