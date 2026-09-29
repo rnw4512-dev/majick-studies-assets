@@ -1,9 +1,9 @@
-// Majick Studies V3.3.50 Guardian Room Check — AUTHORITATIVE MAIN APP BRIDGE
+// Majick Studies V3.3.52 Game Realm Expansion — AUTHORITATIVE MAIN APP BRIDGE
 (function(){
 'use strict';
 
-const RELEASE_LABEL='Guardian Room Check • V3.3.50';
-const RELEASE_TITLE='Majick Studies — V3.3.50 Guardian Room Check';
+const RELEASE_LABEL='Game Realm Expansion • V3.3.52';
+const RELEASE_TITLE='Majick Studies — V3.3.52 Game Realm Expansion';
 const registry=()=>window.MajickGuardianRegistry;
 const canonOf=type=>registry()?.get?.(type)?.canon||String(type||'').toLowerCase();
 const STAGE_SLUGS=['new-bond','apprentice','guardian','ascendant','celestial'];
@@ -209,7 +209,7 @@ function sanctuaryMarkup(context){
   }
   const q='?v=3350-guardian-room&context='+encodeURIComponent(context||'app');
   return '<section class="phase4Wrap v3317Phase" aria-label="Phaser 4 Living Sanctuary">'+
-    '<div class="phase4Top"><div><b>✦ Living Sanctuary • V3.3.50</b><br><span>Protected Guardian movement • personalized nooks • furniture storage</span></div>'+
+    '<div class="phase4Top"><div><b>✦ Living Sanctuary • V3.3.52</b><br><span>Protected Guardian movement • personalized nooks • furniture storage</span></div>'+
     '<div class="phase4Actions"><button class="btn ghost" onclick="phase4OpenFullscreen()">Full Sanctuary</button><button class="btn primary" onclick="navigate(\'addmaterial\')">Add Study Material</button></div></div>'+
     '<iframe class="phase4Frame v3317SanctuaryFrame" src="sanctuary/index.html'+q+'" title="Majick Studies Living Sanctuary" loading="eager" allow="fullscreen" onload="setTimeout(()=>{v3317PushGuardianLevels();v3321PushFurnitureState();},120)"></iframe>'+
     '<div class="phase4Help">Personal Guardian nooks • feeding + play zones • store/place owned furniture • Cozy Dorm layout preset.</div>'+
@@ -331,14 +331,14 @@ function applyReleaseBadge(){
   const pill=document.querySelector('.top .pill');
   if(pill&&pill.textContent!==RELEASE_LABEL)pill.textContent=RELEASE_LABEL;
   if(document.title!==RELEASE_TITLE)document.title=RELEASE_TITLE;
-  if(document.documentElement.dataset.majickVersion!=='3.3.42-sanctuary-alive'){
-    document.documentElement.dataset.majickVersion='3.3.42-sanctuary-alive';
+  if(document.documentElement.dataset.majickVersion!=='3.3.52-game-realm'){
+    document.documentElement.dataset.majickVersion='3.3.52-game-realm';
   }
 }
 
 function showRuntimeNotice(error){
   const message=String(error?.message||error||'Unknown runtime error');
-  console.error('Majick V3.3.44 runtime error',error);
+  console.error('Majick V3.3.52 runtime error',error);
   if(document.getElementById('v3317RuntimeNotice'))return;
   try{
     const n=document.createElement('div');
