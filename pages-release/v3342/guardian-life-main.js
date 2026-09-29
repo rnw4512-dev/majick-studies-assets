@@ -61,7 +61,8 @@ function stagePath(stage){
 }
 function showEvolutionCeremony(d,p){
   const stage=String(d.stage||''); if(!stage)return;
-  document.getElementById('majEvolutionCelebration')?.remove();
+  if(typeof document==='undefined'||!document.body||typeof document.createElement!=='function')return;
+  document.getElementById?.('majEvolutionCelebration')?.remove();
 
   const name=String(d.name||p?.name||'Guardian');
   const img=stageImage(p,stage);
