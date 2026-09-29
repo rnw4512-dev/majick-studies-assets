@@ -66,9 +66,13 @@ function showEvolutionCeremony(d,p){
 
   const name=String(d.name||p?.name||'Guardian');
   const img=stageImage(p,stage);
-  const oldStage=STAGE[d.previousStage]||'New Bond';
+  const previousStageSlug=String(d.previousStage||STAGE_ORDER[Math.max(0,STAGE_ORDER.indexOf(stage)-1)]||'new-bond');
+  const previousImg=stageImage(p,previousStageSlug);
+  const oldStage=STAGE[previousStageSlug]||'New Bond';
   const celebration=celebrationFor(p);
   const stageCelebration=STAGE_CELEBRATION[stage]||STAGE_CELEBRATION.apprentice;
+  const course=String(window.S?.activeCourse||'WGU');
+  const level=Number(d.level||p?.level||window.v3317StageForPet?.(p)?.level||0);
 
   const host=document.createElement('div');
   host.id='majEvolutionCelebration';
@@ -86,7 +90,12 @@ function showEvolutionCeremony(d,p){
         '<div class="majEvoArtWrap">'+(img?'<img class="majEvoArt" src="'+E(img)+'" alt="'+E(name+', '+(STAGE[stage]||stage))+'">':'<div class="majEvoFallback">✦</div>')+'</div>'+
         '<div class="majEvoArtCaption"><strong>'+E(name)+'</strong><span>'+E(celebration.role)+'</span></div>'+
       '</div>'+
-      '<div class="majEvoBadge"><span>'+E(celebration.sigil)+' '+E(STAGE[stage]||stage)+' '+E(celebration.sigil)+'</span><small>'+E(celebration.role)+' • STAGE '+E(STAGE_ROMAN[stage]||'')+' AWAKENED</small></div>'+
+      '<div class="majEvoTransform" aria-label="Evolution transformation">'+
+        '<div class="majEvoBefore">'+(previousImg?'<img src="'+E(previousImg)+'" alt="'+E(name+', '+oldStage)+'">':'<span>✦</span>')+'<small>'+E(oldStage)+'</small></div>'+
+        '<div class="majEvoTransformArrow"><span>✦</span><b>EVOLVED</b><span>✦</span></div>'+
+        '<div class="majEvoAfter">'+(img?'<img src="'+E(img)+'" alt="'+E(name+', '+(STAGE[stage]||stage))+'">':'<span>✦</span>')+'<small>'+E(STAGE[stage]||stage)+'</small></div>'+
+      '</div>'+
+      '<div class="majEvoBadge"><span>'+E(celebration.sigil)+' '+E(STAGE[stage]||stage)+' '+E(celebration.sigil)+'</span><small>'+E(celebration.role)+' • STAGE '+E(STAGE_ROMAN[stage]||'')+' AWAKENED'+(level?' • LEVEL '+E(level):'')+'</small></div>'+
       '<h2 id="majEvoTitle">'+E(name)+' became '+((stage==='apprentice'||stage==='ascendant')?'an ':'a ')+E(STAGE[stage]||stage)+'!</h2>'+
       '<p class="majEvoLead">'+E(stageCelebration.lead)+' Your studies strengthened '+E(name)+"'s bond enough to awaken this form.</p>"+
       '<div class="majEvoPath">'+stagePath(stage)+'</div>'+
@@ -97,8 +106,15 @@ function showEvolutionCeremony(d,p){
         '<div><span>◇</span><b>Codex Updated</b><small>'+E(oldStage)+' → '+E(STAGE[stage]||stage)+'</small></div>'+
       '</div>'+
       '<p class="majEvoFlavor">'+E(personalityLine(p,stage))+'</p>'+
+      '<div class="majEvoMemoryCard">'+
+        '<span class="majEvoMemoryIcon">'+E(celebration.sigil)+'</span>'+
+        '<div><small>EVOLUTION MEMORY EARNED</small><b>'+E(name)+' • '+E(STAGE[stage]||stage)+'</b><p>'+E(course)+' • '+E(new Date().toLocaleDateString())+'</p></div>'+
+      '</div>'+
       '<p class="majEvoGentle">Growth comes from the studying you already do — no care debt and no streak punishment.</p>'+
-      '<button type="button" class="majEvoWelcome">Welcome Home ✦</button>'+
+      '<div class="majEvoActions">'+
+        '<button type="button" class="majEvoWelcome">Welcome Home ✦</button>'+
+        '<button type="button" class="majEvoSanctuary">See '+E(name)+' in the Sanctuary ☾</button>'+
+      '</div>'+
     '</section>';
   document.body.appendChild(host);
   const art=host.querySelector('.majEvoArt');
@@ -108,11 +124,19 @@ function showEvolutionCeremony(d,p){
   }
 
   requestAnimationFrame(()=>host.classList.add('show'));
+  const close=()=>{host.classList.add('closing');setTimeout(()=>host.remove(),420)};
   const btn=host.querySelector('.majEvoWelcome');
+  const sanctuaryBtn=host.querySelector('.majEvoSanctuary');
   btn?.focus();
-  btn?.addEventListener('click',()=>{
-    host.classList.add('closing');
-    setTimeout(()=>host.remove(),420);
+  btn?.addEventListener('click',close,{once:true});
+  sanctuaryBtn?.addEventListener('click',()=>{
+    close();
+    setTimeout(()=>{
+      try{
+        if(typeof window.navigate==='function')window.navigate('sanctuary');
+        else if(window.S){window.S.screen='sanctuary';window.render?.();}
+      }catch(_){}
+    },180);
   },{once:true});
 }
 function recordEvolution(d){
