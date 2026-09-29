@@ -278,3 +278,58 @@
   .realmTrialGuide{grid-template-columns:1fr}
   .realmTrialGuide>div{min-height:auto;padding:10px 12px}
 }
+
+/* V3.3.56 accessibility + mobile stability */
+.realmHub button:focus-visible,
+.realmMode button:focus-visible,
+.realmMode select:focus-visible,
+.realmClassic summary:focus-visible{
+  outline:3px solid #d8c2ff;
+  outline-offset:3px;
+  box-shadow:0 0 0 2px rgba(26,16,37,.95),0 0 22px rgba(185,154,232,.24);
+}
+.realmMode button,.realmHub button{touch-action:manipulation}
+.realmMode .card,.realmScene,.realmGuardianBanner,.realmTrialGuide,.realmBossHUD{max-width:100%;box-sizing:border-box}
+.realmMode .question,.realmStarBack b,.realmSortRune>b,.realmHexClaim blockquote{overflow-wrap:anywhere}
+.realmSortChoices,.realmLensChoices,.options,.realmHexJudge,.realmHexRepairs{max-width:100%}
+.realmSortChoices button,.realmLensChoices button,.options .opt,.realmHexJudge button,.realmHexRepairs button{min-height:44px}
+@media(max-width:760px){
+  .realmMode{overflow-x:hidden}
+  .realmScene{min-height:270px}
+  .realmSceneArt{min-height:125px}
+  .realmSceneCopy p{font-size:13px}
+  .realmGuardianBanner{align-items:flex-start}
+  .realmGuardianBanner img{flex:0 0 auto}
+  .realmSortChoices,.realmLensChoices,.options,.realmHexJudge,.realmHexRepairs{display:grid;grid-template-columns:1fr}
+  .realmSortChoices button,.realmLensChoices button,.options .opt,.realmHexJudge button,.realmHexRepairs button{width:100%}
+  .realmConstellationGrid{gap:10px}
+  .realmStarCard{min-height:145px}
+}
+@media(max-width:480px){
+  .realmScene{padding:15px;border-radius:18px}
+  .realmSceneCopy h2{font-size:24px}
+  .realmSceneArt{min-height:110px}
+  .realmTrialGuide{gap:7px}
+  .realmTrialGuide>div{padding:9px 10px}
+  .realmResultHero{padding-left:12px;padding-right:12px}
+  .realmResultScore{font-size:34px}
+  .realmConstellationGrid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .realmStarBack b{font-size:13px}
+}
+@media(prefers-reduced-motion:reduce){
+  .realmScene *,
+  .realmStarCard *,
+  .realmConstellationLine,
+  .realmConstellationNode,
+  .realmConstellationSparkle,
+  .realmConstellationFinale,
+  .realmFinalConstellationLine,
+  .realmNewBest,
+  .realmGauntlet.phase-three .bossSigil{
+    animation:none!important;
+    transition:none!important;
+  }
+  .realmConstellationLine.newlyDrawn{stroke-dashoffset:0}
+  .realmConstellationFinale.show{opacity:1;transform:none}
+  .realmStarCard:hover,.realmStarCard:focus-visible{transform:none}
+}
