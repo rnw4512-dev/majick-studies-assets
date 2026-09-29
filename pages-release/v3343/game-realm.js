@@ -171,7 +171,9 @@
   function runeSortHTML(){
     if(session.finished)return realmResultHTML('Rune Sort','runesort',session.score,session.items.length,session.score===session.items.length,'You sorted '+session.score+' of '+session.items.length+' runes correctly.');
     const done=session.items.filter(x=>x.ok).length;
-    return '<div class="qwrap realmMode realmRuneSort">'+guardianBanner('Sort the runes. I will react when the pattern clicks.')+
+    return '<div class="qwrap realmMode realmRuneSort">'+
+      '<div class="realmWorldTag"><small>LOCATION</small><b>Runestone Atrium</b><span>Ancient sorting runes drift through a moonlit collegiate hall.</span></div>'+
+      guardianBanner('Sort the runes. I will react when the pattern clicks.')+
       '<div class="qtop"><span class="qbadge">ᚱ Rune Sort</span><b>'+done+'/'+session.items.length+' locked</b></div>'+
       '<div class="card"><p>Choose the section each prompt belongs to. Correct runes lock into place.</p>'+
       '<div class="realmSortBoard">'+session.items.map((x,i)=>'<article class="realmSortRune '+(x.ok?'locked':x.choice?'miss':'')+'"><b>'+E(x.prompt)+'</b><div class="realmSortChoices">'+session.categories.map(cat=>'<button '+(x.ok?'disabled':'')+' onclick="runeSortPick('+i+','+JSON.stringify(cat)+')">'+E(cat)+'</button>').join('')+'</div>'+(x.choice?'<small class="'+(x.ok?'strong':'weak')+'">'+(x.ok?'✓ Rune locked':'Not this section — try again')+'</small>':'')+'</article>').join('')+'</div>'+
@@ -218,7 +220,9 @@
   function oracleHTML(){
     if(session.finished)return realmResultHTML('Oracle Lens','oraclelens',session.score,session.limit,session.score===session.limit,'You answered '+session.score+'/'+session.limit+' correctly and found '+session.clarity+' controlling clues.');
     const q=session.current;
-    return '<div class="qwrap realmMode realmOracle">'+guardianBanner('Find what actually controls the answer before you commit.')+
+    return '<div class="qwrap realmMode realmOracle">'+
+      '<div class="realmWorldTag"><small>LOCATION</small><b>Oracle Observatory</b><span>Celestial lenses and suspended constellations reveal the clue that matters most.</span></div>'+
+      guardianBanner('Find what actually controls the answer before you commit.')+
       '<div class="qtop"><span class="qbadge">◉ Oracle Lens</span><b>Round '+session.round+'/'+session.limit+'</b></div>'+
       '<div class="card"><div class="tiny">'+E(q.section||'Mixed')+' • Difficulty '+Number(q.difficulty||1)+'</div><div class="question">'+E(q.prompt)+'</div>'+
       '<h3>1. Which clue should the Oracle focus on?</h3><div class="realmLensChoices">'+session.lenses.map(l=>'<button class="'+(session.lensChoice===l?(session.lensCorrect?'correct':'selected'):'')+'" '+(session.answered?'disabled':'')+' onclick="oracleChooseLens('+JSON.stringify(l)+')">'+E(l)+'</button>').join('')+'</div>'+
@@ -280,7 +284,9 @@
   function constellationHTML(){
     const total=session.cards.length/2;
     if(session.finished)return realmResultHTML('Memory Constellation','constellation',session.matched,total,true,'You linked all '+total+' concept pairs in '+session.moves+' moves.');
-    return '<div class="qwrap realmMode realmConstellation">'+guardianBanner('Find the clue that belongs with its answer. I will light each star when you connect them.')+
+    return '<div class="qwrap realmMode realmConstellation">'+
+      '<div class="realmWorldTag"><small>LOCATION</small><b>Constellation Garden</b><span>Memory stars bloom across a midnight garden as each concept finds its pair.</span></div>'+
+      guardianBanner('Find the clue that belongs with its answer. I will light each star when you connect them.')+
       '<div class="qtop"><span class="qbadge">✧ Memory Constellation</span><b>'+session.matched+'/'+total+' stars linked • '+session.moves+' moves</b></div>'+
       '<div class="card"><p>Turn over two cards. Match a controlling clue with its correct answer.</p>'+
       '<div class="realmConstellationGrid">'+session.cards.map((c,i)=>{
@@ -344,7 +350,9 @@
     if(session.finished)return realmResultHTML('Hex Breaker','hexbreaker',session.score,session.limit,session.score===session.limit,'You fully broke '+session.score+'/'+session.limit+' hexes. Judgment: '+session.judgmentScore+'/'+session.limit+' • Repairs: '+session.repairScore+'/'+session.limit+'.');
     const q=session.current;
     const judgementCorrect=session.judgment!=null&&((session.judgment==='valid')===session.claimValid);
-    return '<div class="qwrap realmMode realmHexBreaker">'+guardianBanner('Do not trust every glowing claim. Decide whether it is sound before you repair it.')+
+    return '<div class="qwrap realmMode realmHexBreaker">'+
+      '<div class="realmWorldTag"><small>LOCATION</small><b>Hexed Archive</b><span>Corrupted scrolls pulse between shadowed shelves until you expose the faulty claim.</span></div>'+
+      guardianBanner('Do not trust every glowing claim. Decide whether it is sound before you repair it.')+
       '<div class="qtop"><span class="qbadge">⬡ Hex Breaker</span><b>Hex '+session.round+'/'+session.limit+'</b></div>'+
       '<div class="card"><div class="tiny">'+E(q.section||'Mixed')+' • '+E(q.prompt)+'</div>'+
       '<div class="realmHexClaim"><small>ENCHANTED CLAIM</small><blockquote>'+E(session.claim)+'</blockquote></div>'+
@@ -395,7 +403,9 @@
   function gauntletHTML(){
     if(session.finished)return realmResultHTML('Guardian Gauntlet','gauntlet',session.score,Math.max(1,session.round),session.won,session.won?(session.guardianName+' helped you break the boss ward.'):'The boss ward held this time. Your run still added practice data.');
     const q=session.current;
-    return '<div class="qwrap realmMode realmGauntlet">'+guardianBanner(session.shieldUsed?'The shield is spent. I am still with you.':'I can absorb one missed answer for you this run.')+
+    return '<div class="qwrap realmMode realmGauntlet">'+
+      '<div class="realmWorldTag"><small>LOCATION</small><b>Guardian Trial Arena</b><span>A warded dueling chamber where your Guardian fights beside you against a living boss sigil.</span></div>'+
+      guardianBanner(session.shieldUsed?'The shield is spent. I am still with you.':'I can absorb one missed answer for you this run.')+
       '<div class="qtop"><span class="qbadge">♛ Guardian Gauntlet</span><div><span class="hearts">'+('💗'.repeat(session.playerHP))+'</span> <span class="comboGlow">✦ x'+Math.max(1,session.combo)+'</span></div></div>'+
       '<div class="realmBossHUD"><div><b>Boss Ward</b><div class="bossBar"><i style="width:'+session.bossHP+'%"></i></div><small>'+session.bossHP+'% remaining</small></div><span class="realmShield '+(session.shieldUsed?'spent':'ready')+'">'+(session.shieldUsed?'◇ Shield spent':'◇ Guardian shield ready')+'</span></div>'+
       '<div class="card"><div class="tiny">'+E(q.section||'Mixed')+' • Difficulty '+Number(q.difficulty||1)+' • Round '+session.round+'/'+session.limit+'</div><div class="question">'+E(q.prompt)+'</div>'+
