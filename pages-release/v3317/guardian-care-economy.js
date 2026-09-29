@@ -82,6 +82,15 @@ function canon(type){
   }catch(_){}
   return reg||FALLBACK_META[type]||{name:type||'Guardian',species:'Guardian',icon:'✦',favoriteItem:'celestial-feather-wand',favoriteLabel:'Celestial Feather Wand'};
 }
+
+function identityForPet(pet){
+  if(!pet)return canon('');
+  const reg=window.MajickGuardianRegistry?.getFor?.(pet);
+  return reg||canon(pet.type);
+}
+function resolvedTypeForPet(pet){
+  return identityForPet(pet)?.type||pet?.type||'';
+}
 function ownedPets(){
   return Array.isArray(window.S?.legacy?.pets)?S.legacy.pets.filter(Boolean):[];
 }
@@ -92,7 +101,8 @@ function petById(id){
   return ownedPets().find(p=>p.id===id)||null;
 }
 function petByType(type){
-  return ownedPets().find(p=>p.type===type)||null;
+  const key=String(type||'');
+  return ownedPets().find(p=>p.type===key||resolvedTypeForPet(p)===key)||null;
 }
 function resolvePet(target){
   if(target&&typeof target==='object'&&target.id)return target;
@@ -131,7 +141,8 @@ function ensureAccount(){
     for(const k of NEED_KEYS)g[k]=clamp(g[k]??DEFAULT_NEEDS[k],25,100);
     g.bond=Math.max(Number(pet.bond||0),Number(g.bond||0));
     g.petId=pet.id;
-    g.type=pet.type;
+    g.type=resolvedTypeForPet(pet);
+    g.sourceType=pet.type;
     g.lastCareAt=g.lastCareAt||null;
     g.lastAction=g.lastAction||null;
     g.affectionCooldownUntil=Number(g.affectionCooldownUntil||0);
@@ -194,8 +205,8 @@ function saveCare(){
   try{save()}catch(e){console.warn('Guardian care save',e)}
 }
 function logCare(pet,action,message){
-  const a=ensureAccount(),g=a.guardianCare.guardians[pet.id];
-  a.guardianCare.log.unshift({petId:pet.id,type:pet.type,name:pet.name,action,message,at:new Date().toISOString()});
+  const a=ensureAccount(),g=a.guardianCare.guardians[pet.id],meta=identityForPet(pet);
+  a.guardianCare.log.unshift({petId:pet.id,type:meta.type||pet.type,sourceType:pet.type,name:meta.name||pet.name,action,message,at:new Date().toISOString()});
   a.guardianCare.log=a.guardianCare.log.slice(0,60);
   g.lastCareAt=new Date().toISOString();
   g.lastAction=action;
@@ -221,7 +232,7 @@ function change(g,changes){
   }
 }
 function favoriteForPet(pet){
-  const meta=canon(pet?.type);
+  const meta=identityForPet(pet);
   return {id:meta.favoriteItem||'celestial-feather-wand',label:meta.favoriteLabel||meta.favoriteObject||'Sanctuary treasure'};
 }
 function favoriteOwned(pet){
@@ -245,42 +256,42 @@ function assignedBed(pet){
   return 'guardian-bed-'+String(pet.id||pet.type||idx).replace(/[^a-zA-Z0-9_-]/g,'-');
 }
 function resultBase(pet,action){
-  const g=state(pet),meta=canon(pet.type);
-  return {ok:true,guardianId:pet.id,guardianType:pet.type,name:pet.name||meta.name,action,state:g,icon:meta.icon,visualAction:'play'};
+  const g=state(pet),meta=identityForPet(pet);
+  return {ok:true,guardianId:pet.id,guardianType:meta.type||pet.type,sourceType:pet.type,name:meta.name||pet.name,action,state:g,icon:meta.icon,visualAction:'play'};
 }
 
 function performAction(target,action,opts={}){
   const pet=resolvePet(target);
   if(!pet)return {ok:false,action,message:'That Guardian is not currently in your bonded roster.'};
 
-  const a=ensureAccount(),g=a.guardianCare.guardians[pet.id],meta=canon(pet.type),r=resultBase(pet,action);
+  const a=ensureAccount(),g=a.guardianCare.guardians[pet.id],meta=identityForPet(pet),r=resultBase(pet,action);
   let msg='',favoriteBonus=false;
 
   if(action==='feed'){
     if(!consume('moonberry-meal',1))return {ok:false,guardianId:pet.id,guardianType:pet.type,action,message:'You are out of Moonberry Familiar Meals. Visit the Moon Crystal Boutique.',needsShop:true};
     change(g,{hunger:34,affection:3,bond:3});
-    msg=(pet.name||meta.name)+' happily finishes a Moonberry meal and looks noticeably more content.';
+    msg=(meta.name||pet.name)+' happily finishes a Moonberry meal and looks noticeably more content.';
     r.icon='✦';
   }else if(action==='water'){
     change(g,{hydration:38,bond:1});
-    msg=(pet.name||meta.name)+' drinks from the enchanted water basin. The water shimmers as they finish.';
+    msg=(meta.name||pet.name)+' drinks from the enchanted water basin. The water shimmers as they finish.';
     r.icon='◌';
   }else if(action==='treat'){
     if(!consume('starlight-treat',1))return {ok:false,guardianId:pet.id,guardianType:pet.type,action,message:'You are out of Starlight Treats. Visit the Moon Crystal Boutique.',needsShop:true};
     change(g,{hunger:10,fun:8,affection:12,bond:4});
-    msg=(pet.name||meta.name)+' takes the Starlight Treat and gives you a very pleased little reaction.';
+    msg=(meta.name||pet.name)+' takes the Starlight Treat and gives you a very pleased little reaction.';
     r.icon='☆';
   }else if(action==='groom'){
     if(!owns('moon-silver-brush'))return {ok:false,guardianId:pet.id,guardianType:pet.type,action,message:'You need the Moon-Silver Grooming Brush from the Boutique first.',needsShop:true};
     change(g,{grooming:38,affection:8,bond:4});
-    msg=(pet.name||meta.name)+' relaxes while you brush and groom them. Their coat and aura look immaculate.';
+    msg=(meta.name||pet.name)+' relaxes while you brush and groom them. Their coat and aura look immaculate.';
     r.icon='✧';
   }else if(action==='play'){
     const toy=opts.itemId||bestToy(pet);
     favoriteBonus=toy===favoriteForPet(pet).id&&owns(toy);
     change(g,{fun:favoriteBonus?44:32,energy:-4,affection:6,bond:favoriteBonus?7:4});
     const item=CATALOG.find(x=>x.id===toy);
-    msg=(pet.name||meta.name)+' plays with '+(item?.name||'the Sanctuary ribbon toy')+'.'+(favoriteBonus?' It is one of their favorite things, and the bond magic flares brighter.':'');
+    msg=(meta.name||pet.name)+' plays with '+(item?.name||'the Sanctuary ribbon toy')+'.'+(favoriteBonus?' It is one of their favorite things, and the bond magic flares brighter.':'');
     r.icon=favoriteBonus?'✦':'♡';
     r.itemId=toy;
     r.favoriteBonus=favoriteBonus;
@@ -306,7 +317,7 @@ function performAction(target,action,opts={}){
     beds[bed]=pet.id;
     change(g,{energy:48,affection:3,bond:already?5:2});
     g.preferredBed=bed;
-    msg=(pet.name||meta.name)+(already?' settles into their familiar bed and immediately relaxes.':' chooses this bed as a favorite resting place.');
+    msg=(meta.name||pet.name)+(already?' settles into their familiar bed and immediately relaxes.':' chooses this bed as a favorite resting place.');
     r.icon='☾';
     r.visualAction='sleep';
     r.travelObject=bed;
@@ -314,12 +325,12 @@ function performAction(target,action,opts={}){
     const now=Date.now(),cool=Number(g.affectionCooldownUntil||0);
     if(now<cool){
       change(g,{affection:5});
-      msg=(pet.name||meta.name)+' leans into the affection. The bond is already glowing from your recent attention.';
+      msg=(meta.name||pet.name)+' leans into the affection. The bond is already glowing from your recent attention.';
       r.rewardCooledDown=true;
     }else{
       change(g,{affection:28,bond:4});
       g.affectionCooldownUntil=now+10*60*1000;
-      msg=(pet.name||meta.name)+' melts into the attention and your familiar bond brightens.';
+      msg=(meta.name||pet.name)+' melts into the attention and your familiar bond brightens.';
     }
     r.icon='♡';
   }else{
@@ -409,10 +420,10 @@ function snapshot(){
   const a=ensureAccount();
   applyDecay(a);
   const roster=ownedPets().map(pet=>{
-    const g=a.guardianCare.guardians[pet.id],meta=canon(pet.type),fav=favoriteForPet(pet);
+    const g=a.guardianCare.guardians[pet.id],meta=identityForPet(pet),fav=favoriteForPet(pet),type=meta.type||pet.type;
     return {
-      petId:pet.id,type:pet.type,name:pet.name||meta.name,species:meta.species,icon:meta.icon,
-      phaser:!!window.V338_CANON?.[pet.type]?.phaser,
+      petId:pet.id,type,sourceType:pet.type,canon:meta.canon||type,name:meta.name||pet.name,species:meta.species,role:meta.role||'Study Keeper',personality:meta.personality||'',accent:meta.accent||'#b79ad9',icon:meta.icon,
+      phaser:!!window.V338_CANON?.[type]?.phaser||!!meta.hasProtectedMotion,
       ...g,
       favoriteItem:fav.id,favoriteLabel:fav.label,favoriteOwned:favoriteOwned(pet),
       playItem:bestToy(pet),
@@ -466,7 +477,7 @@ function guardianCareHTML(target){
   if(focus&&snap.focusPetId!==focus.id){
     ensureAccount().guardianCare.focusPetId=focus.id;
   }
-  const g=snap.guardians[focus.id],meta=canon(focus.type);
+  const g=snap.guardians[focus.id],meta=identityForPet(focus);
   const meal=snap.inventory['moonberry-meal']||0,treat=snap.inventory['starlight-treat']||0,brush=snap.owned.includes('moon-silver-brush');
   const toy=bestToy(focus),toyName=CATALOG.find(x=>x.id===toy)?.name||'Sanctuary Ribbon Toy';
 

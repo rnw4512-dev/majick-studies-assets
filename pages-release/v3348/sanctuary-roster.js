@@ -13,7 +13,9 @@
    const level=Number(state.level||g.level||1),slug=state.stageSlug||g.stageSlug;
    return STAGES.includes(slug)?slug:level>=12?'celestial':level>=8?'ascendant':level>=5?'guardian':level>=3?'apprentice':'new-bond';
  }
- function canon(g){return window.MajickGuardianRegistry?.get?.(g.type)?.canon||String(g.type).replace(/[^a-z0-9-]/gi,'').toLowerCase()}
+ function identity(g){return window.MajickGuardianRegistry?.getFor?.(g)||window.MajickGuardianRegistry?.get?.(g.type)||null}
+ function resolvedType(g){return identity(g)?.type||String(g.type||'')}
+ function canon(g){return identity(g)?.canon||String(g.type).replace(/[^a-z0-9-]/gi,'').toLowerCase()}
  function imageKey(g){return 'v3348-'+canon(g)+'-room'}
  function imageURL(g){return '../assets/familiars/canon/'+canon(g)+'-guardian.webp?v=3348'}
  function point(scene,g,index){
@@ -23,9 +25,10 @@
  }
  function report(scene){
    const rows=roster(scene).map(g=>{
-     const pet=scene.v3348PetById?.[g.petId],walk=scene['v3317Walk_'+g.type],action=scene['v3317Action_'+g.type];
-     const visible=pet?.active&&((pet.visible!==false&&Number(pet.alpha??1)>.05)||(ORIGINAL.has(g.type)&&((walk?.active&&walk.visible!==false)||(action?.active&&action.visible!==false))));
-     return {petId:g.petId,name:g.name,type:g.type,present:!!visible};
+     const type=resolvedType(g),meta=identity(g)||{};
+     const pet=scene.v3348PetById?.[g.petId],walk=scene['v3317Walk_'+type],action=scene['v3317Action_'+type];
+     const visible=pet?.active&&((pet.visible!==false&&Number(pet.alpha??1)>.05)||(ORIGINAL.has(type)&&String(g.type||'')===type&&((walk?.active&&walk.visible!==false)||(action?.active&&action.visible!==false))));
+     return {petId:g.petId,name:meta.name||g.name,type,canon:meta.canon||canon(g),present:!!visible};
    });
    try{window.parent?.postMessage({type:'MAJICK_SANCTUARY_ROSTER_V3350',rows},location.origin)}catch(_){}
    return rows;
@@ -40,9 +43,10 @@
      :scene.add.image(p.x,p.y,key).setOrigin(.5,1).setDepth(80);
    if(key!=='v3350-placeholder')pet.setScale(Math.min(.7,Math.max(.15,240/Math.max(1,pet.height))));
    pet.setInteractive({useHandCursor:true});pet.on('pointerup',()=>{if(!scene.editMode)scene.openGuardianCarePanel?.(g.petId)});
-   pet.setData('guardianId',g.petId);pet.setData('guardianName',g.name);pet.setData('guardianType',g.type);pet.v3350Texture=key;
+   const meta=identity(g)||{},type=resolvedType(g);
+   pet.setData('guardianId',g.petId);pet.setData('guardianName',meta.name||g.name);pet.setData('guardianType',type);pet.v3350Texture=key;
    scene.v3348Sprites[g.petId]=pet;scene.v3348PetById[g.petId]=pet;
-   if(!scene[g.type]||!scene[g.type].active)scene[g.type]=pet;
+   if(!scene[type]||!scene[type].active)scene[type]=pet;
    scene.v3320RefreshGuardianLabels?.(scene.v3317CareState);
    scene.v3348Roam(g.petId);report(scene);
  }
@@ -55,9 +59,10 @@
      const type=pet.getData?.('guardianType');if(type&&this[type]===pet)delete this[type];
    }
    rs.forEach((g,index)=>{
-     const first=!seenTypes.has(g.type);seenTypes.add(g.type);
-     if(first&&ORIGINAL.has(g.type)){
-       if(this[g.type]?.active)this.v3348PetById[g.petId]=this[g.type];
+     const type=resolvedType(g),first=!seenTypes.has(type);seenTypes.add(type);
+     // Only reuse an original protected Phaser body when saved type and canon identity agree.
+     if(first&&ORIGINAL.has(type)&&String(g.type||'')===type){
+       if(this[type]?.active)this.v3348PetById[g.petId]=this[type];
        return;
      }
      const primary=imageKey(g,this),key=this.v3348Fallback[primary]||primary,existing=this.v3348Sprites[g.petId];

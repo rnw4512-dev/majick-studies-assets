@@ -23,14 +23,21 @@ function activePet(){
 }
 function guardianMeta(p){
   if(!p)return null;
-  const reg=window.MajickGuardianRegistry?.get?.(p.type)||{};
-  const name=window.v338Canon?.(p.type)?.display||reg.name||p.name||'Guardian';
+  const reg=window.MajickGuardianRegistry?.getFor?.(p)||window.MajickGuardianRegistry?.get?.(p.type)||{};
+  const type=reg.type||p.type;
+  const name=reg.name||p.name||'Guardian';
   const level=typeof window.masPetLevel==='function'?window.masPetLevel(p):Math.max(1,Number(p.level||1)||1);
   const stage=level>=12?'Celestial':level>=8?'Ascendant':level>=5?'Guardian':level>=3?'Apprentice':'New Bond';
-  const image=(()=>{try{return window.v3312CurrentGuardianImage?.(p)||window.v338Canon?.(p.type)?.portrait||''}catch(_){return ''}})();
+  const image=(()=>{
+    try{
+      return window.MajickGuardianRegistry?.stageImage?.(type,level)
+        ||window.v3312CurrentGuardianImage?.({...p,type})
+        ||window.v338Canon?.(type)?.portrait||'';
+    }catch(_){return ''}
+  })();
   const snap=careSnapshot();
-  const g=snap?.guardians?.[p.id]||snap?.byType?.[p.type]||{};
-  return {pet:p,id:p.id,type:p.type,name,level,stage,image,bond:Math.round(Number(g.bond??p.bond??0)),mood:g.mood?.label||'Bonded',icon:g.icon||reg.icon||'✦'};
+  const g=snap?.guardians?.[p.id]||snap?.byType?.[type]||snap?.byType?.[p.type]||{};
+  return {pet:p,id:p.id,type,sourceType:p.type,name,level,stage,image,bond:Math.round(Number(g.bond??p.bond??0)),mood:g.mood?.label||'Bonded',icon:g.icon||reg.icon||'✦',species:reg.species||'Guardian',role:reg.role||'Study Keeper',personality:reg.personality||'',accent:reg.accent||'#b79ad9'};
 }
 function journey(){
   const a=account();if(!a)return {guardians:{},memories:[]};
@@ -56,7 +63,7 @@ function setActive(id){
   if(a?.guardianCare)a.guardianCare.focusPetId=p.id;
   guardianJourney(p);
   saveState();
-  sound('hello',p.type);
+  sound('hello',guardianMeta(p)?.type||p.type);
   sparks(document.querySelector('.v3341GuardianHeroPortrait,.v3341StudyGuardianPortrait'),18);
   try{window.render?.()}catch(_){}
   setTimeout(decorate,30);
@@ -187,7 +194,7 @@ function addBond(p,amount){
   }catch(_){}
 }
 function broadcastReaction(kind,p,meta={}){
-  const payload={type:'MAJICK_STUDY_GUARDIAN_REACTION_V3341',kind,guardianId:p?.id||null,guardianType:p?.type||null,name:guardianMeta(p)?.name||p?.name||'Guardian',course:COURSE_LABEL(),meta};
+  const gm=guardianMeta(p);const payload={type:'MAJICK_STUDY_GUARDIAN_REACTION_V3341',kind,guardianId:p?.id||null,guardianType:gm?.type||p?.type||null,name:gm?.name||p?.name||'Guardian',course:COURSE_LABEL(),meta};
   document.querySelectorAll('.v3317SanctuaryFrame').forEach(f=>{try{f.contentWindow?.postMessage(payload,location.origin)}catch(_){}});
 }
 function react(kind,meta={}){
@@ -217,7 +224,7 @@ function react(kind,meta={}){
   if(kind==='concept'){courseRow.concepts++;addMemory(p,'Completed a '+COURSE_LABEL()+' concept with you.','concept')}
   if(kind==='mastery'){courseRow.mastery++;addMemory(p,'Reached a '+COURSE_LABEL()+' mastery checkpoint with you.','mastery')}
   if(kind==='course-pass'){courseRow.passed=true;courseRow.passedAt=new Date().toISOString()}
-  saveState();sound(kind,p.type);
+  saveState();sound(kind,guardianMeta(p)?.type||p.type);
   const dock=document.querySelector('.v3341StudyGuardian,.v3341GuardianHero');
   if(dock){dock.classList.remove('reacting');void dock.offsetWidth;dock.classList.add('reacting');const line=dock.querySelector('.v3341ReactionLine');if(line)line.textContent=msg}
   sparks(dock?.querySelector?.('.v3341StudyGuardianPortrait,.v3341GuardianHeroPortrait')||dock,kind==='course-pass'?38:kind==='mastery'?28:kind==='concept'?22:14);
