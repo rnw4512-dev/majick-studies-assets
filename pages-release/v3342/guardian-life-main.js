@@ -5,6 +5,13 @@ const E=v=>String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt
 const STAGE={'new-bond':'New Bond','apprentice':'Apprentice','guardian':'Guardian','ascendant':'Ascendant','celestial':'Celestial'};
 const STAGE_ORDER=['new-bond','apprentice','guardian','ascendant','celestial'];
 const STAGE_ROMAN={'new-bond':'I','apprentice':'II','guardian':'III','ascendant':'IV','celestial':'V'};
+const STAGE_CELEBRATION={
+  'new-bond':{headline:'A New Bond Begins',lead:'A new magical companion has answered your call.',stars:18,mark:'✦'},
+  apprentice:{headline:'Potential Awakened',lead:'Study and bond have awakened a stronger form.',stars:28,mark:'☾'},
+  guardian:{headline:'Guardian Form Unlocked',lead:'Your shared work has forged a true Guardian bond.',stars:36,mark:'✦'},
+  ascendant:{headline:'Ascendant Power Awakened',lead:'Your Guardian has crossed into a rare and radiant form.',stars:46,mark:'✧'},
+  celestial:{headline:'Celestial Form Achieved',lead:'A brilliant milestone — your Guardian has reached its highest known form.',stars:60,mark:'★'}
+};
 const CELEBRATION={
   luna:{display:'Velora',sigil:'☾',role:'Moon Cat',line:'Velora’s quiet confidence has deepened. Expect more thoughtful pauses, cozy routines, and calm companionship.'},
   ember:{display:'Cascade',sigil:'◇',role:'Pocket Dragon',line:'Cascade’s spark has grown steadier. Expect bolder play, focused curiosity, and more energetic Sanctuary reactions.'},
@@ -51,19 +58,20 @@ function showEvolutionCeremony(d,p){
   const img=stageImage(p,stage);
   const oldStage=STAGE[d.previousStage]||'New Bond';
   const celebration=celebrationFor(p);
+  const stageCelebration=STAGE_CELEBRATION[stage]||STAGE_CELEBRATION.apprentice;
 
   const host=document.createElement('div');
   host.id='majEvolutionCelebration';
-  host.className='majEvoBackdrop';
+  host.className='majEvoBackdrop majEvo-'+stage;
   host.innerHTML=
-    '<div class="majEvoStars" aria-hidden="true">'+Array.from({length:28},(_,i)=>'<i style="--i:'+i+'">✦</i>').join('')+'</div>'+
+    '<div class="majEvoStars" aria-hidden="true">'+Array.from({length:stageCelebration.stars},(_,i)=>'<i style="--i:'+i+'">'+E(i%7===0?stageCelebration.mark:'✦')+'</i>').join('')+'</div>'+
     '<section class="majEvoCard" role="dialog" aria-modal="true" aria-labelledby="majEvoTitle">'+
       '<div class="majEvoAura" aria-hidden="true"></div>'+
-      '<p class="majEvoKicker">'+E(celebration.sigil)+' GUARDIAN EVOLUTION '+E(celebration.sigil)+'</p>'+
+      '<p class="majEvoKicker">'+E(celebration.sigil)+' GUARDIAN EVOLUTION '+E(celebration.sigil)+'</p>'+<div class="majEvoStageHeadline">'+E(stageCelebration.headline)+'</div>'+
       '<div class="majEvoArtWrap">'+(img?'<img class="majEvoArt" src="'+E(img)+'" alt="'+E(name+', '+(STAGE[stage]||stage))+'">':'<div class="majEvoFallback">✦</div>')+'</div>'+
       '<div class="majEvoBadge"><span>'+E(celebration.sigil)+' '+E(STAGE[stage]||stage)+' '+E(celebration.sigil)+'</span><small>'+E(celebration.role)+' • STAGE '+E(STAGE_ROMAN[stage]||'')+' AWAKENED</small></div>'+
       '<h2 id="majEvoTitle">'+E(name)+' became '+((stage==='apprentice'||stage==='ascendant')?'an ':'a ')+E(STAGE[stage]||stage)+'!</h2>'+
-      '<p class="majEvoLead">Your studies strengthened '+E(name)+"'s bond enough to awaken a new form.</p>"+
+      '<p class="majEvoLead">'+E(stageCelebration.lead)+' Your studies strengthened '+E(name)+"'s bond enough to awaken this form.</p>"+
       '<div class="majEvoPath">'+stagePath(stage)+'</div>'+
       '<div class="majEvoRewards">'+
         '<div><span>✦</span><b>+10 Bond</b><small>your connection deepened</small></div>'+
@@ -133,6 +141,6 @@ if(typeof oldRender==='function'&&!oldRender.__v3342){
   const fn=function(){const r=oldRender.apply(this,arguments);setTimeout(decorate,0);return r};fn.__v3342=true;window.render=fn;
 }
 setTimeout(decorate,0);
-window.MajickGuardianLife={VERSION,recordEvolution,nookSummary,decorate,showEvolutionCeremony};
+window.MajickGuardianLife={VERSION,recordEvolution,nookSummary,decorate,showEvolutionCeremony,profiles:CELEBRATION,stageCelebrations:STAGE_CELEBRATION};
 document.documentElement.dataset.majickGuardianLife=VERSION;
 })();
