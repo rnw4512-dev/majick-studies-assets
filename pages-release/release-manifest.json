@@ -1,9 +1,9 @@
 {
-  "release": "Majick Studies V3.3.12 — Faster Evolutions + Interactive Campus",
+  "release": "Majick Studies V3.3.52 — Game Realm Expansion",
   "live_url": "https://rnw4512-dev.github.io/majick-studies-assets/",
   "deployment_run": 35480970745,
   "deployment_status": "success",
-  "stable_base": "V3.3.11 Living Grimoire + confirmed V3.3.10 Phaser motion foundation",
+  "stable_base": "V3.3.50 Guardian Room Check + V3.3.52 Game Realm Expansion",
   "protected_phaser_rules": [
     "Do not rewrite Velora, Cascade, Solstice, or Aurelia movement methods",
     "Do not replace their original sprite files",
@@ -11,13 +11,10 @@
     "Future work goes around the working movement system"
   ],
   "verified": [
-    "GitHub Pages deployment completed successfully",
-    "V3.3.12 app-progress.json present",
-    "50 evolution stage WebP files present",
-    "Legacy-to-canon stage mapping included",
-    "Original 33 Phase 4 motion files remain present",
-    "Service-worker startup precache reduced to 14 lightweight shell assets",
-    "V3.3.12 JavaScript syntax checks passed"
+    "Rune Sort, Oracle Lens, Guardian Gauntlet, Memory Constellation, and Hex Breaker added",
+    "Duplicate Guardian species can have distinct names, colors, and personalities",
+    "Evolution celebration UI preserved",
+    "Golden Baseline architecture and protected Phaser motion remain intact"
   ],
   "save_safety": "No destructive migration. Existing XP, crystals, streaks, answers, course progress, current Guardian data, and movement saves are preserved.",
   "next_art_folder": "sanctuary/assets/objects/",

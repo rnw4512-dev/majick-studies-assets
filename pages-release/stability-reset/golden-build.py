@@ -188,8 +188,8 @@ for src_name,(dst_name,expected_hash,expected_bytes) in PINNED_MOTION.items():
 progress=site/"app-progress.json"
 if progress.exists():
     data=json.loads(progress.read_text(encoding="utf-8"))
-    data["version"]="V3.3.50 Guardian Room Check"
-    data["learning_intelligence"]="V3.3.42 Sanctuary Alive with protected lifetime Majick XP, one distinct bed and personal nook per hatched Guardian, favorite keepsakes and comfort spots, need-driven and personality-driven room routines, physical travel to care stations, expandable Guardian beds beyond the original two slots, evolution ceremonies and permanent evolution memories, visible protected Phaser movement, shared Guardian progression across Game Realm/D755 Retake/D772 Learn, retroactive credit for previously uncredited study answers, Study Guardian bond quests, optional Finish Debrief, D755 teacher-focus questions, and D772 instruction cycles"
+    data["version"]="V3.3.52 Game Realm Expansion"
+    data["learning_intelligence"]="V3.3.52 Game Realm Expansion with Rune Sort, Oracle Lens, Guardian Gauntlet, Memory Constellation, Hex Breaker, active Guardian realm support, duplicate-species Guardian individuality, evolution celebrations, protected lifetime Majick XP, and existing Sanctuary/learning systems preserved"
     data["sanctuary_version"]="V3.3.42 Sanctuary Alive Personal Nooks"
     data["sanctuary_home"]="Every hatched Guardian has a distinct bed and personal nook, favorite keepsake and comfort item, need-driven and personality-driven room routines, physical care travel, visible protected Phaser movement, evolved idle/action art, evolution ceremony, Guardian vocal reactions, care inventory, and room-safe furniture layout"
     data["sanctuary_customization"]="personal Guardian nooks, feeding/play zones, owned furniture storage, Cozy Dorm layout preset"
