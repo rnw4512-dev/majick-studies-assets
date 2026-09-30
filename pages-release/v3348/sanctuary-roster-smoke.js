@@ -40,6 +40,9 @@ assert.match(source,/idleDynamicGuardian/,'dynamic Guardian idle breathing helpe
 assert.match(source,/actionDynamicGuardian/,'dynamic Guardian care-action motion helper missing');
 assert.match(source,/playStyle/,'dynamic Guardian play-style helper missing');
 assert.match(source,/favoritePlayBurst/,'favorite-toy play burst helper missing');
+assert.match(source,/sleepAura/,'Guardian sleep aura helper missing');
+assert.match(source,/wakeDynamicGuardian/,'Guardian wake animation helper missing');
+assert.match(source,/v3353SleepState/,'Guardian sleep-state marker missing');
 assert.match(source,/arcane-float/,'Vesper\/Rook play style missing');
 assert.match(source,/double-hop/,'Briar\/Solara play style missing');
 assert.match(source,/wiggle-bob/,'Prism\/Cascade play style missing');
@@ -53,6 +56,7 @@ assert.notEqual(scene.v3348PetById['owned-vesper'],scene.v3348PetById['second-ve
 assert.ok(['walking','idle','breathing'].includes(scene.v3348PetById['second-vesper'].getData('v3351MotionState')),'second same-species Guardian needs independent motion state');
 assert.equal(reports.at(-1).rows.filter(g=>g.present).length,2);
 assert.match(source,/playStyles:Object\.fromEntries/,'Sanctuary roster QA output should expose dynamic play styles');
+assert.match(source,/sleepStates:Object\.fromEntries/,'Sanctuary roster QA output should expose dynamic sleep states');
 scene.v3320ApplyCareSnapshot({roster:[]});
 assert.equal(scene.v3348PetById['owned-vesper'],undefined,'removed Guardian cannot remain visible');
 assert.ok(reports.some(x=>x.type==='MAJICK_SANCTUARY_ROSTER_V3350'&&x.rows.some(g=>g.petId==='owned-vesper'&&g.present)));
