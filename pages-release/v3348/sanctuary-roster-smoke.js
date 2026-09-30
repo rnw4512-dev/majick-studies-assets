@@ -23,7 +23,10 @@ scene.tweens={
   isTweening:target=>!!target?._tweening
 };
 scene.time={delayedCall(){},addEvent(){}};
-scene.add={image(x,y,key){const data={};return {x,y,height:400,texture:{key},active:true,scaleX:1,scaleY:1,angle:0,alpha:1,flipX:false,setOrigin(){return this},setDepth(){return this},setScale(x,y=x){this.scaleX=x;this.scaleY=y;return this},setAngle(v){this.angle=v;return this},setAlpha(v){this.alpha=v;return this},setInteractive(){return this},setData(k,v){data[k]=v;this[k]=v;return this},getData(k){return data[k]},on(){return this},setFlipX(v){this.flipX=!!v;return this},destroy(){this.active=false}}}};
+scene.add={
+ image(x,y,key){const data={};return {x,y,height:400,texture:{key},active:true,scaleX:1,scaleY:1,angle:0,alpha:1,flipX:false,setOrigin(){return this},setDepth(){return this},setScale(x,y=x){this.scaleX=x;this.scaleY=y;return this},setAngle(v){this.angle=v;return this},setAlpha(v){this.alpha=v;return this},setInteractive(){return this},setData(k,v){data[k]=v;this[k]=v;return this},getData(k){return data[k]},on(){return this},setFlipX(v){this.flipX=!!v;return this},destroy(){this.active=false}}},
+ text(x,y,text){return {x,y,text,active:true,alpha:1,setOrigin(){return this},setDepth(){return this},destroy(){this.active=false}}}
+};
 scene.load={once(event,fn){callbacks[event]=fn},image(key,url){scene.loaded={key,url}},start(){textures.add(scene.loaded.key);callbacks['filecomplete-image-'+scene.loaded.key]?.()}};
 vm.runInNewContext(source,{Game,window:{MajickGuardianRegistry:{get:type=>({canon:type})},addEventListener(){},parent:{postMessage:data=>reports.push(data)}},location:{origin:'https://example.test'},Math});
 scene.create();
@@ -35,6 +38,11 @@ assert.ok(scene.lastTween,'owned Vesper must move');
 assert.equal(scene.v3348PetById['owned-vesper'].getData('v3351MotionState'),'walking','dynamic Guardian should enter walking motion state');
 assert.match(source,/idleDynamicGuardian/,'dynamic Guardian idle breathing helper missing');
 assert.match(source,/actionDynamicGuardian/,'dynamic Guardian care-action motion helper missing');
+assert.match(source,/playStyle/,'dynamic Guardian play-style helper missing');
+assert.match(source,/favoritePlayBurst/,'favorite-toy play burst helper missing');
+assert.match(source,/arcane-float/,'Vesper\/Rook play style missing');
+assert.match(source,/double-hop/,'Briar\/Solara play style missing');
+assert.match(source,/wiggle-bob/,'Prism\/Cascade play style missing');
 assert.match(source,/walking-to-care/,'dynamic Guardian travel motion state missing');
 assert.ok(scene.labelsUpdated,'room labels must use current roster');
 scene.v3320ApplyCareSnapshot({roster:[
@@ -44,6 +52,7 @@ scene.v3320ApplyCareSnapshot({roster:[
 assert.notEqual(scene.v3348PetById['owned-vesper'],scene.v3348PetById['second-vesper'],'two owned Guardians of one type need two bodies');
 assert.ok(['walking','idle','breathing'].includes(scene.v3348PetById['second-vesper'].getData('v3351MotionState')),'second same-species Guardian needs independent motion state');
 assert.equal(reports.at(-1).rows.filter(g=>g.present).length,2);
+assert.match(source,/playStyles:Object\.fromEntries/,'Sanctuary roster QA output should expose dynamic play styles');
 scene.v3320ApplyCareSnapshot({roster:[]});
 assert.equal(scene.v3348PetById['owned-vesper'],undefined,'removed Guardian cannot remain visible');
 assert.ok(reports.some(x=>x.type==='MAJICK_SANCTUARY_ROSTER_V3350'&&x.rows.some(g=>g.petId==='owned-vesper'&&g.present)));
