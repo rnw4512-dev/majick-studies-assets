@@ -317,8 +317,8 @@ jobs:
           grep -q 'wgu-practice.css?v=3333' _site/index.html
           grep -q 'learn-mode.js?v=3338' _site/index.html
           grep -q 'learn-mode.css?v=3338' _site/index.html
-          grep -q 'd755-retake.js?v=3340-breakdown' _site/index.html
-          grep -q 'd755-retake.css?v=3340-breakdown' _site/index.html
+          grep -q 'd755-retake.js?v=3340-adaptive' _site/index.html
+          grep -q 'd755-retake.css?v=3340-adaptive' _site/index.html
           grep -q 'guardian-core.js?v=3341' _site/index.html
           grep -q 'guardian-core.css?v=3341' _site/index.html
           grep -q "VERSION='3.3.41'" _site/guardian-core.js
@@ -629,7 +629,7 @@ jobs:
                       'index learn-mode cache key': 'learn-mode.js?v=3338' in index,
                       'learn-mode version': "VERSION='3.3.38'" in learn,
                       'Arcane Anchor Wall': 'Arcane Anchor Wall' in learn,
-                      'index D755 cache key': 'd755-retake.js?v=3340-breakdown' in index,
+                      'index D755 cache key': 'd755-retake.js?v=3340-adaptive' in index,
                       'D755 version': "VERSION='3.3.40'" in d755,
                       'D755 diagnostic': '30-Question Retake Diagnostic' in d755,
                       'D755 teacher focus marker': 'd755-teacher-focus-2026-09-26' in d755,
@@ -637,6 +637,12 @@ jobs:
                       'Assessment Type Drill': 'Assessment Type Drill' in d755,
                       'Assessment Type Anchor Chart': 'ASSESSMENT TYPE ANCHOR CHART' in d755,
                       'D755 category breakdown': 'd755AssessmentBreakdown' in d755,
+                      'D755 adaptive focus': 'd755AdaptiveFocus' in d755,
+                      'D755 classification lens': 'd755ClassificationLens' in d755,
+                      'D755 contrast feedback': 'Why not the tempting opposite?' in d755,
+                      'd755AdaptiveFocus' in d755,
+                      'd755ClassificationLens' in d755,
+                      'Why not the tempting opposite?' in d755,
                       'CBC goal visual': 'MEASURABLE ANNUAL GOAL • C-B-C' in d755,
                       '40-question mixed simulation': '40-question mixed simulation' in d755,
                       'index Guardian Core cache key': 'guardian-core.js?v=3341' in index,
