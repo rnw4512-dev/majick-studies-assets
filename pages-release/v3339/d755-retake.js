@@ -1284,7 +1284,7 @@ function bindInside(root){
 
  root.querySelectorAll('[data-d755-home]').forEach(b=>b.addEventListener('click',()=>go('home')));
  root.querySelectorAll('[data-d755-section]').forEach(b=>b.addEventListener('click',()=>selectSection(b.dataset.d755Section)));
- root.querySelectorAll('[data-d755-mode]').forEach(b=>b.addEventListener('click',()=>{const m=b.dataset.d755Mode;if(m==='diagnostic'||m==='mock'||m==='assessmentDrill'||m==='lawReferralDrill'){const st=prog();st[m]=null;st.mode=m}else if(m==='dimensionDetective'){const st=prog();st.dimensionDetective=null;st.mode=m}else if(m==='contrastRepair'){const st=prog();st.contrastRepair=null;st.mode=m}else st.mode=m;save();render()}));
+ root.querySelectorAll('[data-d755-mode]').forEach(b=>b.addEventListener('click',()=>{const st=prog(),m=b.dataset.d755Mode;if(m==='diagnostic'||m==='mock'||m==='assessmentDrill'||m==='lawReferralDrill'){const st=prog();st[m]=null;st.mode=m}else if(m==='dimensionDetective'){const st=prog();st.dimensionDetective=null;st.mode=m}else if(m==='contrastRepair'){const st=prog();st.contrastRepair=null;st.mode=m}else st.mode=m;save();render()}));
  root.querySelector('[data-d755-begin]')?.addEventListener('click',beginSection);
  root.querySelectorAll('[data-d755-phase]').forEach(b=>b.addEventListener('click',()=>setPhase(Number(b.dataset.d755Phase))));
  root.querySelectorAll('[data-d755-answer]').forEach(b=>b.addEventListener('click',()=>answer(b.dataset.d755Answer,b.dataset.choice)));

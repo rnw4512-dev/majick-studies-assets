@@ -402,3 +402,12 @@ while(M.state().mode==='assessmentDrill'){
 assert(!M.assessmentMistakeIds().includes(source.id),'Three correct transfer answers must resolve the source mistake');
 assert(ctx.S.progress.D755.xp===xpBefore,'Sorter and transfer must preserve lifetime XP');
 console.log('D755 sorter and fresh-scenario repair passed');
+
+// Exercise the real mode button callback, not only exported functions.
+const modeButton={dataset:{d755Mode:'assessmentSorter'},addEventListener(name,fn){if(name==='click')this.click=fn}};
+const fakeRoot={innerHTML:'',querySelectorAll(selector){return selector==='[data-d755-mode]'?[modeButton]:[]},querySelector(){return null}};
+ctx.document.getElementById=id=>id==='d755RetakeRoot'?fakeRoot:null;
+M.state().mode='home';M.render();modeButton.click();
+assert(M.state().mode==='assessmentSorter','Mode button must open sorter without a scope error');
+assert(/VISUAL ASSESSMENT SORTER|d755Sorter/.test(fakeRoot.innerHTML),'Mode click must render the sorter');
+console.log('D755 real mode-button callback passed');
