@@ -88,6 +88,10 @@ assert(snap.roster.length===2,'owned Guardian roster should contain exactly two 
 assert(snap.eggs.length===1,'incubator should contain exactly one egg');
 assert(snap.guardians.luna||snap.guardians['luna'],'Velora care state missing');
 assert(snap.guardians.pet_solstice,'Solstice care state missing');
+const favoritePlay=window.MajickGuardianCare.performAction('pet_solstice','play');
+assert(favoritePlay.ok&&favoritePlay.favoriteBonus===true,'Owned Solstice favorite item should trigger favorite play');
+assert(favoritePlay.itemId==='comet-ball'&&favoritePlay.itemLabel==='Comet Ball','Favorite play should expose the actual item identity');
+assert(favoritePlay.favoriteLabel==='Comet Ball','Favorite play should expose the Guardian favorite label');
 const feedResult=window.MajickGuardianCare.performAction('luna','feed');
 assert(feedResult.ok&&feedResult.travelObject==='guardian-food-bowl'&&feedResult.visualAction==='feed','Feed should route to Guardian food bowl');
 const waterResult=window.MajickGuardianCare.performAction('luna','water');
