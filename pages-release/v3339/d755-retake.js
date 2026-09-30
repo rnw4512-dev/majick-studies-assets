@@ -529,7 +529,7 @@ function assessmentMasteryRows(){
 function assessmentMasteryHTML(){
  const rows=assessmentMasteryRows(),practiced=rows.filter(x=>x.possible>0),mastered=rows.filter(x=>x.status==='Mastered').length;
  return '<section class="d755AssessmentMastery"><header><div><small>ASSESSMENT TYPE MASTERY LADDER</small><h3>'+mastered+' / '+rows.length+' dimensions mastered</h3></div><span>'+Math.round(mastered/rows.length*100)+'%</span></header>'+
-  '<div class="d755MasteryRows">'+rows.map(row=>'<article class="'+row.status.toLowerCase().replace(/\s+/g,'-')+'"><div><b>'+E(row.label)+'</b><span>'+E(row.status)+'</span><em>'+(row.possible?row.pct+'%':'—')+'</em></div><i><u style="width:'+(row.possible?row.pct:0)+'%"></u></i><small>'+(row.possible?'Evidence from '+row.drillTotal+' drill item'+(row.drillTotal===1?'':'s')+' and '+row.detectiveTotal+' detective case'+(row.detectiveTotal===1?'':'s'):'Complete the drill or Detective to begin this row.')+'</small></article>').join('')+'</div>'+
+  '<div class="d755MasteryRows">'+rows.map(row=>'<article class="'+row.status.toLowerCase().replace(/\s+/g,'-')+'"><div><b>'+E(row.label)+'</b><span>'+E(row.status)+'</span><em>'+(row.possible?row.pct+'%':'—')+'</em></div><i><u style="width:'+(row.possible?row.pct:0)+'%"></u></i><small>'+(row.possible?'Evidence from '+row.drillTotal+' drill item'+(row.drillTotal===1?'':'s')+' and '+row.detectiveTotal+' detective case'+(row.detectiveTotal===1?'':'s'):'Complete the drill or Detective to begin this row.')+'</small><button type="button" data-d755-focus-family="'+E(row.label)+'">Practice this type →</button></article>').join('')+'</div>'+
   (practiced.length?'<p>Mastery combines <b>classification accuracy</b> with your ability to identify the <b>dimension the stem is asking about</b>.</p>':'<p>Complete the Assessment Type Drill or Assessment Dimension Detective to start building mastery evidence.</p>')+
  '</section>';
 }
@@ -541,6 +541,16 @@ function weakestAssessmentFamilies(){
   .sort((a,b)=>a.pct-b.pct)
   .slice(0,2)
   .map(x=>x.label);
+}
+function startAssessmentFamilyPractice(family){
+ const st=prog(),pool=shuffle(BANK.filter(q=>q.section===1&&q.trap==='assessment-type'&&assessmentFamily(q)===family));
+ if(!pool.length)return;
+ const qs=pool.slice(0,Math.min(6,pool.length));
+ st.assessmentDrill={
+   index:0,selected:null,submitted:false,answers:[],ids:qs.map(q=>q.id),
+   startedAt:Date.now(),focusedFamily:family
+ };
+ st.mode='assessmentDrill';save();render();
 }
 function sampleQuestions(count,mode){
  const assessmentPool=BANK.filter(q=>q.section===1&&q.trap==='assessment-type');
@@ -631,7 +641,7 @@ function examNext(mode){
      if(a.correct)familyStats[family].correct++;
    }
  }
- const result={score,total,pct:total?Math.round(score/total*100):0,bySection,trapCounts,familyStats,at:Date.now(),status:score/total>=.85?'Ready for final review':score/total>=.7?'Targeted repair needed':'Needs another teaching pass'};
+ const result={score,total,pct:total?Math.round(score/total*100):0,bySection,trapCounts,familyStats,focusedFamily:o.focusedFamily||'',at:Date.now(),status:score/total>=.85?'Ready for final review':score/total>=.7?'Targeted repair needed':'Needs another teaching pass'};
  st[mode+'Result']=result;st.mode=mode+'Result';save();render();
 }
 function teacherVisual(item){
@@ -777,7 +787,7 @@ function resultView(mode){
  const st=prog(),r=st[mode+'Result'];if(!r)return examView(mode);
  const isDrill=mode==='assessmentDrill';
  const traps=Object.entries(r.trapCounts||{}).sort((a,b)=>b[1]-a[1]).slice(0,5);
- return '<section class="d755Result"><small>'+E(isDrill?'ASSESSMENT TYPE DRILL RESULTS':mode==='diagnostic'?'DIAGNOSTIC RESULTS':'MOCK OA RESULTS')+'</small><h1>'+E(r.status)+'</h1><div class="score">'+r.score+' / '+r.total+'<span>'+r.pct+'%</span></div>'+(isDrill?'<p class="evidenceNote">Focused identification practice: use the question wording to decide whether it is asking about data type, administration, purpose, comparison, or monitoring.</p><div class="d755AssessmentBreakdown">'+Object.entries(r.familyStats||{}).map(([label,row])=>{const pct=row.total?Math.round(row.correct/row.total*100):0;return '<article><div><b>'+E(label)+'</b><span>'+row.correct+'/'+row.total+' • '+pct+'%</span></div><i><em style="width:'+pct+'%"></em></i></article>'}).join('')+'</div>'+assessmentMasteryHTML()+assessmentTypeChart():'<div class="sectionResults">'+r.bySection.map(x=>'<div><b>Section '+x.section+'</b><span>'+x.correct+'/'+x.total+' • '+x.pct+'%</span><i><em style="width:'+x.pct+'%"></em></i></div>').join('')+'</div>')+(traps.length?'<div class="d755Weak"><h3>Highest-priority decision traps</h3>'+traps.map(([id,n])=>'<article><b>'+E(REPAIRS[id]?.title||id)+'</b><span>'+n+' miss'+(n===1?'':'es')+'</span><p>'+E(REPAIRS[id]?.right||'Review the related concept.')+'</p></article>').join('')+'</div>':'')+'<div class="resultActions">'+(isDrill?'':'<button class="btn primary" data-d755-repair-result="'+mode+'">Study my weakest area</button>')+'<button class="btn ghost" data-d755-start-exam="'+mode+'">'+E(isDrill?'Practice weak types next':'Retake with new mix')+'</button><button class="btn ghost" data-d755-home>Retake Studio Home</button></div><p class="evidenceNote">This is practice evidence for your retake preparation, not a prediction of your WGU OA result.</p></section>';
+ return '<section class="d755Result"><small>'+E(isDrill?'ASSESSMENT TYPE DRILL RESULTS':mode==='diagnostic'?'DIAGNOSTIC RESULTS':'MOCK OA RESULTS')+'</small><h1>'+E(r.status)+'</h1><div class="score">'+r.score+' / '+r.total+'<span>'+r.pct+'%</span></div>'+(isDrill?'<p class="evidenceNote">'+(r.focusedFamily?'Focused practice: <b>'+E(r.focusedFamily)+'</b>. ':'')+'Use the question wording to decide whether it is asking about data type, administration, purpose, comparison, or monitoring.</p><div class="d755AssessmentBreakdown">'+Object.entries(r.familyStats||{}).map(([label,row])=>{const pct=row.total?Math.round(row.correct/row.total*100):0;return '<article><div><b>'+E(label)+'</b><span>'+row.correct+'/'+row.total+' • '+pct+'%</span></div><i><em style="width:'+pct+'%"></em></i></article>'}).join('')+'</div>'+assessmentMasteryHTML()+assessmentTypeChart():'<div class="sectionResults">'+r.bySection.map(x=>'<div><b>Section '+x.section+'</b><span>'+x.correct+'/'+x.total+' • '+x.pct+'%</span><i><em style="width:'+x.pct+'%"></em></i></div>').join('')+'</div>')+(traps.length?'<div class="d755Weak"><h3>Highest-priority decision traps</h3>'+traps.map(([id,n])=>'<article><b>'+E(REPAIRS[id]?.title||id)+'</b><span>'+n+' miss'+(n===1?'':'es')+'</span><p>'+E(REPAIRS[id]?.right||'Review the related concept.')+'</p></article>').join('')+'</div>':'')+'<div class="resultActions">'+(isDrill?'':'<button class="btn primary" data-d755-repair-result="'+mode+'">Study my weakest area</button>')+'<button class="btn ghost" data-d755-start-exam="'+mode+'">'+E(isDrill?'Practice weak types next':'Retake with new mix')+'</button><button class="btn ghost" data-d755-home>Retake Studio Home</button></div><p class="evidenceNote">This is practice evidence for your retake preparation, not a prediction of your WGU OA result.</p></section>';
 }
 function repairFromResult(mode){
  const st=prog(),r=st[mode+'Result'];if(!r)return go('home');
@@ -849,6 +859,7 @@ function bindInside(root){
  root.querySelectorAll('[data-d755-tutor]').forEach(b=>b.addEventListener('click',()=>tutor(b.dataset.d755Tutor)));
  root.querySelector('[data-d755-complete]')?.addEventListener('click',completeConcept);
  root.querySelectorAll('[data-d755-start-exam]').forEach(b=>b.addEventListener('click',()=>startExam(b.dataset.d755StartExam)));
+ root.querySelectorAll('[data-d755-focus-family]').forEach(b=>b.addEventListener('click',()=>startAssessmentFamilyPractice(b.dataset.d755FocusFamily)));
  root.querySelectorAll('[data-d755-start-detective]').forEach(b=>b.addEventListener('click',startDimensionDetective));
  root.querySelectorAll('[data-d755-detective-dimension]').forEach(b=>b.addEventListener('click',()=>detectiveChooseDimension(b.dataset.d755DetectiveDimension)));
  root.querySelector('[data-d755-detective-submit-dimension]')?.addEventListener('click',detectiveSubmitDimension);
@@ -897,6 +908,6 @@ if(typeof oldBind==='function'){
  };
 }
 ensureBank();
-window.MajickD755Retake={VERSION,COURSE,SECTIONS,TRAPS,BANK,ensureBank,show,render,shell,state:prog,current,startExam,examSubmit,examNext,assessmentFamily,startDimensionDetective,detectiveChooseDimension,detectiveSubmitDimension,detectiveChooseAnswer,detectiveSubmitAnswer,detectiveNext,startSectionCheck,checkSubmit,checkNext,anchorsView,grimoireWall,teacherVisual};
+window.MajickD755Retake={VERSION,COURSE,SECTIONS,TRAPS,BANK,ensureBank,show,render,shell,state:prog,current,startExam,examSubmit,examNext,assessmentFamily,startAssessmentFamilyPractice,startDimensionDetective,detectiveChooseDimension,detectiveSubmitDimension,detectiveChooseAnswer,detectiveSubmitAnswer,detectiveNext,startSectionCheck,checkSubmit,checkNext,anchorsView,grimoireWall,teacherVisual};
 document.documentElement.dataset.majickD755Retake=VERSION;
 })();
