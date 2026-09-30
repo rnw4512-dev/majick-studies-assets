@@ -321,6 +321,9 @@ function performAction(target,action,opts={}){
     r.icon='☾';
     r.visualAction='sleep';
     r.travelObject=bed;
+    r.bedId=bed;
+    r.familiarBed=already;
+    r.bedBondBonus=already?5:2;
   }else if(action==='affection'){
     const now=Date.now(),cool=Number(g.affectionCooldownUntil||0);
     if(now<cool){
