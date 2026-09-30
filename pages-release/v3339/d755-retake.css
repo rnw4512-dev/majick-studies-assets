@@ -879,3 +879,27 @@
   .d755EvidenceSnapshot>header{flex-direction:column}
   .d755EvidenceGrid{grid-template-columns:1fr}
 }
+
+/* Actionable Retake Evidence Snapshot */
+.d755EvidenceGrid article>button{
+  width:100%;
+  margin-top:10px;
+  padding:7px 8px;
+  border:1px solid rgba(190,155,211,.16);
+  border-radius:9px;
+  background:#20162a;
+  color:#d9c8e1;
+  font-size:8px;
+  font-weight:900;
+  cursor:pointer;
+}
+.d755EvidenceGrid article>button:hover,
+.d755EvidenceGrid article>button:focus-visible{
+  border-color:#c59ddd;
+  color:#fff0c7;
+  outline:none;
+  box-shadow:0 0 15px rgba(184,143,211,.12);
+}
+.d755EvidenceGrid article.attention>button{
+  border-color:rgba(192,102,123,.22);
+}
