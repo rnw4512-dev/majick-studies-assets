@@ -908,3 +908,27 @@
 .d755SortGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin:24px 0}.d755SortDimension{padding:20px;border:1px solid #a99ae0;border-radius:16px;background:linear-gradient(135deg,#221736,#132737);color:#fff}.d755SortDimension:nth-child(2){background:linear-gradient(135deg,#291836,#342542)}.d755SortDimension:nth-child(3){background:linear-gradient(135deg,#18322f,#183048)}.d755SortDimension:nth-child(4){background:linear-gradient(135deg,#30251d,#322640)}.d755SortDimension .btn{margin:6px 8px 6px 0;white-space:normal;min-height:48px}.d755SortDimension .selected{outline:3px solid #e8cbff;background:#503768}.d755SortDimension .correct{background:#214c3b;border:2px solid #99efbd}.d755SortDimension .wrong{background:#562733;border:2px solid #ffb6bf}.d755SortDimension p{color:#fff;line-height:1.65}.d755MistakeReason{margin:16px 0;padding:18px;border:1px solid #ceb2f4;border-radius:14px;background:#251d38}.d755MistakeReason p{line-height:1.65}@media(max-width:680px){.d755SortGrid{grid-template-columns:1fr}}
 
 .d755Grid:has(.d755Sorter){grid-template-columns:245px minmax(0,1fr)}.d755SortDimension .btn:disabled{opacity:1!important;color:#fff!important;-webkit-text-fill-color:#fff;background:#302442}.d755SortDimension .btn:disabled.correct{background:#214c3b}.d755SortDimension .btn:disabled.wrong{background:#562733}@media(max-width:860px){.d755Grid:has(.d755Sorter){grid-template-columns:1fr}}
+
+/* Readable timelines, behavior steps, and answer review. */
+.d755ProcessChart{padding:16px;border:1px solid #594363;border-radius:14px;background:#150e1c;margin:14px 0;color:#eee4f2}
+.d755ProcessChart h2{font-size:20px;line-height:1.35;margin:0 0 15px;color:#f1daa1}
+.d755TimelineScroll{overflow-x:auto;border-radius:10px}
+.d755TimelineTable{width:100%;border-collapse:collapse;font-size:14px;line-height:1.55;min-width:460px}
+.d755TimelineTable th,.d755TimelineTable td{padding:12px;text-align:left;vertical-align:top;border-bottom:1px solid #4c3857}
+.d755TimelineTable thead th{background:#35233f;color:#f1daa1}
+.d755TimelineTable tbody th{width:22%;color:#f4e9f8}
+.d755ProcessSteps{padding-left:25px;display:grid;gap:14px}
+.d755ProcessSteps li::marker{color:#f1daa1;font-weight:800}
+.d755ProcessSteps b,.d755ProcessSteps span{display:block}
+.d755ProcessSteps span{margin-top:4px;line-height:1.55}
+.d755OfficialSources summary{cursor:pointer;padding:10px 0;font-weight:700;color:#e2cdec}
+.d755ProcessChart a,.d755Feedback a,.d755MissedReview a{color:#e8c4ff;text-decoration:underline;text-underline-offset:3px}
+.d755ProcessChart a:hover,.d755Feedback a:hover,.d755MissedReview a:hover{color:#fff}
+.d755ProcessChart a:focus-visible,.d755MissedReview summary:focus-visible,.d755TimelineScroll:focus-visible{outline:3px solid #f1daa1;outline-offset:3px}
+.d755MissedReview{margin:24px 0;text-align:left}
+.d755MissedReview h2{color:#f1daa1;font-size:20px}
+.d755MissedReview details{background:#1b1223;border:1px solid #594363;border-radius:12px;margin:10px 0;overflow:hidden}
+.d755MissedReview summary{padding:14px;cursor:pointer;font-weight:700;line-height:1.5}
+.d755MissedReview details>div{padding:0 14px 16px;border-top:1px solid #594363;line-height:1.6}
+.d755CorrectDecision,.d755ReviewClear{color:#bce8cb}
+@media(max-width:600px){.d755ProcessChart{padding:12px}.d755TimelineTable th,.d755TimelineTable td{padding:9px}}
