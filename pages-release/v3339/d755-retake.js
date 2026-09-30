@@ -511,7 +511,7 @@ function home(){
  const st=prog();
  const total=SECTIONS.flatMap(s=>s.concepts).length,done=Object.keys(st.completed).filter(k=>st.completed[k]).length;
  const diag=st.diagnosticResult;
- return '<section class="d755Home"><small>D755 • TEACHER-FOCUS RETAKE STUDIO</small><h1>Assessment for Special Education</h1><p>This retake course now follows your instructor’s OA review and Student Journey process: interpret data, identify the student’s stage, choose the next educational decision, and explain why. Vocabulary is tested inside decisions—not by itself.</p><div class="d755HomeStats"><div><b>'+done+' / '+total+'</b><span>concepts completed</span></div><div><b>'+Object.keys(st.anchors).length+'</b><span>anchor charts unlocked</span></div><div><b>'+(diag?diag.score+'/'+diag.total:'—')+'</b><span>diagnostic</span></div></div>'+assessmentMasteryHTML()+'<div class="d755CourseCycle"><span>Collect evidence</span><i>→</i><span>Interpret patterns</span><i>→</i><span>Individualize</span><i>→</i><span>Intervene</span><i>→</i><span>Monitor</span><i>→</i><span>Communicate</span></div><div class="d755HomeActions"><button class="btn primary" data-d755-section="'+st.sectionId+'">Continue Learning</button><button class="btn ghost" data-d755-mode="diagnostic">Start / Retake Diagnostic</button><button class="btn ghost" data-d755-mode="assessmentDrill">Assessment Type Drill</button><button class="btn ghost" data-d755-mode="dimensionDetective">Assessment Dimension Detective</button><button class="btn ghost" data-d755-mode="mock">Mock OA</button></div><div class="d755SectionCards">'+SECTIONS.map(s=>'<button data-d755-section="'+s.id+'"><span>SECTION '+s.number+'</span><b>'+E(s.title)+'</b><small>'+E(s.bigIdea)+'</small></button>').join('')+'</div></section>';
+ return '<section class="d755Home"><small>D755 • TEACHER-FOCUS RETAKE STUDIO</small><h1>Assessment for Special Education</h1><p>This retake course now follows your instructor’s OA review and Student Journey process: interpret data, identify the student’s stage, choose the next educational decision, and explain why. Vocabulary is tested inside decisions—not by itself.</p><div class="d755HomeStats"><div><b>'+done+' / '+total+'</b><span>concepts completed</span></div><div><b>'+Object.keys(st.anchors).length+'</b><span>anchor charts unlocked</span></div><div><b>'+(diag?diag.score+'/'+diag.total:'—')+'</b><span>diagnostic</span></div></div>'+assessmentMasteryHTML()+'<div class="d755CourseCycle"><span>Collect evidence</span><i>→</i><span>Interpret patterns</span><i>→</i><span>Individualize</span><i>→</i><span>Intervene</span><i>→</i><span>Monitor</span><i>→</i><span>Communicate</span></div><div class="d755HomeActions"><button class="btn primary" data-d755-section="'+st.sectionId+'">Continue Learning</button><button class="btn ghost" data-d755-mode="diagnostic">Start / Retake Diagnostic</button><button class="btn ghost" data-d755-mode="assessmentDrill">Assessment Type Drill</button><button class="btn ghost" data-d755-mode="dimensionDetective">Assessment Dimension Detective</button><button class="btn ghost" data-d755-mode="contrastRepair">Confusing Pairs Repair</button><button class="btn ghost" data-d755-mode="mock">Mock OA</button></div><div class="d755SectionCards">'+SECTIONS.map(s=>'<button data-d755-section="'+s.id+'"><span>SECTION '+s.number+'</span><b>'+E(s.title)+'</b><small>'+E(s.bigIdea)+'</small></button>').join('')+'</div></section>';
 }
 function assessmentMasteryRows(){
  const st=prog(),drill=st?.assessmentDrillResult?.familyStats||{},detective=st?.dimensionDetectiveResult?.familyStats||{};
@@ -670,6 +670,76 @@ function assessmentTypeChart(){
 }
 const ASSESSMENT_DIMENSIONS=['Data type','Administration','Purpose','Comparison / CBM','Screening / monitoring','Assessment tools'];
 
+const ASSESSMENT_CONTRAST_PAIRS=[
+ {label:'Qualitative vs Quantitative',answers:['Qualitative data','Quantitative data']},
+ {label:'Formal vs Informal',answers:['Formal assessment','Informal assessment']},
+ {label:'Formative vs Summative',answers:['Formative assessment','Summative assessment']},
+ {label:'Norm vs Criterion',answers:['Norm-referenced','Criterion-referenced']},
+ {label:'Screening vs Progress Monitoring',answers:['Universal screening','Progress monitoring']}
+];
+function contrastPairFor(q){
+ return ASSESSMENT_CONTRAST_PAIRS.find(p=>p.answers.includes(q?.answer))||null;
+}
+function startContrastRepair(){
+ const st=prog(),pool=BANK.filter(q=>q.section===1&&q.trap==='assessment-type'&&contrastPairFor(q));
+ const picked=[];
+ for(const pair of ASSESSMENT_CONTRAST_PAIRS){
+   const rows=shuffle(pool.filter(q=>contrastPairFor(q)?.label===pair.label)).slice(0,2);
+   picked.push(...rows);
+ }
+ const qs=shuffle(picked).slice(0,10);
+ st.contrastRepair={index:0,ids:qs.map(q=>q.id),selected:null,submitted:false,answers:[],startedAt:Date.now()};
+ st.mode='contrastRepair';save();render();
+}
+function contrastRepairObj(){return prog()?.contrastRepair}
+function contrastRepairQuestions(o){return examQuestions(o)}
+function contrastRepairSelect(v){
+ const o=contrastRepairObj();if(!o||o.submitted)return;o.selected=v;render();
+}
+function contrastRepairSubmit(){
+ const st=prog(),o=st.contrastRepair,q=contrastRepairQuestions(o)[o?.index];
+ if(!o||!q||!o.selected)return;
+ const correct=o.selected===q.answer,at=Date.now();
+ o.submitted=true;
+ o.answers.push({id:q.id,pair:contrastPairFor(q)?.label||'',chosen:o.selected,answer:q.answer,correct,at});
+ window.MajickStudyProgress?.creditAnswer?.({
+   key:'D755:contrast-repair:'+q.id+':'+at,course:'D755',source:'d755-contrast-repair',
+   qid:q.id,topicId:q.topicId||realmTopic(q.section,q.concept),correct,difficulty:q.difficulty||4,
+   chosen:o.selected,answer:q.answer,at
+ });
+ save();render();
+}
+function contrastRepairNext(){
+ const st=prog(),o=st.contrastRepair,qs=contrastRepairQuestions(o);if(!o||!o.submitted)return;
+ if(o.index<qs.length-1){
+   o.index++;o.selected=null;o.submitted=false;save();render();return;
+ }
+ const total=qs.length,score=o.answers.filter(x=>x.correct).length;
+ const pairStats={};
+ for(const a of o.answers){
+   pairStats[a.pair]=pairStats[a.pair]||{correct:0,total:0};
+   pairStats[a.pair].total++;
+   if(a.correct)pairStats[a.pair].correct++;
+ }
+ st.contrastRepairResult={score,total,pct:total?Math.round(score/total*100):0,pairStats,at:Date.now()};
+ st.mode='contrastRepairResult';save();render();
+}
+function contrastRepairView(){
+ const st=prog(),o=st.contrastRepair;
+ if(!o)return '<section class="d755ExamIntro d755ContrastIntro"><small>CONFUSING PAIRS REPAIR</small><h1>Practice the two labels that look almost right.</h1><p>Each case removes extra distractors so you can focus on the exact distinction: qualitative/quantitative, formal/informal, formative/summative, norm/criterion, or screening/progress monitoring.</p><button class="btn primary" data-d755-start-contrast>Start 10-Case Repair</button></section>';
+ const qs=contrastRepairQuestions(o),q=qs[o.index];if(!q)return '<div class="d755Empty">Contrast-repair question set unavailable.</div>';
+ const pair=contrastPairFor(q),correct=o.selected===q.answer;
+ return '<section class="d755Exam d755ContrastRepair"><header><div><small>CONFUSING PAIRS REPAIR</small><h2>'+E(pair?.label||'Assessment contrast')+'</h2></div><span>'+(o.index+1)+' / '+qs.length+'</span></header><article>'+
+  '<h3>'+E(q.prompt)+'</h3>'+
+  '<div class="d755ContrastChoices">'+(pair?.answers||[]).map(x=>'<button '+(o.submitted?'disabled':'')+' class="'+(o.submitted?(x===q.answer?'correct':x===o.selected?'wrong':''):o.selected===x?'selected':'')+'" data-d755-contrast-choice="'+E(x)+'">'+E(x)+'</button>').join('')+'</div>'+
+  (!o.submitted?'<footer><button class="btn primary" '+(o.selected?'':'disabled')+' data-d755-contrast-submit>Lock answer</button></footer>':
+   '<div class="d755Feedback '+(correct?'correct':'repair')+'"><b>'+(correct?'✓ You separated the pair':'Repair this pair')+'</b><p>'+E(q.why)+'</p><div class="d755ContrastWhy"><small>WHY NOT THE OTHER ONE?</small><span>'+E(assessmentContrast(q.answer))+'</span></div></div><footer><button class="btn primary" data-d755-contrast-next>'+(o.index<qs.length-1?'Next pair →':'See repair results →')+'</button></footer>')+
+ '</article></section>';
+}
+function contrastRepairResultView(){
+ const st=prog(),r=st.contrastRepairResult;if(!r)return contrastRepairView();
+ return '<section class="d755Result d755ContrastResult"><small>CONFUSING PAIRS REPAIR • RESULTS</small><h1>'+r.score+' / '+r.total+'</h1><div class="score">'+r.pct+'%</div><div class="d755AssessmentBreakdown">'+Object.entries(r.pairStats||{}).map(([label,row])=>{const pct=row.total?Math.round(row.correct/row.total*100):0;return '<article><div><b>'+E(label)+'</b><span>'+row.correct+'/'+row.total+' • '+pct+'%</span></div><i><em style="width:'+pct+'%"></em></i></article>'}).join('')+'</div><div class="resultActions"><button class="btn primary" data-d755-start-contrast>Try new pairs</button><button class="btn ghost" data-d755-mode="assessmentDrill">Assessment Type Drill</button><button class="btn ghost" data-d755-home>Retake Studio Home</button></div></section>';
+}
 function startDimensionDetective(){
  const st=prog(),pool=shuffle(BANK.filter(q=>q.section===1&&q.trap==='assessment-type'));
  const picked=[],seen=new Set();
@@ -834,8 +904,8 @@ function learnView(){
 }
 function shell(){
  const {st,section,concept}=current();
- let center=st.mode==='home'?home():st.mode==='diagnostic'?examView('diagnostic'):st.mode==='diagnosticResult'?resultView('diagnostic'):st.mode==='assessmentDrill'?examView('assessmentDrill'):st.mode==='assessmentDrillResult'?resultView('assessmentDrill'):st.mode==='dimensionDetective'?dimensionDetectiveView():st.mode==='dimensionDetectiveResult'?dimensionDetectiveResultView():st.mode==='mock'?examView('mock'):st.mode==='mockResult'?resultView('mock'):st.mode==='traps'?trapsView():st.mode==='anchors'?anchorsView():learnView();
- const quiet=['home','diagnostic','diagnosticResult','assessmentDrill','assessmentDrillResult','dimensionDetective','dimensionDetectiveResult','mock','mockResult','traps','anchors','sectionOpening','sectionCheck','sectionResult'].includes(st.mode);
+ let center=st.mode==='home'?home():st.mode==='diagnostic'?examView('diagnostic'):st.mode==='diagnosticResult'?resultView('diagnostic'):st.mode==='assessmentDrill'?examView('assessmentDrill'):st.mode==='assessmentDrillResult'?resultView('assessmentDrill'):st.mode==='dimensionDetective'?dimensionDetectiveView():st.mode==='dimensionDetectiveResult'?dimensionDetectiveResultView():st.mode==='contrastRepair'?contrastRepairView():st.mode==='contrastRepairResult'?contrastRepairResultView():st.mode==='mock'?examView('mock'):st.mode==='mockResult'?resultView('mock'):st.mode==='traps'?trapsView():st.mode==='anchors'?anchorsView():learnView();
+ const quiet=['home','diagnostic','diagnosticResult','assessmentDrill','assessmentDrillResult','dimensionDetective','dimensionDetectiveResult','contrastRepair','contrastRepairResult','mock','mockResult','traps','anchors','sectionOpening','sectionCheck','sectionResult'].includes(st.mode);
  return '<section class="d755Retake"><header class="d755Header"><div><small>THE MOONLIT COLLEGIUM • D755</small><h2>Assessment for Special Education • Retake Studio</h2><p>Evidence → Interpretation → Individualized Decision → Intervention → Monitoring → Communication</p></div><button class="btn ghost" data-d755-home>Retake Studio Home</button></header><div class="d755Grid">'+rail(st,section)+'<main>'+center+'</main>'+(quiet?'':tutorPanel(concept,st))+'</div></section>';
 }
 function show(){
@@ -850,7 +920,7 @@ function render(){const box=document.getElementById('d755RetakeRoot');if(box&&ac
 function bindInside(root){
  root.querySelectorAll('[data-d755-home]').forEach(b=>b.addEventListener('click',()=>go('home')));
  root.querySelectorAll('[data-d755-section]').forEach(b=>b.addEventListener('click',()=>selectSection(b.dataset.d755Section)));
- root.querySelectorAll('[data-d755-mode]').forEach(b=>b.addEventListener('click',()=>{const m=b.dataset.d755Mode;if(m==='diagnostic'||m==='mock'||m==='assessmentDrill'){const st=prog();st[m]=null;st.mode=m}else if(m==='dimensionDetective'){const st=prog();st.dimensionDetective=null;st.mode=m}else st.mode=m;save();render()}));
+ root.querySelectorAll('[data-d755-mode]').forEach(b=>b.addEventListener('click',()=>{const m=b.dataset.d755Mode;if(m==='diagnostic'||m==='mock'||m==='assessmentDrill'){const st=prog();st[m]=null;st.mode=m}else if(m==='dimensionDetective'){const st=prog();st.dimensionDetective=null;st.mode=m}else if(m==='contrastRepair'){const st=prog();st.contrastRepair=null;st.mode=m}else st.mode=m;save();render()}));
  root.querySelector('[data-d755-begin]')?.addEventListener('click',beginSection);
  root.querySelectorAll('[data-d755-phase]').forEach(b=>b.addEventListener('click',()=>setPhase(Number(b.dataset.d755Phase))));
  root.querySelectorAll('[data-d755-answer]').forEach(b=>b.addEventListener('click',()=>answer(b.dataset.d755Answer,b.dataset.choice)));
@@ -861,6 +931,10 @@ function bindInside(root){
  root.querySelectorAll('[data-d755-start-exam]').forEach(b=>b.addEventListener('click',()=>startExam(b.dataset.d755StartExam)));
  root.querySelectorAll('[data-d755-focus-family]').forEach(b=>b.addEventListener('click',()=>startAssessmentFamilyPractice(b.dataset.d755FocusFamily)));
  root.querySelectorAll('[data-d755-start-detective]').forEach(b=>b.addEventListener('click',startDimensionDetective));
+ root.querySelectorAll('[data-d755-start-contrast]').forEach(b=>b.addEventListener('click',startContrastRepair));
+ root.querySelectorAll('[data-d755-contrast-choice]').forEach(b=>b.addEventListener('click',()=>contrastRepairSelect(b.dataset.d755ContrastChoice)));
+ root.querySelector('[data-d755-contrast-submit]')?.addEventListener('click',contrastRepairSubmit);
+ root.querySelector('[data-d755-contrast-next]')?.addEventListener('click',contrastRepairNext);
  root.querySelectorAll('[data-d755-detective-dimension]').forEach(b=>b.addEventListener('click',()=>detectiveChooseDimension(b.dataset.d755DetectiveDimension)));
  root.querySelector('[data-d755-detective-submit-dimension]')?.addEventListener('click',detectiveSubmitDimension);
  root.querySelectorAll('[data-d755-detective-answer]').forEach(b=>b.addEventListener('click',()=>detectiveChooseAnswer(b.dataset.d755DetectiveAnswer)));
@@ -908,6 +982,6 @@ if(typeof oldBind==='function'){
  };
 }
 ensureBank();
-window.MajickD755Retake={VERSION,COURSE,SECTIONS,TRAPS,BANK,ensureBank,show,render,shell,state:prog,current,startExam,examSubmit,examNext,assessmentFamily,assessmentMasteryRows,startAssessmentFamilyPractice,startDimensionDetective,detectiveChooseDimension,detectiveSubmitDimension,detectiveChooseAnswer,detectiveSubmitAnswer,detectiveNext,startSectionCheck,checkSubmit,checkNext,anchorsView,grimoireWall,teacherVisual};
+window.MajickD755Retake={VERSION,COURSE,SECTIONS,TRAPS,BANK,ensureBank,show,render,shell,state:prog,current,startExam,examSubmit,examNext,assessmentFamily,assessmentMasteryRows,startAssessmentFamilyPractice,startContrastRepair,contrastRepairSelect,contrastRepairSubmit,contrastRepairNext,startDimensionDetective,detectiveChooseDimension,detectiveSubmitDimension,detectiveChooseAnswer,detectiveSubmitAnswer,detectiveNext,startSectionCheck,checkSubmit,checkNext,anchorsView,grimoireWall,teacherVisual};
 document.documentElement.dataset.majickD755Retake=VERSION;
 })();
