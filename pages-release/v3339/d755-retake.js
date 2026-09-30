@@ -511,7 +511,7 @@ function home(){
  const st=prog();
  const total=SECTIONS.flatMap(s=>s.concepts).length,done=Object.keys(st.completed).filter(k=>st.completed[k]).length;
  const diag=st.diagnosticResult;
- return '<section class="d755Home"><small>D755 • TEACHER-FOCUS RETAKE STUDIO</small><h1>Assessment for Special Education</h1><p>This retake course now follows your instructor’s OA review and Student Journey process: interpret data, identify the student’s stage, choose the next educational decision, and explain why. Vocabulary is tested inside decisions—not by itself.</p><div class="d755HomeStats"><div><b>'+done+' / '+total+'</b><span>concepts completed</span></div><div><b>'+Object.keys(st.anchors).length+'</b><span>anchor charts unlocked</span></div><div><b>'+(diag?diag.score+'/'+diag.total:'—')+'</b><span>diagnostic</span></div></div><div class="d755CourseCycle"><span>Collect evidence</span><i>→</i><span>Interpret patterns</span><i>→</i><span>Individualize</span><i>→</i><span>Intervene</span><i>→</i><span>Monitor</span><i>→</i><span>Communicate</span></div><div class="d755HomeActions"><button class="btn primary" data-d755-section="'+st.sectionId+'">Continue Learning</button><button class="btn ghost" data-d755-mode="diagnostic">Start / Retake Diagnostic</button><button class="btn ghost" data-d755-mode="assessmentDrill">Assessment Type Drill</button><button class="btn ghost" data-d755-mode="mock">Mock OA</button></div><div class="d755SectionCards">'+SECTIONS.map(s=>'<button data-d755-section="'+s.id+'"><span>SECTION '+s.number+'</span><b>'+E(s.title)+'</b><small>'+E(s.bigIdea)+'</small></button>').join('')+'</div></section>';
+ return '<section class="d755Home"><small>D755 • TEACHER-FOCUS RETAKE STUDIO</small><h1>Assessment for Special Education</h1><p>This retake course now follows your instructor’s OA review and Student Journey process: interpret data, identify the student’s stage, choose the next educational decision, and explain why. Vocabulary is tested inside decisions—not by itself.</p><div class="d755HomeStats"><div><b>'+done+' / '+total+'</b><span>concepts completed</span></div><div><b>'+Object.keys(st.anchors).length+'</b><span>anchor charts unlocked</span></div><div><b>'+(diag?diag.score+'/'+diag.total:'—')+'</b><span>diagnostic</span></div></div><div class="d755CourseCycle"><span>Collect evidence</span><i>→</i><span>Interpret patterns</span><i>→</i><span>Individualize</span><i>→</i><span>Intervene</span><i>→</i><span>Monitor</span><i>→</i><span>Communicate</span></div><div class="d755HomeActions"><button class="btn primary" data-d755-section="'+st.sectionId+'">Continue Learning</button><button class="btn ghost" data-d755-mode="diagnostic">Start / Retake Diagnostic</button><button class="btn ghost" data-d755-mode="assessmentDrill">Assessment Type Drill</button><button class="btn ghost" data-d755-mode="dimensionDetective">Assessment Dimension Detective</button><button class="btn ghost" data-d755-mode="mock">Mock OA</button></div><div class="d755SectionCards">'+SECTIONS.map(s=>'<button data-d755-section="'+s.id+'"><span>SECTION '+s.number+'</span><b>'+E(s.title)+'</b><small>'+E(s.bigIdea)+'</small></button>').join('')+'</div></section>';
 }
 function weakestAssessmentFamilies(){
  const stats=prog()?.assessmentDrillResult?.familyStats||{};
@@ -638,6 +638,111 @@ function assessmentTypeChart(){
   '<div class="d755AssessmentRule"><b>WGU decision rule:</b> if the stem says “what type based on purpose?” choose formative/summative; if it says “how was it administered?” choose formal/informal; if it asks “what kind of data?” choose qualitative/quantitative.</div>'+
  '</section>';
 }
+const ASSESSMENT_DIMENSIONS=['Data type','Administration','Purpose','Comparison / CBM','Screening / monitoring','Assessment tools'];
+
+function startDimensionDetective(){
+ const st=prog(),pool=shuffle(BANK.filter(q=>q.section===1&&q.trap==='assessment-type'));
+ const picked=[],seen=new Set();
+ for(const q of pool){
+   const fam=assessmentFamily(q);
+   if(!seen.has(fam)){picked.push(q);seen.add(fam)}
+   if(picked.length>=6)break;
+ }
+ for(const q of pool){
+   if(picked.length>=8)break;
+   if(!picked.some(x=>x.id===q.id))picked.push(q);
+ }
+ st.dimensionDetective={
+   index:0,ids:picked.map(q=>q.id),phase:'dimension',
+   dimensionChoice:null,answerChoice:null,dimensionSubmitted:false,answerSubmitted:false,
+   answers:[],startedAt:Date.now()
+ };
+ st.mode='dimensionDetective';save();render();
+}
+function detectiveObj(){return prog()?.dimensionDetective}
+function detectiveQuestions(o){return examQuestions(o)}
+function detectiveChooseDimension(v){
+ const o=detectiveObj();if(!o||o.dimensionSubmitted)return;
+ o.dimensionChoice=v;render();
+}
+function detectiveSubmitDimension(){
+ const o=detectiveObj(),q=detectiveQuestions(o)[o?.index];
+ if(!o||!q||!o.dimensionChoice)return;
+ o.dimensionSubmitted=true;
+ o.phase='classification';
+ save();render();
+}
+function detectiveChooseAnswer(v){
+ const o=detectiveObj();if(!o||!o.dimensionSubmitted||o.answerSubmitted)return;
+ o.answerChoice=v;render();
+}
+function detectiveSubmitAnswer(){
+ const st=prog(),o=st.dimensionDetective,q=detectiveQuestions(o)[o?.index];
+ if(!o||!q||!o.answerChoice)return;
+ const dimension=assessmentFamily(q);
+ const dimensionCorrect=o.dimensionChoice===dimension;
+ const answerCorrect=o.answerChoice===q.answer;
+ const at=Date.now();
+ o.answerSubmitted=true;
+ o.answers.push({
+   id:q.id,dimension,dimensionChoice:o.dimensionChoice,dimensionCorrect,
+   chosen:o.answerChoice,answer:q.answer,correct:answerCorrect,at
+ });
+ window.MajickStudyProgress?.creditAnswer?.({
+   key:'D755:dimension-detective:'+q.id+':'+at,course:'D755',source:'d755-dimension-detective',
+   qid:q.id,topicId:q.topicId||realmTopic(q.section,q.concept),correct:answerCorrect,
+   difficulty:q.difficulty||4,chosen:o.answerChoice,answer:q.answer,at
+ });
+ save();render();
+}
+function detectiveNext(){
+ const st=prog(),o=st.dimensionDetective,qs=detectiveQuestions(o);if(!o||!o.answerSubmitted)return;
+ if(o.index<qs.length-1){
+   o.index++;o.phase='dimension';o.dimensionChoice=null;o.answerChoice=null;
+   o.dimensionSubmitted=false;o.answerSubmitted=false;save();render();return;
+ }
+ const total=qs.length;
+ const dimensionScore=o.answers.filter(x=>x.dimensionCorrect).length;
+ const classificationScore=o.answers.filter(x=>x.correct).length;
+ const familyStats={};
+ for(const a of o.answers){
+   familyStats[a.dimension]=familyStats[a.dimension]||{dimensionCorrect:0,classificationCorrect:0,total:0};
+   familyStats[a.dimension].total++;
+   if(a.dimensionCorrect)familyStats[a.dimension].dimensionCorrect++;
+   if(a.correct)familyStats[a.dimension].classificationCorrect++;
+ }
+ st.dimensionDetectiveResult={
+   total,dimensionScore,classificationScore,familyStats,at:Date.now()
+ };
+ st.mode='dimensionDetectiveResult';save();render();
+}
+function dimensionDetectiveView(){
+ const st=prog(),o=st.dimensionDetective;
+ if(!o)return '<section class="d755ExamIntro dimensionDetectiveIntro"><small>ASSESSMENT DIMENSION DETECTIVE</small><h1>First identify what the stem is asking.</h1><p>One scenario can be formal, summative, quantitative, and norm-referenced at the same time. This mode trains you to identify the dimension the question wants before choosing the label.</p><div class="d755DetectiveSteps"><span><b>1</b>Name the dimension</span><i>→</i><span><b>2</b>Classify the assessment</span><i>→</i><span><b>3</b>Explain the contrast</span></div><button class="btn primary" data-d755-start-detective>Start 8-Scenario Detective</button></section>';
+ const qs=detectiveQuestions(o),q=qs[o.index];if(!q)return '<div class="d755Empty">Detective question set unavailable.</div>';
+ const family=assessmentFamily(q),dimensionCorrect=o.dimensionChoice===family,answerCorrect=o.answerChoice===q.answer;
+ return '<section class="d755Exam d755Detective"><header><div><small>ASSESSMENT DIMENSION DETECTIVE</small><h2>Read the stem before naming the assessment.</h2></div><span>'+(o.index+1)+' / '+qs.length+'</span></header><article>'+
+  '<div class="d755DetectivePhase"><span class="'+(o.phase==='dimension'?'active':'done')+'">1 • What dimension?</span><span class="'+(o.phase==='classification'?'active':'')+'">2 • What type?</span></div>'+
+  '<h3>'+E(q.prompt)+'</h3>'+
+  (!o.dimensionSubmitted?
+    '<div class="d755DetectivePrompt"><small>STEP 1</small><b>What is this stem asking you to classify?</b></div><div class="d755DimensionChoices">'+ASSESSMENT_DIMENSIONS.map(x=>'<button '+(o.dimensionChoice===x?'class="selected"':'')+' data-d755-detective-dimension="'+E(x)+'">'+E(x)+'</button>').join('')+'</div><footer><button class="btn primary" '+(o.dimensionChoice?'':'disabled')+' data-d755-detective-submit-dimension>Lock dimension →</button></footer>'
+   :
+    '<div class="d755DimensionReveal '+(dimensionCorrect?'correct':'repair')+'"><small>STEP 1 • '+(dimensionCorrect?'CORRECT':'REPAIR')+'</small><b>'+E(family)+'</b><p>'+E(assessmentFamilyRule(family))+'</p></div>'+
+    '<div class="d755DetectivePrompt"><small>STEP 2</small><b>Now classify the assessment.</b></div>'+
+    '<div class="d755Choices">'+q.options.map((x,i)=>'<button '+(o.answerSubmitted?'disabled':'')+' class="'+(o.answerSubmitted?(x===q.answer?'correct':x===o.answerChoice?'wrong':''):o.answerChoice===x?'selected':'')+'" data-d755-detective-answer="'+E(x)+'"><i>'+String.fromCharCode(65+i)+'</i><span>'+E(x)+'</span></button>').join('')+'</div>'+
+    (!o.answerSubmitted?
+      '<footer><button class="btn primary" '+(o.answerChoice?'':'disabled')+' data-d755-detective-submit-answer>Submit classification</button></footer>'
+     :
+      '<div class="d755Feedback '+(answerCorrect?'correct':'repair')+'"><b>'+(answerCorrect?'✓ Classification correct':'Repair the classification')+'</b><p>'+E(q.why)+'</p><div class="d755ClassificationLens"><small>WHY THE OTHER DIMENSION/LABEL CAN TEMPT YOU</small><b>'+E(family)+'</b><span>'+E(assessmentFamilyRule(family))+'</span><em><b>Why not the tempting opposite?</b> '+E(assessmentContrast(q.answer))+'</em></div></div><footer><button class="btn primary" data-d755-detective-next>'+(o.index<qs.length-1?'Next case →':'See detective results →')+'</button></footer>')
+  )+
+ '</article></section>';
+}
+function dimensionDetectiveResultView(){
+ const st=prog(),r=st.dimensionDetectiveResult;if(!r)return dimensionDetectiveView();
+ const dimensionPct=Math.round(r.dimensionScore/r.total*100),classPct=Math.round(r.classificationScore/r.total*100);
+ return '<section class="d755Result d755DetectiveResult"><small>ASSESSMENT DIMENSION DETECTIVE • RESULTS</small><h1>Separate the question from the label.</h1><div class="d755DetectiveScores"><div><b>'+r.dimensionScore+' / '+r.total+'</b><span>dimension recognition</span><em>'+dimensionPct+'%</em></div><div><b>'+r.classificationScore+' / '+r.total+'</b><span>assessment classification</span><em>'+classPct+'%</em></div></div><div class="d755AssessmentBreakdown">'+Object.entries(r.familyStats||{}).map(([label,row])=>'<article><div><b>'+E(label)+'</b><span>Dimension '+row.dimensionCorrect+'/'+row.total+' • Type '+row.classificationCorrect+'/'+row.total+'</span></div></article>').join('')+'</div><p class="evidenceNote">If your type score is higher than your dimension score, slow down and identify what the stem is asking before reading the answer choices.</p><div class="resultActions"><button class="btn primary" data-d755-start-detective>Try 8 new cases</button><button class="btn ghost" data-d755-mode="assessmentDrill">Assessment Type Drill</button><button class="btn ghost" data-d755-home>Retake Studio Home</button></div></section>';
+}
+
 function examView(mode){
  const st=prog(),o=st[mode];
  const isDrill=mode==='assessmentDrill';
@@ -699,8 +804,8 @@ function learnView(){
 }
 function shell(){
  const {st,section,concept}=current();
- let center=st.mode==='home'?home():st.mode==='diagnostic'?examView('diagnostic'):st.mode==='diagnosticResult'?resultView('diagnostic'):st.mode==='assessmentDrill'?examView('assessmentDrill'):st.mode==='assessmentDrillResult'?resultView('assessmentDrill'):st.mode==='mock'?examView('mock'):st.mode==='mockResult'?resultView('mock'):st.mode==='traps'?trapsView():st.mode==='anchors'?anchorsView():learnView();
- const quiet=['home','diagnostic','diagnosticResult','assessmentDrill','assessmentDrillResult','mock','mockResult','traps','anchors','sectionOpening','sectionCheck','sectionResult'].includes(st.mode);
+ let center=st.mode==='home'?home():st.mode==='diagnostic'?examView('diagnostic'):st.mode==='diagnosticResult'?resultView('diagnostic'):st.mode==='assessmentDrill'?examView('assessmentDrill'):st.mode==='assessmentDrillResult'?resultView('assessmentDrill'):st.mode==='dimensionDetective'?dimensionDetectiveView():st.mode==='dimensionDetectiveResult'?dimensionDetectiveResultView():st.mode==='mock'?examView('mock'):st.mode==='mockResult'?resultView('mock'):st.mode==='traps'?trapsView():st.mode==='anchors'?anchorsView():learnView();
+ const quiet=['home','diagnostic','diagnosticResult','assessmentDrill','assessmentDrillResult','dimensionDetective','dimensionDetectiveResult','mock','mockResult','traps','anchors','sectionOpening','sectionCheck','sectionResult'].includes(st.mode);
  return '<section class="d755Retake"><header class="d755Header"><div><small>THE MOONLIT COLLEGIUM • D755</small><h2>Assessment for Special Education • Retake Studio</h2><p>Evidence → Interpretation → Individualized Decision → Intervention → Monitoring → Communication</p></div><button class="btn ghost" data-d755-home>Retake Studio Home</button></header><div class="d755Grid">'+rail(st,section)+'<main>'+center+'</main>'+(quiet?'':tutorPanel(concept,st))+'</div></section>';
 }
 function show(){
@@ -715,7 +820,7 @@ function render(){const box=document.getElementById('d755RetakeRoot');if(box&&ac
 function bindInside(root){
  root.querySelectorAll('[data-d755-home]').forEach(b=>b.addEventListener('click',()=>go('home')));
  root.querySelectorAll('[data-d755-section]').forEach(b=>b.addEventListener('click',()=>selectSection(b.dataset.d755Section)));
- root.querySelectorAll('[data-d755-mode]').forEach(b=>b.addEventListener('click',()=>{const m=b.dataset.d755Mode;if(m==='diagnostic'||m==='mock'||m==='assessmentDrill'){const st=prog();st[m]=null;st.mode=m}else st.mode=m;save();render()}));
+ root.querySelectorAll('[data-d755-mode]').forEach(b=>b.addEventListener('click',()=>{const m=b.dataset.d755Mode;if(m==='diagnostic'||m==='mock'||m==='assessmentDrill'){const st=prog();st[m]=null;st.mode=m}else if(m==='dimensionDetective'){const st=prog();st.dimensionDetective=null;st.mode=m}else st.mode=m;save();render()}));
  root.querySelector('[data-d755-begin]')?.addEventListener('click',beginSection);
  root.querySelectorAll('[data-d755-phase]').forEach(b=>b.addEventListener('click',()=>setPhase(Number(b.dataset.d755Phase))));
  root.querySelectorAll('[data-d755-answer]').forEach(b=>b.addEventListener('click',()=>answer(b.dataset.d755Answer,b.dataset.choice)));
@@ -724,6 +829,12 @@ function bindInside(root){
  root.querySelectorAll('[data-d755-tutor]').forEach(b=>b.addEventListener('click',()=>tutor(b.dataset.d755Tutor)));
  root.querySelector('[data-d755-complete]')?.addEventListener('click',completeConcept);
  root.querySelectorAll('[data-d755-start-exam]').forEach(b=>b.addEventListener('click',()=>startExam(b.dataset.d755StartExam)));
+ root.querySelectorAll('[data-d755-start-detective]').forEach(b=>b.addEventListener('click',startDimensionDetective));
+ root.querySelectorAll('[data-d755-detective-dimension]').forEach(b=>b.addEventListener('click',()=>detectiveChooseDimension(b.dataset.d755DetectiveDimension)));
+ root.querySelector('[data-d755-detective-submit-dimension]')?.addEventListener('click',detectiveSubmitDimension);
+ root.querySelectorAll('[data-d755-detective-answer]').forEach(b=>b.addEventListener('click',()=>detectiveChooseAnswer(b.dataset.d755DetectiveAnswer)));
+ root.querySelector('[data-d755-detective-submit-answer]')?.addEventListener('click',detectiveSubmitAnswer);
+ root.querySelector('[data-d755-detective-next]')?.addEventListener('click',detectiveNext);
  root.querySelectorAll('[data-d755-exam-choice]').forEach(b=>b.addEventListener('click',()=>examSelect(b.dataset.d755ExamChoice,b.dataset.choice)));
  root.querySelectorAll('[data-d755-exam-submit]').forEach(b=>b.addEventListener('click',()=>examSubmit(b.dataset.d755ExamSubmit)));
  root.querySelectorAll('[data-d755-exam-next]').forEach(b=>b.addEventListener('click',()=>examNext(b.dataset.d755ExamNext)));
@@ -766,6 +877,6 @@ if(typeof oldBind==='function'){
  };
 }
 ensureBank();
-window.MajickD755Retake={VERSION,COURSE,SECTIONS,TRAPS,BANK,ensureBank,show,render,shell,state:prog,current,startExam,examSubmit,examNext,startSectionCheck,checkSubmit,checkNext,anchorsView,grimoireWall,teacherVisual};
+window.MajickD755Retake={VERSION,COURSE,SECTIONS,TRAPS,BANK,ensureBank,show,render,shell,state:prog,current,startExam,examSubmit,examNext,startDimensionDetective,detectiveChooseDimension,detectiveSubmitDimension,detectiveChooseAnswer,detectiveSubmitAnswer,detectiveNext,startSectionCheck,checkSubmit,checkNext,anchorsView,grimoireWall,teacherVisual};
 document.documentElement.dataset.majickD755Retake=VERSION;
 })();
