@@ -69,6 +69,7 @@ const rotated=M.freshAssessmentRows(rotationProbe);
 assert(rotated.length===rotationProbe.length,'Assessment question rotation must preserve the full pool');
 assert(rotated[0].id!==rotationProbe[0].id,'Recently used assessment question should move behind unseen questions');
 assert(rotated.some(q=>q.id===rotationProbe[0].id),'Recently used assessment question must remain available as fallback');
+let st=M.state();
 const mistakeProbe=assessmentTypeQs[0];
 M.updateAssessmentMistake(mistakeProbe.id,false);
 assert(M.assessmentMistakeIds().includes(mistakeProbe.id),'Wrong assessment answer should enter Mistake Repair Queue');
@@ -100,7 +101,7 @@ assert(/data-d755-tab="d755retake"/.test(shell),'Retake Studio tab not injected'
 assert(/data-panel="d755retake"/.test(shell),'Retake Studio panel not injected');
 
 const xpBefore=ctx.S.progress.D755.xp;
-let st=M.state();
+st=M.state();
 assert(st.mode==='home','D755 should enter Retake Studio at home');
 assert(/TEACHER-FOCUS RETAKE STUDIO/.test(M.shell()),'Teacher-focus home label missing');
 assert(/Retake Diagnostic/.test(M.shell())&&/30 mixed WGU-style scenarios/.test(M.shell()),'Retake Studio does not expose the 30-question diagnostic entry point');
