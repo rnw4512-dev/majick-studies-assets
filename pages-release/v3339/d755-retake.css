@@ -903,3 +903,6 @@
 .d755EvidenceGrid article.attention>button{
   border-color:rgba(192,102,123,.22);
 }
+
+/* Four independent classification dimensions, readable without animation. */
+.d755SortGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin:24px 0}.d755SortDimension{padding:20px;border:1px solid #a99ae0;border-radius:16px;background:linear-gradient(135deg,#221736,#132737);color:#fff}.d755SortDimension:nth-child(2){background:linear-gradient(135deg,#291836,#342542)}.d755SortDimension:nth-child(3){background:linear-gradient(135deg,#18322f,#183048)}.d755SortDimension:nth-child(4){background:linear-gradient(135deg,#30251d,#322640)}.d755SortDimension .btn{margin:6px 8px 6px 0;white-space:normal;min-height:48px}.d755SortDimension .selected{outline:3px solid #e8cbff;background:#503768}.d755SortDimension .correct{background:#214c3b;border:2px solid #99efbd}.d755SortDimension .wrong{background:#562733;border:2px solid #ffb6bf}.d755SortDimension p{color:#fff;line-height:1.65}.d755MistakeReason{margin:16px 0;padding:18px;border:1px solid #ceb2f4;border-radius:14px;background:#251d38}.d755MistakeReason p{line-height:1.65}@media(max-width:680px){.d755SortGrid{grid-template-columns:1fr}}

@@ -375,3 +375,30 @@ console.log(JSON.stringify({
  sectionCheck:8,
  xp:ctx.S.progress.D755.xp
 }));
+
+// One case can be classified in four independent dimensions.
+M.startAssessmentSorter();
+assert(/Data type/.test(M.shell())&&/Comparison/.test(M.shell()),'Sorter must show all four dimensions');
+M.sorterSubmit();
+assert(!M.state().assessmentSorter.submitted,'Sorter must require all four answers');
+while(M.state().mode==='assessmentSorter'){
+ const o=M.state().assessmentSorter,c=M.SORT_CASES[o.order[o.index]];
+ c.answers.forEach((a,i)=>M.sorterChoose(i,a));M.sorterSubmit();
+ assert(/Fixed|fixed|Descriptive|descriptive|Numerical|numerical|Counts|counts|Narrative|narrative|Words|words/.test(M.shell()),'Sorter must explain scenario evidence');
+ M.sorterNext();
+}
+assert(M.state().assessmentSorterResult.correct===24&&M.state().assessmentSorterResult.total===24,'Sorter must save 24 classification results');
+const source=M.BANK.find(q=>q.trap==='assessment-type');
+M.updateAssessmentMistake(source.id,false);
+M.startExam('diagnostic');
+const savedDiagnostic=M.state().diagnostic;
+M.startTransferPractice(source.id);
+assert(M.state().diagnostic===savedDiagnostic,'Transfer practice must preserve the diagnostic');
+assert(M.state().assessmentDrill.ids.length===3&&!M.state().assessmentDrill.ids.includes(source.id),'Transfer must use three different questions');
+assert(M.state().assessmentDrill.ids.every(id=>M.assessmentFamily(M.BANK.find(q=>q.id===id))===M.assessmentFamily(source)),'Transfer must test the same assessment dimension');
+while(M.state().mode==='assessmentDrill'){
+ const o=M.state().assessmentDrill,q=M.BANK.find(q=>q.id===o.ids[o.index]);o.selected=q.answer;M.examSubmit('assessmentDrill');M.examNext('assessmentDrill');
+}
+assert(!M.assessmentMistakeIds().includes(source.id),'Three correct transfer answers must resolve the source mistake');
+assert(ctx.S.progress.D755.xp===xpBefore,'Sorter and transfer must preserve lifetime XP');
+console.log('D755 sorter and fresh-scenario repair passed');

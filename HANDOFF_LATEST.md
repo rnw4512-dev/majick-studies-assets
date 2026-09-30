@@ -488,3 +488,14 @@ Current estimate:
 - Protected: original Guardian motion assets, single render owner, course-isolated progress, existing XP/crystals and question bank.
 - User manual action: none.
 - Next step: verify Pages deployment and live Law + Referral drill, then continue Guardian/Sanctuary integration and game visuals from current repository code.
+
+## 2026-09-30 — D755 visual sorter and fresh-scenario repair
+- Added six fully specified scenarios with four independent classifications (24 decisions): data type, administration, purpose, comparison. Cards explain the exact scenario evidence after submission; saved results show each dimension.
+- Added Why I Missed It feedback in diagnostic/drill modes. Assessment misses offer three different same-dimension scenarios; three correct transfer answers resolve the original mistake. Mock OA still withholds teaching feedback during the simulation.
+- Assessment mistakes from diagnostic and mock now join the existing D755 repair queue.
+- Existing 130-question bank and XP preserved. Sorter evidence is stored separately from existing mastery ladder.
+- Changed D755 JS/CSS, smoke, build/cache keys and release gates; handoff/build notes.
+- Syntax and complete D755 smoke passed, including 24 sorter decisions, same-dimension transfer, source exclusion, original diagnostic preservation, mistake resolution, XP preservation.
+- Deployment pending at this checkpoint; verify the Pages run and published files before stating live.
+- Protected motion assets/render owner and course-isolated saves untouched. User manual action: none.
+- Next: verify live sorter and feedback; expand spaced review/confidence tracking later.
