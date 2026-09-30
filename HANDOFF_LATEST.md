@@ -505,3 +505,9 @@ Current estimate:
 - Added smoke coverage for the actual bound mode-button callback; all D755 smoke assertions pass.
 - Initial feature and navigation-fix Pages runs passed. Browser retained the earlier script, so the script cache key is now 3340-study-repair-sorter-navfix with matching release gates.
 - Final browser verification must include opening Visual Assessment Sorter, starting a case, selecting four labels and viewing feedback. Final cache-key deployment pending at this checkpoint.
+
+### Final visual verification checkpoint
+- Cache-refresh deployment passed; live browser opened Visual Assessment Sorter, started a case, selected all four labels and received all four evidence explanations without the navigation error.
+- Visual check found unused tutor-column space and dimmed disabled labels. CSS now gives the sorter the full main area and preserves white submitted labels; mobile remains one column. CSS cache key: 3340-study-sorter-readable.
+- Existing bank remains 130 plus six sorter scenarios (24 separate classification decisions). Sorter/state/transfer and real navigation callback smoke passed.
+- Final readability CSS deployment pending at this checkpoint; verify screenshot and Pages run. No user code editing needed.
