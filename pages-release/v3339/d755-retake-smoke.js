@@ -112,6 +112,7 @@ for(let i=0;i<12;i++){
   if(i===0){
     assert(/THIS STEM IS ASKING ABOUT/.test(M.shell()),'Assessment Type Drill classification lens missing after submission');
     assert(/d755ClassificationLens/.test(M.shell()),'Assessment Type Drill classification lens markup missing');
+    assert(/Why not the tempting opposite\?/.test(M.shell()),'Assessment Type Drill contrast explanation missing');
   }
   M.examNext('assessmentDrill');
 }
