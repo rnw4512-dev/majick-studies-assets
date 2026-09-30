@@ -511,7 +511,7 @@ function home(){
  const st=prog();
  const total=SECTIONS.flatMap(s=>s.concepts).length,done=Object.keys(st.completed).filter(k=>st.completed[k]).length;
  const diag=st.diagnosticResult;
- return '<section class="d755Home"><small>D755 • TEACHER-FOCUS RETAKE STUDIO</small><h1>Assessment for Special Education</h1><p>This retake course now follows your instructor’s OA review and Student Journey process: interpret data, identify the student’s stage, choose the next educational decision, and explain why. Vocabulary is tested inside decisions—not by itself.</p><div class="d755HomeStats"><div><b>'+done+' / '+total+'</b><span>concepts completed</span></div><div><b>'+Object.keys(st.anchors).length+'</b><span>anchor charts unlocked</span></div><div><b>'+(diag?diag.score+'/'+diag.total:'—')+'</b><span>diagnostic</span></div></div>'+assessmentMasteryHTML()+'<div class="d755CourseCycle"><span>Collect evidence</span><i>→</i><span>Interpret patterns</span><i>→</i><span>Individualize</span><i>→</i><span>Intervene</span><i>→</i><span>Monitor</span><i>→</i><span>Communicate</span></div><div class="d755HomeActions"><button class="btn primary" data-d755-section="'+st.sectionId+'">Continue Learning</button><button class="btn ghost" data-d755-mode="diagnostic">Start / Retake Diagnostic</button><button class="btn ghost" data-d755-mode="assessmentDrill">Assessment Type Drill</button><button class="btn ghost" data-d755-mode="dimensionDetective">Assessment Dimension Detective</button><button class="btn ghost" data-d755-mode="contrastRepair">Confusing Pairs Repair</button><button class="btn ghost" data-d755-mode="mock">Mock OA</button></div><div class="d755SectionCards">'+SECTIONS.map(s=>'<button data-d755-section="'+s.id+'"><span>SECTION '+s.number+'</span><b>'+E(s.title)+'</b><small>'+E(s.bigIdea)+'</small></button>').join('')+'</div></section>';
+ return '<section class="d755Home"><small>D755 • TEACHER-FOCUS RETAKE STUDIO</small><h1>Assessment for Special Education</h1><p>This retake course now follows your instructor’s OA review and Student Journey process: interpret data, identify the student’s stage, choose the next educational decision, and explain why. Vocabulary is tested inside decisions—not by itself.</p><div class="d755HomeStats"><div><b>'+done+' / '+total+'</b><span>concepts completed</span></div><div><b>'+Object.keys(st.anchors).length+'</b><span>anchor charts unlocked</span></div><div><b>'+(diag?diag.score+'/'+diag.total:'—')+'</b><span>diagnostic</span></div></div>'+assessmentMasteryHTML()+assessmentNextPracticeHTML()+'<div class="d755CourseCycle"><span>Collect evidence</span><i>→</i><span>Interpret patterns</span><i>→</i><span>Individualize</span><i>→</i><span>Intervene</span><i>→</i><span>Monitor</span><i>→</i><span>Communicate</span></div><div class="d755HomeActions"><button class="btn primary" data-d755-section="'+st.sectionId+'">Continue Learning</button><button class="btn ghost" data-d755-mode="diagnostic">Start / Retake Diagnostic</button><button class="btn ghost" data-d755-mode="assessmentDrill">Assessment Type Drill</button><button class="btn ghost" data-d755-mode="dimensionDetective">Assessment Dimension Detective</button><button class="btn ghost" data-d755-mode="contrastRepair">Confusing Pairs Repair</button><button class="btn ghost" data-d755-mode="mock">Mock OA</button></div><div class="d755SectionCards">'+SECTIONS.map(s=>'<button data-d755-section="'+s.id+'"><span>SECTION '+s.number+'</span><b>'+E(s.title)+'</b><small>'+E(s.bigIdea)+'</small></button>').join('')+'</div></section>';
 }
 function assessmentEvidence(kind){
  const st=prog(),saved=st?.assessmentTypeEvidence?.[kind]||{};
@@ -559,6 +559,44 @@ function assessmentMasteryHTML(){
   '<div class="d755MasteryRows">'+rows.map(row=>'<article class="'+row.status.toLowerCase().replace(/\s+/g,'-')+'"><div><b>'+E(row.label)+'</b><span>'+E(row.status)+'</span><em>'+(row.possible?row.pct+'%':'—')+'</em></div><i><u style="width:'+(row.possible?row.pct:0)+'%"></u></i><small>'+(row.possible?'Evidence from '+row.drillTotal+' drill item'+(row.drillTotal===1?'':'s')+', '+row.detectiveTotal+' detective case'+(row.detectiveTotal===1?'':'s')+', and '+row.pairTotal+' pair-repair case'+(row.pairTotal===1?'':'s'):'Complete the drill or Detective to begin this row.')+'</small><button type="button" data-d755-focus-family="'+E(row.label)+'">Practice this type →</button></article>').join('')+'</div>'+
   (practiced.length?'<p>Mastery combines <b>classification accuracy</b>, <b>dimension recognition</b>, and your ability to separate <b>confusing pairs</b>.</p>':'<p>Complete the Assessment Type Drill or Assessment Dimension Detective to start building mastery evidence.</p>')+
  '</section>';
+}
+function assessmentNextPractice(){
+ const rows=assessmentMasteryRows();
+ const practiced=rows.filter(x=>x.possible>0);
+ const detective=prog()?.dimensionDetectiveResult||null;
+ if(!practiced.length){
+   return {kind:'drill',title:'Start with Assessment Type Drill',detail:'Build a baseline across the six assessment dimensions before targeting a weakness.'};
+ }
+ if(detective&&detective.total){
+   const dimPct=Math.round(Number(detective.dimensionScore||0)/Math.max(1,Number(detective.total||1))*100);
+   const classPct=Math.round(Number(detective.classificationScore||0)/Math.max(1,Number(detective.total||1))*100);
+   if(classPct-dimPct>=15){
+     return {kind:'detective',title:'Practice reading the stem first',detail:'Your classification is stronger than your dimension recognition. Use Assessment Dimension Detective next.'};
+   }
+ }
+ const pairEvidence=assessmentEvidence('pairs');
+ const pairWeak=rows.filter(row=>Number(pairEvidence[row.label]?.total||0)>0)
+   .map(row=>({row,pct:Math.round(Number(pairEvidence[row.label]?.correct||0)/Math.max(1,Number(pairEvidence[row.label]?.total||1))*100)}))
+   .sort((a,b)=>a.pct-b.pct)[0];
+ if(pairWeak&&pairWeak.pct<70){
+   return {kind:'pairs',title:'Repair a confusing pair',detail:pairWeak.row.label+' is your weakest two-choice contrast right now.'};
+ }
+ const weak=[...practiced].filter(x=>x.status!=='Mastered').sort((a,b)=>a.pct-b.pct)[0];
+ if(weak){
+   return {kind:'family',family:weak.label,title:'Practice '+weak.label,detail:'This is currently your weakest mastery row at '+weak.pct+'%.'};
+ }
+ return {kind:'maintenance',title:'Keep mastery fresh',detail:'All practiced assessment dimensions are at mastery level. Use a mixed Assessment Type Drill for maintenance.'};
+}
+function assessmentNextPracticeHTML(){
+ const rec=assessmentNextPractice();
+ const action=rec.kind==='family'
+   ?'<button class="btn primary" data-d755-focus-family="'+E(rec.family)+'">Practice this type →</button>'
+   :rec.kind==='detective'
+    ?'<button class="btn primary" data-d755-start-detective>Open Dimension Detective →</button>'
+    :rec.kind==='pairs'
+     ?'<button class="btn primary" data-d755-start-contrast>Open Confusing Pairs →</button>'
+     :'<button class="btn primary" data-d755-mode="assessmentDrill">'+(rec.kind==='maintenance'?'Mixed maintenance drill →':'Start Assessment Type Drill →')+'</button>';
+ return '<section class="d755NextPractice"><div><small>RECOMMENDED NEXT PRACTICE</small><h3>'+E(rec.title)+'</h3><p>'+E(rec.detail)+'</p></div>'+action+'</section>';
 }
 function weakestAssessmentFamilies(){
  const stats=assessmentEvidence('drill');
@@ -1028,6 +1066,6 @@ if(typeof oldBind==='function'){
  };
 }
 ensureBank();
-window.MajickD755Retake={VERSION,COURSE,SECTIONS,TRAPS,BANK,ensureBank,show,render,shell,state:prog,current,startExam,examSubmit,examNext,assessmentFamily,assessmentEvidence,assessmentMasteryRows,startAssessmentFamilyPractice,contrastPairFor,contrastPairFamily,startContrastRepair,contrastRepairSelect,contrastRepairSubmit,contrastRepairNext,startDimensionDetective,detectiveChooseDimension,detectiveSubmitDimension,detectiveChooseAnswer,detectiveSubmitAnswer,detectiveNext,startSectionCheck,checkSubmit,checkNext,anchorsView,grimoireWall,teacherVisual};
+window.MajickD755Retake={VERSION,COURSE,SECTIONS,TRAPS,BANK,ensureBank,show,render,shell,state:prog,current,startExam,examSubmit,examNext,assessmentFamily,assessmentEvidence,assessmentMasteryRows,assessmentNextPractice,startAssessmentFamilyPractice,contrastPairFor,contrastPairFamily,startContrastRepair,contrastRepairSelect,contrastRepairSubmit,contrastRepairNext,startDimensionDetective,detectiveChooseDimension,detectiveSubmitDimension,detectiveChooseAnswer,detectiveSubmitAnswer,detectiveNext,startSectionCheck,checkSubmit,checkNext,anchorsView,grimoireWall,teacherVisual};
 document.documentElement.dataset.majickD755Retake=VERSION;
 })();
