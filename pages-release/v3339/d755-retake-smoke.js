@@ -190,6 +190,21 @@ assert(focusQs.length>0&&focusQs.every(q=>M.assessmentFamily(q)==='Purpose'),'Fo
 st.assessmentDrill=null;
 st.mode='home';
 
+M.startContrastRepair();
+st=M.state();
+assert(st.mode==='contrastRepair','Confusing Pairs Repair did not start');
+assert(st.contrastRepair.ids.length>=8,'Confusing Pairs Repair should include a broad set of binary cases');
+const repairQs=st.contrastRepair.ids.map(id=>M.BANK.find(q=>q.id===id));
+assert(repairQs.every(q=>M.contrastPairFor(q)),'Confusing Pairs Repair should only use known contrast-pair questions');
+const firstRepair=repairQs[0],firstPair=M.contrastPairFor(firstRepair);
+assert(firstPair.answers.length===2,'Confusing Pairs Repair must use exactly two competing labels');
+M.contrastRepairSelect(firstRepair.answer);
+M.contrastRepairSubmit();
+assert(M.state().contrastRepair.submitted===true,'Confusing Pairs Repair answer did not submit');
+M.contrastRepairNext();
+M.state().contrastRepair=null;
+M.state().mode='home';
+
 M.startExam('mock');
 st=M.state();
 assert(st.mock.ids.length===40,'Mock OA must contain 40 questions');
