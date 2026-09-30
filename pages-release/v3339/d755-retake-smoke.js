@@ -32,18 +32,18 @@ assert(M&&M.VERSION==='3.3.40','D755 runtime/version missing');
 assert(ctx.document.documentElement.dataset.majickD755Retake==='3.3.40','dataset marker missing');
 assert(M.SECTIONS.length===3,'D755 must contain exactly three sections');
 assert(M.SECTIONS.reduce((n,s)=>n+s.concepts.length,0)===16,'D755 instructional concept count changed');
-assert(M.BANK.length===90,'D755 teacher-focus bank must contain 90 questions');
-assert(M.BANK.filter(q=>q.section===1).length===54,'Section 1 must include the expanded 36-question assessment-identification bank');
-assert(M.BANK.filter(q=>q.section===2).length===18,'Section 2 must retain 18 teacher-focus questions');
-assert(M.BANK.filter(q=>q.section===3).length===18,'Section 3 must retain 18 teacher-focus questions');
-assert(new Set(M.BANK.map(q=>q.id)).size===90,'Question IDs must be unique');
+assert(M.BANK.length===130,'D755 teacher-focus bank must contain 130 questions');
+assert(M.BANK.filter(q=>q.section===1).length===85,'Section 1 must include the expanded assessment, law, and referral bank');
+assert(M.BANK.filter(q=>q.section===2).length===23,'Section 2 must include the added law/referral scenarios');
+assert(M.BANK.filter(q=>q.section===3).length===22,'Section 3 must include the added referral-stage scenarios');
+assert(new Set(M.BANK.map(q=>q.id)).size===130,'Question IDs must be unique');
 assert(M.BANK.every(q=>Array.isArray(q.options)&&q.options.length===4&&q.options.includes(q.answer)),'Every question must have four choices and a valid answer');
 assert(M.BANK.every(q=>q.style==='wgu-course-scenario'&&q.source==='d755-teacher-focus-2026-09-26'&&q.teacherFocus===true),'Teacher-focus question metadata missing');
 assert(M.BANK.every(q=>q.topicId&&Number(q.difficulty)>=1&&q.format==='scenario'),'Game Realm question metadata missing');
 const realmTopics=new Set(ctx.S.courses.D755.concepts.map(x=>x.id));
 assert(M.BANK.every(q=>realmTopics.has(q.topicId)),'A D755 question points to a Game Realm topic that does not exist');
 assert(Array.isArray(ctx.S.courses.D755.misconceptionCatalog)&&ctx.S.courses.D755.misconceptionCatalog.length>=8,'D755 Game Realm misconception catalog missing');
-assert(ctx.S.courses.D755.questionBank.length===90,'Teacher-focus D755 bank did not self-install');
+assert(ctx.S.courses.D755.questionBank.length===130,'Teacher-focus D755 bank did not self-install');
 assert(M.BANK.some(q=>/four most recent progress-monitoring points/.test(q.prompt)&&q.visual==='four-below'),'Four-point rule data question missing');
 assert(M.BANK.some(q=>/Predictive validity/.test(q.answer)),'Predictive validity question missing');
 assert(M.BANK.some(q=>/General Outcome Measurement/.test(q.answer)),'GOM question missing');
@@ -51,7 +51,7 @@ assert(M.BANK.some(q=>/PLAAFP/.test(q.prompt)||/PLAAFP/.test(q.why)),'PLAAFP que
 assert(M.BANK.some(q=>q.visual==='cbc'),'C-B-C measurable goal visual question missing');
 assert(M.BANK.some(q=>/Universal screening\/concern/.test(q.answer)),'Student Journey sequencing question missing');
 const assessmentTypeQs=M.BANK.filter(q=>q.trap==='assessment-type');
-assert(assessmentTypeQs.length===36,'Assessment-identification expansion must contain 36 focused questions');
+assert(assessmentTypeQs.length===56,'Assessment-identification expansion must contain 56 focused questions');
 assert(assessmentTypeQs.some(q=>q.answer==='Qualitative data'),'Qualitative assessment identification question missing');
 assert(assessmentTypeQs.some(q=>q.answer==='Quantitative data'),'Quantitative assessment identification question missing');
 assert(assessmentTypeQs.some(q=>q.answer==='Formal assessment'),'Formal assessment identification question missing');
@@ -64,6 +64,23 @@ assert(assessmentTypeQs.some(q=>/Curriculum-Based Measurement/.test(q.answer)),'
 assert(assessmentTypeQs.some(q=>q.answer==='Universal screening'),'Universal screening identification question missing');
 assert(assessmentTypeQs.some(q=>q.answer==='Progress monitoring'),'Progress-monitoring identification question missing');
 assert(assessmentTypeQs.some(q=>/Functional Behavior Assessment/.test(q.answer)),'FBA identification question missing');
+assert(assessmentTypeQs.some(q=>/high school senior/.test(q.prompt)),'Senior assessment-type scenario missing');
+assert(assessmentTypeQs.filter(q=>q.answer==='Formative assessment').length>=4,'Expanded formative scenario practice missing');
+assert(assessmentTypeQs.filter(q=>q.answer==='Summative assessment').length>=4,'Expanded summative scenario practice missing');
+assert(assessmentTypeQs.filter(q=>q.answer==='Norm-referenced').length>=4,'Expanded norm-referenced scenario practice missing');
+assert(assessmentTypeQs.filter(q=>q.answer==='Criterion-referenced').length>=5,'Expanded criterion-referenced scenario practice missing');
+const lawQs=M.BANK.filter(q=>q.trap==='law-case');
+assert(lawQs.length===10,'D755 law/case weak-area set must contain 10 questions');
+assert(lawQs.some(q=>/Rowley/.test(q.answer)||/Rowley/.test(q.prompt)),'Rowley case question missing');
+assert(lawQs.some(q=>/Endrew F/.test(q.answer)||/Endrew F/.test(q.prompt)),'Endrew F. case question missing');
+assert(lawQs.some(q=>q.answer==='FAPE'),'FAPE law question missing');
+assert(lawQs.some(q=>/Least Restrictive Environment/.test(q.answer)),'LRE law question missing');
+assert(lawQs.some(q=>q.answer==='Child Find'),'Child Find law question missing');
+const referralQs=M.BANK.filter(q=>q.trap==='process-order'&&q.id.includes('referral_'));
+assert(referralQs.length===10,'D755 referral-stage weak-area set must contain 10 questions');
+for(const stage of ['Concern and initial data collection','Pre-referral intervention / MTSS','Formal referral for special-education evaluation','Parental consent for initial evaluation','Multidisciplinary evaluation','Eligibility determination','IEP development','Placement and LRE decision','Annual IEP review','Reevaluation']){
+  assert(referralQs.some(q=>q.answer===stage),'Referral-stage question missing: '+stage);
+}
 const rotationProbe=assessmentTypeQs.slice(0,4);
 M.rememberAssessmentQuestion(rotationProbe[0].id);
 const rotated=M.freshAssessmentRows(rotationProbe);
@@ -155,6 +172,8 @@ assert(st.diagnostic.ids.length===30,'Diagnostic must contain 30 questions');
 const diagQs=st.diagnostic.ids.map(id=>M.BANK.find(q=>q.id===id));
 for(const n of [1,2,3])assert(diagQs.filter(q=>q.section===n).length===10,'Diagnostic section '+n+' quota must be 10');
 assert(diagQs.filter(q=>q.trap==='assessment-type').length>=6,'Diagnostic should regularly include focused assessment-type questions');
+assert(diagQs.filter(q=>q.trap==='law-case').length>=3,'Diagnostic should regularly include law/case questions');
+assert(diagQs.filter(q=>q.trap==='process-order'&&q.id.includes('referral_')).length>=4,'Diagnostic should regularly include referral-stage questions');
 
 for(let i=0;i<30;i++){
   const o=M.state().diagnostic;
@@ -315,6 +334,8 @@ assert(mockQs.filter(q=>q.section===1).length===14,'Mock Section 1 quota must be
 assert(mockQs.filter(q=>q.section===2).length===13,'Mock Section 2 quota must be 13');
 assert(mockQs.filter(q=>q.section===3).length===13,'Mock Section 3 quota must be 13');
 assert(mockQs.filter(q=>q.trap==='assessment-type').length>=8,'Mock OA should regularly include focused assessment-type questions');
+assert(mockQs.filter(q=>q.trap==='law-case').length>=4,'Mock OA should regularly include law/case questions');
+assert(mockQs.filter(q=>q.trap==='process-order'&&q.id.includes('referral_')).length>=5,'Mock OA should regularly include referral-stage questions');
 
 st.mode='learn';st.sectionId='d755-s1';st.conceptIndex=0;st.phase=1;
 const html=M.shell();
