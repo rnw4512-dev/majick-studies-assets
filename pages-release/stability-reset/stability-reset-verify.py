@@ -4,7 +4,7 @@ site=Path(sys.argv[1])
 def fail(msg): raise SystemExit('STABILITY RESET VERIFY FAILED: '+msg)
 main=(site/'index.html').read_text(encoding='utf-8')
 san=(site/'sanctuary'/'index.html').read_text(encoding='utf-8')
-for f in ('v3310-ui-compat.js','v3312-ui-compat.js','guardian-registry.js','majick-state-core.js','learning-lab.js','learning-lab.css','learning-plan.js','learning-plan.css','course-tutor.js','course-tutor.css','learn-mode.js','learn-mode.css','d755-retake.js','d755-retake.css','guardian-core.js','guardian-core.css','study-progress-bridge.js','guardian-life-main.js','guardian-life-main.css','game-realm.js','game-realm.css','magical-college-home.js','magical-college-home.css','guardian-care-economy.js','v3317-main.js','sanctuary/v3317-sanctuary.js','sanctuary/v3320-sanctuary-life.js','sanctuary/v3321-sanctuary-customize.js','v3322-main-recovery.js','sanctuary/v3322-sanctuary-recovery.js','sanctuary/v3325-sanctuary-visual-authority.js','sanctuary/guardian-core-sanctuary.js','sanctuary/sanctuary-alive.js'):
+for f in ('v3310-ui-compat.js','v3312-ui-compat.js','guardian-registry.js','majick-state-core.js','learning-lab.js','learning-lab.css','learning-plan.js','learning-plan.css','course-tutor.js','course-tutor.css','learn-mode.js','learn-mode.css','d755-retake.js','d755-retake.css','guardian-core.js','guardian-core.css','study-progress-bridge.js','guardian-life-main.js','guardian-life-main.css','game-realm.js','game-realm.css','magical-college-home.js','magical-college-home.css','guardian-care-economy.js','v3317-main.js','sanctuary/v3317-sanctuary.js','sanctuary/v3320-sanctuary-life.js','sanctuary/v3321-sanctuary-customize.js','v3322-main-recovery.js','sanctuary/v3322-sanctuary-recovery.js','sanctuary/v3325-sanctuary-visual-authority.js','sanctuary/guardian-core-sanctuary.js','sanctuary/sanctuary-alive.js','sanctuary/sanctuary-roster.js'):
     p=site/f
     if not p.exists() or not p.stat().st_size: fail('missing '+f)
 for old in ('v3310-main.js','v3312-main.js','v3313-main.js','v3314-main.js','v3315-main.js','v3316-main.js'):
@@ -148,6 +148,12 @@ for marker in ("VERSION='3.3.42'","guardian-bed-","v3342BuildPersonalNooks","v33
     if marker not in alive: fail('Sanctuary Alive missing '+marker)
 if 'sanctuary-alive.js?v=3349-moments' not in san:
     fail('Sanctuary Alive asset is not installed')
+roster=(site/'sanctuary'/'sanctuary-roster.js').read_text(encoding='utf-8')
+for marker in ("v3351MotionState","idleDynamicGuardian","actionDynamicGuardian","walking-to-care"):
+    if marker not in roster: fail('dynamic Guardian motion missing '+marker)
+if 'sanctuary-roster.js?v=3351-motion' not in san:
+    fail('dynamic Sanctuary roster motion asset is not cache-busted')
+if san.find('sanctuary-alive.js')>san.find('sanctuary-roster.js'): fail('Sanctuary roster loads before Sanctuary Alive')
 if san.find('guardian-core-sanctuary.js')>san.find('sanctuary-alive.js'): fail('Sanctuary Alive loads before Guardian Core Sanctuary')
 care=(site/'guardian-care-economy.js').read_text(encoding='utf-8')
 if 'window.MajickGuardianRegistry?.get?.(type)' not in care: fail('Guardian care does not use the shared registry')
