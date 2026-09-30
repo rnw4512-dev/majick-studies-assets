@@ -317,8 +317,8 @@ jobs:
           grep -q 'wgu-practice.css?v=3333' _site/index.html
           grep -q 'learn-mode.js?v=3338' _site/index.html
           grep -q 'learn-mode.css?v=3338' _site/index.html
-          grep -q 'd755-retake.js?v=3340-mastery' _site/index.html
-          grep -q 'd755-retake.css?v=3340-mastery' _site/index.html
+          grep -q 'd755-retake.js?v=3340-focus' _site/index.html
+          grep -q 'd755-retake.css?v=3340-focus' _site/index.html
           grep -q 'guardian-core.js?v=3341' _site/index.html
           grep -q 'guardian-core.css?v=3341' _site/index.html
           grep -q "VERSION='3.3.41'" _site/guardian-core.js
@@ -635,7 +635,7 @@ jobs:
                       'index learn-mode cache key': 'learn-mode.js?v=3338' in index,
                       'learn-mode version': "VERSION='3.3.38'" in learn,
                       'Arcane Anchor Wall': 'Arcane Anchor Wall' in learn,
-                      'index D755 cache key': 'd755-retake.js?v=3340-mastery' in index,
+                      'index D755 cache key': 'd755-retake.js?v=3340-focus' in index,
                       'D755 version': "VERSION='3.3.40'" in d755,
                       'D755 diagnostic': '30-Question Retake Diagnostic' in d755,
                       'D755 teacher focus marker': 'd755-teacher-focus-2026-09-26' in d755,
@@ -650,6 +650,7 @@ jobs:
                       'D755 Assessment Dimension Detective': 'Assessment Dimension Detective' in d755,
                       'D755 dimension recognition result': 'dimension recognition' in d755,
                       'D755 mastery ladder': 'ASSESSMENT TYPE MASTERY LADDER' in d755,
+                      'D755 focused family practice': 'Practice this type' in d755,
                       'D755 assessment classification result': 'assessment classification' in d755,
                       'CBC goal visual': 'MEASURABLE ANNUAL GOAL • C-B-C' in d755,
                       '40-question mixed simulation': '40-question mixed simulation' in d755,
