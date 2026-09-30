@@ -33,6 +33,24 @@
    if(bed)return {x:Math.max(160,Math.min((scene.worldWidth||2400)-160,bed.x+80)),y:Math.max(370,bed.y-80)};
    return {x:340+(index%5)*370,y:560+Math.floor(index/5)*110};
  }
+ function individualBehavior(g){
+   const meta=identity(g)||{},seedText=String(g?.petId||meta.name||g?.name||resolvedType(g)||'guardian');
+   let seed=0;
+   for(let i=0;i<seedText.length;i++)seed=(seed*31+seedText.charCodeAt(i))>>>0;
+   const variant=Number(meta.variantIndex||g?.variantIndex||0);
+   const personality=String(meta.personality||g?.personality||'').toLowerCase();
+   let roamScale=.82+((seed%37)/100);      // .82 - 1.18
+   let paceScale=.9+(((seed>>>3)%25)/100); // .90 - 1.14
+   let pauseScale=.82+(((seed>>>6)%43)/100);// .82 - 1.24
+   let idleBias=((seed>>>9)%3);
+   if(/energetic|playful|momentum|adventur|curious/.test(personality)){roamScale+=.12;paceScale+=.08;pauseScale-=.1}
+   if(/quiet|calm|thoughtful|gentle|cozy|strateg/.test(personality)){roamScale-=.08;paceScale-=.04;pauseScale+=.13}
+   if(/observ|insight/.test(personality)){roamScale-=.03;pauseScale+=.08;idleBias=0}
+   roamScale=Math.max(.7,Math.min(1.35,roamScale+(variant%3)*.025));
+   paceScale=Math.max(.82,Math.min(1.28,paceScale));
+   pauseScale=Math.max(.72,Math.min(1.4,pauseScale));
+   return {roamScale,paceScale,pauseScale,idleBias,variant};
+ }
  function motionProfile(g){
    const type=resolvedType(g);
    if(['vesper','zephyr','prism'].includes(type))return {bob:12,tilt:2.4,squash:.035,pace:.92,idle:10};
@@ -78,8 +96,13 @@
  function idleDynamicGuardian(scene,g){
    const pet=scene.v3348Sprites?.[g.petId];
    if(!pet?.active||scene.editMode)return false;
-   const profile=motionProfile(g),b=baseScale(pet),style=idleStyle(g);
+   const profile=motionProfile(g),behavior=individualBehavior(g),b=baseScale(pet);
+   let style=idleStyle(g);
+   if(style==='breathing'){
+     style=behavior.idleBias===0?'watchful-tilt':behavior.idleBias===1?'soft-bob':'cozy-sway';
+   }
    pet.setData?.('v3354IdleStyle',style);
+   pet.setData?.('v3355IndividualBehavior',JSON.stringify(behavior));
    pet.setData?.('v3351MotionState','idle-'+style);
    let args={targets:pet,duration:700,yoyo:true,ease:'Sine.inOut',onComplete:()=>{if(pet.active)resetDynamicPose(pet)}};
    if(style==='watchful-tilt'){
@@ -260,10 +283,10 @@
  Game.prototype.v3348Roam=function(id){
    const pet=this.v3348Sprites?.[id];if(!pet?.active||this.editMode||this.tweens.isTweening?.(pet))return false;
    const g=roster(this).find(x=>x.petId===id);if(!g)return false;
-   const profile=motionProfile(g),b=baseScale(pet),w=this.worldWidth||2400,h=this.worldHeight||950;
-   const tx=Math.max(180,Math.min(w-180,pet.x+(Math.random()-.5)*530));
-   const ty=Math.max(430,Math.min(h-135,pet.y+(Math.random()-.5)*230));
-   const duration=(2000+Math.random()*1700)/profile.pace;
+   const profile=motionProfile(g),behavior=individualBehavior(g),b=baseScale(pet),w=this.worldWidth||2400,h=this.worldHeight||950;
+   const tx=Math.max(180,Math.min(w-180,pet.x+(Math.random()-.5)*530*behavior.roamScale));
+   const ty=Math.max(430,Math.min(h-135,pet.y+(Math.random()-.5)*230*behavior.roamScale));
+   const duration=(2000+Math.random()*1700)/(profile.pace*behavior.paceScale);
    pet.setFlipX(tx<pet.x);pet.setData?.('v3351MotionState','walking');
    const pulse=this.tweens.add({
      targets:pet,
@@ -280,7 +303,8 @@
      if(!pet.active)return;
      resetDynamicPose(pet);
      idleDynamicGuardian(this,g);
-     this.time.delayedCall(1900+Math.random()*2800,()=>this.v3348Roam(id));
+     const pause=(1900+Math.random()*2800)*behavior.pauseScale;
+     this.time.delayedCall(pause,()=>this.v3348Roam(id));
    }});
    return true;
  };
@@ -356,7 +380,7 @@
  };
  window.MajickSanctuaryRoster={VERSION,stage,canon,inspect(scene){
    const s=scene||window.majickPhaserGame?.scene?.getScene?.('Game');
-   return {roster:report(s),dynamic:Object.keys(s?.v3348Sprites||{}),motion:Object.fromEntries(Object.entries(s?.v3348Sprites||{}).map(([id,p])=>[id,p?.getData?.('v3351MotionState')||'unknown'])),playStyles:Object.fromEntries(Object.entries(s?.v3348Sprites||{}).map(([id,p])=>[id,p?.getData?.('v3352PlayStyle')||''])),sleepStates:Object.fromEntries(Object.entries(s?.v3348Sprites||{}).map(([id,p])=>[id,p?.getData?.('v3353SleepState')||''])),idleStyles:Object.fromEntries(Object.entries(s?.v3348Sprites||{}).map(([id,p])=>[id,p?.getData?.('v3354IdleStyle')||'']))};
+   return {roster:report(s),dynamic:Object.keys(s?.v3348Sprites||{}),motion:Object.fromEntries(Object.entries(s?.v3348Sprites||{}).map(([id,p])=>[id,p?.getData?.('v3351MotionState')||'unknown'])),playStyles:Object.fromEntries(Object.entries(s?.v3348Sprites||{}).map(([id,p])=>[id,p?.getData?.('v3352PlayStyle')||''])),sleepStates:Object.fromEntries(Object.entries(s?.v3348Sprites||{}).map(([id,p])=>[id,p?.getData?.('v3353SleepState')||''])),idleStyles:Object.fromEntries(Object.entries(s?.v3348Sprites||{}).map(([id,p])=>[id,p?.getData?.('v3354IdleStyle')||''])),individualBehavior:Object.fromEntries((roster(s)||[]).map(g=>[g.petId,individualBehavior(g)]))};
  }};
  window.addEventListener('message',ev=>{
    if(ev.origin!==location.origin||ev.data?.type!=='MAJICK_SANCTUARY_ROSTER_REQUEST_V3350')return;
