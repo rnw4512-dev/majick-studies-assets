@@ -595,3 +595,9 @@ Current estimate:
 - Deployment pending at this checkpoint; verify the Pages run and published files before stating live.
 - Protected motion assets/render owner and course-isolated saves untouched. User manual action: none.
 - Next: verify live sorter and feedback; expand spaced review/confidence tracking later.
+
+### Sorter live-navigation repair checkpoint
+- Browser click-through exposed an existing mode-handler scope error (st undefined); fixed in 496547638979d9d8732f9774501c714a8d102f69.
+- Added smoke coverage for the actual bound mode-button callback; all D755 smoke assertions pass.
+- Initial feature and navigation-fix Pages runs passed. Browser retained the earlier script, so the script cache key is now 3340-study-repair-sorter-navfix with matching release gates.
+- Final browser verification must include opening Visual Assessment Sorter, starting a case, selecting four labels and viewing feedback. Final cache-key deployment pending at this checkpoint.
