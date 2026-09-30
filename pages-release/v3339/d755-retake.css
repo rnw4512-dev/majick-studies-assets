@@ -240,3 +240,17 @@
   font-size:10px;
   line-height:1.45;
 }
+
+.d755ClassificationLens em{
+  display:block;
+  margin-top:8px;
+  padding-top:8px;
+  border-top:1px solid rgba(184,151,204,.12);
+  color:#ae9fb4;
+  font:normal 10px/1.45 Arial,sans-serif;
+}
+.d755ClassificationLens em b{
+  display:inline;
+  color:#e6cf9d;
+  font:800 10px Arial,sans-serif;
+}
