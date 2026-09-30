@@ -519,3 +519,7 @@ Added 16 federal IDEA timeline scenarios and 12 behavior/IEP scenarios (158 tota
 
 ## 2026-09-30 — Process guide and review enhancements
 Prior timelines/behavior/comfort deployment 66ee322 passed full Pages workflow and live UI checks. Added timeline comparison table, behavior step guide, readable official links, optional in-drill reminders, saved missed-answer review across D755 exam modes, and resume of unfinished drills. Fixed existing incorrect variable in missed-trap counts, which crashed result completion after wrong answers. New wrong-answer, legacy-result, and resume smoke coverage passed; Golden build and stability verifier passed.
+
+
+## 2026-09-30 — Process practice progress and focused review
+Previous guide/resume/review build 7c2afe3 passed Pages deployment and live UI checks. Added timeline and behavior evidence cards on D755 home/results, using latest per-question answers including mixed practice. New submissions persist bounded per-question evidence. Six-question focused reviews prioritize missed decisions and other practice, and cannot replace paused rounds. Narrow-panel timeline comparisons become labeled stacked cards instead of clipped columns. Process evidence, separation, latest-answer resolution, six-question completion, and paused-round preservation tests passed, along with existing D755 smoke and Golden build verification.

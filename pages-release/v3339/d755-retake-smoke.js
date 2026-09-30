@@ -453,3 +453,30 @@ for(const mode of ['timelineDrill','behaviorDrill','diagnostic','mock']){
  assert(st[mode]===null&&M.shell().includes('Start '),'Completed rounds must offer a fresh start');
 }
 console.log('PAUSED DRILL RESUME PASSED');
+// Latest evidence wins across drills and mixed practice, without crossing topics.
+st=M.state();for(const key of ['timelineDrill','behaviorDrill','diagnostic','mock','assessmentDrill','lawReferralDrill']){delete st[key];delete st[key+'Result'];}
+st.processEvidence={};
+const timelineRows=M.BANK.filter(q=>q.trap==='timeline'),behaviorRows=M.BANK.filter(q=>q.trap==='behavior-process');
+st.diagnosticResult={answers:[{id:timelineRows[0].id,correct:false,at:10},{id:behaviorRows[0].id,correct:false,at:10}]};
+let evidence=M.processEvidence('timelineDrill');
+assert(evidence.practiced===1&&evidence.missedIds[0]===timelineRows[0].id,'Mixed practice did not feed process evidence');
+st.processEvidence[timelineRows[0].id]={id:timelineRows[0].id,correct:true,at:20};
+evidence=M.processEvidence('timelineDrill');assert(evidence.correct===1&&evidence.missedIds.length===0,'A newer correct answer failed to resolve old evidence');
+assert(M.processEvidence('behaviorDrill').missedIds.length===1,'Timeline answer cleared behavior evidence');
+for(let i=1;i<=4;i++)st.processEvidence[timelineRows[i].id]={id:timelineRows[i].id,correct:false,at:20};
+M.startProcessReview('timelineDrill');
+const review=st.timelineDrill;
+assert(review.processReview&&review.ids.length===6&&new Set(review.ids).size===6,'Focused process review must be six unique questions');
+assert(review.ids.filter(id=>M.processEvidence('timelineDrill').missedIds.includes(id)).length===3,'Focused review must include three missed decisions');
+assert(review.ids.every(id=>timelineRows.some(q=>q.id===id)),'Focused review crossed topic pools');
+assert(M.shell().includes('Need a reminder? Open the process guide'),'Focused review lacks teaching support');
+M.startProcessReview('timelineDrill');assert(st.timelineDrill===review,'Focused review overwrote an unfinished round');
+assert(M.processProgressHTML().includes('Continue saved round'),'Saved round recommendation missing');
+const beforeBehavior=st.behaviorDrill;M.startProcessReview('D772');assert(st.behaviorDrill===beforeBehavior,'Unsupported course changed process practice');
+assert(M.processChart('timelineDrill').includes('data-label="Timing"'),'Responsive timing labels missing');
+console.log('PROCESS EVIDENCE AND FOCUSED REVIEW PASSED');
+for(let i=0;i<6;i++){const item=M.BANK.find(q=>q.id===review.ids[i]);review.selected=item.answer;M.examSubmit('timelineDrill');assert(st.processEvidence[item.id].correct,'Submitted answer did not persist process evidence');M.examNext('timelineDrill');}
+assert(st.timelineDrillResult.total===6&&st.timelineDrillResult.score===6,'Focused review result used the full-drill length');
+assert(M.processEvidence('timelineDrill').missedIds.length===1,'Focused review did not repair exactly the three practiced mistakes');
+assert(M.shell().includes('Your next process review'),'Process results lack next practice guidance');
+console.log('FOCUSED REVIEW COMPLETION PASSED');
