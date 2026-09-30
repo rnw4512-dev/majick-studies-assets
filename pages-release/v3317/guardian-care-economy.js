@@ -355,7 +355,7 @@ function performAction(target,action,opts={}){
     const defaults={
       feed:'guardian-food-bowl',
       water:'guardian-water-basin',
-      treat:'guardian-treat-jar',
+      treat:'guardian-food-bowl',
       groom:'guardian-brush',
       play:'guardian-play-rug'
     };
