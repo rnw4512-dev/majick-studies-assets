@@ -202,20 +202,30 @@ assert(Object.keys(M.assessmentEvidence('drill')).length>=4,'Cumulative drill ev
 st=M.state();
 st.mode='home';
 
+const pairEvidenceBefore=Object.values(M.assessmentEvidence('pairs')).reduce((n,row)=>n+Number(row.total||0),0);
 M.startContrastRepair();
 st=M.state();
 assert(st.mode==='contrastRepair','Confusing Pairs Repair did not start');
-assert(st.contrastRepair.ids.length>=8,'Confusing Pairs Repair should include a broad set of binary cases');
+assert(st.contrastRepair.ids.length===12,'Confusing Pairs Repair should include 12 cases across six contrast pairs');
 const repairQs=st.contrastRepair.ids.map(id=>M.BANK.find(q=>q.id===id));
 assert(repairQs.every(q=>M.contrastPairFor(q)),'Confusing Pairs Repair should only use known contrast-pair questions');
-const firstRepair=repairQs[0],firstPair=M.contrastPairFor(firstRepair);
-assert(firstPair.answers.length===2,'Confusing Pairs Repair must use exactly two competing labels');
-M.contrastRepairSelect(firstRepair.answer);
-M.contrastRepairSubmit();
-assert(M.state().contrastRepair.submitted===true,'Confusing Pairs Repair answer did not submit');
-M.contrastRepairNext();
-M.state().contrastRepair=null;
-M.state().mode='home';
+const repairFamilies=new Set(repairQs.map(q=>M.contrastPairFamily(M.contrastPairFor(q).label)));
+assert(repairFamilies.size===6,'Confusing Pairs Repair should cover all six mastery dimensions');
+for(let i=0;i<repairQs.length;i++){
+  const o=M.state().contrastRepair;
+  const q=M.BANK.find(x=>x.id===o.ids[o.index]);
+  M.contrastRepairSelect(q.answer);
+  M.contrastRepairSubmit();
+  assert(M.state().contrastRepair.submitted===true,'Confusing Pairs Repair answer did not submit');
+  M.contrastRepairNext();
+}
+st=M.state();
+assert(st.mode==='contrastRepairResult','Confusing Pairs Repair did not reach results');
+const pairEvidenceAfter=Object.values(M.assessmentEvidence('pairs')).reduce((n,row)=>n+Number(row.total||0),0);
+assert(pairEvidenceAfter===pairEvidenceBefore+12,'Confusing Pairs Repair should add 12 cumulative mastery evidence cases');
+assert(Object.keys(M.assessmentEvidence('pairs')).length===6,'Confusing Pairs Repair mastery evidence should cover all six dimensions');
+assert(/ASSESSMENT TYPE MASTERY LADDER/.test(M.shell()),'Confusing Pairs results should show the mastery ladder');
+st.mode='home';
 
 M.startExam('mock');
 st=M.state();

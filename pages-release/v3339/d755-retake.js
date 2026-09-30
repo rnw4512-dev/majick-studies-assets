@@ -516,14 +516,16 @@ function home(){
 function assessmentEvidence(kind){
  const st=prog(),saved=st?.assessmentTypeEvidence?.[kind]||{};
  if(Object.keys(saved).length)return saved;
- return kind==='drill'?(st?.assessmentDrillResult?.familyStats||{}):(st?.dimensionDetectiveResult?.familyStats||{});
+ if(kind==='drill')return st?.assessmentDrillResult?.familyStats||{};
+ if(kind==='detective')return st?.dimensionDetectiveResult?.familyStats||{};
+ return {};
 }
 function mergeAssessmentEvidence(kind,stats){
  const st=prog();
- st.assessmentTypeEvidence=st.assessmentTypeEvidence||{drill:{},detective:{}};
+ st.assessmentTypeEvidence=st.assessmentTypeEvidence||{drill:{},detective:{},pairs:{}};
  const target=st.assessmentTypeEvidence[kind]||(st.assessmentTypeEvidence[kind]={});
  if(!Object.keys(target).length){
-   const prior=kind==='drill'?(st?.assessmentDrillResult?.familyStats||{}):(st?.dimensionDetectiveResult?.familyStats||{});
+   const prior=kind==='drill'?(st?.assessmentDrillResult?.familyStats||{}):kind==='detective'?(st?.dimensionDetectiveResult?.familyStats||{}):{};
    for(const [label,row] of Object.entries(prior)){
      target[label]={};
      for(const [key,val] of Object.entries(row||{}))if(typeof val==='number')target[label][key]=Number(val||0);
@@ -538,23 +540,24 @@ function mergeAssessmentEvidence(kind,stats){
  return target;
 }
 function assessmentMasteryRows(){
- const drill=assessmentEvidence('drill'),detective=assessmentEvidence('detective');
+ const drill=assessmentEvidence('drill'),detective=assessmentEvidence('detective'),pairs=assessmentEvidence('pairs');
  return ASSESSMENT_DIMENSIONS.map(label=>{
-   const d=drill[label]||{},x=detective[label]||{};
+   const d=drill[label]||{},x=detective[label]||{},p=pairs[label]||{};
    const drillCorrect=Number(d.correct||0),drillTotal=Number(d.total||0);
    const dimCorrect=Number(x.dimensionCorrect||0),classCorrect=Number(x.classificationCorrect||0),detectiveTotal=Number(x.total||0);
-   const earned=drillCorrect+dimCorrect+classCorrect;
-   const possible=drillTotal+(detectiveTotal*2);
+   const pairCorrect=Number(p.correct||0),pairTotal=Number(p.total||0);
+   const earned=drillCorrect+dimCorrect+classCorrect+pairCorrect;
+   const possible=drillTotal+(detectiveTotal*2)+pairTotal;
    const pct=possible?Math.round(earned/possible*100):0;
    const status=!possible?'Not practiced':pct>=85?'Mastered':pct>=70?'Developing':'Needs practice';
-   return {label,pct,status,possible,drillTotal,detectiveTotal};
+   return {label,pct,status,possible,drillTotal,detectiveTotal,pairTotal};
  });
 }
 function assessmentMasteryHTML(){
  const rows=assessmentMasteryRows(),practiced=rows.filter(x=>x.possible>0),mastered=rows.filter(x=>x.status==='Mastered').length;
  return '<section class="d755AssessmentMastery"><header><div><small>ASSESSMENT TYPE MASTERY LADDER</small><h3>'+mastered+' / '+rows.length+' dimensions mastered</h3></div><span>'+Math.round(mastered/rows.length*100)+'%</span></header>'+
-  '<div class="d755MasteryRows">'+rows.map(row=>'<article class="'+row.status.toLowerCase().replace(/\s+/g,'-')+'"><div><b>'+E(row.label)+'</b><span>'+E(row.status)+'</span><em>'+(row.possible?row.pct+'%':'—')+'</em></div><i><u style="width:'+(row.possible?row.pct:0)+'%"></u></i><small>'+(row.possible?'Evidence from '+row.drillTotal+' drill item'+(row.drillTotal===1?'':'s')+' and '+row.detectiveTotal+' detective case'+(row.detectiveTotal===1?'':'s'):'Complete the drill or Detective to begin this row.')+'</small><button type="button" data-d755-focus-family="'+E(row.label)+'">Practice this type →</button></article>').join('')+'</div>'+
-  (practiced.length?'<p>Mastery combines <b>classification accuracy</b> with your ability to identify the <b>dimension the stem is asking about</b>.</p>':'<p>Complete the Assessment Type Drill or Assessment Dimension Detective to start building mastery evidence.</p>')+
+  '<div class="d755MasteryRows">'+rows.map(row=>'<article class="'+row.status.toLowerCase().replace(/\s+/g,'-')+'"><div><b>'+E(row.label)+'</b><span>'+E(row.status)+'</span><em>'+(row.possible?row.pct+'%':'—')+'</em></div><i><u style="width:'+(row.possible?row.pct:0)+'%"></u></i><small>'+(row.possible?'Evidence from '+row.drillTotal+' drill item'+(row.drillTotal===1?'':'s')+', '+row.detectiveTotal+' detective case'+(row.detectiveTotal===1?'':'s')+', and '+row.pairTotal+' pair-repair case'+(row.pairTotal===1?'':'s'):'Complete the drill or Detective to begin this row.')+'</small><button type="button" data-d755-focus-family="'+E(row.label)+'">Practice this type →</button></article>').join('')+'</div>'+
+  (practiced.length?'<p>Mastery combines <b>classification accuracy</b>, <b>dimension recognition</b>, and your ability to separate <b>confusing pairs</b>.</p>':'<p>Complete the Assessment Type Drill or Assessment Dimension Detective to start building mastery evidence.</p>')+
  '</section>';
 }
 function weakestAssessmentFamilies(){
@@ -700,10 +703,22 @@ const ASSESSMENT_CONTRAST_PAIRS=[
  {label:'Formal vs Informal',answers:['Formal assessment','Informal assessment']},
  {label:'Formative vs Summative',answers:['Formative assessment','Summative assessment']},
  {label:'Norm vs Criterion',answers:['Norm-referenced','Criterion-referenced']},
- {label:'Screening vs Progress Monitoring',answers:['Universal screening','Progress monitoring']}
+ {label:'Screening vs Progress Monitoring',answers:['Universal screening','Progress monitoring']},
+ {label:'Direct Observation vs Anecdotal Record',answers:['Direct observation','Anecdotal record']}
 ];
 function contrastPairFor(q){
  return ASSESSMENT_CONTRAST_PAIRS.find(p=>p.answers.includes(q?.answer))||null;
+}
+function contrastPairFamily(label){
+ const map={
+  'Qualitative vs Quantitative':'Data type',
+  'Formal vs Informal':'Administration',
+  'Formative vs Summative':'Purpose',
+  'Norm vs Criterion':'Comparison / CBM',
+  'Screening vs Progress Monitoring':'Screening / monitoring',
+  'Direct Observation vs Anecdotal Record':'Assessment tools'
+ };
+ return map[label]||'Other';
 }
 function startContrastRepair(){
  const st=prog(),pool=BANK.filter(q=>q.section===1&&q.trap==='assessment-type'&&contrastPairFor(q));
@@ -712,7 +727,7 @@ function startContrastRepair(){
    const rows=shuffle(pool.filter(q=>contrastPairFor(q)?.label===pair.label)).slice(0,2);
    picked.push(...rows);
  }
- const qs=shuffle(picked).slice(0,10);
+ const qs=shuffle(picked).slice(0,12);
  st.contrastRepair={index:0,ids:qs.map(q=>q.id),selected:null,submitted:false,answers:[],startedAt:Date.now()};
  st.mode='contrastRepair';save();render();
 }
@@ -740,18 +755,23 @@ function contrastRepairNext(){
    o.index++;o.selected=null;o.submitted=false;save();render();return;
  }
  const total=qs.length,score=o.answers.filter(x=>x.correct).length;
- const pairStats={};
+ const pairStats={},familyStats={};
  for(const a of o.answers){
    pairStats[a.pair]=pairStats[a.pair]||{correct:0,total:0};
    pairStats[a.pair].total++;
    if(a.correct)pairStats[a.pair].correct++;
+   const family=contrastPairFamily(a.pair);
+   familyStats[family]=familyStats[family]||{correct:0,total:0};
+   familyStats[family].total++;
+   if(a.correct)familyStats[family].correct++;
  }
- st.contrastRepairResult={score,total,pct:total?Math.round(score/total*100):0,pairStats,at:Date.now()};
+ mergeAssessmentEvidence('pairs',familyStats);
+ st.contrastRepairResult={score,total,pct:total?Math.round(score/total*100):0,pairStats,familyStats,at:Date.now()};
  st.mode='contrastRepairResult';save();render();
 }
 function contrastRepairView(){
  const st=prog(),o=st.contrastRepair;
- if(!o)return '<section class="d755ExamIntro d755ContrastIntro"><small>CONFUSING PAIRS REPAIR</small><h1>Practice the two labels that look almost right.</h1><p>Each case removes extra distractors so you can focus on the exact distinction: qualitative/quantitative, formal/informal, formative/summative, norm/criterion, or screening/progress monitoring.</p><button class="btn primary" data-d755-start-contrast>Start 10-Case Repair</button></section>';
+ if(!o)return '<section class="d755ExamIntro d755ContrastIntro"><small>CONFUSING PAIRS REPAIR</small><h1>Practice the two labels that look almost right.</h1><p>Each case removes extra distractors so you can focus on the exact distinction: qualitative/quantitative, formal/informal, formative/summative, norm/criterion, or screening/progress monitoring.</p><button class="btn primary" data-d755-start-contrast>Start 12-Case Repair</button></section>';
  const qs=contrastRepairQuestions(o),q=qs[o.index];if(!q)return '<div class="d755Empty">Contrast-repair question set unavailable.</div>';
  const pair=contrastPairFor(q),correct=o.selected===q.answer;
  return '<section class="d755Exam d755ContrastRepair"><header><div><small>CONFUSING PAIRS REPAIR</small><h2>'+E(pair?.label||'Assessment contrast')+'</h2></div><span>'+(o.index+1)+' / '+qs.length+'</span></header><article>'+
@@ -763,7 +783,7 @@ function contrastRepairView(){
 }
 function contrastRepairResultView(){
  const st=prog(),r=st.contrastRepairResult;if(!r)return contrastRepairView();
- return '<section class="d755Result d755ContrastResult"><small>CONFUSING PAIRS REPAIR • RESULTS</small><h1>'+r.score+' / '+r.total+'</h1><div class="score">'+r.pct+'%</div><div class="d755AssessmentBreakdown">'+Object.entries(r.pairStats||{}).map(([label,row])=>{const pct=row.total?Math.round(row.correct/row.total*100):0;return '<article><div><b>'+E(label)+'</b><span>'+row.correct+'/'+row.total+' • '+pct+'%</span></div><i><em style="width:'+pct+'%"></em></i></article>'}).join('')+'</div><div class="resultActions"><button class="btn primary" data-d755-start-contrast>Try new pairs</button><button class="btn ghost" data-d755-mode="assessmentDrill">Assessment Type Drill</button><button class="btn ghost" data-d755-home>Retake Studio Home</button></div></section>';
+ return '<section class="d755Result d755ContrastResult"><small>CONFUSING PAIRS REPAIR • RESULTS</small><h1>'+r.score+' / '+r.total+'</h1><div class="score">'+r.pct+'%</div><div class="d755AssessmentBreakdown">'+Object.entries(r.pairStats||{}).map(([label,row])=>{const pct=row.total?Math.round(row.correct/row.total*100):0;return '<article><div><b>'+E(label)+'</b><span>'+row.correct+'/'+row.total+' • '+pct+'%</span></div><i><em style="width:'+pct+'%"></em></i></article>'}).join('')+'</div>'+assessmentMasteryHTML()+'<div class="resultActions"><button class="btn primary" data-d755-start-contrast>Try new pairs</button><button class="btn ghost" data-d755-mode="assessmentDrill">Assessment Type Drill</button><button class="btn ghost" data-d755-home>Retake Studio Home</button></div></section>';
 }
 function startDimensionDetective(){
  const st=prog(),pool=shuffle(BANK.filter(q=>q.section===1&&q.trap==='assessment-type'));
@@ -1008,6 +1028,6 @@ if(typeof oldBind==='function'){
  };
 }
 ensureBank();
-window.MajickD755Retake={VERSION,COURSE,SECTIONS,TRAPS,BANK,ensureBank,show,render,shell,state:prog,current,startExam,examSubmit,examNext,assessmentFamily,assessmentEvidence,assessmentMasteryRows,startAssessmentFamilyPractice,contrastPairFor,startContrastRepair,contrastRepairSelect,contrastRepairSubmit,contrastRepairNext,startDimensionDetective,detectiveChooseDimension,detectiveSubmitDimension,detectiveChooseAnswer,detectiveSubmitAnswer,detectiveNext,startSectionCheck,checkSubmit,checkNext,anchorsView,grimoireWall,teacherVisual};
+window.MajickD755Retake={VERSION,COURSE,SECTIONS,TRAPS,BANK,ensureBank,show,render,shell,state:prog,current,startExam,examSubmit,examNext,assessmentFamily,assessmentEvidence,assessmentMasteryRows,startAssessmentFamilyPractice,contrastPairFor,contrastPairFamily,startContrastRepair,contrastRepairSelect,contrastRepairSubmit,contrastRepairNext,startDimensionDetective,detectiveChooseDimension,detectiveSubmitDimension,detectiveChooseAnswer,detectiveSubmitAnswer,detectiveNext,startSectionCheck,checkSubmit,checkNext,anchorsView,grimoireWall,teacherVisual};
 document.documentElement.dataset.majickD755Retake=VERSION;
 })();
