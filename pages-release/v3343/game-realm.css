@@ -333,3 +333,50 @@
   .realmConstellationFinale.show{opacity:1;transform:none}
   .realmStarCard:hover,.realmStarCard:focus-visible{transform:none}
 }
+
+/* V3.3.57 in-trial progress meters */
+.realmRunProgress{
+  margin:0 0 12px;
+  padding:10px 12px;
+  border:1px solid rgba(183,151,205,.15);
+  border-radius:13px;
+  background:rgba(18,12,25,.78);
+}
+.realmRunProgress>div:first-child{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+  margin-bottom:7px;
+}
+.realmRunProgress small{
+  color:#a990b7;
+  font:900 8px Arial,sans-serif;
+  letter-spacing:.13em;
+  text-transform:uppercase;
+}
+.realmRunProgress b{
+  color:#f6e8c1;
+  font:900 11px Arial,sans-serif;
+}
+.realmRunProgressBar{
+  height:7px;
+  border-radius:999px;
+  overflow:hidden;
+  background:#24172d;
+  border:1px solid rgba(255,255,255,.04);
+}
+.realmRunProgressBar i{
+  display:block;
+  height:100%;
+  border-radius:999px;
+  background:linear-gradient(90deg,#7d5daa,#b989d3,#ddbc77);
+  box-shadow:0 0 14px rgba(190,147,221,.18);
+  transition:width .28s ease;
+}
+.realmRuneSort .realmRunProgressBar i{background:linear-gradient(90deg,#3b8199,#77b7c9)}
+.realmOracle .realmRunProgressBar i{background:linear-gradient(90deg,#6950a7,#a98ddb)}
+.realmConstellation .realmRunProgressBar i{background:linear-gradient(90deg,#5f6eaf,#b8a7f0)}
+.realmHexBreaker .realmRunProgressBar i{background:linear-gradient(90deg,#8f456c,#d07ba4)}
+.realmGauntlet .realmRunProgressBar i{background:linear-gradient(90deg,#9b5e6d,#d59a64)}
+@media(prefers-reduced-motion:reduce){.realmRunProgressBar i{transition:none!important}}
