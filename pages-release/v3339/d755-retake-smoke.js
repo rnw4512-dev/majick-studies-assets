@@ -132,7 +132,8 @@ st=M.state();
 assert(st.mode==='assessmentDrillResult','Assessment Type Drill did not reach result state');
 assert(st.assessmentDrillResult.score===12&&st.assessmentDrillResult.total===12,'Assessment Type Drill score/result incorrect');
 assert(Object.keys(st.assessmentDrillResult.familyStats||{}).length>=3,'Assessment Type Drill category breakdown missing');
-st.assessmentDrillResult.familyStats={
+st.assessmentTypeEvidence=st.assessmentTypeEvidence||{drill:{},detective:{}};
+st.assessmentTypeEvidence.drill={
   'Purpose':{correct:0,total:3},
   'Administration':{correct:1,total:3},
   'Data type':{correct:3,total:3},
@@ -181,13 +182,24 @@ const masteryRows=M.assessmentMasteryRows();
 assert(masteryRows.length===6,'Assessment Type Mastery Ladder must contain all six dimensions');
 assert(masteryRows.some(x=>x.possible>0),'Assessment Type Mastery Ladder should include accumulated evidence');
 assert(masteryRows.every(x=>['Mastered','Developing','Needs practice','Not practiced'].includes(x.status)),'Assessment Type Mastery Ladder status invalid');
+const purposeBefore=Number(M.assessmentEvidence('drill').Purpose?.total||0);
 M.startAssessmentFamilyPractice('Purpose');
 st=M.state();
 assert(st.mode==='assessmentDrill','Focused mastery practice should use Assessment Type Drill mode');
 assert(st.assessmentDrill.focusedFamily==='Purpose','Focused mastery practice should remember its selected family');
 const focusQs=st.assessmentDrill.ids.map(id=>M.BANK.find(q=>q.id===id));
 assert(focusQs.length>0&&focusQs.every(q=>M.assessmentFamily(q)==='Purpose'),'Focused mastery practice should contain only the selected assessment family');
-st.assessmentDrill=null;
+for(let i=0;i<focusQs.length;i++){
+  const o=M.state().assessmentDrill;
+  const q=M.BANK.find(x=>x.id===o.ids[o.index]);
+  o.selected=q.answer;
+  M.examSubmit('assessmentDrill');
+  M.examNext('assessmentDrill');
+}
+const purposeAfter=Number(M.assessmentEvidence('drill').Purpose?.total||0);
+assert(purposeAfter===purposeBefore+focusQs.length,'Focused practice should add to cumulative Purpose evidence instead of replacing it');
+assert(Object.keys(M.assessmentEvidence('drill')).length>=4,'Cumulative drill evidence should preserve previously practiced assessment dimensions');
+st=M.state();
 st.mode='home';
 
 M.startContrastRepair();

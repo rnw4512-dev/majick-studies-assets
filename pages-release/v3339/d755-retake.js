@@ -513,8 +513,32 @@ function home(){
  const diag=st.diagnosticResult;
  return '<section class="d755Home"><small>D755 • TEACHER-FOCUS RETAKE STUDIO</small><h1>Assessment for Special Education</h1><p>This retake course now follows your instructor’s OA review and Student Journey process: interpret data, identify the student’s stage, choose the next educational decision, and explain why. Vocabulary is tested inside decisions—not by itself.</p><div class="d755HomeStats"><div><b>'+done+' / '+total+'</b><span>concepts completed</span></div><div><b>'+Object.keys(st.anchors).length+'</b><span>anchor charts unlocked</span></div><div><b>'+(diag?diag.score+'/'+diag.total:'—')+'</b><span>diagnostic</span></div></div>'+assessmentMasteryHTML()+'<div class="d755CourseCycle"><span>Collect evidence</span><i>→</i><span>Interpret patterns</span><i>→</i><span>Individualize</span><i>→</i><span>Intervene</span><i>→</i><span>Monitor</span><i>→</i><span>Communicate</span></div><div class="d755HomeActions"><button class="btn primary" data-d755-section="'+st.sectionId+'">Continue Learning</button><button class="btn ghost" data-d755-mode="diagnostic">Start / Retake Diagnostic</button><button class="btn ghost" data-d755-mode="assessmentDrill">Assessment Type Drill</button><button class="btn ghost" data-d755-mode="dimensionDetective">Assessment Dimension Detective</button><button class="btn ghost" data-d755-mode="contrastRepair">Confusing Pairs Repair</button><button class="btn ghost" data-d755-mode="mock">Mock OA</button></div><div class="d755SectionCards">'+SECTIONS.map(s=>'<button data-d755-section="'+s.id+'"><span>SECTION '+s.number+'</span><b>'+E(s.title)+'</b><small>'+E(s.bigIdea)+'</small></button>').join('')+'</div></section>';
 }
+function assessmentEvidence(kind){
+ const st=prog(),saved=st?.assessmentTypeEvidence?.[kind]||{};
+ if(Object.keys(saved).length)return saved;
+ return kind==='drill'?(st?.assessmentDrillResult?.familyStats||{}):(st?.dimensionDetectiveResult?.familyStats||{});
+}
+function mergeAssessmentEvidence(kind,stats){
+ const st=prog();
+ st.assessmentTypeEvidence=st.assessmentTypeEvidence||{drill:{},detective:{}};
+ const target=st.assessmentTypeEvidence[kind]||(st.assessmentTypeEvidence[kind]={});
+ if(!Object.keys(target).length){
+   const prior=kind==='drill'?(st?.assessmentDrillResult?.familyStats||{}):(st?.dimensionDetectiveResult?.familyStats||{});
+   for(const [label,row] of Object.entries(prior)){
+     target[label]={};
+     for(const [key,val] of Object.entries(row||{}))if(typeof val==='number')target[label][key]=Number(val||0);
+   }
+ }
+ for(const [label,row] of Object.entries(stats||{})){
+   target[label]=target[label]||{};
+   for(const [key,val] of Object.entries(row||{})){
+     if(typeof val==='number')target[label][key]=Number(target[label][key]||0)+Number(val||0);
+   }
+ }
+ return target;
+}
 function assessmentMasteryRows(){
- const st=prog(),drill=st?.assessmentDrillResult?.familyStats||{},detective=st?.dimensionDetectiveResult?.familyStats||{};
+ const drill=assessmentEvidence('drill'),detective=assessmentEvidence('detective');
  return ASSESSMENT_DIMENSIONS.map(label=>{
    const d=drill[label]||{},x=detective[label]||{};
    const drillCorrect=Number(d.correct||0),drillTotal=Number(d.total||0);
@@ -534,7 +558,7 @@ function assessmentMasteryHTML(){
  '</section>';
 }
 function weakestAssessmentFamilies(){
- const stats=prog()?.assessmentDrillResult?.familyStats||{};
+ const stats=assessmentEvidence('drill');
  return Object.entries(stats)
   .filter(([,row])=>Number(row?.total||0)>0)
   .map(([label,row])=>({label,pct:Number(row.correct||0)/Number(row.total||1)}))
@@ -641,6 +665,7 @@ function examNext(mode){
      if(a.correct)familyStats[family].correct++;
    }
  }
+ if(mode==='assessmentDrill')mergeAssessmentEvidence('drill',familyStats);
  const result={score,total,pct:total?Math.round(score/total*100):0,bySection,trapCounts,familyStats,focusedFamily:o.focusedFamily||'',at:Date.now(),status:score/total>=.85?'Ready for final review':score/total>=.7?'Targeted repair needed':'Needs another teaching pass'};
  st[mode+'Result']=result;st.mode=mode+'Result';save();render();
 }
@@ -811,6 +836,7 @@ function detectiveNext(){
    if(a.dimensionCorrect)familyStats[a.dimension].dimensionCorrect++;
    if(a.correct)familyStats[a.dimension].classificationCorrect++;
  }
+ mergeAssessmentEvidence('detective',familyStats);
  st.dimensionDetectiveResult={
    total,dimensionScore,classificationScore,familyStats,at:Date.now()
  };
@@ -982,6 +1008,6 @@ if(typeof oldBind==='function'){
  };
 }
 ensureBank();
-window.MajickD755Retake={VERSION,COURSE,SECTIONS,TRAPS,BANK,ensureBank,show,render,shell,state:prog,current,startExam,examSubmit,examNext,assessmentFamily,assessmentMasteryRows,startAssessmentFamilyPractice,contrastPairFor,startContrastRepair,contrastRepairSelect,contrastRepairSubmit,contrastRepairNext,startDimensionDetective,detectiveChooseDimension,detectiveSubmitDimension,detectiveChooseAnswer,detectiveSubmitAnswer,detectiveNext,startSectionCheck,checkSubmit,checkNext,anchorsView,grimoireWall,teacherVisual};
+window.MajickD755Retake={VERSION,COURSE,SECTIONS,TRAPS,BANK,ensureBank,show,render,shell,state:prog,current,startExam,examSubmit,examNext,assessmentFamily,assessmentEvidence,assessmentMasteryRows,startAssessmentFamilyPractice,contrastPairFor,startContrastRepair,contrastRepairSelect,contrastRepairSubmit,contrastRepairNext,startDimensionDetective,detectiveChooseDimension,detectiveSubmitDimension,detectiveChooseAnswer,detectiveSubmitAnswer,detectiveNext,startSectionCheck,checkSubmit,checkNext,anchorsView,grimoireWall,teacherVisual};
 document.documentElement.dataset.majickD755Retake=VERSION;
 })();
