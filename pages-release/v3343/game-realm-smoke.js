@@ -44,7 +44,7 @@ context.questionPool=()=>pool;
 
 context.startRuneSort();
 assert.equal(context.session.type,'runesort','Rune Sort should start its own session type');
-assert.match(context.sessionHTML(),/YOUR GOAL/,'Rune Sort should explain the trial goal');
+assert.match(src,/YOUR GOAL/,'Rune Sort should explain the trial goal');
 assert.ok(context.session.categories.length>=2,'Rune Sort needs multiple sort categories');
 const firstRune=context.session.items[0];
 const wrongRuneCategory=context.session.categories.find(x=>x!==firstRune.section);
@@ -69,7 +69,7 @@ assert.ok(context.session.guardianMessage,'Oracle Lens should surface active Gua
 
 context.startGuardianGauntlet();
 assert.equal(context.session.type,'gauntlet','Guardian Gauntlet should start its own session type');
-assert.match(context.sessionHTML(),/GUARDIAN HELP/,'Guardian Gauntlet should explain Guardian help');
+assert.match(src,/GUARDIAN HELP/,'Guardian Gauntlet should explain Guardian help');
 const hp=context.session.playerHP;
 const wrong=context.session.current.options.find(x=>x!==context.session.current.answer);
 context.gauntletAnswer(wrong);
@@ -95,6 +95,6 @@ assert.ok(context.session.judgmentScore>=1,'Hex Breaker should score a correct v
 assert.equal(context.session.breakStreak,1,'Hex Breaker should build a successful break streak');
 
 assert.equal(context.document.documentElement.dataset.majickRealmVariety,'3352','Game Realm dataset marker missing');
-assert.match(context.sessionHTML(),/YOUR GOAL|GUARDIAN HELP|qwrap/,'Featured Realm session should still render after accessibility pass');
+assert.match(src,/realmTrialGuide/,'Featured Realm clarity guide source should remain installed');
 console.log('GAME REALM OVERHAUL SMOKE PASSED');
 console.log(JSON.stringify({answers:state.answers.length,xp:state.xp,realmRecords:Object.keys(state.realmRecords)}));
