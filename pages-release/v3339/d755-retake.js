@@ -800,8 +800,15 @@ function sampleQuestions(count,mode){
  }
  const per=mode==='diagnostic'?[10,10,10]:[14,13,13];
  const assessFocus=shuffle(assessmentPool).slice(0,mode==='diagnostic'?6:8);
- const lawFocus=shuffle(BANK.filter(q=>q.trap==='law-case')).slice(0,mode==='diagnostic'?3:4);
- const processFocus=shuffle(BANK.filter(q=>q.trap==='process-order'&&q.id.includes('referral_'))).slice(0,mode==='diagnostic'?4:5);
+ const laws=BANK.filter(q=>q.trap==='law-case');
+ const referrals=BANK.filter(q=>q.trap==='process-order'&&q.id.includes('referral_'));
+ const pick=(rows,section,n)=>shuffle(rows.filter(q=>q.section===section)).slice(0,n);
+ const lawFocus=mode==='diagnostic'
+   ?[...pick(laws,1,1),...pick(laws,2,2)]
+   :[...pick(laws,1,2),...pick(laws,2,2)];
+ const processFocus=mode==='diagnostic'
+   ?[...pick(referrals,1,1),...pick(referrals,2,1),...pick(referrals,3,2)]
+   :[...pick(referrals,1,1),...pick(referrals,2,2),...pick(referrals,3,2)];
  const focus=[...assessFocus,...lawFocus,...processFocus];
  const focusIds=new Set(focus.map(q=>q.id));
  let out=[...focus];
