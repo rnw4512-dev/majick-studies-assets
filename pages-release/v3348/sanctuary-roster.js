@@ -169,6 +169,33 @@
      });
    }catch(_){}
  }
+ function careVisualBurst(scene,pet,action,result={}){
+   if(!pet?.active)return null;
+   const cfg={
+     feed:{glyph:'✦',sub:'meal',color:'#f2c47f'},
+     water:{glyph:'◌',sub:'water',color:'#9edcf3'},
+     treat:{glyph:'☆',sub:'treat',color:'#ffe7a6'},
+     groom:{glyph:'✧',sub:'shine',color:'#e8c9ff'},
+     affection:{glyph:'♡',sub:'bond',color:'#f3bfd7'}
+   }[action];
+   if(!cfg)return null;
+   try{
+     const host=scene.add?.container?.(pet.x,pet.y-112)?.setDepth?.(512);
+     if(!host)return null;
+     const main=scene.add.text(0,0,cfg.glyph,{fontFamily:'Georgia',fontSize:'34px',color:cfg.color,stroke:'#21102d',strokeThickness:4}).setOrigin(.5);
+     const label=scene.add.text(0,30,cfg.sub.toUpperCase(),{fontFamily:'Arial',fontSize:'9px',fontStyle:'bold',color:'#f4ecf7',backgroundColor:'#2a1938',padding:{x:5,y:2}}).setOrigin(.5);
+     host.add?.([main,label]);
+     const extras=[];
+     for(let i=0;i<3;i++){
+       const glyph=scene.add.text((i-1)*22,12+(i%2)*8,i===1?cfg.glyph:'✦',{fontFamily:'Georgia',fontSize:i===1?'16px':'12px',color:cfg.color}).setOrigin(.5);
+       host.add?.(glyph);extras.push(glyph);
+       scene.tweens.add({targets:glyph,y:glyph.y-42-(i*8),x:glyph.x+(i-1)*10,alpha:0,duration:700+i*110,ease:'Sine.out'});
+     }
+     scene.tweens.add({targets:host,y:host.y-34,alpha:0,duration:1350,ease:'Sine.out',onComplete:()=>host.destroy?.()});
+     if(action==='affection'||action==='treat')scene.createSparkles?.(pet.x,pet.y-105,action==='affection'?18:12);
+     return host;
+   }catch(_){return null}
+ }
  function actionDynamicGuardian(scene,g,action='care'){
    const pet=scene.v3348Sprites?.[g.petId];if(!pet?.active)return false;
    const b=baseScale(pet);
@@ -201,6 +228,14 @@
      }else{
        scene.tweens.add({targets:pet,y:pet.y-34,angle:pet.flipX?-7:7,scaleX:b.sx*1.04,scaleY:b.sy*.96,duration:280,yoyo:true,repeat:2,ease:'Quad.out',onComplete:()=>resetDynamicPose(pet)});
      }
+   }else if(action==='feed'){
+     scene.tweens.add({targets:pet,y:pet.y+10,angle:pet.flipX?4:-4,scaleY:b.sy*.93,scaleX:b.sx*1.03,duration:240,yoyo:true,repeat:2,ease:'Sine.inOut',onComplete:()=>resetDynamicPose(pet)});
+   }else if(action==='water'){
+     scene.tweens.add({targets:pet,y:pet.y+8,angle:pet.flipX?3:-3,scaleY:b.sy*.95,duration:210,yoyo:true,repeat:3,ease:'Sine.inOut',onComplete:()=>resetDynamicPose(pet)});
+   }else if(action==='treat'){
+     scene.tweens.add({targets:pet,y:pet.y-38,scaleX:b.sx*1.06,scaleY:b.sy*.94,angle:pet.flipX?-6:6,duration:220,yoyo:true,repeat:2,ease:'Quad.out',onComplete:()=>resetDynamicPose(pet)});
+   }else if(action==='groom'){
+     scene.tweens.add({targets:pet,x:pet.x+(pet.flipX?-8:8),angle:pet.flipX?-5:5,scaleX:b.sx*1.025,scaleY:b.sy*1.015,duration:360,yoyo:true,repeat:2,ease:'Sine.inOut',onComplete:()=>resetDynamicPose(pet)});
    }else if(action==='affection'){
      scene.tweens.add({targets:pet,y:pet.y-22,scaleX:b.sx*1.05,scaleY:b.sy*1.05,duration:330,yoyo:true,ease:'Sine.inOut',onComplete:()=>resetDynamicPose(pet)});
    }else{
@@ -319,9 +354,11 @@
      }
      else if(g)actionDynamicGuardian(this,g,result.action||'care');
    }
-   if(result?.ok===false||result?.action!=='play')return response;
+   if(result?.ok===false)return response;
    const pet=this.v3348PetById?.[result.guardianId]||this[result.guardianType];if(!pet?.active)return response;
    const g=roster(this).find(x=>x.petId===result.guardianId);
+   if(['feed','water','treat','groom','affection'].includes(result.action))careVisualBurst(this,pet,result.action,result);
+   if(result?.action!=='play')return response;
    const glyph=TOYS[result.itemId]||'✦';
    const toy=this.add.text(pet.x,pet.y-110,glyph,{fontFamily:'Georgia',fontSize:'44px',color:'#ffe5ad',stroke:'#21102d',strokeThickness:4}).setOrigin(.5).setDepth(505);
    favoritePlayBurst(this,pet,g||{type:result.guardianType},result);
@@ -380,7 +417,7 @@
  };
  window.MajickSanctuaryRoster={VERSION,stage,canon,inspect(scene){
    const s=scene||window.majickPhaserGame?.scene?.getScene?.('Game');
-   return {roster:report(s),dynamic:Object.keys(s?.v3348Sprites||{}),motion:Object.fromEntries(Object.entries(s?.v3348Sprites||{}).map(([id,p])=>[id,p?.getData?.('v3351MotionState')||'unknown'])),playStyles:Object.fromEntries(Object.entries(s?.v3348Sprites||{}).map(([id,p])=>[id,p?.getData?.('v3352PlayStyle')||''])),sleepStates:Object.fromEntries(Object.entries(s?.v3348Sprites||{}).map(([id,p])=>[id,p?.getData?.('v3353SleepState')||''])),idleStyles:Object.fromEntries(Object.entries(s?.v3348Sprites||{}).map(([id,p])=>[id,p?.getData?.('v3354IdleStyle')||''])),individualBehavior:Object.fromEntries((roster(s)||[]).map(g=>[g.petId,individualBehavior(g)]))};
+   return {roster:report(s),dynamic:Object.keys(s?.v3348Sprites||{}),motion:Object.fromEntries(Object.entries(s?.v3348Sprites||{}).map(([id,p])=>[id,p?.getData?.('v3351MotionState')||'unknown'])),playStyles:Object.fromEntries(Object.entries(s?.v3348Sprites||{}).map(([id,p])=>[id,p?.getData?.('v3352PlayStyle')||''])),sleepStates:Object.fromEntries(Object.entries(s?.v3348Sprites||{}).map(([id,p])=>[id,p?.getData?.('v3353SleepState')||''])),idleStyles:Object.fromEntries(Object.entries(s?.v3348Sprites||{}).map(([id,p])=>[id,p?.getData?.('v3354IdleStyle')||''])),individualBehavior:Object.fromEntries((roster(s)||[]).map(g=>[g.petId,individualBehavior(g)])),careVisualActions:['feed','water','treat','groom','affection']};
  }};
  window.addEventListener('message',ev=>{
    if(ev.origin!==location.origin||ev.data?.type!=='MAJICK_SANCTUARY_ROSTER_REQUEST_V3350')return;

@@ -302,7 +302,7 @@ jobs:
           grep -q 'living-collegium.css?v=3346' _site/index.html
           grep -q 'collegium-atmosphere.js?v=3350-room' _site/index.html
           grep -q 'collegium-atmosphere.css?v=3348-roster' _site/index.html
-          grep -q 'sanctuary-roster.js?v=3355-individual' _site/sanctuary/index.html
+          grep -q 'sanctuary-roster.js?v=3356-carevisual' _site/sanctuary/index.html
           grep -q 'v3351MotionState' _site/sanctuary/sanctuary-roster.js
           grep -q 'idleDynamicGuardian' _site/sanctuary/sanctuary-roster.js
           grep -q 'actionDynamicGuardian' _site/sanctuary/sanctuary-roster.js
@@ -311,6 +311,8 @@ jobs:
           grep -q 'sleepAura' _site/sanctuary/sanctuary-roster.js
           grep -q 'wakeDynamicGuardian' _site/sanctuary/sanctuary-roster.js
           grep -q 'v3354IdleStyle' _site/sanctuary/sanctuary-roster.js
+          grep -q 'careVisualBurst' _site/sanctuary/sanctuary-roster.js
+          grep -q "careVisualActions:\['feed','water','treat','groom','affection'\]" _site/sanctuary/sanctuary-roster.js
           grep -q 'idleStyle' _site/sanctuary/sanctuary-roster.js
           grep -q 'v3355IndividualBehavior' _site/sanctuary/sanctuary-roster.js
           grep -q 'individualBehavior' _site/sanctuary/sanctuary-roster.js
@@ -707,7 +709,7 @@ jobs:
                       'Living Collegium cache key': 'living-collegium.js?v=3346' in index,
                       'Living Collegium version': "VERSION='3.3.46'" in living,
                       'Collegium atmosphere cache key': 'collegium-atmosphere.js?v=3350-room' in index,
-                      'Sanctuary roster cache key': 'sanctuary-roster.js?v=3355-individual' in san_index,
+                      'Sanctuary roster cache key': 'sanctuary-roster.js?v=3356-carevisual' in san_index,
                       'Sanctuary audit cache key': 'sanctuary-audit.js?v=3350' in index,
                   }
                   last=checks

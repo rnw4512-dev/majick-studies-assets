@@ -151,7 +151,7 @@ if 'sanctuary-alive.js?v=3349-moments' not in san:
 roster=(site/'sanctuary'/'sanctuary-roster.js').read_text(encoding='utf-8')
 for marker in ("v3351MotionState","idleDynamicGuardian","actionDynamicGuardian","walking-to-care","playStyle","favoritePlayBurst","sleepAura","wakeDynamicGuardian","v3353SleepState","v3354IdleStyle","idleStyle","v3355IndividualBehavior","individualBehavior"):
     if marker not in roster: fail('dynamic Guardian motion missing '+marker)
-if 'sanctuary-roster.js?v=3355-individual' not in san:
+if 'sanctuary-roster.js?v=3356-carevisual' not in san:
     fail('dynamic Sanctuary roster motion asset is not cache-busted')
 if san.find('sanctuary-alive.js')>san.find('sanctuary-roster.js'): fail('Sanctuary roster loads before Sanctuary Alive')
 if san.find('guardian-core-sanctuary.js')>san.find('sanctuary-alive.js'): fail('Sanctuary Alive loads before Guardian Core Sanctuary')
