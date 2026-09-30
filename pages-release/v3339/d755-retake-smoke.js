@@ -163,6 +163,7 @@ assert(st.mode==='home','D755 should enter Retake Studio at home');
 assert(/TEACHER-FOCUS RETAKE STUDIO/.test(M.shell()),'Teacher-focus home label missing');
 assert(/Retake Diagnostic/.test(M.shell())&&/30 mixed WGU-style scenarios/.test(M.shell()),'Retake Studio does not expose the 30-question diagnostic entry point');
 assert(/Assessment Type Drill/.test(M.shell()),'Retake Studio does not expose the Assessment Type Drill entry point');
+assert(/Law \+ Referral Process Drill/.test(M.shell()),'Retake Studio does not expose the Law + Referral Process Drill entry point');
 assert(/Smart 10-Question Review/.test(M.shell()),'Retake Studio does not expose Smart Review');
 assert(/Assessment Dimension Detective/.test(M.shell()),'Retake Studio does not expose the Assessment Dimension Detective entry point');
 
@@ -325,6 +326,15 @@ assert(pairEvidenceAfter===pairEvidenceBefore+12,'Confusing Pairs Repair should 
 assert(Object.keys(M.assessmentEvidence('pairs')).length===6,'Confusing Pairs Repair mastery evidence should cover all six dimensions');
 assert(/ASSESSMENT TYPE MASTERY LADDER/.test(M.shell()),'Confusing Pairs results should show the mastery ladder');
 st.mode='home';
+
+M.startExam('lawReferralDrill');
+st=M.state();
+assert(st.lawReferralDrill.ids.length===12,'Law + Referral Process Drill must contain 12 questions');
+const lawReferralQs=st.lawReferralDrill.ids.map(id=>M.BANK.find(q=>q.id===id));
+assert(lawReferralQs.filter(q=>q.trap==='law-case').length===6,'Law + Referral Process Drill must contain 6 law/case questions');
+assert(lawReferralQs.filter(q=>q.trap==='process-order'&&q.id.includes('referral_')).length===6,'Law + Referral Process Drill must contain 6 referral-stage questions');
+assert(/LAW \+ REFERRAL PROCESS DRILL/.test(M.shell()),'Law + Referral Process Drill screen missing');
+st.lawReferralDrill=null;st.mode='home';
 
 M.startExam('mock');
 st=M.state();
