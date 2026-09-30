@@ -602,6 +602,10 @@ function freshAssessmentRows(rows){
  return fresh.concat(recycled);
 }
 function assessmentNextPractice(){
+ const mistakes=assessmentMistakeIds();
+ if(mistakes.length){
+   return {kind:'mistakes',count:mistakes.length,title:'Repair your missed assessment questions',detail:mistakes.length+' unresolved assessment question'+(mistakes.length===1?' is':'s are')+' waiting. Clear these before adding more new practice.'};
+ }
  const rows=assessmentMasteryRows();
  const practiced=rows.filter(x=>x.possible>0);
  const detective=prog()?.dimensionDetectiveResult||null;
@@ -630,9 +634,11 @@ function assessmentNextPractice(){
 }
 function assessmentNextPracticeHTML(){
  const rec=assessmentNextPractice();
- const action=rec.kind==='family'
-   ?'<button class="btn primary" data-d755-focus-family="'+E(rec.family)+'">Practice this type →</button>'
-   :rec.kind==='detective'
+ const action=rec.kind==='mistakes'
+   ?'<button class="btn primary" data-d755-mistake-repair>Repair '+Number(rec.count||0)+' missed question'+(Number(rec.count||0)===1?'':'s')+' →</button>'
+   :rec.kind==='family'
+    ?'<button class="btn primary" data-d755-focus-family="'+E(rec.family)+'">Practice this type →</button>'
+    :rec.kind==='detective'
     ?'<button class="btn primary" data-d755-start-detective>Open Dimension Detective →</button>'
     :rec.kind==='pairs'
      ?'<button class="btn primary" data-d755-start-contrast>Open Confusing Pairs →</button>'
