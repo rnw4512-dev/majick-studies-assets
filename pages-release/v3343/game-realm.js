@@ -141,6 +141,8 @@
     const map={
       runesort:{place:'Runestone Atrium',subtitle:'Ancient sorting runes drift through a moonlit collegiate hall.',icon:'ᚱ',
         art:'<div class="realmSceneArt runeArt"><span class="pillar p1">ᚱ</span><span class="pillar p2">ᚾ</span><span class="pillar p3">ᛟ</span><span class="floorRune">✦</span><i class="floatRune r1">ᚨ</i><i class="floatRune r2">ᛃ</i><i class="floatRune r3">ᛗ</i></div>'},
+      assessmentsigilsort:{place:'Hall of Assessment Sigils',subtitle:'Four enchanted gates test whether you can read what kind of assessment a scenario describes.',icon:'✥',
+        art:'<div class="realmSceneArt assessmentSigilArt"><span class="sigilGate g1">Q</span><span class="sigilGate g2">F</span><span class="sigilGate g3">Σ</span><span class="sigilGate g4">M</span><i class="sigilSpark s1">✦</i><i class="sigilSpark s2">✧</i><i class="sigilSpark s3">⋆</i></div>'},
       oraclelens:{place:'Oracle Observatory',subtitle:'Celestial lenses and suspended constellations reveal the clue that matters most.',icon:'◉',
         art:'<div class="realmSceneArt oracleArt"><span class="bigLens"></span><span class="scopeArm"></span><i class="star s1">✦</i><i class="star s2">✧</i><i class="star s3">✦</i><i class="star s4">✧</i><span class="orbit o1"></span><span class="orbit o2"></span></div>'},
       constellation:{place:'Constellation Garden',subtitle:'Memory stars bloom across a midnight garden as each concept finds its pair.',icon:'✧',
@@ -197,6 +199,7 @@
   function trialProgress(kind){
     let current=0,total=1,label='Progress';
     if(kind==='runesort'){current=(session?.items||[]).filter(x=>x.ok).length;total=Math.max(1,session?.items?.length||1);label='Runes locked'}
+    else if(kind==='assessmentsigilsort'){current=Number(session?.index||0)+(session?.answered?1:0);total=Math.max(1,session?.items?.length||1);label='Assessment sigils solved'}
     else if(kind==='oraclelens'){current=Math.max(0,Number(session?.round||1)-1)+(session?.answered?1:0);total=Math.max(1,Number(session?.limit||8));label='Lenses completed'}
     else if(kind==='constellation'){current=Number(session?.matched||0);total=Math.max(1,(session?.cards?.length||2)/2);label='Stars linked'}
     else if(kind==='hexbreaker'){current=Math.max(0,Number(session?.round||1)-1)+(session?.answered?1:0);total=Math.max(1,Number(session?.limit||8));label='Hexes examined'}
@@ -207,6 +210,7 @@
   function trialGuide(kind){
     const guides={
       runesort:{goal:'Sort each prompt into the course section it belongs to.',win:'Lock as many runes as you can.',help:'Your Guardian reacts when a pattern clicks.'},
+      assessmentsigilsort:{goal:'Read the D755 scenario and choose the assessment gate it belongs to.',win:'Clear every scenario in the selected assessment chamber.',help:'Your Guardian reacts to each correct classification.'},
       oraclelens:{goal:'Find the clue that actually controls the answer.',win:'Align the lens, then answer through that clue.',help:'Your Guardian tracks your clarity streak.'},
       constellation:{goal:'Match each clue card with its correct answer card.',win:'Connect every pair into one constellation.',help:'Your Guardian celebrates each linked star.'},
       hexbreaker:{goal:'Decide whether the glowing claim is valid or hexed.',win:'Repair the hex with the correct concept.',help:'Your Guardian tracks your break streak.'},
@@ -236,6 +240,7 @@
         '<div class="realmStats"><span>ᚱ '+E(bestText('runesort'))+' Rune Sort</span><span>◉ '+E(bestText('oraclelens'))+' Oracle Lens</span><span>♛ '+E(bestText('gauntlet'))+' Gauntlet</span><span>✧ '+E(bestText('constellation'))+' Constellation</span><span>⬡ '+E(bestText('hexbreaker'))+' Hex Breaker</span></div>'+
         '<div class="realmFeaturedGrid">'+
           gameCard('ᚱ','Rune Sort','Sort real course prompts into the correct sections. Pattern recognition without another answer-card loop.','startRuneSort()')+
+          (globalThis.S?.activeCourse==='D755'?gameCard('✥','Assessment Sigil Sort','Sort D755 scenarios through Qualitative/Quantitative, Formal/Informal, Formative/Summative, or Screening/Monitoring gates.','startAssessmentSigilSort()','D755 TRIAL'):'')+
           gameCard('◉','Oracle Lens','Identify the controlling clue first, then answer through that clue.','startOracleLens()')+
           gameCard('♛','Guardian Gauntlet','A multi-round boss run with hearts, boss HP, combos, and one Guardian shield.','startGuardianGauntlet()')+
           gameCard('✧','Memory Constellation','Match controlling clues to the correct answers and build a glowing constellation.','startMemoryConstellation()')+
@@ -244,6 +249,78 @@
         '<details class="realmClassic"><summary><span>Classic Trials</span><small>All previous Game Realm modes are still available</small></summary><div class="realmClassicBody">'+baseGamesHTML()+'</div></details>'+
       '</div>';
     };
+  }
+
+  /* ---------- D755 Assessment Sigil Sort ---------- */
+  const ASSESSMENT_SIGIL_FAMILIES={
+    data:{label:'Qualitative vs Quantitative',left:'Qualitative',right:'Quantitative',concept:/qualitative quantitative/i,
+      map:a=>/qualitative/i.test(a)&&!/quantitative/i.test(a)?'Qualitative':/quantitative/i.test(a)&&!/qualitative/i.test(a)?'Quantitative':null},
+    administration:{label:'Formal vs Informal',left:'Formal',right:'Informal',concept:/formal informal/i,
+      map:a=>/\binformal\b/i.test(a)?'Informal':/\bformal\b/i.test(a)?'Formal':null},
+    purpose:{label:'Formative vs Summative',left:'Formative',right:'Summative',concept:/assessment purpose/i,
+      map:a=>/formative/i.test(a)?'Formative':/summative/i.test(a)?'Summative':null},
+    monitoring:{label:'Screening vs Progress Monitoring',left:'Universal Screening',right:'Progress Monitoring',concept:/screening|tier movement/i,
+      map:a=>/universal screening/i.test(a)?'Universal Screening':/progress monitoring/i.test(a)?'Progress Monitoring':null}
+  };
+  function assessmentSigilPool(key){
+    const cfg=ASSESSMENT_SIGIL_FAMILIES[key],bank=globalThis.MajickD755Retake?.BANK||[];
+    if(!cfg||!Array.isArray(bank))return [];
+    return shuffleCopy(bank.filter(q=>q?.trap==='assessment-type'&&cfg.concept.test(String(q.concept||''))&&cfg.map(String(q.answer||'')))
+      .map(q=>({...q,sigilAnswer:cfg.map(String(q.answer||''))})));
+  }
+  globalThis.startAssessmentSigilSort=function(){
+    if(globalThis.S?.activeCourse!=='D755'){
+      try{alert('Assessment Sigil Sort is a D755-only Realm trial. Switch to Assessment for Special Education first.')}catch(_){}
+      return;
+    }
+    session={type:'assessmentsigilsort',opts:{label:'Assessment Sigil Sort'},phase:'choose',family:null,items:[],index:0,score:0,answered:false,choice:null,finished:false,questions:[]};
+    if(globalThis.S)S.screen='mission';render?.();
+  };
+  globalThis.chooseAssessmentSigilFamily=function(key){
+    if(!session||session.type!=='assessmentsigilsort'||!ASSESSMENT_SIGIL_FAMILIES[key])return;
+    const items=assessmentSigilPool(key).slice(0,4);
+    if(items.length<2){try{alert('This assessment chamber needs more D755 scenarios. Choose another chamber.')}catch(_){}return}
+    session.family=key;session.items=items;session.index=0;session.score=0;session.phase='play';session.answered=false;session.choice=null;session.finished=false;
+    render?.();
+  };
+  globalThis.answerAssessmentSigil=function(value){
+    if(!session||session.type!=='assessmentsigilsort'||session.phase!=='play'||session.answered)return;
+    const q=session.items?.[session.index];if(!q)return;
+    const correct=normalize(value)===normalize(q.sigilAnswer);
+    session.choice=value;session.answered=true;session.questions.push(q.id);
+    if(correct){session.score++;session.guardianMessage=guardianLine(session.score>=3?'streak':'correct')}
+    else session.guardianMessage=guardianLine('miss');
+    recordAnswer(q,value,correct,'assessmentsigilsort');
+    render?.();
+  };
+  globalThis.nextAssessmentSigil=function(){
+    if(!session||session.type!=='assessmentsigilsort'||!session.answered)return;
+    if(session.index>=session.items.length-1){
+      session.finished=true;session.phase='result';
+      session.recordOutcome=recordRealm('assessmentsigilsort',session.score,session.items.length,session.score===session.items.length);
+      guardianReact('concept',{mode:'assessmentsigilsort'});
+    }else{
+      session.index++;session.answered=false;session.choice=null;
+    }
+    render?.();
+  };
+  function assessmentSigilHTML(){
+    if(session.finished)return realmResultHTML('Assessment Sigil Sort','assessmentsigilsort',session.score,session.items.length,session.score===session.items.length,'You classified '+session.score+' of '+session.items.length+' D755 assessment scenarios correctly.');
+    if(session.phase==='choose'){
+      return '<div class="qwrap realmMode realmAssessmentSigil">'+realmScene('assessmentsigilsort')+guardianBanner('Choose the assessment distinction you want to train.')+
+        '<div class="qtop"><span class="qbadge">✥ Assessment Sigil Sort</span><b>D755 only</b></div>'+
+        trialGuide('assessmentsigilsort')+
+        '<div class="card"><h3>Choose an assessment chamber</h3><p>Each chamber trains one distinction using real D755 practice scenarios.</p><div class="assessmentSigilChambers">'+
+        Object.entries(ASSESSMENT_SIGIL_FAMILIES).map(([key,cfg])=>'<button type="button" onclick="chooseAssessmentSigilFamily(\''+E(key)+'\')"><span>✥</span><b>'+E(cfg.label)+'</b><small>'+assessmentSigilPool(key).length+' scenarios available</small></button>').join('')+
+        '</div></div></div>';
+    }
+    const q=session.items[session.index],cfg=ASSESSMENT_SIGIL_FAMILIES[session.family];
+    return '<div class="qwrap realmMode realmAssessmentSigil">'+realmScene('assessmentsigilsort')+guardianBanner(session.guardianMessage||'Read the scenario carefully. Decide which sigil gate it belongs to.')+
+      '<div class="qtop"><span class="qbadge">✥ '+E(cfg.label)+'</span><b>'+(session.index+1)+' / '+session.items.length+'</b></div>'+trialProgress('assessmentsigilsort')+trialGuide('assessmentsigilsort')+
+      '<div class="card assessmentSigilCard"><small>D755 • WHAT TYPE OF ASSESSMENT IS THIS?</small><div class="question">'+E(q.prompt)+'</div>'+
+      '<div class="assessmentSigilGates">'+[cfg.left,cfg.right].map(v=>'<button type="button" '+(session.answered?'disabled':'')+' class="'+(session.answered?(normalize(v)===normalize(q.sigilAnswer)?'correct':normalize(v)===normalize(session.choice)?'wrong':''):'')+'" onclick="answerAssessmentSigil(\''+E(v)+'\')"><span>✥</span><b>'+E(v)+'</b></button>').join('')+'</div>'+
+      (session.answered?'<div class="realmSigilFeedback '+(normalize(session.choice)===normalize(q.sigilAnswer)?'strong':'weak')+'"><b>'+(normalize(session.choice)===normalize(q.sigilAnswer)?'✓ Sigil aligned':'✕ Wrong gate')+'</b><p>'+E(q.why||'Use the assessment purpose and administration clues in the scenario.')+'</p><button class="btn violet" onclick="nextAssessmentSigil()">'+(session.index<session.items.length-1?'Next sigil →':'See result →')+'</button></div>':'')+
+      '</div></div>';
   }
 
   /* ---------- Rune Sort ---------- */
@@ -636,6 +713,7 @@
 
   function realmResultStats(id){
     if(!session)return [];
+    if(id==='assessmentsigilsort')return [['Sigils aligned',session.score+'/'+(session.items?.length||0)],['Chamber',ASSESSMENT_SIGIL_FAMILIES[session.family]?.label||'Assessment types'],['Guardian reactions',session.questions?.length||0]];
     if(id==='runesort'){
       const attempts=(session.items||[]).reduce((n,x)=>n+Number(x.attempts||0),0);
       return [['Runes locked',session.score+'/'+(session.items?.length||0)],['Total attempts',attempts],['First-try locks',(session.items||[]).filter(x=>x.ok&&Number(x.attempts||0)===1).length]];
@@ -653,12 +731,13 @@
       '<small>'+(won?'TRIAL CLEARED':'TRIAL COMPLETE')+'</small><h2>'+E(title)+'</h2><div class="realmResultScore">'+score+'/'+total+' <span>'+acc+'%</span></div><p>'+E(detail)+'</p>'+
       '<div class="realmResultStats">'+stats.map(([label,value])=>'<div><small>'+E(label)+'</small><b>'+E(value)+'</b></div>').join('')+'</div>'+
       (g?'<div class="realmResultGuardian">'+(g.image?'<img src="'+E(g.image)+'" alt="'+E(g.name)+'" style="filter:hue-rotate('+Number(g.hue||0)+'deg)">':'<span>'+E(g.icon||'✦')+'</span>')+'<div><b>'+E(g.name)+'</b><p>'+E(guardianLine('finish'))+'</p></div></div>':'')+
-      '<div class="heroBtns"><button class="btn primary" onclick="'+(id==='runesort'?'startRuneSort()':id==='oraclelens'?'startOracleLens()':id==='constellation'?'startMemoryConstellation()':id==='hexbreaker'?'startHexBreaker()':'startGuardianGauntlet()')+'">Play again</button><button class="btn secondary" onclick="session=null;navigate(\'games\')">Back to Game Realm</button></div></section></div>';
+      '<div class="heroBtns"><button class="btn primary" onclick="'+(id==='assessmentsigilsort'?'startAssessmentSigilSort()':id==='runesort'?'startRuneSort()':id==='oraclelens'?'startOracleLens()':id==='constellation'?'startMemoryConstellation()':id==='hexbreaker'?'startHexBreaker()':'startGuardianGauntlet()')+'">Play again</button><button class="btn secondary" onclick="session=null;navigate(\'games\')">Back to Game Realm</button></div></section></div>';
   }
 
   const baseSessionHTML=typeof sessionHTML==='function'?sessionHTML:null;
   if(baseSessionHTML){
     sessionHTML=function(){
+      if(session?.type==='assessmentsigilsort')return assessmentSigilHTML();
       if(session?.type==='runesort')return runeSortHTML();
       if(session?.type==='oraclelens')return oracleHTML();
       if(session?.type==='constellation')return constellationHTML();
@@ -672,6 +751,7 @@
     VERSION,
     guardian,
     buildRuneSort,
+    assessmentSigilPool,
     buildConstellation,
     inspect(){
       return {
