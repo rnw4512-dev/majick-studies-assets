@@ -597,3 +597,39 @@
 @media(max-width:650px){
   .d755ContrastChoices{grid-template-columns:1fr}
 }
+
+/* D755 recommended next practice */
+.d755NextPractice{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  margin:16px 0 18px;
+  padding:15px 16px;
+  border:1px solid rgba(211,175,112,.22);
+  border-radius:16px;
+  background:linear-gradient(90deg,rgba(97,67,126,.16),rgba(183,132,74,.09));
+  box-shadow:0 12px 28px rgba(0,0,0,.08);
+}
+.d755NextPractice small{
+  display:block;
+  color:#c3a3d3;
+  font:900 8px Arial,sans-serif;
+  letter-spacing:.15em;
+}
+.d755NextPractice h3{
+  margin:5px 0 4px;
+  color:#f6dfa9;
+  font:700 19px Georgia,serif;
+}
+.d755NextPractice p{
+  margin:0;
+  color:#bcaec2;
+  font-size:11px;
+  line-height:1.45;
+}
+.d755NextPractice .btn{flex:0 0 auto}
+@media(max-width:700px){
+  .d755NextPractice{align-items:stretch;flex-direction:column}
+  .d755NextPractice .btn{width:100%}
+}
