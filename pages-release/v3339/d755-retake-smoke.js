@@ -145,6 +145,10 @@ assert(adaptiveFocusCount>=6,'Adaptive Assessment Type Drill should target the t
 M.state().assessmentDrill=null;
 M.state().mode='home';
 
+st=M.state();
+st.dimensionDetective=null;
+st.mode='dimensionDetective';
+assert(/First identify what the stem is asking/.test(M.shell()),'Assessment Dimension Detective intro/teaching frame missing');
 M.startDimensionDetective();
 st=M.state();
 assert(st.mode==='dimensionDetective','Assessment Dimension Detective did not start');
@@ -152,7 +156,7 @@ assert(st.dimensionDetective.ids.length===8,'Assessment Dimension Detective must
 const detectiveQs=st.dimensionDetective.ids.map(id=>M.BANK.find(q=>q.id===id));
 const detectiveFamilies=new Set(detectiveQs.map(q=>M.assessmentFamily(q)));
 assert(detectiveFamilies.size>=6,'Assessment Dimension Detective should cover every major assessment dimension');
-assert(/First identify what the stem is asking/.test(M.shell()),'Assessment Dimension Detective intro/teaching frame missing');
+assert(/What is this stem asking you to classify/.test(M.shell()),'Assessment Dimension Detective first-case prompt missing');
 
 for(let i=0;i<8;i++){
   const o=M.state().dimensionDetective;
