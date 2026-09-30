@@ -87,6 +87,7 @@ assert(st.mode==='home','D755 should enter Retake Studio at home');
 assert(/TEACHER-FOCUS RETAKE STUDIO/.test(M.shell()),'Teacher-focus home label missing');
 assert(/Retake Diagnostic/.test(M.shell())&&/30 mixed WGU-style scenarios/.test(M.shell()),'Retake Studio does not expose the 30-question diagnostic entry point');
 assert(/Assessment Type Drill/.test(M.shell()),'Retake Studio does not expose the Assessment Type Drill entry point');
+assert(/Assessment Dimension Detective/.test(M.shell()),'Retake Studio does not expose the Assessment Dimension Detective entry point');
 
 M.startExam('diagnostic');
 st=M.state();
@@ -143,6 +144,34 @@ const adaptiveFocusCount=adaptiveQs.filter(q=>/assessment purpose|formal informa
 assert(adaptiveFocusCount>=6,'Adaptive Assessment Type Drill should target the two weakest categories');
 M.state().assessmentDrill=null;
 M.state().mode='home';
+
+M.startDimensionDetective();
+st=M.state();
+assert(st.mode==='dimensionDetective','Assessment Dimension Detective did not start');
+assert(st.dimensionDetective.ids.length===8,'Assessment Dimension Detective must contain 8 cases');
+const detectiveQs=st.dimensionDetective.ids.map(id=>M.BANK.find(q=>q.id===id));
+const detectiveFamilies=new Set(detectiveQs.map(q=>M.assessmentFamily(q)));
+assert(detectiveFamilies.size>=6,'Assessment Dimension Detective should cover every major assessment dimension');
+assert(/First identify what the stem is asking/.test(M.shell()),'Assessment Dimension Detective intro/teaching frame missing');
+
+for(let i=0;i<8;i++){
+  const o=M.state().dimensionDetective;
+  const q=M.BANK.find(x=>x.id===o.ids[o.index]);
+  const fam=M.assessmentFamily(q);
+  M.detectiveChooseDimension(fam);
+  M.detectiveSubmitDimension();
+  assert(o.dimensionSubmitted===true&&o.phase==='classification','Detective did not advance from dimension to classification');
+  M.detectiveChooseAnswer(q.answer);
+  M.detectiveSubmitAnswer();
+  assert(o.answerSubmitted===true,'Detective classification did not submit');
+  M.detectiveNext();
+}
+st=M.state();
+assert(st.mode==='dimensionDetectiveResult','Assessment Dimension Detective did not reach result state');
+assert(st.dimensionDetectiveResult.dimensionScore===8,'Detective dimension score incorrect');
+assert(st.dimensionDetectiveResult.classificationScore===8,'Detective classification score incorrect');
+assert(Object.keys(st.dimensionDetectiveResult.familyStats||{}).length>=6,'Detective family result breakdown missing');
+assert(/dimension recognition/.test(M.shell())&&/assessment classification/.test(M.shell()),'Detective result comparison missing');
 
 M.startExam('mock');
 st=M.state();
