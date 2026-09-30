@@ -40,6 +40,9 @@ assert.match(source,/idleDynamicGuardian/,'dynamic Guardian idle breathing helpe
 assert.match(source,/actionDynamicGuardian/,'dynamic Guardian care-action motion helper missing');
 assert.match(source,/playStyle/,'dynamic Guardian play-style helper missing');
 assert.match(source,/favoritePlayBurst/,'favorite-toy play burst helper missing');
+assert.match(source,/v3358FavoriteReaction/,'favorite-item reaction state marker missing');
+assert.match(source,/FAVORITE •/,'favorite-item Sanctuary banner missing');
+assert.match(source,/favoriteReactions:Object\.fromEntries/,'Sanctuary QA output should expose favorite-item reactions');
 assert.match(source,/sleepAura/,'Guardian sleep aura helper missing');
 assert.match(source,/wakeDynamicGuardian/,'Guardian wake animation helper missing');
 assert.match(source,/v3353SleepState/,'Guardian sleep-state marker missing');
