@@ -633,3 +633,38 @@
   .d755NextPractice{align-items:stretch;flex-direction:column}
   .d755NextPractice .btn{width:100%}
 }
+
+/* D755 mistake repair queue */
+.d755MistakeQueue{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  margin:16px 0 18px;
+  padding:15px 16px;
+  border:1px solid rgba(184,111,130,.22);
+  border-radius:16px;
+  background:linear-gradient(90deg,rgba(119,58,80,.14),rgba(73,50,92,.13));
+}
+.d755MistakeQueue small{
+  display:block;
+  color:#d0a7b4;
+  font:900 8px Arial,sans-serif;
+  letter-spacing:.14em;
+}
+.d755MistakeQueue h3{
+  margin:5px 0 4px;
+  color:#f3d8df;
+  font:700 18px Georgia,serif;
+}
+.d755MistakeQueue p{
+  margin:0;
+  color:#baaabf;
+  font-size:10px;
+  line-height:1.45;
+}
+.d755MistakeQueue .btn{flex:0 0 auto}
+@media(max-width:700px){
+  .d755MistakeQueue{align-items:stretch;flex-direction:column}
+  .d755MistakeQueue .btn{width:100%}
+}
