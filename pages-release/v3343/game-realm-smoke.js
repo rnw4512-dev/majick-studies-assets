@@ -3,7 +3,7 @@ const src=fs.readFileSync(__dirname+'/game-realm.js','utf8');
 const state={answers:[],xp:0,crystals:0,realmRecords:{}};
 const context={
   document:{documentElement:{dataset:{}}},
-  S:{screen:'games'},
+  S:{screen:'games',activeCourse:'D755'},
   session:{type:'moonword',items:[
     {term:'Sample',def:'Part of a population',choice:'Sample',ok:true},
     {term:'Sample',def:'The selected individuals',choice:'Population',ok:false},
@@ -17,7 +17,17 @@ const context={
   render:()=>{},save:()=>{},alert:()=>{},
   record:(q,chosen,correct,confidence,mode)=>state.answers.push({qid:q.id,chosen,correct,confidence,mode}),
   grantMoonlight:()=>{state.xp+=1},
-  sparkle:()=>{},playChime:()=>{},setTimeout:(fn)=>{fn();return 0}
+  sparkle:()=>{},playChime:()=>{},setTimeout:(fn)=>{fn();return 0},
+  MajickD755Retake:{BANK:[
+    {id:'d1',section:1,concept:'qualitative quantitative',trap:'assessment-type',prompt:'Teacher writes descriptive interview notes.',answer:'Qualitative data',why:'Descriptive evidence is qualitative.'},
+    {id:'d2',section:1,concept:'qualitative quantitative',trap:'assessment-type',prompt:'Teacher counts 12 behaviors in 20 minutes.',answer:'Quantitative data',why:'A frequency count is quantitative.'},
+    {id:'d3',section:1,concept:'formal informal',trap:'assessment-type',prompt:'Psychologist follows fixed directions and standardized scoring.',answer:'Formal assessment',why:'Fixed administration is formal.'},
+    {id:'d4',section:1,concept:'formal informal',trap:'assessment-type',prompt:'Teacher takes flexible notes during guided reading.',answer:'Informal assessment',why:'Flexible classroom evidence is informal.'},
+    {id:'d5',section:1,concept:'assessment purpose',trap:'assessment-type',prompt:'Exit ticket changes tomorrow’s instruction.',answer:'Formative assessment',why:'It guides ongoing instruction.'},
+    {id:'d6',section:1,concept:'assessment purpose',trap:'assessment-type',prompt:'Final exam evaluates learning at the end of a unit.',answer:'Summative assessment',why:'It evaluates learning at an endpoint.'},
+    {id:'d7',section:1,concept:'screening child find',trap:'assessment-type',prompt:'All students take a brief fall reading check.',answer:'Universal screening',why:'All students are screened for risk.'},
+    {id:'d8',section:1,concept:'screening tier movement',trap:'assessment-type',prompt:'A Tier 2 student completes a weekly fluency probe.',answer:'Progress monitoring',why:'Repeated probes track intervention response.'}
+  ]}
 };
 context.globalThis=context;
 vm.createContext(context);vm.runInContext(src,context);
@@ -41,6 +51,25 @@ const pool=[
   {id:'c2',section:'Graphs',prompt:'Why can 3D pie charts mislead?',options:['Perspective distorts area','They have labels'],answer:'Perspective distorts area',keyClue:'3D perspective changes apparent size',why:'Perspective changes perceived slice size.',difficulty:4}
 ];
 context.questionPool=()=>pool;
+
+context.S.activeCourse='D772';
+const beforeType=context.session?.type;
+context.startAssessmentSigilSort();
+assert.equal(context.session?.type,beforeType,'Assessment Sigil Sort must not start outside D755');
+context.S.activeCourse='D755';
+assert.ok(context.MajickGameRealm.assessmentSigilPool('data').length>=2,'D755 data-type sigil chamber needs scenarios');
+assert.ok(context.MajickGameRealm.assessmentSigilPool('administration').length>=2,'D755 formal/informal sigil chamber needs scenarios');
+assert.ok(context.MajickGameRealm.assessmentSigilPool('purpose').length>=2,'D755 formative/summative sigil chamber needs scenarios');
+assert.ok(context.MajickGameRealm.assessmentSigilPool('monitoring').length>=2,'D755 screening/monitoring sigil chamber needs scenarios');
+context.startAssessmentSigilSort();
+assert.equal(context.session.type,'assessmentsigilsort','Assessment Sigil Sort should start for D755');
+context.chooseAssessmentSigilFamily('purpose');
+assert.equal(context.session.phase,'play','Assessment Sigil Sort should enter a selected chamber');
+const sigilQ=context.session.items[0];
+context.answerAssessmentSigil(sigilQ.sigilAnswer);
+assert.equal(context.session.score,1,'Assessment Sigil Sort should score a correct assessment classification');
+assert.equal(context.session.answered,true,'Assessment Sigil Sort should lock the answered sigil');
+context.S.activeCourse='D755';
 
 context.startRuneSort();
 assert.equal(context.session.type,'runesort','Rune Sort should start its own session type');
@@ -97,5 +126,7 @@ assert.equal(context.session.breakStreak,1,'Hex Breaker should build a successfu
 
 assert.equal(context.document.documentElement.dataset.majickRealmVariety,'3352','Game Realm dataset marker missing');
 assert.match(src,/realmTrialGuide/,'Featured Realm clarity guide source should remain installed');
+assert.match(src,/Assessment Sigil Sort/,'D755 Assessment Sigil Sort source missing');
+assert.match(src,/globalThis\.S\?\.activeCourse==='D755'/,'D755 Assessment Sigil Sort must be course-gated');
 console.log('GAME REALM OVERHAUL SMOKE PASSED');
 console.log(JSON.stringify({answers:state.answers.length,xp:state.xp,realmRecords:Object.keys(state.realmRecords)}));

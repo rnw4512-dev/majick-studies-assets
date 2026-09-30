@@ -330,8 +330,10 @@ jobs:
           grep -q 'guardian-life-main.css?v=3342' _site/index.html
           cmp pages-release/v3343/game-realm.js _site/game-realm.js
           cmp pages-release/v3343/game-realm.css _site/game-realm.css
-          grep -q 'game-realm.js?v=3357-progress' _site/index.html
-          grep -q 'game-realm.css?v=3357-progress' _site/index.html
+          grep -q 'game-realm.js?v=3358-sigils' _site/index.html
+          grep -q 'game-realm.css?v=3358-sigils' _site/index.html
+          grep -q 'Assessment Sigil Sort' _site/game-realm.js
+          grep -q "activeCourse==='D755'" _site/game-realm.js
           grep -q "VERSION='3.3.42'" _site/guardian-life-main.js
           grep -q 'Personal Crystal Nest' _site/guardian-life-main.js
           grep -q 'MAJICK_GUARDIAN_EVOLUTION_V3342' _site/guardian-life-main.js
@@ -663,8 +665,10 @@ jobs:
                       'personal Guardian beds': 'guardian-bed-' in sanctuary_alive,
                       'legacy Sunday analytics removed': 'Sunday Readiness & Thinking Analytics' not in index,
                       'legacy Sunday deadline removed': '<h3>Before Sunday</h3>' not in index,
-                      'Game Realm cache key': 'game-realm.js?v=3357-progress' in index,
+                      'Game Realm cache key': 'game-realm.js?v=3358-sigils' in index,
                       'Moon Crystal word bank': 'realmWordBank' in game_realm,
+                      'D755 Assessment Sigil Sort': 'Assessment Sigil Sort' in game_realm,
+                      'D755 Realm course gate': "activeCourse==='D755'" in game_realm,
                       'Living Collegium cache key': 'living-collegium.js?v=3346' in index,
                       'Living Collegium version': "VERSION='3.3.46'" in living,
                       'Collegium atmosphere cache key': 'collegium-atmosphere.js?v=3350-room' in index,
