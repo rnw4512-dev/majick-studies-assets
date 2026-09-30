@@ -570,20 +570,32 @@ function updateAssessmentMistake(id,correct){
  if(!correct)rows.push(id);
  st.assessmentMistakeIds=rows.slice(-40);
 }
-function startAssessmentMistakeRepair(){
+function assessmentMistakeSummary(){
+ const byId=new Map(BANK.map(q=>[q.id,q])),summary={};
+ for(const id of assessmentMistakeIds()){
+   const q=byId.get(id);
+   if(!q||q.section!==1||q.trap!=='assessment-type')continue;
+   const family=assessmentFamily(q);
+   summary[family]=(summary[family]||0)+1;
+ }
+ return summary;
+}
+function startAssessmentMistakeRepair(family){
  const st=prog(),byId=new Map(BANK.map(q=>[q.id,q]));
- const qs=assessmentMistakeIds().map(id=>byId.get(id)).filter(q=>q&&q.section===1&&q.trap==='assessment-type');
+ let qs=assessmentMistakeIds().map(id=>byId.get(id)).filter(q=>q&&q.section===1&&q.trap==='assessment-type');
+ if(family)qs=qs.filter(q=>assessmentFamily(q)===family);
  if(!qs.length)return;
  st.assessmentDrill={
    index:0,selected:null,submitted:false,answers:[],ids:qs.map(q=>q.id),
-   startedAt:Date.now(),mistakeRepair:true
+   startedAt:Date.now(),mistakeRepair:true,mistakeFamily:family||''
  };
  st.mode='assessmentDrill';save();render();
 }
 function assessmentMistakeQueueHTML(){
  const n=assessmentMistakeIds().length;
  if(!n)return '';
- return '<section class="d755MistakeQueue"><div><small>MISTAKE REPAIR QUEUE</small><h3>'+n+' assessment question'+(n===1?'':'s')+' waiting</h3><p>Retry only the assessment questions you missed. A correct retry clears that question from the queue.</p></div><button class="btn primary" data-d755-mistake-repair>Repair missed questions →</button></section>';
+ const summary=assessmentMistakeSummary();
+ return '<section class="d755MistakeQueue"><div class="d755MistakeQueueCopy"><small>MISTAKE REPAIR QUEUE</small><h3>'+n+' assessment question'+(n===1?'':'s')+' waiting</h3><p>Retry only the assessment questions you missed. A correct retry clears that question from the queue.</p><div class="d755MistakeFamilies">'+Object.entries(summary).sort((a,b)=>b[1]-a[1]).map(([family,count])=>'<button type="button" data-d755-mistake-family="'+E(family)+'"><b>'+count+'</b><span>'+E(family)+'</span></button>').join('')+'</div></div><button class="btn primary" data-d755-mistake-repair>Repair all missed questions →</button></section>';
 }
 function assessmentRecentIds(){
  const st=prog();
@@ -1065,7 +1077,8 @@ function bindInside(root){
  root.querySelector('[data-d755-complete]')?.addEventListener('click',completeConcept);
  root.querySelectorAll('[data-d755-start-exam]').forEach(b=>b.addEventListener('click',()=>startExam(b.dataset.d755StartExam)));
  root.querySelectorAll('[data-d755-focus-family]').forEach(b=>b.addEventListener('click',()=>startAssessmentFamilyPractice(b.dataset.d755FocusFamily)));
- root.querySelectorAll('[data-d755-mistake-repair]').forEach(b=>b.addEventListener('click',startAssessmentMistakeRepair));
+ root.querySelectorAll('[data-d755-mistake-repair]').forEach(b=>b.addEventListener('click',()=>startAssessmentMistakeRepair()));
+ root.querySelectorAll('[data-d755-mistake-family]').forEach(b=>b.addEventListener('click',()=>startAssessmentMistakeRepair(b.dataset.d755MistakeFamily)));
  root.querySelectorAll('[data-d755-start-detective]').forEach(b=>b.addEventListener('click',startDimensionDetective));
  root.querySelectorAll('[data-d755-start-contrast]').forEach(b=>b.addEventListener('click',startContrastRepair));
  root.querySelectorAll('[data-d755-contrast-choice]').forEach(b=>b.addEventListener('click',()=>contrastRepairSelect(b.dataset.d755ContrastChoice)));
@@ -1118,6 +1131,6 @@ if(typeof oldBind==='function'){
  };
 }
 ensureBank();
-window.MajickD755Retake={VERSION,COURSE,SECTIONS,TRAPS,BANK,ensureBank,show,render,shell,state:prog,current,startExam,examSubmit,examNext,assessmentFamily,assessmentEvidence,assessmentMasteryRows,assessmentNextPractice,assessmentMistakeIds,updateAssessmentMistake,startAssessmentMistakeRepair,assessmentRecentIds,rememberAssessmentQuestion,freshAssessmentRows,startAssessmentFamilyPractice,contrastPairFor,contrastPairFamily,startContrastRepair,contrastRepairSelect,contrastRepairSubmit,contrastRepairNext,startDimensionDetective,detectiveChooseDimension,detectiveSubmitDimension,detectiveChooseAnswer,detectiveSubmitAnswer,detectiveNext,startSectionCheck,checkSubmit,checkNext,anchorsView,grimoireWall,teacherVisual};
+window.MajickD755Retake={VERSION,COURSE,SECTIONS,TRAPS,BANK,ensureBank,show,render,shell,state:prog,current,startExam,examSubmit,examNext,assessmentFamily,assessmentEvidence,assessmentMasteryRows,assessmentNextPractice,assessmentMistakeIds,assessmentMistakeSummary,updateAssessmentMistake,startAssessmentMistakeRepair,assessmentRecentIds,rememberAssessmentQuestion,freshAssessmentRows,startAssessmentFamilyPractice,contrastPairFor,contrastPairFamily,startContrastRepair,contrastRepairSelect,contrastRepairSubmit,contrastRepairNext,startDimensionDetective,detectiveChooseDimension,detectiveSubmitDimension,detectiveChooseAnswer,detectiveSubmitAnswer,detectiveNext,startSectionCheck,checkSubmit,checkNext,anchorsView,grimoireWall,teacherVisual};
 document.documentElement.dataset.majickD755Retake=VERSION;
 })();
