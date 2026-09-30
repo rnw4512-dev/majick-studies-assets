@@ -298,10 +298,13 @@ function performAction(target,action,opts={}){
     const toy=opts.itemId||bestToy(pet);
     favoriteBonus=toy===favoriteForPet(pet).id&&owns(toy);
     change(g,{fun:favoriteBonus?44:32,energy:-4,affection:6,bond:favoriteBonus?7:4});
-    const item=CATALOG.find(x=>x.id===toy);
+    const item=CATALOG.find(x=>x.id===toy),favorite=favoriteForPet(pet);
     msg=(meta.name||pet.name)+' plays with '+(item?.name||'the Sanctuary ribbon toy')+'.'+(favoriteBonus?' It is one of their favorite things, and the bond magic flares brighter.':'');
     r.icon=favoriteBonus?'✦':'♡';
     r.itemId=toy;
+    r.itemLabel=item?.name||'Sanctuary Ribbon Toy';
+    r.favoriteItemId=favorite.id;
+    r.favoriteLabel=favorite.label;
     r.favoriteBonus=favoriteBonus;
   }else if(action==='sleep'){
     const bed=opts.objectId||assignedBed(pet);
