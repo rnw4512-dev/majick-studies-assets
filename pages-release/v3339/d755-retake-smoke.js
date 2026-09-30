@@ -63,17 +63,17 @@ assert(assessmentTypeQs.some(q=>/Curriculum-Based Measurement/.test(q.answer)),'
 assert(assessmentTypeQs.some(q=>q.answer==='Universal screening'),'Universal screening identification question missing');
 assert(assessmentTypeQs.some(q=>q.answer==='Progress monitoring'),'Progress-monitoring identification question missing');
 assert(assessmentTypeQs.some(q=>/Functional Behavior Assessment/.test(q.answer)),'FBA identification question missing');
-assert(M.BANK.some(q=>q.id==='assess_id_25'&&/parent interview/i.test(q.prompt)),'New qualitative parent-interview scenario missing');
-assert(M.BANK.some(q=>q.id==='assess_id_26'&&/seconds/i.test(q.prompt)&&q.answer==='Quantitative data'),'New quantitative latency scenario missing');
-assert(M.BANK.some(q=>q.id==='assess_id_28'&&/running record/i.test(q.prompt)&&q.answer==='Informal assessment'),'New informal running-record scenario missing');
-assert(M.BANK.some(q=>q.id==='assess_id_29'&&/mini whiteboards/i.test(q.prompt)&&q.answer==='Formative assessment'),'New formative whiteboard scenario missing');
-assert(M.BANK.some(q=>q.id==='assess_id_30'&&/portfolio/i.test(q.prompt)&&q.answer==='Summative assessment'),'New summative portfolio scenario missing');
-assert(M.BANK.some(q=>q.id==='assess_id_31'&&/percentile rank/i.test(q.prompt)&&q.answer==='Norm-referenced'),'New norm-referenced percentile scenario missing');
-assert(M.BANK.some(q=>q.id==='assess_id_32'&&/9 of 10/i.test(q.prompt)&&q.answer==='Criterion-referenced'),'New criterion-referenced mastery scenario missing');
-assert(M.BANK.some(q=>q.id==='assess_id_33'&&/kindergarten/i.test(q.prompt)&&q.answer==='Universal screening'),'New kindergarten screening scenario missing');
-assert(M.BANK.some(q=>q.id==='assess_id_34'&&/Tier 3/i.test(q.prompt)&&q.answer==='Progress monitoring'),'New Tier 3 progress-monitoring scenario missing');
-assert(M.BANK.some(q=>q.id==='assess_id_35'&&/several classes/i.test(q.prompt)&&/Functional Behavior Assessment/.test(q.answer)),'New across-settings FBA scenario missing');
-assert(M.BANK.some(q=>q.id==='assess_id_36'&&/parent each complete/i.test(q.prompt)&&/rating scale/.test(q.answer)),'New multi-informant rating-scale scenario missing');
+assert(M.BANK.some(q=>q.id==='d755_wgu_assess_id_25'&&/parent interview/i.test(q.prompt)),'New qualitative parent-interview scenario missing');
+assert(M.BANK.some(q=>q.id==='d755_wgu_assess_id_26'&&/seconds/i.test(q.prompt)&&q.answer==='Quantitative data'),'New quantitative latency scenario missing');
+assert(M.BANK.some(q=>q.id==='d755_wgu_assess_id_28'&&/running record/i.test(q.prompt)&&q.answer==='Informal assessment'),'New informal running-record scenario missing');
+assert(M.BANK.some(q=>q.id==='d755_wgu_assess_id_29'&&/mini whiteboards/i.test(q.prompt)&&q.answer==='Formative assessment'),'New formative whiteboard scenario missing');
+assert(M.BANK.some(q=>q.id==='d755_wgu_assess_id_30'&&/portfolio/i.test(q.prompt)&&q.answer==='Summative assessment'),'New summative portfolio scenario missing');
+assert(M.BANK.some(q=>q.id==='d755_wgu_assess_id_31'&&/percentile rank/i.test(q.prompt)&&q.answer==='Norm-referenced'),'New norm-referenced percentile scenario missing');
+assert(M.BANK.some(q=>q.id==='d755_wgu_assess_id_32'&&/9 of 10/i.test(q.prompt)&&q.answer==='Criterion-referenced'),'New criterion-referenced mastery scenario missing');
+assert(M.BANK.some(q=>q.id==='d755_wgu_assess_id_33'&&/kindergarten/i.test(q.prompt)&&q.answer==='Universal screening'),'New kindergarten screening scenario missing');
+assert(M.BANK.some(q=>q.id==='d755_wgu_assess_id_34'&&/Tier 3/i.test(q.prompt)&&q.answer==='Progress monitoring'),'New Tier 3 progress-monitoring scenario missing');
+assert(M.BANK.some(q=>q.id==='d755_wgu_assess_id_35'&&/several classes/i.test(q.prompt)&&/Functional Behavior Assessment/.test(q.answer)),'New across-settings FBA scenario missing');
+assert(M.BANK.some(q=>q.id==='d755_wgu_assess_id_36'&&/parent each complete/i.test(q.prompt)&&/rating scale/.test(q.answer)),'New multi-informant rating-scale scenario missing');
 assert(M.teacherVisual({visual:'four-below'}).includes('<svg'),'Four-point visual renderer missing');
 assert(M.teacherVisual({visual:'cbc'}).includes('MEASURABLE ANNUAL GOAL'),'C-B-C visual renderer missing');
 
