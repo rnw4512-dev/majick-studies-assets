@@ -57,6 +57,11 @@ assert.ok(['walking','idle','breathing'].includes(scene.v3348PetById['second-ves
 assert.equal(reports.at(-1).rows.filter(g=>g.present).length,2);
 assert.match(source,/playStyles:Object\.fromEntries/,'Sanctuary roster QA output should expose dynamic play styles');
 assert.match(source,/sleepStates:Object\.fromEntries/,'Sanctuary roster QA output should expose dynamic sleep states');
+assert.match(source,/idleStyle/,'dynamic Guardian personality idle helper missing');
+assert.match(source,/watchful-tilt/,'watchful Guardian idle style missing');
+assert.match(source,/quick-fidget/,'Zephyr-style idle fidget missing');
+assert.match(source,/curious-wiggle/,'curious Guardian idle style missing');
+assert.match(source,/idleStyles:Object\.fromEntries/,'Sanctuary roster QA output should expose dynamic idle styles');
 scene.v3320ApplyCareSnapshot({roster:[]});
 assert.equal(scene.v3348PetById['owned-vesper'],undefined,'removed Guardian cannot remain visible');
 assert.ok(reports.some(x=>x.type==='MAJICK_SANCTUARY_ROSTER_V3350'&&x.rows.some(g=>g.petId==='owned-vesper'&&g.present)));
