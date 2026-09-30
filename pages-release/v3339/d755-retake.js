@@ -695,9 +695,12 @@ function smartReviewQuestions(count=10){
 function startSmartReview(){
  const st=prog(),qs=smartReviewQuestions(10);
  if(!qs.length)return;
+ const weakBefore=assessmentMasteryRows().filter(x=>x.possible>0&&x.status!=='Mastered').sort((a,b)=>a.pct-b.pct).slice(0,2).map(x=>x.label);
  st.assessmentDrill={
    index:0,selected:null,submitted:false,answers:[],ids:qs.map(q=>q.id),
-   startedAt:Date.now(),smartReview:true
+   startedAt:Date.now(),smartReview:true,
+   smartReviewStartMistakes:[...assessmentMistakeIds()],
+   smartReviewTargetFamilies:weakBefore
  };
  st.mode='assessmentDrill';save();render();
 }
@@ -791,7 +794,23 @@ function examNext(mode){
    }
  }
  if(mode==='assessmentDrill')mergeAssessmentEvidence('drill',familyStats);
- const result={score,total,pct:total?Math.round(score/total*100):0,bySection,trapCounts,familyStats,focusedFamily:o.focusedFamily||'',mistakeRepair:!!o.mistakeRepair,smartReview:!!o.smartReview,at:Date.now(),status:score/total>=.85?'Ready for final review':score/total>=.7?'Targeted repair needed':'Needs another teaching pass'};
+ let smartReviewSummary=null;
+ if(mode==='assessmentDrill'&&o.smartReview){
+   const startMistakes=Array.isArray(o.smartReviewStartMistakes)?o.smartReviewStartMistakes:[];
+   const remainingMistakes=assessmentMistakeIds();
+   const cleared=startMistakes.filter(id=>!remainingMistakes.includes(id));
+   const practiced=Object.keys(familyStats);
+   const weakestRemaining=assessmentMasteryRows().filter(x=>x.possible>0&&x.status!=='Mastered').sort((a,b)=>a.pct-b.pct)[0]||null;
+   smartReviewSummary={
+     startedMistakes:startMistakes.length,
+     clearedMistakes:cleared.length,
+     remainingMistakes:remainingMistakes.length,
+     targetFamilies:Array.isArray(o.smartReviewTargetFamilies)?o.smartReviewTargetFamilies:[],
+     practicedFamilies:practiced,
+     weakestRemaining:weakestRemaining?{label:weakestRemaining.label,pct:weakestRemaining.pct,status:weakestRemaining.status}:null
+   };
+ }
+ const result={score,total,pct:total?Math.round(score/total*100):0,bySection,trapCounts,familyStats,focusedFamily:o.focusedFamily||'',mistakeRepair:!!o.mistakeRepair,smartReview:!!o.smartReview,smartReviewSummary,at:Date.now(),status:score/total>=.85?'Ready for final review':score/total>=.7?'Targeted repair needed':'Needs another teaching pass'};
  st[mode+'Result']=result;st.mode=mode+'Result';save();render();
 }
 function teacherVisual(item){
@@ -1025,11 +1044,27 @@ function examView(mode){
  const qs=examQuestions(o),item=qs[o.index];if(!item)return '<div class="d755Empty">Question set unavailable.</div>';
  return '<section class="d755Exam"><header><div><small>'+E(mode==='assessmentDrill'?(o?.smartReview?'SMART REVIEW':'ASSESSMENT TYPE DRILL'):mode==='diagnostic'?'RETAKE DIAGNOSTIC':'MOCK OA')+'</small><h2>Assessment for Special Education</h2></div><span>'+(o.index+1)+' / '+qs.length+'</span></header><article>'+(isDrill?'<details class="d755AssessReminder"><summary>Need a reminder? Open the Assessment Type Anchor Chart</summary>'+assessmentTypeChart()+'</details>':'')+'<h3>'+E(item.prompt)+'</h3>'+teacherVisual(item)+'<div class="d755Choices">'+item.options.map((x,i)=>'<button '+(o.submitted?'disabled':'')+' class="'+(o.submitted?(x===item.answer?'correct':x===o.selected?'wrong':''):o.selected===x?'selected':'')+'" data-d755-exam-choice="'+E(mode)+'" data-choice="'+E(x)+'"><i>'+String.fromCharCode(65+i)+'</i><span>'+E(x)+'</span></button>').join('')+'</div>'+(o.submitted&&(mode==='diagnostic'||mode==='assessmentDrill')?'<div class="d755Feedback '+(o.selected===item.answer?'correct':'repair')+'"><b>'+(o.selected===item.answer?'✓ Correct':'Repair this decision')+'</b><p>'+E(item.why)+'</p>'+(mode==='assessmentDrill'?'<div class="d755ClassificationLens"><small>THIS STEM IS ASKING ABOUT</small><b>'+E(assessmentFamily(item))+'</b><span>'+E(assessmentFamilyRule(assessmentFamily(item)))+'</span><em><b>Why not the tempting opposite?</b> '+E(assessmentContrast(item.answer))+'</em></div>':'')+'</div>':'')+'<footer>'+(!o.submitted?'<button class="btn primary" '+(o.selected?'':'disabled')+' data-d755-exam-submit="'+mode+'">Submit</button>':'<button class="btn primary" data-d755-exam-next="'+mode+'">'+(o.index<qs.length-1?'Next →':'See results →')+'</button>')+'</footer></article></section>';
 }
+function smartReviewSummaryHTML(r){
+ const x=r?.smartReviewSummary;if(!r?.smartReview||!x)return '';
+ const target=x.targetFamilies?.length?x.targetFamilies.join(' + '):'Mixed assessment review';
+ const practiced=x.practicedFamilies?.length?x.practicedFamilies.join(', '):'Mixed dimensions';
+ const weakest=x.weakestRemaining;
+ return '<section class="d755SmartReviewSummary"><header><small>SMART REVIEW • WHAT CHANGED</small><h3>Your repair snapshot</h3></header>'+
+  '<div class="d755SmartReviewStats">'+
+   '<article><b>'+Number(x.clearedMistakes||0)+'</b><span>mistakes cleared</span><small>started with '+Number(x.startedMistakes||0)+'</small></article>'+
+   '<article><b>'+Number(x.remainingMistakes||0)+'</b><span>mistakes still queued</span><small>correct retries clear them</small></article>'+
+   '<article><b>'+Number(x.practicedFamilies?.length||0)+'</b><span>dimensions practiced</span><small>'+E(practiced)+'</small></article>'+
+  '</div>'+
+  '<div class="d755SmartReviewFocus"><div><small>REVIEW TARGET</small><b>'+E(target)+'</b></div>'+
+   (weakest?'<div><small>WEAKEST REMAINING</small><b>'+E(weakest.label)+' • '+Number(weakest.pct||0)+'%</b><span>'+E(weakest.status)+'</span></div>':'<div><small>WEAKEST REMAINING</small><b>No practiced dimension below mastery</b></div>')+
+  '</div>'+
+ '</section>';
+}
 function resultView(mode){
  const st=prog(),r=st[mode+'Result'];if(!r)return examView(mode);
  const isDrill=mode==='assessmentDrill';
  const traps=Object.entries(r.trapCounts||{}).sort((a,b)=>b[1]-a[1]).slice(0,5);
- return '<section class="d755Result"><small>'+E(isDrill?(r.smartReview?'SMART REVIEW RESULTS':'ASSESSMENT TYPE DRILL RESULTS'):mode==='diagnostic'?'DIAGNOSTIC RESULTS':'MOCK OA RESULTS')+'</small><h1>'+E(r.status)+'</h1><div class="score">'+r.score+' / '+r.total+'<span>'+r.pct+'%</span></div>'+(isDrill?'<p class="evidenceNote">'+(r.mistakeRepair?'<b>Mistake Repair Queue:</b> '+assessmentMistakeIds().length+' item'+(assessmentMistakeIds().length===1?'':'s')+' still waiting. ':r.smartReview?'<b>Smart Review:</b> mistakes, weak dimensions, and fresh questions were mixed into this set. ':r.focusedFamily?'Focused practice: <b>'+E(r.focusedFamily)+'</b>. ':'')+'Use the question wording to decide whether it is asking about data type, administration, purpose, comparison, or monitoring.</p><div class="d755AssessmentBreakdown">'+Object.entries(r.familyStats||{}).map(([label,row])=>{const pct=row.total?Math.round(row.correct/row.total*100):0;return '<article><div><b>'+E(label)+'</b><span>'+row.correct+'/'+row.total+' • '+pct+'%</span></div><i><em style="width:'+pct+'%"></em></i></article>'}).join('')+'</div>'+assessmentMasteryHTML()+assessmentTypeChart():'<div class="sectionResults">'+r.bySection.map(x=>'<div><b>Section '+x.section+'</b><span>'+x.correct+'/'+x.total+' • '+x.pct+'%</span><i><em style="width:'+x.pct+'%"></em></i></div>').join('')+'</div>')+(traps.length?'<div class="d755Weak"><h3>Highest-priority decision traps</h3>'+traps.map(([id,n])=>'<article><b>'+E(REPAIRS[id]?.title||id)+'</b><span>'+n+' miss'+(n===1?'':'es')+'</span><p>'+E(REPAIRS[id]?.right||'Review the related concept.')+'</p></article>').join('')+'</div>':'')+'<div class="resultActions">'+(isDrill?'':'<button class="btn primary" data-d755-repair-result="'+mode+'">Study my weakest area</button>')+'<button class="btn ghost" data-d755-start-exam="'+mode+'">'+E(isDrill?'Practice weak types next':'Retake with new mix')+'</button><button class="btn ghost" data-d755-home>Retake Studio Home</button></div><p class="evidenceNote">This is practice evidence for your retake preparation, not a prediction of your WGU OA result.</p></section>';
+ return '<section class="d755Result"><small>'+E(isDrill?(r.smartReview?'SMART REVIEW RESULTS':'ASSESSMENT TYPE DRILL RESULTS'):mode==='diagnostic'?'DIAGNOSTIC RESULTS':'MOCK OA RESULTS')+'</small><h1>'+E(r.status)+'</h1><div class="score">'+r.score+' / '+r.total+'<span>'+r.pct+'%</span></div>'+(isDrill?'<p class="evidenceNote">'+(r.mistakeRepair?'<b>Mistake Repair Queue:</b> '+assessmentMistakeIds().length+' item'+(assessmentMistakeIds().length===1?'':'s')+' still waiting. ':r.smartReview?'<b>Smart Review:</b> mistakes, weak dimensions, and fresh questions were mixed into this set. ':r.focusedFamily?'Focused practice: <b>'+E(r.focusedFamily)+'</b>. ':'')+'Use the question wording to decide whether it is asking about data type, administration, purpose, comparison, or monitoring.</p>'+smartReviewSummaryHTML(r)+'<div class="d755AssessmentBreakdown">'+Object.entries(r.familyStats||{}).map(([label,row])=>{const pct=row.total?Math.round(row.correct/row.total*100):0;return '<article><div><b>'+E(label)+'</b><span>'+row.correct+'/'+row.total+' • '+pct+'%</span></div><i><em style="width:'+pct+'%"></em></i></article>'}).join('')+'</div>'+assessmentMasteryHTML()+assessmentTypeChart():'<div class="sectionResults">'+r.bySection.map(x=>'<div><b>Section '+x.section+'</b><span>'+x.correct+'/'+x.total+' • '+x.pct+'%</span><i><em style="width:'+x.pct+'%"></em></i></div>').join('')+'</div>')+(traps.length?'<div class="d755Weak"><h3>Highest-priority decision traps</h3>'+traps.map(([id,n])=>'<article><b>'+E(REPAIRS[id]?.title||id)+'</b><span>'+n+' miss'+(n===1?'':'es')+'</span><p>'+E(REPAIRS[id]?.right||'Review the related concept.')+'</p></article>').join('')+'</div>':'')+'<div class="resultActions">'+(isDrill?'':'<button class="btn primary" data-d755-repair-result="'+mode+'">Study my weakest area</button>')+'<button class="btn ghost" data-d755-start-exam="'+mode+'">'+E(isDrill?'Practice weak types next':'Retake with new mix')+'</button><button class="btn ghost" data-d755-home>Retake Studio Home</button></div><p class="evidenceNote">This is practice evidence for your retake preparation, not a prediction of your WGU OA result.</p></section>';
 }
 function repairFromResult(mode){
  const st=prog(),r=st[mode+'Result'];if(!r)return go('home');
