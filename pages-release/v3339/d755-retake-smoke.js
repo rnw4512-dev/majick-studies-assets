@@ -63,6 +63,12 @@ assert(assessmentTypeQs.some(q=>/Curriculum-Based Measurement/.test(q.answer)),'
 assert(assessmentTypeQs.some(q=>q.answer==='Universal screening'),'Universal screening identification question missing');
 assert(assessmentTypeQs.some(q=>q.answer==='Progress monitoring'),'Progress-monitoring identification question missing');
 assert(assessmentTypeQs.some(q=>/Functional Behavior Assessment/.test(q.answer)),'FBA identification question missing');
+const rotationProbe=assessmentTypeQs.slice(0,4);
+M.rememberAssessmentQuestion(rotationProbe[0].id);
+const rotated=M.freshAssessmentRows(rotationProbe);
+assert(rotated.length===rotationProbe.length,'Assessment question rotation must preserve the full pool');
+assert(rotated[0].id!==rotationProbe[0].id,'Recently used assessment question should move behind unseen questions');
+assert(rotated.some(q=>q.id===rotationProbe[0].id),'Recently used assessment question must remain available as fallback');
 assert(M.BANK.some(q=>q.id==='d755_wgu_assess_id_25'&&/parent interview/i.test(q.prompt)),'New qualitative parent-interview scenario missing');
 assert(M.BANK.some(q=>q.id==='d755_wgu_assess_id_26'&&/seconds/i.test(q.prompt)&&q.answer==='Quantitative data'),'New quantitative latency scenario missing');
 assert(M.BANK.some(q=>q.id==='d755_wgu_assess_id_28'&&/running record/i.test(q.prompt)&&q.answer==='Informal assessment'),'New informal running-record scenario missing');
