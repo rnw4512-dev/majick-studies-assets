@@ -331,8 +331,8 @@ jobs:
           grep -q 'wgu-practice.css?v=3333' _site/index.html
           grep -q 'learn-mode.js?v=3338' _site/index.html
           grep -q 'learn-mode.css?v=3338' _site/index.html
-          grep -q 'd755-retake.js?v=3340-timelines-behavior' _site/index.html
-          grep -q 'd755-retake.css?v=3340-timelines-behavior' _site/index.html
+          grep -q 'd755-retake.js?v=3340-process-review' _site/index.html
+          grep -q 'd755-retake.css?v=3340-process-review' _site/index.html
           grep -q 'guardian-core.js?v=3341' _site/index.html
           grep -q 'guardian-core.css?v=3341' _site/index.html
           grep -q "VERSION='3.3.41'" _site/guardian-core.js
@@ -660,7 +660,7 @@ jobs:
                       'index learn-mode cache key': 'learn-mode.js?v=3338' in index,
                       'learn-mode version': "VERSION='3.3.38'" in learn,
                       'Arcane Anchor Wall': 'Arcane Anchor Wall' in learn,
-                      'index D755 cache key': 'd755-retake.js?v=3340-timelines-behavior' in index,
+                      'index D755 cache key': 'd755-retake.js?v=3340-process-review' in index,
                       'D755 version': "VERSION='3.3.40'" in d755,
                       'D755 diagnostic': '30-Question Retake Diagnostic' in d755,
                       'D755 teacher focus marker': 'd755-teacher-focus-2026-09-26' in d755,

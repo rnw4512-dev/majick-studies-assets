@@ -515,3 +515,7 @@ Current estimate:
 
 ## 2026-09-30 — Timelines, behavior process, and study comfort
 Added 16 federal IDEA timeline scenarios and 12 behavior/IEP scenarios (158 total), with dedicated 12-question drills and official-source feedback. Diagnostic/mock deliberately include both areas. Added per-course return-to-study and course selection shelf plus persisted reduced-motion/larger-text preferences. D755 and Living Collegium smoke tests passed; publication verification pending.
+
+
+## 2026-09-30 — Process guide and review enhancements
+Prior timelines/behavior/comfort deployment 66ee322 passed full Pages workflow and live UI checks. Added timeline comparison table, behavior step guide, readable official links, optional in-drill reminders, saved missed-answer review across D755 exam modes, and resume of unfinished drills. Fixed existing incorrect variable in missed-trap counts, which crashed result completion after wrong answers. New wrong-answer, legacy-result, and resume smoke coverage passed; Golden build and stability verifier passed.
