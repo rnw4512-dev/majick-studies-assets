@@ -560,6 +560,22 @@ function assessmentMasteryHTML(){
   (practiced.length?'<p>Mastery combines <b>classification accuracy</b>, <b>dimension recognition</b>, and your ability to separate <b>confusing pairs</b>.</p>':'<p>Complete the Assessment Type Drill or Assessment Dimension Detective to start building mastery evidence.</p>')+
  '</section>';
 }
+function assessmentRecentIds(){
+ const st=prog();
+ return Array.isArray(st.assessmentRecentIds)?st.assessmentRecentIds:[];
+}
+function rememberAssessmentQuestion(id){
+ if(!id)return;
+ const st=prog(),rows=assessmentRecentIds().filter(x=>x!==id);
+ rows.push(id);
+ st.assessmentRecentIds=rows.slice(-24);
+}
+function freshAssessmentRows(rows){
+ const recent=new Set(assessmentRecentIds());
+ const fresh=shuffle(rows.filter(q=>!recent.has(q.id)));
+ const recycled=shuffle(rows.filter(q=>recent.has(q.id)));
+ return fresh.concat(recycled);
+}
 function assessmentNextPractice(){
  const rows=assessmentMasteryRows();
  const practiced=rows.filter(x=>x.possible>0);
@@ -608,7 +624,7 @@ function weakestAssessmentFamilies(){
   .map(x=>x.label);
 }
 function startAssessmentFamilyPractice(family){
- const st=prog(),pool=shuffle(BANK.filter(q=>q.section===1&&q.trap==='assessment-type'&&assessmentFamily(q)===family));
+ const st=prog(),pool=freshAssessmentRows(BANK.filter(q=>q.section===1&&q.trap==='assessment-type'&&assessmentFamily(q)===family));
  if(!pool.length)return;
  const qs=pool.slice(0,Math.min(6,pool.length));
  st.assessmentDrill={
@@ -618,7 +634,7 @@ function startAssessmentFamilyPractice(family){
  st.mode='assessmentDrill';save();render();
 }
 function sampleQuestions(count,mode){
- const assessmentPool=BANK.filter(q=>q.section===1&&q.trap==='assessment-type');
+ const assessmentPool=freshAssessmentRows(BANK.filter(q=>q.section===1&&q.trap==='assessment-type'));
  if(mode==='assessmentDrill'){
    const weak=weakestAssessmentFamilies();
    if(!weak.length)return shuffle(assessmentPool).slice(0,count);
@@ -646,7 +662,7 @@ function startExam(mode){
 function examObj(mode){const st=prog();return st[mode]}
 function examQuestions(obj){const by=new Map(BANK.map(q=>[q.id,q]));return (obj?.ids||[]).map(id=>by.get(id)).filter(Boolean)}
 function examSelect(mode,v){const o=examObj(mode);if(!o||o.submitted)return;o.selected=v;render()}
-function examSubmit(mode){const st=prog(),o=st[mode],qs=examQuestions(o),item=qs[o.index];if(!o||!item||!o.selected)return;const correct=o.selected===item.answer,at=Date.now();o.submitted=true;o.answers.push({id:item.id,section:item.section,concept:item.concept,trap:item.trap,chosen:o.selected,correct,at});window.MajickStudyProgress?.creditAnswer?.({key:'D755:'+mode+':'+item.id+':'+at,course:'D755',source:'d755-'+mode,qid:item.id,topicId:item.topicId||realmTopic(item.section,item.concept),correct,difficulty:item.difficulty||4,chosen:o.selected,answer:item.answer,at});save();render()}
+function examSubmit(mode){const st=prog(),o=st[mode],qs=examQuestions(o),item=qs[o.index];if(!o||!item||!o.selected)return;const correct=o.selected===item.answer,at=Date.now();o.submitted=true;o.answers.push({id:item.id,section:item.section,concept:item.concept,trap:item.trap,chosen:o.selected,correct,at});if(mode==='assessmentDrill')rememberAssessmentQuestion(item.id);window.MajickStudyProgress?.creditAnswer?.({key:'D755:'+mode+':'+item.id+':'+at,course:'D755',source:'d755-'+mode,qid:item.id,topicId:item.topicId||realmTopic(item.section,item.concept),correct,difficulty:item.difficulty||4,chosen:o.selected,answer:item.answer,at});save();render()}
 function assessmentContrast(answer){
  const a=String(answer||'');
  const pairs=[
@@ -759,10 +775,10 @@ function contrastPairFamily(label){
  return map[label]||'Other';
 }
 function startContrastRepair(){
- const st=prog(),pool=BANK.filter(q=>q.section===1&&q.trap==='assessment-type'&&contrastPairFor(q));
+ const st=prog(),pool=freshAssessmentRows(BANK.filter(q=>q.section===1&&q.trap==='assessment-type'&&contrastPairFor(q)));
  const picked=[];
  for(const pair of ASSESSMENT_CONTRAST_PAIRS){
-   const rows=shuffle(pool.filter(q=>contrastPairFor(q)?.label===pair.label)).slice(0,2);
+   const rows=freshAssessmentRows(pool.filter(q=>contrastPairFor(q)?.label===pair.label)).slice(0,2);
    picked.push(...rows);
  }
  const qs=shuffle(picked).slice(0,12);
@@ -780,6 +796,7 @@ function contrastRepairSubmit(){
  const correct=o.selected===q.answer,at=Date.now();
  o.submitted=true;
  o.answers.push({id:q.id,pair:contrastPairFor(q)?.label||'',chosen:o.selected,answer:q.answer,correct,at});
+ rememberAssessmentQuestion(q.id);
  window.MajickStudyProgress?.creditAnswer?.({
    key:'D755:contrast-repair:'+q.id+':'+at,course:'D755',source:'d755-contrast-repair',
    qid:q.id,topicId:q.topicId||realmTopic(q.section,q.concept),correct,difficulty:q.difficulty||4,
@@ -824,7 +841,7 @@ function contrastRepairResultView(){
  return '<section class="d755Result d755ContrastResult"><small>CONFUSING PAIRS REPAIR • RESULTS</small><h1>'+r.score+' / '+r.total+'</h1><div class="score">'+r.pct+'%</div><div class="d755AssessmentBreakdown">'+Object.entries(r.pairStats||{}).map(([label,row])=>{const pct=row.total?Math.round(row.correct/row.total*100):0;return '<article><div><b>'+E(label)+'</b><span>'+row.correct+'/'+row.total+' • '+pct+'%</span></div><i><em style="width:'+pct+'%"></em></i></article>'}).join('')+'</div>'+assessmentMasteryHTML()+'<div class="resultActions"><button class="btn primary" data-d755-start-contrast>Try new pairs</button><button class="btn ghost" data-d755-mode="assessmentDrill">Assessment Type Drill</button><button class="btn ghost" data-d755-home>Retake Studio Home</button></div></section>';
 }
 function startDimensionDetective(){
- const st=prog(),pool=shuffle(BANK.filter(q=>q.section===1&&q.trap==='assessment-type'));
+ const st=prog(),pool=freshAssessmentRows(BANK.filter(q=>q.section===1&&q.trap==='assessment-type'));
  const picked=[],seen=new Set();
  for(const q of pool){
    const fam=assessmentFamily(q);
@@ -867,6 +884,7 @@ function detectiveSubmitAnswer(){
  const answerCorrect=o.answerChoice===q.answer;
  const at=Date.now();
  o.answerSubmitted=true;
+ rememberAssessmentQuestion(q.id);
  o.answers.push({
    id:q.id,dimension,dimensionChoice:o.dimensionChoice,dimensionCorrect,
    chosen:o.answerChoice,answer:q.answer,correct:answerCorrect,at
@@ -1066,6 +1084,6 @@ if(typeof oldBind==='function'){
  };
 }
 ensureBank();
-window.MajickD755Retake={VERSION,COURSE,SECTIONS,TRAPS,BANK,ensureBank,show,render,shell,state:prog,current,startExam,examSubmit,examNext,assessmentFamily,assessmentEvidence,assessmentMasteryRows,assessmentNextPractice,startAssessmentFamilyPractice,contrastPairFor,contrastPairFamily,startContrastRepair,contrastRepairSelect,contrastRepairSubmit,contrastRepairNext,startDimensionDetective,detectiveChooseDimension,detectiveSubmitDimension,detectiveChooseAnswer,detectiveSubmitAnswer,detectiveNext,startSectionCheck,checkSubmit,checkNext,anchorsView,grimoireWall,teacherVisual};
+window.MajickD755Retake={VERSION,COURSE,SECTIONS,TRAPS,BANK,ensureBank,show,render,shell,state:prog,current,startExam,examSubmit,examNext,assessmentFamily,assessmentEvidence,assessmentMasteryRows,assessmentNextPractice,assessmentRecentIds,rememberAssessmentQuestion,freshAssessmentRows,startAssessmentFamilyPractice,contrastPairFor,contrastPairFamily,startContrastRepair,contrastRepairSelect,contrastRepairSubmit,contrastRepairNext,startDimensionDetective,detectiveChooseDimension,detectiveSubmitDimension,detectiveChooseAnswer,detectiveSubmitAnswer,detectiveNext,startSectionCheck,checkSubmit,checkNext,anchorsView,grimoireWall,teacherVisual};
 document.documentElement.dataset.majickD755Retake=VERSION;
 })();
