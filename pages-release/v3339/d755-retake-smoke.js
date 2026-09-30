@@ -109,6 +109,10 @@ for(let i=0;i<12;i++){
   const q=M.BANK.find(x=>x.id===o.ids[o.index]);
   o.selected=q.answer;
   M.examSubmit('assessmentDrill');
+  if(i===0){
+    assert(/THIS STEM IS ASKING ABOUT/.test(M.shell()),'Assessment Type Drill classification lens missing after submission');
+    assert(/d755ClassificationLens/.test(M.shell()),'Assessment Type Drill classification lens markup missing');
+  }
   M.examNext('assessmentDrill');
 }
 st=M.state();
