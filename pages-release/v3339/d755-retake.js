@@ -511,7 +511,34 @@ function home(){
  const st=prog();
  const total=SECTIONS.flatMap(s=>s.concepts).length,done=Object.keys(st.completed).filter(k=>st.completed[k]).length;
  const diag=st.diagnosticResult;
- return '<section class="d755Home"><small>D755 • TEACHER-FOCUS RETAKE STUDIO</small><h1>Assessment for Special Education</h1><p>This retake course now follows your instructor’s OA review and Student Journey process: interpret data, identify the student’s stage, choose the next educational decision, and explain why. Vocabulary is tested inside decisions—not by itself.</p><div class="d755HomeStats"><div><b>'+done+' / '+total+'</b><span>concepts completed</span></div><div><b>'+Object.keys(st.anchors).length+'</b><span>anchor charts unlocked</span></div><div><b>'+(diag?diag.score+'/'+diag.total:'—')+'</b><span>diagnostic</span></div></div>'+assessmentMasteryHTML()+assessmentNextPracticeHTML()+assessmentMistakeQueueHTML()+'<div class="d755CourseCycle"><span>Collect evidence</span><i>→</i><span>Interpret patterns</span><i>→</i><span>Individualize</span><i>→</i><span>Intervene</span><i>→</i><span>Monitor</span><i>→</i><span>Communicate</span></div><div class="d755HomeActions"><button class="btn primary" data-d755-section="'+st.sectionId+'">Continue Learning</button><button class="btn ghost" data-d755-mode="diagnostic">Start / Retake Diagnostic</button><button class="btn ghost" data-d755-mode="assessmentDrill">Assessment Type Drill</button><button class="btn ghost" data-d755-smart-review>Smart 10-Question Review</button><button class="btn ghost" data-d755-mode="dimensionDetective">Assessment Dimension Detective</button><button class="btn ghost" data-d755-mode="contrastRepair">Confusing Pairs Repair</button><button class="btn ghost" data-d755-mode="mock">Mock OA</button></div><div class="d755SectionCards">'+SECTIONS.map(s=>'<button data-d755-section="'+s.id+'"><span>SECTION '+s.number+'</span><b>'+E(s.title)+'</b><small>'+E(s.bigIdea)+'</small></button>').join('')+'</div></section>';
+ return '<section class="d755Home"><small>D755 • TEACHER-FOCUS RETAKE STUDIO</small><h1>Assessment for Special Education</h1><p>This retake course now follows your instructor’s OA review and Student Journey process: interpret data, identify the student’s stage, choose the next educational decision, and explain why. Vocabulary is tested inside decisions—not by itself.</p><div class="d755HomeStats"><div><b>'+done+' / '+total+'</b><span>concepts completed</span></div><div><b>'+Object.keys(st.anchors).length+'</b><span>anchor charts unlocked</span></div><div><b>'+(diag?diag.score+'/'+diag.total:'—')+'</b><span>diagnostic</span></div></div>'+retakeEvidenceSnapshotHTML()+assessmentMasteryHTML()+assessmentNextPracticeHTML()+assessmentMistakeQueueHTML()+'<div class="d755CourseCycle"><span>Collect evidence</span><i>→</i><span>Interpret patterns</span><i>→</i><span>Individualize</span><i>→</i><span>Intervene</span><i>→</i><span>Monitor</span><i>→</i><span>Communicate</span></div><div class="d755HomeActions"><button class="btn primary" data-d755-section="'+st.sectionId+'">Continue Learning</button><button class="btn ghost" data-d755-mode="diagnostic">Start / Retake Diagnostic</button><button class="btn ghost" data-d755-mode="assessmentDrill">Assessment Type Drill</button><button class="btn ghost" data-d755-smart-review>Smart 10-Question Review</button><button class="btn ghost" data-d755-mode="dimensionDetective">Assessment Dimension Detective</button><button class="btn ghost" data-d755-mode="contrastRepair">Confusing Pairs Repair</button><button class="btn ghost" data-d755-mode="mock">Mock OA</button></div><div class="d755SectionCards">'+SECTIONS.map(s=>'<button data-d755-section="'+s.id+'"><span>SECTION '+s.number+'</span><b>'+E(s.title)+'</b><small>'+E(s.bigIdea)+'</small></button>').join('')+'</div></section>';
+}
+function retakeEvidenceSnapshot(){
+ const st=prog(),rows=assessmentMasteryRows();
+ const practiced=rows.filter(x=>x.possible>0),mastered=rows.filter(x=>x.status==='Mastered').length;
+ const sectionRows=[1,2,3].map(n=>st.sectionChecks?.['s'+n]||null);
+ const sectionReady=sectionRows.filter(r=>r?.status==='Ready to move on').length;
+ const diag=st.diagnosticResult||null,mock=st.mockResult||null;
+ return {
+   sectionReady,sectionTotal:3,
+   assessmentMastered:mastered,assessmentPracticed:practiced.length,assessmentTotal:rows.length,
+   mistakes:assessmentMistakeIds().length,
+   diagnostic:diag?{score:Number(diag.score||0),total:Number(diag.total||0),pct:Number(diag.pct||0)}:null,
+   mock:mock?{score:Number(mock.score||0),total:Number(mock.total||0),pct:Number(mock.pct||0)}:null
+ };
+}
+function retakeEvidenceSnapshotHTML(){
+ const x=retakeEvidenceSnapshot();
+ return '<section class="d755EvidenceSnapshot"><header><div><small>RETAKE EVIDENCE SNAPSHOT</small><h3>What your saved practice shows</h3></div><span>Evidence, not prediction</span></header>'+
+  '<div class="d755EvidenceGrid">'+
+   '<article><b>'+x.sectionReady+' / '+x.sectionTotal+'</b><span>section checks ready to move on</span><small>Based on your saved section mastery checks.</small></article>'+
+   '<article><b>'+x.assessmentMastered+' / '+x.assessmentTotal+'</b><span>assessment dimensions mastered</span><small>'+x.assessmentPracticed+' of '+x.assessmentTotal+' dimensions have practice evidence.</small></article>'+
+   '<article class="'+(x.mistakes?'attention':'clear')+'"><b>'+x.mistakes+'</b><span>unresolved assessment mistakes</span><small>'+(x.mistakes?'Use Mistake Repair before adding more of the same type.':'No assessment mistakes are currently waiting in the repair queue.')+'</small></article>'+
+   '<article><b>'+(x.diagnostic?x.diagnostic.score+' / '+x.diagnostic.total:'—')+'</b><span>latest diagnostic</span><small>'+(x.diagnostic?x.diagnostic.pct+'% saved practice evidence.':'No diagnostic result saved yet.')+'</small></article>'+
+   '<article><b>'+(x.mock?x.mock.score+' / '+x.mock.total:'—')+'</b><span>latest mock OA</span><small>'+(x.mock?x.mock.pct+'% saved practice evidence.':'No mock OA result saved yet.')+'</small></article>'+
+  '</div>'+
+  '<p>This snapshot summarizes practice completed inside Majick Studies. It does not predict or guarantee your WGU OA result.</p>'+
+ '</section>';
 }
 function assessmentEvidence(kind){
  const st=prog(),saved=st?.assessmentTypeEvidence?.[kind]||{};
@@ -1192,6 +1219,6 @@ if(typeof oldBind==='function'){
  };
 }
 ensureBank();
-window.MajickD755Retake={VERSION,COURSE,SECTIONS,TRAPS,BANK,ensureBank,show,render,shell,state:prog,current,startExam,examSubmit,examNext,assessmentFamily,assessmentEvidence,assessmentMasteryRows,assessmentNextPractice,smartReviewSummaryHTML,assessmentMistakeIds,assessmentMistakeSummary,updateAssessmentMistake,startAssessmentMistakeRepair,smartReviewQuestions,startSmartReview,assessmentRecentIds,rememberAssessmentQuestion,freshAssessmentRows,startAssessmentFamilyPractice,contrastPairFor,contrastPairFamily,startContrastRepair,contrastRepairSelect,contrastRepairSubmit,contrastRepairNext,startDimensionDetective,detectiveChooseDimension,detectiveSubmitDimension,detectiveChooseAnswer,detectiveSubmitAnswer,detectiveNext,startSectionCheck,checkSubmit,checkNext,anchorsView,grimoireWall,teacherVisual};
+window.MajickD755Retake={VERSION,COURSE,SECTIONS,TRAPS,BANK,ensureBank,show,render,shell,state:prog,current,startExam,examSubmit,examNext,assessmentFamily,retakeEvidenceSnapshot,assessmentEvidence,assessmentMasteryRows,assessmentNextPractice,smartReviewSummaryHTML,assessmentMistakeIds,assessmentMistakeSummary,updateAssessmentMistake,startAssessmentMistakeRepair,smartReviewQuestions,startSmartReview,assessmentRecentIds,rememberAssessmentQuestion,freshAssessmentRows,startAssessmentFamilyPractice,contrastPairFor,contrastPairFamily,startContrastRepair,contrastRepairSelect,contrastRepairSubmit,contrastRepairNext,startDimensionDetective,detectiveChooseDimension,detectiveSubmitDimension,detectiveChooseAnswer,detectiveSubmitAnswer,detectiveNext,startSectionCheck,checkSubmit,checkNext,anchorsView,grimoireWall,teacherVisual};
 document.documentElement.dataset.majickD755Retake=VERSION;
 })();
