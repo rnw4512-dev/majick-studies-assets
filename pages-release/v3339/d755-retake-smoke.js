@@ -423,3 +423,33 @@ for(const mode of ['timelineDrill','behaviorDrill']){
  assert(st[mode+'Result'].score===12&&M.shell().includes('12 / 12'),'Process result flow failed');
 }
 console.log('D755 TIMELINE AND BEHAVIOR DRILLS PASSED');
+for(const mode of ['timelineDrill','behaviorDrill','diagnostic','mock']){
+ M.startExam(mode);st=M.state();
+ const total=st[mode].ids.length;
+ for(let i=0;i<total;i++){
+  const item=M.BANK.find(q=>q.id===st[mode].ids[i]);
+  st[mode].selected=i===0?item.options.find(x=>x!==item.answer):item.answer;
+  M.examSubmit(mode);M.examNext(mode);
+ }
+ const r=st[mode+'Result'],item=M.BANK.find(q=>q.id===r.answers[0].id);
+ assert(r.answers.length===total&&r.score===total-1,'Saved answer evidence incomplete');
+ assert(M.shell().includes('Review the 1 missed decision'),'Result missed-answer review missing');
+ const html=M.missedAnswerReview(mode);
+ assert(html.includes(item.answer)&&html.includes(r.answers[0].chosen)&&html.includes(item.why),'Review lost decision evidence');
+ delete r.answers;
+ assert(M.missedAnswerReview(mode)==='','Legacy results invented answer evidence');
+}
+M.startExam('timelineDrill');assert(M.shell().includes('Need a reminder? Open the process guide'),'In-drill guide missing');
+assert(M.processChart('timelineDrill').includes('scope="col"')&&M.processChart('timelineDrill').includes('d/300.301'),'Timeline comparison/source missing');
+assert(M.processChart('behaviorDrill').includes('d755ProcessSteps'),'Behavior step guide missing');
+console.log('SAVED MISSED-ANSWER REVIEW AND IN-DRILL GUIDES PASSED');
+
+for(const mode of ['timelineDrill','behaviorDrill','diagnostic','mock']){
+ M.startExam(mode);st=M.state();const saved=st[mode];
+ saved.selected=M.BANK.find(q=>q.id===saved.ids[0]).answer;M.examSubmit(mode);M.examNext(mode);
+ st.mode='home';M.openExam(mode);
+ assert(st[mode]===saved&&saved.index===1,'Leaving a drill lost its saved question position');
+ saved.answers=saved.ids.map(id=>({id,correct:true}));M.openExam(mode);
+ assert(st[mode]===null&&M.shell().includes('Start '),'Completed rounds must offer a fresh start');
+}
+console.log('PAUSED DRILL RESUME PASSED');
