@@ -100,7 +100,17 @@ while(M.state().assessmentDrill&&M.state().mode==='assessmentDrill'){
 }
 assert(purposeMistakes.every(q=>!M.assessmentMistakeIds().includes(q.id)),'Correct retries should clear repaired Purpose questions from Mistake Repair Queue');
 assert(M.assessmentNextPractice().kind!=='mistakes','Recommendation should leave Mistake Repair mode after the queue is cleared');
-st=M.state();st.mode='home';
+st=M.state();
+const evidenceBeforeSmart=JSON.parse(JSON.stringify(st.assessmentTypeEvidence||{}));
+const detectiveBeforeSmart=st.dimensionDetectiveResult;
+st.assessmentTypeEvidence={drill:{'Purpose':{correct:1,total:4},'Administration':{correct:1,total:4}},detective:{},pairs:{}};
+st.dimensionDetectiveResult=null;
+const broadWeakRec=M.assessmentNextPractice();
+assert(broadWeakRec.kind==='smart','Multiple weak mastery rows should recommend Smart Review');
+assert(/Smart 10-Question Review/.test(broadWeakRec.title),'Smart Review recommendation title missing');
+st.assessmentTypeEvidence=evidenceBeforeSmart;
+st.dimensionDetectiveResult=detectiveBeforeSmart;
+st.mode='home';
 assert(M.BANK.some(q=>q.id==='d755_wgu_assess_id_25'&&/parent interview/i.test(q.prompt)),'New qualitative parent-interview scenario missing');
 assert(M.BANK.some(q=>q.id==='d755_wgu_assess_id_26'&&/seconds/i.test(q.prompt)&&q.answer==='Quantitative data'),'New quantitative latency scenario missing');
 assert(M.BANK.some(q=>q.id==='d755_wgu_assess_id_28'&&/running record/i.test(q.prompt)&&q.answer==='Informal assessment'),'New informal running-record scenario missing');
@@ -222,7 +232,7 @@ assert(masteryRows.length===6,'Assessment Type Mastery Ladder must contain all s
 assert(masteryRows.some(x=>x.possible>0),'Assessment Type Mastery Ladder should include accumulated evidence');
 assert(masteryRows.every(x=>['Mastered','Developing','Needs practice','Not practiced'].includes(x.status)),'Assessment Type Mastery Ladder status invalid');
 const nextPractice=M.assessmentNextPractice();
-assert(['drill','detective','pairs','family','maintenance'].includes(nextPractice.kind),'D755 next-practice recommendation kind invalid');
+assert(['drill','detective','pairs','smart','family','maintenance'].includes(nextPractice.kind),'D755 next-practice recommendation kind invalid');
 st.mode='home';
 assert(/RECOMMENDED NEXT PRACTICE/.test(M.shell()),'D755 Recommended Next Practice card missing from home');
 const purposeBefore=Number(M.assessmentEvidence('drill').Purpose?.total||0);
