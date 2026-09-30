@@ -64,21 +64,42 @@
    try{scene.tweens.killTweensOf(pet)}catch(_){}
    resetDynamicPose(pet);
  }
+ function idleStyle(g){
+   const type=resolvedType(g),personality=String(identity(g)?.personality||g?.personality||'').toLowerCase();
+   if(['vesper','rook'].includes(type)||/observ|strateg|insight|quiet/.test(personality))return 'watchful-tilt';
+   if(type==='zephyr'||/energetic|momentum|restless|playful/.test(personality))return 'quick-fidget';
+   if(['briar','solara'].includes(type)||/gentle|courage|warm|calm/.test(personality))return 'soft-bob';
+   if(['prism','ember'].includes(type)||/curious|bright|creative/.test(personality))return 'curious-wiggle';
+   if(type==='luna'||/independent|book|thoughtful/.test(personality))return 'cat-settle';
+   if(type==='nova'||/explor|adventur/.test(personality))return 'fox-listen';
+   if(type==='mallow'||/cozy|affection|sweet/.test(personality))return 'cozy-sway';
+   return 'breathing';
+ }
  function idleDynamicGuardian(scene,g){
    const pet=scene.v3348Sprites?.[g.petId];
    if(!pet?.active||scene.editMode)return false;
-   const profile=motionProfile(g),b=baseScale(pet);
-   pet.setData?.('v3351MotionState','breathing');
-   scene.tweens.add({
-     targets:pet,
-     scaleX:b.sx*(1+profile.squash*.45),
-     scaleY:b.sy*(1-profile.squash*.32),
-     y:pet.y-profile.idle,
-     duration:700,
-     yoyo:true,
-     ease:'Sine.inOut',
-     onComplete:()=>{if(pet.active)resetDynamicPose(pet)}
-   });
+   const profile=motionProfile(g),b=baseScale(pet),style=idleStyle(g);
+   pet.setData?.('v3354IdleStyle',style);
+   pet.setData?.('v3351MotionState','idle-'+style);
+   let args={targets:pet,duration:700,yoyo:true,ease:'Sine.inOut',onComplete:()=>{if(pet.active)resetDynamicPose(pet)}};
+   if(style==='watchful-tilt'){
+     Object.assign(args,{angle:pet.flipX?-4:4,y:pet.y-profile.idle*.45,duration:820});
+   }else if(style==='quick-fidget'){
+     Object.assign(args,{x:pet.x+(pet.flipX?-12:12),angle:pet.flipX?-3:3,duration:260,repeat:1});
+   }else if(style==='soft-bob'){
+     Object.assign(args,{y:pet.y-profile.idle*.7,scaleY:b.sy*1.025,scaleX:b.sx*.99,duration:620});
+   }else if(style==='curious-wiggle'){
+     Object.assign(args,{angle:pet.flipX?-5:5,scaleX:b.sx*1.025,scaleY:b.sy*.985,duration:420,repeat:1});
+   }else if(style==='cat-settle'){
+     Object.assign(args,{scaleY:b.sy*.965,scaleX:b.sx*1.02,y:pet.y+4,duration:760});
+   }else if(style==='fox-listen'){
+     Object.assign(args,{angle:pet.flipX?-2.5:2.5,y:pet.y-profile.idle*.35,duration:520,repeat:1});
+   }else if(style==='cozy-sway'){
+     Object.assign(args,{x:pet.x+(pet.flipX?-7:7),angle:pet.flipX?-2:2,duration:900});
+   }else{
+     Object.assign(args,{scaleX:b.sx*(1+profile.squash*.45),scaleY:b.sy*(1-profile.squash*.32),y:pet.y-profile.idle});
+   }
+   scene.tweens.add(args);
    return true;
  }
  function playStyle(g){
@@ -335,7 +356,7 @@
  };
  window.MajickSanctuaryRoster={VERSION,stage,canon,inspect(scene){
    const s=scene||window.majickPhaserGame?.scene?.getScene?.('Game');
-   return {roster:report(s),dynamic:Object.keys(s?.v3348Sprites||{}),motion:Object.fromEntries(Object.entries(s?.v3348Sprites||{}).map(([id,p])=>[id,p?.getData?.('v3351MotionState')||'unknown'])),playStyles:Object.fromEntries(Object.entries(s?.v3348Sprites||{}).map(([id,p])=>[id,p?.getData?.('v3352PlayStyle')||''])),sleepStates:Object.fromEntries(Object.entries(s?.v3348Sprites||{}).map(([id,p])=>[id,p?.getData?.('v3353SleepState')||'']))};
+   return {roster:report(s),dynamic:Object.keys(s?.v3348Sprites||{}),motion:Object.fromEntries(Object.entries(s?.v3348Sprites||{}).map(([id,p])=>[id,p?.getData?.('v3351MotionState')||'unknown'])),playStyles:Object.fromEntries(Object.entries(s?.v3348Sprites||{}).map(([id,p])=>[id,p?.getData?.('v3352PlayStyle')||''])),sleepStates:Object.fromEntries(Object.entries(s?.v3348Sprites||{}).map(([id,p])=>[id,p?.getData?.('v3353SleepState')||''])),idleStyles:Object.fromEntries(Object.entries(s?.v3348Sprites||{}).map(([id,p])=>[id,p?.getData?.('v3354IdleStyle')||'']))};
  }};
  window.addEventListener('message',ev=>{
    if(ev.origin!==location.origin||ev.data?.type!=='MAJICK_SANCTUARY_ROSTER_REQUEST_V3350')return;
