@@ -109,12 +109,29 @@ for(let i=0;i<12;i++){
   const q=M.BANK.find(x=>x.id===o.ids[o.index]);
   o.selected=q.answer;
   M.examSubmit('assessmentDrill');
+  if(i===0){
+    assert(/THIS STEM IS ASKING ABOUT/.test(M.shell()),'Assessment Type Drill classification lens missing after submission');
+    assert(/d755ClassificationLens/.test(M.shell()),'Assessment Type Drill classification lens markup missing');
+    assert(/Why not the tempting opposite\?/.test(M.shell()),'Assessment Type Drill contrast explanation missing');
+  }
   M.examNext('assessmentDrill');
 }
 st=M.state();
 assert(st.mode==='assessmentDrillResult','Assessment Type Drill did not reach result state');
 assert(st.assessmentDrillResult.score===12&&st.assessmentDrillResult.total===12,'Assessment Type Drill score/result incorrect');
 assert(Object.keys(st.assessmentDrillResult.familyStats||{}).length>=3,'Assessment Type Drill category breakdown missing');
+st.assessmentDrillResult.familyStats={
+  'Purpose':{correct:0,total:3},
+  'Administration':{correct:1,total:3},
+  'Data type':{correct:3,total:3},
+  'Assessment tools':{correct:3,total:3}
+};
+M.startExam('assessmentDrill');
+const adaptiveQs=M.state().assessmentDrill.ids.map(id=>M.BANK.find(q=>q.id===id));
+const adaptiveFocusCount=adaptiveQs.filter(q=>/assessment purpose|formal informal/.test(String(q.concept))).length;
+assert(adaptiveFocusCount>=6,'Adaptive Assessment Type Drill should target the two weakest categories');
+M.state().assessmentDrill=null;
+M.state().mode='home';
 
 M.startExam('mock');
 st=M.state();
