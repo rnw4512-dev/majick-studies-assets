@@ -531,3 +531,69 @@
   outline:none;
   box-shadow:0 0 16px rgba(183,140,211,.12);
 }
+
+/* D755 Confusing Pairs Repair */
+.d755ContrastIntro{
+  border:1px solid rgba(199,164,220,.18);
+  border-radius:18px;
+  background:linear-gradient(180deg,rgba(29,18,37,.96),rgba(18,12,24,.98));
+}
+.d755ContrastChoices{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:12px;
+  margin:18px 0;
+}
+.d755ContrastChoices button{
+  min-height:92px;
+  padding:16px;
+  border:1px solid rgba(188,151,211,.18);
+  border-radius:16px;
+  background:#18101f;
+  color:#e7d9ec;
+  font:800 15px/1.35 Georgia,serif;
+  cursor:pointer;
+}
+.d755ContrastChoices button:hover,
+.d755ContrastChoices button:focus-visible{
+  border-color:#c69ddd;
+  color:#fff1ca;
+  outline:none;
+  box-shadow:0 0 22px rgba(183,140,211,.13);
+}
+.d755ContrastChoices button.selected{
+  border-color:#d3a9e7;
+  background:#281832;
+}
+.d755ContrastChoices button.correct{
+  border-color:#7fb892;
+  background:rgba(61,111,77,.16);
+  color:#cce8d5;
+}
+.d755ContrastChoices button.wrong{
+  border-color:#b76e80;
+  background:rgba(124,58,77,.15);
+  color:#e5b7c3;
+}
+.d755ContrastWhy{
+  margin-top:10px;
+  padding:10px 12px;
+  border-left:3px solid #b68ed0;
+  border-radius:8px;
+  background:rgba(111,73,137,.1);
+}
+.d755ContrastWhy small{
+  display:block;
+  margin-bottom:4px;
+  color:#c2a2d3;
+  font:900 8px Arial,sans-serif;
+  letter-spacing:.13em;
+}
+.d755ContrastWhy span{
+  color:#d7c9dc;
+  font-size:10px;
+  line-height:1.45;
+}
+@media(max-width:650px){
+  .d755ContrastChoices{grid-template-columns:1fr}
+}
