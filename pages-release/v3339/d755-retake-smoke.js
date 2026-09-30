@@ -101,6 +101,7 @@ assert(st.assessmentDrillResult.smartReviewSummary.remainingMistakes===M.assessm
 assert(Array.isArray(st.assessmentDrillResult.smartReviewSummary.practicedFamilies),'Smart Review practiced-dimension summary missing');
 assert(/SMART REVIEW • WHAT CHANGED/.test(M.smartReviewSummaryHTML(st.assessmentDrillResult)),'Smart Review repair snapshot HTML missing');
 st.mode='home';
+purposeMistakes.forEach(q=>M.updateAssessmentMistake(q.id,false));
 const mistakeRec=M.assessmentNextPractice();
 assert(mistakeRec.kind==='mistakes'&&mistakeRec.count>=2,'Recommended Next Practice should prioritize unresolved assessment mistakes');
 assert(/Repair your missed assessment questions/.test(mistakeRec.title),'Mistake-priority recommendation title missing');
