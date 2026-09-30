@@ -668,3 +668,48 @@
   .d755MistakeQueue{align-items:stretch;flex-direction:column}
   .d755MistakeQueue .btn{width:100%}
 }
+
+/* D755 mistake queue family breakdown */
+.d755MistakeQueueCopy{min-width:0;flex:1}
+.d755MistakeFamilies{
+  display:flex;
+  flex-wrap:wrap;
+  gap:7px;
+  margin-top:10px;
+}
+.d755MistakeFamilies button{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  padding:6px 8px;
+  border:1px solid rgba(197,142,158,.2);
+  border-radius:999px;
+  background:rgba(91,46,62,.16);
+  color:#d9bec8;
+  cursor:pointer;
+}
+.d755MistakeFamilies button:hover,
+.d755MistakeFamilies button:focus-visible{
+  border-color:#d69aab;
+  color:#fff0f4;
+  outline:none;
+}
+.d755MistakeFamilies b{
+  display:grid;
+  place-items:center;
+  min-width:20px;
+  height:20px;
+  padding:0 5px;
+  border-radius:999px;
+  background:#6d3548;
+  color:#fff2f6;
+  font-size:9px;
+}
+.d755MistakeFamilies span{
+  font-size:9px;
+  font-weight:800;
+}
+@media(max-width:700px){
+  .d755MistakeFamilies{display:grid;grid-template-columns:1fr}
+  .d755MistakeFamilies button{justify-content:flex-start}
+}
