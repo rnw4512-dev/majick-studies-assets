@@ -75,6 +75,7 @@ let st=M.state();
 assert(st.mode==='home','D755 should enter Retake Studio at home');
 assert(/TEACHER-FOCUS RETAKE STUDIO/.test(M.shell()),'Teacher-focus home label missing');
 assert(/Retake Diagnostic/.test(M.shell())&&/30 mixed WGU-style scenarios/.test(M.shell()),'Retake Studio does not expose the 30-question diagnostic entry point');
+assert(/Assessment Type Drill/.test(M.shell()),'Retake Studio does not expose the Assessment Type Drill entry point');
 
 M.startExam('diagnostic');
 st=M.state();
@@ -94,6 +95,13 @@ st=M.state();
 assert(st.mode==='diagnosticResult','Diagnostic did not reach result state');
 assert(st.diagnosticResult.score===30&&st.diagnosticResult.total===30,'Perfect diagnostic score incorrect');
 assert(st.diagnosticResult.bySection.every(x=>x.pct===100),'Diagnostic section breakdown incorrect');
+
+M.startExam('assessmentDrill');
+st=M.state();
+assert(st.assessmentDrill.ids.length===12,'Assessment Type Drill must contain 12 questions');
+const drillQs=st.assessmentDrill.ids.map(id=>M.BANK.find(q=>q.id===id));
+assert(drillQs.every(q=>q.trap==='assessment-type'),'Assessment Type Drill must contain only focused assessment-identification questions');
+assert(/ASSESSMENT TYPE DRILL/.test(M.shell()),'Assessment Type Drill screen label missing');
 
 M.startExam('mock');
 st=M.state();
