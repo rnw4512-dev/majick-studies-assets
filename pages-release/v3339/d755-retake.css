@@ -57,3 +57,88 @@
 .d755QuestionVisual.cbc b{display:grid;place-items:center;width:28px;height:28px;margin:auto;border:1px solid #8b668f;border-radius:50%;color:#76517c;font:700 16px Georgia,serif}
 .d755QuestionVisual.cbc em{color:#766a76;font-size:8px;font-style:normal;line-height:1.35}
 @media(max-width:560px){.d755QuestionVisual.cbc>div{grid-template-columns:1fr}.d755QuestionVisual.journey i{transform:rotate(90deg)}}
+
+/* Assessment Type Drill anchor chart */
+.d755AssessmentTypeChart{
+  margin:18px 0;
+  padding:16px;
+  border:1px solid rgba(196,160,219,.18);
+  border-radius:18px;
+  background:linear-gradient(180deg,rgba(28,18,36,.96),rgba(18,12,24,.98));
+}
+.d755AssessmentTypeChart header small{
+  display:block;
+  color:#b99ac9;
+  font:900 8px Arial,sans-serif;
+  letter-spacing:.15em;
+}
+.d755AssessmentTypeChart header h3{
+  margin:5px 0 5px;
+  color:#f5e7f7;
+  font:700 22px/1.15 Georgia,serif;
+}
+.d755AssessmentTypeChart header p{
+  margin:0 0 14px;
+  color:#b9a9c0;
+  font-size:12px;
+  line-height:1.5;
+}
+.d755AssessmentTypeGrid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:10px;
+}
+.d755AssessmentTypeGrid article{
+  display:grid;
+  grid-template-columns:auto 1fr;
+  gap:6px 10px;
+  padding:12px;
+  border:1px solid rgba(180,146,202,.14);
+  border-radius:14px;
+  background:#160f1d;
+}
+.d755AssessmentTypeGrid article>small{
+  grid-column:1/-1;
+  color:#a98eb7;
+  font:900 8px Arial,sans-serif;
+  letter-spacing:.12em;
+}
+.d755AssessmentTypeGrid article>b{
+  color:#f2dfad;
+  font-size:11px;
+}
+.d755AssessmentTypeGrid article>span{
+  color:#c5b8ca;
+  font-size:10px;
+  line-height:1.4;
+}
+.d755AssessmentRule{
+  margin-top:12px;
+  padding:11px 12px;
+  border-left:3px solid #b48ad0;
+  border-radius:8px;
+  background:rgba(120,79,146,.11);
+  color:#d8c9dd;
+  font-size:11px;
+  line-height:1.5;
+}
+.d755AssessmentRule b{color:#f1dcad}
+.d755AssessReminder{
+  margin:0 0 16px;
+  border:1px solid rgba(183,149,204,.16);
+  border-radius:14px;
+  background:#150e1c;
+}
+.d755AssessReminder>summary{
+  padding:11px 13px;
+  cursor:pointer;
+  color:#d9c8e1;
+  font-size:11px;
+  font-weight:800;
+}
+.d755AssessReminder[open]>summary{border-bottom:1px solid rgba(183,149,204,.12)}
+.d755AssessReminder .d755AssessmentTypeChart{margin:0;border:0;border-radius:0 0 14px 14px}
+@media(max-width:720px){
+  .d755AssessmentTypeGrid{grid-template-columns:1fr}
+  .d755AssessmentTypeGrid article{grid-template-columns:1fr}
+}

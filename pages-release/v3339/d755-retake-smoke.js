@@ -102,6 +102,8 @@ assert(st.assessmentDrill.ids.length===12,'Assessment Type Drill must contain 12
 const drillQs=st.assessmentDrill.ids.map(id=>M.BANK.find(q=>q.id===id));
 assert(drillQs.every(q=>q.trap==='assessment-type'),'Assessment Type Drill must contain only focused assessment-identification questions');
 assert(/ASSESSMENT TYPE DRILL/.test(M.shell()),'Assessment Type Drill screen label missing');
+assert(/ASSESSMENT TYPE ANCHOR CHART/.test(M.shell()),'Assessment Type Anchor Chart missing from drill');
+assert(/WGU decision rule/.test(M.shell()),'Assessment Type Drill decision rule missing');
 
 M.startExam('mock');
 st=M.state();
