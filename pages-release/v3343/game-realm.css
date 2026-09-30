@@ -380,3 +380,121 @@
 .realmHexBreaker .realmRunProgressBar i{background:linear-gradient(90deg,#8f456c,#d07ba4)}
 .realmGauntlet .realmRunProgressBar i{background:linear-gradient(90deg,#9b5e6d,#d59a64)}
 @media(prefers-reduced-motion:reduce){.realmRunProgressBar i{transition:none!important}}
+
+/* D755 Assessment Sigil Sort */
+.realmAssessmentSigil .realmScene{
+  background:
+    radial-gradient(circle at 50% 20%,rgba(191,144,226,.16),transparent 34%),
+    linear-gradient(180deg,#171022,#0f0a16 74%);
+  border-color:rgba(195,154,221,.22);
+}
+.assessmentSigilArt{
+  position:relative;
+  min-height:160px;
+  overflow:hidden;
+}
+.assessmentSigilArt:before{
+  content:'';
+  position:absolute;inset:18px 8%;
+  border:1px solid rgba(202,173,226,.13);
+  border-radius:50% 50% 16px 16px;
+  box-shadow:inset 0 0 40px rgba(108,72,137,.12);
+}
+.sigilGate{
+  position:absolute;
+  bottom:24px;
+  width:54px;height:76px;
+  display:grid;place-items:center;
+  border:1px solid rgba(211,182,228,.24);
+  border-radius:28px 28px 9px 9px;
+  background:linear-gradient(180deg,rgba(66,42,82,.9),rgba(25,17,34,.96));
+  color:#ead6f3;
+  font:700 24px Georgia,serif;
+  box-shadow:0 0 28px rgba(157,111,190,.08);
+}
+.sigilGate.g1{left:8%}.sigilGate.g2{left:31%}.sigilGate.g3{right:31%}.sigilGate.g4{right:8%}
+.sigilSpark{position:absolute;color:#efd79b;font-style:normal;animation:realmFloat 2.6s ease-in-out infinite alternate}
+.sigilSpark.s1{left:20%;top:22%}.sigilSpark.s2{left:49%;top:12%;animation-delay:.5s}.sigilSpark.s3{right:18%;top:30%;animation-delay:1s}
+.assessmentSigilChambers{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:10px;
+  margin-top:14px;
+}
+.assessmentSigilChambers button{
+  min-height:110px;
+  padding:14px;
+  display:grid;
+  grid-template-columns:38px 1fr;
+  grid-template-rows:auto auto;
+  gap:4px 10px;
+  text-align:left;
+  border:1px solid rgba(190,151,216,.16);
+  border-radius:15px;
+  background:linear-gradient(180deg,#1b1223,#130d19);
+  color:#e9dcef;
+}
+.assessmentSigilChambers button:hover,
+.assessmentSigilChambers button:focus-visible{
+  border-color:rgba(224,190,143,.34);
+  box-shadow:0 0 24px rgba(171,127,205,.1);
+}
+.assessmentSigilChambers button>span{
+  grid-row:1/3;
+  display:grid;place-items:center;
+  width:38px;height:38px;
+  border-radius:50%;
+  background:rgba(151,105,183,.13);
+  color:#e7c981;
+  font-size:18px;
+}
+.assessmentSigilChambers b{font-size:12px;color:#f0e3f4}
+.assessmentSigilChambers small{font-size:9px;color:#9e8aa8}
+.assessmentSigilCard>small{
+  display:block;
+  margin-bottom:10px;
+  color:#b59ac3;
+  font:900 8px Arial,sans-serif;
+  letter-spacing:.14em;
+}
+.assessmentSigilGates{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:12px;
+  margin:18px 0 8px;
+}
+.assessmentSigilGates button{
+  min-height:100px;
+  display:grid;
+  place-items:center;
+  align-content:center;
+  gap:5px;
+  border:1px solid rgba(190,151,216,.18);
+  border-radius:18px;
+  background:linear-gradient(180deg,#21142b,#160e1d);
+  color:#eadff0;
+}
+.assessmentSigilGates button>span{font-size:24px;color:#e4c77f}
+.assessmentSigilGates button>b{font-size:14px}
+.assessmentSigilGates button.correct{
+  border-color:rgba(125,211,173,.48);
+  background:linear-gradient(180deg,rgba(39,85,67,.9),rgba(20,45,36,.95));
+}
+.assessmentSigilGates button.wrong{
+  border-color:rgba(217,116,140,.45);
+  background:linear-gradient(180deg,rgba(87,42,57,.9),rgba(44,22,30,.95));
+}
+.realmSigilFeedback{
+  margin-top:12px;
+  padding:12px 13px;
+  border-radius:13px;
+  background:#150f1b;
+  border:1px solid rgba(180,149,201,.14);
+}
+.realmSigilFeedback b{display:block;margin-bottom:4px}
+.realmSigilFeedback p{margin:0 0 10px;color:#bbaec0;font-size:11px;line-height:1.45}
+.realmSigilFeedback.strong b{color:#9ed9ba}.realmSigilFeedback.weak b{color:#e2a0ae}
+@media(max-width:700px){
+  .assessmentSigilChambers,.assessmentSigilGates{grid-template-columns:1fr}
+  .sigilGate{width:42px;height:62px;font-size:18px}
+}
