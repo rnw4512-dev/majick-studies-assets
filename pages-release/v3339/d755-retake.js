@@ -638,7 +638,12 @@ function assessmentNextPractice(){
  if(pairWeak&&pairWeak.pct<70){
    return {kind:'pairs',title:'Repair a confusing pair',detail:pairWeak.row.label+' is your weakest two-choice contrast right now.'};
  }
- const weak=[...practiced].filter(x=>x.status!=='Mastered').sort((a,b)=>a.pct-b.pct)[0];
+ const weakRows=[...practiced].filter(x=>x.status!=='Mastered').sort((a,b)=>a.pct-b.pct);
+ const broadWeak=weakRows.filter(x=>x.pct<70);
+ if(broadWeak.length>=2){
+   return {kind:'smart',count:broadWeak.length,title:'Run a Smart 10-Question Review',detail:broadWeak.length+' mastery dimensions are below 70%, so mix your weak areas with fresh unseen questions.'};
+ }
+ const weak=weakRows[0];
  if(weak){
    return {kind:'family',family:weak.label,title:'Practice '+weak.label,detail:'This is currently your weakest mastery row at '+weak.pct+'%.'};
  }
@@ -654,7 +659,9 @@ function assessmentNextPracticeHTML(){
     ?'<button class="btn primary" data-d755-start-detective>Open Dimension Detective →</button>'
     :rec.kind==='pairs'
      ?'<button class="btn primary" data-d755-start-contrast>Open Confusing Pairs →</button>'
-     :'<button class="btn primary" data-d755-mode="assessmentDrill">'+(rec.kind==='maintenance'?'Mixed maintenance drill →':'Start Assessment Type Drill →')+'</button>';
+     :rec.kind==='smart'
+      ?'<button class="btn primary" data-d755-smart-review>Start Smart Review →</button>'
+      :'<button class="btn primary" data-d755-mode="assessmentDrill">'+(rec.kind==='maintenance'?'Mixed maintenance drill →':'Start Assessment Type Drill →')+'</button>';
  return '<section class="d755NextPractice"><div><small>RECOMMENDED NEXT PRACTICE</small><h3>'+E(rec.title)+'</h3><p>'+E(rec.detail)+'</p></div>'+action+'</section>';
 }
 function weakestAssessmentFamilies(){
