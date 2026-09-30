@@ -45,6 +45,7 @@ context.questionPool=()=>pool;
 context.startRuneSort();
 assert.equal(context.session.type,'runesort','Rune Sort should start its own session type');
 assert.match(src,/YOUR GOAL/,'Rune Sort should explain the trial goal');
+assert.match(src,/realmRunProgress/,'Featured Realm trials should include progress meters');
 assert.ok(context.session.categories.length>=2,'Rune Sort needs multiple sort categories');
 const firstRune=context.session.items[0];
 const wrongRuneCategory=context.session.categories.find(x=>x!==firstRune.section);
