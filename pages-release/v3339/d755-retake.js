@@ -495,9 +495,26 @@ function home(){
  const diag=st.diagnosticResult;
  return '<section class="d755Home"><small>D755 • TEACHER-FOCUS RETAKE STUDIO</small><h1>Assessment for Special Education</h1><p>This retake course now follows your instructor’s OA review and Student Journey process: interpret data, identify the student’s stage, choose the next educational decision, and explain why. Vocabulary is tested inside decisions—not by itself.</p><div class="d755HomeStats"><div><b>'+done+' / '+total+'</b><span>concepts completed</span></div><div><b>'+Object.keys(st.anchors).length+'</b><span>anchor charts unlocked</span></div><div><b>'+(diag?diag.score+'/'+diag.total:'—')+'</b><span>diagnostic</span></div></div><div class="d755CourseCycle"><span>Collect evidence</span><i>→</i><span>Interpret patterns</span><i>→</i><span>Individualize</span><i>→</i><span>Intervene</span><i>→</i><span>Monitor</span><i>→</i><span>Communicate</span></div><div class="d755HomeActions"><button class="btn primary" data-d755-section="'+st.sectionId+'">Continue Learning</button><button class="btn ghost" data-d755-mode="diagnostic">Start / Retake Diagnostic</button><button class="btn ghost" data-d755-mode="assessmentDrill">Assessment Type Drill</button><button class="btn ghost" data-d755-mode="mock">Mock OA</button></div><div class="d755SectionCards">'+SECTIONS.map(s=>'<button data-d755-section="'+s.id+'"><span>SECTION '+s.number+'</span><b>'+E(s.title)+'</b><small>'+E(s.bigIdea)+'</small></button>').join('')+'</div></section>';
 }
+function weakestAssessmentFamilies(){
+ const stats=prog()?.assessmentDrillResult?.familyStats||{};
+ return Object.entries(stats)
+  .filter(([,row])=>Number(row?.total||0)>0)
+  .map(([label,row])=>({label,pct:Number(row.correct||0)/Number(row.total||1)}))
+  .sort((a,b)=>a.pct-b.pct)
+  .slice(0,2)
+  .map(x=>x.label);
+}
 function sampleQuestions(count,mode){
  const assessmentPool=BANK.filter(q=>q.section===1&&q.trap==='assessment-type');
- if(mode==='assessmentDrill')return shuffle(assessmentPool).slice(0,count);
+ if(mode==='assessmentDrill'){
+   const weak=weakestAssessmentFamilies();
+   if(!weak.length)return shuffle(assessmentPool).slice(0,count);
+   const priority=assessmentPool.filter(q=>weak.includes(assessmentFamily(q)));
+   const targeted=shuffle(priority).slice(0,Math.min(6,priority.length));
+   const used=new Set(targeted.map(q=>q.id));
+   const fill=shuffle(assessmentPool.filter(q=>!used.has(q.id))).slice(0,Math.max(0,count-targeted.length));
+   return shuffle([...targeted,...fill]).slice(0,count);
+ }
  const per=mode==='diagnostic'?[10,10,10]:[14,13,13];
  const focus=shuffle(assessmentPool).slice(0,mode==='diagnostic'?6:8);
  const focusIds=new Set(focus.map(q=>q.id));
@@ -517,6 +534,39 @@ function examObj(mode){const st=prog();return st[mode]}
 function examQuestions(obj){const by=new Map(BANK.map(q=>[q.id,q]));return (obj?.ids||[]).map(id=>by.get(id)).filter(Boolean)}
 function examSelect(mode,v){const o=examObj(mode);if(!o||o.submitted)return;o.selected=v;render()}
 function examSubmit(mode){const st=prog(),o=st[mode],qs=examQuestions(o),item=qs[o.index];if(!o||!item||!o.selected)return;const correct=o.selected===item.answer,at=Date.now();o.submitted=true;o.answers.push({id:item.id,section:item.section,concept:item.concept,trap:item.trap,chosen:o.selected,correct,at});window.MajickStudyProgress?.creditAnswer?.({key:'D755:'+mode+':'+item.id+':'+at,course:'D755',source:'d755-'+mode,qid:item.id,topicId:item.topicId||realmTopic(item.section,item.concept),correct,difficulty:item.difficulty||4,chosen:o.selected,answer:item.answer,at});save();render()}
+function assessmentContrast(answer){
+ const a=String(answer||'');
+ const pairs=[
+  [/Qualitative/i,'Quantitative evidence would be numerical: scores, counts, rates, percentages, or other measured values.'],
+  [/Quantitative/i,'Qualitative evidence would be descriptive: observations, interviews, characteristics, experiences, or narrative notes.'],
+  [/\bInformal\b/i,'A formal assessment would use predetermined procedures, fixed directions, structured scoring, or standardized administration.'],
+  [/\bFormal\b/i,'An informal assessment would be flexible and embedded in everyday classroom instruction rather than tightly standardized.'],
+  [/Formative/i,'A summative assessment judges learning at an endpoint; formative evidence is used while learning is still happening to adjust instruction.'],
+  [/Summative/i,'A formative assessment is used during instruction to guide the next teaching move; summative assessment evaluates learning at a defined endpoint.'],
+  [/Norm-referenced/i,'Criterion-referenced results compare performance with a defined skill or standard rather than with a norm group.'],
+  [/Criterion-referenced/i,'Norm-referenced results compare the student with a peer or norm group rather than with a fixed mastery standard.'],
+  [/Universal screening/i,'Progress monitoring is repeated for students receiving support to see whether intervention is working; universal screening broadly identifies who may be at risk.'],
+  [/Progress monitoring/i,'Universal screening checks a broad group to identify risk; progress monitoring repeatedly measures response to instruction or intervention.'],
+  [/Curriculum-Based Measurement|CBM/i,'CBM is brief, repeated, curriculum-linked measurement used to track growth; it is not a one-time endpoint test.'],
+  [/Functional Behavior Assessment|FBA/i,'An FBA is a process for identifying the likely function of behavior; a single observation or checklist is only one possible data source within that process.'],
+  [/Direct observation/i,'Direct observation records behavior as it happens; an anecdotal record is a narrative write-up of a specific event, often after or around the event.'],
+  [/Anecdotal record/i,'An anecdotal record is a narrative description of an event; direct observation emphasizes recording performance or behavior as it occurs.'],
+  [/Behavior checklist|rating scale/i,'A checklist or rating scale structures observations into categories or ratings; it is different from an open narrative anecdotal record.']
+ ];
+ const hit=pairs.find(([re])=>re.test(a));
+ return hit?hit[1]:'Compare the purpose, administration, data form, or comparison group in the stem with the definition of the tempting alternative.';
+}
+function assessmentFamilyRule(label){
+ const rules={
+  'Data type':'Look for what kind of evidence is being described: words/qualities versus numbers/measures.',
+  'Administration':'Look for how the assessment is given: standardized/structured versus flexible/classroom-based.',
+  'Purpose':'Look for why the assessment is being used: adjust instruction now versus evaluate learning at an endpoint.',
+  'Comparison / CBM':'Look for what performance is compared with, or whether the measure is a brief repeated curriculum-linked probe.',
+  'Screening / monitoring':'Look for whether the goal is to identify risk broadly or repeatedly track response to intervention.',
+  'Assessment tools':'Look for the specific evidence-gathering tool: FBA, direct observation, anecdotal record, checklist, or rating scale.'
+ };
+ return rules[label]||'Use the wording of the stem to identify what dimension is being classified.';
+}
 function assessmentFamily(q){
  const c=String(q?.concept||'').toLowerCase();
  if(/qualitative quantitative/.test(c))return 'Data type';
@@ -574,16 +624,17 @@ function examView(mode){
  const st=prog(),o=st[mode];
  const isDrill=mode==='assessmentDrill';
  const title=isDrill?'12-Question Assessment Type Drill':mode==='diagnostic'?'30-Question Retake Diagnostic':'40-Question Mock OA';
+ const weak=isDrill?weakestAssessmentFamilies():[];
  const intro=isDrill?'Practice identifying qualitative/quantitative, formal/informal, formative/summative, norm-/criterion-referenced, CBM, screening, progress monitoring, FBA, observation, anecdotal records, and behavior checklists.':mode==='diagnostic'?'Find the concepts that actually need reteaching before you spend time reviewing everything again.':'Mixed, unlabeled scenarios across all three sections. No tutor prompts during the simulation.';
- if(!o)return '<section class="d755ExamIntro"><small>'+E(isDrill?'ASSESSMENT TYPE DRILL':mode.toUpperCase())+'</small><h1>'+E(title)+'</h1><p>'+E(intro)+'</p>'+(isDrill?assessmentTypeChart():'')+'<button class="btn primary" data-d755-start-exam="'+mode+'">Start '+E(isDrill?'Drill':mode==='diagnostic'?'Diagnostic':'Mock OA')+'</button></section>';
+ if(!o)return '<section class="d755ExamIntro"><small>'+E(isDrill?'ASSESSMENT TYPE DRILL':mode.toUpperCase())+'</small><h1>'+E(title)+'</h1><p>'+E(intro)+'</p>'+(isDrill&&weak.length?'<div class="d755AdaptiveFocus"><small>ADAPTIVE FOCUS THIS ROUND</small><b>'+E(weak.join(' + '))+'</b><span>More questions will come from your two weakest categories.</span></div>':'')+(isDrill?assessmentTypeChart():'')+'<button class="btn primary" data-d755-start-exam="'+mode+'">Start '+E(isDrill?'Drill':mode==='diagnostic'?'Diagnostic':'Mock OA')+'</button></section>';
  const qs=examQuestions(o),item=qs[o.index];if(!item)return '<div class="d755Empty">Question set unavailable.</div>';
- return '<section class="d755Exam"><header><div><small>'+E(mode==='assessmentDrill'?'ASSESSMENT TYPE DRILL':mode==='diagnostic'?'RETAKE DIAGNOSTIC':'MOCK OA')+'</small><h2>Assessment for Special Education</h2></div><span>'+(o.index+1)+' / '+qs.length+'</span></header><article>'+(isDrill?'<details class="d755AssessReminder"><summary>Need a reminder? Open the Assessment Type Anchor Chart</summary>'+assessmentTypeChart()+'</details>':'')+'<h3>'+E(item.prompt)+'</h3>'+teacherVisual(item)+'<div class="d755Choices">'+item.options.map((x,i)=>'<button '+(o.submitted?'disabled':'')+' class="'+(o.submitted?(x===item.answer?'correct':x===o.selected?'wrong':''):o.selected===x?'selected':'')+'" data-d755-exam-choice="'+E(mode)+'" data-choice="'+E(x)+'"><i>'+String.fromCharCode(65+i)+'</i><span>'+E(x)+'</span></button>').join('')+'</div>'+(o.submitted&&(mode==='diagnostic'||mode==='assessmentDrill')?'<div class="d755Feedback '+(o.selected===item.answer?'correct':'repair')+'"><b>'+(o.selected===item.answer?'✓ Correct':'Repair this decision')+'</b><p>'+E(item.why)+'</p></div>':'')+'<footer>'+(!o.submitted?'<button class="btn primary" '+(o.selected?'':'disabled')+' data-d755-exam-submit="'+mode+'">Submit</button>':'<button class="btn primary" data-d755-exam-next="'+mode+'">'+(o.index<qs.length-1?'Next →':'See results →')+'</button>')+'</footer></article></section>';
+ return '<section class="d755Exam"><header><div><small>'+E(mode==='assessmentDrill'?'ASSESSMENT TYPE DRILL':mode==='diagnostic'?'RETAKE DIAGNOSTIC':'MOCK OA')+'</small><h2>Assessment for Special Education</h2></div><span>'+(o.index+1)+' / '+qs.length+'</span></header><article>'+(isDrill?'<details class="d755AssessReminder"><summary>Need a reminder? Open the Assessment Type Anchor Chart</summary>'+assessmentTypeChart()+'</details>':'')+'<h3>'+E(item.prompt)+'</h3>'+teacherVisual(item)+'<div class="d755Choices">'+item.options.map((x,i)=>'<button '+(o.submitted?'disabled':'')+' class="'+(o.submitted?(x===item.answer?'correct':x===o.selected?'wrong':''):o.selected===x?'selected':'')+'" data-d755-exam-choice="'+E(mode)+'" data-choice="'+E(x)+'"><i>'+String.fromCharCode(65+i)+'</i><span>'+E(x)+'</span></button>').join('')+'</div>'+(o.submitted&&(mode==='diagnostic'||mode==='assessmentDrill')?'<div class="d755Feedback '+(o.selected===item.answer?'correct':'repair')+'"><b>'+(o.selected===item.answer?'✓ Correct':'Repair this decision')+'</b><p>'+E(item.why)+'</p>'+(mode==='assessmentDrill'?'<div class="d755ClassificationLens"><small>THIS STEM IS ASKING ABOUT</small><b>'+E(assessmentFamily(item))+'</b><span>'+E(assessmentFamilyRule(assessmentFamily(item)))+'</span><em><b>Why not the tempting opposite?</b> '+E(assessmentContrast(item.answer))+'</em></div>':'')+'</div>':'')+'<footer>'+(!o.submitted?'<button class="btn primary" '+(o.selected?'':'disabled')+' data-d755-exam-submit="'+mode+'">Submit</button>':'<button class="btn primary" data-d755-exam-next="'+mode+'">'+(o.index<qs.length-1?'Next →':'See results →')+'</button>')+'</footer></article></section>';
 }
 function resultView(mode){
  const st=prog(),r=st[mode+'Result'];if(!r)return examView(mode);
  const isDrill=mode==='assessmentDrill';
  const traps=Object.entries(r.trapCounts||{}).sort((a,b)=>b[1]-a[1]).slice(0,5);
- return '<section class="d755Result"><small>'+E(isDrill?'ASSESSMENT TYPE DRILL RESULTS':mode==='diagnostic'?'DIAGNOSTIC RESULTS':'MOCK OA RESULTS')+'</small><h1>'+E(r.status)+'</h1><div class="score">'+r.score+' / '+r.total+'<span>'+r.pct+'%</span></div>'+(isDrill?'<p class="evidenceNote">Focused identification practice: use the question wording to decide whether it is asking about data type, administration, purpose, comparison, or monitoring.</p><div class="d755AssessmentBreakdown">'+Object.entries(r.familyStats||{}).map(([label,row])=>{const pct=row.total?Math.round(row.correct/row.total*100):0;return '<article><div><b>'+E(label)+'</b><span>'+row.correct+'/'+row.total+' • '+pct+'%</span></div><i><em style="width:'+pct+'%"></em></i></article>'}).join('')+'</div>'+assessmentTypeChart():'<div class="sectionResults">'+r.bySection.map(x=>'<div><b>Section '+x.section+'</b><span>'+x.correct+'/'+x.total+' • '+x.pct+'%</span><i><em style="width:'+x.pct+'%"></em></i></div>').join('')+'</div>')+(traps.length?'<div class="d755Weak"><h3>Highest-priority decision traps</h3>'+traps.map(([id,n])=>'<article><b>'+E(REPAIRS[id]?.title||id)+'</b><span>'+n+' miss'+(n===1?'':'es')+'</span><p>'+E(REPAIRS[id]?.right||'Review the related concept.')+'</p></article>').join('')+'</div>':'')+'<div class="resultActions">'+(isDrill?'':'<button class="btn primary" data-d755-repair-result="'+mode+'">Study my weakest area</button>')+'<button class="btn ghost" data-d755-start-exam="'+mode+'">Retake with new mix</button><button class="btn ghost" data-d755-home>Retake Studio Home</button></div><p class="evidenceNote">This is practice evidence for your retake preparation, not a prediction of your WGU OA result.</p></section>';
+ return '<section class="d755Result"><small>'+E(isDrill?'ASSESSMENT TYPE DRILL RESULTS':mode==='diagnostic'?'DIAGNOSTIC RESULTS':'MOCK OA RESULTS')+'</small><h1>'+E(r.status)+'</h1><div class="score">'+r.score+' / '+r.total+'<span>'+r.pct+'%</span></div>'+(isDrill?'<p class="evidenceNote">Focused identification practice: use the question wording to decide whether it is asking about data type, administration, purpose, comparison, or monitoring.</p><div class="d755AssessmentBreakdown">'+Object.entries(r.familyStats||{}).map(([label,row])=>{const pct=row.total?Math.round(row.correct/row.total*100):0;return '<article><div><b>'+E(label)+'</b><span>'+row.correct+'/'+row.total+' • '+pct+'%</span></div><i><em style="width:'+pct+'%"></em></i></article>'}).join('')+'</div>'+assessmentTypeChart():'<div class="sectionResults">'+r.bySection.map(x=>'<div><b>Section '+x.section+'</b><span>'+x.correct+'/'+x.total+' • '+x.pct+'%</span><i><em style="width:'+x.pct+'%"></em></i></div>').join('')+'</div>')+(traps.length?'<div class="d755Weak"><h3>Highest-priority decision traps</h3>'+traps.map(([id,n])=>'<article><b>'+E(REPAIRS[id]?.title||id)+'</b><span>'+n+' miss'+(n===1?'':'es')+'</span><p>'+E(REPAIRS[id]?.right||'Review the related concept.')+'</p></article>').join('')+'</div>':'')+'<div class="resultActions">'+(isDrill?'':'<button class="btn primary" data-d755-repair-result="'+mode+'">Study my weakest area</button>')+'<button class="btn ghost" data-d755-start-exam="'+mode+'">'+E(isDrill?'Practice weak types next':'Retake with new mix')+'</button><button class="btn ghost" data-d755-home>Retake Studio Home</button></div><p class="evidenceNote">This is practice evidence for your retake preparation, not a prediction of your WGU OA result.</p></section>';
 }
 function repairFromResult(mode){
  const st=prog(),r=st[mode+'Result'];if(!r)return go('home');
