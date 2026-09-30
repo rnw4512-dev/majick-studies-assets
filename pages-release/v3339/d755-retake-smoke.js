@@ -81,6 +81,26 @@ const smartPreview=M.smartReviewQuestions(10);
 assert(smartPreview.length===10,'D755 Smart Review should contain 10 assessment questions');
 assert(new Set(smartPreview.map(q=>q.id)).size===smartPreview.length,'D755 Smart Review should not duplicate questions inside a set');
 assert(purposeMistakes.every(q=>smartPreview.some(x=>x.id===q.id)),'D755 Smart Review should include unresolved mistake-queue questions first');
+const smartStartMistakes=M.assessmentMistakeIds().length;
+M.startSmartReview();
+st=M.state();
+assert(st.mode==='assessmentDrill'&&st.assessmentDrill.smartReview===true,'D755 Smart Review should launch in assessment drill mode');
+assert(Array.isArray(st.assessmentDrill.smartReviewStartMistakes),'Smart Review should capture its starting mistake queue');
+while(M.state().assessmentDrill&&M.state().mode==='assessmentDrill'){
+  const o=M.state().assessmentDrill;
+  const item=M.BANK.find(q=>q.id===o.ids[o.index]);
+  o.selected=item.answer;
+  M.examSubmit('assessmentDrill');
+  M.examNext('assessmentDrill');
+}
+st=M.state();
+assert(st.mode==='assessmentDrillResult'&&st.assessmentDrillResult.smartReview===true,'Smart Review should finish with a Smart Review result');
+assert(st.assessmentDrillResult.smartReviewSummary,'Smart Review repair summary missing from results');
+assert(st.assessmentDrillResult.smartReviewSummary.startedMistakes===smartStartMistakes,'Smart Review starting mistake count incorrect');
+assert(st.assessmentDrillResult.smartReviewSummary.remainingMistakes===M.assessmentMistakeIds().length,'Smart Review remaining mistake count incorrect');
+assert(Array.isArray(st.assessmentDrillResult.smartReviewSummary.practicedFamilies),'Smart Review practiced-dimension summary missing');
+assert(/SMART REVIEW • WHAT CHANGED/.test(M.smartReviewSummaryHTML(st.assessmentDrillResult)),'Smart Review repair snapshot HTML missing');
+st.mode='home';
 const mistakeRec=M.assessmentNextPractice();
 assert(mistakeRec.kind==='mistakes'&&mistakeRec.count>=2,'Recommended Next Practice should prioritize unresolved assessment mistakes');
 assert(/Repair your missed assessment questions/.test(mistakeRec.title),'Mistake-priority recommendation title missing');
