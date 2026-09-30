@@ -67,6 +67,15 @@ assert.match(source,/individualBehavior/,'individual Guardian behavior helper mi
 assert.match(source,/v3355IndividualBehavior/,'individual Guardian behavior state marker missing');
 assert.match(source,/roamScale/,'individual Guardian roam variation missing');
 assert.match(source,/pauseScale/,'individual Guardian pause variation missing');
+assert.match(source,/careVisualBurst/,'distinct Guardian care visual-burst helper missing');
+for(const action of ['feed','water','treat','groom','affection']){
+  assert.match(source,new RegExp("action==='"+action+"'"),action+' needs a distinct dynamic Sanctuary motion');
+}
+assert.match(source,/careVisualActions:\['feed','water','treat','groom','affection'\]/,'Sanctuary QA output must expose the five visible care actions');
+assert.match(source,/meal/,'feeding visual label missing');
+assert.match(source,/water/,'water visual label missing');
+assert.match(source,/shine/,'grooming shine visual label missing');
+assert.match(source,/bond/,'affection bond visual label missing');
 scene.v3320ApplyCareSnapshot({roster:[]});
 assert.equal(scene.v3348PetById['owned-vesper'],undefined,'removed Guardian cannot remain visible');
 assert.ok(reports.some(x=>x.type==='MAJICK_SANCTUARY_ROSTER_V3350'&&x.rows.some(g=>g.petId==='owned-vesper'&&g.present)));
