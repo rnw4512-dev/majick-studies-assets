@@ -181,6 +181,14 @@ const masteryRows=M.assessmentMasteryRows();
 assert(masteryRows.length===6,'Assessment Type Mastery Ladder must contain all six dimensions');
 assert(masteryRows.some(x=>x.possible>0),'Assessment Type Mastery Ladder should include accumulated evidence');
 assert(masteryRows.every(x=>['Mastered','Developing','Needs practice','Not practiced'].includes(x.status)),'Assessment Type Mastery Ladder status invalid');
+M.startAssessmentFamilyPractice('Purpose');
+st=M.state();
+assert(st.mode==='assessmentDrill','Focused mastery practice should use Assessment Type Drill mode');
+assert(st.assessmentDrill.focusedFamily==='Purpose','Focused mastery practice should remember its selected family');
+const focusQs=st.assessmentDrill.ids.map(id=>M.BANK.find(q=>q.id===id));
+assert(focusQs.length>0&&focusQs.every(q=>M.assessmentFamily(q)==='Purpose'),'Focused mastery practice should contain only the selected assessment family');
+st.assessmentDrill=null;
+st.mode='home';
 
 M.startExam('mock');
 st=M.state();

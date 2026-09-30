@@ -511,3 +511,23 @@
   .d755MasteryRows article>div{grid-template-columns:1fr auto}
   .d755MasteryRows em{grid-column:2}
 }
+
+/* Focused mastery practice buttons */
+.d755MasteryRows article>button{
+  margin-top:9px;
+  padding:7px 10px;
+  border:1px solid rgba(188,151,211,.18);
+  border-radius:10px;
+  background:#20152a;
+  color:#d9c7e2;
+  font-size:9px;
+  font-weight:900;
+  cursor:pointer;
+}
+.d755MasteryRows article>button:hover,
+.d755MasteryRows article>button:focus-visible{
+  border-color:#c39adb;
+  color:#fff0c8;
+  outline:none;
+  box-shadow:0 0 16px rgba(183,140,211,.12);
+}
