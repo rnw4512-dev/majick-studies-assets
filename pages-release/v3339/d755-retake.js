@@ -517,13 +517,33 @@ function examObj(mode){const st=prog();return st[mode]}
 function examQuestions(obj){const by=new Map(BANK.map(q=>[q.id,q]));return (obj?.ids||[]).map(id=>by.get(id)).filter(Boolean)}
 function examSelect(mode,v){const o=examObj(mode);if(!o||o.submitted)return;o.selected=v;render()}
 function examSubmit(mode){const st=prog(),o=st[mode],qs=examQuestions(o),item=qs[o.index];if(!o||!item||!o.selected)return;const correct=o.selected===item.answer,at=Date.now();o.submitted=true;o.answers.push({id:item.id,section:item.section,concept:item.concept,trap:item.trap,chosen:o.selected,correct,at});window.MajickStudyProgress?.creditAnswer?.({key:'D755:'+mode+':'+item.id+':'+at,course:'D755',source:'d755-'+mode,qid:item.id,topicId:item.topicId||realmTopic(item.section,item.concept),correct,difficulty:item.difficulty||4,chosen:o.selected,answer:item.answer,at});save();render()}
+function assessmentFamily(q){
+ const c=String(q?.concept||'').toLowerCase();
+ if(/qualitative quantitative/.test(c))return 'Data type';
+ if(/formal informal/.test(c))return 'Administration';
+ if(/assessment purpose/.test(c))return 'Purpose';
+ if(/criterion cbm/.test(c))return 'Comparison / CBM';
+ if(/screening|tier movement/.test(c))return 'Screening / monitoring';
+ if(/data sources/.test(c))return 'Assessment tools';
+ return 'Other';
+}
 function examNext(mode){
  const st=prog(),o=st[mode],qs=examQuestions(o);if(!o)return;
  if(o.index<qs.length-1){o.index++;o.selected=null;o.submitted=false;save();render();return}
  const score=o.answers.filter(x=>x.correct).length,total=qs.length;
  const bySection=[1,2,3].map(n=>{const rows=o.answers.filter(x=>x.section===n);return {section:n,correct:rows.filter(x=>x.correct).length,total:rows.length,pct:rows.length?Math.round(rows.filter(x=>x.correct).length/rows.length*100):0}});
  const trapCounts={};for(const a of o.answers.filter(x=>!x.correct&&x.trap))trapCounts[x.trap]=(trapCounts[x.trap]||0)+1;
- const result={score,total,pct:total?Math.round(score/total*100):0,bySection,trapCounts,at:Date.now(),status:score/total>=.85?'Ready for final review':score/total>=.7?'Targeted repair needed':'Needs another teaching pass'};
+ const familyStats={};
+ if(mode==='assessmentDrill'){
+   const byId=new Map(BANK.map(q=>[q.id,q]));
+   for(const a of o.answers){
+     const family=assessmentFamily(byId.get(a.id));
+     familyStats[family]=familyStats[family]||{correct:0,total:0};
+     familyStats[family].total++;
+     if(a.correct)familyStats[family].correct++;
+   }
+ }
+ const result={score,total,pct:total?Math.round(score/total*100):0,bySection,trapCounts,familyStats,at:Date.now(),status:score/total>=.85?'Ready for final review':score/total>=.7?'Targeted repair needed':'Needs another teaching pass'};
  st[mode+'Result']=result;st.mode=mode+'Result';save();render();
 }
 function teacherVisual(item){
@@ -563,7 +583,7 @@ function resultView(mode){
  const st=prog(),r=st[mode+'Result'];if(!r)return examView(mode);
  const isDrill=mode==='assessmentDrill';
  const traps=Object.entries(r.trapCounts||{}).sort((a,b)=>b[1]-a[1]).slice(0,5);
- return '<section class="d755Result"><small>'+E(isDrill?'ASSESSMENT TYPE DRILL RESULTS':mode==='diagnostic'?'DIAGNOSTIC RESULTS':'MOCK OA RESULTS')+'</small><h1>'+E(r.status)+'</h1><div class="score">'+r.score+' / '+r.total+'<span>'+r.pct+'%</span></div>'+(isDrill?'<p class="evidenceNote">Focused identification practice: use the question wording to decide whether it is asking about data type, administration, purpose, comparison, or monitoring.</p>'+assessmentTypeChart():'<div class="sectionResults">'+r.bySection.map(x=>'<div><b>Section '+x.section+'</b><span>'+x.correct+'/'+x.total+' • '+x.pct+'%</span><i><em style="width:'+x.pct+'%"></em></i></div>').join('')+'</div>')+(traps.length?'<div class="d755Weak"><h3>Highest-priority decision traps</h3>'+traps.map(([id,n])=>'<article><b>'+E(REPAIRS[id]?.title||id)+'</b><span>'+n+' miss'+(n===1?'':'es')+'</span><p>'+E(REPAIRS[id]?.right||'Review the related concept.')+'</p></article>').join('')+'</div>':'')+'<div class="resultActions">'+(isDrill?'':'<button class="btn primary" data-d755-repair-result="'+mode+'">Study my weakest area</button>')+'<button class="btn ghost" data-d755-start-exam="'+mode+'">Retake with new mix</button><button class="btn ghost" data-d755-home>Retake Studio Home</button></div><p class="evidenceNote">This is practice evidence for your retake preparation, not a prediction of your WGU OA result.</p></section>';
+ return '<section class="d755Result"><small>'+E(isDrill?'ASSESSMENT TYPE DRILL RESULTS':mode==='diagnostic'?'DIAGNOSTIC RESULTS':'MOCK OA RESULTS')+'</small><h1>'+E(r.status)+'</h1><div class="score">'+r.score+' / '+r.total+'<span>'+r.pct+'%</span></div>'+(isDrill?'<p class="evidenceNote">Focused identification practice: use the question wording to decide whether it is asking about data type, administration, purpose, comparison, or monitoring.</p><div class="d755AssessmentBreakdown">'+Object.entries(r.familyStats||{}).map(([label,row])=>{const pct=row.total?Math.round(row.correct/row.total*100):0;return '<article><div><b>'+E(label)+'</b><span>'+row.correct+'/'+row.total+' • '+pct+'%</span></div><i><em style="width:'+pct+'%"></em></i></article>'}).join('')+'</div>'+assessmentTypeChart():'<div class="sectionResults">'+r.bySection.map(x=>'<div><b>Section '+x.section+'</b><span>'+x.correct+'/'+x.total+' • '+x.pct+'%</span><i><em style="width:'+x.pct+'%"></em></i></div>').join('')+'</div>')+(traps.length?'<div class="d755Weak"><h3>Highest-priority decision traps</h3>'+traps.map(([id,n])=>'<article><b>'+E(REPAIRS[id]?.title||id)+'</b><span>'+n+' miss'+(n===1?'':'es')+'</span><p>'+E(REPAIRS[id]?.right||'Review the related concept.')+'</p></article>').join('')+'</div>':'')+'<div class="resultActions">'+(isDrill?'':'<button class="btn primary" data-d755-repair-result="'+mode+'">Study my weakest area</button>')+'<button class="btn ghost" data-d755-start-exam="'+mode+'">Retake with new mix</button><button class="btn ghost" data-d755-home>Retake Studio Home</button></div><p class="evidenceNote">This is practice evidence for your retake preparation, not a prediction of your WGU OA result.</p></section>';
 }
 function repairFromResult(mode){
  const st=prog(),r=st[mode+'Result'];if(!r)return go('home');
