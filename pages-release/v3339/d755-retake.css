@@ -932,3 +932,24 @@
 .d755MissedReview details>div{padding:0 14px 16px;border-top:1px solid #594363;line-height:1.6}
 .d755CorrectDecision,.d755ReviewClear{color:#bce8cb}
 @media(max-width:600px){.d755ProcessChart{padding:12px}.d755TimelineTable th,.d755TimelineTable td{padding:9px}}
+
+/* The guide responds to its study panel, including narrow desktop columns. */
+.d755ProcessChart{container-type:inline-size}
+@container (max-width:520px){
+ .d755TimelineTable{min-width:0;display:block}
+ .d755TimelineTable thead{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
+ .d755TimelineTable tbody{display:grid;gap:12px}
+ .d755TimelineTable tr{display:block;border:1px solid #594363;border-radius:10px;padding:4px;background:#21162a}
+ .d755TimelineTable th,.d755TimelineTable td{display:block;width:auto;border:0;padding:8px;white-space:normal;overflow-wrap:anywhere}
+ .d755TimelineTable td::before{content:attr(data-label);display:block;color:#dbbadf;font-size:12px;font-weight:800;margin-bottom:3px}
+ .d755TimelineTable tbody th{width:auto;color:#f1daa1}
+}
+.d755ProcessProgress{margin:20px 0;padding:18px;background:#1b1223;border:1px solid #594363;border-radius:16px;color:#e8ddec;text-align:left}
+.d755ProcessProgress>small{color:#dbc18b;font-weight:800;letter-spacing:.06em}
+.d755ProcessProgress h2{font-size:22px;color:#f1daa1;margin:8px 0}
+.d755ProcessProgress p{font-size:14px;line-height:1.6}
+.d755ProcessProgress>div{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:12px}
+.d755ProcessProgress article{padding:15px;border:1px solid #594363;border-radius:12px;background:#140d1b}
+.d755ProcessProgress h3{font-size:18px;color:#f1daa1;margin:0 0 10px}
+.d755ProcessProgress progress{width:100%;height:10px;accent-color:#bd93d3;margin:6px 0}
+.d755ProcessProgress button{white-space:normal}
