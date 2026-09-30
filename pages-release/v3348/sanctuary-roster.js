@@ -160,12 +160,22 @@
  }
  function favoritePlayBurst(scene,pet,g,result){
    if(!pet?.active||!result?.favoriteBonus)return;
-   try{scene.createSparkles?.(pet.x,pet.y-110,26)}catch(_){}
+   try{pet.setData?.('v3358FavoriteReaction',result.itemLabel||result.favoriteLabel||result.itemId||'favorite')}catch(_){}
+   try{scene.createSparkles?.(pet.x,pet.y-110,34)}catch(_){}
    try{
-     const glyphs=['✦','✧','⋆'];
+     const itemName=String(result.itemLabel||result.favoriteLabel||'Favorite Item').toUpperCase();
+     const banner=scene.add?.text?.(pet.x,pet.y-150,'✦ FAVORITE • '+itemName+' ✦',{
+       fontFamily:'Arial',fontSize:'10px',fontStyle:'bold',color:'#fff0b8',backgroundColor:'#2a1838',padding:{x:8,y:4}
+     }).setOrigin?.(.5)?.setDepth?.(514);
+     if(banner)scene.tweens.add({targets:banner,y:banner.y-34,alpha:0,duration:1500,ease:'Sine.out',onComplete:()=>banner.destroy?.()});
+
+     const halo=scene.add?.text?.(pet.x,pet.y-100,'✦  ◇  ✦',{fontFamily:'Georgia',fontSize:'30px',color:'#ffe8a8'}).setOrigin?.(.5)?.setDepth?.(511);
+     if(halo)scene.tweens.add({targets:halo,scaleX:1.45,scaleY:1.45,alpha:0,angle:22,duration:1050,ease:'Sine.out',onComplete:()=>halo.destroy?.()});
+
+     const glyphs=['✦','✧','⋆','✦','✧'];
      glyphs.forEach((glyph,i)=>{
-       const star=scene.add?.text?.(pet.x+(i-1)*24,pet.y-90-(i%2)*18,glyph,{fontFamily:'Georgia',fontSize:'24px',color:'#ffe8a8'}).setOrigin?.(.5)?.setDepth?.(510);
-       if(star)scene.tweens.add({targets:star,y:star.y-70,x:star.x+(i-1)*18,alpha:0,duration:850+i*120,ease:'Sine.out',onComplete:()=>star.destroy?.()});
+       const star=scene.add?.text?.(pet.x+(i-2)*22,pet.y-82-(i%2)*14,glyph,{fontFamily:'Georgia',fontSize:i===2?'27px':'20px',color:'#ffe8a8'}).setOrigin?.(.5)?.setDepth?.(510);
+       if(star)scene.tweens.add({targets:star,y:star.y-76,x:star.x+(i-2)*13,alpha:0,duration:820+i*100,ease:'Sine.out',onComplete:()=>star.destroy?.()});
      });
    }catch(_){}
  }
@@ -427,7 +437,7 @@
  };
  window.MajickSanctuaryRoster={VERSION,stage,canon,inspect(scene){
    const s=scene||window.majickPhaserGame?.scene?.getScene?.('Game');
-   return {roster:report(s),dynamic:Object.keys(s?.v3348Sprites||{}),motion:Object.fromEntries(Object.entries(s?.v3348Sprites||{}).map(([id,p])=>[id,p?.getData?.('v3351MotionState')||'unknown'])),playStyles:Object.fromEntries(Object.entries(s?.v3348Sprites||{}).map(([id,p])=>[id,p?.getData?.('v3352PlayStyle')||''])),sleepStates:Object.fromEntries(Object.entries(s?.v3348Sprites||{}).map(([id,p])=>[id,p?.getData?.('v3353SleepState')||''])),idleStyles:Object.fromEntries(Object.entries(s?.v3348Sprites||{}).map(([id,p])=>[id,p?.getData?.('v3354IdleStyle')||''])),individualBehavior:Object.fromEntries((roster(s)||[]).map(g=>[g.petId,individualBehavior(g)])),careVisualActions:['feed','water','treat','groom','affection'],careStationActions:{feed:'guardian-food-bowl',water:'guardian-water-basin',treat:'guardian-food-bowl',groom:'guardian-brush'}};
+   return {roster:report(s),dynamic:Object.keys(s?.v3348Sprites||{}),motion:Object.fromEntries(Object.entries(s?.v3348Sprites||{}).map(([id,p])=>[id,p?.getData?.('v3351MotionState')||'unknown'])),playStyles:Object.fromEntries(Object.entries(s?.v3348Sprites||{}).map(([id,p])=>[id,p?.getData?.('v3352PlayStyle')||''])),sleepStates:Object.fromEntries(Object.entries(s?.v3348Sprites||{}).map(([id,p])=>[id,p?.getData?.('v3353SleepState')||''])),idleStyles:Object.fromEntries(Object.entries(s?.v3348Sprites||{}).map(([id,p])=>[id,p?.getData?.('v3354IdleStyle')||''])),individualBehavior:Object.fromEntries((roster(s)||[]).map(g=>[g.petId,individualBehavior(g)])),careVisualActions:['feed','water','treat','groom','affection'],careStationActions:{feed:'guardian-food-bowl',water:'guardian-water-basin',treat:'guardian-food-bowl',groom:'guardian-brush'},favoriteReactions:Object.fromEntries(Object.entries(s?.v3348Sprites||{}).map(([id,p])=>[id,p?.getData?.('v3358FavoriteReaction')||'']))};
  }};
  window.addEventListener('message',ev=>{
    if(ev.origin!==location.origin||ev.data?.type!=='MAJICK_SANCTUARY_ROSTER_REQUEST_V3350')return;
