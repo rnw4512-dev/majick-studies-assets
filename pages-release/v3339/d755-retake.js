@@ -528,14 +528,14 @@ function retakeEvidenceSnapshot(){
  };
 }
 function retakeEvidenceSnapshotHTML(){
- const x=retakeEvidenceSnapshot();
+ const x=retakeEvidenceSnapshot(),st=prog();
  return '<section class="d755EvidenceSnapshot"><header><div><small>RETAKE EVIDENCE SNAPSHOT</small><h3>What your saved practice shows</h3></div><span>Evidence, not prediction</span></header>'+
   '<div class="d755EvidenceGrid">'+
-   '<article><b>'+x.sectionReady+' / '+x.sectionTotal+'</b><span>section checks ready to move on</span><small>Based on your saved section mastery checks.</small></article>'+
-   '<article><b>'+x.assessmentMastered+' / '+x.assessmentTotal+'</b><span>assessment dimensions mastered</span><small>'+x.assessmentPracticed+' of '+x.assessmentTotal+' dimensions have practice evidence.</small></article>'+
-   '<article class="'+(x.mistakes?'attention':'clear')+'"><b>'+x.mistakes+'</b><span>unresolved assessment mistakes</span><small>'+(x.mistakes?'Use Mistake Repair before adding more of the same type.':'No assessment mistakes are currently waiting in the repair queue.')+'</small></article>'+
-   '<article><b>'+(x.diagnostic?x.diagnostic.score+' / '+x.diagnostic.total:'—')+'</b><span>latest diagnostic</span><small>'+(x.diagnostic?x.diagnostic.pct+'% saved practice evidence.':'No diagnostic result saved yet.')+'</small></article>'+
-   '<article><b>'+(x.mock?x.mock.score+' / '+x.mock.total:'—')+'</b><span>latest mock OA</span><small>'+(x.mock?x.mock.pct+'% saved practice evidence.':'No mock OA result saved yet.')+'</small></article>'+
+   '<article><b>'+x.sectionReady+' / '+x.sectionTotal+'</b><span>section checks ready to move on</span><small>Based on your saved section mastery checks.</small><button type="button" data-d755-section="'+E(st.sectionId)+'">Continue sections →</button></article>'+
+   '<article><b>'+x.assessmentMastered+' / '+x.assessmentTotal+'</b><span>assessment dimensions mastered</span><small>'+x.assessmentPracticed+' of '+x.assessmentTotal+' dimensions have practice evidence.</small><button type="button" data-d755-smart-review>Smart Review →</button></article>'+
+   '<article class="'+(x.mistakes?'attention':'clear')+'"><b>'+x.mistakes+'</b><span>unresolved assessment mistakes</span><small>'+(x.mistakes?'Use Mistake Repair before adding more of the same type.':'No assessment mistakes are currently waiting in the repair queue.')+'</small>'+(x.mistakes?'<button type="button" data-d755-mistake-repair>Repair mistakes →</button>':'<button type="button" data-d755-smart-review>Keep it fresh →</button>')+'</article>'+
+   '<article><b>'+(x.diagnostic?x.diagnostic.score+' / '+x.diagnostic.total:'—')+'</b><span>latest diagnostic</span><small>'+(x.diagnostic?x.diagnostic.pct+'% saved practice evidence.':'No diagnostic result saved yet.')+'</small><button type="button" data-d755-mode="diagnostic">'+(x.diagnostic?'Retake diagnostic →':'Start diagnostic →')+'</button></article>'+
+   '<article><b>'+(x.mock?x.mock.score+' / '+x.mock.total:'—')+'</b><span>latest mock OA</span><small>'+(x.mock?x.mock.pct+'% saved practice evidence.':'No mock OA result saved yet.')+'</small><button type="button" data-d755-mode="mock">'+(x.mock?'Retake Mock OA →':'Open Mock OA →')+'</button></article>'+
   '</div>'+
   '<p>This snapshot summarizes practice completed inside Majick Studies. It does not predict or guarantee your WGU OA result.</p>'+
  '</section>';
