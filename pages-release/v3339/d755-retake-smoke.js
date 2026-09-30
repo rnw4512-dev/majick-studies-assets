@@ -327,6 +327,8 @@ assert(Object.keys(M.assessmentEvidence('pairs')).length===6,'Confusing Pairs Re
 assert(/ASSESSMENT TYPE MASTERY LADDER/.test(M.shell()),'Confusing Pairs results should show the mastery ladder');
 st.mode='home';
 
+st.mode='lawReferralDrill';st.lawReferralDrill=null;
+assert(/Start Law \+ Referral Drill/.test(M.shell()),'Law/referral intro must name the correct drill');
 M.startExam('lawReferralDrill');
 st=M.state();
 assert(st.lawReferralDrill.ids.length===12,'Law + Referral Process Drill must contain 12 questions');
@@ -334,6 +336,11 @@ const lawReferralQs=st.lawReferralDrill.ids.map(id=>M.BANK.find(q=>q.id===id));
 assert(lawReferralQs.filter(q=>q.trap==='law-case').length===6,'Law + Referral Process Drill must contain 6 law/case questions');
 assert(lawReferralQs.filter(q=>q.trap==='process-order'&&q.id.includes('referral_')).length===6,'Law + Referral Process Drill must contain 6 referral-stage questions');
 assert(/LAW \+ REFERRAL PROCESS DRILL/.test(M.shell()),'Law + Referral Process Drill screen missing');
+const firstLawReferralIds=new Set(st.lawReferralDrill.ids);
+st.lawReferralDrill=null;
+M.startExam('lawReferralDrill');
+const twoRoundIds=new Set([...firstLawReferralIds,...M.state().lawReferralDrill.ids]);
+assert(twoRoundIds.size===20,'Two law/referral rounds must cover all 20 available questions before avoidable repeats');
 st.lawReferralDrill=null;st.mode='home';
 
 M.startExam('mock');
