@@ -26,7 +26,11 @@ const context={
     {id:'d5',section:1,concept:'assessment purpose',trap:'assessment-type',prompt:'Exit ticket changes tomorrow’s instruction.',answer:'Formative assessment',why:'It guides ongoing instruction.'},
     {id:'d6',section:1,concept:'assessment purpose',trap:'assessment-type',prompt:'Final exam evaluates learning at the end of a unit.',answer:'Summative assessment',why:'It evaluates learning at an endpoint.'},
     {id:'d7',section:1,concept:'screening child find',trap:'assessment-type',prompt:'All students take a brief fall reading check.',answer:'Universal screening',why:'All students are screened for risk.'},
-    {id:'d8',section:1,concept:'screening tier movement',trap:'assessment-type',prompt:'A Tier 2 student completes a weekly fluency probe.',answer:'Progress monitoring',why:'Repeated probes track intervention response.'}
+    {id:'d8',section:1,concept:'screening tier movement',trap:'assessment-type',prompt:'A Tier 2 student completes a weekly fluency probe.',answer:'Progress monitoring',why:'Repeated probes track intervention response.'},
+    {id:'d9',section:1,concept:'criterion cbm',trap:'assessment-type',prompt:'Student performance is compared with a national peer sample.',answer:'Norm-referenced',why:'The score is compared with a norm group.'},
+    {id:'d10',section:1,concept:'criterion cbm',trap:'assessment-type',prompt:'Student performance is compared with a defined mastery standard.',answer:'Criterion-referenced',why:'The score is compared with a criterion.'},
+    {id:'d11',section:1,concept:'data sources',trap:'assessment-type',prompt:'Teacher records behavior as it happens during class.',answer:'Direct observation',why:'The behavior is observed directly in real time.'},
+    {id:'d12',section:1,concept:'data sources',trap:'assessment-type',prompt:'Teacher writes a narrative about a specific classroom incident.',answer:'Anecdotal record',why:'A narrative incident record is anecdotal.'}
   ]}
 };
 context.globalThis=context;
@@ -61,6 +65,8 @@ assert.ok(context.MajickGameRealm.assessmentSigilPool('data').length>=2,'D755 da
 assert.ok(context.MajickGameRealm.assessmentSigilPool('administration').length>=2,'D755 formal/informal sigil chamber needs scenarios');
 assert.ok(context.MajickGameRealm.assessmentSigilPool('purpose').length>=2,'D755 formative/summative sigil chamber needs scenarios');
 assert.ok(context.MajickGameRealm.assessmentSigilPool('monitoring').length>=2,'D755 screening/monitoring sigil chamber needs scenarios');
+assert.ok(context.MajickGameRealm.assessmentSigilPool('comparison').length>=2,'D755 norm/criterion sigil chamber needs scenarios');
+assert.ok(context.MajickGameRealm.assessmentSigilPool('evidence').length>=2,'D755 observation/anecdotal sigil chamber needs scenarios');
 context.startAssessmentSigilSort();
 assert.equal(context.session.type,'assessmentsigilsort','Assessment Sigil Sort should start for D755');
 context.chooseAssessmentSigilFamily('purpose');

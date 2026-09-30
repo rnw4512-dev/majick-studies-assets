@@ -240,7 +240,7 @@
         '<div class="realmStats"><span>ᚱ '+E(bestText('runesort'))+' Rune Sort</span><span>◉ '+E(bestText('oraclelens'))+' Oracle Lens</span><span>♛ '+E(bestText('gauntlet'))+' Gauntlet</span><span>✧ '+E(bestText('constellation'))+' Constellation</span><span>⬡ '+E(bestText('hexbreaker'))+' Hex Breaker</span></div>'+
         '<div class="realmFeaturedGrid">'+
           gameCard('ᚱ','Rune Sort','Sort real course prompts into the correct sections. Pattern recognition without another answer-card loop.','startRuneSort()')+
-          (globalThis.S?.activeCourse==='D755'?gameCard('✥','Assessment Sigil Sort','Sort D755 scenarios through Qualitative/Quantitative, Formal/Informal, Formative/Summative, or Screening/Monitoring gates.','startAssessmentSigilSort()','D755 TRIAL'):'')+
+          (globalThis.S?.activeCourse==='D755'?gameCard('✥','Assessment Sigil Sort','Sort D755 scenarios through Qualitative/Quantitative, Formal/Informal, Formative/Summative, Norm/Criterion, Screening/Monitoring, or Observation/Anecdotal gates.','startAssessmentSigilSort()','D755 TRIAL'):'')+
           gameCard('◉','Oracle Lens','Identify the controlling clue first, then answer through that clue.','startOracleLens()')+
           gameCard('♛','Guardian Gauntlet','A multi-round boss run with hearts, boss HP, combos, and one Guardian shield.','startGuardianGauntlet()')+
           gameCard('✧','Memory Constellation','Match controlling clues to the correct answers and build a glowing constellation.','startMemoryConstellation()')+
@@ -260,7 +260,11 @@
     purpose:{label:'Formative vs Summative',left:'Formative',right:'Summative',concept:/assessment purpose/i,
       map:a=>/formative/i.test(a)?'Formative':/summative/i.test(a)?'Summative':null},
     monitoring:{label:'Screening vs Progress Monitoring',left:'Universal Screening',right:'Progress Monitoring',concept:/screening|tier movement/i,
-      map:a=>/universal screening/i.test(a)?'Universal Screening':/progress monitoring/i.test(a)?'Progress Monitoring':null}
+      map:a=>/universal screening/i.test(a)?'Universal Screening':/progress monitoring/i.test(a)?'Progress Monitoring':null},
+    comparison:{label:'Norm-Referenced vs Criterion-Referenced',left:'Norm-Referenced',right:'Criterion-Referenced',concept:/criterion cbm/i,
+      map:a=>/norm-referenced/i.test(a)?'Norm-Referenced':/criterion-referenced/i.test(a)?'Criterion-Referenced':null},
+    evidence:{label:'Direct Observation vs Anecdotal Record',left:'Direct Observation',right:'Anecdotal Record',concept:/data sources/i,
+      map:a=>/^direct observation$/i.test(a)?'Direct Observation':/^anecdotal record$/i.test(a)?'Anecdotal Record':null}
   };
   function assessmentSigilPool(key){
     const cfg=ASSESSMENT_SIGIL_FAMILIES[key],bank=globalThis.MajickD755Retake?.BANK||[];
