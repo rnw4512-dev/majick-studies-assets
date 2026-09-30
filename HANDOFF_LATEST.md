@@ -477,3 +477,14 @@ Current estimate:
   - `Base render order verified: inline script 0 before V3.3.17 script 28`
   - `Majick Studies V3.3.17 assembled successfully.`
 - This is now the active verified live build.
+
+## 2026-09-30 — D755 law/referral continuation
+- Resumed from main commit 3febecc54b1d33c20532f0f46631d5a497ec7d80 (130 D755 questions, 56 assessment-identification scenarios, 10 law/case questions and 10 referral-stage questions).
+- Corrected Law + Referral drill intro button to name the drill instead of Mock OA.
+- Each 12-question round keeps six law/case and six referral-stage questions and prioritizes questions absent from the preceding round. Two consecutive rounds cover all 20 questions. Some overlap is necessary because each category has ten questions and each round uses six.
+- Files changed: pages-release/v3339/d755-retake.js and d755-retake-smoke.js; HANDOFF_LATEST.md; CURRENT_BUILD.md.
+- Verification: JavaScript syntax and complete D755 smoke passed; bank remains 130, diagnostic 30, mock 40, section check 8; existing XP 4987 preserved by smoke. Added checks for the correct start label and two-round coverage.
+- Deployment state: local verification complete; this checkpoint does not assert Pages deployment success. Check the GitHub Actions run for this change before calling it live.
+- Protected: original Guardian motion assets, single render owner, course-isolated progress, existing XP/crystals and question bank.
+- User manual action: none.
+- Next step: verify Pages deployment and live Law + Referral drill, then continue Guardian/Sanctuary integration and game visuals from current repository code.
