@@ -77,6 +77,10 @@ purposeMistakes.forEach(q=>M.updateAssessmentMistake(q.id,false));
 assert(purposeMistakes.every(q=>M.assessmentMistakeIds().includes(q.id)),'Wrong assessment answers should enter Mistake Repair Queue');
 const mistakeSummary=M.assessmentMistakeSummary();
 assert(mistakeSummary.Purpose===2,'Mistake Repair Queue should count misses by assessment dimension');
+const smartPreview=M.smartReviewQuestions(10);
+assert(smartPreview.length===10,'D755 Smart Review should contain 10 assessment questions');
+assert(new Set(smartPreview.map(q=>q.id)).size===smartPreview.length,'D755 Smart Review should not duplicate questions inside a set');
+assert(purposeMistakes.every(q=>smartPreview.some(x=>x.id===q.id)),'D755 Smart Review should include unresolved mistake-queue questions first');
 const mistakeRec=M.assessmentNextPractice();
 assert(mistakeRec.kind==='mistakes'&&mistakeRec.count>=2,'Recommended Next Practice should prioritize unresolved assessment mistakes');
 assert(/Repair your missed assessment questions/.test(mistakeRec.title),'Mistake-priority recommendation title missing');
@@ -121,6 +125,7 @@ assert(st.mode==='home','D755 should enter Retake Studio at home');
 assert(/TEACHER-FOCUS RETAKE STUDIO/.test(M.shell()),'Teacher-focus home label missing');
 assert(/Retake Diagnostic/.test(M.shell())&&/30 mixed WGU-style scenarios/.test(M.shell()),'Retake Studio does not expose the 30-question diagnostic entry point');
 assert(/Assessment Type Drill/.test(M.shell()),'Retake Studio does not expose the Assessment Type Drill entry point');
+assert(/Smart 10-Question Review/.test(M.shell()),'Retake Studio does not expose Smart Review');
 assert(/Assessment Dimension Detective/.test(M.shell()),'Retake Studio does not expose the Assessment Dimension Detective entry point');
 
 M.startExam('diagnostic');
