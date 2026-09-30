@@ -409,3 +409,105 @@
   .d755DetectiveSteps i{display:none}
   .d755DimensionChoices,.d755DetectiveScores{grid-template-columns:1fr}
 }
+
+/* D755 assessment-type mastery ladder */
+.d755AssessmentMastery{
+  margin:18px 0;
+  padding:16px;
+  border:1px solid rgba(189,154,212,.18);
+  border-radius:18px;
+  background:linear-gradient(180deg,rgba(26,17,34,.96),rgba(17,12,23,.98));
+}
+.d755AssessmentMastery>header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom:12px;
+}
+.d755AssessmentMastery>header small{
+  display:block;
+  color:#b89bc8;
+  font:900 8px Arial,sans-serif;
+  letter-spacing:.14em;
+}
+.d755AssessmentMastery>header h3{
+  margin:4px 0 0;
+  color:#f3e4f6;
+  font:700 20px Georgia,serif;
+}
+.d755AssessmentMastery>header>span{
+  color:#f1cf87;
+  font:900 22px Georgia,serif;
+}
+.d755MasteryRows{
+  display:grid;
+  gap:9px;
+}
+.d755MasteryRows article{
+  padding:11px 12px;
+  border:1px solid rgba(180,147,201,.13);
+  border-radius:13px;
+  background:#150f1c;
+}
+.d755MasteryRows article>div{
+  display:grid;
+  grid-template-columns:1fr auto auto;
+  align-items:center;
+  gap:10px;
+  margin-bottom:7px;
+}
+.d755MasteryRows b{
+  color:#eadcf0;
+  font-size:11px;
+}
+.d755MasteryRows span{
+  padding:4px 7px;
+  border-radius:999px;
+  background:#24182c;
+  color:#baa9c1;
+  font:800 8px Arial,sans-serif;
+}
+.d755MasteryRows em{
+  color:#f2deb0;
+  font:800 11px Georgia,serif;
+  font-style:normal;
+}
+.d755MasteryRows i{
+  display:block;
+  height:7px;
+  overflow:hidden;
+  border-radius:999px;
+  background:#281a31;
+}
+.d755MasteryRows u{
+  display:block;
+  height:100%;
+  border-radius:999px;
+  background:linear-gradient(90deg,#7f5ea9,#b987d0,#dfbd74);
+  text-decoration:none;
+}
+.d755MasteryRows small{
+  display:block;
+  margin-top:6px;
+  color:#8f8195;
+  font-size:9px;
+}
+.d755MasteryRows article.mastered{border-color:rgba(128,190,153,.25)}
+.d755MasteryRows article.mastered span{background:rgba(89,145,111,.16);color:#bfe0c9}
+.d755MasteryRows article.mastered u{background:linear-gradient(90deg,#4f9470,#8ec59f)}
+.d755MasteryRows article.developing{border-color:rgba(210,175,104,.22)}
+.d755MasteryRows article.developing span{background:rgba(165,125,55,.13);color:#e9cf91}
+.d755MasteryRows article.needs-practice{border-color:rgba(189,95,115,.19)}
+.d755MasteryRows article.needs-practice span{background:rgba(149,69,89,.13);color:#d8a0ae}
+.d755MasteryRows article.not-practiced{opacity:.72}
+.d755AssessmentMastery>p{
+  margin:12px 0 0;
+  color:#a998b0;
+  font-size:10px;
+  line-height:1.45;
+}
+@media(max-width:620px){
+  .d755MasteryRows article>div{grid-template-columns:1fr auto}
+  .d755MasteryRows em{grid-column:2}
+}
