@@ -64,12 +64,52 @@ function decorateLearning(){
     nav.before(box);box.append(summary,nav);
   }
 }
+
+const STUDY_ROUTES={learninglab:'Learn Lab',mission:'Study Now',livinggrimoire:'Living Grimoire'};
+function account(){if(!window.S)return null;return window.S.majickAccount||(window.S.majickAccount={})}
+function comfort(){const a=account();return a?(a.studyComfort||(a.studyComfort={})):{};}
+function reducedMotion(){const p=comfort();return typeof p.reduceMotion==='boolean'?p.reduceMotion:!!window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;}
+function applyComfort(){
+ const root=document.documentElement;if(!root)return;
+ root.dataset.majickReduceMotion=String(reducedMotion());root.dataset.majickLargeText=String(!!comfort().largeText);
+}
+function toggleComfort(key){if(!['reduceMotion','largeText'].includes(key))return;const p=comfort();p[key]=key==='reduceMotion'?!reducedMotion():!p.largeText;window.save?.();decorateCompass();}
+function rememberStudyRoute(){
+ const a=account(),course=window.S?.activeCourse,screen=window.S?.screen;if(!a||!course||!Object.hasOwn(STUDY_ROUTES,screen))return;
+ const routes=a.studyReturn||(a.studyReturn={});if(routes[course]!==screen){routes[course]=screen;window.save?.();}
+}
+function studyDestination(){const saved=account()?.studyReturn?.[window.S?.activeCourse];return Object.hasOwn(STUDY_ROUTES,saved)?saved:'learninglab';}
+function returnToStudy(){
+ const route=studyDestination();if(typeof window.navigate==='function')window.navigate(route);else if(window.S){window.S.screen=route;window.save?.();window.render?.();}
+ if(route==='learninglab'&&window.S?.activeCourse==='D755')setTimeout(()=>window.MajickD755Retake?.show?.(),100);
+}
+function focusCourse(){const select=document.querySelector('.top select');if(!select)return;select.focus();try{select.showPicker?.();}catch(_){};}
+function decorateCompass(){
+ applyComfort();rememberStudyRoute();
+ const top=document.querySelector('.top');if(!top||!window.S)return;
+ let shelf=document.getElementById('majickStudyCompass');
+ if(!shelf){
+  shelf=document.createElement('section');shelf.id='majickStudyCompass';shelf.className='lcStudyCompass';shelf.setAttribute('aria-label','Study shortcuts and reading comfort');
+  shelf.innerHTML='<button type="button" class="lcCourseShortcut" data-lc-course></button><button type="button" data-lc-return></button><details><summary>Reading comfort</summary><div class="lcComfortChoices"><button type="button" data-lc-motion></button><button type="button" data-lc-text></button><p>These preferences apply across your courses. Reduced motion still keeps Sanctuary Guardians moving.</p></div></details>';
+  shelf.querySelector('[data-lc-course]').addEventListener('click',focusCourse);
+  shelf.querySelector('[data-lc-return]').addEventListener('click',returnToStudy);
+  shelf.querySelector('[data-lc-motion]').addEventListener('click',()=>toggleComfort('reduceMotion'));
+  shelf.querySelector('[data-lc-text]').addEventListener('click',()=>toggleComfort('largeText'));
+  top.insertAdjacentElement('afterend',shelf);
+ }
+ const course=window.S.activeCourse||'WGU';
+ const cb=shelf.querySelector('[data-lc-course]');cb.textContent='✦ '+course+' · Change course';cb.setAttribute('aria-label','Current course '+course+'. Choose a course');
+ shelf.querySelector('[data-lc-return]').textContent='↩ Return to '+STUDY_ROUTES[studyDestination()];
+ const mb=shelf.querySelector('[data-lc-motion]');mb.textContent='Reduced motion: '+(reducedMotion()?'on':'off');mb.setAttribute('aria-pressed',String(reducedMotion()));
+ const tb=shelf.querySelector('[data-lc-text]');tb.textContent='Larger text: '+(comfort().largeText?'on':'off');tb.setAttribute('aria-pressed',String(!!comfort().largeText));
+}
+
 function decorateVersion(){
   document.title='Majick Studies — V'+VERSION+' Living Collegium';
 }
-function decorate(){decorateVersion();decorateCompanions();decorateLearning()}
+function decorate(){decorateVersion();decorateCompanions();decorateLearning();decorateCompass()}
 const previous=window.render;
 if(typeof previous==='function')window.render=function(){const result=previous.apply(this,arguments);setTimeout(decorate,0);return result};
 setTimeout(decorate,120);
-window.MajickLivingCollegium={VERSION,persona,sceneHTML,decorate};
+window.MajickLivingCollegium={VERSION,persona,sceneHTML,decorate,STUDY_ROUTES,comfort,reducedMotion,applyComfort,toggleComfort,rememberStudyRoute,studyDestination,returnToStudy,decorateCompass};
 })();

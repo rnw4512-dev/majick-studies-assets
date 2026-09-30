@@ -511,3 +511,7 @@ Current estimate:
 - Visual check found unused tutor-column space and dimmed disabled labels. CSS now gives the sorter the full main area and preserves white submitted labels; mobile remains one column. CSS cache key: 3340-study-sorter-readable.
 - Existing bank remains 130 plus six sorter scenarios (24 separate classification decisions). Sorter/state/transfer and real navigation callback smoke passed.
 - Final readability CSS deployment pending at this checkpoint; verify screenshot and Pages run. No user code editing needed.
+
+
+## 2026-09-30 — Timelines, behavior process, and study comfort
+Added 16 federal IDEA timeline scenarios and 12 behavior/IEP scenarios (158 total), with dedicated 12-question drills and official-source feedback. Diagnostic/mock deliberately include both areas. Added per-course return-to-study and course selection shelf plus persisted reduced-motion/larger-text preferences. D755 and Living Collegium smoke tests passed; publication verification pending.

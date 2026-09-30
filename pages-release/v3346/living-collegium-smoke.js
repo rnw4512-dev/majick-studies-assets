@@ -13,3 +13,21 @@ assert.equal((app.sceneHTML().match(/class="lcGuardianMoment"/g)||[]).length,3,'
 state.legacy.pets[2].name='<script>alert(1)</script>';
 assert(!app.sceneHTML().includes('<script>'),'Guardian names must be escaped');
 console.log('V3.3.46 LIVING COLLEGIUM SMOKE PASSED');
+
+context.document.documentElement={dataset:{}};
+context.window.matchMedia=()=>({matches:true});
+let saves=0;context.window.save=()=>saves++;
+state.activeCourse='D755';state.screen='learninglab';app.rememberStudyRoute();
+assert.equal(app.studyDestination(),'learninglab');
+state.screen='mission';app.rememberStudyRoute();assert.equal(app.studyDestination(),'mission');
+state.activeCourse='D772';assert.equal(app.studyDestination(),'learninglab','A different course must not inherit the prior course route');
+state.screen='livinggrimoire';app.rememberStudyRoute();
+state.activeCourse='D755';assert.equal(app.studyDestination(),'mission');
+let route;context.window.navigate=x=>route=x;app.returnToStudy();assert.equal(route,'mission');
+assert.equal(app.reducedMotion(),true,'Honor system reduced-motion setting by default');
+app.toggleComfort('reduceMotion');assert.equal(app.reducedMotion(),false,'Explicit preference can override system setting');
+app.toggleComfort('largeText');assert.equal(context.document.documentElement.dataset.majickLargeText,'true');
+state.activeCourse='D772';assert.equal(app.comfort().largeText,true,'Comfort preferences follow the account across courses');
+const before=saves;app.rememberStudyRoute();assert.equal(saves,before,'Decoration must not repeatedly save an unchanged study route');
+assert.equal(state.legacy.pets.length,3,'Study shortcuts must not change Guardians');
+console.log('APP-WIDE STUDY COMPASS AND COMFORT SMOKE PASSED');
