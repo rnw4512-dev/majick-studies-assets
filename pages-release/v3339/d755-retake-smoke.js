@@ -252,6 +252,12 @@ assert(snap.assessmentTotal===6,'Retake Evidence Snapshot must track all six ass
 assert(typeof snap.mistakes==='number','Retake Evidence Snapshot mistake count missing');
 assert(Object.prototype.hasOwnProperty.call(snap,'diagnostic')&&Object.prototype.hasOwnProperty.call(snap,'mock'),'Retake Evidence Snapshot diagnostic/mock fields missing');
 assert(/RETAKE EVIDENCE SNAPSHOT/.test(M.shell()),'Retake Evidence Snapshot missing from D755 home');
+const evidenceHome=M.shell();
+assert(/data-d755-smart-review/.test(evidenceHome),'Evidence Snapshot should link to Smart Review');
+assert(/data-d755-mode="diagnostic"/.test(evidenceHome),'Evidence Snapshot should link to Diagnostic');
+assert(/data-d755-mode="mock"/.test(evidenceHome),'Evidence Snapshot should link to Mock OA');
+assert(/data-d755-section=/.test(evidenceHome),'Evidence Snapshot should link back to section work');
+if(M.retakeEvidenceSnapshot().mistakes>0)assert(/data-d755-mistake-repair/.test(evidenceHome),'Evidence Snapshot should link to Mistake Repair when mistakes exist');
 const purposeBefore=Number(M.assessmentEvidence('drill').Purpose?.total||0);
 M.startAssessmentFamilyPractice('Purpose');
 st=M.state();
