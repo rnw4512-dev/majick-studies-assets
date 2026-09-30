@@ -789,8 +789,10 @@ function startSmartReview(){
 }
 function sampleQuestions(count,mode){
  if(mode==='lawReferralDrill'){
-   const laws=shuffle(BANK.filter(q=>q.trap==='law-case')).slice(0,6);
-   const referrals=shuffle(BANK.filter(q=>q.trap==='process-order'&&q.id.includes('referral_'))).slice(0,6);
+   const recent=new Set(prog().lawReferralRecentIds||[]);
+   const rotate=rows=>[...shuffle(rows.filter(q=>!recent.has(q.id))),...shuffle(rows.filter(q=>recent.has(q.id)))].slice(0,6);
+   const laws=rotate(BANK.filter(q=>q.trap==='law-case'));
+   const referrals=rotate(BANK.filter(q=>q.trap==='process-order'&&q.id.includes('referral_')));
    return shuffle([...laws,...referrals]).slice(0,count);
  }
  const assessmentPool=freshAssessmentRows(BANK.filter(q=>q.section===1&&q.trap==='assessment-type'));
@@ -825,6 +827,7 @@ function sampleQuestions(count,mode){
 }
 function startExam(mode){
  const st=prog(),count=(mode==='assessmentDrill'||mode==='lawReferralDrill')?12:mode==='diagnostic'?30:40,qs=sampleQuestions(count,mode);
+ if(mode==='lawReferralDrill')st.lawReferralRecentIds=qs.map(q=>q.id);
  st[mode]={index:0,selected:null,submitted:false,answers:[],ids:qs.map(q=>q.id),startedAt:Date.now()};
  st.mode=mode;save();render();
 }
@@ -1146,7 +1149,7 @@ function examView(mode){
  const title=isDrill?(o?.smartReview?'10-Question Smart Review':'12-Question Assessment Type Drill'):isLawReferral?'12-Question Law + Referral Process Drill':mode==='diagnostic'?'30-Question Retake Diagnostic':'40-Question Mock OA';
  const weak=isDrill?weakestAssessmentFamilies():[];
  const intro=isDrill?'Practice identifying qualitative/quantitative, formal/informal, formative/summative, norm-/criterion-referenced, CBM, screening, progress monitoring, FBA, observation, anecdotal records, and behavior checklists.':isLawReferral?'Practice special-education law and identify the exact referral/evaluation stage from student and team scenarios.':mode==='diagnostic'?'Find the concepts that actually need reteaching before you spend time reviewing everything again.':'Mixed, unlabeled scenarios across all three sections. No tutor prompts during the simulation.';
- if(!o)return '<section class="d755ExamIntro"><small>'+E(isDrill?'ASSESSMENT TYPE DRILL':isLawReferral?'LAW + REFERRAL PROCESS DRILL':mode.toUpperCase())+'</small><h1>'+E(title)+'</h1><p>'+E(intro)+'</p>'+(isDrill&&weak.length?'<div class="d755AdaptiveFocus"><small>ADAPTIVE FOCUS THIS ROUND</small><b>'+E(weak.join(' + '))+'</b><span>More questions will come from your two weakest categories.</span></div>':'')+(isDrill?assessmentTypeChart():'')+'<button class="btn primary" data-d755-start-exam="'+mode+'">Start '+E(isDrill?'Drill':mode==='diagnostic'?'Diagnostic':'Mock OA')+'</button></section>';
+ if(!o)return '<section class="d755ExamIntro"><small>'+E(isDrill?'ASSESSMENT TYPE DRILL':isLawReferral?'LAW + REFERRAL PROCESS DRILL':mode.toUpperCase())+'</small><h1>'+E(title)+'</h1><p>'+E(intro)+'</p>'+(isDrill&&weak.length?'<div class="d755AdaptiveFocus"><small>ADAPTIVE FOCUS THIS ROUND</small><b>'+E(weak.join(' + '))+'</b><span>More questions will come from your two weakest categories.</span></div>':'')+(isDrill?assessmentTypeChart():'')+'<button class="btn primary" data-d755-start-exam="'+mode+'">Start '+E(isDrill?'Drill':isLawReferral?'Law + Referral Drill':mode==='diagnostic'?'Diagnostic':'Mock OA')+'</button></section>';
  const qs=examQuestions(o),item=qs[o.index];if(!item)return '<div class="d755Empty">Question set unavailable.</div>';
  return '<section class="d755Exam"><header><div><small>'+E(mode==='assessmentDrill'?(o?.smartReview?'SMART REVIEW':'ASSESSMENT TYPE DRILL'):isLawReferral?'LAW + REFERRAL PROCESS DRILL':mode==='diagnostic'?'RETAKE DIAGNOSTIC':'MOCK OA')+'</small><h2>Assessment for Special Education</h2></div><span>'+(o.index+1)+' / '+qs.length+'</span></header><article>'+(isDrill?'<details class="d755AssessReminder"><summary>Need a reminder? Open the Assessment Type Anchor Chart</summary>'+assessmentTypeChart()+'</details>':'')+'<h3>'+E(item.prompt)+'</h3>'+teacherVisual(item)+'<div class="d755Choices">'+item.options.map((x,i)=>'<button '+(o.submitted?'disabled':'')+' class="'+(o.submitted?(x===item.answer?'correct':x===o.selected?'wrong':''):o.selected===x?'selected':'')+'" data-d755-exam-choice="'+E(mode)+'" data-choice="'+E(x)+'"><i>'+String.fromCharCode(65+i)+'</i><span>'+E(x)+'</span></button>').join('')+'</div>'+(o.submitted&&(mode==='diagnostic'||mode==='assessmentDrill'||mode==='lawReferralDrill')?'<div class="d755Feedback '+(o.selected===item.answer?'correct':'repair')+'"><b>'+(o.selected===item.answer?'✓ Correct':'Repair this decision')+'</b><p>'+E(item.why)+'</p>'+(mode==='assessmentDrill'?'<div class="d755ClassificationLens"><small>THIS STEM IS ASKING ABOUT</small><b>'+E(assessmentFamily(item))+'</b><span>'+E(assessmentFamilyRule(assessmentFamily(item)))+'</span><em><b>Why not the tempting opposite?</b> '+E(assessmentContrast(item.answer))+'</em></div>':'')+'</div>':'')+'<footer>'+(!o.submitted?'<button class="btn primary" '+(o.selected?'':'disabled')+' data-d755-exam-submit="'+mode+'">Submit</button>':'<button class="btn primary" data-d755-exam-next="'+mode+'">'+(o.index<qs.length-1?'Next →':'See results →')+'</button>')+'</footer></article></section>';
 }
