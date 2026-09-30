@@ -32,18 +32,18 @@ assert(M&&M.VERSION==='3.3.40','D755 runtime/version missing');
 assert(ctx.document.documentElement.dataset.majickD755Retake==='3.3.40','dataset marker missing');
 assert(M.SECTIONS.length===3,'D755 must contain exactly three sections');
 assert(M.SECTIONS.reduce((n,s)=>n+s.concepts.length,0)===16,'D755 instructional concept count changed');
-assert(M.BANK.length===130,'D755 teacher-focus bank must contain 130 questions');
+assert(M.BANK.length===158,'D755 teacher-focus bank must contain 158 questions');
 assert(M.BANK.filter(q=>q.section===1).length===85,'Section 1 must include the expanded assessment, law, and referral bank');
 assert(M.BANK.filter(q=>q.section===2).length===23,'Section 2 must include the added law/referral scenarios');
-assert(M.BANK.filter(q=>q.section===3).length===22,'Section 3 must include the added referral-stage scenarios');
-assert(new Set(M.BANK.map(q=>q.id)).size===130,'Question IDs must be unique');
+assert(M.BANK.filter(q=>q.section===3).length===50,'Section 3 must include the added referral-stage scenarios');
+assert(new Set(M.BANK.map(q=>q.id)).size===158,'Question IDs must be unique');
 assert(M.BANK.every(q=>Array.isArray(q.options)&&q.options.length===4&&q.options.includes(q.answer)),'Every question must have four choices and a valid answer');
 assert(M.BANK.every(q=>q.style==='wgu-course-scenario'&&q.source==='d755-teacher-focus-2026-09-26'&&q.teacherFocus===true),'Teacher-focus question metadata missing');
 assert(M.BANK.every(q=>q.topicId&&Number(q.difficulty)>=1&&q.format==='scenario'),'Game Realm question metadata missing');
 const realmTopics=new Set(ctx.S.courses.D755.concepts.map(x=>x.id));
 assert(M.BANK.every(q=>realmTopics.has(q.topicId)),'A D755 question points to a Game Realm topic that does not exist');
 assert(Array.isArray(ctx.S.courses.D755.misconceptionCatalog)&&ctx.S.courses.D755.misconceptionCatalog.length>=8,'D755 Game Realm misconception catalog missing');
-assert(ctx.S.courses.D755.questionBank.length===130,'Teacher-focus D755 bank did not self-install');
+assert(ctx.S.courses.D755.questionBank.length===158,'Teacher-focus D755 bank did not self-install');
 assert(M.BANK.some(q=>/four most recent progress-monitoring points/.test(q.prompt)&&q.visual==='four-below'),'Four-point rule data question missing');
 assert(M.BANK.some(q=>/Predictive validity/.test(q.answer)),'Predictive validity question missing');
 assert(M.BANK.some(q=>/General Outcome Measurement/.test(q.answer)),'GOM question missing');
@@ -411,3 +411,15 @@ M.state().mode='home';M.render();modeButton.click();
 assert(M.state().mode==='assessmentSorter','Mode button must open sorter without a scope error');
 assert(/VISUAL ASSESSMENT SORTER|d755Sorter/.test(fakeRoot.innerHTML),'Mode click must render the sorter');
 console.log('D755 real mode-button callback passed');
+
+for(const mode of ['timelineDrill','behaviorDrill']){
+ st=M.state();st.mode=mode;st[mode]=null;
+ assert(M.shell().includes('12-Question'),'Process drill intro missing');
+ M.startExam(mode);
+ const rows=st[mode].ids.map(id=>M.BANK.find(q=>q.id===id));
+ assert(rows.length===12&&new Set(st[mode].ids).size===12,'Process drill sampling failed');
+ assert(rows.every(q=>q.reference&&q.trap===(mode==='timelineDrill'?'timeline':'behavior-process')),'Process drill crossed topic pools');
+ for(let i=0;i<12;i++){const item=M.BANK.find(q=>q.id===st[mode].ids[st[mode].index]);st[mode].selected=item.answer;M.examSubmit(mode);assert(M.shell().includes('Check the official source'),'Official source missing from feedback');M.examNext(mode);}
+ assert(st[mode+'Result'].score===12&&M.shell().includes('12 / 12'),'Process result flow failed');
+}
+console.log('D755 TIMELINE AND BEHAVIOR DRILLS PASSED');
