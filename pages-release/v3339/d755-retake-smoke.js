@@ -176,6 +176,11 @@ assert(st.dimensionDetectiveResult.dimensionScore===8,'Detective dimension score
 assert(st.dimensionDetectiveResult.classificationScore===8,'Detective classification score incorrect');
 assert(Object.keys(st.dimensionDetectiveResult.familyStats||{}).length>=6,'Detective family result breakdown missing');
 assert(/dimension recognition/.test(M.shell())&&/assessment classification/.test(M.shell()),'Detective result comparison missing');
+assert(/ASSESSMENT TYPE MASTERY LADDER/.test(M.shell()),'Assessment Type Mastery Ladder missing from Detective results');
+const masteryRows=M.assessmentMasteryRows();
+assert(masteryRows.length===6,'Assessment Type Mastery Ladder must contain all six dimensions');
+assert(masteryRows.some(x=>x.possible>0),'Assessment Type Mastery Ladder should include accumulated evidence');
+assert(masteryRows.every(x=>['Mastered','Developing','Needs practice','Not practiced'].includes(x.status)),'Assessment Type Mastery Ladder status invalid');
 
 M.startExam('mock');
 st=M.state();
