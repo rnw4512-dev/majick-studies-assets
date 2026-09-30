@@ -12,7 +12,8 @@ for old in ('v3310-main.js','v3312-main.js','v3313-main.js','v3314-main.js','v33
 for old in ('v3311-sanctuary.js','v3312-sanctuary.js','v3313-sanctuary.js','v3314-sanctuary.js','v3315-sanctuary.js'):
     if old in san: fail('obsolete Sanctuary runtime still loaded: '+old)
 order=['v3310-ui-compat.js','v3312-ui-compat.js','guardian-registry.js','majick-state-core.js','guardian-care-economy.js','learning-lab.js','learning-plan.js','course-tutor.js','learn-mode.js','d755-retake.js','v3317-main.js','magical-college-home.js','v3322-main-recovery.js','guardian-core.js','study-progress-bridge.js','guardian-life-main.js']
-if 'game-realm.js?v=3357-progress' not in main or 'game-realm.css?v=3357-progress' not in main or main.find('game-realm.js?v=3357-progress')<main.find('guardian-life-main.js'): fail('Game Realm enhancement load order missing')
+if 'game-realm.js?v=3358-sigils' not in main or 'game-realm.css?v=3358-sigils' not in main or main.find('game-realm.js?v=3358-sigils')<main.find('guardian-life-main.js'): fail('Game Realm enhancement load order missing')
+if 'Assessment Sigil Sort' not in (site/'game-realm.js').read_text(encoding='utf-8') or "activeCourse==='D755'" not in (site/'game-realm.js').read_text(encoding='utf-8'): fail('D755 Assessment Sigil Sort course gate missing')
 pos=[main.find(x) for x in order]
 if any(x<0 for x in pos) or pos!=sorted(pos): fail('main runtime load order is wrong')
 if san.find('guardian-registry.js')<0 or san.find('v3317-sanctuary.js')<0: fail('Sanctuary registry/bridge missing')
