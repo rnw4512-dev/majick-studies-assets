@@ -149,9 +149,9 @@ for marker in ("VERSION='3.3.42'","guardian-bed-","v3342BuildPersonalNooks","v33
 if 'sanctuary-alive.js?v=3349-moments' not in san:
     fail('Sanctuary Alive asset is not installed')
 roster=(site/'sanctuary'/'sanctuary-roster.js').read_text(encoding='utf-8')
-for marker in ("v3351MotionState","idleDynamicGuardian","actionDynamicGuardian","walking-to-care","playStyle","favoritePlayBurst","sleepAura","wakeDynamicGuardian","v3353SleepState"):
+for marker in ("v3351MotionState","idleDynamicGuardian","actionDynamicGuardian","walking-to-care","playStyle","favoritePlayBurst","sleepAura","wakeDynamicGuardian","v3353SleepState","v3354IdleStyle","idleStyle"):
     if marker not in roster: fail('dynamic Guardian motion missing '+marker)
-if 'sanctuary-roster.js?v=3353-bed' not in san:
+if 'sanctuary-roster.js?v=3354-idle' not in san:
     fail('dynamic Sanctuary roster motion asset is not cache-busted')
 if san.find('sanctuary-alive.js')>san.find('sanctuary-roster.js'): fail('Sanctuary roster loads before Sanctuary Alive')
 if san.find('guardian-core-sanctuary.js')>san.find('sanctuary-alive.js'): fail('Sanctuary Alive loads before Guardian Core Sanctuary')

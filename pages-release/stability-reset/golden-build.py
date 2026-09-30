@@ -234,7 +234,7 @@ san_tag='<script src="./v3317-sanctuary.js?v=3350-room"></script>'
 if san_tag not in san_html:
     fail("authoritative Sanctuary runtime tag missing while installing Sanctuary recovery")
 san_html=san_html.replace(san_tag,san_tag+'\\n<script src="./v3320-sanctuary-life.js?v=3350-room"></script>\\n<script src="./v3321-sanctuary-customize.js?v=3322-recovery"></script>\\n<script src="./v3322-sanctuary-recovery.js?v=3322"></script>\\n<script src="./v3325-sanctuary-visual-authority.js?v=3325"></script>\\n<script src="./guardian-core-sanctuary.js?v=3341"></script>\\n<script src="./sanctuary-alive.js?v=3349-moments"></script>',1)
-san_html=san_html.replace('<script src="./sanctuary-alive.js?v=3349-moments"></script>','<script src="./sanctuary-alive.js?v=3349-moments"></script>\n<script src="./sanctuary-roster.js?v=3353-bed"></script>',1)
+san_html=san_html.replace('<script src="./sanctuary-alive.js?v=3349-moments"></script>','<script src="./sanctuary-alive.js?v=3349-moments"></script>\n<script src="./sanctuary-roster.js?v=3354-idle"></script>',1)
 san_index.write_text(san_html,encoding="utf-8")
 
 (site/".nojekyll").touch()
