@@ -251,6 +251,10 @@ assert(snap.sectionTotal===3,'Retake Evidence Snapshot must track all three sect
 assert(snap.assessmentTotal===6,'Retake Evidence Snapshot must track all six assessment dimensions');
 assert(typeof snap.mistakes==='number','Retake Evidence Snapshot mistake count missing');
 assert(Object.prototype.hasOwnProperty.call(snap,'diagnostic')&&Object.prototype.hasOwnProperty.call(snap,'mock'),'Retake Evidence Snapshot diagnostic/mock fields missing');
+assert(M.evidenceTrendText({delta:null})==='','Evidence trend should stay neutral without a prior attempt');
+assert(/↑ 8 points/.test(M.evidenceTrendText({delta:8})),'Evidence trend should show positive point change');
+assert(/↓ 5 points/.test(M.evidenceTrendText({delta:-5})),'Evidence trend should show negative point change');
+assert(/same as previous/.test(M.evidenceTrendText({delta:0})),'Evidence trend should show unchanged result');
 assert(/RETAKE EVIDENCE SNAPSHOT/.test(M.shell()),'Retake Evidence Snapshot missing from D755 home');
 const evidenceHome=M.shell();
 assert(/data-d755-smart-review/.test(evidenceHome),'Evidence Snapshot should link to Smart Review');

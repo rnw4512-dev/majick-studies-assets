@@ -519,13 +519,20 @@ function retakeEvidenceSnapshot(){
  const sectionRows=[1,2,3].map(n=>st.sectionChecks?.['s'+n]||null);
  const sectionReady=sectionRows.filter(r=>r?.status==='Ready to move on').length;
  const diag=st.diagnosticResult||null,mock=st.mockResult||null;
+ const diagHistory=Array.isArray(st.diagnosticHistory)?st.diagnosticHistory:[],mockHistory=Array.isArray(st.mockHistory)?st.mockHistory:[];
+ const diagPrev=diagHistory.length?diagHistory[diagHistory.length-1]:null,mockPrev=mockHistory.length?mockHistory[mockHistory.length-1]:null;
  return {
    sectionReady,sectionTotal:3,
    assessmentMastered:mastered,assessmentPracticed:practiced.length,assessmentTotal:rows.length,
    mistakes:assessmentMistakeIds().length,
-   diagnostic:diag?{score:Number(diag.score||0),total:Number(diag.total||0),pct:Number(diag.pct||0)}:null,
-   mock:mock?{score:Number(mock.score||0),total:Number(mock.total||0),pct:Number(mock.pct||0)}:null
+   diagnostic:diag?{score:Number(diag.score||0),total:Number(diag.total||0),pct:Number(diag.pct||0),previousPct:diagPrev?Number(diagPrev.pct||0):null,delta:diagPrev?Number(diag.pct||0)-Number(diagPrev.pct||0):null}:null,
+   mock:mock?{score:Number(mock.score||0),total:Number(mock.total||0),pct:Number(mock.pct||0),previousPct:mockPrev?Number(mockPrev.pct||0):null,delta:mockPrev?Number(mock.pct||0)-Number(mockPrev.pct||0):null}:null
  };
+}
+function evidenceTrendText(row){
+ if(!row||row.delta===null||row.delta===undefined)return '';
+ const d=Number(row.delta||0);
+ return d>0?' • ↑ '+d+' points from previous':d<0?' • ↓ '+Math.abs(d)+' points from previous':' • ↔ same as previous';
 }
 function retakeEvidenceSnapshotHTML(){
  const x=retakeEvidenceSnapshot(),st=prog();
@@ -534,8 +541,8 @@ function retakeEvidenceSnapshotHTML(){
    '<article><b>'+x.sectionReady+' / '+x.sectionTotal+'</b><span>section checks ready to move on</span><small>Based on your saved section mastery checks.</small><button type="button" data-d755-section="'+E(st.sectionId)+'">Continue sections →</button></article>'+
    '<article><b>'+x.assessmentMastered+' / '+x.assessmentTotal+'</b><span>assessment dimensions mastered</span><small>'+x.assessmentPracticed+' of '+x.assessmentTotal+' dimensions have practice evidence.</small><button type="button" data-d755-smart-review>Smart Review →</button></article>'+
    '<article class="'+(x.mistakes?'attention':'clear')+'"><b>'+x.mistakes+'</b><span>unresolved assessment mistakes</span><small>'+(x.mistakes?'Use Mistake Repair before adding more of the same type.':'No assessment mistakes are currently waiting in the repair queue.')+'</small>'+(x.mistakes?'<button type="button" data-d755-mistake-repair>Repair mistakes →</button>':'<button type="button" data-d755-smart-review>Keep it fresh →</button>')+'</article>'+
-   '<article><b>'+(x.diagnostic?x.diagnostic.score+' / '+x.diagnostic.total:'—')+'</b><span>latest diagnostic</span><small>'+(x.diagnostic?x.diagnostic.pct+'% saved practice evidence.':'No diagnostic result saved yet.')+'</small><button type="button" data-d755-mode="diagnostic">'+(x.diagnostic?'Retake diagnostic →':'Start diagnostic →')+'</button></article>'+
-   '<article><b>'+(x.mock?x.mock.score+' / '+x.mock.total:'—')+'</b><span>latest mock OA</span><small>'+(x.mock?x.mock.pct+'% saved practice evidence.':'No mock OA result saved yet.')+'</small><button type="button" data-d755-mode="mock">'+(x.mock?'Retake Mock OA →':'Open Mock OA →')+'</button></article>'+
+   '<article><b>'+(x.diagnostic?x.diagnostic.score+' / '+x.diagnostic.total:'—')+'</b><span>latest diagnostic</span><small>'+(x.diagnostic?x.diagnostic.pct+'% saved practice evidence'+evidenceTrendText(x.diagnostic)+'.':'No diagnostic result saved yet.')+'</small><button type="button" data-d755-mode="diagnostic">'+(x.diagnostic?'Retake diagnostic →':'Start diagnostic →')+'</button></article>'+
+   '<article><b>'+(x.mock?x.mock.score+' / '+x.mock.total:'—')+'</b><span>latest mock OA</span><small>'+(x.mock?x.mock.pct+'% saved practice evidence'+evidenceTrendText(x.mock)+'.':'No mock OA result saved yet.')+'</small><button type="button" data-d755-mode="mock">'+(x.mock?'Retake Mock OA →':'Open Mock OA →')+'</button></article>'+
   '</div>'+
   '<p>This snapshot summarizes practice completed inside Majick Studies. It does not predict or guarantee your WGU OA result.</p>'+
  '</section>';
@@ -838,6 +845,14 @@ function examNext(mode){
    };
  }
  const result={score,total,pct:total?Math.round(score/total*100):0,bySection,trapCounts,familyStats,focusedFamily:o.focusedFamily||'',mistakeRepair:!!o.mistakeRepair,smartReview:!!o.smartReview,smartReviewSummary,at:Date.now(),status:score/total>=.85?'Ready for final review':score/total>=.7?'Targeted repair needed':'Needs another teaching pass'};
+ if(mode==='diagnostic'||mode==='mock'){
+   const prior=st[mode+'Result'];
+   if(prior){
+     const key=mode+'History',history=Array.isArray(st[key])?st[key]:[];
+     history.push({score:Number(prior.score||0),total:Number(prior.total||0),pct:Number(prior.pct||0),at:Number(prior.at||0)});
+     st[key]=history.slice(-5);
+   }
+ }
  st[mode+'Result']=result;st.mode=mode+'Result';save();render();
 }
 function teacherVisual(item){
@@ -1219,6 +1234,6 @@ if(typeof oldBind==='function'){
  };
 }
 ensureBank();
-window.MajickD755Retake={VERSION,COURSE,SECTIONS,TRAPS,BANK,ensureBank,show,render,shell,state:prog,current,startExam,examSubmit,examNext,assessmentFamily,retakeEvidenceSnapshot,assessmentEvidence,assessmentMasteryRows,assessmentNextPractice,smartReviewSummaryHTML,assessmentMistakeIds,assessmentMistakeSummary,updateAssessmentMistake,startAssessmentMistakeRepair,smartReviewQuestions,startSmartReview,assessmentRecentIds,rememberAssessmentQuestion,freshAssessmentRows,startAssessmentFamilyPractice,contrastPairFor,contrastPairFamily,startContrastRepair,contrastRepairSelect,contrastRepairSubmit,contrastRepairNext,startDimensionDetective,detectiveChooseDimension,detectiveSubmitDimension,detectiveChooseAnswer,detectiveSubmitAnswer,detectiveNext,startSectionCheck,checkSubmit,checkNext,anchorsView,grimoireWall,teacherVisual};
+window.MajickD755Retake={VERSION,COURSE,SECTIONS,TRAPS,BANK,ensureBank,show,render,shell,state:prog,current,startExam,examSubmit,examNext,assessmentFamily,retakeEvidenceSnapshot,evidenceTrendText,assessmentEvidence,assessmentMasteryRows,assessmentNextPractice,smartReviewSummaryHTML,assessmentMistakeIds,assessmentMistakeSummary,updateAssessmentMistake,startAssessmentMistakeRepair,smartReviewQuestions,startSmartReview,assessmentRecentIds,rememberAssessmentQuestion,freshAssessmentRows,startAssessmentFamilyPractice,contrastPairFor,contrastPairFamily,startContrastRepair,contrastRepairSelect,contrastRepairSubmit,contrastRepairNext,startDimensionDetective,detectiveChooseDimension,detectiveSubmitDimension,detectiveChooseAnswer,detectiveSubmitAnswer,detectiveNext,startSectionCheck,checkSubmit,checkNext,anchorsView,grimoireWall,teacherVisual};
 document.documentElement.dataset.majickD755Retake=VERSION;
 })();
