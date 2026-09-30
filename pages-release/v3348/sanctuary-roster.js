@@ -33,6 +33,70 @@
    if(bed)return {x:Math.max(160,Math.min((scene.worldWidth||2400)-160,bed.x+80)),y:Math.max(370,bed.y-80)};
    return {x:340+(index%5)*370,y:560+Math.floor(index/5)*110};
  }
+ function motionProfile(g){
+   const type=resolvedType(g);
+   if(['vesper','zephyr','prism'].includes(type))return {bob:12,tilt:2.4,squash:.035,pace:.92,idle:10};
+   if(['briar','solara','nova'].includes(type))return {bob:8,tilt:3.2,squash:.05,pace:1.05,idle:6};
+   if(['rook','luna','mallow'].includes(type))return {bob:7,tilt:2.2,squash:.038,pace:.98,idle:5};
+   return {bob:8,tilt:2.6,squash:.04,pace:1,idle:6};
+ }
+ function baseScale(pet){
+   const sx=Math.abs(Number(pet?.getData?.('v3351BaseScaleX')??pet?.scaleX??1))||1;
+   const sy=Math.abs(Number(pet?.getData?.('v3351BaseScaleY')??pet?.scaleY??1))||1;
+   return {sx,sy};
+ }
+ function rememberBaseMotion(pet){
+   if(!pet?.setData)return;
+   const b=baseScale(pet);
+   pet.setData('v3351BaseScaleX',b.sx);pet.setData('v3351BaseScaleY',b.sy);
+   pet.setData('v3351MotionState','idle');
+ }
+ function resetDynamicPose(pet){
+   if(!pet?.active)return;
+   const b=baseScale(pet);
+   try{pet.setScale?.(b.sx,b.sy)}catch(_){}
+   try{pet.setAngle?.(0)}catch(_){if('angle' in pet)pet.angle=0}
+   try{pet.setAlpha?.(1)}catch(_){if('alpha' in pet)pet.alpha=1}
+   try{pet.setData?.('v3351MotionState','idle')}catch(_){}
+ }
+ function stopDynamicMotion(scene,pet){
+   if(!pet)return;
+   try{scene.tweens.killTweensOf(pet)}catch(_){}
+   resetDynamicPose(pet);
+ }
+ function idleDynamicGuardian(scene,g){
+   const pet=scene.v3348Sprites?.[g.petId];
+   if(!pet?.active||scene.editMode)return false;
+   const profile=motionProfile(g),b=baseScale(pet);
+   pet.setData?.('v3351MotionState','breathing');
+   scene.tweens.add({
+     targets:pet,
+     scaleX:b.sx*(1+profile.squash*.45),
+     scaleY:b.sy*(1-profile.squash*.32),
+     y:pet.y-profile.idle,
+     duration:700,
+     yoyo:true,
+     ease:'Sine.inOut',
+     onComplete:()=>{if(pet.active)resetDynamicPose(pet)}
+   });
+   return true;
+ }
+ function actionDynamicGuardian(scene,g,action='care'){
+   const pet=scene.v3348Sprites?.[g.petId];if(!pet?.active)return false;
+   const b=baseScale(pet);
+   stopDynamicMotion(scene,pet);
+   pet.setData?.('v3351MotionState',action);
+   if(action==='sleep'){
+     scene.tweens.add({targets:pet,angle:-5,scaleY:b.sy*.9,scaleX:b.sx*1.05,alpha:.88,duration:850,yoyo:true,repeat:1,ease:'Sine.inOut',onComplete:()=>resetDynamicPose(pet)});
+   }else if(action==='play'){
+     scene.tweens.add({targets:pet,y:pet.y-34,angle:pet.flipX?-7:7,scaleX:b.sx*1.04,scaleY:b.sy*.96,duration:280,yoyo:true,repeat:2,ease:'Quad.out',onComplete:()=>resetDynamicPose(pet)});
+   }else if(action==='affection'){
+     scene.tweens.add({targets:pet,y:pet.y-22,scaleX:b.sx*1.05,scaleY:b.sy*1.05,duration:330,yoyo:true,ease:'Sine.inOut',onComplete:()=>resetDynamicPose(pet)});
+   }else{
+     scene.tweens.add({targets:pet,angle:pet.flipX?-3:3,scaleY:b.sy*.96,duration:260,yoyo:true,ease:'Sine.inOut',onComplete:()=>resetDynamicPose(pet)});
+   }
+   return true;
+ }
  function report(scene){
    const rows=roster(scene).map(g=>{
      const type=resolvedType(g),meta=identity(g)||{};
@@ -47,7 +111,7 @@
    if(!roster(scene).some(x=>x.petId===g.petId)||!scene.sys?.isActive?.())return;
    const existing=scene.v3348Sprites[g.petId];
    if(existing?.active&&existing.texture?.key===key)return;
-   if(existing?.active){scene.tweens.killTweensOf(existing);existing.destroy()}
+   if(existing?.active){stopDynamicMotion(scene,existing);existing.destroy()}
    const p=point(scene,g,index),pet=key==='v3350-placeholder'
      ?scene.add.text(p.x,p.y,g.icon||'✦',{fontFamily:'Georgia',fontSize:'80px',color:'#f2d9ff'}).setOrigin(.5,1).setDepth(80)
      :scene.add.image(p.x,p.y,key).setOrigin(.5,1).setDepth(80);
@@ -56,6 +120,7 @@
    applyIndividualTint(pet,meta);
    pet.setInteractive({useHandCursor:true});pet.on('pointerup',()=>{if(!scene.editMode)scene.openGuardianCarePanel?.(g.petId)});
    pet.setData('guardianId',g.petId);pet.setData('guardianName',meta.name||g.name);pet.setData('guardianType',type);pet.v3350Texture=key;
+   rememberBaseMotion(pet);
    scene.v3348Sprites[g.petId]=pet;scene.v3348PetById[g.petId]=pet;
    if(!scene[type]||!scene[type].active)scene[type]=pet;
    scene.v3320RefreshGuardianLabels?.(scene.v3317CareState);
@@ -66,7 +131,7 @@
    this.v3348Sprites=this.v3348Sprites||{};this.v3348PetById=this.v3348PetById||{};this.v3348Loading=this.v3348Loading||{};this.v3348Fallback=this.v3348Fallback||{};
    for(const id of Object.keys(this.v3348PetById))if(!owned.has(id))delete this.v3348PetById[id];
    for(const [id,pet] of Object.entries(this.v3348Sprites))if(!owned.has(id)){
-     this.tweens.killTweensOf(pet);pet.destroy();delete this.v3348Sprites[id];delete this.v3348PetById[id];
+     stopDynamicMotion(this,pet);pet.destroy();delete this.v3348Sprites[id];delete this.v3348PetById[id];
      const type=pet.getData?.('guardianType');if(type&&this[type]===pet)delete this[type];
    }
    rs.forEach((g,index)=>{
@@ -106,12 +171,28 @@
  };
  Game.prototype.v3348Roam=function(id){
    const pet=this.v3348Sprites?.[id];if(!pet?.active||this.editMode||this.tweens.isTweening?.(pet))return false;
-   const w=this.worldWidth||2400,h=this.worldHeight||950;
+   const g=roster(this).find(x=>x.petId===id);if(!g)return false;
+   const profile=motionProfile(g),b=baseScale(pet),w=this.worldWidth||2400,h=this.worldHeight||950;
    const tx=Math.max(180,Math.min(w-180,pet.x+(Math.random()-.5)*530));
    const ty=Math.max(430,Math.min(h-135,pet.y+(Math.random()-.5)*230));
-   pet.setFlipX(tx<pet.x);
-   this.tweens.add({targets:pet,x:tx,y:ty,duration:2000+Math.random()*1700,ease:'Sine.inOut',onComplete:()=>{
-     if(pet.active)this.time.delayedCall(1800+Math.random()*3000,()=>this.v3348Roam(id));
+   const duration=(2000+Math.random()*1700)/profile.pace;
+   pet.setFlipX(tx<pet.x);pet.setData?.('v3351MotionState','walking');
+   const pulse=this.tweens.add({
+     targets:pet,
+     scaleX:b.sx*(1+profile.squash),
+     scaleY:b.sy*(1-profile.squash),
+     angle:pet.flipX?-profile.tilt:profile.tilt,
+     duration:240,
+     yoyo:true,
+     repeat:-1,
+     ease:'Sine.inOut'
+   });
+   this.tweens.add({targets:pet,x:tx,y:ty,duration,ease:'Sine.inOut',onComplete:()=>{
+     try{pulse?.stop?.()}catch(_){}
+     if(!pet.active)return;
+     resetDynamicPose(pet);
+     idleDynamicGuardian(this,g);
+     this.time.delayedCall(1900+Math.random()*2800,()=>this.v3348Roam(id));
    }});
    return true;
  };
@@ -119,11 +200,9 @@
  Game.prototype.v3317CareReaction=function(result){
    const response=careReaction?.call(this,result);
    if(result?.ok!==false&&this.v3348Sprites?.[result?.guardianId]?.active){
+     const g=roster(this).find(x=>x.petId===result.guardianId);
      if(result.travelObject)this.v3342TravelGuardian(result.guardianId,result.travelObject,result.visualAction||result.action,result.message);
-     else if(result.action==='affection'){
-       const pet=this.v3348Sprites[result.guardianId];
-       this.tweens.add({targets:pet,y:pet.y-24,duration:340,yoyo:true,ease:'Sine.inOut'});
-     }
+     else if(g)actionDynamicGuardian(this,g,result.action||'care');
    }
    if(result?.ok===false||result?.action!=='play')return response;
    const pet=this.v3348PetById?.[result.guardianId]||this[result.guardianType];if(!pet?.active)return response;
@@ -139,11 +218,17 @@
    if(!pet?.active)return travel?.call(this,type,target,action,bubble);
    if(this.editMode)return false;
    const p=typeof target==='string'?this.v3342ObjectPoint?.(target):target;if(!p)return false;
-   this.tweens.killTweensOf(pet);pet.setFlipX(Number(p.x)<pet.x);
-   this.tweens.add({targets:pet,x:Number(p.x)+50,y:Number(p.y)-25,duration:2200,ease:'Sine.inOut',onComplete:()=>{
+   stopDynamicMotion(this,pet);pet.setFlipX(Number(p.x)<pet.x);
+   const profile=motionProfile(g),b=baseScale(pet);
+   pet.setData?.('v3351MotionState','walking-to-care');
+   const pulse=this.tweens.add({targets:pet,scaleX:b.sx*(1+profile.squash),scaleY:b.sy*(1-profile.squash),angle:pet.flipX?-profile.tilt:profile.tilt,duration:230,yoyo:true,repeat:-1,ease:'Sine.inOut'});
+   this.tweens.add({targets:pet,x:Number(p.x)+50,y:Number(p.y)-25,duration:2200/profile.pace,ease:'Sine.inOut',onComplete:()=>{
+     try{pulse?.stop?.()}catch(_){}
+     resetDynamicPose(pet);
      if(bubble)this.showPetMessage?.(pet,bubble,'#e7d2f5');
      this.v3342RecordUse?.(g.type,typeof target==='string'?target:'personal-nook');
-     this.time.delayedCall(action==='sleep'?5200:2200,()=>this.v3348Roam(g.petId));
+     actionDynamicGuardian(this,g,action||'care');
+     this.time.delayedCall(action==='sleep'?5200:2400,()=>this.v3348Roam(g.petId));
    }});
    return true;
  };
@@ -172,7 +257,7 @@
  };
  window.MajickSanctuaryRoster={VERSION,stage,canon,inspect(scene){
    const s=scene||window.majickPhaserGame?.scene?.getScene?.('Game');
-   return {roster:report(s),dynamic:Object.keys(s?.v3348Sprites||{})};
+   return {roster:report(s),dynamic:Object.keys(s?.v3348Sprites||{}),motion:Object.fromEntries(Object.entries(s?.v3348Sprites||{}).map(([id,p])=>[id,p?.getData?.('v3351MotionState')||'unknown']))};
  }};
  window.addEventListener('message',ev=>{
    if(ev.origin!==location.origin||ev.data?.type!=='MAJICK_SANCTUARY_ROSTER_REQUEST_V3350')return;
