@@ -27,6 +27,7 @@ vm.createContext(ctx);
 vm.runInContext(src,ctx,{filename:'d755-retake.js'});
 
 const M=ctx.MajickD755Retake;
+let st;
 assert(M&&M.VERSION==='3.3.40','D755 runtime/version missing');
 assert(ctx.document.documentElement.dataset.majickD755Retake==='3.3.40','dataset marker missing');
 assert(M.SECTIONS.length===3,'D755 must contain exactly three sections');
@@ -69,7 +70,7 @@ const rotated=M.freshAssessmentRows(rotationProbe);
 assert(rotated.length===rotationProbe.length,'Assessment question rotation must preserve the full pool');
 assert(rotated[0].id!==rotationProbe[0].id,'Recently used assessment question should move behind unseen questions');
 assert(rotated.some(q=>q.id===rotationProbe[0].id),'Recently used assessment question must remain available as fallback');
-let st=M.state();
+st=M.state();
 const mistakeProbe=assessmentTypeQs[0];
 M.updateAssessmentMistake(mistakeProbe.id,false);
 assert(M.assessmentMistakeIds().includes(mistakeProbe.id),'Wrong assessment answer should enter Mistake Repair Queue');
