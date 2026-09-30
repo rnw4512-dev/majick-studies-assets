@@ -53,6 +53,7 @@ scene.v3320ApplyCareSnapshot({roster:[
   {petId:'second-vesper',type:'vesper',name:'Second Owl',level:3}
 ]});
 assert.notEqual(scene.v3348PetById['owned-vesper'],scene.v3348PetById['second-vesper'],'two owned Guardians of one type need two bodies');
+assert.match(source,/seedText=String\(g\?\.petId/,'individual behavior should be deterministically seeded by Guardian identity');
 assert.ok(['walking','idle','breathing'].includes(scene.v3348PetById['second-vesper'].getData('v3351MotionState')),'second same-species Guardian needs independent motion state');
 assert.equal(reports.at(-1).rows.filter(g=>g.present).length,2);
 assert.match(source,/playStyles:Object\.fromEntries/,'Sanctuary roster QA output should expose dynamic play styles');
@@ -62,6 +63,10 @@ assert.match(source,/watchful-tilt/,'watchful Guardian idle style missing');
 assert.match(source,/quick-fidget/,'Zephyr-style idle fidget missing');
 assert.match(source,/curious-wiggle/,'curious Guardian idle style missing');
 assert.match(source,/idleStyles:Object\.fromEntries/,'Sanctuary roster QA output should expose dynamic idle styles');
+assert.match(source,/individualBehavior/,'individual Guardian behavior helper missing');
+assert.match(source,/v3355IndividualBehavior/,'individual Guardian behavior state marker missing');
+assert.match(source,/roamScale/,'individual Guardian roam variation missing');
+assert.match(source,/pauseScale/,'individual Guardian pause variation missing');
 scene.v3320ApplyCareSnapshot({roster:[]});
 assert.equal(scene.v3348PetById['owned-vesper'],undefined,'removed Guardian cannot remain visible');
 assert.ok(reports.some(x=>x.type==='MAJICK_SANCTUARY_ROSTER_V3350'&&x.rows.some(g=>g.petId==='owned-vesper'&&g.present)));
