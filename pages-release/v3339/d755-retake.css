@@ -142,3 +142,45 @@
   .d755AssessmentTypeGrid{grid-template-columns:1fr}
   .d755AssessmentTypeGrid article{grid-template-columns:1fr}
 }
+
+/* Assessment Type Drill category breakdown */
+.d755AssessmentBreakdown{
+  display:grid;
+  gap:9px;
+  margin:16px 0 18px;
+}
+.d755AssessmentBreakdown article{
+  padding:11px 12px;
+  border:1px solid rgba(183,149,204,.14);
+  border-radius:13px;
+  background:#160f1d;
+}
+.d755AssessmentBreakdown article>div{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  margin-bottom:7px;
+}
+.d755AssessmentBreakdown b{
+  color:#eadcf0;
+  font-size:11px;
+}
+.d755AssessmentBreakdown span{
+  color:#b8a6c0;
+  font-size:10px;
+  font-weight:800;
+}
+.d755AssessmentBreakdown i{
+  display:block;
+  height:7px;
+  overflow:hidden;
+  border-radius:999px;
+  background:#24172d;
+}
+.d755AssessmentBreakdown em{
+  display:block;
+  height:100%;
+  border-radius:999px;
+  background:linear-gradient(90deg,#7c5ca8,#b98bd0,#d9b873);
+}
