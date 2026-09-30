@@ -88,6 +88,15 @@ assert(snap.roster.length===2,'owned Guardian roster should contain exactly two 
 assert(snap.eggs.length===1,'incubator should contain exactly one egg');
 assert(snap.guardians.luna||snap.guardians['luna'],'Velora care state missing');
 assert(snap.guardians.pet_solstice,'Solstice care state missing');
+const feedResult=window.MajickGuardianCare.performAction('luna','feed');
+assert(feedResult.ok&&feedResult.travelObject==='guardian-food-bowl'&&feedResult.visualAction==='feed','Feed should route to Guardian food bowl');
+const waterResult=window.MajickGuardianCare.performAction('luna','water');
+assert(waterResult.ok&&waterResult.travelObject==='guardian-water-basin'&&waterResult.visualAction==='water','Water should route to Guardian water basin');
+S.majickAccount.guardianOwned.push('moon-silver-brush');
+const groomResult=window.MajickGuardianCare.performAction('luna','groom');
+assert(groomResult.ok&&groomResult.travelObject==='guardian-brush'&&groomResult.visualAction==='groom','Groom should route to Guardian brush station');
+const treatResult=window.MajickGuardianCare.performAction('luna','treat');
+assert(treatResult.ok&&treatResult.travelObject==='guardian-food-bowl'&&treatResult.visualAction==='treat','Treat should route to Guardian food bowl');
 
 console.log('V3.3.17 migration smoke passed');
 console.log('courses repaired:',Object.keys(S.progress).join(', '));

@@ -132,7 +132,7 @@ for marker in ("window.MajickSanctuaryRecovery","v3322SyncOwnedGuardians","v3322
 visual=(site/'sanctuary'/'v3325-sanctuary-visual-authority.js').read_text(encoding='utf-8')
 for marker in ("window.MajickGuardianVisualAuthority","v3325SyncOwnedVisuals","v3325BaseScale","totalVisible"):
     if marker not in visual: fail('Guardian visual authority missing '+marker)
-for marker in ('majick-state-core.js?v=3322-recovery','guardian-care-economy.js?v=3346-bed','v3317-main.js?v=3352-hotfix','v3322-main-recovery.js?v=3322'):
+for marker in ('majick-state-core.js?v=3322-recovery','guardian-care-economy.js?v=3347-stations','v3317-main.js?v=3352-hotfix','v3322-main-recovery.js?v=3322'):
     if marker not in main: fail('main cache-bust/runtime missing '+marker)
 if 'v3322-sanctuary-recovery.js?v=3322' not in san:
     fail('Sanctuary recovery asset is not installed')
@@ -151,13 +151,13 @@ if 'sanctuary-alive.js?v=3349-moments' not in san:
 roster=(site/'sanctuary'/'sanctuary-roster.js').read_text(encoding='utf-8')
 for marker in ("v3351MotionState","idleDynamicGuardian","actionDynamicGuardian","walking-to-care","playStyle","favoritePlayBurst","sleepAura","wakeDynamicGuardian","v3353SleepState","v3354IdleStyle","idleStyle","v3355IndividualBehavior","individualBehavior"):
     if marker not in roster: fail('dynamic Guardian motion missing '+marker)
-if 'sanctuary-roster.js?v=3356-carevisual' not in san:
+if 'sanctuary-roster.js?v=3357-stations' not in san:
     fail('dynamic Sanctuary roster motion asset is not cache-busted')
 if san.find('sanctuary-alive.js')>san.find('sanctuary-roster.js'): fail('Sanctuary roster loads before Sanctuary Alive')
 if san.find('guardian-core-sanctuary.js')>san.find('sanctuary-alive.js'): fail('Sanctuary Alive loads before Guardian Core Sanctuary')
 care=(site/'guardian-care-economy.js').read_text(encoding='utf-8')
 if 'window.MajickGuardianRegistry?.get?.(type)' not in care: fail('Guardian care does not use the shared registry')
-for marker in ('familiarBed','bedBondBonus','bedId'):
+for marker in ('familiarBed','bedBondBonus','bedId','guardian-food-bowl','guardian-water-basin','guardian-brush'):
     if marker not in care: fail('Guardian familiar-bed result missing '+marker)
 
 for path in (site/'guardian-registry.js',site/'majick-state-core.js',site/'learning-lab.js',site/'learn-mode.js',site/'d755-retake.js',site/'guardian-core.js',site/'study-progress-bridge.js',site/'guardian-life-main.js',site/'guardian-care-economy.js',site/'v3317-main.js',site/'sanctuary'/'v3317-sanctuary.js',site/'sanctuary'/'v3320-sanctuary-life.js',site/'sanctuary'/'v3321-sanctuary-customize.js',site/'v3322-main-recovery.js',site/'sanctuary'/'v3322-sanctuary-recovery.js',site/'sanctuary'/'v3325-sanctuary-visual-authority.js',site/'sanctuary'/'guardian-core-sanctuary.js',site/'sanctuary'/'sanctuary-alive.js'):

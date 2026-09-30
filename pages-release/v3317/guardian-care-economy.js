@@ -272,20 +272,28 @@ function performAction(target,action,opts={}){
     change(g,{hunger:34,affection:3,bond:3});
     msg=(meta.name||pet.name)+' happily finishes a Moonberry meal and looks noticeably more content.';
     r.icon='✦';
+    r.visualAction='feed';
+    r.travelObject=opts.objectId||'guardian-food-bowl';
   }else if(action==='water'){
     change(g,{hydration:38,bond:1});
     msg=(meta.name||pet.name)+' drinks from the enchanted water basin. The water shimmers as they finish.';
     r.icon='◌';
+    r.visualAction='water';
+    r.travelObject=opts.objectId||'guardian-water-basin';
   }else if(action==='treat'){
     if(!consume('starlight-treat',1))return {ok:false,guardianId:pet.id,guardianType:pet.type,action,message:'You are out of Starlight Treats. Visit the Moon Crystal Boutique.',needsShop:true};
     change(g,{hunger:10,fun:8,affection:12,bond:4});
     msg=(meta.name||pet.name)+' takes the Starlight Treat and gives you a very pleased little reaction.';
     r.icon='☆';
+    r.visualAction='treat';
+    r.travelObject=opts.objectId||'guardian-food-bowl';
   }else if(action==='groom'){
     if(!owns('moon-silver-brush'))return {ok:false,guardianId:pet.id,guardianType:pet.type,action,message:'You need the Moon-Silver Grooming Brush from the Boutique first.',needsShop:true};
     change(g,{grooming:38,affection:8,bond:4});
     msg=(meta.name||pet.name)+' relaxes while you brush and groom them. Their coat and aura look immaculate.';
     r.icon='✧';
+    r.visualAction='groom';
+    r.travelObject=opts.objectId||'guardian-brush';
   }else if(action==='play'){
     const toy=opts.itemId||bestToy(pet);
     favoriteBonus=toy===favoriteForPet(pet).id&&owns(toy);

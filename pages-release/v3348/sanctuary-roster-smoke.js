@@ -72,6 +72,9 @@ for(const action of ['feed','water','treat','groom','affection']){
   assert.match(source,new RegExp("action==='"+action+"'"),action+' needs a distinct dynamic Sanctuary motion');
 }
 assert.match(source,/careVisualActions:\['feed','water','treat','groom','affection'\]/,'Sanctuary QA output must expose the five visible care actions');
+assert.match(source,/careStationActions:\{feed:'guardian-food-bowl',water:'guardian-water-basin',treat:'guardian-food-bowl',groom:'guardian-brush'\}/,'Sanctuary QA output must expose care station routing');
+assert.match(source,/if\(!result\.travelObject&&\['feed','water','treat','groom','affection'\]\.includes\(result\.action\)\)careVisualBurst/,'Care visuals should wait for arrival when a station is assigned');
+assert.match(source,/\['feed','water','treat','groom'\]\.includes\(action\)\)careVisualBurst/,'Care station arrival must trigger the visible care effect');
 assert.match(source,/meal/,'feeding visual label missing');
 assert.match(source,/water/,'water visual label missing');
 assert.match(source,/shine/,'grooming shine visual label missing');

@@ -357,7 +357,7 @@
    if(result?.ok===false)return response;
    const pet=this.v3348PetById?.[result.guardianId]||this[result.guardianType];if(!pet?.active)return response;
    const g=roster(this).find(x=>x.petId===result.guardianId);
-   if(['feed','water','treat','groom','affection'].includes(result.action))careVisualBurst(this,pet,result.action,result);
+   if(!result.travelObject&&['feed','water','treat','groom','affection'].includes(result.action))careVisualBurst(this,pet,result.action,result);
    if(result?.action!=='play')return response;
    const glyph=TOYS[result.itemId]||'✦';
    const toy=this.add.text(pet.x,pet.y-110,glyph,{fontFamily:'Georgia',fontSize:'44px',color:'#ffe5ad',stroke:'#21102d',strokeThickness:4}).setOrigin(.5).setDepth(505);
@@ -369,7 +369,16 @@
  const travel=Game.prototype.v3342TravelGuardian;
  Game.prototype.v3342TravelGuardian=function(type,target,action,bubble){
    const g=roster(this).find(x=>x.petId===type)||roster(this).find(x=>x.type===type),pet=g&&this.v3348Sprites?.[g.petId];
-   if(!pet?.active)return travel?.call(this,type,target,action,bubble);
+   if(!pet?.active){
+     const original=this[type]||this[g?.type],point=typeof target==='string'?this.v3342ObjectPoint?.(target):target;
+     const ok=travel?.call(this,type,target,action,bubble);
+     if(ok&&original?.active&&point&&['feed','water','treat','groom'].includes(action)){
+       const distance=Math.hypot(Number(point.x)-Number(original.x||0),Number(point.y)-Number(original.y||0));
+       const delay=Math.max(650,Math.min(2600,distance*2.2))+120;
+       this.time?.delayedCall?.(delay,()=>careVisualBurst(this,original,action,{travelObject:target}));
+     }
+     return ok;
+   }
    if(this.editMode)return false;
    const p=typeof target==='string'?this.v3342ObjectPoint?.(target):target;if(!p)return false;
    stopDynamicMotion(this,pet);pet.setFlipX(Number(p.x)<pet.x);
@@ -382,6 +391,7 @@
      if(bubble)this.showPetMessage?.(pet,bubble,'#e7d2f5');
      this.v3342RecordUse?.(g.type,typeof target==='string'?target:'personal-nook');
      actionDynamicGuardian(this,g,action||'care');
+     if(['feed','water','treat','groom'].includes(action))careVisualBurst(this,pet,action,{travelObject:target});
      if(action==='sleep')sleepAura(this,pet,{familiarBed:!!g.familiarBed});
      this.time.delayedCall(action==='sleep'?5200:2400,()=>{
        if(action==='sleep'){
@@ -417,7 +427,7 @@
  };
  window.MajickSanctuaryRoster={VERSION,stage,canon,inspect(scene){
    const s=scene||window.majickPhaserGame?.scene?.getScene?.('Game');
-   return {roster:report(s),dynamic:Object.keys(s?.v3348Sprites||{}),motion:Object.fromEntries(Object.entries(s?.v3348Sprites||{}).map(([id,p])=>[id,p?.getData?.('v3351MotionState')||'unknown'])),playStyles:Object.fromEntries(Object.entries(s?.v3348Sprites||{}).map(([id,p])=>[id,p?.getData?.('v3352PlayStyle')||''])),sleepStates:Object.fromEntries(Object.entries(s?.v3348Sprites||{}).map(([id,p])=>[id,p?.getData?.('v3353SleepState')||''])),idleStyles:Object.fromEntries(Object.entries(s?.v3348Sprites||{}).map(([id,p])=>[id,p?.getData?.('v3354IdleStyle')||''])),individualBehavior:Object.fromEntries((roster(s)||[]).map(g=>[g.petId,individualBehavior(g)])),careVisualActions:['feed','water','treat','groom','affection']};
+   return {roster:report(s),dynamic:Object.keys(s?.v3348Sprites||{}),motion:Object.fromEntries(Object.entries(s?.v3348Sprites||{}).map(([id,p])=>[id,p?.getData?.('v3351MotionState')||'unknown'])),playStyles:Object.fromEntries(Object.entries(s?.v3348Sprites||{}).map(([id,p])=>[id,p?.getData?.('v3352PlayStyle')||''])),sleepStates:Object.fromEntries(Object.entries(s?.v3348Sprites||{}).map(([id,p])=>[id,p?.getData?.('v3353SleepState')||''])),idleStyles:Object.fromEntries(Object.entries(s?.v3348Sprites||{}).map(([id,p])=>[id,p?.getData?.('v3354IdleStyle')||''])),individualBehavior:Object.fromEntries((roster(s)||[]).map(g=>[g.petId,individualBehavior(g)])),careVisualActions:['feed','water','treat','groom','affection'],careStationActions:{feed:'guardian-food-bowl',water:'guardian-water-basin',treat:'guardian-food-bowl',groom:'guardian-brush'}};
  }};
  window.addEventListener('message',ev=>{
    if(ev.origin!==location.origin||ev.data?.type!=='MAJICK_SANCTUARY_ROSTER_REQUEST_V3350')return;
