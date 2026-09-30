@@ -104,6 +104,17 @@ assert(drillQs.every(q=>q.trap==='assessment-type'),'Assessment Type Drill must 
 assert(/ASSESSMENT TYPE DRILL/.test(M.shell()),'Assessment Type Drill screen label missing');
 assert(/ASSESSMENT TYPE ANCHOR CHART/.test(M.shell()),'Assessment Type Anchor Chart missing from drill');
 assert(/WGU decision rule/.test(M.shell()),'Assessment Type Drill decision rule missing');
+for(let i=0;i<12;i++){
+  const o=M.state().assessmentDrill;
+  const q=M.BANK.find(x=>x.id===o.ids[o.index]);
+  o.selected=q.answer;
+  M.examSubmit('assessmentDrill');
+  M.examNext('assessmentDrill');
+}
+st=M.state();
+assert(st.mode==='assessmentDrillResult','Assessment Type Drill did not reach result state');
+assert(st.assessmentDrillResult.score===12&&st.assessmentDrillResult.total===12,'Assessment Type Drill score/result incorrect');
+assert(Object.keys(st.assessmentDrillResult.familyStats||{}).length>=3,'Assessment Type Drill category breakdown missing');
 
 M.startExam('mock');
 st=M.state();
