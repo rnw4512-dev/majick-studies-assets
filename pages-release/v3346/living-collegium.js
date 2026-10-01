@@ -95,7 +95,7 @@ function rememberStudyTool(course,tool){
  const a=account();if(!a)return;const saved=a.studyTool||(a.studyTool={});const prior=saved[course];
  const next={kind:tool.kind,value:tool.value,label:String(tool.label||'Learn Lab').slice(0,80)};
  if(prior?.kind===next.kind&&prior?.value===next.value&&prior?.label===next.label)return;
- saved[course]=next;window.save?.();
+ saved[course]=next;window.save?.();decorateCompass();
 }
 function restoreStudyTool(course){
  if(window.S?.activeCourse!==course||window.S?.screen!=='learninglab')return;
