@@ -197,3 +197,14 @@ console.log('Label the Study lifecycle and journal question lookup passed');
  assert(journal.mistakes().length===0,'corrected question remains in active mistake list');
  console.log('Mistake journal deduplication, selected answer, repair and isolation passed');
 }
+
+ctx.S.activeCourse='D772';ctx.MajickWGUPractice.startExperiments();
+assert(ctx.session.questions.length===8,'experiment drill size wrong');
+for(let i=0;i<8;i++){
+ const q=ctx.session.current;
+ assert(q.options.filter(o=>o===q.answer).length===1,'experiment answer invalid');
+ ctx.MajickWGUPractice.select(q.answer);ctx.MajickWGUPractice.submit();ctx.continueSession();
+}
+assert(ctx.session.finished&&ctx.session.score===8,'experiment lifecycle failed');
+assert(/Practice designed experiments again/.test(ctx.sessionHTML()),'experiment replay missing');
+console.log('Designed Experiments lifecycle and answer checks passed');
