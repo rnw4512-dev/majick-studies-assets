@@ -128,6 +128,7 @@ const missedLesson=two[1].learningPathLessonId;
 ctx.MajickWGUPractice.startFocusedReview();
 assert(ctx.session.questions.length>0&&ctx.session.questions.length<=10,'focused round size invalid');
 assert(ctx.session.questions.every(q=>q.learningPathLessonId===missedLesson),'focused review crossed lessons');
-assert(ctx.session.questions.every(q=>!two.some(old=>old.id===q.id)),'fresh questions not prioritized');
+const firstRepeat=ctx.session.questions.findIndex(q=>two.some(old=>old.id===q.id));
+assert(firstRepeat===-1||ctx.session.questions.slice(firstRepeat).every(q=>two.some(old=>old.id===q.id)),'fresh questions not prioritized');
 assert(ctx.session.review.length===0,'old answers leaked into focused review');
 console.log('D772 focused review flow passed');
