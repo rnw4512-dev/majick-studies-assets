@@ -535,3 +535,7 @@ Previous saved shelf build 0d9da93 passed deployment and live save/reload/unsave
 
 ### Course resume follow-up verification
 Live D772 testing caught delayed Tutor hydration switching Vocabulary back to Course Path after restore. Tutor startup now skips its default switch when a course has a saved tool and stops after course/screen changes. Added actual delayed-hydration bind regression cases for saved tool, course switch, leaving Learn Lab, and default path. Toolbar labels refresh immediately after selecting a tool. Smoke/build/verifier passed.
+
+
+### Startup panel coordination
+Additional live checking found Learn Mode also reopening its default classroom after navigation. Both D772 Learn Mode and D755 Retake startup callbacks now respect another saved tool and stop after course/screen changes. Added actual bind callback regression tests for both modules; smoke and full build verification passed. This completes coordination across Tutor, Learn Mode, and Retake startup.
