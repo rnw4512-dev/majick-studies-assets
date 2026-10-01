@@ -1462,7 +1462,7 @@ if(typeof oldBind==='function'){
    oldBind();
    if(!active())return;
    document.querySelector('[data-d755-tab="d755retake"]')?.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();show()});
-   setTimeout(show,120);
+   setTimeout(()=>{if(!active()||window.S?.screen!=='learninglab')return;const saved=window.S?.majickAccount?.studyTool?.[COURSE];if(!saved||saved.kind==='retake')show();},120);
  };
 }
 ensureBank();
