@@ -323,7 +323,7 @@ jobs:
           grep -q 'learning-lab.css?v=3319' _site/index.html
           grep -q 'learning-plan.js?v=3324' _site/index.html
           grep -q 'learning-plan.css?v=3324' _site/index.html
-          grep -q 'course-tutor.js?v=3326-course-resume' _site/index.html
+          grep -q 'course-tutor.js?v=3326-lesson32-guide' _site/index.html
           grep -q 'course-tutor.css?v=3326' _site/index.html
           grep -q 'magical-college-home.js?v=3337' _site/index.html
           grep -q 'magical-college-home.css?v=3337' _site/index.html
