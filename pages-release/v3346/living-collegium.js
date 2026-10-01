@@ -155,8 +155,14 @@ function decorateVersion(){
   document.title='Majick Studies — V'+VERSION+' Living Collegium';
 }
 function decorate(){decorateVersion();decorateCompanions();decorateLearning();decorateCompass();decorateHomeResume()}
+let decorationPending=false;
+function scheduleDecorate(){
+ if(decorationPending)return;
+ decorationPending=true;
+ setTimeout(()=>{decorationPending=false;decorate();},0);
+}
 const previous=window.render;
-if(typeof previous==='function')window.render=function(){const result=previous.apply(this,arguments);setTimeout(decorate,0);return result};
+if(typeof previous==='function')window.render=function(){const result=previous.apply(this,arguments);scheduleDecorate();return result};
 setTimeout(decorate,120);
-window.MajickLivingCollegium={VERSION,persona,sceneHTML,decorate,STUDY_TOOLS,studyToolFromButton,savedStudyTool,rememberStudyTool,restoreStudyTool,resetComfort,pageTop,decorateHomeResume,STUDY_ROUTES,comfort,reducedMotion,applyComfort,toggleComfort,rememberStudyRoute,studyDestination,returnToStudy,decorateCompass};
+window.MajickLivingCollegium={VERSION,persona,sceneHTML,decorate,scheduleDecorate,STUDY_TOOLS,studyToolFromButton,savedStudyTool,rememberStudyTool,restoreStudyTool,resetComfort,pageTop,decorateHomeResume,STUDY_ROUTES,comfort,reducedMotion,applyComfort,toggleComfort,rememberStudyRoute,studyDestination,returnToStudy,decorateCompass};
 })();
