@@ -80,7 +80,7 @@ if 'learn-mode.js?v=3338' not in main or 'learn-mode.css?v=3338' not in main:
 d755=(site/'d755-retake.js').read_text(encoding='utf-8')
 for marker in ("VERSION='3.3.40'","Assessment for Special Education","30-Question Retake Diagnostic","40-question mixed simulation","WGU TRAP LIBRARY","d755-teacher-focus-2026-09-26","four most recent progress-monitoring points","Predictive validity","General Outcome Measurement","PLAAFP","MEASURABLE ANNUAL GOAL • C-B-C","realmTopic","misconceptionCatalog","MajickStudyProgress","assess_id_24","assess_id_36","assess_id_56","Board of Education v. Rowley","Endrew F. v. Douglas County","referral_10","Law + Referral Process Drill","Assessment Type Drill","ASSESSMENT TYPE ANCHOR CHART","d755AssessmentBreakdown","d755AdaptiveFocus","d755ClassificationLens","Why not the tempting opposite?","Assessment Dimension Detective","dimension recognition","assessment classification","MISTAKE REPAIR QUEUE","Repair your missed assessment questions","assessmentMistakeSummary","Smart 10-Question Review"):
     if marker not in d755: fail('D755 Retake Studio missing '+marker)
-if 'd755-retake.js?v=3340-process-progress' not in main or 'd755-retake.css?v=3340-process-progress' not in main:
+if 'd755-retake.js?v=3340-study-shelf' not in main or 'd755-retake.css?v=3340-study-shelf' not in main:
     fail('V3.3.40 Teacher-Focus D755 Questions assets are not installed in index.html')
 guardian=(site/'guardian-core.js').read_text(encoding='utf-8')
 for marker in ("VERSION='3.3.41'","ACTIVE STUDY GUARDIAN","guardianJourney","finishDebriefEnabled","MAJICK_STUDY_GUARDIAN_REACTION_V3341","course-pass"):
