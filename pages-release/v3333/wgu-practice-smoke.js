@@ -148,6 +148,8 @@ for(let i=0;i<8;i++){
  ctx.continueSession();
 }
 assert(ctx.session.finished&&ctx.session.score===8,'sampling drill did not finish correctly');
+assert(/Sampling Method Drill complete/.test(ctx.sessionHTML()),'completed drill still displays last question');
+assert(/Play sampling drill again/.test(ctx.sessionHTML()),'sampling replay missing');
 ctx.S.activeCourse='D755';const previous=ctx.session;ctx.MajickWGUPractice.startSampling();
 assert(ctx.session===previous,'D772 sampling drill changed another course');
 console.log('Sampling drill lifecycle and course isolation passed');
