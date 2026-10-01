@@ -72,3 +72,17 @@ console.log('COURSE TOOL RESUME, DEFAULT COMFORT AND PAGE TOP PASSED');
  }
  console.log('DELAYED TUTOR STARTUP RESPECTS SAVED TOOL AND NAVIGATION');
 })().catch(error=>{console.error(error);process.exitCode=1});
+
+// A burst of renders should queue one shared decoration, then allow the next burst.
+{
+ const timers=[];let baseCalls=0,queries=0;
+ const c={window:{render(){baseCalls++;return 'render-result'}},document:{querySelector(){queries++;return null},title:''},setTimeout(fn){timers.push(fn)}};
+ vm.createContext(c);vm.runInContext(source,c);timers.length=0;
+ for(let i=0;i<20;i++)assert.equal(c.window.render(),'render-result');
+ assert.equal(baseCalls,20,'Shared scheduling swallowed a base render');
+ assert.equal(timers.length,1,'Render burst queued redundant decoration passes');
+ timers.shift()();assert(queries>0,'Coalesced decoration did not execute');
+ c.window.render();assert.equal(timers.length,1,'Next render could not schedule decoration');
+ timers.shift()();
+ console.log('APP-WIDE DECORATION BURSTS COALESCED WITHOUT CHANGING BASE RENDERS');
+}
