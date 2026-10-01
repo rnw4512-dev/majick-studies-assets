@@ -606,7 +606,7 @@ if(typeof baseBind==='function'){
    baseBind();
    if(!active())return;
    document.querySelector('[data-instruction-tab="instruction"]')?.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();show()});
-   setTimeout(show,110);
+   setTimeout(()=>{if(!active()||window.S?.screen!=='learninglab')return;const saved=window.S?.majickAccount?.studyTool?.[COURSE];if(!saved||saved.kind==='instruction')show();},110);
  };
 }
 patchScreenHTML();
