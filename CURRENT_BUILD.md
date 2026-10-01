@@ -627,3 +627,7 @@ Previous process progress build 5616a42 passed deployment and live card/guide ch
 
 ## 2026-09-30 — App-wide course resume and reading comfort
 Previous saved shelf build 0d9da93 passed deployment and live save/reload/unsave checks. Added Home Continue studying card, per-course Learn Lab tool memory (retake/tutor/plan/instruction/vocab/tools/etc), safe restore after navigation with course/screen guards, per-course toolkit expansion memory, toolbar Page top action respecting reduced motion, visible comfort summary, default-settings reset, and larger text for tables. Capture-phase tool listener handles existing stopPropagation callbacks. Tests cover course isolation, stale restore guards, valid tool parsing, unchanged-location save deduplication, comfort reset preserving course location, and scroll behavior; Golden build and stability verification passed.
+
+
+### Course resume follow-up verification
+Live D772 testing caught delayed Tutor hydration switching Vocabulary back to Course Path after restore. Tutor startup now skips its default switch when a course has a saved tool and stops after course/screen changes. Added actual delayed-hydration bind regression cases for saved tool, course switch, leaving Learn Lab, and default path. Toolbar labels refresh immediately after selecting a tool. Smoke/build/verifier passed.
