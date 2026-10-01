@@ -85,7 +85,22 @@ function submit(){
   const choice=session.pendingChoice;
   session.pendingChoice=null;
   answerQ(choice);
+  if(fixedPractice())session.review.push({q:session.current,chosen:choice,correct:choice===session.current.answer});
 }
+const SAMPLING_REASONS={
+ 'Stratified':'The population is divided into groups, and some individuals are randomly selected from every group. Equal numbers from the groups are not required.',
+ 'Cluster':'Entire groups are randomly selected, and every individual in the selected groups is included.',
+ 'Systematic':'After a random starting point, individuals are selected at a fixed interval.',
+ 'Simple Random':'Individuals are randomly selected from the complete population list, with every possible sample of the stated size equally likely.'
+};
+const SAMPLING_ROWS=[["A university would like to determine the average textbook cost for undergraduate students. Students are separated into freshman, sophomore, junior, and senior groups. Twenty students are randomly selected from each group.", "Stratified"], ["A hospital would like to determine nurses\u2019 average weekly work hours. After randomly selecting a starting name from its complete nurse list, it selects every 12th name.", "Systematic"], ["A school district would like to determine the proportion of fifth-grade students who eat breakfast. Five fifth-grade classrooms are randomly selected, and every student in those classrooms is surveyed.", "Cluster"], ["An insurer would like to determine the proportion of policyholders who filed claims. A computer selects 200 distinct policyholder IDs from the complete list, with every possible set of 200 equally likely.", "Simple Random"], ["A college would like to determine average commuting time. Students are divided into full-time and part-time groups. Sixty full-time students and forty part-time students are randomly selected.", "Stratified"], ["A manufacturer would like to determine the proportion of defective bulbs in a shipment of 80 boxes. Six boxes are randomly selected, and every bulb in those boxes is tested.", "Cluster"], ["A library would like to determine average visitor satisfaction. A number from 1 through 15 is randomly selected as the first visitor position. That visitor and every 15th visitor afterward are surveyed.", "Systematic"], ["A university would like to determine average tuition paid. A computer randomly selects 75 distinct names from the complete undergraduate list, with every possible set of 75 equally likely.", "Simple Random"]];
+function startSampling(){
+ if(!activeD772())return;
+ const questions=shuffleCopy(SAMPLING_ROWS.map(([prompt,answer],i)=>({id:'d772_wgu_sampling_drill_'+i,prompt:prompt+' What type of sampling is used?',answer,options:shuffleCopy(Object.keys(SAMPLING_REASONS)),why:SAMPLING_REASONS[answer],wguClue:SAMPLING_REASONS[answer],choiceCoach:Object.fromEntries(Object.entries(SAMPLING_REASONS).filter(([term])=>term!==answer).map(([term,why])=>[term,why+' That selection rule is not described in this study.'])),learningPathLessonId:'d772-s1-l1',topicId:'sampling-methods',difficulty:2})));
+ session={type:'adaptive',opts:{label:'Sampling Method Drill',limit:questions.length,kind:'d772-sampling-drill'},index:1,score:0,combo:0,questions,current:questions[0],answered:false,confidence:'sure',review:[],start:Date.now(),pendingChoice:null};
+ S.screen='mission';render();
+}
+function fixedPractice(){return ['d772-focused-review','d772-sampling-drill'].includes(session?.opts?.kind)}
 function balancedOA(){
   const all=window.MajickQuestionBuilder?.d772Questions?.('d772-master-section-1')||[];
   const ids=['d772-s1-l1','d772-s1-l2','d772-s1-l3','d772-s1-l4'];
@@ -111,7 +126,7 @@ function startFocusedReview(){
   const repeated=shuffleCopy(pool.filter(q=>seen.has(q.id)));
   const arr=[...fresh,...repeated].slice(0,10);
   if(!arr.length)return;
-  session={type:'adaptive',opts:{label:'Section 1 Focused Review',limit:arr.length,kind:'d772-focused-review'},index:1,score:0,questions:arr,current:arr[0],answered:false,confidence:'sure',review:[],start:Date.now(),pendingChoice:null};
+  session={type:'adaptive',opts:{label:'Section 1 Focused Review',limit:arr.length,kind:'d772-focused-review'},index:1,score:0,combo:0,questions:arr,current:arr[0],answered:false,confidence:'sure',review:[],start:Date.now(),pendingChoice:null};
   S.screen='mission';render();
 }
 function lessonSummary(review){
@@ -178,7 +193,7 @@ window.startClueHunter=wguStartClueHunter;
 window.startReason=wguStartReason;
 
 function missionLanding(){
-  return '<div class="v3333Mission"><div class="v3333MissionHead"><span class="v3333Eyebrow">D772 • SECTION 1</span><h2>WGU-Style Practice</h2><p>Every mode uses the same WGU-language concept bank. The difference is how much support you receive while practicing.</p></div><div class="v3333MissionGrid"><button onclick="startAdaptive()"><span>Adaptive Practice</span><b>12 WGU-style scenarios</b><small>Targets concepts that need more practice.</small></button><button onclick="startClueHunter()"><span>Clue Training</span><b>10 WGU-style scenarios</b><small>Practice finding the words that control the answer.</small></button><button onclick="startReason()"><span>Reasoning Practice</span><b>10 WGU-style scenarios</b><small>Answer, then explain why the correct choice wins.</small></button><button class="oa" onclick="MajickWGUPractice.startOA()"><span>Section 1 OA Simulation</span><b>30 mixed questions</b><small>No hints. No lesson labels. Readiness breakdown at the end.</small></button></div></div>';
+  return '<div class="v3333Mission"><div class="v3333MissionHead"><span class="v3333Eyebrow">D772 • SECTION 1</span><h2>WGU-Style Practice</h2><p>Practice course concepts with scenarios, focused drills, and different levels of support.</p></div><div class="v3333MissionGrid"><button onclick="MajickWGUPractice.startSampling()"><span>Sampling Method Drill</span><b>8 fresh study scenarios</b><small>Stratified, cluster, systematic, and simple random. Feedback stays until you choose Next.</small></button><button onclick="startAdaptive()"><span>Adaptive Practice</span><b>12 WGU-style scenarios</b><small>Targets concepts that need more practice.</small></button><button onclick="startClueHunter()"><span>Clue Training</span><b>10 WGU-style scenarios</b><small>Practice finding the words that control the answer.</small></button><button onclick="startReason()"><span>Reasoning Practice</span><b>10 WGU-style scenarios</b><small>Answer, then explain why the correct choice wins.</small></button><button class="oa" onclick="MajickWGUPractice.startOA()"><span>Section 1 OA Simulation</span><b>30 mixed questions</b><small>No hints. No lesson labels. Readiness breakdown at the end.</small></button></div></div>';
 }
 const originalSessionHTML=window.sessionHTML||sessionHTML;
 const originalResultHTML=window.resultHTML||resultHTML;
@@ -203,6 +218,10 @@ missionHTML=function(){
   return originalMissionHTML();
 };
 nextQuestion=function(){
+  if(fixedPractice()){
+    if(session.index>=session.questions.length){finishSession();return;}
+    session.current=session.questions[session.index++];session.answered=false;session.chosen=null;session.pendingChoice=null;session.confidence='sure';return;
+  }
   const out=originalNextQuestion.apply(this,arguments);
   if(session)session.pendingChoice=null;
   return out;
@@ -228,7 +247,7 @@ function bootD772Practice(){
     }
   }catch(e){console.warn('D772 Practice Lab boot',e)}
 }
-window.MajickWGUPractice={VERSION,select,submit,startOA,startFocusedReview,visualHtml,whyList,balancedOA,isD772Question,ensureD772Bank,bootD772Practice};
+window.MajickWGUPractice={VERSION,select,submit,startOA,startFocusedReview,startSampling,visualHtml,whyList,balancedOA,isD772Question,ensureD772Bank,bootD772Practice};
 document.documentElement.dataset.majickWguPractice='3.3.36';
 bootD772Practice();
 })();

@@ -45,7 +45,7 @@ ctx.answerQ=choice=>{
   ctx.session.chosen=choice;
   ctx.session.answered=true;
   ctx.session.review=ctx.session.review||[];
-  ctx.session.review.push({q,chosen:choice,correct:choice===q.answer});
+  if(ctx.session.type==='test')ctx.session.review.push({q,chosen:choice,correct:choice===q.answer});
   if(choice===q.answer)ctx.session.score=(ctx.session.score||0)+1;
 };
 ctx.continueSession=()=>ctx.nextQuestion();
@@ -132,3 +132,22 @@ const firstRepeat=ctx.session.questions.findIndex(q=>two.some(old=>old.id===q.id
 assert(firstRepeat===-1||ctx.session.questions.slice(firstRepeat).every(q=>two.some(old=>old.id===q.id)),'fresh questions not prioritized');
 assert(ctx.session.review.length===0,'old answers leaked into focused review');
 console.log('D772 focused review flow passed');
+
+ctx.finishSession=()=>{ctx.session.finished=true};
+ctx.MajickWGUPractice.startSampling();
+assert(ctx.session.questions.length===8,'sampling drill size wrong');
+assert(new Set(ctx.session.questions.map(q=>q.answer)).size===4,'sampling method coverage incomplete');
+const drillIds=ctx.session.questions.map(q=>q.id);
+for(let i=0;i<8;i++){
+ assert(ctx.session.current.id===drillIds[i],'fixed round escaped its selected questions');
+ ctx.MajickWGUPractice.select(ctx.session.current.answer);
+ ctx.MajickWGUPractice.submit();
+ ctx.MajickWGUPractice.submit();
+ assert(ctx.session.review.length===i+1,'answer duplicated or missing');
+ assert(/Why each answer is right or wrong/.test(ctx.sessionHTML()),'drill explanations missing');
+ ctx.continueSession();
+}
+assert(ctx.session.finished&&ctx.session.score===8,'sampling drill did not finish correctly');
+ctx.S.activeCourse='D755';const previous=ctx.session;ctx.MajickWGUPractice.startSampling();
+assert(ctx.session===previous,'D772 sampling drill changed another course');
+console.log('Sampling drill lifecycle and course isolation passed');
