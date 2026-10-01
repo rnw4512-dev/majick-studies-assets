@@ -192,6 +192,10 @@ window.startAdaptive=wguStartAdaptive;
 window.startClueHunter=wguStartClueHunter;
 window.startReason=wguStartReason;
 
+function fixedResult(){
+ const review=session.review||[],missed=review.filter(x=>!x.correct);
+ return '<div class="v3333Result"><section class="v3333ResultHero"><h2>'+E(session.opts.label)+' complete</h2><p>You scored '+session.score+'/'+review.length+'.</p><div class="v3333ResultActions">'+(session.opts.kind==='d772-sampling-drill'?'<button class="btn primary" onclick="MajickWGUPractice.startSampling()">Play sampling drill again</button>':missed.length?'<button class="btn primary" onclick="MajickWGUPractice.startFocusedReview()">Practice my missed lessons →</button>':'')+'<button class="btn ghost" onclick="session=null;navigate(\'mission\')">Return to Practice Lab</button></div></section><details class="v3333Missed"><summary>Review missed questions ('+missed.length+')</summary>'+missed.map(x=>'<article><b>'+E(x.q.prompt)+'</b><p>You chose: '+E(x.chosen)+'</p><p>Best answer: '+E(x.q.answer)+'</p><p>'+E(x.q.why)+'</p>'+whyList(x.q)+'</article>').join('')+'</details></div>';
+}
 function missionLanding(){
   return '<div class="v3333Mission"><div class="v3333MissionHead"><span class="v3333Eyebrow">D772 • SECTION 1</span><h2>WGU-Style Practice</h2><p>Practice course concepts with scenarios, focused drills, and different levels of support.</p></div><div class="v3333MissionGrid"><button onclick="MajickWGUPractice.startSampling()"><span>Sampling Method Drill</span><b>8 fresh study scenarios</b><small>Stratified, cluster, systematic, and simple random. Feedback stays until you choose Next.</small></button><button onclick="startAdaptive()"><span>Adaptive Practice</span><b>12 WGU-style scenarios</b><small>Targets concepts that need more practice.</small></button><button onclick="startClueHunter()"><span>Clue Training</span><b>10 WGU-style scenarios</b><small>Practice finding the words that control the answer.</small></button><button onclick="startReason()"><span>Reasoning Practice</span><b>10 WGU-style scenarios</b><small>Answer, then explain why the correct choice wins.</small></button><button class="oa" onclick="MajickWGUPractice.startOA()"><span>Section 1 OA Simulation</span><b>30 mixed questions</b><small>No hints. No lesson labels. Readiness breakdown at the end.</small></button></div></div>';
 }
@@ -202,6 +206,7 @@ const originalNextQuestion=window.nextQuestion||nextQuestion;
 const originalStartMixed=window.startMixed||startMixed;
 sessionHTML=function(){
   if(!activeD772()||!session)return originalSessionHTML();
+  if(session.finished&&fixedPractice())return fixedResult();
   if(session.finished&&session.opts?.kind==='d772-section1-oa')return oaResult();
   if(isD772Question(session.current))return questionHtml(session.current);
   return originalSessionHTML();
