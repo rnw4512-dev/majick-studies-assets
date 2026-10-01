@@ -527,3 +527,7 @@ Previous guide/resume/review build 7c2afe3 passed Pages deployment and live UI c
 
 ## 2026-09-30 — Saved question shelf
 Previous process progress build 5616a42 passed deployment and live card/guide checks. Added D755 question bookmarks across drills, diagnostic, mock, and section checks; saved-question shelf with optional explanation details; up-to-10-question saved review; and home resume list for unfinished exam modes. Unsave preserves ongoing review IDs. Added duplicate-submit guards to exam and section-check handlers. Empty shelf, exact review limit, wrong-answer results, unchanged bookmarks after completion, invalid IDs, paused review preservation, and unchanged lifetime XP tests passed. Golden build/stability verifier passed.
+
+
+## 2026-09-30 — App-wide course resume and reading comfort
+Previous saved shelf build 0d9da93 passed deployment and live save/reload/unsave checks. Added Home Continue studying card, per-course Learn Lab tool memory (retake/tutor/plan/instruction/vocab/tools/etc), safe restore after navigation with course/screen guards, per-course toolkit expansion memory, toolbar Page top action respecting reduced motion, visible comfort summary, default-settings reset, and larger text for tables. Capture-phase tool listener handles existing stopPropagation callbacks. Tests cover course isolation, stale restore guards, valid tool parsing, unchanged-location save deduplication, comfort reset preserving course location, and scroll behavior; Golden build and stability verification passed.

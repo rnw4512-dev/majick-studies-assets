@@ -53,15 +53,18 @@ function decorateLearning(){
     const card=document.createElement('section');card.className='lcContinue';
     card.innerHTML='<div><span>YOUR NEXT CLASS</span><h3>'+E(lesson?.title||'Choose a lesson in your course path')+'</h3><p>'+(lesson?'Continue the chapter, then practice what you learned.':'Open your course path to see what is ready to learn.')+'</p></div><button type="button">'+(lesson?'Continue lesson':'Open course path')+' →</button>';
     card.querySelector('button').addEventListener('click',()=>{
-      if(lesson)tutor.openLesson(lesson.id,null,id);
+      if(lesson){rememberStudyTool(id,{kind:'tutor',value:'tutor',label:'Course Tutor'});tutor.openLesson(lesson.id,null,id);}
       else tutor?.show?.('path');
     });
     nav.before(card);
   }
+  if(!nav.dataset.lcResumeBound){nav.dataset.lcResumeBound='true';nav.addEventListener('click',event=>{const button=event.target.closest('button');if(!button)return;const tool=studyToolFromButton(button);if(tool)rememberStudyTool(window.S?.activeCourse,tool);},true);}
   if(!nav.closest('.lcToolkit')){
     const box=document.createElement('details');box.className='lcToolkit';
     const summary=document.createElement('summary');summary.textContent='Explore course tools and study modes';
     nav.before(box);box.append(summary,nav);
+    const toolkitCourse=window.S?.activeCourse;box.open=!!account()?.studyToolkit?.[toolkitCourse];
+    box.addEventListener('toggle',()=>{const a=account(),course=toolkitCourse;if(!a||!course||window.S?.activeCourse!==course||!box.isConnected)return;const prefs=a.studyToolkit||(a.studyToolkit={});if(prefs[course]!==box.open){prefs[course]=box.open;window.save?.();}});
   }
 }
 
@@ -79,9 +82,49 @@ function rememberStudyRoute(){
  const routes=a.studyReturn||(a.studyReturn={});if(routes[course]!==screen){routes[course]=screen;window.save?.();}
 }
 function studyDestination(){const saved=account()?.studyReturn?.[window.S?.activeCourse];return Object.hasOwn(STUDY_ROUTES,saved)?saved:'learninglab';}
+const STUDY_TOOLS={learn:['learn','vocab','game','practice','tools','notes','mastery'],tutor:['path','tutor'],retake:['d755retake'],plan:['plan','read'],instruction:['instruction']};
+function studyToolFromButton(button){
+ const d=button.dataset||{};
+ const kind=d.learnTab?'learn':d.tutorTab?'tutor':d.d755Tab?'retake':d.planTab?'plan':d.instructionTab?'instruction':null;
+ const value=d.learnTab||d.tutorTab||d.d755Tab||d.planTab||d.instructionTab;
+ return kind&&STUDY_TOOLS[kind].includes(value)?{kind,value,label:button.textContent.trim()}:null;
+}
+function savedStudyTool(course=window.S?.activeCourse){const tool=account()?.studyTool?.[course];return tool&&STUDY_TOOLS[tool.kind]?.includes(tool.value)&&(tool.kind!=='retake'||course==='D755')?tool:null;}
+function rememberStudyTool(course,tool){
+ if(!course||!STUDY_TOOLS[tool?.kind]?.includes(tool.value)||(tool.kind==='retake'&&course!=='D755'))return;
+ const a=account();if(!a)return;const saved=a.studyTool||(a.studyTool={});const prior=saved[course];
+ const next={kind:tool.kind,value:tool.value,label:String(tool.label||'Learn Lab').slice(0,80)};
+ if(prior?.kind===next.kind&&prior?.value===next.value&&prior?.label===next.label)return;
+ saved[course]=next;window.save?.();
+}
+function restoreStudyTool(course){
+ if(window.S?.activeCourse!==course||window.S?.screen!=='learninglab')return;
+ const tool=savedStudyTool(course);
+ if(!tool){if(course==='D755')window.MajickD755Retake?.show?.();return;}
+ const button=[...document.querySelectorAll('.learnTabs button')].find(b=>{const row=studyToolFromButton(b);return row?.kind===tool.kind&&row?.value===tool.value;});
+ if(!button)return;
+ const box=button.closest('.lcToolkit');if(box)box.open=true;
+ button.click();
+}
 function returnToStudy(){
- const route=studyDestination();if(typeof window.navigate==='function')window.navigate(route);else if(window.S){window.S.screen=route;window.save?.();window.render?.();}
- if(route==='learninglab'&&window.S?.activeCourse==='D755')setTimeout(()=>window.MajickD755Retake?.show?.(),100);
+ const route=studyDestination(),course=window.S?.activeCourse;
+ if(typeof window.navigate==='function')window.navigate(route);else if(window.S){window.S.screen=route;window.save?.();window.render?.();}
+ if(route==='learninglab')setTimeout(()=>restoreStudyTool(course),160);
+}
+function resetComfort(){const prefs=comfort();delete prefs.reduceMotion;delete prefs.largeText;window.save?.();decorateCompass();}
+function pageTop(){
+ const behavior=reducedMotion()?'auto':'smooth';
+ for(const selector of ['.content','.main'])document.querySelector(selector)?.scrollTo?.({top:0,left:0,behavior});
+ window.scrollTo?.({top:0,left:0,behavior});
+}
+function decorateHomeResume(){
+ if(window.S?.screen!=='home')return;
+ const content=document.querySelector('.content');if(!content||document.getElementById('majickHomeResume'))return;
+ const course=window.S.activeCourse,route=studyDestination(),tool=route==='learninglab'?savedStudyTool():null;
+ const title=window.S.courses?.[course]?.title||course;
+ const card=document.createElement('section');card.id='majickHomeResume';card.className='lcHomeResume';
+ card.innerHTML='<div><small>YOUR CURRENT COURSE · '+E(course)+'</small><h2>Continue '+E(title)+'</h2><p>Return to '+E(tool?.label||STUDY_ROUTES[route])+'. Your course keeps its own study destination.</p></div><button type="button">Continue studying →</button>';
+ card.querySelector('button').addEventListener('click',returnToStudy);content.prepend(card);
 }
 function focusCourse(){const select=document.querySelector('.top select');if(!select)return;select.focus();try{select.showPicker?.();}catch(_){};}
 function decorateCompass(){
@@ -90,16 +133,20 @@ function decorateCompass(){
  let shelf=document.getElementById('majickStudyCompass');
  if(!shelf){
   shelf=document.createElement('section');shelf.id='majickStudyCompass';shelf.className='lcStudyCompass';shelf.setAttribute('aria-label','Study shortcuts and reading comfort');
-  shelf.innerHTML='<button type="button" class="lcCourseShortcut" data-lc-course></button><button type="button" data-lc-return></button><details><summary>Reading comfort</summary><div class="lcComfortChoices"><button type="button" data-lc-motion></button><button type="button" data-lc-text></button><p>These preferences apply across your courses. Reduced motion still keeps Sanctuary Guardians moving.</p></div></details>';
+  shelf.innerHTML='<button type="button" class="lcCourseShortcut" data-lc-course></button><button type="button" data-lc-return></button><button type="button" data-lc-top>↑ Page top</button><details><summary>Reading comfort</summary><div class="lcComfortChoices"><button type="button" data-lc-motion></button><button type="button" data-lc-text></button><button type="button" data-lc-reset>Use default reading settings</button><p>These preferences apply across your courses. Reduced motion still keeps Sanctuary Guardians moving.</p></div></details>';
   shelf.querySelector('[data-lc-course]').addEventListener('click',focusCourse);
   shelf.querySelector('[data-lc-return]').addEventListener('click',returnToStudy);
+  shelf.querySelector('[data-lc-top]').addEventListener('click',pageTop);
+  shelf.querySelector('[data-lc-reset]').addEventListener('click',resetComfort);
   shelf.querySelector('[data-lc-motion]').addEventListener('click',()=>toggleComfort('reduceMotion'));
   shelf.querySelector('[data-lc-text]').addEventListener('click',()=>toggleComfort('largeText'));
   top.insertAdjacentElement('afterend',shelf);
  }
  const course=window.S.activeCourse||'WGU';
  const cb=shelf.querySelector('[data-lc-course]');cb.textContent='✦ '+course+' · Change course';cb.setAttribute('aria-label','Current course '+course+'. Choose a course');
- shelf.querySelector('[data-lc-return]').textContent='↩ Return to '+STUDY_ROUTES[studyDestination()];
+ const route=studyDestination(),tool=route==='learninglab'?savedStudyTool():null;
+ shelf.querySelector('[data-lc-return]').textContent='↩ Return to '+(tool?.label||STUDY_ROUTES[route]);
+ const enabled=[comfort().largeText?'larger text':'',reducedMotion()?'reduced motion':''].filter(Boolean);shelf.querySelector('summary').textContent='Reading comfort'+(enabled.length?' · '+enabled.join(' + '):'');
  const mb=shelf.querySelector('[data-lc-motion]');mb.textContent='Reduced motion: '+(reducedMotion()?'on':'off');mb.setAttribute('aria-pressed',String(reducedMotion()));
  const tb=shelf.querySelector('[data-lc-text]');tb.textContent='Larger text: '+(comfort().largeText?'on':'off');tb.setAttribute('aria-pressed',String(!!comfort().largeText));
 }
@@ -107,9 +154,9 @@ function decorateCompass(){
 function decorateVersion(){
   document.title='Majick Studies — V'+VERSION+' Living Collegium';
 }
-function decorate(){decorateVersion();decorateCompanions();decorateLearning();decorateCompass()}
+function decorate(){decorateVersion();decorateCompanions();decorateLearning();decorateCompass();decorateHomeResume()}
 const previous=window.render;
 if(typeof previous==='function')window.render=function(){const result=previous.apply(this,arguments);setTimeout(decorate,0);return result};
 setTimeout(decorate,120);
-window.MajickLivingCollegium={VERSION,persona,sceneHTML,decorate,STUDY_ROUTES,comfort,reducedMotion,applyComfort,toggleComfort,rememberStudyRoute,studyDestination,returnToStudy,decorateCompass};
+window.MajickLivingCollegium={VERSION,persona,sceneHTML,decorate,STUDY_TOOLS,studyToolFromButton,savedStudyTool,rememberStudyTool,restoreStudyTool,resetComfort,pageTop,decorateHomeResume,STUDY_ROUTES,comfort,reducedMotion,applyComfort,toggleComfort,rememberStudyRoute,studyDestination,returnToStudy,decorateCompass};
 })();
