@@ -141,9 +141,11 @@ function mastery(id=cid()){
   return {attempts:rows.length,correct:rows.filter(a=>a.correct===true).length,topics};
 }
 function mistakes(id=cid()){
-  return answers(id).filter(a=>a.correct===false).slice(-12).reverse().map(a=>{
+  const latest=new Map();
+  answers(id).forEach((a,i)=>latest.set(a.qid||a.id||'unidentified-'+i,a));
+  return [...latest.values()].filter(a=>a.correct===false).sort((a,b)=>(b.at||0)-(a.at||0)).slice(0,12).map(a=>{
     const q=questionById(id,a.qid||a.id);
-    return {qid:a.qid||a.id,prompt:q?.prompt||a.prompt||'Review this missed question',given:a.given??a.selected??a.answerGiven??'',correct:q?.answer??a.answer??'',why:q?.why||a.why||''};
+    return {qid:a.qid||a.id,prompt:q?.prompt||a.prompt||'Review this missed question',given:a.given??a.selected??a.answerGiven??a.chosen??'',correct:q?.answer??a.answer??'',why:q?.why||a.why||''};
   });
 }
 function recommendation(id=cid()){
