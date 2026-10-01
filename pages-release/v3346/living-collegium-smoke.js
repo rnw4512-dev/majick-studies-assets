@@ -55,3 +55,20 @@ app.pageTop();assert.equal(scrollCalls.length,3);assert(scrollCalls.every(x=>x.t
 app.toggleComfort('reduceMotion');scrollCalls.length=0;app.pageTop();assert(scrollCalls.every(x=>x.behavior==='smooth'),'Normal top action omitted smooth scroll');
 assert.equal(state.legacy.pets.length,3,'App-wide study updates changed Guardians');
 console.log('COURSE TOOL RESUME, DEFAULT COMFORT AND PAGE TOP PASSED');
+// Exercise the actual Tutor bind callback with delayed hydration.
+(async()=>{
+ for(const testCase of ['saved-tool','course-switch','left-lab','default-path']){
+  const courseState={activeCourse:'D772',screen:'learninglab',majickAccount:{studyTool:testCase==='saved-tool'?{D772:{kind:'learn',value:'vocab'}}:{}}};
+  const panels=[{hidden:true,name:'path'},{hidden:false,name:'vocab'}],timers=[];
+  let finish;
+  const store={list:()=>new Promise(resolve=>finish=resolve)},lab={render:()=>'',bind(){},refresh(){}};
+  const tutorContext={window:{S:courseState,MajickLearningLab:lab,MajickMaterialStore:store},S:courseState,MajickLearningLab:lab,MajickMaterialStore:store,document:{getElementById:()=>null,querySelectorAll:selector=>selector==='.learnPanel'?panels:[],querySelector:selector=>selector==='.learnPanel[data-panel="path"]'?panels[0]:null},setTimeout:fn=>timers.push(fn),console};
+  vm.createContext(tutorContext);vm.runInContext(fs.readFileSync(__dirname+'/../v3326/course-tutor.js','utf8'),tutorContext);
+  lab.bind();const pending=timers.shift()();
+  if(testCase==='course-switch')courseState.activeCourse='D755';
+  if(testCase==='left-lab')courseState.screen='home';
+  finish([]);await pending;
+  assert.equal(panels[0].hidden,testCase!=='default-path','Delayed Tutor default overwrote navigation: '+testCase);
+ }
+ console.log('DELAYED TUTOR STARTUP RESPECTS SAVED TOOL AND NAVIGATION');
+})().catch(error=>{console.error(error);process.exitCode=1});
