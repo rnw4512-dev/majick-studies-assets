@@ -111,7 +111,7 @@ if 'magical-college-home.js?v=3337' not in main or 'magical-college-home.css?v=3
     fail('Moonlit Collegium self-paced home assets are not installed')
 for marker in ("tagD772Generated","classifyD772Item","learningPathRepair","multiLesson"):
     if marker not in tutor: fail('D772 item-level notes repair missing '+marker)
-if 'learning-lab.js?v=3319' not in main or 'learning-lab.css?v=3319' not in main:
+if 'learning-lab.js?v=3319-mistake-journal' not in main or 'learning-lab.css?v=3319' not in main:
     fail('Learning Lab assets are not installed in index.html')
 san_life=(site/'sanctuary'/'v3320-sanctuary-life.js').read_text(encoding='utf-8')
 for marker in ("window.MajickSanctuaryLife","v3320BuildHomeHud","v3320SnapDecorItem","guardian-food-bowl","bedAssignments"):
