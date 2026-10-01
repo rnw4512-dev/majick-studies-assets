@@ -329,10 +329,10 @@ jobs:
           grep -q 'magical-college-home.css?v=3337' _site/index.html
           grep -q 'wgu-practice.js?v=3336' _site/index.html
           grep -q 'wgu-practice.css?v=3333' _site/index.html
-          grep -q 'learn-mode.js?v=3338' _site/index.html
+          grep -q 'learn-mode.js?v=3338-course-resume' _site/index.html
           grep -q 'learn-mode.css?v=3338' _site/index.html
-          grep -q 'd755-retake.js?v=3340-study-shelf' _site/index.html
-          grep -q 'd755-retake.css?v=3340-study-shelf' _site/index.html
+          grep -q 'd755-retake.js?v=3340-study-shelf-resume' _site/index.html
+          grep -q 'd755-retake.css?v=3340-study-shelf-resume' _site/index.html
           grep -q 'guardian-core.js?v=3341' _site/index.html
           grep -q 'guardian-core.css?v=3341' _site/index.html
           grep -q "VERSION='3.3.41'" _site/guardian-core.js
@@ -657,10 +657,10 @@ jobs:
                       'practice version': "VERSION='3.3.36'" in practice,
                       'index home cache key': 'magical-college-home.js?v=3337' in index,
                       'self-paced course clock': 'SELF-PACED COURSE CLOCK' in home,
-                      'index learn-mode cache key': 'learn-mode.js?v=3338' in index,
+                      'index learn-mode cache key': 'learn-mode.js?v=3338-course-resume' in index,
                       'learn-mode version': "VERSION='3.3.38'" in learn,
                       'Arcane Anchor Wall': 'Arcane Anchor Wall' in learn,
-                      'index D755 cache key': 'd755-retake.js?v=3340-study-shelf' in index,
+                      'index D755 cache key': 'd755-retake.js?v=3340-study-shelf-resume' in index,
                       'D755 version': "VERSION='3.3.40'" in d755,
                       'D755 diagnostic': '30-Question Retake Diagnostic' in d755,
                       'D755 teacher focus marker': 'd755-teacher-focus-2026-09-26' in d755,
