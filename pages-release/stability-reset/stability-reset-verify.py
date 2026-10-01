@@ -70,7 +70,7 @@ if 'learning-plan.js?v=3324' not in main or 'learning-plan.css?v=3324' not in ma
 tutor=(site/'course-tutor.js').read_text(encoding='utf-8')
 for marker in ("window.MajickCourseTutor","D772_SECTION_ONE","Understanding Data Collection Methods","Recognizing Bias in Data Collection","Unveiling Data Misrepresentations","Conclusions About Data Findings","Needs Review","targetRigor"):
     if marker not in tutor: fail('Course Tutor missing '+marker)
-if 'course-tutor.js?v=3326' not in main or 'course-tutor.css?v=3326' not in main:
+if 'course-tutor.js?v=3326-course-resume' not in main or 'course-tutor.css?v=3326' not in main:
     fail('Course Tutor assets are not installed in index.html')
 learn=(site/'learn-mode.js').read_text(encoding='utf-8')
 for marker in ("VERSION='3.3.38'","Teach → Visual → Worked Example","Arcane Anchor Wall","ADAPTIVE REPAIR INSERTED","CAN I DO THIS?"):
