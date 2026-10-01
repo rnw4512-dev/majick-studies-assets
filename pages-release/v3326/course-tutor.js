@@ -749,7 +749,12 @@ const baseBind=MajickLearningLab.bind;
 MajickLearningLab.bind=function(){
   baseBind();
   document.querySelectorAll('[data-tutor-tab]').forEach(b=>b.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();show(b.dataset.tutorTab)}));
-  setTimeout(()=>hydrate().then(()=>show('path')),30);
+  const bindingCourse=cid();
+  setTimeout(()=>hydrate(bindingCourse).then(()=>{
+    if(cid()!==bindingCourse||window.S?.screen!=='learninglab')return;
+    if(window.S?.majickAccount?.studyTool?.[bindingCourse])return;
+    show('path');
+  }),30);
 };
 const baseRefresh=MajickLearningLab.refresh;
 MajickLearningLab.refresh=function(){baseRefresh();hydrate()};
