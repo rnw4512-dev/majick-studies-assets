@@ -122,3 +122,12 @@ assert(/practice evidence, not a prediction/i.test(result),'readiness limitation
 assert(ctx.document.documentElement.dataset.majickWguPractice==='3.3.36','runtime dataset marker missing');
 console.log('V3.3.36 WGU PRACTICE SMOKE PASSED');
 console.log(JSON.stringify({questions:questions.length,visuals:questions.filter(q=>q.visual).length,oa:oa.length,lessons:new Set(oa.map(q=>q.learningPathLessonId)).size}));
+
+assert(/Practice my missed lessons/.test(result),'focused review action missing');
+const missedLesson=two[1].learningPathLessonId;
+ctx.MajickWGUPractice.startFocusedReview();
+assert(ctx.session.questions.length>0&&ctx.session.questions.length<=10,'focused round size invalid');
+assert(ctx.session.questions.every(q=>q.learningPathLessonId===missedLesson),'focused review crossed lessons');
+assert(ctx.session.questions.every(q=>!two.some(old=>old.id===q.id)),'fresh questions not prioritized');
+assert(ctx.session.review.length===0,'old answers leaked into focused review');
+console.log('D772 focused review flow passed');

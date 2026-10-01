@@ -100,6 +100,20 @@ function startOA(){
   S.screen='mission';
   render();
 }
+function startFocusedReview(){
+  if(!activeD772()||!session?.finished)return;
+  const missed=(session.review||[]).filter(x=>!x.correct);
+  const lessons=new Set(missed.map(x=>x.q?.learningPathLessonId).filter(Boolean));
+  if(!lessons.size)return;
+  const seen=new Set((session.review||[]).map(x=>x.q?.id));
+  const pool=(window.MajickQuestionBuilder?.d772Questions?.('d772-master-section-1')||[]).filter(q=>lessons.has(q.learningPathLessonId));
+  const fresh=shuffleCopy(pool.filter(q=>!seen.has(q.id)));
+  const repeated=shuffleCopy(pool.filter(q=>seen.has(q.id)));
+  const arr=[...fresh,...repeated].slice(0,10);
+  if(!arr.length)return;
+  session={type:'adaptive',opts:{label:'Section 1 Focused Review',limit:arr.length,kind:'d772-focused-review'},index:1,score:0,questions:arr,current:arr[0],answered:false,confidence:'sure',review:[],start:Date.now(),pendingChoice:null};
+  S.screen='mission';render();
+}
 function lessonSummary(review){
   const rows={};
   Object.entries(LESSON_NAMES).forEach(([id,title])=>rows[id]={id,title,total:0,correct:0});
@@ -125,7 +139,7 @@ function oaResult(){
   });
   const conceptRows=Object.values(concepts).sort((a,b)=>(a.correct/a.total)-(b.correct/b.total)||a.term.localeCompare(b.term));
   const misses=conceptRows.filter(x=>x.correct<x.total);
-  return '<div class="v3333Result"><section class="v3333ResultHero"><span class="v3333Eyebrow">SECTION 1 • OA SIMULATION COMPLETE</span><h2>'+score+'/'+total+' • '+acc+'%</h2><p>This is practice evidence, not a prediction of your OA score. Use the breakdown to decide what to review next.</p><div class="v3333ResultActions"><button class="btn primary" onclick="MajickWGUPractice.startOA()">Retake 30-question simulation</button><button class="btn ghost" onclick="session=null;navigate(\'learninglab\')">Return to Course Tutor</button></div></section><section class="v3333Readiness"><h3>Section 1 Practice Readiness by Lesson</h3><div class="v3333LessonGrid">'+lessons.map(r=>{const [label,cls]=statusFor(r.correct,r.total);const pct=r.total?Math.round(r.correct/r.total*100):0;return '<article><small>'+E(r.title)+'</small><b>'+r.correct+'/'+r.total+' • '+pct+'%</b><span class="'+cls+'">'+label+'</span></article>'}).join('')+'</div></section><section class="v3333Concepts"><h3>Concepts to Review</h3>'+(misses.length?misses.map(r=>'<article><div><b>'+E(r.term)+'</b><small>'+E(LESSON_NAMES[r.lessonId]||'Section 1')+'</small></div><span>'+r.correct+'/'+r.total+'</span></article>').join(''):'<p>No concepts were missed in this simulation.</p>')+'</section><details class="v3333Missed"><summary>Review missed questions ('+review.filter(x=>!x.correct).length+')</summary>'+review.filter(x=>!x.correct).map(x=>'<article><b>'+E(x.q.prompt)+'</b>'+visualHtml(x.q.visual)+'<p class="wrongText">You chose: '+E(x.chosen)+'</p><p><strong>Best answer:</strong> '+E(x.q.answer)+'</p><p>'+E(x.q.why||'')+'</p>'+whyList(x.q)+'</article>').join('')+'</details></div>';
+  return '<div class="v3333Result"><section class="v3333ResultHero"><span class="v3333Eyebrow">SECTION 1 • OA SIMULATION COMPLETE</span><h2>'+score+'/'+total+' • '+acc+'%</h2><p>This is practice evidence, not a prediction of your OA score. Use the breakdown to decide what to review next.</p><div class="v3333ResultActions">'+(review.some(x=>!x.correct)?'<button class="btn primary" onclick="MajickWGUPractice.startFocusedReview()">Practice my missed lessons →</button>':'')+'<button class="btn primary" onclick="MajickWGUPractice.startOA()">Retake 30-question simulation</button><button class="btn ghost" onclick="session=null;navigate(\'learninglab\')">Return to Course Tutor</button></div></section><section class="v3333Readiness"><h3>Section 1 Practice Readiness by Lesson</h3><div class="v3333LessonGrid">'+lessons.map(r=>{const [label,cls]=statusFor(r.correct,r.total);const pct=r.total?Math.round(r.correct/r.total*100):0;return '<article><small>'+E(r.title)+'</small><b>'+r.correct+'/'+r.total+' • '+pct+'%</b><span class="'+cls+'">'+label+'</span></article>'}).join('')+'</div></section><section class="v3333Concepts"><h3>Concepts to Review</h3>'+(misses.length?misses.map(r=>'<article><div><b>'+E(r.term)+'</b><small>'+E(LESSON_NAMES[r.lessonId]||'Section 1')+'</small></div><span>'+r.correct+'/'+r.total+'</span></article>').join(''):'<p>No concepts were missed in this simulation.</p>')+'</section><details class="v3333Missed"><summary>Review missed questions ('+review.filter(x=>!x.correct).length+')</summary>'+review.filter(x=>!x.correct).map(x=>'<article><b>'+E(x.q.prompt)+'</b>'+visualHtml(x.q.visual)+'<p class="wrongText">You chose: '+E(x.chosen)+'</p><p><strong>Best answer:</strong> '+E(x.q.answer)+'</p><p>'+E(x.q.why||'')+'</p>'+whyList(x.q)+'</article>').join('')+'</details></div>';
 }
 function ensureD772Bank(){
   try{
@@ -214,7 +228,7 @@ function bootD772Practice(){
     }
   }catch(e){console.warn('D772 Practice Lab boot',e)}
 }
-window.MajickWGUPractice={VERSION,select,submit,startOA,visualHtml,whyList,balancedOA,isD772Question,ensureD772Bank,bootD772Practice};
+window.MajickWGUPractice={VERSION,select,submit,startOA,startFocusedReview,visualHtml,whyList,balancedOA,isD772Question,ensureD772Bank,bootD772Practice};
 document.documentElement.dataset.majickWguPractice='3.3.36';
 bootD772Practice();
 })();
