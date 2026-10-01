@@ -174,3 +174,26 @@ assert(/Review missed questions \(1\)/.test(ctx.sessionHTML()),'study design mis
 ctx.S.activeCourse='D755';const beforeDesign=ctx.session;ctx.MajickWGUPractice.startStudyDesign();
 assert(ctx.session===beforeDesign,'study design crossed courses');
 console.log('Study design lifecycle, missed review, and isolation passed');
+
+ctx.S.activeCourse='D772';ctx.MajickWGUPractice.startLabelStudy();
+assert(ctx.session.questions.length===6,'label count wrong');
+assert(new Set(ctx.session.questions.map(q=>q.answer)).size===6,'label definitions incomplete');
+assert(ctx.session.questions.every(q=>ctx.S.courses.D772.questionBank.some(old=>old.id===q.id)),'label questions unavailable to mistake journal');
+for(let i=0;i<6;i++){
+ ctx.MajickWGUPractice.select(ctx.session.current.answer);ctx.MajickWGUPractice.submit();ctx.continueSession();
+}
+assert(ctx.session.finished&&ctx.session.score===6,'label game did not finish');
+assert(/Label another study/.test(ctx.sessionHTML()),'label replay missing');
+console.log('Label the Study lifecycle and journal question lookup passed');
+
+{
+ const c={window:{S:{activeCourse:'D772',courses:{D772:{questionBank:[{id:'m1',prompt:'Test prompt',answer:'Population',why:'Entire group'}]},D755:{questionBank:[]}},progress:{D772:{answers:[{qid:'m1',correct:false,chosen:'Sample',at:1},{qid:'m1',correct:false,chosen:'Statistic',at:2}]},D755:{answers:[]}}}},console};
+ vm.createContext(c);vm.runInContext(fs.readFileSync(root+'/pages-release/v3319/learning-lab.js','utf8'),c);
+ const journal=c.window.MajickLearningLab;
+ assert(journal.mistakes().length===1,'journal duplicates repeated misses');
+ assert(journal.mistakes()[0].given==='Statistic','journal omitted actual selected answer');
+ assert(journal.mistakes('D755').length===0,'journal mixed course mistakes');
+ c.window.S.progress.D772.answers.push({qid:'m1',correct:true,at:3});
+ assert(journal.mistakes().length===0,'corrected question remains in active mistake list');
+ console.log('Mistake journal deduplication, selected answer, repair and isolation passed');
+}
