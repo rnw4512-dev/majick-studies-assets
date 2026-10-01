@@ -153,3 +153,24 @@ assert(/Play sampling drill again/.test(ctx.sessionHTML()),'sampling replay miss
 ctx.S.activeCourse='D755';const previous=ctx.session;ctx.MajickWGUPractice.startSampling();
 assert(ctx.session===previous,'D772 sampling drill changed another course');
 console.log('Sampling drill lifecycle and course isolation passed');
+
+ctx.S.activeCourse='D772';ctx.MajickWGUPractice.startStudyDesign();
+assert(ctx.session.questions.length===9,'study design size wrong');
+assert(new Set(ctx.session.questions.map(q=>q.answer)).size===3,'study design coverage incomplete');
+const designIds=ctx.session.questions.map(q=>q.id);
+for(let i=0;i<9;i++){
+ const q=ctx.session.current;
+ assert(q.id===designIds[i],'study design progression escaped drill');
+ assert(q.options.length===3&&q.options.includes(q.answer),'invalid design choices');
+ ctx.MajickWGUPractice.select(i===0?q.options.find(o=>o!==q.answer):q.answer);
+ ctx.MajickWGUPractice.submit();ctx.MajickWGUPractice.submit();
+ assert(ctx.session.review.length===i+1,'duplicate study design answer');
+ assert(/Why each answer is right or wrong/.test(ctx.sessionHTML()),'study design feedback missing');
+ ctx.continueSession();
+}
+assert(ctx.session.finished&&ctx.session.score===8,'study design score wrong');
+assert(/Play study design drill again/.test(ctx.sessionHTML()),'study design replay missing');
+assert(/Review missed questions \(1\)/.test(ctx.sessionHTML()),'study design misses not reviewed');
+ctx.S.activeCourse='D755';const beforeDesign=ctx.session;ctx.MajickWGUPractice.startStudyDesign();
+assert(ctx.session===beforeDesign,'study design crossed courses');
+console.log('Study design lifecycle, missed review, and isolation passed');
