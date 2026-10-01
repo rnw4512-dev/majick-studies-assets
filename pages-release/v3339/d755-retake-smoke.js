@@ -504,3 +504,15 @@ assert(st.mode==='bookmarks'&&M.shell().includes('Your shelf is empty'),'Empty s
 M.startExam('diagnostic');assert(M.savedPracticeHTML().includes('Retake Diagnostic'),'Saved practice omitted diagnostic');
 assert(ctx.S.progress.D755.xp===xpBefore,'Bookmarks must not change lifetime XP');
 console.log('QUESTION BOOKMARKS AND SAVED REVIEW PASSED');
+
+// Actual startup callback must not override a saved tool or later navigation.
+let startupPanelShows=0,startupCallback;
+ctx.setTimeout=(fn,delay)=>{if(delay===120)startupCallback=fn;return 1};
+ctx.document.querySelector=()=>null;ctx.document.getElementById=()=>null;
+ctx.document.querySelectorAll=selector=>{if(selector==='.learnPanel')startupPanelShows++;return []};
+ctx.S.activeCourse='D755';ctx.S.screen='learninglab';ctx.S.majickAccount={studyTool:{D755:{kind:'learn',value:'vocab'}}};
+ctx.MajickLearningLab.bind();startupCallback();assert(startupPanelShows===0,'Startup overwrote saved tool');
+ctx.S.majickAccount.studyTool={};ctx.S.screen='home';startupCallback();assert(startupPanelShows===0,'Startup reopened tool after leaving Learn Lab');
+ctx.S.screen='learninglab';ctx.S.activeCourse='OTHER';startupCallback();assert(startupPanelShows===0,'Startup crossed courses');
+ctx.S.activeCourse='D755';startupCallback();assert(startupPanelShows===1,'Default startup panel disappeared');
+console.log('D755 STARTUP TOOL RESTORE GUARD PASSED');
