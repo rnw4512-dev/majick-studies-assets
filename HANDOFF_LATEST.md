@@ -523,3 +523,7 @@ Prior timelines/behavior/comfort deployment 66ee322 passed full Pages workflow a
 
 ## 2026-09-30 — Process practice progress and focused review
 Previous guide/resume/review build 7c2afe3 passed Pages deployment and live UI checks. Added timeline and behavior evidence cards on D755 home/results, using latest per-question answers including mixed practice. New submissions persist bounded per-question evidence. Six-question focused reviews prioritize missed decisions and other practice, and cannot replace paused rounds. Narrow-panel timeline comparisons become labeled stacked cards instead of clipped columns. Process evidence, separation, latest-answer resolution, six-question completion, and paused-round preservation tests passed, along with existing D755 smoke and Golden build verification.
+
+
+## 2026-09-30 — Saved question shelf
+Previous process progress build 5616a42 passed deployment and live card/guide checks. Added D755 question bookmarks across drills, diagnostic, mock, and section checks; saved-question shelf with optional explanation details; up-to-10-question saved review; and home resume list for unfinished exam modes. Unsave preserves ongoing review IDs. Added duplicate-submit guards to exam and section-check handlers. Empty shelf, exact review limit, wrong-answer results, unchanged bookmarks after completion, invalid IDs, paused review preservation, and unchanged lifetime XP tests passed. Golden build/stability verifier passed.

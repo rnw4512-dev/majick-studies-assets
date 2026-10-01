@@ -953,3 +953,15 @@
 .d755ProcessProgress h3{font-size:18px;color:#f1daa1;margin:0 0 10px}
 .d755ProcessProgress progress{width:100%;height:10px;accent-color:#bd93d3;margin:6px 0}
 .d755ProcessProgress button{white-space:normal}
+
+.d755BookmarkButton{margin:0 0 14px;font-size:14px!important}
+.d755BookmarkButton[aria-pressed="true"]{color:#f1daa1;border-color:#b992c7;background:#35233f}
+.d755SavedPractice{margin:20px 0;padding:18px;border:1px solid #594363;border-radius:16px;background:#1b1223;color:#e8ddec}
+.d755SavedPractice h2{font-size:22px;color:#f1daa1;margin:0 0 10px}
+.d755SavedPractice h3{font-size:17px;color:#e4c6ef;margin:18px 0 10px}
+.d755SavedPractice p{font-size:14px;line-height:1.6}
+.d755ResumeGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,250px),1fr));gap:10px}
+.d755ResumeGrid button{text-align:left;white-space:normal;padding:14px}
+.d755ResumeGrid b,.d755ResumeGrid span{display:block;line-height:1.5}
+.d755ResumeGrid span{font-size:13px;font-weight:400;color:#dbccdf;margin-top:5px}
+.d755Bookmarks .d755MissedReview>article{padding-bottom:14px;border-bottom:1px solid #594363;margin-bottom:16px}

@@ -480,3 +480,27 @@ assert(st.timelineDrillResult.total===6&&st.timelineDrillResult.score===6,'Focus
 assert(M.processEvidence('timelineDrill').missedIds.length===1,'Focused review did not repair exactly the three practiced mistakes');
 assert(M.shell().includes('Your next process review'),'Process results lack next practice guidance');
 console.log('FOCUSED REVIEW COMPLETION PASSED');
+
+// Bookmarking must not submit, score, or replace a round.
+st=M.state();st.bookmarkedIds=[];M.startExam('mock');
+const bookmarkRound=st.mock,bookmarkItem=M.BANK.find(q=>q.id===bookmarkRound.ids[0]),bookmarkAnswers=bookmarkRound.answers.length;
+M.toggleQuestionBookmark(bookmarkItem.id);
+assert(st.mock===bookmarkRound&&bookmarkRound.answers.length===bookmarkAnswers&&!bookmarkRound.submitted,'Bookmark changed exam evidence');
+assert(M.bookmarkedQuestions().length===1&&M.shell().includes('aria-pressed="true"'),'Saved bookmark toggle missing');
+M.toggleQuestionBookmark('unknown-question');assert(M.bookmarkedQuestions().length===1,'Unknown bookmark accepted');
+M.toggleQuestionBookmark(bookmarkItem.id);assert(M.bookmarkedQuestions().length===0,'Unsave failed');
+for(const item of M.BANK.slice(0,12))M.toggleQuestionBookmark(item.id);
+const savedIds=new Set(M.bookmarkedQuestions().map(q=>q.id));
+M.startExam('bookmarkReview');const savedReview=st.bookmarkReview;
+assert(savedReview.ids.length===10&&new Set(savedReview.ids).size===10&&savedReview.ids.every(id=>savedIds.has(id)),'Saved review must sample 10 unique saved questions');
+const firstSaved=M.BANK.find(q=>q.id===savedReview.ids[0]);M.toggleQuestionBookmark(firstSaved.id);
+assert(st.bookmarkReview===savedReview&&savedReview.ids.includes(firstSaved.id),'Unsave changed in-progress review');
+for(let i=0;i<10;i++){const item=M.BANK.find(q=>q.id===savedReview.ids[i]);savedReview.selected=i===0?item.options.find(x=>x!==item.answer):item.answer;M.examSubmit('bookmarkReview');const answerCount=savedReview.answers.length;M.examSubmit('bookmarkReview');assert(savedReview.answers.length===answerCount,'Duplicate submission changed score');M.examNext('bookmarkReview');}
+assert(st.bookmarkReviewResult.total===10&&st.bookmarkReviewResult.score===9&&M.shell().includes('SAVED QUESTION REVIEW RESULTS'),'Saved review result incorrect');
+assert(M.shell().includes('Review the 1 missed decision'),'Saved review lost missed-answer feedback');
+assert(M.bookmarkedQuestions().length===11,'Completing practice removed saved bookmarks');
+st.bookmarkedIds=[];delete st.bookmarkReview;M.startExam('bookmarkReview');
+assert(st.mode==='bookmarks'&&M.shell().includes('Your shelf is empty'),'Empty shelf opened invalid review');
+M.startExam('diagnostic');assert(M.savedPracticeHTML().includes('Retake Diagnostic'),'Saved practice omitted diagnostic');
+assert(ctx.S.progress.D755.xp===xpBefore,'Bookmarks must not change lifetime XP');
+console.log('QUESTION BOOKMARKS AND SAVED REVIEW PASSED');
