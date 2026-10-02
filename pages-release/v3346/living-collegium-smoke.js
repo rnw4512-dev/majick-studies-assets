@@ -86,3 +86,5 @@ console.log('COURSE TOOL RESUME, DEFAULT COMFORT AND PAGE TOP PASSED');
  timers.shift()();
  console.log('APP-WIDE DECORATION BURSTS COALESCED WITHOUT CHANGING BASE RENDERS');
 }
+
+assert(app.toolMatches('Guided Practice',' PRACTICE '));assert(app.toolMatches('Vocabulary','vocab'));assert(app.toolMatches('My Notes',''));assert(!app.toolMatches('Mastery','notes'));console.log('Classroom tool search matching passed');

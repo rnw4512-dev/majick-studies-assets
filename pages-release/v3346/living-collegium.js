@@ -44,6 +44,7 @@ function decorateCompanions(){
     if(holder.firstElementChild)oldGrid.replaceWith(holder.firstElementChild);
   }
 }
+function toolMatches(label,query){return String(label||'').toLowerCase().includes(String(query||'').trim().toLowerCase());}
 function decorateLearning(){
   const lab=document.querySelector('.learnLab');if(!lab)return;
   const nav=lab.querySelector('.learnTabs');if(!nav)return;
@@ -63,6 +64,13 @@ function decorateLearning(){
     const box=document.createElement('details');box.className='lcToolkit';
     const summary=document.createElement('summary');summary.textContent='Explore course tools and study modes';
     nav.before(box);box.append(summary,nav);
+    const search=document.createElement('div');search.className='lcToolSearch';
+    search.innerHTML='<label>Find a classroom tool<input type="search" placeholder="Try vocabulary, practice, or notes" aria-label="Find a classroom tool"></label><button type="button">Clear</button><p role="status" aria-live="polite"></p>';
+    nav.before(search);
+    const input=search.querySelector('input'),status=search.querySelector('p');
+    const filter=()=>{const buttons=[...nav.querySelectorAll('button')];let visible=0;buttons.forEach(b=>{b.hidden=!toolMatches(b.textContent,input.value);if(!b.hidden)visible++;});status.textContent=input.value.trim()?(visible?visible+' matching tools':'No matching tools. Try a shorter search.') : '';};
+    input.addEventListener('input',filter);search.querySelector('button').addEventListener('click',()=>{input.value='';filter();input.focus();});
+
     const toolkitCourse=window.S?.activeCourse;box.open=!!account()?.studyToolkit?.[toolkitCourse];
     box.addEventListener('toggle',()=>{const a=account(),course=toolkitCourse;if(!a||!course||window.S?.activeCourse!==course||!box.isConnected)return;const prefs=a.studyToolkit||(a.studyToolkit={});if(prefs[course]!==box.open){prefs[course]=box.open;window.save?.();}});
   }
@@ -164,5 +172,5 @@ function scheduleDecorate(){
 const previous=window.render;
 if(typeof previous==='function')window.render=function(){const result=previous.apply(this,arguments);scheduleDecorate();return result};
 setTimeout(decorate,120);
-window.MajickLivingCollegium={VERSION,persona,sceneHTML,decorate,scheduleDecorate,STUDY_TOOLS,studyToolFromButton,savedStudyTool,rememberStudyTool,restoreStudyTool,resetComfort,pageTop,decorateHomeResume,STUDY_ROUTES,comfort,reducedMotion,applyComfort,toggleComfort,rememberStudyRoute,studyDestination,returnToStudy,decorateCompass};
+window.MajickLivingCollegium={VERSION,persona,sceneHTML,toolMatches,decorate,scheduleDecorate,STUDY_TOOLS,studyToolFromButton,savedStudyTool,rememberStudyTool,restoreStudyTool,resetComfort,pageTop,decorateHomeResume,STUDY_ROUTES,comfort,reducedMotion,applyComfort,toggleComfort,rememberStudyRoute,studyDestination,returnToStudy,decorateCompass};
 })();

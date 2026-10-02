@@ -298,8 +298,8 @@ jobs:
           # Golden architecture and protected assets.
           grep -q '"build_foundation": "V3.3.18 Golden Baseline"' _site/app-progress.json
           grep -q '"version": "V3.3.52 Game Realm Expansion"' _site/app-progress.json
-          grep -q 'living-collegium.js?v=3346-smooth-render' _site/index.html
-          grep -q 'living-collegium.css?v=3346-smooth-render' _site/index.html
+          grep -q 'living-collegium.js?v=3346-tool-search' _site/index.html
+          grep -q 'living-collegium.css?v=3346-tool-search-smooth-render' _site/index.html
           grep -q 'collegium-atmosphere.js?v=3350-room' _site/index.html
           grep -q 'collegium-atmosphere.css?v=3348-roster' _site/index.html
           grep -q 'sanctuary-roster.js?v=3357-stations' _site/sanctuary/index.html
@@ -721,7 +721,7 @@ jobs:
                       'D755 norm criterion chamber': 'Norm-Referenced vs Criterion-Referenced' in game_realm,
                       'D755 observation anecdotal chamber': 'Direct Observation vs Anecdotal Record' in game_realm,
                       'D755 Realm course gate': "activeCourse==='D755'" in game_realm,
-                      'Living Collegium cache key': 'living-collegium.js?v=3346-smooth-render' in index,
+                      'Living Collegium cache key': 'living-collegium.js?v=3346-tool-search' in index,
                       'Living Collegium version': "VERSION='3.3.46'" in living,
                       'Collegium atmosphere cache key': 'collegium-atmosphere.js?v=3350-room' in index,
                       'Sanctuary roster cache key': 'sanctuary-roster.js?v=3357-stations' in san_index,

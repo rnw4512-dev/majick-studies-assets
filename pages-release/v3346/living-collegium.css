@@ -21,3 +21,5 @@ html[data-majick-large-text=true] .content :is(p,li,button,label,input,select,te
 .lcHomeResume button:focus-visible{outline:3px solid #f1daa1;outline-offset:3px}
 html[data-majick-large-text=true] .content :is(td,th){font-size:max(1em,16px)!important;line-height:1.6!important}
 @media(max-width:640px){.lcHomeResume{align-items:stretch;flex-direction:column}.lcHomeResume button{width:100%}.lcStudyCompass details{flex:1 1 200px}.lcStudyCompass summary{white-space:normal}}
+
+.lcToolSearch{display:flex;align-items:end;gap:12px;flex-wrap:wrap;padding:14px 0;color:#e8daf0}.lcToolSearch label{display:grid;gap:7px;flex:1;min-width:200px;font-size:13px}.lcToolSearch input{width:100%;box-sizing:border-box;padding:12px;border:1px solid #9276a4;border-radius:12px;background:#160f24;color:#f6edff;font:inherit}.lcToolSearch input:focus-visible{outline:2px solid #d0a6e8;outline-offset:2px}.lcToolSearch button{padding:12px;border:1px solid #9276a4;border-radius:12px;background:#302040;color:#f6edff;cursor:pointer}.lcToolSearch p{flex-basis:100%;margin:0;color:#d6bddf;font-size:13px}.lcToolkit .learnTabs button[hidden]{display:none!important}
