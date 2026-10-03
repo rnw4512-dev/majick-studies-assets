@@ -194,7 +194,7 @@ if 'duplicate-safe-hatch.js?v=3375' not in main or 'duplicate-safe-hatch.css?v=3
 home_focus=(site/'home-focus.js').read_text(encoding='utf-8')
 for marker in ("VERSION='3.3.77'","compactHome","Dormitory & Sanctuary","v3377CampusDoors","window.MajickHomeFocus"):
     if marker not in home_focus: fail('Home Focus missing '+marker)
-dorm=(site/'sanctuary-dorm.js').read_text(encoding='utf-8')
+dorm=(site/'sanctuary'/'sanctuary-dorm.js').read_text(encoding='utf-8')
 for marker in ("VERSION='3.3.77'","YOUR DORMITORY & GUARDIAN SANCTUARY","Your Study Alcove","Shared Commons","Dormitory & Sanctuary"):
     if marker not in dorm: fail('Shared Dormitory missing '+marker)
 if 'home-focus.js?v=3377' not in main or 'home-focus.css?v=3377' not in main:
