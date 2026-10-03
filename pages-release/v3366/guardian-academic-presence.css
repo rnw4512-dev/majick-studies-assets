@@ -1,0 +1,10 @@
+/* V3.3.66 — Guardian academic presence */
+.v3366AcademicGuardian{display:flex;align-items:center;gap:10px;margin:0 0 12px;padding:9px 12px;border:1px solid rgba(203,168,216,.22);border-radius:13px;background:linear-gradient(110deg,rgba(28,16,36,.9),rgba(18,11,24,.86));color:#eee3f0;box-shadow:0 8px 24px rgba(5,2,9,.12)}
+.v3366AcademicGuardian img,.v3366AcademicGuardian>span{flex:0 0 42px;width:42px;height:42px;border-radius:12px;background:radial-gradient(circle,rgba(126,79,151,.2),rgba(9,5,14,.94))}
+.v3366AcademicGuardian img{object-fit:contain}.v3366AcademicGuardian>span{display:grid;place-items:center;color:#e4c77f;font-size:20px}
+.v3366AcademicGuardian div{min-width:0}.v3366AcademicGuardian small{display:block;color:#d8b979;font:800 8px/1.25 system-ui;letter-spacing:.11em}.v3366AcademicGuardian b{display:block;margin:2px 0;color:#eedaa8;font:700 14px Georgia,serif}.v3366AcademicGuardian p{margin:0;color:#bfb0c5;font:10px/1.45 system-ui}
+.v3366AcademicGuardian.learn{border-left:3px solid rgba(228,189,111,.55)}
+.v3366AcademicGuardian.archive{border-left:3px solid rgba(184,143,197,.55)}
+.v3366AcademicGuardian.realm{border-left:3px solid rgba(133,109,192,.6)}
+.v3366AcademicGuardian.home{border-left:3px solid rgba(226,185,105,.5)}
+@media(max-width:640px){.v3366AcademicGuardian{padding:8px 10px;gap:8px}.v3366AcademicGuardian img,.v3366AcademicGuardian>span{flex-basis:36px;width:36px;height:36px}.v3366AcademicGuardian p{font-size:9px}.v3366AcademicGuardian small{font-size:7px}}
