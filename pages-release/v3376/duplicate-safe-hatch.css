@@ -1,0 +1,5 @@
+/* V3.3.75 — Duplicate-safe Guardian hatching */
+.v3375DuplicateSafe{display:flex;align-items:flex-start;gap:9px;margin:10px 0 12px;padding:9px 11px;border:1px solid rgba(218,181,111,.24);border-radius:11px;background:linear-gradient(110deg,rgba(57,35,65,.58),rgba(27,17,35,.62));color:#d8cbdc}
+.v3375DuplicateSafe>span{display:grid;place-items:center;flex:0 0 30px;height:30px;border-radius:50%;background:#291a32;color:#e6c77f;text-shadow:0 0 10px rgba(212,155,231,.45)}
+.v3375DuplicateSafe div{display:grid;gap:2px}.v3375DuplicateSafe b{color:#ead5a0;font:700 11px Georgia,serif}.v3375DuplicateSafe small{color:#a999af;font:9px/1.45 system-ui}
+@media(max-width:620px){.v3375DuplicateSafe{padding:8px 9px}.v3375DuplicateSafe>span{flex-basis:26px;height:26px}}
