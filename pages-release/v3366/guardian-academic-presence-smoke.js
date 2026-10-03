@@ -1,0 +1,4 @@
+const fs=require('fs');const js=fs.readFileSync(__dirname+'/guardian-academic-presence.js','utf8');const css=fs.readFileSync(__dirname+'/guardian-academic-presence.css','utf8');
+for(const marker of ["VERSION='3.3.66'","MajickGuardianCore","contextLine","v3366AcademicGuardian","MajickRenderQueue","window.MajickGuardianAcademicPresence"])if(!js.includes(marker))throw new Error('missing '+marker);
+for(const marker of ['.v3366AcademicGuardian','.v3366AcademicGuardian.learn','.v3366AcademicGuardian.archive'])if(!css.includes(marker))throw new Error('missing CSS '+marker);
+console.log('V3.3.66 Guardian Academic Presence smoke passed');
