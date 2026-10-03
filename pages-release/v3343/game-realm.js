@@ -812,5 +812,5 @@
       };
     }
   };
-  document.documentElement.dataset.majickRealmVariety='3352';
+  document.documentElement.dataset.majickRealmVariety='3353';
 })();
