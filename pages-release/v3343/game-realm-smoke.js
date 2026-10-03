@@ -56,7 +56,16 @@ const pool=[
 ];
 context.questionPool=()=>pool;
 
+
 context.S.activeCourse='D772';
+const d772Pool=context.MajickGameRealm.d772RealmPool();
+assert.equal(d772Pool.length,24,'D772 Realm supplement should provide 24 Section 1 scenarios');
+assert.deepEqual([...new Set(d772Pool.map(q=>q.section))].sort(),['Bias & Credibility','Conclusions','Data Collection','Misrepresentation'],'D772 Realm supplement should cover all four Section 1 domains');
+assert.ok(context.MajickGameRealm.realmQuestionPool().length>=24,'D772 Realm pool should merge guaranteed scenarios with course questions');
+context.startRuneSort();
+assert.equal(context.session.type,'runesort','Rune Sort should start for D772');
+assert.ok(context.session.categories.some(x=>['Data Collection','Bias & Credibility','Misrepresentation','Conclusions'].includes(x)),'D772 Rune Sort should use Section 1 domain labels');
+
 const beforeType=context.session?.type;
 context.startAssessmentSigilSort();
 assert.equal(context.session?.type,beforeType,'Assessment Sigil Sort must not start outside D755');
