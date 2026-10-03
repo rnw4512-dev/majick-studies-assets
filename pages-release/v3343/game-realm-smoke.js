@@ -140,7 +140,7 @@ assert.equal(context.session.answered,true,'Hex Breaker should resolve after jud
 assert.ok(context.session.judgmentScore>=1,'Hex Breaker should score a correct validity judgment');
 assert.equal(context.session.breakStreak,1,'Hex Breaker should build a successful break streak');
 
-assert.equal(context.document.documentElement.dataset.majickRealmVariety,'3353','Game Realm dataset marker missing');
+assert.equal(context.document.documentElement.dataset.majickRealmVariety,'3355','Game Realm dataset marker missing');
 assert.match(src,/realmTrialGuide/,'Featured Realm clarity guide source should remain installed');
 assert.match(src,/Assessment Sigil Sort/,'D755 Assessment Sigil Sort source missing');
 assert.match(src,/globalThis\.S\?\.activeCourse==='D755'/,'D755 Assessment Sigil Sort must be course-gated');
