@@ -1,0 +1,7 @@
+const fs=require('fs'),vm=require('vm'),assert=require('assert');
+const js=fs.readFileSync(__dirname+'/product-core.js','utf8'),css=fs.readFileSync(__dirname+'/product-core.css','utf8');
+for(const m of ["VERSION='3.4.0'","DAILY STUDY LOOP","learn-start","quick-check-complete","practice-complete","dorm-return","window.MajickProductCore","window.MajickUI"])if(!js.includes(m))throw new Error('missing '+m);
+for(const m of ['.v34Button','.v34Card','.v3400DailyLoop','--v34-space-1'])if(!css.includes(m))throw new Error('missing CSS '+m);
+const account={};const ctx={window:{S:{activeCourse:'D772'},MajickStateCore:{ensureAccount:()=>account},MajickCourseTutor:{selectedLesson:()=>({id:'d772-s2-l1',title:'Exploring Various Types of Data'})},MajickRenderQueue:null},document:{documentElement:{dataset:{}},querySelector(){return null},getElementById(){return null}},setTimeout(){},Date,console};vm.createContext(ctx);vm.runInContext(js,ctx);
+const P=ctx.window.MajickProductCore;P.record('enter-college');assert.equal(P.nextAction().stage,'learn');P.record('learn-start');assert.equal(P.nextAction().stage,'check');P.record('quick-check-complete');assert.equal(P.nextAction().stage,'practice');P.record('practice-complete',{won:true,xp:10});assert.equal(P.nextAction().stage,'guardian');P.record('guardian-reacted');assert.equal(P.nextAction().stage,'dorm');P.record('dorm-return');assert.equal(P.nextAction().stage,'complete');
+console.log('V3.4.0 Product Core smoke passed');

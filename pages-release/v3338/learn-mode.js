@@ -323,7 +323,9 @@ function selectLesson(id){
  persist();render();
 }
 function beginLesson(){
- const st=progress();st.mode='concept';st.phase=0;st.currentFeedback=null;persist();render();
+ const st=progress();st.mode='concept';st.phase=0;st.currentFeedback=null;
+ try{window.MajickProductCore?.record?.('learn-start',{course:COURSE,lessonId:st.lessonId})}catch(_){}
+ persist();render();
 }
 function setPhase(n){
  const {st,concept}=current();
@@ -335,6 +337,7 @@ function setPhase(n){
 function completeConcept(){
  const {st,lesson,concept,idx}=current();
  st.completedConcepts[concept.id]=true;st.anchors[concept.id]=true;
+ try{window.MajickProductCore?.record?.('concept-complete',{course:COURSE,lessonId:lesson.id,conceptId:concept.id,conceptTitle:concept.title||concept.id})}catch(_){}
  if(idx<lesson.concepts.length-1){st.conceptIndex=idx+1;st.phase=0;st.currentFeedback=null}
  else{startCheckpoint()}
  persist();render();
@@ -368,6 +371,7 @@ function checkpointNext(){
  const score=cp.answers.filter(a=>a.correct).length,total=qs.length;
  const status=score>=Math.max(5,total-1)?'Ready to move on':score>=Math.max(4,total-2)?'One distinction to repair':'Needs another teaching pass';
  st.checkpoints[lesson.id]={score,total,status,answers:[...cp.answers],at:Date.now()};
+ try{window.MajickProductCore?.record?.('quick-check-complete',{course:COURSE,lessonId:lesson.id,score,total,status})}catch(_){}
  st.mode='checkpointResult';persist();render();
 }
 function repairCheckpoint(){

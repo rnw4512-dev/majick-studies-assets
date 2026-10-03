@@ -1,6 +1,6 @@
 (()=>{
 'use strict';
-const VERSION='3.3.41';
+const VERSION='3.4.0';
 const COURSE_LABEL=()=>window.S?.activeCourse||'WGU';
 const E=v=>String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
 
@@ -51,6 +51,48 @@ function guardianJourney(p=activePet()){
   const g=j.guardians[p.id]||(j.guardians[p.id]={questProgress:0,questTarget:5,questCompletions:0,studyMoments:0,lastReactionAt:0,courses:{}});
   g.courses=g.courses||{};
   return g;
+}
+function relationshipEvent(kind,meta={},p=activePet()){
+  if(!p)return null;
+  const g=guardianJourney(p),m=guardianMeta(p),course=String(meta.course||COURSE_LABEL()),lesson=String(meta.lessonTitle||meta.lessonId||'').trim();
+  g.relationship=g.relationship&&typeof g.relationship==='object'?g.relationship:{
+    schemaVersion:1,studySessions:0,conceptsTogether:0,quickChecks:0,practiceWins:0,rewardsWitnessed:0,dormReturns:0,courses:{},recent:[]
+  };
+  const r=g.relationship;
+  r.courses=r.courses&&typeof r.courses==='object'?r.courses:{};
+  r.recent=Array.isArray(r.recent)?r.recent:[];
+  const c=r.courses[course]||(r.courses[course]={sessions:0,concepts:0,checks:0,practiceWins:0,dormReturns:0,lastStudiedAt:null});
+  let text='';
+  if(kind==='learn-start'){r.studySessions++;c.sessions++;text='Started '+course+(lesson?' • '+lesson:'')+' with you.'}
+  else if(kind==='concept-complete'){r.conceptsTogether++;c.concepts++;text='Worked through a '+course+' concept beside you.'}
+  else if(kind==='quick-check-complete'){r.quickChecks++;c.checks++;text='Saw you finish a '+course+' quick check'+(meta.status?' • '+meta.status:'')+'.'}
+  else if(kind==='practice-complete'&&meta.won){r.practiceWins++;c.practiceWins++;text='Shared a '+course+' Game Realm victory with you.'}
+  else if(kind==='reward-earned'){r.rewardsWitnessed++;text='Witnessed a '+course+' study reward.'}
+  else if(kind==='dorm-return'){r.dormReturns++;c.dormReturns++;text='Returned to the dorm with you after studying '+course+'.'}
+  if(!text)return r;
+  c.lastStudiedAt=new Date().toISOString();
+  const sig=kind+'|'+course+'|'+String(meta.lessonId||'')+'|'+String(meta.game||meta.status||'');
+  if(!r.recent.some(x=>x.sig===sig)){
+    r.recent.unshift({sig,kind,course,lessonId:meta.lessonId||null,text,at:new Date().toISOString()});
+    r.recent=r.recent.slice(0,30);
+    addMemory(p,text,'relationship-'+kind);
+  }
+  saveState();
+  return {guardianId:p.id,name:m?.name||p.name,relationship:r,course:c};
+}
+function relationshipSnapshot(p=activePet()){
+  if(!p)return null;
+  const g=guardianJourney(p),r=g.relationship||{};
+  return {
+    guardian:guardianMeta(p),
+    studySessions:Number(r.studySessions||0),
+    conceptsTogether:Number(r.conceptsTogether||0),
+    quickChecks:Number(r.quickChecks||0),
+    practiceWins:Number(r.practiceWins||0),
+    dormReturns:Number(r.dormReturns||0),
+    courses:r.courses||{},
+    recent:Array.isArray(r.recent)?r.recent.slice(0,8):[]
+  };
 }
 function saveState(){
   try{window.save?.()}catch(_){}
@@ -332,12 +374,24 @@ function recentMemories(limit=4){
   const p=activePet();return journey().memories.filter(m=>m.petId===p?.id).slice(0,limit);
 }
 document.addEventListener('pointerdown',()=>unlockAudio(),{once:true,capture:true});
-const previousRender=window.render;
-if(typeof previousRender==='function'&&!previousRender.__v3341){
-  const wrapped=function(){const r=previousRender.apply(this,arguments);setTimeout(()=>{wrapCare();wrapDebrief();applyDebriefPreference();decorate()},0);return r};
-  wrapped.__v3341=true;window.render=wrapped;
+function postRenderGuardian(){
+  wrapCare();wrapDebrief();applyDebriefPreference();decorate();
 }
-setTimeout(()=>{wrapCare();wrapDebrief();applyDebriefPreference();decorate();observeReactions()},0);
-window.MajickGuardianCore={VERSION,activePet,meta:guardianMeta,select:setActive,cycle,study,react,sound,sparks,toggleSound,settings,studyPrefs,debriefEnabled,toggleDebrief,applyDebriefPreference,journey:guardianJourney,recentMemories,decorate,guardianHeroHtml,studyDockHtml};
+function installRenderIntegration(){
+  const sharedQueue=window.MajickRenderQueue;
+  if(sharedQueue?.register){
+    sharedQueue.register('guardian-core-v34',postRenderGuardian,35);
+    sharedQueue.schedule();
+    return 'shared-queue';
+  }
+  const previousRender=window.render;
+  if(typeof previousRender==='function'&&!previousRender.__v3341){
+    const wrapped=function(){const r=previousRender.apply(this,arguments);setTimeout(postRenderGuardian,0);return r};
+    wrapped.__v3341=true;window.render=wrapped;
+  }
+  return 'legacy-fallback';
+}
+setTimeout(()=>{installRenderIntegration();postRenderGuardian();observeReactions()},0);
+window.MajickGuardianCore={VERSION,activePet,meta:guardianMeta,select:setActive,cycle,study,react,sound,sparks,toggleSound,settings,studyPrefs,debriefEnabled,toggleDebrief,applyDebriefPreference,journey:guardianJourney,relationshipEvent,relationshipSnapshot,recentMemories,decorate,guardianHeroHtml,studyDockHtml};
 document.documentElement.dataset.majickGuardianCore=VERSION;
 })();

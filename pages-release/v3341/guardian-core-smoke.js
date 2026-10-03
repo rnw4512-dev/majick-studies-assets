@@ -30,6 +30,7 @@ const account={
   guardianAudio:{enabled:true,guardian:true,magic:true,volume:.58},
   studyPreferences:{finishDebriefEnabled:true}
 };
+const renderQueueTasks={};
 const ctx={
   console,Date,Math,JSON,WeakSet,MutationObserver,Element,document,
   location:{origin:'https://example.test'},
@@ -42,6 +43,10 @@ const ctx={
     progress:{D755:{xp:4987}}
   },
   MajickStateCore:{ensureAccount(){return account}},
+  MajickRenderQueue:{
+    register(name,fn,priority){renderQueueTasks[name]={fn,priority};return true},
+    schedule(){},
+  },
   MajickGuardianCare:{
     snapshot(){return {focusPetId:'p1',guardians:{p1:{bond:10,mood:{label:'Bright'},icon:'☾'}}}},
     broadcastState(){}
@@ -59,13 +64,15 @@ vm.createContext(ctx);
 vm.runInContext(src,ctx,{filename:'guardian-core.js'});
 
 const M=ctx.MajickGuardianCore;
-assert(M&&M.VERSION==='3.3.41','Guardian Core version missing');
-assert(document.documentElement.dataset.majickGuardianCore==='3.3.41','Guardian Core dataset missing');
+assert(M&&M.VERSION==='3.4.0','Guardian Core version missing');
+assert(document.documentElement.dataset.majickGuardianCore==='3.4.0','Guardian Core dataset missing');
 assert(M.activePet().id==='p1','Active Study Guardian not resolved');
 assert(/ACTIVE STUDY GUARDIAN/.test(M.guardianHeroHtml()),'Guardian is not central in Home hero');
 assert(/Study with Velora/.test(M.guardianHeroHtml()),'Home hero study action missing');
 assert(/Debrief on/.test(M.guardianHeroHtml()),'Debrief toggle missing from Home hero');
 assert(/STUDYING WITH/.test(M.studyDockHtml()),'Study Guardian dock missing');
+assert(renderQueueTasks['guardian-core-v34'],'Guardian Core did not register with shared render queue');
+assert(!ctx.render.__v3341,'Guardian Core installed a legacy render wrapper even though shared queue was available');
 
 const xpBefore=ctx.S.progress.D755.xp;
 assert(M.debriefEnabled()===true,'Debrief should default on');
@@ -85,8 +92,20 @@ assert(account.guardianCare.guardians.p1.bond>10,'Guardian bond did not grow fro
 assert(M.recentMemories(10).some(x=>x.kind==='bond-quest'),'Bond Quest memory missing');
 assert(M.recentMemories(10).some(x=>x.kind==='concept'),'Concept study memory missing');
 assert(ctx.S.progress.D755.xp===xpBefore,'Guardian rewards changed academic/lifetime XP');
+M.relationshipEvent('learn-start',{course:'D755',lessonId:'lesson-a',lessonTitle:'Assessment Foundations'});
+M.relationshipEvent('concept-complete',{course:'D755',lessonId:'lesson-a',conceptId:'concept-a'});
+M.relationshipEvent('quick-check-complete',{course:'D755',lessonId:'lesson-a',status:'Ready to move on'});
+M.relationshipEvent('practice-complete',{course:'D755',lessonId:'lesson-a',won:true,game:'realm-a'});
+M.relationshipEvent('dorm-return',{course:'D755',lessonId:'lesson-a'});
+const relationship=M.relationshipSnapshot();
+assert(relationship.studySessions===1,'Guardian study relationship session missing');
+assert(relationship.conceptsTogether===1,'Guardian concept relationship missing');
+assert(relationship.quickChecks===1,'Guardian quick-check relationship missing');
+assert(relationship.practiceWins===1,'Guardian practice-win relationship missing');
+assert(relationship.dormReturns===1,'Guardian dorm-return relationship missing');
+assert(ctx.S.progress.D755.xp===xpBefore,'Guardian relationship tracking changed academic/lifetime XP');
 
-console.log('V3.3.41 GUARDIAN CORE SMOKE PASSED');
+console.log('V3.4.0 GUARDIAN CORE SMOKE PASSED');
 console.log(JSON.stringify({
   version:M.VERSION,
   guardian:M.meta(M.activePet()).name,
@@ -94,5 +113,6 @@ console.log(JSON.stringify({
   studyMoments:g.studyMoments,
   bond:account.guardianCare.guardians.p1.bond,
   debrief:M.debriefEnabled(),
+  relationship,
   xp:ctx.S.progress.D755.xp
 }));

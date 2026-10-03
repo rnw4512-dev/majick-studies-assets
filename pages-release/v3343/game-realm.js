@@ -74,6 +74,7 @@
       if(won)row.wins=Number(row.wins||0)+1;
       row.at=Date.now();
       p.realmRecords[id]=row;
+      try{window.MajickProductCore?.record?.('practice-complete',{course:window.S?.activeCourse||'',game:id,score,total,won})}catch(_){}
       save?.();
       return {previousBest,best:row.best,newBest:row.last>previousBest&&row.last>0,plays:row.plays,wins:row.wins};
     }catch(_){return null}
@@ -83,6 +84,7 @@
       const p=prog();
       p.xp=Number(p.xp||0)+Number(xp||0);
       p.crystals=Number(p.crystals||0)+Number(cr||0);
+      try{window.MajickProductCore?.record?.('reward-earned',{course:window.S?.activeCourse||'',label,xp:Number(xp||0),crystals:Number(cr||0)})}catch(_){}
       save?.();
       if(typeof rewardToast==='function')rewardToast('✨ '+xp+' XP'+(cr?' • 💎 '+cr:''),label);
     }catch(_){}

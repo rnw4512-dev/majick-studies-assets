@@ -12,11 +12,11 @@ for old in ('v3310-main.js','v3312-main.js','v3313-main.js','v3314-main.js','v33
 for old in ('v3311-sanctuary.js','v3312-sanctuary.js','v3313-sanctuary.js','v3314-sanctuary.js','v3315-sanctuary.js'):
     if old in san: fail('obsolete Sanctuary runtime still loaded: '+old)
 order=['v3310-ui-compat.js','v3312-ui-compat.js','guardian-registry.js','majick-state-core.js','guardian-care-economy.js','learning-lab.js','learning-plan.js','course-tutor.js','learn-mode.js','d755-retake.js','v3317-main.js','magical-college-home.js','v3322-main-recovery.js','guardian-core.js','study-progress-bridge.js','guardian-life-main.js']
-if 'game-realm.js?v=3378-s2-l1-variables' not in main or 'game-realm.css?v=3362-d772-review' not in main or main.find('game-realm.js?v=3378-s2-l1-variables')<main.find('guardian-life-main.js'): fail('Game Realm enhancement load order missing')
+if 'game-realm.js?v=3400-product-flow' not in main or 'game-realm.css?v=3362-d772-review' not in main or main.find('game-realm.js?v=3400-product-flow')<main.find('guardian-life-main.js'): fail('Game Realm enhancement load order missing')
 if 'Assessment Sigil Sort' not in (site/'game-realm.js').read_text(encoding='utf-8') or "activeCourse==='D755'" not in (site/'game-realm.js').read_text(encoding='utf-8'): fail('D755 Assessment Sigil Sort course gate missing')
 realm_src=(site/'game-realm.js').read_text(encoding='utf-8')
-for marker in ("VERSION='3.3.78-realm'","D772_REALM_SUPPLEMENT","v3377-d772-s2-l1-01","v3379-d772-s2-l1-07","v3379-d772-s2-l1-12","Types of Data","explanatory variable","response variable","realmQuestionPool","d772RealmPool","buildD772SectionReview","startD772SectionReview","majickRealmVariety='3378'"):
-    if marker not in realm_src: fail('D772 Realm Training missing '+marker)
+for marker in ("VERSION='3.3.78-realm'","D772_REALM_SUPPLEMENT","v3377-d772-s2-l1-01","v3379-d772-s2-l1-07","v3379-d772-s2-l1-12","Types of Data","explanatory variable","response variable","MajickProductCore?.record?.('practice-complete'","MajickProductCore?.record?.('reward-earned'","realmQuestionPool","d772RealmPool","buildD772SectionReview","startD772SectionReview","majickRealmVariety='3378'"):
+    if marker not in realm_src: fail('D772 Realm V3.4 flow hook missing '+marker)
 pos=[main.find(x) for x in order]
 if any(x<0 for x in pos) or pos!=sorted(pos): fail('main runtime load order is wrong')
 if san.find('guardian-registry.js')<0 or san.find('v3317-sanctuary.js')<0: fail('Sanctuary registry/bridge missing')
@@ -192,13 +192,19 @@ if 'duplicate-safe-hatch.js?v=3375' not in main or 'duplicate-safe-hatch.css?v=3
     fail('V3.3.75 Duplicate-Safe Hatch assets are not installed in index.html')
 
 home_focus=(site/'home-focus.js').read_text(encoding='utf-8')
-for marker in ("VERSION='3.3.77'","compactHome","Dormitory & Sanctuary","v3377CampusDoors","window.MajickHomeFocus"):
-    if marker not in home_focus: fail('Home Focus missing '+marker)
+for marker in ("VERSION='3.4.0'","compactHome","MajickProductCore?.goNext","Dormitory & Sanctuary","v3377CampusDoors","window.MajickHomeFocus"):
+    if marker not in home_focus: fail('Home Focus V3.4 missing '+marker)
 dorm=(site/'sanctuary'/'sanctuary-dorm.js').read_text(encoding='utf-8')
 for marker in ("VERSION='3.3.77'","YOUR DORMITORY & GUARDIAN SANCTUARY","Your Study Alcove","Shared Commons","Dormitory & Sanctuary"):
     if marker not in dorm: fail('Shared Dormitory missing '+marker)
-if 'home-focus.js?v=3377' not in main or 'home-focus.css?v=3377' not in main:
+if 'home-focus.js?v=3400' not in main or 'home-focus.css?v=3377' not in main:
     fail('V3.3.77 Home Focus assets are not installed in index.html')
+
+product=(site/'product-core.js').read_text(encoding='utf-8')
+for marker in ("VERSION='3.4.0'","DAILY STUDY LOOP","enter-college","learn-start","quick-check-complete","practice-complete","reward-earned","guardian-reacted","dorm-return","courseModel","dormStoryHtml","window.MajickProductCore","window.MajickUI"):
+    if marker not in product: fail('V3.4 Product Core missing '+marker)
+if 'product-core.js?v=3400' not in main or 'product-core.css?v=3400' not in main:
+    fail('V3.4 Product Core assets are not installed in index.html')
 
 san_bridge=(site/'sanctuary'/'v3317-sanctuary.js').read_text(encoding='utf-8')
 if 'PROTECTED_MOTION_TYPES()' not in san_bridge: fail('Sanctuary motion loop is not registry-driven')
@@ -216,9 +222,9 @@ for marker in ("window.MajickCourseTutor","D772_SECTION_ONE","D772_SECTION_TWO",
 if 'course-tutor.js?v=3378-s2-l1-variables' not in main or 'course-tutor.css?v=3374-l3-repair' not in main:
     fail('Course Tutor assets are not installed in index.html')
 learn=(site/'learn-mode.js').read_text(encoding='utf-8')
-for marker in ("VERSION='3.3.38'","Teach → Visual → Worked Example","Arcane Anchor Wall","ADAPTIVE REPAIR INSERTED","CAN I DO THIS?"):
-    if marker not in learn: fail('Learn Mode missing '+marker)
-if 'learn-mode.js?v=3338-course-resume' not in main or 'learn-mode.css?v=3338' not in main:
+for marker in ("VERSION='3.3.38'","Teach → Visual → Worked Example","Arcane Anchor Wall","ADAPTIVE REPAIR INSERTED","CAN I DO THIS?","MajickProductCore?.record?.('learn-start'","MajickProductCore?.record?.('concept-complete'","MajickProductCore?.record?.('quick-check-complete'"):
+    if marker not in learn: fail('Learn Mode V3.4 flow hook missing '+marker)
+if 'learn-mode.js?v=3400-product-flow' not in main or 'learn-mode.css?v=3338' not in main:
     fail('V3.3.38 Learn Mode assets are not installed in index.html')
 d755=(site/'d755-retake.js').read_text(encoding='utf-8')
 for marker in ("VERSION='3.3.40'","Assessment for Special Education","30-Question Retake Diagnostic","40-question mixed simulation","WGU TRAP LIBRARY","d755-teacher-focus-2026-09-26","four most recent progress-monitoring points","Predictive validity","General Outcome Measurement","PLAAFP","MEASURABLE ANNUAL GOAL • C-B-C","realmTopic","misconceptionCatalog","MajickStudyProgress","assess_id_24","assess_id_36","assess_id_56","Board of Education v. Rowley","Endrew F. v. Douglas County","referral_10","Law + Referral Process Drill","Assessment Type Drill","ASSESSMENT TYPE ANCHOR CHART","d755AssessmentBreakdown","d755AdaptiveFocus","d755ClassificationLens","Why not the tempting opposite?","Assessment Dimension Detective","dimension recognition","assessment classification","MISTAKE REPAIR QUEUE","Repair your missed assessment questions","assessmentMistakeSummary","Smart 10-Question Review"):
@@ -226,9 +232,9 @@ for marker in ("VERSION='3.3.40'","Assessment for Special Education","30-Questio
 if 'd755-retake.js?v=3340-study-shelf-resume' not in main or 'd755-retake.css?v=3340-study-shelf-resume' not in main:
     fail('V3.3.40 Teacher-Focus D755 Questions assets are not installed in index.html')
 guardian=(site/'guardian-core.js').read_text(encoding='utf-8')
-for marker in ("VERSION='3.3.41'","ACTIVE STUDY GUARDIAN","guardianJourney","finishDebriefEnabled","MAJICK_STUDY_GUARDIAN_REACTION_V3341","course-pass"):
-    if marker not in guardian: fail('Guardian Core missing '+marker)
-if 'guardian-core.js?v=3341' not in main or 'guardian-core.css?v=3341' not in main:
+for marker in ("VERSION='3.4.0'","ACTIVE STUDY GUARDIAN","guardianJourney","relationshipEvent","relationshipSnapshot","sharedQueue?.register","guardian-core-v34","finishDebriefEnabled","MAJICK_STUDY_GUARDIAN_REACTION_V3341","course-pass"):
+    if marker not in guardian: fail('Guardian Core V3.4 missing '+marker)
+if 'guardian-core.js?v=3400' not in main or 'guardian-core.css?v=3341' not in main:
     fail('V3.3.41 Guardian Core assets are not installed in index.html')
 study_bridge=(site/'study-progress-bridge.js').read_text(encoding='utf-8')
 for marker in ("VERSION='3.3.42'","reconcileHistorical","creditAnswer","guardianBridgeKey","studyProgressBridge"):
@@ -245,7 +251,7 @@ if 'guardian-life-main.js?v=3342' not in main or 'guardian-life-main.css?v=3342'
 learn=(site/'learn-mode.js').read_text(encoding='utf-8')
 for marker in ("VERSION='3.3.38'","Teach → Visual → Worked Example","Arcane Anchor Wall","ADAPTIVE REPAIR INSERTED","CAN I DO THIS?"):
     if marker not in learn: fail('Learn Mode missing '+marker)
-if 'learn-mode.js?v=3338-course-resume' not in main or 'learn-mode.css?v=3338' not in main:
+if 'learn-mode.js?v=3400-product-flow' not in main or 'learn-mode.css?v=3338' not in main:
     fail('V3.3.38 Learn Mode assets are not installed in index.html')
 home=(site/'magical-college-home.js').read_text(encoding='utf-8')
 for marker in ("window.MajickCollegeDashboard","MOONLIT COLLEGIUM","ACADEMIC HALL","GUARDIAN HOUSE","ARCANE STUDENT RECORD"):
@@ -275,7 +281,7 @@ for marker in ("window.MajickSanctuaryRecovery","v3322SyncOwnedGuardians","v3322
 visual=(site/'sanctuary'/'v3325-sanctuary-visual-authority.js').read_text(encoding='utf-8')
 for marker in ("window.MajickGuardianVisualAuthority","v3325SyncOwnedVisuals","v3325BaseScale","totalVisible"):
     if marker not in visual: fail('Guardian visual authority missing '+marker)
-for marker in ('majick-state-core.js?v=3322-recovery','guardian-care-economy.js?v=3347-stations','v3317-main.js?v=3378-s2-l1-variables','v3322-main-recovery.js?v=3322'):
+for marker in ('majick-state-core.js?v=3322-recovery','guardian-care-economy.js?v=3347-stations','v3317-main.js?v=3400-product-core','v3322-main-recovery.js?v=3322'):
     if marker not in main: fail('main cache-bust/runtime missing '+marker)
 if 'v3322-sanctuary-recovery.js?v=3322' not in san:
     fail('Sanctuary recovery asset is not installed')
