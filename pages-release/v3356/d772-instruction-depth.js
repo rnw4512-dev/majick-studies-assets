@@ -71,10 +71,17 @@ function decorate(){
  document.documentElement.dataset.majickD772Instruction='3356';
  renderBrief();renderArchiveIndex();
 }
-const prev=window.render;
-if(typeof prev==='function'&&!prev.__v3356){
- const wrapped=function(){const out=prev.apply(this,arguments);setTimeout(decorate,0);return out};wrapped.__v3356=true;window.render=wrapped;
+const renderQueue=window.MajickRenderQueue;
+if(renderQueue?.register){
+ renderQueue.register('d772-instruction',decorate,60);
+ renderQueue.schedule();
+}else{
+ const previousRender=window.render;
+ if(typeof previousRender==='function'&&!previousRender.__d772_instructionFallback){
+  const wrapped=function(){const out=previousRender.apply(this,arguments);setTimeout(decorate,0);return out};
+  wrapped.__d772_instructionFallback=true;window.render=wrapped;
+ }
+ setTimeout(decorate,120);
 }
-setTimeout(decorate,140);
 window.MajickD772InstructionDepth={VERSION,COURSE,LESSON_DEPTH,currentLesson,decorate};
 })();

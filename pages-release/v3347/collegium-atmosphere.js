@@ -36,8 +36,17 @@
    document.title='Majick Studies — V'+VERSION+' Collegium Atmospheres';
  }
  document.addEventListener('visibilitychange',()=>{stop();if(!document.hidden&&enabled&&ctx?.state==='running')tone()});
- const previous=window.render;
- if(typeof previous==='function')window.render=function(){const result=previous.apply(this,arguments);setTimeout(decorate,0);return result};
- setTimeout(decorate,160);
+const renderQueue=window.MajickRenderQueue;
+if(renderQueue?.register){
+ renderQueue.register('collegium-atmosphere',decorate,40);
+ renderQueue.schedule();
+}else{
+ const previousRender=window.render;
+ if(typeof previousRender==='function'&&!previousRender.__collegium_atmosphereFallback){
+  const wrapped=function(){const out=previousRender.apply(this,arguments);setTimeout(decorate,0);return out};
+  wrapped.__collegium_atmosphereFallback=true;window.render=wrapped;
+ }
+ setTimeout(decorate,120);
+}
  window.MajickCollegiumAtmosphere={VERSION,ROOMS,room,decorate};
 })();
