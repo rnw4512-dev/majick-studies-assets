@@ -59,9 +59,9 @@ context.questionPool=()=>pool;
 
 context.S.activeCourse='D772';
 const d772Pool=context.MajickGameRealm.d772RealmPool();
-assert.equal(d772Pool.length,30,'D772 Realm supplement should provide 30 Section 1 scenarios including the six Lesson 3 repair items');
+assert.equal(d772Pool.length,36,'D772 Realm supplement should provide 36 guaranteed D772 scenarios including Section 2 Lesson 1 data-type practice');
 assert.deepEqual([...new Set(d772Pool.map(q=>q.section))].sort(),['Bias & Credibility','Conclusions','Data Collection','Misrepresentation'],'D772 Realm supplement should cover all four Section 1 domains');
-assert.ok(context.MajickGameRealm.realmQuestionPool().length>=30,'D772 Realm pool should merge guaranteed scenarios with the Lesson 3 repair bank and course questions');
+assert.ok(context.MajickGameRealm.realmQuestionPool().length>=36,'D772 Realm pool should merge guaranteed scenarios with Section 1 repair and Section 2 Lesson 1 practice');
 context.startRuneSort();
 assert.equal(context.session.type,'runesort','Rune Sort should start for D772');
 assert.ok(context.session.categories.some(x=>['Data Collection','Bias & Credibility','Misrepresentation','Conclusions'].includes(x)),'D772 Rune Sort should use Section 1 domain labels');
@@ -152,7 +152,7 @@ assert.equal(context.session.reviewMode,true,'D772 Section Review should be mark
 assert.equal(context.session.limit,12,'D772 Section Review should run 12 questions');
 assert.equal(context.session.questions.length,1,'D772 Section Review should begin with one queued question');
 
-assert.equal(context.document.documentElement.dataset.majickRealmVariety,'3374','Game Realm dataset marker missing');
+assert.equal(context.document.documentElement.dataset.majickRealmVariety,'3376','Game Realm dataset marker missing');
 assert.match(src,/realmTrialGuide/,'Featured Realm clarity guide source should remain installed');
 assert.match(src,/Assessment Sigil Sort/,'D755 Assessment Sigil Sort source missing');
 assert.match(src,/globalThis\.S\?\.activeCourse==='D755'/,'D755 Assessment Sigil Sort must be course-gated');
