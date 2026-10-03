@@ -204,11 +204,34 @@ const D772_SECTION_ONE_CONTENT={
 
 const D772_SECTION_TWO_CONTENT={
   'd772-s2-l1':{
-    sourceLabel:'COURSE-PROVIDED D772 • SECTION 2 STRUCTURE',
-    overview:'Section 2, Interpreting Data Using Statistics and Graphs, begins by exploring various types of data. The course assessment target is: “Can I identify different classifications of data?” Detailed teaching content will expand as verified lesson material is added.',
-    teach:[{title:'Assessment target',text:'Identify different classifications of data. Majick should verify the specific classifications and examples against the lesson material and reliable statistics references before promoting them into trusted master notes.'}],
-    vocab:[],
-    memory:['Before choosing a graph or statistic, identify what kind of data you have.']
+    sourceLabel:'COURSE-PROVIDED D772 • SECTION 2 LESSON 1 • CORROBORATED',
+    overview:'Lesson 1 begins with the distinction between categorical and quantitative data. Your course examples classify counts and measurements as quantitative and labels such as architectural style as categorical. OpenStax independently corroborates the same distinction: numerical variables represent numerical measurements or counts, while categorical variables place observations into categories.',
+    teach:[
+      {title:'Categorical data',text:'Categorical data identify a label, type, group, or category. The value tells you what kind of thing an observation is, not how much of a quantity it has. Your course example “architectural style” is categorical because colonial, ranch, mid-century modern, and Victorian are category labels.'},
+      {title:'Quantitative data',text:'Quantitative data are numerical values that represent amounts, counts, or measurements. Your course examples—number of workout machines, lawn area in square feet, and number of cars in a parking lot—are quantitative because the recorded numbers represent quantities.'},
+      {title:'Fast decision rule',text:'Ask: “Does this value tell me HOW MUCH/HOW MANY, or WHAT KIND?” HOW MUCH/HOW MANY usually points to quantitative data. WHAT KIND points to categorical data. A number can still be categorical when it is only acting as a label, so always ask what the number means.'},
+      {title:'Course examples',text:'Five gyms with 12, 15, 10, 22, and 20 machines → quantitative. Lawn areas such as 1440, 1600, and 2100 square feet → quantitative. House architectural styles such as colonial, ranch, and Victorian → categorical. Number of cars in a parking lot → quantitative.'}
+    ],
+    vocab:[
+      ['Categorical data','Data whose values identify groups, labels, or types rather than numerical amounts.'],
+      ['Quantitative data','Data whose values are numerical quantities such as counts or measurements.'],
+      ['Count','A quantitative value describing how many items or events there are.'],
+      ['Measurement','A quantitative value obtained by measuring an amount such as area, distance, time, or weight.']
+    ],
+    practiceEvidence:{
+      source:'WGU D772 Section 2 Lesson 1 practice questions 4–7',
+      examples:[
+        {prompt:'Number of workout machines at gyms',answer:'Quantitative'},
+        {prompt:'Area of lawns in square feet',answer:'Quantitative'},
+        {prompt:'Architectural style of houses',answer:'Categorical'},
+        {prompt:'Number of cars in a parking lot',answer:'Quantitative'}
+      ],
+      corroboration:[
+        {source:'OpenStax Introductory Statistics 2e §1.1',url:'https://openstax.org/books/introductory-statistics-2e/pages/1-1-definitions-of-statistics-probability-and-key-terms',supports:'numerical variables versus categorical variables'},
+        {source:'OpenStax Introductory Statistics §1.2',url:'https://openstax.org/books/introductory-statistics/pages/1-2-data-sampling-and-variation-in-data-and-sampling',supports:'counts as quantitative discrete and types/categories as qualitative/categorical'}
+      ]
+    },
+    memory:['HOW MANY / HOW MUCH = usually quantitative.','WHAT KIND = categorical.','Counts are quantitative.','Measurements are quantitative.','A number used only as a label can still be categorical.']
   },
   'd772-s2-l2':{
     sourceLabel:'COURSE-PROVIDED D772 • SECTION 2 STRUCTURE',
