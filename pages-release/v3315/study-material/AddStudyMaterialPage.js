@@ -2,6 +2,11 @@
 'use strict';
 
 const E=s=>{try{return esc(String(s??''))}catch(_){return String(s??'').replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]))}};
+const D772_SECTIONS=[
+  {id:'d772-s1',title:'Section 1 • Assessing Research and Data Credibility'},
+  {id:'d772-s2',title:'Section 2 • Interpreting Data Using Statistics and Graphs'},
+  {id:'d772-s3',title:'Section 3 • Applying Probability'}
+];
 
 function courseOptions(){
   const rows=[];
@@ -38,6 +43,7 @@ function render(){
       '<section class="v3315SourceCard">'+
         '<h3>1. Choose your course</h3>'+
         '<select id="materialCourse">'+opts.map(x=>'<option value="'+E(x.id)+'" '+(x.id===window.S?.activeCourse?'selected':'')+'>'+E((window.MajickCourseManager?.record?.(x.id)?.status==='passed'?'✓ ':'')+x.id+' • '+x.title)+'</option>').join('')+'</select>'+
+        '<div id="materialSectionWrap" class="v3315SectionPicker" '+(window.S?.activeCourse==='D772'?'':'hidden')+'><label for="materialSection"><b>D772 section</b><small>Keep each upload in its own course section.</small></label><select id="materialSection">'+D772_SECTIONS.map(x=>'<option value="'+x.id+'">'+E(x.title)+'</option>').join('')+'</select></div>'+
         '<h3>2. Add your notes</h3>'+
         '<div class="v3315UploadRow">'+
           '<label class="v3315Drop"><span>⬆</span><b>Upload File</b><small>PDF • Word DOCX • TXT • MD</small><input id="materialFile" type="file" accept=".pdf,.docx,.txt,.md"></label>'+
@@ -71,6 +77,23 @@ function values(){
 
 function selectedCourseId(){
   return document.getElementById('materialCourse')?.value||window.S?.activeCourse||'';
+}
+
+function sectionMeta(id){
+  return D772_SECTIONS.find(x=>x.id===id)||D772_SECTIONS[0];
+}
+function selectedSectionId(){
+  return selectedCourseId()==='D772'?(document.getElementById('materialSection')?.value||'d772-s1'):null;
+}
+function syncSectionChooser(courseId=selectedCourseId(),preferred=null){
+  const wrap=document.getElementById('materialSectionWrap'),select=document.getElementById('materialSection');
+  if(!wrap||!select)return;
+  const isD772=courseId==='D772';
+  wrap.hidden=!isD772;
+  if(isD772){
+    const wanted=preferred&&D772_SECTIONS.some(x=>x.id===preferred)?preferred:(select.value||'d772-s1');
+    select.value=wanted;
+  }
 }
 
 function courseForId(courseId){
@@ -143,6 +166,7 @@ async function openSource(id){
   if(!row)return;
   const select=document.getElementById('materialCourse');
   if(select&&[...select.options].some(o=>o.value===row.courseId))select.value=row.courseId;
+  syncSectionChooser(row.courseId,row.sectionId||row.learningPath?.sectionId||'d772-s1');
   const paste=document.getElementById('materialPaste');
   if(paste)paste.value=row.text||'';
   const file=document.getElementById('materialFile');
@@ -163,6 +187,7 @@ async function regenerateSource(id){
     ...opts,
     targetCount,
     courseId:row.courseId,
+    sectionId:row.sectionId||row.learningPath?.sectionId||null,
     sourceId:row.id
   });
   row.settings={...(row.settings||{}),targetCount,adaptive:true};
@@ -254,7 +279,7 @@ async function refreshLibrary(){
   box.innerHTML=(duplicateIds.size?'<div class="v3315DuplicateTools"><div><b>'+duplicateIds.size+' duplicate source cop'+(duplicateIds.size===1?'y':'ies')+' detected</b><small>Majick already hides repeated lesson content. You can also delete the extra saved copies.</small></div><button class="btn v3315DeleteDuplicates" type="button">Delete duplicate copies</button></div>':'')+rows.map(r=>{
     const active=r.active!==false;
     return '<article class="v3315SourceRow '+(active?'':'paused')+'" data-source="'+E(r.id)+'">'+
-      '<div><b>'+E(r.sourceName)+(duplicateIds.has(r.id)?' <span class="v3315DuplicateBadge">DUPLICATE COPY</span>':'')+'</b><small>'+E(String(r.sourceType||'').toUpperCase())+' • '+new Date(r.createdAt).toLocaleDateString()+' • '+(r.generated?.practiceQuestions?.length||0)+' questions • '+(active?'ACTIVE':'PAUSED')+(r.learningPath?.lessonTitle?' • '+E(r.learningPath.lessonTitle):'')+'</small></div>'+
+      '<div><b>'+E(r.sourceName)+(duplicateIds.has(r.id)?' <span class="v3315DuplicateBadge">DUPLICATE COPY</span>':'')+'</b><small>'+E(String(r.sourceType||'').toUpperCase())+' • '+new Date(r.createdAt).toLocaleDateString()+' • '+(r.sectionTitle?E(r.sectionTitle)+' • ':'')+(r.generated?.practiceQuestions?.length||0)+' questions • '+(active?'ACTIVE':'PAUSED')+(r.learningPath?.lessonTitle?' • '+E(r.learningPath.lessonTitle):'')+'</small></div>'+
       '<div class="v3315SourceActions">'+
         '<button class="btn ghost v3315OpenSource" type="button">Open</button>'+
         '<button class="btn ghost v3315RegenerateSource" type="button">Regenerate</button>'+
@@ -285,8 +310,12 @@ async function forge(){
     if(parsed.text.length<80)throw new Error('The material is too short to build a useful study set. Add a little more detail.');
     const opts=values();
     const targetCount=100;
+    const sectionId=courseId==='D772'?selectedSectionId():null;
+    const section=courseId==='D772'?sectionMeta(sectionId):null;
     const draft=MajickMaterialStore.newRecord({
       courseId,
+      sectionId,
+      sectionTitle:section?.title||null,
       sourceType:parsed.sourceType,
       sourceName:parsed.name,
       text:parsed.text,
@@ -298,13 +327,15 @@ async function forge(){
       ...opts,
       targetCount,
       courseId,
+      sectionId:draft.sectionId||null,
       sourceId:draft.id
     });
     window.MajickCourseTutor?.annotateSource?.(draft,courseId);
     await MajickMaterialStore.save(draft);
     addGeneratedCourseMetadata(courseId,draft);
     const synced=await syncCourse(courseId);
-    setStatus('<b>✓ Study material saved.</b> '+draft.generated.practiceQuestions.length+' rigorous candidates built • '+(synced?.total||0)+' active adaptive questions in '+courseId+' • '+(draft.generated.passages?.length||0)+' reading passages.',true);
+    const sectionLabel=draft.sectionTitle?' • '+draft.sectionTitle:'';
+    setStatus('<b>✓ Study material saved.</b>'+sectionLabel+' • '+draft.generated.practiceQuestions.length+' rigorous candidates built • '+(synced?.total||0)+' active adaptive questions in '+courseId+' • '+(draft.generated.passages?.length||0)+' reading passages.',true);
     showPreview(draft.generated);
     await refreshLibrary();
   }catch(err){
@@ -320,17 +351,23 @@ function bind(){
   root.__bound=true;
   document.getElementById('materialForgeBtn')?.addEventListener('click',forge);
   document.getElementById('materialCourse')?.addEventListener('change',()=>{
+    syncSectionChooser(selectedCourseId());
     showPreview(null);
     setStatus('Showing saved sources for '+selectedCourseId()+'.');
     refreshLibrary();
+  });
+  document.getElementById('materialSection')?.addEventListener('change',()=>{
+    const sec=sectionMeta(selectedSectionId());
+    setStatus('New D772 material will be saved to '+sec.title+'.');
   });
   document.getElementById('materialFile')?.addEventListener('change',e=>{
     const f=e.target.files?.[0];
     setStatus(f?'Ready: '+f.name:'Nothing added yet.');
   });
+  syncSectionChooser(selectedCourseId());
   refreshLibrary();
 }
 
-window.AddStudyMaterialPage={render,bind,refreshLibrary,openSource,regenerateSource,toggleSource,removeSource,deleteDuplicateSources,duplicateSourceIds};
+window.AddStudyMaterialPage={render,bind,refreshLibrary,openSource,regenerateSource,toggleSource,removeSource,deleteDuplicateSources,duplicateSourceIds,selectedSectionId,sectionMeta,D772_SECTIONS};
 window.v3315BindStudyMaterialPage=bind;
 })();
