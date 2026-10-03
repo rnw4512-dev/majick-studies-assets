@@ -1,0 +1,4 @@
+const fs=require('fs');const js=fs.readFileSync(__dirname+'/d772-course-map.js','utf8');const css=fs.readFileSync(__dirname+'/d772-course-map.css','utf8');
+for(const marker of ["VERSION='3.3.67'","Assessing Research and Data Credibility","Interpreting Data Using Statistics and Graphs","Applying Probability","awaiting-material","window.MajickD772CourseMap"])if(!js.includes(marker))throw new Error('missing '+marker);
+for(const marker of ['.v3367CourseMap','.v3367SectionGrid','.v3367Awaiting','.v3367ArchiveSections'])if(!css.includes(marker))throw new Error('missing CSS '+marker);
+console.log('V3.3.67 D772 Course Map smoke passed');
