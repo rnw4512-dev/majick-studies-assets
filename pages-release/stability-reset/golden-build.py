@@ -103,6 +103,8 @@ OVERLAYS=[
     ("pages-release/v3348/sanctuary-roster.js","sanctuary/sanctuary-roster.js"),
     ("pages-release/v3350/sanctuary-audit.js","sanctuary-audit.js"),
     ("pages-release/v3350/sanctuary-audit.css","sanctuary-audit.css"),
+    ("pages-release/v3354/d772-collegium.js","d772-collegium.js"),
+    ("pages-release/v3354/d772-collegium.css","d772-collegium.css"),
     ("pages-release/v3315/study-material/materialParser.js","study-material/materialParser.js"),
     ("pages-release/v3315/study-material/materialStoreModel.js","study-material/materialStoreModel.js"),
     ("pages-release/v3315/study-material/questionBuilder.js","study-material/questionBuilder.js"),
@@ -188,8 +190,8 @@ for src_name,(dst_name,expected_hash,expected_bytes) in PINNED_MOTION.items():
 progress=site/"app-progress.json"
 if progress.exists():
     data=json.loads(progress.read_text(encoding="utf-8"))
-    data["version"]="V3.3.53 Assessment Depth"
-    data["learning_intelligence"]="V3.3.53 Assessment Depth with expanded non-ambiguous D755 assessment identification, longer 8-question Sigil chambers, Rune Sort, Oracle Lens, Guardian Gauntlet, Memory Constellation, Hex Breaker, active Guardian realm support, protected lifetime Majick XP, and existing Sanctuary/learning systems preserved"
+    data["version"]="V3.3.54 D772 Collegium Rebuild"
+    data["learning_intelligence"]="V3.3.54 D772 Collegium Rebuild with D772 Section 1 as the active academic focus, four connected learning-path lessons, distinct college-entry Home, classroom teaching board, library/research Grimoire, existing Game Realm systems, active Guardian support, protected lifetime Majick XP, and protected Sanctuary movement preserved"
     data["sanctuary_version"]="V3.3.42 Sanctuary Alive Personal Nooks"
     data["sanctuary_home"]="Every hatched Guardian has a distinct bed and personal nook, favorite keepsake and comfort item, need-driven and personality-driven room routines, physical care travel, visible protected Phaser movement, evolved idle/action art, evolution ceremony, Guardian vocal reactions, care inventory, and room-safe furniture layout"
     data["sanctuary_customization"]="personal Guardian nooks, feeding/play zones, owned furniture storage, Cozy Dorm layout preset"
@@ -206,9 +208,9 @@ html=html.replace('<link rel="stylesheet" href="./learning-lab.css?v=3319">','')
 html=html.replace('./guardian-care-economy.css?v=stability-1','./guardian-care-economy.css?v=3322-recovery')
 html=html.replace('./majick-state-core.js?v=stability-1','./majick-state-core.js?v=3322-recovery')
 html=html.replace('./guardian-care-economy.js?v=stability-1','./guardian-care-economy.js?v=3347-stations')
-html=html.replace('./v3317-main.js?v=stability-1','./v3317-main.js?v=3352-hotfix')
+html=html.replace('./v3317-main.js?v=stability-1','./v3317-main.js?v=3354-d772-collegium')
 html=html.replace('</head>','<link rel="stylesheet" href="./learning-lab.css?v=3319">\\n<link rel="stylesheet" href="./learning-plan.css?v=3324">\\n<link rel="stylesheet" href="./course-tutor.css?v=3326">\\n<link rel="stylesheet" href="./magical-college-home.css?v=3337">\\n<link rel="stylesheet" href="./wgu-practice.css?v=3333-candlelit">\\n<link rel="stylesheet" href="./learn-mode.css?v=3338-candlelit">\\n<link rel="stylesheet" href="./d755-retake.css?v=3340-study-shelf-resume">\\n<link rel="stylesheet" href="./guardian-core.css?v=3341">\\n<link rel="stylesheet" href="./guardian-life-main.css?v=3342">\\n</head>',1)
-main_tag='<script src="./v3317-main.js?v=3352-hotfix"></script>'
+main_tag='<script src="./v3317-main.js?v=3354-d772-collegium"></script>'
 if main_tag not in html:
     fail("authoritative main runtime tag missing while installing recovery")
 html=html.replace(main_tag,'<script src="./learning-lab.js?v=3319-mistake-journal"></script>\\n<script src="./learning-plan.js?v=3324"></script>\\n<script src="./course-tutor.js?v=3326-lesson32-guide"></script>\\n<script src="./learn-mode.js?v=3338-course-resume"></script>\\n<script src="./d755-retake.js?v=3340-study-shelf-resume"></script>\\n<script src="./wgu-practice.js?v=3336-designed-experiments"></script>\\n'+main_tag+'\\n<script src="./magical-college-home.js?v=3337"></script>\\n<script src="./v3322-main-recovery.js?v=3322"></script>\\n<script src="./guardian-core.js?v=3341"></script>\\n<script src="./study-progress-bridge.js?v=3342"></script>\\n<script src="./guardian-life-main.js?v=3342"></script>',1)
@@ -222,7 +224,8 @@ html=html.replace('</head>','<link rel="stylesheet" href="./living-collegium.css
 html=html.replace('</body>','<script src="./game-realm.js?v=3360-assessment-depth"></script>\n<script src="./living-collegium.js?v=3346-tool-search"></script>\n<script src="./collegium-atmosphere.js?v=3350-room"></script>\n</body>',1)
 html=html.replace('</head>','<link rel="stylesheet" href="./collegium-atmosphere.css?v=3348-roster">\n</head>',1)
 html=html.replace('</head>','<link rel="stylesheet" href="./sanctuary-audit.css?v=3350">\n</head>',1)
-html=html.replace('</body>','<script src="./sanctuary-audit.js?v=3350"></script>\n</body>',1)
+html=html.replace('</head>','<link rel="stylesheet" href="./d772-collegium.css?v=3354">\n</head>',1)
+html=html.replace('</body>','<script src="./sanctuary-audit.js?v=3350"></script>\n<script src="./d772-collegium.js?v=3354"></script>\n</body>',1)
 index.write_text(html,encoding="utf-8")
 
 san_index=site/"sanctuary"/"index.html"
