@@ -30,6 +30,7 @@ const account={
   guardianAudio:{enabled:true,guardian:true,magic:true,volume:.58},
   studyPreferences:{finishDebriefEnabled:true}
 };
+const renderQueueTasks={};
 const ctx={
   console,Date,Math,JSON,WeakSet,MutationObserver,Element,document,
   location:{origin:'https://example.test'},
@@ -42,6 +43,10 @@ const ctx={
     progress:{D755:{xp:4987}}
   },
   MajickStateCore:{ensureAccount(){return account}},
+  MajickRenderQueue:{
+    register(name,fn,priority){renderQueueTasks[name]={fn,priority};return true},
+    schedule(){},
+  },
   MajickGuardianCare:{
     snapshot(){return {focusPetId:'p1',guardians:{p1:{bond:10,mood:{label:'Bright'},icon:'☾'}}}},
     broadcastState(){}
@@ -66,6 +71,8 @@ assert(/ACTIVE STUDY GUARDIAN/.test(M.guardianHeroHtml()),'Guardian is not centr
 assert(/Study with Velora/.test(M.guardianHeroHtml()),'Home hero study action missing');
 assert(/Debrief on/.test(M.guardianHeroHtml()),'Debrief toggle missing from Home hero');
 assert(/STUDYING WITH/.test(M.studyDockHtml()),'Study Guardian dock missing');
+assert(renderQueueTasks['guardian-core-v34'],'Guardian Core did not register with shared render queue');
+assert(!ctx.render.__v3341,'Guardian Core installed a legacy render wrapper even though shared queue was available');
 
 const xpBefore=ctx.S.progress.D755.xp;
 assert(M.debriefEnabled()===true,'Debrief should default on');
