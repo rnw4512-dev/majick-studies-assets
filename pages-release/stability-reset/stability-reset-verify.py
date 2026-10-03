@@ -119,6 +119,12 @@ for marker in ("VERSION='3.3.63'","Focus layout","v3363ArcaneState","v3363Guardi
 if 'focus-feedback.js?v=3363' not in main or 'focus-feedback.css?v=3363' not in main:
     fail('V3.3.63 Focus Feedback assets are not installed in index.html')
 
+atmo=(site/'collegium-atmosphere.js').read_text(encoding='utf-8')
+for marker in ("VERSION='3.3.64'","games:'Game realm'","mission:'Practice chamber'","function micro(","enabled:()=>enabled"):
+    if marker not in atmo: fail('Room Micro-Sound missing '+marker)
+if 'collegium-atmosphere.js?v=3364-micro-sound' not in main:
+    fail('V3.3.64 Room Micro-Sound cache key missing from index.html')
+
 san_bridge=(site/'sanctuary'/'v3317-sanctuary.js').read_text(encoding='utf-8')
 if 'PROTECTED_MOTION_TYPES()' not in san_bridge: fail('Sanctuary motion loop is not registry-driven')
 learning=(site/'learning-lab.js').read_text(encoding='utf-8')
@@ -194,7 +200,7 @@ for marker in ("window.MajickSanctuaryRecovery","v3322SyncOwnedGuardians","v3322
 visual=(site/'sanctuary'/'v3325-sanctuary-visual-authority.js').read_text(encoding='utf-8')
 for marker in ("window.MajickGuardianVisualAuthority","v3325SyncOwnedVisuals","v3325BaseScale","totalVisible"):
     if marker not in visual: fail('Guardian visual authority missing '+marker)
-for marker in ('majick-state-core.js?v=3322-recovery','guardian-care-economy.js?v=3347-stations','v3317-main.js?v=3363-focus-feedback','v3322-main-recovery.js?v=3322'):
+for marker in ('majick-state-core.js?v=3322-recovery','guardian-care-economy.js?v=3347-stations','v3317-main.js?v=3364-room-sound','v3322-main-recovery.js?v=3322'):
     if marker not in main: fail('main cache-bust/runtime missing '+marker)
 if 'v3322-sanctuary-recovery.js?v=3322' not in san:
     fail('Sanctuary recovery asset is not installed')

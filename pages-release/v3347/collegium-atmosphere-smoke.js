@@ -6,10 +6,12 @@ const document={hidden:false,body:{dataset:{}},querySelector:s=>s==='.top'?top:n
 const context={document,window:{S:{screen:'home'},render(){},AudioContext:class{constructor(){audioCreated++}}},localStorage:{getItem(){return null}},setTimeout(){},clearTimeout(){}};
 vm.runInNewContext(source,context);
 assert.equal(audioCreated,0,'ambience must wait for user gesture');
-for(const room of ['home','learninglab','livinggrimoire','companions']){
+for(const room of ['home','learninglab','livinggrimoire','games','mission','companions']){
   context.window.S.screen=room;context.window.MajickCollegiumAtmosphere.decorate();
   assert.equal(document.body.dataset.majickRoom,room);
   assert.match(button.textContent,/ambience off/);
 }
 assert.equal(button.attributes['aria-pressed'],'false');
-console.log('V3.3.47 COLLEGIUM ATMOSPHERE SMOKE PASSED');
+assert.equal(typeof context.window.MajickCollegiumAtmosphere.micro,'function');
+assert.equal(context.window.MajickCollegiumAtmosphere.enabled(),false,'micro-sound must be opt-in with ambience');
+console.log('V3.3.64 COLLEGIUM ATMOSPHERE + MICRO-SOUND SMOKE PASSED');
