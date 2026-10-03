@@ -1,0 +1,18 @@
+const fs=require('fs'),vm=require('vm'),assert=require('assert');
+const add=fs.readFileSync(__dirname+'/../v3315/study-material/AddStudyMaterialPage.js','utf8');
+const store=fs.readFileSync(__dirname+'/../v3315/study-material/materialStoreModel.js','utf8');
+const builder=fs.readFileSync(__dirname+'/../v3315/study-material/questionBuilder.js','utf8');
+for(const marker of ["D772_SECTIONS","d772-s1","d772-s2","d772-s3","materialSection","selectedSectionId","sectionId:draft.sectionId"])if(!add.includes(marker))throw new Error('Add Study Material missing '+marker);
+for(const marker of ["sectionId","sectionTitle","sectionOneRows","storedFutureSectionSources"])if(!store.includes(marker))throw new Error('Material Store missing '+marker);
+for(const marker of ["const d772SectionOne","curatedPracticeReady","d772SectionOne?d772Questions(sourceId):[]"])if(!builder.includes(marker))throw new Error('Question Builder missing '+marker);
+const ctx={window:{},console};vm.createContext(ctx);vm.runInContext(builder,ctx);
+const text='Population and sample are important ideas in statistics. A sample is part of a population. Researchers collect data and interpret evidence. This material provides enough sentences to generate vocabulary and review content for testing.';
+const s1=ctx.window.MajickQuestionBuilder.build(text,{courseId:'D772',sectionId:'d772-s1',sourceId:'s1'});
+const s2=ctx.window.MajickQuestionBuilder.build(text,{courseId:'D772',sectionId:'d772-s2',sourceId:'s2'});
+const s3=ctx.window.MajickQuestionBuilder.build(text,{courseId:'D772',sectionId:'d772-s3',sourceId:'s3'});
+assert(s1.practiceQuestions.length>0,'Section 1 curated bank should remain available');
+assert.equal(s2.practiceQuestions.length,0,'Section 2 must not receive Section 1 questions');
+assert.equal(s3.practiceQuestions.length,0,'Section 3 must not receive Section 1 questions');
+assert.equal(s2.curatedPracticeReady,false);
+assert.equal(s3.curatedPracticeReady,false);
+console.log('V3.3.68 D772 section-aware intake smoke passed');
