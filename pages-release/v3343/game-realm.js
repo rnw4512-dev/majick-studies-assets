@@ -2,7 +2,7 @@
 (()=>{
   'use strict';
 
-  const VERSION='3.3.52-realm';
+  const VERSION='3.3.55-realm';
   const normalize=v=>String(v||'').trim().toLocaleLowerCase();
   const E=v=>{try{return esc(String(v??''))}catch(_){return String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}};
   const shuffleCopy=a=>{
@@ -239,12 +239,12 @@
         realmProgressHTML()+
         '<div class="realmStats"><span>ᚱ '+E(bestText('runesort'))+' Rune Sort</span><span>◉ '+E(bestText('oraclelens'))+' Oracle Lens</span><span>♛ '+E(bestText('gauntlet'))+' Gauntlet</span><span>✧ '+E(bestText('constellation'))+' Constellation</span><span>⬡ '+E(bestText('hexbreaker'))+' Hex Breaker</span></div>'+
         '<div class="realmFeaturedGrid">'+
-          gameCard('ᚱ','Rune Sort','Sort real course prompts into the correct sections. Pattern recognition without another answer-card loop.','startRuneSort()')+
+          gameCard('ᚱ','Rune Sort','Sort D772 prompts into Data Collection, Bias & Credibility, Misrepresentation, and Conclusions when D772 is active.','startRuneSort()')+
           (globalThis.S?.activeCourse==='D755'?gameCard('✥','Assessment Sigil Sort','Sort D755 scenarios through Qualitative/Quantitative, Formal/Informal, Formative/Summative, Norm/Criterion, Screening/Monitoring, or Observation/Anecdotal gates.','startAssessmentSigilSort()','D755 TRIAL'):'')+
-          gameCard('◉','Oracle Lens','Identify the controlling clue first, then answer through that clue.','startOracleLens()')+
+          gameCard('◉','Oracle Lens','Identify the controlling statistical clue first, then answer through that clue.','startOracleLens()')+
           gameCard('♛','Guardian Gauntlet','A multi-round boss run with hearts, boss HP, combos, and one Guardian shield.','startGuardianGauntlet()')+
           gameCard('✧','Memory Constellation','Match controlling clues to the correct answers and build a glowing constellation.','startMemoryConstellation()')+
-          gameCard('⬡','Hex Breaker','Judge a claim, expose the misconception, and repair it with the correct concept.','startHexBreaker()')+
+          gameCard('⬡','Hex Breaker','Judge a statistical claim, expose the misconception, and repair it with the correct concept.','startHexBreaker()')+
         '</div>'+
         '<details class="realmClassic"><summary><span>Classic Trials</span><small>All previous Game Realm modes are still available</small></summary><div class="realmClassicBody">'+baseGamesHTML()+'</div></details>'+
       '</div>';
@@ -373,9 +373,55 @@
       '</div></div>';
   }
 
+
+  /* ---------- D772 Realm Training ---------- */
+  /* V3.3.55: guaranteed Section 1 practice depth for the active Statistical Data Literacy course. */
+  const D772_REALM_SUPPLEMENT=[
+    {id:'v3355-d772-l1-01',section:'Data Collection',prompt:'A district wants the average commute time for all 4,200 employees and surveys 350 randomly selected employees. The 350 employees are the…',options:['Population','Sample','Parameter','Statistic'],answer:'Sample',keyClue:'the smaller group actually surveyed',why:'The sample is the subset of the population that actually provides data.',difficulty:1},
+    {id:'v3355-d772-l1-02',section:'Data Collection',prompt:'The 350 surveyed employees have an average commute of 31 minutes. The 31-minute value is a…',options:['Parameter','Statistic','Population','Variable'],answer:'Statistic',keyClue:'the number describes the sample',why:'A numerical summary calculated from a sample is a statistic.',difficulty:1},
+    {id:'v3355-d772-l1-03',section:'Data Collection',prompt:'A district randomly selects 20 students from every grade level. Which sampling method is used?',options:['Cluster sampling','Stratified sampling','Systematic sampling','Convenience sampling'],answer:'Stratified sampling',keyClue:'some students are selected from every subgroup',why:'Stratified sampling takes some individuals from each subgroup.',difficulty:2},
+    {id:'v3355-d772-l1-04',section:'Data Collection',prompt:'A researcher randomly chooses four classrooms and surveys every student in those classrooms. Which method is used?',options:['Stratified sampling','Cluster sampling','Simple random sample','Systematic sampling'],answer:'Cluster sampling',keyClue:'whole selected groups are included',why:'Cluster sampling selects some natural groups and includes everyone in those selected groups.',difficulty:2},
+    {id:'v3355-d772-l1-05',section:'Data Collection',prompt:'Researchers record students’ usual sleep hours and exam scores without changing anyone’s sleep. What type of study is this?',options:['Experiment','Observational study','Double-blind study','Systematic sample'],answer:'Observational study',keyClue:'no treatment or condition is assigned',why:'Researchers only observe naturally occurring values, so the study is observational.',difficulty:2},
+    {id:'v3355-d772-l1-06',section:'Data Collection',prompt:'Researchers randomly place participants into a treatment group or a placebo group. What design feature is being used?',options:['Random sampling','Randomization','Convenience sampling','Nonresponse'],answer:'Randomization',keyClue:'participants are assigned to groups by chance',why:'Randomization determines which treatment group study participants enter.',difficulty:2},
+
+    {id:'v3355-d772-l2-01',section:'Bias & Credibility',prompt:'A city estimates adult exercise habits by surveying only people leaving a fitness center. What is the main problem?',options:['Sampling bias','Placebo effect','Replication','Randomization'],answer:'Sampling bias',keyClue:'the selected group systematically overrepresents exercisers',why:'The sampling method does not fairly represent all adults.',difficulty:2},
+    {id:'v3355-d772-l2-02',section:'Bias & Credibility',prompt:'A website asks visitors to click a link if they want to rate a controversial new policy. Which problem is most likely?',options:['Voluntary response bias','Nonresponse bias','Cluster sampling','Blinding'],answer:'Voluntary response bias',keyClue:'people choose themselves to participate',why:'People with especially strong opinions are often more likely to volunteer.',difficulty:2},
+    {id:'v3355-d772-l2-03',section:'Bias & Credibility',prompt:'A researcher selects 500 people for a survey, but many selected people never respond and the nonresponders differ from responders. What bias is this?',options:['Nonresponse bias','Convenience bias','Self-interest bias','Sampling-frame error'],answer:'Nonresponse bias',keyClue:'selected people fail to respond',why:'Nonresponse bias occurs when selected nonresponders differ systematically from responders.',difficulty:2},
+    {id:'v3355-d772-l2-04',section:'Bias & Credibility',prompt:'“Responsible parents support the safer school schedule. Do you support it?” What is the clearest problem with this question?',options:['Loaded wording','Cluster sampling','Random assignment','Replication'],answer:'Loaded wording',keyClue:'the wording pressures respondents toward one answer',why:'The question frames one response as more responsible, which can influence answers.',difficulty:2},
+    {id:'v3355-d772-l2-05',section:'Bias & Credibility',prompt:'Employees are asked about their supervisor while their names appear on the form. Several may hide criticism because they fear being identified. This is primarily…',options:['Response bias','Sampling bias','Random variation','Stratified sampling'],answer:'Response bias',keyClue:'fear of identification can change the answers given',why:'Perceived lack of anonymity can cause inaccurate responses.',difficulty:3},
+    {id:'v3355-d772-l2-06',section:'Bias & Credibility',prompt:'A company pays for research on its own product. Which conclusion is most appropriate?',options:['The study must be false','The potential conflict of interest should increase scrutiny','The sample is automatically random','The result is automatically statistically significant'],answer:'The potential conflict of interest should increase scrutiny',keyClue:'the sponsor has something to gain from a favorable result',why:'Self-interest is a credibility concern, but it does not automatically prove the findings are false.',difficulty:3},
+
+    {id:'v3355-d772-l3-01',section:'Misrepresentation',prompt:'A bar chart showing values from 96 to 100 starts its vertical axis at 95, making a small difference look huge. What makes the graph misleading?',options:['Truncated axis exaggerates the visual difference','The graph has too many labels','The categories are alphabetical','The sample is stratified'],answer:'Truncated axis exaggerates the visual difference',keyClue:'the vertical scale begins close to the observed values instead of zero',why:'A truncated axis can visually magnify a modest numerical difference.',difficulty:2},
+    {id:'v3355-d772-l3-02',section:'Misrepresentation',prompt:'A picture graph doubles both the height and width of an icon to represent twice as many people. Why can this exaggerate the change?',options:['The icon area grows by more than two times','The icon has a label','The graph uses categories','The values are quantitative'],answer:'The icon area grows by more than two times',keyClue:'both dimensions are enlarged',why:'Increasing both height and width increases area, making the visual increase larger than the numerical increase.',difficulty:3},
+    {id:'v3355-d772-l3-03',section:'Misrepresentation',prompt:'Why can a 3-D pie chart make equal or similar slices appear different in size?',options:['Perspective distorts apparent area','Pie charts cannot show percentages','3-D graphs have no categories','The mean changes'],answer:'Perspective distorts apparent area',keyClue:'slices closer to the viewer can look larger',why:'The viewing angle can distort the apparent sizes of slices.',difficulty:2},
+    {id:'v3355-d772-l3-04',section:'Misrepresentation',prompt:'A company tests a hair-growth product on only six people and advertises that it works for everyone. What is the clearest concern?',options:['The tiny sample cannot support such a broad generalization','Six is always statistically significant','The result proves causation','A small sample eliminates random variation'],answer:'The tiny sample cannot support such a broad generalization',keyClue:'only six participants are used to make a claim about everyone',why:'Very small samples are vulnerable to random variation and cannot justify sweeping population claims.',difficulty:2},
+    {id:'v3355-d772-l3-05',section:'Misrepresentation',prompt:'A result is statistically significant. Which statement is still NOT guaranteed?',options:['The effect is practically important','The result was unlikely under the statistical model','A statistical test was used','The data produced evidence against chance alone'],answer:'The effect is practically important',keyClue:'statistical significance and practical importance answer different questions',why:'A statistically significant effect can still be too small to matter in practice.',difficulty:3},
+    {id:'v3355-d772-l3-06',section:'Misrepresentation',prompt:'A researcher changes recorded values to make the results fit the desired conclusion. This is best described as…',options:['Falsification','Replication','Blinding','Randomization'],answer:'Falsification',keyClue:'existing research data are deliberately altered',why:'Falsification manipulates the research record or data rather than honestly reporting what occurred.',difficulty:2},
+
+    {id:'v3355-d772-l4-01',section:'Conclusions',prompt:'A study finds that students who sleep more tend to have higher grades, but researchers did not assign sleep amounts. Which conclusion is justified?',options:['Sleep and grades are associated','More sleep definitely causes higher grades','Grades cause sleep','The relationship proves a treatment effect'],answer:'Sleep and grades are associated',keyClue:'no treatment was assigned',why:'Observational evidence can show association but does not by itself establish causation.',difficulty:2},
+    {id:'v3355-d772-l4-02',section:'Conclusions',prompt:'Which design feature most directly supports a causal conclusion in an experiment?',options:['Random assignment to treatment groups','A voluntary response sample','A larger bar chart','A convenience sample'],answer:'Random assignment to treatment groups',keyClue:'treatment groups are created by chance',why:'Random assignment helps balance lurking variables across experimental groups and supports causal inference.',difficulty:3},
+    {id:'v3355-d772-l4-03',section:'Conclusions',prompt:'Which feature most directly supports generalizing results from a sample to a larger population?',options:['Random sampling from the target population','Random assignment after selection','A placebo alone','A 3-D graph'],answer:'Random sampling from the target population',keyClue:'the sample is selected in a way intended to represent the population',why:'Random sampling supports population generalization when the sample adequately represents the target population.',difficulty:3},
+    {id:'v3355-d772-l4-04',section:'Conclusions',prompt:'Researchers randomly assign volunteers to two treatments but recruit the volunteers through a convenience sample. What is the strongest conclusion?',options:['The treatment comparison may support causation for participants, but broad population generalization is limited','The result automatically represents all adults','Random assignment guarantees a representative sample','No causal comparison is possible'],answer:'The treatment comparison may support causation for participants, but broad population generalization is limited',keyClue:'random assignment is strong, but selection into the study is not representative',why:'Random assignment helps causal inference; convenience recruitment limits generalizability.',difficulty:4},
+    {id:'v3355-d772-l4-05',section:'Conclusions',prompt:'A study reports a relationship between two variables. Before saying one variable caused the other, what should you check first?',options:['Whether the study actually imposed and randomized a treatment','Whether the graph uses purple','Whether the sample mean is an integer','Whether the title sounds scientific'],answer:'Whether the study actually imposed and randomized a treatment',keyClue:'causal conclusions depend on study design, not just association',why:'Causation requires stronger design evidence than a simple observed relationship.',difficulty:3},
+    {id:'v3355-d772-l4-06',section:'Conclusions',prompt:'Which statement best follows the rule “the claim cannot be stronger than the evidence”?',options:['State only the conclusion the study design and data support','Always use causal language','Generalize every sample result to everyone','Ignore sampling limitations if the p-value is small'],answer:'State only the conclusion the study design and data support',keyClue:'match the wording of the conclusion to the strength of the evidence',why:'Sound conclusions respect the limits of sampling, design, and analysis.',difficulty:2}
+  ];
+
+  function realmQuestionPool(opts){
+    const base=(typeof questionPool==='function'?questionPool(opts):[])||[];
+    if(globalThis.S?.activeCourse!== 'D772')return base;
+    const seen=new Set(),out=[];
+    for(const q of [...base,...D772_REALM_SUPPLEMENT]){
+      if(!q?.prompt||!q?.answer)continue;
+      const key=normalize(q.prompt)+'|'+normalize(q.answer);
+      if(seen.has(key))continue;
+      seen.add(key);out.push(q);
+    }
+    return out;
+  }
+
   /* ---------- Rune Sort ---------- */
   function buildRuneSort(){
-    const pool=(typeof questionPool==='function'?questionPool():[]).filter(q=>q?.prompt&&q?.section);
+    const pool=realmQuestionPool().filter(q=>q?.prompt&&q?.section);
     const groups=new Map();
     pool.forEach(q=>{
       const key=String(q.section||'').trim();if(!key)return;
@@ -431,7 +477,7 @@
 
   /* ---------- Oracle Lens ---------- */
   function nextOracle(){
-    const pool=(typeof questionPool==='function'?questionPool():[]).filter(q=>q?.prompt&&q?.options?.length>=2);
+    const pool=realmQuestionPool().filter(q=>q?.prompt&&q?.options?.length>=2);
     const q=pickAdaptive(pool);if(!q)return false;
     const otherClues=shuffleCopy(pool.filter(x=>x.id!==q.id&&x.keyClue).map(x=>x.keyClue)).slice(0,2);
     const correctClue=q.keyClue||q.distractorCoach||('Focus on the exact task in: '+q.prompt);
@@ -487,7 +533,7 @@
 
   /* ---------- Memory Constellation ---------- */
   function buildConstellation(){
-    const pool=(typeof questionPool==='function'?questionPool():[]).filter(q=>q?.prompt&&q?.answer);
+    const pool=realmQuestionPool().filter(q=>q?.prompt&&q?.answer);
     const chosen=shuffleCopy(pool).slice(0,6);
     if(chosen.length<4)return null;
     const cards=[];
@@ -637,7 +683,7 @@
 
   /* ---------- Hex Breaker ---------- */
   function nextHex(){
-    const pool=(typeof questionPool==='function'?questionPool():[]).filter(q=>q?.prompt&&q?.options?.length>=2&&q?.answer);
+    const pool=realmQuestionPool().filter(q=>q?.prompt&&q?.options?.length>=2&&q?.answer);
     const q=pickAdaptive(pool);if(!q)return false;
     const wrongs=q.options.filter(o=>o!==q.answer);
     const makeValid=Math.random()<.35||!wrongs.length;
@@ -712,7 +758,7 @@
 
   /* ---------- Guardian Gauntlet ---------- */
   function nextGauntlet(){
-    const pool=(typeof questionPool==='function'?questionPool({hard:true}):[]).filter(q=>q?.prompt&&q?.options?.length>=2);
+    const pool=realmQuestionPool({hard:true}).filter(q=>q?.prompt&&q?.options?.length>=2);
     if(!pool.length)return false;
     const q=pickAdaptive(pool);session.current=q;session.answered=false;session.chosen=null;session.questions.push(q.id);session.round++;return true;
   }
@@ -801,6 +847,8 @@
     VERSION,
     guardian,
     buildRuneSort,
+    realmQuestionPool,
+    d772RealmPool:()=>D772_REALM_SUPPLEMENT.slice(),
     assessmentSigilPool,
     buildConstellation,
     inspect(){
@@ -812,5 +860,5 @@
       };
     }
   };
-  document.documentElement.dataset.majickRealmVariety='3353';
+  document.documentElement.dataset.majickRealmVariety='3355';
 })();
