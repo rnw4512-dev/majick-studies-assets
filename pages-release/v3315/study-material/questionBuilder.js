@@ -500,7 +500,10 @@ function build(text,opts){
   const count=Math.min(120,Math.max(20,Number(opts.count||opts.targetCount||TARGET)));
   const vocab=opts.vocabulary===false?[]:vocabulary(text,30);
   const passageRows=passages(text,sourceId);
-  const practice=opts.practiceQuestions===false?[]:(String(opts.courseId||'')==='D772'?d772Questions(sourceId):questions(text,count,sourceId,passageRows));
+  const courseId=String(opts.courseId||'');
+  const sectionId=String(opts.sectionId||'');
+  const d772SectionOne=!sectionId||sectionId==='d772-s1';
+  const practice=opts.practiceQuestions===false?[]:(courseId==='D772'?(d772SectionOne?d772Questions(sourceId):[]):questions(text,count,sourceId,passageRows));
   const key=ss.slice(0,14);
   const explanations=opts.explanations===false?[]:key.slice(0,10).map((s,i)=>({
     concept:(vocab[i]&&vocab[i].term)||('Key Idea '+(i+1)),
@@ -518,6 +521,9 @@ function build(text,opts){
   };
   return {
     targetCount:count,
+    courseId,
+    sectionId:sectionId||null,
+    curatedPracticeReady:courseId!=='D772'||d772SectionOne,
     practiceQuestions:practice,
     passages:passageRows,
     explanations,
