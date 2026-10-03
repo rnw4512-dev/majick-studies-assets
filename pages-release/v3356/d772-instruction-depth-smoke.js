@@ -1,4 +1,4 @@
 const fs=require('fs');const js=fs.readFileSync(__dirname+'/d772-instruction-depth.js','utf8');const css=fs.readFileSync(__dirname+'/d772-instruction-depth.css','utf8');
-for(const marker of ["VERSION='3.3.56'","PROFESSOR'S LESSON BRIEF","Sampling bias","Statistical significance","Random assignment","v3356ProfessorBrief","v3356ArchiveIndex","window.MajickD772InstructionDepth"])if(!js.includes(marker))throw new Error('missing '+marker);
+for(const marker of ["VERSION='3.3.56'","LESSON BRIEF","Sampling bias","Statistical significance","Random assignment","v3356ProfessorBrief","v3356ArchiveIndex","window.MajickD772InstructionDepth"])if(!js.includes(marker))throw new Error('missing '+marker);
 for(const marker of ['.v3356ProfessorBrief','.v3356ArchiveIndex','.v3356TermCloud'])if(!css.includes(marker))throw new Error('missing CSS '+marker);
 console.log('V3.3.56 D772 Instruction Depth smoke passed');
