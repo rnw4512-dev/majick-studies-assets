@@ -148,18 +148,33 @@ async function syncCourse(courseId){
 function addGeneratedCourseMetadata(courseId,row){
   const c=courseForId(courseId);
   if(!c)return;
+  const trusted=window.MajickSourceProvenance?.canPromote?.(row)===true;
+  c.sources=c.sources||[];
+  const p=row.provenance||{};
+  const meta={
+    id:row.id,name:row.sourceName,note:'Uploaded through Notes Forge',type:row.sourceType,active:row.active!==false,
+    sectionId:row.sectionId||null,
+    verificationStatus:p.verificationStatus||'needs-reference-check',
+    claimType:p.claimType||'mixed',
+    authorOrOrg:p.authorOrOrg||'',
+    reference:p.reference||'',
+    trustedForMasterContent:trusted
+  };
+  const at=c.sources.findIndex(x=>x.id===row.id);
+  if(at>=0)c.sources[at]=meta;else c.sources.push(meta);
+
+  // Pending, disputed, opinion-only, and rejected material can be saved and studied in context,
+  // but it must not silently rewrite the trusted glossary/master concept layer.
+  if(!trusted)return;
+
   c.glossary=c.glossary||{};
   (row.generated?.vocabulary||[]).forEach(v=>{
     if(v?.term&&v?.definition)c.glossary[v.term]=v.definition;
   });
   c.concepts=c.concepts||[];
   if(!c.concepts.some(x=>x.id==='uploaded-notes')){
-    c.concepts.push({id:'uploaded-notes',title:'Uploaded Course Material',section:'course',priority:'core'});
+    c.concepts.push({id:'uploaded-notes',title:'Verified Uploaded Course Material',section:'course',priority:'core'});
   }
-  c.sources=c.sources||[];
-  const meta={id:row.id,name:row.sourceName,note:'Uploaded through Notes Forge',type:row.sourceType,active:row.active!==false};
-  const at=c.sources.findIndex(x=>x.id===row.id);
-  if(at>=0)c.sources[at]=meta;else c.sources.push(meta);
 }
 
 async function openSource(id){
