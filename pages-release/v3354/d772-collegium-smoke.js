@@ -1,0 +1,4 @@
+const fs=require('fs');const js=fs.readFileSync(__dirname+'/d772-collegium.js','utf8');const css=fs.readFileSync(__dirname+'/d772-collegium.css','utf8');
+for(const marker of ["VERSION='3.3.54'","Understanding Data Collection Methods","Recognizing Bias in Data Collection","Unveiling Data Misrepresentations","Conclusions About Data Findings","v3354CampusGate","v3354TeachingBoard","v3354ArchiveDesk","window.MajickD772Collegium"])if(!js.includes(marker))throw new Error('missing '+marker);
+for(const marker of ['.v3354CampusGate','.v3354TeachingBoard','.v3354ArchiveDesk'])if(!css.includes(marker))throw new Error('missing CSS '+marker);
+console.log('V3.3.54 D772 Collegium smoke passed');
