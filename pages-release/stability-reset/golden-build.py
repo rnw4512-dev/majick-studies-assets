@@ -117,6 +117,8 @@ OVERLAYS=[
     ("pages-release/v3361/campus-runtime.css","campus-runtime.css"),
     ("pages-release/v3362/classroom-library-life.js","classroom-library-life.js"),
     ("pages-release/v3362/classroom-library-life.css","classroom-library-life.css"),
+    ("pages-release/v3363/focus-feedback.js","focus-feedback.js"),
+    ("pages-release/v3363/focus-feedback.css","focus-feedback.css"),
     ("pages-release/v3315/study-material/materialParser.js","study-material/materialParser.js"),
     ("pages-release/v3315/study-material/materialStoreModel.js","study-material/materialStoreModel.js"),
     ("pages-release/v3315/study-material/questionBuilder.js","study-material/questionBuilder.js"),
@@ -202,8 +204,8 @@ for src_name,(dst_name,expected_hash,expected_bytes) in PINNED_MOTION.items():
 progress=site/"app-progress.json"
 if progress.exists():
     data=json.loads(progress.read_text(encoding="utf-8"))
-    data["version"]="V3.3.62 Living Classroom & Library"
-    data["learning_intelligence"]="V3.3.62 Living Classroom & Library with subtle candle flicker, active-concept rune wake effects, Grimoire page shimmer, archive shelf glints, active-lesson bookmarks, consistent spacing tokens, shared Campus Runtime render queue and doorway transitions, reduced-motion support, D772 Section 1 systems, Sanctuary dorm identity, active Guardian support, protected XP, and protected Guardian movement preserved."
+    data["version"]="V3.3.63 Focus & Feedback"
+    data["learning_intelligence"]="V3.3.63 Focus & Feedback with optional Focus layout, collapsible secondary Grimoire shelves, improved arcane loading/empty states, non-rewarding active Guardian milestone nods, subtle mastery and section-completion constellation moments, Living Classroom and Library effects, shared Campus Runtime queue, D772 Section 1 systems, Sanctuary dorm identity, protected XP, and protected Guardian movement preserved."
     data["sanctuary_version"]="V3.3.42 Sanctuary Alive Personal Nooks"
     data["sanctuary_home"]="Every hatched Guardian has a distinct bed and personal nook, favorite keepsake and comfort item, need-driven and personality-driven room routines, physical care travel, visible protected Phaser movement, evolved idle/action art, evolution ceremony, Guardian vocal reactions, care inventory, and room-safe furniture layout"
     data["sanctuary_customization"]="personal Guardian nooks, feeding/play zones, owned furniture storage, Cozy Dorm layout preset"
@@ -220,9 +222,9 @@ html=html.replace('<link rel="stylesheet" href="./learning-lab.css?v=3319">','')
 html=html.replace('./guardian-care-economy.css?v=stability-1','./guardian-care-economy.css?v=3322-recovery')
 html=html.replace('./majick-state-core.js?v=stability-1','./majick-state-core.js?v=3322-recovery')
 html=html.replace('./guardian-care-economy.js?v=stability-1','./guardian-care-economy.js?v=3347-stations')
-html=html.replace('./v3317-main.js?v=stability-1','./v3317-main.js?v=3362-classroom-library')
+html=html.replace('./v3317-main.js?v=stability-1','./v3317-main.js?v=3363-focus-feedback')
 html=html.replace('</head>','<link rel="stylesheet" href="./learning-lab.css?v=3319">\\n<link rel="stylesheet" href="./learning-plan.css?v=3324">\\n<link rel="stylesheet" href="./course-tutor.css?v=3326">\\n<link rel="stylesheet" href="./magical-college-home.css?v=3337">\\n<link rel="stylesheet" href="./wgu-practice.css?v=3333-candlelit">\\n<link rel="stylesheet" href="./learn-mode.css?v=3338-candlelit">\\n<link rel="stylesheet" href="./d755-retake.css?v=3340-study-shelf-resume">\\n<link rel="stylesheet" href="./guardian-core.css?v=3341">\\n<link rel="stylesheet" href="./guardian-life-main.css?v=3342">\\n</head>',1)
-main_tag='<script src="./v3317-main.js?v=3362-classroom-library"></script>'
+main_tag='<script src="./v3317-main.js?v=3363-focus-feedback"></script>'
 if main_tag not in html:
     fail("authoritative main runtime tag missing while installing recovery")
 html=html.replace(main_tag,'<script src="./learning-lab.js?v=3319-mistake-journal"></script>\\n<script src="./learning-plan.js?v=3324"></script>\\n<script src="./course-tutor.js?v=3326-lesson32-guide"></script>\\n<script src="./learn-mode.js?v=3338-course-resume"></script>\\n<script src="./d755-retake.js?v=3340-study-shelf-resume"></script>\\n<script src="./wgu-practice.js?v=3336-designed-experiments"></script>\\n'+main_tag+'\\n<script src="./magical-college-home.js?v=3337"></script>\\n<script src="./v3322-main-recovery.js?v=3322"></script>\\n<script src="./guardian-core.js?v=3341"></script>\\n<script src="./study-progress-bridge.js?v=3342"></script>\\n<script src="./guardian-life-main.js?v=3342"></script>',1)
@@ -242,7 +244,8 @@ html=html.replace('</head>','<link rel="stylesheet" href="./d772-hall-map.css?v=
 html=html.replace('</head>','<link rel="stylesheet" href="./living-magic.css?v=3360">\n</head>',1)
 html=html.replace('</head>','<link rel="stylesheet" href="./campus-runtime.css?v=3361">\n</head>',1)
 html=html.replace('</head>','<link rel="stylesheet" href="./classroom-library-life.css?v=3362">\n</head>',1)
-html=html.replace('</body>','<script src="./sanctuary-audit.js?v=3350"></script>\n<script src="./d772-collegium.js?v=3361-shared-queue"></script>\n<script src="./d772-instruction-depth.js?v=3361-shared-queue"></script>\n<script src="./d772-hall-map.js?v=3361-shared-queue"></script>\n<script src="./living-magic.js?v=3361-shared-queue"></script>\n<script src="./classroom-library-life.js?v=3362"></script>\n</body>',1)
+html=html.replace('</head>','<link rel="stylesheet" href="./focus-feedback.css?v=3363">\n</head>',1)
+html=html.replace('</body>','<script src="./sanctuary-audit.js?v=3350"></script>\n<script src="./d772-collegium.js?v=3361-shared-queue"></script>\n<script src="./d772-instruction-depth.js?v=3361-shared-queue"></script>\n<script src="./d772-hall-map.js?v=3361-shared-queue"></script>\n<script src="./living-magic.js?v=3361-shared-queue"></script>\n<script src="./classroom-library-life.js?v=3362"></script>\n<script src="./focus-feedback.js?v=3363"></script>\n</body>',1)
 index.write_text(html,encoding="utf-8")
 
 san_index=site/"sanctuary"/"index.html"
