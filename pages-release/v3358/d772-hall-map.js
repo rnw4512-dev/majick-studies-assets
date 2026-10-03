@@ -20,6 +20,7 @@ function open(id){
  }catch(_){}
 }
 function render(){
+ if(window.MajickHomeFocus?.compactHome?.()){document.querySelector('.v3358HallMap')?.remove();return;}
  if(window.S?.screen!=='home'||window.S?.activeCourse!==COURSE)return;
  const gate=document.querySelector('.v3354CampusGate');if(!gate)return;
  gate.parentElement?.querySelector('.v3358HallMap')?.remove();

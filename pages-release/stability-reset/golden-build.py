@@ -135,6 +135,8 @@ OVERLAYS=[
     ("pages-release/v3372/source-provenance.css","source-provenance.css"),
     ("pages-release/v3376/duplicate-safe-hatch.js","duplicate-safe-hatch.js"),
     ("pages-release/v3376/duplicate-safe-hatch.css","duplicate-safe-hatch.css"),
+    ("pages-release/v3378/home-focus.js","home-focus.js"),
+    ("pages-release/v3378/home-focus.css","home-focus.css"),
     ("pages-release/v3315/study-material/materialParser.js","study-material/materialParser.js"),
     ("pages-release/v3315/study-material/materialStoreModel.js","study-material/materialStoreModel.js"),
     ("pages-release/v3315/study-material/questionBuilder.js","study-material/questionBuilder.js"),
@@ -220,8 +222,8 @@ for src_name,(dst_name,expected_hash,expected_bytes) in PINNED_MOTION.items():
 progress=site/"app-progress.json"
 if progress.exists():
     data=json.loads(progress.read_text(encoding="utf-8"))
-    data["version"]="V3.3.76 D772 Section 2 Lesson 1 Data Types"
-    data["learning_intelligence"]="V3.3.76 D772 Section 2 Lesson 1 Data Types with verified categorical-versus-quantitative teaching, WGU examples for machines/lawn area/architectural style/cars, OpenStax corroboration, numeric-label trap guidance, and six new non-duplicate Realm practice scenarios; all duplicate-safe Guardian hatching, source provenance, Section 1 repair, Guardian movement, Sanctuary, and protected assets preserved."
+    data["version"]="V3.3.77 Campus Focus + Shared Dormitory"
+    data["learning_intelligence"]="V3.3.77 Campus Focus + Shared Dormitory with a simplified Home portal, one primary Continue Course path, four campus destinations, advanced tools collapsed, redundant Home course maps/resume cards suppressed, and the Sanctuary reframed as the student’s personal dormitory plus Guardian residence; all D772 learning, duplicate-safe hatching, source provenance, Guardian movement, Sanctuary care systems, and protected assets preserved."
     data["sanctuary_version"]="V3.3.42 Sanctuary Alive Personal Nooks"
     data["sanctuary_home"]="Every hatched Guardian has a distinct bed and personal nook, favorite keepsake and comfort item, need-driven and personality-driven room routines, physical care travel, visible protected Phaser movement, evolved idle/action art, evolution ceremony, Guardian vocal reactions, care inventory, and room-safe furniture layout"
     data["sanctuary_customization"]="personal Guardian nooks, feeding/play zones, owned furniture storage, Cozy Dorm layout preset"
@@ -238,9 +240,9 @@ html=html.replace('<link rel="stylesheet" href="./learning-lab.css?v=3319">','')
 html=html.replace('./guardian-care-economy.css?v=stability-1','./guardian-care-economy.css?v=3322-recovery')
 html=html.replace('./majick-state-core.js?v=stability-1','./majick-state-core.js?v=3322-recovery')
 html=html.replace('./guardian-care-economy.js?v=stability-1','./guardian-care-economy.js?v=3347-stations')
-html=html.replace('./v3317-main.js?v=stability-1','./v3317-main.js?v=3376-s2-l1-data-types')
+html=html.replace('./v3317-main.js?v=stability-1','./v3317-main.js?v=3377-campus-focus')
 html=html.replace('</head>','<link rel="stylesheet" href="./learning-lab.css?v=3319">\\n<link rel="stylesheet" href="./learning-plan.css?v=3324">\\n<link rel="stylesheet" href="./course-tutor.css?v=3374-l3-repair">\\n<link rel="stylesheet" href="./magical-college-home.css?v=3337">\\n<link rel="stylesheet" href="./wgu-practice.css?v=3333-candlelit">\\n<link rel="stylesheet" href="./learn-mode.css?v=3338-candlelit">\\n<link rel="stylesheet" href="./d755-retake.css?v=3340-study-shelf-resume">\\n<link rel="stylesheet" href="./guardian-core.css?v=3341">\\n<link rel="stylesheet" href="./guardian-life-main.css?v=3342">\\n</head>',1)
-main_tag='<script src="./v3317-main.js?v=3376-s2-l1-data-types"></script>'
+main_tag='<script src="./v3317-main.js?v=3377-campus-focus"></script>'
 if main_tag not in html:
     fail("authoritative main runtime tag missing while installing recovery")
 html=html.replace(main_tag,'<script src="./learning-lab.js?v=3319-mistake-journal"></script>\\n<script src="./learning-plan.js?v=3324"></script>\\n<script src="./course-tutor.js?v=3376-s2-l1"></script>\\n<script src="./learn-mode.js?v=3338-course-resume"></script>\\n<script src="./d755-retake.js?v=3340-study-shelf-resume"></script>\\n<script src="./wgu-practice.js?v=3336-designed-experiments"></script>\\n'+main_tag+'\\n<script src="./magical-college-home.js?v=3337"></script>\\n<script src="./v3322-main-recovery.js?v=3322"></script>\\n<script src="./guardian-core.js?v=3341"></script>\\n<script src="./study-progress-bridge.js?v=3342"></script>\\n<script src="./guardian-life-main.js?v=3342"></script>',1)
@@ -269,8 +271,9 @@ html=html.replace('</head>','<link rel="stylesheet" href="./d772-section-readine
 html=html.replace('</head>','<link rel="stylesheet" href="./section-library.css?v=3370">\n</head>',1)
 html=html.replace('</head>','<link rel="stylesheet" href="./section-intake-shortcuts.css?v=3371">\n</head>',1)
 html=html.replace('</head>','<link rel="stylesheet" href="./source-provenance.css?v=3372">\n</head>',1)
+html=html.replace('</head>','<link rel="stylesheet" href="./home-focus.css?v=3377">\n</head>',1)
 html=html.replace('</head>','<link rel="stylesheet" href="./duplicate-safe-hatch.css?v=3375">\n</head>',1)
-html=html.replace('</body>','<script src="./sanctuary-audit.js?v=3350"></script>\n<script src="./d772-collegium.js?v=3361-shared-queue"></script>\n<script src="./d772-instruction-depth.js?v=3361-shared-queue"></script>\n<script src="./d772-hall-map.js?v=3361-shared-queue"></script>\n<script src="./living-magic.js?v=3361-shared-queue"></script>\n<script src="./classroom-library-life.js?v=3362"></script>\n<script src="./focus-feedback.js?v=3363"></script>\n<script src="./mobile-cleanup.js?v=3365"></script>\n<script src="./guardian-academic-presence.js?v=3366"></script>\n<script src="./d772-course-map.js?v=3373-section2"></script>\n<script src="./d772-section-readiness.js?v=3369"></script>\n<script src="./section-intake-shortcuts.js?v=3371"></script>\n<script src="./source-provenance.js?v=3372"></script>\n<script src="./duplicate-safe-hatch.js?v=3375"></script>\n</body>',1)
+html=html.replace('</body>','<script src="./sanctuary-audit.js?v=3350"></script>\n<script src="./d772-collegium.js?v=3361-shared-queue"></script>\n<script src="./d772-instruction-depth.js?v=3361-shared-queue"></script>\n<script src="./d772-hall-map.js?v=3361-shared-queue"></script>\n<script src="./living-magic.js?v=3361-shared-queue"></script>\n<script src="./classroom-library-life.js?v=3362"></script>\n<script src="./focus-feedback.js?v=3363"></script>\n<script src="./mobile-cleanup.js?v=3365"></script>\n<script src="./guardian-academic-presence.js?v=3366"></script>\n<script src="./d772-course-map.js?v=3373-section2"></script>\n<script src="./d772-section-readiness.js?v=3369"></script>\n<script src="./section-intake-shortcuts.js?v=3371"></script>\n<script src="./source-provenance.js?v=3372"></script>\n<script src="./duplicate-safe-hatch.js?v=3375"></script>\n<script src="./home-focus.js?v=3377"></script>\n</body>',1)
 index.write_text(html,encoding="utf-8")
 
 san_index=site/"sanctuary"/"index.html"

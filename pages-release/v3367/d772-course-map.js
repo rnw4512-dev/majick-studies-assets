@@ -48,6 +48,7 @@ function card(section){
   '</article>';
 }
 function renderHome(){
+ if(window.MajickHomeFocus?.compactHome?.()){document.querySelector('.v3367CourseMap')?.remove();return;}
  if(!active()||window.S?.screen!=='home')return;
  const hall=document.querySelector('.v3358HallMap');if(!hall)return;
  let map=document.querySelector('.v3367CourseMap');

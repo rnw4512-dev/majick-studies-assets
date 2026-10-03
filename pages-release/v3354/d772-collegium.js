@@ -22,6 +22,7 @@ function openLesson(id){
  }catch(_){}
 }
 function home(){
+ if(window.MajickHomeFocus?.compactHome?.())return;
  if(window.S?.screen!=='home'||window.S?.activeCourse!==COURSE)return;
  const host=document.querySelector('.v3327Home,.content'); if(!host||host.querySelector('.v3354CampusGate'))return;
  const lesson=activeLesson();
