@@ -63,13 +63,13 @@ if r'\\nconst canonOf' in main_bridge: fail('escaped newline leaked into JavaScr
 d772=(site/'d772-collegium.js').read_text(encoding='utf-8')
 for marker in ("VERSION='3.3.54'","Understanding Data Collection Methods","Recognizing Bias in Data Collection","Unveiling Data Misrepresentations","Conclusions About Data Findings","v3354CampusGate","v3354TeachingBoard","v3354ArchiveDesk","window.MajickD772Collegium"):
     if marker not in d772: fail('D772 Collegium missing '+marker)
-if 'd772-collegium.js?v=3354' not in main or 'd772-collegium.css?v=3354' not in main:
+if 'd772-collegium.js?v=3361-shared-queue' not in main or 'd772-collegium.css?v=3354' not in main:
     fail('V3.3.54 D772 Collegium assets are not installed in index.html')
 
 instruction=(site/'d772-instruction-depth.js').read_text(encoding='utf-8')
 for marker in ("VERSION='3.3.56'","LESSON BRIEF","Sampling bias","Statistical significance","Random assignment","v3356ProfessorBrief","v3356ArchiveIndex","window.MajickD772InstructionDepth"):
     if marker not in instruction: fail('D772 Instruction Depth missing '+marker)
-if 'd772-instruction-depth.js?v=3356' not in main or 'd772-instruction-depth.css?v=3356' not in main:
+if 'd772-instruction-depth.js?v=3361-shared-queue' not in main or 'd772-instruction-depth.css?v=3356' not in main:
     fail('V3.3.56 D772 Instruction Depth assets are not installed in index.html')
 
 dorm=(site/'sanctuary'/'sanctuary-dorm.js').read_text(encoding='utf-8')
@@ -81,13 +81,13 @@ if 'sanctuary-dorm.js?v=3357' not in san or 'sanctuary-dorm.css?v=3357' not in s
 hall=(site/'d772-hall-map.js').read_text(encoding='utf-8')
 for marker in ("VERSION='3.3.58'","d772-s1-l1","d772-s1-l2","d772-s1-l3","d772-s1-l4","d772-s1-review","v3358HallMap","window.MajickD772HallMap"):
     if marker not in hall: fail('D772 Hall Map missing '+marker)
-if 'd772-hall-map.js?v=3358' not in main or 'd772-hall-map.css?v=3358' not in main:
+if 'd772-hall-map.js?v=3361-shared-queue' not in main or 'd772-hall-map.css?v=3358' not in main:
     fail('V3.3.58 D772 Hall Map assets are not installed in index.html')
 
 magic=(site/'living-magic.js').read_text(encoding='utf-8')
-for marker in ("VERSION='3.3.60'","MutationObserver","requestAnimationFrame","majickLivingMagic","majickRoomRibbon","window.MajickLivingMagic"):
+for marker in ("VERSION='3.3.60'","register('living-magic'","requestAnimationFrame","majickLivingMagic","majickRoomRibbon","window.MajickLivingMagic"):
     if marker not in magic: fail('Living Magic missing '+marker)
-if 'living-magic.js?v=3360' not in main or 'living-magic.css?v=3360' not in main:
+if 'living-magic.js?v=3361-shared-queue' not in main or 'living-magic.css?v=3360' not in main:
     fail('V3.3.60 Living Magic assets are not installed in index.html')
 
 runtime=(site/'campus-runtime.js').read_text(encoding='utf-8')
