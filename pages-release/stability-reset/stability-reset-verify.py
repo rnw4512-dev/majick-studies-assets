@@ -73,10 +73,10 @@ if 'd772-instruction-depth.js?v=3361-shared-queue' not in main or 'd772-instruct
     fail('V3.3.56 D772 Instruction Depth assets are not installed in index.html')
 
 dorm=(site/'sanctuary'/'sanctuary-dorm.js').read_text(encoding='utf-8')
-for marker in ("VERSION='3.3.57'","Study Nook","Care Station","Play Commons","Rest Loft","v3357BuildDormIdentity","window.MajickSanctuaryDorm"):
-    if marker not in dorm: fail('Sanctuary Dorm Polish missing '+marker)
+for marker in ("VERSION='3.3.77'","Your Study Alcove","Guardian Care Station","Shared Commons","Rest Loft","YOUR DORMITORY & GUARDIAN SANCTUARY","v3357BuildDormIdentity","window.MajickSanctuaryDorm"):
+    if marker not in dorm: fail('Shared Dormitory missing '+marker)
 if 'sanctuary-dorm.js?v=3357' not in san or 'sanctuary-dorm.css?v=3357' not in san:
-    fail('V3.3.57 Sanctuary Dorm assets are not installed in sanctuary/index.html')
+    fail('V3.3.77 Shared Dormitory assets are not installed in sanctuary/index.html')
 
 hall=(site/'d772-hall-map.js').read_text(encoding='utf-8')
 for marker in ("VERSION='3.3.58'","d772-s1-l1","d772-s1-l2","d772-s1-l3","d772-s1-l4","d772-s1-review","v3358HallMap","window.MajickD772HallMap"):
