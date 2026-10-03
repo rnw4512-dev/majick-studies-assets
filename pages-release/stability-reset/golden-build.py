@@ -129,6 +129,8 @@ OVERLAYS=[
     ("pages-release/v3369/d772-section-readiness.js","d772-section-readiness.js"),
     ("pages-release/v3369/d772-section-readiness.css","d772-section-readiness.css"),
     ("pages-release/v3370/section-library.css","section-library.css"),
+    ("pages-release/v3371/section-intake-shortcuts.js","section-intake-shortcuts.js"),
+    ("pages-release/v3371/section-intake-shortcuts.css","section-intake-shortcuts.css"),
     ("pages-release/v3315/study-material/materialParser.js","study-material/materialParser.js"),
     ("pages-release/v3315/study-material/materialStoreModel.js","study-material/materialStoreModel.js"),
     ("pages-release/v3315/study-material/questionBuilder.js","study-material/questionBuilder.js"),
@@ -214,8 +216,8 @@ for src_name,(dst_name,expected_hash,expected_bytes) in PINNED_MOTION.items():
 progress=site/"app-progress.json"
 if progress.exists():
     data=json.loads(progress.read_text(encoding="utf-8"))
-    data["version"]="V3.3.70 D772 Sectioned Source Library"
-    data["learning_intelligence"]="V3.3.70 D772 Sectioned Source Library with Notes Forge sources grouped into separate Section 1, 2, and 3 shelves, empty section placeholders, section-specific counts, and preserved source actions; Section Readiness, Section-Aware Intake, Course Map, Guardian Academic Presence, Mobile Cleanup, Living Magic, Campus Runtime, classroom/library effects, Focus & Feedback, optional room sound, Sanctuary identity, protected XP, and protected Guardian movement preserved."
+    data["version"]="V3.3.71 D772 Section Intake Shortcuts"
+    data["learning_intelligence"]="V3.3.71 D772 Section Intake Shortcuts with one-tap Section 2/3 material entry from the D772 course map, session-scoped preferred section handoff into Notes Forge, automatic D772 course selection, and preserved section isolation; all Sectioned Source Library, Section Readiness, Section-Aware Intake, Course Map, Guardian Academic Presence, Mobile Cleanup, Living Magic, Campus Runtime, classroom/library effects, Focus & Feedback, optional room sound, Sanctuary identity, protected XP, and protected Guardian movement preserved."
     data["sanctuary_version"]="V3.3.42 Sanctuary Alive Personal Nooks"
     data["sanctuary_home"]="Every hatched Guardian has a distinct bed and personal nook, favorite keepsake and comfort item, need-driven and personality-driven room routines, physical care travel, visible protected Phaser movement, evolved idle/action art, evolution ceremony, Guardian vocal reactions, care inventory, and room-safe furniture layout"
     data["sanctuary_customization"]="personal Guardian nooks, feeding/play zones, owned furniture storage, Cozy Dorm layout preset"
@@ -232,9 +234,9 @@ html=html.replace('<link rel="stylesheet" href="./learning-lab.css?v=3319">','')
 html=html.replace('./guardian-care-economy.css?v=stability-1','./guardian-care-economy.css?v=3322-recovery')
 html=html.replace('./majick-state-core.js?v=stability-1','./majick-state-core.js?v=3322-recovery')
 html=html.replace('./guardian-care-economy.js?v=stability-1','./guardian-care-economy.js?v=3347-stations')
-html=html.replace('./v3317-main.js?v=stability-1','./v3317-main.js?v=3370-section-library')
+html=html.replace('./v3317-main.js?v=stability-1','./v3317-main.js?v=3371-section-intake')
 html=html.replace('</head>','<link rel="stylesheet" href="./learning-lab.css?v=3319">\\n<link rel="stylesheet" href="./learning-plan.css?v=3324">\\n<link rel="stylesheet" href="./course-tutor.css?v=3326">\\n<link rel="stylesheet" href="./magical-college-home.css?v=3337">\\n<link rel="stylesheet" href="./wgu-practice.css?v=3333-candlelit">\\n<link rel="stylesheet" href="./learn-mode.css?v=3338-candlelit">\\n<link rel="stylesheet" href="./d755-retake.css?v=3340-study-shelf-resume">\\n<link rel="stylesheet" href="./guardian-core.css?v=3341">\\n<link rel="stylesheet" href="./guardian-life-main.css?v=3342">\\n</head>',1)
-main_tag='<script src="./v3317-main.js?v=3370-section-library"></script>'
+main_tag='<script src="./v3317-main.js?v=3371-section-intake"></script>'
 if main_tag not in html:
     fail("authoritative main runtime tag missing while installing recovery")
 html=html.replace(main_tag,'<script src="./learning-lab.js?v=3319-mistake-journal"></script>\\n<script src="./learning-plan.js?v=3324"></script>\\n<script src="./course-tutor.js?v=3326-lesson32-guide"></script>\\n<script src="./learn-mode.js?v=3338-course-resume"></script>\\n<script src="./d755-retake.js?v=3340-study-shelf-resume"></script>\\n<script src="./wgu-practice.js?v=3336-designed-experiments"></script>\\n'+main_tag+'\\n<script src="./magical-college-home.js?v=3337"></script>\\n<script src="./v3322-main-recovery.js?v=3322"></script>\\n<script src="./guardian-core.js?v=3341"></script>\\n<script src="./study-progress-bridge.js?v=3342"></script>\\n<script src="./guardian-life-main.js?v=3342"></script>',1)
@@ -261,7 +263,8 @@ html=html.replace('</head>','<link rel="stylesheet" href="./d772-course-map.css?
 html=html.replace('</head>','<link rel="stylesheet" href="./section-aware-intake.css?v=3368">\n</head>',1)
 html=html.replace('</head>','<link rel="stylesheet" href="./d772-section-readiness.css?v=3369">\n</head>',1)
 html=html.replace('</head>','<link rel="stylesheet" href="./section-library.css?v=3370">\n</head>',1)
-html=html.replace('</body>','<script src="./sanctuary-audit.js?v=3350"></script>\n<script src="./d772-collegium.js?v=3361-shared-queue"></script>\n<script src="./d772-instruction-depth.js?v=3361-shared-queue"></script>\n<script src="./d772-hall-map.js?v=3361-shared-queue"></script>\n<script src="./living-magic.js?v=3361-shared-queue"></script>\n<script src="./classroom-library-life.js?v=3362"></script>\n<script src="./focus-feedback.js?v=3363"></script>\n<script src="./mobile-cleanup.js?v=3365"></script>\n<script src="./guardian-academic-presence.js?v=3366"></script>\n<script src="./d772-course-map.js?v=3367"></script>\n<script src="./d772-section-readiness.js?v=3369"></script>\n</body>',1)
+html=html.replace('</head>','<link rel="stylesheet" href="./section-intake-shortcuts.css?v=3371">\n</head>',1)
+html=html.replace('</body>','<script src="./sanctuary-audit.js?v=3350"></script>\n<script src="./d772-collegium.js?v=3361-shared-queue"></script>\n<script src="./d772-instruction-depth.js?v=3361-shared-queue"></script>\n<script src="./d772-hall-map.js?v=3361-shared-queue"></script>\n<script src="./living-magic.js?v=3361-shared-queue"></script>\n<script src="./classroom-library-life.js?v=3362"></script>\n<script src="./focus-feedback.js?v=3363"></script>\n<script src="./mobile-cleanup.js?v=3365"></script>\n<script src="./guardian-academic-presence.js?v=3366"></script>\n<script src="./d772-course-map.js?v=3367"></script>\n<script src="./d772-section-readiness.js?v=3369"></script>\n<script src="./section-intake-shortcuts.js?v=3371"></script>\n</body>',1)
 index.write_text(html,encoding="utf-8")
 
 san_index=site/"sanctuary"/"index.html"
