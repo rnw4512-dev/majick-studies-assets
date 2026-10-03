@@ -4,7 +4,7 @@ site=Path(sys.argv[1])
 def fail(msg): raise SystemExit('STABILITY RESET VERIFY FAILED: '+msg)
 main=(site/'index.html').read_text(encoding='utf-8')
 san=(site/'sanctuary'/'index.html').read_text(encoding='utf-8')
-for f in ('v3310-ui-compat.js','v3312-ui-compat.js','guardian-registry.js','majick-state-core.js','learning-lab.js','learning-lab.css','learning-plan.js','learning-plan.css','course-tutor.js','course-tutor.css','learn-mode.js','learn-mode.css','d755-retake.js','d755-retake.css','guardian-core.js','guardian-core.css','study-progress-bridge.js','guardian-life-main.js','guardian-life-main.css','game-realm.js','game-realm.css','magical-college-home.js','magical-college-home.css','guardian-care-economy.js','v3317-main.js','sanctuary/v3317-sanctuary.js','sanctuary/v3320-sanctuary-life.js','sanctuary/v3321-sanctuary-customize.js','v3322-main-recovery.js','sanctuary/v3322-sanctuary-recovery.js','sanctuary/v3325-sanctuary-visual-authority.js','sanctuary/guardian-core-sanctuary.js','sanctuary/sanctuary-alive.js','sanctuary/sanctuary-roster.js','d772-collegium.js','d772-collegium.css'):
+for f in ('v3310-ui-compat.js','v3312-ui-compat.js','guardian-registry.js','majick-state-core.js','learning-lab.js','learning-lab.css','learning-plan.js','learning-plan.css','course-tutor.js','course-tutor.css','learn-mode.js','learn-mode.css','d755-retake.js','d755-retake.css','guardian-core.js','guardian-core.css','study-progress-bridge.js','guardian-life-main.js','guardian-life-main.css','game-realm.js','game-realm.css','magical-college-home.js','magical-college-home.css','guardian-care-economy.js','v3317-main.js','sanctuary/v3317-sanctuary.js','sanctuary/v3320-sanctuary-life.js','sanctuary/v3321-sanctuary-customize.js','v3322-main-recovery.js','sanctuary/v3322-sanctuary-recovery.js','sanctuary/v3325-sanctuary-visual-authority.js','sanctuary/guardian-core-sanctuary.js','sanctuary/sanctuary-alive.js','sanctuary/sanctuary-roster.js','d772-collegium.js','d772-collegium.css','d772-instruction-depth.js','d772-instruction-depth.css'):
     p=site/f
     if not p.exists() or not p.stat().st_size: fail('missing '+f)
 for old in ('v3310-main.js','v3312-main.js','v3313-main.js','v3314-main.js','v3315-main.js','v3316-main.js'):
@@ -65,6 +65,12 @@ for marker in ("VERSION='3.3.54'","Understanding Data Collection Methods","Recog
     if marker not in d772: fail('D772 Collegium missing '+marker)
 if 'd772-collegium.js?v=3354' not in main or 'd772-collegium.css?v=3354' not in main:
     fail('V3.3.54 D772 Collegium assets are not installed in index.html')
+
+instruction=(site/'d772-instruction-depth.js').read_text(encoding='utf-8')
+for marker in ("VERSION='3.3.56'","PROFESSOR'S LESSON BRIEF","Sampling bias","Statistical significance","Random assignment","v3356ProfessorBrief","v3356ArchiveIndex","window.MajickD772InstructionDepth"):
+    if marker not in instruction: fail('D772 Instruction Depth missing '+marker)
+if 'd772-instruction-depth.js?v=3356' not in main or 'd772-instruction-depth.css?v=3356' not in main:
+    fail('V3.3.56 D772 Instruction Depth assets are not installed in index.html')
 
 san_bridge=(site/'sanctuary'/'v3317-sanctuary.js').read_text(encoding='utf-8')
 if 'PROTECTED_MOTION_TYPES()' not in san_bridge: fail('Sanctuary motion loop is not registry-driven')
@@ -141,7 +147,7 @@ for marker in ("window.MajickSanctuaryRecovery","v3322SyncOwnedGuardians","v3322
 visual=(site/'sanctuary'/'v3325-sanctuary-visual-authority.js').read_text(encoding='utf-8')
 for marker in ("window.MajickGuardianVisualAuthority","v3325SyncOwnedVisuals","v3325BaseScale","totalVisible"):
     if marker not in visual: fail('Guardian visual authority missing '+marker)
-for marker in ('majick-state-core.js?v=3322-recovery','guardian-care-economy.js?v=3347-stations','v3317-main.js?v=3355-d772-realm','v3322-main-recovery.js?v=3322'):
+for marker in ('majick-state-core.js?v=3322-recovery','guardian-care-economy.js?v=3347-stations','v3317-main.js?v=3356-d772-instruction','v3322-main-recovery.js?v=3322'):
     if marker not in main: fail('main cache-bust/runtime missing '+marker)
 if 'v3322-sanctuary-recovery.js?v=3322' not in san:
     fail('Sanctuary recovery asset is not installed')
