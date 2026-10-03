@@ -31,10 +31,17 @@ function render(){
  gate.insertAdjacentElement('afterend',map);
 }
 function decorate(){document.documentElement.dataset.majickD772Hall='3358';render()}
-const prev=window.render;
-if(typeof prev==='function'&&!prev.__v3358){
- const wrapped=function(){const out=prev.apply(this,arguments);setTimeout(decorate,0);return out};wrapped.__v3358=true;window.render=wrapped;
+const renderQueue=window.MajickRenderQueue;
+if(renderQueue?.register){
+ renderQueue.register('d772-hall',decorate,70);
+ renderQueue.schedule();
+}else{
+ const previousRender=window.render;
+ if(typeof previousRender==='function'&&!previousRender.__d772_hallFallback){
+  const wrapped=function(){const out=previousRender.apply(this,arguments);setTimeout(decorate,0);return out};
+  wrapped.__d772_hallFallback=true;window.render=wrapped;
+ }
+ setTimeout(decorate,120);
 }
-setTimeout(decorate,150);
 window.MajickD772HallMap={VERSION,COURSE,PATH,render,open};
 })();
