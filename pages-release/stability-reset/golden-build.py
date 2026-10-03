@@ -188,8 +188,8 @@ for src_name,(dst_name,expected_hash,expected_bytes) in PINNED_MOTION.items():
 progress=site/"app-progress.json"
 if progress.exists():
     data=json.loads(progress.read_text(encoding="utf-8"))
-    data["version"]="V3.3.52 Game Realm Expansion"
-    data["learning_intelligence"]="V3.3.52 Game Realm Expansion with Rune Sort, Oracle Lens, Guardian Gauntlet, Memory Constellation, Hex Breaker, active Guardian realm support, duplicate-species Guardian individuality, evolution celebrations, protected lifetime Majick XP, and existing Sanctuary/learning systems preserved"
+    data["version"]="V3.3.53 Assessment Depth"
+    data["learning_intelligence"]="V3.3.53 Assessment Depth with expanded non-ambiguous D755 assessment identification, longer 8-question Sigil chambers, Rune Sort, Oracle Lens, Guardian Gauntlet, Memory Constellation, Hex Breaker, active Guardian realm support, protected lifetime Majick XP, and existing Sanctuary/learning systems preserved"
     data["sanctuary_version"]="V3.3.42 Sanctuary Alive Personal Nooks"
     data["sanctuary_home"]="Every hatched Guardian has a distinct bed and personal nook, favorite keepsake and comfort item, need-driven and personality-driven room routines, physical care travel, visible protected Phaser movement, evolved idle/action art, evolution ceremony, Guardian vocal reactions, care inventory, and room-safe furniture layout"
     data["sanctuary_customization"]="personal Guardian nooks, feeding/play zones, owned furniture storage, Cozy Dorm layout preset"
@@ -217,9 +217,9 @@ html=html.replace('<h3>Before Sunday</h3>','<h3>Before Your OA</h3>')
 html=html.replace('<h3>🌌 Weekly Constellation Quest</h3>','<h3>🌌 Constellation Quest • 7-Day Bonus</h3>')
 html=html.replace('concept stars visited this week.','concept stars visited during this 7-day bonus cycle.')
 html=html.replace('<p><b>Final Moon Review</b> for the last targeted pass.</p>','<p><b>Final Moon Review</b> for the last targeted pass.</p><p><small>Self-paced: take the OA when your mastery supports it. The 4–6 week window is a planning guardrail, not a deadline.</small></p>')
-html=html.replace('</head>','<link rel="stylesheet" href="./game-realm.css?v=3359-assessment">\n</head>',1)
+html=html.replace('</head>','<link rel="stylesheet" href="./game-realm.css?v=3360-assessment-depth">\n</head>',1)
 html=html.replace('</head>','<link rel="stylesheet" href="./living-collegium.css?v=3346-tool-search-smooth-render">\n</head>',1)
-html=html.replace('</body>','<script src="./game-realm.js?v=3359-assessment"></script>\n<script src="./living-collegium.js?v=3346-tool-search"></script>\n<script src="./collegium-atmosphere.js?v=3350-room"></script>\n</body>',1)
+html=html.replace('</body>','<script src="./game-realm.js?v=3360-assessment-depth"></script>\n<script src="./living-collegium.js?v=3346-tool-search"></script>\n<script src="./collegium-atmosphere.js?v=3350-room"></script>\n</body>',1)
 html=html.replace('</head>','<link rel="stylesheet" href="./collegium-atmosphere.css?v=3348-roster">\n</head>',1)
 html=html.replace('</head>','<link rel="stylesheet" href="./sanctuary-audit.css?v=3350">\n</head>',1)
 html=html.replace('</body>','<script src="./sanctuary-audit.js?v=3350"></script>\n</body>',1)
