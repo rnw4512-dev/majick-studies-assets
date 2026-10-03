@@ -169,8 +169,17 @@ function scheduleDecorate(){
  decorationPending=true;
  setTimeout(()=>{decorationPending=false;decorate();},0);
 }
-const previous=window.render;
-if(typeof previous==='function')window.render=function(){const result=previous.apply(this,arguments);scheduleDecorate();return result};
-setTimeout(decorate,120);
+const renderQueue=window.MajickRenderQueue;
+if(renderQueue?.register){
+ renderQueue.register('living-collegium',decorate,30);
+ renderQueue.schedule();
+}else{
+ const previousRender=window.render;
+ if(typeof previousRender==='function'&&!previousRender.__living_collegiumFallback){
+  const wrapped=function(){const out=previousRender.apply(this,arguments);setTimeout(decorate,0);return out};
+  wrapped.__living_collegiumFallback=true;window.render=wrapped;
+ }
+ setTimeout(decorate,120);
+}
 window.MajickLivingCollegium={VERSION,persona,sceneHTML,toolMatches,decorate,scheduleDecorate,STUDY_TOOLS,studyToolFromButton,savedStudyTool,rememberStudyTool,restoreStudyTool,resetComfort,pageTop,decorateHomeResume,STUDY_ROUTES,comfort,reducedMotion,applyComfort,toggleComfort,rememberStudyRoute,studyDestination,returnToStudy,decorateCompass};
 })();
