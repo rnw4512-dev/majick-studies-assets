@@ -12,10 +12,10 @@ for old in ('v3310-main.js','v3312-main.js','v3313-main.js','v3314-main.js','v33
 for old in ('v3311-sanctuary.js','v3312-sanctuary.js','v3313-sanctuary.js','v3314-sanctuary.js','v3315-sanctuary.js'):
     if old in san: fail('obsolete Sanctuary runtime still loaded: '+old)
 order=['v3310-ui-compat.js','v3312-ui-compat.js','guardian-registry.js','majick-state-core.js','guardian-care-economy.js','learning-lab.js','learning-plan.js','course-tutor.js','learn-mode.js','d755-retake.js','v3317-main.js','magical-college-home.js','v3322-main-recovery.js','guardian-core.js','study-progress-bridge.js','guardian-life-main.js']
-if 'game-realm.js?v=3361-d772-realm' not in main or 'game-realm.css?v=3361-d772-realm' not in main or main.find('game-realm.js?v=3361-d772-realm')<main.find('guardian-life-main.js'): fail('Game Realm enhancement load order missing')
+if 'game-realm.js?v=3362-d772-review' not in main or 'game-realm.css?v=3362-d772-review' not in main or main.find('game-realm.js?v=3362-d772-review')<main.find('guardian-life-main.js'): fail('Game Realm enhancement load order missing')
 if 'Assessment Sigil Sort' not in (site/'game-realm.js').read_text(encoding='utf-8') or "activeCourse==='D755'" not in (site/'game-realm.js').read_text(encoding='utf-8'): fail('D755 Assessment Sigil Sort course gate missing')
 realm_src=(site/'game-realm.js').read_text(encoding='utf-8')
-for marker in ("VERSION='3.3.55-realm'","D772_REALM_SUPPLEMENT","Bias & Credibility","Misrepresentation","realmQuestionPool","d772RealmPool","majickRealmVariety='3355'"):
+for marker in ("VERSION='3.3.59-realm'","D772_REALM_SUPPLEMENT","Bias & Credibility","Misrepresentation","realmQuestionPool","d772RealmPool","buildD772SectionReview","startD772SectionReview","majickRealmVariety='3359'"):
     if marker not in realm_src: fail('D772 Realm Training missing '+marker)
 pos=[main.find(x) for x in order]
 if any(x<0 for x in pos) or pos!=sorted(pos): fail('main runtime load order is wrong')
@@ -159,7 +159,7 @@ for marker in ("window.MajickSanctuaryRecovery","v3322SyncOwnedGuardians","v3322
 visual=(site/'sanctuary'/'v3325-sanctuary-visual-authority.js').read_text(encoding='utf-8')
 for marker in ("window.MajickGuardianVisualAuthority","v3325SyncOwnedVisuals","v3325BaseScale","totalVisible"):
     if marker not in visual: fail('Guardian visual authority missing '+marker)
-for marker in ('majick-state-core.js?v=3322-recovery','guardian-care-economy.js?v=3347-stations','v3317-main.js?v=3358-d772-hall','v3322-main-recovery.js?v=3322'):
+for marker in ('majick-state-core.js?v=3322-recovery','guardian-care-economy.js?v=3347-stations','v3317-main.js?v=3359-d772-review','v3322-main-recovery.js?v=3322'):
     if marker not in main: fail('main cache-bust/runtime missing '+marker)
 if 'v3322-sanctuary-recovery.js?v=3322' not in san:
     fail('Sanctuary recovery asset is not installed')
