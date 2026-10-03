@@ -3,12 +3,12 @@
 (function(){
 'use strict';
 if(typeof Game==='undefined')return;
-const VERSION='3.3.57';
+const VERSION='3.3.77';
 const ZONES=[
-  {key:'study',title:'Study Nook',subtitle:'books • desk • quiet focus',x:.22,y:.68},
-  {key:'care',title:'Care Station',subtitle:'food • water • grooming',x:.50,y:.68},
-  {key:'play',title:'Play Commons',subtitle:'toys • bonding • favorite items',x:.78,y:.68},
-  {key:'rest',title:'Rest Loft',subtitle:'beds • comfort • moonlight',x:.50,y:.86}
+  {key:'study',title:'Your Study Alcove',subtitle:'desk • books • course planning',x:.22,y:.68},
+  {key:'care',title:'Guardian Care Station',subtitle:'food • water • grooming',x:.50,y:.68},
+  {key:'play',title:'Shared Commons',subtitle:'toys • bonding • favorite items',x:.78,y:.68},
+  {key:'rest',title:'Rest Loft',subtitle:'your space • Guardian beds • moonlight',x:.50,y:.86}
 ];
 function safeDestroy(x){try{x?.destroy?.(true)}catch(_){}}
 Game.prototype.v3357BuildDormIdentity=function(){
@@ -23,11 +23,11 @@ Game.prototype.v3357BuildDormIdentity=function(){
   c.add(frame);
 
   const plaqueBg=this.add.rectangle(width/2,622,440,56,0x1c1024,.88).setOrigin(.5,0).setStrokeStyle(1,0xd7b56f,.42);
-  const plaque=this.add.text(width/2,635,'MOONLIT COLLEGIUM • GUARDIAN RESIDENCE',{
+  const plaque=this.add.text(width/2,635,'MOONLIT COLLEGIUM • YOUR DORMITORY & GUARDIAN SANCTUARY',{
     fontFamily:'Georgia',fontStyle:'bold',fontSize:'16px',color:'#f2d79b',
     align:'center'
   }).setOrigin(.5,0);
-  const sub=this.add.text(width/2,658,'Sanctuary Dormitory • bonded Guardians live, study, play, and rest here',{
+  const sub=this.add.text(width/2,658,'Your personal dorm room and Guardian residence • study, rest, care, customize',{
     fontFamily:'Arial',fontSize:'10px',color:'#d7c9dc',align:'center'
   }).setOrigin(.5,0);
   c.add([plaqueBg,plaque,sub]);
@@ -62,7 +62,7 @@ Game.prototype.create=function(){
   this.v3357BuildDormIdentity();
   if(this.hudStatusText?.setText){
     const current=String(this.hudStatusText.text||'');
-    if(!current.includes('Guardian Residence'))this.hudStatusText.setText('Guardian Residence • beds, care, play, study & personal nooks are active');
+    if(!current.includes('Dormitory & Sanctuary'))this.hudStatusText.setText('Dormitory & Sanctuary • your study alcove, Guardian care, play, rest & personal nooks');
   }
   this.scale.on?.('resize',()=>this.time?.delayedCall?.(100,()=>this.v3357BuildDormIdentity()));
 };
