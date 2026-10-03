@@ -126,6 +126,7 @@ function pageTop(){
  window.scrollTo?.({top:0,left:0,behavior});
 }
 function decorateHomeResume(){
+ if(window.MajickHomeFocus?.compactHome?.()){document.getElementById('majickHomeResume')?.remove();return;}
  if(window.S?.screen!=='home')return;
  const content=document.querySelector('.content');if(!content||document.getElementById('majickHomeResume'))return;
  const course=window.S.activeCourse,route=studyDestination(),tool=route==='learninglab'?savedStudyTool():null;
