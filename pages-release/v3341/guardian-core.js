@@ -377,18 +377,21 @@ document.addEventListener('pointerdown',()=>unlockAudio(),{once:true,capture:tru
 function postRenderGuardian(){
   wrapCare();wrapDebrief();applyDebriefPreference();decorate();
 }
-const sharedQueue=window.MajickRenderQueue;
-if(sharedQueue?.register){
-  sharedQueue.register('guardian-core-v34',postRenderGuardian,35);
-  sharedQueue.schedule();
-}else{
+function installRenderIntegration(){
+  const sharedQueue=window.MajickRenderQueue;
+  if(sharedQueue?.register){
+    sharedQueue.register('guardian-core-v34',postRenderGuardian,35);
+    sharedQueue.schedule();
+    return 'shared-queue';
+  }
   const previousRender=window.render;
   if(typeof previousRender==='function'&&!previousRender.__v3341){
     const wrapped=function(){const r=previousRender.apply(this,arguments);setTimeout(postRenderGuardian,0);return r};
     wrapped.__v3341=true;window.render=wrapped;
   }
+  return 'legacy-fallback';
 }
-setTimeout(()=>{postRenderGuardian();observeReactions()},0);
+setTimeout(()=>{installRenderIntegration();postRenderGuardian();observeReactions()},0);
 window.MajickGuardianCore={VERSION,activePet,meta:guardianMeta,select:setActive,cycle,study,react,sound,sparks,toggleSound,settings,studyPrefs,debriefEnabled,toggleDebrief,applyDebriefPreference,journey:guardianJourney,relationshipEvent,relationshipSnapshot,recentMemories,decorate,guardianHeroHtml,studyDockHtml};
 document.documentElement.dataset.majickGuardianCore=VERSION;
 })();
