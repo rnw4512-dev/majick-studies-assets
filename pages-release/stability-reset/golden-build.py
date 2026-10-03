@@ -111,6 +111,8 @@ OVERLAYS=[
     ("pages-release/v3357/sanctuary-dorm.css","sanctuary/sanctuary-dorm.css"),
     ("pages-release/v3358/d772-hall-map.js","d772-hall-map.js"),
     ("pages-release/v3358/d772-hall-map.css","d772-hall-map.css"),
+    ("pages-release/v3360/living-magic.js","living-magic.js"),
+    ("pages-release/v3360/living-magic.css","living-magic.css"),
     ("pages-release/v3315/study-material/materialParser.js","study-material/materialParser.js"),
     ("pages-release/v3315/study-material/materialStoreModel.js","study-material/materialStoreModel.js"),
     ("pages-release/v3315/study-material/questionBuilder.js","study-material/questionBuilder.js"),
@@ -196,8 +198,8 @@ for src_name,(dst_name,expected_hash,expected_bytes) in PINNED_MOTION.items():
 progress=site/"app-progress.json"
 if progress.exists():
     data=json.loads(progress.read_text(encoding="utf-8"))
-    data["version"]="V3.3.59 D772 Section 1 Review"
-    data["learning_intelligence"]="V3.3.59 D772 Section 1 Review with a balanced 12-question Guardian Gauntlet review using three questions each from Data Collection, Bias & Credibility, Misrepresentation, and Conclusions; D772 Hall Map, Instruction Depth, Realm Training, Collegium environments, Sanctuary dorm identity, active Guardian support, protected lifetime Majick XP, and protected Guardian movement preserved."
+    data["version"]="V3.3.60 Living Magic & Smoothness"
+    data["learning_intelligence"]="V3.3.60 Living Magic & Smoothness with lightweight room-specific magical motes and glows, campus-location ribbons, requestAnimationFrame-batched decoration, off-screen rendering containment, stable scrollbars, reduced-motion support, D772 Section 1 Review, Hall Map, Instruction Depth, Realm Training, Sanctuary dorm identity, active Guardian support, protected lifetime Majick XP, and protected Guardian movement preserved."
     data["sanctuary_version"]="V3.3.42 Sanctuary Alive Personal Nooks"
     data["sanctuary_home"]="Every hatched Guardian has a distinct bed and personal nook, favorite keepsake and comfort item, need-driven and personality-driven room routines, physical care travel, visible protected Phaser movement, evolved idle/action art, evolution ceremony, Guardian vocal reactions, care inventory, and room-safe furniture layout"
     data["sanctuary_customization"]="personal Guardian nooks, feeding/play zones, owned furniture storage, Cozy Dorm layout preset"
@@ -214,9 +216,9 @@ html=html.replace('<link rel="stylesheet" href="./learning-lab.css?v=3319">','')
 html=html.replace('./guardian-care-economy.css?v=stability-1','./guardian-care-economy.css?v=3322-recovery')
 html=html.replace('./majick-state-core.js?v=stability-1','./majick-state-core.js?v=3322-recovery')
 html=html.replace('./guardian-care-economy.js?v=stability-1','./guardian-care-economy.js?v=3347-stations')
-html=html.replace('./v3317-main.js?v=stability-1','./v3317-main.js?v=3359-d772-review')
+html=html.replace('./v3317-main.js?v=stability-1','./v3317-main.js?v=3360-living-magic')
 html=html.replace('</head>','<link rel="stylesheet" href="./learning-lab.css?v=3319">\\n<link rel="stylesheet" href="./learning-plan.css?v=3324">\\n<link rel="stylesheet" href="./course-tutor.css?v=3326">\\n<link rel="stylesheet" href="./magical-college-home.css?v=3337">\\n<link rel="stylesheet" href="./wgu-practice.css?v=3333-candlelit">\\n<link rel="stylesheet" href="./learn-mode.css?v=3338-candlelit">\\n<link rel="stylesheet" href="./d755-retake.css?v=3340-study-shelf-resume">\\n<link rel="stylesheet" href="./guardian-core.css?v=3341">\\n<link rel="stylesheet" href="./guardian-life-main.css?v=3342">\\n</head>',1)
-main_tag='<script src="./v3317-main.js?v=3359-d772-review"></script>'
+main_tag='<script src="./v3317-main.js?v=3360-living-magic"></script>'
 if main_tag not in html:
     fail("authoritative main runtime tag missing while installing recovery")
 html=html.replace(main_tag,'<script src="./learning-lab.js?v=3319-mistake-journal"></script>\\n<script src="./learning-plan.js?v=3324"></script>\\n<script src="./course-tutor.js?v=3326-lesson32-guide"></script>\\n<script src="./learn-mode.js?v=3338-course-resume"></script>\\n<script src="./d755-retake.js?v=3340-study-shelf-resume"></script>\\n<script src="./wgu-practice.js?v=3336-designed-experiments"></script>\\n'+main_tag+'\\n<script src="./magical-college-home.js?v=3337"></script>\\n<script src="./v3322-main-recovery.js?v=3322"></script>\\n<script src="./guardian-core.js?v=3341"></script>\\n<script src="./study-progress-bridge.js?v=3342"></script>\\n<script src="./guardian-life-main.js?v=3342"></script>',1)
@@ -233,7 +235,8 @@ html=html.replace('</head>','<link rel="stylesheet" href="./sanctuary-audit.css?
 html=html.replace('</head>','<link rel="stylesheet" href="./d772-collegium.css?v=3354">\n</head>',1)
 html=html.replace('</head>','<link rel="stylesheet" href="./d772-instruction-depth.css?v=3356">\n</head>',1)
 html=html.replace('</head>','<link rel="stylesheet" href="./d772-hall-map.css?v=3358">\n</head>',1)
-html=html.replace('</body>','<script src="./sanctuary-audit.js?v=3350"></script>\n<script src="./d772-collegium.js?v=3354"></script>\n<script src="./d772-instruction-depth.js?v=3356"></script>\n<script src="./d772-hall-map.js?v=3358"></script>\n</body>',1)
+html=html.replace('</head>','<link rel="stylesheet" href="./living-magic.css?v=3360">\n</head>',1)
+html=html.replace('</body>','<script src="./sanctuary-audit.js?v=3350"></script>\n<script src="./d772-collegium.js?v=3354"></script>\n<script src="./d772-instruction-depth.js?v=3356"></script>\n<script src="./d772-hall-map.js?v=3358"></script>\n<script src="./living-magic.js?v=3360"></script>\n</body>',1)
 index.write_text(html,encoding="utf-8")
 
 san_index=site/"sanctuary"/"index.html"
