@@ -1,0 +1,12 @@
+const fs=require('fs'),vm=require('vm'),assert=require('assert');
+const js=fs.readFileSync(__dirname+'/duplicate-safe-hatch.js','utf8'),css=fs.readFileSync(__dirname+'/duplicate-safe-hatch.css','utf8');
+for(const m of ["VERSION='3.3.75'","guardian-resonance-gem","function plan","function resolve","wrapGlobalHatch","MajickCelestialIncubator","window.MajickDuplicateSafeHatch"])if(!js.includes(m))throw new Error('missing '+m);
+for(const m of ['.v3375DuplicateSafe'])if(!css.includes(m))throw new Error('missing CSS '+m);
+const guardians=[{type:'velora',name:'Velora'},{type:'cascade',name:'Cascade'},{type:'vesper',name:'Vesper'}];
+const ctx={window:{S:{legacy:{pets:[{id:'p1',type:'velora'}],eggs:[{id:'e1',type:'velora'}]},majickAccount:{}},MajickGuardianRegistry:{resolveType:r=>String(r?.type||r||''),all:()=>guardians,get:t=>guardians.find(g=>g.type===t)},MajickGuardianCare:{catalog:[],ensure(){return ctx.window.S.majickAccount},broadcastState(){}},MajickStateCore:{ensureAccount(){return ctx.window.S.majickAccount}},MajickRenderQueue:null},S:null,document:{querySelector(){return null}},setInterval(){return 0},clearInterval(){},Date,console};
+ctx.S=ctx.window.S;vm.createContext(ctx);vm.runInContext(js,ctx);
+const p=ctx.window.MajickDuplicateSafeHatch.plan(ctx.window.S.legacy.eggs[0]);
+assert.notEqual(p.mode,'normal','duplicate egg must not be treated as a normal duplicate hatch');
+const fresh=ctx.window.MajickDuplicateSafeHatch.plan({id:'e2',type:'cascade'});
+assert.equal(fresh.mode,'normal','unowned Guardian should hatch normally');
+console.log('V3.3.75 duplicate-safe hatch smoke passed');
