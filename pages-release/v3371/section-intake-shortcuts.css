@@ -1,0 +1,4 @@
+/* V3.3.71 — D772 direct section intake shortcuts */
+.v3371AddMaterials{width:100%;margin-top:8px;padding:8px 10px;border:1px solid rgba(199,160,213,.28);border-radius:9px;background:linear-gradient(135deg,#4b315a,#34223f);color:#f0e5f2;font:800 9px/1.35 system-ui;cursor:pointer}
+.v3371AddMaterials:hover,.v3371AddMaterials:focus-visible{border-color:#d6b16d;background:#593969;outline:none;box-shadow:0 0 0 2px rgba(214,177,109,.1)}
+@media(max-width:600px){.v3371AddMaterials{min-height:40px;font-size:10px}}
