@@ -140,7 +140,7 @@ if 'guardian-academic-presence.js?v=3366' not in main or 'guardian-academic-pres
 coursemap=(site/'d772-course-map.js').read_text(encoding='utf-8')
 for marker in ("VERSION='3.3.67'","Assessing Research and Data Credibility","Interpreting Data Using Statistics and Graphs","Applying Probability","awaiting-material","window.MajickD772CourseMap"):
     if marker not in coursemap: fail('D772 Course Map missing '+marker)
-if 'd772-course-map.js?v=3367' not in main or 'd772-course-map.css?v=3367' not in main:
+if 'd772-course-map.js?v=3373-section2' not in main or 'd772-course-map.css?v=3367' not in main:
     fail('V3.3.67 D772 Course Map assets are not installed in index.html')
 
 add_material=(site/'study-material'/'AddStudyMaterialPage.js').read_text(encoding='utf-8')
@@ -196,9 +196,9 @@ for marker in ("window.MajickLearningPlan","passageList","PERSONAL LEARNING PLAN
 if 'learning-plan.js?v=3324' not in main or 'learning-plan.css?v=3324' not in main:
     fail('Learning Plan assets are not installed in index.html')
 tutor=(site/'course-tutor.js').read_text(encoding='utf-8')
-for marker in ("window.MajickCourseTutor","D772_SECTION_ONE","Understanding Data Collection Methods","Recognizing Bias in Data Collection","Unveiling Data Misrepresentations","Conclusions About Data Findings","Needs Review","targetRigor"):
+for marker in ("window.MajickCourseTutor","D772_SECTION_ONE","D772_SECTION_TWO","Exploring Various Types of Data","Choosing Graphical Displays","Data Distribution Interpretation","Calculating Single-Variable Descriptive Statistics","Can I identify different classifications of data?","Can I select an appropriate graphical display based on data type(s)?","Can I describe the distribution of data given a graphical display?","Can I calculate single-variable descriptive statistics?","OpenStax Introductory Statistics","NIST/SEMATECH","tutorSourceRefs","Needs Review","targetRigor"):
     if marker not in tutor: fail('Course Tutor missing '+marker)
-if 'course-tutor.js?v=3326-lesson32-guide' not in main or 'course-tutor.css?v=3326' not in main:
+if 'course-tutor.js?v=3373-section2' not in main or 'course-tutor.css?v=3373-section2' not in main:
     fail('Course Tutor assets are not installed in index.html')
 learn=(site/'learn-mode.js').read_text(encoding='utf-8')
 for marker in ("VERSION='3.3.38'","Teach → Visual → Worked Example","Arcane Anchor Wall","ADAPTIVE REPAIR INSERTED","CAN I DO THIS?"):
@@ -260,7 +260,7 @@ for marker in ("window.MajickSanctuaryRecovery","v3322SyncOwnedGuardians","v3322
 visual=(site/'sanctuary'/'v3325-sanctuary-visual-authority.js').read_text(encoding='utf-8')
 for marker in ("window.MajickGuardianVisualAuthority","v3325SyncOwnedVisuals","v3325BaseScale","totalVisible"):
     if marker not in visual: fail('Guardian visual authority missing '+marker)
-for marker in ('majick-state-core.js?v=3322-recovery','guardian-care-economy.js?v=3347-stations','v3317-main.js?v=3372-source-provenance','v3322-main-recovery.js?v=3322'):
+for marker in ('majick-state-core.js?v=3322-recovery','guardian-care-economy.js?v=3347-stations','v3317-main.js?v=3373-section2','v3322-main-recovery.js?v=3322'):
     if marker not in main: fail('main cache-bust/runtime missing '+marker)
 if 'v3322-sanctuary-recovery.js?v=3322' not in san:
     fail('Sanctuary recovery asset is not installed')
