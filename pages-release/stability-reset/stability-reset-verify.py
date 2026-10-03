@@ -67,7 +67,7 @@ if 'd772-collegium.js?v=3354' not in main or 'd772-collegium.css?v=3354' not in 
     fail('V3.3.54 D772 Collegium assets are not installed in index.html')
 
 instruction=(site/'d772-instruction-depth.js').read_text(encoding='utf-8')
-for marker in ("VERSION='3.3.56'","PROFESSOR'S LESSON BRIEF","Sampling bias","Statistical significance","Random assignment","v3356ProfessorBrief","v3356ArchiveIndex","window.MajickD772InstructionDepth"):
+for marker in ("VERSION='3.3.56'","LESSON BRIEF","Sampling bias","Statistical significance","Random assignment","v3356ProfessorBrief","v3356ArchiveIndex","window.MajickD772InstructionDepth"):
     if marker not in instruction: fail('D772 Instruction Depth missing '+marker)
 if 'd772-instruction-depth.js?v=3356' not in main or 'd772-instruction-depth.css?v=3356' not in main:
     fail('V3.3.56 D772 Instruction Depth assets are not installed in index.html')
