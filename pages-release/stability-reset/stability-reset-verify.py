@@ -202,7 +202,7 @@ for marker in ("window.MajickLearningPlan","passageList","PERSONAL LEARNING PLAN
 if 'learning-plan.js?v=3324' not in main or 'learning-plan.css?v=3324' not in main:
     fail('Learning Plan assets are not installed in index.html')
 tutor=(site/'course-tutor.js').read_text(encoding='utf-8')
-for marker in ("window.MajickCourseTutor","D772_SECTION_ONE","D772_SECTION_TWO","Exploring Various Types of Data","Categorical data","Quantitative data","number of workout machines","architectural style","locker number","OpenStax Introductory Statistics 2e §1.1","Can I identify different classifications of data?","Choosing Graphical Displays","Data Distribution Interpretation","Calculating Single-Variable Descriptive Statistics","tutorSourceRefs","Needs Review","targetRigor"):
+for marker in ("window.MajickCourseTutor","D772_SECTION_ONE","D772_SECTION_TWO","Exploring Various Types of Data","Categorical data","Quantitative data","number of workout machines","architectural style","A number used only as a label can still be categorical.","OpenStax Introductory Statistics 2e §1.1","Can I identify different classifications of data?","Choosing Graphical Displays","Data Distribution Interpretation","Calculating Single-Variable Descriptive Statistics","tutorSourceRefs","Needs Review","targetRigor"):
     if marker not in tutor: fail('Course Tutor missing '+marker)
 if 'course-tutor.js?v=3376-s2-l1' not in main or 'course-tutor.css?v=3374-l3-repair' not in main:
     fail('Course Tutor assets are not installed in index.html')
