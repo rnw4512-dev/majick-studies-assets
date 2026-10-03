@@ -4,7 +4,7 @@ site=Path(sys.argv[1])
 def fail(msg): raise SystemExit('STABILITY RESET VERIFY FAILED: '+msg)
 main=(site/'index.html').read_text(encoding='utf-8')
 san=(site/'sanctuary'/'index.html').read_text(encoding='utf-8')
-for f in ('v3310-ui-compat.js','v3312-ui-compat.js','guardian-registry.js','majick-state-core.js','learning-lab.js','learning-lab.css','learning-plan.js','learning-plan.css','course-tutor.js','course-tutor.css','learn-mode.js','learn-mode.css','d755-retake.js','d755-retake.css','guardian-core.js','guardian-core.css','study-progress-bridge.js','guardian-life-main.js','guardian-life-main.css','game-realm.js','game-realm.css','magical-college-home.js','magical-college-home.css','guardian-care-economy.js','v3317-main.js','sanctuary/v3317-sanctuary.js','sanctuary/v3320-sanctuary-life.js','sanctuary/v3321-sanctuary-customize.js','v3322-main-recovery.js','sanctuary/v3322-sanctuary-recovery.js','sanctuary/v3325-sanctuary-visual-authority.js','sanctuary/guardian-core-sanctuary.js','sanctuary/sanctuary-alive.js','sanctuary/sanctuary-roster.js'):
+for f in ('v3310-ui-compat.js','v3312-ui-compat.js','guardian-registry.js','majick-state-core.js','learning-lab.js','learning-lab.css','learning-plan.js','learning-plan.css','course-tutor.js','course-tutor.css','learn-mode.js','learn-mode.css','d755-retake.js','d755-retake.css','guardian-core.js','guardian-core.css','study-progress-bridge.js','guardian-life-main.js','guardian-life-main.css','game-realm.js','game-realm.css','magical-college-home.js','magical-college-home.css','guardian-care-economy.js','v3317-main.js','sanctuary/v3317-sanctuary.js','sanctuary/v3320-sanctuary-life.js','sanctuary/v3321-sanctuary-customize.js','v3322-main-recovery.js','sanctuary/v3322-sanctuary-recovery.js','sanctuary/v3325-sanctuary-visual-authority.js','sanctuary/guardian-core-sanctuary.js','sanctuary/sanctuary-alive.js','sanctuary/sanctuary-roster.js','d772-collegium.js','d772-collegium.css'):
     p=site/f
     if not p.exists() or not p.stat().st_size: fail('missing '+f)
 for old in ('v3310-main.js','v3312-main.js','v3313-main.js','v3314-main.js','v3315-main.js','v3316-main.js'):
@@ -56,6 +56,12 @@ if ('V'+current_version) not in main_bridge:
 if 'CANON[' in main_bridge: fail('main bridge still contains fixed Guardian CANON lookup')
 if "const meta=registry()?.get?.(p.type);" not in main_bridge: fail('Guardian payload is not registry-driven')
 if r'\\nconst canonOf' in main_bridge: fail('escaped newline leaked into JavaScript source')
+
+d772=(site/'d772-collegium.js').read_text(encoding='utf-8')
+for marker in ("VERSION='3.3.54'","Understanding Data Collection Methods","Recognizing Bias in Data Collection","Unveiling Data Misrepresentations","Conclusions About Data Findings","v3354CampusGate","v3354TeachingBoard","v3354ArchiveDesk","window.MajickD772Collegium"):
+    if marker not in d772: fail('D772 Collegium missing '+marker)
+if 'd772-collegium.js?v=3354' not in main or 'd772-collegium.css?v=3354' not in main:
+    fail('V3.3.54 D772 Collegium assets are not installed in index.html')
 
 san_bridge=(site/'sanctuary'/'v3317-sanctuary.js').read_text(encoding='utf-8')
 if 'PROTECTED_MOTION_TYPES()' not in san_bridge: fail('Sanctuary motion loop is not registry-driven')
