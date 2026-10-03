@@ -107,6 +107,8 @@ OVERLAYS=[
     ("pages-release/v3354/d772-collegium.css","d772-collegium.css"),
     ("pages-release/v3356/d772-instruction-depth.js","d772-instruction-depth.js"),
     ("pages-release/v3356/d772-instruction-depth.css","d772-instruction-depth.css"),
+    ("pages-release/v3357/sanctuary-dorm.js","sanctuary/sanctuary-dorm.js"),
+    ("pages-release/v3357/sanctuary-dorm.css","sanctuary/sanctuary-dorm.css"),
     ("pages-release/v3315/study-material/materialParser.js","study-material/materialParser.js"),
     ("pages-release/v3315/study-material/materialStoreModel.js","study-material/materialStoreModel.js"),
     ("pages-release/v3315/study-material/questionBuilder.js","study-material/questionBuilder.js"),
@@ -192,8 +194,8 @@ for src_name,(dst_name,expected_hash,expected_bytes) in PINNED_MOTION.items():
 progress=site/"app-progress.json"
 if progress.exists():
     data=json.loads(progress.read_text(encoding="utf-8"))
-    data["version"]="V3.3.56 D772 Instruction Depth"
-    data["learning_intelligence"]="V3.3.56 D772 Instruction Depth with professor lesson briefs, key-term clouds, explicit WGU traps, comparison anchors, a D772 Section 1 research index, D772 Realm training, distinct Collegium spaces, active Guardian support, protected lifetime Majick XP, and protected Sanctuary movement preserved"
+    data["version"]="V3.3.57 Sanctuary Dorm Polish"
+    data["learning_intelligence"]="V3.3.57 Sanctuary Dorm Polish with D772 Instruction Depth and Realm Training preserved, plus Moonlit Collegium Guardian Residence identity, Study Nook, Care Station, Play Commons, and Rest Loft environmental zones. Protected Guardian movement and the 33 pinned motion assets remain unchanged."
     data["sanctuary_version"]="V3.3.42 Sanctuary Alive Personal Nooks"
     data["sanctuary_home"]="Every hatched Guardian has a distinct bed and personal nook, favorite keepsake and comfort item, need-driven and personality-driven room routines, physical care travel, visible protected Phaser movement, evolved idle/action art, evolution ceremony, Guardian vocal reactions, care inventory, and room-safe furniture layout"
     data["sanctuary_customization"]="personal Guardian nooks, feeding/play zones, owned furniture storage, Cozy Dorm layout preset"
@@ -210,9 +212,9 @@ html=html.replace('<link rel="stylesheet" href="./learning-lab.css?v=3319">','')
 html=html.replace('./guardian-care-economy.css?v=stability-1','./guardian-care-economy.css?v=3322-recovery')
 html=html.replace('./majick-state-core.js?v=stability-1','./majick-state-core.js?v=3322-recovery')
 html=html.replace('./guardian-care-economy.js?v=stability-1','./guardian-care-economy.js?v=3347-stations')
-html=html.replace('./v3317-main.js?v=stability-1','./v3317-main.js?v=3356-d772-instruction')
+html=html.replace('./v3317-main.js?v=stability-1','./v3317-main.js?v=3357-sanctuary-dorm')
 html=html.replace('</head>','<link rel="stylesheet" href="./learning-lab.css?v=3319">\\n<link rel="stylesheet" href="./learning-plan.css?v=3324">\\n<link rel="stylesheet" href="./course-tutor.css?v=3326">\\n<link rel="stylesheet" href="./magical-college-home.css?v=3337">\\n<link rel="stylesheet" href="./wgu-practice.css?v=3333-candlelit">\\n<link rel="stylesheet" href="./learn-mode.css?v=3338-candlelit">\\n<link rel="stylesheet" href="./d755-retake.css?v=3340-study-shelf-resume">\\n<link rel="stylesheet" href="./guardian-core.css?v=3341">\\n<link rel="stylesheet" href="./guardian-life-main.css?v=3342">\\n</head>',1)
-main_tag='<script src="./v3317-main.js?v=3356-d772-instruction"></script>'
+main_tag='<script src="./v3317-main.js?v=3357-sanctuary-dorm"></script>'
 if main_tag not in html:
     fail("authoritative main runtime tag missing while installing recovery")
 html=html.replace(main_tag,'<script src="./learning-lab.js?v=3319-mistake-journal"></script>\\n<script src="./learning-plan.js?v=3324"></script>\\n<script src="./course-tutor.js?v=3326-lesson32-guide"></script>\\n<script src="./learn-mode.js?v=3338-course-resume"></script>\\n<script src="./d755-retake.js?v=3340-study-shelf-resume"></script>\\n<script src="./wgu-practice.js?v=3336-designed-experiments"></script>\\n'+main_tag+'\\n<script src="./magical-college-home.js?v=3337"></script>\\n<script src="./v3322-main-recovery.js?v=3322"></script>\\n<script src="./guardian-core.js?v=3341"></script>\\n<script src="./study-progress-bridge.js?v=3342"></script>\\n<script src="./guardian-life-main.js?v=3342"></script>',1)
@@ -241,6 +243,8 @@ if san_tag not in san_html:
     fail("authoritative Sanctuary runtime tag missing while installing Sanctuary recovery")
 san_html=san_html.replace(san_tag,san_tag+'\\n<script src="./v3320-sanctuary-life.js?v=3350-room"></script>\\n<script src="./v3321-sanctuary-customize.js?v=3322-recovery"></script>\\n<script src="./v3322-sanctuary-recovery.js?v=3322"></script>\\n<script src="./v3325-sanctuary-visual-authority.js?v=3325"></script>\\n<script src="./guardian-core-sanctuary.js?v=3341"></script>\\n<script src="./sanctuary-alive.js?v=3349-moments"></script>',1)
 san_html=san_html.replace('<script src="./sanctuary-alive.js?v=3349-moments"></script>','<script src="./sanctuary-alive.js?v=3349-moments"></script>\n<script src="./sanctuary-roster.js?v=3357-stations"></script>',1)
+san_html=san_html.replace('</head>','<link rel="stylesheet" href="./sanctuary-dorm.css?v=3357">\n</head>',1)
+san_html=san_html.replace('</body>','<script src="./sanctuary-dorm.js?v=3357"></script>\n</body>',1)
 san_index.write_text(san_html,encoding="utf-8")
 
 (site/".nojekyll").touch()
