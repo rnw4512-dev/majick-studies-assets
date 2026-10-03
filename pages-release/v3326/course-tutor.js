@@ -210,13 +210,19 @@ const D772_SECTION_TWO_CONTENT={
       {title:'Categorical data',text:'Categorical data identify a label, type, group, or category. The value tells you what kind of thing an observation is, not how much of a quantity it has. Your course example “architectural style” is categorical because colonial, ranch, mid-century modern, and Victorian are category labels.'},
       {title:'Quantitative data',text:'Quantitative data are numerical values that represent amounts, counts, or measurements. Your course examples—number of workout machines, lawn area in square feet, and number of cars in a parking lot—are quantitative because the recorded numbers represent quantities.'},
       {title:'Fast decision rule',text:'Ask: “Does this value tell me HOW MUCH/HOW MANY, or WHAT KIND?” HOW MUCH/HOW MANY usually points to quantitative data. WHAT KIND points to categorical data. A number can still be categorical when it is only acting as a label, so always ask what the number means.'},
-      {title:'Course examples',text:'Five gyms with 12, 15, 10, 22, and 20 machines → quantitative. Lawn areas such as 1440, 1600, and 2100 square feet → quantitative. House architectural styles such as colonial, ranch, and Victorian → categorical. Number of cars in a parking lot → quantitative.'}
+      {title:'Course examples',text:'Five gyms with 12, 15, 10, 22, and 20 machines → quantitative. Lawn areas such as 1440, 1600, and 2100 square feet → quantitative. House architectural styles such as colonial, ranch, and Victorian → categorical. Number of cars in a parking lot → quantitative.'},
+      {title:'Explanatory variable',text:'The explanatory variable is the variable used to explain, predict, or potentially influence the response. In an experiment it may be deliberately changed or assigned by the researcher; in an observational relationship it can still be the variable treated as the possible influence without proving causation.'},
+      {title:'Response variable',text:'The response variable is the outcome being observed or measured—the variable that may respond to differences in the explanatory variable.'},
+      {title:'Direction-of-influence check',text:'When the roles are unclear, phrase the relationship in both directions and ask which direction makes substantive sense. This identifies the intended explanatory/response roles; it does not by itself prove that the explanatory variable causes the response.'},
+      {title:'WGU research-question examples',text:'Mindset → test scores: mindset is the explanatory variable and test score is the response. Hot-dog type → calories: type of hot dog is explanatory and number of calories is the response. Type of light while sleeping → nearsightedness: light type is explanatory and nearsightedness is the response. The course also uses age and political affiliation only as a direction-of-influence reasoning example; that example does not establish that age causes political affiliation.'}
     ],
     vocab:[
       ['Categorical data','Data whose values identify groups, labels, or types rather than numerical amounts.'],
       ['Quantitative data','Data whose values are numerical quantities such as counts or measurements.'],
       ['Count','A quantitative value describing how many items or events there are.'],
-      ['Measurement','A quantitative value obtained by measuring an amount such as area, distance, time, or weight.']
+      ['Measurement','A quantitative value obtained by measuring an amount such as area, distance, time, or weight.'],
+      ['Explanatory variable','The variable used to explain, predict, or potentially influence the response variable.'],
+      ['Response variable','The outcome variable that is observed or measured and may change with the explanatory variable.']
     ],
     practiceEvidence:{
       source:'WGU D772 Section 2 Lesson 1 practice questions 4–7',
@@ -224,14 +230,19 @@ const D772_SECTION_TWO_CONTENT={
         {prompt:'Number of workout machines at gyms',answer:'Quantitative'},
         {prompt:'Area of lawns in square feet',answer:'Quantitative'},
         {prompt:'Architectural style of houses',answer:'Categorical'},
-        {prompt:'Number of cars in a parking lot',answer:'Quantitative'}
+        {prompt:'Number of cars in a parking lot',answer:'Quantitative'},
+        {prompt:'Mindset and standardized-test scores',answer:'Mindset = explanatory; test score = response'},
+        {prompt:'Hot-dog type and calories',answer:'Hot-dog type = explanatory; calories = response'},
+        {prompt:'Type of sleep light and nearsightedness',answer:'Light type = explanatory; nearsightedness = response'}
       ],
       corroboration:[
         {source:'OpenStax Introductory Statistics 2e §1.1',url:'https://openstax.org/books/introductory-statistics-2e/pages/1-1-definitions-of-statistics-probability-and-key-terms',supports:'numerical variables versus categorical variables'},
-        {source:'OpenStax Introductory Statistics §1.2',url:'https://openstax.org/books/introductory-statistics/pages/1-2-data-sampling-and-variation-in-data-and-sampling',supports:'counts as quantitative discrete and types/categories as qualitative/categorical'}
+        {source:'OpenStax Introductory Statistics §1.2',url:'https://openstax.org/books/introductory-statistics/pages/1-2-data-sampling-and-variation-in-data-and-sampling',supports:'counts as quantitative discrete and types/categories as qualitative/categorical'},
+        {source:'OpenStax Introductory Statistics §1.4',url:'https://openstax.org/books/introductory-statistics/pages/1-4-experimental-design-and-ethics',supports:'explanatory variable as the possible influence and response variable as the measured outcome'},
+        {source:'OpenStax Contemporary Mathematics §8.8',url:'https://openstax.org/books/contemporary-mathematics/pages/8-8-scatter-plots-correlation-and-regression-lines',supports:'when dependence is meaningful, the explanatory variable is the variable the response may depend on; some relationships may not have a uniquely preferred direction'}
       ]
     },
-    memory:['HOW MANY / HOW MUCH = usually quantitative.','WHAT KIND = categorical.','Counts are quantitative.','Measurements are quantitative.','A number used only as a label can still be categorical.']
+    memory:['HOW MANY / HOW MUCH = usually quantitative.','WHAT KIND = categorical.','Counts are quantitative.','Measurements are quantitative.','A number used only as a label can still be categorical.','Explanatory = possible influence/predictor; response = measured outcome.','Use the two-directions test when roles are unclear.','Explanatory does not automatically mean proven cause.']
   },
   'd772-s2-l2':{
     sourceLabel:'COURSE-PROVIDED D772 • SECTION 2 STRUCTURE',
