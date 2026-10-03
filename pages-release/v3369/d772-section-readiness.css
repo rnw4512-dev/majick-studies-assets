@@ -1,0 +1,5 @@
+/* V3.3.69 — D772 section source readiness */
+.v3367SectionCard{position:relative}.v3369SourceStatus{display:flex;align-items:center;gap:6px;margin-top:10px;padding:7px 8px;border-top:1px solid rgba(188,151,202,.12);color:#8f8196;font:700 8px/1.35 system-ui;letter-spacing:.03em}.v3369SourceStatus span{color:#b69bc1}.v3367SectionCard.has-sources .v3369SourceStatus{color:#d8c99f}.v3367SectionCard.has-sources .v3369SourceStatus span{color:#e1c27c;text-shadow:0 0 10px rgba(222,181,104,.3)}
+.v3367SectionCard.awaiting-material.has-sources{border-color:rgba(194,155,210,.35);background:linear-gradient(145deg,#1b1222,#17101f)}.v3367SectionCard.awaiting-material.has-sources .v3367Awaiting{border-style:solid;background:radial-gradient(circle,rgba(122,78,142,.16),transparent 64%)}.v3367SectionCard.awaiting-material.has-sources .v3367Awaiting b:after{content:" • materials received";color:#d8bd82}
+.v3367ArchiveSections>div.has-sources{opacity:1;border-color:rgba(205,167,216,.3)}.v3367ArchiveSections>div.has-sources span{color:#c9b18a}
+@media(max-width:600px){.v3369SourceStatus{font-size:8px;padding-inline:4px}}
