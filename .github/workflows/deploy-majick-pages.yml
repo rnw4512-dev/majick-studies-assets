@@ -1,5 +1,5 @@
 name: Deploy Majick Studies Golden Baseline to GitHub Pages
-# V3.3.73 D772 Section 2 Structure
+# V3.3.74 D772 Lesson 3 Quiz Repair
 
 on:
   push:
@@ -411,7 +411,7 @@ jobs:
 
           # Golden architecture and protected assets.
           grep -q '"build_foundation": "V3.3.18 Golden Baseline"' _site/app-progress.json
-          grep -q '"version": "V3.3.73 D772 Section 2 Structure"' _site/app-progress.json
+          grep -q '"version": "V3.3.74 D772 Lesson 3 Quiz Repair"' _site/app-progress.json
           grep -q 'living-collegium.js?v=3361-shared-queue' _site/index.html
           grep -q 'living-collegium.css?v=3346-tool-search-smooth-render' _site/index.html
           grep -q 'collegium-atmosphere.js?v=3364-micro-sound' _site/index.html
@@ -437,8 +437,8 @@ jobs:
           grep -q 'learning-lab.css?v=3319' _site/index.html
           grep -q 'learning-plan.js?v=3324' _site/index.html
           grep -q 'learning-plan.css?v=3324' _site/index.html
-          grep -q 'course-tutor.js?v=3373-section2' _site/index.html
-          grep -q 'course-tutor.css?v=3373-section2' _site/index.html
+          grep -q 'course-tutor.js?v=3374-l3-repair' _site/index.html
+          grep -q 'course-tutor.css?v=3374-l3-repair' _site/index.html
           grep -q 'magical-college-home.js?v=3337' _site/index.html
           grep -q 'magical-college-home.css?v=3337' _site/index.html
           grep -q 'wgu-practice.js?v=3336-designed-experiments' _site/index.html
@@ -458,7 +458,7 @@ jobs:
           grep -q 'guardian-life-main.css?v=3342' _site/index.html
           cmp pages-release/v3343/game-realm.js _site/game-realm.js
           cmp pages-release/v3343/game-realm.css _site/game-realm.css
-          grep -q 'game-realm.js?v=3362-d772-review' _site/index.html
+          grep -q 'game-realm.js?v=3374-l3-repair' _site/index.html
           grep -q 'game-realm.css?v=3362-d772-review' _site/index.html
           grep -q 'Assessment Sigil Sort' _site/game-realm.js
           grep -q "activeCourse==='D755'" _site/game-realm.js
@@ -516,7 +516,7 @@ jobs:
           grep -q 'guardian-food-bowl' _site/guardian-care-economy.js
           grep -q 'guardian-water-basin' _site/guardian-care-economy.js
           grep -q 'guardian-brush' _site/guardian-care-economy.js
-          grep -q 'v3317-main.js?v=3373-section2' _site/index.html
+          grep -q 'v3317-main.js?v=3374-l3-repair' _site/index.html
           grep -q 'v3322-main-recovery.js?v=3322' _site/index.html
           grep -q 'v3320-sanctuary-life.js?v=3350-room' _site/sanctuary/index.html
           grep -q 'v3321-sanctuary-customize.js?v=3322-recovery' _site/sanctuary/index.html
@@ -717,13 +717,13 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
-          echo "Waiting for V3.3.73 at $LIVE_URL"
+          echo "Waiting for V3.3.74 at $LIVE_URL"
           python - <<'PY'
           import json,time,urllib.request,urllib.error,os
           base=(os.environ.get('LIVE_URL') or 'https://rnw4512-dev.github.io/majick-studies-assets/').rstrip('/')+'/'
           status_url=os.environ.get('STATUS_URL','')
           token=os.environ.get('GH_TOKEN','')
-          expected='V3.3.73 D772 Section 2 Structure'
+          expected='V3.3.74 D772 Lesson 3 Quiz Repair'
           last=None
           for attempt in range(1,121):
               try:
@@ -829,7 +829,7 @@ jobs:
                       'personal Guardian beds': 'guardian-bed-' in sanctuary_alive,
                       'legacy Sunday analytics removed': 'Sunday Readiness & Thinking Analytics' not in index,
                       'legacy Sunday deadline removed': '<h3>Before Sunday</h3>' not in index,
-                      'Game Realm cache key': 'game-realm.js?v=3362-d772-review' in index,
+                      'Game Realm cache key': 'game-realm.js?v=3374-l3-repair' in index,
                       'Moon Crystal word bank': 'realmWordBank' in game_realm,
                       'D755 Assessment Sigil Sort': 'Assessment Sigil Sort' in game_realm,
                       'D755 norm criterion chamber': 'Norm-Referenced vs Criterion-Referenced' in game_realm,
@@ -844,12 +844,12 @@ jobs:
                   last=checks
                   missing=[name for name,ok in checks.items() if not ok]
                   if not missing:
-                      print('LIVE V3.3.73 DEPLOYMENT VERIFIED')
+                      print('LIVE V3.3.74 DEPLOYMENT VERIFIED')
                       raise SystemExit(0)
                   print('Live deployment waiting on '+str(len(missing))+' marker(s): '+', '.join(missing))
               except Exception as e:
                   last=repr(e)
                   print('Live check waiting:',last)
               time.sleep(5)
-          raise SystemExit('Pages deployment was created and left active, but the live site did not expose V3.3.73 within 10 minutes: '+repr(last))
+          raise SystemExit('Pages deployment was created and left active, but the live site did not expose V3.3.74 within 10 minutes: '+repr(last))
           PY
