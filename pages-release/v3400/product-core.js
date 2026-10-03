@@ -155,7 +155,10 @@ function decorateHome(){
 }
 function decorateDorm(){
  if(window.S?.screen!=='companions')return;
- const d=ensure();if(d?.stages?.reward&&!d.stages.dorm)record('dorm-return',{screen:'companions'});
+ const d=ensure();if(!d?.stages?.reward)return;
+ if(!d.stages.guardian)record('guardian-reacted',{screen:'companions',source:'dorm-arrival'});
+ const next=ensure();
+ if(next?.stages?.guardian&&!next.stages.dorm)record('dorm-return',{screen:'companions'});
 }
 function decorate(){decorateHome();decorateDorm();document.documentElement.dataset.majickProductCore='3400'}
 const q=window.MajickRenderQueue;
