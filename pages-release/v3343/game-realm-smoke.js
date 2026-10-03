@@ -60,7 +60,7 @@ context.questionPool=()=>pool;
 context.S.activeCourse='D772';
 const d772Pool=context.MajickGameRealm.d772RealmPool();
 assert.equal(d772Pool.length,36,'D772 Realm supplement should provide 36 guaranteed D772 scenarios including Section 2 Lesson 1 data-type practice');
-assert.deepEqual([...new Set(d772Pool.map(q=>q.section))].sort(),['Bias & Credibility','Conclusions','Data Collection','Misrepresentation'],'D772 Realm supplement should cover all four Section 1 domains');
+assert.deepEqual([...new Set(d772Pool.map(q=>q.section))].sort(),['Bias & Credibility','Conclusions','Data Collection','Misrepresentation','Types of Data'],'D772 Realm supplement should cover all four Section 1 domains plus Section 2 Lesson 1 Types of Data');
 assert.ok(context.MajickGameRealm.realmQuestionPool().length>=36,'D772 Realm pool should merge guaranteed scenarios with Section 1 repair and Section 2 Lesson 1 practice');
 context.startRuneSort();
 assert.equal(context.session.type,'runesort','Rune Sort should start for D772');
