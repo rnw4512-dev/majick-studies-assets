@@ -1,0 +1,11 @@
+const fs=require('fs'),vm=require('vm'),assert=require('assert');
+const js=fs.readFileSync(__dirname+'/source-provenance.js','utf8'),css=fs.readFileSync(__dirname+'/source-provenance.css','utf8');
+for(const marker of ["VERSION='3.3.72'","needs-reference-check","verified-fact","attributed-opinion","canPromote","validateReview","window.MajickSourceProvenance"])if(!js.includes(marker))throw new Error('missing '+marker);
+for(const marker of ['.v3372ProvenancePanel','.v3372ProvenanceBadge','.v3372SourceCredit'])if(!css.includes(marker))throw new Error('missing CSS '+marker);
+const ctx={window:{},Date,console};vm.createContext(ctx);vm.runInContext(js,ctx);
+const P=ctx.window.MajickSourceProvenance;
+assert.equal(P.canPromote({provenance:{verificationStatus:'needs-reference-check'}}),false);
+assert.equal(P.canPromote({provenance:{verificationStatus:'verified-fact',reference:'https://example.org'}}),true);
+assert.equal(P.validateReview({}, {verificationStatus:'verified-fact'}).ok,false);
+assert.equal(P.validateReview({}, {verificationStatus:'attributed-opinion',authorOrOrg:'Jane Doe'}).ok,true);
+console.log('V3.3.72 Source Provenance smoke passed');
