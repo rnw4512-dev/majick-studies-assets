@@ -39,6 +39,14 @@ const D772_SECTION_TWO={
   id:'d772-s2',
   title:'Section 2: Interpreting Data Using Statistics and Graphs',
   competency:'Interpret data using statistical methods and graphical representations.',
+  provenance:{
+    courseStructure:'User-provided WGU D772 Section 2 introduction and assessment-prep prompts',
+    corroboration:[
+      {source:'OpenStax Introductory Statistics',url:'https://openstax.org/books/introductory-statistics/pages/2-introduction',supports:'graphical displays, distributions, measures of location/center/spread and descriptive statistics'},
+      {source:'NIST/SEMATECH e-Handbook of Statistical Methods',url:'https://www.nist.gov/publications/nistsematech-e-handbook-statistical-methods-chapter-1-exploratory-data-analysis',supports:'graphical analysis for structure, patterns and outliers'},
+      {source:'OpenStax Introductory Statistics',url:'https://openstax.org/books/introductory-statistics/pages/1-3-frequency-frequency-tables-and-levels-of-measurement',supports:'classification and levels of measurement'}
+    ]
+  },
   assessmentPrep:[
     'Can I identify different classifications of data?',
     'Can I select an appropriate graphical display based on data type(s)?',
