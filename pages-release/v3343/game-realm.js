@@ -252,6 +252,44 @@
   }
 
   /* ---------- D755 Assessment Sigil Sort ---------- */
+  /* V3.3.53: clear, non-ambiguous D755 assessment-identification scenarios.
+     These supplement the course bank so the Realm can train longer without recycling. */
+  const ASSESSMENT_SIGIL_SUPPLEMENT=[
+    {id:'v3353-data-01',trap:'assessment-type',concept:'qualitative quantitative',prompt:'A school psychologist interviews a student about what reading feels like, records the student’s descriptions of frustration, and looks for themes in the responses. What kind of data is being collected?',answer:'Qualitative',why:'The evidence is descriptive and focuses on experiences and qualities rather than numerical scores.'},
+    {id:'v3353-data-02',trap:'assessment-type',concept:'qualitative quantitative',prompt:'A teacher records the number of correctly read words per minute for each student during a fluency probe. What kind of data is this?',answer:'Quantitative',why:'Words correct per minute is numerical data that can be counted and compared.'},
+    {id:'v3353-data-03',trap:'assessment-type',concept:'qualitative quantitative',prompt:'An evaluator reviews open-ended parent comments describing when a child becomes overwhelmed during homework. What kind of data is this?',answer:'Qualitative',why:'Open-ended descriptions provide narrative information about patterns and experiences.'},
+    {id:'v3353-data-04',trap:'assessment-type',concept:'qualitative quantitative',prompt:'A behavior specialist graphs how many times a student leaves their seat during each 30-minute observation. What kind of data is this?',answer:'Quantitative',why:'The behavior is being expressed as a numerical frequency.'},
+    {id:'v3353-data-05',trap:'assessment-type',concept:'qualitative quantitative',prompt:'A teacher writes detailed notes about the strategies a student uses while solving unfamiliar math problems. What kind of data is this?',answer:'Qualitative',why:'The notes describe characteristics of the student’s approach instead of producing a numeric score.'},
+    {id:'v3353-data-06',trap:'assessment-type',concept:'qualitative quantitative',prompt:'A progress report shows that a student answered 18 of 25 comprehension questions correctly. What kind of data is this?',answer:'Quantitative',why:'The result is expressed numerically as a count of correct responses.'},
+
+    {id:'v3353-admin-01',trap:'assessment-type',concept:'formal informal',prompt:'A teacher uses a published achievement test with standardized directions, fixed timing, and scoring rules. Which administration type best describes it?',answer:'Formal',why:'Predetermined directions, timing, and scoring rules are features of formal assessment.'},
+    {id:'v3353-admin-02',trap:'assessment-type',concept:'formal informal',prompt:'During a reading group, a teacher asks follow-up questions, changes the prompts based on student responses, and takes quick notes. Which administration type best describes this?',answer:'Informal',why:'The teacher is using flexible, instruction-embedded procedures rather than a fixed standardized format.'},
+    {id:'v3353-admin-03',trap:'assessment-type',concept:'formal informal',prompt:'An evaluator follows the exact manual for a norm-referenced cognitive assessment and scores responses according to published rules. Which administration type is this?',answer:'Formal',why:'Following standardized procedures and scoring rules makes this a formal assessment.'},
+    {id:'v3353-admin-04',trap:'assessment-type',concept:'formal informal',prompt:'A teacher listens to a student read a classroom passage and jots down miscues without using a standardized script or fixed scoring protocol. Which administration type is this?',answer:'Informal',why:'The observation is flexible and classroom-based rather than administered under standardized procedures.'},
+
+    {id:'v3353-purpose-01',trap:'assessment-type',concept:'assessment purpose',prompt:'Halfway through a unit, a teacher gives a short exit ticket and changes tomorrow’s lesson after seeing a common misconception. What is the primary assessment purpose?',answer:'Formative',why:'The assessment occurs during learning and is used immediately to adjust instruction.'},
+    {id:'v3353-purpose-02',trap:'assessment-type',concept:'assessment purpose',prompt:'At the end of a semester, students take a final exam used to evaluate what they learned across the course. What is the primary assessment purpose?',answer:'Summative',why:'The assessment evaluates learning at a defined endpoint.'},
+    {id:'v3353-purpose-03',trap:'assessment-type',concept:'assessment purpose',prompt:'A teacher checks student responses after a mini-lesson and reteaches the concept before moving on. What is the primary assessment purpose?',answer:'Formative',why:'The information is being used during instruction to guide the next teaching move.'},
+    {id:'v3353-purpose-04',trap:'assessment-type',concept:'assessment purpose',prompt:'A district gives an end-of-year assessment to summarize student achievement after instruction is complete. What is the primary assessment purpose?',answer:'Summative',why:'The measure summarizes achievement after a period of instruction.'},
+    {id:'v3353-purpose-05',trap:'assessment-type',concept:'assessment purpose',prompt:'A special educator gives a brief probe every Friday and changes the intervention when the student’s trend line is not improving. What is the primary assessment purpose?',answer:'Formative',why:'Repeated results are being used to adjust instruction while learning is still occurring.'},
+    {id:'v3353-purpose-06',trap:'assessment-type',concept:'assessment purpose',prompt:'After completing a six-week instructional unit, a teacher gives a unit test that contributes to the final grade. What is the primary assessment purpose?',answer:'Summative',why:'The test judges learning after the instructional period has ended.'},
+
+    {id:'v3353-monitor-01',trap:'assessment-type',concept:'screening tier movement',prompt:'At the beginning of the year, every student in the grade completes the same brief reading measure to identify who may need additional support. What is this?',answer:'Universal Screening',why:'Universal screening is given broadly to identify students who may be at risk and need further support.'},
+    {id:'v3353-monitor-02',trap:'assessment-type',concept:'screening tier movement',prompt:'A student receiving Tier 2 reading intervention completes a brief probe each week so the team can see whether the intervention is working. What is this?',answer:'Progress Monitoring',why:'Progress monitoring repeatedly measures response to an intervention over time.'},
+    {id:'v3353-monitor-03',trap:'assessment-type',concept:'screening tier movement',prompt:'All kindergarten students complete a short early-literacy check in September to flag possible risk. What is this?',answer:'Universal Screening',why:'The measure is administered to all students to identify who may need more support.'},
+    {id:'v3353-monitor-04',trap:'assessment-type',concept:'screening tier movement',prompt:'A team graphs a student’s weekly math-fluency scores during an intervention and compares the trend with the goal line. What is this?',answer:'Progress Monitoring',why:'Repeated data are being used to judge growth and intervention response.'},
+
+    {id:'v3353-compare-01',trap:'assessment-type',concept:'criterion cbm',prompt:'A student’s score is interpreted by comparing it with the performance of a representative national peer group. Which type of interpretation is this?',answer:'Norm-Referenced',why:'Norm-referenced interpretation compares a student with other people in a norm group.'},
+    {id:'v3353-compare-02',trap:'assessment-type',concept:'criterion cbm',prompt:'A student must correctly identify 90% of taught sight words to meet the instructional mastery standard. Which type of interpretation is this?',answer:'Criterion-Referenced',why:'Criterion-referenced interpretation compares performance with a predetermined standard.'},
+    {id:'v3353-compare-03',trap:'assessment-type',concept:'criterion cbm',prompt:'A reading score is reported as the student’s percentile rank compared with same-age peers. Which type of interpretation is this?',answer:'Norm-Referenced',why:'Percentile rank locates performance relative to a norm group.'},
+    {id:'v3353-compare-04',trap:'assessment-type',concept:'criterion cbm',prompt:'A student is considered proficient after demonstrating every required step on a task-analysis checklist. Which type of interpretation is this?',answer:'Criterion-Referenced',why:'The student is being compared with defined performance criteria rather than with peers.'},
+
+    {id:'v3353-evidence-01',trap:'assessment-type',concept:'data sources',prompt:'A teacher watches a student during independent work and records each instance of task refusal as it happens. Which data source is this?',answer:'Direct Observation',why:'The teacher is recording behavior while directly watching it occur.'},
+    {id:'v3353-evidence-02',trap:'assessment-type',concept:'data sources',prompt:'After class, a teacher writes a brief narrative describing a notable conflict between two students and the events surrounding it. Which data source is this?',answer:'Anecdotal Record',why:'An anecdotal record is a brief narrative account of a significant observed event.'},
+    {id:'v3353-evidence-03',trap:'assessment-type',concept:'data sources',prompt:'An observer uses a timer and records whether a student is on task at each 30-second interval during math. Which data source is this?',answer:'Direct Observation',why:'The observer is systematically recording behavior in real time.'},
+    {id:'v3353-evidence-04',trap:'assessment-type',concept:'data sources',prompt:'A paraprofessional writes a short dated note describing what happened before and after a student unexpectedly left the classroom. Which data source is this?',answer:'Anecdotal Record',why:'The note is a narrative record of a specific event rather than a structured live measurement system.'}
+  ];
+
   const ASSESSMENT_SIGIL_FAMILIES={
     data:{label:'Qualitative vs Quantitative',left:'Qualitative',right:'Quantitative',concept:/qualitative quantitative/i,
       map:a=>/qualitative/i.test(a)&&!/quantitative/i.test(a)?'Qualitative':/quantitative/i.test(a)&&!/qualitative/i.test(a)?'Quantitative':null},
@@ -267,9 +305,17 @@
       map:a=>/^direct observation$/i.test(a)?'Direct Observation':/^anecdotal record$/i.test(a)?'Anecdotal Record':null}
   };
   function assessmentSigilPool(key){
-    const cfg=ASSESSMENT_SIGIL_FAMILIES[key],bank=globalThis.MajickD755Retake?.BANK||[];
-    if(!cfg||!Array.isArray(bank))return [];
+    const cfg=ASSESSMENT_SIGIL_FAMILIES[key];
+    const courseBank=Array.isArray(globalThis.MajickD755Retake?.BANK)?globalThis.MajickD755Retake.BANK:[];
+    const bank=[...courseBank,...ASSESSMENT_SIGIL_SUPPLEMENT];
+    if(!cfg)return [];
+    const seen=new Set();
     return shuffleCopy(bank.filter(q=>q?.trap==='assessment-type'&&cfg.concept.test(String(q.concept||''))&&cfg.map(String(q.answer||'')))
+      .filter(q=>{
+        const signature=normalize(String(q.prompt||''))+'|'+normalize(String(q.answer||''));
+        if(!signature||seen.has(signature))return false;
+        seen.add(signature);return true;
+      })
       .map(q=>({...q,sigilAnswer:cfg.map(String(q.answer||''))})));
   }
   globalThis.startAssessmentSigilSort=function(){
@@ -282,7 +328,7 @@
   };
   globalThis.chooseAssessmentSigilFamily=function(key){
     if(!session||session.type!=='assessmentsigilsort'||!ASSESSMENT_SIGIL_FAMILIES[key])return;
-    const items=assessmentSigilPool(key).slice(0,4);
+    const items=assessmentSigilPool(key).slice(0,8);
     if(items.length<2){try{alert('This assessment chamber needs more D755 scenarios. Choose another chamber.')}catch(_){}return}
     session.family=key;session.items=items;session.index=0;session.score=0;session.phase='play';session.answered=false;session.choice=null;session.finished=false;
     render?.();
@@ -314,7 +360,7 @@
       return '<div class="qwrap realmMode realmAssessmentSigil">'+realmScene('assessmentsigilsort')+guardianBanner('Choose the assessment distinction you want to train.')+
         '<div class="qtop"><span class="qbadge">✥ Assessment Sigil Sort</span><b>D755 only</b></div>'+
         trialGuide('assessmentsigilsort')+
-        '<div class="card"><h3>Choose an assessment chamber</h3><p>Each chamber trains one distinction using real D755 practice scenarios.</p><div class="assessmentSigilChambers">'+
+        '<div class="card"><h3>Choose an assessment chamber</h3><p>Each chamber trains one distinction with clear D755-style scenarios. Runs now pull up to 8 questions before recycling.</p><div class="assessmentSigilChambers">'+
         Object.entries(ASSESSMENT_SIGIL_FAMILIES).map(([key,cfg])=>'<button type="button" onclick="chooseAssessmentSigilFamily(\''+E(key)+'\')"><span>✥</span><b>'+E(cfg.label)+'</b><small>'+assessmentSigilPool(key).length+' scenarios available</small></button>').join('')+
         '</div></div></div>';
     }
