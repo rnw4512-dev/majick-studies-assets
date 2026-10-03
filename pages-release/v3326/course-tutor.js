@@ -238,6 +238,7 @@ const D772_SECTION_TWO_CONTENT={
     memory:['Classify → choose display → describe distribution → calculate and interpret descriptive statistics.']
   }
 };
+Object.values(D772_SECTION_TWO_CONTENT).forEach(x=>{x.provenance=D772_SECTION_TWO.provenance});
 
 const D772_TUTOR_HELP={
   'd772-s1-l1':{
@@ -795,7 +796,9 @@ function renderTutorAssist(kind,lesson,ch,id=cid()){
 }
 function officialTeachingHtml(official){
   if(!official)return '';
-  return '<article class="tutorOfficialTeaching"><small>'+E(official.sourceLabel||'VERIFIED D772 COURSE NOTES')+'</small><h4>'+E(official.overview)+'</h4>'+(official.teach||[]).map(x=>'<div class="tutorOfficialTopic"><b>'+E(x.title)+'</b><p>'+E(x.text)+'</p></div>').join('')+((official.memory||[]).length?'<div class="tutorMemoryCues"><small>MEMORY CUES</small><ul>'+official.memory.map(x=>'<li>'+E(x)+'</li>').join('')+'</ul></div>':'')+'</article>';
+  const refs=official.provenance?.corroboration||[];
+  const refHtml=refs.length?'<div class="tutorSourceRefs"><small>REFERENCES USED TO CORROBORATE THIS SECTION</small><ul>'+refs.map(r=>'<li><b>'+E(r.source)+'</b><span>'+E(r.supports||'')+'</span><code>'+E(r.url||'')+'</code></li>').join('')+'</ul></div>':'';
+  return '<article class="tutorOfficialTeaching"><small>'+E(official.sourceLabel||'VERIFIED D772 COURSE NOTES')+'</small><h4>'+E(official.overview)+'</h4>'+(official.teach||[]).map(x=>'<div class="tutorOfficialTopic"><b>'+E(x.title)+'</b><p>'+E(x.text)+'</p></div>').join('')+((official.memory||[]).length?'<div class="tutorMemoryCues"><small>MEMORY CUES</small><ul>'+official.memory.map(x=>'<li>'+E(x)+'</li>').join('')+'</ul></div>':'')+refHtml+'</article>';
 }
 function openLesson(lessonId,helpKind=null,id='D772'){
   try{
