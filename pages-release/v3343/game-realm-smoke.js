@@ -140,7 +140,19 @@ assert.equal(context.session.answered,true,'Hex Breaker should resolve after jud
 assert.ok(context.session.judgmentScore>=1,'Hex Breaker should score a correct validity judgment');
 assert.equal(context.session.breakStreak,1,'Hex Breaker should build a successful break streak');
 
-assert.equal(context.document.documentElement.dataset.majickRealmVariety,'3355','Game Realm dataset marker missing');
+
+context.S.activeCourse='D772';
+const reviewQueue=context.MajickGameRealm.buildD772SectionReview();
+assert.equal(reviewQueue.length,12,'D772 Section 1 Review should contain 12 questions');
+const reviewCounts=reviewQueue.reduce((acc,q)=>(acc[q.section]=(acc[q.section]||0)+1,acc),{});
+assert.deepEqual(reviewCounts,{'Data Collection':3,'Bias & Credibility':3,'Misrepresentation':3,'Conclusions':3},'D772 review should balance three questions per Section 1 domain');
+context.startD772SectionReview();
+assert.equal(context.session.type,'gauntlet','D772 Section Review should reuse the Guardian Gauntlet engine');
+assert.equal(context.session.reviewMode,true,'D772 Section Review should be marked as review mode');
+assert.equal(context.session.limit,12,'D772 Section Review should run 12 questions');
+assert.equal(context.session.questions.length,1,'D772 Section Review should begin with one queued question');
+
+assert.equal(context.document.documentElement.dataset.majickRealmVariety,'3359','Game Realm dataset marker missing');
 assert.match(src,/realmTrialGuide/,'Featured Realm clarity guide source should remain installed');
 assert.match(src,/Assessment Sigil Sort/,'D755 Assessment Sigil Sort source missing');
 assert.match(src,/globalThis\.S\?\.activeCourse==='D755'/,'D755 Assessment Sigil Sort must be course-gated');
