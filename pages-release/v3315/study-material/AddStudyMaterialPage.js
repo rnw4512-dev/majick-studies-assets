@@ -44,7 +44,8 @@ function render(){
         '<h3>1. Choose your course</h3>'+
         '<select id="materialCourse">'+opts.map(x=>'<option value="'+E(x.id)+'" '+(x.id===window.S?.activeCourse?'selected':'')+'>'+E((window.MajickCourseManager?.record?.(x.id)?.status==='passed'?'✓ ':'')+x.id+' • '+x.title)+'</option>').join('')+'</select>'+
         '<div id="materialSectionWrap" class="v3315SectionPicker" '+(window.S?.activeCourse==='D772'?'':'hidden')+'><label for="materialSection"><b>D772 section</b><small>Keep each upload in its own course section.</small></label><select id="materialSection">'+D772_SECTIONS.map(x=>'<option value="'+x.id+'">'+E(x.title)+'</option>').join('')+'</select></div>'+
-        '<h3>2. Add your notes</h3>'+
+        '<section class="v3372ProvenancePanel"><div><small>REFERENCE CHECK</small><h3>2. Source & claim details</h3><p>Your upload is evidence to evaluate, not automatic truth. Facts need corroboration; opinions stay attributed.</p></div><div class="v3372ProvenanceGrid"><label>Claim type<select id="materialClaimType"><option value="mixed">Mixed / not sure yet</option><option value="factual">Factual claims</option><option value="interpretation">Interpretation / analysis</option><option value="opinion">Opinion / viewpoint</option></select></label><label>Source kind<select id="materialSourceKind"><option value="user-material">My notes / uploaded material</option><option value="official-primary">Official / primary source</option><option value="textbook">Textbook / course material</option><option value="scholarly-secondary">Scholarly secondary source</option><option value="reputable-secondary">Reputable secondary source</option><option value="commentary">Commentary / opinion</option></select></label><label>Author or organization<input id="materialAuthorOrg" type="text" placeholder="Author, WGU, CDC, journal, etc."></label><label>Reference / URL / citation<input id="materialReference" type="text" placeholder="URL, DOI, book/chapter, or citation"></label><label>Source date<input id="materialSourceDate" type="text" placeholder="Publication or access date"></label></div><div class="v3372TrustNote"><b>Default status: Needs Reference Check</b><span>Only corroborated facts should become trusted study content. Viewpoints remain attributed to their source.</span></div></section>'+
+        '<h3>3. Add your notes</h3>'+
         '<div class="v3315UploadRow">'+
           '<label class="v3315Drop"><span>⬆</span><b>Upload File</b><small>PDF • Word DOCX • TXT • MD</small><input id="materialFile" type="file" accept=".pdf,.docx,.txt,.md"></label>'+
           '<div class="v3315Or">OR</div>'+
@@ -53,7 +54,7 @@ function render(){
         '<div id="materialStatus" class="v3315Status" aria-live="polite">Nothing added yet.</div>'+
       '</section>'+
       '<aside class="v3315ForgeCard">'+
-        '<h3>3. What should Majick build?</h3>'+
+        '<h3>4. What should Majick build?</h3>'+
         '<div class="v3315Checks">'+outputChecks()+'</div>'+
         '<div class="v3315Count"><b>Adaptive question bank</b><small>D772 uses a quality-first WGU-style concept and scenario bank. Other courses build adaptive practice from active source notes.</small></div>'+
         '<button class="btn primary v3315ForgeButton" id="materialForgeBtn">✦ Forge Study Material</button>'+
@@ -172,6 +173,12 @@ async function openSource(id){
   const file=document.getElementById('materialFile');
   if(file)file.value='';
   applyOutputs(row.outputs||{});
+  const p=row.provenance||{};
+  const claim=document.getElementById('materialClaimType');if(claim)claim.value=p.claimType||'mixed';
+  const kind=document.getElementById('materialSourceKind');if(kind)kind.value=p.submittedSourceKind||'user-material';
+  const author=document.getElementById('materialAuthorOrg');if(author)author.value=p.authorOrOrg||'';
+  const ref=document.getElementById('materialReference');if(ref)ref.value=p.reference||'';
+  const date=document.getElementById('materialSourceDate');if(date)date.value=p.sourceDate||'';
   showPreview(row.generated);
   setStatus('Opened '+row.sourceName+' • '+(row.active===false?'paused':'active')+' for '+row.courseId+'.');
   await refreshLibrary();
@@ -266,10 +273,26 @@ async function deleteDuplicateSources(courseId=selectedCourseId()){
   await refreshLibrary();
 }
 
+function provenanceBadge(row){
+  const p=row?.provenance||{};
+  const status=String(p.verificationStatus||'needs-reference-check');
+  const map={
+    'verified-fact':['VERIFIED FACT','verified'],
+    'corroborated':['CORROBORATED','verified'],
+    'attributed-opinion':['ATTRIBUTED OPINION','opinion'],
+    'disputed':['DISPUTED / CHECK','disputed'],
+    'rejected':['NOT TRUSTED','rejected'],
+    'needs-reference-check':['NEEDS REFERENCE CHECK','pending']
+  };
+  const pair=map[status]||map['needs-reference-check'];
+  return '<span class="v3372ProvenanceBadge '+pair[1]+'">'+pair[0]+'</span>';
+}
 function sourceRowHtml(r,duplicateIds){
   const active=r.active!==false;
+  const p=r.provenance||{};
+  const credit=p.authorOrOrg?'<em class="v3372SourceCredit">Source: '+E(p.authorOrOrg)+(p.reference?' • '+E(p.reference):'')+'</em>':'';
   return '<article class="v3315SourceRow '+(active?'':'paused')+'" data-source="'+E(r.id)+'">'+
-    '<div><b>'+E(r.sourceName)+(duplicateIds.has(r.id)?' <span class="v3315DuplicateBadge">DUPLICATE COPY</span>':'')+'</b><small>'+E(String(r.sourceType||'').toUpperCase())+' • '+new Date(r.createdAt).toLocaleDateString()+' • '+(r.generated?.practiceQuestions?.length||0)+' questions • '+(active?'ACTIVE':'PAUSED')+(r.learningPath?.lessonTitle?' • '+E(r.learningPath.lessonTitle):'')+'</small></div>'+
+    '<div><b>'+E(r.sourceName)+(duplicateIds.has(r.id)?' <span class="v3315DuplicateBadge">DUPLICATE COPY</span>':'')+' '+provenanceBadge(r)+'</b><small>'+E(String(r.sourceType||'').toUpperCase())+' • '+new Date(r.createdAt).toLocaleDateString()+' • '+(r.generated?.practiceQuestions?.length||0)+' questions • '+(active?'ACTIVE':'PAUSED')+(r.learningPath?.lessonTitle?' • '+E(r.learningPath.lessonTitle):'')+'</small>'+credit+'</div>'+
     '<div class="v3315SourceActions">'+
       '<button class="btn ghost v3315OpenSource" type="button">Open</button>'+
       '<button class="btn ghost v3315RegenerateSource" type="button">Regenerate</button>'+
@@ -278,6 +301,7 @@ function sourceRowHtml(r,duplicateIds){
     '</div>'+
   '</article>';
 }
+
 function sectionLibraryHtml(rows,duplicateIds,cid){
   if(cid!=='D772')return rows.map(r=>sourceRowHtml(r,duplicateIds)).join('');
   return D772_SECTIONS.map(sec=>{
@@ -331,7 +355,15 @@ async function forge(){
       sourceType:parsed.sourceType,
       sourceName:parsed.name,
       text:parsed.text,
-      outputs:opts
+      outputs:opts,
+      provenance:{
+        claimType:document.getElementById('materialClaimType')?.value||'mixed',
+        submittedSourceKind:document.getElementById('materialSourceKind')?.value||'user-material',
+        authorOrOrg:String(document.getElementById('materialAuthorOrg')?.value||'').trim(),
+        reference:String(document.getElementById('materialReference')?.value||'').trim(),
+        sourceDate:String(document.getElementById('materialSourceDate')?.value||'').trim(),
+        verificationStatus:'needs-reference-check'
+      }
     });
     draft.settings={targetCount,adaptive:true};
     setStatus('Forging questions, explanations, vocabulary and review…');
@@ -380,6 +412,6 @@ function bind(){
   refreshLibrary();
 }
 
-window.AddStudyMaterialPage={render,bind,refreshLibrary,openSource,regenerateSource,toggleSource,removeSource,deleteDuplicateSources,duplicateSourceIds,selectedSectionId,sectionMeta,D772_SECTIONS,sourceRowHtml,sectionLibraryHtml};
+window.AddStudyMaterialPage={render,bind,refreshLibrary,openSource,regenerateSource,toggleSource,removeSource,deleteDuplicateSources,duplicateSourceIds,selectedSectionId,sectionMeta,D772_SECTIONS,sourceRowHtml,sectionLibraryHtml,provenanceBadge};
 window.v3315BindStudyMaterialPage=bind;
 })();
