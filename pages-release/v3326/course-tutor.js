@@ -35,6 +35,45 @@ const D772_SECTION_ONE={
   ]
 };
 
+const D772_SECTION_TWO={
+  id:'d772-s2',
+  title:'Section 2: Interpreting Data Using Statistics and Graphs',
+  competency:'Interpret data using statistical methods and graphical representations.',
+  assessmentPrep:[
+    'Can I identify different classifications of data?',
+    'Can I select an appropriate graphical display based on data type(s)?',
+    'Can I describe the distribution of data given a graphical display?',
+    'Can I calculate single-variable descriptive statistics?'
+  ],
+  lessons:[
+    {id:'d772-s2-l1',number:1,title:'Exploring Various Types of Data',short:'Types of Data',keywords:['data type','classification','classifications','categorical','quantitative','qualitative','numerical','variable'],
+      goal:'Identify and distinguish the data classifications required by the Section 2 competency.',
+      visual:['Observe the variable','Identify how values are recorded','Classify the data','Choose valid interpretations'],
+      thinking:['What kind of values are recorded?','Are the values categories or numerical measurements?','Does the classification affect what summaries or graphs make sense?'],
+      traps:['Choosing a graph or statistic before identifying the data type.']},
+    {id:'d772-s2-l2',number:2,title:'Choosing Graphical Displays',short:'Graphical Displays',keywords:['graph','graphical display','bar graph','histogram','box plot','dot plot','display','chart'],
+      goal:'Select an appropriate graphical display based on the data type or types in the problem.',
+      visual:['Data type','Question being asked','Candidate displays','Best display','Interpret'],
+      thinking:['What data type is present?','What comparison or pattern needs to be visible?','Which display matches that purpose?'],
+      traps:['Selecting a display because it looks familiar instead of because it matches the data.']},
+    {id:'d772-s2-l3',number:3,title:'Data Distribution Interpretation',short:'Distributions',keywords:['distribution','shape','center','spread','outlier','skew','symmetric','graphical display'],
+      goal:'Describe the distribution of data from a graphical display using the features required by the course.',
+      visual:['Graph','Shape / pattern','Center','Spread','Unusual values'],
+      thinking:['What overall pattern do I see?','Where are values concentrated?','How variable are they?','Are there unusual values or features?'],
+      traps:['Describing one bar or point instead of the distribution as a whole.']},
+    {id:'d772-s2-l4',number:4,title:'Calculating Single-Variable Descriptive Statistics',short:'Descriptive Statistics',keywords:['descriptive statistic','mean','median','mode','range','variance','standard deviation','quartile','percentile','single variable'],
+      goal:'Calculate and interpret the single-variable descriptive statistics required by the Section 2 competency.',
+      visual:['Single variable','Organize values','Choose statistic','Calculate','Interpret in context'],
+      thinking:['Which statistic is requested?','What values belong in the calculation?','What does the result mean for this variable?'],
+      traps:['Calculating correctly but interpreting the statistic incorrectly.']},
+    {id:'d772-s2-review',number:null,title:'Section 2: Summary and Test',short:'Section 2 Review',review:true,keywords:[],
+      goal:'Combine data classification, graphical-display selection, distribution interpretation, and single-variable descriptive statistics.',
+      visual:['Classify','Choose display','Describe distribution','Calculate','Interpret'],
+      thinking:['What type of data is this?','Which display fits?','What does the distribution show?','Which descriptive statistic is needed?'],
+      traps:['Skipping the data-type step before choosing a graph or statistic.']}
+  ]
+};
+
 const D772_SECTION_ONE_CONTENT={
   'd772-s1-l1':{
     overview:'Lesson 1 asks where the data came from and how the study was designed. Follow the chain: population and sample → sampling method → study type → experimental design.',
@@ -149,6 +188,49 @@ const D772_SECTION_ONE_CONTENT={
   }
 };
 
+const D772_SECTION_TWO_CONTENT={
+  'd772-s2-l1':{
+    sourceLabel:'COURSE-PROVIDED D772 • SECTION 2 STRUCTURE',
+    overview:'Section 2, Interpreting Data Using Statistics and Graphs, begins by exploring various types of data. The course assessment target is: “Can I identify different classifications of data?” Detailed teaching content will expand as verified lesson material is added.',
+    teach:[{title:'Assessment target',text:'Identify different classifications of data. Majick should verify the specific classifications and examples against the lesson material and reliable statistics references before promoting them into trusted master notes.'}],
+    vocab:[],
+    memory:['Before choosing a graph or statistic, identify what kind of data you have.']
+  },
+  'd772-s2-l2':{
+    sourceLabel:'COURSE-PROVIDED D772 • SECTION 2 STRUCTURE',
+    overview:'Lesson 2 is Choosing Graphical Displays. The course assessment target is: “Can I select an appropriate graphical display based on data type(s)?” Detailed display rules will be added from verified lesson material.',
+    teach:[{title:'Assessment target',text:'Select an appropriate graphical display based on the data type or types in the problem. Majick should preserve the reason a display is appropriate, not just memorize a chart name.'}],
+    vocab:[],
+    memory:['Data type first; display choice second.']
+  },
+  'd772-s2-l3':{
+    sourceLabel:'COURSE-PROVIDED D772 • SECTION 2 STRUCTURE',
+    overview:'Lesson 3 is Data Distribution Interpretation. The course assessment target is: “Can I describe the distribution of data given a graphical display?” Detailed distribution vocabulary will be added from verified lesson material.',
+    teach:[{title:'Assessment target',text:'Describe the distribution shown in a graphical display. Majick should require the description to be supported by visible features of the data.'}],
+    vocab:[],
+    memory:['Describe what the distribution actually shows; do not infer beyond the graph.']
+  },
+  'd772-s2-l4':{
+    sourceLabel:'COURSE-PROVIDED D772 • SECTION 2 STRUCTURE',
+    overview:'Lesson 4 is Calculating Single-Variable Descriptive Statistics. The course assessment target is: “Can I calculate single-variable descriptive statistics?” Detailed formulas and interpretation rules will be added from verified lesson material.',
+    teach:[{title:'Assessment target',text:'Calculate the requested descriptive statistic for one variable and interpret the result in context. Specific formulas and calculator procedures should be verified before they are promoted into trusted notes.'}],
+    vocab:[],
+    memory:['Know what statistic is requested, calculate it correctly, then interpret it in context.']
+  },
+  'd772-s2-review':{
+    sourceLabel:'COURSE-PROVIDED D772 • SECTION 2 ASSESSMENT PREP',
+    overview:'Section 2 review aligns directly to four competency questions supplied in the course.',
+    teach:[
+      {title:'Assessment Prep 1',text:'Can I identify different classifications of data?'},
+      {title:'Assessment Prep 2',text:'Can I select an appropriate graphical display based on data type(s)?'},
+      {title:'Assessment Prep 3',text:'Can I describe the distribution of data given a graphical display?'},
+      {title:'Assessment Prep 4',text:'Can I calculate single-variable descriptive statistics?'}
+    ],
+    vocab:[],
+    memory:['Classify → choose display → describe distribution → calculate and interpret descriptive statistics.']
+  }
+};
+
 const D772_TUTOR_HELP={
   'd772-s1-l1':{
     simple:'Think of Lesson 1 as four questions: Who is the full group? Who actually got studied? How were they chosen? Did the researcher only observe, or did they assign a treatment? Those answers tell you whether the sample and study design are strong enough for the claim.',
@@ -213,12 +295,19 @@ function headingInfo(row){
   };
 }
 function escRx(s){return String(s||'').replace(/[.*+?^${}()|[\]\\]/g,'\\$&')}
-function lessonById(id){return D772_SECTION_ONE.lessons.find(l=>l.id===id)||null}
+const D772_OFFICIAL_SECTIONS=[D772_SECTION_ONE,D772_SECTION_TWO];
+function d772SectionForRow(row){
+  const sid=String(row?.sectionId||row?.learningPath?.sectionId||'');
+  if(sid==='d772-s2')return D772_SECTION_TWO;
+  return D772_SECTION_ONE;
+}
+function lessonById(id){return D772_OFFICIAL_SECTIONS.flatMap(s=>s.lessons).find(l=>l.id===id)||null}
 function classifyD772(row){
   if(row?.learningPath?.courseId==='D772'&&(row.learningPath.lessonId||row.learningPath.multiLesson))return row.learningPath;
+  const section=d772SectionForRow(row);
   const text=sourceText(row),head=headingInfo(row);
   let best=null,bestScore=0;
-  for(const lesson of D772_SECTION_ONE.lessons.filter(x=>!x.review)){
+  for(const lesson of section.lessons.filter(x=>!x.review)){
     let score=0;
     if(head.lessonNumber===lesson.number)score+=12;
     if(norm(head.lessonTitle).includes(norm(lesson.short)))score+=8;
@@ -228,7 +317,7 @@ function classifyD772(row){
   }
   if(!best||bestScore<2)return null;
   return {
-    courseId:'D772',sectionId:D772_SECTION_ONE.id,sectionTitle:D772_SECTION_ONE.title,
+    courseId:'D772',sectionId:section.id,sectionTitle:section.title,
     lessonId:best.id,lessonTitle:best.title,lessonNumber:best.number,confidence:bestScore>=10?'high':bestScore>=4?'medium':'low'
   };
 }
@@ -236,7 +325,8 @@ function d772Segments(row){
   const raw=String(row?.text||'');
   if(!raw)return [];
   const marks=[];
-  for(const lesson of D772_SECTION_ONE.lessons.filter(x=>!x.review)){
+  const section=d772SectionForRow(row);
+  for(const lesson of section.lessons.filter(x=>!x.review)){
     const patterns=[
       new RegExp('\\bLesson\\s*'+lesson.number+'\\b[^\\n]{0,120}','ig'),
       new RegExp(escRx(lesson.title),'ig')
@@ -286,7 +376,8 @@ function classifyD772Item(row,item){
     if(hit)return hit.lessonId;
   }
   let best=null,bestScore=0;
-  for(const lesson of D772_SECTION_ONE.lessons.filter(x=>!x.review)){
+  const section=d772SectionForRow(row);
+  for(const lesson of section.lessons.filter(x=>!x.review)){
     const score=scoreD772Item(text,lesson);
     if(score>bestScore){bestScore=score;best=lesson}
   }
@@ -307,16 +398,16 @@ function tagD772Generated(row){
       const lesson=lessonById(id);lessonIds.add(id);
       if(item.learningPathLessonId!==id){item.learningPathLessonId=id;changed=true}
       if(item.learningPathLessonTitle!==lesson.title){item.learningPathLessonTitle=lesson.title;changed=true}
-      if(item.learningPathSectionId!==D772_SECTION_ONE.id){item.learningPathSectionId=D772_SECTION_ONE.id;changed=true}
+      const section=d772SectionForRow(row);if(item.learningPathSectionId!==section.id){item.learningPathSectionId=section.id;changed=true}
     }
   }
   const ids=[...lessonIds];
   if(ids.length>1){
-    const next={courseId:'D772',sectionId:D772_SECTION_ONE.id,sectionTitle:D772_SECTION_ONE.title,multiLesson:true,lessonIds:ids,confidence:'item-level'};
+    const section=d772SectionForRow(row);const next={courseId:'D772',sectionId:section.id,sectionTitle:section.title,multiLesson:true,lessonIds:ids,confidence:'item-level'};
     if(JSON.stringify(row.learningPath)!==JSON.stringify(next)){row.learningPath=next;changed=true}
   }else if(ids.length===1){
     const lesson=lessonById(ids[0]);
-    const next={courseId:'D772',sectionId:D772_SECTION_ONE.id,sectionTitle:D772_SECTION_ONE.title,lessonId:lesson.id,lessonTitle:lesson.title,lessonNumber:lesson.number,confidence:'item-level'};
+    const section=d772SectionForRow(row);const next={courseId:'D772',sectionId:section.id,sectionTitle:section.title,lessonId:lesson.id,lessonTitle:lesson.title,lessonNumber:lesson.number,confidence:'item-level'};
     if(JSON.stringify(row.learningPath)!==JSON.stringify(next)){row.learningPath=next;changed=true}
   }
   row.learningPathRepair={version:'3.3.27',mode:'item-level',lessonIds:ids,originalSourcePreserved:true};
@@ -397,9 +488,8 @@ function dynamicSections(id,sourceRows){
 }
 function sections(id=cid()){
   const sourceRows=rows(id);
-  // D772 has exactly one official course section: Section 1. There is no Section 2.
-  // Uploaded material is sorted into Lessons 1–4 and the Section 1 Summary/Test only.
-  if(id==='D772')return [JSON.parse(JSON.stringify(D772_SECTION_ONE))];
+  // D772 official structure currently includes Sections 1 and 2. Section 2 lesson detail expands only as verified material is added.
+  if(id==='D772')return D772_OFFICIAL_SECTIONS.map(sec=>JSON.parse(JSON.stringify(sec)));
   return dynamicSections(id,sourceRows);
 }
 function rowHasLesson(row,lessonId,id=cid()){
@@ -440,7 +530,7 @@ function answersForQuestions(qs,id=cid()){
   const ids=new Set((qs||[]).map(q=>q.id));
   return (prog(id).answers||[]).filter(a=>ids.has(a.qid));
 }
-function officialD772Content(lesson,id=cid()){return id==='D772'&&lesson?D772_SECTION_ONE_CONTENT[lesson.id]||null:null}
+function officialD772Content(lesson,id=cid()){return id==='D772'&&lesson?(D772_SECTION_ONE_CONTENT[lesson.id]||D772_SECTION_TWO_CONTENT[lesson.id]||null):null}
 function mastery(lesson,id=cid()){
   const src=sourcesForLesson(lesson,id),official=officialD772Content(lesson,id),qs=questionsForLesson(lesson,id),answers=answersForQuestions(qs,id);
   const byId=new Map(qs.map(q=>[q.id,q]));
@@ -569,7 +659,7 @@ function chapter(lesson,id=cid()){
   const mergedTeaching=mergeLessonTeaching(sourceRows,lesson,id);
   const uploadedVocab=dedupeVocab(sourceRows,lesson,id);
   const vocab=[];const vocabSeen=new Set();
-  for(const v of [...(official?.vocab||[]).map(x=>({term:x[0],definition:x[1],sourceName:'D772 Section 1 Master Notes'})),...uploadedVocab]){const key=norm(v.term);if(!key||vocabSeen.has(key))continue;vocabSeen.add(key);vocab.push(v)}
+  for(const v of [...(official?.vocab||[]).map(x=>({term:x[0],definition:x[1],sourceName:'D772 verified/course-provided notes'})),...uploadedVocab]){const key=norm(v.term);if(!key||vocabSeen.has(key))continue;vocabSeen.add(key);vocab.push(v)}
   const explanations=uniqText(lessonItems(sourceRows,'explanations',lesson,id),x=>x.explanation);
   const repairs=uniqText(lessonItems(sourceRows,'misconceptionRepair',lesson,id),x=>x.correction);
   const m=mastery(lesson,id);
@@ -611,7 +701,7 @@ function renderPath(){
   const id=cid(),secs=sections(id);
   const active=selectedLesson(id);
   const pathHero=id==='D772'
-    ? '<div class="tutorHero tutorHeroCompact"><div><span>D772 • SECTION 1 • COMPLETE COURSE PATH</span><h3>Four lessons. One Section 1 Summary and Test. No Section 2.</h3><p>The complete Section 1 master notes are built into the Tutor. Extra uploads stay intact and are sorted into the correct lesson without creating duplicate sections.</p></div><button class="btn primary" id="continueTutor">'+(active?'Continue '+E(active.short||active.title):'Open Tutor')+' →</button></div>'
+    ? '<div class="tutorHero tutorHeroCompact"><div><span>D772 • MULTI-SECTION COURSE PATH</span><h3>Section 1 is built. Section 2 now has its four official lessons and competency targets.</h3><p>Section 2 teaching detail expands only from verified course material and corroborated statistics references. Section 3 remains separate until its course structure is supplied.</p></div><button class="btn primary" id="continueTutor">'+(active?'Continue '+E(active.short||active.title):'Open Tutor')+' →</button></div>'
     : '<div class="tutorHero"><div><span>MAJICK COURSE TUTOR • '+E(id)+'</span><h3>Learn the course in order. Prove each lesson at higher rigor.</h3><p>Your uploaded notes automatically fill this path. Repeated material is deduplicated in the tutor chapter and the active question bank.</p></div><button class="btn primary" id="continueTutor">'+(active?'Continue '+E(active.short||active.title):'Open Tutor')+' →</button></div>';
   box.innerHTML=pathHero+
     secs.map(sec=>{
@@ -697,7 +787,7 @@ function renderTutorAssist(kind,lesson,ch,id=cid()){
 }
 function officialTeachingHtml(official){
   if(!official)return '';
-  return '<article class="tutorOfficialTeaching"><small>AUTHORITATIVE D772 • SECTION 1 MASTER NOTES</small><h4>'+E(official.overview)+'</h4>'+(official.teach||[]).map(x=>'<div class="tutorOfficialTopic"><b>'+E(x.title)+'</b><p>'+E(x.text)+'</p></div>').join('')+((official.memory||[]).length?'<div class="tutorMemoryCues"><small>MEMORY CUES</small><ul>'+official.memory.map(x=>'<li>'+E(x)+'</li>').join('')+'</ul></div>':'')+'</article>';
+  return '<article class="tutorOfficialTeaching"><small>'+E(official.sourceLabel||'VERIFIED D772 COURSE NOTES')+'</small><h4>'+E(official.overview)+'</h4>'+(official.teach||[]).map(x=>'<div class="tutorOfficialTopic"><b>'+E(x.title)+'</b><p>'+E(x.text)+'</p></div>').join('')+((official.memory||[]).length?'<div class="tutorMemoryCues"><small>MEMORY CUES</small><ul>'+official.memory.map(x=>'<li>'+E(x)+'</li>').join('')+'</ul></div>':'')+'</article>';
 }
 function openLesson(lessonId,helpKind=null,id='D772'){
   try{
@@ -762,5 +852,5 @@ MajickLearningLab.bind=function(){
 };
 const baseRefresh=MajickLearningLab.refresh;
 MajickLearningLab.refresh=function(){baseRefresh();hydrate()};
-window.MajickCourseTutor={VERSION,D772_SECTION_ONE,D772_SECTION_ONE_CONTENT,D772_TUTOR_HELP,hydrate,sections,classifySource,annotateSource,tagD772Generated,classifyD772Item,d772Segments,sourcesForLesson,questionsForLesson,mastery,sectionProgress,chapter,mergeLessonTeaching,officialD772Content,startPractice,show,renderPath,renderTutor,renderTutorAssist,openLesson,selectedLesson};
+window.MajickCourseTutor={VERSION,D772_SECTION_ONE,D772_SECTION_TWO,D772_SECTION_ONE_CONTENT,D772_SECTION_TWO_CONTENT,D772_TUTOR_HELP,hydrate,sections,classifySource,annotateSource,tagD772Generated,classifyD772Item,d772Segments,sourcesForLesson,questionsForLesson,mastery,sectionProgress,chapter,mergeLessonTeaching,officialD772Content,startPractice,show,renderPath,renderTutor,renderTutorAssist,openLesson,selectedLesson};
 })();
