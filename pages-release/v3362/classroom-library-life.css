@@ -1,0 +1,47 @@
+/* V3.3.62 — Living Classroom + Grimoire Library Life */
+:root{
+ --maj-space-1:6px;--maj-space-2:10px;--maj-space-3:14px;--maj-space-4:18px;--maj-space-5:24px;--maj-space-6:32px;
+ --maj-radius-card:18px;--maj-radius-small:11px;--maj-gold:#e4c37e;--maj-plum:#7c5790;
+}
+:is(.v3354CampusGate,.v3354TeachingBoard,.v3354ArchiveDesk,.v3356ProfessorBrief,.v3356ArchiveIndex,.v3358HallMap){margin-bottom:var(--maj-space-5)}
+:is(.v3354TeachingBoard,.v3354ArchiveDesk,.v3356ProfessorBrief,.v3356ArchiveIndex){gap:var(--maj-space-4)}
+body[data-majick-polish-room=learninglab] .learnLab{position:relative}
+body[data-majick-polish-room=learninglab] .v3354TeachingBoard{position:relative;overflow:hidden}
+body[data-majick-polish-room=learninglab] .v3354TeachingBoard:before,
+body[data-majick-polish-room=learninglab] .v3354TeachingBoard:after{
+ content:"";position:absolute;top:18px;width:5px;height:17px;border-radius:50% 50% 42% 42%;background:#f2c16d;
+ box-shadow:0 0 9px rgba(244,184,94,.75),0 0 22px rgba(224,129,67,.24);opacity:.68;pointer-events:none;
+ animation:v3362Candle 2.8s ease-in-out infinite alternate;transform-origin:50% 100%
+}
+body[data-majick-polish-room=learninglab] .v3354TeachingBoard:before{left:16px}
+body[data-majick-polish-room=learninglab] .v3354TeachingBoard:after{right:16px;animation-delay:-1.2s}
+.v3362BoardRunes{position:absolute;inset:9px 16px auto 16px;display:flex;justify-content:space-between;pointer-events:none;color:rgba(226,194,125,.22);font:700 13px Georgia,serif}
+.v3362BoardRunes i{font-style:normal;text-shadow:0 0 9px rgba(183,120,205,.18)}
+.v3362BoardAwake .v3362BoardRunes i{animation:v3362RuneWake .8s ease both}
+.v3362BoardAwake .v3362BoardRunes i:nth-child(2){animation-delay:.07s}.v3362BoardAwake .v3362BoardRunes i:nth-child(3){animation-delay:.14s}.v3362BoardAwake .v3362BoardRunes i:nth-child(4){animation-delay:.21s}
+body[data-majick-polish-room=learninglab] :is(.v3338Anchor,.tutorOfficialTeaching,.v3356Compare){border-color:rgba(218,181,112,.24)}
+body[data-majick-polish-room=learninglab] .learnTabs button:is(.active,[aria-selected=true]){box-shadow:0 0 0 1px rgba(228,195,126,.18),0 0 20px rgba(177,112,201,.12)}
+body[data-majick-polish-room=livinggrimoire] .v3354ArchiveDesk{position:relative}
+body[data-majick-polish-room=livinggrimoire] .v3354Parchment{position:relative;overflow:hidden}
+body[data-majick-polish-room=livinggrimoire] .v3354Parchment:after{
+ content:"";position:absolute;top:-25%;bottom:-25%;width:36px;left:-60px;transform:skewX(-18deg);
+ background:linear-gradient(90deg,transparent,rgba(255,247,216,.17),transparent);pointer-events:none;
+ animation:v3362PageShimmer 9s ease-in-out infinite
+}
+.v3362Bookmark{position:absolute;right:18px;top:-1px;min-width:38px;padding:10px 7px 14px;background:linear-gradient(#774c78,#4b2d58);clip-path:polygon(0 0,100% 0,100% 80%,50% 100%,0 80%);color:#f2ddb0;font:800 9px/1 system-ui;letter-spacing:.08em;text-align:center;box-shadow:0 4px 12px rgba(31,16,39,.18)}
+.v3354Shelves span{position:relative;overflow:hidden}
+.v3354Shelves span:after{
+ content:"";position:absolute;inset:-40% auto -40% -35%;width:20%;transform:rotate(18deg);
+ background:linear-gradient(90deg,transparent,rgba(245,220,163,.2),transparent);animation:v3362ShelfGlint 11s linear infinite
+}
+.v3354Shelves span:nth-child(2):after{animation-delay:-2.5s}.v3354Shelves span:nth-child(3):after{animation-delay:-5s}.v3354Shelves span:nth-child(4):after{animation-delay:-7.5s}
+.v3354LessonTabs button[aria-current]{position:relative;background:#392343;border-color:#d6b36d;box-shadow:0 0 0 1px rgba(217,180,109,.12)}
+.v3354LessonTabs button[aria-current]:after{content:"BOOKMARK";position:absolute;left:50%;bottom:-17px;transform:translateX(-50%);color:#8c6e49;font:800 7px system-ui;letter-spacing:.08em}
+.v3356ArchiveGrid article{min-height:0}.v3356ArchiveGrid article>div{margin-block:var(--maj-space-2) var(--maj-space-3)}
+@keyframes v3362Candle{0%{transform:scale(.88) rotate(-2deg);opacity:.48}100%{transform:scale(1.08) rotate(2deg);opacity:.8}}
+@keyframes v3362RuneWake{0%{opacity:.15;transform:scale(.8);text-shadow:none}55%{opacity:.9;color:#efd58f;text-shadow:0 0 15px rgba(224,169,243,.65)}100%{opacity:.32;transform:scale(1)}}
+@keyframes v3362PageShimmer{0%,72%{left:-70px;opacity:0}78%{opacity:.7}88%{left:110%;opacity:.35}100%{left:110%;opacity:0}}
+@keyframes v3362ShelfGlint{0%,78%{left:-35%;opacity:0}84%{opacity:.75}94%,100%{left:125%;opacity:0}}
+@media(prefers-reduced-motion:reduce){.v3354TeachingBoard:before,.v3354TeachingBoard:after,.v3362BoardRunes i,.v3354Parchment:after,.v3354Shelves span:after{animation:none!important}}
+html[data-majick-reduce-motion=true] :is(.v3354TeachingBoard:before,.v3354TeachingBoard:after,.v3362BoardRunes i,.v3354Parchment:after,.v3354Shelves span:after){animation:none!important}
+@media(max-width:700px){.v3362Bookmark{right:10px}.v3354LessonTabs button[aria-current]:after{display:none}}
