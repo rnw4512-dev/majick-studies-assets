@@ -115,9 +115,14 @@ function progress(){
  const done=STAGES.filter(s=>d.stages[s.key]).length,total=STAGES.length;
  return {done,total,percent:Math.round(done/total*100)};
 }
+function courseModel(){
+ let sections=[];
+ try{sections=window.MajickCourseTutor?.sections?.(course())||[]}catch(_){}
+ return {course:course(),sections,selectedLesson:lesson()};
+}
 function snapshot(){
  const d=ensure(),p=progress(),next=nextAction();
- return {version:VERSION,schemaVersion:SCHEMA,daily:d,progress:p,next,course:course(),lesson:lesson()};
+ return {version:VERSION,schemaVersion:SCHEMA,daily:d,progress:p,next,course:course(),lesson:lesson(),content:courseModel()};
 }
 function goNext(){
  const n=nextAction();
@@ -153,16 +158,29 @@ function decorateHome(){
  el.querySelector('[data-v3400-next]')?.addEventListener('click',goNext);
  if(!ensure()?.stages?.entered)record('enter-college',{screen:'home'});
 }
+function dormStoryHtml(){
+ const s=snapshot(),rel=window.MajickGuardianCore?.relationshipSnapshot?.(),g=rel?.guardian;
+ const memories=(rel?.recent||[]).slice(0,2);
+ return '<section id="v3400DormStory" class="v3400DormStory">'+
+  '<div><small>TODAY IN YOUR DORM</small><h3>'+escape(s.progress.done)+' / '+escape(s.progress.total)+' study-loop steps complete</h3><p>'+escape(s.daily?.lessonTitle||s.course)+'</p></div>'+
+  (g?'<aside>'+(g.image?'<img src="'+escape(g.image)+'" alt="">':'<span>'+escape(g.icon||'◆')+'</span>')+'<div><small>'+escape(g.name)+' • STUDY RELATIONSHIP</small><b>'+escape(rel.studySessions)+' sessions • '+escape(rel.conceptsTogether)+' concepts • '+escape(rel.practiceWins)+' realm wins</b>'+(memories[0]?'<em>'+escape(memories[0].text)+'</em>':'')+'</div></aside>':'')+
+ '</section>';
+}
 function decorateDorm(){
  if(window.S?.screen!=='companions')return;
- const d=ensure();if(!d?.stages?.reward)return;
- if(!d.stages.guardian)record('guardian-reacted',{screen:'companions',source:'dorm-arrival'});
- const next=ensure();
- if(next?.stages?.guardian&&!next.stages.dorm)record('dorm-return',{screen:'companions'});
+ const d=ensure();if(d?.stages?.reward){
+   if(!d.stages.guardian)record('guardian-reacted',{screen:'companions',source:'dorm-arrival'});
+   const next=ensure();
+   if(next?.stages?.guardian&&!next.stages.dorm)record('dorm-return',{screen:'companions'});
+ }
+ const frame=document.querySelector('.v3317SanctuaryFrame');
+ if(!frame)return;
+ document.getElementById('v3400DormStory')?.remove();
+ const wrap=document.createElement('div');wrap.innerHTML=dormStoryHtml();frame.insertAdjacentElement('beforebegin',wrap.firstElementChild);
 }
 function decorate(){decorateHome();decorateDorm();document.documentElement.dataset.majickProductCore='3400'}
 const q=window.MajickRenderQueue;
 if(q?.register){q.register('product-core-v34',decorate,15);q.schedule()}else setTimeout(decorate,120);
 window.MajickUI=window.MajickUI||UI;
-window.MajickProductCore={VERSION,SCHEMA,STAGES,EVENT_STAGE,ensure,record,nextAction,progress,snapshot,goNext,loopHtml,decorate,UI,dayKey};
+window.MajickProductCore={VERSION,SCHEMA,STAGES,EVENT_STAGE,ensure,record,nextAction,progress,snapshot,courseModel,goNext,loopHtml,dormStoryHtml,decorate,UI,dayKey};
 })();
