@@ -266,6 +266,29 @@ async function deleteDuplicateSources(courseId=selectedCourseId()){
   await refreshLibrary();
 }
 
+function sourceRowHtml(r,duplicateIds){
+  const active=r.active!==false;
+  return '<article class="v3315SourceRow '+(active?'':'paused')+'" data-source="'+E(r.id)+'">'+
+    '<div><b>'+E(r.sourceName)+(duplicateIds.has(r.id)?' <span class="v3315DuplicateBadge">DUPLICATE COPY</span>':'')+'</b><small>'+E(String(r.sourceType||'').toUpperCase())+' • '+new Date(r.createdAt).toLocaleDateString()+' • '+(r.generated?.practiceQuestions?.length||0)+' questions • '+(active?'ACTIVE':'PAUSED')+(r.learningPath?.lessonTitle?' • '+E(r.learningPath.lessonTitle):'')+'</small></div>'+
+    '<div class="v3315SourceActions">'+
+      '<button class="btn ghost v3315OpenSource" type="button">Open</button>'+
+      '<button class="btn ghost v3315RegenerateSource" type="button">Regenerate</button>'+
+      '<button class="btn ghost v3315ToggleSource" type="button">'+(active?'Pause':'Activate')+'</button>'+
+      '<button class="btn ghost v3315RemoveSource v3315DeleteSource" type="button">Delete</button>'+
+    '</div>'+
+  '</article>';
+}
+function sectionLibraryHtml(rows,duplicateIds,cid){
+  if(cid!=='D772')return rows.map(r=>sourceRowHtml(r,duplicateIds)).join('');
+  return D772_SECTIONS.map(sec=>{
+    const items=rows.filter(r=>String(r.sectionId||r.learningPath?.sectionId||'d772-s1')===sec.id);
+    return '<section class="v3370SectionShelf" data-section-shelf="'+sec.id+'">'+
+      '<header><div><small>'+E(sec.title.split(' • ')[0])+'</small><h4>'+E(sec.title.replace(/^Section \d+ • /,''))+'</h4></div><span>'+items.length+' source'+(items.length===1?'':'s')+'</span></header>'+
+      (items.length?items.map(r=>sourceRowHtml(r,duplicateIds)).join(''):'<div class="v3370ShelfEmpty">No material added to this section yet.</div>')+
+    '</section>';
+  }).join('');
+}
+
 async function refreshLibrary(){
   const box=document.getElementById('materialLibrary');
   if(!box||!window.MajickMaterialStore)return;
@@ -276,18 +299,7 @@ async function refreshLibrary(){
     return;
   }
   const duplicateIds=duplicateSourceIds(rows);
-  box.innerHTML=(duplicateIds.size?'<div class="v3315DuplicateTools"><div><b>'+duplicateIds.size+' duplicate source cop'+(duplicateIds.size===1?'y':'ies')+' detected</b><small>Majick already hides repeated lesson content. You can also delete the extra saved copies.</small></div><button class="btn v3315DeleteDuplicates" type="button">Delete duplicate copies</button></div>':'')+rows.map(r=>{
-    const active=r.active!==false;
-    return '<article class="v3315SourceRow '+(active?'':'paused')+'" data-source="'+E(r.id)+'">'+
-      '<div><b>'+E(r.sourceName)+(duplicateIds.has(r.id)?' <span class="v3315DuplicateBadge">DUPLICATE COPY</span>':'')+'</b><small>'+E(String(r.sourceType||'').toUpperCase())+' • '+new Date(r.createdAt).toLocaleDateString()+' • '+(r.sectionTitle?E(r.sectionTitle)+' • ':'')+(r.generated?.practiceQuestions?.length||0)+' questions • '+(active?'ACTIVE':'PAUSED')+(r.learningPath?.lessonTitle?' • '+E(r.learningPath.lessonTitle):'')+'</small></div>'+
-      '<div class="v3315SourceActions">'+
-        '<button class="btn ghost v3315OpenSource" type="button">Open</button>'+
-        '<button class="btn ghost v3315RegenerateSource" type="button">Regenerate</button>'+
-        '<button class="btn ghost v3315ToggleSource" type="button">'+(active?'Pause':'Activate')+'</button>'+
-        '<button class="btn ghost v3315RemoveSource v3315DeleteSource" type="button">Delete</button>'+
-      '</div>'+
-    '</article>';
-  }).join('');
+  box.innerHTML=(duplicateIds.size?'<div class="v3315DuplicateTools"><div><b>'+duplicateIds.size+' duplicate source cop'+(duplicateIds.size===1?'y':'ies')+' detected</b><small>Majick already hides repeated lesson content. You can also delete the extra saved copies.</small></div><button class="btn v3315DeleteDuplicates" type="button">Delete duplicate copies</button></div>':'')+sectionLibraryHtml(rows,duplicateIds,cid);
 
   box.querySelector('.v3315DeleteDuplicates')?.addEventListener('click',()=>deleteDuplicateSources(cid));
   box.querySelectorAll('.v3315OpenSource').forEach(btn=>btn.addEventListener('click',()=>openSource(btn.closest('[data-source]')?.dataset.source)));
@@ -368,6 +380,6 @@ function bind(){
   refreshLibrary();
 }
 
-window.AddStudyMaterialPage={render,bind,refreshLibrary,openSource,regenerateSource,toggleSource,removeSource,deleteDuplicateSources,duplicateSourceIds,selectedSectionId,sectionMeta,D772_SECTIONS};
+window.AddStudyMaterialPage={render,bind,refreshLibrary,openSource,regenerateSource,toggleSource,removeSource,deleteDuplicateSources,duplicateSourceIds,selectedSectionId,sectionMeta,D772_SECTIONS,sourceRowHtml,sectionLibraryHtml};
 window.v3315BindStudyMaterialPage=bind;
 })();
