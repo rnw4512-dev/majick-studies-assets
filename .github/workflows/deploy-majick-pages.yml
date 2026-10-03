@@ -1,5 +1,5 @@
 name: Deploy Majick Studies Golden Baseline to GitHub Pages
-# V3.3.68 D772 Section-Aware Intake
+# V3.3.69 D772 Section Readiness
 
 on:
   push:
@@ -36,6 +36,7 @@ on:
       - 'pages-release/v3366/**'
       - 'pages-release/v3367/**'
       - 'pages-release/v3368/**'
+      - 'pages-release/v3369/**'
       - 'pages-release/v3315/study-material/**'
       - 'pages-release/v3316/courseManager.js'
       - 'pages-release/v3317/v3317-main.js'
@@ -176,6 +177,9 @@ jobs:
           test -s pages-release/v3367/d772-course-map-smoke.js
           test -s pages-release/v3368/section-aware-intake.css
           test -s pages-release/v3368/section-aware-intake-smoke.js
+          test -s pages-release/v3369/d772-section-readiness.js
+          test -s pages-release/v3369/d772-section-readiness.css
+          test -s pages-release/v3369/d772-section-readiness-smoke.js
           test -s pages-release/v3317/v3317-optimize-phaser.py
           test -s sanctuary/assets/objects/objects-manifest.json
           test -s sanctuary/assets/objects/generate-object-library.py
@@ -246,6 +250,9 @@ jobs:
           node --check pages-release/v3315/study-material/questionBuilder.js
           node --check pages-release/v3368/section-aware-intake-smoke.js
           node pages-release/v3368/section-aware-intake-smoke.js
+          node --check pages-release/v3369/d772-section-readiness.js
+          node --check pages-release/v3369/d772-section-readiness-smoke.js
+          node pages-release/v3369/d772-section-readiness-smoke.js
           node pages-release/v3354/d772-collegium-smoke.js
           node --check pages-release/v3342/study-progress-bridge-smoke.js
           node --check pages-release/v3343/game-realm.js
@@ -382,7 +389,7 @@ jobs:
 
           # Golden architecture and protected assets.
           grep -q '"build_foundation": "V3.3.18 Golden Baseline"' _site/app-progress.json
-          grep -q '"version": "V3.3.68 D772 Section-Aware Intake"' _site/app-progress.json
+          grep -q '"version": "V3.3.69 D772 Section Readiness"' _site/app-progress.json
           grep -q 'living-collegium.js?v=3361-shared-queue' _site/index.html
           grep -q 'living-collegium.css?v=3346-tool-search-smooth-render' _site/index.html
           grep -q 'collegium-atmosphere.js?v=3364-micro-sound' _site/index.html
@@ -487,7 +494,7 @@ jobs:
           grep -q 'guardian-food-bowl' _site/guardian-care-economy.js
           grep -q 'guardian-water-basin' _site/guardian-care-economy.js
           grep -q 'guardian-brush' _site/guardian-care-economy.js
-          grep -q 'v3317-main.js?v=3368-section-aware' _site/index.html
+          grep -q 'v3317-main.js?v=3369-section-readiness' _site/index.html
           grep -q 'v3322-main-recovery.js?v=3322' _site/index.html
           grep -q 'v3320-sanctuary-life.js?v=3350-room' _site/sanctuary/index.html
           grep -q 'v3321-sanctuary-customize.js?v=3322-recovery' _site/sanctuary/index.html
@@ -688,13 +695,13 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
-          echo "Waiting for V3.3.68 at $LIVE_URL"
+          echo "Waiting for V3.3.69 at $LIVE_URL"
           python - <<'PY'
           import json,time,urllib.request,urllib.error,os
           base=(os.environ.get('LIVE_URL') or 'https://rnw4512-dev.github.io/majick-studies-assets/').rstrip('/')+'/'
           status_url=os.environ.get('STATUS_URL','')
           token=os.environ.get('GH_TOKEN','')
-          expected='V3.3.68 D772 Section-Aware Intake'
+          expected='V3.3.69 D772 Section Readiness'
           last=None
           for attempt in range(1,121):
               try:
@@ -815,12 +822,12 @@ jobs:
                   last=checks
                   missing=[name for name,ok in checks.items() if not ok]
                   if not missing:
-                      print('LIVE V3.3.68 DEPLOYMENT VERIFIED')
+                      print('LIVE V3.3.69 DEPLOYMENT VERIFIED')
                       raise SystemExit(0)
                   print('Live deployment waiting on '+str(len(missing))+' marker(s): '+', '.join(missing))
               except Exception as e:
                   last=repr(e)
                   print('Live check waiting:',last)
               time.sleep(5)
-          raise SystemExit('Pages deployment was created and left active, but the live site did not expose V3.3.68 within 10 minutes: '+repr(last))
+          raise SystemExit('Pages deployment was created and left active, but the live site did not expose V3.3.69 within 10 minutes: '+repr(last))
           PY
