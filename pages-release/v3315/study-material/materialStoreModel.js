@@ -128,6 +128,19 @@ async function setActive(id,active){
 function newRecord(input){
   const sectionId=input.sectionId?String(input.sectionId):null;
   const sectionTitle=input.sectionTitle?String(input.sectionTitle):null;
+  const provenance=Object.assign({
+    claimType:'mixed',
+    submittedSourceKind:'user-material',
+    authorOrOrg:'',
+    reference:'',
+    sourceDate:'',
+    verificationStatus:'needs-reference-check',
+    verificationVerdict:null,
+    reviewedAt:null,
+    reviewedBy:null,
+    citations:[],
+    notes:''
+  },input.provenance||{});
   return {
     id:'source_'+Date.now()+'_'+Math.random().toString(36).slice(2,8),
     courseId:String(input.courseId||''),
@@ -137,6 +150,7 @@ function newRecord(input){
     sourceType:input.sourceType||'pasted-text',
     sourceName:input.sourceName||'Study Notes',
     text:String(input.text||''),
+    provenance,
     active:true,
     createdAt:new Date().toISOString(),
     outputs:input.outputs||{},
