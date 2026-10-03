@@ -2,7 +2,7 @@
 (()=>{
   'use strict';
 
-  const VERSION='3.3.55-realm';
+  const VERSION='3.3.59-realm';
   const normalize=v=>String(v||'').trim().toLocaleLowerCase();
   const E=v=>{try{return esc(String(v??''))}catch(_){return String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}};
   const shuffleCopy=a=>{
@@ -242,7 +242,7 @@
           gameCard('ᚱ','Rune Sort','Sort D772 prompts into Data Collection, Bias & Credibility, Misrepresentation, and Conclusions when D772 is active.','startRuneSort()')+
           (globalThis.S?.activeCourse==='D755'?gameCard('✥','Assessment Sigil Sort','Sort D755 scenarios through Qualitative/Quantitative, Formal/Informal, Formative/Summative, Norm/Criterion, Screening/Monitoring, or Observation/Anecdotal gates.','startAssessmentSigilSort()','D755 TRIAL'):'')+
           gameCard('◉','Oracle Lens','Identify the controlling statistical clue first, then answer through that clue.','startOracleLens()')+
-          gameCard('♛','Guardian Gauntlet','A multi-round boss run with hearts, boss HP, combos, and one Guardian shield.','startGuardianGauntlet()')+
+          (globalThis.S?.activeCourse==='D772'?gameCard('♛','Section 1 Review Gauntlet','A balanced 12-question D772 review: three questions each from Data Collection, Bias, Misrepresentation, and Conclusions.','startD772SectionReview()','D772 REVIEW'):gameCard('♛','Guardian Gauntlet','A multi-round boss run with hearts, boss HP, combos, and one Guardian shield.','startGuardianGauntlet()'))+
           gameCard('✧','Memory Constellation','Match controlling clues to the correct answers and build a glowing constellation.','startMemoryConstellation()')+
           gameCard('⬡','Hex Breaker','Judge a statistical claim, expose the misconception, and repair it with the correct concept.','startHexBreaker()')+
         '</div>'+
@@ -757,14 +757,40 @@
   }
 
   /* ---------- Guardian Gauntlet ---------- */
+  function buildD772SectionReview(){
+    const pool=realmQuestionPool().filter(q=>q?.prompt&&q?.options?.length>=2&&q?.answer);
+    const domains=['Data Collection','Bias & Credibility','Misrepresentation','Conclusions'];
+    const selected=[];
+    for(const domain of domains){
+      const rows=shuffleCopy(pool.filter(q=>q.section===domain));
+      if(rows.length<3)return null;
+      selected.push(...rows.slice(0,3));
+    }
+    return shuffleCopy(selected);
+  }
   function nextGauntlet(){
-    const pool=realmQuestionPool({hard:true}).filter(q=>q?.prompt&&q?.options?.length>=2);
-    if(!pool.length)return false;
-    const q=pickAdaptive(pool);session.current=q;session.answered=false;session.chosen=null;session.questions.push(q.id);session.round++;return true;
+    let q=null;
+    if(session?.reviewMode&&Array.isArray(session.reviewQueue)&&session.reviewQueue.length){
+      q=session.reviewQueue.shift();
+    }else{
+      const pool=realmQuestionPool({hard:true}).filter(q=>q?.prompt&&q?.options?.length>=2);
+      if(!pool.length)return false;
+      q=pickAdaptive(pool);
+    }
+    if(!q)return false;
+    session.current=q;session.answered=false;session.chosen=null;session.questions.push(q.id);session.round++;return true;
   }
   globalThis.startGuardianGauntlet=function(){
     const g=guardian();
     session={type:'gauntlet',opts:{label:'Guardian Gauntlet'},round:0,limit:12,score:0,combo:0,maxCombo:0,playerHP:5,bossHP:100,shield:true,shieldUsed:false,finished:false,won:false,questions:[],guardianName:g?.name||'Guardian'};
+    nextGauntlet();if(globalThis.S)S.screen='mission';render?.();
+  };
+  globalThis.startD772SectionReview=function(){
+    if(globalThis.S?.activeCourse!=='D772')return globalThis.startGuardianGauntlet();
+    const queue=buildD772SectionReview();
+    if(!queue){try{alert('Section 1 Review needs at least three usable questions in each D772 Section 1 domain.')}catch(_){}return}
+    const g=guardian();
+    session={type:'gauntlet',opts:{label:'D772 Section 1 Review'},reviewMode:true,reviewQueue:queue,round:0,limit:12,score:0,combo:0,maxCombo:0,playerHP:5,bossHP:100,shield:true,shieldUsed:false,finished:false,won:false,questions:[],guardianName:g?.name||'Guardian'};
     nextGauntlet();if(globalThis.S)S.screen='mission';render?.();
   };
   globalThis.gauntletAnswer=function(chosen){
@@ -796,10 +822,10 @@
     nextGauntlet();render?.();
   };
   function gauntletHTML(){
-    if(session.finished)return realmResultHTML('Guardian Gauntlet','gauntlet',session.score,Math.max(1,session.round),session.won,session.won?(session.guardianName+' helped you break the boss ward.'):'The boss ward held this time. Your run still added practice data.');
+    if(session.finished)return realmResultHTML(session.reviewMode?'D772 Section 1 Review':'Guardian Gauntlet','gauntlet',session.score,Math.max(1,session.round),session.won,session.reviewMode?('Balanced Section 1 review complete • '+session.score+'/'+session.round+' correct'):(session.won?(session.guardianName+' helped you break the boss ward.'):'The boss ward held this time. Your run still added practice data.'));
     const q=session.current,phase=bossPhase(session.bossHP);
     return '<div class="qwrap realmMode realmGauntlet '+phase.className+'">'+realmScene('gauntlet')+guardianBanner(session.guardianMessage||(session.shieldUsed?'The shield is spent. I am still with you.':'I can absorb one missed answer for you this run.'))+
-      '<div class="qtop"><span class="qbadge">♛ Guardian Gauntlet</span><div><span class="hearts">'+('💗'.repeat(session.playerHP))+'</span> <span class="comboGlow">✦ x'+Math.max(1,session.combo)+'</span></div></div>'+trialProgress('gauntlet')+trialGuide('gauntlet')+
+      '<div class="qtop"><span class="qbadge">♛ '+E(session.reviewMode?'D772 Section 1 Review':'Guardian Gauntlet')+'</span><div><span class="hearts">'+('💗'.repeat(session.playerHP))+'</span> <span class="comboGlow">✦ x'+Math.max(1,session.combo)+'</span></div></div>'+trialProgress('gauntlet')+trialGuide('gauntlet')+
       '<div class="realmBossHUD"><div><div class="realmBossPhase"><small>'+E(phase.name)+'</small><b>Boss Ward</b><em>'+E(phase.line)+'</em></div><div class="bossBar"><i style="width:'+session.bossHP+'%"></i></div><small>'+session.bossHP+'% remaining</small></div><span class="realmShield '+(session.shieldUsed?'spent':'ready')+'">'+(session.shieldUsed?'◇ Shield spent':'◇ Guardian shield ready')+'</span></div>'+
       '<div class="card"><div class="tiny">'+E(q.section||'Mixed')+' • Difficulty '+Number(q.difficulty||1)+' • Round '+session.round+'/'+session.limit+'</div><div class="question">'+E(q.prompt)+'</div>'+
       '<div class="options">'+q.options.map(o=>'<button class="opt '+(session.answered?(o===q.answer?'correct':o===session.chosen?'wrong':''):'')+'" '+(session.answered?'disabled':'')+' data-answer="'+E(o)+'" onclick="gauntletAnswer(this.dataset.answer)">'+E(o)+'</button>').join('')+'</div>'+
@@ -849,6 +875,7 @@
     buildRuneSort,
     realmQuestionPool,
     d772RealmPool:()=>D772_REALM_SUPPLEMENT.slice(),
+    buildD772SectionReview,
     assessmentSigilPool,
     buildConstellation,
     inspect(){
@@ -860,5 +887,5 @@
       };
     }
   };
-  document.documentElement.dataset.majickRealmVariety='3355';
+  document.documentElement.dataset.majickRealmVariety='3359';
 })();
