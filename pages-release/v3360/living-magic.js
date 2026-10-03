@@ -67,14 +67,20 @@ function schedule(){
  if(raf)return;
  raf=requestAnimationFrame(decorate);
 }
-const observer=new MutationObserver(schedule);
 function start(){
  if(!document.body)return setTimeout(start,50);
- observer.observe(document.body,{childList:true,subtree:true});
- schedule();
- window.addEventListener('resize',schedule,{passive:true});
- document.addEventListener('visibilitychange',()=>{if(!document.hidden)schedule()});
+ const queue=window.MajickRenderQueue;
+ if(queue?.register){
+  queue.register('living-magic',decorate,90);
+  queue.schedule();
+ }else{
+  const observer=new MutationObserver(schedule);
+  observer.observe(document.body,{childList:true,subtree:true});
+  schedule();
+ }
+ window.addEventListener('resize',()=>window.MajickRenderQueue?.schedule?.()||schedule(),{passive:true});
+ document.addEventListener('visibilitychange',()=>{if(!document.hidden)(window.MajickRenderQueue?.schedule?.()||schedule())});
 }
 start();
-window.MajickLivingMagic={VERSION,ROOM_LABELS,room,reduced,decorate,schedule,inspect(){return{version:VERSION,room:room(),layer:!!document.getElementById('majickLivingMagic'),ribbon:!!document.getElementById('majickRoomRibbon'),reduced:reduced()}}};
+window.MajickLivingMagic={VERSION,ROOM_LABELS,room,reduced,decorate,schedule,inspect(){return{version:VERSION,room:room(),layer:!!document.getElementById('majickLivingMagic'),ribbon:!!document.getElementById('majickRoomRibbon'),reduced:reduced(),sharedQueue:!!window.MajickRenderQueue}}};
 })();
