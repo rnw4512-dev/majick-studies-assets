@@ -1,0 +1,32 @@
+/* V3.3.60 — Living Magic + Smoothness */
+:root{scrollbar-gutter:stable}
+html{background:#0e0914}
+body{overflow-x:hidden}
+.content,.main{min-width:0}
+.v3360Contained{content-visibility:auto;contain-intrinsic-size:1px 420px}
+#majickRoomRibbon{content-visibility:visible!important;contain:none!important}
+.v3360RoomRibbon{position:relative;z-index:4;display:flex;align-items:center;gap:13px;margin:0 0 14px;padding:10px 14px;border:1px solid rgba(213,178,115,.22);border-radius:14px;background:linear-gradient(90deg,rgba(24,14,32,.92),rgba(40,23,47,.72));box-shadow:0 10px 28px rgba(5,2,10,.16);color:#eee3f0;backdrop-filter:blur(10px)}
+.v3360RoomSigil{display:grid;place-items:center;flex:0 0 38px;height:38px;border:1px solid rgba(232,198,127,.28);border-radius:50%;background:radial-gradient(circle,rgba(126,77,145,.45),rgba(29,17,39,.9));color:#efd18d;font:700 19px Georgia,serif;text-shadow:0 0 14px rgba(224,174,242,.45)}
+.v3360RoomRibbon div{display:grid;gap:1px;min-width:0}.v3360RoomRibbon small{color:#c9a8d6;font:800 8px/1.3 system-ui;letter-spacing:.14em}.v3360RoomRibbon b{color:#f0dba8;font:700 15px/1.25 Georgia,serif}.v3360RoomRibbon em{color:#bfaec7;font:10px/1.4 system-ui;font-style:normal}
+.v3360MagicLayer{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;opacity:.58}.v3360MagicLayer>*{position:absolute;pointer-events:none}.v3360MagicLayer .mote{width:3px;height:3px;border-radius:50%;background:#ead59f;box-shadow:0 0 8px rgba(231,198,132,.85),0 0 16px rgba(177,126,207,.45);opacity:.22;animation:v3360Drift 18s linear infinite}.v3360MagicLayer .m1{left:8%;top:83%;animation-duration:20s}.v3360MagicLayer .m2{left:24%;top:67%;animation-delay:-7s;animation-duration:24s}.v3360MagicLayer .m3{left:47%;top:91%;animation-delay:-13s;animation-duration:22s}.v3360MagicLayer .m4{left:68%;top:74%;animation-delay:-4s;animation-duration:26s}.v3360MagicLayer .m5{left:84%;top:88%;animation-delay:-11s;animation-duration:21s}.v3360MagicLayer .m6{left:92%;top:61%;animation-delay:-16s;animation-duration:28s}
+.v3360Glow{width:260px;height:260px;border-radius:50%;filter:blur(70px);opacity:.09;animation:v3360Breathe 8s ease-in-out infinite alternate}.v3360Glow.g1{left:-80px;top:18%;background:#c17bd1}.v3360Glow.g2{right:-80px;top:52%;background:#e3a35e;animation-delay:-4s}
+body[data-majick-polish-room=home] .v3360MagicLayer{opacity:.64}
+body[data-majick-polish-room=learninglab] .v3360MagicLayer .g2{opacity:.16}
+body[data-majick-polish-room=livinggrimoire] .v3360MagicLayer .mote{background:#d5b878}
+body[data-majick-polish-room=games] .v3360MagicLayer .mote{box-shadow:0 0 8px #e2c27d,0 0 18px #9f6fc2}
+body[data-majick-polish-room=companions] .v3360MagicLayer .g1{opacity:.13}
+body.v3360RoomPulse .v3360RoomRibbon{animation:v3360RoomIn .6s ease both}
+@keyframes v3360Drift{0%{transform:translate3d(0,0,0) scale(.8);opacity:0}12%{opacity:.28}85%{opacity:.18}100%{transform:translate3d(24px,-120vh,0) scale(1.25);opacity:0}}
+@keyframes v3360Breathe{from{transform:scale(.92);opacity:.06}to{transform:scale(1.08);opacity:.12}}
+@keyframes v3360RoomIn{0%{opacity:.55;transform:translateY(-5px)}100%{opacity:1;transform:none}}
+/* subtle candle / parchment life without moving layouts */
+body[data-majick-polish-room=learninglab] .v3354BoardFrame,body[data-majick-polish-room=learninglab] .tutorChapterBlock{transition:box-shadow .24s ease,border-color .24s ease}
+body[data-majick-polish-room=learninglab] .v3354BoardFrame:hover,body[data-majick-polish-room=learninglab] .tutorChapterBlock:hover{box-shadow:0 0 0 1px rgba(233,187,108,.08),0 10px 30px rgba(229,149,73,.08)}
+body[data-majick-polish-room=livinggrimoire] .v3354Parchment,body[data-majick-polish-room=livinggrimoire] .v3356ArchiveGrid article{transition:transform .2s ease,box-shadow .2s ease}
+body[data-majick-polish-room=livinggrimoire] .v3354Parchment:hover{transform:translateY(-1px);box-shadow:7px 11px 0 rgba(15,8,20,.22),0 12px 28px rgba(221,184,112,.08)}
+body[data-majick-polish-room=home] :is(.v3358Door,.v3354Schedule button,.lcHomeResume button),body[data-majick-polish-room=games] .realmTrialCard{transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease}
+body[data-majick-polish-room=home] .v3358Door:hover,body[data-majick-polish-room=games] .realmTrialCard:hover{transform:translateY(-2px)}
+:is(button,a,[role=button]):focus-visible{outline-color:#f0cf8c;outline-offset:3px}
+@media(max-width:720px){.v3360RoomRibbon{padding:9px 11px}.v3360RoomSigil{flex-basis:34px;height:34px}.v3360MagicLayer{opacity:.4}.v3360Contained{contain-intrinsic-size:1px 320px}}
+@media(prefers-reduced-motion:reduce){.v3360MagicLayer .mote,.v3360Glow,body.v3360RoomPulse .v3360RoomRibbon{animation:none!important}.v3360MagicLayer{opacity:.25}}
+html[data-majick-reduce-motion=true] .v3360MagicLayer .mote,html[data-majick-reduce-motion=true] .v3360Glow,html[data-majick-reduce-motion=true] body.v3360RoomPulse .v3360RoomRibbon{animation:none!important}
