@@ -176,7 +176,7 @@ if(renderQueue?.register){
 }else{
  const previousRender=window.render;
  if(typeof previousRender==='function'&&!previousRender.__living_collegiumFallback){
-  const wrapped=function(){const out=previousRender.apply(this,arguments);setTimeout(decorate,0);return out};
+  const wrapped=function(){const out=previousRender.apply(this,arguments);scheduleDecorate();return out};
   wrapped.__living_collegiumFallback=true;window.render=wrapped;
  }
  setTimeout(decorate,120);
