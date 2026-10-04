@@ -11,7 +11,7 @@ for name,digest in manifest["files"].items():
 assert len(list((source/"sanctuary/assets/motion").glob("*.png")))==33
 if output.exists(): shutil.rmtree(output)
 shutil.copytree(source,output)
-release=hashlib.sha256((source/"source-manifest.json").read_bytes()).hexdigest()[:16]
+release=hashlib.sha256((source/"source-manifest.json").read_bytes()+Path(__file__).read_bytes()).hexdigest()[:16]
 # Stamp local code, stylesheet and HTML URLs, including dynamically created iframes.
 pattern=re.compile(r"""(?P<q>['"])(?P<url>[^'"\s<>]*\.(?:js|css|html)(?:\?[^'"\s<>]*)?)(?P=q)""")
 for p in sorted(output.rglob("*")):
