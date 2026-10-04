@@ -3367,88 +3367,12 @@ Game.prototype.createBackground = function()
 {
     const W=this.worldWidth, H=this.worldHeight;
 
-    // Deep stone-and-walnut magical-college shell.
-    this.add.rectangle(W/2, 330, W, 663, 0x0c0811).setDepth(-30);
-    if (this.textures.exists('academy-sanctuary-bg'))
-    {
-        const art=this.add.image(W/2, 330, 'academy-sanctuary-bg').setDisplaySize(W,663).setDepth(-29);
-        art.setTint(0x66516f).setAlpha(0.46);
-    }
-    this.add.rectangle(W/2, 330, W, 663, 0x0a0710, 0.44).setDepth(-28);
-
-    // Stone courses and carved wainscot.
-    for(let y=28;y<660;y+=78)
-    {
-        this.add.rectangle(W/2,y,W,2,0x7e657d,0.13).setDepth(-27);
-    }
-    for(let x=0;x<W;x+=220)
-    {
-        this.add.rectangle(x+110,330,2,660,0x8c7086,0.08).setDepth(-27);
+    // One room backdrop; the existing furniture and Guardian owners render above it.
+    this.add.rectangle(W/2,H/2,W,H,0x1c111b).setDepth(-30);
+    if(this.textures.exists('academy-sanctuary-bg')){
+        this.add.image(W/2,H/2,'academy-sanctuary-bg').setDisplaySize(W,H).setDepth(-29);
     }
 
-    // Gothic columns frame the college hall.
-    [42,430,785,1415,1770,2158].forEach((x,i)=>{
-        const col=this.add.rectangle(x,345,72,690,i%2?0x1d1420:0x211622,0.98).setDepth(-25);
-        col.setStrokeStyle(2,0x8c6b6a,0.25);
-        this.add.rectangle(x,58,108,34,0x2e1d2c,1).setStrokeStyle(2,0xc09a6b,0.25).setDepth(-24);
-        this.add.rectangle(x,636,108,34,0x2e1d2c,1).setStrokeStyle(2,0xc09a6b,0.22).setDepth(-24);
-    });
-
-    // Three tall moonlit study-hall windows.
-    const windowXs=[610,1100,1590];
-    windowXs.forEach((x,idx)=>{
-        const frame=this.add.container(x,310).setDepth(-23);
-        const halo=this.add.ellipse(0,-58,360,470,0x5c3979,0.12);
-        const glassTop=this.add.ellipse(0,-105,278,218,0x1d2340,0.96).setStrokeStyle(8,0xb98f69,0.62);
-        const glass=this.add.rectangle(0,35,278,310,0x171d38,0.96).setStrokeStyle(8,0xb98f69,0.62);
-        const inner=this.add.rectangle(0,22,232,286,0x32224d,0.42).setStrokeStyle(2,0xedd19e,0.26);
-        const mullion=this.add.rectangle(0,5,5,300,0xb98f69,0.46);
-        const cross=this.add.rectangle(0,-54,238,4,0xb98f69,0.42);
-        frame.add([halo,glassTop,glass,inner,mullion,cross]);
-        for(let k=0;k<16;k++){
-            const star=this.add.circle(Phaser.Math.Between(-105,105),Phaser.Math.Between(-185,150),Phaser.Math.Between(1,3),Phaser.Math.RND.pick([0xeed8b0,0xcbb4ff,0x8bd3d0]),Phaser.Math.FloatBetween(.3,.75));
-            frame.add(star);
-        }
-        if(idx===1){
-            const moon=this.add.text(58,-118,'☾',{fontFamily:'Georgia',fontSize:'78px',color:'#efd5a1'}).setOrigin(.5);
-            frame.add(moon);
-            this.tweens.add({targets:moon,alpha:.68,duration:1800,yoyo:true,repeat:-1,ease:'Sine.inOut'});
-        }
-    });
-
-    // Academy banners.
-    [270,1930].forEach((x,i)=>{
-        const banner=this.add.container(x,210).setDepth(-21);
-        const cloth=this.add.rectangle(0,0,154,240,i?0x24122f:0x2a1733,0.98).setStrokeStyle(3,0xc09a6b,0.5);
-        const point=this.add.triangle(0,145,-77,0,77,0,0,76,i?0x24122f:0x2a1733,0.98).setStrokeStyle(3,0xc09a6b,0.42);
-        const sig=this.add.text(0,-22,i?'✦\n☾':'☾\n✧',{fontFamily:'Georgia',fontSize:'42px',align:'center',color:'#d7b882'}).setOrigin(.5);
-        banner.add([cloth,point,sig]);
-    });
-
-    // Dark walnut floor.
-    this.add.rectangle(W/2,811,W,298,0x160d14,1).setDepth(-18);
-    for(let x=0;x<W;x+=118){
-        const plank=this.add.rectangle(x+59,811,114,298,(Math.floor(x/118)%2)?0x23131e:0x1e111a,0.99).setDepth(-17);
-        plank.setStrokeStyle(1,0x865f55,0.13);
-    }
-    this.add.rectangle(W/2,666,W,16,0x3a2430,1).setStrokeStyle(2,0xd0a06f,0.26).setDepth(-16);
-
-    // Large heraldic rug.
-    const rug=this.add.ellipse(1100,818,1600,228,0x4a173b,0.82).setDepth(-15);
-    rug.setStrokeStyle(6,0xa57a61,0.58);
-    this.add.ellipse(1100,818,1375,176,0x1e1020,0.74).setStrokeStyle(2,0xd8b27a,0.32).setDepth(-14);
-    this.add.text(1100,813,'☾   ✦   ◇   ✦   ☾',{fontFamily:'Georgia',fontSize:'42px',color:'#b78e70',alpha:.38}).setOrigin(.5).setDepth(-13);
-
-    // Warm wall sconces and floating dust motes.
-    [215,990,1210,1985].forEach((x,i)=>{
-        const flame=this.add.circle(x,455,10,0xffc06e,.88).setDepth(-11);
-        this.add.rectangle(x,488,9,58,0xc6a071,.55).setDepth(-12);
-        this.tweens.add({targets:flame,scaleY:1.3,alpha:.58,duration:450+i*45,yoyo:true,repeat:-1});
-    });
-    for(let i=0;i<52;i++){
-        const mote=this.add.circle(Phaser.Math.Between(70,W-70),Phaser.Math.Between(60,740),Phaser.Math.Between(1,4),Phaser.Math.RND.pick([0xe7c68e,0xa98bd2,0x70b7bd]),Phaser.Math.FloatBetween(.10,.34)).setDepth(-10);
-        this.tweens.add({targets:mote,y:mote.y-Phaser.Math.Between(18,60),x:mote.x+Phaser.Math.Between(-20,20),alpha:.04,duration:Phaser.Math.Between(2500,5200),yoyo:true,repeat:-1,ease:'Sine.inOut'});
-    }
 };
 
 Game.prototype.createDecor = function()

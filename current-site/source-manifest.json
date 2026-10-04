@@ -110,7 +110,7 @@
     "campus-runtime.js": "9b6293f0932dfd75fa35bf2b0d32f8bbfb70369cbd10eea2386122062b255ebd",
     "classroom-library-life.css": "c8531b8bd6e72ad6db8429bd3781af4021abdd6cd222a814829c75a7cb763ab0",
     "classroom-library-life.js": "2f5c3b0778305969555e9efea408657fc8036640d09b5a7200eb49f857688f7c",
-    "collegium-atmosphere.css": "9fbcdaeaee1b7d48c8bc1046432dbc38a8a7000efecf27574bcdf52fcc7be1e2",
+    "collegium-atmosphere.css": "e53ef54553ab0ca695ae2aade3673314cf5030049da055083f91e2608607bce0",
     "collegium-atmosphere.js": "f86e878d705d89f477fc091c09a9e3ade23b190cb45635a13286a1f743f9dde3",
     "course-tutor.css": "43ebde61c10fad7b5f56927eb2ad2889bdeb7cacc01eeb59d3c6ff29bca879c9",
     "course-tutor.js": "11cf5d506c61bf2e3cfc5ea2c7dea617e1a9611194167343b590393a8048c081",
@@ -166,9 +166,9 @@
     "recovery/current_progress_2026-09-19.json": "51b2d54c4125ed77f0644fbef1b82597315fd7d9491ef32f8266b647606fed48",
     "refresh-v3317.html": "adbdcfeed0db95bb5687678e1eeaaa5f2a327431848f1150af7239adf08d536a",
     "sanctuary/Boot.js": "13175ee1eeac8a34e8744636d94d60d7504e1baa8d3bb7eb004fec8061d9338e",
-    "sanctuary/Game.js": "d9e37b82127885eb048c0a909306a4c2997482b718abc5fadae5019f1802ffd3",
+    "sanctuary/Game.js": "5ee9205712f2529dfea264e8e5d3312d7b373416e0f62755874b3e351f64cc8b",
     "sanctuary/MainMenu.js": "13f8fdf4b1b4e81801834254a20442f49625a9207cd208554bf1e32a9118c595",
-    "sanctuary/Preloader.js": "7e491555b940dca028994865cdd89ec24c5b0f5afce4ffa8e282ec645fdcd41d",
+    "sanctuary/Preloader.js": "03ac5ea5bb21402da985cf26f550956351c621cfa29ed6c49a5b84a0aa888e22",
     "sanctuary/assets/Pets/Mellow.js": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
     "sanctuary/assets/Pets/Nova.js": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
     "sanctuary/assets/Pets/luna.js": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
@@ -392,6 +392,7 @@
     "coverage/d772-s2-l4-1.json": "965a11a0c9215cdf0d06f28d39c00fb26befd80ac6c06852965e2bc7485bb612",
     "coverage/d772-s2-l4-2.json": "db55a222f9cb7751c60ffbc69db56c8ba6fe9962bc6375ead816221a4206e1eb",
     "assets/learn-classroom-v1.png": "1b8c5f294309515ab2c7305833cb95610300791ac310c11dbbb91646385cb7ab",
-    "lesson-visuals/iqr-middle-half.svg": "82b18e918bae195bbf39329ebd69032e42be35d1bfc32f0385e997daf0e0ef8b"
+    "lesson-visuals/iqr-middle-half.svg": "82b18e918bae195bbf39329ebd69032e42be35d1bfc32f0385e997daf0e0ef8b",
+    "assets/guardian-dorm-v1.png": "f89fd6d4e47b102078d388977a406d954306d0efc4e445f9fe6ecacb53fdf38b"
   }
 }

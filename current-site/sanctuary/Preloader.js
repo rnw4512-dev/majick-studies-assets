@@ -25,7 +25,7 @@ class Preloader extends Phaser.Scene
         const base = './assets/runtime-motion/';
 
         // Local academy art keeps the room feeling like a real magical college.
-        this.load.image('academy-sanctuary-bg', '../assets/academy_hero.jpg');
+        this.load.image('academy-sanctuary-bg', '../assets/guardian-dorm-v1.png');
         // V3.3.14 MANIFEST OBJECTS START
         this.load.json('majick-object-manifest', './assets/objects/objects-manifest.json?v=3314');
         this.load.json('majick-evolution-manifest', './assets/evolutions/evolution-manifest.json?v=3315');
