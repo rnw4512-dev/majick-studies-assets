@@ -208,6 +208,15 @@ if "parentLessonId:'d772-s2-l1'" not in lesson12:
 if 'course-tutor.js?v=3402-s2-l2-graphs' not in main or 'course-tutor.css?v=3402-s2-l2-graphs' not in main:
     fail('V3.4.1 Lesson 1.2 Tutor assets are not installed in index.html')
 
+lesson2=(site/'course-tutor.js').read_text(encoding='utf-8')
+for marker in ("Choosing Graphical Displays","BAR = compare categories.","PIE = parts of ONE whole.","Overlapping categories → avoid pie chart.","Other/Unknown","s2l2-p1","s2l2-p8","OpenStax Introductory Statistics 2e §1.2"):
+    if marker not in lesson2: fail('D772 Section 2 Lesson 2 missing '+marker)
+realm_graphs=(site/'game-realm.js').read_text(encoding='utf-8')
+for marker in ("VERSION='3.4.2-realm'","v3402-d772-s2-l2-01","v3402-d772-s2-l2-06","section:'Graphical Displays'","majickRealmVariety='3402'"):
+    if marker not in realm_graphs: fail('D772 Section 2 Lesson 2 Realm practice missing '+marker)
+if 'course-tutor.js?v=3402-s2-l2-graphs' not in main or 'game-realm.js?v=3402-s2-l2-graphs' not in main:
+    fail('V3.4.2 Lesson 2 graph assets are not installed in index.html')
+
 product=(site/'product-core.js').read_text(encoding='utf-8')
 for marker in ("VERSION='3.4.0'","DAILY STUDY LOOP","enter-college","learn-start","quick-check-complete","practice-complete","reward-earned","guardian-reacted","dorm-return","courseModel","dormStoryHtml","window.MajickProductCore","window.MajickUI"):
     if marker not in product: fail('V3.4 Product Core missing '+marker)
