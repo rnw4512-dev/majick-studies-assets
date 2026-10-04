@@ -110,8 +110,8 @@
     "campus-runtime.js": "9b6293f0932dfd75fa35bf2b0d32f8bbfb70369cbd10eea2386122062b255ebd",
     "classroom-library-life.css": "c8531b8bd6e72ad6db8429bd3781af4021abdd6cd222a814829c75a7cb763ab0",
     "classroom-library-life.js": "2f5c3b0778305969555e9efea408657fc8036640d09b5a7200eb49f857688f7c",
-    "collegium-atmosphere.css": "3b15714e40009dec917afc77d9e858e1dc32b5b729b1e43e46fe8b75e9abba27",
-    "collegium-atmosphere.js": "f86e878d705d89f477fc091c09a9e3ade23b190cb45635a13286a1f743f9dde3",
+    "collegium-atmosphere.css": "68c5fbf100616ebdb5344d17e70bef47173bf942d3b5bf2ab22ee531b8f73693",
+    "collegium-atmosphere.js": "dbb7419f838e747258649238666935d2fc348443a824c9f9e0b159eb7b27dd02",
     "course-tutor.css": "43ebde61c10fad7b5f56927eb2ad2889bdeb7cacc01eeb59d3c6ff29bca879c9",
     "course-tutor.js": "11cf5d506c61bf2e3cfc5ea2c7dea617e1a9611194167343b590393a8048c081",
     "courseManager.js": "5a3bed03fc53028587e4a14d19056489b83e411ea1ecff5a4afbf196c5196681",
@@ -394,6 +394,8 @@
     "assets/learn-classroom-v1.png": "1b8c5f294309515ab2c7305833cb95610300791ac310c11dbbb91646385cb7ab",
     "lesson-visuals/iqr-middle-half.svg": "82b18e918bae195bbf39329ebd69032e42be35d1bfc32f0385e997daf0e0ef8b",
     "assets/guardian-dorm-v1.png": "f89fd6d4e47b102078d388977a406d954306d0efc4e445f9fe6ecacb53fdf38b",
-    "assets/game-observatory-v1.png": "6bd6a73d5ca81ee7194a11438ae422d64065cee7c2671e22c7c9ba0b71efba64"
+    "assets/game-observatory-v1.png": "6bd6a73d5ca81ee7194a11438ae422d64065cee7c2671e22c7c9ba0b71efba64",
+    "assets/ancient-study-library-v1.png": "85244e085292a40e4e73e4ddb2c4b5f40722733abd8fc64851c1e637994fbbfe",
+    "assets/learn-classroom-v2.png": "cb2e2fce819815ffebce1ed126536829e731e849be37e438b3bcc07f6a205951"
   }
 }

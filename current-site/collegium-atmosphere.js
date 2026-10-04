@@ -49,6 +49,18 @@
    const r=room();
    if(lastRoom&&lastRoom!==r&&enabled)micro('enter',r);
    lastRoom=r;document.body.dataset.majickRoom=r;
+   const libraryRoom=r==='home'||r==='mission';
+   const content=document.querySelector('.content');
+   if(content){
+     let magic=content.querySelector('.ancientLibraryMagic');
+     if(libraryRoom&&!magic){
+       magic=document.createElement('div');magic.className='ancientLibraryMagic';magic.setAttribute('aria-hidden','true');
+       ['⚗︎','☾','✧','⚗︎','✦'].forEach((glyph,i)=>{const charm=document.createElement('span');charm.textContent=glyph;charm.style.setProperty('--charm-index',i);magic.append(charm)});
+       content.prepend(magic);
+     }else if(!libraryRoom&&magic)magic.remove();
+     content.classList.toggle('ancientLibraryRoom',libraryRoom);
+   }
+
    const top=document.querySelector('.top');if(!top)return;
    const pill=top.querySelector('.pill');if(pill)pill.textContent='Guardian Room Check • V'+VERSION;
    let b=top.querySelector('.caAmbience');
