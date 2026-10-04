@@ -131,6 +131,8 @@ Object.assign(twoVariableUnit,{outlineOnly:false,keywords:['role-type','two-way 
 
 Object.assign(D772_SECTION_TWO.lessons.find(l=>l.id==='d772-s2-l2').sublessons.find(l=>l.id==='d772-s2-l2-summary'),{outlineOnly:false,goal:'Review display selection across one-variable and two-variable data, then prepare for interpreting distributions.'});
 
+Object.assign(D772_SECTION_TWO.lessons.find(l=>l.id==='d772-s2-l2').sublessons.find(l=>l.id==='d772-s2-l2-quiz'),{outlineOnly:false,goal:'Review your reported 10/10 Quiz 1 result and retry display-selection questions.'});
+
 const D772_SECTION_ONE_CONTENT={
   'd772-s1-l1':{
     overview:'Lesson 1 asks where the data came from and how the study was designed. Follow the chain: population and sample → sampling method → study type → experimental design.',
@@ -455,6 +457,160 @@ const D772_SECTION_TWO_CONTENT={
     ],
     vocab:[],
     memory:['Classify → choose display → describe distribution → calculate and interpret descriptive statistics.']
+  }
+};
+D772_SECTION_TWO_CONTENT['d772-s2-l2-quiz']={
+  "sourceLabel": "COURSE-PROVIDED D772 \u2022 SECTION 2 \u2022 LESSON 2 \u2022 QUIZ 1",
+  "overview": "Imported result: 10/10 correct on Choosing Graphical Displays Quiz 1. This is evidence from the supplied quiz report, not a claim of whole-course mastery. Retry questions below start unanswered; feedback appears after a selection.",
+  "objectives": [
+    "Select a display from the variable types and purpose.",
+    "Recognize stem-and-leaf limitations and quantitative dot plots.",
+    "Distinguish a categorical bar graph from a histogram."
+  ],
+  "teach": [],
+  "vocab": [],
+  "memory": [],
+  "practice": [
+    {
+      "id": "s2l2quiz1-p1",
+      "prompt": "Which display is best for one-variable categorical data among these choices?",
+      "options": [
+        "Pie chart",
+        "Dot plot",
+        "Histogram",
+        "Scatterplot"
+      ],
+      "answer": 0,
+      "rationale": "A pie chart shows category proportions of one whole. It is the categorical display among these options; a bar graph can also be appropriate when offered.",
+      "provenance": "User-provided quiz item and correct-answer feedback; wording condensed and explanation clarified"
+    },
+    {
+      "id": "s2l2quiz1-p2",
+      "prompt": "Which display shows the distribution of heights for a large class?",
+      "options": [
+        "Histogram",
+        "Pie chart",
+        "Bar graph",
+        "Two-way table"
+      ],
+      "answer": 0,
+      "rationale": "Height is one quantitative variable. A histogram groups its values into intervals and shows frequency, making a large data set manageable.",
+      "provenance": "User-provided quiz item and correct-answer feedback; wording condensed and explanation clarified"
+    },
+    {
+      "id": "s2l2quiz1-p3",
+      "prompt": "What is a key limitation of stem-and-leaf plots?",
+      "options": [
+        "They are not useful for large data sets",
+        "They cannot display quantitative data",
+        "They are difficult to create",
+        "They cannot show individual data points"
+      ],
+      "answer": 0,
+      "rationale": "Stem-and-leaf plots preserve individual quantitative values, but become cumbersome with large data sets. The course answer contrasts large data sets with smaller sets where individual values remain easy to read.",
+      "provenance": "User-provided quiz item and correct-answer feedback; wording condensed and explanation clarified"
+    },
+    {
+      "id": "s2l2quiz1-p4",
+      "prompt": "Which display compares college students\u2019 degree programs with their quiz scores?",
+      "options": [
+        "Scatterplot",
+        "Side-by-side boxplot",
+        "Two-way table",
+        "Dot plot"
+      ],
+      "answer": 1,
+      "rationale": "Degree program is categorical; score is quantitative. Compare score distributions by program with side-by-side boxplots.",
+      "provenance": "User-provided quiz item and correct-answer feedback; wording condensed and explanation clarified"
+    },
+    {
+      "id": "s2l2quiz1-p5",
+      "prompt": "Which display analyzes practice-problem counts and final-exam scores?",
+      "options": [
+        "Pie chart",
+        "Histogram",
+        "Bar graph",
+        "Scatterplot"
+      ],
+      "answer": 3,
+      "rationale": "Both variables are quantitative. A scatterplot displays each paired count and score; it does not by itself establish causation.",
+      "provenance": "User-provided quiz item and correct-answer feedback; wording condensed and explanation clarified"
+    },
+    {
+      "id": "s2l2quiz1-p6",
+      "prompt": "Which display fits C\u2192C (categorical explanatory and categorical response)?",
+      "options": [
+        "Two-way table",
+        "Scatterplot",
+        "Histogram",
+        "Dot plot"
+      ],
+      "answer": 0,
+      "rationale": "A two-way table cross-classifies the frequencies of combinations of two categorical variables.",
+      "provenance": "User-provided quiz item and correct-answer feedback; wording condensed and explanation clarified"
+    },
+    {
+      "id": "s2l2quiz1-p7",
+      "prompt": "Which display relates relationship status (in a relationship or not) to restaurant spending?",
+      "options": [
+        "Two-way table",
+        "Scatterplot",
+        "Side-by-side boxplot",
+        "Histogram"
+      ],
+      "answer": 2,
+      "rationale": "Relationship status is categorical and spending is quantitative: C\u2192Q. Side-by-side boxplots compare spending distributions across the status groups.",
+      "provenance": "User-provided quiz item and correct-answer feedback; wording condensed and explanation clarified"
+    },
+    {
+      "id": "s2l2quiz1-p8",
+      "prompt": "When should you use a dot plot?",
+      "options": [
+        "Comparing two categorical variables",
+        "Displaying one-variable quantitative data",
+        "Displaying one-variable categorical data",
+        "Displaying the relationship between two quantitative variables"
+      ],
+      "answer": 1,
+      "rationale": "A dot plot places individual quantitative values on a number line; stacked dots show repeated values and make the distribution visible.",
+      "provenance": "User-provided quiz item and correct-answer feedback; wording condensed and explanation clarified"
+    },
+    {
+      "id": "s2l2quiz1-p9",
+      "prompt": "Which is a reason to use a bar graph instead of a pie chart?",
+      "options": [
+        "The data are quantitative",
+        "The percentages add up to more than 100%",
+        "Pie charts cannot show percentages",
+        "Bar graphs are the only categorical display"
+      ],
+      "answer": 1,
+      "rationale": "A pie chart represents mutually exclusive pieces of one complete whole. Overlapping categories can total more than 100%, so compare them using bars. Totals below 100% require checking coverage or missing categories; small rounding differences are possible.",
+      "provenance": "User-provided quiz item and correct-answer feedback; wording condensed and explanation clarified"
+    },
+    {
+      "id": "s2l2quiz1-p10",
+      "prompt": "A chart titled Favorite Pizza Topping has four bars labeled Pepperoni, Cheese, Sausage, and Veggie. What type of graph is it?",
+      "options": [
+        "Bar graph",
+        "Histogram",
+        "Stem-and-leaf plot",
+        "Side-by-side boxplot"
+      ],
+      "answer": 0,
+      "rationale": "The horizontal labels identify categories, and each bar represents a category frequency. A histogram instead uses quantitative intervals.",
+      "provenance": "User-provided quiz item and correct-answer feedback; wording condensed and explanation clarified"
+    }
+  ],
+  "provenance": {
+    "courseStructure": "User-provided D772 Section 2 Lesson 2 \u2014 Choosing Graphical Displays Quiz 1 report, 2026-10-04.",
+    "reportedResult": {
+      "correct": 10,
+      "total": 10,
+      "origin": "User-provided completed quiz report",
+      "scope": "This quiz only; not a Majick attempt, XP reward, or mastery promotion."
+    },
+    "sourceImage": "Question 10 uses the supplied textual description; original graphic was not attached."
   }
 };
 D772_SECTION_TWO_CONTENT['d772-s2-l2-summary']={

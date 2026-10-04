@@ -1,0 +1,31 @@
+{
+  "courseId": "D772",
+  "lessonId": "d772-s2-l2-quiz",
+  "source": "User-provided Quiz 1 and feedback, 2026-10-04",
+  "reportedScore": "10/10",
+  "comparedAgainst": [
+    "d772-s2-l2 categorical graph rules",
+    "d772-s2-l2-3 two-variable display rules",
+    "d772-s2-l2-summary display-selection synthesis"
+  ],
+  "existingConceptsReused": [
+    "Pie versus bar",
+    "Quantitative histogram",
+    "C\u2192Q boxplots",
+    "Q\u2192Q scatterplot",
+    "C\u2192C table"
+  ],
+  "usefulAddedCoverage": [
+    "Stem-and-leaf large-data limitation assessment",
+    "Dot plot use assessment",
+    "Bar-versus-histogram recognition from categorical axis labels",
+    "Degree-program and restaurant-spending scenarios"
+  ],
+  "integration": "One named quiz with 10 source items; no duplicate definitions or second global question bank. Repeated concept checks remain in this supplied assessment, not new teaching chapters.",
+  "notAdded": [
+    "Automatic mastery",
+    "XP or crystals for imported score",
+    "Invented attempt timestamps",
+    "Unattached source image"
+  ]
+}
