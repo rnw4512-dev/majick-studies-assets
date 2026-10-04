@@ -225,7 +225,7 @@ for marker in ("window.MajickLearningPlan","passageList","PERSONAL LEARNING PLAN
 if 'learning-plan.js?v=3324' not in main or 'learning-plan.css?v=3324' not in main:
     fail('Learning Plan assets are not installed in index.html')
 tutor=(site/'course-tutor.js').read_text(encoding='utf-8')
-for marker in ("window.MajickCourseTutor","D772_SECTION_ONE","D772_SECTION_TWO","d772-s2-l1-2","parentLessonId:'d772-s2-l1'","Explanatory and Response Variables","ROLE ≠ DATA TYPE","Does X help explain, predict, or influence Y?","I Teach • Two labels can describe the same variable","We Do • Guided example","lessonExperienceHtml","bindLessonExperience","s2l12-p1","s2l12-p8","OpenStax Statistics • Ch. 1 Key Terms","pathSublesson","sectionUnits","allOfficialLessons","tutorSourceRefs","Needs Review","targetRigor")
+for marker in ("window.MajickCourseTutor","D772_SECTION_ONE","D772_SECTION_TWO","d772-s2-l1-2","parentLessonId:'d772-s2-l1'","Explanatory and Response Variables","ROLE ≠ DATA TYPE","Does X help explain, predict, or influence Y?","I Teach • Two labels can describe the same variable","We Do • Guided example","lessonExperienceHtml","bindLessonExperience","s2l12-p1","s2l12-p8","OpenStax Statistics • Ch. 1 Key Terms","pathSublesson","sectionUnits","allOfficialLessons","tutorSourceRefs","Needs Review","targetRigor"):
     if marker not in tutor: fail('Course Tutor missing '+marker)
 if 'course-tutor.js?v=3401-s2-l1-2' not in main or 'course-tutor.css?v=3401-s2-l1-2' not in main:
     fail('Course Tutor assets are not installed in index.html')
