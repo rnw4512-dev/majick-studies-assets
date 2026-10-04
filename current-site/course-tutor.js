@@ -129,6 +129,8 @@ for(const lesson of D772_SECTION_TWO.lessons){
 const twoVariableUnit=D772_SECTION_TWO.lessons.find(l=>l.id==='d772-s2-l2').sublessons.find(l=>l.id==='d772-s2-l2-3');
 Object.assign(twoVariableUnit,{outlineOnly:false,keywords:['role-type','two-way table','side-by-side boxplot','scatterplot','two variable','two-variable'],goal:'Classify both variable roles and types, then select and justify a two-variable display.'});
 
+Object.assign(D772_SECTION_TWO.lessons.find(l=>l.id==='d772-s2-l2').sublessons.find(l=>l.id==='d772-s2-l2-summary'),{outlineOnly:false,goal:'Review display selection across one-variable and two-variable data, then prepare for interpreting distributions.'});
+
 const D772_SECTION_ONE_CONTENT={
   'd772-s1-l1':{
     overview:'Lesson 1 asks where the data came from and how the study was designed. Follow the chain: population and sample → sampling method → study type → experimental design.',
@@ -453,6 +455,47 @@ const D772_SECTION_TWO_CONTENT={
     ],
     vocab:[],
     memory:['Classify → choose display → describe distribution → calculate and interpret descriptive statistics.']
+  }
+};
+D772_SECTION_TWO_CONTENT['d772-s2-l2-summary']={
+  "sourceLabel": "COURSE-PROVIDED D772 \u2022 SECTION 2 \u2022 LESSON 2 SUMMARY",
+  "overview": "Choose a display by identifying how many variables you have, classifying their types, and deciding what you want to compare or describe. This summary revisits the existing lessons rather than adding duplicate definitions.",
+  "objectives": [
+    "Select displays for one categorical variable, one quantitative variable, or a pair of variables.",
+    "Explain the purpose and limitations of the selected display.",
+    "Prepare to interpret distributions in Lesson 3."
+  ],
+  "teach": [
+    {
+      "title": "One categorical variable",
+      "text": "Review pie charts and bar graphs from Lesson 2.1. Decide whether the goal is category comparison or parts of one complete whole; check for overlapping or missing categories."
+    },
+    {
+      "title": "One quantitative variable",
+      "text": "Review stem-and-leaf plots, dot plots, and histograms from Lesson 2.2. Choose according to the amount of data, whether individual values should remain visible, and whether a grouped distribution is useful."
+    },
+    {
+      "title": "Two variables",
+      "text": "Review Lesson 2.3: C\u2192C uses a two-way table; C\u2192Q uses side-by-side boxplots; Q\u2192Q uses a scatterplot. Identify explanatory and response roles separately from categorical and quantitative types."
+    },
+    {
+      "title": "Apply the selection process",
+      "text": "For a new data set, identify the variables, classify their types, state the comparison or relationship of interest, and justify the display. A familiar graph is not automatically the right graph."
+    },
+    {
+      "title": "Next: Data Distribution Interpretation",
+      "text": "Lesson 3 moves from choosing a display to describing what it shows. You will build on the graph-selection foundation to interpret data distributions using statistical concepts and graphical features."
+    }
+  ],
+  "vocab": [],
+  "memory": [
+    "How many variables? \u2192 What types? \u2192 What purpose? \u2192 Which display?",
+    "One categorical: bar or pie. One quantitative: stem-and-leaf, dot plot, or histogram.",
+    "C\u2192C: two-way table. C\u2192Q: side-by-side boxplots. Q\u2192Q: scatterplot."
+  ],
+  "provenance": {
+    "courseStructure": "User-provided WGU D772 Lesson 2 Summary and Next Step, 2026-10-04.",
+    "scope": "Synthesis of existing coverage; no new vocabulary definitions, assessment results, or completion state."
   }
 };
 D772_SECTION_TWO_CONTENT['d772-s2-l2-3']={

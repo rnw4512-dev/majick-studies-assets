@@ -113,7 +113,7 @@
     "collegium-atmosphere.css": "4802f569a4904df9a17ed389d986970928ca39e75f50334350a494a8d5737ed7",
     "collegium-atmosphere.js": "f86e878d705d89f477fc091c09a9e3ade23b190cb45635a13286a1f743f9dde3",
     "course-tutor.css": "43ebde61c10fad7b5f56927eb2ad2889bdeb7cacc01eeb59d3c6ff29bca879c9",
-    "course-tutor.js": "766db5520b77230c6c61bf7f9c82b0b89b3dfeace322f07444e88b87d481c71d",
+    "course-tutor.js": "83d6f44592dbfad9118d9b04ff37b919e373332433bd1ba565545e2957c531d3",
     "courseManager.js": "5a3bed03fc53028587e4a14d19056489b83e411ea1ecff5a4afbf196c5196681",
     "d755-retake.css": "e487a5e8ca4c069b7b9e9dabb603c8462ddcf81cb432b33b2e3395cce3a721d3",
     "d755-retake.js": "504ece754402f90278b7af02d6fd01c9183639c6777c43c75db06e44815b1935",
@@ -378,6 +378,7 @@
     "v339-main.js": "e1346861d157c7b1ddf8693ce81610abd6e750843ca665c5a4aee93e7464d202",
     "wgu-practice.css": "68fc99b8b37819cf305405ab366a96f4fe539e7e9a3ad51c4f894b986059692b",
     "wgu-practice.js": "b47e9767fc64da7e8d60006e9eaff3aed6d833dab8e57065d0055aa3d46507be",
-    "coverage/d772-s2-l2-3.json": "05265a3d4372a4d4075dbc0e75f87743da0f2896493367285d909cc2dd59be22"
+    "coverage/d772-s2-l2-3.json": "05265a3d4372a4d4075dbc0e75f87743da0f2896493367285d909cc2dd59be22",
+    "coverage/d772-s2-l2-summary.json": "d6c5a146210d14d520c720499a0ae93152bdca24c901db983bf97bcc08152118"
   }
 }
