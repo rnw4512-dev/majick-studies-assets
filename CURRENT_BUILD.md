@@ -1,3 +1,21 @@
+# Majick Studies — Current V3.4.2
+
+Updated: 2026-10-04
+
+- Canonical runnable source: `current-site/`. Edit this source for future app changes.
+- Publishing: `.github/workflows/deploy-majick-pages.yml` runs `pages-release/current/build.py current-site _site` only. No historical archive fetches, branch restoration, golden-build assembly, or version-folder overlays.
+- V3.4.2 is live at https://rnw4512-dev.github.io/majick-studies-assets/.
+- Runtime and Sanctuary share release cache keys. The release manifest is checked without browser caching; obsolete Majick worker caches are retired without clearing localStorage or IndexedDB.
+- Removed the stale 3.3.52 document marker; unified visible release badges; renamed version-numbered runtime files to semantic current names while preserving function APIs and save schemas.
+- The 33 original movement PNGs are hash-locked. Never replace them.
+- `current-site/source-manifest.json` hash-locks the reviewed current source. After intentional source edits, update affected hashes in this manifest before publishing; preserve the protected motion hashes. The build refuses unreviewed source mismatches.
+- Current source was frozen from the verified assembled V3.4.2 once; normal publishing never reconstructs it from old releases. Historical modules and save migrations remain where current behavior depends on them; this was a release/source consolidation, not a wholesale render-engine rewrite.
+- Verified: current-source hash/asset checks, JavaScript and inline-script syntax, duplicate/local runtime URLs, ten targeted current-source Guardian/product/D772/Game Realm smoke checks, successful current-only Pages deployment, and browser navigation from Home into Sanctuary.
+- No learner saves, XP, crystals, eggs, courses, or stored progress were intentionally reset. Browser verification used a separate browser world.
+- Next reliability milestone: end-to-end browser release gate covering Learn → Practice → reward → Guardian/egg → reload; save export/recovery; current render-owner consolidation; then multi-user account isolation and sync before public onboarding.
+
+## Historical notes below — reference only; not current deployment instructions
+
 ## V3.3.42 — Sanctuary Alive: Personal Nooks
 - **Game Realm compatibility / shared Guardian progress**
   - D755 teacher-focus questions now expose Game Realm `topicId`, difficulty, format, clue, and misconception metadata.
