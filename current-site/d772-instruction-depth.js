@@ -43,6 +43,7 @@ function openPractice(){
  try{window.navigate?.('mission')}catch(_){}
 }
 function renderBrief(){
+ if(window.MajickCourseTutor)return;
  if(window.S?.screen!=='learninglab'||window.S?.activeCourse!==COURSE)return;
  const lab=document.querySelector('.learnLab');if(!lab)return;
  const old=lab.querySelector('.v3356ProfessorBrief');if(old)old.remove();

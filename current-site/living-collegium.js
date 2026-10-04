@@ -107,6 +107,7 @@ function rememberStudyTool(course,tool){
 }
 function restoreStudyTool(course){
  if(window.S?.activeCourse!==course||window.S?.screen!=='learninglab')return;
+ if(course==='D772'&&window.MajickCourseTutor){window.MajickCourseTutor.show('tutor');return;}
  const tool=savedStudyTool(course);
  if(!tool){if(course==='D755')window.MajickD755Retake?.show?.();return;}
  const button=[...document.querySelectorAll('.learnTabs button')].find(b=>{const row=studyToolFromButton(b);return row?.kind===tool.kind&&row?.value===tool.value;});

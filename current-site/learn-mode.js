@@ -550,6 +550,7 @@ function render(){
 }
 function show(){
  if(!active())return;
+ if(window.MajickCourseTutor){window.MajickCourseTutor.show('tutor');return;}
  document.querySelectorAll('.learnPanel').forEach(p=>p.hidden=true);
  const panel=document.querySelector('.learnPanel[data-panel="instruction"]');if(panel)panel.hidden=false;
  document.querySelectorAll('.learnTabs button').forEach(b=>b.classList.remove('active'));

@@ -2726,7 +2726,7 @@ function show(name){
   document.querySelector('[data-tutor-tab="'+name+'"]')?.classList.add('active');
   document.querySelector('.learnLab')?.classList.toggle('tutorFocus',name==='path'||name==='tutor');
   if(name==='path')renderPath();
-  if(name==='tutor')renderTutor();
+  if(name==='tutor'){document.querySelector('.learnLab')?.classList.remove('instructionFocus');renderTutor();}
 }
 function renderPath(){
   const box=document.getElementById('courseTutorPath');if(!box)return;
@@ -2957,7 +2957,6 @@ MajickLearningLab.bind=function(){
   const bindingCourse=cid();
   setTimeout(()=>hydrate(bindingCourse).then(()=>{
     if(cid()!==bindingCourse||window.S?.screen!=='learninglab')return;
-    if(window.S?.majickAccount?.studyTool?.[bindingCourse])return;
     show('tutor');
   }),30);
 };

@@ -32,6 +32,7 @@ function home(){
  host.prepend(gate);
 }
 function classroom(){
+ if(window.MajickCourseTutor)return;
  if(window.S?.screen!=='learninglab'||window.S?.activeCourse!==COURSE)return;
  const lab=document.querySelector('.learnLab');if(!lab||lab.querySelector('.v3354TeachingBoard'))return;
  const lesson=activeLesson();

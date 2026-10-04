@@ -72,3 +72,5 @@
 @media(max-width:650px){.compactClassroom{padding:12px}.classroomStage{padding:15px}.classroomTabs button{flex:1 1 30%;padding:10px 6px}.classroomNavigation{font-size:12px}.classroomNavigation button{padding:10px}.classroomStage .v3401Practice article>div{grid-template-columns:1fr}}
 
 .classroomStage{max-height:65vh;overflow-y:auto;scrollbar-color:#987447 #e9d6b1}.classroomStage .v3401AnchorGrid:has(figure){display:block}.classroomStage figure img{max-width:480px!important;display:block;margin:auto}.classroomStage figure{margin:8px 0}.classroomStage .tutorQuickChoices button{font-size:16px}.classroomStage .tutorHelpButtons button{font-size:14px}.classroomStage .tutorVocab summary{font-size:17px;color:#49363a}.classroomStage .tutorVisual{flex-wrap:wrap;overflow:visible}
+
+.learnLab.tutorFocus>:is(.lcContinue,.lcToolkit,.v3354TeachingBoard,.v3356ProfessorBrief){display:none!important}
