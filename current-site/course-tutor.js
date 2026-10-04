@@ -523,7 +523,351 @@ function headingInfo(row){
   };
 }
 function escRx(s){return String(s||'').replace(/[.*+?^${}()|[\]\\]/g,'\\$&')}
-const D772_OFFICIAL_SECTIONS=[D772_SECTION_ONE,D772_SECTION_TWO];
+const D772_SECTION_THREE={
+  "id": "d772-s3",
+  "title": "Section 3: Applying Principles of Probability",
+  "provenance": {
+    "courseStructure": "User-provided WGU D772 Section 3 outline; teaching material pending"
+  },
+  "lessons": [
+    {
+      "id": "d772-s3-l1",
+      "number": 1,
+      "title": "Theoretical and Empirical Probability",
+      "short": "Theoretical and Empirical Probability",
+      "outlineOnly": true,
+      "keywords": [],
+      "goal": "Course outline reserved for your upcoming material.",
+      "visual": [],
+      "thinking": [],
+      "traps": [],
+      "sublessons": [
+        {
+          "id": "d772-s3-l1-1",
+          "number": 1.1,
+          "title": "Terminology and Notation",
+          "short": "Terminology and Notation",
+          "parentLessonId": "d772-s3-l1",
+          "unitType": "lesson",
+          "outlineOnly": true,
+          "keywords": [],
+          "goal": "Course outline reserved for your upcoming material.",
+          "visual": [],
+          "thinking": [],
+          "traps": []
+        },
+        {
+          "id": "d772-s3-l1-2",
+          "number": 1.2,
+          "title": "Theoretical (Classical) Probability",
+          "short": "Theoretical (Classical) Probability",
+          "parentLessonId": "d772-s3-l1",
+          "unitType": "lesson",
+          "outlineOnly": true,
+          "keywords": [],
+          "goal": "Course outline reserved for your upcoming material.",
+          "visual": [],
+          "thinking": [],
+          "traps": []
+        },
+        {
+          "id": "d772-s3-l1-3",
+          "number": 1.3,
+          "title": "Empirical (Experimental) Probability and the Law of Large Numbers",
+          "short": "Empirical (Experimental) Probability and the Law of Large Numbers",
+          "parentLessonId": "d772-s3-l1",
+          "unitType": "lesson",
+          "outlineOnly": true,
+          "keywords": [],
+          "goal": "Course outline reserved for your upcoming material.",
+          "visual": [],
+          "thinking": [],
+          "traps": []
+        },
+        {
+          "id": "d772-s3-l1-summary",
+          "number": null,
+          "title": "Lesson 1: Summary",
+          "short": "Lesson 1: Summary",
+          "parentLessonId": "d772-s3-l1",
+          "unitType": "summary",
+          "outlineOnly": true,
+          "keywords": [],
+          "goal": "Course outline reserved for your upcoming material.",
+          "visual": [],
+          "thinking": [],
+          "traps": []
+        },
+        {
+          "id": "d772-s3-l1-quiz",
+          "number": null,
+          "title": "Lesson 1: Quiz",
+          "short": "Lesson 1: Quiz",
+          "parentLessonId": "d772-s3-l1",
+          "unitType": "quiz",
+          "outlineOnly": true,
+          "keywords": [],
+          "goal": "Course outline reserved for your upcoming material.",
+          "visual": [],
+          "thinking": [],
+          "traps": []
+        }
+      ]
+    },
+    {
+      "id": "d772-s3-l2",
+      "number": 2,
+      "title": "Independent, Dependent, and Disjoint Events",
+      "short": "Independent, Dependent, and Disjoint Events",
+      "outlineOnly": true,
+      "keywords": [],
+      "goal": "Course outline reserved for your upcoming material.",
+      "visual": [],
+      "thinking": [],
+      "traps": [],
+      "sublessons": [
+        {
+          "id": "d772-s3-l2-1",
+          "number": 2.1,
+          "title": "Independent and Dependent Events",
+          "short": "Independent and Dependent Events",
+          "parentLessonId": "d772-s3-l2",
+          "unitType": "lesson",
+          "outlineOnly": true,
+          "keywords": [],
+          "goal": "Course outline reserved for your upcoming material.",
+          "visual": [],
+          "thinking": [],
+          "traps": []
+        },
+        {
+          "id": "d772-s3-l2-2",
+          "number": 2.2,
+          "title": "Disjoint Events (Mutually Exclusive)",
+          "short": "Disjoint Events (Mutually Exclusive)",
+          "parentLessonId": "d772-s3-l2",
+          "unitType": "lesson",
+          "outlineOnly": true,
+          "keywords": [],
+          "goal": "Course outline reserved for your upcoming material.",
+          "visual": [],
+          "thinking": [],
+          "traps": []
+        },
+        {
+          "id": "d772-s3-l2-summary",
+          "number": null,
+          "title": "Lesson 2: Summary",
+          "short": "Lesson 2: Summary",
+          "parentLessonId": "d772-s3-l2",
+          "unitType": "summary",
+          "outlineOnly": true,
+          "keywords": [],
+          "goal": "Course outline reserved for your upcoming material.",
+          "visual": [],
+          "thinking": [],
+          "traps": []
+        },
+        {
+          "id": "d772-s3-l2-quiz",
+          "number": null,
+          "title": "Lesson 2: Quiz",
+          "short": "Lesson 2: Quiz",
+          "parentLessonId": "d772-s3-l2",
+          "unitType": "quiz",
+          "outlineOnly": true,
+          "keywords": [],
+          "goal": "Course outline reserved for your upcoming material.",
+          "visual": [],
+          "thinking": [],
+          "traps": []
+        }
+      ]
+    },
+    {
+      "id": "d772-s3-l3",
+      "number": 3,
+      "title": "Unions, Intersections, and Complements",
+      "short": "Unions, Intersections, and Complements",
+      "outlineOnly": true,
+      "keywords": [],
+      "goal": "Course outline reserved for your upcoming material.",
+      "visual": [],
+      "thinking": [],
+      "traps": [],
+      "sublessons": [
+        {
+          "id": "d772-s3-l3-1",
+          "number": 3.1,
+          "title": "Venn Diagrams",
+          "short": "Venn Diagrams",
+          "parentLessonId": "d772-s3-l3",
+          "unitType": "lesson",
+          "outlineOnly": true,
+          "keywords": [],
+          "goal": "Course outline reserved for your upcoming material.",
+          "visual": [],
+          "thinking": [],
+          "traps": []
+        },
+        {
+          "id": "d772-s3-l3-2",
+          "number": 3.2,
+          "title": "Unions",
+          "short": "Unions",
+          "parentLessonId": "d772-s3-l3",
+          "unitType": "lesson",
+          "outlineOnly": true,
+          "keywords": [],
+          "goal": "Course outline reserved for your upcoming material.",
+          "visual": [],
+          "thinking": [],
+          "traps": []
+        },
+        {
+          "id": "d772-s3-l3-3",
+          "number": 3.3,
+          "title": "Intersections",
+          "short": "Intersections",
+          "parentLessonId": "d772-s3-l3",
+          "unitType": "lesson",
+          "outlineOnly": true,
+          "keywords": [],
+          "goal": "Course outline reserved for your upcoming material.",
+          "visual": [],
+          "thinking": [],
+          "traps": []
+        },
+        {
+          "id": "d772-s3-l3-4",
+          "number": 3.4,
+          "title": "Complements",
+          "short": "Complements",
+          "parentLessonId": "d772-s3-l3",
+          "unitType": "lesson",
+          "outlineOnly": true,
+          "keywords": [],
+          "goal": "Course outline reserved for your upcoming material.",
+          "visual": [],
+          "thinking": [],
+          "traps": []
+        },
+        {
+          "id": "d772-s3-l3-summary",
+          "number": null,
+          "title": "Lesson 3: Summary",
+          "short": "Lesson 3: Summary",
+          "parentLessonId": "d772-s3-l3",
+          "unitType": "summary",
+          "outlineOnly": true,
+          "keywords": [],
+          "goal": "Course outline reserved for your upcoming material.",
+          "visual": [],
+          "thinking": [],
+          "traps": []
+        },
+        {
+          "id": "d772-s3-l3-quiz",
+          "number": null,
+          "title": "Lesson 3: Quiz",
+          "short": "Lesson 3: Quiz",
+          "parentLessonId": "d772-s3-l3",
+          "unitType": "quiz",
+          "outlineOnly": true,
+          "keywords": [],
+          "goal": "Course outline reserved for your upcoming material.",
+          "visual": [],
+          "thinking": [],
+          "traps": []
+        }
+      ]
+    },
+    {
+      "id": "d772-s3-l4",
+      "number": 4,
+      "title": "Expected Value",
+      "short": "Expected Value",
+      "outlineOnly": true,
+      "keywords": [],
+      "goal": "Course outline reserved for your upcoming material.",
+      "visual": [],
+      "thinking": [],
+      "traps": [],
+      "sublessons": [
+        {
+          "id": "d772-s3-l4-1",
+          "number": 4.1,
+          "title": "Calculating Expected Value",
+          "short": "Calculating Expected Value",
+          "parentLessonId": "d772-s3-l4",
+          "unitType": "lesson",
+          "outlineOnly": true,
+          "keywords": [],
+          "goal": "Course outline reserved for your upcoming material.",
+          "visual": [],
+          "thinking": [],
+          "traps": []
+        },
+        {
+          "id": "d772-s3-l4-2",
+          "number": 4.2,
+          "title": "Applications of Expected Value",
+          "short": "Applications of Expected Value",
+          "parentLessonId": "d772-s3-l4",
+          "unitType": "lesson",
+          "outlineOnly": true,
+          "keywords": [],
+          "goal": "Course outline reserved for your upcoming material.",
+          "visual": [],
+          "thinking": [],
+          "traps": []
+        },
+        {
+          "id": "d772-s3-l4-summary",
+          "number": null,
+          "title": "Lesson 4: Summary",
+          "short": "Lesson 4: Summary",
+          "parentLessonId": "d772-s3-l4",
+          "unitType": "summary",
+          "outlineOnly": true,
+          "keywords": [],
+          "goal": "Course outline reserved for your upcoming material.",
+          "visual": [],
+          "thinking": [],
+          "traps": []
+        },
+        {
+          "id": "d772-s3-l4-quiz",
+          "number": null,
+          "title": "Lesson 4: Quiz",
+          "short": "Lesson 4: Quiz",
+          "parentLessonId": "d772-s3-l4",
+          "unitType": "quiz",
+          "outlineOnly": true,
+          "keywords": [],
+          "goal": "Course outline reserved for your upcoming material.",
+          "visual": [],
+          "thinking": [],
+          "traps": []
+        }
+      ]
+    },
+    {
+      "id": "d772-s3-review",
+      "number": null,
+      "title": "Section 3: Summary and Test",
+      "short": "Section 3 Review",
+      "review": true,
+      "outlineOnly": true,
+      "keywords": [],
+      "goal": "Section summary and test reserved for your upcoming material.",
+      "visual": [],
+      "thinking": [],
+      "traps": []
+    }
+  ]
+};
+const D772_OFFICIAL_SECTIONS=[D772_SECTION_ONE,D772_SECTION_TWO,D772_SECTION_THREE];
 function sectionUnits(section){
   const out=[];
   for(const lesson of section?.lessons||[]){
@@ -537,6 +881,7 @@ function allOfficialLessons(){return D772_OFFICIAL_SECTIONS.flatMap(sectionUnits
 function d772SectionForRow(row){
   const sid=String(row?.sectionId||row?.learningPath?.sectionId||'');
   if(sid==='d772-s2')return D772_SECTION_TWO;
+  if(sid==='d772-s3')return D772_SECTION_THREE;
   return D772_SECTION_ONE;
 }
 function lessonById(id){return allOfficialLessons().find(l=>l.id===id)||null}
@@ -956,7 +1301,7 @@ function renderPath(){
   const id=cid(),secs=sections(id);
   const active=selectedLesson(id);
   const pathHero=id==='D772'
-    ? '<div class="tutorHero tutorHeroCompact"><div><span>D772 • MULTI-SECTION COURSE PATH</span><h3>Section 1 is built. Section 2 now has its four official lessons and competency targets.</h3><p>Section 2 teaching detail expands only from verified course material and corroborated statistics references. Section 3 remains separate until its course structure is supplied.</p></div><button class="btn primary" id="continueTutor">'+(active?'Continue '+E(active.short||active.title):'Open Tutor')+' →</button></div>'
+    ? '<div class="tutorHero tutorHeroCompact"><div><span>D772 • MULTI-SECTION COURSE PATH</span><h3>Sections 1–3 have their course structure in place.</h3><p>Teaching expands as you add material. Section 3 probability units are reserved for your upcoming notes, summaries, and quizzes.</p></div><button class="btn primary" id="continueTutor">'+(active?'Continue '+E(active.short||active.title):'Open Tutor')+' →</button></div>'
     : '<div class="tutorHero"><div><span>MAJICK COURSE TUTOR • '+E(id)+'</span><h3>Learn the course in order. Prove each lesson at higher rigor.</h3><p>Your uploaded notes automatically fill this path. Repeated material is deduplicated in the tutor chapter and the active question bank.</p></div><button class="btn primary" id="continueTutor">'+(active?'Continue '+E(active.short||active.title):'Open Tutor')+' →</button></div>';
   box.innerHTML=pathHero+
     secs.map(sec=>{
@@ -1146,5 +1491,5 @@ MajickLearningLab.bind=function(){
 };
 const baseRefresh=MajickLearningLab.refresh;
 MajickLearningLab.refresh=function(){baseRefresh();hydrate()};
-window.MajickCourseTutor={VERSION,D772_SECTION_ONE,D772_SECTION_TWO,D772_SECTION_ONE_CONTENT,D772_SECTION_TWO_CONTENT,D772_TUTOR_HELP,sectionUnits,allOfficialLessons,hydrate,sections,classifySource,annotateSource,tagD772Generated,classifyD772Item,d772Segments,sourcesForLesson,questionsForLesson,mastery,sectionProgress,chapter,mergeLessonTeaching,officialD772Content,startPractice,show,renderPath,renderTutor,renderTutorAssist,openLesson,selectedLesson};
+window.MajickCourseTutor={VERSION,D772_SECTION_ONE,D772_SECTION_TWO,D772_SECTION_THREE,D772_SECTION_ONE_CONTENT,D772_SECTION_TWO_CONTENT,D772_TUTOR_HELP,sectionUnits,allOfficialLessons,hydrate,sections,classifySource,annotateSource,tagD772Generated,classifyD772Item,d772Segments,sourcesForLesson,questionsForLesson,mastery,sectionProgress,chapter,mergeLessonTeaching,officialD772Content,startPractice,show,renderPath,renderTutor,renderTutorAssist,openLesson,selectedLesson};
 })();
