@@ -4,16 +4,21 @@
   "source": "Lesson 4.2 upload, 2026-10-04",
   "comparedAgainst": [
     "Lesson 4.1 median procedure",
-    "Lesson 4 introduction spread outline"
+    "Lesson 4 introduction spread outline",
+    "Existing Lesson 4.2 teaching, examples and six practice checks"
   ],
   "added": [
     "Course quartile convention",
     "Even and odd n worked examples",
     "Range and IQR distinction",
-    "Six practice checks"
+    "Six practice checks",
+    "Historical 15-airline-fee example with repeated median values",
+    "Five source practice questions: median, Q1, Q3, IQR, range",
+    "Explicit calculated Q3 provenance; source item unanswered"
   ],
   "reused": [
-    "Median procedure referenced without duplicate definition"
+    "Median procedure referenced without duplicate definition",
+    "Quartile definitions, both existing worked examples, range/IQR formulas and Figure 4.1 description"
   ],
   "notAdded": [
     "Outlier fence formulas outside supplied scope",

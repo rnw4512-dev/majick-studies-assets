@@ -500,6 +500,10 @@ D772_SECTION_TWO_CONTENT['d772-s2-l4-2']={
     {
       "title": "IQR: the middle span",
       "text": "IQR = Q3 \u2212 Q1. It measures the width containing the middle half of ordered observations. Its units match the data\u2019s units; it is not 50% of the numerical range. The box of the next lesson\u2019s boxplot runs from Q1 to Q3. Outlier-fence formulas are outside the scope stated in this upload."
+    },
+    {
+      "title": "Airline fees: repeated values still count",
+      "text": "The historical 15-fee example sorts to {60,69,75,75,100,100,100,100,100,100,125,125,125,125,150}. Keep every repeated observation. Q2 is the eighth value, $100. Exclude only that one middle observation, not every $100. The lower half has seven observations and Q1=$75; the upper half has seven and Q3=$125. IQR=$50; range=$90."
     }
   ],
   "anchorChart": {
@@ -576,7 +580,8 @@ D772_SECTION_TWO_CONTENT['d772-s2-l4-2']={
       "source": "WGU Figure 4.1, Box Plot Components and IQR",
       "url": "https://assets.wgu.edu/225013c4fb08d105aca2c4d0880850e1",
       "note": "User-provided description; visual in Majick is an original labeled example, not the original asset."
-    }
+    },
+    "coursePractice": "Five additional user-provided ungraded airline-fee questions, 2026-10-04. Questions 1,2,4,5 include supplied correct feedback; question 3 has no supplied answer and its $125 key is independently calculated. Correct/unanswered labels are source metadata, not imported Majick attempts or mastery."
   },
   "practice": [
     {
@@ -656,6 +661,71 @@ D772_SECTION_TWO_CONTENT['d772-s2-l4-2']={
       "answer": 1,
       "rationale": "This lesson explicitly uses median-of-halves excluding the overall median for odd n. Other percentile conventions can differ.",
       "provenance": "Majick-authored practice using supplied course methods"
+    },
+    {
+      "id": "s2l42-course-airline-1",
+      "prompt": "In the supplied historical June 2009 example, airline pet fees (dollars) are {69,100,75,100,125,150,100,60,100,125,75,100,125,100,125}. What is the median?",
+      "options": [
+        "$105",
+        "$110",
+        "$100",
+        "$95"
+      ],
+      "answer": 2,
+      "rationale": "Sort all 15 observations. The median position is (15+1)/2=8; the eighth value is $100.",
+      "provenance": "User-provided WGU ungraded practice; answer supported by supplied correct feedback"
+    },
+    {
+      "id": "s2l42-course-airline-2",
+      "prompt": "In the supplied historical June 2009 example, airline pet fees (dollars) are {69,100,75,100,125,150,100,60,100,125,75,100,125,100,125}. What is the first quartile (Q1)?",
+      "options": [
+        "$60",
+        "$75",
+        "$100",
+        "$125"
+      ],
+      "answer": 1,
+      "rationale": "Exclude the eighth observation (the overall median). The lower seven values are {60,69,75,75,100,100,100}; their middle, fourth value is $75.",
+      "provenance": "User-provided WGU ungraded practice; answer supported by supplied correct feedback"
+    },
+    {
+      "id": "s2l42-course-airline-3",
+      "prompt": "In the supplied historical June 2009 example, airline pet fees (dollars) are {69,100,75,100,125,150,100,60,100,125,75,100,125,100,125}. What is the third quartile (Q3)?",
+      "options": [
+        "$90",
+        "$125",
+        "$150",
+        "$100"
+      ],
+      "answer": 1,
+      "rationale": "Calculated with the supplied course convention: exclude the overall median. The upper seven values are {100,100,125,125,125,125,150}; their fourth value is $125. This answer was calculated by Majick; the pasted WGU item was unanswered.",
+      "provenance": "User-provided WGU ungraded practice; answer independently calculated, no supplied key"
+    },
+    {
+      "id": "s2l42-course-airline-4",
+      "prompt": "In the supplied historical June 2009 example, airline pet fees (dollars) are {69,100,75,100,125,150,100,60,100,125,75,100,125,100,125}. What is the interquartile range (IQR)?",
+      "options": [
+        "$20",
+        "$50",
+        "$40",
+        "$60"
+      ],
+      "answer": 1,
+      "rationale": "IQR = Q3 \u2212 Q1 = $125 \u2212 $75 = $50. It measures the span of the middle 50%, not the full span.",
+      "provenance": "User-provided WGU ungraded practice; answer supported by supplied correct feedback"
+    },
+    {
+      "id": "s2l42-course-airline-5",
+      "prompt": "In the supplied historical June 2009 example, airline pet fees (dollars) are {69,100,75,100,125,150,100,60,100,125,75,100,125,100,125}. What is the range?",
+      "options": [
+        "$60",
+        "$90",
+        "$50",
+        "$100"
+      ],
+      "answer": 1,
+      "rationale": "Range = maximum \u2212 minimum = $150 \u2212 $60 = $90. The minimum $60 is an endpoint, not the range.",
+      "provenance": "User-provided WGU ungraded practice; answer supported by supplied correct feedback"
     }
   ],
   "visuals": [
