@@ -113,7 +113,7 @@
     "collegium-atmosphere.css": "4802f569a4904df9a17ed389d986970928ca39e75f50334350a494a8d5737ed7",
     "collegium-atmosphere.js": "f86e878d705d89f477fc091c09a9e3ade23b190cb45635a13286a1f743f9dde3",
     "course-tutor.css": "43ebde61c10fad7b5f56927eb2ad2889bdeb7cacc01eeb59d3c6ff29bca879c9",
-    "course-tutor.js": "02804ac9d49ec597e47b30bb9ab58e66fbbbbbc8be21ac9ad244a3ed44aeff46",
+    "course-tutor.js": "d5acb8257ba1d49f87fe6d3d16f8ae4872724b40776d259972e45543d486da58",
     "courseManager.js": "5a3bed03fc53028587e4a14d19056489b83e411ea1ecff5a4afbf196c5196681",
     "d755-retake.css": "e487a5e8ca4c069b7b9e9dabb603c8462ddcf81cb432b33b2e3395cce3a721d3",
     "d755-retake.js": "504ece754402f90278b7af02d6fd01c9183639c6777c43c75db06e44815b1935",
@@ -389,6 +389,6 @@
     "lesson-visuals/distribution-skewed-left.svg": "33b980ffd59bf94a68ecdae2a4e94d20481799cfc467633378664ae9f0b1998f",
     "coverage/d772-s2-l3-quiz.json": "a4546a076914c6e18d04f7e2ab9f50fbe9efb36a696a1ebda7fc3ee8ecb3e5b6",
     "save-safety.js": "dff6eb9f3126315b541b59330b50de12993441da3d482b6312de16c6699995a0",
-    "coverage/d772-s2-l4-1.json": "d22b82074259c27f29a874050b0b572c592480d0362c1f90c6cecdf6e61a2142"
+    "coverage/d772-s2-l4-1.json": "965a11a0c9215cdf0d06f28d39c00fb26befd80ac6c06852965e2bc7485bb612"
   }
 }

@@ -11,11 +11,24 @@
     "Mean, median and raw-data mode procedures",
     "Median location versus value repair",
     "Readable replacement for missing SVG formulas",
-    "Seven derived practice checks"
+    "Seven derived practice checks",
+    "Same-data comparison: mean 3, median 2, mode 1",
+    "Exact mean 47/8=5.875",
+    "Unsorted odd median",
+    "Tie for highest frequency versus merely repeated values"
   ],
   "notAdded": [
     "Premature spread or boxplot formulas",
     "Duplicated histogram-mode definition",
     "Imported completion or mastery"
+  ],
+  "additionalSource": "Six ungraded course questions and supplied feedback, 2026-10-04",
+  "courseQuestionIds": [
+    "s2l41-course-p1",
+    "s2l41-course-p2",
+    "s2l41-course-p3",
+    "s2l41-course-p4",
+    "s2l41-course-p5",
+    "s2l41-course-p6"
   ]
 }

@@ -562,6 +562,14 @@ D772_SECTION_TWO_CONTENT['d772-s2-l4-1']={
       [
         "430 and 480 each occur twice",
         "Two modes: 430 and 480"
+      ],
+      [
+        "{1,1,1,3,6,6}",
+        "Mean 3; median 2; mode 1"
+      ],
+      [
+        "{2,3,5,5,7,8,8,9}",
+        "Mean 5.875; modes 5 and 8"
       ]
     ]
   },
@@ -598,7 +606,8 @@ D772_SECTION_TWO_CONTENT['d772-s2-l4-1']={
   "provenance": {
     "courseStructure": "User-provided Lesson 4 introduction and mean/median/mode teaching and examples, 2026-10-04.",
     "formulas": "Missing pasted SVG formulas reconstructed as mean=sum/n and median position=(n+1)/2, consistent with the supplied 97-, 100-, and 40-observation examples.",
-    "practice": "Majick-authored checks derived from supplied methods; not claimed as WGU assessment items."
+    "practice": "Majick-authored checks derived from supplied methods; not claimed as WGU assessment items.",
+    "coursePractice": "Six user-provided ungraded questions with correct feedback. This is source answer-key evidence, not an imported graded quiz result or a Majick attempt."
   },
   "practice": [
     {
@@ -684,6 +693,84 @@ D772_SECTION_TWO_CONTENT['d772-s2-l4-1']={
       ],
       "answer": 2,
       "rationale": "Mode identifies the most frequent category. Arbitrary color labels do not provide meaningful numerical amounts to average."
+    },
+    {
+      "id": "s2l41-course-p1",
+      "prompt": "What is the mean of {1,1,1,3,6,6}?",
+      "options": [
+        "2",
+        "2.5",
+        "3",
+        "3.5"
+      ],
+      "answer": 2,
+      "rationale": "The six observations total 18. Mean = 18/6 = 3. Count each repeated observation.",
+      "provenance": "User-provided Lesson 4.1 ungraded course question and correct-answer feedback, 2026-10-04"
+    },
+    {
+      "id": "s2l41-course-p2",
+      "prompt": "What is the median of {1,1,1,3,6,6}?",
+      "options": [
+        "2",
+        "3.5",
+        "3",
+        "2.5"
+      ],
+      "answer": 0,
+      "rationale": "The data are sorted and n=6. The third and fourth values are 1 and 3, so median = (1+3)/2 = 2. Average the values, not their position numbers.",
+      "provenance": "User-provided Lesson 4.1 ungraded course question and correct-answer feedback, 2026-10-04"
+    },
+    {
+      "id": "s2l41-course-p3",
+      "prompt": "What is the mode of {1,1,1,3,6,6}?",
+      "options": [
+        "There is no mode",
+        "1",
+        "6",
+        "1 and 6"
+      ],
+      "answer": 1,
+      "rationale": "1 occurs three times, 6 twice, and 3 once. Only 1 has the greatest frequency. Repetition alone does not make 6 another mode.",
+      "provenance": "User-provided Lesson 4.1 ungraded course question and correct-answer feedback, 2026-10-04"
+    },
+    {
+      "id": "s2l41-course-p4",
+      "prompt": "What is the mean of {2,3,5,5,7,8,8,9}?",
+      "options": [
+        "5.5",
+        "5.75",
+        "6",
+        "5.875"
+      ],
+      "answer": 3,
+      "rationale": "The total is 47 over eight observations. Mean = 47/8 = 5.875; keep the exact result when it appears among the choices.",
+      "provenance": "User-provided Lesson 4.1 ungraded course question and correct-answer feedback, 2026-10-04"
+    },
+    {
+      "id": "s2l41-course-p5",
+      "prompt": "What is the median of {6,1,12,13,4,9,4}?",
+      "options": [
+        "6",
+        "5",
+        "7",
+        "13"
+      ],
+      "answer": 0,
+      "rationale": "Sort first: {1,4,4,6,9,12,13}. With seven observations, the fourth value is the median: 6.",
+      "provenance": "User-provided Lesson 4.1 ungraded course question and correct-answer feedback, 2026-10-04"
+    },
+    {
+      "id": "s2l41-course-p6",
+      "prompt": "What are the modes of {2,3,5,5,7,8,8,9}?",
+      "options": [
+        "5",
+        "5 and 8",
+        "8",
+        "There is no mode"
+      ],
+      "answer": 1,
+      "rationale": "5 and 8 each occur twice, tying for the highest frequency. Both are modes.",
+      "provenance": "User-provided Lesson 4.1 ungraded course question and correct-answer feedback, 2026-10-04"
     }
   ]
 };
