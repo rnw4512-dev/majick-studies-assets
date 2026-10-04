@@ -1957,6 +1957,7 @@ D772_SECTION_TWO_CONTENT['d772-s2-l2-3']={
   ]
 };
 D772_SECTION_TWO_CONTENT['d772-s2-l4-3']={
+  "visualLabel": "ORIGINAL SCALED BOX PLOTS • SUPPLIED COURSE DATA",
   "sourceLabel": "COURSE-PROVIDED D772 \u2022 SECTION 2 \u2022 LESSON 4.3",
   "overview": "Summarize one quantitative variable with five values, place them on a scaled box plot, and interpret center, spread, and approximate quarters of observations. Reuse the Lesson 4.2 quartile method.",
   "objectives": [
@@ -3078,7 +3079,7 @@ function visualHtml(lesson){
 function lessonExperienceHtml(official){
   if(!official)return '';
   const objectives=(official.objectives||[]).length?'<section class="tutorChapterBlock v3401Objectives"><div class="tutorBlockTitle"><span>✦</span><div><small>LEARNING OBJECTIVES</small><h3>What you should be able to do</h3></div></div><ul>'+official.objectives.map(x=>'<li>'+E(x)+'</li>').join('')+'</ul></section>':'';
-  const visuals=(official.visuals||[]).length?'<section class="tutorChapterBlock"><small>ILLUSTRATIVE HISTOGRAMS • NOT WGU DATA</small><div class="v3401AnchorGrid">'+official.visuals.map(v=>'<figure><img style="width:100%;max-width:310px" src="'+E(v.src)+'" alt="'+E(v.alt)+'"><figcaption>'+E(v.title)+'</figcaption></figure>').join('')+'</div></section>':'';
+  const visuals=(official.visuals||[]).length?'<section class="tutorChapterBlock"><small>'+E(official.visualLabel||'ILLUSTRATIVE HISTOGRAMS • NOT WGU DATA')+'</small><div class="v3401AnchorGrid">'+official.visuals.map(v=>'<figure><img style="width:100%;max-width:310px" src="'+E(v.src)+'" alt="'+E(v.alt)+'"><figcaption>'+E(v.title)+'</figcaption></figure>').join('')+'</div></section>':'';
   const a=official.anchorChart;
   const anchor=a?'<section class="tutorChapterBlock v3401Anchor"><div class="tutorBlockTitle"><span>⚯</span><div><small>VISUAL ANCHOR CHART</small><h3>'+E(a.title)+'</h3></div></div><div class="v3401Rule">'+E(a.rule)+'</div><div class="v3401AnchorGrid">'+(a.columns||[]).slice(1).map(row=>'<article><b>'+E(row[0])+'</b><p>'+E(row[1])+'</p></article>').join('')+'</div><div class="v3401RoleExamples">'+(a.examples||[]).map(row=>'<span><b>'+E(row[0])+'</b> → '+E(row[1])+'</span>').join('')+'</div></section>':'';
   const we=official.weDo?'<section class="tutorChapterBlock v3401WeDo"><div class="tutorBlockTitle"><span>2</span><div><small>WE DO</small><h3>Work one together</h3></div></div><p class="v3401Prompt">'+E(official.weDo.prompt)+'</p><ol>'+official.weDo.steps.map(x=>'<li>'+E(x)+'</li>').join('')+'</ol></section>':'';
