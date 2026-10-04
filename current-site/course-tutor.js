@@ -137,6 +137,8 @@ Object.assign(D772_SECTION_TWO.lessons.find(l=>l.id==='d772-s2-l3').sublessons.f
 
 Object.assign(D772_SECTION_TWO.lessons.find(l=>l.id==='d772-s2-l3').sublessons.find(l=>l.id==='d772-s2-l3-quiz'),{outlineOnly:false,goal:'Review your reported 9/10 Quiz 1 result and repair normal-versus-uniform confusion.'});
 
+Object.assign(D772_SECTION_TWO.lessons.find(l=>l.id==='d772-s2-l4').sublessons.find(l=>l.id==='d772-s2-l4-1'),{outlineOnly:false,keywords:['mean','median','mode','measures of center','average','middle value'],goal:'Calculate and interpret mean, median, and raw-data modes.'});
+
 const D772_SECTION_ONE_CONTENT={
   'd772-s1-l1':{
     overview:'Lesson 1 asks where the data came from and how the study was designed. Follow the chain: population and sample → sampling method → study type → experimental design.',
@@ -462,6 +464,228 @@ const D772_SECTION_TWO_CONTENT={
     vocab:[],
     memory:['Classify → choose display → describe distribution → calculate and interpret descriptive statistics.']
   }
+};
+D772_SECTION_TWO_CONTENT['d772-s2-l4']={
+  "sourceLabel": "COURSE-PROVIDED D772 \u2022 SECTION 2 \u2022 LESSON 4",
+  "overview": "Single-variable descriptive statistics summarize one variable. This lesson covers measures of center (mean, median, mode), measures of spread (range and interquartile range), and the five-number summary and box plots.",
+  "objectives": [
+    "Calculate single-variable descriptive statistics."
+  ],
+  "teach": [
+    {
+      "title": "Lesson skills",
+      "text": "Calculate and interpret a summary in context. Begin with mean, median, and mode in Lesson 4.1. Measures of spread and five-number summaries have their own reserved units; their detailed teaching will expand as material is supplied."
+    }
+  ],
+  "vocab": [],
+  "memory": [
+    "Center describes a typical or middle value. Spread describes variability."
+  ],
+  "provenance": {
+    "courseStructure": "User-provided Lesson 4 introduction and objective, 2026-10-04."
+  }
+};
+D772_SECTION_TWO_CONTENT['d772-s2-l4-1']={
+  "sourceLabel": "COURSE-PROVIDED D772 \u2022 SECTION 2 \u2022 LESSON 4.1",
+  "overview": "Calculate mean, median, and mode, then explain what each tells you. Repeated observations count separately. Sort before finding a median, and keep a position number separate from the value at that position.",
+  "objectives": [
+    "Calculate mean as sum divided by observation count.",
+    "Find medians for odd and even sample sizes.",
+    "Distinguish median location from median value.",
+    "Find one or several tied most-frequent values.",
+    "Explain why a median is often preferable for skewed quantitative data."
+  ],
+  "teach": [
+    {
+      "title": "Mean: total divided by count",
+      "text": "Mean = (sum of all values) / n. Count every observation, including repeats. For {1,1,1,2,2,3,4,4,4,4,4}, the sum is 30 and n is 11, giving 30/11 \u2248 2.73. Divide by 11 observations, not by the four distinct values."
+    },
+    {
+      "title": "Median: sort, locate, then read",
+      "text": "Order the values from smallest to largest. The middle position is (n+1)/2 using positions counted from 1. For odd n, read the value at that position. For even n, average the values at positions n/2 and n/2+1. The position formula does not give the median\u2019s numerical value."
+    },
+    {
+      "title": "Location versus value",
+      "text": "With n=97, the middle position is 49, so read the 49th ordered value. With n=100, position 50.5 means average the 50th and 51st values; it does not mean the median is 50.5. In the supplied 40-person museum example, positions 20 and 21 contain ages 23 and 24: median = (23+24)/2 = 23.5 years."
+    },
+    {
+      "title": "Mode: highest frequency, ties allowed",
+      "text": "Find the value or category occurring most often. In the supplied 20-score example, 72 occurs five times and is the mode. In {430,430,480,480,495}, both 430 and 480 occur twice and tie for the highest frequency, so both are modes. A lower-frequency repeated value is not another mode."
+    },
+    {
+      "title": "Choosing a useful summary",
+      "text": "Extreme quantitative values influence the mean more than the median, so a median is often a better summary of a skewed data set. The mode can summarize categorical data, such as the most common color. A numerical mode may be correct yet poorly represent the center of the full distribution."
+    },
+    {
+      "title": "Mode here versus histogram peaks",
+      "text": "For raw data, modes are the exact values tied for highest frequency. In Lesson 3.1, histogram modality counts meaningful local peaks of intervals, even when their heights differ. Do not apply the tied-frequency rule for raw-data modes to histogram peak counting."
+    }
+  ],
+  "anchorChart": {
+    "title": "CENTER: TOTAL \u2022 MIDDLE \u2022 MOST OFTEN",
+    "rule": "Mean: sum/n. Median: sort \u2192 locate \u2192 read or average. Mode: highest frequency.",
+    "columns": [
+      [
+        "Measure",
+        "Procedure and trap"
+      ],
+      [
+        "Mean",
+        "Count repeated observations; divide by n"
+      ],
+      [
+        "Median, odd n",
+        "Read ordered value at (n+1)/2"
+      ],
+      [
+        "Median, even n",
+        "Average ordered values at n/2 and n/2+1"
+      ],
+      [
+        "Mode",
+        "All values tied for highest frequency count"
+      ],
+      [
+        "Interpretation",
+        "Give the statistic in the variable\u2019s units; position is not value"
+      ]
+    ],
+    "examples": [
+      [
+        "30 total over 11 observations",
+        "Mean \u2248 2.73"
+      ],
+      [
+        "Middle ages 23 and 24",
+        "Median = 23.5 years"
+      ],
+      [
+        "430 and 480 each occur twice",
+        "Two modes: 430 and 480"
+      ]
+    ]
+  },
+  "weDo": {
+    "prompt": "Calculate mean, median, and mode for {2,4,4,6,9}.",
+    "steps": [
+      "Sum: 2+4+4+6+9 = 25; five observations.",
+      "Mean = 25/5 = 5.",
+      "The data are sorted. Middle position = (5+1)/2 = 3.",
+      "The third value is 4, so median = 4; the position 3 is not the median value.",
+      "The value 4 occurs twice, more than every other value, so mode = 4."
+    ]
+  },
+  "vocab": [
+    [
+      "Mean",
+      "Sum of quantitative observations divided by their count."
+    ],
+    [
+      "Median",
+      "Middle ordered value, or average of the two middle ordered values."
+    ],
+    [
+      "Mode (raw data)",
+      "Value or category with the greatest frequency; ties can produce multiple modes."
+    ]
+  ],
+  "memory": [
+    "Count observations, not distinct values.",
+    "Sort before finding the median.",
+    "A position is a place in the ordered list, not the median itself.",
+    "For even n, average the two central VALUES."
+  ],
+  "provenance": {
+    "courseStructure": "User-provided Lesson 4 introduction and mean/median/mode teaching and examples, 2026-10-04.",
+    "formulas": "Missing pasted SVG formulas reconstructed as mean=sum/n and median position=(n+1)/2, consistent with the supplied 97-, 100-, and 40-observation examples.",
+    "practice": "Majick-authored checks derived from supplied methods; not claimed as WGU assessment items."
+  },
+  "practice": [
+    {
+      "id": "s2l41-p1",
+      "prompt": "For {1,1,1,2,2,3,4,4,4,4,4}, what is the mean?",
+      "options": [
+        "2.73 approximately",
+        "7.5",
+        "4",
+        "11"
+      ],
+      "answer": 0,
+      "rationale": "The sum is 30 and there are 11 observations, including repeats. Mean = 30/11 \u2248 2.73."
+    },
+    {
+      "id": "s2l41-p2",
+      "prompt": "For 100 sorted values, the middle position is 50.5. What should you do?",
+      "options": [
+        "Report 50.5 as the median",
+        "Average the 50th and 51st values",
+        "Read only the 50th value",
+        "Divide the sum by 50.5"
+      ],
+      "answer": 1,
+      "rationale": "50.5 indicates a position between observations, not a data value. Average the two central values."
+    },
+    {
+      "id": "s2l41-p3",
+      "prompt": "The 20th and 21st ages in a sorted 40-person data set are 23 and 24. What is the median age?",
+      "options": [
+        "20.5 years",
+        "23 years",
+        "23.5 years",
+        "24 years"
+      ],
+      "answer": 2,
+      "rationale": "The position is 20.5, but the median value is (23+24)/2 = 23.5 years."
+    },
+    {
+      "id": "s2l41-p4",
+      "prompt": "What are the modes of {430,430,480,480,495}?",
+      "options": [
+        "430 only",
+        "480 only",
+        "495",
+        "430 and 480"
+      ],
+      "answer": 3,
+      "rationale": "430 and 480 tie for the highest frequency: two appearances each."
+    },
+    {
+      "id": "s2l41-p5",
+      "prompt": "For {9,1,5,3,7}, what is the median?",
+      "options": [
+        "5",
+        "3",
+        "7",
+        "9"
+      ],
+      "answer": 0,
+      "rationale": "Sort to {1,3,5,7,9}. The third value is 5."
+    },
+    {
+      "id": "s2l41-p6",
+      "prompt": "Most salaries are moderate, with a few exceptionally high salaries. Which measure is generally less affected by those extreme salaries?",
+      "options": [
+        "Mean",
+        "Median",
+        "Sum",
+        "Maximum"
+      ],
+      "answer": 1,
+      "rationale": "The median depends on ordered middle values and is less sensitive to extreme high values than the mean."
+    },
+    {
+      "id": "s2l41-p7",
+      "prompt": "The most common survey response is red. Which measure of center applies to the color categories?",
+      "options": [
+        "Mean",
+        "Median calculated numerically",
+        "Mode",
+        "Range"
+      ],
+      "answer": 2,
+      "rationale": "Mode identifies the most frequent category. Arbitrary color labels do not provide meaningful numerical amounts to average."
+    }
+  ]
 };
 D772_SECTION_TWO_CONTENT['d772-s2-l3-quiz']={
   "sourceLabel": "COURSE-PROVIDED D772 \u2022 SECTION 2 \u2022 LESSON 3 \u2022 QUIZ 1",

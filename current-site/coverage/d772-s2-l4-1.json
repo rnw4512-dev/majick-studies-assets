@@ -1,0 +1,21 @@
+{
+  "courseId": "D772",
+  "lessonId": "d772-s2-l4-1",
+  "source": "Lesson 4 introduction and center teaching, 2026-10-04",
+  "comparedAgainst": [
+    "Lesson 4 structure",
+    "Lesson 3.1 histogram modality",
+    "Whole-course practice test median item"
+  ],
+  "added": [
+    "Mean, median and raw-data mode procedures",
+    "Median location versus value repair",
+    "Readable replacement for missing SVG formulas",
+    "Seven derived practice checks"
+  ],
+  "notAdded": [
+    "Premature spread or boxplot formulas",
+    "Duplicated histogram-mode definition",
+    "Imported completion or mastery"
+  ]
+}
