@@ -2749,7 +2749,7 @@ function renderPath(){
         return main+subs;
       }).join('')+'</div></section>';
     }).join('');
-  document.getElementById('continueTutor')?.addEventListener('click',()=>show('tutor'));
+  document.getElementById('continueTutor')?.addEventListener('click',()=>enterClassroom());
   box.querySelectorAll('[data-tutor-lesson]').forEach(btn=>btn.addEventListener('click',()=>{
     tutorState(id).selectedLesson=btn.dataset.tutorLesson;try{save()}catch(_){}
     show('tutor');
@@ -2859,6 +2859,17 @@ function officialTeachingHtml(official){
   const refHtml=refs.length?'<div class="tutorSourceRefs"><small>REFERENCES USED TO CORROBORATE THIS SECTION</small><ul>'+refs.map(r=>'<li><b>'+E(r.source)+'</b><span>'+E(r.supports||'')+'</span><code>'+E(r.url||'')+'</code></li>').join('')+'</ul></div>':'';
   return '<article class="tutorOfficialTeaching"><small>'+E(official.sourceLabel||'VERIFIED D772 COURSE NOTES')+'</small><h4>'+E(official.overview)+'</h4>'+(official.teach||[]).map(x=>'<div class="tutorOfficialTopic"><b>'+E(x.title)+'</b><p>'+E(x.text)+'</p></div>').join('')+((official.memory||[]).length?'<div class="tutorMemoryCues"><small>MEMORY CUES</small><ul>'+official.memory.map(x=>'<li>'+E(x)+'</li>').join('')+'</ul></div>':'')+refHtml+'</article>';
 }
+function enterClassroom(){
+  show('tutor');
+  const box=document.getElementById('courseTutorLesson');if(!box)return;
+  const selected=box.querySelector('[role="tab"][aria-selected="true"]');
+  if(selected?.dataset.classroomTab==='opening')box.querySelector('[data-classroom-tab="teach"]')?.click();
+  box.classList.remove('classroomArriving');void box.offsetWidth;box.classList.add('classroomArriving');
+  let cue=box.querySelector('.classroomArrivalCue');if(!cue){cue=document.createElement('p');cue.className='classroomArrivalCue';cue.setAttribute('role','status');box.prepend(cue)}
+  cue.textContent='✦ Lesson opened · '+(selectedLesson(cid())?.title||'Your classroom');
+  box.querySelector('[role="tab"][aria-selected="true"]')?.focus({preventScroll:true});
+  box.scrollIntoView({block:'start',behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'});
+}
 function openLesson(lessonId,helpKind=null,id='D772'){
   try{
     if(window.S?.activeCourse!==id&&typeof window.switchCourse==='function')window.switchCourse(id);
@@ -2870,7 +2881,7 @@ function openLesson(lessonId,helpKind=null,id='D772'){
     if(typeof navigate==='function')navigate('learninglab');
     else {S.screen='learninglab';render()}
     setTimeout(()=>{
-      show('tutor');
+      enterClassroom();
       if(helpKind){
         const ch=chapter(lesson,id);
         renderTutorAssist(helpKind,lesson,ch,id);
@@ -2903,8 +2914,9 @@ function compactClassroom(box,ch,lesson){
   if(!panels.turn.children.length)panels.turn.innerHTML='<p>Open Review & Tutor to use the lesson quick check or start adaptive practice.</p>';
   const footer=document.createElement('div');footer.className='classroomNavigation';footer.innerHTML='<button type="button" class="classroomPrevious">← Previous</button><span aria-live="polite"></span><button type="button" class="classroomNext">Next →</button>';
   box.append(nav,stage,footer);
+  const classroomState=tutorState(cid());const remembered=classroomState.classroomSteps?.[lesson.id];
   let active=0;
-  function select(index){active=index;groups.forEach(([key],i)=>{panels[key].hidden=i!==active;const b=nav.children[i];b.setAttribute('aria-selected',String(i===active));b.tabIndex=i===active?0:-1});footer.querySelector('span').textContent=(active+1)+' / '+groups.length+' · '+groups[active][1];footer.querySelector('.classroomPrevious').disabled=active===0;footer.querySelector('.classroomNext').disabled=active===groups.length-1}
+  function select(index){active=index;classroomState.classroomSteps=classroomState.classroomSteps||{};classroomState.classroomSteps[lesson.id]=active;try{save()}catch(_){};groups.forEach(([key],i)=>{panels[key].hidden=i!==active;const b=nav.children[i];b.setAttribute('aria-selected',String(i===active));b.tabIndex=i===active?0:-1});footer.querySelector('span').textContent=(active+1)+' / '+groups.length+' · '+groups[active][1];footer.querySelector('.classroomPrevious').disabled=active===0;footer.querySelector('.classroomNext').disabled=active===groups.length-1}
   nav.querySelectorAll('button').forEach((b,i)=>{b.addEventListener('click',()=>select(i));b.addEventListener('keydown',e=>{if(['ArrowLeft','ArrowRight','Home','End'].includes(e.key)){e.preventDefault();const next=e.key==='Home'?0:e.key==='End'?groups.length-1:(i+(e.key==='ArrowRight'?1:-1)+groups.length)%groups.length;select(next);nav.children[next].focus()}})});
   footer.querySelector('.classroomPrevious').onclick=()=>select(active-1);footer.querySelector('.classroomNext').onclick=()=>select(active+1);
   function paginate(parent,nodes,label){if(nodes.length<2)return;let current=0;const controls=document.createElement('div');controls.className='classroomNavigation';const prev=document.createElement('button'),next=document.createElement('button'),status=document.createElement('span');prev.type=next.type='button';prev.textContent='← '+label;next.textContent=label+' →';status.setAttribute('aria-live','polite');controls.append(prev,status,next);parent.append(controls);const update=()=>{nodes.forEach((n,i)=>n.hidden=i!==current);prev.disabled=current===0;next.disabled=current===nodes.length-1;status.textContent=label+' '+(current+1)+' of '+nodes.length};prev.onclick=()=>{current--;update()};next.onclick=()=>{current++;update()};update()}
@@ -2914,7 +2926,7 @@ function compactClassroom(box,ch,lesson){
   const visualGrid=panels.visual.querySelector('.v3401AnchorGrid');if(visualGrid&&visualGrid.querySelector('figure'))paginate(visualGrid,Array.from(visualGrid.querySelectorAll('figure')),'Visual');
   const anchors=document.createElement('div');anchors.className='classroomFloatingCharts';anchors.setAttribute('aria-label','Classroom reference charts');
   const chartButton=document.createElement('button');chartButton.type='button';chartButton.textContent='✧ '+(ch.official?.anchorChart?.title||'Lesson Anchor');chartButton.onclick=()=>{select(2);nav.children[2].focus()};anchors.append(chartButton);head?.after(anchors);
-  select(0);
+  select(Number.isInteger(remembered)&&remembered>=0&&remembered<groups.length?remembered:0);
 }
 function renderTutor(){
   const box=document.getElementById('courseTutorLesson');if(!box)return;
