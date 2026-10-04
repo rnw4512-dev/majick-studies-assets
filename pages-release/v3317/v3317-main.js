@@ -1,9 +1,9 @@
-// Majick Studies V3.4.0 Consolidation & Product Core — AUTHORITATIVE MAIN APP BRIDGE
+// Majick Studies V3.4.1 D772 Section 2 Lesson 1.2 — AUTHORITATIVE MAIN APP BRIDGE
 (function(){
 'use strict';
 
-const RELEASE_LABEL='Consolidation & Product Core • V3.4.0';
-const RELEASE_TITLE='Majick Studies — V3.4.0 Consolidation & Product Core';
+const RELEASE_LABEL='D772 Section 2 Lesson 1.2 • V3.4.1';
+const RELEASE_TITLE='Majick Studies — V3.4.1 D772 Section 2 Lesson 1.2';
 const registry=()=>window.MajickGuardianRegistry;
 const canonOf=type=>registry()?.get?.(type)?.canon||String(type||'').toLowerCase();
 const STAGE_SLUGS=['new-bond','apprentice','guardian','ascendant','celestial'];
@@ -209,7 +209,7 @@ function sanctuaryMarkup(context){
   }
   const q='?v=3350-guardian-room&context='+encodeURIComponent(context||'app');
   return '<section class="phase4Wrap v3317Phase" aria-label="Phaser 4 Living Sanctuary">'+
-    '<div class="phase4Top"><div><b>✦ Living Sanctuary • V3.4.0</b><br><span>Protected Guardian movement • personalized nooks • furniture storage</span></div>'+
+    '<div class="phase4Top"><div><b>✦ Living Sanctuary • V3.4.1</b><br><span>Protected Guardian movement • personalized nooks • furniture storage</span></div>'+
     '<div class="phase4Actions"><button class="btn ghost" onclick="phase4OpenFullscreen()">Full Sanctuary</button><button class="btn primary" onclick="navigate(\'addmaterial\')">Add Study Material</button></div></div>'+
     '<iframe class="phase4Frame v3317SanctuaryFrame" src="sanctuary/index.html'+q+'" title="Majick Studies Living Sanctuary" loading="eager" allow="fullscreen" onload="setTimeout(()=>{v3317PushGuardianLevels();v3321PushFurnitureState();},120)"></iframe>'+
     '<div class="phase4Help">Personal Guardian nooks • feeding + play zones • store/place owned furniture • Cozy Dorm layout preset.</div>'+
@@ -338,7 +338,7 @@ function applyReleaseBadge(){
 
 function showRuntimeNotice(error){
   const message=String(error?.message||error||'Unknown runtime error');
-  console.error('Majick V3.4.0 runtime error',error);
+  console.error('Majick V3.4.1 runtime error',error);
   if(document.getElementById('v3317RuntimeNotice'))return;
   try{
     const n=document.createElement('div');
