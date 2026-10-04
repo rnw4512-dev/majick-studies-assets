@@ -66,7 +66,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
   pages: write
   id-token: write
 
@@ -658,6 +658,20 @@ jobs:
           # but do not let its monolithic legacy boot freeze every Pages release.
           echo "Targeted academics + Guardian Core + Sanctuary Alive personal-nook runtime gates passed."
 
+      - name: Freeze verified V3.4.2 as canonical current source
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ ! -d current-site ]; then
+            python pages-release/current/freeze-current.py _site current-site
+            git config user.name "Majick Release"
+            git config user.email "majick-release@users.noreply.github.com"
+            git add current-site
+            git commit -m "Freeze verified V3.4.2 as canonical current source"
+            git push origin HEAD:main
+          fi
+          python pages-release/current/build.py current-site _site
+
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
 
@@ -749,157 +763,31 @@ jobs:
               fh.write('deployment_id='+str(deploy_id)+'\n')
           PY
 
-      - name: Verify live Pages deployment
+      - name: Verify live current V3.4.2
         timeout-minutes: 12
         shell: bash
         env:
           LIVE_URL: ${{ steps.deployment.outputs.page_url }}
-          STATUS_URL: ${{ steps.deployment.outputs.status_url }}
-          GH_TOKEN: ${{ github.token }}
         run: |
-          set -euo pipefail
-          echo "Waiting for V3.4.2 at $LIVE_URL"
           python - <<'PY'
-          import json,time,urllib.request,urllib.error,os
-          base=(os.environ.get('LIVE_URL') or 'https://rnw4512-dev.github.io/majick-studies-assets/').rstrip('/')+'/'
-          status_url=os.environ.get('STATUS_URL','')
-          token=os.environ.get('GH_TOKEN','')
-          expected='V3.4.2 D772 Section 2 Lesson 2 Graphical Displays'
-          last=None
-          for attempt in range(1,121):
+          import json,time,urllib.request,os
+          from pathlib import Path
+          expected=json.loads(Path('_site/release.json').read_text())
+          base=os.environ['LIVE_URL'].rstrip('/')+'/'
+          for attempt in range(120):
               try:
-                  if status_url and attempt%3==1:
-                      req=urllib.request.Request(status_url,headers={
-                          'Accept':'application/vnd.github+json',
-                          'Authorization':'Bearer '+token,
-                          'X-GitHub-Api-Version':'2026-03-10',
-                      })
-                      with urllib.request.urlopen(req,timeout=10) as r:
-                          st=json.loads(r.read().decode('utf-8'))
-                      print('Pages deployment status:',st.get('status'))
-                  stamp=str(attempt)+'-'+str(int(time.time()))
-                  with urllib.request.urlopen(base+'app-progress.json?smoke='+stamp,timeout=10) as r:
-                      data=json.loads(r.read().decode('utf-8'))
-                  with urllib.request.urlopen(base+'index.html?smoke='+stamp,timeout=10) as r:
-                      index=r.read().decode('utf-8','replace')
-                  with urllib.request.urlopen(base+'wgu-practice.js?smoke='+stamp,timeout=10) as r:
-                      practice=r.read().decode('utf-8','replace')
-                  with urllib.request.urlopen(base+'magical-college-home.js?smoke='+stamp,timeout=10) as r:
-                      home=r.read().decode('utf-8','replace')
-                  with urllib.request.urlopen(base+'learn-mode.js?smoke='+stamp,timeout=10) as r:
-                      learn=r.read().decode('utf-8','replace')
-                  with urllib.request.urlopen(base+'d755-retake.js?smoke='+stamp,timeout=10) as r:
-                      d755=r.read().decode('utf-8','replace')
-                  with urllib.request.urlopen(base+'guardian-core.js?smoke='+stamp,timeout=10) as r:
-                      guardian=r.read().decode('utf-8','replace')
-                  with urllib.request.urlopen(base+'product-core.js?smoke='+stamp,timeout=10) as r:
-                      product_core=r.read().decode('utf-8','replace')
-                  with urllib.request.urlopen(base+'guardian-life-main.js?smoke='+stamp,timeout=10) as r:
-                      guardian_life=r.read().decode('utf-8','replace')
-                  with urllib.request.urlopen(base+'study-progress-bridge.js?smoke='+stamp,timeout=10) as r:
-                      study_bridge=r.read().decode('utf-8','replace')
-                  with urllib.request.urlopen(base+'sanctuary/guardian-core-sanctuary.js?smoke='+stamp,timeout=10) as r:
-                      guardian_san=r.read().decode('utf-8','replace')
-                  with urllib.request.urlopen(base+'sanctuary/sanctuary-alive.js?smoke='+stamp,timeout=10) as r:
-                      sanctuary_alive=r.read().decode('utf-8','replace')
-                  with urllib.request.urlopen(base+'sanctuary/index.html?smoke='+stamp,timeout=10) as r:
-                      san_index=r.read().decode('utf-8','replace')
-                  with urllib.request.urlopen(base+'game-realm.js?smoke='+stamp,timeout=10) as r:
-                      game_realm=r.read().decode('utf-8','replace')
-                  with urllib.request.urlopen(base+'living-collegium.js?smoke='+stamp,timeout=10) as r:
-                      living=r.read().decode('utf-8','replace')
-                  checks={
-                      'app-progress version': data.get('version')==expected,
-                      'index wgu-practice cache key': 'wgu-practice.js?v=3336-designed-experiments' in index,
-                      'practice version': "VERSION='3.3.36'" in practice,
-                      'index home cache key': 'magical-college-home.js?v=3337' in index,
-                      'self-paced course clock': 'SELF-PACED COURSE CLOCK' in home,
-                      'index learn-mode cache key': 'learn-mode.js?v=3400-product-flow' in index,
-                      'learn-mode version': "VERSION='3.3.38'" in learn,
-                      'Arcane Anchor Wall': 'Arcane Anchor Wall' in learn,
-                      'index D755 cache key': 'd755-retake.js?v=3340-study-shelf-resume' in index,
-                      'D755 version': "VERSION='3.3.40'" in d755,
-                      'D755 diagnostic': '30-Question Retake Diagnostic' in d755,
-                      'D755 teacher focus marker': 'd755-teacher-focus-2026-09-26' in d755,
-                      'D755 assessment expansion': 'assess_id_24' in d755,
-                      'D755 assessment expansion 2': 'assess_id_36' in d755,
-                      'D755 weak-area assessment expansion': 'assess_id_56' in d755,
-                      'D755 Rowley law practice': 'Board of Education v. Rowley' in d755,
-                      'D755 Endrew F law practice': 'Endrew F. v. Douglas County' in d755,
-                      'D755 referral stage practice': 'referral_10' in d755,
-                      'D755 law referral drill': 'Law + Referral Process Drill' in d755,
-                      'Assessment Type Drill': 'Assessment Type Drill' in d755,
-                      'Assessment Type Anchor Chart': 'ASSESSMENT TYPE ANCHOR CHART' in d755,
-                      'D755 category breakdown': 'd755AssessmentBreakdown' in d755,
-                      'D755 adaptive focus': 'd755AdaptiveFocus' in d755,
-                      'D755 classification lens': 'd755ClassificationLens' in d755,
-                      'D755 contrast feedback': 'Why not the tempting opposite?' in d755,
-                      'D755 Assessment Dimension Detective': 'Assessment Dimension Detective' in d755,
-                      'D755 dimension recognition result': 'dimension recognition' in d755,
-                      'D755 mastery ladder': 'ASSESSMENT TYPE MASTERY LADDER' in d755,
-                      'D755 focused family practice': 'Practice this type' in d755,
-                      'D755 confusing pairs repair': 'CONFUSING PAIRS REPAIR' in d755,
-                      'D755 cumulative assessment mastery': 'mergeAssessmentEvidence' in d755,
-                      'D755 pair mastery integration': 'contrastPairFamily' in d755,
-                      'D755 next practice recommendation': 'RECOMMENDED NEXT PRACTICE' in d755,
-                      'D755 assessment question rotation': 'freshAssessmentRows' in d755,
-                      'D755 mistake repair queue': 'MISTAKE REPAIR QUEUE' in d755,
-                      'D755 mistake-priority recommendation': 'Repair your missed assessment questions' in d755,
-                      'D755 mistake queue breakdown': 'assessmentMistakeSummary' in d755,
-                      'D755 Smart Review': 'Smart 10-Question Review' in d755,
-                      'D755 observation pair repair': 'Direct Observation vs Anecdotal Record' in d755,
-                      'D755 assessment classification result': 'assessment classification' in d755,
-                      'CBC goal visual': 'MEASURABLE ANNUAL GOAL • C-B-C' in d755,
-                      '40-question mixed simulation': '40-question mixed simulation' in d755,
-                      'index Guardian Core cache key': 'guardian-core.js?v=3400' in index,
-                      'Guardian Core version': "VERSION='3.4.0'" in guardian,
-                      'V3.4 Product Core cache key': 'product-core.js?v=3400' in index,
-                      'V3.4 Product Core version': "VERSION='3.4.0'" in product_core,
-                      'V3.4 Daily Study Loop': 'DAILY STUDY LOOP' in product_core,
-                      'V3.4 Dorm Story': 'dormStoryHtml' in product_core,
-                      'V3.4 canonical course adapter': 'courseModel' in product_core,
-                      'V3.4 Guardian relationship ledger': 'relationshipEvent' in guardian,
-                      'V3.4 Guardian shared render queue': 'guardian-core-v34' in guardian,
-                      'active study Guardian': 'ACTIVE STUDY GUARDIAN' in guardian,
-                      'debrief toggle': 'finishDebriefEnabled' in guardian,
-                      'sanctuary Guardian Core cache key': 'guardian-core-sanctuary.js?v=3341' in san_index,
-                      'sanctuary Guardian Core version': "VERSION='3.3.41'" in guardian_san,
-                      'Guardian controller visibility': 'controllerVisible' in guardian_san,
-                      'Guardian Life cache key': 'guardian-life-main.js?v=3342' in index,
-                      'Guardian Life version': "VERSION='3.3.42'" in guardian_life,
-                      'personal crystal nest': 'Personal Crystal Nest' in guardian_life,
-                      'study progress bridge cache key': 'study-progress-bridge.js?v=3342' in index,
-                      'study progress bridge version': "VERSION='3.3.42'" in study_bridge,
-                      'historical reconciliation': 'reconcileHistorical' in study_bridge,
-                      'guardian bridge key': 'guardianBridgeKey' in study_bridge,
-                      'D755 Realm topic bridge': 'realmTopic' in d755,
-                      'sanctuary alive cache key': 'sanctuary-alive.js?v=3349-moments' in san_index,
-                      'sanctuary alive version': "VERSION='3.3.42'" in sanctuary_alive,
-                      'personal nooks': 'v3342BuildPersonalNooks' in sanctuary_alive,
-                      'personal Guardian beds': 'guardian-bed-' in sanctuary_alive,
-                      'legacy Sunday analytics removed': 'Sunday Readiness & Thinking Analytics' not in index,
-                      'legacy Sunday deadline removed': '<h3>Before Sunday</h3>' not in index,
-                      'Game Realm cache key': 'game-realm.js?v=3402-s2-l2-graphs' in index,
-                      'Moon Crystal word bank': 'realmWordBank' in game_realm,
-                      'D755 Assessment Sigil Sort': 'Assessment Sigil Sort' in game_realm,
-                      'D755 norm criterion chamber': 'Norm-Referenced vs Criterion-Referenced' in game_realm,
-                      'D755 observation anecdotal chamber': 'Direct Observation vs Anecdotal Record' in game_realm,
-                      'D755 Realm course gate': "activeCourse==='D755'" in game_realm,
-                      'Living Collegium cache key': 'living-collegium.js?v=3361-shared-queue' in index,
-                      'Living Collegium version': "VERSION='3.3.46'" in living,
-                      'Collegium atmosphere cache key': 'collegium-atmosphere.js?v=3364-micro-sound' in index,
-                      'Sanctuary roster cache key': 'sanctuary-roster.js?v=3357-stations' in san_index,
-                      'Sanctuary audit cache key': 'sanctuary-audit.js?v=3350' in index,
-                  }
-                  last=checks
-                  missing=[name for name,ok in checks.items() if not ok]
-                  if not missing:
-                      print('LIVE V3.3.78 DEPLOYMENT VERIFIED')
-                      raise SystemExit(0)
-                  print('Live deployment waiting on '+str(len(missing))+' marker(s): '+', '.join(missing))
+                  with urllib.request.urlopen(base+'release.json?check='+str(time.time()),timeout=10) as r:
+                      actual=json.load(r)
+                  assert actual==expected, (actual,expected)
+                  for page in ('index.html','sanctuary/index.html'):
+                      with urllib.request.urlopen(base+page+'?release='+expected['build'],timeout=10) as r:
+                          text=r.read().decode()
+                      assert expected['build'] in text
+                  print('Live current V3.4.2 verified:',actual)
+                  break
               except Exception as e:
-                  last=repr(e)
-                  print('Live check waiting:',last)
-              time.sleep(5)
-          raise SystemExit('Pages deployment was created and left active, but the live site did not expose V3.3.78 within 10 minutes: '+repr(last))
+                  print('Waiting for current publication:',e)
+                  time.sleep(5)
+          else:
+              raise SystemExit('Current V3.4.2 publication not verified')
           PY
