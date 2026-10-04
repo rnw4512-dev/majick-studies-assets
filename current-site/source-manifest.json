@@ -113,7 +113,7 @@
     "collegium-atmosphere.css": "4802f569a4904df9a17ed389d986970928ca39e75f50334350a494a8d5737ed7",
     "collegium-atmosphere.js": "f86e878d705d89f477fc091c09a9e3ade23b190cb45635a13286a1f743f9dde3",
     "course-tutor.css": "43ebde61c10fad7b5f56927eb2ad2889bdeb7cacc01eeb59d3c6ff29bca879c9",
-    "course-tutor.js": "48d17229c1442753a601030ea743c535b6fb769d4eb93b129bc62cf3bd4a430d",
+    "course-tutor.js": "dd11d152ca9d97ff6b49458d830eea9c4192184aacf787763525869f03c0dfaf",
     "courseManager.js": "5a3bed03fc53028587e4a14d19056489b83e411ea1ecff5a4afbf196c5196681",
     "d755-retake.css": "e487a5e8ca4c069b7b9e9dabb603c8462ddcf81cb432b33b2e3395cce3a721d3",
     "d755-retake.js": "504ece754402f90278b7af02d6fd01c9183639c6777c43c75db06e44815b1935",
@@ -380,6 +380,12 @@
     "wgu-practice.js": "b47e9767fc64da7e8d60006e9eaff3aed6d833dab8e57065d0055aa3d46507be",
     "coverage/d772-s2-l2-3.json": "05265a3d4372a4d4075dbc0e75f87743da0f2896493367285d909cc2dd59be22",
     "coverage/d772-s2-l2-summary.json": "d6c5a146210d14d520c720499a0ae93152bdca24c901db983bf97bcc08152118",
-    "coverage/d772-s2-l2-quiz.json": "36433aca0c1ecbc57e655ed29da9a1d3e9fcc8f1bcfd01a31f067e4d9c6fbf19"
+    "coverage/d772-s2-l2-quiz.json": "36433aca0c1ecbc57e655ed29da9a1d3e9fcc8f1bcfd01a31f067e4d9c6fbf19",
+    "coverage/d772-s2-l3-1.json": "776cde26b7cac76c9e5a36ae57c3cb3fec9187ffd4bc3ea7ce4785db868ff840",
+    "lesson-visuals/distribution-approximately-normal.svg": "b9776d7ab8ba6911ae8a2dcf008f8b84c1f7326acdfb73ea0f5ce6176fd4b1e9",
+    "lesson-visuals/distribution-symmetric-bimodal.svg": "11a2d5cfed8ea357b5d1e90d2bf1cfe6260cf9bd82f0d2003de720ea932cd867",
+    "lesson-visuals/distribution-uniform.svg": "c413cf35f3b81b521839c23d4e790fc55194c2ceeae1f82f7611802b3bbe7c40",
+    "lesson-visuals/distribution-skewed-right.svg": "1e6d11945f1699372ecdfffdad7a878e99f7dde740f662becc1be18f701a7d89",
+    "lesson-visuals/distribution-skewed-left.svg": "33b980ffd59bf94a68ecdae2a4e94d20481799cfc467633378664ae9f0b1998f"
   }
 }

@@ -1,0 +1,26 @@
+{
+  "courseId": "D772",
+  "lessonId": "d772-s2-l3-1",
+  "source": "Lesson 3.1 upload, 2026-10-04",
+  "comparedAgainst": [
+    "Existing histogram definition in Lesson 2",
+    "Lesson 3 structure-only entry",
+    "Whole-course unanswered practice test shape items (not treated as answer-key evidence)"
+  ],
+  "added": [
+    "Symmetry/modality/skew as separate descriptors",
+    "Local peaks of unequal heights",
+    "Uniform versus normal",
+    "Tail-direction repair teaching",
+    "Three supplied questions and five new transfer questions",
+    "Five labeled illustrative histogram SVGs"
+  ],
+  "reused": [
+    "Histogram definition rather than another vocabulary copy"
+  ],
+  "notAdded": [
+    "Copied correct labels as mastery",
+    "Claim that all height or salary data follow one fixed shape",
+    "Fabricated WGU image values"
+  ]
+}

@@ -4,7 +4,7 @@ on:
     branches: [main]
     paths:
       - 'current-site/**'
-      - 'pages-release/current/build.py'
+      - 'pages-release/current/**'
       - '.github/workflows/deploy-majick-pages.yml'
   workflow_dispatch:
 permissions:
@@ -27,6 +27,8 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '22'
+      - name: Check lessons, games, rewards, eggs and saved reload
+        run: node pages-release/current/release-checks.cjs current-site
       - name: Verify and publish current source only
         run: python pages-release/current/build.py current-site _site
 

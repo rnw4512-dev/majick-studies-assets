@@ -133,6 +133,8 @@ Object.assign(D772_SECTION_TWO.lessons.find(l=>l.id==='d772-s2-l2').sublessons.f
 
 Object.assign(D772_SECTION_TWO.lessons.find(l=>l.id==='d772-s2-l2').sublessons.find(l=>l.id==='d772-s2-l2-quiz'),{outlineOnly:false,goal:'Review your reported 10/10 Quiz 1 result and retry display-selection questions.'});
 
+Object.assign(D772_SECTION_TWO.lessons.find(l=>l.id==='d772-s2-l3').sublessons.find(l=>l.id==='d772-s2-l3-1'),{outlineOnly:false,keywords:['modality','unimodal','bimodal','multimodal','uniform','skewed','normal distribution','symmetry'],goal:'Describe histogram symmetry, modality, and skewness, and identify approximately normal shapes.'});
+
 const D772_SECTION_ONE_CONTENT={
   'd772-s1-l1':{
     overview:'Lesson 1 asks where the data came from and how the study was designed. Follow the chain: population and sample → sampling method → study type → experimental design.',
@@ -458,6 +460,301 @@ const D772_SECTION_TWO_CONTENT={
     vocab:[],
     memory:['Classify → choose display → describe distribution → calculate and interpret descriptive statistics.']
   }
+};
+D772_SECTION_TWO_CONTENT['d772-s2-l3-1']={
+  "sourceLabel": "COURSE-PROVIDED D772 \u2022 SECTION 2 \u2022 LESSON 3.1",
+  "overview": "Describe a histogram\u2019s shape using symmetry, modality, and skewness. These describe different features: a distribution can be both unimodal and skewed right, or symmetric and bimodal.",
+  "objectives": [
+    "Read values or intervals horizontally and frequencies vertically.",
+    "Identify approximate symmetry and count local peaks.",
+    "Distinguish unimodal, bimodal, multimodal, and uniform shapes.",
+    "Recognize an approximately normal distribution.",
+    "Name skew by the longer tail, not by the location of the tallest bars."
+  ],
+  "visuals": [
+    {
+      "title": "Approximately normal",
+      "src": "lesson-visuals/distribution-approximately-normal.svg",
+      "alt": "Illustrative histogram of a approximately normal distribution. Frequency bar heights: 1, 3, 7, 12, 16, 12, 7, 3, 1."
+    },
+    {
+      "title": "Symmetric bimodal",
+      "src": "lesson-visuals/distribution-symmetric-bimodal.svg",
+      "alt": "Illustrative histogram of a symmetric bimodal distribution. Frequency bar heights: 1, 6, 12, 6, 2, 6, 12, 6, 1."
+    },
+    {
+      "title": "Uniform",
+      "src": "lesson-visuals/distribution-uniform.svg",
+      "alt": "Illustrative histogram of a uniform distribution. Frequency bar heights: 8, 8, 8, 8, 8, 8, 8, 8, 8."
+    },
+    {
+      "title": "Skewed right",
+      "src": "lesson-visuals/distribution-skewed-right.svg",
+      "alt": "Illustrative histogram of a skewed right distribution. Frequency bar heights: 14, 18, 12, 8, 5, 3, 2, 1, 1."
+    },
+    {
+      "title": "Skewed left",
+      "src": "lesson-visuals/distribution-skewed-left.svg",
+      "alt": "Illustrative histogram of a skewed left distribution. Frequency bar heights: 1, 1, 2, 3, 5, 8, 12, 18, 14."
+    }
+  ],
+  "teach": [
+    {
+      "title": "Read the axes before describing shape",
+      "text": "The histogram\u2019s horizontal axis contains quantitative value intervals. Its bar heights show how many observations fall within each interval. Shape concerns the pattern across the entire distribution, not just the tallest bar."
+    },
+    {
+      "title": "Symmetry is approximate mirror balance",
+      "text": "Imagine a vertical line through the middle. If the two sides have roughly matching shape and tail lengths, the distribution is approximately symmetric. Small irregularities do not automatically make it asymmetric."
+    },
+    {
+      "title": "Modality counts local peaks",
+      "text": "A peak is higher than the neighboring regions, not necessarily the tallest region in the whole graph. Unimodal means one peak, bimodal two, and multimodal three or more in this course. Peaks can have different heights. A uniform distribution is approximately flat with no clear peaks; tiny fluctuations do not count as meaningful modes."
+    },
+    {
+      "title": "Normal requires more than symmetry",
+      "text": "An approximately normal distribution is symmetric, unimodal, and roughly bell-shaped around its center. A symmetric bimodal or uniform distribution is not normal. Real measurements may be approximately normal, but a variable\u2019s name alone does not guarantee that shape."
+    },
+    {
+      "title": "Skew follows the long tail",
+      "text": "Skewed right (positive skew) has a longer tail toward larger values; most observations may be toward the left. Skewed left (negative skew) has a longer tail toward smaller values; most observations may be toward the right. Follow the horizontal extent of the sparse tail, not the tall bars."
+    },
+    {
+      "title": "Salary example: combine descriptors",
+      "text": "The supplied salary histogram and feedback describe one peak near lower salaries and a long tail toward higher salaries. Its modality is unimodal and its shape is skewed right. Both labels apply because they describe different features."
+    }
+  ],
+  "anchorChart": {
+    "title": "BALANCE \u2022 PEAKS \u2022 TAIL",
+    "rule": "Check symmetry \u2192 count meaningful peaks \u2192 follow the longer tail",
+    "columns": [
+      [
+        "Check",
+        "Interpretation"
+      ],
+      [
+        "Symmetry",
+        "Approximate mirror images; not necessarily normal"
+      ],
+      [
+        "Modality",
+        "1 peak: unimodal; 2: bimodal; 3+: multimodal; flat: uniform"
+      ],
+      [
+        "Normal",
+        "Symmetric + unimodal + roughly bell-shaped"
+      ],
+      [
+        "Right skew",
+        "Long tail toward larger values"
+      ],
+      [
+        "Left skew",
+        "Long tail toward smaller values"
+      ]
+    ],
+    "examples": [
+      [
+        "One peak near low salaries + high-salary tail",
+        "Unimodal and skewed right"
+      ],
+      [
+        "Two balanced peaks",
+        "Symmetric and bimodal, not normal"
+      ],
+      [
+        "Approximately equal frequencies across intervals",
+        "Uniform, possibly symmetric, not normal"
+      ]
+    ]
+  },
+  "weDo": {
+    "prompt": "Most repair jobs finish quickly, but a few take much longer. The histogram has one peak near the shorter durations and a long tail toward larger durations. Describe it.",
+    "steps": [
+      "Read the horizontal variable: repair duration.",
+      "Find the number of meaningful local peaks: one, so unimodal.",
+      "Follow the longer tail: toward large durations on the right.",
+      "The shape is skewed right, even though the tallest bars are on the left.",
+      "It is not approximately normal because the two tails are not balanced."
+    ]
+  },
+  "vocab": [
+    [
+      "Frequency",
+      "Number of observations of a value, or in a histogram interval."
+    ],
+    [
+      "Peak/mode",
+      "A locally high-frequency region compared with neighboring regions."
+    ],
+    [
+      "Modality (peakedness)",
+      "Number of meaningful peaks in a distribution."
+    ],
+    [
+      "Symmetric distribution",
+      "Approximately mirror-balanced shape around its middle."
+    ],
+    [
+      "Unimodal",
+      "One meaningful peak."
+    ],
+    [
+      "Bimodal",
+      "Two meaningful peaks."
+    ],
+    [
+      "Multimodal",
+      "Three or more meaningful peaks in the terminology of this course."
+    ],
+    [
+      "Uniform",
+      "Approximately equal frequencies with no clear peaks."
+    ],
+    [
+      "Skewness",
+      "Asymmetry with one tail extending substantially farther than the other."
+    ],
+    [
+      "Skewed right (positive skew)",
+      "Longer tail toward larger values."
+    ],
+    [
+      "Skewed left (negative skew)",
+      "Longer tail toward smaller values."
+    ],
+    [
+      "Approximately normal",
+      "Symmetric, unimodal, roughly bell-shaped distribution."
+    ]
+  ],
+  "memory": [
+    "Name skew by the TAIL.",
+    "Count local peaks; their heights can differ.",
+    "Symmetric does not automatically mean normal.",
+    "Modality and skew can both describe the same graph."
+  ],
+  "provenance": {
+    "courseStructure": "User-provided WGU D772 Lesson 3.1 text, figure descriptions, questions 1\u20133 and correct-answer feedback, 2026-10-04.",
+    "visuals": "Majick-authored illustrative equal-width-bin histograms. These are not copies of WGU figures and do not reproduce their measured values. Original asset links could not be opened for independent inspection.",
+    "references": [
+      {
+        "source": "WGU Figure 3.10/3.11 salary histogram",
+        "url": "https://assets.wgu.edu/96fdd440689ff89c3ed2734b85213aae"
+      },
+      {
+        "source": "WGU Figure 3.1/3.12 comparison",
+        "url": "https://assets.wgu.edu/e34328724d5683a13a728e1de657a0ec"
+      },
+      {
+        "source": "Panopto: Data Distributions (supplied attribution, not independently reviewed)",
+        "url": "https://wgu.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=2ad9a886-ac6e-4551-9148-b1bf0010cccc"
+      }
+    ]
+  },
+  "practice": [
+    {
+      "id": "s2l31-p1",
+      "prompt": "The supplied salary histogram has most salaries in lower ranges and a long tail toward higher salaries. What is its shape?",
+      "options": [
+        "Skewed right",
+        "Symmetric",
+        "Skewed left"
+      ],
+      "answer": 0,
+      "rationale": "The longer tail extends toward higher values on the right. The location of the tallest bars does not name the skew.",
+      "provenance": "Course question and supplied feedback, description-based"
+    },
+    {
+      "id": "s2l31-p2",
+      "prompt": "The supplied salary histogram has one meaningful peak near the lower salaries. What is its modality?",
+      "options": [
+        "Uniform",
+        "Multimodal",
+        "Bimodal",
+        "Unimodal"
+      ],
+      "answer": 3,
+      "rationale": "One meaningful local peak makes the distribution unimodal. It can also be skewed right.",
+      "provenance": "Course question and supplied feedback, description-based"
+    },
+    {
+      "id": "s2l31-p3",
+      "prompt": "Histogram A has a substantially longer left tail. Histogram B is symmetric, unimodal, and bell-shaped. Which is approximately normal?",
+      "options": [
+        "Histogram A",
+        "Histogram B"
+      ],
+      "answer": 1,
+      "rationale": "Histogram B meets all three shape requirements. This question uses the supplied descriptions rather than unseen numerical values.",
+      "provenance": "Course question and supplied feedback, description-based"
+    },
+    {
+      "id": "s2l31-p4",
+      "prompt": "A histogram has two peaks of different heights, each above its neighboring regions. How many modes does it have?",
+      "options": [
+        "One: only the tallest counts",
+        "Two: each local peak counts",
+        "None: the peaks must match",
+        "Three: count the valley too"
+      ],
+      "answer": 1,
+      "rationale": "Both local peaks count even if one is taller. A valley is not a peak.",
+      "provenance": "Majick-authored transfer/repair scenario"
+    },
+    {
+      "id": "s2l31-p5",
+      "prompt": "A symmetric histogram is nearly flat across its intervals. Which description fits?",
+      "options": [
+        "Normal because it is symmetric",
+        "Uniform and not normal",
+        "Skewed right",
+        "Unimodal and bell-shaped"
+      ],
+      "answer": 1,
+      "rationale": "Flat frequencies mean uniform. Symmetry alone does not imply a normal bell shape.",
+      "provenance": "Majick-authored transfer/repair scenario"
+    },
+    {
+      "id": "s2l31-p6",
+      "prompt": "Most scores are high, but a few very low scores form a long tail toward smaller values. What is the skew?",
+      "options": [
+        "Skewed right",
+        "Skewed left",
+        "Normal",
+        "Uniform"
+      ],
+      "answer": 1,
+      "rationale": "The longer tail points left toward smaller values, even though most observations are toward the right.",
+      "provenance": "Majick-authored transfer/repair scenario"
+    },
+    {
+      "id": "s2l31-p7",
+      "prompt": "A distribution has three distinct meaningful peaks. Which modality term does this course use?",
+      "options": [
+        "Unimodal",
+        "Bimodal",
+        "Multimodal",
+        "Uniform"
+      ],
+      "answer": 2,
+      "rationale": "This course calls distributions with three or more meaningful peaks multimodal.",
+      "provenance": "Majick-authored transfer/repair scenario"
+    },
+    {
+      "id": "s2l31-p8",
+      "prompt": "Why can a salary histogram be both unimodal and skewed right?",
+      "options": [
+        "The labels describe different features: peak count and tail direction",
+        "Every unimodal distribution is normal",
+        "Skew counts the peaks",
+        "The labels are contradictory"
+      ],
+      "answer": 0,
+      "rationale": "Unimodal counts one peak; skewed right describes the long right tail. Both can apply.",
+      "provenance": "Majick-authored transfer/repair scenario"
+    }
+  ]
 };
 D772_SECTION_TWO_CONTENT['d772-s2-l2-quiz']={
   "sourceLabel": "COURSE-PROVIDED D772 \u2022 SECTION 2 \u2022 LESSON 2 \u2022 QUIZ 1",
@@ -1759,11 +2056,12 @@ function visualHtml(lesson){
 function lessonExperienceHtml(official){
   if(!official)return '';
   const objectives=(official.objectives||[]).length?'<section class="tutorChapterBlock v3401Objectives"><div class="tutorBlockTitle"><span>✦</span><div><small>LEARNING OBJECTIVES</small><h3>What you should be able to do</h3></div></div><ul>'+official.objectives.map(x=>'<li>'+E(x)+'</li>').join('')+'</ul></section>':'';
+  const visuals=(official.visuals||[]).length?'<section class="tutorChapterBlock"><small>ILLUSTRATIVE HISTOGRAMS • NOT WGU DATA</small><div class="v3401AnchorGrid">'+official.visuals.map(v=>'<figure><img style="width:100%;max-width:310px" src="'+E(v.src)+'" alt="'+E(v.alt)+'"><figcaption>'+E(v.title)+'</figcaption></figure>').join('')+'</div></section>':'';
   const a=official.anchorChart;
   const anchor=a?'<section class="tutorChapterBlock v3401Anchor"><div class="tutorBlockTitle"><span>⚯</span><div><small>VISUAL ANCHOR CHART</small><h3>'+E(a.title)+'</h3></div></div><div class="v3401Rule">'+E(a.rule)+'</div><div class="v3401AnchorGrid">'+(a.columns||[]).slice(1).map(row=>'<article><b>'+E(row[0])+'</b><p>'+E(row[1])+'</p></article>').join('')+'</div><div class="v3401RoleExamples">'+(a.examples||[]).map(row=>'<span><b>'+E(row[0])+'</b> → '+E(row[1])+'</span>').join('')+'</div></section>':'';
   const we=official.weDo?'<section class="tutorChapterBlock v3401WeDo"><div class="tutorBlockTitle"><span>2</span><div><small>WE DO</small><h3>Work one together</h3></div></div><p class="v3401Prompt">'+E(official.weDo.prompt)+'</p><ol>'+official.weDo.steps.map(x=>'<li>'+E(x)+'</li>').join('')+'</ol></section>':'';
   const practice=(official.practice||[]).length?'<section class="tutorChapterBlock v3401YouDo"><div class="tutorBlockTitle"><span>3</span><div><small>YOU DO</small><h3>WGU/OA-style mixed role + data-type practice</h3></div></div><div class="v3401Practice">'+official.practice.map((q,i)=>'<article data-v3401-q="'+E(q.id||i)+'"><small>QUESTION '+(i+1)+'</small><b>'+E(q.prompt)+'</b><div>'+q.options.map((o,j)=>'<button type="button" data-v3401-answer="'+j+'">'+String.fromCharCode(65+j)+'. '+E(o)+'</button>').join('')+'</div><p class="v3401Feedback" aria-live="polite"></p></article>').join('')+'</div></section>':'';
-  return objectives+anchor+we+practice;
+  return objectives+visuals+anchor+we+practice;
 }
 function bindLessonExperience(official){
   if(!official?.practice?.length)return;
