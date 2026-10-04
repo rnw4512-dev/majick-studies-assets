@@ -200,6 +200,14 @@ for marker in ("VERSION='3.3.77'","YOUR DORMITORY & GUARDIAN SANCTUARY","Your St
 if 'home-focus.js?v=3400' not in main or 'home-focus.css?v=3377' not in main:
     fail('V3.3.77 Home Focus assets are not installed in index.html')
 
+lesson12=(site/'course-tutor.js').read_text(encoding='utf-8')
+if lesson12.find("d772-s2-l1-2")<lesson12.find("const D772_SECTION_TWO="):
+    fail('D772 Lesson 1.2 appears before Section 2 and may have leaked into Section 1')
+if "parentLessonId:'d772-s2-l1'" not in lesson12:
+    fail('D772 Lesson 1.2 is not nested under Section 2 Lesson 1')
+if 'course-tutor.js?v=3401-s2-l1-2' not in main or 'course-tutor.css?v=3401-s2-l1-2' not in main:
+    fail('V3.4.1 Lesson 1.2 Tutor assets are not installed in index.html')
+
 product=(site/'product-core.js').read_text(encoding='utf-8')
 for marker in ("VERSION='3.4.0'","DAILY STUDY LOOP","enter-college","learn-start","quick-check-complete","practice-complete","reward-earned","guardian-reacted","dorm-return","courseModel","dormStoryHtml","window.MajickProductCore","window.MajickUI"):
     if marker not in product: fail('V3.4 Product Core missing '+marker)
@@ -217,9 +225,9 @@ for marker in ("window.MajickLearningPlan","passageList","PERSONAL LEARNING PLAN
 if 'learning-plan.js?v=3324' not in main or 'learning-plan.css?v=3324' not in main:
     fail('Learning Plan assets are not installed in index.html')
 tutor=(site/'course-tutor.js').read_text(encoding='utf-8')
-for marker in ("window.MajickCourseTutor","D772_SECTION_ONE","D772_SECTION_TWO","Exploring Various Types of Data","Categorical data","Quantitative data","Explanatory variable","Response variable","Direction-of-influence check","Mindset → test scores","Hot-dog type → calories","Type of light while sleeping → nearsightedness","OpenStax Introductory Statistics §1.4","OpenStax Contemporary Mathematics §8.8","Can I identify different classifications of data?","Choosing Graphical Displays","Data Distribution Interpretation","Calculating Single-Variable Descriptive Statistics","tutorSourceRefs","Needs Review","targetRigor"):
+for marker in ("window.MajickCourseTutor","D772_SECTION_ONE","D772_SECTION_TWO","d772-s2-l1-2","parentLessonId:'d772-s2-l1'","Explanatory and Response Variables","ROLE ≠ DATA TYPE","Does X help explain, predict, or influence Y?","I Teach • Two labels can describe the same variable","We Do • Guided example","lessonExperienceHtml","bindLessonExperience","s2l12-p1","s2l12-p8","OpenStax Statistics • Ch. 1 Key Terms","pathSublesson","sectionUnits","allOfficialLessons","tutorSourceRefs","Needs Review","targetRigor")
     if marker not in tutor: fail('Course Tutor missing '+marker)
-if 'course-tutor.js?v=3378-s2-l1-variables' not in main or 'course-tutor.css?v=3374-l3-repair' not in main:
+if 'course-tutor.js?v=3401-s2-l1-2' not in main or 'course-tutor.css?v=3401-s2-l1-2' not in main:
     fail('Course Tutor assets are not installed in index.html')
 learn=(site/'learn-mode.js').read_text(encoding='utf-8')
 for marker in ("VERSION='3.3.38'","Teach → Visual → Worked Example","Arcane Anchor Wall","ADAPTIVE REPAIR INSERTED","CAN I DO THIS?","MajickProductCore?.record?.('learn-start'","MajickProductCore?.record?.('concept-complete'","MajickProductCore?.record?.('quick-check-complete'"):
@@ -281,7 +289,7 @@ for marker in ("window.MajickSanctuaryRecovery","v3322SyncOwnedGuardians","v3322
 visual=(site/'sanctuary'/'v3325-sanctuary-visual-authority.js').read_text(encoding='utf-8')
 for marker in ("window.MajickGuardianVisualAuthority","v3325SyncOwnedVisuals","v3325BaseScale","totalVisible"):
     if marker not in visual: fail('Guardian visual authority missing '+marker)
-for marker in ('majick-state-core.js?v=3322-recovery','guardian-care-economy.js?v=3347-stations','v3317-main.js?v=3400-product-core','v3322-main-recovery.js?v=3322'):
+for marker in ('majick-state-core.js?v=3322-recovery','guardian-care-economy.js?v=3347-stations','v3317-main.js?v=3401-s2-l1-2','v3322-main-recovery.js?v=3322'):
     if marker not in main: fail('main cache-bust/runtime missing '+marker)
 if 'v3322-sanctuary-recovery.js?v=3322' not in san:
     fail('Sanctuary recovery asset is not installed')
