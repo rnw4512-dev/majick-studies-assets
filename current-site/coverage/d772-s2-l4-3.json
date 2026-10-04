@@ -1,0 +1,26 @@
+{
+  "courseId": "D772",
+  "lessonId": "d772-s2-l4-3",
+  "source": "User Lesson 4.3 upload, 2026-10-04",
+  "comparedAgainst": [
+    "Lesson 4.1 center coverage",
+    "Lesson 4.2 quartiles, range, IQR and examples"
+  ],
+  "added": [
+    "Five-number summary and scaled boxplot construction",
+    "Three verified examples and original scaled plots",
+    "Four source practice questions plus four authored transfer questions",
+    "Spread versus observation share misconception",
+    "Explicit phone and Figure 4.10 caption discrepancies"
+  ],
+  "reused": [
+    "Quartile method",
+    "Range/IQR formulas",
+    "Mean, median, mode definitions"
+  ],
+  "notAdded": [
+    "Duplicate glossary definitions",
+    "Outlier fence algorithms",
+    "Imported mastery from ungraded source feedback"
+  ]
+}

@@ -141,6 +141,8 @@ Object.assign(D772_SECTION_TWO.lessons.find(l=>l.id==='d772-s2-l4').sublessons.f
 
 Object.assign(D772_SECTION_TWO.lessons.find(l=>l.id==='d772-s2-l4').sublessons.find(l=>l.id==='d772-s2-l4-2'),{outlineOnly:false,keywords:['quartile','interquartile','iqr','range','measures of spread'],goal:'Calculate quartiles, range, and IQR with the course median-of-halves convention.'});
 
+Object.assign(D772_SECTION_TWO.lessons.find(l=>l.id==='d772-s2-l4').sublessons.find(l=>l.id==='d772-s2-l4-3'),{outlineOnly:false,keywords:['five-number summary','box plot','box-and-whisker','whiskers'],goal:'Construct and interpret a scaled box plot from the five-number summary.',traps:['Longer segment does not mean more observations.','The axis endpoint need not be a data extreme.','The median line need not be centered in the box.']});
+
 const D772_SECTION_ONE_CONTENT={
   'd772-s1-l1':{
     overview:'Lesson 1 asks where the data came from and how the study was designed. Follow the chain: population and sample → sampling method → study type → experimental design.',
@@ -1951,6 +1953,250 @@ D772_SECTION_TWO_CONTENT['d772-s2-l2-3']={
       "answer": 0,
       "rationale": "Turning scores into pass/fail changes the response from quantitative to categorical. C\u2192Q becomes C\u2192C, so use a two-way table.",
       "provenance": "Majick-authored transfer scenario based on uploaded concepts"
+    }
+  ]
+};
+D772_SECTION_TWO_CONTENT['d772-s2-l4-3']={
+  "sourceLabel": "COURSE-PROVIDED D772 \u2022 SECTION 2 \u2022 LESSON 4.3",
+  "overview": "Summarize one quantitative variable with five values, place them on a scaled box plot, and interpret center, spread, and approximate quarters of observations. Reuse the Lesson 4.2 quartile method.",
+  "objectives": [
+    "Calculate the ordered five-number summary.",
+    "Construct and read a scaled box plot.",
+    "Read range and IQR from a summary or plot.",
+    "Distinguish equal shares of observations from unequal distances on the number line.",
+    "Use a sample summary as evidence without claiming it proves a cause or an intervention\u2019s effectiveness."
+  ],
+  "teach": [
+    {
+      "title": "Five values in order",
+      "text": "Minimum \u2192 Q1 \u2192 median (Q2) \u2192 Q3 \u2192 maximum. The median describes center. The extremes give range; Q1 and Q3 give IQR. Use the median-of-halves method from Lesson 4.2, excluding the overall median when n is odd."
+    },
+    {
+      "title": "Read the box and whiskers",
+      "text": "In this lesson\u2019s five-number box plot, the box starts at Q1 and ends at Q3. Its internal line marks the median. Whiskers connect the box to the minimum and maximum. Modified box plots can handle outliers differently; that convention is not used in these examples."
+    },
+    {
+      "title": "Construct with a scaled axis",
+      "text": "Draw a number line with equal spacing for equal numerical differences. Mark the five values. Draw the box from Q1 to Q3, the median line at Q2, and whiskers to the observed extremes. A median need not sit at the geometric center of the box."
+    },
+    {
+      "title": "Quarter of observations is not quarter of distance",
+      "text": "Consecutive five-number landmarks describe approximately quarters of the ordered observations. A longer segment means values are more spread out; it does not imply more observations there. Tied values and finite samples make exact percentage statements unreliable."
+    },
+    {
+      "title": "Fitness grant: evidence and limits",
+      "text": "For the 15 surveyed students, the sorted exercise minutes yield {0,20,40,60,130}. About a quarter are in the lowest segment, 0\u201320 minutes, and the median is 40 minutes. The summary can support a grant proposal about surveyed students\u2019 activity, but does not prove new equipment will increase activity or represent every student."
+    },
+    {
+      "title": "Heights: reading spread from five values",
+      "text": "The 40 supplied heights have summary {59,64.5,66,70,77}. Range = 77\u221259 = 18; IQR = 70\u221264.5 = 5.5. The box contains approximately the middle 50%, despite covering much less than half the numerical range."
+    },
+    {
+      "title": "Phone example: trust calculations over conflicting captions",
+      "text": "The 25 supplied battery times give {250,325,390,520,730}. Use Q3=520, not 525, and maximum=730, not 750. The axis can extend to 750 without making it the maximum. The median is 390, not the center of the drawn box."
+    }
+  ],
+  "visuals": [
+    {
+      "title": "Student exercise \u00b7 scaled plot",
+      "src": "./assets/boxplot-exercise.svg",
+      "alt": "Student exercise: minimum 0, Q1 20, median 40, Q3 60, maximum 130. Original plot from supplied data."
+    },
+    {
+      "title": "Student heights \u00b7 scaled plot",
+      "src": "./assets/boxplot-heights.svg",
+      "alt": "Student heights: minimum 59, Q1 64.5, median 66, Q3 70, maximum 77. Original plot from supplied data."
+    },
+    {
+      "title": "Smartphone battery life \u00b7 scaled plot",
+      "src": "./assets/boxplot-phones.svg",
+      "alt": "Smartphone battery life: minimum 250, Q1 325, median 390, Q3 520, maximum 730. Original plot from supplied data."
+    }
+  ],
+  "anchorChart": {
+    "title": "FIVE LANDMARKS \u2022 ONE SCALED PLOT",
+    "rule": "Min \u2014 Q1 [ median ] Q3 \u2014 Max \u00b7 Box = middle \u224850%",
+    "columns": [
+      [
+        "Part",
+        "Meaning"
+      ],
+      [
+        "Left whisker endpoint",
+        "Minimum (course convention)"
+      ],
+      [
+        "Left box edge",
+        "Q1"
+      ],
+      [
+        "Inside line",
+        "Median / Q2"
+      ],
+      [
+        "Right box edge",
+        "Q3"
+      ],
+      [
+        "Right whisker endpoint",
+        "Maximum (course convention)"
+      ],
+      [
+        "Box width",
+        "IQR = Q3 \u2212 Q1"
+      ]
+    ],
+    "examples": [
+      [
+        "Phones",
+        "250 \u00b7 325 \u00b7 390 \u00b7 520 \u00b7 730"
+      ],
+      [
+        "Heights",
+        "59 \u00b7 64.5 \u00b7 66 \u00b7 70 \u00b7 77"
+      ],
+      [
+        "Exercise",
+        "0 \u00b7 20 \u00b7 40 \u00b7 60 \u00b7 130"
+      ]
+    ]
+  },
+  "weDo": {
+    "prompt": "Construct the smartphone battery-life box plot from the 25 supplied times.",
+    "steps": [
+      "Sort: {250,260,280,290,300,320,330,340,350,360,370,380,390,430,440,470,490,520,520,520,530,530,550,550,730}.",
+      "The 13th value is the median: 390. Exclude it from both halves.",
+      "Lower 12 observations: Q1=(320+330)/2=325. Upper 12: Q3=(520+520)/2=520.",
+      "Summary: minimum 250, Q1 325, median 390, Q3 520, maximum 730.",
+      "Draw an equally scaled 250\u2013750 axis. Box from 325 to 520, median line at 390, whiskers to 250 and 730.",
+      "Range=730\u2212250=480 minutes. IQR=520\u2212325=195 minutes."
+    ]
+  },
+  "vocab": [
+    [
+      "Five-number summary",
+      "Minimum, Q1, median (Q2), Q3, maximum, in that order."
+    ],
+    [
+      "Box plot / box-and-whisker plot",
+      "Display of the five-number summary using a scaled axis, quartile box, median line, and whiskers."
+    ]
+  ],
+  "memory": [
+    "Longer segment \u2260 more observations.",
+    "Box edges are Q1 and Q3; inside line is the median.",
+    "Axis endpoint \u2260 data maximum."
+  ],
+  "provenance": {
+    "courseStructure": "User-provided Lesson 4.3 teaching, examples, figure descriptions and four ungraded practice questions, 2026-10-04.",
+    "reused": "Quartile convention and range/IQR definitions from Lesson 4.2; center terms from Lesson 4.1.",
+    "discrepancies": "Phone captions mention Q3 525 and maximum 750; raw data and explicit calculations give 520 and 730. Figure 4.10 short caption mentions outliers at 2 and 13, but detailed description and keyed dataset give {2,4,6,8,11}. Original diagrams follow verified calculations.",
+    "practice": "Source Q1 and Q4 have supplied correct feedback; Q2 and Q3 are unanswered and keys derived from supplied teaching. Remaining questions are Majick-authored transfer checks. No imported mastery or attempts."
+  },
+  "practice": [
+    {
+      "id": "s2l43-p1",
+      "prompt": "A scaled course box plot has minimum 2, Q1 4, median 6, Q3 8, maximum 11. Which dataset matches?",
+      "options": [
+        "{3,3,5,5,6,7,8,9,11}",
+        "{2,3,5,5,6,7,8,10,11}",
+        "{2,3,5,5,6,7,8,8,11}",
+        "{2,3,5,5,7,7,8,10,11}"
+      ],
+      "answer": 2,
+      "rationale": "For the matching set, exclude the middle 6: Q1=(3+5)/2=4; Q3=(8+8)/2=8. The extremes are 2 and 11.",
+      "provenance": "Supplied WGU correct feedback"
+    },
+    {
+      "id": "s2l43-p2",
+      "prompt": "Which part of a box plot identifies the median (Q2)?",
+      "options": [
+        "The right edge of the box",
+        "The farthest point on the left whisker",
+        "The left edge of the box",
+        "The line inside the box"
+      ],
+      "answer": 3,
+      "rationale": "The internal line represents Q2. Box edges represent Q1 and Q3.",
+      "provenance": "Supplied unanswered WGU item; key derived from teaching"
+    },
+    {
+      "id": "s2l43-p3",
+      "prompt": "How do you determine IQR from a box plot?",
+      "options": [
+        "Distance between farthest whisker points",
+        "Distance between median and right whisker",
+        "Distance between box edges",
+        "Distance between left whisker and median"
+      ],
+      "answer": 2,
+      "rationale": "Read Q3 and Q1 on the scale, then subtract. The box spans Q1 to Q3.",
+      "provenance": "Supplied unanswered WGU item; key derived from teaching"
+    },
+    {
+      "id": "s2l43-p4",
+      "prompt": "Approximately what percent of observations lies between Q1 and Q3?",
+      "options": [
+        "75%",
+        "50%",
+        "25%",
+        "100%"
+      ],
+      "answer": 1,
+      "rationale": "Q1 and Q3 bound the middle approximately 50%; ties and sample size can affect exact counts.",
+      "provenance": "Supplied WGU correct feedback"
+    },
+    {
+      "id": "s2l43-p5",
+      "prompt": "A box plot\u2019s upper whisker segment is longer than its lower whisker segment. What does that tell you?",
+      "options": [
+        "More observations lie in the upper quarter",
+        "The upper-quarter values are more spread out",
+        "The median must be the mean",
+        "The upper quarter contains 50%"
+      ],
+      "answer": 1,
+      "rationale": "Segments represent approximately quarters of observations. Length shows numerical spread, not count.",
+      "provenance": "Majick-authored transfer"
+    },
+    {
+      "id": "s2l43-p6",
+      "prompt": "For the phone summary {250,325,390,520,730}, what is the IQR?",
+      "options": [
+        "480 minutes",
+        "195 minutes",
+        "65 minutes",
+        "200 minutes"
+      ],
+      "answer": 1,
+      "rationale": "IQR=520\u2212325=195 minutes. Full range is 480; 525 is an inconsistent pasted caption.",
+      "provenance": "Majick-authored transfer"
+    },
+    {
+      "id": "s2l43-p7",
+      "prompt": "A phone plot axis ends at 750 but its right whisker ends at 730. What is the maximum?",
+      "options": [
+        "750",
+        "520",
+        "730",
+        "390"
+      ],
+      "answer": 2,
+      "rationale": "Read the whisker endpoint: 730. The axis extends beyond the greatest observation.",
+      "provenance": "Majick-authored transfer"
+    },
+    {
+      "id": "s2l43-p8",
+      "prompt": "Does the exercise summary prove purchasing equipment will increase exercise?",
+      "options": [
+        "Yes, the minimum is zero",
+        "Yes, the median is 40",
+        "No; it describes surveyed activity, not an equipment experiment",
+        "No; summaries cannot provide evidence"
+      ],
+      "answer": 2,
+      "rationale": "It can support a needs argument but does not test whether equipment causes improvement.",
+      "provenance": "Majick-authored transfer"
     }
   ]
 };

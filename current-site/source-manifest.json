@@ -113,7 +113,7 @@
     "collegium-atmosphere.css": "5271d724452e7db7de987c7dcdc49d89e988e8a6b25fcc55211daa40eb6d1ca0",
     "collegium-atmosphere.js": "dbb7419f838e747258649238666935d2fc348443a824c9f9e0b159eb7b27dd02",
     "course-tutor.css": "9ce968e6158c4db2d5c81404744f90e01593468a9cf73e4087ddb51efa01bb4a",
-    "course-tutor.js": "d580e9a08a060760a7c3e79c3a667b17e9895c0c5ffcb6ff9e1abc084c201193",
+    "course-tutor.js": "e9eab18faed1e93b12fea28b6407deb5061296f682368d26f715dcbee94e57bc",
     "courseManager.js": "5a3bed03fc53028587e4a14d19056489b83e411ea1ecff5a4afbf196c5196681",
     "d755-retake.css": "e487a5e8ca4c069b7b9e9dabb603c8462ddcf81cb432b33b2e3395cce3a721d3",
     "d755-retake.js": "504ece754402f90278b7af02d6fd01c9183639c6777c43c75db06e44815b1935",
@@ -396,6 +396,10 @@
     "assets/guardian-dorm-v1.png": "f89fd6d4e47b102078d388977a406d954306d0efc4e445f9fe6ecacb53fdf38b",
     "assets/game-observatory-v1.png": "6bd6a73d5ca81ee7194a11438ae422d64065cee7c2671e22c7c9ba0b71efba64",
     "assets/ancient-study-library-v1.png": "85244e085292a40e4e73e4ddb2c4b5f40722733abd8fc64851c1e637994fbbfe",
-    "assets/learn-classroom-v2.png": "cb2e2fce819815ffebce1ed126536829e731e849be37e438b3bcc07f6a205951"
+    "assets/learn-classroom-v2.png": "cb2e2fce819815ffebce1ed126536829e731e849be37e438b3bcc07f6a205951",
+    "coverage/d772-s2-l4-3.json": "a686e3ac70bede645b88e775cc6506dd5158e7c548a3ee049d6d62256f938978",
+    "assets/boxplot-exercise.svg": "617c9eddef0699fec10c4c7fb5b27a4c68281aeead6350865b6722c42795bed8",
+    "assets/boxplot-heights.svg": "7939d0a74fffe127e905fe3a13e4bc93db43ae9188eae7ce265d71e3e12c831a",
+    "assets/boxplot-phones.svg": "3ed42e541d8e8039d2b270f4b76ec634918e02db245e085e38088ea05d7ef727"
   }
 }
