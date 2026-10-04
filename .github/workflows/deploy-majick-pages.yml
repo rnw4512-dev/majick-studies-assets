@@ -43,6 +43,7 @@ on:
       - 'pages-release/v3376/**'
       - 'pages-release/v3378/**'
       - 'pages-release/v3400/**'
+      - 'pages-release/v3401/**'
       - 'pages-release/v3315/study-material/**'
       - 'pages-release/v3316/courseManager.js'
       - 'pages-release/v3317/v3317-main.js'
@@ -203,6 +204,7 @@ jobs:
           test -s pages-release/v3400/product-core.js
           test -s pages-release/v3400/product-core.css
           test -s pages-release/v3400/product-core-smoke.js
+          test -s pages-release/v3401/d772-s2-l1-2-smoke.js
           test -s pages-release/v3317/v3317-optimize-phaser.py
           test -s sanctuary/assets/objects/objects-manifest.json
           test -s sanctuary/assets/objects/generate-object-library.py
@@ -296,6 +298,8 @@ jobs:
           node --check pages-release/v3400/product-core.js
           node --check pages-release/v3400/product-core-smoke.js
           node pages-release/v3400/product-core-smoke.js
+          node --check pages-release/v3401/d772-s2-l1-2-smoke.js
+          node pages-release/v3401/d772-s2-l1-2-smoke.js
           node pages-release/v3354/d772-collegium-smoke.js
           node --check pages-release/v3342/study-progress-bridge-smoke.js
           node --check pages-release/v3343/game-realm.js
@@ -750,7 +754,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
-          echo "Waiting for V3.4.0 at $LIVE_URL"
+          echo "Waiting for V3.4.1 at $LIVE_URL"
           python - <<'PY'
           import json,time,urllib.request,urllib.error,os
           base=(os.environ.get('LIVE_URL') or 'https://rnw4512-dev.github.io/majick-studies-assets/').rstrip('/')+'/'
