@@ -59,9 +59,9 @@ context.questionPool=()=>pool;
 
 context.S.activeCourse='D772';
 const d772Pool=context.MajickGameRealm.d772RealmPool();
-assert.equal(d772Pool.length,42,'D772 Realm supplement should provide 42 guaranteed D772 scenarios including explanatory/response-variable practice');
-assert.deepEqual([...new Set(d772Pool.map(q=>q.section))].sort(),['Bias & Credibility','Conclusions','Data Collection','Misrepresentation','Types of Data'],'D772 Realm supplement should cover all four Section 1 domains plus Section 2 Lesson 1 Types of Data');
-assert.ok(context.MajickGameRealm.realmQuestionPool().length>=42,'D772 Realm pool should merge guaranteed scenarios with Section 1 repair and Section 2 Lesson 1 explanatory/response practice');
+assert.equal(d772Pool.length,48,'D772 Realm supplement should provide 48 guaranteed D772 scenarios including Section 2 Lesson 2 graphical-display practice');
+assert.deepEqual([...new Set(d772Pool.map(q=>q.section))].sort(),['Bias & Credibility','Conclusions','Data Collection','Graphical Displays','Misrepresentation','Types of Data'],'D772 Realm supplement should cover the four Section 1 domains plus Section 2 Types of Data and Graphical Displays');
+assert.ok(context.MajickGameRealm.realmQuestionPool().length>=48,'D772 Realm pool should merge guaranteed scenarios with Section 1 repair and Section 2 Lesson 1/2 practice');
 context.startRuneSort();
 assert.equal(context.session.type,'runesort','Rune Sort should start for D772');
 assert.ok(context.session.categories.some(x=>['Data Collection','Bias & Credibility','Misrepresentation','Conclusions'].includes(x)),'D772 Rune Sort should use Section 1 domain labels');
@@ -152,7 +152,7 @@ assert.equal(context.session.reviewMode,true,'D772 Section Review should be mark
 assert.equal(context.session.limit,12,'D772 Section Review should run 12 questions');
 assert.equal(context.session.questions.length,1,'D772 Section Review should begin with one queued question');
 
-assert.equal(context.document.documentElement.dataset.majickRealmVariety,'3378','Game Realm dataset marker missing');
+assert.equal(context.document.documentElement.dataset.majickRealmVariety,'3402','Game Realm dataset marker missing');
 assert.match(src,/realmTrialGuide/,'Featured Realm clarity guide source should remain installed');
 assert.match(src,/Assessment Sigil Sort/,'D755 Assessment Sigil Sort source missing');
 assert.match(src,/globalThis\.S\?\.activeCourse==='D755'/,'D755 Assessment Sigil Sort must be course-gated');
