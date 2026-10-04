@@ -70,7 +70,19 @@ const D772_SECTION_TWO={
       goal:'Select an appropriate graphical display based on the data type or types in the problem.',
       visual:['Data type','Question being asked','Candidate displays','Best display','Interpret'],
       thinking:['What data type is present?','What comparison or pattern needs to be visible?','Which display matches that purpose?'],
-      traps:['Selecting a display because it looks familiar instead of because it matches the data.']},
+      traps:['Selecting a display because it looks familiar instead of because it matches the data.'],
+      sublessons:[
+        {id:'d772-s2-l2-1',number:2.1,parentLessonId:'d772-s2-l2',title:'Categorical Graphical Displays',short:'Categorical Displays',keywords:['bar graph','pie chart','categorical','proportion','percent','other unknown','overlap'],
+          goal:'Choose and interpret bar graphs and pie charts for categorical data, including whole-part and overlapping-category checks.',
+          visual:['Categorical variable','Compare categories? → Bar','Parts of one whole? → Pie','Check overlap / 100%'],
+          thinking:['Are the categories mutually exclusive?','Do the percentages represent a whole?','Is the goal comparison or whole-part composition?'],
+          traps:['Using a pie chart when categories overlap.','Ignoring a missing remainder category.']},
+        {id:'d772-s2-l2-2',number:2.2,parentLessonId:'d772-s2-l2',title:'One Variable Quantitative',short:'One Variable Quantitative',keywords:['dot plot','stem-and-leaf','stem and leaf','histogram','quantitative','exact values','distribution','outlier','frequency','bin','interval'],
+          goal:'Choose and interpret graphical displays for one quantitative variable, including dot plots, stem-and-leaf plots, and histograms.',
+          visual:['One quantitative variable','Need exact values?','Small data → Dot / Stem-and-leaf','Large distribution → Histogram','Read pattern / outlier'],
+          thinking:['Do I need to see every exact value?','How large is the data set?','What values or intervals have the greatest frequency?','Is there a cluster, gap, or potential outlier?'],
+          traps:['Choosing a histogram when exact individual values must remain visible.','Reading a histogram bar as an exact raw value.','Forgetting to use the stem-and-leaf key.']}
+      ]},
     {id:'d772-s2-l3',number:3,title:'Data Distribution Interpretation',short:'Distributions',keywords:['distribution','shape','center','spread','outlier','skew','symmetric','graphical display'],
       goal:'Describe the distribution of data from a graphical display using the features required by the course.',
       visual:['Graph','Shape / pattern','Center','Spread','Unusual values'],
@@ -241,9 +253,21 @@ const D772_SECTION_TWO_CONTENT={
     memory:['HOW MANY / HOW MUCH = usually quantitative.','WHAT KIND = categorical.','Counts are quantitative.','Measurements are quantitative.','A number used only as a label can still be categorical.']
   },
   'd772-s2-l2':{
+    sourceLabel:'D772 • SECTION 2 • LESSON 2 OVERVIEW',
+    overview:'Lesson 2 asks you to choose a graphical display that matches the data type and purpose. Use the two focused sublessons: 2.1 for categorical displays and 2.2 for one-variable quantitative displays.',
+    teach:[{title:'Choose the sublesson',text:'Categorical data → Lesson 2.1. One quantitative variable → Lesson 2.2. Start by identifying the data type, then choose the display that preserves the information you need.'}],
+    vocab:[],
+    memory:['Data type first → display second.','2.1 = categorical displays.','2.2 = one-variable quantitative displays.']
+  },
+  'd772-s2-l2-1':{
     simple:'Start with the variable type and the goal. If you are comparing categories, think BAR. If you are showing how mutually exclusive categories make up one whole, think PIE. If categories can overlap, do not use a pie chart. Histogram = quantitative distribution; scatterplot = relationship between two quantitative variables; line graph = change over time.',
     example:'A survey asks students to choose ONE favorite campus event: concert 40%, sports 30%, theater 20%, other 10%. A bar graph can compare the categories, and a pie chart can show their parts of the whole because each student belongs to one category and the percentages total 100%.',
     quickCheck:{prompt:'Students may join any number of four clubs, so the club percentages total 145%. Which graph is more appropriate?',choices:['Bar graph','Pie chart','Histogram','Scatterplot'],answer:0,rationale:'The categories overlap, so the percentages do not partition one whole. A bar graph can compare them without implying they sum to 100%.'}
+  },
+  'd772-s2-l2-2':{
+    simple:'This lesson is one quantitative variable. If the data set is small and you need every exact value, use a dot plot or stem-and-leaf plot. If the data set is large or you mainly need the distribution shape, use a histogram. Dot = count observations. Stem-and-leaf = read the key. Histogram = read interval frequencies.',
+    example:'Suppose 20 students report how many minutes they studied. If you want every exact minute value, use a dot plot or stem-and-leaf plot. If 2,000 students report study time and you want the overall distribution, a histogram is much easier to read.',
+    quickCheck:{prompt:'You have 25 numerical data values and must be able to recover every exact value from the graph. Which is the best choice?',choices:['Stem-and-leaf plot','Histogram','Pie chart','Scatterplot'],answer:0,rationale:'A stem-and-leaf plot preserves the individual values while still showing the distribution. A histogram groups values into bins.'}
   },
   'd772-s2-l1-2':{
     sourceLabel:'COURSE-PROVIDED D772 • SECTION 2 • LESSON 1.2 • CORROBORATED',
@@ -388,6 +412,80 @@ const D772_SECTION_TWO_CONTENT={
     },
     memory:['BAR = compare categories.','PIE = parts of ONE whole.','Overlapping categories → avoid pie chart.','Whole should total about 100% for a pie chart; small rounding differences are possible.','If a complete categorical table totals well below 100%, check for a missing Other/Unknown category.','Histogram = quantitative distribution. Scatterplot = two quantitative variables. Line graph = trend over time.']
   },
+  'd772-s2-l2-2':{
+    sourceLabel:'COURSE-PROVIDED D772 • SECTION 2 • LESSON 2.2 • CORROBORATED',
+    overview:'Lesson 2.2 focuses on graphical displays for ONE quantitative variable. The main decision is whether you need to preserve exact individual values or summarize the overall distribution. Dot plots and stem-and-leaf plots work well for smaller data sets when exact values matter; histograms summarize larger quantitative data sets by grouping values into intervals.',
+    objectives:[
+      'Choose an appropriate display for one quantitative variable.',
+      'Read exact values and frequencies from stem-and-leaf plots.',
+      'Read frequencies, clusters, patterns, and potential outliers from dot plots.',
+      'Interpret histogram intervals and frequencies.',
+      'Decide when exact-value displays are more useful than grouped-distribution displays.'
+    ],
+    teach:[
+      {title:'I Teach • Dot plot',text:'A dot plot places one dot for each observation above its quantitative value. It is useful for relatively small data sets because you can still see individual values, repeated values, clusters, gaps, and possible outliers.'},
+      {title:'I Teach • Stem-and-leaf plot',text:'A stem-and-leaf plot splits each quantitative value into a stem and a leaf. It preserves the original values while also showing the shape of the distribution. Always read the key first, because the same stem and leaf symbols can represent different place values depending on the key.'},
+      {title:'I Teach • Histogram',text:'A histogram groups quantitative values into intervals or bins and shows the frequency in each interval. It is especially useful for larger data sets and for seeing distribution shape, concentration, spread, and unusual features. Because values are grouped, a histogram generally does not preserve every exact raw value.'},
+      {title:'I Teach • Exact values vs. distribution',text:'If the data set is small and the question says you need to see exact values, think dot plot or stem-and-leaf plot. If the data set is large and the goal is to see the overall distribution or shape, think histogram.'},
+      {title:'I Teach • Reading frequency',text:'On a dot plot, count dots at or within the requested values. On a stem-and-leaf plot, count the leaves that match the requested range. On a histogram, use the bar height for each interval; if a question spans several intervals, add those frequencies.'},
+      {title:'Course examples • stem-and-leaf',text:'Your WGU practice uses a stem-and-leaf plot where the smallest value is 6, the values between 40 and 50 are 47, 48, and 49, and a stem of 5 with leaf 7 represents 57 according to the key.'},
+      {title:'Course examples • dot plot',text:'Your WGU dot-plot practice asks you to count values below a cutoff, describe the main concentration of values, and identify 48°F as a potential outlier because it does not fit the rest of the pattern.'},
+      {title:'Course examples • histogram',text:'For a large set of student heights, WGU identifies a histogram as the best display. In the presidential-age histogram, the tallest interval (52–57) is the most common group, and frequencies across several intervals are added to answer a question such as how many observations are over age 62.'}
+    ],
+    anchorChart:{
+      title:'ONE QUANTITATIVE VARIABLE',
+      rule:'Need exact values? → DOT or STEM-AND-LEAF • Need overall distribution / large data? → HISTOGRAM',
+      columns:[
+        ['Display','What you can see'],
+        ['Dot plot','Exact values + repeats + clusters + gaps + possible outliers'],
+        ['Stem-and-leaf','Exact values + ordered distribution; read the key'],
+        ['Histogram','Grouped intervals + frequencies + overall distribution shape']
+      ],
+      examples:[
+        ['15 test scores; exact scores matter','Dot plot or stem-and-leaf'],
+        ['30 book counts; exact values matter','Dot plot or stem-and-leaf'],
+        ['1,000+ student heights','Histogram'],
+        ['Find most common interval','Histogram → tallest bar']
+      ]
+    },
+    weDo:{
+      prompt:'A teacher has 24 quiz scores and wants to see every exact score while also noticing clusters and possible unusual values. Which display should she choose?',
+      steps:[
+        'The variable is quantitative: quiz score.',
+        'The data set is fairly small.',
+        'The teacher wants every exact value to remain visible.',
+        'A dot plot or stem-and-leaf plot would satisfy the goal.',
+        'A histogram would summarize the distribution but group values into intervals, so exact individual scores would be lost.'
+      ]
+    },
+    practice:[
+      {id:'s2l22-p1',prompt:'A class has 18 numerical quiz scores. You need to see each exact score. Which displays are best choices?',options:['Dot plot or stem-and-leaf plot','Histogram only','Pie chart or bar graph','Scatterplot only'],answer:0,rationale:'For a small quantitative data set where exact values matter, dot plots and stem-and-leaf plots preserve individual observations.'},
+      {id:'s2l22-p2',prompt:'In a stem-and-leaf plot with key 6|4 = 64, what value does 7|2 represent?',options:['72','7.2','27','702'],answer:0,rationale:'The key shows that the stem is the tens digit and the leaf is the ones digit, so 7|2 represents 72.'},
+      {id:'s2l22-p3',prompt:'A dot plot has one isolated value far below the main cluster. What should you call it first?',options:['A potential outlier','The median','A categorical label','A required error'],answer:0,rationale:'An isolated value that does not fit the main pattern may be a potential outlier. It is not automatically a mistake.'},
+      {id:'s2l22-p4',prompt:'Which display is most appropriate for the distribution of 1,500 commute times?',options:['Histogram','Stem-and-leaf plot showing all 1,500 values','Pie chart','Single categorical bar'],answer:0,rationale:'A histogram efficiently summarizes a large one-variable quantitative data set by grouping values into intervals.'},
+      {id:'s2l22-p5',prompt:'In a histogram, what does the tallest bar usually identify?',options:['The interval with the greatest frequency','The exact largest raw value','The response variable','The sample size automatically'],answer:0,rationale:'Histogram bar height represents frequency, so the tallest bar corresponds to the interval containing the most observations.'},
+      {id:'s2l22-p6',prompt:'A histogram question asks how many observations fall across three adjacent intervals. What should you do?',options:['Add the frequencies of those intervals','Use only the tallest bar','Count the interval labels','Multiply the endpoints'],answer:0,rationale:'Each bar gives the frequency for its interval. Add the relevant bar frequencies to get the total across multiple intervals.'},
+      {id:'s2l22-p7',prompt:'What important information is generally lost when raw quantitative data are converted to a histogram?',options:['The exact individual data values','The overall shape of the distribution','The approximate concentration of observations','The interval frequencies'],answer:0,rationale:'Histograms group observations into bins, so the exact raw values generally cannot be reconstructed from the graph.'},
+      {id:'s2l22-p8',prompt:'A dot plot shows most values between 20 and 30, with repeated dots around 25. What can you reasonably say?',options:['The data are concentrated around the mid-20s','Every value equals 25','The variable is categorical','There can be no outliers'],answer:0,rationale:'A concentration of dots in that region indicates a cluster or common range; it does not mean every observation is identical.'}
+    ],
+    vocab:[
+      ['Dot plot','A display for quantitative data that places a dot for each observation at its value.'],
+      ['Stem-and-leaf plot','A display that splits each quantitative value into a stem and leaf while preserving exact observations.'],
+      ['Histogram','A display of a quantitative distribution using intervals or bins and their frequencies.'],
+      ['Frequency','The number of observations at a value or within an interval.'],
+      ['Interval / bin','A range of quantitative values grouped together in a histogram.'],
+      ['Potential outlier','A value that appears not to fit the pattern of the rest of the data and deserves further investigation.']
+    ],
+    provenance:{
+      courseStructure:'User-provided WGU D772 Section 2 Lesson 2.2 One Variable Quantitative practice questions 1–11 and feedback',
+      corroboration:[
+        {source:'OpenStax Statistics §2.1',url:'https://openstax.org/books/statistics/pages/2-1-stem-and-leaf-graphs-stemplots-line-graphs-and-bar-graphs',supports:'stem-and-leaf plots for small data sets, preserving exact values, distribution patterns and outliers'},
+        {source:'OpenStax Contemporary Mathematics §8.2',url:'https://openstax.org/books/contemporary-mathematics/pages/8-2-visualizing-data',supports:'histograms for quantitative data of any size and the loss of exact raw values when data are binned'},
+        {source:'NIST/SEMATECH Histogram guidance',url:'https://www.itl.nist.gov/div898/handbook/eda/section3/histogra.htm',supports:'histograms summarize univariate distributions using intervals and frequencies and reveal center, spread, skewness, outliers and modes'}
+      ]
+    },
+    memory:['Small + exact values → DOT PLOT or STEM-AND-LEAF.','Large quantitative distribution → HISTOGRAM.','Stem-and-leaf: read the key before interpreting a value.','Dot plot: each dot is an observation; look for clusters, gaps, and potential outliers.','Histogram: bars represent interval frequencies, not exact raw values.','Tallest histogram bar = most frequent interval.']
+  },
   'd772-s2-l3':{
     sourceLabel:'COURSE-PROVIDED D772 • SECTION 2 STRUCTURE',
     overview:'Lesson 3 is Data Distribution Interpretation. The course assessment target is: “Can I describe the distribution of data given a graphical display?” Detailed distribution vocabulary will be added from verified lesson material.',
@@ -418,6 +516,11 @@ const D772_SECTION_TWO_CONTENT={
 Object.values(D772_SECTION_TWO_CONTENT).forEach(x=>{x.provenance=D772_SECTION_TWO.provenance});
 
 const D772_TUTOR_HELP={
+  'd772-s2-l2':{
+    simple:'Lesson 2 is about matching the graph to the data type and purpose. Use 2.1 for categorical displays and 2.2 for one-variable quantitative displays.',
+    example:'Favorite category percentages belong in 2.1. A distribution of numerical test scores belongs in 2.2.',
+    quickCheck:{prompt:'You want to display the distribution of one numerical variable. Which sublesson should you use?',choices:['Lesson 2.2','Lesson 2.1','Lesson 1.2','Section 1'],answer:0,rationale:'Lesson 2.2 focuses on graphical displays for one quantitative variable.'}
+  },
   'd772-s1-l1':{
     simple:'Think of Lesson 1 as four questions: Who is the full group? Who actually got studied? How were they chosen? Did the researcher only observe, or did they assign a treatment? Those answers tell you whether the sample and study design are strong enough for the claim.',
     example:'A district wants to understand planning time for all 5,000 teachers. It divides teachers into elementary, middle, and high school groups and randomly chooses teachers from every group. The 5,000 teachers are the population, the selected teachers are the sample, and the method is stratified sampling because it takes SOME FROM ALL groups.',
