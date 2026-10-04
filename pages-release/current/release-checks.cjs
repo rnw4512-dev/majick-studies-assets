@@ -18,6 +18,7 @@ check('course units, question keys, coverage and visual assets',()=>{
   for(const q of content.practice||[]){assert(!questionIds.has(q.id),'duplicate question '+q.id);questionIds.add(q.id);assert(Number.isInteger(q.answer)&&q.answer>=0&&q.answer<q.options.length);assert(q.rationale)}
   for(const visual of content.visuals||[])assert(fs.existsSync(path.join(root,visual.src)),visual.src);
  }
+ const quiz=t.officialD772Content({id:'d772-s2-l3-quiz'},'D772');assert.equal(quiz.provenance.reportedResult.correct,9);assert.equal(quiz.practice.length,10);assert.equal(quiz.practice[2].answer,2);assert.equal(quiz.visuals.length,2);
  const shape=t.officialD772Content({id:'d772-s2-l3-1'},'D772');assert.equal(shape.practice.length,8);
  assert.equal(t.officialD772Content({id:'d772-s2-l2-quiz'},'D772').provenance.reportedResult.correct,10);
  for(const file of fs.readdirSync(path.join(root,'coverage'))){const record=JSON.parse(fs.readFileSync(path.join(root,'coverage',file)));assert(units.some(u=>u.id===record.lessonId));}

@@ -113,7 +113,7 @@
     "collegium-atmosphere.css": "4802f569a4904df9a17ed389d986970928ca39e75f50334350a494a8d5737ed7",
     "collegium-atmosphere.js": "f86e878d705d89f477fc091c09a9e3ade23b190cb45635a13286a1f743f9dde3",
     "course-tutor.css": "43ebde61c10fad7b5f56927eb2ad2889bdeb7cacc01eeb59d3c6ff29bca879c9",
-    "course-tutor.js": "dd11d152ca9d97ff6b49458d830eea9c4192184aacf787763525869f03c0dfaf",
+    "course-tutor.js": "1c6b7ea9b66cb45bf0912ca6dc5a9ab5cfed52635ea628e8f60a47f8755ce187",
     "courseManager.js": "5a3bed03fc53028587e4a14d19056489b83e411ea1ecff5a4afbf196c5196681",
     "d755-retake.css": "e487a5e8ca4c069b7b9e9dabb603c8462ddcf81cb432b33b2e3395cce3a721d3",
     "d755-retake.js": "504ece754402f90278b7af02d6fd01c9183639c6777c43c75db06e44815b1935",
@@ -386,6 +386,7 @@
     "lesson-visuals/distribution-symmetric-bimodal.svg": "11a2d5cfed8ea357b5d1e90d2bf1cfe6260cf9bd82f0d2003de720ea932cd867",
     "lesson-visuals/distribution-uniform.svg": "c413cf35f3b81b521839c23d4e790fc55194c2ceeae1f82f7611802b3bbe7c40",
     "lesson-visuals/distribution-skewed-right.svg": "1e6d11945f1699372ecdfffdad7a878e99f7dde740f662becc1be18f701a7d89",
-    "lesson-visuals/distribution-skewed-left.svg": "33b980ffd59bf94a68ecdae2a4e94d20481799cfc467633378664ae9f0b1998f"
+    "lesson-visuals/distribution-skewed-left.svg": "33b980ffd59bf94a68ecdae2a4e94d20481799cfc467633378664ae9f0b1998f",
+    "coverage/d772-s2-l3-quiz.json": "a4546a076914c6e18d04f7e2ab9f50fbe9efb36a696a1ebda7fc3ee8ecb3e5b6"
   }
 }

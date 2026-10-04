@@ -135,6 +135,8 @@ Object.assign(D772_SECTION_TWO.lessons.find(l=>l.id==='d772-s2-l2').sublessons.f
 
 Object.assign(D772_SECTION_TWO.lessons.find(l=>l.id==='d772-s2-l3').sublessons.find(l=>l.id==='d772-s2-l3-1'),{outlineOnly:false,keywords:['modality','unimodal','bimodal','multimodal','uniform','skewed','normal distribution','symmetry'],goal:'Describe histogram symmetry, modality, and skewness, and identify approximately normal shapes.'});
 
+Object.assign(D772_SECTION_TWO.lessons.find(l=>l.id==='d772-s2-l3').sublessons.find(l=>l.id==='d772-s2-l3-quiz'),{outlineOnly:false,goal:'Review your reported 9/10 Quiz 1 result and repair normal-versus-uniform confusion.'});
+
 const D772_SECTION_ONE_CONTENT={
   'd772-s1-l1':{
     overview:'Lesson 1 asks where the data came from and how the study was designed. Follow the chain: population and sample → sampling method → study type → experimental design.',
@@ -459,6 +461,198 @@ const D772_SECTION_TWO_CONTENT={
     ],
     vocab:[],
     memory:['Classify → choose display → describe distribution → calculate and interpret descriptive statistics.']
+  }
+};
+D772_SECTION_TWO_CONTENT['d772-s2-l3-quiz']={
+  "sourceLabel": "COURSE-PROVIDED D772 \u2022 SECTION 2 \u2022 LESSON 3 \u2022 QUIZ 1",
+  "overview": "Imported result: 9/10 on Data Distribution Interpretation Quiz 1. Question 3 was incorrect. The focused repair is distinguishing a normal bell-shaped distribution from a flat uniform distribution; this report does not establish whole-lesson mastery. Retries begin unanswered.",
+  "objectives": [
+    "Distinguish normal and uniform shapes using peak structure, not symmetry alone.",
+    "Describe symmetry and modality separately.",
+    "Name skew using the longer tail."
+  ],
+  "teach": [
+    {
+      "title": "Repair Question 3: bell versus flat",
+      "text": "Both normal and uniform distributions can be symmetric. Look at frequency heights: normal has one central peak with frequencies decreasing toward both tails; uniform has approximately equal frequencies across intervals. Use the two visuals below to compare their silhouettes."
+    },
+    {
+      "title": "Explain why",
+      "text": "If you call a graph normal, point to its central peak, mirror balance, and bell-shaped taper. If its bars stay roughly level, say uniform and explain that no clear peak appears. A symmetric two-peak graph is bimodal, not normal."
+    }
+  ],
+  "visuals": [
+    {
+      "title": "Normal: central peak and balanced taper",
+      "src": "lesson-visuals/distribution-approximately-normal.svg",
+      "alt": "Illustrative normal-shaped histogram: one central peak and shorter balanced bars toward both ends."
+    },
+    {
+      "title": "Uniform: approximately level frequencies",
+      "src": "lesson-visuals/distribution-uniform.svg",
+      "alt": "Illustrative uniform histogram: equal-height bars across the value intervals with no central peak."
+    }
+  ],
+  "weDo": {
+    "prompt": "A histogram has nearly equal frequencies across all intervals and its two sides are mirror images. A classmate calls it normal because it is symmetric. Repair that reasoning.",
+    "steps": [
+      "Symmetry checks left-right balance. Both normal and uniform shapes can pass that check.",
+      "The bars are approximately level, not concentrated around one central peak.",
+      "The distribution is uniform.",
+      "Normal requires a single central peak and a roughly bell-shaped taper as well as symmetry.",
+      "Now change the scenario: one central peak, balanced taper toward both ends. That description is approximately normal."
+    ]
+  },
+  "vocab": [],
+  "memory": [
+    "Normal = balanced bell with one central peak. Uniform = approximately flat.",
+    "Symmetry alone does not establish normality."
+  ],
+  "practice": [
+    {
+      "id": "s2l3quiz1-p1",
+      "prompt": "What is the shape when values are evenly spread out and there is no clear peak?",
+      "options": [
+        "Skewed right",
+        "Skewed left",
+        "Unimodal",
+        "Uniform"
+      ],
+      "answer": 3,
+      "rationale": "Uniform distributions have approximately equal frequencies and no clear peaks.",
+      "provenance": "User-provided quiz item and feedback, paraphrased"
+    },
+    {
+      "id": "s2l3quiz1-p2",
+      "prompt": "What describes a distribution with a long tail on the right?",
+      "options": [
+        "Symmetric",
+        "Skewed right",
+        "Skewed left",
+        "Uniform"
+      ],
+      "answer": 1,
+      "rationale": "Skew follows the longer tail. The tail points toward larger values on the right, even when the bulk of observations is on the left.",
+      "provenance": "User-provided quiz item and feedback, paraphrased"
+    },
+    {
+      "id": "s2l3quiz1-p3",
+      "prompt": "What characterizes a normal distribution?",
+      "options": [
+        "A long tail on one side",
+        "Multiple peaks",
+        "A bell-shaped curve symmetric around the mean",
+        "Uniform distribution of values"
+      ],
+      "answer": 2,
+      "rationale": "Normal means symmetric, unimodal, and bell-shaped around the mean. Uniform means approximately flat. Both can be symmetric, so symmetry alone cannot distinguish them.",
+      "provenance": "User-provided quiz item and feedback, paraphrased"
+    },
+    {
+      "id": "s2l3quiz1-p4",
+      "prompt": "A histogram has bars of approximately equal height. Which description fits?",
+      "options": [
+        "Skewed left",
+        "Skewed right",
+        "Uniform",
+        "Normal"
+      ],
+      "answer": 2,
+      "rationale": "Approximately equal bar heights form a flat, uniform distribution; they do not form a central bell-shaped peak.",
+      "provenance": "User-provided quiz item and feedback, paraphrased"
+    },
+    {
+      "id": "s2l3quiz1-p5",
+      "prompt": "Most observations are on the right, with a long tail on the left. Which description fits?",
+      "options": [
+        "Skewed left",
+        "Skewed right",
+        "Uniform",
+        "Symmetric"
+      ],
+      "answer": 0,
+      "rationale": "Name skew by the longer tail, not by the tallest bars: the left tail indicates negative or left skew.",
+      "provenance": "User-provided quiz item and feedback, paraphrased"
+    },
+    {
+      "id": "s2l3quiz1-p6",
+      "prompt": "A histogram has peaks at the left and right edges, a valley in the middle, and mirror-image sides. Which description fits?",
+      "options": [
+        "Symmetric and uniform",
+        "Normal and symmetric",
+        "Symmetric and bimodal",
+        "Normal and bimodal"
+      ],
+      "answer": 2,
+      "rationale": "Mirror balance makes it symmetric. Two peaks make it bimodal. A normal distribution has one central peak.",
+      "provenance": "User-provided quiz item and feedback, paraphrased"
+    },
+    {
+      "id": "s2l3quiz1-p7",
+      "prompt": "A histogram has a higher peak on the left and a smaller prominent peak on the right. Which description best fits?",
+      "options": [
+        "Unimodal and symmetric",
+        "Bimodal and symmetric",
+        "Unimodal but not symmetric",
+        "Bimodal but not symmetric"
+      ],
+      "answer": 3,
+      "rationale": "Each meaningful local peak counts, even when their heights differ. The unequal left and right peaks in this described display do not form mirror images.",
+      "provenance": "User-provided quiz item and feedback, paraphrased"
+    },
+    {
+      "id": "s2l3quiz1-p8",
+      "prompt": "A histogram is symmetric, has one central peak, and is roughly bell-shaped. Which description fits?",
+      "options": [
+        "Skewed left",
+        "Uniform",
+        "Normal",
+        "Bimodal"
+      ],
+      "answer": 2,
+      "rationale": "This description meets all three features of an approximately normal shape: symmetry, one peak, and a bell-shaped profile.",
+      "provenance": "User-provided quiz item and feedback, paraphrased"
+    },
+    {
+      "id": "s2l3quiz1-p9",
+      "prompt": "Most observations are on the left, with a long tail on the right. Which description fits?",
+      "options": [
+        "Skewed left",
+        "Skewed right",
+        "Uniform",
+        "Symmetric"
+      ],
+      "answer": 1,
+      "rationale": "The sparse tail stretches toward larger values, so the distribution is skewed right.",
+      "provenance": "User-provided quiz item and feedback, paraphrased"
+    },
+    {
+      "id": "s2l3quiz1-p10",
+      "prompt": "A histogram has two peaks near its center separated by a small valley, and its sides are mirror images. Which description fits?",
+      "options": [
+        "Unimodal and symmetric",
+        "Unimodal and uniform",
+        "Bimodal and symmetric",
+        "Bimodal and uniform"
+      ],
+      "answer": 2,
+      "rationale": "Two distinct peaks separated by a valley indicate bimodality; mirror-image sides indicate symmetry. Two peaks do not become one just because they are close.",
+      "provenance": "User-provided quiz item and feedback, paraphrased"
+    }
+  ],
+  "provenance": {
+    "courseStructure": "User-provided D772 Section 2 Lesson 3 \u2014 Data Distribution Interpretation Quiz 1 report, 2026-10-04.",
+    "reportedResult": {
+      "correct": 9,
+      "total": 10,
+      "incorrectQuestionNumbers": [
+        3
+      ],
+      "selectedAnswerForQuestion3": "Not explicitly supplied",
+      "origin": "User-provided completed quiz report",
+      "scope": "Quiz result only; no automatic mastery, reward, or invented attempt record."
+    },
+    "visuals": "Reuses labeled Majick illustrative histograms from Lesson 3.1; originals were described in text, not supplied as images."
   }
 };
 D772_SECTION_TWO_CONTENT['d772-s2-l3-1']={

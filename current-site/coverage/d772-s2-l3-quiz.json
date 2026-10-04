@@ -1,0 +1,28 @@
+{
+  "courseId": "D772",
+  "lessonId": "d772-s2-l3-quiz",
+  "source": "User-provided Lesson 3 Quiz 1 report, 2026-10-04",
+  "reportedScore": "9/10",
+  "incorrectQuestionNumbers": [
+    3
+  ],
+  "comparedAgainst": [
+    "Lesson 3.1 shape vocabulary, examples, eight questions and illustrative histograms"
+  ],
+  "added": [
+    "One named 10-item source quiz",
+    "Reported incorrect question 3",
+    "Focused visual contrast and changed scenario for normal versus uniform",
+    "Close versus unequal-height bimodal examples"
+  ],
+  "reused": [
+    "Existing normal and uniform SVGs",
+    "Existing distribution vocabulary"
+  ],
+  "notAdded": [
+    "Duplicate definitions",
+    "Automatic lesson mastery",
+    "Unspecified selected answer",
+    "Reward for imported score"
+  ]
+}
