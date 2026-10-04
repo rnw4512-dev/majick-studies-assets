@@ -1,0 +1,42 @@
+{
+  "courseId": "D772",
+  "sectionId": "d772-s2",
+  "lessonId": "d772-s2-l2-3",
+  "uploadedAt": "2026-10-04",
+  "source": "User-provided Lesson 2.3 questions, feedback, and terms",
+  "comparedAgainst": [
+    "course-tutor.js D772_SECTION_TWO_CONTENT d772-s2-l1-2 (roles vs types)",
+    "course-tutor.js D772_SECTION_TWO_CONTENT d772-s2-l2 (graph vocabulary and Q\u2192Q)",
+    "game-realm.js D772 graphical-display practice"
+  ],
+  "retainedExistingDefinitions": [
+    "pie chart",
+    "bar graph",
+    "stem-and-leaf plot",
+    "dot plot",
+    "histogram",
+    "scatterplot"
+  ],
+  "added": [
+    "Role-type classification matrix with all four combinations",
+    "C\u2192C two-way table",
+    "C\u2192Q side-by-side boxplot",
+    "Five course-provided scenarios and their supplied feedback",
+    "Three new transfer/repair question types"
+  ],
+  "notAdded": [
+    "Duplicate one-variable definitions",
+    "Unsupported Q\u2192C display requirement",
+    "Completion or mastery from copied correct labels"
+  ],
+  "questionIds": [
+    "s2l23-p1",
+    "s2l23-p2",
+    "s2l23-p3",
+    "s2l23-p4",
+    "s2l23-p5",
+    "s2l23-p6",
+    "s2l23-p7",
+    "s2l23-p8"
+  ]
+}

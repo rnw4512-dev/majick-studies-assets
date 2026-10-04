@@ -126,6 +126,9 @@ for(const lesson of D772_SECTION_TWO.lessons){
   }));
 }
 
+const twoVariableUnit=D772_SECTION_TWO.lessons.find(l=>l.id==='d772-s2-l2').sublessons.find(l=>l.id==='d772-s2-l2-3');
+Object.assign(twoVariableUnit,{outlineOnly:false,keywords:['role-type','two-way table','side-by-side boxplot','scatterplot','two variable','two-variable'],goal:'Classify both variable roles and types, then select and justify a two-variable display.'});
+
 const D772_SECTION_ONE_CONTENT={
   'd772-s1-l1':{
     overview:'Lesson 1 asks where the data came from and how the study was designed. Follow the chain: population and sample → sampling method → study type → experimental design.',
@@ -452,7 +455,234 @@ const D772_SECTION_TWO_CONTENT={
     memory:['Classify → choose display → describe distribution → calculate and interpret descriptive statistics.']
   }
 };
-Object.values(D772_SECTION_TWO_CONTENT).forEach(x=>{x.provenance=D772_SECTION_TWO.provenance});
+D772_SECTION_TWO_CONTENT['d772-s2-l2-3']={
+  "sourceLabel": "COURSE-PROVIDED D772 \u2022 SECTION 2 \u2022 LESSON 2.3",
+  "overview": "Classify the explanatory and response variables separately, then select a display for the pair. The arrow runs from explanatory type to response type; it does not establish causation.",
+  "objectives": [
+    "Identify explanatory and response roles separately from data type.",
+    "Classify variable pairs as C\u2192C, C\u2192Q, Q\u2192C, or Q\u2192Q.",
+    "Choose a two-way table, side-by-side boxplot, or scatterplot for the course-tested combinations.",
+    "Explain why a one-variable display does not answer a two-variable relationship question."
+  ],
+  "teach": [
+    {
+      "title": "First: role, then type",
+      "text": "Identify what may explain or predict the outcome and what outcome is measured. Then classify each variable as categorical (C) or quantitative (Q). The notation C\u2192Q means a categorical explanatory variable and a quantitative response variable. Study design determines whether a causal conclusion is justified."
+    },
+    {
+      "title": "C\u2192C: two-way table",
+      "text": "When both variables are categories, a two-way table cross-classifies their counts or percentages. Taking notes (yes/no) and exam outcome (pass/fail) is C\u2192C. A two-way table is a tabular display, although the course groups it with graphical-display choices."
+    },
+    {
+      "title": "C\u2192Q: side-by-side boxplots",
+      "text": "Compare the distribution of quantitative outcomes across categorical groups. Enrollment status (full-time/part-time) and test score is C\u2192Q. Each group gets a boxplot on the same quantitative scale, allowing comparison of medians, spread, and unusual values."
+    },
+    {
+      "title": "Q\u2192Q: scatterplot",
+      "text": "Each point represents a paired observation of two quantitative variables. Number of tutoring sessions and test score is Q\u2192Q. Both counts and measurements can be quantitative; the values need not be continuous."
+    },
+    {
+      "title": "The fourth role-type combination",
+      "text": "Q\u2192C is a quantitative explanatory variable paired with a categorical response, such as study hours predicting pass/fail. It belongs in the classification table. The supplied Lesson 2.3 questions do not give a required display for this combination, so do not force it into a Q\u2192Q scatterplot rule."
+    }
+  ],
+  "anchorChart": {
+    "title": "TWO VARIABLES: ROLE \u2192 TYPE \u2192 DISPLAY",
+    "rule": "Arrow = explanatory type \u2192 response type; C = category, Q = quantity",
+    "columns": [
+      [
+        "Role-type pair",
+        "Display or scope"
+      ],
+      [
+        "C\u2192C",
+        "Two-way table: category \u00d7 category"
+      ],
+      [
+        "C\u2192Q",
+        "Side-by-side boxplots: quantitative distributions by group"
+      ],
+      [
+        "Q\u2192Q",
+        "Scatterplot: paired quantitative values"
+      ],
+      [
+        "Q\u2192C",
+        "Valid role-type pair; display not specified in this upload"
+      ]
+    ],
+    "examples": [
+      [
+        "Notes taken \u2192 pass/fail",
+        "C\u2192C"
+      ],
+      [
+        "Handedness \u2192 longevity",
+        "C\u2192Q"
+      ],
+      [
+        "Number of beers \u2192 BAC",
+        "Q\u2192Q"
+      ],
+      [
+        "Study hours \u2192 pass/fail",
+        "Q\u2192C"
+      ]
+    ]
+  },
+  "weDo": {
+    "prompt": "Compare final-exam scores for students attending an evening class versus a daytime class. Which display fits?",
+    "steps": [
+      "The explanatory variable is class schedule: evening or daytime.",
+      "Schedule is categorical (C).",
+      "The response variable is final-exam score, a quantitative measurement (Q).",
+      "The pair is C\u2192Q.",
+      "Use side-by-side boxplots to compare score distributions on one shared scale."
+    ]
+  },
+  "vocab": [
+    [
+      "Role-type classification",
+      "Classify the explanatory and response variables separately as categorical or quantitative."
+    ],
+    [
+      "Two-way table",
+      "A table cross-classifying two categorical variables using counts or percentages."
+    ],
+    [
+      "Side-by-side boxplot",
+      "Boxplots on a shared quantitative scale comparing distributions across categorical groups."
+    ]
+  ],
+  "memory": [
+    "Identify role before writing the arrow.",
+    "Numeric counts are quantitative, even when only whole numbers are possible.",
+    "Pass/fail is categorical; a numerical exam score is quantitative.",
+    "C\u2192C: two-way table. C\u2192Q: side-by-side boxplots. Q\u2192Q: scatterplot.",
+    "Association in a display does not itself prove causation."
+  ],
+  "provenance": {
+    "courseStructure": "User-provided WGU D772 Lesson 2.3 questions 1\u20135, correct-answer feedback, key terms, and Figure 2.19 description. Uploaded 2026-10-04.",
+    "courseReference": {
+      "source": "WGU Figure 2.19: Role-type Classification Table",
+      "note": "Original image was not supplied; Majick anchor chart is a text reconstruction of the role-type relationships."
+    },
+    "references": [
+      {
+        "source": "Panopto: Pie Charts and Bar Graphs",
+        "url": "https://wgu.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=a0cb4ad2-5874-4c46-bde6-b1bf000f9fc9",
+        "note": "Attribution provided in the upload; video was not independently reviewed."
+      }
+    ]
+  },
+  "practice": [
+    {
+      "id": "s2l23-p1",
+      "prompt": "A study explores the relationship between number of beers consumed and blood alcohol content (BAC percentage). What is the role-type classification?",
+      "options": [
+        "C\u2192C",
+        "Q\u2192Q",
+        "Q\u2192C",
+        "C\u2192Q"
+      ],
+      "answer": 1,
+      "rationale": "Beer count and BAC percentage are both quantitative. The explanatory count leads to the quantitative response: Q\u2192Q.",
+      "provenance": "Course-provided question and feedback (paraphrased)"
+    },
+    {
+      "id": "s2l23-p2",
+      "prompt": "A study asks whether longevity is related to handedness (right-handed or left-handed). What is the role-type classification?",
+      "options": [
+        "Q\u2192C",
+        "Q\u2192Q",
+        "C\u2192C",
+        "C\u2192Q"
+      ],
+      "answer": 3,
+      "rationale": "Handedness is the categorical explanatory variable. Longevity is the quantitative response, so C\u2192Q.",
+      "provenance": "Course-provided question and feedback (paraphrased)"
+    },
+    {
+      "id": "s2l23-p3",
+      "prompt": "Which display compares students\u2019 enrollment status (full-time or part-time) with their test scores?",
+      "options": [
+        "Scatterplot",
+        "Dot plot",
+        "Side-by-side boxplot",
+        "Two-way table"
+      ],
+      "answer": 2,
+      "rationale": "Enrollment status is categorical and test score is quantitative. Side-by-side boxplots compare score distributions across the groups.",
+      "provenance": "Course-provided question and feedback (paraphrased)"
+    },
+    {
+      "id": "s2l23-p4",
+      "prompt": "Which display shows whether students took notes (yes/no) and their final-exam outcome (pass/fail)?",
+      "options": [
+        "Scatterplot",
+        "Side-by-side boxplot",
+        "Histogram",
+        "Two-way table"
+      ],
+      "answer": 3,
+      "rationale": "Both variables are categorical, so cross-classify them in a two-way table. Pass/fail is different from a numeric score.",
+      "provenance": "Course-provided question and feedback (paraphrased)"
+    },
+    {
+      "id": "s2l23-p5",
+      "prompt": "Which display shows the number of tutoring sessions and corresponding test scores?",
+      "options": [
+        "Two-way table",
+        "Side-by-side boxplot",
+        "Scatterplot",
+        "Histogram"
+      ],
+      "answer": 2,
+      "rationale": "Tutoring-session count and test score are quantitative. Each paired observation becomes one point on a scatterplot.",
+      "provenance": "Course-provided question and feedback (paraphrased)"
+    },
+    {
+      "id": "s2l23-p6",
+      "prompt": "A researcher uses weekly study hours to predict whether students pass or fail. Which role-type pair fits?",
+      "options": [
+        "C\u2192Q",
+        "Q\u2192C",
+        "Q\u2192Q",
+        "C\u2192C"
+      ],
+      "answer": 1,
+      "rationale": "Study hours are a quantitative explanatory variable; pass/fail is a categorical response. The pair is Q\u2192C, even though this upload supplies no required display for it.",
+      "provenance": "Majick-authored transfer scenario based on uploaded concepts"
+    },
+    {
+      "id": "s2l23-p7",
+      "prompt": "Why is a histogram of all test scores insufficient for comparing full-time versus part-time students?",
+      "options": [
+        "It combines the scores without showing a separate distribution for each enrollment group",
+        "A histogram cannot display scores",
+        "Enrollment status is continuous",
+        "Every two-variable display must be a two-way table"
+      ],
+      "answer": 0,
+      "rationale": "A histogram shows one quantitative distribution. Combining groups loses the group comparison; side-by-side boxplots keep the categorical groups visible.",
+      "provenance": "Majick-authored transfer scenario based on uploaded concepts"
+    },
+    {
+      "id": "s2l23-p8",
+      "prompt": "Students\u2019 scores are changed from numeric percentages to pass/fail. Enrollment status remains full-time/part-time. How does the display choice change?",
+      "options": [
+        "Side-by-side boxplots become a two-way table",
+        "Two-way table becomes a scatterplot",
+        "Scatterplot becomes a histogram",
+        "The role-type pair stays C\u2192Q"
+      ],
+      "answer": 0,
+      "rationale": "Turning scores into pass/fail changes the response from quantitative to categorical. C\u2192Q becomes C\u2192C, so use a two-way table.",
+      "provenance": "Majick-authored transfer scenario based on uploaded concepts"
+    }
+  ]
+};
+Object.values(D772_SECTION_TWO_CONTENT).forEach(x=>{if(!x.provenance)x.provenance=D772_SECTION_TWO.provenance});
 
 const D772_TUTOR_HELP={
   'd772-s1-l1':{
