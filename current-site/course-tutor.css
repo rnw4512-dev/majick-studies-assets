@@ -33,3 +33,42 @@
 .v3401Prompt{padding:10px 12px;border-left:2px solid #c99f5e;background:rgba(201,159,94,.06);color:#d8cadb}
 .v3401Practice{display:grid;gap:10px}.v3401Practice article{padding:11px;border:1px solid rgba(187,148,200,.16);border-radius:12px;background:#15101b}.v3401Practice article>small{display:block;margin-bottom:5px;color:#b49abe;font:800 8px system-ui;letter-spacing:.08em}.v3401Practice article>b{display:block;margin-bottom:8px;color:#ead7a5;font:700 11px/1.45 Georgia,serif}.v3401Practice article>div{display:grid;grid-template-columns:1fr 1fr;gap:6px}.v3401Practice button{padding:8px 9px;border:1px solid rgba(181,143,194,.18);border-radius:9px;background:#1b1421;color:#cdbfd0;text-align:left;font:700 9px/1.35 system-ui;cursor:pointer}.v3401Practice button.correct{border-color:rgba(144,199,151,.55);background:rgba(79,128,86,.18)}.v3401Practice button.incorrect{border-color:rgba(214,124,128,.48);background:rgba(132,65,70,.16)}.v3401Feedback{min-height:18px;margin:7px 0 0;color:#a99bab;font:9px/1.45 system-ui}.v3401Feedback b{color:#dfc77f}
 @media(max-width:680px){.pathLesson.pathSublesson{margin-left:18px;width:calc(100% - 18px)}.v3401AnchorGrid,.v3401RoleExamples,.v3401Practice article>div{grid-template-columns:1fr}}
+
+/* A single compact classroom uses the existing course tutor and academic state. */
+.learnLab.tutorFocus>.lcContinue{display:none!important}
+.learnLab.tutorFocus>.learnTabs{display:none!important}
+.compactClassroom{max-width:1050px;margin:auto;background:#211624e8;border:1px solid #b48a53;border-radius:12px;padding:20px;box-shadow:0 18px 40px #0005}
+.compactClassroom .tutorLessonHead h2{font-size:clamp(22px,3vw,30px)}
+.compactClassroom .tutorLessonHead p{margin:5px 0;font-size:15px}
+.compactClassroom .masteryBadge{min-width:130px}
+.classroomTabs{display:flex;gap:5px;flex-wrap:wrap;margin:16px 0 0}
+.classroomTabs button,.classroomNavigation button{cursor:pointer;padding:10px 14px;background:#33213e;color:#f4e6d2;border:1px solid #8b6d9a;border-radius:7px;font:600 14px system-ui}
+.classroomTabs button[aria-selected=true]{background:#ecd9b3;color:#392a2e;border-color:#e2bb76}
+.classroomTabs button:focus-visible,.classroomNavigation button:focus-visible,.classroomFloatingCharts button:focus-visible{outline:3px solid #dbb8ec;outline-offset:3px}
+.classroomStage{padding:18px;background:linear-gradient(135deg,#f0e3c8,#decca7);color:#35292c;border:1px solid #b69358;border-radius:0 9px 9px;min-height:240px}
+.classroomStage>[hidden],.compactClassroom [hidden]{display:none!important}
+.classroomStage .tutorChapterBlock,.classroomStage .tutorOfficialTeaching{background:transparent!important;border:0!important;box-shadow:none!important;margin:0;padding:0!important}
+.classroomStage :is(h3,h4,b,p,li,small,figcaption,.tutorMuted,.tutorLocked,.tutorOfficialTopic b,.tutorOfficialTopic p){color:#3e3030!important}
+.classroomStage p,.classroomStage li{font-size:16px;line-height:1.65}
+.classroomStage .tutorBlockTitle small{font-size:12px}
+.classroomStage .tutorOfficialTopic{padding:10px 0;border:0}
+.classroomStage .tutorOfficialTopic b{font:700 22px Georgia,serif}
+.classroomStage .tutorOfficialTeaching>h4{font-size:15px!important;font-weight:400;margin-bottom:12px!important}
+.classroomStage :is(.v3401Rule,.v3401Prompt,.v3401AnchorGrid article,.v3401RoleExamples span,.tutorVocab details,.tutorVisual div){background:#fff5df99;color:#403031;border-color:#9c7e5555}
+.classroomStage .v3401Practice article{background:#fff4db;border-color:#aa8a59}
+.classroomStage .v3401Practice article>b{font-size:17px}
+.classroomStage .v3401Practice button{font-size:15px;padding:12px;background:#39293f;color:#fff0dd}
+.classroomStage .v3401Feedback{font-size:15px;color:#443234}
+.classroomStage .tutorTwoCol{display:block}
+.classroomStage .tutorHelpBar,.classroomStage .tutorAssistPanel{background:#fff3db;border-color:#ae895a}
+.classroomStage .tutorAssistMistakes article{background:#fff7e8}
+.classroomStage .tutorSources{flex-wrap:wrap}
+.classroomStage .tutorSources span{color:#49383b}
+.classroomStage .tutorVocab p{font-size:15px}
+.classroomNavigation{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:18px;font-size:14px}
+.classroomNavigation button:disabled{opacity:.45;cursor:default}
+.classroomFloatingCharts{display:flex;justify-content:flex-end;margin:10px 0;gap:10px}
+.classroomFloatingCharts button{max-width:100%;cursor:pointer;background:linear-gradient(130deg,#ebd7af,#d6bc8d);color:#453137;border:1px solid #bc9656;padding:14px 20px;font:700 16px Georgia,serif;border-radius:3px;box-shadow:0 5px 18px #d2ab6433;transform:rotate(-1deg)}
+@media(max-width:650px){.compactClassroom{padding:12px}.classroomStage{padding:15px}.classroomTabs button{flex:1 1 30%;padding:10px 6px}.classroomNavigation{font-size:12px}.classroomNavigation button{padding:10px}.classroomStage .v3401Practice article>div{grid-template-columns:1fr}}
+
+.classroomStage{max-height:65vh;overflow-y:auto;scrollbar-color:#987447 #e9d6b1}.classroomStage .v3401AnchorGrid:has(figure){display:block}.classroomStage figure img{max-width:480px!important;display:block;margin:auto}.classroomStage figure{margin:8px 0}.classroomStage .tutorQuickChoices button{font-size:16px}.classroomStage .tutorHelpButtons button{font-size:14px}.classroomStage .tutorVocab summary{font-size:17px;color:#49363a}.classroomStage .tutorVisual{flex-wrap:wrap;overflow:visible}
