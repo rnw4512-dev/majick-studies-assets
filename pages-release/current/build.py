@@ -26,6 +26,7 @@ for p in sorted(output.rglob("*")):
   query["v"]=release
   return match["q"]+urlunsplit((u.scheme,u.netloc,u.path,urlencode(query),u.fragment))+match["q"]
  text=pattern.sub(stamp,p.read_text())
+ text=text.replace("?v=3.4.2&context=", "?v="+release+"&context=")
  if p.name=="index.html":
   # No storage writes: release checks cannot alter learner saves or course state.
   root="../" if p.parent.name=="sanctuary" else "./"
