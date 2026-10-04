@@ -103,3 +103,5 @@ body[data-majick-room=mission] :is(.card,.qwrap,.d772PracticeIntro){background:#
 
 /* Study Now shares the teaching classroom; Home remains the library entrance. */
 body[data-majick-room=mission] .content{background-image:linear-gradient(90deg,#160f18aa,#160f1855,#160f1888),url('./assets/learn-classroom-v2.png')}
+
+body[data-majick-room=home] .v3377DoorGrid button *{color:#44302f!important;opacity:1!important}
