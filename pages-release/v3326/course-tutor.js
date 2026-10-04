@@ -240,6 +240,11 @@ const D772_SECTION_TWO_CONTENT={
     },
     memory:['HOW MANY / HOW MUCH = usually quantitative.','WHAT KIND = categorical.','Counts are quantitative.','Measurements are quantitative.','A number used only as a label can still be categorical.']
   },
+  'd772-s2-l2':{
+    simple:'Start with the variable type and the goal. If you are comparing categories, think BAR. If you are showing how mutually exclusive categories make up one whole, think PIE. If categories can overlap, do not use a pie chart. Histogram = quantitative distribution; scatterplot = relationship between two quantitative variables; line graph = change over time.',
+    example:'A survey asks students to choose ONE favorite campus event: concert 40%, sports 30%, theater 20%, other 10%. A bar graph can compare the categories, and a pie chart can show their parts of the whole because each student belongs to one category and the percentages total 100%.',
+    quickCheck:{prompt:'Students may join any number of four clubs, so the club percentages total 145%. Which graph is more appropriate?',choices:['Bar graph','Pie chart','Histogram','Scatterplot'],answer:0,rationale:'The categories overlap, so the percentages do not partition one whole. A bar graph can compare them without implying they sum to 100%.'}
+  },
   'd772-s2-l1-2':{
     sourceLabel:'COURSE-PROVIDED D772 • SECTION 2 • LESSON 1.2 • CORROBORATED',
     overview:'Lesson 1.2 separates two different questions about a variable: WHAT TYPE of data is it, and WHAT ROLE does it play in the research question? Categorical/quantitative describes the data type. Explanatory/response describes the variable’s role in the relationship being studied.',
@@ -310,11 +315,78 @@ const D772_SECTION_TWO_CONTENT={
     memory:['ROLE ≠ DATA TYPE.','Ask: Does X explain, predict, or influence Y? X = explanatory; Y = response.','Categorical variables can be explanatory or response.','Quantitative variables can be explanatory or response.','Explanatory does not automatically mean causal in an observational study.']
   },
   'd772-s2-l2':{
-    sourceLabel:'COURSE-PROVIDED D772 • SECTION 2 STRUCTURE',
-    overview:'Lesson 2 is Choosing Graphical Displays. The course assessment target is: “Can I select an appropriate graphical display based on data type(s)?” Detailed display rules will be added from verified lesson material.',
-    teach:[{title:'Assessment target',text:'Select an appropriate graphical display based on the data type or types in the problem. Majick should preserve the reason a display is appropriate, not just memorize a chart name.'}],
-    vocab:[],
-    memory:['Data type first; display choice second.']
+    sourceLabel:'COURSE-PROVIDED D772 • SECTION 2 • LESSON 2 • CORROBORATED',
+    overview:'Lesson 2 teaches you to choose a graphical display by matching the display to the data type and the question you want the graph to answer. For categorical proportions, bar graphs and pie charts can both work, but they communicate different things and have different restrictions.',
+    objectives:[
+      'Choose an appropriate graph for categorical data.',
+      'Distinguish when a bar graph or pie chart is more appropriate.',
+      'Recognize when a pie chart is invalid because categories overlap or do not represent the full whole.',
+      'Identify when a missing Other/Unknown category causes percentages to fall short of 100%.'
+    ],
+    teach:[
+      {title:'I Teach • Start with the data type',text:'Categorical data are commonly displayed with bar graphs or pie charts. Quantitative distributions are commonly shown with displays such as histograms. Scatterplots are used to show relationships between two quantitative variables, while line graphs are often used for change over time.'},
+      {title:'I Teach • Bar graph',text:'A bar graph compares categories using bar length or height. The bars can represent counts or percentages. Bar graphs are especially useful when you want to compare categories directly, and they can still be appropriate when categories overlap.'},
+      {title:'I Teach • Pie chart',text:'A pie chart shows how one whole is divided among categories. Each slice represents a proportion of the total. Because the circle represents the whole, the categories should be mutually exclusive for the intended comparison and the percentages should total about 100%, allowing for small rounding error.'},
+      {title:'I Teach • Missing category check',text:'If category percentages should describe one complete whole but total less than 100%, look for an omitted category such as “Other/Unknown.” Do not automatically recalculate the listed percentages when the more likely problem is that some observations were left out of the representation.'},
+      {title:'I Teach • Overlapping categories',text:'If people can belong to more than one category, the percentages may add to more than 100%. A pie chart is then misleading because its slices imply mutually exclusive pieces of one whole. A bar graph can compare the category percentages without requiring them to form one pie.'},
+      {title:'Course examples',text:'Your WGU practice confirms: pie charts and bar graphs can display categorical proportions; bar graphs compare category counts/percentages while pie charts emphasize proportions of the whole; a missing Other/Unknown category can explain totals below 100%; and a pie chart is inappropriate when students may participate in multiple activities and percentages exceed 100%.'}
+    ],
+    anchorChart:{
+      title:'CHOOSE THE DISPLAY BY PURPOSE',
+      rule:'CATEGORIES? → BAR compares • PIE shows parts of ONE whole',
+      columns:[
+        ['Display','Best use'],
+        ['Bar graph','Compare counts or percentages across categories'],
+        ['Pie chart','Show mutually exclusive category proportions that make one whole'],
+        ['Histogram','Show a quantitative distribution across intervals/bins'],
+        ['Scatterplot','Show the relationship between two quantitative variables'],
+        ['Line graph','Show change or trend over time']
+      ],
+      examples:[
+        ['Favorite school subject percentages','Bar or pie'],
+        ['Students in overlapping clubs','Bar, not pie'],
+        ['Exam-score distribution','Histogram'],
+        ['Study hours vs. exam score','Scatterplot']
+      ]
+    },
+    weDo:{
+      prompt:'A survey asks 200 employees which ONE commuting method they use most often. Results are: subway 40%, bus 25%, car 20%, walk 10%, other 5%. Which displays are appropriate?',
+      steps:[
+        'The variable is categorical: commuting method.',
+        'The categories are intended to be mutually exclusive because each person gives one main method.',
+        'The percentages total 100%.',
+        'A bar graph can compare the categories.',
+        'A pie chart can show each category as part of the whole.',
+        'Therefore both a bar graph and pie chart are appropriate.'
+      ]
+    },
+    practice:[
+      {id:'s2l2-p1',prompt:'A school reports the percentage of students choosing each of five mutually exclusive lunch plans. Which two displays are appropriate for showing the category proportions?',options:['Bar graph and pie chart','Histogram and scatterplot','Line graph and histogram','Scatterplot and pie chart'],answer:0,rationale:'The variable is categorical, and the categories form one whole. A bar graph can compare the categories and a pie chart can show their proportions of the whole.'},
+      {id:'s2l2-p2',prompt:'A survey asks employees to select every benefit they use. The percentages total 168%. Which display is the better choice?',options:['Bar graph','Pie chart','Histogram','Scatterplot'],answer:0,rationale:'The categories overlap because employees may select multiple benefits. A pie chart would wrongly imply mutually exclusive pieces totaling one whole; a bar graph can compare the category percentages.'},
+      {id:'s2l2-p3',prompt:'A table of mutually exclusive household expense categories totals 92%. What should you check first?',options:['Whether an Other/Unknown category was omitted','Whether every percentage should be multiplied by 2','Whether the graph must become a scatterplot','Whether categories should overlap'],answer:0,rationale:'If the categories should represent the entire whole but total less than 100%, an omitted remainder category such as Other/Unknown is a natural first check.'},
+      {id:'s2l2-p4',prompt:'Which statement best distinguishes a bar graph from a pie chart for categorical data?',options:['Bar graphs emphasize category comparison; pie charts emphasize parts of one whole','Bar graphs are only for quantitative data','Pie charts can represent overlapping categories without restriction','Bar graphs must be vertical'],answer:0,rationale:'Bar length/height is useful for category comparison. Pie slices emphasize each category as a proportion of the whole.'},
+      {id:'s2l2-p5',prompt:'You want to display the distribution of 500 exam scores grouped into score intervals. Which graph is most appropriate?',options:['Histogram','Pie chart','Bar graph of category labels','Scatterplot'],answer:0,rationale:'Exam scores are quantitative, and a histogram displays the distribution of quantitative values across intervals or bins.'},
+      {id:'s2l2-p6',prompt:'You want to examine whether weekly study hours are related to final-exam score. Which graph is most appropriate?',options:['Scatterplot','Pie chart','Single bar graph','Histogram of categories'],answer:0,rationale:'Both variables are quantitative, so a scatterplot is appropriate for examining their relationship.'},
+      {id:'s2l2-p7',prompt:'Monthly website visits are recorded for two years, and you want to show the trend over time. Which display is most appropriate?',options:['Line graph','Pie chart','Histogram','Single-category bar graph'],answer:0,rationale:'A line graph is well suited for showing change or trend over time.'},
+      {id:'s2l2-p8',prompt:'A pie chart shows participation in sports 45%, band 35%, theater 30%, and debate 20%. Students may join more than one activity. What is the main problem?',options:['The categories overlap, so the percentages do not represent mutually exclusive parts of one whole','Pie charts can never show categorical data','The chart needs a second y-axis','Every slice must be the same size'],answer:0,rationale:'Because students can appear in multiple categories, the total can exceed 100%. A pie chart falsely implies the categories partition one whole.'}
+    ],
+    vocab:[
+      ['Bar graph','A graph that uses separated bars to compare counts or percentages across categories.'],
+      ['Pie chart','A circular graph whose slices represent category proportions of one whole.'],
+      ['Histogram','A graph showing the distribution of quantitative data across intervals or bins.'],
+      ['Scatterplot','A graph of paired quantitative values used to examine their relationship.'],
+      ['Line graph','A graph often used to show how a quantity changes over time.'],
+      ['Other/Unknown','A remainder category used when observations do not fit the named categories and the representation is intended to cover the full whole.']
+    ],
+    provenance:{
+      courseStructure:'User-provided WGU D772 Section 2 Lesson 2 practice questions 1–4 and feedback',
+      corroboration:[
+        {source:'OpenStax Introductory Business Statistics §1.2',url:'https://openstax.org/books/introductory-business-statistics/pages/1-2-data-sampling-and-variation-in-data-and-sampling',supports:'bar graphs and pie charts for categorical data; pie slices represent percentages; bar lengths represent counts or percentages'},
+        {source:'OpenStax Introductory Statistics 2e §1.2',url:'https://openstax.org/books/introductory-statistics-2e/pages/1-2-data-sampling-and-variation-in-data-and-sampling',supports:'pie charts cannot appropriately represent overlapping categories whose percentages exceed 100%; missing Other/Unknown category example'},
+        {source:'OpenStax Principles of Finance 2e §13.6',url:'https://openstax.org/books/principles-finance-2e/pages/13-6-data-visualization-and-graphical-displays',supports:'bar charts for categorical distributions, histograms for continuous distributions, scatterplots for relationships, time-series graphs for time'}
+      ]
+    },
+    memory:['BAR = compare categories.','PIE = parts of ONE whole.','Overlapping categories → avoid pie chart.','Whole should total about 100% for a pie chart; small rounding differences are possible.','If a complete categorical table totals well below 100%, check for a missing Other/Unknown category.','Histogram = quantitative distribution. Scatterplot = two quantitative variables. Line graph = trend over time.']
   },
   'd772-s2-l3':{
     sourceLabel:'COURSE-PROVIDED D772 • SECTION 2 STRUCTURE',
