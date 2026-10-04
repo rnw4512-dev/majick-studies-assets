@@ -498,3 +498,24 @@
   .assessmentSigilChambers,.assessmentSigilGates{grid-template-columns:1fr}
   .sigilGate{width:42px;height:62px;font-size:18px}
 }
+/* Furnished study-game chambers; the board stays still and opaque. */
+body[data-majick-room=games] .content{background:linear-gradient(90deg,#130d1dbb,#130d1d55,#130d1dbb),url('./assets/game-observatory-v1.png') center top/100% auto no-repeat;background-color:#15101d;padding:clamp(18px,3vw,36px)}
+body[data-majick-room=games] .content:before{background:linear-gradient(180deg,transparent,#15101df5 700px)}
+.realmHub .realmHero{border:1px solid #b48b59;border-radius:18px 18px 5px 5px;background:linear-gradient(100deg,#271b2beb,#271b2b77);box-shadow:inset 0 0 0 5px #30201966,0 16px 36px #0005}
+.realmTrialCard{border:1px solid #aa8255;border-radius:7px;background:linear-gradient(180deg,#18102044 0,#181020d9 32%,#181020f5 65%),url('./assets/game-observatory-v1.png') center/cover;color:#f5e8d2;box-shadow:inset 0 0 0 4px #2a1a2066,0 12px 24px #0004;min-height:245px}
+.realmTrialCard:nth-child(3n+2){background-image:linear-gradient(180deg,#18102044 0,#181020dc 32%,#181020f5 65%),url('./assets/guardian-dorm-v1.png');background-position:25% center}
+.realmTrialCard:nth-child(3n){background-image:linear-gradient(180deg,#18102044 0,#181020dc 32%,#181020f5 65%),url('./assets/learn-classroom-v1.png');background-position:75% center}
+.realmTrialCard :is(p,small),.realmSceneCopy p{font-size:.95rem;line-height:1.6;color:#edddce}
+.realmTrialIcon{border:1px solid #d6b276;background:#2a1c2ad9;color:#f6d79c;border-radius:50%}
+.realmScene{--realm-room:url('./assets/game-observatory-v1.png');background:linear-gradient(90deg,#181020e8,#18102077),var(--realm-room) center/cover;border:1px solid #bc965e;border-radius:9px;box-shadow:inset 0 0 0 5px #30201b88;min-height:230px}
+.realmScene-runesort,.realmScene-assessmentsigilsort{--realm-room:url('./assets/learn-classroom-v1.png')}
+.realmScene-hexbreaker{--realm-room:url('./assets/guardian-dorm-v1.png')}
+.realmSceneArt{opacity:.35;pointer-events:none}
+.realmMode :is(.card,.realmTrialGuide,.realmBossHUD){background:#1c1524f5;border-color:#a9855480;border-radius:8px;color:#f2e8da}
+.realmMode :is(.card p,.realmTrialGuide p){font-size:1rem;line-height:1.65}
+.realmGuardianBanner{background:linear-gradient(100deg,#422c43ee,#22182cee);border-color:#b58b5780;border-radius:7px}
+.realmStarCard{border-color:#a98d65;border-radius:8px;background:linear-gradient(145deg,#37263d,#21182b)}
+.realmStarCard.open,.realmStarCard.matched{background:#211a2cf5}
+.realmSceneCopy h2{color:#f8e2b2;text-shadow:0 2px 12px #000}
+@media(max-width:700px){body[data-majick-room=games] .content{padding:14px;background-size:auto 700px}.realmScene{min-height:190px}.realmTrialCard{min-height:220px}.realmSceneCopy p{font-size:.95rem}}
+@media(prefers-reduced-motion:reduce){.realmTrialCard,.realmStarCard{transition:none}}

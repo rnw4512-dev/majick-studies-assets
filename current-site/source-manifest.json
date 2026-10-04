@@ -110,7 +110,7 @@
     "campus-runtime.js": "9b6293f0932dfd75fa35bf2b0d32f8bbfb70369cbd10eea2386122062b255ebd",
     "classroom-library-life.css": "c8531b8bd6e72ad6db8429bd3781af4021abdd6cd222a814829c75a7cb763ab0",
     "classroom-library-life.js": "2f5c3b0778305969555e9efea408657fc8036640d09b5a7200eb49f857688f7c",
-    "collegium-atmosphere.css": "bee1f4361087f4e7fbf1e420e6fa8d3fb6d976538ceaf5d69d721adb01b2912c",
+    "collegium-atmosphere.css": "3b15714e40009dec917afc77d9e858e1dc32b5b729b1e43e46fe8b75e9abba27",
     "collegium-atmosphere.js": "f86e878d705d89f477fc091c09a9e3ade23b190cb45635a13286a1f743f9dde3",
     "course-tutor.css": "43ebde61c10fad7b5f56927eb2ad2889bdeb7cacc01eeb59d3c6ff29bca879c9",
     "course-tutor.js": "11cf5d506c61bf2e3cfc5ea2c7dea617e1a9611194167343b590393a8048c081",
@@ -131,7 +131,7 @@
     "duplicate-safe-hatch.js": "12b24b573494635fedff9085ecd12377b509a34186c7db74dc64589af0723b45",
     "focus-feedback.css": "bf9ca907849ea30be24b9f8b0f986789d6013a6ddd8f01773abc3494a1ea1976",
     "focus-feedback.js": "1681cd12131e3168ceba9f76d6bf3831dc12eb047d7cdd782a747c3fc098a1d9",
-    "game-realm.css": "84208e008113a9441d9904b37703ebc8a97b47e15ab3ae3d6a10f2e4146c299c",
+    "game-realm.css": "49c1f7d34b99cdd15b47ab64117aea7054c3e1e5e280203aa2d9ec34d7e4bdbd",
     "game-realm.js": "f12202f2566fd797b4dd8191ddae4e88f0b5d25fa50e3662d8d085eb4433492c",
     "guardian-academic-presence.css": "48db71515dbed8ec6b6bdfae1063a82a8f63383178618a3ee69c570e90d03497",
     "guardian-academic-presence.js": "056fdf0d84ff47d1279bb901d786d11b99fa86580cc53e9014add405579e0e29",
@@ -393,6 +393,7 @@
     "coverage/d772-s2-l4-2.json": "db55a222f9cb7751c60ffbc69db56c8ba6fe9962bc6375ead816221a4206e1eb",
     "assets/learn-classroom-v1.png": "1b8c5f294309515ab2c7305833cb95610300791ac310c11dbbb91646385cb7ab",
     "lesson-visuals/iqr-middle-half.svg": "82b18e918bae195bbf39329ebd69032e42be35d1bfc32f0385e997daf0e0ef8b",
-    "assets/guardian-dorm-v1.png": "f89fd6d4e47b102078d388977a406d954306d0efc4e445f9fe6ecacb53fdf38b"
+    "assets/guardian-dorm-v1.png": "f89fd6d4e47b102078d388977a406d954306d0efc4e445f9fe6ecacb53fdf38b",
+    "assets/game-observatory-v1.png": "6bd6a73d5ca81ee7194a11438ae422d64065cee7c2671e22c7c9ba0b71efba64"
   }
 }

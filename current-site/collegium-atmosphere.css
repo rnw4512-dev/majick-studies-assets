@@ -65,3 +65,14 @@ body[data-majick-room] :is(.v3327Hall,.v3327StudentRecord,.v3377CampusDoors,.lcG
 body[data-majick-room] :is(.v3327HeroCopy p,.v3327CourseScroll p,.tutorChapterBlock p){font-size:1rem;line-height:1.7}
 body[data-majick-room] .v3354Shelves span{font-size:.875rem}
 @media(max-width:700px){body[data-majick-room=learninglab] .content{padding:14px;background-size:auto 780px;background-color:#17101e}body[data-majick-room=learninglab] .lcContinue{min-height:170px;flex-wrap:wrap;padding:20px}body[data-majick-room=home] .v3327PortalHero{min-height:210px}}
+/* Campus rooms share materials while keeping their own spatial light. */
+body[data-majick-room=home] .content{background:linear-gradient(90deg,#140d1bd9,#140d1b77,#140d1bc9),url('./assets/learn-classroom-v1.png') center top/100% auto no-repeat;background-color:#17101e;padding:clamp(18px,3vw,36px)}
+body[data-majick-room=home] .content:before{background:linear-gradient(180deg,transparent,#17101ef5 650px)}
+body[data-majick-room=home] .v3327PortalHero{background:linear-gradient(90deg,#211421dd,#21142166);border:1px solid #c4a06a;box-shadow:inset 0 0 0 5px #2c1a2266,0 14px 35px #0005}
+body[data-majick-room=home] :is(.v3377CampusDoors,.v3400DailyLoop){background:linear-gradient(120deg,#352331ee,#1a1420ee);border:1px solid #a7804d80;border-radius:8px}
+body[data-majick-room=home] :is(.v3377CampusDoors button,.v3358Door){border:1px solid #ab8759;border-radius:5px;background:linear-gradient(120deg,#482c43,#281b2b);color:#f4e4c4;min-height:48px}
+body[data-majick-room=livinggrimoire] :is(.v3367CourseMap,.v3356ArchiveIndex){background:linear-gradient(120deg,#271a24f2,#17121cf2);border:1px solid #ab865c;border-radius:6px;box-shadow:inset 0 0 0 4px #39251d66,0 15px 35px #0005}
+body[data-majick-room=livinggrimoire] :is(.v3367SectionCard,.v3356ArchiveSection){border-radius:5px;border-color:#b8996655;background:linear-gradient(90deg,#372633,#211b27)}
+body[data-majick-room=livinggrimoire] :is(.v3367CourseMap p,.v3356ArchiveIndex p){font-size:1rem;line-height:1.65}
+body[data-majick-room=livinggrimoire] .v3354Parchment :is(button,a){color:#35212d;border-color:#83603b}
+@media(max-width:700px){body[data-majick-room=home] .content{padding:14px;background-size:auto 680px}}
