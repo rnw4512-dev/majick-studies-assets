@@ -58,7 +58,14 @@ const D772_SECTION_TWO={
       goal:'Identify and distinguish the data classifications required by the Section 2 competency.',
       visual:['Observe the variable','Identify how values are recorded','Classify the data','Choose valid interpretations'],
       thinking:['What kind of values are recorded?','Are the values categories or numerical measurements?','Does the classification affect what summaries or graphs make sense?'],
-      traps:['Choosing a graph or statistic before identifying the data type.']},
+      traps:['Choosing a graph or statistic before identifying the data type.'],
+      sublessons:[
+        {id:'d772-s2-l1-2',number:1.2,parentLessonId:'d772-s2-l1',title:'Explanatory and Response Variables',short:'Explanatory & Response',keywords:['explanatory variable','response variable','predict','prediction','influence','related to','relationship','role','data type'],
+          goal:'Identify explanatory and response variables, determine the possible direction of influence, and classify each variable’s role separately from whether it is categorical or quantitative.',
+          visual:['Research question','Does X explain / predict / influence Y?','X = explanatory','Y = response','Classify each variable’s data type separately'],
+          thinking:['What are the two variables?','Which variable is being used to explain, predict, or possibly influence the other?','Which variable is the measured or observed response?','Now separately ask whether each variable is categorical or quantitative.'],
+          traps:['Assuming explanatory means quantitative.','Assuming response means quantitative.','Choosing the first variable named instead of reading the relationship.','Treating explanatory as proof of causation in an observational study.']}
+      ]},
     {id:'d772-s2-l2',number:2,title:'Choosing Graphical Displays',short:'Graphical Displays',keywords:['graph','graphical display','bar graph','histogram','box plot','dot plot','display','chart'],
       goal:'Select an appropriate graphical display based on the data type or types in the problem.',
       visual:['Data type','Question being asked','Candidate displays','Best display','Interpret'],
@@ -244,6 +251,75 @@ const D772_SECTION_TWO_CONTENT={
     },
     memory:['HOW MANY / HOW MUCH = usually quantitative.','WHAT KIND = categorical.','Counts are quantitative.','Measurements are quantitative.','A number used only as a label can still be categorical.','Explanatory = possible influence/predictor; response = measured outcome.','Use the two-directions test when roles are unclear.','Explanatory does not automatically mean proven cause.']
   },
+  'd772-s2-l1-2':{
+    sourceLabel:'COURSE-PROVIDED D772 • SECTION 2 • LESSON 1.2 • CORROBORATED',
+    overview:'Lesson 1.2 separates two different questions about a variable: WHAT TYPE of data is it, and WHAT ROLE does it play in the research question? Categorical/quantitative describes the data type. Explanatory/response describes the variable’s role in the relationship being studied.',
+    objectives:[
+      'Distinguish categorical variables from quantitative variables.',
+      'Identify explanatory and response variables.',
+      'Determine which variable may predict or influence the other.',
+      'Identify a variable’s role separately from its data type.'
+    ],
+    teach:[
+      {title:'I Teach • Two labels can describe the same variable',text:'A variable has a data type and can also have a research role. “Categorical” or “quantitative” tells you what kind of values the variable takes. “Explanatory” or “response” tells you how that variable is being used in the research question. These are separate characteristics.'},
+      {title:'I Teach • The direction rule',text:'Ask: “Does X help explain, predict, or influence Y?” If yes, X is the explanatory variable and Y is the response variable. In an observational study, this identifies the direction of the research question; it does not by itself prove that X causes Y.'},
+      {title:'I Teach • Explanatory variable',text:'The explanatory variable is the variable being used to explain or predict differences in the response, or the variable that may influence the response. It can be categorical or quantitative.'},
+      {title:'I Teach • Response variable',text:'The response variable is the outcome being observed or measured—the variable that may differ in response to the explanatory variable. It can also be categorical or quantitative.'},
+      {title:'We Do • Guided example',text:'Question: “Is weekly exercise time related to resting heart rate?” Step 1: variables = weekly exercise time and resting heart rate. Step 2: ask whether exercise time may help explain or predict heart rate. Yes. Step 3: explanatory = exercise time; response = resting heart rate. Step 4: both are quantitative because each is a numerical measurement.'},
+      {title:'Course examples',text:'Age → smoking habits: age is explanatory; smoking habits are response. Driver age → sign-legibility distance: driver age is explanatory; sign-legibility distance is response. Driving-practice time → driving-test result: practice time is explanatory; pass/fail result is response. IQ level → favorite type of music: IQ level is explanatory; music preference is response.'},
+      {title:'Role and type are separate',text:'Examples: smoking habits can be categorical + response. Driver age can be quantitative + explanatory. Driving-test result can be categorical + response. Sign-legibility distance can be quantitative + response. Do not use data type to guess the research role.'}
+    ],
+    anchorChart:{
+      title:'ROLE ≠ DATA TYPE',
+      rule:'Does X help explain, predict, or influence Y? → X = EXPLANATORY • Y = RESPONSE',
+      columns:[
+        ['Question','What it tells you'],
+        ['Categorical or quantitative?','DATA TYPE: labels/categories vs. numerical counts/measurements'],
+        ['Explanatory or response?','ROLE: possible predictor/influence vs. observed outcome']
+      ],
+      examples:[
+        ['Driver age','Quantitative + Explanatory'],
+        ['Sign-legibility distance','Quantitative + Response'],
+        ['Driving-test result','Categorical + Response'],
+        ['Favorite music type','Categorical + Response']
+      ]
+    },
+    weDo:{
+      prompt:'A school studies whether the type of tutoring program (online, small-group, or one-to-one) is related to the number of points gained on a posttest.',
+      steps:[
+        'Identify the two variables: tutoring-program type and points gained.',
+        'Ask: Does tutoring-program type help explain or predict points gained? That is the direction being studied.',
+        'Tutoring-program type = explanatory variable.',
+        'Points gained = response variable.',
+        'Tutoring-program type is categorical; points gained is quantitative.'
+      ]
+    },
+    practice:[
+      {id:'s2l12-p1',prompt:'A researcher asks whether daily screen time is related to hours of sleep per night. Which pairing is most natural?',options:['Screen time = explanatory; sleep hours = response','Sleep hours = explanatory; screen time = response','Both are categorical','Both must be response variables'],answer:0,rationale:'The research question treats screen time as the possible predictor or influence and sleep hours as the observed outcome.'},
+      {id:'s2l12-p2',prompt:'A study compares preferred study location (library, home, café) with exam score. How should preferred study location be classified?',options:['Categorical + explanatory','Quantitative + explanatory','Categorical + response','Quantitative + response'],answer:0,rationale:'Study location consists of category labels, and the question uses location to explain or predict differences in exam score.'},
+      {id:'s2l12-p3',prompt:'A study asks whether commute distance predicts whether an employee works remotely. How should remote-work status be classified?',options:['Categorical + response','Quantitative + response','Categorical + explanatory','Quantitative + explanatory'],answer:0,rationale:'Remote-work status is a category such as yes/no and is the outcome being predicted, so it is categorical + response.'},
+      {id:'s2l12-p4',prompt:'A researcher asks whether medication dose is related to change in blood pressure. How should medication dose be classified?',options:['Quantitative + explanatory','Categorical + explanatory','Quantitative + response','Categorical + response'],answer:0,rationale:'Dose is a numerical amount and is being used as the possible influence, so it is quantitative + explanatory.'},
+      {id:'s2l12-p5',prompt:'Which statement is correct?',options:['Explanatory variables must be quantitative','Response variables must be quantitative','A variable’s data type and research role are separate characteristics','Categorical variables cannot predict quantitative variables'],answer:2,rationale:'Categorical/quantitative describes the kind of values. Explanatory/response describes the variable’s role in the research question.'},
+      {id:'s2l12-p6',prompt:'An observational study uses neighborhood type to predict whether residents use public transit. Does calling neighborhood type “explanatory” prove it causes transit use?',options:['No; the role identifies the direction being studied, not causation by itself','Yes; explanatory always means causal','Yes, if both variables are categorical','No, because categorical variables cannot be explanatory'],answer:0,rationale:'An explanatory variable may be used to explain or predict a response in observational data without establishing a causal effect.'},
+      {id:'s2l12-p7',prompt:'A study asks whether number of practice problems completed predicts final-exam score. What are the data types and roles?',options:['Practice problems = quantitative explanatory; exam score = quantitative response','Practice problems = categorical response; exam score = quantitative explanatory','Both are categorical explanatory variables','Both are quantitative response variables'],answer:0,rationale:'Both variables are numerical, but their roles differ: practice amount is the predictor and exam score is the outcome.'},
+      {id:'s2l12-p8',prompt:'A researcher asks whether meal-plan type predicts whether a student renews the plan next semester. Which answer correctly classifies both variables?',options:['Meal-plan type = categorical explanatory; renewal status = categorical response','Meal-plan type = quantitative explanatory; renewal status = categorical response','Meal-plan type = categorical response; renewal status = categorical explanatory','Both are quantitative'],answer:0,rationale:'Both variables are categorical, while their roles are different: plan type is explanatory and renewal status is the response.'}
+    ],
+    vocab:[
+      ['Categorical variable','A variable whose values are names, labels, or categories.'],
+      ['Quantitative variable','A variable whose values are numerical counts or measurements.'],
+      ['Explanatory variable','The variable used to explain or predict the response, or the variable that may influence it.'],
+      ['Response variable','The observed or measured outcome that may be affected by or associated with the explanatory variable.']
+    ],
+    provenance:{
+      courseStructure:'User-provided WGU D772 Section 2 Lesson 1.2 learning objectives, terms, rule, and four course examples',
+      corroboration:[
+        {source:'OpenStax Statistics • Ch. 1 Key Terms',url:'https://openstax.org/books/statistics/pages/1-key-terms',supports:'categorical, quantitative/numerical, explanatory, and response variable definitions'},
+        {source:'OpenStax Introductory Statistics 2e §1.2',url:'https://openstax.org/books/introductory-statistics-2e/pages/1-2-data-sampling-and-variation-in-data-and-sampling',supports:'categorical/qualitative versus quantitative data'},
+        {source:'OpenStax Introductory Statistics §1.4',url:'https://openstax.org/books/introductory-statistics/pages/1-4-experimental-design-and-ethics',supports:'explanatory variable as possible influence and response variable as measured outcome'}
+      ]
+    },
+    memory:['ROLE ≠ DATA TYPE.','Ask: Does X explain, predict, or influence Y? X = explanatory; Y = response.','Categorical variables can be explanatory or response.','Quantitative variables can be explanatory or response.','Explanatory does not automatically mean causal in an observational study.']
+  },
   'd772-s2-l2':{
     sourceLabel:'COURSE-PROVIDED D772 • SECTION 2 STRUCTURE',
     overview:'Lesson 2 is Choosing Graphical Displays. The course assessment target is: “Can I select an appropriate graphical display based on data type(s)?” Detailed display rules will be added from verified lesson material.',
@@ -305,6 +381,11 @@ const D772_TUTOR_HELP={
     simple:'For the Section 1 test, follow the research chain from beginning to end: identify population/sample → sampling method → study type → experimental design → bias → graph/significance → research integrity → association or causation. Do not jump straight to the conclusion.',
     example:'Suppose a company surveys volunteers, uses a truncated graph, and then claims its product causes improvement. You would question the voluntary-response sample, the misleading display, and the causal claim. Section 1 questions often stack several credibility problems in one scenario.',
     quickCheck:{prompt:'Which sequence best matches the Section 1 credibility check?',choices:['Conclusion → graph → sample → population','Population/sample → collection/design → bias/display → supported conclusion','Vocabulary → formula → calculator → conclusion','Correlation → causation → sampling'],answer:1,rationale:'Section 1 follows the evidence from who was studied and how data were collected through bias/presentation and finally to the conclusion the evidence supports.'}
+  },
+  'd772-s2-l1-2':{
+    simple:'First find the two variables. Then ask: “Does X help explain, predict, or influence Y?” X is explanatory; Y is response. After that, classify each variable separately: labels/categories = categorical; numerical counts/measurements = quantitative. ROLE and DATA TYPE are two different labels.',
+    example:'Does type of breakfast predict the number of minutes a student can sustain attention? Breakfast type is categorical + explanatory. Attention minutes are quantitative + response.',
+    quickCheck:{prompt:'A study asks whether school transportation type (bus, walk, car) predicts arrival time in minutes. How is transportation type classified?',choices:['Categorical + explanatory','Quantitative + explanatory','Categorical + response','Quantitative + response'],answer:0,rationale:'Transportation type consists of categories and is the predictor in the research question, so it is categorical + explanatory.'}
   }
 };
 
@@ -335,7 +416,7 @@ function sourceText(row){return (String(row?.sourceName||'')+' '+String(row?.tex
 function headingInfo(row){
   const raw=String(row?.sourceName||'')+'\n'+String(row?.text||'').slice(0,1600);
   const section=raw.match(/\bSection\s+(\d+)\s*[:\-–]?\s*([^\n]{0,90})/i);
-  const lesson=raw.match(/\bLesson\s+(\d+)\s*[:\-–]?\s*([^\n]{0,90})/i);
+  const lesson=raw.match(/\bLesson\s+(\d+(?:\.\d+)?)\s*[:\-–]?\s*([^\n]{0,90})/i);
   return {
     sectionNumber:section?Number(section[1]):null,
     sectionTitle:section?.[2]?.trim()||'',
@@ -345,18 +426,28 @@ function headingInfo(row){
 }
 function escRx(s){return String(s||'').replace(/[.*+?^${}()|[\]\\]/g,'\\$&')}
 const D772_OFFICIAL_SECTIONS=[D772_SECTION_ONE,D772_SECTION_TWO];
+function sectionUnits(section){
+  const out=[];
+  for(const lesson of section?.lessons||[]){
+    out.push(lesson);
+    for(const sub of lesson.sublessons||[])out.push({...sub,parentTitle:lesson.title});
+  }
+  return out;
+}
+function allOfficialLessons(){return D772_OFFICIAL_SECTIONS.flatMap(sectionUnits)}
+
 function d772SectionForRow(row){
   const sid=String(row?.sectionId||row?.learningPath?.sectionId||'');
   if(sid==='d772-s2')return D772_SECTION_TWO;
   return D772_SECTION_ONE;
 }
-function lessonById(id){return D772_OFFICIAL_SECTIONS.flatMap(s=>s.lessons).find(l=>l.id===id)||null}
+function lessonById(id){return allOfficialLessons().find(l=>l.id===id)||null}
 function classifyD772(row){
   if(row?.learningPath?.courseId==='D772'&&(row.learningPath.lessonId||row.learningPath.multiLesson))return row.learningPath;
   const section=d772SectionForRow(row);
   const text=sourceText(row),head=headingInfo(row);
   let best=null,bestScore=0;
-  for(const lesson of section.lessons.filter(x=>!x.review)){
+  for(const lesson of sectionUnits(section).filter(x=>!x.review)){
     let score=0;
     if(head.lessonNumber===lesson.number)score+=12;
     if(norm(head.lessonTitle).includes(norm(lesson.short)))score+=8;
@@ -375,7 +466,7 @@ function d772Segments(row){
   if(!raw)return [];
   const marks=[];
   const section=d772SectionForRow(row);
-  for(const lesson of section.lessons.filter(x=>!x.review)){
+  for(const lesson of sectionUnits(section).filter(x=>!x.review)){
     const patterns=[
       new RegExp('\\bLesson\\s*'+lesson.number+'\\b[^\\n]{0,120}','ig'),
       new RegExp(escRx(lesson.title),'ig')
@@ -411,7 +502,8 @@ function scoreD772Item(text,lesson){
     'd772-s1-l1':['data collection','collection method','random sample','sampling method','population','census','survey','observation','experiment'],
     'd772-s1-l2':['selection bias','response bias','nonresponse','undercoverage','voluntary response','convenience sample','leading question','biased wording','bias'],
     'd772-s1-l3':['truncated axis','misleading graph','misrepresentation','axis','scale','interval','distort','display'],
-    'd772-s1-l4':['causation','causal','correlation','association','generalize','inference','supported conclusion','limitation','claim','findings']
+    'd772-s1-l4':['causation','causal','correlation','association','generalize','inference','supported conclusion','limitation','claim','findings'],
+    'd772-s2-l1-2':['explanatory variable','response variable','predict','prediction','influence','relationship','categorical explanatory','quantitative explanatory','categorical response','quantitative response']
   }[lesson.id]||lesson.keywords||[];
   for(const k of strong)if(t.includes(norm(k)))score+=k.includes(' ')?4:2;
   return score;
@@ -426,7 +518,7 @@ function classifyD772Item(row,item){
   }
   let best=null,bestScore=0;
   const section=d772SectionForRow(row);
-  for(const lesson of section.lessons.filter(x=>!x.review)){
+  for(const lesson of sectionUnits(section).filter(x=>!x.review)){
     const score=scoreD772Item(text,lesson);
     if(score>bestScore){bestScore=score;best=lesson}
   }
@@ -553,8 +645,8 @@ function rowHasLesson(row,lessonId,id=cid()){
 }
 function sourcesForLesson(lesson,id=cid()){
   if(lesson.review){
-    const section=sections(id).find(s=>s.lessons.some(l=>l.id===lesson.id));
-    const ids=new Set((section?.lessons||[]).filter(l=>!l.review).flatMap(l=>sourcesForLesson(l,id).map(r=>r.id)));
+    const section=sections(id).find(s=>sectionUnits(s).some(l=>l.id===lesson.id));
+    const ids=new Set(sectionUnits(section).filter(l=>!l.review).flatMap(l=>sourcesForLesson(l,id).map(r=>r.id)));
     return rows(id).filter(r=>ids.has(r.id));
   }
   return rows(id).filter(r=>rowHasLesson(r,lesson.id,id));
@@ -562,8 +654,8 @@ function sourcesForLesson(lesson,id=cid()){
 function questionsForLesson(lesson,id=cid()){
   if(id==='D772'){
     if(lesson.review){
-      const sec=sections(id).find(s=>s.lessons.some(l=>l.id===lesson.id));
-      const lessonIds=new Set((sec?.lessons||[]).filter(l=>!l.review).map(l=>l.id));
+      const sec=sections(id).find(s=>sectionUnits(s).some(l=>l.id===lesson.id));
+      const lessonIds=new Set(sectionUnits(sec).filter(l=>!l.review).map(l=>l.id));
       return (course(id).questionBank||[]).filter(q=>lessonIds.has(q.learningPathLessonId)||lessonIds.has(classifyD772Item(rows(id).find(r=>r.id===q.sourceId),q)));
     }
     return (course(id).questionBank||[]).filter(q=>{
@@ -617,7 +709,7 @@ function sectionProgress(section,id=cid()){
   return {pct,ready:lessons.every(l=>mastery(l,id).sourceCount>0),lessons:rows};
 }
 function selectedLesson(id=cid()){
-  const all=sections(id).flatMap(s=>s.lessons);
+  const all=sections(id).flatMap(sectionUnits);
   const st=tutorState(id);
   let lesson=all.find(l=>l.id===st.selectedLesson);
   if(!lesson){
@@ -626,7 +718,7 @@ function selectedLesson(id=cid()){
   }
   return lesson;
 }
-function findSectionForLesson(lesson,id=cid()){return sections(id).find(s=>s.lessons.some(l=>l.id===lesson?.id))||null}
+function findSectionForLesson(lesson,id=cid()){return sections(id).find(s=>sectionUnits(s).some(l=>l.id===lesson?.id))||null}
 function lessonNumberLabel(lesson){return lesson.review?'SECTION REVIEW':lesson.number?('LESSON '+lesson.number):'LESSON'}
 function lessonItems(sourceRows,bucket,lesson,id=cid()){
   const out=[];
@@ -758,7 +850,12 @@ function renderPath(){
       return '<section class="pathSection"><div class="pathSectionHead"><div><span>LEARNING PATH</span><h3>'+E(sec.title)+'</h3></div><div class="pathProgress"><b>'+sp.pct+'%</b><small>'+ (sp.ready?'section material loaded':'add lesson notes as you go')+'</small></div></div><div class="pathRail">'+sec.lessons.map((lesson,i)=>{
         const m=mastery(lesson,id);
         const available=m.sourceCount>0||(lesson.review&&sp.ready);
-        return '<button class="pathLesson '+statusClass(m.status)+' '+(lesson.id===active?.id?'selected':'')+'" data-tutor-lesson="'+E(lesson.id)+'"><i>'+(lesson.review?'✓':lesson.number||i+1)+'</i><div><small>'+E(lessonNumberLabel(lesson))+'</small><b>'+E(lesson.title)+'</b><span>'+E(m.status)+' • '+m.sourceCount+' source'+(m.sourceCount===1?'':'s')+' • '+m.attempts+' attempts</span></div><em>'+(available?'Open →':'Waiting for notes')+'</em></button>';
+        const main='<button class="pathLesson '+statusClass(m.status)+' '+(lesson.id===active?.id?'selected':'')+'" data-tutor-lesson="'+E(lesson.id)+'"><i>'+(lesson.review?'✓':lesson.number||i+1)+'</i><div><small>'+E(lessonNumberLabel(lesson))+'</small><b>'+E(lesson.title)+'</b><span>'+E(m.status)+' • '+m.sourceCount+' source'+(m.sourceCount===1?'':'s')+' • '+m.attempts+' attempts</span></div><em>'+(available?'Open →':'Waiting for notes')+'</em></button>';
+        const subs=(lesson.sublessons||[]).map(sub=>{
+          const sm=mastery(sub,id),subAvailable=sm.sourceCount>0;
+          return '<button class="pathLesson pathSublesson '+statusClass(sm.status)+' '+(sub.id===active?.id?'selected':'')+'" data-tutor-lesson="'+E(sub.id)+'"><i>'+E(sub.number)+'</i><div><small>'+E(lessonNumberLabel(sub))+' • INSIDE LESSON '+E(lesson.number)+'</small><b>'+E(sub.title)+'</b><span>'+E(sm.status)+' • focused mastery unit</span></div><em>'+(subAvailable?'Open →':'Waiting for notes')+'</em></button>';
+        }).join('');
+        return main+subs;
       }).join('')+'</div></section>';
     }).join('');
   document.getElementById('continueTutor')?.addEventListener('click',()=>show('tutor'));
@@ -771,6 +868,30 @@ function visualHtml(lesson){
   const v=lesson.visual||['Learn','Practice','Apply','Review'];
   return '<div class="tutorVisual">'+v.map((x,i)=>'<div><span>'+E(x)+'</span></div>'+(i<v.length-1?'<b>→</b>':'')).join('')+'</div>';
 }
+function lessonExperienceHtml(official){
+  if(!official)return '';
+  const objectives=(official.objectives||[]).length?'<section class="tutorChapterBlock v3401Objectives"><div class="tutorBlockTitle"><span>✦</span><div><small>LEARNING OBJECTIVES</small><h3>What you should be able to do</h3></div></div><ul>'+official.objectives.map(x=>'<li>'+E(x)+'</li>').join('')+'</ul></section>':'';
+  const a=official.anchorChart;
+  const anchor=a?'<section class="tutorChapterBlock v3401Anchor"><div class="tutorBlockTitle"><span>⚯</span><div><small>VISUAL ANCHOR CHART</small><h3>'+E(a.title)+'</h3></div></div><div class="v3401Rule">'+E(a.rule)+'</div><div class="v3401AnchorGrid">'+(a.columns||[]).slice(1).map(row=>'<article><b>'+E(row[0])+'</b><p>'+E(row[1])+'</p></article>').join('')+'</div><div class="v3401RoleExamples">'+(a.examples||[]).map(row=>'<span><b>'+E(row[0])+'</b> → '+E(row[1])+'</span>').join('')+'</div></section>':'';
+  const we=official.weDo?'<section class="tutorChapterBlock v3401WeDo"><div class="tutorBlockTitle"><span>2</span><div><small>WE DO</small><h3>Work one together</h3></div></div><p class="v3401Prompt">'+E(official.weDo.prompt)+'</p><ol>'+official.weDo.steps.map(x=>'<li>'+E(x)+'</li>').join('')+'</ol></section>':'';
+  const practice=(official.practice||[]).length?'<section class="tutorChapterBlock v3401YouDo"><div class="tutorBlockTitle"><span>3</span><div><small>YOU DO</small><h3>WGU/OA-style mixed role + data-type practice</h3></div></div><div class="v3401Practice">'+official.practice.map((q,i)=>'<article data-v3401-q="'+E(q.id||i)+'"><small>QUESTION '+(i+1)+'</small><b>'+E(q.prompt)+'</b><div>'+q.options.map((o,j)=>'<button type="button" data-v3401-answer="'+j+'">'+String.fromCharCode(65+j)+'. '+E(o)+'</button>').join('')+'</div><p class="v3401Feedback" aria-live="polite"></p></article>').join('')+'</div></section>':'';
+  return objectives+anchor+we+practice;
+}
+function bindLessonExperience(official){
+  if(!official?.practice?.length)return;
+  document.querySelectorAll('[data-v3401-q]').forEach((card,i)=>{
+    const q=official.practice[i];if(!q)return;
+    card.querySelectorAll('[data-v3401-answer]').forEach(btn=>btn.addEventListener('click',()=>{
+      const pick=Number(btn.dataset.v3401Answer),correct=pick===Number(q.answer);
+      card.querySelectorAll('[data-v3401-answer]').forEach(x=>x.disabled=true);
+      btn.classList.add(correct?'correct':'incorrect');
+      const fb=card.querySelector('.v3401Feedback');
+      if(fb)fb.innerHTML='<b>'+(correct?'✓ Correct':'Not yet')+'</b> '+E(q.rationale);
+      try{window.MajickProductCore?.record?.('concept-complete',{course:'D772',lessonId:'d772-s2-l1-2',qid:q.id,correct})}catch(_){}
+    }));
+  });
+}
+
 function helpFor(lesson){return D772_TUTOR_HELP[lesson?.id]||null}
 function relatedMistakesHtml(lesson,id=cid()){
   const qs=questionsForLesson(lesson,id),byId=new Map(qs.map(q=>[q.id,q]));
@@ -843,7 +964,7 @@ function officialTeachingHtml(official){
 function openLesson(lessonId,helpKind=null,id='D772'){
   try{
     if(window.S?.activeCourse!==id&&typeof window.switchCourse==='function')window.switchCourse(id);
-    const lesson=sections(id).flatMap(s=>s.lessons).find(l=>l.id===lessonId)||selectedLesson(id);
+    const lesson=sections(id).flatMap(sectionUnits).find(l=>l.id===lessonId)||selectedLesson(id);
     if(!lesson)return;
     const st=tutorState(id);
     st.selectedLesson=lesson.id;
@@ -871,17 +992,19 @@ function renderTutor(){
   box.innerHTML='<div class="tutorLessonHead"><div><button class="tutorBack" id="tutorBack">← Course Path</button><span>'+E(ch.section?.title||id)+' • '+E(lessonNumberLabel(lesson))+'</span><h2>'+E(lesson.title)+'</h2><p>'+E(lesson.goal||'Learn and apply this lesson.')+'</p></div><div class="masteryBadge '+statusClass(m.status)+'"><small>MASTERY</small><b>'+E(m.status)+'</b><span>'+m.accuracy+'% • target rigor '+m.targetRigor+'</span></div></div>'+
     '<div class="tutorNext"><b>What Majick wants you to do next:</b> '+E(nextStep(m))+'</div>'+
     '<section class="tutorHelpBar" aria-label="Majick Tutor help"><div><small>ASK MAJICK ABOUT THIS LESSON</small><b>Use help without leaving the page</b></div><div class="tutorHelpButtons"><button type="button" data-tutor-help="simple">Explain Simpler</button><button type="button" data-tutor-help="example">Give Me an Example</button><button type="button" data-tutor-help="quiz">Quiz Me on This Page</button><button type="button" data-tutor-help="mistakes">Related Mistakes</button></div></section><section id="tutorAssistPanel" class="tutorAssistPanel" hidden></section>'+
+    lessonExperienceHtml(ch.official)+
     '<section class="tutorChapterBlock"><div class="tutorBlockTitle"><span>1</span><div><small>TEACH ME</small><h3>Build the idea before memorizing it</h3></div></div>'+sourceEvidence+'</section>'+
     '<section class="tutorChapterBlock"><div class="tutorBlockTitle"><span>2</span><div><small>SEE IT</small><h3>A visual thinking path</h3></div></div>'+visualHtml(lesson)+'</section>'+
     '<div class="tutorTwoCol"><section class="tutorChapterBlock"><div class="tutorBlockTitle"><span>3</span><div><small>VOCABULARY IN CONTEXT</small><h3>Words you need to recognize</h3></div></div>'+(ch.vocab.length?'<div class="tutorVocab">'+ch.vocab.slice(0,14).map(v=>'<details><summary>'+E(v.term)+'</summary><p>'+E(v.definition)+'</p></details>').join('')+'</div>':'<p class="tutorMuted">Vocabulary will populate from this lesson’s notes.</p>')+'</section>'+
     '<section class="tutorChapterBlock"><div class="tutorBlockTitle"><span>4</span><div><small>HOW TO THINK THROUGH IT</small><h3>Use this when a question feels confusing</h3></div></div><ol class="thinkingSteps">'+(lesson.thinking||[]).map(x=>'<li>'+E(x)+'</li>').join('')+'</ol></section></div>'+
     '<div class="tutorTwoCol"><section class="tutorChapterBlock trapBlock"><div class="tutorBlockTitle"><span>5</span><div><small>COMMON TRAPS</small><h3>What Majick should catch you doing</h3></div></div><ul>'+[...(lesson.traps||[]),...ch.repairs.slice(0,3).map(r=>r.correction)].slice(0,6).map(x=>'<li>'+E(x)+'</li>').join('')+'</ul></section>'+
     '<section class="tutorChapterBlock"><div class="tutorBlockTitle"><span>6</span><div><small>PROVE IT</small><h3>Adaptive lesson practice</h3></div></div><div class="proveStats"><span><b>'+m.questionCount+'</b> lesson questions</span><span><b>'+m.attempts+'</b> attempts</span><span><b>'+m.accuracy+'%</b> accuracy</span><span><b>R'+m.targetRigor+'</b> next rigor</span></div><button class="btn primary" id="tutorPractice" '+(m.questionCount?'':'disabled')+'>'+ (m.status==='Needs Review'?'Repair this lesson':'Start adaptive lesson practice')+' →</button></section></div>'+
-    '<section class="tutorSources"><div><b>Source coverage</b><span>'+E(ch.official?('D772 Section 1 Master Notes'+(sourceNames.length?' • '+sourceNames.join(' • '):'')):(sourceNames.length?sourceNames.join(' • '):'No lesson source uploaded yet'))+'</span></div><button class="tutorManageSources" id="tutorManageSources" type="button">Manage or delete source notes →</button></section>';
+    '<section class="tutorSources"><div><b>Source coverage</b><span>'+E(ch.official?('D772 verified/course-provided notes'+(sourceNames.length?' • '+sourceNames.join(' • '):'')):(sourceNames.length?sourceNames.join(' • '):'No lesson source uploaded yet'))+'</span></div><button class="tutorManageSources" id="tutorManageSources" type="button">Manage or delete source notes →</button></section>';
   document.getElementById('tutorBack')?.addEventListener('click',()=>show('path'));
   document.getElementById('tutorPractice')?.addEventListener('click',()=>startPractice(lesson,id));
   document.getElementById('tutorManageSources')?.addEventListener('click',()=>{try{navigate('addmaterial')}catch(_){}});
   box.querySelectorAll('[data-tutor-help]').forEach(btn=>btn.addEventListener('click',()=>renderTutorAssist(btn.dataset.tutorHelp,lesson,ch,id)));
+  bindLessonExperience(ch.official);
 }
 const baseRender=MajickLearningLab.render;
 MajickLearningLab.render=function(){
@@ -903,5 +1026,5 @@ MajickLearningLab.bind=function(){
 };
 const baseRefresh=MajickLearningLab.refresh;
 MajickLearningLab.refresh=function(){baseRefresh();hydrate()};
-window.MajickCourseTutor={VERSION,D772_SECTION_ONE,D772_SECTION_TWO,D772_SECTION_ONE_CONTENT,D772_SECTION_TWO_CONTENT,D772_TUTOR_HELP,hydrate,sections,classifySource,annotateSource,tagD772Generated,classifyD772Item,d772Segments,sourcesForLesson,questionsForLesson,mastery,sectionProgress,chapter,mergeLessonTeaching,officialD772Content,startPractice,show,renderPath,renderTutor,renderTutorAssist,openLesson,selectedLesson};
+window.MajickCourseTutor={VERSION,D772_SECTION_ONE,D772_SECTION_TWO,D772_SECTION_ONE_CONTENT,D772_SECTION_TWO_CONTENT,D772_TUTOR_HELP,sectionUnits,allOfficialLessons,hydrate,sections,classifySource,annotateSource,tagD772Generated,classifyD772Item,d772Segments,sourcesForLesson,questionsForLesson,mastery,sectionProgress,chapter,mergeLessonTeaching,officialD772Content,startPractice,show,renderPath,renderTutor,renderTutorAssist,openLesson,selectedLesson};
 })();
