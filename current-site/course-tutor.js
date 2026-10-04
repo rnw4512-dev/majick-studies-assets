@@ -2913,7 +2913,11 @@ function compactClassroom(box,ch,lesson){
   if(!panels.example.children.length)panels.example.innerHTML='<p>'+E(helpFor(lesson)?.example||'A worked example has not been supplied for this lesson yet. Check the teaching notes and source coverage in Review.')+'</p>';
   if(!panels.turn.children.length)panels.turn.innerHTML='<p>Open Review & Tutor to use the lesson quick check or start adaptive practice.</p>';
   const footer=document.createElement('div');footer.className='classroomNavigation';footer.innerHTML='<button type="button" class="classroomPrevious">← Previous</button><span aria-live="polite"></span><button type="button" class="classroomNext">Next →</button>';
-  box.append(nav,stage,footer);
+  const scrollTools=document.createElement('div');scrollTools.className='classroomScrollTools';scrollTools.setAttribute('aria-label','Parchment scrolling');
+  scrollTools.innerHTML='<span>Lesson parchment</span><button type="button" aria-label="Scroll lesson up">↑ Up</button><button type="button" aria-label="Scroll lesson down">↓ Down</button><button type="button" aria-label="Return to top of lesson parchment">↑ Top</button>';
+  scrollTools.querySelectorAll('button').forEach((b,i)=>b.addEventListener('click',()=>{const motion=window.matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth';if(i===2)stage.scrollTo({top:0,behavior:motion});else stage.scrollBy({top:(i===0?-1:1)*Math.max(150,stage.clientHeight*.65),behavior:motion})}));
+  stage.tabIndex=0;stage.setAttribute('aria-label','Scrollable lesson parchment');
+  box.append(nav,scrollTools,stage,footer);
   const classroomState=tutorState(cid());const remembered=classroomState.classroomSteps?.[lesson.id];
   let active=0;
   function select(index){active=index;classroomState.classroomSteps=classroomState.classroomSteps||{};classroomState.classroomSteps[lesson.id]=active;try{save()}catch(_){};groups.forEach(([key],i)=>{panels[key].hidden=i!==active;const b=nav.children[i];b.setAttribute('aria-selected',String(i===active));b.tabIndex=i===active?0:-1});footer.querySelector('span').textContent=(active+1)+' / '+groups.length+' · '+groups[active][1];footer.querySelector('.classroomPrevious').disabled=active===0;footer.querySelector('.classroomNext').disabled=active===groups.length-1}
