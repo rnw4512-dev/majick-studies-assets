@@ -2,28 +2,17 @@
 'use strict';
 const VERSION='3.3.67';
 const COURSE='D772';
-const SECTIONS=[
- {id:'d772-s1',number:1,title:'Assessing Research and Data Credibility',status:'active',lessons:[
-  {id:'d772-s1-l1',title:'Understanding Data Collection Methods'},
-  {id:'d772-s1-l2',title:'Recognizing Bias in Data Collection'},
-  {id:'d772-s1-l3',title:'Unveiling Data Misrepresentations'},
-  {id:'d772-s1-l4',title:'Conclusions About Data Findings'},
-  {id:'d772-s1-review',title:'Section 1 Summary and Test'}
- ]},
- {id:'d772-s2',number:2,title:'Interpreting Data Using Statistics and Graphs',status:'structure-ready',masteryTargets:[
-  'Identify different classifications of data',
-  'Select an appropriate graphical display based on data type(s)',
-  'Describe the distribution of data given a graphical display',
-  'Calculate single-variable descriptive statistics'
- ],lessons:[
-  {id:'d772-s2-l1',title:'Exploring Various Types of Data'},
-  {id:'d772-s2-l2',title:'Choosing Graphical Displays'},
-  {id:'d772-s2-l3',title:'Data Distribution Interpretation'},
-  {id:'d772-s2-l4',title:'Calculating Single-Variable Descriptive Statistics'},
-  {id:'d772-s2-review',title:'Section 2 Summary and Test'}
- ]},
- {id:'d772-s3',number:3,title:'Applying Probability',status:'awaiting-material',lessons:[]}
-];
+// Read the academic structure from its owner; the map never maintains a second outline.
+const SECTIONS=new Proxy([],{
+ get(_target,key){
+  const sections=(window.MajickCourseTutor?.sections?.(COURSE)||[]).map((section,i)=>({
+   ...section,number:i+1,title:section.title.replace(/^Section \d+:\s*/,''),
+   status:i===0?'active':'structure-ready'
+  }));
+  sections.push({id:'d772-s3',number:3,title:'Applying Probability',status:'awaiting-material',lessons:[]});
+  const value=Reflect.get(sections,key);return typeof value==='function'?value.bind(sections):value;
+ }
+});
 function active(){return window.S?.activeCourse===COURSE}
 function E(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 function selectedLesson(){
@@ -37,11 +26,11 @@ function openLesson(id){
 }
 function card(section){
  const current=selectedLesson();
- const activeSection=section.lessons.some(l=>l.id===current);
+ const activeSection=section.lessons.some(l=>l.id===current||(l.sublessons||[]).some(u=>u.id===current));
  return '<article class="v3367SectionCard '+section.status+(activeSection?' current':'')+'">'+
   '<header><span>'+section.number+'</span><div><small>SECTION '+section.number+'</small><h3>'+E(section.title)+'</h3></div></header>'+
   (section.lessons.length?
-   '<div class="v3367SectionLessons">'+section.lessons.map((l,i)=>'<button type="button" data-v3367-lesson="'+l.id+'" class="'+(l.id===current?'active':'')+'"><i>'+(i<4?'L'+(i+1):'✦')+'</i><span>'+E(l.title)+'</span></button>').join('')+'</div>'+
+   '<div class="v3367SectionLessons">'+section.lessons.flatMap(l=>[l,...(l.sublessons||[])]).map((l,i)=>'<button type="button" data-v3367-lesson="'+l.id+'" class="'+(l.id===current?'active':'')+'"><i>'+(l.parentLessonId?(l.number??'•'):l.number?'L'+l.number:'✦')+'</i><span>'+E(l.title)+'</span></button>').join('')+'</div>'+
    '<p class="v3367SectionNote">'+(section.id==='d772-s1'?'Section 1 remains isolated from later sections.':section.id==='d772-s2'?'Section 2 structure and competency targets are loaded; detailed teaching expands only from verified material.':'This section remains separate until its course structure is supplied.')+'</p>'
    :
    '<div class="v3367Awaiting"><span>☾</span><b>Ready for your next course materials</b><p>This section stays separate until you add its lesson content. Nothing from Section 1 is copied here.</p></div>')+

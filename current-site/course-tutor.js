@@ -37,7 +37,7 @@ const D772_SECTION_ONE={
 
 const D772_SECTION_TWO={
   id:'d772-s2',
-  title:'Section 2: Interpreting Data Using Statistics and Graphs',
+  title:'Section 2: Interpreting Data with Statistics and Graphs',
   competency:'Interpret data using statistical methods and graphical representations.',
   provenance:{
     courseStructure:'User-provided WGU D772 Section 2 introduction and assessment-prep prompts',
@@ -88,6 +88,43 @@ const D772_SECTION_TWO={
       traps:['Skipping the data-type step before choosing a graph or statistic.']}
   ]
 };
+
+// Course structure supplied by the learner. Outline entries contain no invented teaching,
+// assessment questions, completion flags, or mastery evidence.
+const D772_SECTION_TWO_OUTLINE={
+  'd772-s2-l2':[
+    ['d772-s2-l2-1',2.1,'One Variable Categorical','lesson'],
+    ['d772-s2-l2-2',2.2,'One Variable Quantitative','lesson'],
+    ['d772-s2-l2-3',2.3,'Two Variable Displays','lesson'],
+    ['d772-s2-l2-summary',null,'Lesson 2: Summary','summary'],
+    ['d772-s2-l2-quiz',null,'Lesson 2: Quiz','quiz']
+  ],
+  'd772-s2-l3':[
+    ['d772-s2-l3-1',3.1,'Describing Distributions','lesson'],
+    ['d772-s2-l3-summary',null,'Lesson 3: Summary','summary'],
+    ['d772-s2-l3-quiz',null,'Lesson 3: Quiz','quiz']
+  ],
+  'd772-s2-l4':[
+    ['d772-s2-l4-1',4.1,'Measures of Center','lesson'],
+    ['d772-s2-l4-2',4.2,'Measures of Spread','lesson'],
+    ['d772-s2-l4-3',4.3,'The Five-number Summary and Box Plots','lesson'],
+    ['d772-s2-l4-summary',null,'Lesson 4: Summary','summary'],
+    ['d772-s2-l4-quiz',null,'Lesson 4: Quiz','quiz']
+  ],
+  'd772-s2-review':[
+    ['d772-s2-summary',null,'Section 2: Summary','summary'],
+    ['d772-s2-test',null,'Section 2: Test','test']
+  ]
+};
+for(const lesson of D772_SECTION_TWO.lessons){
+  const outline=D772_SECTION_TWO_OUTLINE[lesson.id];
+  if(!outline)continue;
+  lesson.sublessons=outline.map(([id,number,title,unitType])=>({
+    id,number,title,short:title,parentLessonId:lesson.id,unitType,outlineOnly:true,
+    keywords:[],goal:'Course outline reserved for your upcoming material.',
+    visual:[],thinking:[],traps:[]
+  }));
+}
 
 const D772_SECTION_ONE_CONTENT={
   'd772-s1-l1':{
@@ -796,7 +833,7 @@ function selectedLesson(id=cid()){
   return lesson;
 }
 function findSectionForLesson(lesson,id=cid()){return sections(id).find(s=>sectionUnits(s).some(l=>l.id===lesson?.id))||null}
-function lessonNumberLabel(lesson){return lesson.review?'SECTION REVIEW':lesson.number?('LESSON '+lesson.number):'LESSON'}
+function lessonNumberLabel(lesson){if(lesson.unitType&&lesson.unitType!=='lesson')return lesson.unitType.toUpperCase();return lesson.review?'SECTION REVIEW':lesson.number?('LESSON '+lesson.number):'LESSON'}
 function lessonItems(sourceRows,bucket,lesson,id=cid()){
   const out=[];
   for(const row of sourceRows){
@@ -930,7 +967,7 @@ function renderPath(){
         const main='<button class="pathLesson '+statusClass(m.status)+' '+(lesson.id===active?.id?'selected':'')+'" data-tutor-lesson="'+E(lesson.id)+'"><i>'+(lesson.review?'✓':lesson.number||i+1)+'</i><div><small>'+E(lessonNumberLabel(lesson))+'</small><b>'+E(lesson.title)+'</b><span>'+E(m.status)+' • '+m.sourceCount+' source'+(m.sourceCount===1?'':'s')+' • '+m.attempts+' attempts</span></div><em>'+(available?'Open →':'Waiting for notes')+'</em></button>';
         const subs=(lesson.sublessons||[]).map(sub=>{
           const sm=mastery(sub,id),subAvailable=sm.sourceCount>0;
-          return '<button class="pathLesson pathSublesson '+statusClass(sm.status)+' '+(sub.id===active?.id?'selected':'')+'" data-tutor-lesson="'+E(sub.id)+'"><i>'+E(sub.number)+'</i><div><small>'+E(lessonNumberLabel(sub))+' • INSIDE LESSON '+E(lesson.number)+'</small><b>'+E(sub.title)+'</b><span>'+E(sm.status)+' • focused mastery unit</span></div><em>'+(subAvailable?'Open →':'Waiting for notes')+'</em></button>';
+          return '<button class="pathLesson pathSublesson '+statusClass(sm.status)+' '+(sub.id===active?.id?'selected':'')+'" data-tutor-lesson="'+E(sub.id)+'"><i>'+E(sub.number??(sub.unitType==='quiz'?'?':sub.unitType==='test'?'✓':'•'))+'</i><div><small>'+E(lessonNumberLabel(sub))+' • INSIDE LESSON '+E(lesson.number)+'</small><b>'+E(sub.title)+'</b><span>'+E(sm.status)+' • focused mastery unit</span></div><em>'+(subAvailable?'Open →':'Waiting for notes')+'</em></button>';
         }).join('');
         return main+subs;
       }).join('')+'</div></section>';
