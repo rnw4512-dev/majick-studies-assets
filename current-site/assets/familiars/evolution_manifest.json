@@ -1,0 +1,346 @@
+{
+  "version": "V3.3.9",
+  "phase_thresholds": [
+    {
+      "phase": 1,
+      "id": "new_bond",
+      "name": "New Bond",
+      "levels": "1-2"
+    },
+    {
+      "phase": 2,
+      "id": "apprentice",
+      "name": "Apprentice",
+      "levels": "3-4"
+    },
+    {
+      "phase": 3,
+      "id": "guardian",
+      "name": "Guardian",
+      "levels": "5-7",
+      "canonical_art_anchor": true
+    },
+    {
+      "phase": 4,
+      "id": "ascendant",
+      "name": "Ascendant",
+      "levels": "8-11"
+    },
+    {
+      "phase": 5,
+      "id": "celestial",
+      "name": "Celestial",
+      "levels": "12+"
+    }
+  ],
+  "rules": [
+    "Evolution never changes the animal into a different species or character.",
+    "Face, core silhouette cues, signature palette and personality remain recognizable through all phases.",
+    "Guardian form is the canonical visual anchor for every familiar.",
+    "Evolution is driven by cumulative study Bond XP; missed days never reverse an evolution.",
+    "Streaks, mastery, boss wins and perfect sessions may award bonus Bond XP but are not required to retain a form.",
+    "Future Phaser animation frames must be derived from the canonical character art rather than regenerated as unrelated designs."
+  ],
+  "familiars": [
+    {
+      "id": "luna",
+      "name": "Velora",
+      "species": "Moon Cat",
+      "role": "Twilight Keeper",
+      "portrait": "assets/familiars/canon/velora-guardian.webp",
+      "currently_active": true,
+      "forms": [
+        {
+          "phase": 1,
+          "description": "Small moon charm; soft violet markings."
+        },
+        {
+          "phase": 2,
+          "description": "Sharper clue-glow; scholar ribbon and brighter eyes."
+        },
+        {
+          "phase": 3,
+          "description": "Current elegant Moon Cat design."
+        },
+        {
+          "phase": 4,
+          "description": "Fuller starry tail; brighter moon/third-eye markings; scholar mantle."
+        },
+        {
+          "phase": 5,
+          "description": "Constellation fur; orbiting lunar motes; regal moon-crown effect."
+        }
+      ]
+    },
+    {
+      "id": "ember",
+      "name": "Cascade",
+      "species": "Pocket Dragon",
+      "role": "Arcane Keeper",
+      "portrait": "assets/familiars/canon/cascade-guardian.webp",
+      "currently_active": true,
+      "forms": [
+        {
+          "phase": 1,
+          "description": "Tiny wings; fewer luminous markings."
+        },
+        {
+          "phase": 2,
+          "description": "Gold runes begin to glow; stronger hop/fly reactions."
+        },
+        {
+          "phase": 3,
+          "description": "Current blue celestial dragon design."
+        },
+        {
+          "phase": 4,
+          "description": "Longer wing fins; brighter gold runes; crystal accents."
+        },
+        {
+          "phase": 5,
+          "description": "Nebula wings; radiant horn/crown details; orbiting flame-stars."
+        }
+      ]
+    },
+    {
+      "id": "nova",
+      "name": "Solstice",
+      "species": "Star Fox",
+      "role": "Wonder Keeper",
+      "portrait": "assets/familiars/canon/solstice-guardian.webp",
+      "currently_active": true,
+      "forms": [
+        {
+          "phase": 1,
+          "description": "Simple tail glow; one star charm."
+        },
+        {
+          "phase": 2,
+          "description": "Explorer charm and stronger ear/tail sparkle."
+        },
+        {
+          "phase": 3,
+          "description": "Current orange-gold Star Fox design."
+        },
+        {
+          "phase": 4,
+          "description": "Richer galaxy tail; ear constellations; explorer satchel/charm."
+        },
+        {
+          "phase": 5,
+          "description": "Comet-tail trails; celestial mantle; moving starfield markings."
+        }
+      ]
+    },
+    {
+      "id": "mallow",
+      "name": "Aurelia",
+      "species": "Winged Bunny",
+      "role": "Dream Keeper",
+      "portrait": "assets/familiars/canon/aurelia-guardian.webp",
+      "currently_active": true,
+      "forms": [
+        {
+          "phase": 1,
+          "description": "Little wings; simple moon ribbon."
+        },
+        {
+          "phase": 2,
+          "description": "Softer cloud aura; brighter wing tips."
+        },
+        {
+          "phase": 3,
+          "description": "Current dreamy Winged Bunny design."
+        },
+        {
+          "phase": 4,
+          "description": "Larger feathered wings; rose/moon accents; cloud aura."
+        },
+        {
+          "phase": 5,
+          "description": "Luminous wings; moon halo; drifting dream motes."
+        }
+      ]
+    },
+    {
+      "id": "vesper",
+      "name": "Vesper",
+      "species": "Starlight Owl",
+      "role": "Insight Keeper",
+      "portrait": "assets/familiars/canon/vesper-guardian.webp",
+      "currently_active": false,
+      "forms": [
+        {
+          "phase": 1,
+          "description": "Fluffier juvenile owl; one crescent pin."
+        },
+        {
+          "phase": 2,
+          "description": "Small scholar chain; first star-feather markings."
+        },
+        {
+          "phase": 3,
+          "description": "Exact approved indigo-lavender owl portrait."
+        },
+        {
+          "phase": 4,
+          "description": "Longer celestial plumage; scholar chains; glowing eye markings."
+        },
+        {
+          "phase": 5,
+          "description": "Great constellation wings; astral halo; floating runic feathers."
+        }
+      ]
+    },
+    {
+      "id": "briar",
+      "name": "Briar",
+      "species": "Moonlit Fawn",
+      "role": "Growth Keeper",
+      "portrait": "assets/familiars/canon/briar-guardian.webp",
+      "currently_active": false,
+      "forms": [
+        {
+          "phase": 1,
+          "description": "Small antler buds; simple leaf bracelet."
+        },
+        {
+          "phase": 2,
+          "description": "First moon-vines and brighter hoof markings."
+        },
+        {
+          "phase": 3,
+          "description": "Exact approved sage-ivory fawn portrait."
+        },
+        {
+          "phase": 4,
+          "description": "Larger flowering antlers; vine-light trails; glowing hoofprints."
+        },
+        {
+          "phase": 5,
+          "description": "Moon-tree antlers; floating leaves/stars; luminous garden aura."
+        }
+      ]
+    },
+    {
+      "id": "zephyr",
+      "name": "Zephyr",
+      "species": "Cloud Ferret",
+      "role": "Momentum Keeper",
+      "portrait": "assets/familiars/canon/zephyr-guardian.webp",
+      "currently_active": false,
+      "forms": [
+        {
+          "phase": 1,
+          "description": "Short fluffy tail; tiny bell."
+        },
+        {
+          "phase": 2,
+          "description": "Longer mist-tail; first wind ribbons."
+        },
+        {
+          "phase": 3,
+          "description": "Exact approved lavender Cloud Ferret portrait."
+        },
+        {
+          "phase": 4,
+          "description": "Longer ribbon-cloud tail; wind charms; floating wisps."
+        },
+        {
+          "phase": 5,
+          "description": "Aurora tail; cloud-step movement; orbiting wind ribbons."
+        }
+      ]
+    },
+    {
+      "id": "prism",
+      "name": "Prism",
+      "species": "Crystal Axolotl",
+      "role": "Reflection Keeper",
+      "portrait": "assets/familiars/canon/prism-guardian.webp",
+      "currently_active": false,
+      "forms": [
+        {
+          "phase": 1,
+          "description": "Tiny crystal buds; softer gill glow."
+        },
+        {
+          "phase": 2,
+          "description": "More crystal freckles; first floating droplets."
+        },
+        {
+          "phase": 3,
+          "description": "Exact approved opal Crystal Axolotl portrait."
+        },
+        {
+          "phase": 4,
+          "description": "Larger crystalline gills; refracted patterns; floating droplets."
+        },
+        {
+          "phase": 5,
+          "description": "Prismatic fins; crystal halo; rainbow-water trails."
+        }
+      ]
+    },
+    {
+      "id": "rook",
+      "name": "Rook",
+      "species": "Twilight Raven",
+      "role": "Strategy Keeper",
+      "portrait": "assets/familiars/canon/rook-guardian.webp",
+      "currently_active": false,
+      "forms": [
+        {
+          "phase": 1,
+          "description": "Glossy dark fledgling; one tiny charm."
+        },
+        {
+          "phase": 2,
+          "description": "First constellation flecks; small scholar pendant."
+        },
+        {
+          "phase": 3,
+          "description": "Exact approved black-plum/teal raven portrait."
+        },
+        {
+          "phase": 4,
+          "description": "Longer iridescent feathers; constellation mantle; scholar pendant."
+        },
+        {
+          "phase": 5,
+          "description": "Cosmic wing cloak; star-map feathers; shadow-to-starlight trail."
+        }
+      ]
+    },
+    {
+      "id": "solara",
+      "name": "Solara",
+      "species": "Sunrise Hedgehog",
+      "role": "Courage Keeper",
+      "portrait": "assets/familiars/canon/solara-guardian.webp",
+      "currently_active": false,
+      "forms": [
+        {
+          "phase": 1,
+          "description": "Soft cream quills; simple sun ribbon."
+        },
+        {
+          "phase": 2,
+          "description": "Warm glow at quill tips; first flower charms."
+        },
+        {
+          "phase": 3,
+          "description": "Exact approved gold-peach hedgehog portrait."
+        },
+        {
+          "phase": 4,
+          "description": "Glowing flowered quills; sunrise aura; brighter charms."
+        },
+        {
+          "phase": 5,
+          "description": "Radiant solar quills; petal sparks; warm halo and sunburst effects."
+        }
+      ]
+    }
+  ]
+}

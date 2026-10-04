@@ -1,0 +1,4 @@
+/* V3.3.68 — D772 section-aware Notes Forge */
+.v3315SectionPicker{display:grid;grid-template-columns:minmax(150px,.55fr) minmax(0,1.45fr);gap:10px;align-items:center;margin:10px 0 16px;padding:11px 12px;border:1px solid rgba(211,174,112,.25);border-radius:12px;background:linear-gradient(110deg,rgba(38,23,45,.8),rgba(24,15,31,.8))}
+.v3315SectionPicker[hidden]{display:none!important}.v3315SectionPicker label{display:grid;gap:2px}.v3315SectionPicker label b{color:#e6cc92;font:700 12px Georgia,serif}.v3315SectionPicker label small{color:#9e8fa4;font:9px/1.4 system-ui}.v3315SectionPicker select{width:100%;min-height:42px;padding:8px 10px;border:1px solid #8b6b98;border-radius:9px;background:#17101f;color:#eee4f1;font:600 11px/1.4 system-ui}
+@media(max-width:620px){.v3315SectionPicker{grid-template-columns:1fr}.v3315SectionPicker select{font-size:12px}}

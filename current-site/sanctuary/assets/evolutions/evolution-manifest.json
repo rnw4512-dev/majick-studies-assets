@@ -1,0 +1,483 @@
+{
+  "schemaVersion": 1,
+  "libraryVersion": "3.3.14",
+  "sourceOfTruth": true,
+  "basePath": "./assets/evolutions/",
+  "protectedMovementRule": "Never edit, overwrite, regenerate, rename, or remove files in sanctuary/assets/motion/. The original 33 movement files remain the stable movement fallback.",
+  "stageOrder": [
+    "new-bond",
+    "apprentice",
+    "guardian",
+    "ascendant",
+    "celestial"
+  ],
+  "stages": {
+    "new-bond": {
+      "displayName": "New Bond",
+      "minLevel": 1,
+      "maxLevel": 2,
+      "accent": "soft moonlight"
+    },
+    "apprentice": {
+      "displayName": "Apprentice",
+      "minLevel": 3,
+      "maxLevel": 4,
+      "accent": "violet learning glow"
+    },
+    "guardian": {
+      "displayName": "Guardian",
+      "minLevel": 5,
+      "maxLevel": 7,
+      "accent": "focused celestial aura"
+    },
+    "ascendant": {
+      "displayName": "Ascendant",
+      "minLevel": 8,
+      "maxLevel": 11,
+      "accent": "gold-violet orbit magic"
+    },
+    "celestial": {
+      "displayName": "Celestial",
+      "minLevel": 12,
+      "maxLevel": null,
+      "accent": "full moon-and-star radiance"
+    }
+  },
+  "actions": {
+    "walk": {
+      "role": "stage-aware locomotion visual",
+      "interactive": false
+    },
+    "play": {
+      "role": "Guardian interaction/reaction visual",
+      "interactive": false
+    },
+    "sleep": {
+      "role": "rest/bed visual",
+      "interactive": false
+    }
+  },
+  "loadingPolicy": {
+    "preload": "current Guardian stage assets",
+    "lazyLoad": "other stages on profile/evolution view",
+    "missingAssetFallback": "protected original movement art",
+    "cacheKeyPattern": "evo-{guardian}-{stage}-{action}"
+  },
+  "renderPolicy": {
+    "movementScheduler": "protected-existing",
+    "behaviorMethods": "protected-existing",
+    "stageSelection": "level-driven",
+    "actionSelection": "behavior-driven",
+    "visualSwapOnly": true,
+    "neverStretchPortraitIntoMovementFrame": true
+  },
+  "levelResolution": [
+    {
+      "stage": "new-bond",
+      "minLevel": 1,
+      "maxLevel": 2
+    },
+    {
+      "stage": "apprentice",
+      "minLevel": 3,
+      "maxLevel": 4
+    },
+    {
+      "stage": "guardian",
+      "minLevel": 5,
+      "maxLevel": 7
+    },
+    {
+      "stage": "ascendant",
+      "minLevel": 8,
+      "maxLevel": 11
+    },
+    {
+      "stage": "celestial",
+      "minLevel": 12,
+      "maxLevel": null
+    }
+  ],
+  "guardians": {
+    "velora": {
+      "displayName": "Velora",
+      "internalId": "luna",
+      "protectedBaseMotionKey": "luna",
+      "assetRoot": "velora/",
+      "stageOrder": [
+        "new-bond",
+        "apprentice",
+        "guardian",
+        "ascendant",
+        "celestial"
+      ],
+      "stages": {
+        "new-bond": {
+          "levelRange": {
+            "min": 1,
+            "max": 2
+          },
+          "assets": {
+            "walk": "velora/new-bond/walk.webp",
+            "play": "velora/new-bond/play.webp",
+            "sleep": "velora/new-bond/sleep.webp"
+          },
+          "phaserTextureKeys": {
+            "walk": "evo-velora-new-bond-walk",
+            "play": "evo-velora-new-bond-play",
+            "sleep": "evo-velora-new-bond-sleep"
+          }
+        },
+        "apprentice": {
+          "levelRange": {
+            "min": 3,
+            "max": 4
+          },
+          "assets": {
+            "walk": "velora/apprentice/walk.webp",
+            "play": "velora/apprentice/play.webp",
+            "sleep": "velora/apprentice/sleep.webp"
+          },
+          "phaserTextureKeys": {
+            "walk": "evo-velora-apprentice-walk",
+            "play": "evo-velora-apprentice-play",
+            "sleep": "evo-velora-apprentice-sleep"
+          }
+        },
+        "guardian": {
+          "levelRange": {
+            "min": 5,
+            "max": 7
+          },
+          "assets": {
+            "walk": "velora/guardian/walk.webp",
+            "play": "velora/guardian/play.webp",
+            "sleep": "velora/guardian/sleep.webp"
+          },
+          "phaserTextureKeys": {
+            "walk": "evo-velora-guardian-walk",
+            "play": "evo-velora-guardian-play",
+            "sleep": "evo-velora-guardian-sleep"
+          }
+        },
+        "ascendant": {
+          "levelRange": {
+            "min": 8,
+            "max": 11
+          },
+          "assets": {
+            "walk": "velora/ascendant/walk.webp",
+            "play": "velora/ascendant/play.webp",
+            "sleep": "velora/ascendant/sleep.webp"
+          },
+          "phaserTextureKeys": {
+            "walk": "evo-velora-ascendant-walk",
+            "play": "evo-velora-ascendant-play",
+            "sleep": "evo-velora-ascendant-sleep"
+          }
+        },
+        "celestial": {
+          "levelRange": {
+            "min": 12,
+            "max": null
+          },
+          "assets": {
+            "walk": "velora/celestial/walk.webp",
+            "play": "velora/celestial/play.webp",
+            "sleep": "velora/celestial/sleep.webp"
+          },
+          "phaserTextureKeys": {
+            "walk": "evo-velora-celestial-walk",
+            "play": "evo-velora-celestial-play",
+            "sleep": "evo-velora-celestial-sleep"
+          }
+        }
+      }
+    },
+    "cascade": {
+      "displayName": "Cascade",
+      "internalId": "ember",
+      "protectedBaseMotionKey": "ember",
+      "assetRoot": "cascade/",
+      "stageOrder": [
+        "new-bond",
+        "apprentice",
+        "guardian",
+        "ascendant",
+        "celestial"
+      ],
+      "stages": {
+        "new-bond": {
+          "levelRange": {
+            "min": 1,
+            "max": 2
+          },
+          "assets": {
+            "walk": "cascade/new-bond/walk.webp",
+            "play": "cascade/new-bond/play.webp",
+            "sleep": "cascade/new-bond/sleep.webp"
+          },
+          "phaserTextureKeys": {
+            "walk": "evo-cascade-new-bond-walk",
+            "play": "evo-cascade-new-bond-play",
+            "sleep": "evo-cascade-new-bond-sleep"
+          }
+        },
+        "apprentice": {
+          "levelRange": {
+            "min": 3,
+            "max": 4
+          },
+          "assets": {
+            "walk": "cascade/apprentice/walk.webp",
+            "play": "cascade/apprentice/play.webp",
+            "sleep": "cascade/apprentice/sleep.webp"
+          },
+          "phaserTextureKeys": {
+            "walk": "evo-cascade-apprentice-walk",
+            "play": "evo-cascade-apprentice-play",
+            "sleep": "evo-cascade-apprentice-sleep"
+          }
+        },
+        "guardian": {
+          "levelRange": {
+            "min": 5,
+            "max": 7
+          },
+          "assets": {
+            "walk": "cascade/guardian/walk.webp",
+            "play": "cascade/guardian/play.webp",
+            "sleep": "cascade/guardian/sleep.webp"
+          },
+          "phaserTextureKeys": {
+            "walk": "evo-cascade-guardian-walk",
+            "play": "evo-cascade-guardian-play",
+            "sleep": "evo-cascade-guardian-sleep"
+          }
+        },
+        "ascendant": {
+          "levelRange": {
+            "min": 8,
+            "max": 11
+          },
+          "assets": {
+            "walk": "cascade/ascendant/walk.webp",
+            "play": "cascade/ascendant/play.webp",
+            "sleep": "cascade/ascendant/sleep.webp"
+          },
+          "phaserTextureKeys": {
+            "walk": "evo-cascade-ascendant-walk",
+            "play": "evo-cascade-ascendant-play",
+            "sleep": "evo-cascade-ascendant-sleep"
+          }
+        },
+        "celestial": {
+          "levelRange": {
+            "min": 12,
+            "max": null
+          },
+          "assets": {
+            "walk": "cascade/celestial/walk.webp",
+            "play": "cascade/celestial/play.webp",
+            "sleep": "cascade/celestial/sleep.webp"
+          },
+          "phaserTextureKeys": {
+            "walk": "evo-cascade-celestial-walk",
+            "play": "evo-cascade-celestial-play",
+            "sleep": "evo-cascade-celestial-sleep"
+          }
+        }
+      }
+    },
+    "solstice": {
+      "displayName": "Solstice",
+      "internalId": "nova",
+      "protectedBaseMotionKey": "nova",
+      "assetRoot": "solstice/",
+      "stageOrder": [
+        "new-bond",
+        "apprentice",
+        "guardian",
+        "ascendant",
+        "celestial"
+      ],
+      "stages": {
+        "new-bond": {
+          "levelRange": {
+            "min": 1,
+            "max": 2
+          },
+          "assets": {
+            "walk": "solstice/new-bond/walk.webp",
+            "play": "solstice/new-bond/play.webp",
+            "sleep": "solstice/new-bond/sleep.webp"
+          },
+          "phaserTextureKeys": {
+            "walk": "evo-solstice-new-bond-walk",
+            "play": "evo-solstice-new-bond-play",
+            "sleep": "evo-solstice-new-bond-sleep"
+          }
+        },
+        "apprentice": {
+          "levelRange": {
+            "min": 3,
+            "max": 4
+          },
+          "assets": {
+            "walk": "solstice/apprentice/walk.webp",
+            "play": "solstice/apprentice/play.webp",
+            "sleep": "solstice/apprentice/sleep.webp"
+          },
+          "phaserTextureKeys": {
+            "walk": "evo-solstice-apprentice-walk",
+            "play": "evo-solstice-apprentice-play",
+            "sleep": "evo-solstice-apprentice-sleep"
+          }
+        },
+        "guardian": {
+          "levelRange": {
+            "min": 5,
+            "max": 7
+          },
+          "assets": {
+            "walk": "solstice/guardian/walk.webp",
+            "play": "solstice/guardian/play.webp",
+            "sleep": "solstice/guardian/sleep.webp"
+          },
+          "phaserTextureKeys": {
+            "walk": "evo-solstice-guardian-walk",
+            "play": "evo-solstice-guardian-play",
+            "sleep": "evo-solstice-guardian-sleep"
+          }
+        },
+        "ascendant": {
+          "levelRange": {
+            "min": 8,
+            "max": 11
+          },
+          "assets": {
+            "walk": "solstice/ascendant/walk.webp",
+            "play": "solstice/ascendant/play.webp",
+            "sleep": "solstice/ascendant/sleep.webp"
+          },
+          "phaserTextureKeys": {
+            "walk": "evo-solstice-ascendant-walk",
+            "play": "evo-solstice-ascendant-play",
+            "sleep": "evo-solstice-ascendant-sleep"
+          }
+        },
+        "celestial": {
+          "levelRange": {
+            "min": 12,
+            "max": null
+          },
+          "assets": {
+            "walk": "solstice/celestial/walk.webp",
+            "play": "solstice/celestial/play.webp",
+            "sleep": "solstice/celestial/sleep.webp"
+          },
+          "phaserTextureKeys": {
+            "walk": "evo-solstice-celestial-walk",
+            "play": "evo-solstice-celestial-play",
+            "sleep": "evo-solstice-celestial-sleep"
+          }
+        }
+      }
+    },
+    "aurelia": {
+      "displayName": "Aurelia",
+      "internalId": "mallow",
+      "protectedBaseMotionKey": "mallow",
+      "assetRoot": "aurelia/",
+      "stageOrder": [
+        "new-bond",
+        "apprentice",
+        "guardian",
+        "ascendant",
+        "celestial"
+      ],
+      "stages": {
+        "new-bond": {
+          "levelRange": {
+            "min": 1,
+            "max": 2
+          },
+          "assets": {
+            "walk": "aurelia/new-bond/walk.webp",
+            "play": "aurelia/new-bond/play.webp",
+            "sleep": "aurelia/new-bond/sleep.webp"
+          },
+          "phaserTextureKeys": {
+            "walk": "evo-aurelia-new-bond-walk",
+            "play": "evo-aurelia-new-bond-play",
+            "sleep": "evo-aurelia-new-bond-sleep"
+          }
+        },
+        "apprentice": {
+          "levelRange": {
+            "min": 3,
+            "max": 4
+          },
+          "assets": {
+            "walk": "aurelia/apprentice/walk.webp",
+            "play": "aurelia/apprentice/play.webp",
+            "sleep": "aurelia/apprentice/sleep.webp"
+          },
+          "phaserTextureKeys": {
+            "walk": "evo-aurelia-apprentice-walk",
+            "play": "evo-aurelia-apprentice-play",
+            "sleep": "evo-aurelia-apprentice-sleep"
+          }
+        },
+        "guardian": {
+          "levelRange": {
+            "min": 5,
+            "max": 7
+          },
+          "assets": {
+            "walk": "aurelia/guardian/walk.webp",
+            "play": "aurelia/guardian/play.webp",
+            "sleep": "aurelia/guardian/sleep.webp"
+          },
+          "phaserTextureKeys": {
+            "walk": "evo-aurelia-guardian-walk",
+            "play": "evo-aurelia-guardian-play",
+            "sleep": "evo-aurelia-guardian-sleep"
+          }
+        },
+        "ascendant": {
+          "levelRange": {
+            "min": 8,
+            "max": 11
+          },
+          "assets": {
+            "walk": "aurelia/ascendant/walk.webp",
+            "play": "aurelia/ascendant/play.webp",
+            "sleep": "aurelia/ascendant/sleep.webp"
+          },
+          "phaserTextureKeys": {
+            "walk": "evo-aurelia-ascendant-walk",
+            "play": "evo-aurelia-ascendant-play",
+            "sleep": "evo-aurelia-ascendant-sleep"
+          }
+        },
+        "celestial": {
+          "levelRange": {
+            "min": 12,
+            "max": null
+          },
+          "assets": {
+            "walk": "aurelia/celestial/walk.webp",
+            "play": "aurelia/celestial/play.webp",
+            "sleep": "aurelia/celestial/sleep.webp"
+          },
+          "phaserTextureKeys": {
+            "walk": "evo-aurelia-celestial-walk",
+            "play": "evo-aurelia-celestial-play",
+            "sleep": "evo-aurelia-celestial-sleep"
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "version": "V3.3.6",
+  "art_policy": "LOCKED_APPROVED_ARTWORK",
+  "note": "These exact PNG files are canonical Guardian-form portraits. Future Phaser motion/evolution art must preserve each character's face, species, silhouette cues, signature palette and personality rather than redesigning them.",
+  "familiars": [
+    {
+      "id": "vesper",
+      "name": "Vesper",
+      "species": "Starlight Owl",
+      "role": "Insight Keeper",
+      "portrait": "vesper-starlight-owl.png",
+      "art_locked": true
+    },
+    {
+      "id": "briar",
+      "name": "Briar",
+      "species": "Moonlit Fawn",
+      "role": "Growth Keeper",
+      "portrait": "briar-moonlit-fawn.png",
+      "art_locked": true
+    },
+    {
+      "id": "zephyr",
+      "name": "Zephyr",
+      "species": "Cloud Ferret",
+      "role": "Momentum Keeper",
+      "portrait": "zephyr-cloud-ferret.png",
+      "art_locked": true
+    },
+    {
+      "id": "prism",
+      "name": "Prism",
+      "species": "Crystal Axolotl",
+      "role": "Reflection Keeper",
+      "portrait": "prism-crystal-axolotl.png",
+      "art_locked": true
+    },
+    {
+      "id": "rook",
+      "name": "Rook",
+      "species": "Twilight Raven",
+      "role": "Strategy Keeper",
+      "portrait": "rook-twilight-raven.png",
+      "art_locked": true
+    },
+    {
+      "id": "solara",
+      "name": "Solara",
+      "species": "Sunrise Hedgehog",
+      "role": "Courage Keeper",
+      "portrait": "solara-sunrise-hedgehog.png",
+      "art_locked": true
+    }
+  ]
+}

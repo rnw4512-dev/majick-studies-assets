@@ -1,0 +1,110 @@
+{
+  "version": "V3.4.2 D772 Section 2 Lesson 2 Graphical Displays",
+  "release_name": "Stability Reset \u2022 Single Runtime Ownership",
+  "overall_full_vision_percent": 84,
+  "usable_study_app_percent": 92,
+  "status_basis": "Engineering estimate against the current Majick Studies roadmap, not a test score.",
+  "stable_base": "V3.3.12 Faster Evolutions with V3.3.10 protected Phaser motion foundation",
+  "what_changed": [
+    "Main app shell now reports V3.3.17 consistently after every render.",
+    "Service worker registration is disabled during active development so stale shells cannot take over newer releases.",
+    "Previously installed Majick service workers are retired and old Majick caches are cleared.",
+    "The legacy snag modal is replaced by a V3.3.17 runtime handler that ignores resource-only failures.",
+    "Corrected 60 individual Guardian evolution action assets are deployed.",
+    "Phase 4 movement logic remains the protected movement controller.",
+    "Each course now keeps its own academic record: notes, generated questions, answers, mistakes, mastery, readiness, repair queue, and study streak.",
+    "Majick account XP and Guardian growth persist across courses; a newly created course starts with a fresh class streak.",
+    "Study Material now includes a Course Center for starting a new WGU course and marking a course passed.",
+    "Passing a course records completion, awards 500 Majick XP once, and shows a course-completion celebration.",
+    "Approved five-stage Guardian art is restored for sidebar/profile screens; walk/play/sleep action art remains Phaser-only.",
+    "Evolution action WebPs are normalized during deployment so transparent margins no longer make Guardians tiny or blank.",
+    "Home Sanctuary replacement is strengthened so the real Phaser Living Sanctuary replaces legacy habitat panels."
+  ],
+  "verified_working": [
+    "JavaScript syntax checks for the patched main app, sanctuary Game.js, Preloader.js and service worker.",
+    "Question-bank analysis confirms 92 PMFC questions including 25 difficulty-4/5 items, so stronger difficulty rotation can occur without inventing course facts.",
+    "No save-schema reset is introduced; internal familiar ids remain luna/ember/nova/mallow for compatibility."
+  ],
+  "not_yet_browser_verified": [
+    "Live user-browser animation timing and sound output after deployment.",
+    "Every sanctuary object interaction on the final GitHub Pages build."
+  ],
+  "study_now_changed": false,
+  "study_now_change_note": "No Study Now question, scoring, difficulty, XP, crystal, streak, answer, or course-progress logic changed.",
+  "save_compatibility": "Additive-only. Existing XP, crystals, streaks, answers, course progress, Guardians, and sanctuary movement saves are preserved.",
+  "areas": [
+    {
+      "name": "Core study engine",
+      "percent": 92,
+      "status": "Stable scoring/feedback base preserved; scheduler selection, audio and presentation were patched."
+    },
+    {
+      "name": "Adaptive study + analytics",
+      "percent": 88,
+      "status": "Wider anti-repeat memory, scenario-family rotation, format/topic balancing and stronger difficulty escalation are active."
+    },
+    {
+      "name": "Guardian identity system",
+      "percent": 95,
+      "status": "Canon names and exact approved portrait/icon assets are used throughout non-Phaser UI."
+    },
+    {
+      "name": "Magical college sanctuary",
+      "percent": 85,
+      "status": "Dark Collegium room, interactive furniture, crystal beds and same-origin original Phase 4 motion assets are implemented."
+    },
+    {
+      "name": "Collectibles / decorating",
+      "percent": 55,
+      "status": "Core room furniture and resting objects exist; a larger study-earned collectible catalog remains."
+    },
+    {
+      "name": "10-guardian roster",
+      "percent": 80,
+      "status": "All ten remain represented; four have preserved movement, six are portrait-ready."
+    },
+    {
+      "name": "Evolution system",
+      "percent": 58,
+      "status": "Five phases and all ten banners are present; separate automatic stage portrait/sprite swaps are incomplete."
+    },
+    {
+      "name": "Save / update safety",
+      "percent": 88,
+      "status": "Permanent Pages origin and emergency recovery are active; future code patches deploy in place."
+    },
+    {
+      "name": "Web/GitHub deployment",
+      "percent": 94,
+      "status": "Permanent Pages URL is live; patch-overlay deployment allows in-place code updates without re-uploading the whole app ZIP."
+    }
+  ],
+  "next_priorities": [
+    "Upload the nine WebP object files to sanctuary/assets/objects/.",
+    "Visually tune object scale/placement after the real art is live.",
+    "Add evolution aura effects around moving sprites without changing their animation frames."
+  ],
+  "known_risks": [
+    "First entry into the Living Sanctuary can still take time because the protected original motion PNGs total roughly 53 MB; they are intentionally not altered or recompressed.",
+    "One hard refresh is recommended after deployment so the new lightweight service worker replaces the old heavy cache."
+  ],
+  "release_rule": "Every future Majick Studies build must update PROJECT_PROGRESS.md, app-progress.json and the in-app progress panel, and state whether Study Now logic changed and whether saves migrate safely.",
+  "placeholders": [
+    "Sanctuary furniture is still mostly code-drawn until final transparent object art is added to GitHub."
+  ],
+  "protected_rules": [
+    "Do not rewrite the original Guardian movement methods.",
+    "Do not edit, overwrite, rename, regenerate, or remove the original 33 files in sanctuary/assets/motion/.",
+    "Academic data from one course must never be surfaced as progress, notes, questions, mistakes, mastery, or streak data for another course.",
+    "Account XP and Guardian growth may persist across courses because they represent the learner, not a class."
+  ],
+  "runtime_architecture": "legacy foundation compiled to one authoritative runtime; no deploy-time JavaScript body rewriting",
+  "sanctuary_runtime": "Base Game.js + protected V3.3.10 movement + one V3.3.17 Sanctuary bridge",
+  "state_runtime": "MajickStateCore owns shared XP/crystals/chests and safe course progress compatibility",
+  "guardian_runtime": "MajickGuardianRegistry contains the current baseline canon and dynamically accepts future Guardians; care is roster-driven by pet.id",
+  "learning_intelligence": "V3.4.2 adds D772 Section 2 Lesson 2 \u2014 Choosing Graphical Displays with corroborated bar-versus-pie rules, missing Other/Unknown checks, overlapping-category restrictions, histogram/scatterplot/line distinctions, eight new Tutor practice questions, and six new Game Realm scenarios. V3.4 Product Core, Lesson 1.2, Guardian relationship memory, shared render queue, source provenance, duplicate-safe hatching, Sanctuary movement, and protected assets remain preserved.",
+  "sanctuary_version": "V3.4.2",
+  "sanctuary_home": "Every hatched Guardian has a distinct bed and personal nook, favorite keepsake and comfort item, need-driven and personality-driven room routines, physical care travel, visible protected Phaser movement, evolved idle/action art, evolution ceremony, Guardian vocal reactions, care inventory, and room-safe furniture layout",
+  "sanctuary_customization": "personal Guardian nooks, feeding/play zones, owned furniture storage, Cozy Dorm layout preset",
+  "build_foundation": "current-site: canonical V3.4.2 source"
+}

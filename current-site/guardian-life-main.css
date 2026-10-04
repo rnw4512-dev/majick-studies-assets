@@ -1,0 +1,110 @@
+
+/* Guardian personal nook summary */
+.v3342NookSummary{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-top:8px;padding:7px 9px;border:1px solid rgba(214,181,108,.14);border-radius:9px;background:rgba(214,181,108,.04)}
+.v3342NookSummary small{width:100%;color:#a58b55;font-size:7px;font-weight:900;letter-spacing:.11em}
+.v3342NookSummary span{padding:4px 6px;border:1px solid rgba(187,145,201,.13);border-radius:999px;background:#120c17;color:#b7a8bc;font-size:7px}
+
+/* V3.3.50 Guardian Evolution Celebration */
+.majEvoBackdrop{position:fixed;inset:0;z-index:5000;display:grid;place-items:center;padding:24px;background:radial-gradient(circle at 50% 32%,rgba(122,74,162,.28),rgba(8,3,15,.93) 62%);backdrop-filter:blur(12px);opacity:0;transition:opacity .35s ease;overflow:auto}
+.majEvoBackdrop.show{opacity:1}.majEvoBackdrop.closing{opacity:0}
+.majEvoCard{position:relative;isolation:isolate;width:min(980px,94vw);min-height:680px;padding:30px 42px 34px;border:1px solid rgba(247,216,150,.5);border-radius:34px;background:linear-gradient(180deg,rgba(37,14,49,.97),rgba(15,7,28,.985));box-shadow:0 0 0 1px rgba(194,139,226,.16),0 32px 90px rgba(0,0,0,.55),0 0 80px rgba(164,100,212,.16);text-align:center;color:#f7edf9;overflow:hidden;transform:scale(.92) translateY(16px);transition:transform .55s cubic-bezier(.2,.8,.2,1)}
+.majEvoBackdrop.show .majEvoCard{transform:scale(1) translateY(0)}
+.majEvoAura{position:absolute;z-index:-1;left:50%;top:37%;width:520px;height:520px;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(circle,rgba(255,233,164,.27),rgba(180,109,255,.18) 33%,rgba(84,28,118,.04) 63%,transparent 72%);filter:blur(3px);animation:majAura 2.2s ease-in-out infinite alternate}
+.majEvoKicker{margin:0 0 6px;color:#f1d996;font:900 13px/1.2 Arial,sans-serif;letter-spacing:.22em}
+.majEvoArtWrap{height:330px;display:grid;place-items:center;position:relative}
+.majEvoArt{width:min(430px,76vw);height:320px;object-fit:contain;filter:drop-shadow(0 20px 30px rgba(0,0,0,.38)) drop-shadow(0 0 22px rgba(226,183,255,.3));animation:majGuardianRise 1s cubic-bezier(.2,.8,.2,1) both}
+.majEvoFallback{font-size:120px;color:#f2d184}
+.majEvoBadge{display:inline-flex;flex-direction:column;gap:2px;min-width:240px;padding:9px 20px;border:1px solid rgba(242,209,132,.5);border-radius:999px;background:linear-gradient(90deg,rgba(98,49,117,.85),rgba(144,82,166,.85),rgba(98,49,117,.85));box-shadow:0 0 24px rgba(218,170,255,.18);animation:majBadge .55s .8s both}
+.majEvoBadge span{font:800 18px Georgia,serif;color:#ffe9ad;letter-spacing:.08em}.majEvoBadge small{font:800 9px Arial,sans-serif;color:#e8d9ec;letter-spacing:.2em}
+.majEvoCard h2{margin:15px 0 6px;font:700 clamp(30px,4vw,48px)/1.05 Georgia,serif;color:#ffe9bd;text-shadow:0 2px 24px rgba(255,222,150,.16)}
+.majEvoLead{margin:0 auto 18px;max-width:720px;color:#e8dfea;font:500 16px/1.45 Arial,sans-serif}
+.majEvoPath{display:flex;align-items:center;justify-content:center;gap:8px;margin:18px auto 20px;flex-wrap:wrap}
+.majEvoPath>i{color:#886f92;font-style:normal}.majEvoStage{display:flex;align-items:center;gap:6px;padding:8px 11px;border:1px solid rgba(196,166,209,.14);border-radius:999px;background:rgba(255,255,255,.025);color:#83758a;font:700 10px Arial,sans-serif}.majEvoStage.done{color:#b7a3bd}.majEvoStage.active{border-color:rgba(244,208,126,.62);background:rgba(235,183,89,.12);color:#ffe3a0;box-shadow:0 0 22px rgba(229,178,83,.12)}.majEvoStage span{min-width:12px}
+.majEvoRewards{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;max-width:860px;margin:0 auto 18px}
+.majEvoRewards>div{padding:14px 10px;border:1px solid rgba(211,174,226,.16);border-radius:16px;background:linear-gradient(180deg,rgba(72,36,88,.38),rgba(27,13,37,.52));animation:majReward .55s both}.majEvoRewards>div:nth-child(1){animation-delay:1.05s}.majEvoRewards>div:nth-child(2){animation-delay:1.18s}.majEvoRewards>div:nth-child(3){animation-delay:1.31s}.majEvoRewards>div:nth-child(4){animation-delay:1.44s}
+.majEvoRewards span{display:block;color:#f0cb75;font-size:21px;margin-bottom:4px}.majEvoRewards b{display:block;color:#f4e7f7;font:800 12px Arial,sans-serif}.majEvoRewards small{display:block;color:#a99daf;font:500 9px/1.35 Arial,sans-serif;margin-top:3px}
+.majEvoFlavor{max-width:720px;margin:4px auto 6px;color:#d8b9e8;font:600 13px/1.5 Arial,sans-serif}.majEvoGentle{max-width:720px;margin:0 auto 18px;color:#92859a;font:500 10px/1.45 Arial,sans-serif}
+.majEvoWelcome{min-width:280px;padding:17px 30px;border:1px solid rgba(255,224,166,.42);border-radius:18px;background:linear-gradient(135deg,#b45da5,#7c51b0);box-shadow:0 14px 34px rgba(91,40,122,.28),0 0 24px rgba(240,195,255,.12);color:white;font:900 18px Arial,sans-serif;cursor:pointer;transition:transform .18s ease,filter .18s ease}.majEvoWelcome:hover,.majEvoWelcome:focus-visible{transform:translateY(-2px) scale(1.02);filter:brightness(1.1);outline:none}
+.majEvoStars{position:absolute;inset:0;pointer-events:none;overflow:hidden}.majEvoStars i{position:absolute;left:calc((var(--i)*37)%100 * 1%);top:calc((var(--i)*53)%100 * 1%);color:#f5db9b;font-style:normal;font-size:calc(10px + (var(--i)%5)*3px);opacity:.25;animation:majTwinkle calc(1.8s + (var(--i)%6)*.3s) ease-in-out infinite alternate}
+@keyframes majGuardianRise{0%{opacity:0;transform:scale(.68) translateY(28px);filter:blur(5px)}65%{opacity:1;transform:scale(1.04) translateY(-4px);filter:blur(0)}100%{opacity:1;transform:scale(1) translateY(0)}}
+@keyframes majBadge{from{opacity:0;transform:translateY(12px) scale(.88)}to{opacity:1;transform:none}}
+@keyframes majReward{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@keyframes majAura{from{transform:translate(-50%,-50%) scale(.94);opacity:.7}to{transform:translate(-50%,-50%) scale(1.06);opacity:1}}
+@keyframes majTwinkle{from{opacity:.12;transform:scale(.75)}to{opacity:.7;transform:scale(1.35)}}
+@media(max-width:760px){.majEvoBackdrop{padding:10px}.majEvoCard{min-height:auto;padding:22px 14px 26px;border-radius:24px}.majEvoArtWrap{height:260px}.majEvoArt{height:250px}.majEvoRewards{grid-template-columns:repeat(2,1fr)}.majEvoPath{gap:5px}.majEvoStage{font-size:8px;padding:6px 8px}.majEvoPath>i{display:none}}
+
+.majEvoStageHeadline{margin:2px 0 0;color:#d8b9e8;font:800 12px/1.2 Arial,sans-serif;letter-spacing:.16em;text-transform:uppercase;opacity:.92}
+.majEvo-apprentice .majEvoCard{box-shadow:0 0 0 1px rgba(194,139,226,.18),0 32px 90px rgba(0,0,0,.55),0 0 90px rgba(161,102,209,.22)}
+.majEvo-guardian .majEvoCard{border-color:rgba(255,220,148,.62);box-shadow:0 0 0 1px rgba(255,229,167,.14),0 34px 100px rgba(0,0,0,.58),0 0 115px rgba(220,164,91,.23)}
+.majEvo-guardian .majEvoAura{width:590px;height:590px;background:radial-gradient(circle,rgba(255,236,175,.36),rgba(192,119,255,.2) 35%,rgba(84,28,118,.03) 66%,transparent 74%)}
+.majEvo-guardian .majEvoKicker,.majEvo-guardian .majEvoStageHeadline{color:#f5d78a}
+.majEvo-ascendant{background:radial-gradient(circle at 50% 26%,rgba(129,71,185,.42),rgba(8,3,15,.95) 64%)}
+.majEvo-ascendant .majEvoCard{border-color:rgba(239,198,255,.72);box-shadow:0 0 0 1px rgba(239,198,255,.18),0 36px 110px rgba(0,0,0,.6),0 0 145px rgba(178,102,255,.28)}
+.majEvo-ascendant .majEvoAura{width:650px;height:650px;background:radial-gradient(circle,rgba(255,242,194,.38),rgba(202,132,255,.29) 35%,rgba(95,34,138,.06) 66%,transparent 75%)}
+.majEvo-ascendant .majEvoArt{filter:drop-shadow(0 24px 34px rgba(0,0,0,.38)) drop-shadow(0 0 32px rgba(229,192,255,.5))}
+.majEvo-ascendant .majEvoBadge{transform:scale(1.04)}
+.majEvo-celestial{background:radial-gradient(circle at 50% 22%,rgba(246,212,126,.22),rgba(137,70,191,.38) 38%,rgba(7,3,14,.97) 70%)}
+.majEvo-celestial .majEvoCard{width:min(1040px,95vw);border-color:rgba(255,231,164,.86);box-shadow:0 0 0 1px rgba(255,239,192,.2),0 38px 120px rgba(0,0,0,.62),0 0 180px rgba(239,196,105,.3)}
+.majEvo-celestial .majEvoAura{width:760px;height:760px;background:radial-gradient(circle,rgba(255,249,213,.54),rgba(255,211,121,.28) 26%,rgba(197,121,255,.24) 48%,rgba(83,32,119,.03) 72%,transparent 78%)}
+.majEvo-celestial .majEvoArtWrap{height:360px}
+.majEvo-celestial .majEvoArt{height:350px;width:min(470px,78vw);filter:drop-shadow(0 26px 38px rgba(0,0,0,.4)) drop-shadow(0 0 40px rgba(255,229,159,.52));animation:majGuardianCelestial 1.25s cubic-bezier(.16,.85,.18,1) both}
+.majEvo-celestial .majEvoKicker{font-size:14px;color:#ffe8a8}.majEvo-celestial .majEvoStageHeadline{font-size:13px;color:#ffe6a0}
+.majEvo-celestial .majEvoBadge{background:linear-gradient(90deg,rgba(102,58,134,.9),rgba(187,124,175,.92),rgba(151,105,75,.92),rgba(102,58,134,.9));box-shadow:0 0 34px rgba(255,218,142,.24)}
+.majEvo-celestial .majEvoWelcome{background:linear-gradient(135deg,#c96bad,#8e5cc0,#b58b4b);box-shadow:0 16px 40px rgba(99,42,129,.3),0 0 30px rgba(255,220,150,.2)}
+@keyframes majGuardianCelestial{0%{opacity:0;transform:scale(.55) translateY(36px) rotate(-2deg);filter:blur(8px) brightness(1.8)}55%{opacity:1;transform:scale(1.08) translateY(-8px);filter:blur(0) brightness(1.18)}78%{transform:scale(.98) translateY(2px)}100%{transform:scale(1) translateY(0);filter:drop-shadow(0 26px 38px rgba(0,0,0,.4)) drop-shadow(0 0 40px rgba(255,229,159,.52))}}
+
+/* Evolved Guardian art centerpiece */
+.majEvoCard{padding-top:24px}
+.majEvoArtStage{position:relative;display:grid;place-items:center;min-height:430px;margin:4px auto 8px;isolation:isolate}
+.majEvoArtWrap{position:relative;z-index:3;width:min(610px,82vw);height:410px;display:grid;place-items:center;overflow:visible}
+.majEvoArt{display:block;width:auto;height:auto;max-width:100%;max-height:100%;object-fit:contain;object-position:center center;transform-origin:50% 78%;filter:drop-shadow(0 24px 36px rgba(0,0,0,.42)) drop-shadow(0 0 30px rgba(230,190,255,.32));animation:majGuardianRise 1s cubic-bezier(.2,.8,.2,1) both}
+.majEvoArt.portrait{max-height:408px;max-width:500px}
+.majEvoArt.square{max-height:400px;max-width:560px}
+.majEvoArt.landscape{max-width:610px;max-height:360px}
+.majEvoArtCaption{position:absolute;z-index:5;bottom:4px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;gap:1px;min-width:230px;padding:8px 18px;border:1px solid rgba(246,220,159,.25);border-radius:999px;background:rgba(17,7,27,.72);box-shadow:0 10px 26px rgba(0,0,0,.28);backdrop-filter:blur(8px)}
+.majEvoArtCaption strong{color:#fbe9bb;font:700 16px Georgia,serif;letter-spacing:.03em}
+.majEvoArtCaption span{color:#bda9c5;font:800 8px Arial,sans-serif;letter-spacing:.15em;text-transform:uppercase}
+.majEvoSigil{position:absolute;z-index:1;top:45%;left:50%;transform:translate(-50%,-50%);font-size:210px;line-height:1;color:rgba(255,234,181,.055);text-shadow:0 0 40px rgba(218,170,255,.08);user-select:none}
+.majEvoHalo{position:absolute;z-index:0;left:50%;top:47%;border-radius:50%;transform:translate(-50%,-50%);pointer-events:none}
+.majEvoHaloOne{width:420px;height:420px;border:1px solid rgba(240,210,151,.14);box-shadow:inset 0 0 60px rgba(237,209,148,.06),0 0 45px rgba(178,111,223,.08);animation:majHaloSpin 18s linear infinite}
+.majEvoHaloTwo{width:330px;height:330px;border:1px dashed rgba(206,165,234,.17);box-shadow:0 0 34px rgba(193,136,228,.06);animation:majHaloSpinReverse 14s linear infinite}
+.majEvoArtStage::after{content:'';position:absolute;z-index:2;left:50%;bottom:34px;width:min(450px,72vw);height:52px;transform:translateX(-50%);border-radius:50%;background:radial-gradient(ellipse,rgba(236,197,122,.18),rgba(151,92,188,.08) 48%,transparent 72%);filter:blur(7px)}
+.majEvoBadge{margin-top:2px}
+.majEvo-apprentice .majEvoArtStage{min-height:430px}
+.majEvo-guardian .majEvoArtStage{min-height:450px}
+.majEvo-guardian .majEvoArtWrap{height:430px;width:min(650px,84vw)}
+.majEvo-guardian .majEvoArt.portrait{max-height:428px}.majEvo-guardian .majEvoArt.square{max-height:420px}.majEvo-guardian .majEvoArt.landscape{max-width:650px;max-height:385px}
+.majEvo-ascendant .majEvoArtStage{min-height:470px}
+.majEvo-ascendant .majEvoArtWrap{height:450px;width:min(690px,86vw)}
+.majEvo-ascendant .majEvoArt.portrait{max-height:448px}.majEvo-ascendant .majEvoArt.square{max-height:440px}.majEvo-ascendant .majEvoArt.landscape{max-width:690px;max-height:405px}
+.majEvo-celestial .majEvoArtStage{min-height:500px}
+.majEvo-celestial .majEvoArtWrap{height:480px;width:min(740px,88vw)}
+.majEvo-celestial .majEvoArt.portrait{max-height:478px;max-width:580px}.majEvo-celestial .majEvoArt.square{max-height:468px;max-width:640px}.majEvo-celestial .majEvoArt.landscape{max-width:740px;max-height:430px}
+.majEvo-celestial .majEvoSigil{font-size:250px;color:rgba(255,239,192,.07)}
+.majEvo-celestial .majEvoHaloOne{width:500px;height:500px;border-color:rgba(255,228,163,.22)}
+.majEvo-celestial .majEvoHaloTwo{width:390px;height:390px;border-color:rgba(221,180,245,.24)}
+@keyframes majHaloSpin{from{transform:translate(-50%,-50%) rotate(0deg)}to{transform:translate(-50%,-50%) rotate(360deg)}}
+@keyframes majHaloSpinReverse{from{transform:translate(-50%,-50%) rotate(360deg)}to{transform:translate(-50%,-50%) rotate(0deg)}}
+@media(max-width:760px){
+  .majEvoArtStage{min-height:330px}
+  .majEvoArtWrap,.majEvo-guardian .majEvoArtWrap,.majEvo-ascendant .majEvoArtWrap,.majEvo-celestial .majEvoArtWrap{width:88vw;height:315px}
+  .majEvoArt.portrait,.majEvoArt.square,.majEvoArt.landscape,.majEvo-guardian .majEvoArt.portrait,.majEvo-guardian .majEvoArt.square,.majEvo-guardian .majEvoArt.landscape,.majEvo-ascendant .majEvoArt.portrait,.majEvo-ascendant .majEvoArt.square,.majEvo-ascendant .majEvoArt.landscape,.majEvo-celestial .majEvoArt.portrait,.majEvo-celestial .majEvoArt.square,.majEvo-celestial .majEvoArt.landscape{max-width:86vw;max-height:305px}
+  .majEvoSigil{font-size:150px}.majEvoHaloOne{width:300px;height:300px}.majEvoHaloTwo{width:240px;height:240px}
+  .majEvoArtCaption{bottom:-2px}
+}
+
+/* Evolution reveal enhancements */
+.majEvoTransform{display:grid;grid-template-columns:minmax(110px,160px) 110px minmax(110px,160px);align-items:center;justify-content:center;gap:16px;margin:12px auto 16px;max-width:600px}
+.majEvoBefore,.majEvoAfter{display:grid;place-items:center;gap:6px;padding:10px;border:1px solid rgba(211,174,226,.15);border-radius:18px;background:rgba(255,255,255,.025)}
+.majEvoBefore img,.majEvoAfter img{width:110px;height:110px;object-fit:contain;filter:drop-shadow(0 8px 16px rgba(0,0,0,.28))}
+.majEvoBefore{opacity:.72;filter:saturate(.8)}
+.majEvoAfter{border-color:rgba(244,208,126,.42);box-shadow:0 0 22px rgba(240,193,111,.12)}
+.majEvoBefore small,.majEvoAfter small{font:800 9px Arial,sans-serif;letter-spacing:.12em;text-transform:uppercase;color:#b8a9bf}
+.majEvoAfter small{color:#f4d98f}
+.majEvoTransformArrow{display:flex;flex-direction:column;align-items:center;gap:2px;color:#d7b3e6}.majEvoTransformArrow span{color:#f0d084}.majEvoTransformArrow b{font:900 9px Arial,sans-serif;letter-spacing:.18em}
+.majEvoMemoryCard{display:flex;align-items:center;gap:14px;max-width:620px;margin:12px auto 14px;padding:12px 16px;border:1px solid rgba(246,220,159,.18);border-radius:18px;background:linear-gradient(90deg,rgba(85,46,103,.32),rgba(30,16,42,.45))}
+.majEvoMemoryIcon{display:grid;place-items:center;width:46px;height:46px;border-radius:50%;background:rgba(244,208,126,.1);border:1px solid rgba(244,208,126,.28);color:#f6d985;font-size:21px}
+.majEvoMemoryCard div{text-align:left}.majEvoMemoryCard small{display:block;color:#b99ec4;font:800 8px Arial,sans-serif;letter-spacing:.16em}.majEvoMemoryCard b{display:block;margin-top:2px;color:#f6e8f8;font:700 14px Georgia,serif}.majEvoMemoryCard p{margin:3px 0 0;color:#93869a;font:600 9px Arial,sans-serif}
+.majEvoActions{display:flex;justify-content:center;gap:10px;flex-wrap:wrap}
+.majEvoSanctuary{min-width:280px;padding:17px 24px;border:1px solid rgba(214,181,108,.28);border-radius:18px;background:rgba(255,255,255,.035);color:#e8d7ec;font:800 15px Arial,sans-serif;cursor:pointer;transition:transform .18s ease,background .18s ease}.majEvoSanctuary:hover,.majEvoSanctuary:focus-visible{transform:translateY(-2px);background:rgba(202,154,226,.09);outline:none}
+@media(max-width:760px){.majEvoTransform{grid-template-columns:1fr 52px 1fr;gap:8px}.majEvoBefore img,.majEvoAfter img{width:82px;height:82px}.majEvoTransformArrow b{font-size:7px}.majEvoMemoryCard{padding:10px 12px}.majEvoActions{flex-direction:column}.majEvoWelcome,.majEvoSanctuary{width:100%;min-width:0}}

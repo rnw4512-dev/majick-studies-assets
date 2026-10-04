@@ -1,0 +1,24 @@
+/* Four spaces share the same plum, gold, and serif language. Details stay behind content. */
+body[data-majick-room] .content{position:relative;isolation:isolate;min-height:calc(100vh - 80px)}
+body[data-majick-room] .content:before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:var(--room-light);background-attachment:local}
+body[data-majick-room=home]{--room-light:radial-gradient(ellipse at 50% 0%,rgba(219,180,112,.14),transparent 50%),radial-gradient(circle at 84% 20%,rgba(139,99,183,.13),transparent 35%)}
+body[data-majick-room=learninglab]{--room-light:radial-gradient(ellipse at 15% 6%,rgba(240,172,91,.18),transparent 30%),radial-gradient(ellipse at 86% 14%,rgba(211,141,80,.13),transparent 28%),linear-gradient(150deg,rgba(58,28,39,.17),transparent 60%)}
+body[data-majick-room=livinggrimoire]{--room-light:radial-gradient(ellipse at 50% 5%,rgba(188,157,108,.13),transparent 58%),repeating-linear-gradient(90deg,transparent 0 97px,rgba(192,154,109,.025) 98px 99px)}
+body[data-majick-room=companions]{--room-light:radial-gradient(ellipse at 86% 8%,rgba(239,172,107,.15),transparent 38%),radial-gradient(ellipse at 14% 38%,rgba(164,116,183,.13),transparent 45%)}
+.caAmbience{border:1px solid rgba(215,183,130,.42);border-radius:999px;background:#291d37;color:#efdbb6;padding:8px 12px;font:600 .78rem/1.25 system-ui;cursor:pointer;white-space:normal;text-align:center}
+.caAmbience:hover{background:#493052}.caAmbience:focus-visible{outline:2px solid #f5d999;outline-offset:3px}
+body[data-majick-room=home] .v3327PortalHero{background:radial-gradient(ellipse at 50% -18%,rgba(227,183,110,.23),transparent 54%),linear-gradient(125deg,#0d0817,#261432 58%,#392349);box-shadow:inset 0 2px rgba(241,209,146,.25),0 20px 65px #10091c}
+body[data-majick-room=home] .v3327PortalHero:before{content:"";position:absolute;inset:12px 13px;border:1px solid rgba(225,190,126,.16);border-radius:85px 85px 16px 16px;pointer-events:none}
+body[data-majick-room=learninglab] .learnLab{padding:14px;border:1px solid rgba(218,170,102,.18);border-radius:22px;background:radial-gradient(circle at 3% 3%,rgba(232,167,91,.09),transparent 38%),rgba(31,17,33,.35);box-shadow:inset 0 1px rgba(250,217,153,.14)}
+body[data-majick-room=learninglab] .lcContinue{box-shadow:0 0 38px rgba(222,139,72,.12),inset 0 1px rgba(247,201,139,.18)}
+body[data-majick-room=livinggrimoire] .content{background-image:linear-gradient(90deg,rgba(26,14,36,.25),transparent 17%,transparent 83%,rgba(26,14,36,.25))}
+body[data-majick-room=livinggrimoire] .content>section:first-child,body[data-majick-room=livinggrimoire] .content>div:first-child{border-color:rgba(218,185,128,.28)}
+body[data-majick-room=companions] .phase4Wrap{border-color:rgba(225,177,116,.48);box-shadow:0 20px 70px rgba(10,4,19,.45),0 0 45px rgba(217,144,87,.12)}
+body[data-majick-room=companions] .lcScene{background:radial-gradient(ellipse at 88% 8%,rgba(218,151,88,.19),transparent 48%),linear-gradient(145deg,#24192d,#16111f)}
+@media(max-width:700px){.caAmbience{width:100%;order:3}.learnLab{padding:10px!important}}
+@media(prefers-reduced-motion:reduce){body[data-majick-room] .content:before{background-attachment:scroll}}
+/* A Guardian's full name and portrait must remain legible in the sidebar. */
+.sidefoot.unifiedFamiliarSide .copy b{white-space:normal;overflow:visible;text-overflow:clip;overflow-wrap:anywhere;line-height:1.2}
+.sidefoot.unifiedFamiliarSide .familiarRole{max-width:100%;white-space:normal;line-height:1.35}
+.sidefoot.unifiedFamiliarSide .rewardStrip{gap:6px}
+.sidefoot.unifiedFamiliarSide .rewardChip{padding:6px 8px}

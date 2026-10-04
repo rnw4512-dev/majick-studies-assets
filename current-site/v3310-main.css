@@ -1,0 +1,15 @@
+/* Majick Studies V3.3.10 — Canon UI + sanctuary motion restore */
+.v3310CanonDock{grid-template-columns:112px minmax(0,1fr)!important;background:linear-gradient(135deg,#201126 0%,#28142d 52%,#14101e 100%)!important;border:1px solid rgba(235,195,126,.28)!important;box-shadow:0 16px 40px #07030d66,inset 0 0 0 1px #ffffff08!important}
+.v3310CanonDock .v3310PortraitStage{height:92px;width:102px;display:grid;place-items:center;position:relative;border-radius:22px;background:radial-gradient(circle at 50% 36%,#6e467144 0%,#25142f66 55%,transparent 76%);overflow:hidden;border:1px solid #d8b87a33}
+.v3310CanonDock .v3310PortraitStage:after{content:'✦';position:absolute;right:8px;top:5px;color:#efc975;font-size:13px;text-shadow:0 0 8px #efc975aa}
+.v3310CanonDock .v3310Portrait{width:96px;height:96px;object-fit:contain;filter:drop-shadow(0 8px 12px #0009)}
+.v3310CanonDock .v523GuardianCopy b{color:#f1cf8c!important;font-family:Georgia,'Times New Roman',serif;font-size:20px}
+.v3310CanonDock .v523GuardianCopy p{color:#f8eef3!important;opacity:.96}
+.v3310CanonDock .v523GuardianTag{background:#4a2a5b!important;color:#e8ceff!important;border:1px solid #b68dd744!important}
+.v3310CanonDock .v523GuardianAbility{background:linear-gradient(135deg,#6b46a5,#bd5d9d)!important;color:white!important}
+.v3310HabPet{position:absolute;left:var(--x);bottom:var(--y);width:78px;height:72px;z-index:4;display:grid;place-items:center;animation-delay:var(--delay);will-change:transform}
+.v3310HabPet img{width:72px;height:72px;object-fit:contain;filter:drop-shadow(0 8px 8px #1a0b2099)}
+.v3310HabPet .name{position:absolute;bottom:-13px;left:50%;transform:translateX(-50%);white-space:nowrap;font-size:9px;font-weight:900;color:#f0d7a1;background:#170a20dd;padding:2px 6px;border-radius:999px;border:1px solid #cfaa7144}
+.v3310HabPet.runner{animation:v523RoomRun var(--dur) linear infinite}.v3310HabPet.hopper{animation:v523RoomHop var(--dur) ease-in-out infinite}.v3310HabPet.waver{animation:v523RoomWave var(--dur) ease-in-out infinite}
+.v3310PhaseNote{margin:8px 0 0;padding:8px 10px;border:1px solid #d7b77a2b;border-radius:12px;background:#12081788;color:#e9d9c8;font-size:11px}
+@media(max-width:900px){.v3310CanonDock{grid-template-columns:92px minmax(0,1fr)!important}.v3310CanonDock .v3310PortraitStage{width:84px;height:80px}.v3310CanonDock .v3310Portrait{width:82px;height:82px}}

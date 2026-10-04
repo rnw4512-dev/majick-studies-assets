@@ -1,0 +1,6 @@
+/* V3.3.70 — D772 Notes Forge section shelves */
+.v3370SectionShelf{margin:0 0 14px;padding:12px;border:1px solid rgba(191,151,205,.18);border-radius:14px;background:linear-gradient(145deg,#18101f,#130d19)}
+.v3370SectionShelf>header{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:9px;padding-bottom:8px;border-bottom:1px solid rgba(223,188,116,.13)}
+.v3370SectionShelf>header small{display:block;color:#b99dc4;font:800 8px/1.3 system-ui;letter-spacing:.11em}.v3370SectionShelf>header h4{margin:2px 0 0;color:#e8d39d;font:700 15px/1.3 Georgia,serif}.v3370SectionShelf>header>span{flex:none;padding:5px 8px;border:1px solid rgba(199,162,213,.18);border-radius:999px;background:#23172b;color:#c7b8cd;font:700 8px system-ui}
+.v3370SectionShelf .v3315SourceRow{margin-top:8px}.v3370ShelfEmpty{padding:16px;border:1px dashed rgba(180,143,195,.17);border-radius:10px;color:#8e8094;font:10px/1.45 system-ui;text-align:center;background:rgba(25,16,31,.55)}
+@media(max-width:620px){.v3370SectionShelf{padding:10px}.v3370SectionShelf>header{align-items:flex-start}.v3370SectionShelf>header h4{font-size:13px}}

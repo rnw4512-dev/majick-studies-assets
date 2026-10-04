@@ -1,0 +1,9 @@
+{
+  "name": "Majick Studies \u2014 Living Magical College",
+  "short_name": "Majick Studies",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#0e0a17",
+  "theme_color": "#2c173b",
+  "description": "A living magical-college study sanctuary with adaptive learning, companions, course materials, and cloud progress."
+}

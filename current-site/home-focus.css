@@ -1,0 +1,12 @@
+/* V3.3.77 — Campus Focus */
+html[data-majick-home-focus=true] .v3327Home .v3327HallGrid,
+html[data-majick-home-focus=true] .v3327Home .v3317HomeSanctuary,
+html[data-majick-home-focus=true] .v3327Home .v3327StudentRecord{display:none!important}
+html[data-majick-home-focus=true] .v3327PortalHero{margin-bottom:12px}
+html[data-majick-home-focus=true] .v3327HeroActions button:not(.v3327Primary){display:none!important}
+.v3377CampusDoors{margin:0 0 20px;padding:15px;border:1px solid rgba(213,177,110,.24);border-radius:18px;background:linear-gradient(145deg,#160e1d,#21142a 58%,#17101f);box-shadow:0 16px 40px rgba(5,2,9,.18);color:#eee4f0}
+.v3377CampusDoors>header{display:flex;justify-content:space-between;gap:14px;align-items:end;margin-bottom:11px}.v3377CampusDoors small{color:#b7a8bd}.v3377CampusDoors h3{margin:2px 0;color:#ecd8a2;font:700 20px Georgia,serif}.v3377CampusDoors>header>span{color:#94879a;font:9px system-ui}
+.v3377DoorGrid{display:grid;grid-template-columns:1.35fr repeat(3,1fr);gap:9px}.v3377DoorGrid button{display:grid;gap:3px;min-height:76px;padding:12px;border:1px solid rgba(183,145,198,.22);border-radius:12px;background:#17101f;color:#eee4f1;text-align:left;cursor:pointer}.v3377DoorGrid button:first-child{border-color:rgba(218,181,111,.46);background:linear-gradient(135deg,#34203f,#22152b)}.v3377DoorGrid b{color:#e8d19a;font:700 12px Georgia,serif}.v3377DoorGrid small{font:9px/1.35 system-ui}
+.v3377CampusDoors details{margin-top:10px;border-top:1px solid rgba(190,151,205,.12);padding-top:8px}.v3377CampusDoors summary{color:#a99ab0;font:800 9px system-ui;cursor:pointer}.v3377ToolRow{display:flex;flex-wrap:wrap;gap:7px;margin-top:8px}.v3377ToolRow button{padding:7px 9px;border:1px solid rgba(177,140,191,.2);border-radius:8px;background:#130d19;color:#cbbdce;font:700 9px system-ui}
+@media(max-width:800px){.v3377DoorGrid{grid-template-columns:1fr 1fr}.v3377CampusDoors>header{align-items:start;flex-direction:column}}
+@media(max-width:520px){.v3377DoorGrid{grid-template-columns:1fr}.v3377CampusDoors{padding:12px}.v3377DoorGrid button{min-height:62px}}

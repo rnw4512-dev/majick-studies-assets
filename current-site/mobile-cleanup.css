@@ -1,0 +1,70 @@
+/* V3.3.65 — Mobile + visual hierarchy cleanup */
+:root{--maj-mobile-pad:14px;--maj-mobile-gap:12px}
+.v3365RepeatedHeading{display:none!important}
+.v3365RepeatedBlock:has(> .v3365RepeatedHeading){padding-top:0!important}
+@media(max-width:900px){
+  .content{padding-inline:min(18px,4vw)!important}
+  .v3354CampusGate,.v3354TeachingBoard,.v3354ArchiveDesk,.v3356ProfessorBrief,.v3356ArchiveIndex,.v3358HallMap{border-radius:18px!important}
+  .v3354CampusGate,.v3354TeachingBoard,.v3354ArchiveDesk{gap:14px!important}
+  .v3354Parchment{box-shadow:4px 6px 0 rgba(15,8,20,.2)!important}
+  .v3341GuardianHero{max-width:none!important;width:100%;box-sizing:border-box}
+  .v3358Corridor{gap:10px!important}
+}
+@media(max-width:700px){
+  #majickRoomRibbon.v3365HasPrimary{padding:7px 10px;margin-bottom:10px;opacity:.86}
+  #majickRoomRibbon.v3365HasPrimary .v3360RoomSigil{width:30px;height:30px;flex-basis:30px;font-size:15px}
+  #majickRoomRibbon.v3365HasPrimary small,#majickRoomRibbon.v3365HasPrimary em{display:none}
+  #majickRoomRibbon.v3365HasPrimary b{font-size:12px}
+  .v3354CampusGate,.v3354TeachingBoard,.v3354ArchiveDesk,.v3356ProfessorBrief,.v3356ArchiveIndex,.v3358HallMap{padding:var(--maj-mobile-pad)!important;margin-bottom:16px!important}
+  .v3354GateCopy h2,.v3354TeachingBoard h2,.v3354ArchiveDesk h2,.v3356ProfessorHead h2,.v3356ArchiveIndex h2{font-size:clamp(21px,7vw,28px)!important}
+  .v3354GateCopy p,.v3354TeachingBoard p,.v3356ProfessorHead p,.v3356ArchiveIndex p{font-size:14px!important;line-height:1.55!important}
+  .v3354Schedule{gap:8px!important;padding:10px!important}
+  .v3354Schedule span{font-size:11px!important}
+  .v3354Schedule button,.v3354LessonTabs button,.v3356BriefActions button,.v3356ArchiveGrid button{min-height:42px}
+  .v3354TeachingBoard aside{padding:13px!important}
+  .v3354BoardFrame{padding:16px!important;border-width:5px!important}
+  .v3354Targets{gap:6px!important}
+  .v3354Targets span{font-size:11px!important;padding:7px 8px!important}
+  .v3354Parchment{padding:16px!important}
+  .v3354LessonTabs{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px!important}
+  .v3354LessonTabs button{width:100%;white-space:normal}
+  .v3354Callout{padding:10px!important}
+  .v3354Librarian{padding:13px!important}
+  .v3356BriefGrid,.v3356ArchiveGrid{gap:10px!important}
+  .v3356BriefGrid article,.v3356ArchiveGrid article{padding:12px!important}
+  .v3356TermCloud{gap:5px!important}
+  .v3356TermCloud span,.v3356ArchiveGrid article span{font-size:9px!important;padding:5px 7px!important}
+  .v3358Corridor{display:grid!important;grid-template-columns:1fr!important}
+  .v3358Door{min-height:140px!important;border-radius:22px!important;display:grid;grid-template-columns:46px 1fr;grid-template-rows:auto auto auto;column-gap:10px;text-align:left!important;align-items:center;padding:13px!important}
+  .v3358DoorNo{position:static!important;transform:none!important;grid-column:1;grid-row:1/4;text-align:center}
+  .v3358DoorArch{width:42px!important;height:48px!important;margin:0!important;grid-column:1;grid-row:1/4;border-radius:18px!important}
+  .v3358Door strong,.v3358Door small,.v3358Door em{grid-column:2}
+  .v3358Door strong{font-size:15px!important}
+  .v3358Door small{min-height:0!important;margin-top:3px!important}
+  .v3358Door em{margin-top:4px!important;padding-top:4px!important}
+  .v3358DoorNo{display:none!important}
+  .v3358HallMap header>span{font-size:8px!important}
+  .v3341GuardianHero{grid-template-columns:76px minmax(0,1fr)!important;gap:10px!important}
+  .v3341GuardianHeroPortrait{width:74px!important;height:90px!important;border-radius:17px!important}
+  .v3341GuardianHeroCopy h3{font-size:20px!important}
+  .v3341GuardianHeroCopy>p{font-size:9px!important}
+  .v3341GuardianSelector{overflow-x:auto;flex-wrap:nowrap!important;padding-bottom:3px}
+  .v3341GuardianSelector button{flex:none}
+  .v3341BondQuest>small{display:none}
+  .lcStudyCompass{position:relative;z-index:20}
+  .lcStudyCompass>button,.lcStudyCompass details{flex:1 1 calc(50% - 8px)!important}
+  .lcStudyCompass button,.lcStudyCompass summary{font-size:12px!important;min-height:40px!important;padding:8px 10px!important}
+  .lcComfortChoices{position:fixed!important;left:12px!important;right:12px!important;bottom:12px!important;top:auto!important;width:auto!important;max-height:62vh;overflow:auto}
+  .v3363GuardianNod{border-radius:14px!important}
+}
+@media(max-width:430px){
+  .content{padding-inline:10px!important}
+  .v3354LessonTabs{grid-template-columns:1fr!important}
+  .v3341GuardianHero{grid-template-columns:64px minmax(0,1fr)!important;padding:10px!important}
+  .v3341GuardianHeroPortrait{width:62px!important;height:76px!important}
+  .v3341GuardianHeroActions{grid-column:1/-1}
+  .v3341GuardianHeroActions button{flex:1 1 100%!important}
+  .v3356BriefActions{display:grid!important;grid-template-columns:1fr}
+  .v3356BriefActions button{width:100%}
+  .v3362Bookmark{right:6px!important;transform:scale(.9);transform-origin:top right}
+}
