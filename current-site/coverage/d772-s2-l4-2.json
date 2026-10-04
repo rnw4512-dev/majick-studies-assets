@@ -1,0 +1,22 @@
+{
+  "courseId": "D772",
+  "lessonId": "d772-s2-l4-2",
+  "source": "Lesson 4.2 upload, 2026-10-04",
+  "comparedAgainst": [
+    "Lesson 4.1 median procedure",
+    "Lesson 4 introduction spread outline"
+  ],
+  "added": [
+    "Course quartile convention",
+    "Even and odd n worked examples",
+    "Range and IQR distinction",
+    "Six practice checks"
+  ],
+  "reused": [
+    "Median procedure referenced without duplicate definition"
+  ],
+  "notAdded": [
+    "Outlier fence formulas outside supplied scope",
+    "Automatic mastery"
+  ]
+}

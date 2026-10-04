@@ -22,3 +22,31 @@ body[data-majick-room=companions] .lcScene{background:radial-gradient(ellipse at
 .sidefoot.unifiedFamiliarSide .familiarRole{max-width:100%;white-space:normal;line-height:1.35}
 .sidefoot.unifiedFamiliarSide .rewardStrip{gap:6px}
 .sidefoot.unifiedFamiliarSide .rewardChip{padding:6px 8px}
+
+/* Approved October 2026 room materials: one visual system, existing room owners. */
+:root{--maj-walnut:#281713;--maj-brass:#d7b574;--maj-velvet:#492c4d;--maj-paper:#eadbb8;--maj-room-ink:#f1e6d0}
+body[data-majick-room] .side{background:linear-gradient(90deg,#1d121b,#2d1c29);border-right:1px solid #8b6842;box-shadow:inset -5px 0 0 #100c13,inset -6px 0 0 #60432d}
+body[data-majick-room] .top{background:linear-gradient(110deg,#24151e,#352239);border-bottom:1px solid #80613e;color:var(--maj-room-ink)}
+body[data-majick-room] :is(button,a,input,select,summary):focus-visible{outline:3px solid #f4d08c;outline-offset:3px}
+body[data-majick-room=learninglab]{--room-light:radial-gradient(ellipse at 12% 8%,#dfa35328,transparent 40%),linear-gradient(115deg,#281611,#17101e 55%,#2e1b29)}
+body[data-majick-room=learninglab] .learnLab{padding:clamp(12px,2vw,24px);background:linear-gradient(90deg,#38231b88,#20151de8,#38231b88);border:1px solid #9b794b;border-radius:22px;box-shadow:inset 0 0 0 5px #130e14,inset 0 0 0 6px #6e5036,0 24px 50px #08050c66}
+body[data-majick-room=learninglab] :is(.learnHero,.v3338ClassHeader){min-height:240px;padding:clamp(22px,4vw,48px);align-items:flex-end;background:linear-gradient(90deg,#140d18e8,#170d1799 65%,#170d1755),url('./assets/learn-classroom-v1.png') center 46%/cover;border:1px solid #c09a60;border-radius:15px 15px 4px 4px;box-shadow:inset 0 0 0 5px #2c1c1c,0 12px 30px #08040b66}
+body[data-majick-room=learninglab] :is(.learnHero,.v3338ClassHeader) h2{font-family:Georgia,serif;font-size:clamp(27px,3.4vw,42px);color:#ffedc5;text-shadow:0 2px 10px #000}
+body[data-majick-room=learninglab] :is(.learnHero,.v3338ClassHeader) p{color:#f2e4d1;font-size:14px;line-height:1.65;max-width:640px}
+body[data-majick-room=learninglab] .v3338Classroom{border:1px solid #a27b4b;border-radius:18px;background:linear-gradient(90deg,#42291eaa,#211724ee 30%,#211724ee 70%,#42291eaa);box-shadow:inset 0 0 0 5px #211317,inset 0 0 0 6px #8f693d66,0 24px 50px #0005}
+body[data-majick-room=learninglab] :is(.v3338LessonRail,.v3338Tutor){border-color:#967149;background:linear-gradient(120deg,#382337,#211627);border-radius:7px;box-shadow:inset 3px 0 0 #75504688,0 12px 24px #0003}
+body[data-majick-room=learninglab] :is(.v3338Opening,.v3338Stage,.v3338Checkpoint,.tutorOfficialTeaching,.tutorChapterBlock){border-color:#9b80594d;background:linear-gradient(140deg,#24201d,#171419);box-shadow:inset 0 1px #dfc18b22,0 10px 25px #08060a33}
+body[data-majick-room=learninglab] .v3354BoardFrame{border:9px ridge #795032;border-radius:5px;background:radial-gradient(ellipse at 45% 15%,#2b3b30,#101d18);box-shadow:inset 0 0 25px #050d0b,0 5px 0 #1e1110}
+body[data-majick-room=learninglab] .learnTabs button{border-radius:5px;border-color:#9a764c;background:#302131;color:#efdfc6;padding:12px 17px;min-height:44px}
+body[data-majick-room=learninglab] .learnTabs button.active{background:linear-gradient(#725173,#492f4e);border-color:#ddba7c;box-shadow:inset 0 -3px #bb9556}
+body[data-majick-room=livinggrimoire]{--room-light:radial-gradient(ellipse at 78% 2%,#8f67b742,transparent 46%),radial-gradient(ellipse at 8% 25%,#cc914125,transparent 42%),linear-gradient(90deg,#291a17,#1b1425,#291a17)}
+body[data-majick-room=livinggrimoire] .v3354ArchiveDesk{padding:clamp(14px,2.4vw,30px);border:7px ridge #63442f;border-radius:12px;background:repeating-linear-gradient(0deg,#2d1c18 0 65px,#513524 66px 69px,#211512 70px 75px);box-shadow:0 24px 60px #07040b77,inset 0 0 24px #090609}
+body[data-majick-room=livinggrimoire] .v3354Shelves{gap:12px}
+body[data-majick-room=livinggrimoire] .v3354Shelves span{border-radius:3px;border:1px solid #ad865d;border-left:8px ridge #aa835c;background:linear-gradient(90deg,#4a2c4a,#281c2d);padding:18px 12px;color:#f0d7a5;box-shadow:3px 4px 0 #100c1299;font-size:11px;line-height:1.4}
+body[data-majick-room=livinggrimoire] .v3354Shelves span:nth-child(2n){background:linear-gradient(90deg,#2a423a,#182923)}
+body[data-majick-room=livinggrimoire] .v3354Parchment{border:1px solid #ba9864;border-radius:4px;padding:clamp(20px,3vw,36px);background:radial-gradient(ellipse at center,#f3e7ca,#e1cfaa);color:#342931;box-shadow:6px 7px 0 #b59969,10px 13px 0 #160f16,0 18px 35px #0005}
+body[data-majick-room=livinggrimoire] .v3354Parchment p{font-size:15px;line-height:1.75}
+body[data-majick-room=livinggrimoire] .v3354Librarian{background:linear-gradient(120deg,#563751,#281c32);border:1px solid #b88a54;border-radius:5px;box-shadow:inset 0 0 0 4px #311c30}
+body[data-majick-room=companions] .phase4Wrap{border:5px ridge #795334;border-radius:12px;background:#20141f;box-shadow:0 20px 60px #06040966}
+@media(max-width:700px){body[data-majick-room=learninglab] :is(.learnHero,.v3338ClassHeader){min-height:210px;background-position:center;padding:24px 18px}.v3338ClassHeader{flex-wrap:wrap}.classStatus{text-align:left;min-width:0}.learnTabs button{flex-grow:1}body[data-majick-room=livinggrimoire] .v3354ArchiveDesk{border-width:4px}}
+@media(prefers-reduced-motion:reduce){body[data-majick-room] *{scroll-behavior:auto!important}body[data-majick-room] .content:before{animation:none}}

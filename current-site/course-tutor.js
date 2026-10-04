@@ -139,6 +139,8 @@ Object.assign(D772_SECTION_TWO.lessons.find(l=>l.id==='d772-s2-l3').sublessons.f
 
 Object.assign(D772_SECTION_TWO.lessons.find(l=>l.id==='d772-s2-l4').sublessons.find(l=>l.id==='d772-s2-l4-1'),{outlineOnly:false,keywords:['mean','median','mode','measures of center','average','middle value'],goal:'Calculate and interpret mean, median, and raw-data modes.'});
 
+Object.assign(D772_SECTION_TWO.lessons.find(l=>l.id==='d772-s2-l4').sublessons.find(l=>l.id==='d772-s2-l4-2'),{outlineOnly:false,keywords:['quartile','interquartile','iqr','range','measures of spread'],goal:'Calculate quartiles, range, and IQR with the course median-of-halves convention.'});
+
 const D772_SECTION_ONE_CONTENT={
   'd772-s1-l1':{
     overview:'Lesson 1 asks where the data came from and how the study was designed. Follow the chain: population and sample → sampling method → study type → experimental design.',
@@ -464,6 +466,205 @@ const D772_SECTION_TWO_CONTENT={
     vocab:[],
     memory:['Classify → choose display → describe distribution → calculate and interpret descriptive statistics.']
   }
+};
+D772_SECTION_TWO_CONTENT['d772-s2-l4-2']={
+  "sourceLabel": "COURSE-PROVIDED D772 \u2022 SECTION 2 \u2022 LESSON 4.2",
+  "overview": "Use ordered data and the course\u2019s median-of-halves method to calculate quartiles. Range describes the full span; IQR describes the span of the middle 50%. For odd n, leave the overall median out of both halves.",
+  "objectives": [
+    "Find Q1, Q2, and Q3 using the supplied median-of-halves convention.",
+    "Calculate range = maximum \u2212 minimum.",
+    "Calculate IQR = Q3 \u2212 Q1 and interpret the middle 50%.",
+    "Distinguish spread in values from number of observations."
+  ],
+  "teach": [
+    {
+      "title": "Quartiles and percentiles",
+      "text": "Q1 corresponds to the 25th percentile, Q2 to the median (50th percentile), and Q3 to the 75th percentile. Quartiles divide ordered observations into four roughly equal-count portions; the numerical distances between quartiles do not need to be equal. Ties can complicate statements about exactly 25% being strictly below a value."
+    },
+    {
+      "title": "Course method: sort, split, take medians",
+      "text": "First sort all observations. Find Q2 with the median procedure from Lesson 4.1. Split into lower and upper halves. When n is odd, exclude the single overall median observation from both halves. Then Q1 is the lower-half median and Q3 is the upper-half median. Use this convention consistently with the supplied WGU examples; other software may use different percentile conventions."
+    },
+    {
+      "title": "Even-n worked source example",
+      "text": "Sorted data: {1,1,2,2,4,6,6.8,7.2,8,8.3,9,10,10,11.5}. Q2 = (6.8+7.2)/2 = 7. The seven lower observations have median 2, so Q1=2. The seven upper observations have median 9, so Q3=9. IQR = 9\u22122 = 7."
+    },
+    {
+      "title": "Odd-n worked source example",
+      "text": "Sort {8,2,13,15,5,10,5} into {2,5,5,8,10,13,15}. Q2=8. Exclude that observation when splitting: lower {2,5,5}, upper {10,13,15}. Their medians give Q1=5 and Q3=13. IQR=13\u22125=8."
+    },
+    {
+      "title": "Range: the full span",
+      "text": "Range = maximum \u2212 minimum. The supplied community-event ages run from 12 to 50 years, so range = 50\u221212 = 38 years. Range is a difference, not the largest value or the pair of endpoints."
+    },
+    {
+      "title": "IQR: the middle span",
+      "text": "IQR = Q3 \u2212 Q1. It measures the width containing the middle half of ordered observations. Its units match the data\u2019s units; it is not 50% of the numerical range. The box of the next lesson\u2019s boxplot runs from Q1 to Q3. Outlier-fence formulas are outside the scope stated in this upload."
+    }
+  ],
+  "anchorChart": {
+    "title": "SORT \u2022 SPLIT \u2022 SUMMARIZE SPREAD",
+    "rule": "Q1 = median of lower half; Q2 = overall median; Q3 = median of upper half",
+    "columns": [
+      [
+        "Statistic",
+        "Meaning or formula"
+      ],
+      [
+        "Q1 / Q2 / Q3",
+        "25th / 50th / 75th percentiles"
+      ],
+      [
+        "Odd n",
+        "Exclude the overall median from both halves"
+      ],
+      [
+        "Range",
+        "Maximum \u2212 minimum: full span"
+      ],
+      [
+        "IQR",
+        "Q3 \u2212 Q1: middle 50% span"
+      ]
+    ],
+    "examples": [
+      [
+        "{2,5,5,8,10,13,15}",
+        "Q1=5, Q2=8, Q3=13; IQR=8"
+      ],
+      [
+        "Event ages 12 through 50",
+        "Range=38 years"
+      ]
+    ]
+  },
+  "weDo": {
+    "prompt": "Find quartiles, range and IQR for {1,2,3,4,5,6,7,8,9} using the course convention.",
+    "steps": [
+      "The data are ordered; Q2 is the fifth value, 5.",
+      "Exclude the median 5 from both halves.",
+      "Lower half {1,2,3,4}: Q1=(2+3)/2=2.5.",
+      "Upper half {6,7,8,9}: Q3=(7+8)/2=7.5.",
+      "Range=9\u22121=8.",
+      "IQR=7.5\u22122.5=5."
+    ]
+  },
+  "vocab": [
+    [
+      "Quartiles",
+      "Ordered-data cut points corresponding to the 25th, 50th, and 75th percentiles."
+    ],
+    [
+      "Range",
+      "Maximum minus minimum, measuring the full numerical span."
+    ],
+    [
+      "Interquartile range (IQR)",
+      "Q3 minus Q1, measuring the span of the middle half of ordered observations."
+    ]
+  ],
+  "memory": [
+    "Sort before splitting.",
+    "Odd n: remove the overall median from both halves.",
+    "Range uses extremes; IQR uses quartiles.",
+    "Middle 50% describes observations, not half the numerical range."
+  ],
+  "provenance": {
+    "courseStructure": "User-provided Lesson 4.2 quartiles, range, IQR and worked examples, 2026-10-04.",
+    "quartileConvention": "Median of halves excluding the overall median when n is odd, as explicitly supplied.",
+    "reference": {
+      "source": "WGU Figure 4.1, Box Plot Components and IQR",
+      "url": "https://assets.wgu.edu/225013c4fb08d105aca2c4d0880850e1",
+      "note": "User-provided description; visual in Majick is an original labeled example, not the original asset."
+    }
+  },
+  "practice": [
+    {
+      "id": "s2l42-p1",
+      "prompt": "For {2,5,5,8,10,13,15}, which halves should you use to find Q1 and Q3?",
+      "options": [
+        "{2,5,5} and {10,13,15}",
+        "{2,5,5,8} and {8,10,13,15}",
+        "{2,5} and {13,15}",
+        "Do not sort the data"
+      ],
+      "answer": 0,
+      "rationale": "The overall median is 8. The supplied course method excludes it from both halves.",
+      "provenance": "Majick-authored practice using supplied course methods"
+    },
+    {
+      "id": "s2l42-p2",
+      "prompt": "For {2,5,5,8,10,13,15}, what is the IQR?",
+      "options": [
+        "13",
+        "8",
+        "5",
+        "7"
+      ],
+      "answer": 1,
+      "rationale": "Q1=5 and Q3=13, so IQR=13\u22125=8.",
+      "provenance": "Majick-authored practice using supplied course methods"
+    },
+    {
+      "id": "s2l42-p3",
+      "prompt": "Ages run from 12 to 50 years. What is the range?",
+      "options": [
+        "62 years",
+        "50 years",
+        "38 years",
+        "12 years"
+      ],
+      "answer": 2,
+      "rationale": "Range is maximum minus minimum: 50\u221212=38 years.",
+      "provenance": "Majick-authored practice using supplied course methods"
+    },
+    {
+      "id": "s2l42-p4",
+      "prompt": "For the supplied 14-value example, Q1=2 and Q3=9. What is the IQR?",
+      "options": [
+        "11",
+        "4.5",
+        "9",
+        "7"
+      ],
+      "answer": 3,
+      "rationale": "IQR=Q3\u2212Q1=9\u22122=7; do not average or add the quartiles.",
+      "provenance": "Majick-authored practice using supplied course methods"
+    },
+    {
+      "id": "s2l42-p5",
+      "prompt": "What does an IQR of 8 minutes describe?",
+      "options": [
+        "The middle 50% of observations spans 8 minutes",
+        "Exactly 8 observations",
+        "Half of the entire numerical range",
+        "The maximum is 8 minutes"
+      ],
+      "answer": 0,
+      "rationale": "IQR is the numerical width from Q1 to Q3, in the data\u2019s units.",
+      "provenance": "Majick-authored practice using supplied course methods"
+    },
+    {
+      "id": "s2l42-p6",
+      "prompt": "Why can you not assume a calculator\u2019s quartiles match this lesson?",
+      "options": [
+        "Quartiles never require sorted data",
+        "Software can use a different percentile convention",
+        "Q2 is never a median",
+        "All quartile algorithms are identical"
+      ],
+      "answer": 1,
+      "rationale": "This lesson explicitly uses median-of-halves excluding the overall median for odd n. Other percentile conventions can differ.",
+      "provenance": "Majick-authored practice using supplied course methods"
+    }
+  ],
+  "visuals": [
+    {
+      "title": "Middle 50%: IQR spans Q1 to Q3",
+      "src": "lesson-visuals/iqr-middle-half.svg",
+      "alt": "Example boxplot: minimum 1, Q1 2, median 7, Q3 9, maximum 11.5. IQR equals 7."
+    }
+  ]
 };
 D772_SECTION_TWO_CONTENT['d772-s2-l4']={
   "sourceLabel": "COURSE-PROVIDED D772 \u2022 SECTION 2 \u2022 LESSON 4",

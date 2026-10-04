@@ -3,3 +3,7 @@ html,body{background:radial-gradient(circle at 50% 0%,#2e1a3b 0,#160e20 46%,#0e0
 body:before{content:"MOONLIT COLLEGIUM • GUARDIAN RESIDENCE";position:fixed;left:50%;top:10px;transform:translateX(-50%);z-index:3;padding:7px 14px;border:1px solid rgba(224,188,116,.28);border-radius:999px;background:rgba(20,12,28,.72);color:#e9d19c;font:700 10px/1.2 Georgia,serif;letter-spacing:.11em;pointer-events:none;backdrop-filter:blur(8px)}
 canvas{box-shadow:0 0 0 1px rgba(229,193,120,.13),0 24px 80px rgba(4,1,8,.45)}
 @media(max-width:700px){body:before{max-width:78vw;text-align:center;white-space:normal;font-size:9px}}
+/* Warm walnut/brass framing around the existing living Phaser residence. */
+html,body{background:radial-gradient(ellipse at 16% 12%,#a96e3028,transparent 40%),radial-gradient(ellipse at 80% 0%,#66518b33,transparent 50%),linear-gradient(115deg,#2b1917,#17101e 55%,#352133)}
+body:before{border:1px solid #bb935b;border-radius:4px;background:linear-gradient(110deg,#392620ed,#2c1c30ed);color:#f4dfb5;box-shadow:0 5px 18px #0005;font-size:11px;letter-spacing:.09em}
+canvas{box-shadow:0 0 0 5px #241516,0 0 0 7px #9c7546,0 28px 80px #04010688}

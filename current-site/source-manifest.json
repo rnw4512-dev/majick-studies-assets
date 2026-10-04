@@ -110,10 +110,10 @@
     "campus-runtime.js": "9b6293f0932dfd75fa35bf2b0d32f8bbfb70369cbd10eea2386122062b255ebd",
     "classroom-library-life.css": "c8531b8bd6e72ad6db8429bd3781af4021abdd6cd222a814829c75a7cb763ab0",
     "classroom-library-life.js": "2f5c3b0778305969555e9efea408657fc8036640d09b5a7200eb49f857688f7c",
-    "collegium-atmosphere.css": "4802f569a4904df9a17ed389d986970928ca39e75f50334350a494a8d5737ed7",
+    "collegium-atmosphere.css": "6212caaaec806bb3531d26de0758a21ec897aaae0571b4e95d77db8c475b9edb",
     "collegium-atmosphere.js": "f86e878d705d89f477fc091c09a9e3ade23b190cb45635a13286a1f743f9dde3",
     "course-tutor.css": "43ebde61c10fad7b5f56927eb2ad2889bdeb7cacc01eeb59d3c6ff29bca879c9",
-    "course-tutor.js": "d5acb8257ba1d49f87fe6d3d16f8ae4872724b40776d259972e45543d486da58",
+    "course-tutor.js": "11cf5d506c61bf2e3cfc5ea2c7dea617e1a9611194167343b590393a8048c081",
     "courseManager.js": "5a3bed03fc53028587e4a14d19056489b83e411ea1ecff5a4afbf196c5196681",
     "d755-retake.css": "e487a5e8ca4c069b7b9e9dabb603c8462ddcf81cb432b33b2e3395cce3a721d3",
     "d755-retake.js": "504ece754402f90278b7af02d6fd01c9183639c6777c43c75db06e44815b1935",
@@ -340,7 +340,7 @@
     "sanctuary/phaser.min.js": "8634d4b539506bcffba0e4f551b19d0e2b57a0e5ca4a3f215af9b59b9c58319e",
     "sanctuary/sanctuary-alive.js": "b978d7c4ba076316548f44cc284a257c200b7fc8351544f1e330fa3e228a573b",
     "sanctuary/sanctuary-customize.js": "d5097750f91db9b45a35c97bda43d557ba05b9c412d8c1d85c678598a303284e",
-    "sanctuary/sanctuary-dorm.css": "5694b50b1e7d9f2b60f4e39fd1c6480a0a68b2f0f93c20794cfee580778f3cea",
+    "sanctuary/sanctuary-dorm.css": "1ca02a17ea82e9798b9b8633846e09bf6e2f1f512f4daec00360b51b97b20329",
     "sanctuary/sanctuary-dorm.js": "01bb1a1c4ade57d61d6c5ff0eb2227b1e7965ca655b87a129458c1a28fa0dfc1",
     "sanctuary/sanctuary-life.js": "e70fc627cfc67835f2c9b350e0afe320d84ef56af43fbf7658ed398bb8ef6392",
     "sanctuary/sanctuary-recovery.js": "a0fb9274bf7b7f2456d72507aeb2906170407af81714d2b98d9069a01e5ad626",
@@ -389,6 +389,9 @@
     "lesson-visuals/distribution-skewed-left.svg": "33b980ffd59bf94a68ecdae2a4e94d20481799cfc467633378664ae9f0b1998f",
     "coverage/d772-s2-l3-quiz.json": "a4546a076914c6e18d04f7e2ab9f50fbe9efb36a696a1ebda7fc3ee8ecb3e5b6",
     "save-safety.js": "dff6eb9f3126315b541b59330b50de12993441da3d482b6312de16c6699995a0",
-    "coverage/d772-s2-l4-1.json": "965a11a0c9215cdf0d06f28d39c00fb26befd80ac6c06852965e2bc7485bb612"
+    "coverage/d772-s2-l4-1.json": "965a11a0c9215cdf0d06f28d39c00fb26befd80ac6c06852965e2bc7485bb612",
+    "coverage/d772-s2-l4-2.json": "db55a222f9cb7751c60ffbc69db56c8ba6fe9962bc6375ead816221a4206e1eb",
+    "assets/learn-classroom-v1.png": "1b8c5f294309515ab2c7305833cb95610300791ac310c11dbbb91646385cb7ab",
+    "lesson-visuals/iqr-middle-half.svg": "82b18e918bae195bbf39329ebd69032e42be35d1bfc32f0385e997daf0e0ef8b"
   }
 }
