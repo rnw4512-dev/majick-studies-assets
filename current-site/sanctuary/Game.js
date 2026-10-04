@@ -3363,18 +3363,6 @@ class Game extends Phaser.Scene
 // Existing Phase 4 familiar movement methods and motion art are untouched.
 // =============================================================
 
-Game.prototype.createBackground = function()
-{
-    const W=this.worldWidth, H=this.worldHeight;
-
-    // One room backdrop; the existing furniture and Guardian owners render above it.
-    this.add.rectangle(W/2,H/2,W,H,0x1c111b).setDepth(-30);
-    if(this.textures.exists('academy-sanctuary-bg')){
-        this.add.image(W/2,H/2,'academy-sanctuary-bg').setDisplaySize(W,H).setDepth(-29);
-    }
-
-};
-
 Game.prototype.createDecor = function()
 {
     const gold=0xd0a06f, dark=0x241522, plum=0x4a2340, velvet=0x65345a;

@@ -6,81 +6,12 @@
 
 Game.prototype.createBackground = function()
 {
-    const W=this.worldWidth;
-    this.add.rectangle(W/2,330,W,663,0x09070d,1).setDepth(-50);
-    this.add.rectangle(W/2,330,W,663,0x160d1c,.96).setDepth(-49);
-    this.add.rectangle(W/2,328,W-40,620,0x201323,.94).setStrokeStyle(3,0x7d5f64,.20).setDepth(-48);
-    for(let y=46;y<650;y+=64)this.add.rectangle(W/2,y,W-70,2,0xb38b82,.08).setDepth(-47);
-
-    const buildShelf=(x,w,h)=>{
-        const c=this.add.container(x,345).setDepth(-39);
-        c.add(this.add.rectangle(0,0,w,h,0x140c12,.98).setStrokeStyle(5,0x6f4d3b,.62));
-        c.add(this.add.rectangle(0,-h/2+18,w-18,26,0x3b271f,.98).setStrokeStyle(2,0xb28762,.35));
-        const ys=[-210,-135,-60,15,90,165];
-        ys.forEach((yy,row)=>{
-            c.add(this.add.rectangle(0,yy+23,w-22,10,0x4d3124,.96).setStrokeStyle(1,0xc09a6b,.25));
-            const count=Math.max(7,Math.floor((w-44)/25));
-            for(let i=0;i<count;i++){
-                const hues=[0x512d45,0x344957,0x4d5131,0x5b3a2b,0x372d58,0x6a4b45];
-                const bh=31+((i+row)%4)*7;
-                c.add(this.add.rectangle(-w/2+32+i*24,yy+15-bh/2,15,bh,hues[(i+row)%hues.length],.98).setStrokeStyle(1,0xd1ac79,.18));
-            }
-        });
-        [-w*.28,0,w*.29].forEach((dx,i)=>{
-            const orb=this.add.circle(dx,-250+(i%2)*18,10,[0x8e65d7,0x5fa7a7,0xc26a9a][i],.86).setStrokeStyle(2,0xf0d9ff,.42);c.add(orb);
-            this.tweens.add({targets:orb,alpha:.45,scale:1.18,duration:1500+i*180,yoyo:true,repeat:-1,ease:'Sine.inOut'});
-        });
-        return c;
-    };
-    buildShelf(225,360,580);buildShelf(1975,360,580);
-
-    const arch=this.add.container(1100,300).setDepth(-43);
-    arch.add(this.add.ellipse(0,-62,690,520,0x0c1225,.98).setStrokeStyle(12,0x8a6858,.75));
-    arch.add(this.add.rectangle(0,92,690,300,0x0c1225,.98).setStrokeStyle(12,0x8a6858,.75));
-    arch.add(this.add.rectangle(0,20,635,425,0x171331,.72).setStrokeStyle(2,0xd6b27d,.22));
-    arch.add(this.add.rectangle(0,20,7,430,0xa67d62,.54));
-    arch.add(this.add.rectangle(0,-66,620,6,0xa67d62,.50));
-    const moon=this.add.circle(128,-140,83,0xf3ddb2,.86).setStrokeStyle(6,0xffedc9,.20);arch.add(moon);
-    arch.add(this.add.circle(159,-160,74,0x171331,.96));
-    for(let i=0;i<36;i++){
-        const star=this.add.circle(Phaser.Math.Between(-280,285),Phaser.Math.Between(-250,170),Phaser.Math.Between(1,3),Phaser.Math.RND.pick([0xffdfa0,0xc8a9ff,0x83cbd6]),Phaser.Math.FloatBetween(.32,.82));arch.add(star);
-        if(i%5===0)this.tweens.add({targets:star,alpha:.16,scale:1.35,duration:Phaser.Math.Between(1100,2400),yoyo:true,repeat:-1});
+    const W=this.worldWidth,H=this.worldHeight;
+    this.add.rectangle(W/2,H/2,W,H,0x1c111b).setDepth(-50);
+    if(this.textures.exists('academy-sanctuary-bg')){
+        this.add.image(W/2,H/2,'academy-sanctuary-bg').setDisplaySize(W,H).setDepth(-49);
     }
-    [-255,-180,-100,-20,72,160,240].forEach((dx,i)=>{
-        const hh=[105,165,128,205,142,186,112][i];
-        arch.add(this.add.rectangle(dx,165-hh/2,62,hh,0x080a13,.94));
-        arch.add(this.add.triangle(dx,105-hh,-38,58,38,58,0,-18,0x090a14,.96));
-        if(i===3)arch.add(this.add.rectangle(dx,18-hh,7,75,0x090a14,.96));
-    });
 
-    [420,520,1665,1770].forEach((x,vi)=>{
-        this.add.rectangle(x,138,5,260,0x31402b,.82).setAngle(vi%2?7:-6).setDepth(-35);
-        for(let j=0;j<10;j++){
-            const yy=40+j*25,side=j%2?1:-1;
-            this.add.ellipse(x+side*(12+(j%3)*4),yy,25,12,0x496344,.78).setAngle(side*28).setDepth(-34);
-            if(j%2===0)this.add.circle(x+side*24,yy+6,6,0x73558b,.68).setDepth(-33);
-        }
-    });
-
-    this.add.rectangle(1760,500,300,250,0x160d12,.99).setStrokeStyle(8,0x6f4e3f,.72).setDepth(-31);
-    this.add.ellipse(1760,528,190,165,0x070609,.99).setStrokeStyle(5,0x8a6550,.55).setDepth(-30);
-    const fireGlow=this.add.ellipse(1760,585,175,82,0xff8a46,.14).setDepth(-28);
-    for(let i=0;i<5;i++){
-        const flame=this.add.triangle(1715+i*23,575,-14,28,14,28,0,-26,i%2?0xffb55f:0xe87346,.82).setDepth(-27);
-        this.tweens.add({targets:flame,scaleY:1.25,alpha:.48,duration:420+i*55,yoyo:true,repeat:-1,ease:'Sine.inOut'});
-    }
-    this.tweens.add({targets:fireGlow,alpha:.28,scaleX:1.14,duration:1200,yoyo:true,repeat:-1});
-
-    this.add.rectangle(W/2,812,W,300,0x150c12,1).setDepth(-22);
-    for(let x=0;x<W;x+=96)this.add.rectangle(x+48,812,92,300,(Math.floor(x/96)%2)?0x21121a:0x1b0f16,.99).setStrokeStyle(1,0x704939,.14).setDepth(-21);
-    this.add.ellipse(1110,818,1490,232,0x4a1d3c,.90).setStrokeStyle(7,0xa47a5f,.72).setDepth(-19);
-    this.add.ellipse(1110,818,1290,178,0x201024,.84).setStrokeStyle(2,0xe1bc7c,.36).setDepth(-18);
-    this.add.text(1110,812,'☾     ✦     ◇     ✦     ☾',{fontFamily:'Georgia',fontSize:'40px',color:'#d6b277'}).setAlpha(.34).setOrigin(.5).setDepth(-17);
-
-    for(let i=0;i<44;i++){
-        const mote=this.add.circle(Phaser.Math.Between(70,W-70),Phaser.Math.Between(55,715),Phaser.Math.Between(1,4),Phaser.Math.RND.pick([0xf4cf8f,0xb896df,0x73b9c4]),Phaser.Math.FloatBetween(.08,.30)).setDepth(-10);
-        this.tweens.add({targets:mote,y:mote.y-Phaser.Math.Between(20,62),x:mote.x+Phaser.Math.Between(-20,20),alpha:.03,duration:Phaser.Math.Between(2600,5600),yoyo:true,repeat:-1,ease:'Sine.inOut'});
-    }
 };
 
 Game.prototype.createDecor = function()
