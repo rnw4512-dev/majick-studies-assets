@@ -1,6 +1,6 @@
 (()=>{
 'use strict';
-const VERSION='3.3.46';
+const VERSION='3.4.2';
 const E=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const PERSONALITY={
   luna:{place:'the moon window',habit:'studies the room before approaching',moment:'Velora settles beside your notes, then offers a slow, approving blink.',care:'Velora leans into your hand and returns to her watch by the window.',sigil:'☾'},
