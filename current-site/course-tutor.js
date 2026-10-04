@@ -2233,6 +2233,67 @@ const D772_TUTOR_HELP={
     simple:'First find the two variables. Then ask: “Does X help explain, predict, or influence Y?” X is explanatory; Y is response. After that, classify each variable separately: labels/categories = categorical; numerical counts/measurements = quantitative. ROLE and DATA TYPE are two different labels.',
     example:'Does type of breakfast predict the number of minutes a student can sustain attention? Breakfast type is categorical + explanatory. Attention minutes are quantitative + response.',
     quickCheck:{prompt:'A study asks whether school transportation type (bus, walk, car) predicts arrival time in minutes. How is transportation type classified?',choices:['Categorical + explanatory','Quantitative + explanatory','Categorical + response','Quantitative + response'],answer:0,rationale:'Transportation type consists of categories and is the predictor in the research question, so it is categorical + explanatory.'}
+  },
+  'd772-s2-l4-1':{
+    simple:'Center is three different questions. Mean asks for the fair-share total: add every observation and divide by how many observations there are. Median asks for the middle after sorting. Mode asks what occurs most often. Keep the procedure separate from the answer value.',
+    example:'For {2,2,5,7,9}, mean = 25/5 = 5, median = 5, and mode = 2. The same data can have three different center values because each measure answers a different question.',
+    quickCheck:{prompt:'For {1,3,3,4,9}, which statement is correct?',choices:['Mean=4, median=3, mode=3','Mean=3, median=4, mode=9','Mean=5, median=3, no mode','Mean=4, median=4, mode=3'],answer:0,rationale:'The total is 20 across five observations, so mean=4. The sorted middle value is 3, and 3 occurs most often.'},
+    repairs:[
+      {ids:['s2l41-p1','s2l41-course-p1','s2l41-course-p4'],variants:[
+        {simple:'Your last miss points to the mean calculation. Count observations, not distinct values. Repeated values still occupy separate spots in the data set and each one contributes to the total and to n.',example:'For {2,2,2,8}, the sum is 14 and n=4, so the mean is 3.5. Dividing by the two distinct values would be the wrong denominator.',cue:'MEAN = total of every observation ÷ number of observations.',check:{prompt:'What is the mean of {4,4,7,9}?',choices:['6','6.5','7','24'],answer:0,rationale:'The total is 24 and there are four observations, so 24/4=6.'}},
+        {simple:'Try a balance idea: imagine redistributing the total equally across every data point. The mean is the equal share. That is why duplicate observations must stay in the count.',example:'For {1,1,6,8}, the total 16 shared equally across four observations gives a mean of 4.',cue:'Do not compress duplicates before averaging.',check:{prompt:'The values {5,5,5,9,11} total 35. What is the mean?',choices:['5','7','8.75','35'],answer:1,rationale:'There are five observations, so 35/5=7.'}}
+      ]},
+      {ids:['s2l41-p2','s2l41-p3','s2l41-p5','s2l41-course-p2','s2l41-course-p5'],variants:[
+        {simple:'Your last miss is about median position versus median value. First sort. Then locate the middle position. Finally read the value there—or average the two middle values for even n. A position number is not automatically the median.',example:'With six sorted values {1,4,6,10,11,20}, the middle positions are 3 and 4, but the median is (6+10)/2=8.',cue:'SORT → LOCATE → READ/AVERAGE VALUES.',check:{prompt:'For sorted {2,5,8,12,13,20}, what is the median?',choices:['8','10','12','3.5'],answer:1,rationale:'Average the 3rd and 4th values: (8+12)/2=10.'}},
+        {simple:'Think of the median as a data value sitting at the center of an ordered line. The formula tells you where to look; it does not replace the value you find there.',example:'For 9 observations, (9+1)/2=5 tells you to read the 5th ordered observation. If that value is 42, the median is 42—not 5.',cue:'Position tells WHERE. Median tells WHAT VALUE.',check:{prompt:'A sorted set has 7 observations and its 4th value is 18. What is the median?',choices:['4','7','18','21'],answer:2,rationale:'For seven observations, the 4th value is the middle observation, so the median is 18.'}}
+      ]},
+      {ids:['s2l41-p4','s2l41-p7','s2l41-course-p3','s2l41-course-p6'],variants:[
+        {simple:'Your last miss is about mode. Count frequencies and identify the greatest frequency. Every value tied at that highest frequency is a mode. A value that merely repeats is not automatically a mode.',example:'In {2,2,3,3,4,4,4}, only 4 is the mode because frequency 3 is higher than frequency 2.',cue:'MODE = highest frequency, including ties for highest.',check:{prompt:'What are the modes of {1,1,2,3,3,4}?',choices:['1 only','3 only','1 and 3','No mode'],answer:2,rationale:'1 and 3 each occur twice, tying for the greatest frequency.'}},
+        {simple:'For categorical data, mode is often the only measure of center that makes sense. You can count which label appears most; you cannot meaningfully average arbitrary labels.',example:'If shirt colors are blue, blue, green, red, blue, the mode is blue. A mean or numerical median is not meaningful for the color names.',cue:'Categories can have a mode without having a numerical mean.',check:{prompt:'Survey choices are tea, coffee, tea, water, tea. Which measure identifies the most common choice?',choices:['Mean','Median','Mode','Range'],answer:2,rationale:'Mode identifies the most frequent category: tea.'}}
+      ]}
+    ]
+  },
+  'd772-s2-l4-2':{
+    simple:'Spread tells how far values are separated. For this course, sort first, find Q2, split the data, and for odd n remove only the one overall median observation from both halves. Then Q1 and Q3 are the half-medians. Range uses max−min; IQR uses Q3−Q1.',
+    example:'For {1,3,5,7,9,11,13}, Q2=7. Exclude that one 7. Lower {1,3,5} gives Q1=3; upper {9,11,13} gives Q3=11. IQR=8 and range=12.',
+    quickCheck:{prompt:'Using the course convention, what is Q1 for {2,4,6,8,10,12,14}?',choices:['4','5','6','8'],answer:0,rationale:'Q2=8 is excluded. The lower half is {2,4,6}, whose median is 4.'},
+    repairs:[
+      {ids:['s2l42-p1','s2l42-p6','s2l42-course-airline-1','s2l42-course-airline-2','s2l42-course-airline-3'],variants:[
+        {simple:'Your last miss points to the split step. With odd n, remove the single middle observation after sorting, then build the lower and upper halves. Do not remove every value equal to the median.',example:'For {1,2,4,4,4,7,9}, the middle observation is the fourth 4. Remove that one position only; the other 4s remain where they belong.',cue:'Odd n: exclude ONE middle observation, not every matching value.',check:{prompt:'For {2,4,4,4,8,10,12}, what is the lower half after finding the median?',choices:['{2,4,4}','{2,4}','{2,4,4,4}','{4,8,10}'],answer:0,rationale:'The fourth observation is the overall median and is excluded; the first three observations form the lower half.'}},
+        {simple:'Quartiles are found from positions in the ordered list, so duplicate values still count as separate observations. Keep the full sorted list intact until you remove only the one overall median position when n is odd.',example:'In the airline-fee list, several $100 values remain in both halves even though Q2 is $100. The median is one observation position, not a command to delete all $100s.',cue:'Preserve duplicates; split by position.',check:{prompt:'Why do repeated $100 values remain in the halves when the median is $100?',choices:['Because only the single middle observation is excluded','Because duplicates do not count','Because Q2 must be removed twice','Because quartiles ignore order'],answer:0,rationale:'The course method excludes the one overall median observation, not every observation with the same value.'}}
+      ]},
+      {ids:['s2l42-p2','s2l42-p4','s2l42-p5','s2l42-course-airline-4'],variants:[
+        {simple:'Your last miss is about IQR. The IQR is a distance on the number line: Q3−Q1. It describes the numerical width containing the middle roughly 50% of observations.',example:'If Q1=12 and Q3=20, IQR=8 units. It does not mean there are eight observations and it is not half of the full range.',cue:'IQR = RIGHT BOX EDGE − LEFT BOX EDGE.',check:{prompt:'If Q1=18 and Q3=31, what is the IQR?',choices:['13','49','24.5','31'],answer:0,rationale:'IQR=31−18=13.'}},
+        {simple:'Picture the box in a box plot. Its left edge is Q1 and right edge is Q3. The width of that box—measured in the variable’s units—is the IQR.',example:'A box from 75 dollars to 125 dollars has IQR 50 dollars, even if the entire data range is larger.',cue:'The box width is the middle-50% span.',check:{prompt:'A box plot has Q1=40 and Q3=70. Which statement is correct?',choices:['IQR=30','Range=30','There are exactly 30 observations','Median=30'],answer:0,rationale:'The box spans 70−40=30 units, so IQR=30.'}}
+      ]},
+      {ids:['s2l42-p3','s2l42-course-airline-5'],variants:[
+        {simple:'Your last miss is about range. Range measures only the full endpoint span: maximum minus minimum. Do not report either endpoint itself.',example:'If ages run from 14 to 52, the range is 38 years.',cue:'RANGE = MAX − MIN.',check:{prompt:'Values run from 60 to 150. What is the range?',choices:['90','150','60','210'],answer:0,rationale:'150−60=90.'}},
+        {simple:'Use range when the question asks for the total numerical spread from the smallest observed value to the largest observed value.',example:'A temperature data set from 48°F to 83°F has a range of 35°F.',cue:'Endpoints are inputs; their difference is the range.',check:{prompt:'The minimum is 7 and maximum is 19. What is the range?',choices:['12','26','19','7'],answer:0,rationale:'19−7=12.'}}
+      ]}
+    ]
+  },
+  'd772-s2-l4-3':{
+    simple:'A box plot is the five-number summary placed on a scale: minimum, Q1, median, Q3, maximum. The box runs from Q1 to Q3, the line inside is the median, and these course examples use whiskers at the observed minimum and maximum.',
+    example:'For {10,20,30,40,50,60,70}, the five-number summary is 10,20,40,60,70. The box goes 20→60, the median line is at 40, and whiskers reach 10 and 70.',
+    quickCheck:{prompt:'A box plot has Q1=25, median=40, Q3=55. Which distance is the IQR?',choices:['15','30','40','55'],answer:1,rationale:'IQR is the distance from Q1 to Q3: 55−25=30.'},
+    repairs:[
+      {ids:['s2l43-p1'],variants:[
+        {simple:'Your last miss is about matching a data set to a five-number summary. Sort the candidate data, find the median, then apply the course median-of-halves rule for Q1 and Q3. Check the endpoints last.',example:'For {1,2,4,4,5,8,9}, summary = 1,2,4,8,9: median 4; lower-half median 2; upper-half median 8.',cue:'Verify Q2, then Q1/Q3, then min/max.',check:{prompt:'Using the course rule, what is the five-number summary of {1,2,3,4,5,6,7}?',choices:['1,2,4,6,7','1,3,4,5,7','1,2.5,4,5.5,7','1,2,3,6,7'],answer:0,rationale:'Median=4; lower {1,2,3} gives Q1=2; upper {5,6,7} gives Q3=6.'}},
+        {simple:'Treat the five numbers as five checkpoints rather than judging a box plot by appearance. A candidate must satisfy all five checkpoints on the same scale.',example:'If a plot claims min=2 and max=11, any dataset beginning above 2 or ending below 11 can be rejected immediately before checking quartiles.',cue:'Five checkpoints beat visual guessing.',check:{prompt:'A claimed summary is {2,4,6,8,11}. Which fact must be true?',choices:['The median is 6','The mean is 6','There are exactly 9 observations','No value repeats'],answer:0,rationale:'The third number in the five-number summary is the median (Q2).'}}
+      ]},
+      {ids:['s2l43-p2','s2l43-p3','s2l43-p6','s2l43-p7'],variants:[
+        {simple:'Your last miss is about reading the parts of the plot. Box edges are Q1 and Q3. The line inside the box is the median. Under this course convention, whisker endpoints are the observed minimum and maximum.',example:'If the axis continues to 100 but the right whisker stops at 92, the maximum is 92. The axis is only a ruler; it can extend beyond the data.',cue:'Read the MARK, not the edge of the ruler.',check:{prompt:'A box plot axis ends at 80, but the right whisker ends at 74. What is the maximum?',choices:['80','74','Q3','Cannot tell'],answer:1,rationale:'The observed maximum is at the whisker endpoint: 74.'}},
+        {simple:'Use the geometry as labels: left box wall = Q1, inside line = median, right box wall = Q3. The distance between the two box walls is the IQR.',example:'If the box edges sit at 30 and 65, IQR=35 no matter where the median line falls inside that box.',cue:'BOX = Q1 to Q3; INNER LINE = Q2.',check:{prompt:'Which two marks determine IQR directly from a box plot?',choices:['Two whisker endpoints','Q1 and Q3 box edges','Minimum and median','Median and maximum'],answer:1,rationale:'IQR=Q3−Q1, so use the two box edges.'}}
+      ]},
+      {ids:['s2l43-p4','s2l43-p5'],variants:[
+        {simple:'Your last miss is about what segment length means. Quartile sections contain roughly equal portions of the observations, but their numerical widths can differ. A longer segment means those values are more spread out, not that it contains more observations.',example:'Two quartile segments may each contain about 25% of the data while one spans 5 points and the other spans 30 points.',cue:'COUNT is roughly equal by quartile; LENGTH shows spread.',check:{prompt:'Two adjacent quartile segments contain roughly the same share of observations, but one is much longer. What differs?',choices:['Numerical spread','Number of quartiles','Sample size must double','The longer segment contains 50%'],answer:0,rationale:'Longer length shows a wider numerical span for that quarter, not more observations.'}},
+        {simple:'Do not read a box plot like a bar chart. The length of a box or whisker segment is measured in data units. It is not a visual count of people or observations.',example:'A long 60→130 whisker can still represent about one quarter of the ordered observations, just spread across 70 units.',cue:'Box-plot length = distance in values.',check:{prompt:'A very short Q1→median segment most directly means what?',choices:['That quarter is tightly clustered in value','Few observations are in that quarter','The median is wrong','The mean equals Q1'],answer:0,rationale:'A short segment means the values in that quartile occupy a small numerical interval.'}}
+      ]},
+      {ids:['s2l43-p8'],variants:[
+        {simple:'Your last miss is about evidence, not plotting. A box plot describes a distribution. It does not by itself show that an intervention caused the distribution to change.',example:'A school can use a low exercise-time summary to describe need, but it would need an appropriate study comparing outcomes to test whether new equipment causes improvement.',cue:'DESCRIPTION ≠ CAUSATION.',check:{prompt:'A box plot shows low baseline reading minutes. What can it establish by itself?',choices:['The distribution of observed reading minutes','That a new program will increase reading','That low minutes cause low grades','That every student is below average'],answer:0,rationale:'The plot summarizes observed values; it does not test a causal intervention.'}},
+        {simple:'Separate “what the data look like” from “why they look that way.” Five-number summaries answer the first question only.',example:'A salary box plot can show center and spread, but it cannot prove which policy caused those salaries.',cue:'Plots summarize outcomes; study design supports causal claims.',check:{prompt:'What extra ingredient is needed before claiming an intervention caused improvement?',choices:['A larger axis','An appropriate causal study design','A centered median line','Equal whisker lengths'],answer:1,rationale:'Causal claims require evidence from an appropriate study design, not just a descriptive plot.'}}
+      ]}
+    ]
   }
 };
 
@@ -3108,18 +3169,43 @@ function bindLessonExperience(official,lessonId,courseId=cid()){
 }
 
 function helpFor(lesson){return D772_TUTOR_HELP[lesson?.id]||null}
+function recentWrongForLesson(lesson,id=cid()){
+  const qs=questionsForLesson(lesson,id),byId=new Map(qs.map(q=>[q.id,q]));
+  const wrong=(prog(id).answers||[]).filter(a=>a&&!a.correct&&byId.has(a.qid));
+  const last=wrong[wrong.length-1]||null;
+  if(!last)return null;
+  return {attempt:last,question:byId.get(last.qid),sameQuestionMisses:wrong.filter(a=>a.qid===last.qid).length};
+}
+function repairFor(lesson,id=cid()){
+  const help=helpFor(lesson),miss=recentWrongForLesson(lesson,id);
+  if(!help?.repairs?.length||!miss)return null;
+  const repair=help.repairs.find(r=>(r.ids||[]).includes(miss.question?.id));
+  if(!repair)return null;
+  const variants=repair.variants||[];
+  const variant=variants.length?variants[(Math.max(1,miss.sameQuestionMisses)-1)%variants.length]:repair;
+  return {miss,...repair,...variant};
+}
 function relatedMistakesHtml(lesson,id=cid()){
   const qs=questionsForLesson(lesson,id),byId=new Map(qs.map(q=>[q.id,q]));
   const wrong=(prog(id).answers||[]).filter(a=>a&&!a.correct&&byId.has(a.qid)).slice(-4).reverse();
+  const repair=repairFor(lesson,id);
+  const repairLead=repair?'<div class="tutorRepairLead"><b>Current repair target</b><p>'+E(repair.cue||repair.simple||'Use the lesson clue before retrying.')+'</p></div>':'';
   if(wrong.length){
-    return '<div class="tutorAssistMistakes"><p>These are recent misses from this lesson. Re-read the clue that separates the concepts before answering again.</p>'+wrong.map((a,i)=>{const q=byId.get(a.qid)||{};return '<article><small>RECENT MISS '+(i+1)+'</small><b>'+E(q.prompt||'Lesson question')+'</b>'+(q.why?'<p>'+E(q.why)+'</p>':'')+'</article>'}).join('')+'</div>';
+    return '<div class="tutorAssistMistakes">'+repairLead+'<p>These are recent misses from this lesson. The newest miss changes the repair explanation and transfer check so you are not simply seeing the same question again.</p>'+wrong.map((a,i)=>{const q=byId.get(a.qid)||{};return '<article><small>RECENT MISS '+(i+1)+'</small><b>'+E(q.prompt||'Lesson question')+'</b>'+(q.why?'<p>'+E(q.why)+'</p>':'')+'</article>'}).join('')+'</div>';
   }
   return '<div class="tutorAssistMistakes"><p>You do not have a recent wrong answer saved for this lesson yet. Watch these high-priority traps:</p><ul>'+(lesson.traps||[]).map(x=>'<li>'+E(x)+'</li>').join('')+'</ul></div>';
 }
-function quickQuizHtml(lesson,id=cid()){
+function adaptiveCheck(lesson,id=cid()){
+  const repair=repairFor(lesson,id);
+  if(repair?.check)return {check:repair.check,adaptive:true,repair};
   const built=helpFor(lesson)?.quickCheck;
-  if(built){
-    return '<div class="tutorQuickQuiz"><p class="tutorQuickPrompt">'+E(built.prompt)+'</p><div class="tutorQuickChoices">'+built.choices.map((x,i)=>'<button type="button" data-tutor-quick-choice="'+i+'">'+String.fromCharCode(65+i)+'. '+E(x)+'</button>').join('')+'</div><div class="tutorQuickFeedback" aria-live="polite"></div></div>';
+  return built?{check:built,adaptive:false,repair:null}:null;
+}
+function quickQuizHtml(lesson,id=cid()){
+  const adaptive=adaptiveCheck(lesson,id);
+  if(adaptive?.check){
+    const built=adaptive.check;
+    return '<div class="tutorQuickQuiz">'+(adaptive.adaptive?'<p class="tutorRepairBadge">New transfer scenario based on your latest miss</p>':'')+'<p class="tutorQuickPrompt">'+E(built.prompt)+'</p><div class="tutorQuickChoices">'+built.choices.map((x,i)=>'<button type="button" data-tutor-quick-choice="'+i+'">'+String.fromCharCode(65+i)+'. '+E(x)+'</button>').join('')+'</div><div class="tutorQuickFeedback" aria-live="polite"></div></div>';
   }
   const q=questionsForLesson(lesson,id)[0];
   if(q&&Array.isArray(q.choices)&&q.choices.length){
@@ -3129,44 +3215,47 @@ function quickQuizHtml(lesson,id=cid()){
 }
 function renderTutorAssist(kind,lesson,ch,id=cid()){
   const panel=document.getElementById('tutorAssistPanel');if(!panel)return;
-  const help=helpFor(lesson);
+  const help=helpFor(lesson),repair=repairFor(lesson,id);
   let title='',body='';
   if(kind==='simple'){
-    title='Explain it simpler';
-    body='<p>'+E(help?.simple||lesson.goal||'Focus on the main idea, then identify the clue in the scenario that tells you which concept applies.')+'</p>';
+    title=repair?'Repair this idea':'Explain it simpler';
+    body='<p>'+E(repair?.simple||help?.simple||lesson.goal||'Focus on the main idea, then identify the clue in the scenario that tells you which concept applies.')+'</p>'+(repair?.cue?'<div class="tutorRepairCue"><b>Use this cue</b><span>'+E(repair.cue)+'</span></div>':'');
   }else if(kind==='example'){
-    title='Show me an example';
-    body='<p>'+E(help?.example||'Use the current lesson goal and compare it with one concrete example from your uploaded notes.')+'</p>';
+    title=repair?'Try a different example':'Show me an example';
+    body='<p>'+E(repair?.example||help?.example||'A lesson-specific worked example is not available yet. Use the worked example in this classroom and the source coverage in Review.')+'</p>';
   }else if(kind==='mistakes'){
     title='Related mistakes';
     body=relatedMistakesHtml(lesson,id);
   }else if(kind==='quiz'){
-    title='Quick check';
+    title=repair?'Transfer check':'Quick check';
     body=quickQuizHtml(lesson,id);
   }
   panel.hidden=false;
   panel.innerHTML='<div class="tutorAssistHead"><div><small>MAJICK TUTOR • '+E(lessonNumberLabel(lesson))+'</small><h3>'+E(title)+'</h3></div><button type="button" id="tutorAssistClose" aria-label="Close tutor help">×</button></div><div class="tutorAssistBody">'+body+'</div>';
   document.getElementById('tutorAssistClose')?.addEventListener('click',()=>{panel.hidden=true;panel.innerHTML=''});
-  if(kind==='quiz'&&help?.quickCheck){
-    panel.querySelectorAll('[data-tutor-quick-choice]').forEach(btn=>btn.addEventListener('click',()=>{
-      const picked=Number(btn.dataset.tutorQuickChoice),correct=picked===help.quickCheck.answer;
-      panel.querySelectorAll('[data-tutor-quick-choice]').forEach(x=>x.disabled=true);
-      const feedback=panel.querySelector('.tutorQuickFeedback');
-      if(feedback)feedback.innerHTML='<b>'+(correct?'✓ Correct':'Not yet')+'</b><p>'+E(help.quickCheck.rationale)+'</p>';
-      btn.classList.add(correct?'correct':'incorrect');
-    }));
-  }
-  if(kind==='quiz'&&!help?.quickCheck){
-    const q=questionsForLesson(lesson,id)[0];
-    if(q&&Array.isArray(q.choices)){
-      const correctIndex=q.choices.findIndex(x=>String(x)===String(q.answer));
-      panel.querySelectorAll('[data-tutor-bank-choice]').forEach(btn=>btn.addEventListener('click',()=>{
-        const picked=Number(btn.dataset.tutorBankChoice),correct=picked===correctIndex;
-        panel.querySelectorAll('[data-tutor-bank-choice]').forEach(x=>x.disabled=true);
+  if(kind==='quiz'){
+    const adaptive=adaptiveCheck(lesson,id);
+    if(adaptive?.check){
+      const built=adaptive.check;
+      panel.querySelectorAll('[data-tutor-quick-choice]').forEach(btn=>btn.addEventListener('click',()=>{
+        const picked=Number(btn.dataset.tutorQuickChoice),correct=picked===built.answer;
+        panel.querySelectorAll('[data-tutor-quick-choice]').forEach(x=>x.disabled=true);
         const feedback=panel.querySelector('.tutorQuickFeedback');
-        if(feedback)feedback.innerHTML='<b>'+(correct?'✓ Correct':'Not yet')+'</b>'+(q.why?'<p>'+E(q.why)+'</p>':'');
+        if(feedback)feedback.innerHTML='<b>'+(correct?'✓ Correct':'Not yet')+'</b><p>'+E(built.rationale)+'</p>';
         btn.classList.add(correct?'correct':'incorrect');
       }));
+    }else{
+      const q=questionsForLesson(lesson,id)[0];
+      if(q&&Array.isArray(q.choices)){
+        const correctIndex=q.choices.findIndex(x=>String(x)===String(q.answer));
+        panel.querySelectorAll('[data-tutor-bank-choice]').forEach(btn=>btn.addEventListener('click',()=>{
+          const picked=Number(btn.dataset.tutorBankChoice),correct=picked===correctIndex;
+          panel.querySelectorAll('[data-tutor-bank-choice]').forEach(x=>x.disabled=true);
+          const feedback=panel.querySelector('.tutorQuickFeedback');
+          if(feedback)feedback.innerHTML='<b>'+(correct?'✓ Correct':'Not yet')+'</b>'+(q.why?'<p>'+E(q.why)+'</p>':'');
+          btn.classList.add(correct?'correct':'incorrect');
+        }));
+      }
     }
   }
 }
