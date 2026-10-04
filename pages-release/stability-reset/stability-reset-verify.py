@@ -12,7 +12,7 @@ for old in ('v3310-main.js','v3312-main.js','v3313-main.js','v3314-main.js','v33
 for old in ('v3311-sanctuary.js','v3312-sanctuary.js','v3313-sanctuary.js','v3314-sanctuary.js','v3315-sanctuary.js'):
     if old in san: fail('obsolete Sanctuary runtime still loaded: '+old)
 order=['v3310-ui-compat.js','v3312-ui-compat.js','guardian-registry.js','majick-state-core.js','guardian-care-economy.js','learning-lab.js','learning-plan.js','course-tutor.js','learn-mode.js','d755-retake.js','v3317-main.js','magical-college-home.js','v3322-main-recovery.js','guardian-core.js','study-progress-bridge.js','guardian-life-main.js']
-if 'game-realm.js?v=3400-product-flow' not in main or 'game-realm.css?v=3362-d772-review' not in main or main.find('game-realm.js?v=3400-product-flow')<main.find('guardian-life-main.js'): fail('Game Realm enhancement load order missing')
+if 'game-realm.js?v=3402-s2-l2-graphs' not in main or 'game-realm.css?v=3362-d772-review' not in main or main.find('game-realm.js?v=3402-s2-l2-graphs')<main.find('guardian-life-main.js'): fail('Game Realm enhancement load order missing')
 if 'Assessment Sigil Sort' not in (site/'game-realm.js').read_text(encoding='utf-8') or "activeCourse==='D755'" not in (site/'game-realm.js').read_text(encoding='utf-8'): fail('D755 Assessment Sigil Sort course gate missing')
 realm_src=(site/'game-realm.js').read_text(encoding='utf-8')
 for marker in ("VERSION='3.3.78-realm'","D772_REALM_SUPPLEMENT","v3377-d772-s2-l1-01","v3379-d772-s2-l1-07","v3379-d772-s2-l1-12","Types of Data","explanatory variable","response variable","MajickProductCore?.record?.('practice-complete'","MajickProductCore?.record?.('reward-earned'","realmQuestionPool","d772RealmPool","buildD772SectionReview","startD772SectionReview","majickRealmVariety='3378'"):
@@ -205,7 +205,7 @@ if lesson12.find("d772-s2-l1-2")<lesson12.find("const D772_SECTION_TWO="):
     fail('D772 Lesson 1.2 appears before Section 2 and may have leaked into Section 1')
 if "parentLessonId:'d772-s2-l1'" not in lesson12:
     fail('D772 Lesson 1.2 is not nested under Section 2 Lesson 1')
-if 'course-tutor.js?v=3401-s2-l1-2' not in main or 'course-tutor.css?v=3401-s2-l1-2' not in main:
+if 'course-tutor.js?v=3402-s2-l2-graphs' not in main or 'course-tutor.css?v=3402-s2-l2-graphs' not in main:
     fail('V3.4.1 Lesson 1.2 Tutor assets are not installed in index.html')
 
 product=(site/'product-core.js').read_text(encoding='utf-8')
@@ -227,7 +227,7 @@ if 'learning-plan.js?v=3324' not in main or 'learning-plan.css?v=3324' not in ma
 tutor=(site/'course-tutor.js').read_text(encoding='utf-8')
 for marker in ("window.MajickCourseTutor","D772_SECTION_ONE","D772_SECTION_TWO","d772-s2-l1-2","parentLessonId:'d772-s2-l1'","Explanatory and Response Variables","ROLE ≠ DATA TYPE","Does X help explain, predict, or influence Y?","I Teach • Two labels can describe the same variable","We Do • Guided example","lessonExperienceHtml","bindLessonExperience","s2l12-p1","s2l12-p8","OpenStax Statistics • Ch. 1 Key Terms","pathSublesson","sectionUnits","allOfficialLessons","tutorSourceRefs","Needs Review","targetRigor"):
     if marker not in tutor: fail('Course Tutor missing '+marker)
-if 'course-tutor.js?v=3401-s2-l1-2' not in main or 'course-tutor.css?v=3401-s2-l1-2' not in main:
+if 'course-tutor.js?v=3402-s2-l2-graphs' not in main or 'course-tutor.css?v=3402-s2-l2-graphs' not in main:
     fail('Course Tutor assets are not installed in index.html')
 learn=(site/'learn-mode.js').read_text(encoding='utf-8')
 for marker in ("VERSION='3.3.38'","Teach → Visual → Worked Example","Arcane Anchor Wall","ADAPTIVE REPAIR INSERTED","CAN I DO THIS?","MajickProductCore?.record?.('learn-start'","MajickProductCore?.record?.('concept-complete'","MajickProductCore?.record?.('quick-check-complete'"):
@@ -289,7 +289,7 @@ for marker in ("window.MajickSanctuaryRecovery","v3322SyncOwnedGuardians","v3322
 visual=(site/'sanctuary'/'v3325-sanctuary-visual-authority.js').read_text(encoding='utf-8')
 for marker in ("window.MajickGuardianVisualAuthority","v3325SyncOwnedVisuals","v3325BaseScale","totalVisible"):
     if marker not in visual: fail('Guardian visual authority missing '+marker)
-for marker in ('majick-state-core.js?v=3322-recovery','guardian-care-economy.js?v=3347-stations','v3317-main.js?v=3401-s2-l1-2','v3322-main-recovery.js?v=3322'):
+for marker in ('majick-state-core.js?v=3322-recovery','guardian-care-economy.js?v=3347-stations','v3317-main.js?v=3402-s2-l2-graphs','v3322-main-recovery.js?v=3322'):
     if marker not in main: fail('main cache-bust/runtime missing '+marker)
 if 'v3322-sanctuary-recovery.js?v=3322' not in san:
     fail('Sanctuary recovery asset is not installed')
