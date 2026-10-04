@@ -15,7 +15,7 @@ order=['v3310-ui-compat.js','v3312-ui-compat.js','guardian-registry.js','majick-
 if 'game-realm.js?v=3402-s2-l2-graphs' not in main or 'game-realm.css?v=3362-d772-review' not in main or main.find('game-realm.js?v=3402-s2-l2-graphs')<main.find('guardian-life-main.js'): fail('Game Realm enhancement load order missing')
 if 'Assessment Sigil Sort' not in (site/'game-realm.js').read_text(encoding='utf-8') or "activeCourse==='D755'" not in (site/'game-realm.js').read_text(encoding='utf-8'): fail('D755 Assessment Sigil Sort course gate missing')
 realm_src=(site/'game-realm.js').read_text(encoding='utf-8')
-for marker in ("VERSION='3.3.78-realm'","D772_REALM_SUPPLEMENT","v3377-d772-s2-l1-01","v3379-d772-s2-l1-07","v3379-d772-s2-l1-12","Types of Data","explanatory variable","response variable","MajickProductCore?.record?.('practice-complete'","MajickProductCore?.record?.('reward-earned'","realmQuestionPool","d772RealmPool","buildD772SectionReview","startD772SectionReview","majickRealmVariety='3378'"):
+for marker in ("VERSION='3.4.2-realm'","D772_REALM_SUPPLEMENT","v3377-d772-s2-l1-01","v3379-d772-s2-l1-07","v3379-d772-s2-l1-12","v3402-d772-s2-l2-01","v3402-d772-s2-l2-06","Types of Data","Graphical Displays","MajickProductCore?.record?.('practice-complete'","MajickProductCore?.record?.('reward-earned'","realmQuestionPool","d772RealmPool","buildD772SectionReview","startD772SectionReview","majickRealmVariety='3402'"):
     if marker not in realm_src: fail('D772 Realm V3.4 flow hook missing '+marker)
 pos=[main.find(x) for x in order]
 if any(x<0 for x in pos) or pos!=sorted(pos): fail('main runtime load order is wrong')
