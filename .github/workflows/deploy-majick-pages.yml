@@ -1,5 +1,5 @@
 name: Deploy Majick Studies Golden Baseline to GitHub Pages
-# V3.4.1 D772 Section 2 Lesson 1.2
+# V3.4.2 D772 Section 2 Lesson 2 Graphical Displays
 
 on:
   push:
@@ -436,14 +436,14 @@ jobs:
 
           # Golden architecture and protected assets.
           grep -q '"build_foundation": "V3.3.18 Golden Baseline"' _site/app-progress.json
-          grep -q '"version": "V3.4.1 D772 Section 2 Lesson 1.2"' _site/app-progress.json
+          grep -q '"version": "V3.4.2 D772 Section 2 Lesson 2 Graphical Displays"' _site/app-progress.json
           grep -q 'product-core.js?v=3400' _site/index.html
           grep -q 'product-core.css?v=3400' _site/index.html
           grep -q 'DAILY STUDY LOOP' _site/product-core.js
           grep -q 'dormStoryHtml' _site/product-core.js
           grep -q 'courseModel' _site/product-core.js
-          grep -q 'course-tutor.js?v=3401-s2-l1-2' _site/index.html
-          grep -q 'course-tutor.css?v=3401-s2-l1-2' _site/index.html
+          grep -q 'course-tutor.js?v=3402-s2-l2-graphs' _site/index.html
+          grep -q 'course-tutor.css?v=3402-s2-l2-graphs' _site/index.html
           grep -q "d772-s2-l1-2" _site/course-tutor.js
           grep -q 'ROLE ≠ DATA TYPE' _site/course-tutor.js
           grep -q 's2l12-p8' _site/course-tutor.js
@@ -472,8 +472,8 @@ jobs:
           grep -q 'learning-lab.css?v=3319' _site/index.html
           grep -q 'learning-plan.js?v=3324' _site/index.html
           grep -q 'learning-plan.css?v=3324' _site/index.html
-          grep -q 'course-tutor.js?v=3401-s2-l1-2' _site/index.html
-          grep -q 'course-tutor.css?v=3401-s2-l1-2' _site/index.html
+          grep -q 'course-tutor.js?v=3402-s2-l2-graphs' _site/index.html
+          grep -q 'course-tutor.css?v=3402-s2-l2-graphs' _site/index.html
           grep -q 'magical-college-home.js?v=3337' _site/index.html
           grep -q 'magical-college-home.css?v=3337' _site/index.html
           grep -q 'wgu-practice.js?v=3336-designed-experiments' _site/index.html
@@ -495,7 +495,7 @@ jobs:
           grep -q 'guardian-life-main.css?v=3342' _site/index.html
           cmp pages-release/v3343/game-realm.js _site/game-realm.js
           cmp pages-release/v3343/game-realm.css _site/game-realm.css
-          grep -q 'game-realm.js?v=3400-product-flow' _site/index.html
+          grep -q 'game-realm.js?v=3402-s2-l2-graphs' _site/index.html
           grep -q 'game-realm.css?v=3362-d772-review' _site/index.html
           grep -q 'Assessment Sigil Sort' _site/game-realm.js
           grep -q "activeCourse==='D755'" _site/game-realm.js
@@ -553,7 +553,7 @@ jobs:
           grep -q 'guardian-food-bowl' _site/guardian-care-economy.js
           grep -q 'guardian-water-basin' _site/guardian-care-economy.js
           grep -q 'guardian-brush' _site/guardian-care-economy.js
-          grep -q 'v3317-main.js?v=3401-s2-l1-2' _site/index.html
+          grep -q 'v3317-main.js?v=3402-s2-l2-graphs' _site/index.html
           grep -q 'v3322-main-recovery.js?v=3322' _site/index.html
           grep -q 'v3320-sanctuary-life.js?v=3350-room' _site/sanctuary/index.html
           grep -q 'v3321-sanctuary-customize.js?v=3322-recovery' _site/sanctuary/index.html
@@ -760,7 +760,7 @@ jobs:
           base=(os.environ.get('LIVE_URL') or 'https://rnw4512-dev.github.io/majick-studies-assets/').rstrip('/')+'/'
           status_url=os.environ.get('STATUS_URL','')
           token=os.environ.get('GH_TOKEN','')
-          expected='V3.4.1 D772 Section 2 Lesson 1.2'
+          expected='V3.4.2 D772 Section 2 Lesson 2 Graphical Displays'
           last=None
           for attempt in range(1,121):
               try:
@@ -875,7 +875,7 @@ jobs:
                       'personal Guardian beds': 'guardian-bed-' in sanctuary_alive,
                       'legacy Sunday analytics removed': 'Sunday Readiness & Thinking Analytics' not in index,
                       'legacy Sunday deadline removed': '<h3>Before Sunday</h3>' not in index,
-                      'Game Realm cache key': 'game-realm.js?v=3400-product-flow' in index,
+                      'Game Realm cache key': 'game-realm.js?v=3402-s2-l2-graphs' in index,
                       'Moon Crystal word bank': 'realmWordBank' in game_realm,
                       'D755 Assessment Sigil Sort': 'Assessment Sigil Sort' in game_realm,
                       'D755 norm criterion chamber': 'Norm-Referenced vs Criterion-Referenced' in game_realm,
