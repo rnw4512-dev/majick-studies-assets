@@ -39,3 +39,14 @@ check('reward replay, focused eggs, course isolation and saved reload',()=>{
  const reloaded=context(JSON.parse(JSON.stringify(restored)));load(reloaded,'study-progress-bridge.js');reloaded.MajickCelestialIncubator.complete('e2');assert.equal(reloaded.S.legacy.pets.length,2);
 });
 console.log('Canonical release checks passed. Browser interaction and cloud-sync checks remain separate.');
+check('save migration, backups, corruption recovery and storage failure',()=>{
+ const data=new Map();let fail=false;const storage={getItem:k=>data.get(k)||null,setItem:(k,v)=>{if(fail)throw Error('Storage full');data.set(k,String(v))}};
+ const c=context();c.localStorage=storage;load(c,'save-safety.js');const a=c.MajickSaveSafety;
+ const original={courses:{D772:{id:'D772'},D755:{id:'D755'}},progress:{D772:{answers:[{qid:'q1'}],mastery:{c1:'shaky'}},D755:{answers:[]}},majickAccount:{xp:4500,crystals:150,sanctuaryFurniture:{owned:['bed'],placements:{bed:{x:10,y:20}}}},legacy:{pets:[{id:'unique-guardian',name:'Vesper A'}],eggs:[{id:'e1',progress:4},{id:'e2',progress:9},{id:'e3',progress:0}]}};
+ const migrated=a.migrate(original);assert.equal(migrated.saveSchemaVersion,1);assert.equal(JSON.stringify(original),JSON.stringify({...migrated,saveSchemaVersion:undefined}));
+ a.write(migrated);const next=JSON.parse(JSON.stringify(migrated));next.progress.D772.answers.push({qid:'q2'});a.write(next);assert.equal(JSON.parse(storage.getItem(a.keys.PREVIOUS)).progress.D772.answers.length,1);
+ const exported=a.exportPayload(next),restored=a.preview(JSON.parse(JSON.stringify(exported)));assert.equal(JSON.stringify(restored),JSON.stringify(next));assert.equal(restored.legacy.eggs.length,3);assert.equal(restored.majickAccount.xp,4500);
+ storage.setItem(a.keys.KEY,'broken-json');const recovered=a.read();assert.equal(recovered.progress.D772.answers.length,1);assert.equal(storage.getItem(a.keys.BAD),'broken-json');
+ assert.throws(()=>a.preview({schemaVersion:2,state:next}),/newer/);assert.throws(()=>a.preview({courses:{},progress:{D772:{answers:'bad'}}}),/Invalid/);
+ const before=storage.getItem(a.keys.KEY);fail=true;assert.throws(()=>a.write(next),/Storage full/);assert.equal(storage.getItem(a.keys.KEY),before);assert.equal(a.status().ok,false);
+});

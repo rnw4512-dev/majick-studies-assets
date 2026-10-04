@@ -144,7 +144,7 @@
     "guardian-registry.js": "b20170b996ddf065f33bb37332c8a9fce68ae104914e3e94ffe9aa44b7b612f3",
     "home-focus.css": "cbb719eb8e78701717b4016388d511553f2785212d839815ed006651ae738b2b",
     "home-focus.js": "c4b28238d5f38e0401df2933fcf64991b928631e488a79f80301b20174f1968b",
-    "index.html": "e46b219019f60a007ed89855de50eac335f03cd2867a5548bc3c6cc7e4b83486",
+    "index.html": "3e0790c0b2e262c7a41a68fbd26ef520e9b32b4710393d264d8775e9b3cc28db",
     "learn-mode.css": "30181250c67efe7bd97c9276706a804a551e7904a2bb28160eeb0c193f35c002",
     "learn-mode.js": "15b8fcd351bde785d169d26217639d3982043c5c6de9f3b57bb993170225b930",
     "learning-lab.css": "6ed48d27023052a714d27c027f25828bc5ad74edccb172704e823a58b26d6844",
@@ -387,6 +387,7 @@
     "lesson-visuals/distribution-uniform.svg": "c413cf35f3b81b521839c23d4e790fc55194c2ceeae1f82f7611802b3bbe7c40",
     "lesson-visuals/distribution-skewed-right.svg": "1e6d11945f1699372ecdfffdad7a878e99f7dde740f662becc1be18f701a7d89",
     "lesson-visuals/distribution-skewed-left.svg": "33b980ffd59bf94a68ecdae2a4e94d20481799cfc467633378664ae9f0b1998f",
-    "coverage/d772-s2-l3-quiz.json": "a4546a076914c6e18d04f7e2ab9f50fbe9efb36a696a1ebda7fc3ee8ecb3e5b6"
+    "coverage/d772-s2-l3-quiz.json": "a4546a076914c6e18d04f7e2ab9f50fbe9efb36a696a1ebda7fc3ee8ecb3e5b6",
+    "save-safety.js": "dff6eb9f3126315b541b59330b50de12993441da3d482b6312de16c6699995a0"
   }
 }
