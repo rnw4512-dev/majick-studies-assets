@@ -229,6 +229,24 @@ function inferError(q,choice){
  if(/both|not|or|and|distinguish|difference|compare/i.test(text))return 'concept distinction';
  return 'scenario recognition';
 }
+
+function activeProfile(){
+ try{return window.MajickLearningProfiles?.profileFor?.(current().concept,current().lesson,cid())||null}catch(_){return null}
+}
+function profileCard(){
+ try{return window.MajickLearningProfiles?.cardHtml?.(current().concept,current().lesson,cid())||''}catch(_){return ''}
+}
+function profileGuide(){
+ const p=activeProfile();if(!p)return '';
+ const map={
+  definition:'Compare the concept with its closest look-alike, then test it in scenarios and study the tempting wrong answer.',
+  procedure:'Recognize the problem type, set up the rule or formula, substitute carefully, calculate, then interpret.',
+  interpretation:'Read the visual or result first, describe the pattern, then explain what it means in context.',
+  application:'Identify the decision, compare the possible actions, apply the relevant evidence, and justify the best choice.',
+  memory:'Retrieve before rereading, match terms to meanings, and revisit them later with spaced recall.'
+ };
+ return map[p.primary]||'Use the support pattern that best matches this concept.';
+}
 function tutorText(kind){
  const c=current().concept;
  if(kind==='simple')return c?.different?.[0]||c?.teach||current().lesson.goal||'Focus on the single idea this question is testing.';
@@ -251,13 +269,13 @@ function ensureQuestion(scope,mixed=false){
 }
 function stepBody(){
  const st=state(),step=Number(st.step||0),{lesson,concept}=current(),m=mastery();
- if(step===0)return '<small>① WHAT AM I LEARNING?</small><h2>'+E(concept.title||lesson.title)+'</h2><p class="lead">'+E(concept.teach||lesson.goal)+'</p><div class="v346GoalGrid"><span>Recognize it</span><span>Use it independently</span><span>Explain why</span><span>Avoid the trap</span><span>Retrieve it later</span></div><button class="btn primary" data-v346-next>Quick Check →</button>';
+ if(step===0)return '<small>① WHAT AM I LEARNING?</small><h2>'+E(concept.title||lesson.title)+'</h2><p class="lead">'+E(concept.teach||lesson.goal)+'</p>'+profileCard()+'<div class="v346GoalGrid"><span>Recognize it</span><span>Use it independently</span><span>Explain why</span><span>Avoid the trap</span><span>Retrieve it later</span></div><button class="btn primary" data-v346-next>Quick Check →</button>';
  if(step===1){
    const d=diagnostic(),qs=d.questions.map(byId).filter(Boolean);
    if(!qs.length)return '<small>② QUICK CHECK</small><h2>Diagnostic pending</h2><p>Add course questions and Majick will automatically create a 2–3 item diagnostic.</p><button class="btn primary" data-v346-next>Teach Me →</button>';
    return '<small>② QUICK CHECK • NOT GRADED</small><h2>What do you already know?</h2>'+qs.map((q,i)=>'<section class="v346Diag"><b>'+(i+1)+'. '+E(q.prompt)+'</b>'+q.options.map(o=>'<button data-v346-diag="'+i+'" data-choice="'+E(o)+'" '+(d.answers[i]?'disabled':'')+'>'+E(o)+'</button>').join('')+(d.answers[i]?'<p>'+E(q.why||'Use this feedback to decide what needs teaching.')+'</p>':'')+'</section>').join('')+(d.answers.filter(Boolean).length===qs.length?'<button class="btn primary" data-v346-next>Teach Me →</button>':'');
  }
- if(step===2)return '<small>③ TEACH ME</small><h2>'+E(concept.title||lesson.title)+'</h2><p class="lead">'+E(concept.teach||lesson.goal)+'</p>'+tutorButtons()+'<button class="btn primary" data-v346-next>Show Me →</button>';
+ if(step===2)return '<small>③ TEACH ME</small><h2>'+E(concept.title||lesson.title)+'</h2><p class="lead">'+E(concept.teach||lesson.goal)+'</p><div class="v347ProfileGuide"><b>Best learning strategy for this concept</b><p>'+E(profileGuide())+'</p></div>'+tutorButtons()+'<button class="btn primary" data-v346-next>Show Me →</button>';
  if(step===3){
    const ex=concept?.worked?.scenario||concept?.examples?.[0]||concept.teach||lesson.goal,steps=concept?.worked?.steps||['Identify what the scenario is asking.','Name the concept or strategy.','Apply the rule.','Check the answer against the scenario.'];
    return '<small>④ SHOW ME • WATCH FIRST</small><h2>Worked example</h2><div class="v346Worked"><p>'+E(ex)+'</p><ol>'+steps.map(x=>'<li>'+E(x)+'</li>').join('')+'</ol></div>'+workedErrorHtml()+'<button class="btn primary" data-v346-next>Why does this work? →</button>';
@@ -285,7 +303,7 @@ function stepBody(){
 }
 function tutorButtons(){return '<div class="v346TutorButtons"><button data-v346-tutor="simple">Explain Simpler</button><button data-v346-tutor="example">Give Me an Example</button><button data-v346-tutor="quiz">Quiz Me on This Page</button><button data-v346-tutor="mistakes">Related Mistakes</button></div><div id="v346TutorOut"></div>'}
 function panelHtml(){
- const {lesson,concept}=current(),g=guardian(),m=mastery();
+ const {lesson,concept}=current(),g=guardian(),m=mastery();try{window.MajickLearningProfiles?.saveProfile?.(concept,lesson,cid())}catch(_){}
  return '<section class="v346SharedAdaptive"><header><div><small>SHARED LEARNING ENGINE • '+E(cid())+'</small><h1>'+E(concept.title||lesson.title)+'</h1><p>'+E(course().title||cid())+'</p>'+pathMeterHtml()+'</div><select id="v346Lesson">'+lessons().map((l,i)=>'<option value="'+i+'" '+(i===state().lessonIndex?'selected':'')+'>'+E(l.title)+'</option>').join('')+'</select></header><div class="v346Grid"><nav>'+STEPS.map((x,i)=>'<button data-v346-step="'+i+'" class="'+(i===state().step?'active':'')+'"><i>'+(i+1)+'</i><span>'+E(x)+'</span></button>').join('')+'</nav><main>'+stepBody()+'</main><aside><div class="v346Guardian"><span>'+g.emoji+'</span><b>'+E(g.name)+'</b><p>'+(m.recurring?'“I see a repeated trap. We are repairing that exact distinction.”':m.independent>=2?'“You are showing independence. I will give fewer cues unless you ask.”':'“Name the strategy before you answer. Recognition comes before recall.”')+'</p></div><div class="v346Evidence"><small>SKILL EVIDENCE</small><b>'+Math.round(m.acc*100)+'%</b><span>'+m.independent+' independent • '+m.transfer+' transfer</span></div></aside></div></section>';
 }
 function renderAdaptive(){const box=document.getElementById('adaptiveLearningCore');if(!box)return;box.innerHTML=panelHtml();bindAdaptive(box)}
@@ -341,6 +359,6 @@ function patch(){
  window.MajickLearningLab.__sharedAdaptive=true;
 }
 patch();
-window.MajickAdaptiveLearning={VERSION,STEPS,lessons,current,mastery,microDefs,microReceipt,learningPath,show:showAdaptive,render:renderAdaptive,state,progress};
+window.MajickAdaptiveLearning={VERSION,STEPS,lessons,current,mastery,microDefs,microReceipt,learningPath,activeProfile,show:showAdaptive,render:renderAdaptive,state,progress};
 document.documentElement.dataset.majickAdaptiveLearning=VERSION;
 })();
