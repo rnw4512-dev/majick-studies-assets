@@ -408,6 +408,8 @@
     "course-learning-profiles.js": "60d25988b6ae0ed1cab981ce99d2d8ed49fe9c8553b189df3d83103797bfe925",
     "course-learning-profiles.css": "f0f4f53b2c9422f0ed884d4688af1d8367e63851b367331f78b994b6548b5caa",
     "reward-core.js": "6b137b0f206d019eba10497adeba82ccbb264d57508916c5c2b4bf90fdfe80f4",
-    "reward-core.css": "e4a1b1cd49f70a44ccecc5352d353e4c17c3a95c67f9d7526a72b8f0b67878e6"
+    "reward-core.css": "e4a1b1cd49f70a44ccecc5352d353e4c17c3a95c67f9d7526a72b8f0b67878e6",
+    "assets/rewards/reference-boards/cascade/cascade-collection-reference-board.webp": "1b4d05d2b5303afeec9d2b51713d3a1aef76754ff6c0e242724a165218f79b68",
+    "assets/rewards/reference-boards/cascade/cascade-collection-reference-board-runtime.webp": "19a8202353e552f20173d109a6c7b61fcfe91420e5efa59de56bea771e745b1b"
   }
 }
