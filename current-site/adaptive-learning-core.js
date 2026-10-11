@@ -602,7 +602,7 @@ function renderAdaptive(){const box=document.getElementById('adaptiveLearningCor
 function showAdaptive(){
  // Later D772 sections use the existing verified lesson owner, not Section 1's adaptive bank.
  const tutor=window.MajickCourseTutor,selected=cid()==='D772'?tutor?.selectedLesson?.('D772'):null;
- if(/^d772-s[23]-/.test(String(selected?.id||''))&&typeof tutor?.show==='function'){
+ if(cid()==='D772'&&selected&&typeof tutor?.show==='function'){
    const panel=document.querySelector('.learnPanel[data-panel="tutor"]');
    if(!panel||panel.hidden)tutor.show('tutor');
    return;
@@ -676,3 +676,4 @@ patch();
 window.MajickAdaptiveLearning={VERSION,STEPS,lessons,current,mastery,microDefs,microReceipt,learningPath,activeProfile,prereqStatus,misconceptionSummary,supportLevel,tomorrowQueue,memorySweep,guardianPersona,competencyGroups,show:showAdaptive,render:renderAdaptive,state,progress};
 document.documentElement.dataset.majickAdaptiveLearning=VERSION;
 })();
+

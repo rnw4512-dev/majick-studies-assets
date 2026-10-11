@@ -112,8 +112,8 @@
     "classroom-library-life.js": "2f5c3b0778305969555e9efea408657fc8036640d09b5a7200eb49f857688f7c",
     "collegium-atmosphere.css": "5271d724452e7db7de987c7dcdc49d89e988e8a6b25fcc55211daa40eb6d1ca0",
     "collegium-atmosphere.js": "dbb7419f838e747258649238666935d2fc348443a824c9f9e0b159eb7b27dd02",
-    "course-tutor.css": "9ce968e6158c4db2d5c81404744f90e01593468a9cf73e4087ddb51efa01bb4a",
-    "course-tutor.js": "833b59a755820e7b94ef65ddaa347896a760cda4b1f943409b67a6b6c4dcdc48",
+    "course-tutor.css": "05805333c8b49b3a0ed86a0d45911776d7bf8ae0187b0647d4bf5447579c9faf",
+    "course-tutor.js": "fdc591bfc914460b9658923022d0f08c0032afc15ee910a7625da12a00e7871b",
     "courseManager.js": "5a3bed03fc53028587e4a14d19056489b83e411ea1ecff5a4afbf196c5196681",
     "d755-retake.css": "e487a5e8ca4c069b7b9e9dabb603c8462ddcf81cb432b33b2e3395cce3a721d3",
     "d755-retake.js": "504ece754402f90278b7af02d6fd01c9183639c6777c43c75db06e44815b1935",
@@ -144,7 +144,7 @@
     "guardian-registry.js": "b20170b996ddf065f33bb37332c8a9fce68ae104914e3e94ffe9aa44b7b612f3",
     "home-focus.css": "cbb719eb8e78701717b4016388d511553f2785212d839815ed006651ae738b2b",
     "home-focus.js": "c4b28238d5f38e0401df2933fcf64991b928631e488a79f80301b20174f1968b",
-    "index.html": "a18d3256b8857821f7caa0e15c3306cfe5c58012409c6c0b0aec631e67a70e6e",
+    "index.html": "9bd98a2f6046cd06c73bdab8324823defb22022937b731cf303649882e2a6de7",
     "learn-mode.css": "30181250c67efe7bd97c9276706a804a551e7904a2bb28160eeb0c193f35c002",
     "learn-mode.js": "f6647cd013d5bc59a319710c45ac806b56585c7fc5c912afa88857d2f16f82e0",
     "learning-lab.css": "6ed48d27023052a714d27c027f25828bc5ad74edccb172704e823a58b26d6844",
@@ -403,7 +403,7 @@
     "assets/boxplot-phones.svg": "3ed42e541d8e8039d2b270f4b76ec634918e02db245e085e38088ea05d7ef727",
     "math-support.js": "b83f030c4fdf5793c7fc0f418685aa10495b3ea90c0ffa1e40cc4fa7ecc5e2ae",
     "math-support.css": "450f81a8f786d6bb9a1aff897ad2276ed96cf0e0c6fae20cb3754c70b4f3736b",
-    "adaptive-learning-core.js": "3acaf4c6c0453a7d87da64b05d9db8360b7db1153abb70939b75f88d4c4dfab2",
+    "adaptive-learning-core.js": "a0c57fec1b64965260d03cce9e9c92c362c8ff97cbad6a648a5ce1dd633bd2bd",
     "adaptive-learning-core.css": "f984e356b6efa4d7608e1226aec5df13f024f702ea3a51b56d8c75a589a44646",
     "course-learning-profiles.js": "60d25988b6ae0ed1cab981ce99d2d8ed49fe9c8553b189df3d83103797bfe925",
     "course-learning-profiles.css": "f0f4f53b2c9422f0ed884d4688af1d8367e63851b367331f78b994b6548b5caa",
@@ -472,6 +472,7 @@
     "assets/rewards/reference-boards/rook/rook-collection-reference-board-runtime.webp": "0631021bbfc352b1be387cc1444f232e9e102b6156f334800dc687560ed50ea6",
     "assets/rewards/reference-boards/rook/rook-collection-reference-board.webp": "502735fe838adb02704d9b833991613efc0dfce10fbd796b55c946babf46e339",
     "coverage/d772-section3-study-content.json": "4b14197f3a9dff67dec78fe23ee52fd4817f2146daec7ff1a85ab2f091ddc26b",
-    "lesson-visuals/probability-venn.svg": "957a8e0963e342724174bcc06347931a6eec9a984b63242a3bc81bb77661c518"
+    "lesson-visuals/probability-venn.svg": "957a8e0963e342724174bcc06347931a6eec9a984b63242a3bc81bb77661c518",
+    "coverage/d772-targeted-visual-practice.json": "0158b148090e1c0d6f6d9f5507e48366843627d7292e9e5484946c4c8bba4c81"
   }
 }
