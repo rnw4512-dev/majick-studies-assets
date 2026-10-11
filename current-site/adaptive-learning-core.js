@@ -1,6 +1,6 @@
 (()=>{
 'use strict';
-const VERSION='3.4.7-shared-adaptive';
+const VERSION='3.4.9-shared-adaptive';
 const STEPS=['What am I learning?','Quick Check','Teach Me','Show Me','Why Does This Work?','Help Me Try','My Turn','Related Mistakes','Mix It Up','Retrieve It','Mastery Check','Schedule Review'];
 const E=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const MICRO_SKILLS={
@@ -64,6 +64,28 @@ const GENERIC_MICRO=[
  ['interpret','Explains the answer in context'],
  ['transfer','Uses the skill in a new scenario']
 ];
+const PREREQUISITES={
+ D772:{
+  'expected-value':[['probability','Understands probability'],['percent-decimal','Converts percent ↔ decimal'],['signs','Uses positive/negative values'],['multiply','Multiplies decimals'],['interpret','Interprets results in context']],
+  'empirical-probability':[['numerator','Identifies target outcomes'],['denominator','Identifies total trials'],['divide','Divides'],['round','Rounds decimals']],
+  'theoretical-probability':[['favorable','Counts favorable outcomes'],['total','Counts the sample space'],['divide','Divides'],['convert','Converts fraction/decimal/percent']],
+  'union':[['recognize','Recognizes OR'],['overlap','Understands overlap']],
+  'intersection':[['recognize','Recognizes AND'],['overlap','Understands overlap']],
+  'complement':[['recognize','Recognizes NOT'],['whole','Understands probability whole = 1'],['subtract','Subtracts decimals']],
+  'five-number-summary':[['order','Orders data'],['median','Finds median'],['quartiles','Finds quartiles']]
+ }
+};
+const ASSESSMENT_LANGUAGE=[
+ ['most appropriate','Choose the option that best fits the stated goal or condition, not merely one that could work.'],
+ ['best supports','Look for the evidence or action that most directly supports the claim or need.'],
+ ['most likely','Compare probabilities or evidence; do not treat it as certainty.'],
+ ['not','Reverse the target: identify what does NOT fit.'],
+ ['except','Most options fit; choose the one that does not.'],
+ ['simultaneously','Both conditions must occur at the same time.'],
+ ['on average','Think long-run mean or expected result, not one trial.'],
+ ['approximately','A rounded or estimated answer is expected.']
+];
+
 
 const cid=()=>String(window.S?.activeCourse||'');
 const course=()=>window.S?.courses?.[cid()]||{id:cid(),title:cid(),questionBank:[],concepts:[],misconceptionCatalog:[]};
@@ -74,7 +96,8 @@ function progress(){
  p.answers=Array.isArray(p.answers)?p.answers:[];
  p.spacedQueue=Array.isArray(p.spacedQueue)?p.spacedQueue:[];
  p.errorTags=Array.isArray(p.errorTags)?p.errorTags:[];
- p.adaptiveLearning=p.adaptiveLearning||{lessonIndex:0,step:0,diagnostics:{},checks:{},support:{},currentQuestion:null,microSkills:{},path:{},workedErrors:{}};
+ p.adaptiveLearning=p.adaptiveLearning||{lessonIndex:0,step:0,diagnostics:{},checks:{},support:{},currentQuestion:null,microSkills:{},path:{},workedErrors:{},confidence:{},supportEvents:[],branches:{},sessionSeen:[],lastVisit:0};
+ p.misconceptionMemory=p.misconceptionMemory&&typeof p.misconceptionMemory==='object'?p.misconceptionMemory:{};
  return p;
 }
 function state(){return progress()?.adaptiveLearning||{}}
@@ -235,11 +258,12 @@ function record(q,choice,source,{assisted=false,transfer=false}={}){
    window.MajickStudyProgress.creditAnswer({key:cid()+':'+source+':'+(q.id||q.qid)+':'+at,course:cid(),source,qid:q.id||q.qid,topicId,correct:ok,difficulty:source==='adaptive-mastery'?5:source==='adaptive-mix'?4:3,chosen:choice,answer:q.answer,at,assisted,transfer});
  }else progress().answers.push({qid:q.id||q.qid,topicId,correct:ok,chosen:choice,answer:q.answer,source,assisted,transfer,at});
  const mids=inferMicro(q,choice,ok);creditMicro(mids,ok,{support:assisted});
+ let misconception=null;
  if(!ok){
-   const tag=inferError(q,choice);
-   progress().errorTags.push({conceptId:current().concept.id,tag,at,qid:q.id||q.qid});
+   const tag=inferError(q,choice);misconception=rememberMisconception(q,choice);
+   progress().errorTags.push({conceptId:current().concept.id,tag,misconception,at,qid:q.id||q.qid});
  }
- save();return ok;
+ save();return {ok,misconception};
 }
 function inferError(q,choice){
  const c=current().concept,text=String(q?.why||'')+' '+String(c?.anchor?.trap||'');
@@ -247,6 +271,145 @@ function inferError(q,choice){
  if(/both|not|or|and|distinguish|difference|compare/i.test(text))return 'concept distinction';
  return 'scenario recognition';
 }
+function misconceptionKey(q,choice){
+ const text=(String(q?.prompt||'')+' '+String(q?.why||'')+' '+String(choice||'')).toLowerCase();
+ if(/denominator|total trials/.test(text))return 'wrong denominator';
+ if(/expected value|lose|loss|negative/.test(text))return 'loss treated as positive';
+ if(/\bor\b|union/.test(text))return 'union / OR confusion';
+ if(/\band\b|intersection/.test(text))return 'intersection / AND confusion';
+ if(/\bnot\b|complement/.test(text))return 'complement / NOT confusion';
+ if(/round|hundredth/.test(text))return 'rounding too early / incorrectly';
+ if(/percent|decimal/.test(text))return 'percent-decimal conversion';
+ return inferError(q,choice);
+}
+function rememberMisconception(q,choice){
+ const p=progress(),key=misconceptionKey(q,choice),row=p.misconceptionMemory[key]||{count:0,concepts:{},lastAt:0};
+ row.count++;row.concepts[current().concept.id]=(row.concepts[current().concept.id]||0)+1;row.lastAt=Date.now();p.misconceptionMemory[key]=row;return key;
+}
+function misconceptionSummary(){
+ return Object.entries(progress().misconceptionMemory||{}).map(([key,v])=>({key,count:Number(v.count||0),conceptCount:Object.keys(v.concepts||{}).length,lastAt:v.lastAt||0})).sort((a,b)=>b.count-a.count);
+}
+function supportEvent(kind){
+ const st=state();st.supportEvents=Array.isArray(st.supportEvents)?st.supportEvents:[];st.supportEvents.push({conceptId:current().concept.id,kind,at:Date.now()});st.supportEvents=st.supportEvents.slice(-160);save();
+}
+function supportLevel(){
+ const m=mastery(),events=(state().supportEvents||[]).filter(x=>x.conceptId===current().concept.id),recent=events.filter(x=>Date.now()-x.at<14*86400000);
+ const delayed=(conceptAnswers()||[]).filter(x=>x.correct&&!x.assisted&&x.source==='adaptive-retrieve').length;
+ if(delayed>=1&&m.independent>=2)return {level:4,label:'Delayed no-help',pct:100};
+ if(m.independent>=2&&recent.length<=1)return {level:3,label:'No help',pct:80};
+ if(m.acc>=.75&&recent.length<=3)return {level:2,label:'Formula / cue only',pct:60};
+ if(m.acc>=.55)return {level:1,label:'Partial scaffold',pct:40};
+ return {level:0,label:'Full scaffold',pct:20};
+}
+function supportMeterHtml(){
+ const x=supportLevel();
+ return '<div class="v349SupportFade"><small>SUPPORT-FADING MASTERY</small><div><i style="width:'+x.pct+'%"></i></div><b>'+E(x.label)+'</b><span>Full scaffold → partial → formula/cue → no help → delayed no-help</span></div>';
+}
+function conceptKeyNorm(){return normId(current().concept?.id||current().concept?.title)}
+function prereqDefs(){
+ const key=conceptKeyNorm(),map=PREREQUISITES[cid()]||{};
+ for(const [k,v] of Object.entries(map)){if(key.includes(k)||k.includes(key))return v}
+ return [];
+}
+function prereqStatus(){
+ const defs=prereqDefs(),ms=microState();
+ return defs.map(([id,label])=>{const r=ms[id]||{},acc=r.attempts?r.correct/r.attempts:0;return{id,label,attempts:r.attempts||0,accuracy:acc,status:!r.attempts?'unknown':acc>=.75?'ready':'weak'}});
+}
+function prereqHtml(){
+ const rows=prereqStatus();if(!rows.length)return '';
+ const weak=rows.filter(x=>x.status==='weak'||x.status==='unknown');
+ return '<div class="v349Prereq"><b>Prerequisite Map</b><p>These are the foundation skills feeding this concept.</p><div>'+rows.map(x=>'<span class="'+x.status+'"><i>'+(x.status==='ready'?'✓':x.status==='weak'?'!':'?')+'</i>'+E(x.label)+'</span>').join('')+'</div>'+
+ (weak.length?'<aside><strong>Mini-reteach branch</strong><p>'+E(weak.slice(0,2).map(x=>x.label).join(' + '))+' needs a quick repair before the harder version.</p></aside>':'<aside class="ready"><strong>Prerequisites look ready.</strong><p>Majick can fade support faster.</p></aside>')+'</div>';
+}
+function diagnosticBranch(){
+ const d=diagnostic(),done=d.answers.filter(Boolean);if(!done.length)return null;
+ const correct=done.filter(x=>x.correct).length,total=d.questions.length||done.length,ratio=total?correct/total:0,pre=prereqStatus(),weak=pre.filter(x=>x.status==='weak');
+ if(weak.length)return {to:2,label:'Prerequisite rescue',reason:'A foundation skill needs repair before this concept.'};
+ if(ratio===1)return {to:6,label:'Fast track',reason:'Quick Check shows strong recognition. Skip directly to independent use.'};
+ if(ratio>=.67)return {to:3,label:'Brief model',reason:'You mostly know this. Watch one model, then practice.'};
+ return {to:2,label:'Full teaching path',reason:'The concept needs explicit teaching and guided practice.'};
+}
+function branchCardHtml(){
+ const b=diagnosticBranch();if(!b)return '';
+ return '<div class="v349Branch"><small>ADAPTIVE PATH</small><b>'+E(b.label)+'</b><p>'+E(b.reason)+'</p></div>';
+}
+function recordConfidence(level){
+ const st=state(),p=st.pendingAnswer;if(!p)return;
+ st.confidence=st.confidence||{};st.confidence[p.qid]=st.confidence[p.qid]||[];
+ st.confidence[p.qid].push({level,correct:p.correct,conceptId:current().concept.id,at:Date.now()});
+ if(p.correct&&level==='guessing')scheduleReview();
+ if(!p.correct&&level==='very-sure'){const key=p.misconception||'high-confidence error';const row=progress().misconceptionMemory[key]||{count:0,concepts:{},lastAt:0};row.count+=2;row.concepts[current().concept.id]=(row.concepts[current().concept.id]||0)+1;row.lastAt=Date.now();progress().misconceptionMemory[key]=row}
+ const scope=p.scope;st.pendingAnswer=null;save();
+ if(p.correct&&['help','turn','mix','retrieve'].includes(scope)){delete st.currentQuestions[scope+':'+current().concept.id];next();return}
+ renderAdaptive();
+}
+function confidenceHtml(){
+ const p=state().pendingAnswer;if(!p)return '';
+ return '<div class="v349Confidence"><b>How sure were you?</b><p>This changes what Majick reviews later.</p><div><button data-v349-confidence="guessing">Guessing</button><button data-v349-confidence="somewhat">Somewhat sure</button><button data-v349-confidence="very-sure">Very sure</button></div></div>';
+}
+function guardianMode(){
+ const x=supportLevel(),m=mastery();
+ if(x.level>=3&&m.independent>=2)return {silent:true,text:'I’m staying quiet unless you ask. Independence is the goal.'};
+ if(x.level===2)return {silent:false,text:'I’ll give you a small cue, not the answer.'};
+ if(x.level===1)return {silent:false,text:'I’ll ask a question that points you toward the next step.'};
+ return {silent:false,text:'I’ll model the thinking and then hand more of it back to you.'};
+}
+function guardianCoachHtml(){
+ const g=guardian(),gm=guardianMode(),m=mastery();
+ return '<div class="v346Guardian '+(gm.silent?'silent':'')+'"><span>'+g.emoji+'</span><b>'+E(g.name)+'</b><p>'+E(m.recurring?'I recognize a repeated trap across your work. We are repairing that pattern, not just this question.':gm.text)+'</p></div>';
+}
+function languageHtml(q){
+ if(!q)return '';
+ const text=String(q.prompt||'').toLowerCase(),hits=ASSESSMENT_LANGUAGE.filter(([phrase])=>text.includes(phrase));
+ if(!hits.length)return '';
+ return '<div class="v349Language"><b>Assessment Language</b>'+hits.map(([p,x])=>'<p><strong>'+E(p)+'</strong><span>'+E(x)+'</span></p>').join('')+'</div>';
+}
+function deconstructHtml(q){
+ if(!q)return '';
+ const text=String(q.prompt||''),nums=text.match(/-?\$?\d+(?:\.\d+)?%?|(?:\d+\s*\/\s*\d+)/g)||[],clues=ASSESSMENT_LANGUAGE.map(x=>x[0]).filter(x=>text.toLowerCase().includes(x)).concat(['or','and','not','average','total','both'].filter(x=>text.toLowerCase().includes(x)));
+ return '<details class="v349Deconstruct"><summary>Deconstruct this question</summary><div><span><b>Context</b>'+E(text.slice(0,180))+'</span><span><b>Important numbers</b>'+E([...new Set(nums)].join(', ')||'None')+'</span><span><b>Clue words</b>'+E([...new Set(clues)].join(', ')||'Read the task verb carefully')+'</span><span><b>Actual task</b>'+E((text.split(/[?.!]/).filter(Boolean).pop()||text).trim())+'</span></div></details>';
+}
+function explainBackHtml(){
+ const c=current().concept,correct=c?.why||c?.teach||current().lesson.goal||'The strategy matches the relationship described in the scenario.';
+ const opts=[correct,'Because it was the most recent rule practiced.','Because the largest number should usually be used.','Because every probability question uses the same operation.'];
+ return '<div class="v349ExplainBack"><b>Explain-it-back check</b><p>Which explanation best captures WHY this strategy works?</p>'+opts.map((x,i)=>'<button data-v349-explain="'+(i===0?'correct':'wrong')+'">'+E(x)+'</button>').join('')+'<div data-v349-explain-out></div></div>';
+}
+function transferLadderHtml(){
+ const m=mastery(),rows=[
+  ['Familiar example',(state().step||0)>=4],
+  ['New numbers',m.independent>=1],
+  ['New context',m.independent>=2],
+  ['Mixed concept',m.transfer>=1],
+  ['Unfamiliar transfer',m.transfer>=2]
+ ];
+ return '<div class="v349Transfer"><b>Transfer Ladder</b>'+rows.map(([x,on])=>'<span class="'+(on?'done':'')+'"><i>'+(on?'✓':'○')+'</i>'+E(x)+'</span>').join('')+'</div>';
+}
+function microHeatmapHtml(){
+ const rows=microReceipt();if(!rows.length)return '';
+ return '<div class="v349Heatmap"><b>Micro-Skill Heatmap</b><div>'+rows.map(x=>'<span class="'+(x.status==='Strong'?'strong':x.status==='Developing'?'developing':x.status==='Needs support'?'weak':'unseen')+'"><i></i>'+E(x.label)+'<small>'+x.accuracy+'%</small></span>').join('')+'</div></div>';
+}
+function recoveryInfo(){
+ const st=state(),last=Number(st.lastVisit||0),days=last?Math.floor((Date.now()-last)/86400000):0;
+ return {due:days>=3,days};
+}
+function recoveryHtml(){
+ const r=recoveryInfo();if(!r.due)return '';
+ return '<div class="v349Recovery"><b>Welcome back • '+r.days+' days away</b><p>Before resuming, do a short recall check so Majick can decide whether to continue or refresh.</p><button data-v349-recovery="check">2-minute recall check</button><button data-v349-recovery="resume">Resume where I left off</button></div>';
+}
+function tomorrowQueue(){
+ const p=progress(),dueSoon=p.spacedQueue.filter(x=>x.dueAt&&x.dueAt<=Date.now()+36*3600000).length,weak=microReceipt().filter(x=>x.status==='Needs support').length,m=mastery();
+ return {delayed:dueSoon,weak,mixed:m.transfer<1?1:0};
+}
+function tomorrowHtml(){
+ const q=tomorrowQueue();
+ return '<div class="v349Tomorrow"><b>Tomorrow Queue</b><span>'+q.delayed+' delayed recalls</span><span>'+q.weak+' weak micro-skills</span><span>'+q.mixed+' mixed transfer question'+(q.mixed===1?'':'s')+'</span></div>';
+}
+function readinessHtml(){
+ const m=mastery(),micro=microReceipt(),strong=micro.filter(x=>x.status==='Strong').length,total=micro.length||1,support=supportLevel(),score=Math.round((m.acc*.35+Math.min(1,m.independent/2)*.2+Math.min(1,m.transfer)*.2+(strong/total)*.15+(support.level>=3?1:.5)*.1)*100);
+ const label=score>=85&&m.ready?'OA-ready evidence':'Still building OA evidence';
+ return '<div class="v349Readiness"><small>OA READINESS • CURRENT CONCEPT</small><b>'+score+'% • '+E(label)+'</b><p>'+(m.ready?'You have accuracy, independence, transfer, and low recurring-error evidence.':'Majick still needs stronger independent or transfer evidence before calling this ready.')+'</p></div>';
+}
+
 
 function activeProfile(){
  try{return window.MajickLearningProfiles?.profileFor?.(current().concept,current().lesson,cid())||null}catch(_){return null}
@@ -287,45 +450,47 @@ function ensureQuestion(scope,mixed=false){
 }
 function stepBody(){
  const st=state(),step=Number(st.step||0),{lesson,concept}=current(),m=mastery();
- if(step===0)return '<small>① WHAT AM I LEARNING?</small><h2>'+E(concept.title||lesson.title)+'</h2><p class="lead">'+E(concept.teach||lesson.goal)+'</p>'+profileCard()+'<div class="v346GoalGrid"><span>Recognize it</span><span>Use it independently</span><span>Explain why</span><span>Avoid the trap</span><span>Retrieve it later</span></div><button class="btn primary" data-v346-next>Quick Check →</button>';
+ const recovery=step===0?recoveryHtml():'';
+ if(step===0)return recovery+'<small>① WHAT AM I LEARNING?</small><h2>'+E(concept.title||lesson.title)+'</h2><p class="lead">'+E(concept.teach||lesson.goal)+'</p>'+profileCard()+'<div class="v346GoalGrid"><span>Recognize it</span><span>Use it independently</span><span>Explain why</span><span>Avoid the trap</span><span>Retrieve it later</span></div><button class="btn primary" data-v346-next>Quick Check →</button>';
  if(step===1){
    const d=diagnostic(),qs=d.questions.map(byId).filter(Boolean);
    if(!qs.length)return '<small>② QUICK CHECK</small><h2>Diagnostic pending</h2><p>Add course questions and Majick will automatically create a 2–3 item diagnostic.</p><button class="btn primary" data-v346-next>Teach Me →</button>';
-   return '<small>② QUICK CHECK • NOT GRADED</small><h2>What do you already know?</h2>'+qs.map((q,i)=>'<section class="v346Diag"><b>'+(i+1)+'. '+E(q.prompt)+'</b>'+q.options.map(o=>'<button data-v346-diag="'+i+'" data-choice="'+E(o)+'" '+(d.answers[i]?'disabled':'')+'>'+E(o)+'</button>').join('')+(d.answers[i]?'<p>'+E(q.why||'Use this feedback to decide what needs teaching.')+'</p>':'')+'</section>').join('')+(d.answers.filter(Boolean).length===qs.length?'<button class="btn primary" data-v346-next>Teach Me →</button>':'');
+   return '<small>② QUICK CHECK • NOT GRADED</small><h2>What do you already know?</h2>'+prereqHtml()+qs.map((q,i)=>'<section class="v346Diag"><b>'+(i+1)+'. '+E(q.prompt)+'</b>'+q.options.map(o=>'<button data-v346-diag="'+i+'" data-choice="'+E(o)+'" '+(d.answers[i]?'disabled':'')+'>'+E(o)+'</button>').join('')+(d.answers[i]?'<p>'+E(q.why||'Use this feedback to decide what needs teaching.')+'</p>':'')+'</section>').join('')+(d.answers.filter(Boolean).length===qs.length?branchCardHtml()+'<button class="btn primary" data-v349-branch>Follow My Best Path →</button>':'');
  }
- if(step===2)return '<small>③ TEACH ME</small><h2>'+E(concept.title||lesson.title)+'</h2><p class="lead">'+E(concept.teach||lesson.goal)+'</p><div class="v347ProfileGuide"><b>Best learning strategy for this concept</b><p>'+E(profileGuide())+'</p></div>'+tutorButtons()+'<button class="btn primary" data-v346-next>Show Me →</button>';
+ if(step===2)return '<small>③ TEACH ME</small><h2>'+E(concept.title||lesson.title)+'</h2>'+prereqHtml()+'<p class="lead">'+E(concept.teach||lesson.goal)+'</p><div class="v347ProfileGuide"><b>Best learning strategy for this concept</b><p>'+E(profileGuide())+'</p></div>'+tutorButtons()+supportMeterHtml()+'<button class="btn primary" data-v346-next>Show Me →</button>';
  if(step===3){
    const ex=concept?.worked?.scenario||concept?.examples?.[0]||concept.teach||lesson.goal,steps=concept?.worked?.steps||['Identify what the scenario is asking.','Name the concept or strategy.','Apply the rule.','Check the answer against the scenario.'];
    return '<small>④ SHOW ME • WATCH FIRST</small><h2>Worked example</h2><div class="v346Worked"><p>'+E(ex)+'</p><ol>'+steps.map(x=>'<li>'+E(x)+'</li>').join('')+'</ol></div>'+workedErrorHtml()+'<button class="btn primary" data-v346-next>Why does this work? →</button>';
  }
- if(step===4)return '<small>⑤ WHY DOES THIS WORK?</small><h2>Connect the rule to the meaning</h2><p class="lead">'+E(concept?.explain?.model||concept?.why||concept?.anchor?.trap||'Explain the reason the correct strategy fits this scenario, not just which answer is correct.')+'</p><button class="btn primary" data-v346-next>Help Me Try →</button>';
+ if(step===4)return '<small>⑤ WHY DOES THIS WORK?</small><h2>Connect the rule to the meaning</h2><p class="lead">'+E(concept?.explain?.model||concept?.why||concept?.anchor?.trap||'Explain the reason the correct strategy fits this scenario, not just which answer is correct.')+'</p>'+explainBackHtml()+'<button class="btn primary" data-v346-next>Help Me Try →</button>';
  if(step===5)return '<small>⑥ HELP ME TRY</small><h2>Guided practice</h2>'+qHtml(ensureQuestion('help'),'help');
  if(step===6){const q=ensureQuestion('turn');return '<small>⑦ MY TURN</small><h2>Try it independently</h2>'+(noMathUnlocked(q)?qHtml(q,'turn'):noMathYetHtml(q));}
  if(step===7){
    const counts=m.counts,cat=course().misconceptionCatalog||[];
    return '<small>⑧ RELATED MISTAKES</small><h2>Learn the tempting wrong answer</h2><div class="v346Mistakes">'+(concept?.anchor?.trap?'<p>⚠ '+E(concept.anchor.trap)+'</p>':'')+cat.slice(0,3).map(x=>'<p>⚠ '+E(x.description||x.label||x.title||String(x))+'</p>').join('')+Object.entries(counts).map(([k,v])=>'<span>'+E(k)+' • '+v+'×</span>').join('')+'</div><button class="btn primary" data-v346-next>Mix It Up →</button>';
  }
- if(step===8){const q=ensureQuestion('mix',true);return '<small>⑨ MIX IT UP</small><h2>Choose the strategy from the scenario</h2><p>Majick does not tell you which lesson this came from.</p>'+(noMathUnlocked(q)?qHtml(q,'mix'):noMathYetHtml(q));}
+ if(step===8){const q=ensureQuestion('mix',true);return '<small>⑨ MIX IT UP</small><h2>Choose the strategy from the scenario</h2><p>Majick does not tell you which lesson this came from.</p>'+transferLadderHtml()+languageHtml(q)+deconstructHtml(q)+(noMathUnlocked(q)?qHtml(q,'mix'):noMathYetHtml(q));}
  if(step===9){
    const due=progress().spacedQueue.filter(x=>x.dueAt<=Date.now()),q=due.length?bank().find(x=>questionTopic(x)===String(due[0].topicId).replace('adaptive:','')):ensureQuestion('retrieve',true);
-   return '<small>⑩ RETRIEVE IT</small><h2>No notes first</h2><p>Recall before rereading.</p>'+qHtml(q||ensureQuestion('retrieve',true),'retrieve');
+   return '<small>⑩ RETRIEVE IT</small><h2>No notes first</h2><p>Recall before rereading.</p>'+supportMeterHtml()+qHtml(q||ensureQuestion('retrieve',true),'retrieve');
  }
  if(step===10){
    const ckey=current().concept.id,check=st.checks[ckey]||(st.checks[ckey]={ids:qset(3).map(q=>q.id||q.qid),index:0,answers:[],done:false});
-   if(check.done)return '<small>⑪ MASTERY GATE</small><h2>'+(m.ready?'Ready to advance':'Continue with review active')+'</h2>'+pathMeterHtml()+'<div class="v346Gate"><span><b>'+Math.round(m.acc*100)+'%</b> recent accuracy</span><span><b>'+m.independent+'</b> independent</span><span><b>'+m.transfer+'</b> transfer</span><span><b>'+(m.recurring?'Yes':'No')+'</b> recurring trap</span></div>'+masteryReceiptHtml()+'<p>'+(m.ready?'Mastery evidence is strong. The skill will still return later.':'You may continue. Majick will schedule more mixed and delayed retrieval instead of requiring 100%.')+'</p><button class="btn primary" data-v346-next>Schedule Review →</button>';
+   if(check.done)return '<small>⑪ MASTERY GATE</small><h2>'+(m.ready?'Ready to advance':'Continue with review active')+'</h2>'+pathMeterHtml()+supportMeterHtml()+microHeatmapHtml()+transferLadderHtml()+readinessHtml()+'<div class="v346Gate"><span><b>'+Math.round(m.acc*100)+'%</b> recent accuracy</span><span><b>'+m.independent+'</b> independent</span><span><b>'+m.transfer+'</b> transfer</span><span><b>'+(m.recurring?'Yes':'No')+'</b> recurring trap</span></div>'+masteryReceiptHtml()+'<p>'+(m.ready?'Mastery evidence is strong. The skill will still return later.':'You may continue. Majick will schedule more mixed and delayed retrieval instead of requiring 100%.')+'</p><button class="btn primary" data-v346-next>Schedule Review →</button>';
    const q=byId(check.ids[check.index]);
    return '<small>⑪ MASTERY CHECK • 3 ITEMS</small><h2>Prove it independently</h2>'+qHtml(q,'mastery');
  }
  const due=progress().spacedQueue.find(x=>x.topicId==='adaptive:'+current().concept.id);
- return '<small>⑫ SCHEDULE REVIEW</small><h2>Learning continues after the lesson</h2>'+pathMeterHtml()+'<p>Majick will bring this concept back in mixed practice and delayed retrieval.</p><div class="v346Review"><b>'+(due?'Next review '+new Date(due.dueAt).toLocaleDateString():'Schedule your first delayed review')+'</b><span>'+Math.round(m.acc*100)+'% recent accuracy • '+m.independent+' independent correct</span></div>'+masteryReceiptHtml()+'<button class="btn primary" data-v346-schedule>Schedule Review</button>';
+ return '<small>⑫ SCHEDULE REVIEW</small><h2>Learning continues after the lesson</h2>'+pathMeterHtml()+tomorrowHtml()+readinessHtml()+'<p>Majick will bring this concept back in mixed practice and delayed retrieval.</p><div class="v346Review"><b>'+(due?'Next review '+new Date(due.dueAt).toLocaleDateString():'Schedule your first delayed review')+'</b><span>'+Math.round(m.acc*100)+'% recent accuracy • '+m.independent+' independent correct</span></div>'+masteryReceiptHtml()+'<button class="btn primary" data-v346-schedule>Schedule Review</button>';
 }
 function tutorButtons(){return '<div class="v346TutorButtons"><button data-v346-tutor="simple">Explain Simpler</button><button data-v346-tutor="example">Give Me an Example</button><button data-v346-tutor="quiz">Quiz Me on This Page</button><button data-v346-tutor="mistakes">Related Mistakes</button></div><div id="v346TutorOut"></div>'}
 function panelHtml(){
  const {lesson,concept}=current(),g=guardian(),m=mastery();try{window.MajickLearningProfiles?.saveProfile?.(concept,lesson,cid())}catch(_){}
- return '<section class="v346SharedAdaptive"><header><div><small>SHARED LEARNING ENGINE • '+E(cid())+'</small><h1>'+E(concept.title||lesson.title)+'</h1><p>'+E(course().title||cid())+'</p>'+pathMeterHtml()+'</div><select id="v346Lesson">'+lessons().map((l,i)=>'<option value="'+i+'" '+(i===state().lessonIndex?'selected':'')+'>'+E(l.title)+'</option>').join('')+'</select></header><div class="v346Grid"><nav>'+STEPS.map((x,i)=>'<button data-v346-step="'+i+'" class="'+(i===state().step?'active':'')+'"><i>'+(i+1)+'</i><span>'+E(x)+'</span></button>').join('')+'</nav><main>'+stepBody()+'</main><aside><div class="v346Guardian"><span>'+g.emoji+'</span><b>'+E(g.name)+'</b><p>'+(m.recurring?'“I see a repeated trap. We are repairing that exact distinction.”':m.independent>=2?'“You are showing independence. I will give fewer cues unless you ask.”':'“Name the strategy before you answer. Recognition comes before recall.”')+'</p></div><div class="v346Evidence"><small>SKILL EVIDENCE</small><b>'+Math.round(m.acc*100)+'%</b><span>'+m.independent+' independent • '+m.transfer+' transfer</span></div></aside></div></section>';
+ return '<section class="v346SharedAdaptive"><header><div><small>SHARED LEARNING ENGINE • '+E(cid())+'</small><h1>'+E(concept.title||lesson.title)+'</h1><p>'+E(course().title||cid())+'</p>'+pathMeterHtml()+supportMeterHtml()+'</div><select id="v346Lesson">'+lessons().map((l,i)=>'<option value="'+i+'" '+(i===state().lessonIndex?'selected':'')+'>'+E(l.title)+'</option>').join('')+'</select></header><div class="v346Grid"><nav>'+STEPS.map((x,i)=>'<button data-v346-step="'+i+'" class="'+(i===state().step?'active':'')+'"><i>'+(i+1)+'</i><span>'+E(x)+'</span></button>').join('')+'</nav><main>'+stepBody()+'</main><aside><div class="v346Guardian"><span>'+g.emoji+'</span><b>'+E(g.name)+'</b><p>'+(m.recurring?'“I see a repeated trap. We are repairing that exact distinction.”':m.independent>=2?'“You are showing independence. I will give fewer cues unless you ask.”':'“Name the strategy before you answer. Recognition comes before recall.”')+'</p></div><div class="v346Evidence"><small>SKILL EVIDENCE</small><b>'+Math.round(m.acc*100)+'%</b><span>'+m.independent+' independent • '+m.transfer+' transfer</span></div></aside></div></section>';
 }
 function renderAdaptive(){const box=document.getElementById('adaptiveLearningCore');if(!box)return;box.innerHTML=panelHtml();bindAdaptive(box)}
 function showAdaptive(){
+ const st=state(),was=Number(st.lastVisit||0);st.lastVisit=Date.now();save();
  document.querySelectorAll('.learnPanel').forEach(p=>p.hidden=true);
  const panel=document.querySelector('.learnPanel[data-panel="adaptive"]');if(panel)panel.hidden=false;
  document.querySelectorAll('.learnTabs button').forEach(b=>b.classList.remove('active'));
@@ -335,12 +500,13 @@ function showAdaptive(){
 function next(){state().step=Math.min(11,Number(state().step||0)+1);state().currentQuestions={};save();renderAdaptive()}
 function handleAnswer(scope,choice){
  const q=ensureQuestion(scope,scope==='mix'||scope==='retrieve');if(!q)return;
- const ok=record(q,choice,'adaptive-'+scope,{assisted:scope==='help',transfer:scope==='mix'});
- const fb=document.getElementById('v346Feedback');if(fb)fb.innerHTML='<div class="v346Feedback '+(ok?'ok':'repair')+'"><b>'+(ok?'✓ Correct':'Repair this reasoning')+'</b><p>'+E(q.why||'Compare the wording of the scenario to the definition or rule.')+'</p></div>';
+ const result=record(q,choice,'adaptive-'+scope,{assisted:scope==='help',transfer:scope==='mix'}),ok=result.ok;
+ state().pendingAnswer={qid:q.id||q.qid,scope,correct:ok,misconception:result.misconception||null};
+ const fb=document.getElementById('v346Feedback');if(fb)fb.innerHTML='<div class="v346Feedback '+(ok?'ok':'repair')+'"><b>'+(ok?'✓ Correct':'Repair this reasoning')+'</b><p>'+E(q.why||'Compare the wording of the scenario to the definition or rule.')+'</p></div>'+confidenceHtml();
  if(scope==='mastery'){
-   const ck=current().concept.id,c=state().checks[ck];c.answers.push(ok);if(c.index<2)c.index++;else c.done=true;save();setTimeout(renderAdaptive,350);return;
+   const ck=current().concept.id,c=state().checks[ck];c.answers.push(ok);if(c.index<2)c.index++;else c.done=true;save();return;
  }
- if(ok&&['help','turn','mix','retrieve'].includes(scope)){delete state().currentQuestions[scope+':'+current().concept.id];save();setTimeout(next,350)}
+ save();
 }
 function bindAdaptive(root){
  root.querySelector('#v346Lesson')?.addEventListener('change',e=>{state().lessonIndex=Number(e.target.value)||0;state().conceptIndex=0;state().step=0;state().currentQuestions={};save();renderAdaptive()});
@@ -348,7 +514,7 @@ function bindAdaptive(root){
  root.querySelector('[data-v346-next]')?.addEventListener('click',next);
  root.querySelectorAll('[data-v346-answer]').forEach(b=>b.addEventListener('click',()=>handleAnswer(b.dataset.scope,b.dataset.v346Answer)));
  root.querySelectorAll('[data-v346-diag]').forEach(b=>b.addEventListener('click',()=>{const d=diagnostic(),i=Number(b.dataset.v346Diag),q=byId(d.questions[i]);if(d.answers[i])return;d.answers[i]={choice:b.dataset.choice,correct:String(b.dataset.choice)===String(q?.answer)};save();renderAdaptive()}));
- root.querySelectorAll('[data-v346-tutor]').forEach(b=>b.addEventListener('click',()=>{const out=root.querySelector('#v346TutorOut');if(out)out.innerHTML='<div class="v346TutorCard">'+E(tutorText(b.dataset.v346Tutor))+'</div>';if(b.dataset.v346Tutor==='quiz'){state().step=5;save();renderAdaptive()}}));
+ root.querySelectorAll('[data-v346-tutor]').forEach(b=>b.addEventListener('click',()=>{supportEvent(b.dataset.v346Tutor);const out=root.querySelector('#v346TutorOut');if(out)out.innerHTML='<div class="v346TutorCard">'+E(tutorText(b.dataset.v346Tutor))+'</div>';if(b.dataset.v346Tutor==='quiz'){state().step=5;save();renderAdaptive()}}));
  root.querySelector('[data-v346-schedule]')?.addEventListener('click',()=>{const days=scheduleReview();root.querySelector('[data-v346-schedule]').textContent='✓ Review scheduled in '+days+' days'});
  root.querySelectorAll('[data-v347-nomath-choice]').forEach(b=>b.addEventListener('click',()=>{
    const q=ensureQuestion(state().step===8?'mix':'turn',state().step===8),k=q?.id||q?.qid;if(!k)return;state().noMath=state().noMath||{};state().noMath[k]=state().noMath[k]||{testing:'',info:'',strategy:'',unlocked:false};
@@ -361,6 +527,11 @@ function bindAdaptive(root){
    const q=ensureQuestion(state().step===8?'mix':'turn',state().step===8),k=q?.id||q?.qid;if(!k)return;state().noMath[k].unlocked=true;creditMicro(['recognize','select'],true);save();renderAdaptive();
  });
  root.querySelector('[data-v347-show-error]')?.addEventListener('click',()=>{const p=root.querySelector('[data-v347-error]');if(p)p.hidden=false});
+ root.querySelector('[data-v349-branch]')?.addEventListener('click',()=>{const b=diagnosticBranch();if(!b)return;state().branches[current().concept.id]={...b,at:Date.now()};state().step=b.to;save();renderAdaptive()});
+ root.querySelectorAll('[data-v349-confidence]').forEach(b=>b.addEventListener('click',()=>recordConfidence(b.dataset.v349Confidence)));
+ root.querySelectorAll('[data-v349-explain]').forEach(b=>b.addEventListener('click',()=>{const out=root.querySelector('[data-v349-explain-out]'),ok=b.dataset.v349Explain==='correct';if(out)out.innerHTML=ok?'<b>✓ Yes — that explains the reasoning.</b>':'<b>Not quite. Choose the explanation tied to the actual relationship in the problem.</b>';creditMicro('interpret',ok);save()}));
+ root.querySelectorAll('[data-v349-recovery]').forEach(b=>b.addEventListener('click',()=>{if(b.dataset.v349Recovery==='check'){state().step=9}else{state().step=Math.max(2,Number(state().step||2))}save();renderAdaptive()}));
+
 }
 function patch(){
  if(!window.MajickLearningLab||window.MajickLearningLab.__sharedAdaptive)return;
@@ -380,6 +551,6 @@ function patch(){
  window.MajickLearningLab.__sharedAdaptive=true;
 }
 patch();
-window.MajickAdaptiveLearning={VERSION,STEPS,lessons,current,mastery,microDefs,microReceipt,learningPath,activeProfile,show:showAdaptive,render:renderAdaptive,state,progress};
+window.MajickAdaptiveLearning={VERSION,STEPS,lessons,current,mastery,microDefs,microReceipt,learningPath,activeProfile,prereqStatus,misconceptionSummary,supportLevel,tomorrowQueue,show:showAdaptive,render:renderAdaptive,state,progress};
 document.documentElement.dataset.majickAdaptiveLearning=VERSION;
 })();
