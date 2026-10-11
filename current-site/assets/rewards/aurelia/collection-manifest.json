@@ -1,0 +1,1058 @@
+{
+  "version": "3.4.2",
+  "guardian": "aurelia",
+  "collection": "aurelia",
+  "counts": {
+    "total": 28,
+    "placeable": 23,
+    "wearable": 5
+  },
+  "visualMaster": "assets/rewards/reference-boards/aurelia/aurelia-collection-reference-board.webp",
+  "palette": [
+    "ivory cream",
+    "ruby red",
+    "rose gold",
+    "forest green",
+    "sage green",
+    "soft peach"
+  ],
+  "items": [
+    {
+      "boardIndex": 1,
+      "name": "Aurelia’s Bunny-Ear Reading Chair",
+      "id": "aurelia-bunny-ear-reading-chair",
+      "kind": "furniture",
+      "rarity": "rare",
+      "icon": "☾",
+      "collection": "aurelia",
+      "image": "assets/rewards/aurelia/items/bunny-ear-reading-chair.webp",
+      "w": 140,
+      "h": 150,
+      "palette": [
+        "ivory cream",
+        "ruby red",
+        "rose gold",
+        "forest green",
+        "sage green",
+        "soft peach"
+      ],
+      "action": "place",
+      "unlock": {
+        "system": "MajickRewardCore",
+        "method": "earned-treasure-drop",
+        "rarity": "rare",
+        "ownershipKey": "blueprints",
+        "guaranteed": false
+      },
+      "imageSha256": "e7873448ea61b248961dcee359aa1e767311918c1a4bdef097c6ec6405b53255",
+      "dimensions": {
+        "width": 478,
+        "height": 512
+      },
+      "creation": {
+        "mode": "built-in image generation",
+        "prompt": "Use case: background-extraction. Asset: one standalone transparent Sanctuary game reward. Recreate ONLY the Aurelia’s Bunny-Ear Reading Chair, at row 1 column 1 in the reference board. Keep its exact silhouette, ornamentation, material, perspective and details. Match this approved palette: ivory cream, ruby red, rose gold, forest green, sage green, soft peach. No purple/violet/lavender; do not redesign or include any neighboring object. Entire complete single object centered with generous margin. Richly rendered ornate mature whimsical magical-college 3D illustration exactly like the board. Actual transparent alpha background. No labels, text, board or backdrop."
+      }
+    },
+    {
+      "boardIndex": 2,
+      "name": "Aurelia’s Wingback Reading Chaise",
+      "id": "aurelia-wingback-reading-chaise",
+      "kind": "furniture",
+      "rarity": "rare",
+      "icon": "☾",
+      "collection": "aurelia",
+      "image": "assets/rewards/aurelia/items/wingback-reading-chaise.webp",
+      "w": 200,
+      "h": 130,
+      "palette": [
+        "ivory cream",
+        "ruby red",
+        "rose gold",
+        "forest green",
+        "sage green",
+        "soft peach"
+      ],
+      "action": "place",
+      "unlock": {
+        "system": "MajickRewardCore",
+        "method": "earned-treasure-drop",
+        "rarity": "rare",
+        "ownershipKey": "blueprints",
+        "guaranteed": false
+      },
+      "imageSha256": "86bfa9fe28b359e961597839e75fbd9e77f887381ff36cb6543d1eb094742857",
+      "dimensions": {
+        "width": 512,
+        "height": 341
+      },
+      "creation": {
+        "mode": "built-in image generation",
+        "prompt": "Use case: background-extraction. Asset: one standalone transparent Sanctuary game reward. Recreate ONLY the Aurelia’s Wingback Reading Chaise, at row 1 column 2 in the reference board. Keep its exact silhouette, ornamentation, material, perspective and details. Match this approved palette: ivory cream, ruby red, rose gold, forest green, sage green, soft peach. No purple/violet/lavender; do not redesign or include any neighboring object. Entire complete single object centered with generous margin. Richly rendered ornate mature whimsical magical-college 3D illustration exactly like the board. Actual transparent alpha background. No labels, text, board or backdrop."
+      }
+    },
+    {
+      "boardIndex": 3,
+      "name": "Aurelia’s Quilted Ruby Canopy Bed",
+      "id": "aurelia-quilted-ruby-canopy-bed",
+      "kind": "furniture",
+      "rarity": "celestial",
+      "icon": "☾",
+      "collection": "aurelia",
+      "image": "assets/rewards/aurelia/items/quilted-ruby-canopy-bed.webp",
+      "w": 220,
+      "h": 175,
+      "palette": [
+        "ivory cream",
+        "ruby red",
+        "rose gold",
+        "forest green",
+        "sage green",
+        "soft peach"
+      ],
+      "action": "place",
+      "unlock": {
+        "system": "MajickRewardCore",
+        "method": "earned-treasure-drop",
+        "rarity": "celestial",
+        "ownershipKey": "blueprints",
+        "guaranteed": false
+      },
+      "imageSha256": "5f192cfb781cc6ee77c2d6618bee5b59dfe64f3602f57034741c47be5b8f8f53",
+      "dimensions": {
+        "width": 512,
+        "height": 384
+      },
+      "creation": {
+        "mode": "built-in image generation",
+        "prompt": "Use case: background-extraction. Asset: one standalone transparent Sanctuary game reward. Recreate ONLY the Aurelia’s Quilted Ruby Canopy Bed, at row 1 column 3 in the reference board. Keep its exact silhouette, ornamentation, material, perspective and details. Match this approved palette: ivory cream, ruby red, rose gold, forest green, sage green, soft peach. No purple/violet/lavender; do not redesign or include any neighboring object. Entire complete single object centered with generous margin. Richly rendered ornate mature whimsical magical-college 3D illustration exactly like the board. Actual transparent alpha background. No labels, text, board or backdrop."
+      }
+    },
+    {
+      "boardIndex": 4,
+      "name": "Aurelia’s Burrow Hammock",
+      "id": "aurelia-burrow-hammock",
+      "kind": "furniture",
+      "rarity": "rare",
+      "icon": "☾",
+      "collection": "aurelia",
+      "image": "assets/rewards/aurelia/items/burrow-hammock.webp",
+      "w": 180,
+      "h": 150,
+      "palette": [
+        "ivory cream",
+        "ruby red",
+        "rose gold",
+        "forest green",
+        "sage green",
+        "soft peach"
+      ],
+      "action": "place",
+      "unlock": {
+        "system": "MajickRewardCore",
+        "method": "earned-treasure-drop",
+        "rarity": "rare",
+        "ownershipKey": "blueprints",
+        "guaranteed": false
+      },
+      "imageSha256": "74e4a3e875509467b540955324d28d6682570da265a94f9fa073546cc2652f9b",
+      "dimensions": {
+        "width": 512,
+        "height": 468
+      },
+      "creation": {
+        "mode": "built-in image generation",
+        "prompt": "Use case: background-extraction. Asset: one standalone transparent Sanctuary game reward. Recreate ONLY the Aurelia’s Burrow Hammock, at row 1 column 4 in the reference board. Keep its exact silhouette, ornamentation, material, perspective and details. Match this approved palette: ivory cream, ruby red, rose gold, forest green, sage green, soft peach. No purple/violet/lavender; do not redesign or include any neighboring object. Entire complete single object centered with generous margin. Richly rendered ornate mature whimsical magical-college 3D illustration exactly like the board. Actual transparent alpha background. No labels, text, board or backdrop."
+      }
+    },
+    {
+      "boardIndex": 5,
+      "name": "Aurelia’s Velvet Footstool",
+      "id": "aurelia-velvet-footstool",
+      "kind": "furniture",
+      "rarity": "rare",
+      "icon": "☾",
+      "collection": "aurelia",
+      "image": "assets/rewards/aurelia/items/velvet-footstool.webp",
+      "w": 95,
+      "h": 75,
+      "palette": [
+        "ivory cream",
+        "ruby red",
+        "rose gold",
+        "forest green",
+        "sage green",
+        "soft peach"
+      ],
+      "action": "place",
+      "unlock": {
+        "system": "MajickRewardCore",
+        "method": "earned-treasure-drop",
+        "rarity": "rare",
+        "ownershipKey": "blueprints",
+        "guaranteed": false
+      },
+      "imageSha256": "3c66b787f305b924921da24c8e251306fd4ce0aa0c9d7e0403420cec601178b3",
+      "dimensions": {
+        "width": 512,
+        "height": 427
+      },
+      "creation": {
+        "mode": "built-in image generation",
+        "prompt": "Use case: background-extraction. Asset: one standalone transparent Sanctuary game reward. Recreate ONLY the Aurelia’s Velvet Footstool, at row 1 column 5 in the reference board. Keep its exact silhouette, ornamentation, material, perspective and details. Match this approved palette: ivory cream, ruby red, rose gold, forest green, sage green, soft peach. No purple/violet/lavender; do not redesign or include any neighboring object. Entire complete single object centered with generous margin. Richly rendered ornate mature whimsical magical-college 3D illustration exactly like the board. Actual transparent alpha background. No labels, text, board or backdrop."
+      }
+    },
+    {
+      "boardIndex": 6,
+      "name": "Aurelia’s Scholar Writing Desk",
+      "id": "aurelia-scholar-writing-desk",
+      "kind": "furniture",
+      "rarity": "arcane",
+      "icon": "☾",
+      "collection": "aurelia",
+      "image": "assets/rewards/aurelia/items/scholar-writing-desk.webp",
+      "w": 180,
+      "h": 150,
+      "palette": [
+        "ivory cream",
+        "ruby red",
+        "rose gold",
+        "forest green",
+        "sage green",
+        "soft peach"
+      ],
+      "action": "place",
+      "unlock": {
+        "system": "MajickRewardCore",
+        "method": "earned-treasure-drop",
+        "rarity": "arcane",
+        "ownershipKey": "blueprints",
+        "guaranteed": false
+      },
+      "imageSha256": "493dcb5b4b0193ff07e943d432e97e425e62d41eba4b63f7291e569067c3ca13",
+      "dimensions": {
+        "width": 512,
+        "height": 341
+      },
+      "creation": {
+        "mode": "built-in image generation",
+        "prompt": "Use case: background-extraction. Asset: one standalone transparent Sanctuary game reward. Recreate ONLY the Aurelia’s Scholar Writing Desk, at row 1 column 6 in the reference board. Keep its exact silhouette, ornamentation, material, perspective and details. Match this approved palette: ivory cream, ruby red, rose gold, forest green, sage green, soft peach. No purple/violet/lavender; do not redesign or include any neighboring object. Entire complete single object centered with generous margin. Richly rendered ornate mature whimsical magical-college 3D illustration exactly like the board. Actual transparent alpha background. No labels, text, board or backdrop."
+      }
+    },
+    {
+      "boardIndex": 7,
+      "name": "Aurelia’s Arched Bookcase",
+      "id": "aurelia-arched-bookcase",
+      "kind": "furniture",
+      "rarity": "enchanted",
+      "icon": "☾",
+      "collection": "aurelia",
+      "image": "assets/rewards/aurelia/items/arched-bookcase.webp",
+      "w": 150,
+      "h": 190,
+      "palette": [
+        "ivory cream",
+        "ruby red",
+        "rose gold",
+        "forest green",
+        "sage green",
+        "soft peach"
+      ],
+      "action": "place",
+      "unlock": {
+        "system": "MajickRewardCore",
+        "method": "earned-treasure-drop",
+        "rarity": "enchanted",
+        "ownershipKey": "blueprints",
+        "guaranteed": false
+      },
+      "imageSha256": "0ffea31ca75a8c39920eb6d4eb8305200b64ab4443863499e2aabbcda4e60fe4",
+      "dimensions": {
+        "width": 512,
+        "height": 477
+      },
+      "creation": {
+        "mode": "built-in image generation",
+        "prompt": "Use case: background-extraction. Asset: one standalone transparent Sanctuary game reward. Recreate ONLY the Aurelia’s Arched Bookcase, at row 1 column 7 in the reference board. Keep its exact silhouette, ornamentation, material, perspective and details. Match this approved palette: ivory cream, ruby red, rose gold, forest green, sage green, soft peach. No purple/violet/lavender; do not redesign or include any neighboring object. Entire complete single object centered with generous margin. Richly rendered ornate mature whimsical magical-college 3D illustration exactly like the board. Actual transparent alpha background. No labels, text, board or backdrop."
+      }
+    },
+    {
+      "boardIndex": 8,
+      "name": "Aurelia’s Rose Crystal Lamp",
+      "id": "aurelia-rose-crystal-lamp",
+      "kind": "decor",
+      "rarity": "enchanted",
+      "icon": "☾",
+      "collection": "aurelia",
+      "image": "assets/rewards/aurelia/items/rose-crystal-lamp.webp",
+      "w": 90,
+      "h": 130,
+      "palette": [
+        "ivory cream",
+        "ruby red",
+        "rose gold",
+        "forest green",
+        "sage green",
+        "soft peach"
+      ],
+      "action": "place",
+      "unlock": {
+        "system": "MajickRewardCore",
+        "method": "earned-treasure-drop",
+        "rarity": "enchanted",
+        "ownershipKey": "blueprints",
+        "guaranteed": false
+      },
+      "imageSha256": "bf4abe8bf415d82f75f2f0f720f5872f41efc7c96b88f7e837404455e96895df",
+      "dimensions": {
+        "width": 512,
+        "height": 468
+      },
+      "creation": {
+        "mode": "built-in image generation",
+        "prompt": "Use case: background-extraction. Asset: one standalone transparent Sanctuary game reward. Recreate ONLY the Aurelia’s Rose Crystal Lamp, at row 2 column 1 in the reference board. Keep its exact silhouette, ornamentation, material, perspective and details. Match this approved palette: ivory cream, ruby red, rose gold, forest green, sage green, soft peach. No purple/violet/lavender; do not redesign or include any neighboring object. Entire complete single object centered with generous margin. Richly rendered ornate mature whimsical magical-college 3D illustration exactly like the board. Actual transparent alpha background. No labels, text, board or backdrop."
+      }
+    },
+    {
+      "boardIndex": 9,
+      "name": "Aurelia’s Wing-Framed Moon Mirror",
+      "id": "aurelia-wing-framed-moon-mirror",
+      "kind": "decor",
+      "rarity": "rare",
+      "icon": "☾",
+      "collection": "aurelia",
+      "image": "assets/rewards/aurelia/items/wing-framed-moon-mirror.webp",
+      "w": 130,
+      "h": 180,
+      "palette": [
+        "ivory cream",
+        "ruby red",
+        "rose gold",
+        "forest green",
+        "sage green",
+        "soft peach"
+      ],
+      "action": "place",
+      "unlock": {
+        "system": "MajickRewardCore",
+        "method": "earned-treasure-drop",
+        "rarity": "rare",
+        "ownershipKey": "blueprints",
+        "guaranteed": false
+      },
+      "imageSha256": "c055e91e93d0fded99fc78fd9b3e7e904d73f79a13f5046c7571758270fe6ed9",
+      "dimensions": {
+        "width": 512,
+        "height": 464
+      },
+      "creation": {
+        "mode": "built-in image generation",
+        "prompt": "Use case: background-extraction. Asset: one standalone transparent Sanctuary game reward. Recreate ONLY the Aurelia’s Wing-Framed Moon Mirror, at row 2 column 2 in the reference board. Keep its exact silhouette, ornamentation, material, perspective and details. Match this approved palette: ivory cream, ruby red, rose gold, forest green, sage green, soft peach. No purple/violet/lavender; do not redesign or include any neighboring object. Entire complete single object centered with generous margin. Richly rendered ornate mature whimsical magical-college 3D illustration exactly like the board. Actual transparent alpha background. No labels, text, board or backdrop."
+      }
+    },
+    {
+      "boardIndex": 10,
+      "name": "Aurelia’s Feather Lantern",
+      "id": "aurelia-feather-lantern",
+      "kind": "decor",
+      "rarity": "arcane",
+      "icon": "☾",
+      "collection": "aurelia",
+      "image": "assets/rewards/aurelia/items/feather-lantern.webp",
+      "w": 85,
+      "h": 140,
+      "palette": [
+        "ivory cream",
+        "ruby red",
+        "rose gold",
+        "forest green",
+        "sage green",
+        "soft peach"
+      ],
+      "action": "place",
+      "unlock": {
+        "system": "MajickRewardCore",
+        "method": "earned-treasure-drop",
+        "rarity": "arcane",
+        "ownershipKey": "blueprints",
+        "guaranteed": false
+      },
+      "imageSha256": "7a930a649971e5d3fae784bc405e3f58761644ddcdb165a04cc0c4409d79e1f2",
+      "dimensions": {
+        "width": 512,
+        "height": 480
+      },
+      "creation": {
+        "mode": "built-in image generation",
+        "prompt": "Use case: background-extraction. Asset: one standalone transparent Sanctuary game reward. Recreate ONLY the Aurelia’s Feather Lantern, at row 2 column 3 in the reference board. Keep its exact silhouette, ornamentation, material, perspective and details. Match this approved palette: ivory cream, ruby red, rose gold, forest green, sage green, soft peach. No purple/violet/lavender; do not redesign or include any neighboring object. Entire complete single object centered with generous margin. Richly rendered ornate mature whimsical magical-college 3D illustration exactly like the board. Actual transparent alpha background. No labels, text, board or backdrop."
+      }
+    },
+    {
+      "boardIndex": 11,
+      "name": "Aurelia’s Flowering Sage Planter",
+      "id": "aurelia-flowering-sage-planter",
+      "kind": "decor",
+      "rarity": "rare",
+      "icon": "☾",
+      "collection": "aurelia",
+      "image": "assets/rewards/aurelia/items/flowering-sage-planter.webp",
+      "w": 120,
+      "h": 120,
+      "palette": [
+        "ivory cream",
+        "ruby red",
+        "rose gold",
+        "forest green",
+        "sage green",
+        "soft peach"
+      ],
+      "action": "place",
+      "unlock": {
+        "system": "MajickRewardCore",
+        "method": "earned-treasure-drop",
+        "rarity": "rare",
+        "ownershipKey": "blueprints",
+        "guaranteed": false
+      },
+      "imageSha256": "34c168e82b480b132b8531d07006e4355bf5e802a647109128261d9556a26e3d",
+      "dimensions": {
+        "width": 512,
+        "height": 341
+      },
+      "creation": {
+        "mode": "built-in image generation",
+        "prompt": "Use case: background-extraction. Asset: one standalone transparent Sanctuary game reward. Recreate ONLY the Aurelia’s Flowering Sage Planter, at row 2 column 4 in the reference board. Keep its exact silhouette, ornamentation, material, perspective and details. Match this approved palette: ivory cream, ruby red, rose gold, forest green, sage green, soft peach. No purple/violet/lavender; do not redesign or include any neighboring object. Entire complete single object centered with generous margin. Richly rendered ornate mature whimsical magical-college 3D illustration exactly like the board. Actual transparent alpha background. No labels, text, board or backdrop."
+      }
+    },
+    {
+      "boardIndex": 12,
+      "name": "Aurelia’s Feeding and Water Station",
+      "id": "aurelia-feeding-and-water-station",
+      "kind": "decor",
+      "rarity": "enchanted",
+      "icon": "☾",
+      "collection": "aurelia",
+      "image": "assets/rewards/aurelia/items/feeding-and-water-station.webp",
+      "w": 120,
+      "h": 75,
+      "palette": [
+        "ivory cream",
+        "ruby red",
+        "rose gold",
+        "forest green",
+        "sage green",
+        "soft peach"
+      ],
+      "action": "place",
+      "unlock": {
+        "system": "MajickRewardCore",
+        "method": "earned-treasure-drop",
+        "rarity": "enchanted",
+        "ownershipKey": "blueprints",
+        "guaranteed": false
+      },
+      "imageSha256": "7406acbfec1f41f4d45a8c8e10d368e0d2130949652bd36ff877b49bdbe940bf",
+      "dimensions": {
+        "width": 512,
+        "height": 341
+      },
+      "creation": {
+        "mode": "built-in image generation",
+        "prompt": "Use case: background-extraction. Asset: one standalone transparent Sanctuary game reward. Recreate ONLY the Aurelia’s Feeding and Water Station, at row 2 column 5 in the reference board. Keep its exact silhouette, ornamentation, material, perspective and details. Match this approved palette: ivory cream, ruby red, rose gold, forest green, sage green, soft peach. No purple/violet/lavender; do not redesign or include any neighboring object. Entire complete single object centered with generous margin. Richly rendered ornate mature whimsical magical-college 3D illustration exactly like the board. Actual transparent alpha background. No labels, text, board or backdrop."
+      }
+    },
+    {
+      "boardIndex": 13,
+      "name": "Aurelia’s Potion Apothecary",
+      "id": "aurelia-potion-apothecary",
+      "kind": "decor",
+      "rarity": "rare",
+      "icon": "☾",
+      "collection": "aurelia",
+      "image": "assets/rewards/aurelia/items/potion-apothecary.webp",
+      "w": 120,
+      "h": 120,
+      "palette": [
+        "ivory cream",
+        "ruby red",
+        "rose gold",
+        "forest green",
+        "sage green",
+        "soft peach"
+      ],
+      "action": "place",
+      "unlock": {
+        "system": "MajickRewardCore",
+        "method": "earned-treasure-drop",
+        "rarity": "rare",
+        "ownershipKey": "blueprints",
+        "guaranteed": false
+      },
+      "imageSha256": "a2699a81475ce95f21dba82aaaa9e40ba9edbfb0f984f28bbfb7c2ea53684c61",
+      "dimensions": {
+        "width": 512,
+        "height": 468
+      },
+      "creation": {
+        "mode": "built-in image generation",
+        "prompt": "Use case: background-extraction. Asset: one standalone transparent Sanctuary game reward. Recreate ONLY the Aurelia’s Potion Apothecary, at row 2 column 6 in the reference board. Keep its exact silhouette, ornamentation, material, perspective and details. Match this approved palette: ivory cream, ruby red, rose gold, forest green, sage green, soft peach. No purple/violet/lavender; do not redesign or include any neighboring object. Entire complete single object centered with generous margin. Richly rendered ornate mature whimsical magical-college 3D illustration exactly like the board. Actual transparent alpha background. No labels, text, board or backdrop."
+      }
+    },
+    {
+      "boardIndex": 14,
+      "name": "Aurelia’s Wing-Embroidered Rug",
+      "id": "aurelia-wing-embroidered-rug",
+      "kind": "decor",
+      "rarity": "arcane",
+      "icon": "☾",
+      "collection": "aurelia",
+      "image": "assets/rewards/aurelia/items/wing-embroidered-rug.webp",
+      "w": 210,
+      "h": 95,
+      "palette": [
+        "ivory cream",
+        "ruby red",
+        "rose gold",
+        "forest green",
+        "sage green",
+        "soft peach"
+      ],
+      "action": "place",
+      "unlock": {
+        "system": "MajickRewardCore",
+        "method": "earned-treasure-drop",
+        "rarity": "arcane",
+        "ownershipKey": "blueprints",
+        "guaranteed": false
+      },
+      "imageSha256": "d9bdaf012e1fa5530960ae15d827e3aa5430da9291e416bc21a4dafa27d19f53",
+      "dimensions": {
+        "width": 512,
+        "height": 341
+      },
+      "creation": {
+        "mode": "built-in image generation",
+        "prompt": "Use case: background-extraction. Asset: one standalone transparent Sanctuary game reward. Recreate ONLY the Aurelia’s Wing-Embroidered Rug, at row 2 column 7 in the reference board. Keep its exact silhouette, ornamentation, material, perspective and details. Match this approved palette: ivory cream, ruby red, rose gold, forest green, sage green, soft peach. No purple/violet/lavender; do not redesign or include any neighboring object. Entire complete single object centered with generous margin. Richly rendered ornate mature whimsical magical-college 3D illustration exactly like the board. Actual transparent alpha background. No labels, text, board or backdrop."
+      }
+    },
+    {
+      "boardIndex": 15,
+      "name": "Aurelia’s Rose Tea Table",
+      "id": "aurelia-rose-tea-table",
+      "kind": "toy",
+      "rarity": "rare",
+      "icon": "☾",
+      "collection": "aurelia",
+      "image": "assets/rewards/aurelia/items/rose-tea-table.webp",
+      "w": 120,
+      "h": 120,
+      "palette": [
+        "ivory cream",
+        "ruby red",
+        "rose gold",
+        "forest green",
+        "sage green",
+        "soft peach"
+      ],
+      "action": "place",
+      "unlock": {
+        "system": "MajickRewardCore",
+        "method": "earned-treasure-drop",
+        "rarity": "rare",
+        "ownershipKey": "blueprints",
+        "guaranteed": false
+      },
+      "imageSha256": "adbc5464837ccde37049b62eace9d50884c4955c0662469e491213b97885b9da",
+      "dimensions": {
+        "width": 512,
+        "height": 433
+      },
+      "creation": {
+        "mode": "built-in image generation",
+        "prompt": "Use case: background-extraction. Asset: one standalone transparent Sanctuary game reward. Recreate ONLY the Aurelia’s Rose Tea Table, at row 3 column 1 in the reference board. Keep its exact silhouette, ornamentation, material, perspective and details. Match this approved palette: ivory cream, ruby red, rose gold, forest green, sage green, soft peach. No purple/violet/lavender; do not redesign or include any neighboring object. Entire complete single object centered with generous margin. Richly rendered ornate mature whimsical magical-college 3D illustration exactly like the board. Actual transparent alpha background. No labels, text, board or backdrop."
+      }
+    },
+    {
+      "boardIndex": 16,
+      "name": "Aurelia’s Feather Play Wand",
+      "id": "aurelia-feather-play-wand",
+      "kind": "toy",
+      "rarity": "enchanted",
+      "icon": "☾",
+      "collection": "aurelia",
+      "image": "assets/rewards/aurelia/items/feather-play-wand.webp",
+      "w": 120,
+      "h": 120,
+      "palette": [
+        "ivory cream",
+        "ruby red",
+        "rose gold",
+        "forest green",
+        "sage green",
+        "soft peach"
+      ],
+      "action": "place",
+      "unlock": {
+        "system": "MajickRewardCore",
+        "method": "earned-treasure-drop",
+        "rarity": "enchanted",
+        "ownershipKey": "blueprints",
+        "guaranteed": false
+      },
+      "imageSha256": "ddef86bed10da763f1749c3e5b93ebb69098ef1eb0b1ccab8a759285895bf86e",
+      "dimensions": {
+        "width": 512,
+        "height": 468
+      },
+      "creation": {
+        "mode": "built-in image generation",
+        "prompt": "Use case: background-extraction. Asset: one standalone transparent Sanctuary game reward. Recreate ONLY the Aurelia’s Feather Play Wand, at row 3 column 2 in the reference board. Keep its exact silhouette, ornamentation, material, perspective and details. Match this approved palette: ivory cream, ruby red, rose gold, forest green, sage green, soft peach. No purple/violet/lavender; do not redesign or include any neighboring object. Entire complete single object centered with generous margin. Richly rendered ornate mature whimsical magical-college 3D illustration exactly like the board. Actual transparent alpha background. No labels, text, board or backdrop."
+      }
+    },
+    {
+      "boardIndex": 17,
+      "name": "Aurelia’s Rune Play Ball",
+      "id": "aurelia-rune-play-ball",
+      "kind": "toy",
+      "rarity": "rare",
+      "icon": "☾",
+      "collection": "aurelia",
+      "image": "assets/rewards/aurelia/items/rune-play-ball.webp",
+      "w": 120,
+      "h": 120,
+      "palette": [
+        "ivory cream",
+        "ruby red",
+        "rose gold",
+        "forest green",
+        "sage green",
+        "soft peach"
+      ],
+      "action": "place",
+      "unlock": {
+        "system": "MajickRewardCore",
+        "method": "earned-treasure-drop",
+        "rarity": "rare",
+        "ownershipKey": "blueprints",
+        "guaranteed": false
+      },
+      "imageSha256": "7f80f5a3c9fba9940a322910d0f427bc64886ed2c9821904fb2dd059ec2f78af",
+      "dimensions": {
+        "width": 512,
+        "height": 468
+      },
+      "creation": {
+        "mode": "built-in image generation",
+        "prompt": "Use case: background-extraction. Asset: one standalone transparent Sanctuary game reward. Recreate ONLY the Aurelia’s Rune Play Ball, at row 3 column 3 in the reference board. Keep its exact silhouette, ornamentation, material, perspective and details. Match this approved palette: ivory cream, ruby red, rose gold, forest green, sage green, soft peach. No purple/violet/lavender; do not redesign or include any neighboring object. Entire complete single object centered with generous margin. Richly rendered ornate mature whimsical magical-college 3D illustration exactly like the board. Actual transparent alpha background. No labels, text, board or backdrop."
+      }
+    },
+    {
+      "boardIndex": 18,
+      "name": "Aurelia’s Treat Puzzle Carousel",
+      "id": "aurelia-treat-puzzle-carousel",
+      "kind": "toy",
+      "rarity": "rare",
+      "icon": "☾",
+      "collection": "aurelia",
+      "image": "assets/rewards/aurelia/items/treat-puzzle-carousel.webp",
+      "w": 120,
+      "h": 120,
+      "palette": [
+        "ivory cream",
+        "ruby red",
+        "rose gold",
+        "forest green",
+        "sage green",
+        "soft peach"
+      ],
+      "action": "place",
+      "unlock": {
+        "system": "MajickRewardCore",
+        "method": "earned-treasure-drop",
+        "rarity": "rare",
+        "ownershipKey": "blueprints",
+        "guaranteed": false
+      },
+      "imageSha256": "e3f9675b47ac0ad0ae75667f3e6f565bd91cf5e92cf6a640c5248a8d549f1f4d",
+      "dimensions": {
+        "width": 512,
+        "height": 341
+      },
+      "creation": {
+        "mode": "built-in image generation",
+        "prompt": "Use case: background-extraction. Asset: one standalone transparent Sanctuary game reward. Recreate ONLY the Aurelia’s Treat Puzzle Carousel, at row 3 column 4 in the reference board. Keep its exact silhouette, ornamentation, material, perspective and details. Match this approved palette: ivory cream, ruby red, rose gold, forest green, sage green, soft peach. No purple/violet/lavender; do not redesign or include any neighboring object. Entire complete single object centered with generous margin. Richly rendered ornate mature whimsical magical-college 3D illustration exactly like the board. Actual transparent alpha background. No labels, text, board or backdrop."
+      }
+    },
+    {
+      "boardIndex": 19,
+      "name": "Aurelia’s Bunny Toy Trunk",
+      "id": "aurelia-bunny-toy-trunk",
+      "kind": "toy",
+      "rarity": "rare",
+      "icon": "☾",
+      "collection": "aurelia",
+      "image": "assets/rewards/aurelia/items/bunny-toy-trunk.webp",
+      "w": 120,
+      "h": 120,
+      "palette": [
+        "ivory cream",
+        "ruby red",
+        "rose gold",
+        "forest green",
+        "sage green",
+        "soft peach"
+      ],
+      "action": "place",
+      "unlock": {
+        "system": "MajickRewardCore",
+        "method": "earned-treasure-drop",
+        "rarity": "rare",
+        "ownershipKey": "blueprints",
+        "guaranteed": false
+      },
+      "imageSha256": "c3cafaaa8e0e6951b9ea99d24ad20d770d8bada56f2403653bd0ef3f56c97dc0",
+      "dimensions": {
+        "width": 512,
+        "height": 341
+      },
+      "creation": {
+        "mode": "built-in image generation",
+        "prompt": "Use case: background-extraction. Asset: one standalone transparent Sanctuary game reward. Recreate ONLY the Aurelia’s Bunny Toy Trunk, at row 3 column 5 in the reference board. Keep its exact silhouette, ornamentation, material, perspective and details. Match this approved palette: ivory cream, ruby red, rose gold, forest green, sage green, soft peach. No purple/violet/lavender; do not redesign or include any neighboring object. Entire complete single object centered with generous margin. Richly rendered ornate mature whimsical magical-college 3D illustration exactly like the board. Actual transparent alpha background. No labels, text, board or backdrop."
+      }
+    },
+    {
+      "boardIndex": 20,
+      "name": "Aurelia’s Hopping Stones",
+      "id": "aurelia-hopping-stones",
+      "kind": "toy",
+      "rarity": "rare",
+      "icon": "☾",
+      "collection": "aurelia",
+      "image": "assets/rewards/aurelia/items/hopping-stones.webp",
+      "w": 120,
+      "h": 120,
+      "palette": [
+        "ivory cream",
+        "ruby red",
+        "rose gold",
+        "forest green",
+        "sage green",
+        "soft peach"
+      ],
+      "action": "place",
+      "unlock": {
+        "system": "MajickRewardCore",
+        "method": "earned-treasure-drop",
+        "rarity": "rare",
+        "ownershipKey": "blueprints",
+        "guaranteed": false
+      },
+      "imageSha256": "f5517699249d9e56cfc25fb9bd35ee5e754b6f26278a8253dfe8fe2370f4dfdb",
+      "dimensions": {
+        "width": 512,
+        "height": 341
+      },
+      "creation": {
+        "mode": "built-in image generation",
+        "prompt": "Use case: background-extraction. Asset: one standalone transparent Sanctuary game reward. Recreate ONLY the Aurelia’s Hopping Stones, at row 3 column 6 in the reference board. Keep its exact silhouette, ornamentation, material, perspective and details. Match this approved palette: ivory cream, ruby red, rose gold, forest green, sage green, soft peach. No purple/violet/lavender; do not redesign or include any neighboring object. Entire complete single object centered with generous margin. Richly rendered ornate mature whimsical magical-college 3D illustration exactly like the board. Actual transparent alpha background. No labels, text, board or backdrop."
+      }
+    },
+    {
+      "boardIndex": 21,
+      "name": "Aurelia’s Rose and Star Mobile",
+      "id": "aurelia-rose-and-star-mobile",
+      "kind": "toy",
+      "rarity": "arcane",
+      "icon": "☾",
+      "collection": "aurelia",
+      "image": "assets/rewards/aurelia/items/rose-and-star-mobile.webp",
+      "w": 115,
+      "h": 150,
+      "palette": [
+        "ivory cream",
+        "ruby red",
+        "rose gold",
+        "forest green",
+        "sage green",
+        "soft peach"
+      ],
+      "action": "place",
+      "unlock": {
+        "system": "MajickRewardCore",
+        "method": "earned-treasure-drop",
+        "rarity": "arcane",
+        "ownershipKey": "blueprints",
+        "guaranteed": false
+      },
+      "imageSha256": "d30847ad71b5213b8f26a3074df67bbd3d351997797d9b685adca9decf28c055",
+      "dimensions": {
+        "width": 512,
+        "height": 427
+      },
+      "creation": {
+        "mode": "built-in image generation",
+        "prompt": "Use case: background-extraction. Asset: one standalone transparent Sanctuary game reward. Recreate ONLY the Aurelia’s Rose and Star Mobile, at row 3 column 7 in the reference board. Keep its exact silhouette, ornamentation, material, perspective and details. Match this approved palette: ivory cream, ruby red, rose gold, forest green, sage green, soft peach. No purple/violet/lavender; do not redesign or include any neighboring object. Entire complete single object centered with generous margin. Richly rendered ornate mature whimsical magical-college 3D illustration exactly like the board. Actual transparent alpha background. No labels, text, board or backdrop."
+      }
+    },
+    {
+      "boardIndex": 22,
+      "name": "Aurelia’s Ruby Rose Circlet",
+      "id": "aurelia-ruby-rose-circlet",
+      "kind": "accessory",
+      "rarity": "celestial",
+      "icon": "✦",
+      "collection": "aurelia",
+      "image": "assets/rewards/aurelia/items/ruby-rose-circlet.webp",
+      "w": 120,
+      "h": 120,
+      "palette": [
+        "ivory cream",
+        "ruby red",
+        "rose gold",
+        "forest green",
+        "sage green",
+        "soft peach"
+      ],
+      "action": "equip",
+      "unlock": {
+        "system": "MajickRewardCore",
+        "method": "earned-treasure-drop",
+        "rarity": "celestial",
+        "ownershipKey": "collectibles",
+        "guaranteed": false
+      },
+      "imageSha256": "1b2f34c29c0ab654a935ac7a20f4a9719f1fe55ac84e63b6482c2d679c97605b",
+      "dimensions": {
+        "width": 512,
+        "height": 341
+      },
+      "creation": {
+        "mode": "built-in image generation",
+        "prompt": "Use case: background-extraction. Asset: one standalone transparent Sanctuary game reward. Recreate ONLY the Aurelia’s Ruby Rose Circlet, at row 4 column 1 in the reference board. Keep its exact silhouette, ornamentation, material, perspective and details. Match this approved palette: ivory cream, ruby red, rose gold, forest green, sage green, soft peach. No purple/violet/lavender; do not redesign or include any neighboring object. Entire complete single object centered with generous margin. Richly rendered ornate mature whimsical magical-college 3D illustration exactly like the board. Actual transparent alpha background. No labels, text, board or backdrop."
+      }
+    },
+    {
+      "boardIndex": 23,
+      "name": "Aurelia’s Sage Moon Collar",
+      "id": "aurelia-sage-moon-collar",
+      "kind": "accessory",
+      "rarity": "enchanted",
+      "icon": "✦",
+      "collection": "aurelia",
+      "image": "assets/rewards/aurelia/items/sage-moon-collar.webp",
+      "w": 120,
+      "h": 120,
+      "palette": [
+        "ivory cream",
+        "ruby red",
+        "rose gold",
+        "forest green",
+        "sage green",
+        "soft peach"
+      ],
+      "action": "equip",
+      "unlock": {
+        "system": "MajickRewardCore",
+        "method": "earned-treasure-drop",
+        "rarity": "enchanted",
+        "ownershipKey": "collectibles",
+        "guaranteed": false
+      },
+      "imageSha256": "9fdf7ea05d697278c0d07df99fc4976e88f2e888765349482d8b37052acdacfa",
+      "dimensions": {
+        "width": 512,
+        "height": 341
+      },
+      "creation": {
+        "mode": "built-in image generation",
+        "prompt": "Use case: background-extraction. Asset: one standalone transparent Sanctuary game reward. Recreate ONLY the Aurelia’s Sage Moon Collar, at row 4 column 2 in the reference board. Keep its exact silhouette, ornamentation, material, perspective and details. Match this approved palette: ivory cream, ruby red, rose gold, forest green, sage green, soft peach. No purple/violet/lavender; do not redesign or include any neighboring object. Entire complete single object centered with generous margin. Richly rendered ornate mature whimsical magical-college 3D illustration exactly like the board. Actual transparent alpha background. No labels, text, board or backdrop."
+      }
+    },
+    {
+      "boardIndex": 24,
+      "name": "Aurelia’s Scholar Glasses",
+      "id": "aurelia-scholar-glasses",
+      "kind": "accessory",
+      "rarity": "rare",
+      "icon": "✦",
+      "collection": "aurelia",
+      "image": "assets/rewards/aurelia/items/scholar-glasses.webp",
+      "w": 120,
+      "h": 120,
+      "palette": [
+        "ivory cream",
+        "ruby red",
+        "rose gold",
+        "forest green",
+        "sage green",
+        "soft peach"
+      ],
+      "action": "equip",
+      "unlock": {
+        "system": "MajickRewardCore",
+        "method": "earned-treasure-drop",
+        "rarity": "rare",
+        "ownershipKey": "collectibles",
+        "guaranteed": false
+      },
+      "imageSha256": "7979175c578dfbad17dac7b242dd0ea1b78592c4e28cb6d510539d69b0056a75",
+      "dimensions": {
+        "width": 512,
+        "height": 256
+      },
+      "creation": {
+        "mode": "built-in image generation",
+        "prompt": "Use case: background-extraction. Asset: one standalone transparent Sanctuary game reward. Recreate ONLY the Aurelia’s Scholar Glasses, at row 4 column 3 in the reference board. Keep its exact silhouette, ornamentation, material, perspective and details. Match this approved palette: ivory cream, ruby red, rose gold, forest green, sage green, soft peach. No purple/violet/lavender; do not redesign or include any neighboring object. Entire complete single object centered with generous margin. Richly rendered ornate mature whimsical magical-college 3D illustration exactly like the board. Actual transparent alpha background. No labels, text, board or backdrop."
+      }
+    },
+    {
+      "boardIndex": 25,
+      "name": "Aurelia’s Wing-and-Petal Cloak",
+      "id": "aurelia-wing-and-petal-cloak",
+      "kind": "accessory",
+      "rarity": "celestial",
+      "icon": "✦",
+      "collection": "aurelia",
+      "image": "assets/rewards/aurelia/items/wing-and-petal-cloak.webp",
+      "w": 120,
+      "h": 120,
+      "palette": [
+        "ivory cream",
+        "ruby red",
+        "rose gold",
+        "forest green",
+        "sage green",
+        "soft peach"
+      ],
+      "action": "equip",
+      "unlock": {
+        "system": "MajickRewardCore",
+        "method": "earned-treasure-drop",
+        "rarity": "celestial",
+        "ownershipKey": "collectibles",
+        "guaranteed": false
+      },
+      "imageSha256": "0b60612b292e1ce3d094dfa5b25bcffd69e65dee1d3b22e723f1b288d11725d4",
+      "dimensions": {
+        "width": 512,
+        "height": 341
+      },
+      "creation": {
+        "mode": "built-in image generation",
+        "prompt": "Use case: background-extraction. Asset: one standalone transparent Sanctuary game reward. Recreate ONLY the Aurelia’s Wing-and-Petal Cloak, at row 4 column 4 in the reference board. Keep its exact silhouette, ornamentation, material, perspective and details. Match this approved palette: ivory cream, ruby red, rose gold, forest green, sage green, soft peach. No purple/violet/lavender; do not redesign or include any neighboring object. Entire complete single object centered with generous margin. Richly rendered ornate mature whimsical magical-college 3D illustration exactly like the board. Actual transparent alpha background. No labels, text, board or backdrop."
+      }
+    },
+    {
+      "boardIndex": 26,
+      "name": "Aurelia’s Scholar Satchel",
+      "id": "aurelia-scholar-satchel",
+      "kind": "accessory",
+      "rarity": "rare",
+      "icon": "✦",
+      "collection": "aurelia",
+      "image": "assets/rewards/aurelia/items/scholar-satchel.webp",
+      "w": 120,
+      "h": 120,
+      "palette": [
+        "ivory cream",
+        "ruby red",
+        "rose gold",
+        "forest green",
+        "sage green",
+        "soft peach"
+      ],
+      "action": "equip",
+      "unlock": {
+        "system": "MajickRewardCore",
+        "method": "earned-treasure-drop",
+        "rarity": "rare",
+        "ownershipKey": "collectibles",
+        "guaranteed": false
+      },
+      "imageSha256": "825914e83e37053b27c8b6786eaf7987a99c3832b43bde174d7eeee8c41a6838",
+      "dimensions": {
+        "width": 512,
+        "height": 341
+      },
+      "creation": {
+        "mode": "built-in image generation",
+        "prompt": "Use case: background-extraction. Asset: one standalone transparent Sanctuary game reward. Recreate ONLY the Aurelia’s Scholar Satchel, at row 4 column 5 in the reference board. Keep its exact silhouette, ornamentation, material, perspective and details. Match this approved palette: ivory cream, ruby red, rose gold, forest green, sage green, soft peach. No purple/violet/lavender; do not redesign or include any neighboring object. Entire complete single object centered with generous margin. Richly rendered ornate mature whimsical magical-college 3D illustration exactly like the board. Actual transparent alpha background. No labels, text, board or backdrop."
+      }
+    },
+    {
+      "boardIndex": 27,
+      "name": "Aurelia’s Rose-Heart Arcane Orb",
+      "id": "aurelia-rose-heart-arcane-orb",
+      "kind": "decor",
+      "rarity": "arcane",
+      "icon": "☾",
+      "collection": "aurelia",
+      "image": "assets/rewards/aurelia/items/rose-heart-arcane-orb.webp",
+      "w": 120,
+      "h": 120,
+      "palette": [
+        "ivory cream",
+        "ruby red",
+        "rose gold",
+        "forest green",
+        "sage green",
+        "soft peach"
+      ],
+      "action": "place",
+      "unlock": {
+        "system": "MajickRewardCore",
+        "method": "earned-treasure-drop",
+        "rarity": "arcane",
+        "ownershipKey": "blueprints",
+        "guaranteed": false
+      },
+      "imageSha256": "70ea8d0e6cab979b9a16103115bdae002d065e0c4f97002f17399912949bdfd4",
+      "dimensions": {
+        "width": 512,
+        "height": 468
+      },
+      "creation": {
+        "mode": "built-in image generation",
+        "prompt": "Use case: background-extraction. Asset: one standalone transparent Sanctuary game reward. Recreate ONLY the Aurelia’s Rose-Heart Arcane Orb, at row 4 column 6 in the reference board. Keep its exact silhouette, ornamentation, material, perspective and details. Match this approved palette: ivory cream, ruby red, rose gold, forest green, sage green, soft peach. No purple/violet/lavender; do not redesign or include any neighboring object. Entire complete single object centered with generous margin. Richly rendered ornate mature whimsical magical-college 3D illustration exactly like the board. Actual transparent alpha background. No labels, text, board or backdrop."
+      }
+    },
+    {
+      "boardIndex": 28,
+      "name": "Aurelia’s Celestial Rabbit Dream Altar",
+      "id": "aurelia-celestial-rabbit-dream-altar",
+      "kind": "decor",
+      "rarity": "celestial",
+      "icon": "☾",
+      "collection": "aurelia",
+      "image": "assets/rewards/aurelia/items/celestial-rabbit-dream-altar.webp",
+      "w": 230,
+      "h": 190,
+      "palette": [
+        "ivory cream",
+        "ruby red",
+        "rose gold",
+        "forest green",
+        "sage green",
+        "soft peach"
+      ],
+      "action": "place",
+      "unlock": {
+        "system": "MajickRewardCore",
+        "method": "earned-treasure-drop",
+        "rarity": "celestial",
+        "ownershipKey": "blueprints",
+        "guaranteed": false
+      },
+      "imageSha256": "d2537499d34ae793e966f89820ccb54d07ec162d0db9bcd84835ee045cce1361",
+      "dimensions": {
+        "width": 512,
+        "height": 341
+      },
+      "creation": {
+        "mode": "built-in image generation",
+        "prompt": "Use case: background-extraction. Asset: one standalone transparent Sanctuary game reward. Recreate ONLY the Aurelia’s Celestial Rabbit Dream Altar, at row 4 column 7 in the reference board. Keep its exact silhouette, ornamentation, material, perspective and details. Match this approved palette: ivory cream, ruby red, rose gold, forest green, sage green, soft peach. No purple/violet/lavender; do not redesign or include any neighboring object. Entire complete single object centered with generous margin. Richly rendered ornate mature whimsical magical-college 3D illustration exactly like the board. Actual transparent alpha background. No labels, text, board or backdrop."
+      }
+    }
+  ],
+  "status": "integrated"
+}
