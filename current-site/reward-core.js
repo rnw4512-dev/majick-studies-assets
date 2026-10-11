@@ -180,8 +180,9 @@ function award(type,ctx={}){
  if(r.ledger[key])return r.ledger[key].receipt||null;
  const cfg=baseFor(type,ctx),independent=ctx.independent===true||type==='independent-correct',delayed=ctx.delayed===true||type==='delayed-recall',transfer=ctx.transfer===true||type==='mixed-transfer-success';
  let xp=Number(cfg.xp||0),crystals=Number(cfg.crystals||0);
- if(type==='correct-answer'&&independent)xp+=5;
- if(type==='correct-answer'&&delayed)xp+=8;
+ if(type==='correct-answer'&&independent){xp+=5;cfg.masteryXp=Number(cfg.masteryXp||0)+5}
+ if(type==='correct-answer'&&delayed){xp+=8;cfg.masteryXp=Number(cfg.masteryXp||0)+8}
+ if(type==='correct-answer'&&transfer){xp+=8;crystals+=1;cfg.masteryXp=Number(cfg.masteryXp||0)+6}
  a.xp=Math.max(Number(a.xp||0),Number(a.xpHighWater||0))+xp;
  a.xpHighWater=Math.max(Number(a.xpHighWater||0),Number(a.xp||0));a.lifetimeXpHighWater=a.xpHighWater;
  a.crystals=Math.max(0,Number(a.crystals||0)+crystals);
@@ -192,7 +193,9 @@ function award(type,ctx={}){
  if(independent)r.stats.independent++;
  if(delayed)r.stats.delayed++;
  if(type==='misconception-repaired')r.stats.repairs++;
- const gr=guardianRewards({correct:type==='correct-answer'||/correct|recall|transfer|repaired/.test(type),hard:cfg.hard,independent,delayed,eggMoonlight:Number(cfg.extraMoonlight||0),bondBonus:Number(cfg.bondBonus||0)});
+ let gr={guardian:null,egg:null};
+ if(type==='correct-answer')gr=guardianRewards({correct:true,hard:cfg.hard,independent,delayed,eggMoonlight:Number(cfg.extraMoonlight||0),bondBonus:Number(cfg.bondBonus||0)});
+ else if(type==='misconception-repaired')gr=guardianRewards({correct:false,hard:false,independent:true,delayed:false,eggMoonlight:0,bondBonus:Number(cfg.bondBonus||0)});
  const drop=treasureDrop(key,cfg,{...ctx,independent,delayed,transfer});
  const receipt={
    key,type,label:type.replace(/-/g,' '),xp,crystals,masteryXp:Number(cfg.masteryXp||0),chests:Number(cfg.chest||0),eggFragments:Number(cfg.eggFragments||0),
@@ -256,6 +259,29 @@ function conjureEgg(m,key){
  try{window.render?.()}catch(_){}
  return egg;
 }
+
+function rarityLabel(id){return RARITIES.find(x=>x.id===id)?.label||id}
+function ingredientName(id){return INGREDIENTS.find(x=>x.id===id)?.name||id}
+function vaultPanelHTML(){
+ const inv=inventory(),r=account()?.rewardCore||{},treasureMap=Object.fromEntries(TREASURES.map(x=>[x.id,x]));
+ const ingredients=Object.entries(inv.ingredients).filter(([,n])=>Number(n)>0);
+ const finds=[...inv.collectibles,...inv.blueprints].map(id=>treasureMap[id]).filter(Boolean);
+ const potions=Object.entries(inv.potions).filter(([,n])=>Number(n)>0);
+ return '<section class="majArcaneVault">'+
+  '<header><div><small>ARCANE REWARD VAULT</small><h2>Your studying is becoming a collection.</h2><p>Rare rewards come from mastery, repair, transfer, delayed recall, and difficult independent work—not from buying answers.</p></div><button onclick="majickConjureEgg()" '+(inv.eggFragments<10?'disabled':'')+'>🥚 Conjure Egg • '+inv.eggFragments+'/10</button></header>'+
+  '<div class="majVaultStats"><span>◇ '+Object.values(inv.ingredients).reduce((a,b)=>a+Number(b||0),0)+' ingredients</span><span>✦ '+finds.length+' rare finds</span><span>⚗ '+potions.reduce((a,[,n])=>a+Number(n||0),0)+' potions</span><span>🥚 '+inv.eggFragments+'/10 fragments</span></div>'+
+  '<div class="majVaultCols">'+
+   '<article><h3>Magical Ingredients</h3><div class="majLootGrid">'+(ingredients.length?ingredients.map(([id,n])=>{const it=INGREDIENTS.find(x=>x.id===id)||{};return '<span class="'+E(it.rarity||'common')+'"><i>'+E(it.icon||'✦')+'</i><b>'+E(it.name||id)+'</b><small>'+E(rarityLabel(it.rarity||'common'))+' • × '+Number(n)+'</small></span>'}).join(''):'<p class="majVaultEmpty">No ingredients yet. Hard and independent answers can uncover them.</p>')+'</div></article>'+
+   '<article><h3>Rare Finds & Blueprints</h3><div class="majLootGrid">'+(finds.length?finds.map(it=>'<span class="'+E(it.rarity)+'"><i>'+E(it.icon)+'</i><b>'+E(it.name)+'</b><small>'+E(rarityLabel(it.rarity))+' • '+E(it.kind)+'</small></span>').join(''):'<p class="majVaultEmpty">Your first rare treasure is still waiting in the Collegium.</p>')+'</div></article>'+
+  '</div>'+
+  '<div class="majRecipeShelf"><h3>Potion Recipes</h3>'+RECIPES.map(rec=>{const count=Number(inv.potions[rec.id]||0),can=Object.entries(rec.cost).every(([k,n])=>Number(inv.ingredients[k]||0)>=n);return '<div class="majRecipe"><span>'+E(rec.icon)+'</span><div><b>'+E(rec.name)+'</b><p>'+E(rec.effect)+'</p><small>'+Object.entries(rec.cost).map(([k,n])=>n+' '+E(ingredientName(k))).join(' + ')+'</small></div><aside><button onclick="majickCraftPotion(\''+E(rec.id)+'\')" '+(can?'':'disabled')+'>Craft</button>'+(count?'<button class="use" onclick="majickUsePotion(\''+E(rec.id)+'\')">Use × '+count+'</button>':'')+'</aside></div>'}).join('')+'</div>'+
+ '</section>';
+}
+function patchVault(){
+ if(typeof window.vaultHTML!=='function'||window.vaultHTML.__majickRewardVault)return false;
+ const old=window.vaultHTML,fn=function(){return old.apply(this,arguments)+vaultPanelHTML()};fn.__majickRewardVault=true;window.vaultHTML=fn;return true;
+}
+
 function inventory(){
  const r=account()?.rewardCore||{};
  return {ingredients:{...(r.ingredients||{})},collectibles:[...(r.collectibles||[])],blueprints:[...(r.blueprints||[])],potions:{...(r.potions||{})},eggFragments:Number(r.eggFragments||0),recipes:RECIPES,treasures:TREASURES};
@@ -282,7 +308,10 @@ function patchLegacyGameRewards(){
  };fn.__majickRewardCore=true;window.grantMoonlight=fn;
 }
 function inspect(){const a=account(),r=a?.rewardCore;return {version:VERSION,xp:a?.xp||0,crystals:a?.crystals||0,chests:a?.chests||0,eggFragments:r?.eggFragments||0,ingredients:{...(r?.ingredients||{})},collectibles:[...(r?.collectibles||[])],blueprints:[...(r?.blueprints||[])],stats:{...(r?.stats||{})},lastReceipt:r?.lastReceipt||null}}
-window.MajickRewardCore={VERSION,RARITIES,INGREDIENTS,TREASURES,RECIPES,award,rewardPreview,inventory,craft,usePotion,showConjuring,conjureEgg,inspect,patchLegacyGameRewards};
+window.MajickRewardCore={VERSION,RARITIES,INGREDIENTS,TREASURES,RECIPES,award,rewardPreview,inventory,craft,usePotion,showConjuring,conjureEgg,vaultPanelHTML,patchVault,inspect,patchLegacyGameRewards};
+window.majickConjureEgg=()=>showConjuring();
+window.majickCraftPotion=id=>{const r=craft(id);try{window.rewardToast?.(r.ok?'⚗ Potion crafted':'Missing ingredients',r.ok?r.recipe.name:r.message)}catch(_){if(!r.ok)alert(r.message)};try{window.render?.()}catch(_){};return r};
+window.majickUsePotion=id=>{const ok=usePotion(id);try{window.rewardToast?.(ok?'✦ Potion activated':'No potion available',ok?(RECIPES.find(x=>x.id===id)?.effect||'Magic stirred.'):'Craft one first.')}catch(_){};try{window.render?.()}catch(_){};return ok};
 document.documentElement.dataset.majickRewardCore=VERSION;
-setTimeout(patchLegacyGameRewards,0);
+setTimeout(()=>{patchLegacyGameRewards();patchVault()},0);
 })();
