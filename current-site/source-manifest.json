@@ -144,7 +144,7 @@
     "guardian-registry.js": "b20170b996ddf065f33bb37332c8a9fce68ae104914e3e94ffe9aa44b7b612f3",
     "home-focus.css": "cbb719eb8e78701717b4016388d511553f2785212d839815ed006651ae738b2b",
     "home-focus.js": "c4b28238d5f38e0401df2933fcf64991b928631e488a79f80301b20174f1968b",
-    "index.html": "1fb672c0fd558c8018844a6108e40501c8f660ec35d2782d5b0376ec095a2611",
+    "index.html": "3beb271776f20d6665dfabdffcd8cae50dd11b44ac37f9e09c1e666e0d64e1d2",
     "learn-mode.css": "30181250c67efe7bd97c9276706a804a551e7904a2bb28160eeb0c193f35c002",
     "learn-mode.js": "f6647cd013d5bc59a319710c45ac806b56585c7fc5c912afa88857d2f16f82e0",
     "learning-lab.css": "6ed48d27023052a714d27c027f25828bc5ad74edccb172704e823a58b26d6844",
@@ -403,8 +403,8 @@
     "assets/boxplot-phones.svg": "3ed42e541d8e8039d2b270f4b76ec634918e02db245e085e38088ea05d7ef727",
     "math-support.js": "68c75a39a2f2ecef740cf5f6f6eb80a2d0f8f696f541aa98c3627baf091716bb",
     "math-support.css": "df8674300b07991af4fa4dd84db43d0e3045e2c5037924c11e326d7dd5144b7f",
-    "adaptive-learning-core.js": "2f0747b47b3f56e911ecc68c8cc1565be4a45b880baa8b0618f90d213257d64d",
-    "adaptive-learning-core.css": "5447d96aea42ecd91ead2ac5b3a2c9ab97c4675989b5899b43053deb52cad82e",
+    "adaptive-learning-core.js": "95183fd32468df5912ebea043db66c5e9b71e888acf222cc6b4458e89bc97d2d",
+    "adaptive-learning-core.css": "48084c93e0c39f72c84fd69aeccbeaacfc882484198a8535197552236b7be504",
     "course-learning-profiles.js": "60d25988b6ae0ed1cab981ce99d2d8ed49fe9c8553b189df3d83103797bfe925",
     "course-learning-profiles.css": "f0f4f53b2c9422f0ed884d4688af1d8367e63851b367331f78b994b6548b5caa"
   }
