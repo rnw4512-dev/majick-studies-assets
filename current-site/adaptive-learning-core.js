@@ -600,6 +600,13 @@ function panelHtml(){
 }
 function renderAdaptive(){const box=document.getElementById('adaptiveLearningCore');if(!box)return;box.innerHTML=panelHtml();bindAdaptive(box)}
 function showAdaptive(){
+ // Later D772 sections use the existing verified lesson owner, not Section 1's adaptive bank.
+ const tutor=window.MajickCourseTutor,selected=cid()==='D772'?tutor?.selectedLesson?.('D772'):null;
+ if(/^d772-s[23]-/.test(String(selected?.id||''))&&typeof tutor?.show==='function'){
+   const panel=document.querySelector('.learnPanel[data-panel="tutor"]');
+   if(!panel||panel.hidden)tutor.show('tutor');
+   return;
+ }
  const st=state(),was=Number(st.lastVisit||0);st.recoveryGapDays=was?Math.floor((Date.now()-was)/86400000):0;st.lastVisit=Date.now();save();
  document.querySelectorAll('.learnPanel').forEach(p=>p.hidden=true);
  const panel=document.querySelector('.learnPanel[data-panel="adaptive"]');if(panel)panel.hidden=false;
