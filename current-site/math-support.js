@@ -1,6 +1,6 @@
 (()=>{
 'use strict';
-const VERSION='3.4.6-math-support';
+const VERSION='3.4.7-math-support';
 const cid=()=>String(window.S?.activeCourse||'');
 const E=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const FAMILY_CARDS=[
@@ -129,6 +129,62 @@ function numberMapping(){
  nums.map(n=>'<label><strong>'+E(n)+'</strong><select data-v343-map="'+E(n)+'"><option value="">Choose its role…</option>'+roleOptions().map(r=>'<option '+(ps.numberRoles[key][n]===r?'selected':'')+'>'+E(r)+'</option>').join('')+'</select></label>').join('')+
  '<div class="v343GuardianCue">Guardian check: if you know the formula but the answer is wrong, look here first. A misplaced denominator, probability, or negative sign is a setup error—not an arithmetic error.</div></div>';
 }
+
+function interactiveFormula(){
+ const f=formulaFor();if(!f)return '';
+ const ps=progressState(),key=conceptKey();ps.formulaSlots=ps.formulaSlots||{};ps.formulaSlots[key]=ps.formulaSlots[key]||{};
+ const nums=extractNumbers(),slots=(f.parts||[]).map(x=>x[0]);
+ if(!slots.length)return '';
+ return '<div class="v347InteractiveFormula"><b>Interactive Formula Coach</b><p>Click a number, then click the formula slot where it belongs. Majick checks the role before you calculate.</p>'+
+ '<div class="v347NumberBank">'+nums.map(n=>'<button data-v347-number="'+E(n)+'" class="'+(ps.activeNumber===n?'selected':'')+'">'+E(n)+'</button>').join('')+'</div>'+
+ '<div class="v347FormulaSlots"><code>'+E(f.formula)+'</code>'+slots.map((slot,i)=>'<button data-v347-slot="'+E(slot)+'"><small>'+E(slot)+'</small><strong>'+E(ps.formulaSlots[key][slot]||'___')+'</strong></button>').join('')+'</div>'+
+ '<div id="v347FormulaFeedback"></div></div>';
+}
+function checkRole(value,slot){
+ const v=String(value||''),money=/\$/.test(v),percent=/%/.test(v),decimal=/^0?\.\d+/.test(v);
+ if(/probability|P\\(|P\\(outcome\\)/i.test(slot)){
+   if(money)return 'That number is a dollar amount. This slot needs how likely the outcome is.';
+   if(percent||decimal||/\\//.test(v))return 'Good fit: this looks like a probability.';
+ }
+ if(/value|payoff|outcome value/i.test(slot)){
+   if(money||(!percent&&!/\\//.test(v)))return 'Good fit: this can represent an outcome value.';
+ }
+ if(/total trials|total outcomes|number of values/i.test(slot)){
+   if(percent||money)return 'This slot needs a count, not a percent or dollar amount.';
+ }
+ if(/Q1|Q3/i.test(slot))return 'Check the ordered data or box plot to make sure this is the correct quartile.';
+ return 'Check the wording: does this number play the role labeled on the slot?';
+}
+function preAlgebraRescue(){
+ const ps=progressState(),key=conceptKey(),issues=ps.issues?.[key]||{},needs=(issues.arithmetic||0)>=2||(issues.placement||0)>=3;
+ return '<div class="v347Rescue '+(needs?'recommended':'')+'"><b>Pre-Algebra Rescue '+(needs?'• RECOMMENDED':'')+'</b><p>Use a 30–60 second repair, then return to the statistics problem.</p><div class="v347RescueGrid">'+
+ [
+  ['fraction-decimal','Fraction → decimal','2/5 = 2 ÷ 5 = 0.40'],
+  ['decimal-percent','Decimal → percent','0.40 × 100 = 40%'],
+  ['percent-decimal','Percent → decimal','30% = 0.30'],
+  ['negative-money','Gain / loss signs','lose $3 = −3']
+ ].map(x=>'<button data-v347-rescue="'+x[0]+'"><strong>'+E(x[1])+'</strong><span>'+E(x[2])+'</span></button>').join('')+
+ '</div><div id="v347RescueOut"></div></div>';
+}
+function rescueLesson(kind){
+ const rows={
+  'fraction-decimal':['Fraction → decimal','The fraction bar means divide. Type numerator ÷ denominator.','2 ÷ 5 = 0.4. You may write 0.40 when hundredths are useful.','Try: 3/4 = ?','0.75'],
+  'decimal-percent':['Decimal → percent','Multiply the decimal by 100 and add the percent sign.','0.40 × 100 = 40%.','Try: 0.27 = ?%','27%'],
+  'percent-decimal':['Percent → decimal','Divide by 100, or move the decimal two places left.','30% = 0.30.','Try: 65% = ?','0.65'],
+  'negative-money':['Gain / loss signs','Gains are positive. Losses and costs are negative when they reduce your value.','win $4 = +4; lose $3 = −3.','Try: an entry fee of $2 is what signed value?','−2']
+ };
+ const r=rows[kind];if(!r)return '';
+ return '<div class="v347RescueLesson"><b>'+E(r[0])+'</b><p>'+E(r[1])+'</p><code>'+E(r[2])+'</code><p>'+E(r[3])+'</p><button data-v347-rescue-answer="'+E(r[4])+'">Show answer</button><span data-v347-rescue-result></span></div>';
+}
+function calculatorRehearsal(){
+ const f=formulaFor();if(!f)return '';
+ let example={display:'38 ÷ 80',result:'0.475',report:'0.48',instruction:'nearest hundredth'};
+ if(/complement/i.test(f.label))example={display:'1 − 0.25',result:'0.75',report:'0.75',instruction:'decimal form'};
+ if(/expected value/i.test(f.label))example={display:'0.30 × (−3) + 0.70 × 2',result:'0.5',report:'$0.50',instruction:'money per play'};
+ if(/interquartile/i.test(f.label))example={display:'70 − 64.5',result:'5.5',report:'5.5',instruction:'IQR'};
+ return '<div class="v347CalcRehearsal"><b>Calculator Rehearsal Mode</b><p>Practice exactly what you would type after you have chosen and set up the formula.</p><div class="v347CalcDisplay"><small>ENTER</small><code>'+E(example.display)+'</code></div><label>What do you type?<input data-v347-rehearse placeholder="'+E(example.display)+'"></label><button data-v347-check-rehearsal data-expr="'+E(example.display)+'" data-result="'+E(example.result)+'">Check keystrokes</button><div id="v347RehearseOut"></div><div class="v347Rounding" hidden><span>Calculator displays <b>'+E(example.result)+'</b></span><span>Instruction: '+E(example.instruction)+'</span><strong>Report: '+E(example.report)+'</strong></div></div>';
+}
+
 function familyCards(){
  return '<div class="v343Families"><b>Formula Family Cards</b><p>Learn the clue family first; the equation is the second step.</p><div>'+FAMILY_CARDS.map(x=>'<article><small>'+E(x[0])+'</small><strong>'+E(x[1])+'</strong><code>'+E(x[2])+'</code><span>'+E(x[3])+'</span></article>').join('')+'</div></div>';
 }
@@ -198,10 +254,10 @@ function help(kind){
  if(kind==='slots')return '<div class="v343Help"><b>What each part means</b>'+f.parts.map(x=>'<p><strong>'+E(x[0])+'</strong> = '+E(x[1])+'</p>').join('')+'</div>';
  if(kind==='organize')return organizer()+signCoach()+estimateCoach();
  if(kind==='translator')return translator();
- if(kind==='mapping')return numberMapping()+signCoach();
+ if(kind==='mapping')return numberMapping()+interactiveFormula()+signCoach();
  if(kind==='family')return familyCards();
- if(kind==='calculator')return calculatorPanel();
- if(kind==='lost')return lostPanel();
+ if(kind==='calculator')return calculatorPanel()+calculatorRehearsal()+preAlgebraRescue();
+ if(kind==='lost')return lostPanel()+preAlgebraRescue();
  return '<div class="v343Help"><b>Set it up before calculating</b><code>'+E(f.template)+'</code><p>Fill the blanks from the story first. Then calculate. Do not do both steps in your head at once.</p></div>';
 }
 function decorate(){
@@ -237,6 +293,26 @@ function decorate(){
      progressState().calculatorUses=(progressState().calculatorUses||0)+1;try{window.save?.()}catch(_){}
      if(out)out.innerHTML=r.ok?'<b>= '+E(r.value)+'</b><small>Now compare this with your estimate and interpret it in context.</small>':'<span>'+E(r.msg)+'</span>';
    });
+   root.querySelectorAll('[data-v347-number]').forEach(b=>b.addEventListener('click',()=>{
+     const ps=progressState();ps.activeNumber=b.dataset.v347Number;try{window.save?.()}catch(_){}
+     b.parentElement.querySelectorAll('button').forEach(x=>x.classList.toggle('selected',x===b));
+   }));
+   root.querySelectorAll('[data-v347-slot]').forEach(b=>b.addEventListener('click',()=>{
+     const ps=progressState(),value=ps.activeNumber,out=root.querySelector('#v347FormulaFeedback');if(!value){if(out)out.textContent='Choose a number first.';return}
+     const key=conceptKey(),slot=b.dataset.v347Slot;ps.formulaSlots=ps.formulaSlots||{};ps.formulaSlots[key]=ps.formulaSlots[key]||{};ps.formulaSlots[key][slot]=value;
+     const msg=checkRole(value,slot);if(out)out.textContent=msg;b.querySelector('strong').textContent=value;
+     const good=/Good fit/.test(msg);try{window.MajickAdaptiveLearning?.state?.();window.MajickAdaptiveLearning?.microReceipt?.();}catch(_){}
+     if(window.MajickAdaptiveLearning?.current?.()?.concept){try{const ms=window.MajickAdaptiveLearning.state().microSkills?.[window.MajickAdaptiveLearning.current().concept.id];if(ms?.substitution){ms.substitution.attempts++;if(good)ms.substitution.correct++;ms.substitution.lastAt=Date.now()}}catch(_){}}
+     try{window.save?.()}catch(_){}
+   }));
+   root.querySelectorAll('[data-v347-rescue]').forEach(b=>b.addEventListener('click',()=>{const out=root.querySelector('#v347RescueOut');if(out)out.innerHTML=rescueLesson(b.dataset.v347Rescue)}));
+   root.addEventListener('click',e=>{const b=e.target.closest('[data-v347-rescue-answer]');if(!b)return;const span=b.parentElement.querySelector('[data-v347-rescue-result]');if(span)span.textContent=' Answer: '+b.dataset.v347RescueAnswer});
+   root.querySelector('[data-v347-check-rehearsal]')?.addEventListener('click',b=>{
+     const btn=b.currentTarget,input=root.querySelector('[data-v347-rehearse]'),out=root.querySelector('#v347RehearseOut'),typed=String(input?.value||'').replace(/\s/g,'').replace(/×/g,'*').replace(/÷/g,'/').replace(/[−–]/g,'-'),target=String(btn.dataset.expr||'').replace(/\s/g,'').replace(/×/g,'*').replace(/÷/g,'/').replace(/[−–]/g,'-');
+     const ok=typed===target;if(out)out.innerHTML=ok?'<b>✓ Correct calculator entry</b><span>Now read the display and apply the rounding/format instruction.</span>':'<b>Check the keystrokes</b><span>Keep the same order as the equation setup. Use parentheses around negative values.</span>';
+     const r=root.querySelector('.v347Rounding');if(r)r.hidden=!ok;
+     const ps=progressState();ps.rehearsal=ps.rehearsal||{attempts:0,correct:0};ps.rehearsal.attempts++;if(ok)ps.rehearsal.correct++;try{window.save?.()}catch(_){}
+   });
  }));
 }
 if(window.MajickRenderQueue?.register){
@@ -250,6 +326,6 @@ if(window.MajickRenderQueue?.register){
  }
  setTimeout(decorate,180);
 }
-window.MajickMathSupport={VERSION,FORMULAS,FAMILY_CARDS,decorate,formulaFor,level,translator,numberMapping,familyCards,calculatorPanel,lostPanel,progressState};
+window.MajickMathSupport={VERSION,FORMULAS,FAMILY_CARDS,decorate,formulaFor,level,translator,numberMapping,interactiveFormula,preAlgebraRescue,calculatorRehearsal,familyCards,calculatorPanel,lostPanel,progressState};
 document.documentElement.dataset.majickMathSupport=VERSION;
 })();
