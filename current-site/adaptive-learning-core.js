@@ -456,6 +456,30 @@ function tomorrowHtml(){
  const q=tomorrowQueue();
  return '<div class="v349Tomorrow"><b>Tomorrow Queue</b><span>'+q.delayed+' delayed recalls</span><span>'+q.weak+' weak micro-skills</span><span>'+q.mixed+' mixed transfer question'+(q.mixed===1?'':'s')+'</span></div>';
 }
+
+function competencyGroups(){
+ const ls=lessons(),groups={};
+ for(const l of ls){
+   const id=String(l.id||''),m=id.match(/(?:section|sec|s)[-_ ]?(\d+)/i),name=m?'Section '+m[1]:(l.section||l.title||'Course');
+   groups[name]=groups[name]||{lessons:[],answers:[]};groups[name].lessons.push(l);
+ }
+ const rows=progress().answers||[];
+ for(const [name,g] of Object.entries(groups)){
+   const keys=g.lessons.flatMap(l=>[String(l.id||'').toLowerCase(),String(l.title||'').toLowerCase()]).filter(Boolean);
+   g.answers=rows.filter(a=>{const t=String(a.topicId||a.qid||'').toLowerCase();return keys.some(k=>k&&t.includes(k))});
+ }
+ return groups;
+}
+function competencyReadinessHtml(){
+ const groups=competencyGroups(),rows=Object.entries(groups).slice(0,8).map(([name,g])=>{
+   const recent=g.answers.slice(-20),acc=recent.length?recent.filter(x=>x.correct).length/recent.length:0,ind=recent.filter(x=>x.correct&&!x.assisted).length,mix=recent.filter(x=>x.correct&&/mix|sweep|retrieve/.test(x.source||'')).length;
+   const score=Math.round((acc*.55+Math.min(1,ind/4)*.25+Math.min(1,mix/2)*.20)*100);
+   return {name,score,evidence:recent.length};
+ });
+ if(!rows.length)return '';
+ return '<div class="v349Competency"><b>OA Readiness by Competency</b><p>Readiness combines accuracy, independence, and mixed/delayed evidence—not completion alone.</p>'+rows.map(x=>'<div><span>'+E(x.name)+'</span><i><em style="width:'+x.score+'%"></em></i><strong>'+x.score+'%</strong><small>'+x.evidence+' evidence points</small></div>').join('')+'</div>';
+}
+
 function readinessHtml(){
  const m=mastery(),micro=microReceipt(),strong=micro.filter(x=>x.status==='Strong').length,total=micro.length||1,support=supportLevel(),score=Math.round((m.acc*.35+Math.min(1,m.independent/2)*.2+Math.min(1,m.transfer)*.2+(strong/total)*.15+(support.level>=3?1:.5)*.1)*100);
  const label=score>=85&&m.ready?'OA-ready evidence':'Still building OA evidence';
@@ -533,7 +557,7 @@ function stepBody(){
    return '<small>⑪ MASTERY CHECK • 3 ITEMS</small><h2>Prove it independently</h2>'+qHtml(q,'mastery');
  }
  const due=progress().spacedQueue.find(x=>x.topicId==='adaptive:'+current().concept.id);
- return '<small>⑫ SCHEDULE REVIEW</small><h2>Learning continues after the lesson</h2>'+pathMeterHtml()+tomorrowHtml()+readinessHtml()+memorySweepHtml()+'<p>Majick will bring this concept back in mixed practice and delayed retrieval.</p><div class="v346Review"><b>'+(due?'Next review '+new Date(due.dueAt).toLocaleDateString():'Schedule your first delayed review')+'</b><span>'+Math.round(m.acc*100)+'% recent accuracy • '+m.independent+' independent correct</span></div>'+masteryReceiptHtml()+'<button class="btn primary" data-v346-schedule>Schedule Review</button>';
+ return '<small>⑫ SCHEDULE REVIEW</small><h2>Learning continues after the lesson</h2>'+pathMeterHtml()+tomorrowHtml()+readinessHtml()+competencyReadinessHtml()+memorySweepHtml()+'<p>Majick will bring this concept back in mixed practice and delayed retrieval.</p><div class="v346Review"><b>'+(due?'Next review '+new Date(due.dueAt).toLocaleDateString():'Schedule your first delayed review')+'</b><span>'+Math.round(m.acc*100)+'% recent accuracy • '+m.independent+' independent correct</span></div>'+masteryReceiptHtml()+'<button class="btn primary" data-v346-schedule>Schedule Review</button>';
 }
 function tutorButtons(){return '<div class="v346TutorButtons"><button data-v346-tutor="simple">Explain Simpler</button><button data-v346-tutor="example">Give Me an Example</button><button data-v346-tutor="quiz">Quiz Me on This Page</button><button data-v346-tutor="mistakes">Related Mistakes</button></div><div id="v346TutorOut"></div>'}
 function panelHtml(){
@@ -608,6 +632,6 @@ function patch(){
  window.MajickLearningLab.__sharedAdaptive=true;
 }
 patch();
-window.MajickAdaptiveLearning={VERSION,STEPS,lessons,current,mastery,microDefs,microReceipt,learningPath,activeProfile,prereqStatus,misconceptionSummary,supportLevel,tomorrowQueue,memorySweep,guardianPersona,show:showAdaptive,render:renderAdaptive,state,progress};
+window.MajickAdaptiveLearning={VERSION,STEPS,lessons,current,mastery,microDefs,microReceipt,learningPath,activeProfile,prereqStatus,misconceptionSummary,supportLevel,tomorrowQueue,memorySweep,guardianPersona,competencyGroups,show:showAdaptive,render:renderAdaptive,state,progress};
 document.documentElement.dataset.majickAdaptiveLearning=VERSION;
 })();
