@@ -152,13 +152,31 @@ function pathMeterHtml(){
  return '<div class="v347PathMeter">'+learningPath().map(([label,on],i)=>'<span class="'+(on?'done':'')+'"><i>'+(on?'●':'○')+'</i>'+E(label)+'</span>').join('<b>→</b>')+'</div>';
 }
 function noMathUnlocked(q){const k=q?.id||q?.qid;return !!(k&&state().noMath?.[k]?.unlocked)}
+function noMathChoices(q){
+ const p=String(q?.prompt||'').toLowerCase(),c=current().concept,title=String(c?.title||'').toLowerCase();
+ let testing=['Probability','Expected value','Graph interpretation','Bias / credibility'];
+ if(/expected value|win|lose|payoff|average result/.test(p+title))testing=['Expected value','Complement','Empirical probability','Mean'];
+ else if(/not|complement/.test(p+title))testing=['Complement','Union','Intersection','Expected value'];
+ else if(/or|union/.test(p+title))testing=['Union','Intersection','Complement','Theoretical probability'];
+ else if(/and|intersection/.test(p+title))testing=['Intersection','Union','Complement','Empirical probability'];
+ else if(/observed|trials|times/.test(p+title))testing=['Empirical probability','Theoretical probability','Complement','Expected value'];
+ else if(/equally likely|fair die|sample space/.test(p+title))testing=['Theoretical probability','Empirical probability','Union','Expected value'];
+ const info=['The counts / probabilities given','The final answer choices only','Every number even if unrelated','Only the largest number'];
+ const strategy=['Use the matching rule or formula','Start calculating immediately','Pick the answer that looks reasonable','Use the last formula practiced'];
+ return {testing,info,strategy};
+}
+function noMathWordBank(){
+ return ['OR','AND','NOT','observed trials','equally likely','probability × value','total trials','favorable outcomes','overlap','long-run average'];
+}
 function noMathYetHtml(q){
  if(!q)return '';
- const st=state();st.noMath=st.noMath||{};const key=q.id||q.qid;st.noMath[key]=st.noMath[key]||{testing:'',info:'',strategy:'',unlocked:false};
- const x=st.noMath[key];
- if(x.unlocked)return '';
+ const st=state();st.noMath=st.noMath||{};const key=q.id||q.qid;st.noMath[key]=st.noMath[key]||{testing:'',info:'',strategy:'',unlocked:false,mode:'choice'};
+ const x=st.noMath[key],choices=noMathChoices(q),bank=noMathWordBank();
  return '<div class="v347NoMath"><small>NO MATH YET</small><h3>Understand the problem before touching the numbers</h3>'+
- ['testing|1. What is this problem testing?','info|2. Which information actually matters?','strategy|3. Which formula or rule fits?'].map(row=>{const [id,label]=row.split('|');return '<label><span>'+label+'</span><textarea data-v347-nomath="'+id+'">'+E(x[id]||'')+'</textarea></label>'}).join('')+
+ '<section><b>1. What is this problem testing?</b><div class="v347ChoiceGrid">'+choices.testing.map(v=>'<button data-v347-nomath-choice="testing" data-value="'+E(v)+'" class="'+(x.testing===v?'selected':'')+'">'+E(v)+'</button>').join('')+'</div></section>'+
+ '<section><b>2. Which information matters?</b><div class="v347ChoiceGrid">'+choices.info.map(v=>'<button data-v347-nomath-choice="info" data-value="'+E(v)+'" class="'+(x.info===v?'selected':'')+'">'+E(v)+'</button>').join('')+'</div></section>'+
+ '<section><b>3. Which strategy fits?</b><div class="v347ChoiceGrid">'+choices.strategy.map(v=>'<button data-v347-nomath-choice="strategy" data-value="'+E(v)+'" class="'+(x.strategy===v?'selected':'')+'">'+E(v)+'</button>').join('')+'</div></section>'+
+ '<section class="v347WordBank"><b>Clue-word bank</b><p>Tap any clue words that match this problem.</p><div>'+bank.map(v=>'<button data-v347-word="'+E(v)+'">'+E(v)+'</button>').join('')+'</div></section>'+
  '<button class="btn primary" data-v347-unlock '+(x.testing&&x.info&&x.strategy?'':'disabled')+'>Unlock the math</button></div>';
 }
 function workedErrorHtml(){
@@ -332,10 +350,13 @@ function bindAdaptive(root){
  root.querySelectorAll('[data-v346-diag]').forEach(b=>b.addEventListener('click',()=>{const d=diagnostic(),i=Number(b.dataset.v346Diag),q=byId(d.questions[i]);if(d.answers[i])return;d.answers[i]={choice:b.dataset.choice,correct:String(b.dataset.choice)===String(q?.answer)};save();renderAdaptive()}));
  root.querySelectorAll('[data-v346-tutor]').forEach(b=>b.addEventListener('click',()=>{const out=root.querySelector('#v346TutorOut');if(out)out.innerHTML='<div class="v346TutorCard">'+E(tutorText(b.dataset.v346Tutor))+'</div>';if(b.dataset.v346Tutor==='quiz'){state().step=5;save();renderAdaptive()}}));
  root.querySelector('[data-v346-schedule]')?.addEventListener('click',()=>{const days=scheduleReview();root.querySelector('[data-v346-schedule]').textContent='✓ Review scheduled in '+days+' days'});
- root.querySelectorAll('[data-v347-nomath]').forEach(t=>t.addEventListener('input',()=>{
-   const q=ensureQuestion(state().step===8?'mix':'turn',state().step===8),k=q?.id||q?.qid;if(!k)return;state().noMath=state().noMath||{};state().noMath[k]=state().noMath[k]||{testing:'',info:'',strategy:'',unlocked:false};state().noMath[k][t.dataset.v347Nomath]=t.value;
+ root.querySelectorAll('[data-v347-nomath-choice]').forEach(b=>b.addEventListener('click',()=>{
+   const q=ensureQuestion(state().step===8?'mix':'turn',state().step===8),k=q?.id||q?.qid;if(!k)return;state().noMath=state().noMath||{};state().noMath[k]=state().noMath[k]||{testing:'',info:'',strategy:'',unlocked:false};
+   const field=b.dataset.v347NomathChoice;state().noMath[k][field]=b.dataset.value;
+   b.parentElement.querySelectorAll('button').forEach(x=>x.classList.toggle('selected',x===b));
    const btn=root.querySelector('[data-v347-unlock]'),x=state().noMath[k];if(btn)btn.disabled=!(x.testing&&x.info&&x.strategy);save();
  }));
+ root.querySelectorAll('[data-v347-word]').forEach(b=>b.addEventListener('click',()=>b.classList.toggle('selected')));
  root.querySelector('[data-v347-unlock]')?.addEventListener('click',()=>{
    const q=ensureQuestion(state().step===8?'mix':'turn',state().step===8),k=q?.id||q?.qid;if(!k)return;state().noMath[k].unlocked=true;creditMicro(['recognize','select'],true);save();renderAdaptive();
  });
