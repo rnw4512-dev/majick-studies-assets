@@ -2,7 +2,7 @@
   "version": "3.4.2",
   "guardian": "solstice",
   "status": "approved-reference-board",
-  "individualAssets": "generation-in-progress",
+  "individualAssets": "complete",
   "palette": [
     "amber",
     "antique gold",
@@ -218,5 +218,6 @@
       "kind": "decor",
       "rarity": "celestial"
     }
-  ]
+  ],
+  "collectionManifest": "assets/rewards/solstice/collection-manifest.json"
 }

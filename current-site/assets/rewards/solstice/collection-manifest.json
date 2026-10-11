@@ -1,0 +1,1404 @@
+{
+  "version": "3.4.2",
+  "collection": "solstice",
+  "guardian": "solstice",
+  "visualMaster": "assets/rewards/reference-boards/solstice/solstice-collection-reference-board.webp",
+  "style": {
+    "palette": [
+      "amber velvet",
+      "antique gold",
+      "teal",
+      "forest green",
+      "midnight blue",
+      "ruby-red accents",
+      "turquoise crystals"
+    ],
+    "motifs": [
+      "fox ears",
+      "fox details",
+      "celestial exploration"
+    ],
+    "excludedColors": [
+      "purple",
+      "violet",
+      "lavender",
+      "magenta"
+    ],
+    "paletteRevision": "2026-10-11-blue-green-amber"
+  },
+  "items": [
+    {
+      "id": "solstice-reading-chaise",
+      "name": "Solstice’s Reading Chaise",
+      "kind": "furniture",
+      "rarity": "rare",
+      "description": "amber tufted velvet chaise, cream cushions, midnight teal galaxy blanket, carved gold moon frame",
+      "w": 190,
+      "h": 130,
+      "icon": "☾",
+      "image": "assets/rewards/solstice/items/reading-chaise.webp",
+      "boardIndex": 1,
+      "action": "place",
+      "unlock": {
+        "system": "MajickRewardCore",
+        "method": "earned-treasure-drop",
+        "rarity": "rare",
+        "ownershipKey": "blueprints",
+        "events": [
+          "correct-answer",
+          "concept-mastered",
+          "lesson-mastered",
+          "competency-mastered",
+          "oa-competency-ready",
+          "course-passed"
+        ],
+        "guaranteed": false
+      },
+      "prompt": {
+        "mode": "built-in",
+        "useCase": "background-extraction",
+        "subject": "amber tufted velvet chaise, cream cushions, midnight teal galaxy blanket, carved gold moon frame",
+        "reference": "solstice-collection-reference-board",
+        "constraints": "Standalone complete object; preserve approved silhouette and fox motifs. Use amber velvet, antique gold, teal and forest-green fabrics, midnight-blue galaxies, turquoise crystals and small ruby-red gems. No purple/violet/lavender/magenta. Transparent alpha, no text or neighboring objects."
+      },
+      "imageSha256": "f1382674669b68fca7b11ea982ef030cb310ebd727667be313ae1aaf6ad92b6f",
+      "dimensions": {
+        "width": 512,
+        "height": 341
+      }
+    },
+    {
+      "id": "solstice-star-pouf",
+      "name": "Solstice’s Star Pouf",
+      "kind": "furniture",
+      "rarity": "enchanted",
+      "description": "round midnight teal velvet pouf stitched with golden constellations",
+      "w": 100,
+      "h": 75,
+      "icon": "☾",
+      "image": "assets/rewards/solstice/items/star-pouf.webp",
+      "boardIndex": 2,
+      "action": "place",
+      "unlock": {
+        "system": "MajickRewardCore",
+        "method": "earned-treasure-drop",
+        "rarity": "enchanted",
+        "ownershipKey": "blueprints",
+        "events": [
+          "correct-answer",
+          "concept-mastered",
+          "lesson-mastered",
+          "competency-mastered",
+          "oa-competency-ready",
+          "course-passed"
+        ],
+        "guaranteed": false
+      },
+      "prompt": {
+        "mode": "built-in",
+        "useCase": "background-extraction",
+        "subject": "round midnight teal velvet pouf stitched with golden constellations",
+        "reference": "solstice-collection-reference-board",
+        "constraints": "Standalone complete object; preserve approved silhouette and fox motifs. Use amber velvet, antique gold, teal and forest-green fabrics, midnight-blue galaxies, turquoise crystals and small ruby-red gems. No purple/violet/lavender/magenta. Transparent alpha, no text or neighboring objects."
+      },
+      "imageSha256": "05fa2b7c82bc31872f85ced37f7081eeb5f73d27d27f9206700f310bf4450f67",
+      "dimensions": {
+        "width": 512,
+        "height": 341
+      }
+    },
+    {
+      "id": "solstice-explorer-telescope",
+      "name": "Solstice’s Explorer Telescope",
+      "kind": "furniture",
+      "rarity": "arcane",
+      "description": "long brass telescope on ornate tripod, midnight teal star lens, crystal charms",
+      "w": 145,
+      "h": 165,
+      "icon": "☾",
+      "image": "assets/rewards/solstice/items/explorer-telescope.webp",
+      "boardIndex": 3,
+      "action": "place",
+      "unlock": {
+        "system": "MajickRewardCore",
+        "method": "earned-treasure-drop",
+        "rarity": "arcane",
+        "ownershipKey": "blueprints",
+        "events": [
+          "correct-answer",
+          "concept-mastered",
+          "lesson-mastered",
+          "competency-mastered",
+          "oa-competency-ready",
+          "course-passed"
+        ],
+        "guaranteed": false
+      },
+      "prompt": {
+        "mode": "built-in",
+        "useCase": "background-extraction",
+        "subject": "long brass telescope on ornate tripod, midnight teal star lens, crystal charms",
+        "reference": "solstice-collection-reference-board",
+        "constraints": "Standalone complete object; preserve approved silhouette and fox motifs. Use amber velvet, antique gold, teal and forest-green fabrics, midnight-blue galaxies, turquoise crystals and small ruby-red gems. No purple/violet/lavender/magenta. Transparent alpha, no text or neighboring objects."
+      },
+      "imageSha256": "681a613a3d099b4a3f0b9644f66314a9fa19ee45e268465186de83bf0114b5e1",
+      "dimensions": {
+        "width": 512,
+        "height": 468
+      }
+    },
+    {
+      "id": "solstice-starlight-hammock",
+      "name": "Solstice’s Starlight Hammock",
+      "kind": "furniture",
+      "rarity": "rare",
+      "description": "amber and cream draped hammock suspended from two gold chains with midnight teal galaxy cloth",
+      "w": 180,
+      "h": 160,
+      "icon": "☾",
+      "image": "assets/rewards/solstice/items/starlight-hammock.webp",
+      "boardIndex": 4,
+      "action": "place",
+      "unlock": {
+        "system": "MajickRewardCore",
+        "method": "earned-treasure-drop",
+        "rarity": "rare",
+        "ownershipKey": "blueprints",
+        "events": [
+          "correct-answer",
+          "concept-mastered",
+          "lesson-mastered",
+          "competency-mastered",
+          "oa-competency-ready",
+          "course-passed"
+        ],
+        "guaranteed": false
+      },
+      "prompt": {
+        "mode": "built-in",
+        "useCase": "background-extraction",
+        "subject": "amber and cream draped hammock suspended from two gold chains with midnight teal galaxy cloth",
+        "reference": "solstice-collection-reference-board",
+        "constraints": "Standalone complete object; preserve approved silhouette and fox motifs. Use amber velvet, antique gold, teal and forest-green fabrics, midnight-blue galaxies, turquoise crystals and small ruby-red gems. No purple/violet/lavender/magenta. Transparent alpha, no text or neighboring objects."
+      },
+      "imageSha256": "78ca2851a92d7c76fbe1fa415ed15fe16682a3d8a01184fc6a13ca1dd178be15",
+      "dimensions": {
+        "width": 512,
+        "height": 341
+      }
+    },
+    {
+      "id": "solstice-galaxy-vanity",
+      "name": "Solstice’s Galaxy Vanity",
+      "kind": "furniture",
+      "rarity": "arcane",
+      "description": "ornate gold vanity desk and integrated round midnight teal galaxy mirror with amber stool",
+      "w": 190,
+      "h": 160,
+      "icon": "☾",
+      "image": "assets/rewards/solstice/items/galaxy-vanity.webp",
+      "boardIndex": 5,
+      "action": "place",
+      "unlock": {
+        "system": "MajickRewardCore",
+        "method": "earned-treasure-drop",
+        "rarity": "arcane",
+        "ownershipKey": "blueprints",
+        "events": [
+          "correct-answer",
+          "concept-mastered",
+          "lesson-mastered",
+          "competency-mastered",
+          "oa-competency-ready",
+          "course-passed"
+        ],
+        "guaranteed": false
+      },
+      "prompt": {
+        "mode": "built-in",
+        "useCase": "background-extraction",
+        "subject": "ornate gold vanity desk and integrated round midnight teal galaxy mirror with amber stool",
+        "reference": "solstice-collection-reference-board",
+        "constraints": "Standalone complete object; preserve approved silhouette and fox motifs. Use amber velvet, antique gold, teal and forest-green fabrics, midnight-blue galaxies, turquoise crystals and small ruby-red gems. No purple/violet/lavender/magenta. Transparent alpha, no text or neighboring objects."
+      },
+      "imageSha256": "acc43a3b73a6b24c7b0c1ed32701a663b71588c0dd2884e25f247af6d337a4be",
+      "dimensions": {
+        "width": 512,
+        "height": 341
+      }
+    },
+    {
+      "id": "solstice-nebula-bowl",
+      "name": "Solstice’s Nebula Bowl",
+      "kind": "decor",
+      "rarity": "arcane",
+      "description": "glass spherical nebula bowl on gold foot, midnight teal galaxies and golden stars inside",
+      "w": 120,
+      "h": 125,
+      "icon": "☾",
+      "image": "assets/rewards/solstice/items/nebula-bowl.webp",
+      "boardIndex": 6,
+      "action": "place",
+      "unlock": {
+        "system": "MajickRewardCore",
+        "method": "earned-treasure-drop",
+        "rarity": "arcane",
+        "ownershipKey": "blueprints",
+        "events": [
+          "correct-answer",
+          "concept-mastered",
+          "lesson-mastered",
+          "competency-mastered",
+          "oa-competency-ready",
+          "course-passed"
+        ],
+        "guaranteed": false
+      },
+      "prompt": {
+        "mode": "built-in",
+        "useCase": "background-extraction",
+        "subject": "glass spherical nebula bowl on gold foot, midnight teal galaxies and golden stars inside",
+        "reference": "solstice-collection-reference-board",
+        "constraints": "Standalone complete object; preserve approved silhouette and fox motifs. Use amber velvet, antique gold, teal and forest-green fabrics, midnight-blue galaxies, turquoise crystals and small ruby-red gems. No purple/violet/lavender/magenta. Transparent alpha, no text or neighboring objects."
+      },
+      "imageSha256": "3e43d62cf412da2ce31ab4aaf689ed1a6d6d3e9630cb4009794c2c062fe1541a",
+      "dimensions": {
+        "width": 512,
+        "height": 423
+      }
+    },
+    {
+      "id": "solstice-solar-orrery",
+      "name": "Solstice’s Solar Orrery",
+      "kind": "toy",
+      "rarity": "celestial",
+      "description": "gold rotating orrery with amber central sun and midnight teal planet charms",
+      "w": 130,
+      "h": 160,
+      "icon": "✧",
+      "image": "assets/rewards/solstice/items/solar-orrery.webp",
+      "boardIndex": 7,
+      "action": "place",
+      "unlock": {
+        "system": "MajickRewardCore",
+        "method": "earned-treasure-drop",
+        "rarity": "celestial",
+        "ownershipKey": "blueprints",
+        "events": [
+          "correct-answer",
+          "concept-mastered",
+          "lesson-mastered",
+          "competency-mastered",
+          "oa-competency-ready",
+          "course-passed"
+        ],
+        "guaranteed": false
+      },
+      "prompt": {
+        "mode": "built-in",
+        "useCase": "background-extraction",
+        "subject": "gold rotating orrery with amber central sun and midnight teal planet charms",
+        "reference": "solstice-collection-reference-board",
+        "constraints": "Standalone complete object; preserve approved silhouette and fox motifs. Use amber velvet, antique gold, teal and forest-green fabrics, midnight-blue galaxies, turquoise crystals and small ruby-red gems. No purple/violet/lavender/magenta. Transparent alpha, no text or neighboring objects."
+      },
+      "imageSha256": "8f433a001ebb578d3909aa27dbdf1ddf69e3b22d3d8e66748f7f36aa21908a24",
+      "dimensions": {
+        "width": 512,
+        "height": 468
+      }
+    },
+    {
+      "id": "solstice-astronomy-bookshelf",
+      "name": "Solstice’s Astronomy Bookshelf",
+      "kind": "furniture",
+      "rarity": "rare",
+      "description": "arched gold bookshelf filled with midnight teal astronomy books and small planets",
+      "w": 145,
+      "h": 185,
+      "icon": "☾",
+      "image": "assets/rewards/solstice/items/astronomy-bookshelf.webp",
+      "boardIndex": 8,
+      "action": "place",
+      "unlock": {
+        "system": "MajickRewardCore",
+        "method": "earned-treasure-drop",
+        "rarity": "rare",
+        "ownershipKey": "blueprints",
+        "events": [
+          "correct-answer",
+          "concept-mastered",
+          "lesson-mastered",
+          "competency-mastered",
+          "oa-competency-ready",
+          "course-passed"
+        ],
+        "guaranteed": false
+      },
+      "prompt": {
+        "mode": "built-in",
+        "useCase": "background-extraction",
+        "subject": "arched gold bookshelf filled with midnight teal astronomy books and small planets",
+        "reference": "solstice-collection-reference-board",
+        "constraints": "Standalone complete object; preserve approved silhouette and fox motifs. Use amber velvet, antique gold, teal and forest-green fabrics, midnight-blue galaxies, turquoise crystals and small ruby-red gems. No purple/violet/lavender/magenta. Transparent alpha, no text or neighboring objects."
+      },
+      "imageSha256": "9fe9930a36e65ffa490b1a79ded5a60a91ef9915a9bf34c3fb207697c58baa58",
+      "dimensions": {
+        "width": 512,
+        "height": 427
+      }
+    },
+    {
+      "id": "solstice-fox-star-den",
+      "name": "Solstice’s Fox Star Den",
+      "kind": "furniture",
+      "rarity": "celestial",
+      "description": "amber cushion fox den with two large fox ears, midnight teal galaxy canopy and turquoise crystals",
+      "w": 210,
+      "h": 150,
+      "icon": "☾",
+      "image": "assets/rewards/solstice/items/fox-star-den.webp",
+      "boardIndex": 9,
+      "action": "place",
+      "unlock": {
+        "system": "MajickRewardCore",
+        "method": "earned-treasure-drop",
+        "rarity": "celestial",
+        "ownershipKey": "blueprints",
+        "events": [
+          "correct-answer",
+          "concept-mastered",
+          "lesson-mastered",
+          "competency-mastered",
+          "oa-competency-ready",
+          "course-passed"
+        ],
+        "guaranteed": false
+      },
+      "prompt": {
+        "mode": "built-in",
+        "useCase": "background-extraction",
+        "subject": "amber cushion fox den with two large fox ears, midnight teal galaxy canopy and turquoise crystals",
+        "reference": "solstice-collection-reference-board",
+        "constraints": "Standalone complete object; preserve approved silhouette and fox motifs. Use amber velvet, antique gold, teal and forest-green fabrics, midnight-blue galaxies, turquoise crystals and small ruby-red gems. No purple/violet/lavender/magenta. Transparent alpha, no text or neighboring objects."
+      },
+      "imageSha256": "217cc1c1b714d7db0297c82d070cae4b75396271493b7f81b631b7c93e007d1b",
+      "dimensions": {
+        "width": 512,
+        "height": 341
+      }
+    },
+    {
+      "id": "solstice-constellation-rug",
+      "name": "Solstice’s Constellation Rug",
+      "kind": "furniture",
+      "rarity": "rare",
+      "description": "round midnight teal rug golden zodiac constellations, amber sun and crescent moon",
+      "w": 220,
+      "h": 100,
+      "icon": "☾",
+      "image": "assets/rewards/solstice/items/constellation-rug.webp",
+      "boardIndex": 10,
+      "action": "place",
+      "unlock": {
+        "system": "MajickRewardCore",
+        "method": "earned-treasure-drop",
+        "rarity": "rare",
+        "ownershipKey": "blueprints",
+        "events": [
+          "correct-answer",
+          "concept-mastered",
+          "lesson-mastered",
+          "competency-mastered",
+          "oa-competency-ready",
+          "course-passed"
+        ],
+        "guaranteed": false
+      },
+      "prompt": {
+        "mode": "built-in",
+        "useCase": "background-extraction",
+        "subject": "round midnight teal rug golden zodiac constellations, amber sun and crescent moon",
+        "reference": "solstice-collection-reference-board",
+        "constraints": "Standalone complete object; preserve approved silhouette and fox motifs. Use amber velvet, antique gold, teal and forest-green fabrics, midnight-blue galaxies, turquoise crystals and small ruby-red gems. No purple/violet/lavender/magenta. Transparent alpha, no text or neighboring objects."
+      },
+      "imageSha256": "2c227b8ae8fb93147f12b4c1cf0534f07a4c08f56530409befce835d3204e281",
+      "dimensions": {
+        "width": 512,
+        "height": 341
+      }
+    },
+    {
+      "id": "solstice-exploration-chest",
+      "name": "Solstice’s Exploration Chest",
+      "kind": "toy",
+      "rarity": "rare",
+      "description": "open ornate gold midnight teal exploration chest filled with star charts, books and luminous nebula orb",
+      "w": 145,
+      "h": 125,
+      "icon": "✧",
+      "image": "assets/rewards/solstice/items/exploration-chest.webp",
+      "boardIndex": 11,
+      "action": "place",
+      "unlock": {
+        "system": "MajickRewardCore",
+        "method": "earned-treasure-drop",
+        "rarity": "rare",
+        "ownershipKey": "blueprints",
+        "events": [
+          "correct-answer",
+          "concept-mastered",
+          "lesson-mastered",
+          "competency-mastered",
+          "oa-competency-ready",
+          "course-passed"
+        ],
+        "guaranteed": false
+      },
+      "prompt": {
+        "mode": "built-in",
+        "useCase": "background-extraction",
+        "subject": "open ornate gold midnight teal exploration chest filled with star charts, books and luminous nebula orb",
+        "reference": "solstice-collection-reference-board",
+        "constraints": "Standalone complete object; preserve approved silhouette and fox motifs. Use amber velvet, antique gold, teal and forest-green fabrics, midnight-blue galaxies, turquoise crystals and small ruby-red gems. No purple/violet/lavender/magenta. Transparent alpha, no text or neighboring objects."
+      },
+      "imageSha256": "d60937520f9a001e796636d343dc330c5256f7491ff4de2cd3d1a02d396dd287",
+      "dimensions": {
+        "width": 512,
+        "height": 341
+      }
+    },
+    {
+      "id": "solstice-planet-climbing-tower",
+      "name": "Solstice’s Planet Climbing Tower",
+      "kind": "toy",
+      "rarity": "rare",
+      "description": "gold spiral climbing tower with four midnight teal and amber padded circular platforms and planet charms",
+      "w": 125,
+      "h": 185,
+      "icon": "✧",
+      "image": "assets/rewards/solstice/items/planet-climbing-tower.webp",
+      "boardIndex": 12,
+      "action": "place",
+      "unlock": {
+        "system": "MajickRewardCore",
+        "method": "earned-treasure-drop",
+        "rarity": "rare",
+        "ownershipKey": "blueprints",
+        "events": [
+          "correct-answer",
+          "concept-mastered",
+          "lesson-mastered",
+          "competency-mastered",
+          "oa-competency-ready",
+          "course-passed"
+        ],
+        "guaranteed": false
+      },
+      "prompt": {
+        "mode": "built-in",
+        "useCase": "background-extraction",
+        "subject": "gold spiral climbing tower with four midnight teal and amber padded circular platforms and planet charms",
+        "reference": "solstice-collection-reference-board",
+        "constraints": "Standalone complete object; preserve approved silhouette and fox motifs. Use amber velvet, antique gold, teal and forest-green fabrics, midnight-blue galaxies, turquoise crystals and small ruby-red gems. No purple/violet/lavender/magenta. Transparent alpha, no text or neighboring objects."
+      },
+      "imageSha256": "430e4f096ec99b9641e41cb2e377142ccc8ed46204f51fd29053c4195a1284a1",
+      "dimensions": {
+        "width": 479,
+        "height": 512
+      }
+    },
+    {
+      "id": "solstice-amber-canopy-bed",
+      "name": "Solstice’s Amber Canopy Bed",
+      "kind": "furniture",
+      "rarity": "celestial",
+      "description": "four-post ornate gold canopy bed, amber velvet curtains, midnight teal galaxy bedding and fox pillows",
+      "w": 220,
+      "h": 175,
+      "icon": "☾",
+      "image": "assets/rewards/solstice/items/amber-canopy-bed.webp",
+      "boardIndex": 13,
+      "action": "place",
+      "unlock": {
+        "system": "MajickRewardCore",
+        "method": "earned-treasure-drop",
+        "rarity": "celestial",
+        "ownershipKey": "blueprints",
+        "events": [
+          "correct-answer",
+          "concept-mastered",
+          "lesson-mastered",
+          "competency-mastered",
+          "oa-competency-ready",
+          "course-passed"
+        ],
+        "guaranteed": false
+      },
+      "prompt": {
+        "mode": "built-in",
+        "useCase": "background-extraction",
+        "subject": "four-post ornate gold canopy bed, amber velvet curtains, midnight teal galaxy bedding and fox pillows",
+        "reference": "solstice-collection-reference-board",
+        "constraints": "Standalone complete object; preserve approved silhouette and fox motifs. Use amber velvet, antique gold, teal and forest-green fabrics, midnight-blue galaxies, turquoise crystals and small ruby-red gems. No purple/violet/lavender/magenta. Transparent alpha, no text or neighboring objects."
+      },
+      "imageSha256": "c0fd2f6f6b4886e023c69eeb5561ed089a101d35e1728ce14523ff5ecd64b5d6",
+      "dimensions": {
+        "width": 512,
+        "height": 341
+      }
+    },
+    {
+      "id": "solstice-star-perch-tree",
+      "name": "Solstice’s Star Perch Tree",
+      "kind": "toy",
+      "rarity": "rare",
+      "description": "branching gold perch tree with three midnight teal velvet round cushions and hanging midnight teal planets",
+      "w": 130,
+      "h": 190,
+      "icon": "✧",
+      "image": "assets/rewards/solstice/items/star-perch-tree.webp",
+      "boardIndex": 14,
+      "action": "place",
+      "unlock": {
+        "system": "MajickRewardCore",
+        "method": "earned-treasure-drop",
+        "rarity": "rare",
+        "ownershipKey": "blueprints",
+        "events": [
+          "correct-answer",
+          "concept-mastered",
+          "lesson-mastered",
+          "competency-mastered",
+          "oa-competency-ready",
+          "course-passed"
+        ],
+        "guaranteed": false
+      },
+      "prompt": {
+        "mode": "built-in",
+        "useCase": "background-extraction",
+        "subject": "branching gold perch tree with three midnight teal velvet round cushions and hanging midnight teal planets",
+        "reference": "solstice-collection-reference-board",
+        "constraints": "Standalone complete object; preserve approved silhouette and fox motifs. Use amber velvet, antique gold, teal and forest-green fabrics, midnight-blue galaxies, turquoise crystals and small ruby-red gems. No purple/violet/lavender/magenta. Transparent alpha, no text or neighboring objects."
+      },
+      "imageSha256": "88f42fd96cdc7913cb03f77325f85d8d087a75f05f09c2ad5b520ebdcb904a4c",
+      "dimensions": {
+        "width": 478,
+        "height": 512
+      }
+    },
+    {
+      "id": "solstice-moon-writing-desk",
+      "name": "Solstice’s Moon Writing Desk",
+      "kind": "furniture",
+      "rarity": "arcane",
+      "description": "curved crescent moon gold writing desk, midnight teal surface, star charts and quill",
+      "w": 185,
+      "h": 140,
+      "icon": "☾",
+      "image": "assets/rewards/solstice/items/moon-writing-desk.webp",
+      "boardIndex": 15,
+      "action": "place",
+      "unlock": {
+        "system": "MajickRewardCore",
+        "method": "earned-treasure-drop",
+        "rarity": "arcane",
+        "ownershipKey": "blueprints",
+        "events": [
+          "correct-answer",
+          "concept-mastered",
+          "lesson-mastered",
+          "competency-mastered",
+          "oa-competency-ready",
+          "course-passed"
+        ],
+        "guaranteed": false
+      },
+      "prompt": {
+        "mode": "built-in",
+        "useCase": "background-extraction",
+        "subject": "curved crescent moon gold writing desk, midnight teal surface, star charts and quill",
+        "reference": "solstice-collection-reference-board",
+        "constraints": "Standalone complete object; preserve approved silhouette and fox motifs. Use amber velvet, antique gold, teal and forest-green fabrics, midnight-blue galaxies, turquoise crystals and small ruby-red gems. No purple/violet/lavender/magenta. Transparent alpha, no text or neighboring objects."
+      },
+      "imageSha256": "5213b3be0113c38a12766114135fcc161f8a333d4fd1e40f578303b1d09fdc40",
+      "dimensions": {
+        "width": 512,
+        "height": 341
+      }
+    },
+    {
+      "id": "solstice-fox-ear-reading-chair",
+      "name": "Solstice’s Fox-Ear Reading Chair",
+      "kind": "furniture",
+      "rarity": "rare",
+      "description": "cream and amber tufted reading armchair with two oversized amber fox ears, gold carvings, midnight teal star pillow",
+      "w": 140,
+      "h": 150,
+      "icon": "☾",
+      "image": "assets/rewards/solstice/items/fox-ear-reading-chair.webp",
+      "boardIndex": 16,
+      "action": "place",
+      "unlock": {
+        "system": "MajickRewardCore",
+        "method": "earned-treasure-drop",
+        "rarity": "rare",
+        "ownershipKey": "blueprints",
+        "events": [
+          "correct-answer",
+          "concept-mastered",
+          "lesson-mastered",
+          "competency-mastered",
+          "oa-competency-ready",
+          "course-passed"
+        ],
+        "guaranteed": false
+      },
+      "prompt": {
+        "mode": "built-in",
+        "useCase": "background-extraction",
+        "subject": "cream and amber tufted reading armchair with two oversized amber fox ears, gold carvings, midnight teal star pillow",
+        "reference": "solstice-collection-reference-board",
+        "constraints": "Standalone complete object; preserve approved silhouette and fox motifs. Use amber velvet, antique gold, teal and forest-green fabrics, midnight-blue galaxies, turquoise crystals and small ruby-red gems. No purple/violet/lavender/magenta. Transparent alpha, no text or neighboring objects."
+      },
+      "imageSha256": "edbd18bfe0cfd5fd0a4608968ca971b650c8dfc459edbcbedb8d18c6b36e36dc",
+      "dimensions": {
+        "width": 512,
+        "height": 341
+      }
+    },
+    {
+      "id": "solstice-crescent-lantern",
+      "name": "Solstice’s Crescent Lantern",
+      "kind": "decor",
+      "rarity": "enchanted",
+      "description": "gold hanging lantern with radiant amber crescent and midnight teal crystal star charms",
+      "w": 85,
+      "h": 145,
+      "icon": "☾",
+      "image": "assets/rewards/solstice/items/crescent-lantern.webp",
+      "boardIndex": 17,
+      "action": "place",
+      "unlock": {
+        "system": "MajickRewardCore",
+        "method": "earned-treasure-drop",
+        "rarity": "enchanted",
+        "ownershipKey": "blueprints",
+        "events": [
+          "correct-answer",
+          "concept-mastered",
+          "lesson-mastered",
+          "competency-mastered",
+          "oa-competency-ready",
+          "course-passed"
+        ],
+        "guaranteed": false
+      },
+      "prompt": {
+        "mode": "built-in",
+        "useCase": "background-extraction",
+        "subject": "gold hanging lantern with radiant amber crescent and midnight teal crystal star charms",
+        "reference": "solstice-collection-reference-board",
+        "constraints": "Standalone complete object; preserve approved silhouette and fox motifs. Use amber velvet, antique gold, teal and forest-green fabrics, midnight-blue galaxies, turquoise crystals and small ruby-red gems. No purple/violet/lavender/magenta. Transparent alpha, no text or neighboring objects."
+      },
+      "imageSha256": "0c30a448fe8fb00083e45f4e50d2b85a3e7cc648f5bc8a8cfc832bbd174ddb14",
+      "dimensions": {
+        "width": 512,
+        "height": 467
+      }
+    },
+    {
+      "id": "solstice-astral-doorway",
+      "name": "Solstice’s Astral Doorway",
+      "kind": "decor",
+      "rarity": "arcane",
+      "description": "arched gold astral doorway with midnight teal stars and amber sky beyond, turquoise crystals at feet",
+      "w": 150,
+      "h": 195,
+      "icon": "☾",
+      "image": "assets/rewards/solstice/items/astral-doorway.webp",
+      "boardIndex": 18,
+      "action": "place",
+      "unlock": {
+        "system": "MajickRewardCore",
+        "method": "earned-treasure-drop",
+        "rarity": "arcane",
+        "ownershipKey": "blueprints",
+        "events": [
+          "correct-answer",
+          "concept-mastered",
+          "lesson-mastered",
+          "competency-mastered",
+          "oa-competency-ready",
+          "course-passed"
+        ],
+        "guaranteed": false
+      },
+      "prompt": {
+        "mode": "built-in",
+        "useCase": "background-extraction",
+        "subject": "arched gold astral doorway with midnight teal stars and amber sky beyond, turquoise crystals at feet",
+        "reference": "solstice-collection-reference-board",
+        "constraints": "Standalone complete object; preserve approved silhouette and fox motifs. Use amber velvet, antique gold, teal and forest-green fabrics, midnight-blue galaxies, turquoise crystals and small ruby-red gems. No purple/violet/lavender/magenta. Transparent alpha, no text or neighboring objects."
+      },
+      "imageSha256": "25dd37470378f70dad2776fa39fcbf6556180f942a8abf5bd7521143ba2d081f",
+      "dimensions": {
+        "width": 512,
+        "height": 468
+      }
+    },
+    {
+      "id": "solstice-galaxy-folding-screen",
+      "name": "Solstice’s Galaxy Folding Screen",
+      "kind": "furniture",
+      "rarity": "arcane",
+      "description": "three-panel folding screen with gold arches, midnight teal celestial skies, amber sun moon and stars",
+      "w": 200,
+      "h": 150,
+      "icon": "☾",
+      "image": "assets/rewards/solstice/items/galaxy-folding-screen.webp",
+      "boardIndex": 19,
+      "action": "place",
+      "unlock": {
+        "system": "MajickRewardCore",
+        "method": "earned-treasure-drop",
+        "rarity": "arcane",
+        "ownershipKey": "blueprints",
+        "events": [
+          "correct-answer",
+          "concept-mastered",
+          "lesson-mastered",
+          "competency-mastered",
+          "oa-competency-ready",
+          "course-passed"
+        ],
+        "guaranteed": false
+      },
+      "prompt": {
+        "mode": "built-in",
+        "useCase": "background-extraction",
+        "subject": "three-panel folding screen with gold arches, midnight teal celestial skies, amber sun moon and stars",
+        "reference": "solstice-collection-reference-board",
+        "constraints": "Standalone complete object; preserve approved silhouette and fox motifs. Use amber velvet, antique gold, teal and forest-green fabrics, midnight-blue galaxies, turquoise crystals and small ruby-red gems. No purple/violet/lavender/magenta. Transparent alpha, no text or neighboring objects."
+      },
+      "imageSha256": "63e20385b0cb78349c6d0c1725ae0cc26a03f5f6523c5cfcd7fab5a0ba33a8e1",
+      "dimensions": {
+        "width": 512,
+        "height": 341
+      }
+    },
+    {
+      "id": "solstice-orbit-play-ball",
+      "name": "Solstice’s Orbit Play Ball",
+      "kind": "toy",
+      "rarity": "enchanted",
+      "description": "midnight teal luminous galaxy ball encircled by two gold orbit rings",
+      "w": 100,
+      "h": 115,
+      "icon": "✧",
+      "image": "assets/rewards/solstice/items/orbit-play-ball.webp",
+      "boardIndex": 20,
+      "action": "place",
+      "unlock": {
+        "system": "MajickRewardCore",
+        "method": "earned-treasure-drop",
+        "rarity": "enchanted",
+        "ownershipKey": "blueprints",
+        "events": [
+          "correct-answer",
+          "concept-mastered",
+          "lesson-mastered",
+          "competency-mastered",
+          "oa-competency-ready",
+          "course-passed"
+        ],
+        "guaranteed": false
+      },
+      "prompt": {
+        "mode": "built-in",
+        "useCase": "background-extraction",
+        "subject": "midnight teal luminous galaxy ball encircled by two gold orbit rings",
+        "reference": "solstice-collection-reference-board",
+        "constraints": "Standalone complete object; preserve approved silhouette and fox motifs. Use amber velvet, antique gold, teal and forest-green fabrics, midnight-blue galaxies, turquoise crystals and small ruby-red gems. No purple/violet/lavender/magenta. Transparent alpha, no text or neighboring objects."
+      },
+      "imageSha256": "83d59d04ccd7f08ec808323aaf4e498b354548287b5648db9cd5f9d49cad0dde",
+      "dimensions": {
+        "width": 512,
+        "height": 466
+      }
+    },
+    {
+      "id": "solstice-star-charm-rack",
+      "name": "Solstice’s Star Charm Rack",
+      "kind": "toy",
+      "rarity": "rare",
+      "description": "gold horizontal play rack with dangling amber stars and midnight teal planet toys",
+      "w": 160,
+      "h": 120,
+      "icon": "✧",
+      "image": "assets/rewards/solstice/items/star-charm-rack.webp",
+      "boardIndex": 21,
+      "action": "place",
+      "unlock": {
+        "system": "MajickRewardCore",
+        "method": "earned-treasure-drop",
+        "rarity": "rare",
+        "ownershipKey": "blueprints",
+        "events": [
+          "correct-answer",
+          "concept-mastered",
+          "lesson-mastered",
+          "competency-mastered",
+          "oa-competency-ready",
+          "course-passed"
+        ],
+        "guaranteed": false
+      },
+      "prompt": {
+        "mode": "built-in",
+        "useCase": "background-extraction",
+        "subject": "gold horizontal play rack with dangling amber stars and midnight teal planet toys",
+        "reference": "solstice-collection-reference-board",
+        "constraints": "Standalone complete object; preserve approved silhouette and fox motifs. Use amber velvet, antique gold, teal and forest-green fabrics, midnight-blue galaxies, turquoise crystals and small ruby-red gems. No purple/violet/lavender/magenta. Transparent alpha, no text or neighboring objects."
+      },
+      "imageSha256": "3ac6ff62f30c4999e7152952f89c62de6e0f7ee5bf242023c6b085bbfc6b3b04",
+      "dimensions": {
+        "width": 512,
+        "height": 341
+      }
+    },
+    {
+      "id": "solstice-solar-circlet",
+      "name": "Solstice’s Solar Circlet",
+      "kind": "accessory",
+      "rarity": "celestial",
+      "description": "ornate gold circlet with amber central sun jewel, crescents and turquoise stars",
+      "w": 80,
+      "h": 45,
+      "icon": "✦",
+      "image": "assets/rewards/solstice/items/solar-circlet.webp",
+      "boardIndex": 22,
+      "action": "equip",
+      "unlock": {
+        "system": "MajickRewardCore",
+        "method": "earned-treasure-drop",
+        "rarity": "celestial",
+        "ownershipKey": "collectibles",
+        "events": [
+          "correct-answer",
+          "concept-mastered",
+          "lesson-mastered",
+          "competency-mastered",
+          "oa-competency-ready",
+          "course-passed"
+        ],
+        "guaranteed": false
+      },
+      "prompt": {
+        "mode": "built-in",
+        "useCase": "background-extraction",
+        "subject": "ornate gold circlet with amber central sun jewel, crescents and turquoise stars",
+        "reference": "solstice-collection-reference-board",
+        "constraints": "Standalone complete object; preserve approved silhouette and fox motifs. Use amber velvet, antique gold, teal and forest-green fabrics, midnight-blue galaxies, turquoise crystals and small ruby-red gems. No purple/violet/lavender/magenta. Transparent alpha, no text or neighboring objects."
+      },
+      "imageSha256": "c433ab8c2a55d5d37a6e7e44f151160b6da6ecdbc44dd4d94ec753bf4d7d84eb",
+      "dimensions": {
+        "width": 512,
+        "height": 341
+      }
+    },
+    {
+      "id": "solstice-moon-collar",
+      "name": "Solstice’s Moon Collar",
+      "kind": "accessory",
+      "rarity": "enchanted",
+      "description": "midnight teal velvet collar with gold buckle and dangling gold crescent charm",
+      "w": 65,
+      "h": 40,
+      "icon": "✦",
+      "image": "assets/rewards/solstice/items/moon-collar.webp",
+      "boardIndex": 23,
+      "action": "equip",
+      "unlock": {
+        "system": "MajickRewardCore",
+        "method": "earned-treasure-drop",
+        "rarity": "enchanted",
+        "ownershipKey": "collectibles",
+        "events": [
+          "correct-answer",
+          "concept-mastered",
+          "lesson-mastered",
+          "competency-mastered",
+          "oa-competency-ready",
+          "course-passed"
+        ],
+        "guaranteed": false
+      },
+      "prompt": {
+        "mode": "built-in",
+        "useCase": "background-extraction",
+        "subject": "midnight teal velvet collar with gold buckle and dangling gold crescent charm",
+        "reference": "solstice-collection-reference-board",
+        "constraints": "Standalone complete object; preserve approved silhouette and fox motifs. Use amber velvet, antique gold, teal and forest-green fabrics, midnight-blue galaxies, turquoise crystals and small ruby-red gems. No purple/violet/lavender/magenta. Transparent alpha, no text or neighboring objects."
+      },
+      "imageSha256": "9544788d6de281ae1b936b95e75a9f44a895a54a0b24ccd2513bc94cf9230a21",
+      "dimensions": {
+        "width": 512,
+        "height": 341
+      }
+    },
+    {
+      "id": "solstice-nebula-wand",
+      "name": "Solstice’s Nebula Wand",
+      "kind": "accessory",
+      "rarity": "arcane",
+      "description": "diagonal gold wand with swirling midnight teal amber galaxy head, star tips and midnight teal ribbons",
+      "w": 80,
+      "h": 125,
+      "icon": "✦",
+      "image": "assets/rewards/solstice/items/nebula-wand.webp",
+      "boardIndex": 24,
+      "action": "equip",
+      "unlock": {
+        "system": "MajickRewardCore",
+        "method": "earned-treasure-drop",
+        "rarity": "arcane",
+        "ownershipKey": "collectibles",
+        "events": [
+          "correct-answer",
+          "concept-mastered",
+          "lesson-mastered",
+          "competency-mastered",
+          "oa-competency-ready",
+          "course-passed"
+        ],
+        "guaranteed": false
+      },
+      "prompt": {
+        "mode": "built-in",
+        "useCase": "background-extraction",
+        "subject": "diagonal gold wand with swirling midnight teal amber galaxy head, star tips and midnight teal ribbons",
+        "reference": "solstice-collection-reference-board",
+        "constraints": "Standalone complete object; preserve approved silhouette and fox motifs. Use amber velvet, antique gold, teal and forest-green fabrics, midnight-blue galaxies, turquoise crystals and small ruby-red gems. No purple/violet/lavender/magenta. Transparent alpha, no text or neighboring objects."
+      },
+      "imageSha256": "b005e1d1e3ac35c89f7d6eb5c113468a8538266d2bd35bf311df46c2e8b12bcf",
+      "dimensions": {
+        "width": 512,
+        "height": 428
+      }
+    },
+    {
+      "id": "solstice-star-glasses",
+      "name": "Solstice’s Star Glasses",
+      "kind": "accessory",
+      "rarity": "rare",
+      "description": "round brass glasses with midnight teal galaxy lenses and delicate star chains",
+      "w": 85,
+      "h": 35,
+      "icon": "✦",
+      "image": "assets/rewards/solstice/items/star-glasses.webp",
+      "boardIndex": 25,
+      "action": "equip",
+      "unlock": {
+        "system": "MajickRewardCore",
+        "method": "earned-treasure-drop",
+        "rarity": "rare",
+        "ownershipKey": "collectibles",
+        "events": [
+          "correct-answer",
+          "concept-mastered",
+          "lesson-mastered",
+          "competency-mastered",
+          "oa-competency-ready",
+          "course-passed"
+        ],
+        "guaranteed": false
+      },
+      "prompt": {
+        "mode": "built-in",
+        "useCase": "background-extraction",
+        "subject": "round brass glasses with midnight teal galaxy lenses and delicate star chains",
+        "reference": "solstice-collection-reference-board",
+        "constraints": "Standalone complete object; preserve approved silhouette and fox motifs. Use amber velvet, antique gold, teal and forest-green fabrics, midnight-blue galaxies, turquoise crystals and small ruby-red gems. No purple/violet/lavender/magenta. Transparent alpha, no text or neighboring objects."
+      },
+      "imageSha256": "2a5362a205cd1f41738d173259d17ec3d45aaec5d5a18c468ba029e24b8cd2a2",
+      "dimensions": {
+        "width": 512,
+        "height": 256
+      }
+    },
+    {
+      "id": "solstice-orbit-bracelet",
+      "name": "Solstice’s Orbit Bracelet",
+      "kind": "accessory",
+      "rarity": "rare",
+      "description": "gold open cuff bracelet with three midnight teal amber planet gems and small stars",
+      "w": 55,
+      "h": 55,
+      "icon": "✦",
+      "image": "assets/rewards/solstice/items/orbit-bracelet.webp",
+      "boardIndex": 26,
+      "action": "equip",
+      "unlock": {
+        "system": "MajickRewardCore",
+        "method": "earned-treasure-drop",
+        "rarity": "rare",
+        "ownershipKey": "collectibles",
+        "events": [
+          "correct-answer",
+          "concept-mastered",
+          "lesson-mastered",
+          "competency-mastered",
+          "oa-competency-ready",
+          "course-passed"
+        ],
+        "guaranteed": false
+      },
+      "prompt": {
+        "mode": "built-in",
+        "useCase": "background-extraction",
+        "subject": "gold open cuff bracelet with three midnight teal amber planet gems and small stars",
+        "reference": "solstice-collection-reference-board",
+        "constraints": "Standalone complete object; preserve approved silhouette and fox motifs. Use amber velvet, antique gold, teal and forest-green fabrics, midnight-blue galaxies, turquoise crystals and small ruby-red gems. No purple/violet/lavender/magenta. Transparent alpha, no text or neighboring objects."
+      },
+      "imageSha256": "001e9ba7c9df2c9811e2d78eb9b1f1032c0ed20aed47d3ef309958b22458c8a7",
+      "dimensions": {
+        "width": 512,
+        "height": 341
+      }
+    },
+    {
+      "id": "solstice-explorer-satchel",
+      "name": "Solstice’s Explorer Satchel",
+      "kind": "accessory",
+      "rarity": "rare",
+      "description": "midnight teal leather exploration satchel with golden crescent, brass straps, midnight teal planet charm",
+      "w": 70,
+      "h": 85,
+      "icon": "✦",
+      "image": "assets/rewards/solstice/items/explorer-satchel.webp",
+      "boardIndex": 27,
+      "action": "equip",
+      "unlock": {
+        "system": "MajickRewardCore",
+        "method": "earned-treasure-drop",
+        "rarity": "rare",
+        "ownershipKey": "collectibles",
+        "events": [
+          "correct-answer",
+          "concept-mastered",
+          "lesson-mastered",
+          "competency-mastered",
+          "oa-competency-ready",
+          "course-passed"
+        ],
+        "guaranteed": false
+      },
+      "prompt": {
+        "mode": "built-in",
+        "useCase": "background-extraction",
+        "subject": "midnight teal leather exploration satchel with golden crescent, brass straps, midnight teal planet charm",
+        "reference": "solstice-collection-reference-board",
+        "constraints": "Standalone complete object; preserve approved silhouette and fox motifs. Use amber velvet, antique gold, teal and forest-green fabrics, midnight-blue galaxies, turquoise crystals and small ruby-red gems. No purple/violet/lavender/magenta. Transparent alpha, no text or neighboring objects."
+      },
+      "imageSha256": "7dec0be90fc35b0e2b329d002fddc15a4d138f955a833cd27ed5b446c4383ded",
+      "dimensions": {
+        "width": 512,
+        "height": 341
+      }
+    },
+    {
+      "id": "solstice-galaxy-cape",
+      "name": "Solstice’s Galaxy Cape",
+      "kind": "accessory",
+      "rarity": "celestial",
+      "description": "flowing midnight teal galaxy cape with golden stars and crescent clasp",
+      "w": 120,
+      "h": 120,
+      "icon": "✦",
+      "image": "assets/rewards/solstice/items/galaxy-cape.webp",
+      "boardIndex": 28,
+      "action": "equip",
+      "unlock": {
+        "system": "MajickRewardCore",
+        "method": "earned-treasure-drop",
+        "rarity": "celestial",
+        "ownershipKey": "collectibles",
+        "events": [
+          "correct-answer",
+          "concept-mastered",
+          "lesson-mastered",
+          "competency-mastered",
+          "oa-competency-ready",
+          "course-passed"
+        ],
+        "guaranteed": false
+      },
+      "prompt": {
+        "mode": "built-in",
+        "useCase": "background-extraction",
+        "subject": "flowing midnight teal galaxy cape with golden stars and crescent clasp",
+        "reference": "solstice-collection-reference-board",
+        "constraints": "Standalone complete object; preserve approved silhouette and fox motifs. Use amber velvet, antique gold, teal and forest-green fabrics, midnight-blue galaxies, turquoise crystals and small ruby-red gems. No purple/violet/lavender/magenta. Transparent alpha, no text or neighboring objects."
+      },
+      "imageSha256": "e1bf49440d9ac3085e7166e0af123e5c08da0f26fbb617f215f9d746299338ef",
+      "dimensions": {
+        "width": 512,
+        "height": 341
+      }
+    },
+    {
+      "id": "solstice-astronomy-book-stack",
+      "name": "Solstice’s Astronomy Book Stack",
+      "kind": "decor",
+      "rarity": "enchanted",
+      "description": "stack of five midnight teal gold astronomy books with star filigree and ribbon bookmarks",
+      "w": 100,
+      "h": 115,
+      "icon": "☾",
+      "image": "assets/rewards/solstice/items/astronomy-book-stack.webp",
+      "boardIndex": 29,
+      "action": "place",
+      "unlock": {
+        "system": "MajickRewardCore",
+        "method": "earned-treasure-drop",
+        "rarity": "enchanted",
+        "ownershipKey": "blueprints",
+        "events": [
+          "correct-answer",
+          "concept-mastered",
+          "lesson-mastered",
+          "competency-mastered",
+          "oa-competency-ready",
+          "course-passed"
+        ],
+        "guaranteed": false
+      },
+      "prompt": {
+        "mode": "built-in",
+        "useCase": "background-extraction",
+        "subject": "stack of five midnight teal gold astronomy books with star filigree and ribbon bookmarks",
+        "reference": "solstice-collection-reference-board",
+        "constraints": "Standalone complete object; preserve approved silhouette and fox motifs. Use amber velvet, antique gold, teal and forest-green fabrics, midnight-blue galaxies, turquoise crystals and small ruby-red gems. No purple/violet/lavender/magenta. Transparent alpha, no text or neighboring objects."
+      },
+      "imageSha256": "b13cb2f56c1b18d68b0f57002c528a1aa0d38270b25ef5be4fa659ecdf104450",
+      "dimensions": {
+        "width": 512,
+        "height": 473
+      }
+    },
+    {
+      "id": "solstice-planet-mobile",
+      "name": "Solstice’s Planet Mobile",
+      "kind": "decor",
+      "rarity": "rare",
+      "description": "gold circular hanging mobile of midnight teal planet orbs and amber stars",
+      "w": 105,
+      "h": 155,
+      "icon": "☾",
+      "image": "assets/rewards/solstice/items/planet-mobile.webp",
+      "boardIndex": 30,
+      "action": "place",
+      "unlock": {
+        "system": "MajickRewardCore",
+        "method": "earned-treasure-drop",
+        "rarity": "rare",
+        "ownershipKey": "blueprints",
+        "events": [
+          "correct-answer",
+          "concept-mastered",
+          "lesson-mastered",
+          "competency-mastered",
+          "oa-competency-ready",
+          "course-passed"
+        ],
+        "guaranteed": false
+      },
+      "prompt": {
+        "mode": "built-in",
+        "useCase": "background-extraction",
+        "subject": "gold circular hanging mobile of midnight teal planet orbs and amber stars",
+        "reference": "solstice-collection-reference-board",
+        "constraints": "Standalone complete object; preserve approved silhouette and fox motifs. Use amber velvet, antique gold, teal and forest-green fabrics, midnight-blue galaxies, turquoise crystals and small ruby-red gems. No purple/violet/lavender/magenta. Transparent alpha, no text or neighboring objects."
+      },
+      "imageSha256": "fe11235e9cb7ee25f4e639d077871bbab832e2f276bbe29b2e91fea01c05c66f",
+      "dimensions": {
+        "width": 512,
+        "height": 341
+      }
+    },
+    {
+      "id": "solstice-starlight-tea-table",
+      "name": "Solstice’s Starlight Tea Table",
+      "kind": "furniture",
+      "rarity": "rare",
+      "description": "round gold low tea table with midnight teal tea pot and three cups, amber star charms",
+      "w": 160,
+      "h": 120,
+      "icon": "☾",
+      "image": "assets/rewards/solstice/items/starlight-tea-table.webp",
+      "boardIndex": 31,
+      "action": "place",
+      "unlock": {
+        "system": "MajickRewardCore",
+        "method": "earned-treasure-drop",
+        "rarity": "rare",
+        "ownershipKey": "blueprints",
+        "events": [
+          "correct-answer",
+          "concept-mastered",
+          "lesson-mastered",
+          "competency-mastered",
+          "oa-competency-ready",
+          "course-passed"
+        ],
+        "guaranteed": false
+      },
+      "prompt": {
+        "mode": "built-in",
+        "useCase": "background-extraction",
+        "subject": "round gold low tea table with midnight teal tea pot and three cups, amber star charms",
+        "reference": "solstice-collection-reference-board",
+        "constraints": "Standalone complete object; preserve approved silhouette and fox motifs. Use amber velvet, antique gold, teal and forest-green fabrics, midnight-blue galaxies, turquoise crystals and small ruby-red gems. No purple/violet/lavender/magenta. Transparent alpha, no text or neighboring objects."
+      },
+      "imageSha256": "bad2a1aff8ba674c0f4d6c1517142df6e7a3d31fd966e4f793a6f1041b5f061f",
+      "dimensions": {
+        "width": 512,
+        "height": 341
+      }
+    },
+    {
+      "id": "solstice-cosmic-orbit-puzzle",
+      "name": "Solstice’s Cosmic Orbit Puzzle",
+      "kind": "toy",
+      "rarity": "arcane",
+      "description": "compact gold orbit-ring puzzle with five midnight teal glowing planets and central amber star",
+      "w": 100,
+      "h": 120,
+      "icon": "✧",
+      "image": "assets/rewards/solstice/items/cosmic-orbit-puzzle.webp",
+      "boardIndex": 32,
+      "action": "place",
+      "unlock": {
+        "system": "MajickRewardCore",
+        "method": "earned-treasure-drop",
+        "rarity": "arcane",
+        "ownershipKey": "blueprints",
+        "events": [
+          "correct-answer",
+          "concept-mastered",
+          "lesson-mastered",
+          "competency-mastered",
+          "oa-competency-ready",
+          "course-passed"
+        ],
+        "guaranteed": false
+      },
+      "prompt": {
+        "mode": "built-in",
+        "useCase": "background-extraction",
+        "subject": "compact gold orbit-ring puzzle with five midnight teal glowing planets and central amber star",
+        "reference": "solstice-collection-reference-board",
+        "constraints": "Standalone complete object; preserve approved silhouette and fox motifs. Use amber velvet, antique gold, teal and forest-green fabrics, midnight-blue galaxies, turquoise crystals and small ruby-red gems. No purple/violet/lavender/magenta. Transparent alpha, no text or neighboring objects."
+      },
+      "imageSha256": "e44679122c0ebfab5889dded3c4fd11ba82cc0c10148f3c2f04f7663cdd639f8",
+      "dimensions": {
+        "width": 512,
+        "height": 496
+      }
+    },
+    {
+      "id": "solstice-sun-globe-lamp",
+      "name": "Solstice’s Sun Globe Lamp",
+      "kind": "decor",
+      "rarity": "arcane",
+      "description": "gold glowing amber sun globe lamp on base of midnight teal books, crescent and midnight teal crystal accents",
+      "w": 120,
+      "h": 135,
+      "icon": "☾",
+      "image": "assets/rewards/solstice/items/sun-globe-lamp.webp",
+      "boardIndex": 33,
+      "action": "place",
+      "unlock": {
+        "system": "MajickRewardCore",
+        "method": "earned-treasure-drop",
+        "rarity": "arcane",
+        "ownershipKey": "blueprints",
+        "events": [
+          "correct-answer",
+          "concept-mastered",
+          "lesson-mastered",
+          "competency-mastered",
+          "oa-competency-ready",
+          "course-passed"
+        ],
+        "guaranteed": false
+      },
+      "prompt": {
+        "mode": "built-in",
+        "useCase": "background-extraction",
+        "subject": "gold glowing amber sun globe lamp on base of midnight teal books, crescent and midnight teal crystal accents",
+        "reference": "solstice-collection-reference-board",
+        "constraints": "Standalone complete object; preserve approved silhouette and fox motifs. Use amber velvet, antique gold, teal and forest-green fabrics, midnight-blue galaxies, turquoise crystals and small ruby-red gems. No purple/violet/lavender/magenta. Transparent alpha, no text or neighboring objects."
+      },
+      "imageSha256": "4d6f3fc4e2e31d1b7dbf75bcfa665b7c0f80be8752962ec35e11d5268a0d5dad",
+      "dimensions": {
+        "width": 512,
+        "height": 468
+      }
+    },
+    {
+      "id": "solstice-celestial-fox-gateway",
+      "name": "Solstice’s Celestial Fox Gateway",
+      "kind": "decor",
+      "rarity": "celestial",
+      "description": "majestic low gold celestial gateway with midnight teal galaxy arch, amber stairway and two white fox sculptures flanked by turquoise crystals",
+      "w": 230,
+      "h": 175,
+      "icon": "☾",
+      "image": "assets/rewards/solstice/items/celestial-fox-gateway.webp",
+      "boardIndex": 34,
+      "action": "place",
+      "unlock": {
+        "system": "MajickRewardCore",
+        "method": "earned-treasure-drop",
+        "rarity": "celestial",
+        "ownershipKey": "blueprints",
+        "events": [
+          "correct-answer",
+          "concept-mastered",
+          "lesson-mastered",
+          "competency-mastered",
+          "oa-competency-ready",
+          "course-passed"
+        ],
+        "guaranteed": false
+      },
+      "prompt": {
+        "mode": "built-in",
+        "useCase": "background-extraction",
+        "subject": "majestic low gold celestial gateway with midnight teal galaxy arch, amber stairway and two white fox sculptures flanked by turquoise crystals",
+        "reference": "solstice-collection-reference-board",
+        "constraints": "Standalone complete object; preserve approved silhouette and fox motifs. Use amber velvet, antique gold, teal and forest-green fabrics, midnight-blue galaxies, turquoise crystals and small ruby-red gems. No purple/violet/lavender/magenta. Transparent alpha, no text or neighboring objects."
+      },
+      "imageSha256": "0725796155f9817fc3438699151197dfbd6b6774b56209fc8027797c91d187ae",
+      "dimensions": {
+        "width": 512,
+        "height": 341
+      }
+    }
+  ],
+  "runtime": {
+    "rewardRegistry": "reward-core.js",
+    "sanctuaryRenderer": "sanctuary/reward-sanctuary.js",
+    "preloader": "sanctuary/Preloader.js",
+    "textureKeyPrefix": "reward-",
+    "wardrobeSlots": 1
+  },
+  "counts": {
+    "total": 34,
+    "placeable": 27,
+    "wearable": 7
+  },
+  "status": "integrated"
+}

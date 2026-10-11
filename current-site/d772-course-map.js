@@ -7,7 +7,7 @@ const SECTIONS=new Proxy([],{
  get(_target,key){
   const sections=(window.MajickCourseTutor?.sections?.(COURSE)||[]).map((section,i)=>({
    ...section,number:i+1,title:section.title.replace(/^Section \d+:\s*/,''),
-   status:i===0?'active':'structure-ready'
+   status:section.lessons.some(l=>window.MajickCourseTutor?.officialD772Content?.(l,COURSE))?'active':'structure-ready'
   }));
   const value=Reflect.get(sections,key);return typeof value==='function'?value.bind(sections):value;
  }
@@ -30,7 +30,7 @@ function card(section){
   '<header><span>'+section.number+'</span><div><small>SECTION '+section.number+'</small><h3>'+E(section.title)+'</h3></div></header>'+
   (section.lessons.length?
    '<div class="v3367SectionLessons">'+section.lessons.flatMap(l=>[l,...(l.sublessons||[])]).map((l,i)=>'<button type="button" data-v3367-lesson="'+l.id+'" class="'+(l.id===current?'active':'')+'"><i>'+(l.parentLessonId?(l.number??'•'):l.number?'L'+l.number:'✦')+'</i><span>'+E(l.title)+'</span></button>').join('')+'</div>'+
-   '<p class="v3367SectionNote">'+(section.id==='d772-s1'?'Section 1 remains isolated from later sections.':section.id==='d772-s2'?'Section 2 structure and competency targets are loaded; detailed teaching expands only from verified material.':'Section 3 outline is loaded; add its teaching material as you study.')+'</p>'
+   '<p class="v3367SectionNote">'+(section.id==='d772-s1'?'Section 1 remains isolated from later sections.':section.id==='d772-s2'?'Section 2 structure and competency targets are loaded; detailed teaching expands only from verified material.':'Section 3 probability teaching, worked examples, and practice are loaded.')+'</p>'
    :
    '<div class="v3367Awaiting"><span>☾</span><b>Ready for your next course materials</b><p>This section stays separate until you add its lesson content. Nothing from Section 1 is copied here.</p></div>')+
   '</article>';
@@ -42,7 +42,7 @@ function renderHome(){
  let map=document.querySelector('.v3367CourseMap');
  if(map)map.remove();
  map=document.createElement('section');map.className='v3367CourseMap';
- map.innerHTML='<header><div><small>D772 • FULL COURSE MAP</small><h2>Statistical Data Literacy Collegium</h2><p>Three separate academic wings. Section 1 is built; Section 2 now has its four official lessons and assessment targets; Section 3 probability lessons and units are ready for your upcoming material.</p></div><span>3 COURSE SECTIONS</span></header><div class="v3367SectionGrid">'+SECTIONS.map(card).join('')+'</div>';
+ map.innerHTML='<header><div><small>D772 • FULL COURSE MAP</small><h2>Statistical Data Literacy Collegium</h2><p>Three separate academic wings. Section 1 is built; Section 2 now has its four official lessons and assessment targets; Section 3 now includes probability explanations, worked examples, and practice.</p></div><span>3 COURSE SECTIONS</span></header><div class="v3367SectionGrid">'+SECTIONS.map(card).join('')+'</div>';
  map.querySelectorAll('[data-v3367-lesson]').forEach(b=>b.addEventListener('click',()=>openLesson(b.dataset.v3367Lesson)));
  hall.insertAdjacentElement('beforebegin',map);
 }

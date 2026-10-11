@@ -2,7 +2,7 @@
 'use strict';
 if(!window.MajickLearningLab||!window.MajickMaterialStore)return;
 
-const VERSION='3.3.32';
+const VERSION='3.4.2-section3';
 const D772_SECTION_ONE={
   id:'d772-section-1',
   title:'Section 1: Assessing Research and Data Credibility',
@@ -2337,7 +2337,26 @@ const D772_SECTION_THREE={
   "id": "d772-s3",
   "title": "Section 3: Applying Principles of Probability",
   "provenance": {
-    "courseStructure": "User-provided WGU D772 Section 3 outline; teaching material pending"
+    "courseStructure": "User-provided WGU D772 Section 3 outline",
+    "teaching": "Original supplemental study explanations and practice corroborated against OpenStax; not WGU assessment questions",
+    "corroboration": [
+      {
+        "source": "OpenStax Introductory Statistics 2e",
+        "url": "https://openstax.org/books/introductory-statistics-2e/pages/3-1-terminology"
+      },
+      {
+        "source": "OpenStax Introductory Statistics 2e",
+        "url": "https://openstax.org/books/introductory-statistics-2e/pages/3-2-independent-and-mutually-exclusive-events"
+      },
+      {
+        "source": "OpenStax Introductory Statistics 2e",
+        "url": "https://openstax.org/books/introductory-statistics-2e/pages/3-3-two-basic-rules-of-probability"
+      },
+      {
+        "source": "OpenStax Introductory Statistics 2e",
+        "url": "https://openstax.org/books/introductory-statistics-2e/pages/4-2-mean-or-expected-value-and-standard-deviation"
+      }
+    ]
   },
   "lessons": [
     {
@@ -2345,12 +2364,23 @@ const D772_SECTION_THREE={
       "number": 1,
       "title": "Theoretical and Empirical Probability",
       "short": "Theoretical and Empirical Probability",
-      "outlineOnly": true,
-      "keywords": [],
-      "goal": "Course outline reserved for your upcoming material.",
-      "visual": [],
+      "outlineOnly": false,
+      "keywords": [
+        "theoretical and empirical probability"
+      ],
+      "goal": "Theoretical and Empirical Probability.",
+      "visual": [
+        "Identify the event",
+        "Read conditions",
+        "Choose a justified rule",
+        "Calculate",
+        "Interpret"
+      ],
       "thinking": [],
-      "traps": [],
+      "traps": [
+        "Do not confuse disjoint events with independent events.",
+        "Read whether a question asks for payout or net value."
+      ],
       "sublessons": [
         {
           "id": "d772-s3-l1-1",
@@ -2359,12 +2389,23 @@ const D772_SECTION_THREE={
           "short": "Terminology and Notation",
           "parentLessonId": "d772-s3-l1",
           "unitType": "lesson",
-          "outlineOnly": true,
-          "keywords": [],
-          "goal": "Course outline reserved for your upcoming material.",
-          "visual": [],
+          "outlineOnly": false,
+          "keywords": [
+            "terminology and notation"
+          ],
+          "goal": "Read probability notation.",
+          "visual": [
+            "Identify the event",
+            "Read conditions",
+            "Choose a justified rule",
+            "Calculate",
+            "Interpret"
+          ],
           "thinking": [],
-          "traps": []
+          "traps": [
+            "Do not confuse disjoint events with independent events.",
+            "Read whether a question asks for payout or net value."
+          ]
         },
         {
           "id": "d772-s3-l1-2",
@@ -2373,12 +2414,23 @@ const D772_SECTION_THREE={
           "short": "Theoretical (Classical) Probability",
           "parentLessonId": "d772-s3-l1",
           "unitType": "lesson",
-          "outlineOnly": true,
-          "keywords": [],
-          "goal": "Course outline reserved for your upcoming material.",
-          "visual": [],
+          "outlineOnly": false,
+          "keywords": [
+            "theoretical (classical) probability"
+          ],
+          "goal": "Use equally likely outcomes.",
+          "visual": [
+            "Identify the event",
+            "Read conditions",
+            "Choose a justified rule",
+            "Calculate",
+            "Interpret"
+          ],
           "thinking": [],
-          "traps": []
+          "traps": [
+            "Do not confuse disjoint events with independent events.",
+            "Read whether a question asks for payout or net value."
+          ]
         },
         {
           "id": "d772-s3-l1-3",
@@ -2387,12 +2439,23 @@ const D772_SECTION_THREE={
           "short": "Empirical (Experimental) Probability and the Law of Large Numbers",
           "parentLessonId": "d772-s3-l1",
           "unitType": "lesson",
-          "outlineOnly": true,
-          "keywords": [],
-          "goal": "Course outline reserved for your upcoming material.",
-          "visual": [],
+          "outlineOnly": false,
+          "keywords": [
+            "empirical (experimental) probability and the law of large numbers"
+          ],
+          "goal": "Estimate from observations.",
+          "visual": [
+            "Identify the event",
+            "Read conditions",
+            "Choose a justified rule",
+            "Calculate",
+            "Interpret"
+          ],
           "thinking": [],
-          "traps": []
+          "traps": [
+            "Do not confuse disjoint events with independent events.",
+            "Read whether a question asks for payout or net value."
+          ]
         },
         {
           "id": "d772-s3-l1-summary",
@@ -2401,12 +2464,23 @@ const D772_SECTION_THREE={
           "short": "Lesson 1: Summary",
           "parentLessonId": "d772-s3-l1",
           "unitType": "summary",
-          "outlineOnly": true,
-          "keywords": [],
-          "goal": "Course outline reserved for your upcoming material.",
-          "visual": [],
+          "outlineOnly": false,
+          "keywords": [
+            "lesson 1: summary"
+          ],
+          "goal": "Lesson 1: Summary: Theoretical and Empirical Probability",
+          "visual": [
+            "Identify the event",
+            "Read conditions",
+            "Choose a justified rule",
+            "Calculate",
+            "Interpret"
+          ],
           "thinking": [],
-          "traps": []
+          "traps": [
+            "Do not confuse disjoint events with independent events.",
+            "Read whether a question asks for payout or net value."
+          ]
         },
         {
           "id": "d772-s3-l1-quiz",
@@ -2415,12 +2489,23 @@ const D772_SECTION_THREE={
           "short": "Lesson 1: Quiz",
           "parentLessonId": "d772-s3-l1",
           "unitType": "quiz",
-          "outlineOnly": true,
-          "keywords": [],
-          "goal": "Course outline reserved for your upcoming material.",
-          "visual": [],
+          "outlineOnly": false,
+          "keywords": [
+            "lesson 1: quiz"
+          ],
+          "goal": "Lesson 1: Quiz: Theoretical and Empirical Probability",
+          "visual": [
+            "Identify the event",
+            "Read conditions",
+            "Choose a justified rule",
+            "Calculate",
+            "Interpret"
+          ],
           "thinking": [],
-          "traps": []
+          "traps": [
+            "Do not confuse disjoint events with independent events.",
+            "Read whether a question asks for payout or net value."
+          ]
         }
       ]
     },
@@ -2429,12 +2514,23 @@ const D772_SECTION_THREE={
       "number": 2,
       "title": "Independent, Dependent, and Disjoint Events",
       "short": "Independent, Dependent, and Disjoint Events",
-      "outlineOnly": true,
-      "keywords": [],
-      "goal": "Course outline reserved for your upcoming material.",
-      "visual": [],
+      "outlineOnly": false,
+      "keywords": [
+        "independent, dependent, and disjoint events"
+      ],
+      "goal": "Independent, Dependent, and Disjoint Events.",
+      "visual": [
+        "Identify the event",
+        "Read conditions",
+        "Choose a justified rule",
+        "Calculate",
+        "Interpret"
+      ],
       "thinking": [],
-      "traps": [],
+      "traps": [
+        "Do not confuse disjoint events with independent events.",
+        "Read whether a question asks for payout or net value."
+      ],
       "sublessons": [
         {
           "id": "d772-s3-l2-1",
@@ -2443,12 +2539,23 @@ const D772_SECTION_THREE={
           "short": "Independent and Dependent Events",
           "parentLessonId": "d772-s3-l2",
           "unitType": "lesson",
-          "outlineOnly": true,
-          "keywords": [],
-          "goal": "Course outline reserved for your upcoming material.",
-          "visual": [],
+          "outlineOnly": false,
+          "keywords": [
+            "independent and dependent events"
+          ],
+          "goal": "Separate independent from dependent.",
+          "visual": [
+            "Identify the event",
+            "Read conditions",
+            "Choose a justified rule",
+            "Calculate",
+            "Interpret"
+          ],
           "thinking": [],
-          "traps": []
+          "traps": [
+            "Do not confuse disjoint events with independent events.",
+            "Read whether a question asks for payout or net value."
+          ]
         },
         {
           "id": "d772-s3-l2-2",
@@ -2457,12 +2564,23 @@ const D772_SECTION_THREE={
           "short": "Disjoint Events (Mutually Exclusive)",
           "parentLessonId": "d772-s3-l2",
           "unitType": "lesson",
-          "outlineOnly": true,
-          "keywords": [],
-          "goal": "Course outline reserved for your upcoming material.",
-          "visual": [],
+          "outlineOnly": false,
+          "keywords": [
+            "disjoint events (mutually exclusive)"
+          ],
+          "goal": "Disjoint does not mean independent.",
+          "visual": [
+            "Identify the event",
+            "Read conditions",
+            "Choose a justified rule",
+            "Calculate",
+            "Interpret"
+          ],
           "thinking": [],
-          "traps": []
+          "traps": [
+            "Do not confuse disjoint events with independent events.",
+            "Read whether a question asks for payout or net value."
+          ]
         },
         {
           "id": "d772-s3-l2-summary",
@@ -2471,12 +2589,23 @@ const D772_SECTION_THREE={
           "short": "Lesson 2: Summary",
           "parentLessonId": "d772-s3-l2",
           "unitType": "summary",
-          "outlineOnly": true,
-          "keywords": [],
-          "goal": "Course outline reserved for your upcoming material.",
-          "visual": [],
+          "outlineOnly": false,
+          "keywords": [
+            "lesson 2: summary"
+          ],
+          "goal": "Lesson 2: Summary: Independent, Dependent, and Disjoint Events",
+          "visual": [
+            "Identify the event",
+            "Read conditions",
+            "Choose a justified rule",
+            "Calculate",
+            "Interpret"
+          ],
           "thinking": [],
-          "traps": []
+          "traps": [
+            "Do not confuse disjoint events with independent events.",
+            "Read whether a question asks for payout or net value."
+          ]
         },
         {
           "id": "d772-s3-l2-quiz",
@@ -2485,12 +2614,23 @@ const D772_SECTION_THREE={
           "short": "Lesson 2: Quiz",
           "parentLessonId": "d772-s3-l2",
           "unitType": "quiz",
-          "outlineOnly": true,
-          "keywords": [],
-          "goal": "Course outline reserved for your upcoming material.",
-          "visual": [],
+          "outlineOnly": false,
+          "keywords": [
+            "lesson 2: quiz"
+          ],
+          "goal": "Lesson 2: Quiz: Independent, Dependent, and Disjoint Events",
+          "visual": [
+            "Identify the event",
+            "Read conditions",
+            "Choose a justified rule",
+            "Calculate",
+            "Interpret"
+          ],
           "thinking": [],
-          "traps": []
+          "traps": [
+            "Do not confuse disjoint events with independent events.",
+            "Read whether a question asks for payout or net value."
+          ]
         }
       ]
     },
@@ -2499,12 +2639,23 @@ const D772_SECTION_THREE={
       "number": 3,
       "title": "Unions, Intersections, and Complements",
       "short": "Unions, Intersections, and Complements",
-      "outlineOnly": true,
-      "keywords": [],
-      "goal": "Course outline reserved for your upcoming material.",
-      "visual": [],
+      "outlineOnly": false,
+      "keywords": [
+        "unions, intersections, and complements"
+      ],
+      "goal": "Unions, Intersections, and Complements.",
+      "visual": [
+        "Identify the event",
+        "Read conditions",
+        "Choose a justified rule",
+        "Calculate",
+        "Interpret"
+      ],
       "thinking": [],
-      "traps": [],
+      "traps": [
+        "Do not confuse disjoint events with independent events.",
+        "Read whether a question asks for payout or net value."
+      ],
       "sublessons": [
         {
           "id": "d772-s3-l3-1",
@@ -2513,12 +2664,23 @@ const D772_SECTION_THREE={
           "short": "Venn Diagrams",
           "parentLessonId": "d772-s3-l3",
           "unitType": "lesson",
-          "outlineOnly": true,
-          "keywords": [],
-          "goal": "Course outline reserved for your upcoming material.",
-          "visual": [],
+          "outlineOnly": false,
+          "keywords": [
+            "venn diagrams"
+          ],
+          "goal": "Read all four Venn regions.",
+          "visual": [
+            "Identify the event",
+            "Read conditions",
+            "Choose a justified rule",
+            "Calculate",
+            "Interpret"
+          ],
           "thinking": [],
-          "traps": []
+          "traps": [
+            "Do not confuse disjoint events with independent events.",
+            "Read whether a question asks for payout or net value."
+          ]
         },
         {
           "id": "d772-s3-l3-2",
@@ -2527,12 +2689,23 @@ const D772_SECTION_THREE={
           "short": "Unions",
           "parentLessonId": "d772-s3-l3",
           "unitType": "lesson",
-          "outlineOnly": true,
-          "keywords": [],
-          "goal": "Course outline reserved for your upcoming material.",
-          "visual": [],
+          "outlineOnly": false,
+          "keywords": [
+            "unions"
+          ],
+          "goal": "OR is the inclusive union.",
+          "visual": [
+            "Identify the event",
+            "Read conditions",
+            "Choose a justified rule",
+            "Calculate",
+            "Interpret"
+          ],
           "thinking": [],
-          "traps": []
+          "traps": [
+            "Do not confuse disjoint events with independent events.",
+            "Read whether a question asks for payout or net value."
+          ]
         },
         {
           "id": "d772-s3-l3-3",
@@ -2541,12 +2714,23 @@ const D772_SECTION_THREE={
           "short": "Intersections",
           "parentLessonId": "d772-s3-l3",
           "unitType": "lesson",
-          "outlineOnly": true,
-          "keywords": [],
-          "goal": "Course outline reserved for your upcoming material.",
-          "visual": [],
+          "outlineOnly": false,
+          "keywords": [
+            "intersections"
+          ],
+          "goal": "AND is the intersection.",
+          "visual": [
+            "Identify the event",
+            "Read conditions",
+            "Choose a justified rule",
+            "Calculate",
+            "Interpret"
+          ],
           "thinking": [],
-          "traps": []
+          "traps": [
+            "Do not confuse disjoint events with independent events.",
+            "Read whether a question asks for payout or net value."
+          ]
         },
         {
           "id": "d772-s3-l3-4",
@@ -2555,12 +2739,23 @@ const D772_SECTION_THREE={
           "short": "Complements",
           "parentLessonId": "d772-s3-l3",
           "unitType": "lesson",
-          "outlineOnly": true,
-          "keywords": [],
-          "goal": "Course outline reserved for your upcoming material.",
-          "visual": [],
+          "outlineOnly": false,
+          "keywords": [
+            "complements"
+          ],
+          "goal": "NOT is the complement.",
+          "visual": [
+            "Identify the event",
+            "Read conditions",
+            "Choose a justified rule",
+            "Calculate",
+            "Interpret"
+          ],
           "thinking": [],
-          "traps": []
+          "traps": [
+            "Do not confuse disjoint events with independent events.",
+            "Read whether a question asks for payout or net value."
+          ]
         },
         {
           "id": "d772-s3-l3-summary",
@@ -2569,12 +2764,23 @@ const D772_SECTION_THREE={
           "short": "Lesson 3: Summary",
           "parentLessonId": "d772-s3-l3",
           "unitType": "summary",
-          "outlineOnly": true,
-          "keywords": [],
-          "goal": "Course outline reserved for your upcoming material.",
-          "visual": [],
+          "outlineOnly": false,
+          "keywords": [
+            "lesson 3: summary"
+          ],
+          "goal": "Lesson 3: Summary: Unions, Intersections, and Complements",
+          "visual": [
+            "Identify the event",
+            "Read conditions",
+            "Choose a justified rule",
+            "Calculate",
+            "Interpret"
+          ],
           "thinking": [],
-          "traps": []
+          "traps": [
+            "Do not confuse disjoint events with independent events.",
+            "Read whether a question asks for payout or net value."
+          ]
         },
         {
           "id": "d772-s3-l3-quiz",
@@ -2583,12 +2789,23 @@ const D772_SECTION_THREE={
           "short": "Lesson 3: Quiz",
           "parentLessonId": "d772-s3-l3",
           "unitType": "quiz",
-          "outlineOnly": true,
-          "keywords": [],
-          "goal": "Course outline reserved for your upcoming material.",
-          "visual": [],
+          "outlineOnly": false,
+          "keywords": [
+            "lesson 3: quiz"
+          ],
+          "goal": "Lesson 3: Quiz: Unions, Intersections, and Complements",
+          "visual": [
+            "Identify the event",
+            "Read conditions",
+            "Choose a justified rule",
+            "Calculate",
+            "Interpret"
+          ],
           "thinking": [],
-          "traps": []
+          "traps": [
+            "Do not confuse disjoint events with independent events.",
+            "Read whether a question asks for payout or net value."
+          ]
         }
       ]
     },
@@ -2597,12 +2814,23 @@ const D772_SECTION_THREE={
       "number": 4,
       "title": "Expected Value",
       "short": "Expected Value",
-      "outlineOnly": true,
-      "keywords": [],
-      "goal": "Course outline reserved for your upcoming material.",
-      "visual": [],
+      "outlineOnly": false,
+      "keywords": [
+        "expected value"
+      ],
+      "goal": "Expected Value.",
+      "visual": [
+        "Identify the event",
+        "Read conditions",
+        "Choose a justified rule",
+        "Calculate",
+        "Interpret"
+      ],
       "thinking": [],
-      "traps": [],
+      "traps": [
+        "Do not confuse disjoint events with independent events.",
+        "Read whether a question asks for payout or net value."
+      ],
       "sublessons": [
         {
           "id": "d772-s3-l4-1",
@@ -2611,12 +2839,23 @@ const D772_SECTION_THREE={
           "short": "Calculating Expected Value",
           "parentLessonId": "d772-s3-l4",
           "unitType": "lesson",
-          "outlineOnly": true,
-          "keywords": [],
-          "goal": "Course outline reserved for your upcoming material.",
-          "visual": [],
+          "outlineOnly": false,
+          "keywords": [
+            "calculating expected value"
+          ],
+          "goal": "Calculate a probability-weighted mean.",
+          "visual": [
+            "Identify the event",
+            "Read conditions",
+            "Choose a justified rule",
+            "Calculate",
+            "Interpret"
+          ],
           "thinking": [],
-          "traps": []
+          "traps": [
+            "Do not confuse disjoint events with independent events.",
+            "Read whether a question asks for payout or net value."
+          ]
         },
         {
           "id": "d772-s3-l4-2",
@@ -2625,12 +2864,23 @@ const D772_SECTION_THREE={
           "short": "Applications of Expected Value",
           "parentLessonId": "d772-s3-l4",
           "unitType": "lesson",
-          "outlineOnly": true,
-          "keywords": [],
-          "goal": "Course outline reserved for your upcoming material.",
-          "visual": [],
+          "outlineOnly": false,
+          "keywords": [
+            "applications of expected value"
+          ],
+          "goal": "Interpret long-run value and risk.",
+          "visual": [
+            "Identify the event",
+            "Read conditions",
+            "Choose a justified rule",
+            "Calculate",
+            "Interpret"
+          ],
           "thinking": [],
-          "traps": []
+          "traps": [
+            "Do not confuse disjoint events with independent events.",
+            "Read whether a question asks for payout or net value."
+          ]
         },
         {
           "id": "d772-s3-l4-summary",
@@ -2639,12 +2889,23 @@ const D772_SECTION_THREE={
           "short": "Lesson 4: Summary",
           "parentLessonId": "d772-s3-l4",
           "unitType": "summary",
-          "outlineOnly": true,
-          "keywords": [],
-          "goal": "Course outline reserved for your upcoming material.",
-          "visual": [],
+          "outlineOnly": false,
+          "keywords": [
+            "lesson 4: summary"
+          ],
+          "goal": "Lesson 4: Summary: Expected Value",
+          "visual": [
+            "Identify the event",
+            "Read conditions",
+            "Choose a justified rule",
+            "Calculate",
+            "Interpret"
+          ],
           "thinking": [],
-          "traps": []
+          "traps": [
+            "Do not confuse disjoint events with independent events.",
+            "Read whether a question asks for payout or net value."
+          ]
         },
         {
           "id": "d772-s3-l4-quiz",
@@ -2653,12 +2914,23 @@ const D772_SECTION_THREE={
           "short": "Lesson 4: Quiz",
           "parentLessonId": "d772-s3-l4",
           "unitType": "quiz",
-          "outlineOnly": true,
-          "keywords": [],
-          "goal": "Course outline reserved for your upcoming material.",
-          "visual": [],
+          "outlineOnly": false,
+          "keywords": [
+            "lesson 4: quiz"
+          ],
+          "goal": "Lesson 4: Quiz: Expected Value",
+          "visual": [
+            "Identify the event",
+            "Read conditions",
+            "Choose a justified rule",
+            "Calculate",
+            "Interpret"
+          ],
           "thinking": [],
-          "traps": []
+          "traps": [
+            "Do not confuse disjoint events with independent events.",
+            "Read whether a question asks for payout or net value."
+          ]
         }
       ]
     },
@@ -2668,15 +2940,27 @@ const D772_SECTION_THREE={
       "title": "Section 3: Summary and Test",
       "short": "Section 3 Review",
       "review": true,
-      "outlineOnly": true,
-      "keywords": [],
-      "goal": "Section summary and test reserved for your upcoming material.",
-      "visual": [],
+      "outlineOnly": false,
+      "keywords": [
+        "section 3: summary and test"
+      ],
+      "goal": "Combine probability types, event relationships, set operations, and expected value.",
+      "visual": [
+        "Identify the event",
+        "Read conditions",
+        "Choose a justified rule",
+        "Calculate",
+        "Interpret"
+      ],
       "thinking": [],
-      "traps": []
+      "traps": [
+        "Do not confuse disjoint events with independent events.",
+        "Read whether a question asks for payout or net value."
+      ]
     }
   ]
 };
+const D772_SECTION_THREE_CONTENT={"d772-s3-l1-1": {"sourceLabel": "CORROBORATED PROBABILITY STUDY NOTES", "overview": "Read probability notation.", "objectives": ["Read probability notation", "Explain the denominator, relationship, or net value before calculating."], "teach": [{"title": "Read probability notation", "text": "An outcome is one result. The sample space S lists all possible results; an event A is a set of results. P(A) is between 0 and 1. A probability of 0.25 means 25%, not 25 successes guaranteed in every 100 trials."}], "memory": ["Read the event and conditions before choosing a rule."], "anchorChart": {"title": "Read probability notation", "rule": "An outcome is one result.", "columns": [["Cue", "Interpretation"], ["Count", "Define the sample space or conditioning group."], ["Rule", "Justify the rule; do not multiply or add automatically."]]}, "weDo": {"prompt": "For one fair die, S={1,2,3,4,5,6}. Event A={2,4,6} means an even result.", "steps": ["List all six outcomes.", "Identify the three outcomes in A.", "Write P(A)=3/6=0.5."]}, "practice": [{"id": "d772-s3-l1-1-practice-1", "prompt": "What is the sample space for one toss of a coin?", "options": ["{heads, tails}", "{heads}", "0.5", "The number of tosses"], "answer": 0, "rationale": "The sample space includes every possible outcome.", "learningPathLessonId": "d772-s3-l1-1", "topicId": "d772-s3-l1-1"}, {"id": "d772-s3-l1-1-practice-2", "prompt": "A probability is 0.35. What percentage is equivalent?", "options": ["3.5%", "35%", "350%", "0.35%"], "answer": 1, "rationale": "Multiply a probability by 100 to express it as a percentage.", "learningPathLessonId": "d772-s3-l1-1", "topicId": "d772-s3-l1-1"}, {"id": "d772-s3-l1-1-practice-3", "prompt": "Which value cannot be a probability?", "options": ["0", "0.45", "1", "1.2"], "answer": 3, "rationale": "Probabilities cannot exceed 1 or fall below 0.", "learningPathLessonId": "d772-s3-l1-1", "topicId": "d772-s3-l1-1"}], "references": [{"source": "OpenStax Introductory Statistics 2e", "url": "https://openstax.org/books/introductory-statistics-2e/pages/3-1-terminology"}, {"source": "OpenStax Introductory Statistics 2e", "url": "https://openstax.org/books/introductory-statistics-2e/pages/3-2-independent-and-mutually-exclusive-events"}, {"source": "OpenStax Introductory Statistics 2e", "url": "https://openstax.org/books/introductory-statistics-2e/pages/3-3-two-basic-rules-of-probability"}, {"source": "OpenStax Introductory Statistics 2e", "url": "https://openstax.org/books/introductory-statistics-2e/pages/4-2-mean-or-expected-value-and-standard-deviation"}], "vocab": [["Outcome", "One result of a chance process."], ["Sample space", "The set of all possible outcomes."], ["Event", "A set of outcomes from the sample space."], ["Probability", "A measure of likelihood from 0 to 1."]]}, "d772-s3-l1-2": {"sourceLabel": "CORROBORATED PROBABILITY STUDY NOTES", "overview": "Use equally likely outcomes.", "objectives": ["Use equally likely outcomes", "Explain the denominator, relationship, or net value before calculating."], "teach": [{"title": "Use equally likely outcomes", "text": "For equally likely outcomes, P(A)=favorable outcomes / total outcomes. Count the same kind of outcome in numerator and denominator. This counting rule needs equally likely outcomes; a biased spinner needs its actual sector probabilities."}], "memory": ["Read the event and conditions before choosing a rule."], "anchorChart": {"title": "Use equally likely outcomes", "rule": "For equally likely outcomes, P(A)=favorable outcomes / total outcomes.", "columns": [["Cue", "Interpretation"], ["Count", "Define the sample space or conditioning group."], ["Rule", "Justify the rule; do not multiply or add automatically."]]}, "weDo": {"prompt": "A fair eight-sector spinner has three red sectors.", "steps": ["Eight sectors are equally likely.", "Three satisfy red.", "P(red)=3/8=0.375=37.5%."]}, "practice": [{"id": "d772-s3-l1-2-practice-1", "prompt": "A fair die is rolled once. What is P(result greater than 4)?", "options": ["1/6", "1/3", "1/2", "2/3"], "answer": 1, "rationale": "The favorable outcomes are 5 and 6: 2/6=1/3.", "learningPathLessonId": "d772-s3-l1-2", "topicId": "d772-s3-l1-2"}, {"id": "d772-s3-l1-2-practice-2", "prompt": "A bag has 4 red and 6 green tokens. One token is selected uniformly. What is P(red)?", "options": ["4/6", "6/10", "4/10", "1/4"], "answer": 2, "rationale": "The total is 10, so 4 favorable tokens give 4/10.", "learningPathLessonId": "d772-s3-l1-2", "topicId": "d772-s3-l1-2"}, {"id": "d772-s3-l1-2-practice-3", "prompt": "When does favorable outcomes divided by total outcomes apply directly?", "options": ["Whenever two outcomes are named", "When outcomes are equally likely", "Only after 100 trials", "Only for independent events"], "answer": 1, "rationale": "Counting outcomes directly assumes equal probabilities.", "learningPathLessonId": "d772-s3-l1-2", "topicId": "d772-s3-l1-2"}], "references": [{"source": "OpenStax Introductory Statistics 2e", "url": "https://openstax.org/books/introductory-statistics-2e/pages/3-1-terminology"}, {"source": "OpenStax Introductory Statistics 2e", "url": "https://openstax.org/books/introductory-statistics-2e/pages/3-2-independent-and-mutually-exclusive-events"}, {"source": "OpenStax Introductory Statistics 2e", "url": "https://openstax.org/books/introductory-statistics-2e/pages/3-3-two-basic-rules-of-probability"}, {"source": "OpenStax Introductory Statistics 2e", "url": "https://openstax.org/books/introductory-statistics-2e/pages/4-2-mean-or-expected-value-and-standard-deviation"}], "vocab": [["Theoretical probability", "A probability calculated from an assumed model rather than observed counts."], ["Equally likely", "Outcomes having the same probability."]]}, "d772-s3-l1-3": {"sourceLabel": "CORROBORATED PROBABILITY STUDY NOTES", "overview": "Estimate from observations.", "objectives": ["Estimate from observations", "Explain the denominator, relationship, or net value before calculating."], "teach": [{"title": "Estimate from observations", "text": "Empirical probability is observed successes / trials. With many independent repetitions under the same conditions, relative frequency tends toward the underlying probability. More trials do not force an exact match or make a losing streak require a win next."}], "memory": ["Read the event and conditions before choosing a rule."], "anchorChart": {"title": "Estimate from observations", "rule": "Empirical probability is observed successes / trials.", "columns": [["Cue", "Interpretation"], ["Count", "Define the sample space or conditioning group."], ["Rule", "Justify the rule; do not multiply or add automatically."]]}, "weDo": {"prompt": "A machine produces 14 defective parts among 200 inspected parts.", "steps": ["Count 14 observed defects.", "Use all 200 inspections as the denominator.", "Estimated P(defect)=14/200=0.07."]}, "practice": [{"id": "d772-s3-l1-3-practice-1", "prompt": "A player succeeds in 18 of 60 attempts. What is the empirical probability of success?", "options": ["0.18", "0.30", "0.60", "3.33"], "answer": 1, "rationale": "18/60=0.30.", "learningPathLessonId": "d772-s3-l1-3", "topicId": "d772-s3-l1-3"}, {"id": "d772-s3-l1-3-practice-2", "prompt": "A fair coin has just landed tails five times. What is P(heads on the next independent toss)?", "options": ["1/6", "0", "1", "1/2"], "answer": 3, "rationale": "Earlier independent tosses do not change the next probability.", "learningPathLessonId": "d772-s3-l1-3", "topicId": "d772-s3-l1-3"}, {"id": "d772-s3-l1-3-practice-3", "prompt": "What does the law of large numbers suggest?", "options": ["Each short run must balance exactly", "Relative frequency tends toward the underlying probability as trials accumulate", "The next result corrects the last result", "A large number of trials makes events independent"], "answer": 1, "rationale": "It concerns long-run proportions, not compensation on the next trial.", "learningPathLessonId": "d772-s3-l1-3", "topicId": "d772-s3-l1-3"}], "references": [{"source": "OpenStax Introductory Statistics 2e", "url": "https://openstax.org/books/introductory-statistics-2e/pages/3-1-terminology"}, {"source": "OpenStax Introductory Statistics 2e", "url": "https://openstax.org/books/introductory-statistics-2e/pages/3-2-independent-and-mutually-exclusive-events"}, {"source": "OpenStax Introductory Statistics 2e", "url": "https://openstax.org/books/introductory-statistics-2e/pages/3-3-two-basic-rules-of-probability"}, {"source": "OpenStax Introductory Statistics 2e", "url": "https://openstax.org/books/introductory-statistics-2e/pages/4-2-mean-or-expected-value-and-standard-deviation"}], "vocab": [["Empirical probability", "Observed event occurrences divided by the number of trials."], ["Law of large numbers", "Under suitable repeated-trial conditions, observed proportions tend toward the underlying probability."]]}, "d772-s3-l2-1": {"sourceLabel": "CORROBORATED PROBABILITY STUDY NOTES", "overview": "Separate independent from dependent.", "objectives": ["Separate independent from dependent", "Explain the denominator, relationship, or net value before calculating."], "teach": [{"title": "Separate independent from dependent", "text": "Independent events do not change each other’s probability: P(B|A)=P(B). For independent events, P(A and B)=P(A)P(B). Drawing without replacement usually changes the next draw’s probability because the bag’s contents change."}], "memory": ["Read the event and conditions before choosing a rule."], "anchorChart": {"title": "Separate independent from dependent", "rule": "Independent events do not change each other’s probability: P(B|A)=P(B).", "columns": [["Cue", "Interpretation"], ["Count", "Define the sample space or conditioning group."], ["Rule", "Justify the rule; do not multiply or add automatically."]]}, "weDo": {"prompt": "A bag has 3 red and 2 blue tokens. Draw two without replacement.", "steps": ["P(first red)=3/5.", "After red is removed, 2 red remain among 4 tokens.", "P(two red)=(3/5)(2/4)=3/10."]}, "practice": [{"id": "d772-s3-l2-1-practice-1", "prompt": "Two fair dice are rolled independently. What is P(two sixes)?", "options": ["1/6", "1/12", "1/36", "1/3"], "answer": 2, "rationale": "Multiply 1/6 by 1/6.", "learningPathLessonId": "d772-s3-l2-1", "topicId": "d772-s3-l2-1"}, {"id": "d772-s3-l2-1-practice-2", "prompt": "A bag has 3 red and 2 blue tokens. After a red token is removed, what is P(red on the next draw)?", "options": ["3/5", "2/4", "2/5", "3/4"], "answer": 1, "rationale": "There are now 2 red tokens among 4 total tokens.", "learningPathLessonId": "d772-s3-l2-1", "topicId": "d772-s3-l2-1"}, {"id": "d772-s3-l2-1-practice-3", "prompt": "Which statement defines independence?", "options": ["The events cannot occur together", "Knowing one event occurred does not change the probability of the other", "The probabilities must be equal", "Both events must be rare"], "answer": 1, "rationale": "Independence is about unchanged conditional probability.", "learningPathLessonId": "d772-s3-l2-1", "topicId": "d772-s3-l2-1"}], "references": [{"source": "OpenStax Introductory Statistics 2e", "url": "https://openstax.org/books/introductory-statistics-2e/pages/3-1-terminology"}, {"source": "OpenStax Introductory Statistics 2e", "url": "https://openstax.org/books/introductory-statistics-2e/pages/3-2-independent-and-mutually-exclusive-events"}, {"source": "OpenStax Introductory Statistics 2e", "url": "https://openstax.org/books/introductory-statistics-2e/pages/3-3-two-basic-rules-of-probability"}, {"source": "OpenStax Introductory Statistics 2e", "url": "https://openstax.org/books/introductory-statistics-2e/pages/4-2-mean-or-expected-value-and-standard-deviation"}], "vocab": [["Independent events", "Events for which learning that one occurred does not change the probability of the other."], ["Dependent events", "Events whose probabilities change when another event is known to occur."], ["Conditional probability", "The probability of an event within the group specified by a condition."]]}, "d772-s3-l2-2": {"sourceLabel": "CORROBORATED PROBABILITY STUDY NOTES", "overview": "Disjoint does not mean independent.", "objectives": ["Disjoint does not mean independent", "Explain the denominator, relationship, or net value before calculating."], "teach": [{"title": "Disjoint does not mean independent", "text": "Disjoint, or mutually exclusive, events cannot occur together: P(A and B)=0. If both have positive probability, they are not independent: learning that one occurred rules out the other."}], "memory": ["Read the event and conditions before choosing a rule."], "anchorChart": {"title": "Disjoint does not mean independent", "rule": "Disjoint, or mutually exclusive, events cannot occur together: P(A and B)=0.", "columns": [["Cue", "Interpretation"], ["Count", "Define the sample space or conditioning group."], ["Rule", "Justify the rule; do not multiply or add automatically."]]}, "weDo": {"prompt": "For one die roll, A={1,3,5} and B={2,4,6}.", "steps": ["No outcome is in both sets.", "P(A and B)=0.", "If A happened, B is impossible on that roll."]}, "practice": [{"id": "d772-s3-l2-2-practice-1", "prompt": "On one die roll, are getting a 1 and getting a 6 disjoint?", "options": ["Yes, one roll cannot have both results", "No, both are possible in the sample space", "Only if the die is biased", "Only across two rolls"], "answer": 0, "rationale": "A single outcome cannot simultaneously be 1 and 6.", "learningPathLessonId": "d772-s3-l2-2", "topicId": "d772-s3-l2-2"}, {"id": "d772-s3-l2-2-practice-2", "prompt": "Two disjoint events each have positive probability. Are they independent?", "options": ["Always", "Yes if their probabilities are equal", "No", "Only when their sum is 1"], "answer": 2, "rationale": "Occurrence of one changes the probability of the other to zero.", "learningPathLessonId": "d772-s3-l2-2", "topicId": "d772-s3-l2-2"}, {"id": "d772-s3-l2-2-practice-3", "prompt": "A and B are disjoint with P(A)=0.2 and P(B)=0.3. What is P(A and B)?", "options": ["0.06", "0.5", "0.1", "0"], "answer": 3, "rationale": "Disjoint events have no overlap.", "learningPathLessonId": "d772-s3-l2-2", "topicId": "d772-s3-l2-2"}], "references": [{"source": "OpenStax Introductory Statistics 2e", "url": "https://openstax.org/books/introductory-statistics-2e/pages/3-1-terminology"}, {"source": "OpenStax Introductory Statistics 2e", "url": "https://openstax.org/books/introductory-statistics-2e/pages/3-2-independent-and-mutually-exclusive-events"}, {"source": "OpenStax Introductory Statistics 2e", "url": "https://openstax.org/books/introductory-statistics-2e/pages/3-3-two-basic-rules-of-probability"}, {"source": "OpenStax Introductory Statistics 2e", "url": "https://openstax.org/books/introductory-statistics-2e/pages/4-2-mean-or-expected-value-and-standard-deviation"}], "vocab": [["Disjoint events", "Events that cannot happen together; also called mutually exclusive."]]}, "d772-s3-l3-1": {"sourceLabel": "CORROBORATED PROBABILITY STUDY NOTES", "overview": "Read all four Venn regions.", "objectives": ["Read all four Venn regions", "Explain the denominator, relationship, or net value before calculating."], "teach": [{"title": "Read all four Venn regions", "text": "A Venn diagram separates A only, both, B only, and neither. The rectangle represents the full sample space. Include the overlap when counting all of A or all of B; count it once for the union."}], "memory": ["Read the event and conditions before choosing a rule."], "anchorChart": {"title": "Read all four Venn regions", "rule": "A Venn diagram separates A only, both, B only, and neither.", "columns": [["Cue", "Interpretation"], ["Count", "Define the sample space or conditioning group."], ["Rule", "Justify the rule; do not multiply or add automatically."]]}, "weDo": {"prompt": "Among 40 students, 18 take math, 12 take science, and 5 take both.", "steps": ["Math only=18−5=13. Science only=12−5=7.", "Either subject=13+5+7=25.", "Neither=40−25=15."]}, "practice": [{"id": "d772-s3-l3-1-practice-1", "prompt": "18 students take math and 5 of them also take science. How many take math only?", "options": ["23", "18", "13", "5"], "answer": 2, "rationale": "Remove the overlap: 18−5=13.", "learningPathLessonId": "d772-s3-l3-1", "topicId": "d772-s3-l3-1"}, {"id": "d772-s3-l3-1-practice-2", "prompt": "A Venn diagram has A-only=9, both=4, B-only=7, neither=10. How many are in A?", "options": ["9", "13", "20", "30"], "answer": 1, "rationale": "All of A includes A-only and the overlap: 9+4=13.", "learningPathLessonId": "d772-s3-l3-1", "topicId": "d772-s3-l3-1"}, {"id": "d772-s3-l3-1-practice-3", "prompt": "In that same diagram, how many are outside both circles?", "options": ["10", "20", "4", "7"], "answer": 0, "rationale": "Neither is the region outside both circles.", "learningPathLessonId": "d772-s3-l3-1", "topicId": "d772-s3-l3-1"}], "references": [{"source": "OpenStax Introductory Statistics 2e", "url": "https://openstax.org/books/introductory-statistics-2e/pages/3-1-terminology"}, {"source": "OpenStax Introductory Statistics 2e", "url": "https://openstax.org/books/introductory-statistics-2e/pages/3-2-independent-and-mutually-exclusive-events"}, {"source": "OpenStax Introductory Statistics 2e", "url": "https://openstax.org/books/introductory-statistics-2e/pages/3-3-two-basic-rules-of-probability"}, {"source": "OpenStax Introductory Statistics 2e", "url": "https://openstax.org/books/introductory-statistics-2e/pages/4-2-mean-or-expected-value-and-standard-deviation"}], "visuals": [{"src": "lesson-visuals/probability-venn.svg", "title": "40 students: 13 math only, 5 both, 7 science only, 15 neither", "alt": "Two overlapping circles inside a rectangle: math only 13, both 5, science only 7, neither 15. Total 40."}], "visualLabel": "ILLUSTRATIVE VENN DIAGRAM • ORIGINAL PRACTICE DATA", "vocab": [["Venn diagram", "A diagram showing event membership and overlap within a sample space."]]}, "d772-s3-l3-2": {"sourceLabel": "CORROBORATED PROBABILITY STUDY NOTES", "overview": "OR is the inclusive union.", "objectives": ["OR is the inclusive union", "Explain the denominator, relationship, or net value before calculating."], "teach": [{"title": "OR is the inclusive union", "text": "A union B, written A ∪ B, includes A, B, or both. P(A or B)=P(A)+P(B)−P(A and B). Subtract the overlap once because adding both probabilities counts it twice."}], "memory": ["Read the event and conditions before choosing a rule."], "anchorChart": {"title": "OR is the inclusive union", "rule": "A union B, written A ∪ B, includes A, B, or both.", "columns": [["Cue", "Interpretation"], ["Count", "Define the sample space or conditioning group."], ["Rule", "Justify the rule; do not multiply or add automatically."]]}, "weDo": {"prompt": "P(A)=0.45, P(B)=0.30, and P(both)=0.10.", "steps": ["Add 0.45+0.30=0.75.", "Subtract the repeated overlap 0.10.", "P(A or B)=0.65."]}, "practice": [{"id": "d772-s3-l3-2-practice-1", "prompt": "P(A)=0.4, P(B)=0.3, and P(both)=0.1. What is P(A or B)?", "options": ["0.12", "0.8", "0.6", "0.7"], "answer": 2, "rationale": "0.4+0.3−0.1=0.6.", "learningPathLessonId": "d772-s3-l3-2", "topicId": "d772-s3-l3-2"}, {"id": "d772-s3-l3-2-practice-2", "prompt": "In probability, inclusive OR means:", "options": ["A or B, but never both", "A, B, or both", "Only the overlap", "Neither event"], "answer": 1, "rationale": "Union includes outcomes in either event, including the overlap.", "learningPathLessonId": "d772-s3-l3-2", "topicId": "d772-s3-l3-2"}, {"id": "d772-s3-l3-2-practice-3", "prompt": "Disjoint events have probabilities 0.25 and 0.35. What is the probability of either?", "options": ["0.0875", "0.10", "0.60", "0.35"], "answer": 2, "rationale": "No overlap is subtracted, so 0.25+0.35=0.60.", "learningPathLessonId": "d772-s3-l3-2", "topicId": "d772-s3-l3-2"}], "references": [{"source": "OpenStax Introductory Statistics 2e", "url": "https://openstax.org/books/introductory-statistics-2e/pages/3-1-terminology"}, {"source": "OpenStax Introductory Statistics 2e", "url": "https://openstax.org/books/introductory-statistics-2e/pages/3-2-independent-and-mutually-exclusive-events"}, {"source": "OpenStax Introductory Statistics 2e", "url": "https://openstax.org/books/introductory-statistics-2e/pages/3-3-two-basic-rules-of-probability"}, {"source": "OpenStax Introductory Statistics 2e", "url": "https://openstax.org/books/introductory-statistics-2e/pages/4-2-mean-or-expected-value-and-standard-deviation"}], "visuals": [{"src": "lesson-visuals/probability-venn.svg", "title": "40 students: 13 math only, 5 both, 7 science only, 15 neither", "alt": "Two overlapping circles inside a rectangle: math only 13, both 5, science only 7, neither 15. Total 40."}], "visualLabel": "ILLUSTRATIVE VENN DIAGRAM • ORIGINAL PRACTICE DATA", "vocab": [["Union", "Outcomes in A, B, or both; the inclusive OR event."]]}, "d772-s3-l3-3": {"sourceLabel": "CORROBORATED PROBABILITY STUDY NOTES", "overview": "AND is the intersection.", "objectives": ["AND is the intersection", "Explain the denominator, relationship, or net value before calculating."], "teach": [{"title": "AND is the intersection", "text": "A intersection B, written A ∩ B, contains the overlap. In general P(A and B)=P(A)P(B|A). Use P(A)P(B) only when independence is justified; without replacement usually requires the changed second probability."}], "memory": ["Read the event and conditions before choosing a rule."], "anchorChart": {"title": "AND is the intersection", "rule": "A intersection B, written A ∩ B, contains the overlap.", "columns": [["Cue", "Interpretation"], ["Count", "Define the sample space or conditioning group."], ["Rule", "Justify the rule; do not multiply or add automatically."]]}, "weDo": {"prompt": "Of 40 students, 5 take both math and science.", "steps": ["The overlap contains 5 students.", "The sample space contains 40 students.", "P(math and science)=5/40=0.125."]}, "practice": [{"id": "d772-s3-l3-3-practice-1", "prompt": "A fair coin and a fair die are independent. What is P(heads and a 6)?", "options": ["1/2", "1/6", "1/12", "1/8"], "answer": 2, "rationale": "Multiply 1/2 by 1/6.", "learningPathLessonId": "d772-s3-l3-3", "topicId": "d772-s3-l3-3"}, {"id": "d772-s3-l3-3-practice-2", "prompt": "A bag has 2 gold and 3 silver tokens. Draw two without replacement. What is P(two gold)?", "options": ["4/25", "1/10", "2/5", "1/5"], "answer": 1, "rationale": "(2/5)(1/4)=2/20=1/10.", "learningPathLessonId": "d772-s3-l3-3", "topicId": "d772-s3-l3-3"}, {"id": "d772-s3-l3-3-practice-3", "prompt": "Which Venn region represents A ∩ B?", "options": ["Both circles including their outer regions", "Outside both circles", "The overlap only", "A only"], "answer": 2, "rationale": "Intersection means membership in both events.", "learningPathLessonId": "d772-s3-l3-3", "topicId": "d772-s3-l3-3"}], "references": [{"source": "OpenStax Introductory Statistics 2e", "url": "https://openstax.org/books/introductory-statistics-2e/pages/3-1-terminology"}, {"source": "OpenStax Introductory Statistics 2e", "url": "https://openstax.org/books/introductory-statistics-2e/pages/3-2-independent-and-mutually-exclusive-events"}, {"source": "OpenStax Introductory Statistics 2e", "url": "https://openstax.org/books/introductory-statistics-2e/pages/3-3-two-basic-rules-of-probability"}, {"source": "OpenStax Introductory Statistics 2e", "url": "https://openstax.org/books/introductory-statistics-2e/pages/4-2-mean-or-expected-value-and-standard-deviation"}], "visuals": [{"src": "lesson-visuals/probability-venn.svg", "title": "40 students: 13 math only, 5 both, 7 science only, 15 neither", "alt": "Two overlapping circles inside a rectangle: math only 13, both 5, science only 7, neither 15. Total 40."}], "visualLabel": "ILLUSTRATIVE VENN DIAGRAM • ORIGINAL PRACTICE DATA", "vocab": [["Intersection", "Outcomes belonging to both events; the AND event."]]}, "d772-s3-l3-4": {"sourceLabel": "CORROBORATED PROBABILITY STUDY NOTES", "overview": "NOT is the complement.", "objectives": ["NOT is the complement", "Explain the denominator, relationship, or net value before calculating."], "teach": [{"title": "NOT is the complement", "text": "The complement Aᶜ contains every outcome not in A. P(not A)=1−P(A). For at least one success, the complementary event is no successes. Multiply failure probabilities only if the trials are independent."}], "memory": ["Read the event and conditions before choosing a rule."], "anchorChart": {"title": "NOT is the complement", "rule": "The complement Aᶜ contains every outcome not in A.", "columns": [["Cue", "Interpretation"], ["Count", "Define the sample space or conditioning group."], ["Rule", "Justify the rule; do not multiply or add automatically."]]}, "weDo": {"prompt": "A shipment arrives on time with probability 0.82.", "steps": ["On time and not on time cover all outcomes.", "Subtract the on-time probability from 1.", "P(not on time)=1−0.82=0.18."]}, "practice": [{"id": "d772-s3-l3-4-practice-1", "prompt": "P(A)=0.72. What is P(not A)?", "options": ["0.72", "0.28", "1.72", "0.18"], "answer": 1, "rationale": "1−0.72=0.28.", "learningPathLessonId": "d772-s3-l3-4", "topicId": "d772-s3-l3-4"}, {"id": "d772-s3-l3-4-practice-2", "prompt": "Two independent trials each succeed with probability 0.2. What is P(at least one success)?", "options": ["0.04", "0.40", "0.36", "0.80"], "answer": 2, "rationale": "P(no successes)=0.8×0.8=0.64; complement is 0.36.", "learningPathLessonId": "d772-s3-l3-4", "topicId": "d772-s3-l3-4"}, {"id": "d772-s3-l3-4-practice-3", "prompt": "What is the complement of at least one head in three coin tosses?", "options": ["Three heads", "Exactly one head", "At least one tail", "No heads"], "answer": 3, "rationale": "The only way to fail to get at least one head is to get no heads.", "learningPathLessonId": "d772-s3-l3-4", "topicId": "d772-s3-l3-4"}], "references": [{"source": "OpenStax Introductory Statistics 2e", "url": "https://openstax.org/books/introductory-statistics-2e/pages/3-1-terminology"}, {"source": "OpenStax Introductory Statistics 2e", "url": "https://openstax.org/books/introductory-statistics-2e/pages/3-2-independent-and-mutually-exclusive-events"}, {"source": "OpenStax Introductory Statistics 2e", "url": "https://openstax.org/books/introductory-statistics-2e/pages/3-3-two-basic-rules-of-probability"}, {"source": "OpenStax Introductory Statistics 2e", "url": "https://openstax.org/books/introductory-statistics-2e/pages/4-2-mean-or-expected-value-and-standard-deviation"}], "visuals": [{"src": "lesson-visuals/probability-venn.svg", "title": "40 students: 13 math only, 5 both, 7 science only, 15 neither", "alt": "Two overlapping circles inside a rectangle: math only 13, both 5, science only 7, neither 15. Total 40."}], "visualLabel": "ILLUSTRATIVE VENN DIAGRAM • ORIGINAL PRACTICE DATA", "vocab": [["Complement", "All outcomes in the sample space that are not in the event."]]}, "d772-s3-l4-1": {"sourceLabel": "CORROBORATED PROBABILITY STUDY NOTES", "overview": "Calculate a probability-weighted mean.", "objectives": ["Calculate a probability-weighted mean", "Explain the denominator, relationship, or net value before calculating."], "teach": [{"title": "Calculate a probability-weighted mean", "text": "Expected value is E(X)=Σ xP(x): multiply each outcome value by its probability, then add. A valid discrete distribution has nonnegative probabilities totaling 1. Do not use an unweighted average unless all outcomes are equally likely."}], "memory": ["Read the event and conditions before choosing a rule."], "anchorChart": {"title": "Calculate a probability-weighted mean", "rule": "Expected value is E(X)=Σ xP(x): multiply each outcome value by its probability, then add.", "columns": [["Cue", "Interpretation"], ["Count", "Define the sample space or conditioning group."], ["Rule", "Justify the rule; do not multiply or add automatically."]]}, "weDo": {"prompt": "A game pays $20 with probability 0.10 and $0 otherwise. A ticket costs $3.", "steps": ["Use net values: $17 when winning and −$3 otherwise.", "Multiply: 17(0.10)=1.70 and −3(0.90)=−2.70.", "Expected net value=−$1 per play."]}, "practice": [{"id": "d772-s3-l4-1-practice-1", "prompt": "X is 0 with probability 0.75 and 8 with probability 0.25. What is E(X)?", "options": ["4", "6", "2", "8"], "answer": 2, "rationale": "0(0.75)+8(0.25)=2.", "learningPathLessonId": "d772-s3-l4-1", "topicId": "d772-s3-l4-1"}, {"id": "d772-s3-l4-1-practice-2", "prompt": "Which is a valid probability distribution?", "options": ["Probabilities −0.1 and 1.1", "Probabilities 0.4 and 0.4", "Probabilities 0.7 and 0.5", "Probabilities 0.3 and 0.7"], "answer": 3, "rationale": "Both probabilities are nonnegative and total 1.", "learningPathLessonId": "d772-s3-l4-1", "topicId": "d772-s3-l4-1"}, {"id": "d772-s3-l4-1-practice-3", "prompt": "A ticket costs $2 and pays $10 with probability 0.2, otherwise $0. What is the expected NET value?", "options": ["$0", "$2", "$8", "−$2"], "answer": 0, "rationale": "Expected payout is $2; subtract the $2 cost to get $0.", "learningPathLessonId": "d772-s3-l4-1", "topicId": "d772-s3-l4-1"}], "references": [{"source": "OpenStax Introductory Statistics 2e", "url": "https://openstax.org/books/introductory-statistics-2e/pages/3-1-terminology"}, {"source": "OpenStax Introductory Statistics 2e", "url": "https://openstax.org/books/introductory-statistics-2e/pages/3-2-independent-and-mutually-exclusive-events"}, {"source": "OpenStax Introductory Statistics 2e", "url": "https://openstax.org/books/introductory-statistics-2e/pages/3-3-two-basic-rules-of-probability"}, {"source": "OpenStax Introductory Statistics 2e", "url": "https://openstax.org/books/introductory-statistics-2e/pages/4-2-mean-or-expected-value-and-standard-deviation"}], "vocab": [["Expected value", "A probability-weighted average of numerical outcomes."], ["Discrete probability distribution", "Possible discrete values with nonnegative probabilities that total 1."]]}, "d772-s3-l4-2": {"sourceLabel": "CORROBORATED PROBABILITY STUDY NOTES", "overview": "Interpret long-run value and risk.", "objectives": ["Interpret long-run value and risk", "Explain the denominator, relationship, or net value before calculating."], "teach": [{"title": "Interpret long-run value and risk", "text": "Expected value is a long-run average, not a promised result on the next trial; it may not be a possible single outcome. For a decision, compare net values consistently and consider variability, affordability, and model assumptions."}], "memory": ["Read the event and conditions before choosing a rule."], "anchorChart": {"title": "Interpret long-run value and risk", "rule": "Expected value is a long-run average, not a promised result on the next trial; it may not be a possible single outcome.", "columns": [["Cue", "Interpretation"], ["Count", "Define the sample space or conditioning group."], ["Rule", "Justify the rule; do not multiply or add automatically."]]}, "weDo": {"prompt": "A service charges $18. It pays a $250 repair bill with probability 0.04.", "steps": ["Expected repair payout=250(0.04)=$10.", "Expected provider margin before other expenses=$18−$10=$8.", "That average does not guarantee an $8 margin on one customer."]}, "practice": [{"id": "d772-s3-l4-2-practice-1", "prompt": "A game has expected net value −$0.50. What does this mean?", "options": ["Every play loses exactly $0.50", "The long-run average loss is $0.50 per play", "A win becomes due after losses", "Winning is impossible"], "answer": 1, "rationale": "Individual plays vary; the expectation describes the average over repetitions.", "learningPathLessonId": "d772-s3-l4-2", "topicId": "d772-s3-l4-2"}, {"id": "d772-s3-l4-2-practice-2", "prompt": "One fair die has expected value 3.5. Is 3.5 possible on a single roll?", "options": ["Yes, on a fair die", "No; an expected value need not be an individual outcome", "Only after an odd number of rolls", "The expected value must be wrong"], "answer": 1, "rationale": "The mean can fall between possible outcomes.", "learningPathLessonId": "d772-s3-l4-2", "topicId": "d772-s3-l4-2"}, {"id": "d772-s3-l4-2-practice-3", "prompt": "Plan A has expected net value $4; Plan B has $2. Which statement is supported?", "options": ["A guarantees more money on the next trial", "A has a higher long-run average under the stated models", "B cannot ever outperform A", "The plans have identical risk"], "answer": 1, "rationale": "A higher expectation alone does not determine one-trial results or variability.", "learningPathLessonId": "d772-s3-l4-2", "topicId": "d772-s3-l4-2"}], "references": [{"source": "OpenStax Introductory Statistics 2e", "url": "https://openstax.org/books/introductory-statistics-2e/pages/3-1-terminology"}, {"source": "OpenStax Introductory Statistics 2e", "url": "https://openstax.org/books/introductory-statistics-2e/pages/3-2-independent-and-mutually-exclusive-events"}, {"source": "OpenStax Introductory Statistics 2e", "url": "https://openstax.org/books/introductory-statistics-2e/pages/3-3-two-basic-rules-of-probability"}, {"source": "OpenStax Introductory Statistics 2e", "url": "https://openstax.org/books/introductory-statistics-2e/pages/4-2-mean-or-expected-value-and-standard-deviation"}], "vocab": [["Net value", "Payout or benefit after subtracting the cost."], ["Variability", "How much individual outcomes differ; expectation alone does not describe this risk."]]}, "d772-s3-l1": {"sourceLabel": "CORROBORATED PROBABILITY STUDY NOTES", "overview": "Theoretical and Empirical Probability.", "objectives": ["Read probability notation.", "Use equally likely outcomes.", "Estimate from observations."], "teach": [{"title": "Read probability notation", "text": "An outcome is one result. The sample space S lists all possible results; an event A is a set of results. P(A) is between 0 and 1. A probability of 0.25 means 25%, not 25 successes guaranteed in every 100 trials."}, {"title": "Use equally likely outcomes", "text": "For equally likely outcomes, P(A)=favorable outcomes / total outcomes. Count the same kind of outcome in numerator and denominator. This counting rule needs equally likely outcomes; a biased spinner needs its actual sector probabilities."}, {"title": "Estimate from observations", "text": "Empirical probability is observed successes / trials. With many independent repetitions under the same conditions, relative frequency tends toward the underlying probability. More trials do not force an exact match or make a losing streak require a win next."}], "memory": ["Explain the event, then choose the rule."], "weDo": {"prompt": "For one fair die, S={1,2,3,4,5,6}. Event A={2,4,6} means an even result.", "steps": ["List all six outcomes.", "Identify the three outcomes in A.", "Write P(A)=3/6=0.5."]}, "practice": [{"id": "d772-s3-l1-1-practice-1", "prompt": "What is the sample space for one toss of a coin?", "options": ["{heads, tails}", "{heads}", "0.5", "The number of tosses"], "answer": 0, "rationale": "The sample space includes every possible outcome.", "learningPathLessonId": "d772-s3-l1-1", "topicId": "d772-s3-l1-1"}, {"id": "d772-s3-l1-1-practice-2", "prompt": "A probability is 0.35. What percentage is equivalent?", "options": ["3.5%", "35%", "350%", "0.35%"], "answer": 1, "rationale": "Multiply a probability by 100 to express it as a percentage.", "learningPathLessonId": "d772-s3-l1-1", "topicId": "d772-s3-l1-1"}, {"id": "d772-s3-l1-1-practice-3", "prompt": "Which value cannot be a probability?", "options": ["0", "0.45", "1", "1.2"], "answer": 3, "rationale": "Probabilities cannot exceed 1 or fall below 0.", "learningPathLessonId": "d772-s3-l1-1", "topicId": "d772-s3-l1-1"}, {"id": "d772-s3-l1-2-practice-1", "prompt": "A fair die is rolled once. What is P(result greater than 4)?", "options": ["1/6", "1/3", "1/2", "2/3"], "answer": 1, "rationale": "The favorable outcomes are 5 and 6: 2/6=1/3.", "learningPathLessonId": "d772-s3-l1-2", "topicId": "d772-s3-l1-2"}, {"id": "d772-s3-l1-2-practice-2", "prompt": "A bag has 4 red and 6 green tokens. One token is selected uniformly. What is P(red)?", "options": ["4/6", "6/10", "4/10", "1/4"], "answer": 2, "rationale": "The total is 10, so 4 favorable tokens give 4/10.", "learningPathLessonId": "d772-s3-l1-2", "topicId": "d772-s3-l1-2"}, {"id": "d772-s3-l1-2-practice-3", "prompt": "When does favorable outcomes divided by total outcomes apply directly?", "options": ["Whenever two outcomes are named", "When outcomes are equally likely", "Only after 100 trials", "Only for independent events"], "answer": 1, "rationale": "Counting outcomes directly assumes equal probabilities.", "learningPathLessonId": "d772-s3-l1-2", "topicId": "d772-s3-l1-2"}, {"id": "d772-s3-l1-3-practice-1", "prompt": "A player succeeds in 18 of 60 attempts. What is the empirical probability of success?", "options": ["0.18", "0.30", "0.60", "3.33"], "answer": 1, "rationale": "18/60=0.30.", "learningPathLessonId": "d772-s3-l1-3", "topicId": "d772-s3-l1-3"}, {"id": "d772-s3-l1-3-practice-2", "prompt": "A fair coin has just landed tails five times. What is P(heads on the next independent toss)?", "options": ["1/6", "0", "1", "1/2"], "answer": 3, "rationale": "Earlier independent tosses do not change the next probability.", "learningPathLessonId": "d772-s3-l1-3", "topicId": "d772-s3-l1-3"}, {"id": "d772-s3-l1-3-practice-3", "prompt": "What does the law of large numbers suggest?", "options": ["Each short run must balance exactly", "Relative frequency tends toward the underlying probability as trials accumulate", "The next result corrects the last result", "A large number of trials makes events independent"], "answer": 1, "rationale": "It concerns long-run proportions, not compensation on the next trial.", "learningPathLessonId": "d772-s3-l1-3", "topicId": "d772-s3-l1-3"}], "references": [{"source": "OpenStax Introductory Statistics 2e", "url": "https://openstax.org/books/introductory-statistics-2e/pages/3-1-terminology"}, {"source": "OpenStax Introductory Statistics 2e", "url": "https://openstax.org/books/introductory-statistics-2e/pages/3-2-independent-and-mutually-exclusive-events"}, {"source": "OpenStax Introductory Statistics 2e", "url": "https://openstax.org/books/introductory-statistics-2e/pages/3-3-two-basic-rules-of-probability"}, {"source": "OpenStax Introductory Statistics 2e", "url": "https://openstax.org/books/introductory-statistics-2e/pages/4-2-mean-or-expected-value-and-standard-deviation"}], "vocab": [["Outcome", "One result of a chance process."], ["Sample space", "The set of all possible outcomes."], ["Event", "A set of outcomes from the sample space."], ["Probability", "A measure of likelihood from 0 to 1."], ["Theoretical probability", "A probability calculated from an assumed model rather than observed counts."], ["Equally likely", "Outcomes having the same probability."], ["Empirical probability", "Observed event occurrences divided by the number of trials."], ["Law of large numbers", "Under suitable repeated-trial conditions, observed proportions tend toward the underlying probability."]]}, "d772-s3-l1-summary": {"sourceLabel": "CORROBORATED PROBABILITY STUDY NOTES", "overview": "Lesson 1: Summary: Theoretical and Empirical Probability", "objectives": ["Read probability notation.", "Use equally likely outcomes.", "Estimate from observations."], "teach": [{"title": "Read probability notation", "text": "An outcome is one result. The sample space S lists all possible results; an event A is a set of results. P(A) is between 0 and 1. A probability of 0.25 means 25%, not 25 successes guaranteed in every 100 trials."}, {"title": "Use equally likely outcomes", "text": "For equally likely outcomes, P(A)=favorable outcomes / total outcomes. Count the same kind of outcome in numerator and denominator. This counting rule needs equally likely outcomes; a biased spinner needs its actual sector probabilities."}, {"title": "Estimate from observations", "text": "Empirical probability is observed successes / trials. With many independent repetitions under the same conditions, relative frequency tends toward the underlying probability. More trials do not force an exact match or make a losing streak require a win next."}], "memory": ["Explain the event, then choose the rule."], "weDo": {"prompt": "For one fair die, S={1,2,3,4,5,6}. Event A={2,4,6} means an even result.", "steps": ["List all six outcomes.", "Identify the three outcomes in A.", "Write P(A)=3/6=0.5."]}, "practice": [{"id": "d772-s3-l1-1-practice-1", "prompt": "What is the sample space for one toss of a coin?", "options": ["{heads, tails}", "{heads}", "0.5", "The number of tosses"], "answer": 0, "rationale": "The sample space includes every possible outcome.", "learningPathLessonId": "d772-s3-l1-1", "topicId": "d772-s3-l1-1"}, {"id": "d772-s3-l1-1-practice-2", "prompt": "A probability is 0.35. What percentage is equivalent?", "options": ["3.5%", "35%", "350%", "0.35%"], "answer": 1, "rationale": "Multiply a probability by 100 to express it as a percentage.", "learningPathLessonId": "d772-s3-l1-1", "topicId": "d772-s3-l1-1"}, {"id": "d772-s3-l1-1-practice-3", "prompt": "Which value cannot be a probability?", "options": ["0", "0.45", "1", "1.2"], "answer": 3, "rationale": "Probabilities cannot exceed 1 or fall below 0.", "learningPathLessonId": "d772-s3-l1-1", "topicId": "d772-s3-l1-1"}, {"id": "d772-s3-l1-2-practice-1", "prompt": "A fair die is rolled once. What is P(result greater than 4)?", "options": ["1/6", "1/3", "1/2", "2/3"], "answer": 1, "rationale": "The favorable outcomes are 5 and 6: 2/6=1/3.", "learningPathLessonId": "d772-s3-l1-2", "topicId": "d772-s3-l1-2"}, {"id": "d772-s3-l1-2-practice-2", "prompt": "A bag has 4 red and 6 green tokens. One token is selected uniformly. What is P(red)?", "options": ["4/6", "6/10", "4/10", "1/4"], "answer": 2, "rationale": "The total is 10, so 4 favorable tokens give 4/10.", "learningPathLessonId": "d772-s3-l1-2", "topicId": "d772-s3-l1-2"}, {"id": "d772-s3-l1-2-practice-3", "prompt": "When does favorable outcomes divided by total outcomes apply directly?", "options": ["Whenever two outcomes are named", "When outcomes are equally likely", "Only after 100 trials", "Only for independent events"], "answer": 1, "rationale": "Counting outcomes directly assumes equal probabilities.", "learningPathLessonId": "d772-s3-l1-2", "topicId": "d772-s3-l1-2"}], "references": [{"source": "OpenStax Introductory Statistics 2e", "url": "https://openstax.org/books/introductory-statistics-2e/pages/3-1-terminology"}, {"source": "OpenStax Introductory Statistics 2e", "url": "https://openstax.org/books/introductory-statistics-2e/pages/3-2-independent-and-mutually-exclusive-events"}, {"source": "OpenStax Introductory Statistics 2e", "url": "https://openstax.org/books/introductory-statistics-2e/pages/3-3-two-basic-rules-of-probability"}, {"source": "OpenStax Introductory Statistics 2e", "url": "https://openstax.org/books/introductory-statistics-2e/pages/4-2-mean-or-expected-value-and-standard-deviation"}], "vocab": [["Outcome", "One result of a chance process."], ["Sample space", "The set of all possible outcomes."], ["Event", "A set of outcomes from the sample space."], ["Probability", "A measure of likelihood from 0 to 1."], ["Theoretical probability", "A probability calculated from an assumed model rather than observed counts."], ["Equally likely", "Outcomes having the same probability."], ["Empirical probability", "Observed event occurrences divided by the number of trials."], ["Law of large numbers", "Under suitable repeated-trial conditions, observed proportions tend toward the underlying probability."]]}, "d772-s3-l1-quiz": {"sourceLabel": "CORROBORATED PROBABILITY STUDY NOTES", "overview": "Lesson 1: Quiz: Theoretical and Empirical Probability", "objectives": ["Read probability notation.", "Use equally likely outcomes.", "Estimate from observations."], "teach": [{"title": "Read probability notation", "text": "An outcome is one result. The sample space S lists all possible results; an event A is a set of results. P(A) is between 0 and 1. A probability of 0.25 means 25%, not 25 successes guaranteed in every 100 trials."}, {"title": "Use equally likely outcomes", "text": "For equally likely outcomes, P(A)=favorable outcomes / total outcomes. Count the same kind of outcome in numerator and denominator. This counting rule needs equally likely outcomes; a biased spinner needs its actual sector probabilities."}, {"title": "Estimate from observations", "text": "Empirical probability is observed successes / trials. With many independent repetitions under the same conditions, relative frequency tends toward the underlying probability. More trials do not force an exact match or make a losing streak require a win next."}], "memory": ["Explain the event, then choose the rule."], "weDo": {"prompt": "For one fair die, S={1,2,3,4,5,6}. Event A={2,4,6} means an even result.", "steps": ["List all six outcomes.", "Identify the three outcomes in A.", "Write P(A)=3/6=0.5."]}, "practice": [{"id": "d772-s3-l1-1-practice-1", "prompt": "What is the sample space for one toss of a coin?", "options": ["{heads, tails}", "{heads}", "0.5", "The number of tosses"], "answer": 0, "rationale": "The sample space includes every possible outcome.", "learningPathLessonId": "d772-s3-l1-1", "topicId": "d772-s3-l1-1"}, {"id": "d772-s3-l1-1-practice-2", "prompt": "A probability is 0.35. What percentage is equivalent?", "options": ["3.5%", "35%", "350%", "0.35%"], "answer": 1, "rationale": "Multiply a probability by 100 to express it as a percentage.", "learningPathLessonId": "d772-s3-l1-1", "topicId": "d772-s3-l1-1"}, {"id": "d772-s3-l1-1-practice-3", "prompt": "Which value cannot be a probability?", "options": ["0", "0.45", "1", "1.2"], "answer": 3, "rationale": "Probabilities cannot exceed 1 or fall below 0.", "learningPathLessonId": "d772-s3-l1-1", "topicId": "d772-s3-l1-1"}, {"id": "d772-s3-l1-2-practice-1", "prompt": "A fair die is rolled once. What is P(result greater than 4)?", "options": ["1/6", "1/3", "1/2", "2/3"], "answer": 1, "rationale": "The favorable outcomes are 5 and 6: 2/6=1/3.", "learningPathLessonId": "d772-s3-l1-2", "topicId": "d772-s3-l1-2"}, {"id": "d772-s3-l1-2-practice-2", "prompt": "A bag has 4 red and 6 green tokens. One token is selected uniformly. What is P(red)?", "options": ["4/6", "6/10", "4/10", "1/4"], "answer": 2, "rationale": "The total is 10, so 4 favorable tokens give 4/10.", "learningPathLessonId": "d772-s3-l1-2", "topicId": "d772-s3-l1-2"}, {"id": "d772-s3-l1-2-practice-3", "prompt": "When does favorable outcomes divided by total outcomes apply directly?", "options": ["Whenever two outcomes are named", "When outcomes are equally likely", "Only after 100 trials", "Only for independent events"], "answer": 1, "rationale": "Counting outcomes directly assumes equal probabilities.", "learningPathLessonId": "d772-s3-l1-2", "topicId": "d772-s3-l1-2"}], "references": [{"source": "OpenStax Introductory Statistics 2e", "url": "https://openstax.org/books/introductory-statistics-2e/pages/3-1-terminology"}, {"source": "OpenStax Introductory Statistics 2e", "url": "https://openstax.org/books/introductory-statistics-2e/pages/3-2-independent-and-mutually-exclusive-events"}, {"source": "OpenStax Introductory Statistics 2e", "url": "https://openstax.org/books/introductory-statistics-2e/pages/3-3-two-basic-rules-of-probability"}, {"source": "OpenStax Introductory Statistics 2e", "url": "https://openstax.org/books/introductory-statistics-2e/pages/4-2-mean-or-expected-value-and-standard-deviation"}], "vocab": [["Outcome", "One result of a chance process."], ["Sample space", "The set of all possible outcomes."], ["Event", "A set of outcomes from the sample space."], ["Probability", "A measure of likelihood from 0 to 1."], ["Theoretical probability", "A probability calculated from an assumed model rather than observed counts."], ["Equally likely", "Outcomes having the same probability."], ["Empirical probability", "Observed event occurrences divided by the number of trials."], ["Law of large numbers", "Under suitable repeated-trial conditions, observed proportions tend toward the underlying probability."]]}, "d772-s3-l2": {"sourceLabel": "CORROBORATED PROBABILITY STUDY NOTES", "overview": "Independent, Dependent, and Disjoint Events.", "objectives": ["Separate independent from dependent.", "Disjoint does not mean independent."], "teach": [{"title": "Separate independent from dependent", "text": "Independent events do not change each other’s probability: P(B|A)=P(B). For independent events, P(A and B)=P(A)P(B). Drawing without replacement usually changes the next draw’s probability because the bag’s contents change."}, {"title": "Disjoint does not mean independent", "text": "Disjoint, or mutually exclusive, events cannot occur together: P(A and B)=0. If both have positive probability, they are not independent: learning that one occurred rules out the other."}], "memory": ["Explain the event, then choose the rule."], "weDo": {"prompt": "A bag has 3 red and 2 blue tokens. Draw two without replacement.", "steps": ["P(first red)=3/5.", "After red is removed, 2 red remain among 4 tokens.", "P(two red)=(3/5)(2/4)=3/10."]}, "practice": [{"id": "d772-s3-l2-1-practice-1", "prompt": "Two fair dice are rolled independently. What is P(two sixes)?", "options": ["1/6", "1/12", "1/36", "1/3"], "answer": 2, "rationale": "Multiply 1/6 by 1/6.", "learningPathLessonId": "d772-s3-l2-1", "topicId": "d772-s3-l2-1"}, {"id": "d772-s3-l2-1-practice-2", "prompt": "A bag has 3 red and 2 blue tokens. After a red token is removed, what is P(red on the next draw)?", "options": ["3/5", "2/4", "2/5", "3/4"], "answer": 1, "rationale": "There are now 2 red tokens among 4 total tokens.", "learningPathLessonId": "d772-s3-l2-1", "topicId": "d772-s3-l2-1"}, {"id": "d772-s3-l2-1-practice-3", "prompt": "Which statement defines independence?", "options": ["The events cannot occur together", "Knowing one event occurred does not change the probability of the other", "The probabilities must be equal", "Both events must be rare"], "answer": 1, "rationale": "Independence is about unchanged conditional probability.", "learningPathLessonId": "d772-s3-l2-1", "topicId": "d772-s3-l2-1"}, {"id": "d772-s3-l2-2-practice-1", "prompt": "On one die roll, are getting a 1 and getting a 6 disjoint?", "options": ["Yes, one roll cannot have both results", "No, both are possible in the sample space", "Only if the die is biased", "Only across two rolls"], "answer": 0, "rationale": "A single outcome cannot simultaneously be 1 and 6.", "learningPathLessonId": "d772-s3-l2-2", "topicId": "d772-s3-l2-2"}, {"id": "d772-s3-l2-2-practice-2", "prompt": "Two disjoint events each have positive probability. Are they independent?", "options": ["Always", "Yes if their probabilities are equal", "No", "Only when their sum is 1"], "answer": 2, "rationale": "Occurrence of one changes the probability of the other to zero.", "learningPathLessonId": "d772-s3-l2-2", "topicId": "d772-s3-l2-2"}, {"id": "d772-s3-l2-2-practice-3", "prompt": "A and B are disjoint with P(A)=0.2 and P(B)=0.3. What is P(A and B)?", "options": ["0.06", "0.5", "0.1", "0"], "answer": 3, "rationale": "Disjoint events have no overlap.", "learningPathLessonId": "d772-s3-l2-2", "topicId": "d772-s3-l2-2"}], "references": [{"source": "OpenStax Introductory Statistics 2e", "url": "https://openstax.org/books/introductory-statistics-2e/pages/3-1-terminology"}, {"source": "OpenStax Introductory Statistics 2e", "url": "https://openstax.org/books/introductory-statistics-2e/pages/3-2-independent-and-mutually-exclusive-events"}, {"source": "OpenStax Introductory Statistics 2e", "url": "https://openstax.org/books/introductory-statistics-2e/pages/3-3-two-basic-rules-of-probability"}, {"source": "OpenStax Introductory Statistics 2e", "url": "https://openstax.org/books/introductory-statistics-2e/pages/4-2-mean-or-expected-value-and-standard-deviation"}], "vocab": [["Independent events", "Events for which learning that one occurred does not change the probability of the other."], ["Dependent events", "Events whose probabilities change when another event is known to occur."], ["Conditional probability", "The probability of an event within the group specified by a condition."], ["Disjoint events", "Events that cannot happen together; also called mutually exclusive."]]}, "d772-s3-l2-summary": {"sourceLabel": "CORROBORATED PROBABILITY STUDY NOTES", "overview": "Lesson 2: Summary: Independent, Dependent, and Disjoint Events", "objectives": ["Separate independent from dependent.", "Disjoint does not mean independent."], "teach": [{"title": "Separate independent from dependent", "text": "Independent events do not change each other’s probability: P(B|A)=P(B). For independent events, P(A and B)=P(A)P(B). Drawing without replacement usually changes the next draw’s probability because the bag’s contents change."}, {"title": "Disjoint does not mean independent", "text": "Disjoint, or mutually exclusive, events cannot occur together: P(A and B)=0. If both have positive probability, they are not independent: learning that one occurred rules out the other."}], "memory": ["Explain the event, then choose the rule."], "weDo": {"prompt": "A bag has 3 red and 2 blue tokens. Draw two without replacement.", "steps": ["P(first red)=3/5.", "After red is removed, 2 red remain among 4 tokens.", "P(two red)=(3/5)(2/4)=3/10."]}, "practice": [{"id": "d772-s3-l2-1-practice-1", "prompt": "Two fair dice are rolled independently. What is P(two sixes)?", "options": ["1/6", "1/12", "1/36", "1/3"], "answer": 2, "rationale": "Multiply 1/6 by 1/6.", "learningPathLessonId": "d772-s3-l2-1", "topicId": "d772-s3-l2-1"}, {"id": "d772-s3-l2-1-practice-2", "prompt": "A bag has 3 red and 2 blue tokens. After a red token is removed, what is P(red on the next draw)?", "options": ["3/5", "2/4", "2/5", "3/4"], "answer": 1, "rationale": "There are now 2 red tokens among 4 total tokens.", "learningPathLessonId": "d772-s3-l2-1", "topicId": "d772-s3-l2-1"}, {"id": "d772-s3-l2-1-practice-3", "prompt": "Which statement defines independence?", "options": ["The events cannot occur together", "Knowing one event occurred does not change the probability of the other", "The probabilities must be equal", "Both events must be rare"], "answer": 1, "rationale": "Independence is about unchanged conditional probability.", "learningPathLessonId": "d772-s3-l2-1", "topicId": "d772-s3-l2-1"}, {"id": "d772-s3-l2-2-practice-1", "prompt": "On one die roll, are getting a 1 and getting a 6 disjoint?", "options": ["Yes, one roll cannot have both results", "No, both are possible in the sample space", "Only if the die is biased", "Only across two rolls"], "answer": 0, "rationale": "A single outcome cannot simultaneously be 1 and 6.", "learningPathLessonId": "d772-s3-l2-2", "topicId": "d772-s3-l2-2"}, {"id": "d772-s3-l2-2-practice-2", "prompt": "Two disjoint events each have positive probability. Are they independent?", "options": ["Always", "Yes if their probabilities are equal", "No", "Only when their sum is 1"], "answer": 2, "rationale": "Occurrence of one changes the probability of the other to zero.", "learningPathLessonId": "d772-s3-l2-2", "topicId": "d772-s3-l2-2"}, {"id": "d772-s3-l2-2-practice-3", "prompt": "A and B are disjoint with P(A)=0.2 and P(B)=0.3. What is P(A and B)?", "options": ["0.06", "0.5", "0.1", "0"], "answer": 3, "rationale": "Disjoint events have no overlap.", "learningPathLessonId": "d772-s3-l2-2", "topicId": "d772-s3-l2-2"}], "references": [{"source": "OpenStax Introductory Statistics 2e", "url": "https://openstax.org/books/introductory-statistics-2e/pages/3-1-terminology"}, {"source": "OpenStax Introductory Statistics 2e", "url": "https://openstax.org/books/introductory-statistics-2e/pages/3-2-independent-and-mutually-exclusive-events"}, {"source": "OpenStax Introductory Statistics 2e", "url": "https://openstax.org/books/introductory-statistics-2e/pages/3-3-two-basic-rules-of-probability"}, {"source": "OpenStax Introductory Statistics 2e", "url": "https://openstax.org/books/introductory-statistics-2e/pages/4-2-mean-or-expected-value-and-standard-deviation"}], "vocab": [["Independent events", "Events for which learning that one occurred does not change the probability of the other."], ["Dependent events", "Events whose probabilities change when another event is known to occur."], ["Conditional probability", "The probability of an event within the group specified by a condition."], ["Disjoint events", "Events that cannot happen together; also called mutually exclusive."]]}, "d772-s3-l2-quiz": {"sourceLabel": "CORROBORATED PROBABILITY STUDY NOTES", "overview": "Lesson 2: Quiz: Independent, Dependent, and Disjoint Events", "objectives": ["Separate independent from dependent.", "Disjoint does not mean independent."], "teach": [{"title": "Separate independent from dependent", "text": "Independent events do not change each other’s probability: P(B|A)=P(B). For independent events, P(A and B)=P(A)P(B). Drawing without replacement usually changes the next draw’s probability because the bag’s contents change."}, {"title": "Disjoint does not mean independent", "text": "Disjoint, or mutually exclusive, events cannot occur together: P(A and B)=0. If both have positive probability, they are not independent: learning that one occurred rules out the other."}], "memory": ["Explain the event, then choose the rule."], "weDo": {"prompt": "A bag has 3 red and 2 blue tokens. Draw two without replacement.", "steps": ["P(first red)=3/5.", "After red is removed, 2 red remain among 4 tokens.", "P(two red)=(3/5)(2/4)=3/10."]}, "practice": [{"id": "d772-s3-l2-1-practice-1", "prompt": "Two fair dice are rolled independently. What is P(two sixes)?", "options": ["1/6", "1/12", "1/36", "1/3"], "answer": 2, "rationale": "Multiply 1/6 by 1/6.", "learningPathLessonId": "d772-s3-l2-1", "topicId": "d772-s3-l2-1"}, {"id": "d772-s3-l2-1-practice-2", "prompt": "A bag has 3 red and 2 blue tokens. After a red token is removed, what is P(red on the next draw)?", "options": ["3/5", "2/4", "2/5", "3/4"], "answer": 1, "rationale": "There are now 2 red tokens among 4 total tokens.", "learningPathLessonId": "d772-s3-l2-1", "topicId": "d772-s3-l2-1"}, {"id": "d772-s3-l2-1-practice-3", "prompt": "Which statement defines independence?", "options": ["The events cannot occur together", "Knowing one event occurred does not change the probability of the other", "The probabilities must be equal", "Both events must be rare"], "answer": 1, "rationale": "Independence is about unchanged conditional probability.", "learningPathLessonId": "d772-s3-l2-1", "topicId": "d772-s3-l2-1"}, {"id": "d772-s3-l2-2-practice-1", "prompt": "On one die roll, are getting a 1 and getting a 6 disjoint?", "options": ["Yes, one roll cannot have both results", "No, both are possible in the sample space", "Only if the die is biased", "Only across two rolls"], "answer": 0, "rationale": "A single outcome cannot simultaneously be 1 and 6.", "learningPathLessonId": "d772-s3-l2-2", "topicId": "d772-s3-l2-2"}, {"id": "d772-s3-l2-2-practice-2", "prompt": "Two disjoint events each have positive probability. Are they independent?", "options": ["Always", "Yes if their probabilities are equal", "No", "Only when their sum is 1"], "answer": 2, "rationale": "Occurrence of one changes the probability of the other to zero.", "learningPathLessonId": "d772-s3-l2-2", "topicId": "d772-s3-l2-2"}, {"id": "d772-s3-l2-2-practice-3", "prompt": "A and B are disjoint with P(A)=0.2 and P(B)=0.3. What is P(A and B)?", "options": ["0.06", "0.5", "0.1", "0"], "answer": 3, "rationale": "Disjoint events have no overlap.", "learningPathLessonId": "d772-s3-l2-2", "topicId": "d772-s3-l2-2"}], "references": [{"source": "OpenStax Introductory Statistics 2e", "url": "https://openstax.org/books/introductory-statistics-2e/pages/3-1-terminology"}, {"source": "OpenStax Introductory Statistics 2e", "url": "https://openstax.org/books/introductory-statistics-2e/pages/3-2-independent-and-mutually-exclusive-events"}, {"source": "OpenStax Introductory Statistics 2e", "url": "https://openstax.org/books/introductory-statistics-2e/pages/3-3-two-basic-rules-of-probability"}, {"source": "OpenStax Introductory Statistics 2e", "url": "https://openstax.org/books/introductory-statistics-2e/pages/4-2-mean-or-expected-value-and-standard-deviation"}], "vocab": [["Independent events", "Events for which learning that one occurred does not change the probability of the other."], ["Dependent events", "Events whose probabilities change when another event is known to occur."], ["Conditional probability", "The probability of an event within the group specified by a condition."], ["Disjoint events", "Events that cannot happen together; also called mutually exclusive."]]}, "d772-s3-l3": {"sourceLabel": "CORROBORATED PROBABILITY STUDY NOTES", "overview": "Unions, Intersections, and Complements.", "objectives": ["Read all four Venn regions.", "OR is the inclusive union.", "AND is the intersection.", "NOT is the complement."], "teach": [{"title": "Read all four Venn regions", "text": "A Venn diagram separates A only, both, B only, and neither. The rectangle represents the full sample space. Include the overlap when counting all of A or all of B; count it once for the union."}, {"title": "OR is the inclusive union", "text": "A union B, written A ∪ B, includes A, B, or both. P(A or B)=P(A)+P(B)−P(A and B). Subtract the overlap once because adding both probabilities counts it twice."}, {"title": "AND is the intersection", "text": "A intersection B, written A ∩ B, contains the overlap. In general P(A and B)=P(A)P(B|A). Use P(A)P(B) only when independence is justified; without replacement usually requires the changed second probability."}, {"title": "NOT is the complement", "text": "The complement Aᶜ contains every outcome not in A. P(not A)=1−P(A). For at least one success, the complementary event is no successes. Multiply failure probabilities only if the trials are independent."}], "memory": ["Explain the event, then choose the rule."], "weDo": {"prompt": "Among 40 students, 18 take math, 12 take science, and 5 take both.", "steps": ["Math only=18−5=13. Science only=12−5=7.", "Either subject=13+5+7=25.", "Neither=40−25=15."]}, "practice": [{"id": "d772-s3-l3-1-practice-1", "prompt": "18 students take math and 5 of them also take science. How many take math only?", "options": ["23", "18", "13", "5"], "answer": 2, "rationale": "Remove the overlap: 18−5=13.", "learningPathLessonId": "d772-s3-l3-1", "topicId": "d772-s3-l3-1"}, {"id": "d772-s3-l3-1-practice-2", "prompt": "A Venn diagram has A-only=9, both=4, B-only=7, neither=10. How many are in A?", "options": ["9", "13", "20", "30"], "answer": 1, "rationale": "All of A includes A-only and the overlap: 9+4=13.", "learningPathLessonId": "d772-s3-l3-1", "topicId": "d772-s3-l3-1"}, {"id": "d772-s3-l3-1-practice-3", "prompt": "In that same diagram, how many are outside both circles?", "options": ["10", "20", "4", "7"], "answer": 0, "rationale": "Neither is the region outside both circles.", "learningPathLessonId": "d772-s3-l3-1", "topicId": "d772-s3-l3-1"}, {"id": "d772-s3-l3-2-practice-1", "prompt": "P(A)=0.4, P(B)=0.3, and P(both)=0.1. What is P(A or B)?", "options": ["0.12", "0.8", "0.6", "0.7"], "answer": 2, "rationale": "0.4+0.3−0.1=0.6.", "learningPathLessonId": "d772-s3-l3-2", "topicId": "d772-s3-l3-2"}, {"id": "d772-s3-l3-2-practice-2", "prompt": "In probability, inclusive OR means:", "options": ["A or B, but never both", "A, B, or both", "Only the overlap", "Neither event"], "answer": 1, "rationale": "Union includes outcomes in either event, including the overlap.", "learningPathLessonId": "d772-s3-l3-2", "topicId": "d772-s3-l3-2"}, {"id": "d772-s3-l3-2-practice-3", "prompt": "Disjoint events have probabilities 0.25 and 0.35. What is the probability of either?", "options": ["0.0875", "0.10", "0.60", "0.35"], "answer": 2, "rationale": "No overlap is subtracted, so 0.25+0.35=0.60.", "learningPathLessonId": "d772-s3-l3-2", "topicId": "d772-s3-l3-2"}, {"id": "d772-s3-l3-3-practice-1", "prompt": "A fair coin and a fair die are independent. What is P(heads and a 6)?", "options": ["1/2", "1/6", "1/12", "1/8"], "answer": 2, "rationale": "Multiply 1/2 by 1/6.", "learningPathLessonId": "d772-s3-l3-3", "topicId": "d772-s3-l3-3"}, {"id": "d772-s3-l3-3-practice-2", "prompt": "A bag has 2 gold and 3 silver tokens. Draw two without replacement. What is P(two gold)?", "options": ["4/25", "1/10", "2/5", "1/5"], "answer": 1, "rationale": "(2/5)(1/4)=2/20=1/10.", "learningPathLessonId": "d772-s3-l3-3", "topicId": "d772-s3-l3-3"}, {"id": "d772-s3-l3-3-practice-3", "prompt": "Which Venn region represents A ∩ B?", "options": ["Both circles including their outer regions", "Outside both circles", "The overlap only", "A only"], "answer": 2, "rationale": "Intersection means membership in both events.", "learningPathLessonId": "d772-s3-l3-3", "topicId": "d772-s3-l3-3"}, {"id": "d772-s3-l3-4-practice-1", "prompt": "P(A)=0.72. What is P(not A)?", "options": ["0.72", "0.28", "1.72", "0.18"], "answer": 1, "rationale": "1−0.72=0.28.", "learningPathLessonId": "d772-s3-l3-4", "topicId": "d772-s3-l3-4"}, {"id": "d772-s3-l3-4-practice-2", "prompt": "Two independent trials each succeed with probability 0.2. What is P(at least one success)?", "options": ["0.04", "0.40", "0.36", "0.80"], "answer": 2, "rationale": "P(no successes)=0.8×0.8=0.64; complement is 0.36.", "learningPathLessonId": "d772-s3-l3-4", "topicId": "d772-s3-l3-4"}, {"id": "d772-s3-l3-4-practice-3", "prompt": "What is the complement of at least one head in three coin tosses?", "options": ["Three heads", "Exactly one head", "At least one tail", "No heads"], "answer": 3, "rationale": "The only way to fail to get at least one head is to get no heads.", "learningPathLessonId": "d772-s3-l3-4", "topicId": "d772-s3-l3-4"}], "references": [{"source": "OpenStax Introductory Statistics 2e", "url": "https://openstax.org/books/introductory-statistics-2e/pages/3-1-terminology"}, {"source": "OpenStax Introductory Statistics 2e", "url": "https://openstax.org/books/introductory-statistics-2e/pages/3-2-independent-and-mutually-exclusive-events"}, {"source": "OpenStax Introductory Statistics 2e", "url": "https://openstax.org/books/introductory-statistics-2e/pages/3-3-two-basic-rules-of-probability"}, {"source": "OpenStax Introductory Statistics 2e", "url": "https://openstax.org/books/introductory-statistics-2e/pages/4-2-mean-or-expected-value-and-standard-deviation"}], "vocab": [["Venn diagram", "A diagram showing event membership and overlap within a sample space."], ["Union", "Outcomes in A, B, or both; the inclusive OR event."], ["Intersection", "Outcomes belonging to both events; the AND event."], ["Complement", "All outcomes in the sample space that are not in the event."]]}, "d772-s3-l3-summary": {"sourceLabel": "CORROBORATED PROBABILITY STUDY NOTES", "overview": "Lesson 3: Summary: Unions, Intersections, and Complements", "objectives": ["Read all four Venn regions.", "OR is the inclusive union.", "AND is the intersection.", "NOT is the complement."], "teach": [{"title": "Read all four Venn regions", "text": "A Venn diagram separates A only, both, B only, and neither. The rectangle represents the full sample space. Include the overlap when counting all of A or all of B; count it once for the union."}, {"title": "OR is the inclusive union", "text": "A union B, written A ∪ B, includes A, B, or both. P(A or B)=P(A)+P(B)−P(A and B). Subtract the overlap once because adding both probabilities counts it twice."}, {"title": "AND is the intersection", "text": "A intersection B, written A ∩ B, contains the overlap. In general P(A and B)=P(A)P(B|A). Use P(A)P(B) only when independence is justified; without replacement usually requires the changed second probability."}, {"title": "NOT is the complement", "text": "The complement Aᶜ contains every outcome not in A. P(not A)=1−P(A). For at least one success, the complementary event is no successes. Multiply failure probabilities only if the trials are independent."}], "memory": ["Explain the event, then choose the rule."], "weDo": {"prompt": "Among 40 students, 18 take math, 12 take science, and 5 take both.", "steps": ["Math only=18−5=13. Science only=12−5=7.", "Either subject=13+5+7=25.", "Neither=40−25=15."]}, "practice": [{"id": "d772-s3-l3-1-practice-1", "prompt": "18 students take math and 5 of them also take science. How many take math only?", "options": ["23", "18", "13", "5"], "answer": 2, "rationale": "Remove the overlap: 18−5=13.", "learningPathLessonId": "d772-s3-l3-1", "topicId": "d772-s3-l3-1"}, {"id": "d772-s3-l3-1-practice-2", "prompt": "A Venn diagram has A-only=9, both=4, B-only=7, neither=10. How many are in A?", "options": ["9", "13", "20", "30"], "answer": 1, "rationale": "All of A includes A-only and the overlap: 9+4=13.", "learningPathLessonId": "d772-s3-l3-1", "topicId": "d772-s3-l3-1"}, {"id": "d772-s3-l3-1-practice-3", "prompt": "In that same diagram, how many are outside both circles?", "options": ["10", "20", "4", "7"], "answer": 0, "rationale": "Neither is the region outside both circles.", "learningPathLessonId": "d772-s3-l3-1", "topicId": "d772-s3-l3-1"}, {"id": "d772-s3-l3-2-practice-1", "prompt": "P(A)=0.4, P(B)=0.3, and P(both)=0.1. What is P(A or B)?", "options": ["0.12", "0.8", "0.6", "0.7"], "answer": 2, "rationale": "0.4+0.3−0.1=0.6.", "learningPathLessonId": "d772-s3-l3-2", "topicId": "d772-s3-l3-2"}, {"id": "d772-s3-l3-2-practice-2", "prompt": "In probability, inclusive OR means:", "options": ["A or B, but never both", "A, B, or both", "Only the overlap", "Neither event"], "answer": 1, "rationale": "Union includes outcomes in either event, including the overlap.", "learningPathLessonId": "d772-s3-l3-2", "topicId": "d772-s3-l3-2"}, {"id": "d772-s3-l3-2-practice-3", "prompt": "Disjoint events have probabilities 0.25 and 0.35. What is the probability of either?", "options": ["0.0875", "0.10", "0.60", "0.35"], "answer": 2, "rationale": "No overlap is subtracted, so 0.25+0.35=0.60.", "learningPathLessonId": "d772-s3-l3-2", "topicId": "d772-s3-l3-2"}], "references": [{"source": "OpenStax Introductory Statistics 2e", "url": "https://openstax.org/books/introductory-statistics-2e/pages/3-1-terminology"}, {"source": "OpenStax Introductory Statistics 2e", "url": "https://openstax.org/books/introductory-statistics-2e/pages/3-2-independent-and-mutually-exclusive-events"}, {"source": "OpenStax Introductory Statistics 2e", "url": "https://openstax.org/books/introductory-statistics-2e/pages/3-3-two-basic-rules-of-probability"}, {"source": "OpenStax Introductory Statistics 2e", "url": "https://openstax.org/books/introductory-statistics-2e/pages/4-2-mean-or-expected-value-and-standard-deviation"}], "vocab": [["Venn diagram", "A diagram showing event membership and overlap within a sample space."], ["Union", "Outcomes in A, B, or both; the inclusive OR event."], ["Intersection", "Outcomes belonging to both events; the AND event."], ["Complement", "All outcomes in the sample space that are not in the event."]]}, "d772-s3-l3-quiz": {"sourceLabel": "CORROBORATED PROBABILITY STUDY NOTES", "overview": "Lesson 3: Quiz: Unions, Intersections, and Complements", "objectives": ["Read all four Venn regions.", "OR is the inclusive union.", "AND is the intersection.", "NOT is the complement."], "teach": [{"title": "Read all four Venn regions", "text": "A Venn diagram separates A only, both, B only, and neither. The rectangle represents the full sample space. Include the overlap when counting all of A or all of B; count it once for the union."}, {"title": "OR is the inclusive union", "text": "A union B, written A ∪ B, includes A, B, or both. P(A or B)=P(A)+P(B)−P(A and B). Subtract the overlap once because adding both probabilities counts it twice."}, {"title": "AND is the intersection", "text": "A intersection B, written A ∩ B, contains the overlap. In general P(A and B)=P(A)P(B|A). Use P(A)P(B) only when independence is justified; without replacement usually requires the changed second probability."}, {"title": "NOT is the complement", "text": "The complement Aᶜ contains every outcome not in A. P(not A)=1−P(A). For at least one success, the complementary event is no successes. Multiply failure probabilities only if the trials are independent."}], "memory": ["Explain the event, then choose the rule."], "weDo": {"prompt": "Among 40 students, 18 take math, 12 take science, and 5 take both.", "steps": ["Math only=18−5=13. Science only=12−5=7.", "Either subject=13+5+7=25.", "Neither=40−25=15."]}, "practice": [{"id": "d772-s3-l3-1-practice-1", "prompt": "18 students take math and 5 of them also take science. How many take math only?", "options": ["23", "18", "13", "5"], "answer": 2, "rationale": "Remove the overlap: 18−5=13.", "learningPathLessonId": "d772-s3-l3-1", "topicId": "d772-s3-l3-1"}, {"id": "d772-s3-l3-1-practice-2", "prompt": "A Venn diagram has A-only=9, both=4, B-only=7, neither=10. How many are in A?", "options": ["9", "13", "20", "30"], "answer": 1, "rationale": "All of A includes A-only and the overlap: 9+4=13.", "learningPathLessonId": "d772-s3-l3-1", "topicId": "d772-s3-l3-1"}, {"id": "d772-s3-l3-1-practice-3", "prompt": "In that same diagram, how many are outside both circles?", "options": ["10", "20", "4", "7"], "answer": 0, "rationale": "Neither is the region outside both circles.", "learningPathLessonId": "d772-s3-l3-1", "topicId": "d772-s3-l3-1"}, {"id": "d772-s3-l3-2-practice-1", "prompt": "P(A)=0.4, P(B)=0.3, and P(both)=0.1. What is P(A or B)?", "options": ["0.12", "0.8", "0.6", "0.7"], "answer": 2, "rationale": "0.4+0.3−0.1=0.6.", "learningPathLessonId": "d772-s3-l3-2", "topicId": "d772-s3-l3-2"}, {"id": "d772-s3-l3-2-practice-2", "prompt": "In probability, inclusive OR means:", "options": ["A or B, but never both", "A, B, or both", "Only the overlap", "Neither event"], "answer": 1, "rationale": "Union includes outcomes in either event, including the overlap.", "learningPathLessonId": "d772-s3-l3-2", "topicId": "d772-s3-l3-2"}, {"id": "d772-s3-l3-2-practice-3", "prompt": "Disjoint events have probabilities 0.25 and 0.35. What is the probability of either?", "options": ["0.0875", "0.10", "0.60", "0.35"], "answer": 2, "rationale": "No overlap is subtracted, so 0.25+0.35=0.60.", "learningPathLessonId": "d772-s3-l3-2", "topicId": "d772-s3-l3-2"}], "references": [{"source": "OpenStax Introductory Statistics 2e", "url": "https://openstax.org/books/introductory-statistics-2e/pages/3-1-terminology"}, {"source": "OpenStax Introductory Statistics 2e", "url": "https://openstax.org/books/introductory-statistics-2e/pages/3-2-independent-and-mutually-exclusive-events"}, {"source": "OpenStax Introductory Statistics 2e", "url": "https://openstax.org/books/introductory-statistics-2e/pages/3-3-two-basic-rules-of-probability"}, {"source": "OpenStax Introductory Statistics 2e", "url": "https://openstax.org/books/introductory-statistics-2e/pages/4-2-mean-or-expected-value-and-standard-deviation"}], "vocab": [["Venn diagram", "A diagram showing event membership and overlap within a sample space."], ["Union", "Outcomes in A, B, or both; the inclusive OR event."], ["Intersection", "Outcomes belonging to both events; the AND event."], ["Complement", "All outcomes in the sample space that are not in the event."]]}, "d772-s3-l4": {"sourceLabel": "CORROBORATED PROBABILITY STUDY NOTES", "overview": "Expected Value.", "objectives": ["Calculate a probability-weighted mean.", "Interpret long-run value and risk."], "teach": [{"title": "Calculate a probability-weighted mean", "text": "Expected value is E(X)=Σ xP(x): multiply each outcome value by its probability, then add. A valid discrete distribution has nonnegative probabilities totaling 1. Do not use an unweighted average unless all outcomes are equally likely."}, {"title": "Interpret long-run value and risk", "text": "Expected value is a long-run average, not a promised result on the next trial; it may not be a possible single outcome. For a decision, compare net values consistently and consider variability, affordability, and model assumptions."}], "memory": ["Explain the event, then choose the rule."], "weDo": {"prompt": "A game pays $20 with probability 0.10 and $0 otherwise. A ticket costs $3.", "steps": ["Use net values: $17 when winning and −$3 otherwise.", "Multiply: 17(0.10)=1.70 and −3(0.90)=−2.70.", "Expected net value=−$1 per play."]}, "practice": [{"id": "d772-s3-l4-1-practice-1", "prompt": "X is 0 with probability 0.75 and 8 with probability 0.25. What is E(X)?", "options": ["4", "6", "2", "8"], "answer": 2, "rationale": "0(0.75)+8(0.25)=2.", "learningPathLessonId": "d772-s3-l4-1", "topicId": "d772-s3-l4-1"}, {"id": "d772-s3-l4-1-practice-2", "prompt": "Which is a valid probability distribution?", "options": ["Probabilities −0.1 and 1.1", "Probabilities 0.4 and 0.4", "Probabilities 0.7 and 0.5", "Probabilities 0.3 and 0.7"], "answer": 3, "rationale": "Both probabilities are nonnegative and total 1.", "learningPathLessonId": "d772-s3-l4-1", "topicId": "d772-s3-l4-1"}, {"id": "d772-s3-l4-1-practice-3", "prompt": "A ticket costs $2 and pays $10 with probability 0.2, otherwise $0. What is the expected NET value?", "options": ["$0", "$2", "$8", "−$2"], "answer": 0, "rationale": "Expected payout is $2; subtract the $2 cost to get $0.", "learningPathLessonId": "d772-s3-l4-1", "topicId": "d772-s3-l4-1"}, {"id": "d772-s3-l4-2-practice-1", "prompt": "A game has expected net value −$0.50. What does this mean?", "options": ["Every play loses exactly $0.50", "The long-run average loss is $0.50 per play", "A win becomes due after losses", "Winning is impossible"], "answer": 1, "rationale": "Individual plays vary; the expectation describes the average over repetitions.", "learningPathLessonId": "d772-s3-l4-2", "topicId": "d772-s3-l4-2"}, {"id": "d772-s3-l4-2-practice-2", "prompt": "One fair die has expected value 3.5. Is 3.5 possible on a single roll?", "options": ["Yes, on a fair die", "No; an expected value need not be an individual outcome", "Only after an odd number of rolls", "The expected value must be wrong"], "answer": 1, "rationale": "The mean can fall between possible outcomes.", "learningPathLessonId": "d772-s3-l4-2", "topicId": "d772-s3-l4-2"}, {"id": "d772-s3-l4-2-practice-3", "prompt": "Plan A has expected net value $4; Plan B has $2. Which statement is supported?", "options": ["A guarantees more money on the next trial", "A has a higher long-run average under the stated models", "B cannot ever outperform A", "The plans have identical risk"], "answer": 1, "rationale": "A higher expectation alone does not determine one-trial results or variability.", "learningPathLessonId": "d772-s3-l4-2", "topicId": "d772-s3-l4-2"}], "references": [{"source": "OpenStax Introductory Statistics 2e", "url": "https://openstax.org/books/introductory-statistics-2e/pages/3-1-terminology"}, {"source": "OpenStax Introductory Statistics 2e", "url": "https://openstax.org/books/introductory-statistics-2e/pages/3-2-independent-and-mutually-exclusive-events"}, {"source": "OpenStax Introductory Statistics 2e", "url": "https://openstax.org/books/introductory-statistics-2e/pages/3-3-two-basic-rules-of-probability"}, {"source": "OpenStax Introductory Statistics 2e", "url": "https://openstax.org/books/introductory-statistics-2e/pages/4-2-mean-or-expected-value-and-standard-deviation"}], "vocab": [["Expected value", "A probability-weighted average of numerical outcomes."], ["Discrete probability distribution", "Possible discrete values with nonnegative probabilities that total 1."], ["Net value", "Payout or benefit after subtracting the cost."], ["Variability", "How much individual outcomes differ; expectation alone does not describe this risk."]]}, "d772-s3-l4-summary": {"sourceLabel": "CORROBORATED PROBABILITY STUDY NOTES", "overview": "Lesson 4: Summary: Expected Value", "objectives": ["Calculate a probability-weighted mean.", "Interpret long-run value and risk."], "teach": [{"title": "Calculate a probability-weighted mean", "text": "Expected value is E(X)=Σ xP(x): multiply each outcome value by its probability, then add. A valid discrete distribution has nonnegative probabilities totaling 1. Do not use an unweighted average unless all outcomes are equally likely."}, {"title": "Interpret long-run value and risk", "text": "Expected value is a long-run average, not a promised result on the next trial; it may not be a possible single outcome. For a decision, compare net values consistently and consider variability, affordability, and model assumptions."}], "memory": ["Explain the event, then choose the rule."], "weDo": {"prompt": "A game pays $20 with probability 0.10 and $0 otherwise. A ticket costs $3.", "steps": ["Use net values: $17 when winning and −$3 otherwise.", "Multiply: 17(0.10)=1.70 and −3(0.90)=−2.70.", "Expected net value=−$1 per play."]}, "practice": [{"id": "d772-s3-l4-1-practice-1", "prompt": "X is 0 with probability 0.75 and 8 with probability 0.25. What is E(X)?", "options": ["4", "6", "2", "8"], "answer": 2, "rationale": "0(0.75)+8(0.25)=2.", "learningPathLessonId": "d772-s3-l4-1", "topicId": "d772-s3-l4-1"}, {"id": "d772-s3-l4-1-practice-2", "prompt": "Which is a valid probability distribution?", "options": ["Probabilities −0.1 and 1.1", "Probabilities 0.4 and 0.4", "Probabilities 0.7 and 0.5", "Probabilities 0.3 and 0.7"], "answer": 3, "rationale": "Both probabilities are nonnegative and total 1.", "learningPathLessonId": "d772-s3-l4-1", "topicId": "d772-s3-l4-1"}, {"id": "d772-s3-l4-1-practice-3", "prompt": "A ticket costs $2 and pays $10 with probability 0.2, otherwise $0. What is the expected NET value?", "options": ["$0", "$2", "$8", "−$2"], "answer": 0, "rationale": "Expected payout is $2; subtract the $2 cost to get $0.", "learningPathLessonId": "d772-s3-l4-1", "topicId": "d772-s3-l4-1"}, {"id": "d772-s3-l4-2-practice-1", "prompt": "A game has expected net value −$0.50. What does this mean?", "options": ["Every play loses exactly $0.50", "The long-run average loss is $0.50 per play", "A win becomes due after losses", "Winning is impossible"], "answer": 1, "rationale": "Individual plays vary; the expectation describes the average over repetitions.", "learningPathLessonId": "d772-s3-l4-2", "topicId": "d772-s3-l4-2"}, {"id": "d772-s3-l4-2-practice-2", "prompt": "One fair die has expected value 3.5. Is 3.5 possible on a single roll?", "options": ["Yes, on a fair die", "No; an expected value need not be an individual outcome", "Only after an odd number of rolls", "The expected value must be wrong"], "answer": 1, "rationale": "The mean can fall between possible outcomes.", "learningPathLessonId": "d772-s3-l4-2", "topicId": "d772-s3-l4-2"}, {"id": "d772-s3-l4-2-practice-3", "prompt": "Plan A has expected net value $4; Plan B has $2. Which statement is supported?", "options": ["A guarantees more money on the next trial", "A has a higher long-run average under the stated models", "B cannot ever outperform A", "The plans have identical risk"], "answer": 1, "rationale": "A higher expectation alone does not determine one-trial results or variability.", "learningPathLessonId": "d772-s3-l4-2", "topicId": "d772-s3-l4-2"}], "references": [{"source": "OpenStax Introductory Statistics 2e", "url": "https://openstax.org/books/introductory-statistics-2e/pages/3-1-terminology"}, {"source": "OpenStax Introductory Statistics 2e", "url": "https://openstax.org/books/introductory-statistics-2e/pages/3-2-independent-and-mutually-exclusive-events"}, {"source": "OpenStax Introductory Statistics 2e", "url": "https://openstax.org/books/introductory-statistics-2e/pages/3-3-two-basic-rules-of-probability"}, {"source": "OpenStax Introductory Statistics 2e", "url": "https://openstax.org/books/introductory-statistics-2e/pages/4-2-mean-or-expected-value-and-standard-deviation"}], "vocab": [["Expected value", "A probability-weighted average of numerical outcomes."], ["Discrete probability distribution", "Possible discrete values with nonnegative probabilities that total 1."], ["Net value", "Payout or benefit after subtracting the cost."], ["Variability", "How much individual outcomes differ; expectation alone does not describe this risk."]]}, "d772-s3-l4-quiz": {"sourceLabel": "CORROBORATED PROBABILITY STUDY NOTES", "overview": "Lesson 4: Quiz: Expected Value", "objectives": ["Calculate a probability-weighted mean.", "Interpret long-run value and risk."], "teach": [{"title": "Calculate a probability-weighted mean", "text": "Expected value is E(X)=Σ xP(x): multiply each outcome value by its probability, then add. A valid discrete distribution has nonnegative probabilities totaling 1. Do not use an unweighted average unless all outcomes are equally likely."}, {"title": "Interpret long-run value and risk", "text": "Expected value is a long-run average, not a promised result on the next trial; it may not be a possible single outcome. For a decision, compare net values consistently and consider variability, affordability, and model assumptions."}], "memory": ["Explain the event, then choose the rule."], "weDo": {"prompt": "A game pays $20 with probability 0.10 and $0 otherwise. A ticket costs $3.", "steps": ["Use net values: $17 when winning and −$3 otherwise.", "Multiply: 17(0.10)=1.70 and −3(0.90)=−2.70.", "Expected net value=−$1 per play."]}, "practice": [{"id": "d772-s3-l4-1-practice-1", "prompt": "X is 0 with probability 0.75 and 8 with probability 0.25. What is E(X)?", "options": ["4", "6", "2", "8"], "answer": 2, "rationale": "0(0.75)+8(0.25)=2.", "learningPathLessonId": "d772-s3-l4-1", "topicId": "d772-s3-l4-1"}, {"id": "d772-s3-l4-1-practice-2", "prompt": "Which is a valid probability distribution?", "options": ["Probabilities −0.1 and 1.1", "Probabilities 0.4 and 0.4", "Probabilities 0.7 and 0.5", "Probabilities 0.3 and 0.7"], "answer": 3, "rationale": "Both probabilities are nonnegative and total 1.", "learningPathLessonId": "d772-s3-l4-1", "topicId": "d772-s3-l4-1"}, {"id": "d772-s3-l4-1-practice-3", "prompt": "A ticket costs $2 and pays $10 with probability 0.2, otherwise $0. What is the expected NET value?", "options": ["$0", "$2", "$8", "−$2"], "answer": 0, "rationale": "Expected payout is $2; subtract the $2 cost to get $0.", "learningPathLessonId": "d772-s3-l4-1", "topicId": "d772-s3-l4-1"}, {"id": "d772-s3-l4-2-practice-1", "prompt": "A game has expected net value −$0.50. What does this mean?", "options": ["Every play loses exactly $0.50", "The long-run average loss is $0.50 per play", "A win becomes due after losses", "Winning is impossible"], "answer": 1, "rationale": "Individual plays vary; the expectation describes the average over repetitions.", "learningPathLessonId": "d772-s3-l4-2", "topicId": "d772-s3-l4-2"}, {"id": "d772-s3-l4-2-practice-2", "prompt": "One fair die has expected value 3.5. Is 3.5 possible on a single roll?", "options": ["Yes, on a fair die", "No; an expected value need not be an individual outcome", "Only after an odd number of rolls", "The expected value must be wrong"], "answer": 1, "rationale": "The mean can fall between possible outcomes.", "learningPathLessonId": "d772-s3-l4-2", "topicId": "d772-s3-l4-2"}, {"id": "d772-s3-l4-2-practice-3", "prompt": "Plan A has expected net value $4; Plan B has $2. Which statement is supported?", "options": ["A guarantees more money on the next trial", "A has a higher long-run average under the stated models", "B cannot ever outperform A", "The plans have identical risk"], "answer": 1, "rationale": "A higher expectation alone does not determine one-trial results or variability.", "learningPathLessonId": "d772-s3-l4-2", "topicId": "d772-s3-l4-2"}], "references": [{"source": "OpenStax Introductory Statistics 2e", "url": "https://openstax.org/books/introductory-statistics-2e/pages/3-1-terminology"}, {"source": "OpenStax Introductory Statistics 2e", "url": "https://openstax.org/books/introductory-statistics-2e/pages/3-2-independent-and-mutually-exclusive-events"}, {"source": "OpenStax Introductory Statistics 2e", "url": "https://openstax.org/books/introductory-statistics-2e/pages/3-3-two-basic-rules-of-probability"}, {"source": "OpenStax Introductory Statistics 2e", "url": "https://openstax.org/books/introductory-statistics-2e/pages/4-2-mean-or-expected-value-and-standard-deviation"}], "vocab": [["Expected value", "A probability-weighted average of numerical outcomes."], ["Discrete probability distribution", "Possible discrete values with nonnegative probabilities that total 1."], ["Net value", "Payout or benefit after subtracting the cost."], ["Variability", "How much individual outcomes differ; expectation alone does not describe this risk."]]}, "d772-s3-review": {"sourceLabel": "CORROBORATED PROBABILITY REVIEW", "overview": "Combine probability types, event relationships, set operations, and expected value.", "objectives": ["Choose a justified probability rule.", "Explain expected value as a long-run net average."], "teach": [{"title": "Read probability notation", "text": "An outcome is one result. The sample space S lists all possible results; an event A is a set of results. P(A) is between 0 and 1. A probability of 0.25 means 25%, not 25 successes guaranteed in every 100 trials."}, {"title": "Use equally likely outcomes", "text": "For equally likely outcomes, P(A)=favorable outcomes / total outcomes. Count the same kind of outcome in numerator and denominator. This counting rule needs equally likely outcomes; a biased spinner needs its actual sector probabilities."}, {"title": "Estimate from observations", "text": "Empirical probability is observed successes / trials. With many independent repetitions under the same conditions, relative frequency tends toward the underlying probability. More trials do not force an exact match or make a losing streak require a win next."}, {"title": "Separate independent from dependent", "text": "Independent events do not change each other’s probability: P(B|A)=P(B). For independent events, P(A and B)=P(A)P(B). Drawing without replacement usually changes the next draw’s probability because the bag’s contents change."}, {"title": "Disjoint does not mean independent", "text": "Disjoint, or mutually exclusive, events cannot occur together: P(A and B)=0. If both have positive probability, they are not independent: learning that one occurred rules out the other."}, {"title": "Read all four Venn regions", "text": "A Venn diagram separates A only, both, B only, and neither. The rectangle represents the full sample space. Include the overlap when counting all of A or all of B; count it once for the union."}, {"title": "OR is the inclusive union", "text": "A union B, written A ∪ B, includes A, B, or both. P(A or B)=P(A)+P(B)−P(A and B). Subtract the overlap once because adding both probabilities counts it twice."}, {"title": "AND is the intersection", "text": "A intersection B, written A ∩ B, contains the overlap. In general P(A and B)=P(A)P(B|A). Use P(A)P(B) only when independence is justified; without replacement usually requires the changed second probability."}, {"title": "NOT is the complement", "text": "The complement Aᶜ contains every outcome not in A. P(not A)=1−P(A). For at least one success, the complementary event is no successes. Multiply failure probabilities only if the trials are independent."}, {"title": "Calculate a probability-weighted mean", "text": "Expected value is E(X)=Σ xP(x): multiply each outcome value by its probability, then add. A valid discrete distribution has nonnegative probabilities totaling 1. Do not use an unweighted average unless all outcomes are equally likely."}, {"title": "Interpret long-run value and risk", "text": "Expected value is a long-run average, not a promised result on the next trial; it may not be a possible single outcome. For a decision, compare net values consistently and consider variability, affordability, and model assumptions."}], "practice": [{"id": "d772-s3-l1-1-practice-1", "prompt": "What is the sample space for one toss of a coin?", "options": ["{heads, tails}", "{heads}", "0.5", "The number of tosses"], "answer": 0, "rationale": "The sample space includes every possible outcome.", "learningPathLessonId": "d772-s3-l1-1", "topicId": "d772-s3-l1-1"}, {"id": "d772-s3-l1-2-practice-1", "prompt": "A fair die is rolled once. What is P(result greater than 4)?", "options": ["1/6", "1/3", "1/2", "2/3"], "answer": 1, "rationale": "The favorable outcomes are 5 and 6: 2/6=1/3.", "learningPathLessonId": "d772-s3-l1-2", "topicId": "d772-s3-l1-2"}, {"id": "d772-s3-l1-3-practice-1", "prompt": "A player succeeds in 18 of 60 attempts. What is the empirical probability of success?", "options": ["0.18", "0.30", "0.60", "3.33"], "answer": 1, "rationale": "18/60=0.30.", "learningPathLessonId": "d772-s3-l1-3", "topicId": "d772-s3-l1-3"}, {"id": "d772-s3-l2-1-practice-1", "prompt": "Two fair dice are rolled independently. What is P(two sixes)?", "options": ["1/6", "1/12", "1/36", "1/3"], "answer": 2, "rationale": "Multiply 1/6 by 1/6.", "learningPathLessonId": "d772-s3-l2-1", "topicId": "d772-s3-l2-1"}, {"id": "d772-s3-l2-2-practice-1", "prompt": "On one die roll, are getting a 1 and getting a 6 disjoint?", "options": ["Yes, one roll cannot have both results", "No, both are possible in the sample space", "Only if the die is biased", "Only across two rolls"], "answer": 0, "rationale": "A single outcome cannot simultaneously be 1 and 6.", "learningPathLessonId": "d772-s3-l2-2", "topicId": "d772-s3-l2-2"}, {"id": "d772-s3-l3-1-practice-1", "prompt": "18 students take math and 5 of them also take science. How many take math only?", "options": ["23", "18", "13", "5"], "answer": 2, "rationale": "Remove the overlap: 18−5=13.", "learningPathLessonId": "d772-s3-l3-1", "topicId": "d772-s3-l3-1"}, {"id": "d772-s3-l3-2-practice-1", "prompt": "P(A)=0.4, P(B)=0.3, and P(both)=0.1. What is P(A or B)?", "options": ["0.12", "0.8", "0.6", "0.7"], "answer": 2, "rationale": "0.4+0.3−0.1=0.6.", "learningPathLessonId": "d772-s3-l3-2", "topicId": "d772-s3-l3-2"}, {"id": "d772-s3-l3-3-practice-1", "prompt": "A fair coin and a fair die are independent. What is P(heads and a 6)?", "options": ["1/2", "1/6", "1/12", "1/8"], "answer": 2, "rationale": "Multiply 1/2 by 1/6.", "learningPathLessonId": "d772-s3-l3-3", "topicId": "d772-s3-l3-3"}, {"id": "d772-s3-l3-4-practice-1", "prompt": "P(A)=0.72. What is P(not A)?", "options": ["0.72", "0.28", "1.72", "0.18"], "answer": 1, "rationale": "1−0.72=0.28.", "learningPathLessonId": "d772-s3-l3-4", "topicId": "d772-s3-l3-4"}, {"id": "d772-s3-l4-1-practice-1", "prompt": "X is 0 with probability 0.75 and 8 with probability 0.25. What is E(X)?", "options": ["4", "6", "2", "8"], "answer": 2, "rationale": "0(0.75)+8(0.25)=2.", "learningPathLessonId": "d772-s3-l4-1", "topicId": "d772-s3-l4-1"}, {"id": "d772-s3-l4-2-practice-1", "prompt": "A game has expected net value −$0.50. What does this mean?", "options": ["Every play loses exactly $0.50", "The long-run average loss is $0.50 per play", "A win becomes due after losses", "Winning is impossible"], "answer": 1, "rationale": "Individual plays vary; the expectation describes the average over repetitions.", "learningPathLessonId": "d772-s3-l4-2", "topicId": "d772-s3-l4-2"}], "references": [{"source": "OpenStax Introductory Statistics 2e", "url": "https://openstax.org/books/introductory-statistics-2e/pages/3-1-terminology"}, {"source": "OpenStax Introductory Statistics 2e", "url": "https://openstax.org/books/introductory-statistics-2e/pages/3-2-independent-and-mutually-exclusive-events"}, {"source": "OpenStax Introductory Statistics 2e", "url": "https://openstax.org/books/introductory-statistics-2e/pages/3-3-two-basic-rules-of-probability"}, {"source": "OpenStax Introductory Statistics 2e", "url": "https://openstax.org/books/introductory-statistics-2e/pages/4-2-mean-or-expected-value-and-standard-deviation"}], "vocab": [["Outcome", "One result of a chance process."], ["Sample space", "The set of all possible outcomes."], ["Event", "A set of outcomes from the sample space."], ["Probability", "A measure of likelihood from 0 to 1."], ["Theoretical probability", "A probability calculated from an assumed model rather than observed counts."], ["Equally likely", "Outcomes having the same probability."], ["Empirical probability", "Observed event occurrences divided by the number of trials."], ["Law of large numbers", "Under suitable repeated-trial conditions, observed proportions tend toward the underlying probability."], ["Independent events", "Events for which learning that one occurred does not change the probability of the other."], ["Dependent events", "Events whose probabilities change when another event is known to occur."], ["Conditional probability", "The probability of an event within the group specified by a condition."], ["Disjoint events", "Events that cannot happen together; also called mutually exclusive."], ["Venn diagram", "A diagram showing event membership and overlap within a sample space."], ["Union", "Outcomes in A, B, or both; the inclusive OR event."], ["Intersection", "Outcomes belonging to both events; the AND event."], ["Complement", "All outcomes in the sample space that are not in the event."], ["Expected value", "A probability-weighted average of numerical outcomes."], ["Discrete probability distribution", "Possible discrete values with nonnegative probabilities that total 1."], ["Net value", "Payout or benefit after subtracting the cost."], ["Variability", "How much individual outcomes differ; expectation alone does not describe this risk."]]}};
 const D772_OFFICIAL_SECTIONS=[D772_SECTION_ONE,D772_SECTION_TWO,D772_SECTION_THREE];
 function sectionUnits(section){
   const out=[];
@@ -2914,8 +3198,8 @@ function questionsForLesson(lesson,id=cid()){
       answer:(q.options||[])[Number(q.answer)],
       why:q.rationale||'',
       rationale:q.rationale||'',
-      learningPathLessonId:lesson.id,
-      topicId:lesson.id+'-role-type',
+      learningPathLessonId:q.learningPathLessonId||lesson.id,
+      topicId:q.topicId||lesson.id+'-role-type',
       testedConcept:lesson.title,
       rigorLevel:i<2?1:i<6?2:3,
       sourceName:official.sourceLabel||'D772 course-provided material'
@@ -2923,7 +3207,8 @@ function questionsForLesson(lesson,id=cid()){
     if(lesson.review){
       const sec=sections(id).find(s=>sectionUnits(s).some(l=>l.id===lesson.id));
       const lessonIds=new Set(sectionUnits(sec).filter(l=>!l.review).map(l=>l.id));
-      return (course(id).questionBank||[]).filter(q=>lessonIds.has(q.learningPathLessonId)||lessonIds.has(classifyD772Item(rows(id).find(r=>r.id===q.sourceId),q)));
+      const reviewBank=(course(id).questionBank||[]).filter(q=>lessonIds.has(q.learningPathLessonId)||lessonIds.has(classifyD772Item(rows(id).find(r=>r.id===q.sourceId),q)));
+      const seen=new Set(reviewBank.map(q=>q.id));return [...reviewBank,...officialPractice.filter(q=>!seen.has(q.id))];
     }
     const bank=(course(id).questionBank||[]).filter(q=>{
       if(q.learningPathLessonId===lesson.id)return true;
@@ -2940,7 +3225,7 @@ function answersForQuestions(qs,id=cid()){
   const ids=new Set((qs||[]).map(q=>q.id));
   return (prog(id).answers||[]).filter(a=>ids.has(a.qid));
 }
-function officialD772Content(lesson,id=cid()){return id==='D772'&&lesson?(D772_SECTION_ONE_CONTENT[lesson.id]||D772_SECTION_TWO_CONTENT[lesson.id]||null):null}
+function officialD772Content(lesson,id=cid()){return id==='D772'&&lesson?(D772_SECTION_ONE_CONTENT[lesson.id]||D772_SECTION_TWO_CONTENT[lesson.id]||D772_SECTION_THREE_CONTENT[lesson.id]||null):null}
 function mastery(lesson,id=cid()){
   const src=sourcesForLesson(lesson,id),official=officialD772Content(lesson,id),qs=questionsForLesson(lesson,id),answers=answersForQuestions(qs,id);
   const byId=new Map(qs.map(q=>[q.id,q]));
@@ -3069,7 +3354,7 @@ function chapter(lesson,id=cid()){
   const mergedTeaching=mergeLessonTeaching(sourceRows,lesson,id);
   const uploadedVocab=dedupeVocab(sourceRows,lesson,id);
   const vocab=[];const vocabSeen=new Set();
-  for(const v of [...(official?.vocab||[]).map(x=>({term:x[0],definition:x[1],sourceName:'D772 verified/course-provided notes'})),...uploadedVocab]){const key=norm(v.term);if(!key||vocabSeen.has(key))continue;vocabSeen.add(key);vocab.push(v)}
+  for(const v of [...(official?.vocab||[]).map(x=>({term:x[0],definition:x[1],sourceName:official.sourceLabel||'D772 verified/course-provided notes'})),...uploadedVocab]){const key=norm(v.term);if(!key||vocabSeen.has(key))continue;vocabSeen.add(key);vocab.push(v)}
   const explanations=uniqText(lessonItems(sourceRows,'explanations',lesson,id),x=>x.explanation);
   const repairs=uniqText(lessonItems(sourceRows,'misconceptionRepair',lesson,id),x=>x.correction);
   const m=mastery(lesson,id);
@@ -3087,6 +3372,11 @@ function nextStep(m){
 }
 function startPractice(lesson,id=cid()){
   const qs=questionsForLesson(lesson,id);
+  if(id==='D772'&&lesson.id.startsWith('d772-s3')){
+    const c=course(id);c.questionBank=Array.isArray(c.questionBank)?c.questionBank:[];
+    const existing=new Set(c.questionBank.map(q=>q.id));
+    for(const q of qs)if(!existing.has(q.id)){c.questionBank.push({...q,options:q.choices||q.options||[],courseId:id,managedBy:'course-tutor-official'});existing.add(q.id)}
+  }
   const topics=[...new Set(qs.map(q=>q.topicId).filter(Boolean))];
   if(!topics.length){alert('Add or regenerate lesson notes first so Majick has lesson-specific questions.');return}
   const m=mastery(lesson,id);
@@ -3111,7 +3401,7 @@ function renderPath(){
   const id=cid(),secs=sections(id);
   const active=selectedLesson(id);
   const pathHero=id==='D772'
-    ? '<div class="tutorHero tutorHeroCompact"><div><span>D772 • MULTI-SECTION COURSE PATH</span><h3>Sections 1–3 have their course structure in place.</h3><p>Teaching expands as you add material. Section 3 probability units are reserved for your upcoming notes, summaries, and quizzes.</p></div><button class="btn primary" id="continueTutor">'+(active?'Continue '+E(active.short||active.title):'Open Tutor')+' →</button></div>'
+    ? '<div class="tutorHero tutorHeroCompact"><div><span>D772 • MULTI-SECTION COURSE PATH</span><h3>Sections 1–3 have their course structure in place.</h3><p>Teaching expands as you add material. Section 3 probability lessons include explanations, worked examples, and practice.</p></div><button class="btn primary" id="continueTutor">'+(active?'Continue '+E(active.short||active.title):'Open Tutor')+' →</button></div>'
     : '<div class="tutorHero"><div><span>MAJICK COURSE TUTOR • '+E(id)+'</span><h3>Learn the course in order. Prove each lesson at higher rigor.</h3><p>Your uploaded notes automatically fill this path. Repeated material is deduplicated in the tutor chapter and the active question bank.</p></div><button class="btn primary" id="continueTutor">'+(active?'Continue '+E(active.short||active.title):'Open Tutor')+' →</button></div>';
   box.innerHTML=pathHero+
     secs.map(sec=>{
@@ -3384,5 +3674,5 @@ MajickLearningLab.bind=function(){
 };
 const baseRefresh=MajickLearningLab.refresh;
 MajickLearningLab.refresh=function(){baseRefresh();hydrate()};
-window.MajickCourseTutor={VERSION,D772_SECTION_ONE,D772_SECTION_TWO,D772_SECTION_THREE,D772_SECTION_ONE_CONTENT,D772_SECTION_TWO_CONTENT,D772_TUTOR_HELP,sectionUnits,allOfficialLessons,hydrate,sections,classifySource,annotateSource,tagD772Generated,classifyD772Item,d772Segments,sourcesForLesson,questionsForLesson,mastery,sectionProgress,chapter,mergeLessonTeaching,officialD772Content,startPractice,show,renderPath,renderTutor,renderTutorAssist,openLesson,selectedLesson};
+window.MajickCourseTutor={VERSION,D772_SECTION_ONE,D772_SECTION_TWO,D772_SECTION_THREE,D772_SECTION_ONE_CONTENT,D772_SECTION_TWO_CONTENT,D772_SECTION_THREE_CONTENT,D772_TUTOR_HELP,sectionUnits,allOfficialLessons,hydrate,sections,classifySource,annotateSource,tagD772Generated,classifyD772Item,d772Segments,sourcesForLesson,questionsForLesson,mastery,sectionProgress,chapter,mergeLessonTeaching,officialD772Content,startPractice,show,renderPath,renderTutor,renderTutorAssist,openLesson,selectedLesson};
 })();

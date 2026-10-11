@@ -1,0 +1,141 @@
+{
+  "version": "3.4.2",
+  "guardian": "rook",
+  "status": "reference-board",
+  "individualAssets": "not-yet-generated",
+  "palette": [
+    "onyx black",
+    "ebony wood",
+    "antique silver",
+    "crimson red",
+    "emerald green"
+  ],
+  "motifs": [
+    "raven wings",
+    "feathers",
+    "claws",
+    "moons",
+    "keys",
+    "archives"
+  ],
+  "board": "assets/rewards/reference-boards/rook/rook-collection-reference-board.webp",
+  "runtimeBoard": "assets/rewards/reference-boards/rook/rook-collection-reference-board-runtime.webp",
+  "creation": {
+    "mode": "built-in image generation",
+    "prompt": "Create Rook's ornate raven Guardian collection board, same richly rendered luxurious 3D filigree style as reference collection. Second reference is Rook's canonical raven character for feather, beak, wing, claw and crescent motifs only; no character portrait. DISTINCT palette: onyx black, ebony wood, antique SILVER, CRIMSON RED velvet and EMERALD GREEN jewels. NO purple/violet/lavender/magenta. Mature whimsical magical-college furnishings and collectibles. Opaque neutral warm-gray background. Exactly 28 complete clearly separated objects arranged 7 columns, 4 rows, no labels/text. Row1: raven-wing crimson reading armchair; ebony crimson reading chaise; ebony canopy roost bed with crimson velvet emerald lining; raven scholar desk-perch; tall crow-wing book cabinet; silver moon scrying mirror framed with black feathers; round crimson silver pouf. Row2: raven lantern emerald glow; charcoal crimson feather rug; ebony archive writing desk with crimson mat silver quill; black silver raven treasure chest emerald gem; paired black silver feeding bowls; silver branch perch emerald charms; crescent silver book display. Row3: shiny coin puzzle carousel; hanging key-ring toy on silver stand; silver rune play ball crimson runes; jeweled feather play wand; shiny-object sorting tray; three padded raven-claw hopping platforms as one set; clockwork puzzle orrery red green lights. Row4: silver raven crest circlet red jewel; black crimson collar emerald moon charm; silver archivist monocle; flowing crimson black raven-feather cloak; ebony scholar satchel silver raven latch; luminous emerald Arcane memory orb on raven pedestal; Celestial midnight archive gateway black marble stairs silver raven statues crimson light emerald crystal torches. Entire objects in canvas, detailed velvet, metal, crystal glow; consistent scale and game-object perspective. No watermarks.\n"
+  },
+  "items": [
+    {
+      "boardIndex": 1,
+      "name": "Raven-Wing Reading Armchair"
+    },
+    {
+      "boardIndex": 2,
+      "name": "Ebony Reading Chaise"
+    },
+    {
+      "boardIndex": 3,
+      "name": "Canopy Roost Bed"
+    },
+    {
+      "boardIndex": 4,
+      "name": "Scholar Desk-Perch"
+    },
+    {
+      "boardIndex": 5,
+      "name": "Crow-Wing Book Cabinet"
+    },
+    {
+      "boardIndex": 6,
+      "name": "Moon Scrying Mirror"
+    },
+    {
+      "boardIndex": 7,
+      "name": "Crimson Pouf"
+    },
+    {
+      "boardIndex": 8,
+      "name": "Raven Lantern"
+    },
+    {
+      "boardIndex": 9,
+      "name": "Feather Rug"
+    },
+    {
+      "boardIndex": 10,
+      "name": "Archive Writing Desk"
+    },
+    {
+      "boardIndex": 11,
+      "name": "Raven Treasure Chest"
+    },
+    {
+      "boardIndex": 12,
+      "name": "Feeding Bowls"
+    },
+    {
+      "boardIndex": 13,
+      "name": "Branch Perch"
+    },
+    {
+      "boardIndex": 14,
+      "name": "Crescent Book Display"
+    },
+    {
+      "boardIndex": 15,
+      "name": "Coin Puzzle Carousel"
+    },
+    {
+      "boardIndex": 16,
+      "name": "Key-Ring Toy"
+    },
+    {
+      "boardIndex": 17,
+      "name": "Rune Play Ball"
+    },
+    {
+      "boardIndex": 18,
+      "name": "Feather Play Wand"
+    },
+    {
+      "boardIndex": 19,
+      "name": "Shiny-Object Sorting Tray"
+    },
+    {
+      "boardIndex": 20,
+      "name": "Raven-Claw Hopping Platforms"
+    },
+    {
+      "boardIndex": 21,
+      "name": "Clockwork Puzzle Orrery"
+    },
+    {
+      "boardIndex": 22,
+      "name": "Raven-Crest Circlet"
+    },
+    {
+      "boardIndex": 23,
+      "name": "Crimson Moon Collar"
+    },
+    {
+      "boardIndex": 24,
+      "name": "Archivist Monocle"
+    },
+    {
+      "boardIndex": 25,
+      "name": "Raven-Feather Cloak"
+    },
+    {
+      "boardIndex": 26,
+      "name": "Scholar Satchel"
+    },
+    {
+      "boardIndex": 27,
+      "name": "Arcane Memory Orb"
+    },
+    {
+      "boardIndex": 28,
+      "name": "Celestial Midnight Archive Gateway"
+    }
+  ]
+}
