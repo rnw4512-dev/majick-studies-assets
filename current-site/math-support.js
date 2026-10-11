@@ -1,6 +1,6 @@
 (()=>{
 'use strict';
-const VERSION='3.4.7-math-support';
+const VERSION='3.4.9-math-support';
 const cid=()=>String(window.S?.activeCourse||'');
 const E=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const FAMILY_CARDS=[
@@ -130,6 +130,32 @@ function numberMapping(){
  '<div class="v343GuardianCue">Guardian check: if you know the formula but the answer is wrong, look here first. A misplaced denominator, probability, or negative sign is a setup error—not an arithmetic error.</div></div>';
 }
 
+
+function visualMathModel(){
+ const f=formulaFor();if(!f)return '';
+ const label=String(f.label||'').toLowerCase();
+ if(/union|intersection/.test(label)){
+  const union=/union/.test(label);
+  return '<div class="v349MathVisual"><b>Visual Math Model</b><p>'+(union?'OR includes both circles and their overlap.':'AND keeps only the overlap.')+'</p><div class="v349Venn '+(union?'union':'intersection')+'"><i class="a"></i><i class="b"></i><span>A</span><em>B</em><strong>'+E(union?'A OR B':'A AND B')+'</strong></div></div>';
+ }
+ if(/complement/.test(label)){
+  return '<div class="v349MathVisual"><b>Visual Math Model</b><p>The whole bar is probability 1. A and NOT A fill the entire bar together.</p><div class="v349ProbBar"><i style="width:30%">A</i><span>NOT A</span></div></div>';
+ }
+ if(/empirical|theoretical|probability/.test(label)){
+  return '<div class="v349MathVisual"><b>Visual Math Model</b><p>Probability is a part of a whole. Count the target part, then compare it with the total.</p><div class="v349Tiles">'+Array.from({length:10},(_,i)=>'<i class="'+(i<4?'hit':'')+'"></i>').join('')+'</div><small>Example model: 4 favorable out of 10 total = 0.40</small></div>';
+ }
+ if(/expected value/.test(label)){
+  return '<div class="v349MathVisual"><b>Visual Math Model</b><p>Each outcome is weighted by how likely it is.</p><div class="v349EVModel"><article><span>30%</span><strong>×</strong><b>−$3</b><em>= −$0.90</em></article><article><span>70%</span><strong>×</strong><b>+$2</b><em>= +$1.40</em></article><footer>Weighted pieces combine → <b>EV = +$0.50</b></footer></div></div>';
+ }
+ if(/interquartile|iqr|quartile/.test(label)){
+  return '<div class="v349MathVisual"><b>Visual Math Model</b><p>The box from Q1 to Q3 is the middle 50%.</p><div class="v349BoxModel"><span>min</span><i></i><b>Q1</b><section><em>median</em></section><b>Q3</b><i></i><span>max</span></div><small>IQR = Q3 − Q1 measures the width of the box.</small></div>';
+ }
+ if(/mean/.test(label)){
+  return '<div class="v349MathVisual"><b>Visual Math Model</b><p>The mean redistributes the total evenly across all values.</p><div class="v349MeanModel"><span>2</span><span>4</span><span>6</span><b>→</b><strong>4</strong><strong>4</strong><strong>4</strong></div></div>';
+ }
+ return '';
+}
+
 function interactiveFormula(){
  const f=formulaFor();if(!f)return '';
  const ps=progressState(),key=conceptKey();ps.formulaSlots=ps.formulaSlots||{};ps.formulaSlots[key]=ps.formulaSlots[key]||{};
@@ -250,9 +276,9 @@ function guardianResponse(kind){
 
 function help(kind){
  const f=formulaFor(); if(!f)return '';
- if(kind==='read')return '<div class="v343Help"><b>Say it like this:</b><p>'+E(f.plain)+'</p></div>';
+ if(kind==='read')return '<div class="v343Help"><b>Say it like this:</b><p>'+E(f.plain)+'</p></div>'+visualMathModel();
  if(kind==='slots')return '<div class="v343Help"><b>What each part means</b>'+f.parts.map(x=>'<p><strong>'+E(x[0])+'</strong> = '+E(x[1])+'</p>').join('')+'</div>';
- if(kind==='organize')return organizer()+signCoach()+estimateCoach();
+ if(kind==='organize')return visualMathModel()+organizer()+signCoach()+estimateCoach();
  if(kind==='translator')return translator();
  if(kind==='mapping')return numberMapping()+interactiveFormula()+signCoach();
  if(kind==='family')return familyCards();
@@ -326,6 +352,6 @@ if(window.MajickRenderQueue?.register){
  }
  setTimeout(decorate,180);
 }
-window.MajickMathSupport={VERSION,FORMULAS,FAMILY_CARDS,decorate,formulaFor,level,translator,numberMapping,interactiveFormula,preAlgebraRescue,calculatorRehearsal,familyCards,calculatorPanel,lostPanel,progressState};
+window.MajickMathSupport={VERSION,FORMULAS,FAMILY_CARDS,decorate,formulaFor,level,translator,numberMapping,interactiveFormula,visualMathModel,preAlgebraRescue,calculatorRehearsal,familyCards,calculatorPanel,lostPanel,progressState};
 document.documentElement.dataset.majickMathSupport=VERSION;
 })();
