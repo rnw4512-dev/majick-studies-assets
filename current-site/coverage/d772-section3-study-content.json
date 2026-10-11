@@ -1949,134 +1949,6 @@
           "Write P(A)=3/6=0.5."
         ]
       },
-      "practice": [
-        {
-          "id": "d772-s3-l1-1-practice-1",
-          "prompt": "What is the sample space for one toss of a coin?",
-          "options": [
-            "{heads, tails}",
-            "{heads}",
-            "0.5",
-            "The number of tosses"
-          ],
-          "answer": 0,
-          "rationale": "The sample space includes every possible outcome.",
-          "learningPathLessonId": "d772-s3-l1-1",
-          "topicId": "d772-s3-l1-1"
-        },
-        {
-          "id": "d772-s3-l1-1-practice-2",
-          "prompt": "A probability is 0.35. What percentage is equivalent?",
-          "options": [
-            "3.5%",
-            "35%",
-            "350%",
-            "0.35%"
-          ],
-          "answer": 1,
-          "rationale": "Multiply a probability by 100 to express it as a percentage.",
-          "learningPathLessonId": "d772-s3-l1-1",
-          "topicId": "d772-s3-l1-1"
-        },
-        {
-          "id": "d772-s3-l1-1-practice-3",
-          "prompt": "Which value cannot be a probability?",
-          "options": [
-            "0",
-            "0.45",
-            "1",
-            "1.2"
-          ],
-          "answer": 3,
-          "rationale": "Probabilities cannot exceed 1 or fall below 0.",
-          "learningPathLessonId": "d772-s3-l1-1",
-          "topicId": "d772-s3-l1-1"
-        },
-        {
-          "id": "d772-s3-l1-2-practice-1",
-          "prompt": "A fair die is rolled once. What is P(result greater than 4)?",
-          "options": [
-            "1/6",
-            "1/3",
-            "1/2",
-            "2/3"
-          ],
-          "answer": 1,
-          "rationale": "The favorable outcomes are 5 and 6: 2/6=1/3.",
-          "learningPathLessonId": "d772-s3-l1-2",
-          "topicId": "d772-s3-l1-2"
-        },
-        {
-          "id": "d772-s3-l1-2-practice-2",
-          "prompt": "A bag has 4 red and 6 green tokens. One token is selected uniformly. What is P(red)?",
-          "options": [
-            "4/6",
-            "6/10",
-            "4/10",
-            "1/4"
-          ],
-          "answer": 2,
-          "rationale": "The total is 10, so 4 favorable tokens give 4/10.",
-          "learningPathLessonId": "d772-s3-l1-2",
-          "topicId": "d772-s3-l1-2"
-        },
-        {
-          "id": "d772-s3-l1-2-practice-3",
-          "prompt": "When does favorable outcomes divided by total outcomes apply directly?",
-          "options": [
-            "Whenever two outcomes are named",
-            "When outcomes are equally likely",
-            "Only after 100 trials",
-            "Only for independent events"
-          ],
-          "answer": 1,
-          "rationale": "Counting outcomes directly assumes equal probabilities.",
-          "learningPathLessonId": "d772-s3-l1-2",
-          "topicId": "d772-s3-l1-2"
-        },
-        {
-          "id": "d772-s3-l1-3-practice-1",
-          "prompt": "A player succeeds in 18 of 60 attempts. What is the empirical probability of success?",
-          "options": [
-            "0.18",
-            "0.30",
-            "0.60",
-            "3.33"
-          ],
-          "answer": 1,
-          "rationale": "18/60=0.30.",
-          "learningPathLessonId": "d772-s3-l1-3",
-          "topicId": "d772-s3-l1-3"
-        },
-        {
-          "id": "d772-s3-l1-3-practice-2",
-          "prompt": "A fair coin has just landed tails five times. What is P(heads on the next independent toss)?",
-          "options": [
-            "1/6",
-            "0",
-            "1",
-            "1/2"
-          ],
-          "answer": 3,
-          "rationale": "Earlier independent tosses do not change the next probability.",
-          "learningPathLessonId": "d772-s3-l1-3",
-          "topicId": "d772-s3-l1-3"
-        },
-        {
-          "id": "d772-s3-l1-3-practice-3",
-          "prompt": "What does the law of large numbers suggest?",
-          "options": [
-            "Each short run must balance exactly",
-            "Relative frequency tends toward the underlying probability as trials accumulate",
-            "The next result corrects the last result",
-            "A large number of trials makes events independent"
-          ],
-          "answer": 1,
-          "rationale": "It concerns long-run proportions, not compensation on the next trial.",
-          "learningPathLessonId": "d772-s3-l1-3",
-          "topicId": "d772-s3-l1-3"
-        }
-      ],
       "references": [
         {
           "source": "OpenStax Introductory Statistics 2e",
@@ -2128,6 +2000,11 @@
           "Law of large numbers",
           "Under suitable repeated-trial conditions, observed proportions tend toward the underlying probability."
         ]
+      ],
+      "practiceLessonIds": [
+        "d772-s3-l1-1",
+        "d772-s3-l1-2",
+        "d772-s3-l1-3"
       ]
     },
     "d772-s3-l1-summary": {
@@ -2163,92 +2040,6 @@
           "Write P(A)=3/6=0.5."
         ]
       },
-      "practice": [
-        {
-          "id": "d772-s3-l1-1-practice-1",
-          "prompt": "What is the sample space for one toss of a coin?",
-          "options": [
-            "{heads, tails}",
-            "{heads}",
-            "0.5",
-            "The number of tosses"
-          ],
-          "answer": 0,
-          "rationale": "The sample space includes every possible outcome.",
-          "learningPathLessonId": "d772-s3-l1-1",
-          "topicId": "d772-s3-l1-1"
-        },
-        {
-          "id": "d772-s3-l1-1-practice-2",
-          "prompt": "A probability is 0.35. What percentage is equivalent?",
-          "options": [
-            "3.5%",
-            "35%",
-            "350%",
-            "0.35%"
-          ],
-          "answer": 1,
-          "rationale": "Multiply a probability by 100 to express it as a percentage.",
-          "learningPathLessonId": "d772-s3-l1-1",
-          "topicId": "d772-s3-l1-1"
-        },
-        {
-          "id": "d772-s3-l1-1-practice-3",
-          "prompt": "Which value cannot be a probability?",
-          "options": [
-            "0",
-            "0.45",
-            "1",
-            "1.2"
-          ],
-          "answer": 3,
-          "rationale": "Probabilities cannot exceed 1 or fall below 0.",
-          "learningPathLessonId": "d772-s3-l1-1",
-          "topicId": "d772-s3-l1-1"
-        },
-        {
-          "id": "d772-s3-l1-2-practice-1",
-          "prompt": "A fair die is rolled once. What is P(result greater than 4)?",
-          "options": [
-            "1/6",
-            "1/3",
-            "1/2",
-            "2/3"
-          ],
-          "answer": 1,
-          "rationale": "The favorable outcomes are 5 and 6: 2/6=1/3.",
-          "learningPathLessonId": "d772-s3-l1-2",
-          "topicId": "d772-s3-l1-2"
-        },
-        {
-          "id": "d772-s3-l1-2-practice-2",
-          "prompt": "A bag has 4 red and 6 green tokens. One token is selected uniformly. What is P(red)?",
-          "options": [
-            "4/6",
-            "6/10",
-            "4/10",
-            "1/4"
-          ],
-          "answer": 2,
-          "rationale": "The total is 10, so 4 favorable tokens give 4/10.",
-          "learningPathLessonId": "d772-s3-l1-2",
-          "topicId": "d772-s3-l1-2"
-        },
-        {
-          "id": "d772-s3-l1-2-practice-3",
-          "prompt": "When does favorable outcomes divided by total outcomes apply directly?",
-          "options": [
-            "Whenever two outcomes are named",
-            "When outcomes are equally likely",
-            "Only after 100 trials",
-            "Only for independent events"
-          ],
-          "answer": 1,
-          "rationale": "Counting outcomes directly assumes equal probabilities.",
-          "learningPathLessonId": "d772-s3-l1-2",
-          "topicId": "d772-s3-l1-2"
-        }
-      ],
       "references": [
         {
           "source": "OpenStax Introductory Statistics 2e",
@@ -2300,6 +2091,11 @@
           "Law of large numbers",
           "Under suitable repeated-trial conditions, observed proportions tend toward the underlying probability."
         ]
+      ],
+      "practiceLessonIds": [
+        "d772-s3-l1-1",
+        "d772-s3-l1-2",
+        "d772-s3-l1-3"
       ]
     },
     "d772-s3-l1-quiz": {
@@ -2335,92 +2131,6 @@
           "Write P(A)=3/6=0.5."
         ]
       },
-      "practice": [
-        {
-          "id": "d772-s3-l1-1-practice-1",
-          "prompt": "What is the sample space for one toss of a coin?",
-          "options": [
-            "{heads, tails}",
-            "{heads}",
-            "0.5",
-            "The number of tosses"
-          ],
-          "answer": 0,
-          "rationale": "The sample space includes every possible outcome.",
-          "learningPathLessonId": "d772-s3-l1-1",
-          "topicId": "d772-s3-l1-1"
-        },
-        {
-          "id": "d772-s3-l1-1-practice-2",
-          "prompt": "A probability is 0.35. What percentage is equivalent?",
-          "options": [
-            "3.5%",
-            "35%",
-            "350%",
-            "0.35%"
-          ],
-          "answer": 1,
-          "rationale": "Multiply a probability by 100 to express it as a percentage.",
-          "learningPathLessonId": "d772-s3-l1-1",
-          "topicId": "d772-s3-l1-1"
-        },
-        {
-          "id": "d772-s3-l1-1-practice-3",
-          "prompt": "Which value cannot be a probability?",
-          "options": [
-            "0",
-            "0.45",
-            "1",
-            "1.2"
-          ],
-          "answer": 3,
-          "rationale": "Probabilities cannot exceed 1 or fall below 0.",
-          "learningPathLessonId": "d772-s3-l1-1",
-          "topicId": "d772-s3-l1-1"
-        },
-        {
-          "id": "d772-s3-l1-2-practice-1",
-          "prompt": "A fair die is rolled once. What is P(result greater than 4)?",
-          "options": [
-            "1/6",
-            "1/3",
-            "1/2",
-            "2/3"
-          ],
-          "answer": 1,
-          "rationale": "The favorable outcomes are 5 and 6: 2/6=1/3.",
-          "learningPathLessonId": "d772-s3-l1-2",
-          "topicId": "d772-s3-l1-2"
-        },
-        {
-          "id": "d772-s3-l1-2-practice-2",
-          "prompt": "A bag has 4 red and 6 green tokens. One token is selected uniformly. What is P(red)?",
-          "options": [
-            "4/6",
-            "6/10",
-            "4/10",
-            "1/4"
-          ],
-          "answer": 2,
-          "rationale": "The total is 10, so 4 favorable tokens give 4/10.",
-          "learningPathLessonId": "d772-s3-l1-2",
-          "topicId": "d772-s3-l1-2"
-        },
-        {
-          "id": "d772-s3-l1-2-practice-3",
-          "prompt": "When does favorable outcomes divided by total outcomes apply directly?",
-          "options": [
-            "Whenever two outcomes are named",
-            "When outcomes are equally likely",
-            "Only after 100 trials",
-            "Only for independent events"
-          ],
-          "answer": 1,
-          "rationale": "Counting outcomes directly assumes equal probabilities.",
-          "learningPathLessonId": "d772-s3-l1-2",
-          "topicId": "d772-s3-l1-2"
-        }
-      ],
       "references": [
         {
           "source": "OpenStax Introductory Statistics 2e",
@@ -2472,6 +2182,11 @@
           "Law of large numbers",
           "Under suitable repeated-trial conditions, observed proportions tend toward the underlying probability."
         ]
+      ],
+      "practiceLessonIds": [
+        "d772-s3-l1-1",
+        "d772-s3-l1-2",
+        "d772-s3-l1-3"
       ]
     },
     "d772-s3-l2": {
@@ -2502,92 +2217,6 @@
           "P(two red)=(3/5)(2/4)=3/10."
         ]
       },
-      "practice": [
-        {
-          "id": "d772-s3-l2-1-practice-1",
-          "prompt": "Two fair dice are rolled independently. What is P(two sixes)?",
-          "options": [
-            "1/6",
-            "1/12",
-            "1/36",
-            "1/3"
-          ],
-          "answer": 2,
-          "rationale": "Multiply 1/6 by 1/6.",
-          "learningPathLessonId": "d772-s3-l2-1",
-          "topicId": "d772-s3-l2-1"
-        },
-        {
-          "id": "d772-s3-l2-1-practice-2",
-          "prompt": "A bag has 3 red and 2 blue tokens. After a red token is removed, what is P(red on the next draw)?",
-          "options": [
-            "3/5",
-            "2/4",
-            "2/5",
-            "3/4"
-          ],
-          "answer": 1,
-          "rationale": "There are now 2 red tokens among 4 total tokens.",
-          "learningPathLessonId": "d772-s3-l2-1",
-          "topicId": "d772-s3-l2-1"
-        },
-        {
-          "id": "d772-s3-l2-1-practice-3",
-          "prompt": "Which statement defines independence?",
-          "options": [
-            "The events cannot occur together",
-            "Knowing one event occurred does not change the probability of the other",
-            "The probabilities must be equal",
-            "Both events must be rare"
-          ],
-          "answer": 1,
-          "rationale": "Independence is about unchanged conditional probability.",
-          "learningPathLessonId": "d772-s3-l2-1",
-          "topicId": "d772-s3-l2-1"
-        },
-        {
-          "id": "d772-s3-l2-2-practice-1",
-          "prompt": "On one die roll, are getting a 1 and getting a 6 disjoint?",
-          "options": [
-            "Yes, one roll cannot have both results",
-            "No, both are possible in the sample space",
-            "Only if the die is biased",
-            "Only across two rolls"
-          ],
-          "answer": 0,
-          "rationale": "A single outcome cannot simultaneously be 1 and 6.",
-          "learningPathLessonId": "d772-s3-l2-2",
-          "topicId": "d772-s3-l2-2"
-        },
-        {
-          "id": "d772-s3-l2-2-practice-2",
-          "prompt": "Two disjoint events each have positive probability. Are they independent?",
-          "options": [
-            "Always",
-            "Yes if their probabilities are equal",
-            "No",
-            "Only when their sum is 1"
-          ],
-          "answer": 2,
-          "rationale": "Occurrence of one changes the probability of the other to zero.",
-          "learningPathLessonId": "d772-s3-l2-2",
-          "topicId": "d772-s3-l2-2"
-        },
-        {
-          "id": "d772-s3-l2-2-practice-3",
-          "prompt": "A and B are disjoint with P(A)=0.2 and P(B)=0.3. What is P(A and B)?",
-          "options": [
-            "0.06",
-            "0.5",
-            "0.1",
-            "0"
-          ],
-          "answer": 3,
-          "rationale": "Disjoint events have no overlap.",
-          "learningPathLessonId": "d772-s3-l2-2",
-          "topicId": "d772-s3-l2-2"
-        }
-      ],
       "references": [
         {
           "source": "OpenStax Introductory Statistics 2e",
@@ -2623,6 +2252,10 @@
           "Disjoint events",
           "Events that cannot happen together; also called mutually exclusive."
         ]
+      ],
+      "practiceLessonIds": [
+        "d772-s3-l2-1",
+        "d772-s3-l2-2"
       ]
     },
     "d772-s3-l2-summary": {
@@ -2653,92 +2286,6 @@
           "P(two red)=(3/5)(2/4)=3/10."
         ]
       },
-      "practice": [
-        {
-          "id": "d772-s3-l2-1-practice-1",
-          "prompt": "Two fair dice are rolled independently. What is P(two sixes)?",
-          "options": [
-            "1/6",
-            "1/12",
-            "1/36",
-            "1/3"
-          ],
-          "answer": 2,
-          "rationale": "Multiply 1/6 by 1/6.",
-          "learningPathLessonId": "d772-s3-l2-1",
-          "topicId": "d772-s3-l2-1"
-        },
-        {
-          "id": "d772-s3-l2-1-practice-2",
-          "prompt": "A bag has 3 red and 2 blue tokens. After a red token is removed, what is P(red on the next draw)?",
-          "options": [
-            "3/5",
-            "2/4",
-            "2/5",
-            "3/4"
-          ],
-          "answer": 1,
-          "rationale": "There are now 2 red tokens among 4 total tokens.",
-          "learningPathLessonId": "d772-s3-l2-1",
-          "topicId": "d772-s3-l2-1"
-        },
-        {
-          "id": "d772-s3-l2-1-practice-3",
-          "prompt": "Which statement defines independence?",
-          "options": [
-            "The events cannot occur together",
-            "Knowing one event occurred does not change the probability of the other",
-            "The probabilities must be equal",
-            "Both events must be rare"
-          ],
-          "answer": 1,
-          "rationale": "Independence is about unchanged conditional probability.",
-          "learningPathLessonId": "d772-s3-l2-1",
-          "topicId": "d772-s3-l2-1"
-        },
-        {
-          "id": "d772-s3-l2-2-practice-1",
-          "prompt": "On one die roll, are getting a 1 and getting a 6 disjoint?",
-          "options": [
-            "Yes, one roll cannot have both results",
-            "No, both are possible in the sample space",
-            "Only if the die is biased",
-            "Only across two rolls"
-          ],
-          "answer": 0,
-          "rationale": "A single outcome cannot simultaneously be 1 and 6.",
-          "learningPathLessonId": "d772-s3-l2-2",
-          "topicId": "d772-s3-l2-2"
-        },
-        {
-          "id": "d772-s3-l2-2-practice-2",
-          "prompt": "Two disjoint events each have positive probability. Are they independent?",
-          "options": [
-            "Always",
-            "Yes if their probabilities are equal",
-            "No",
-            "Only when their sum is 1"
-          ],
-          "answer": 2,
-          "rationale": "Occurrence of one changes the probability of the other to zero.",
-          "learningPathLessonId": "d772-s3-l2-2",
-          "topicId": "d772-s3-l2-2"
-        },
-        {
-          "id": "d772-s3-l2-2-practice-3",
-          "prompt": "A and B are disjoint with P(A)=0.2 and P(B)=0.3. What is P(A and B)?",
-          "options": [
-            "0.06",
-            "0.5",
-            "0.1",
-            "0"
-          ],
-          "answer": 3,
-          "rationale": "Disjoint events have no overlap.",
-          "learningPathLessonId": "d772-s3-l2-2",
-          "topicId": "d772-s3-l2-2"
-        }
-      ],
       "references": [
         {
           "source": "OpenStax Introductory Statistics 2e",
@@ -2774,6 +2321,10 @@
           "Disjoint events",
           "Events that cannot happen together; also called mutually exclusive."
         ]
+      ],
+      "practiceLessonIds": [
+        "d772-s3-l2-1",
+        "d772-s3-l2-2"
       ]
     },
     "d772-s3-l2-quiz": {
@@ -2804,92 +2355,6 @@
           "P(two red)=(3/5)(2/4)=3/10."
         ]
       },
-      "practice": [
-        {
-          "id": "d772-s3-l2-1-practice-1",
-          "prompt": "Two fair dice are rolled independently. What is P(two sixes)?",
-          "options": [
-            "1/6",
-            "1/12",
-            "1/36",
-            "1/3"
-          ],
-          "answer": 2,
-          "rationale": "Multiply 1/6 by 1/6.",
-          "learningPathLessonId": "d772-s3-l2-1",
-          "topicId": "d772-s3-l2-1"
-        },
-        {
-          "id": "d772-s3-l2-1-practice-2",
-          "prompt": "A bag has 3 red and 2 blue tokens. After a red token is removed, what is P(red on the next draw)?",
-          "options": [
-            "3/5",
-            "2/4",
-            "2/5",
-            "3/4"
-          ],
-          "answer": 1,
-          "rationale": "There are now 2 red tokens among 4 total tokens.",
-          "learningPathLessonId": "d772-s3-l2-1",
-          "topicId": "d772-s3-l2-1"
-        },
-        {
-          "id": "d772-s3-l2-1-practice-3",
-          "prompt": "Which statement defines independence?",
-          "options": [
-            "The events cannot occur together",
-            "Knowing one event occurred does not change the probability of the other",
-            "The probabilities must be equal",
-            "Both events must be rare"
-          ],
-          "answer": 1,
-          "rationale": "Independence is about unchanged conditional probability.",
-          "learningPathLessonId": "d772-s3-l2-1",
-          "topicId": "d772-s3-l2-1"
-        },
-        {
-          "id": "d772-s3-l2-2-practice-1",
-          "prompt": "On one die roll, are getting a 1 and getting a 6 disjoint?",
-          "options": [
-            "Yes, one roll cannot have both results",
-            "No, both are possible in the sample space",
-            "Only if the die is biased",
-            "Only across two rolls"
-          ],
-          "answer": 0,
-          "rationale": "A single outcome cannot simultaneously be 1 and 6.",
-          "learningPathLessonId": "d772-s3-l2-2",
-          "topicId": "d772-s3-l2-2"
-        },
-        {
-          "id": "d772-s3-l2-2-practice-2",
-          "prompt": "Two disjoint events each have positive probability. Are they independent?",
-          "options": [
-            "Always",
-            "Yes if their probabilities are equal",
-            "No",
-            "Only when their sum is 1"
-          ],
-          "answer": 2,
-          "rationale": "Occurrence of one changes the probability of the other to zero.",
-          "learningPathLessonId": "d772-s3-l2-2",
-          "topicId": "d772-s3-l2-2"
-        },
-        {
-          "id": "d772-s3-l2-2-practice-3",
-          "prompt": "A and B are disjoint with P(A)=0.2 and P(B)=0.3. What is P(A and B)?",
-          "options": [
-            "0.06",
-            "0.5",
-            "0.1",
-            "0"
-          ],
-          "answer": 3,
-          "rationale": "Disjoint events have no overlap.",
-          "learningPathLessonId": "d772-s3-l2-2",
-          "topicId": "d772-s3-l2-2"
-        }
-      ],
       "references": [
         {
           "source": "OpenStax Introductory Statistics 2e",
@@ -2925,6 +2390,10 @@
           "Disjoint events",
           "Events that cannot happen together; also called mutually exclusive."
         ]
+      ],
+      "practiceLessonIds": [
+        "d772-s3-l2-1",
+        "d772-s3-l2-2"
       ]
     },
     "d772-s3-l3": {
@@ -2965,176 +2434,6 @@
           "Neither=40−25=15."
         ]
       },
-      "practice": [
-        {
-          "id": "d772-s3-l3-1-practice-1",
-          "prompt": "18 students take math and 5 of them also take science. How many take math only?",
-          "options": [
-            "23",
-            "18",
-            "13",
-            "5"
-          ],
-          "answer": 2,
-          "rationale": "Remove the overlap: 18−5=13.",
-          "learningPathLessonId": "d772-s3-l3-1",
-          "topicId": "d772-s3-l3-1"
-        },
-        {
-          "id": "d772-s3-l3-1-practice-2",
-          "prompt": "A Venn diagram has A-only=9, both=4, B-only=7, neither=10. How many are in A?",
-          "options": [
-            "9",
-            "13",
-            "20",
-            "30"
-          ],
-          "answer": 1,
-          "rationale": "All of A includes A-only and the overlap: 9+4=13.",
-          "learningPathLessonId": "d772-s3-l3-1",
-          "topicId": "d772-s3-l3-1"
-        },
-        {
-          "id": "d772-s3-l3-1-practice-3",
-          "prompt": "In that same diagram, how many are outside both circles?",
-          "options": [
-            "10",
-            "20",
-            "4",
-            "7"
-          ],
-          "answer": 0,
-          "rationale": "Neither is the region outside both circles.",
-          "learningPathLessonId": "d772-s3-l3-1",
-          "topicId": "d772-s3-l3-1"
-        },
-        {
-          "id": "d772-s3-l3-2-practice-1",
-          "prompt": "P(A)=0.4, P(B)=0.3, and P(both)=0.1. What is P(A or B)?",
-          "options": [
-            "0.12",
-            "0.8",
-            "0.6",
-            "0.7"
-          ],
-          "answer": 2,
-          "rationale": "0.4+0.3−0.1=0.6.",
-          "learningPathLessonId": "d772-s3-l3-2",
-          "topicId": "d772-s3-l3-2"
-        },
-        {
-          "id": "d772-s3-l3-2-practice-2",
-          "prompt": "In probability, inclusive OR means:",
-          "options": [
-            "A or B, but never both",
-            "A, B, or both",
-            "Only the overlap",
-            "Neither event"
-          ],
-          "answer": 1,
-          "rationale": "Union includes outcomes in either event, including the overlap.",
-          "learningPathLessonId": "d772-s3-l3-2",
-          "topicId": "d772-s3-l3-2"
-        },
-        {
-          "id": "d772-s3-l3-2-practice-3",
-          "prompt": "Disjoint events have probabilities 0.25 and 0.35. What is the probability of either?",
-          "options": [
-            "0.0875",
-            "0.10",
-            "0.60",
-            "0.35"
-          ],
-          "answer": 2,
-          "rationale": "No overlap is subtracted, so 0.25+0.35=0.60.",
-          "learningPathLessonId": "d772-s3-l3-2",
-          "topicId": "d772-s3-l3-2"
-        },
-        {
-          "id": "d772-s3-l3-3-practice-1",
-          "prompt": "A fair coin and a fair die are independent. What is P(heads and a 6)?",
-          "options": [
-            "1/2",
-            "1/6",
-            "1/12",
-            "1/8"
-          ],
-          "answer": 2,
-          "rationale": "Multiply 1/2 by 1/6.",
-          "learningPathLessonId": "d772-s3-l3-3",
-          "topicId": "d772-s3-l3-3"
-        },
-        {
-          "id": "d772-s3-l3-3-practice-2",
-          "prompt": "A bag has 2 gold and 3 silver tokens. Draw two without replacement. What is P(two gold)?",
-          "options": [
-            "4/25",
-            "1/10",
-            "2/5",
-            "1/5"
-          ],
-          "answer": 1,
-          "rationale": "(2/5)(1/4)=2/20=1/10.",
-          "learningPathLessonId": "d772-s3-l3-3",
-          "topicId": "d772-s3-l3-3"
-        },
-        {
-          "id": "d772-s3-l3-3-practice-3",
-          "prompt": "Which Venn region represents A ∩ B?",
-          "options": [
-            "Both circles including their outer regions",
-            "Outside both circles",
-            "The overlap only",
-            "A only"
-          ],
-          "answer": 2,
-          "rationale": "Intersection means membership in both events.",
-          "learningPathLessonId": "d772-s3-l3-3",
-          "topicId": "d772-s3-l3-3"
-        },
-        {
-          "id": "d772-s3-l3-4-practice-1",
-          "prompt": "P(A)=0.72. What is P(not A)?",
-          "options": [
-            "0.72",
-            "0.28",
-            "1.72",
-            "0.18"
-          ],
-          "answer": 1,
-          "rationale": "1−0.72=0.28.",
-          "learningPathLessonId": "d772-s3-l3-4",
-          "topicId": "d772-s3-l3-4"
-        },
-        {
-          "id": "d772-s3-l3-4-practice-2",
-          "prompt": "Two independent trials each succeed with probability 0.2. What is P(at least one success)?",
-          "options": [
-            "0.04",
-            "0.40",
-            "0.36",
-            "0.80"
-          ],
-          "answer": 2,
-          "rationale": "P(no successes)=0.8×0.8=0.64; complement is 0.36.",
-          "learningPathLessonId": "d772-s3-l3-4",
-          "topicId": "d772-s3-l3-4"
-        },
-        {
-          "id": "d772-s3-l3-4-practice-3",
-          "prompt": "What is the complement of at least one head in three coin tosses?",
-          "options": [
-            "Three heads",
-            "Exactly one head",
-            "At least one tail",
-            "No heads"
-          ],
-          "answer": 3,
-          "rationale": "The only way to fail to get at least one head is to get no heads.",
-          "learningPathLessonId": "d772-s3-l3-4",
-          "topicId": "d772-s3-l3-4"
-        }
-      ],
       "references": [
         {
           "source": "OpenStax Introductory Statistics 2e",
@@ -3170,6 +2469,12 @@
           "Complement",
           "All outcomes in the sample space that are not in the event."
         ]
+      ],
+      "practiceLessonIds": [
+        "d772-s3-l3-1",
+        "d772-s3-l3-2",
+        "d772-s3-l3-3",
+        "d772-s3-l3-4"
       ]
     },
     "d772-s3-l3-summary": {
@@ -3210,92 +2515,6 @@
           "Neither=40−25=15."
         ]
       },
-      "practice": [
-        {
-          "id": "d772-s3-l3-1-practice-1",
-          "prompt": "18 students take math and 5 of them also take science. How many take math only?",
-          "options": [
-            "23",
-            "18",
-            "13",
-            "5"
-          ],
-          "answer": 2,
-          "rationale": "Remove the overlap: 18−5=13.",
-          "learningPathLessonId": "d772-s3-l3-1",
-          "topicId": "d772-s3-l3-1"
-        },
-        {
-          "id": "d772-s3-l3-1-practice-2",
-          "prompt": "A Venn diagram has A-only=9, both=4, B-only=7, neither=10. How many are in A?",
-          "options": [
-            "9",
-            "13",
-            "20",
-            "30"
-          ],
-          "answer": 1,
-          "rationale": "All of A includes A-only and the overlap: 9+4=13.",
-          "learningPathLessonId": "d772-s3-l3-1",
-          "topicId": "d772-s3-l3-1"
-        },
-        {
-          "id": "d772-s3-l3-1-practice-3",
-          "prompt": "In that same diagram, how many are outside both circles?",
-          "options": [
-            "10",
-            "20",
-            "4",
-            "7"
-          ],
-          "answer": 0,
-          "rationale": "Neither is the region outside both circles.",
-          "learningPathLessonId": "d772-s3-l3-1",
-          "topicId": "d772-s3-l3-1"
-        },
-        {
-          "id": "d772-s3-l3-2-practice-1",
-          "prompt": "P(A)=0.4, P(B)=0.3, and P(both)=0.1. What is P(A or B)?",
-          "options": [
-            "0.12",
-            "0.8",
-            "0.6",
-            "0.7"
-          ],
-          "answer": 2,
-          "rationale": "0.4+0.3−0.1=0.6.",
-          "learningPathLessonId": "d772-s3-l3-2",
-          "topicId": "d772-s3-l3-2"
-        },
-        {
-          "id": "d772-s3-l3-2-practice-2",
-          "prompt": "In probability, inclusive OR means:",
-          "options": [
-            "A or B, but never both",
-            "A, B, or both",
-            "Only the overlap",
-            "Neither event"
-          ],
-          "answer": 1,
-          "rationale": "Union includes outcomes in either event, including the overlap.",
-          "learningPathLessonId": "d772-s3-l3-2",
-          "topicId": "d772-s3-l3-2"
-        },
-        {
-          "id": "d772-s3-l3-2-practice-3",
-          "prompt": "Disjoint events have probabilities 0.25 and 0.35. What is the probability of either?",
-          "options": [
-            "0.0875",
-            "0.10",
-            "0.60",
-            "0.35"
-          ],
-          "answer": 2,
-          "rationale": "No overlap is subtracted, so 0.25+0.35=0.60.",
-          "learningPathLessonId": "d772-s3-l3-2",
-          "topicId": "d772-s3-l3-2"
-        }
-      ],
       "references": [
         {
           "source": "OpenStax Introductory Statistics 2e",
@@ -3331,6 +2550,12 @@
           "Complement",
           "All outcomes in the sample space that are not in the event."
         ]
+      ],
+      "practiceLessonIds": [
+        "d772-s3-l3-1",
+        "d772-s3-l3-2",
+        "d772-s3-l3-3",
+        "d772-s3-l3-4"
       ]
     },
     "d772-s3-l3-quiz": {
@@ -3371,92 +2596,6 @@
           "Neither=40−25=15."
         ]
       },
-      "practice": [
-        {
-          "id": "d772-s3-l3-1-practice-1",
-          "prompt": "18 students take math and 5 of them also take science. How many take math only?",
-          "options": [
-            "23",
-            "18",
-            "13",
-            "5"
-          ],
-          "answer": 2,
-          "rationale": "Remove the overlap: 18−5=13.",
-          "learningPathLessonId": "d772-s3-l3-1",
-          "topicId": "d772-s3-l3-1"
-        },
-        {
-          "id": "d772-s3-l3-1-practice-2",
-          "prompt": "A Venn diagram has A-only=9, both=4, B-only=7, neither=10. How many are in A?",
-          "options": [
-            "9",
-            "13",
-            "20",
-            "30"
-          ],
-          "answer": 1,
-          "rationale": "All of A includes A-only and the overlap: 9+4=13.",
-          "learningPathLessonId": "d772-s3-l3-1",
-          "topicId": "d772-s3-l3-1"
-        },
-        {
-          "id": "d772-s3-l3-1-practice-3",
-          "prompt": "In that same diagram, how many are outside both circles?",
-          "options": [
-            "10",
-            "20",
-            "4",
-            "7"
-          ],
-          "answer": 0,
-          "rationale": "Neither is the region outside both circles.",
-          "learningPathLessonId": "d772-s3-l3-1",
-          "topicId": "d772-s3-l3-1"
-        },
-        {
-          "id": "d772-s3-l3-2-practice-1",
-          "prompt": "P(A)=0.4, P(B)=0.3, and P(both)=0.1. What is P(A or B)?",
-          "options": [
-            "0.12",
-            "0.8",
-            "0.6",
-            "0.7"
-          ],
-          "answer": 2,
-          "rationale": "0.4+0.3−0.1=0.6.",
-          "learningPathLessonId": "d772-s3-l3-2",
-          "topicId": "d772-s3-l3-2"
-        },
-        {
-          "id": "d772-s3-l3-2-practice-2",
-          "prompt": "In probability, inclusive OR means:",
-          "options": [
-            "A or B, but never both",
-            "A, B, or both",
-            "Only the overlap",
-            "Neither event"
-          ],
-          "answer": 1,
-          "rationale": "Union includes outcomes in either event, including the overlap.",
-          "learningPathLessonId": "d772-s3-l3-2",
-          "topicId": "d772-s3-l3-2"
-        },
-        {
-          "id": "d772-s3-l3-2-practice-3",
-          "prompt": "Disjoint events have probabilities 0.25 and 0.35. What is the probability of either?",
-          "options": [
-            "0.0875",
-            "0.10",
-            "0.60",
-            "0.35"
-          ],
-          "answer": 2,
-          "rationale": "No overlap is subtracted, so 0.25+0.35=0.60.",
-          "learningPathLessonId": "d772-s3-l3-2",
-          "topicId": "d772-s3-l3-2"
-        }
-      ],
       "references": [
         {
           "source": "OpenStax Introductory Statistics 2e",
@@ -3492,6 +2631,12 @@
           "Complement",
           "All outcomes in the sample space that are not in the event."
         ]
+      ],
+      "practiceLessonIds": [
+        "d772-s3-l3-1",
+        "d772-s3-l3-2",
+        "d772-s3-l3-3",
+        "d772-s3-l3-4"
       ]
     },
     "d772-s3-l4": {
@@ -3522,92 +2667,6 @@
           "Expected net value=−$1 per play."
         ]
       },
-      "practice": [
-        {
-          "id": "d772-s3-l4-1-practice-1",
-          "prompt": "X is 0 with probability 0.75 and 8 with probability 0.25. What is E(X)?",
-          "options": [
-            "4",
-            "6",
-            "2",
-            "8"
-          ],
-          "answer": 2,
-          "rationale": "0(0.75)+8(0.25)=2.",
-          "learningPathLessonId": "d772-s3-l4-1",
-          "topicId": "d772-s3-l4-1"
-        },
-        {
-          "id": "d772-s3-l4-1-practice-2",
-          "prompt": "Which is a valid probability distribution?",
-          "options": [
-            "Probabilities −0.1 and 1.1",
-            "Probabilities 0.4 and 0.4",
-            "Probabilities 0.7 and 0.5",
-            "Probabilities 0.3 and 0.7"
-          ],
-          "answer": 3,
-          "rationale": "Both probabilities are nonnegative and total 1.",
-          "learningPathLessonId": "d772-s3-l4-1",
-          "topicId": "d772-s3-l4-1"
-        },
-        {
-          "id": "d772-s3-l4-1-practice-3",
-          "prompt": "A ticket costs $2 and pays $10 with probability 0.2, otherwise $0. What is the expected NET value?",
-          "options": [
-            "$0",
-            "$2",
-            "$8",
-            "−$2"
-          ],
-          "answer": 0,
-          "rationale": "Expected payout is $2; subtract the $2 cost to get $0.",
-          "learningPathLessonId": "d772-s3-l4-1",
-          "topicId": "d772-s3-l4-1"
-        },
-        {
-          "id": "d772-s3-l4-2-practice-1",
-          "prompt": "A game has expected net value −$0.50. What does this mean?",
-          "options": [
-            "Every play loses exactly $0.50",
-            "The long-run average loss is $0.50 per play",
-            "A win becomes due after losses",
-            "Winning is impossible"
-          ],
-          "answer": 1,
-          "rationale": "Individual plays vary; the expectation describes the average over repetitions.",
-          "learningPathLessonId": "d772-s3-l4-2",
-          "topicId": "d772-s3-l4-2"
-        },
-        {
-          "id": "d772-s3-l4-2-practice-2",
-          "prompt": "One fair die has expected value 3.5. Is 3.5 possible on a single roll?",
-          "options": [
-            "Yes, on a fair die",
-            "No; an expected value need not be an individual outcome",
-            "Only after an odd number of rolls",
-            "The expected value must be wrong"
-          ],
-          "answer": 1,
-          "rationale": "The mean can fall between possible outcomes.",
-          "learningPathLessonId": "d772-s3-l4-2",
-          "topicId": "d772-s3-l4-2"
-        },
-        {
-          "id": "d772-s3-l4-2-practice-3",
-          "prompt": "Plan A has expected net value $4; Plan B has $2. Which statement is supported?",
-          "options": [
-            "A guarantees more money on the next trial",
-            "A has a higher long-run average under the stated models",
-            "B cannot ever outperform A",
-            "The plans have identical risk"
-          ],
-          "answer": 1,
-          "rationale": "A higher expectation alone does not determine one-trial results or variability.",
-          "learningPathLessonId": "d772-s3-l4-2",
-          "topicId": "d772-s3-l4-2"
-        }
-      ],
       "references": [
         {
           "source": "OpenStax Introductory Statistics 2e",
@@ -3643,6 +2702,10 @@
           "Variability",
           "How much individual outcomes differ; expectation alone does not describe this risk."
         ]
+      ],
+      "practiceLessonIds": [
+        "d772-s3-l4-1",
+        "d772-s3-l4-2"
       ]
     },
     "d772-s3-l4-summary": {
@@ -3673,92 +2736,6 @@
           "Expected net value=−$1 per play."
         ]
       },
-      "practice": [
-        {
-          "id": "d772-s3-l4-1-practice-1",
-          "prompt": "X is 0 with probability 0.75 and 8 with probability 0.25. What is E(X)?",
-          "options": [
-            "4",
-            "6",
-            "2",
-            "8"
-          ],
-          "answer": 2,
-          "rationale": "0(0.75)+8(0.25)=2.",
-          "learningPathLessonId": "d772-s3-l4-1",
-          "topicId": "d772-s3-l4-1"
-        },
-        {
-          "id": "d772-s3-l4-1-practice-2",
-          "prompt": "Which is a valid probability distribution?",
-          "options": [
-            "Probabilities −0.1 and 1.1",
-            "Probabilities 0.4 and 0.4",
-            "Probabilities 0.7 and 0.5",
-            "Probabilities 0.3 and 0.7"
-          ],
-          "answer": 3,
-          "rationale": "Both probabilities are nonnegative and total 1.",
-          "learningPathLessonId": "d772-s3-l4-1",
-          "topicId": "d772-s3-l4-1"
-        },
-        {
-          "id": "d772-s3-l4-1-practice-3",
-          "prompt": "A ticket costs $2 and pays $10 with probability 0.2, otherwise $0. What is the expected NET value?",
-          "options": [
-            "$0",
-            "$2",
-            "$8",
-            "−$2"
-          ],
-          "answer": 0,
-          "rationale": "Expected payout is $2; subtract the $2 cost to get $0.",
-          "learningPathLessonId": "d772-s3-l4-1",
-          "topicId": "d772-s3-l4-1"
-        },
-        {
-          "id": "d772-s3-l4-2-practice-1",
-          "prompt": "A game has expected net value −$0.50. What does this mean?",
-          "options": [
-            "Every play loses exactly $0.50",
-            "The long-run average loss is $0.50 per play",
-            "A win becomes due after losses",
-            "Winning is impossible"
-          ],
-          "answer": 1,
-          "rationale": "Individual plays vary; the expectation describes the average over repetitions.",
-          "learningPathLessonId": "d772-s3-l4-2",
-          "topicId": "d772-s3-l4-2"
-        },
-        {
-          "id": "d772-s3-l4-2-practice-2",
-          "prompt": "One fair die has expected value 3.5. Is 3.5 possible on a single roll?",
-          "options": [
-            "Yes, on a fair die",
-            "No; an expected value need not be an individual outcome",
-            "Only after an odd number of rolls",
-            "The expected value must be wrong"
-          ],
-          "answer": 1,
-          "rationale": "The mean can fall between possible outcomes.",
-          "learningPathLessonId": "d772-s3-l4-2",
-          "topicId": "d772-s3-l4-2"
-        },
-        {
-          "id": "d772-s3-l4-2-practice-3",
-          "prompt": "Plan A has expected net value $4; Plan B has $2. Which statement is supported?",
-          "options": [
-            "A guarantees more money on the next trial",
-            "A has a higher long-run average under the stated models",
-            "B cannot ever outperform A",
-            "The plans have identical risk"
-          ],
-          "answer": 1,
-          "rationale": "A higher expectation alone does not determine one-trial results or variability.",
-          "learningPathLessonId": "d772-s3-l4-2",
-          "topicId": "d772-s3-l4-2"
-        }
-      ],
       "references": [
         {
           "source": "OpenStax Introductory Statistics 2e",
@@ -3794,6 +2771,10 @@
           "Variability",
           "How much individual outcomes differ; expectation alone does not describe this risk."
         ]
+      ],
+      "practiceLessonIds": [
+        "d772-s3-l4-1",
+        "d772-s3-l4-2"
       ]
     },
     "d772-s3-l4-quiz": {
@@ -3824,92 +2805,6 @@
           "Expected net value=−$1 per play."
         ]
       },
-      "practice": [
-        {
-          "id": "d772-s3-l4-1-practice-1",
-          "prompt": "X is 0 with probability 0.75 and 8 with probability 0.25. What is E(X)?",
-          "options": [
-            "4",
-            "6",
-            "2",
-            "8"
-          ],
-          "answer": 2,
-          "rationale": "0(0.75)+8(0.25)=2.",
-          "learningPathLessonId": "d772-s3-l4-1",
-          "topicId": "d772-s3-l4-1"
-        },
-        {
-          "id": "d772-s3-l4-1-practice-2",
-          "prompt": "Which is a valid probability distribution?",
-          "options": [
-            "Probabilities −0.1 and 1.1",
-            "Probabilities 0.4 and 0.4",
-            "Probabilities 0.7 and 0.5",
-            "Probabilities 0.3 and 0.7"
-          ],
-          "answer": 3,
-          "rationale": "Both probabilities are nonnegative and total 1.",
-          "learningPathLessonId": "d772-s3-l4-1",
-          "topicId": "d772-s3-l4-1"
-        },
-        {
-          "id": "d772-s3-l4-1-practice-3",
-          "prompt": "A ticket costs $2 and pays $10 with probability 0.2, otherwise $0. What is the expected NET value?",
-          "options": [
-            "$0",
-            "$2",
-            "$8",
-            "−$2"
-          ],
-          "answer": 0,
-          "rationale": "Expected payout is $2; subtract the $2 cost to get $0.",
-          "learningPathLessonId": "d772-s3-l4-1",
-          "topicId": "d772-s3-l4-1"
-        },
-        {
-          "id": "d772-s3-l4-2-practice-1",
-          "prompt": "A game has expected net value −$0.50. What does this mean?",
-          "options": [
-            "Every play loses exactly $0.50",
-            "The long-run average loss is $0.50 per play",
-            "A win becomes due after losses",
-            "Winning is impossible"
-          ],
-          "answer": 1,
-          "rationale": "Individual plays vary; the expectation describes the average over repetitions.",
-          "learningPathLessonId": "d772-s3-l4-2",
-          "topicId": "d772-s3-l4-2"
-        },
-        {
-          "id": "d772-s3-l4-2-practice-2",
-          "prompt": "One fair die has expected value 3.5. Is 3.5 possible on a single roll?",
-          "options": [
-            "Yes, on a fair die",
-            "No; an expected value need not be an individual outcome",
-            "Only after an odd number of rolls",
-            "The expected value must be wrong"
-          ],
-          "answer": 1,
-          "rationale": "The mean can fall between possible outcomes.",
-          "learningPathLessonId": "d772-s3-l4-2",
-          "topicId": "d772-s3-l4-2"
-        },
-        {
-          "id": "d772-s3-l4-2-practice-3",
-          "prompt": "Plan A has expected net value $4; Plan B has $2. Which statement is supported?",
-          "options": [
-            "A guarantees more money on the next trial",
-            "A has a higher long-run average under the stated models",
-            "B cannot ever outperform A",
-            "The plans have identical risk"
-          ],
-          "answer": 1,
-          "rationale": "A higher expectation alone does not determine one-trial results or variability.",
-          "learningPathLessonId": "d772-s3-l4-2",
-          "topicId": "d772-s3-l4-2"
-        }
-      ],
       "references": [
         {
           "source": "OpenStax Introductory Statistics 2e",
@@ -3945,6 +2840,10 @@
           "Variability",
           "How much individual outcomes differ; expectation alone does not describe this risk."
         ]
+      ],
+      "practiceLessonIds": [
+        "d772-s3-l4-1",
+        "d772-s3-l4-2"
       ]
     },
     "d772-s3-review": {
@@ -4000,162 +2899,6 @@
           "text": "Expected value is a long-run average, not a promised result on the next trial; it may not be a possible single outcome. For a decision, compare net values consistently and consider variability, affordability, and model assumptions."
         }
       ],
-      "practice": [
-        {
-          "id": "d772-s3-l1-1-practice-1",
-          "prompt": "What is the sample space for one toss of a coin?",
-          "options": [
-            "{heads, tails}",
-            "{heads}",
-            "0.5",
-            "The number of tosses"
-          ],
-          "answer": 0,
-          "rationale": "The sample space includes every possible outcome.",
-          "learningPathLessonId": "d772-s3-l1-1",
-          "topicId": "d772-s3-l1-1"
-        },
-        {
-          "id": "d772-s3-l1-2-practice-1",
-          "prompt": "A fair die is rolled once. What is P(result greater than 4)?",
-          "options": [
-            "1/6",
-            "1/3",
-            "1/2",
-            "2/3"
-          ],
-          "answer": 1,
-          "rationale": "The favorable outcomes are 5 and 6: 2/6=1/3.",
-          "learningPathLessonId": "d772-s3-l1-2",
-          "topicId": "d772-s3-l1-2"
-        },
-        {
-          "id": "d772-s3-l1-3-practice-1",
-          "prompt": "A player succeeds in 18 of 60 attempts. What is the empirical probability of success?",
-          "options": [
-            "0.18",
-            "0.30",
-            "0.60",
-            "3.33"
-          ],
-          "answer": 1,
-          "rationale": "18/60=0.30.",
-          "learningPathLessonId": "d772-s3-l1-3",
-          "topicId": "d772-s3-l1-3"
-        },
-        {
-          "id": "d772-s3-l2-1-practice-1",
-          "prompt": "Two fair dice are rolled independently. What is P(two sixes)?",
-          "options": [
-            "1/6",
-            "1/12",
-            "1/36",
-            "1/3"
-          ],
-          "answer": 2,
-          "rationale": "Multiply 1/6 by 1/6.",
-          "learningPathLessonId": "d772-s3-l2-1",
-          "topicId": "d772-s3-l2-1"
-        },
-        {
-          "id": "d772-s3-l2-2-practice-1",
-          "prompt": "On one die roll, are getting a 1 and getting a 6 disjoint?",
-          "options": [
-            "Yes, one roll cannot have both results",
-            "No, both are possible in the sample space",
-            "Only if the die is biased",
-            "Only across two rolls"
-          ],
-          "answer": 0,
-          "rationale": "A single outcome cannot simultaneously be 1 and 6.",
-          "learningPathLessonId": "d772-s3-l2-2",
-          "topicId": "d772-s3-l2-2"
-        },
-        {
-          "id": "d772-s3-l3-1-practice-1",
-          "prompt": "18 students take math and 5 of them also take science. How many take math only?",
-          "options": [
-            "23",
-            "18",
-            "13",
-            "5"
-          ],
-          "answer": 2,
-          "rationale": "Remove the overlap: 18−5=13.",
-          "learningPathLessonId": "d772-s3-l3-1",
-          "topicId": "d772-s3-l3-1"
-        },
-        {
-          "id": "d772-s3-l3-2-practice-1",
-          "prompt": "P(A)=0.4, P(B)=0.3, and P(both)=0.1. What is P(A or B)?",
-          "options": [
-            "0.12",
-            "0.8",
-            "0.6",
-            "0.7"
-          ],
-          "answer": 2,
-          "rationale": "0.4+0.3−0.1=0.6.",
-          "learningPathLessonId": "d772-s3-l3-2",
-          "topicId": "d772-s3-l3-2"
-        },
-        {
-          "id": "d772-s3-l3-3-practice-1",
-          "prompt": "A fair coin and a fair die are independent. What is P(heads and a 6)?",
-          "options": [
-            "1/2",
-            "1/6",
-            "1/12",
-            "1/8"
-          ],
-          "answer": 2,
-          "rationale": "Multiply 1/2 by 1/6.",
-          "learningPathLessonId": "d772-s3-l3-3",
-          "topicId": "d772-s3-l3-3"
-        },
-        {
-          "id": "d772-s3-l3-4-practice-1",
-          "prompt": "P(A)=0.72. What is P(not A)?",
-          "options": [
-            "0.72",
-            "0.28",
-            "1.72",
-            "0.18"
-          ],
-          "answer": 1,
-          "rationale": "1−0.72=0.28.",
-          "learningPathLessonId": "d772-s3-l3-4",
-          "topicId": "d772-s3-l3-4"
-        },
-        {
-          "id": "d772-s3-l4-1-practice-1",
-          "prompt": "X is 0 with probability 0.75 and 8 with probability 0.25. What is E(X)?",
-          "options": [
-            "4",
-            "6",
-            "2",
-            "8"
-          ],
-          "answer": 2,
-          "rationale": "0(0.75)+8(0.25)=2.",
-          "learningPathLessonId": "d772-s3-l4-1",
-          "topicId": "d772-s3-l4-1"
-        },
-        {
-          "id": "d772-s3-l4-2-practice-1",
-          "prompt": "A game has expected net value −$0.50. What does this mean?",
-          "options": [
-            "Every play loses exactly $0.50",
-            "The long-run average loss is $0.50 per play",
-            "A win becomes due after losses",
-            "Winning is impossible"
-          ],
-          "answer": 1,
-          "rationale": "Individual plays vary; the expectation describes the average over repetitions.",
-          "learningPathLessonId": "d772-s3-l4-2",
-          "topicId": "d772-s3-l4-2"
-        }
-      ],
       "references": [
         {
           "source": "OpenStax Introductory Statistics 2e",
@@ -4255,7 +2998,21 @@
           "Variability",
           "How much individual outcomes differ; expectation alone does not describe this risk."
         ]
+      ],
+      "practiceLessonIds": [
+        "d772-s3-l1-1",
+        "d772-s3-l1-2",
+        "d772-s3-l1-3",
+        "d772-s3-l2-1",
+        "d772-s3-l2-2",
+        "d772-s3-l3-1",
+        "d772-s3-l3-2",
+        "d772-s3-l3-3",
+        "d772-s3-l3-4",
+        "d772-s3-l4-1",
+        "d772-s3-l4-2"
       ]
     }
-  }
+  },
+  "lessonId": "d772-s3-review"
 }
