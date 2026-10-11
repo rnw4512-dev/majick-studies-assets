@@ -131,6 +131,9 @@ function baseFor(type,ctx){
  if(type==='oa-competency-ready')return {xp:100,crystals:15,masteryXp:40,eggFragments:4,lootChance:1,hard:true,chest:1,minimumRarity:'celestial'};
  if(type==='course-passed')return {xp:250,crystals:40,masteryXp:100,eggFragments:10,lootChance:1,hard:true,chest:3,minimumRarity:'celestial'};
  if(type==='boss-victory')return {xp:45,crystals:8,masteryXp:8,eggFragments:1,lootChance:.45,hard:true,chest:1};
+ if(type==='endurance-test')return {xp:35,crystals:10,masteryXp:10,eggFragments:1,lootChance:.35,hard:true,chest:1};
+ if(type==='streak-5')return {xp:0,crystals:3,masteryXp:0,eggFragments:0,lootChance:.05,hard:false};
+ if(type==='streak-10')return {xp:0,crystals:0,masteryXp:0,eggFragments:0,lootChance:.15,hard:false,chest:1};
  if(type==='weekly-goal')return {xp:30,crystals:5,masteryXp:8,eggFragments:1,lootChance:.35,hard:false};
  return {xp:0,crystals:0,masteryXp:0,eggFragments:0,lootChance:0,hard:false};
 }
@@ -179,14 +182,16 @@ function award(type,ctx={}){
  const a=account();if(!a)return null;const r=a.rewardCore,key=rewardKey(type,ctx);
  if(r.ledger[key])return r.ledger[key].receipt||null;
  const cfg=baseFor(type,ctx),independent=ctx.independent===true||type==='independent-correct',delayed=ctx.delayed===true||type==='delayed-recall',transfer=ctx.transfer===true||type==='mixed-transfer-success';
+ const beforeXp=Math.max(Number(a.xp||0),Number(a.xpHighWater||0));
  let xp=Number(cfg.xp||0),crystals=Number(cfg.crystals||0);
  if(type==='correct-answer'&&independent){xp+=5;cfg.masteryXp=Number(cfg.masteryXp||0)+5}
  if(type==='correct-answer'&&delayed){xp+=8;cfg.masteryXp=Number(cfg.masteryXp||0)+8}
  if(type==='correct-answer'&&transfer){xp+=8;crystals+=1;cfg.masteryXp=Number(cfg.masteryXp||0)+6}
- a.xp=Math.max(Number(a.xp||0),Number(a.xpHighWater||0))+xp;
+ a.xp=beforeXp+xp;
  a.xpHighWater=Math.max(Number(a.xpHighWater||0),Number(a.xp||0));a.lifetimeXpHighWater=a.xpHighWater;
  a.crystals=Math.max(0,Number(a.crystals||0)+crystals);
- a.chests=Math.max(0,Number(a.chests||0)+Number(cfg.chest||0));
+ const milestoneChest=Math.floor(a.xp/250)>Math.floor(beforeXp/250)?1:0;
+ a.chests=Math.max(0,Number(a.chests||0)+Number(cfg.chest||0)+milestoneChest);
  r.masteryXp+=Number(cfg.masteryXp||0);
  r.eggFragments+=Number(cfg.eggFragments||0);
  if(type==='correct-answer')r.stats.correct++;
@@ -199,7 +204,7 @@ function award(type,ctx={}){
  const drop=treasureDrop(key,cfg,{...ctx,independent,delayed,transfer});
  const receipt={
    key,type,label:type.replace(/-/g,' '),xp,crystals,masteryXp:Number(cfg.masteryXp||0),chests:Number(cfg.chest||0),eggFragments:Number(cfg.eggFragments||0),
-   guardian:gr.guardian,egg:gr.egg,drop,fragmentTotal:r.eggFragments,conjuresReady:Math.floor(r.eggFragments/10),at:Date.now()
+   guardian:gr.guardian,egg:gr.egg,drop,fragmentTotal:r.eggFragments,conjuresReady:Math.floor(r.eggFragments/10),milestoneChest,chests:Number(cfg.chest||0)+milestoneChest,at:Date.now()
  };
  r.ledger[key]={type,at:receipt.at,receipt};r.lastReceipt=receipt;
  save();showReceipt(receipt);
@@ -302,7 +307,8 @@ function patchLegacyGameRewards(){
  const fn=function(q){
    const combo=Number(window.session?.combo||0),d=Number(q?.difficulty||1),hard=d>=4;
    const receipt=award('correct-answer',{key:'game:'+String(state()?.activeCourse||'')+':'+String(q?.id||'q')+':'+Date.now(),course:state()?.activeCourse,qid:q?.id,difficulty:d,hard,independent:true,source:'game-realm'});
-   if(combo>0&&combo%5===0)award('weekly-goal',{key:'combo5:'+String(state()?.activeCourse||'')+':'+Math.floor(Date.now()/1000),source:'combo',difficulty:d});
+   if(combo>0&&combo%5===0)award('streak-5',{key:'streak5:'+String(state()?.activeCourse||'')+':'+String(q?.id||'q')+':'+combo,source:'combo',difficulty:d});
+   if(combo>0&&combo%10===0)award('streak-10',{key:'streak10:'+String(state()?.activeCourse||'')+':'+String(q?.id||'q')+':'+combo,source:'combo',difficulty:d});
    if(window.session)window.session.reward={xp:receipt?.xp||0,cr:receipt?.crystals||0};
    return receipt;
  };fn.__majickRewardCore=true;window.grantMoonlight=fn;
