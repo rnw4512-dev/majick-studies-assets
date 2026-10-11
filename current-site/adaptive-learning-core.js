@@ -286,6 +286,12 @@ function rememberMisconception(q,choice){
  const p=progress(),key=misconceptionKey(q,choice),row=p.misconceptionMemory[key]||{count:0,concepts:{},lastAt:0};
  row.count++;row.concepts[current().concept.id]=(row.concepts[current().concept.id]||0)+1;row.lastAt=Date.now();p.misconceptionMemory[key]=row;return key;
 }
+
+function misconceptionMemoryHtml(){
+ const rows=misconceptionSummary().slice(0,5);if(!rows.length)return '';
+ return '<div class="v349MisMemory"><b>Misconception Memory</b><p>Majick remembers repeated error patterns across lessons.</p>'+rows.map(x=>'<span class="'+(x.count>=3?'hot':'')+'"><strong>'+E(x.key)+'</strong><small>'+x.count+' times across '+x.conceptCount+' concept'+(x.conceptCount===1?'':'s')+'</small></span>').join('')+'</div>';
+}
+
 function misconceptionSummary(){
  return Object.entries(progress().misconceptionMemory||{}).map(([key,v])=>({key,count:Number(v.count||0),conceptCount:Object.keys(v.concepts||{}).length,lastAt:v.lastAt||0})).sort((a,b)=>b.count-a.count);
 }
@@ -347,6 +353,22 @@ function confidenceHtml(){
  const p=state().pendingAnswer;if(!p)return '';
  return '<div class="v349Confidence"><b>How sure were you?</b><p>This changes what Majick reviews later.</p><div><button data-v349-confidence="guessing">Guessing</button><button data-v349-confidence="somewhat">Somewhat sure</button><button data-v349-confidence="very-sure">Very sure</button></div></div>';
 }
+
+function guardianPersona(){
+ const name=String(guardian().name||'').toLowerCase();
+ if(/velora/.test(name))return {style:'precise',opening:'Let’s identify the exact distinction before we answer.',success:'You named the rule and used it independently.'};
+ if(/cascade/.test(name))return {style:'playful',opening:'Let’s turn the clue into a pattern you can spot again.',success:'You caught the pattern without me giving it away.'};
+ if(/solstice/.test(name))return {style:'questioning',opening:'What evidence in the question tells you which path to take?',success:'You followed the evidence instead of guessing.'};
+ if(/aurelia/.test(name))return {style:'steady',opening:'One step at a time: meaning first, then method.',success:'You kept the reasoning organized from start to finish.'};
+ if(/vesper/.test(name))return {style:'minimal',opening:'Find the clue. Name the strategy. Then move.',success:'Clean recognition. No extra help needed.'};
+ if(/briar/.test(name))return {style:'contrast',opening:'What tempting wrong answer is this question trying to pull you toward?',success:'You avoided the trap and chose from meaning.'};
+ if(/zephyr/.test(name))return {style:'visual',opening:'Picture the relationship before calculating.',success:'The structure made sense before the numbers did.'};
+ if(/prism/.test(name))return {style:'connections',opening:'Which earlier idea connects to this one?',success:'You connected the new problem to what you already know.'};
+ if(/rook/.test(name))return {style:'strategy',opening:'What is the shortest correct route through this problem?',success:'Efficient and correct—strategy before arithmetic.'};
+ if(/solara/.test(name))return {style:'encouraging',opening:'Use the support you need, then let it fade.',success:'You needed less support this time—that matters.'};
+ return {style:'balanced',opening:'Name the strategy before you answer. Recognition comes before recall.',success:'You solved it with stronger independence.'};
+}
+
 function guardianMode(){
  const x=supportLevel(),m=mastery();
  if(x.level>=3&&m.independent>=2)return {silent:true,text:'I’m staying quiet unless you ask. Independence is the goal.'};
@@ -355,8 +377,9 @@ function guardianMode(){
  return {silent:false,text:'I’ll model the thinking and then hand more of it back to you.'};
 }
 function guardianCoachHtml(){
- const g=guardian(),gm=guardianMode(),m=mastery();
- return '<div class="v346Guardian '+(gm.silent?'silent':'')+'"><span>'+g.emoji+'</span><b>'+E(g.name)+'</b><p>'+E(m.recurring?'I recognize a repeated trap across your work. We are repairing that pattern, not just this question.':gm.text)+'</p></div>';
+ const g=guardian(),gm=guardianMode(),m=mastery(),persona=guardianPersona();
+ const line=m.recurring?'I recognize a repeated trap across your work. We are repairing that pattern, not just this question.':gm.silent?'I’m staying quiet unless you ask. Independence is the goal.':persona.opening;
+ return '<div class="v346Guardian '+(gm.silent?'silent':'')+'" data-persona="'+E(persona.style)+'"><span>'+g.emoji+'</span><b>'+E(g.name)+'</b><small>'+E(persona.style.toUpperCase())+' TUTOR</small><p>'+E(line)+'</p></div>';
 }
 function languageHtml(q){
  if(!q)return '';
@@ -389,13 +412,28 @@ function microHeatmapHtml(){
  return '<div class="v349Heatmap"><b>Micro-Skill Heatmap</b><div>'+rows.map(x=>'<span class="'+(x.status==='Strong'?'strong':x.status==='Developing'?'developing':x.status==='Needs support'?'weak':'unseen')+'"><i></i>'+E(x.label)+'<small>'+x.accuracy+'%</small></span>').join('')+'</div></div>';
 }
 function recoveryInfo(){
- const st=state(),last=Number(st.lastVisit||0),days=last?Math.floor((Date.now()-last)/86400000):0;
+ const st=state(),days=Number(st.recoveryGapDays||0);
  return {due:days>=3,days};
 }
 function recoveryHtml(){
  const r=recoveryInfo();if(!r.due)return '';
  return '<div class="v349Recovery"><b>Welcome back • '+r.days+' days away</b><p>Before resuming, do a short recall check so Majick can decide whether to continue or refresh.</p><button data-v349-recovery="check">2-minute recall check</button><button data-v349-recovery="resume">Resume where I left off</button></div>';
 }
+
+function memorySweep(){
+ const st=state();st.memorySweep=st.memorySweep||{};
+ const key=current().lesson.id;
+ if(!st.memorySweep[key]||!Array.isArray(st.memorySweep[key].ids)||!st.memorySweep[key].ids.length){
+   st.memorySweep[key]={ids:qset(4,true).map(q=>q.id||q.qid),answers:{}};
+ }
+ return st.memorySweep[key];
+}
+function memorySweepHtml(){
+ const sw=memorySweep(),qs=sw.ids.map(byId).filter(Boolean).slice(0,4);
+ if(!qs.length)return '';
+ return '<div class="v349Sweep"><b>End-of-Session Memory Sweep</b><p>Retrieve before you leave. At least one item may come from an older concept.</p>'+qs.map((q,i)=>'<section><strong>'+(i+1)+'. '+E(q.prompt)+'</strong><div>'+q.options.map(o=>'<button data-v349-sweep="'+E(q.id||q.qid)+'" data-value="'+E(o)+'" '+(sw.answers[q.id||q.qid]?'disabled':'')+'>'+E(o)+'</button>').join('')+'</div>'+(sw.answers[q.id||q.qid]?'<small class="'+(sw.answers[q.id||q.qid].correct?'ok':'bad')+'">'+(sw.answers[q.id||q.qid].correct?'✓ Retrieved':'Review: '+E(q.why||'Revisit this concept tomorrow.'))+'</small>':'')+'</section>').join('')+'</div>';
+}
+
 function tomorrowQueue(){
  const p=progress(),dueSoon=p.spacedQueue.filter(x=>x.dueAt&&x.dueAt<=Date.now()+36*3600000).length,weak=microReceipt().filter(x=>x.status==='Needs support').length,m=mastery();
  return {delayed:dueSoon,weak,mixed:m.transfer<1?1:0};
@@ -467,7 +505,7 @@ function stepBody(){
  if(step===6){const q=ensureQuestion('turn');return '<small>⑦ MY TURN</small><h2>Try it independently</h2>'+(noMathUnlocked(q)?qHtml(q,'turn'):noMathYetHtml(q));}
  if(step===7){
    const counts=m.counts,cat=course().misconceptionCatalog||[];
-   return '<small>⑧ RELATED MISTAKES</small><h2>Learn the tempting wrong answer</h2><div class="v346Mistakes">'+(concept?.anchor?.trap?'<p>⚠ '+E(concept.anchor.trap)+'</p>':'')+cat.slice(0,3).map(x=>'<p>⚠ '+E(x.description||x.label||x.title||String(x))+'</p>').join('')+Object.entries(counts).map(([k,v])=>'<span>'+E(k)+' • '+v+'×</span>').join('')+'</div><button class="btn primary" data-v346-next>Mix It Up →</button>';
+   return '<small>⑧ RELATED MISTAKES</small><h2>Learn the tempting wrong answer</h2>'+misconceptionMemoryHtml()+'<div class="v346Mistakes">'+(concept?.anchor?.trap?'<p>⚠ '+E(concept.anchor.trap)+'</p>':'')+cat.slice(0,3).map(x=>'<p>⚠ '+E(x.description||x.label||x.title||String(x))+'</p>').join('')+Object.entries(counts).map(([k,v])=>'<span>'+E(k)+' • '+v+'×</span>').join('')+'</div><button class="btn primary" data-v346-next>Mix It Up →</button>';
  }
  if(step===8){const q=ensureQuestion('mix',true);return '<small>⑨ MIX IT UP</small><h2>Choose the strategy from the scenario</h2><p>Majick does not tell you which lesson this came from.</p>'+transferLadderHtml()+languageHtml(q)+deconstructHtml(q)+(noMathUnlocked(q)?qHtml(q,'mix'):noMathYetHtml(q));}
  if(step===9){
@@ -481,7 +519,7 @@ function stepBody(){
    return '<small>⑪ MASTERY CHECK • 3 ITEMS</small><h2>Prove it independently</h2>'+qHtml(q,'mastery');
  }
  const due=progress().spacedQueue.find(x=>x.topicId==='adaptive:'+current().concept.id);
- return '<small>⑫ SCHEDULE REVIEW</small><h2>Learning continues after the lesson</h2>'+pathMeterHtml()+tomorrowHtml()+readinessHtml()+'<p>Majick will bring this concept back in mixed practice and delayed retrieval.</p><div class="v346Review"><b>'+(due?'Next review '+new Date(due.dueAt).toLocaleDateString():'Schedule your first delayed review')+'</b><span>'+Math.round(m.acc*100)+'% recent accuracy • '+m.independent+' independent correct</span></div>'+masteryReceiptHtml()+'<button class="btn primary" data-v346-schedule>Schedule Review</button>';
+ return '<small>⑫ SCHEDULE REVIEW</small><h2>Learning continues after the lesson</h2>'+pathMeterHtml()+tomorrowHtml()+readinessHtml()+memorySweepHtml()+'<p>Majick will bring this concept back in mixed practice and delayed retrieval.</p><div class="v346Review"><b>'+(due?'Next review '+new Date(due.dueAt).toLocaleDateString():'Schedule your first delayed review')+'</b><span>'+Math.round(m.acc*100)+'% recent accuracy • '+m.independent+' independent correct</span></div>'+masteryReceiptHtml()+'<button class="btn primary" data-v346-schedule>Schedule Review</button>';
 }
 function tutorButtons(){return '<div class="v346TutorButtons"><button data-v346-tutor="simple">Explain Simpler</button><button data-v346-tutor="example">Give Me an Example</button><button data-v346-tutor="quiz">Quiz Me on This Page</button><button data-v346-tutor="mistakes">Related Mistakes</button></div><div id="v346TutorOut"></div>'}
 function panelHtml(){
@@ -490,7 +528,7 @@ function panelHtml(){
 }
 function renderAdaptive(){const box=document.getElementById('adaptiveLearningCore');if(!box)return;box.innerHTML=panelHtml();bindAdaptive(box)}
 function showAdaptive(){
- const st=state(),was=Number(st.lastVisit||0);st.lastVisit=Date.now();save();
+ const st=state(),was=Number(st.lastVisit||0);st.recoveryGapDays=was?Math.floor((Date.now()-was)/86400000):0;st.lastVisit=Date.now();save();
  document.querySelectorAll('.learnPanel').forEach(p=>p.hidden=true);
  const panel=document.querySelector('.learnPanel[data-panel="adaptive"]');if(panel)panel.hidden=false;
  document.querySelectorAll('.learnTabs button').forEach(b=>b.classList.remove('active'));
@@ -531,6 +569,10 @@ function bindAdaptive(root){
  root.querySelectorAll('[data-v349-confidence]').forEach(b=>b.addEventListener('click',()=>recordConfidence(b.dataset.v349Confidence)));
  root.querySelectorAll('[data-v349-explain]').forEach(b=>b.addEventListener('click',()=>{const out=root.querySelector('[data-v349-explain-out]'),ok=b.dataset.v349Explain==='correct';if(out)out.innerHTML=ok?'<b>✓ Yes — that explains the reasoning.</b>':'<b>Not quite. Choose the explanation tied to the actual relationship in the problem.</b>';creditMicro('interpret',ok);save()}));
  root.querySelectorAll('[data-v349-recovery]').forEach(b=>b.addEventListener('click',()=>{if(b.dataset.v349Recovery==='check'){state().step=9}else{state().step=Math.max(2,Number(state().step||2))}save();renderAdaptive()}));
+ root.querySelectorAll('[data-v349-sweep]').forEach(b=>b.addEventListener('click',()=>{
+   const sw=memorySweep(),q=byId(b.dataset.v349Sweep),ok=String(b.dataset.value)===String(q?.answer);sw.answers[b.dataset.v349Sweep]={choice:b.dataset.value,correct:ok,at:Date.now()};
+   record(q,b.dataset.value,'adaptive-session-sweep',{assisted:false,transfer:true});save();renderAdaptive();
+ }));
 
 }
 function patch(){
@@ -551,6 +593,6 @@ function patch(){
  window.MajickLearningLab.__sharedAdaptive=true;
 }
 patch();
-window.MajickAdaptiveLearning={VERSION,STEPS,lessons,current,mastery,microDefs,microReceipt,learningPath,activeProfile,prereqStatus,misconceptionSummary,supportLevel,tomorrowQueue,show:showAdaptive,render:renderAdaptive,state,progress};
+window.MajickAdaptiveLearning={VERSION,STEPS,lessons,current,mastery,microDefs,microReceipt,learningPath,activeProfile,prereqStatus,misconceptionSummary,supportLevel,tomorrowQueue,memorySweep,guardianPersona,show:showAdaptive,render:renderAdaptive,state,progress};
 document.documentElement.dataset.majickAdaptiveLearning=VERSION;
 })();
