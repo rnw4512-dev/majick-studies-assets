@@ -202,6 +202,20 @@ function noMathYetHtml(q){
  '<section class="v347WordBank"><b>Clue-word bank</b><p>Tap any clue words that match this problem.</p><div>'+bank.map(v=>'<button data-v347-word="'+E(v)+'">'+E(v)+'</button>').join('')+'</div></section>'+
  '<button class="btn primary" data-v347-unlock '+(x.testing&&x.info&&x.strategy?'':'disabled')+'>Unlock the math</button></div>';
 }
+
+function workedComparisonHtml(){
+ const c=current().concept,examples=Array.isArray(c?.examples)?c.examples.filter(Boolean):[];
+ const a=examples[0]||c?.worked?.scenario||c?.teach||current().lesson.goal;
+ const b=examples[1]||('A second scenario uses the same underlying idea but changes the context or values.');
+ if(!a)return '';
+ return '<div class="v349CompareWorked"><small>COMPARE TWO EXAMPLES</small><div><article><b>Example A</b><p>'+E(a)+'</p></article><article><b>Example B</b><p>'+E(b)+'</p></article></div><section><button data-v349-compare="same">What stayed the same?</button><button data-v349-compare="changed">What changed?</button><button data-v349-compare="decision">Why could the answer/decision change?</button></section><p data-v349-compare-out></p></div>';
+}
+function compareWorkedAnswer(kind){
+ if(kind==='same')return 'The underlying concept, relationship, or formula stays the same.';
+ if(kind==='changed')return 'The numbers, context, wording, or conditions can change even when the strategy stays the same.';
+ return 'A different probability, value, condition, or evidence can change the final result even when the method stays the same.';
+}
+
 function workedErrorHtml(){
  const c=current().concept,title=String(c?.title||'').toLowerCase();
  let ex=null;
@@ -498,7 +512,7 @@ function stepBody(){
  if(step===2)return '<small>③ TEACH ME</small><h2>'+E(concept.title||lesson.title)+'</h2>'+prereqHtml()+'<p class="lead">'+E(concept.teach||lesson.goal)+'</p><div class="v347ProfileGuide"><b>Best learning strategy for this concept</b><p>'+E(profileGuide())+'</p></div>'+tutorButtons()+supportMeterHtml()+'<button class="btn primary" data-v346-next>Show Me →</button>';
  if(step===3){
    const ex=concept?.worked?.scenario||concept?.examples?.[0]||concept.teach||lesson.goal,steps=concept?.worked?.steps||['Identify what the scenario is asking.','Name the concept or strategy.','Apply the rule.','Check the answer against the scenario.'];
-   return '<small>④ SHOW ME • WATCH FIRST</small><h2>Worked example</h2><div class="v346Worked"><p>'+E(ex)+'</p><ol>'+steps.map(x=>'<li>'+E(x)+'</li>').join('')+'</ol></div>'+workedErrorHtml()+'<button class="btn primary" data-v346-next>Why does this work? →</button>';
+   return '<small>④ SHOW ME • WATCH FIRST</small><h2>Worked example</h2><div class="v346Worked"><p>'+E(ex)+'</p><ol>'+steps.map(x=>'<li>'+E(x)+'</li>').join('')+'</ol></div>'+workedComparisonHtml()+workedErrorHtml()+'<button class="btn primary" data-v346-next>Why does this work? →</button>';
  }
  if(step===4)return '<small>⑤ WHY DOES THIS WORK?</small><h2>Connect the rule to the meaning</h2><p class="lead">'+E(concept?.explain?.model||concept?.why||concept?.anchor?.trap||'Explain the reason the correct strategy fits this scenario, not just which answer is correct.')+'</p>'+explainBackHtml()+'<button class="btn primary" data-v346-next>Help Me Try →</button>';
  if(step===5)return '<small>⑥ HELP ME TRY</small><h2>Guided practice</h2>'+qHtml(ensureQuestion('help'),'help');
@@ -565,6 +579,7 @@ function bindAdaptive(root){
    const q=ensureQuestion(state().step===8?'mix':'turn',state().step===8),k=q?.id||q?.qid;if(!k)return;state().noMath[k].unlocked=true;creditMicro(['recognize','select'],true);save();renderAdaptive();
  });
  root.querySelector('[data-v347-show-error]')?.addEventListener('click',()=>{const p=root.querySelector('[data-v347-error]');if(p)p.hidden=false});
+ root.querySelectorAll('[data-v349-compare]').forEach(b=>b.addEventListener('click',()=>{const out=root.querySelector('[data-v349-compare-out]');if(out)out.textContent=compareWorkedAnswer(b.dataset.v349Compare)}));
  root.querySelector('[data-v349-branch]')?.addEventListener('click',()=>{const b=diagnosticBranch();if(!b)return;state().branches[current().concept.id]={...b,at:Date.now()};state().step=b.to;save();renderAdaptive()});
  root.querySelectorAll('[data-v349-confidence]').forEach(b=>b.addEventListener('click',()=>recordConfidence(b.dataset.v349Confidence)));
  root.querySelectorAll('[data-v349-explain]').forEach(b=>b.addEventListener('click',()=>{const out=root.querySelector('[data-v349-explain-out]'),ok=b.dataset.v349Explain==='correct';if(out)out.innerHTML=ok?'<b>✓ Yes — that explains the reasoning.</b>':'<b>Not quite. Choose the explanation tied to the actual relationship in the problem.</b>';creditMicro('interpret',ok);save()}));
