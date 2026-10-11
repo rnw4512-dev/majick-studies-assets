@@ -1,6 +1,6 @@
 (()=>{
 'use strict';
-const VERSION='3.3.42';
+const VERSION='3.4.10-reward-forwarder';
 
 function account(){
   try{return window.MajickStateCore?.ensureAccount?.()||window.S?.majickAccount||null}
@@ -114,7 +114,23 @@ function creditAnswer(evt={}){
   if(l.events[key])return false;
   l.events[key]={source:evt.source||'study',course:evt.course||window.S?.activeCourse||'',qid:evt.qid||'',correct:!!evt.correct,difficulty:Number(evt.difficulty||3),at:Number(evt.at||Date.now()),historical:!!evt.historical};
   canonicalAnswer(evt);
-  awardGuardians(evt);
+  if(!evt.historical&&window.MajickRewardCore?.award){
+    window.MajickRewardCore.award('correct-answer',{
+      key:'study:'+key,
+      course:evt.course||window.S?.activeCourse||'',
+      source:evt.source||'study',
+      qid:evt.qid||'',
+      conceptId:String(evt.topicId||'').replace(/^adaptive:/,''),
+      difficulty:Number(evt.difficulty||3),
+      hard:Number(evt.difficulty||3)>=4,
+      independent:evt.assisted!==true,
+      delayed:/retrieve|delayed|sweep/.test(String(evt.source||'')),
+      transfer:evt.transfer===true||/mix|transfer/.test(String(evt.source||'')),
+      correct:!!evt.correct
+    });
+  }else{
+    awardGuardians(evt);
+  }
   save();
   return true;
 }
