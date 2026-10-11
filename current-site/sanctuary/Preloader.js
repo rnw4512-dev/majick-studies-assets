@@ -22,6 +22,24 @@ class Preloader extends Phaser.Scene
         this.load.on('complete', () => { const n = document.getElementById('phaser-load-note'); if (n) n.style.display = 'none'; });
         this.load.on('loaderror', file => console.warn('Sanctuary asset failed to load:', file && file.key));
 
+        this.load.image('reward-velvet-study-chair', '../assets/rewards/items/velvet-study-chair.webp');
+        this.load.image('reward-constellation-rug', '../assets/rewards/items/constellation-rug.webp');
+        this.load.image('reward-moon-phase-wall-hanging', '../assets/rewards/items/moon-phase-wall-hanging.webp');
+        this.load.image('reward-potion-shelf', '../assets/rewards/items/potion-shelf.webp');
+        this.load.image('reward-crystal-lamp', '../assets/rewards/items/crystal-lamp.webp');
+        this.load.image('reward-floating-book-stack', '../sanctuary/assets/runtime-objects/enchanted-bookstack.webp');
+        this.load.image('reward-celestial-telescope', '../sanctuary/assets/runtime-objects/celestial-telescope.webp');
+        this.load.image('reward-guardian-toy-chest', '../assets/rewards/items/guardian-toy-chest.webp');
+        this.load.image('reward-enchanted-fireplace', '../assets/rewards/items/enchanted-fireplace.webp');
+        this.load.image('reward-moonflower-planter', '../assets/rewards/items/moonflower-planter.webp');
+        this.load.image('reward-canopy-bed-curtains', '../assets/rewards/items/canopy-bed-curtains.webp');
+        this.load.image('reward-rune-writing-desk', '../sanctuary/assets/runtime-objects/moonlit-study-desk.webp');
+        this.load.image('reward-memory-moon-brooch', '../assets/rewards/items/memory-moon-brooch.webp');
+        this.load.image('reward-scholar-rune-circlet', '../assets/rewards/items/scholar-rune-circlet.webp');
+        this.load.image('reward-fortune-seer-monocle', '../assets/rewards/items/fortune-seer-monocle.webp');
+        this.load.image('reward-celestial-dice-charm', '../assets/rewards/items/celestial-dice-charm.webp');
+        this.load.image('reward-star-cartographer-glasses', '../assets/rewards/items/star-cartographer-glasses.webp');
+        this.load.image('reward-probability-scholar-cape', '../assets/rewards/items/probability-scholar-cape.webp');
         const base = './assets/runtime-motion/';
 
         // Local academy art keeps the room feeling like a real magical college.

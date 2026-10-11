@@ -40,6 +40,8 @@ const TREASURES=[
  {id:'star-cartographer-glasses',name:'Star Cartographer Glasses',kind:'accessory',rarity:'arcane',icon:'⌖'},
  {id:'probability-scholar-cape',name:'Probability Scholar Cape',kind:'accessory',rarity:'celestial',icon:'✦'}
 ];
+const ITEM_ART={"velvet-study-chair": "assets/rewards/items/velvet-study-chair.webp", "constellation-rug": "assets/rewards/items/constellation-rug.webp", "moon-phase-wall-hanging": "assets/rewards/items/moon-phase-wall-hanging.webp", "potion-shelf": "assets/rewards/items/potion-shelf.webp", "crystal-lamp": "assets/rewards/items/crystal-lamp.webp", "floating-book-stack": "sanctuary/assets/runtime-objects/enchanted-bookstack.webp", "celestial-telescope": "sanctuary/assets/runtime-objects/celestial-telescope.webp", "guardian-toy-chest": "assets/rewards/items/guardian-toy-chest.webp", "enchanted-fireplace": "assets/rewards/items/enchanted-fireplace.webp", "moonflower-planter": "assets/rewards/items/moonflower-planter.webp", "canopy-bed-curtains": "assets/rewards/items/canopy-bed-curtains.webp", "rune-writing-desk": "sanctuary/assets/runtime-objects/moonlit-study-desk.webp", "memory-moon-brooch": "assets/rewards/items/memory-moon-brooch.webp", "scholar-rune-circlet": "assets/rewards/items/scholar-rune-circlet.webp", "fortune-seer-monocle": "assets/rewards/items/fortune-seer-monocle.webp", "celestial-dice-charm": "assets/rewards/items/celestial-dice-charm.webp", "star-cartographer-glasses": "assets/rewards/items/star-cartographer-glasses.webp", "probability-scholar-cape": "assets/rewards/items/probability-scholar-cape.webp"};
+for(const item of TREASURES)item.image=ITEM_ART[item.id];
 const RECIPES=[
  {id:'clarity-potion',name:'Clarity Potion',icon:'⚗',effect:'Highlights one important clue word.',cost:{'moonpetal':2,'silver-sage':1}},
  {id:'recall-draught',name:'Recall Draught',icon:'☾',effect:'Calls back one older concept for bonus retrieval XP.',cost:{'star-moss':2,'dream-lavender':1}},
@@ -207,7 +209,7 @@ function award(type,ctx={}){
    guardian:gr.guardian,egg:gr.egg,drop,fragmentTotal:r.eggFragments,conjuresReady:Math.floor(r.eggFragments/10),milestoneChest,chests:Number(cfg.chest||0)+milestoneChest,at:Date.now()
  };
  r.ledger[key]={type,at:receipt.at,receipt};r.lastReceipt=receipt;
- save();showReceipt(receipt);
+ save();pushRewardState();showReceipt(receipt);
  try{window.MajickProductCore?.record?.('reward-earned',{type,xp,crystals,eggFragments:receipt.eggFragments,item:drop?.id||null})}catch(_){}
  return receipt;
 }
@@ -268,9 +270,65 @@ function conjureEgg(m,key){
 function rarityLabel(id){return RARITIES.find(x=>x.id===id)?.label||id}
 function ingredientName(id){return INGREDIENTS.find(x=>x.id===id)?.name||id}
 const vaultFilters={status:'all',kind:'all',rarity:'all'};
-function vaultCard(it,owned){
- return '<article class="majVaultItem '+E(it.rarity)+(owned?'':' isLocked')+'"><div class="majVaultItemArt" aria-hidden="true">'+E(it.icon)+'</div><small>'+E(rarityLabel(it.rarity))+' • '+E(it.kind)+'</small><h4>'+E(it.name)+'</h4><p>'+(owned?(it.kind==='accessory'?'Collected accessory':'Blueprint discovered • available in Sanctuary decor'):'Undiscovered • mastery rewards and study treasure can reveal this item')+'</p><b class="majVaultOwnership">'+(owned?'✦ '+(it.kind==='accessory'?'Collected':'Blueprint owned'):'◇ Still to discover')+'</b></article>';
+function roomState(){
+ const r=account()?.rewardCore;if(!r)return {stored:[],positions:{}};
+ if(!r.sanctuary)return null;
+ return r.sanctuary;
 }
+function refreshVault(){const panel=document.getElementById('majArcaneVault');if(panel)panel.outerHTML=vaultPanelHTML()}
+function equippedItem(p){const it=TREASURES.find(x=>x.id===p?.rewardAccessoryId);return it&&p.accessory===it.icon+' '+it.name?it.id:null}
+function equipment(){return (state()?.legacy?.pets||[]).map(p=>({petId:p.id,type:p.type,itemId:equippedItem(p),accessory:p.accessory||''}))}
+function pushRewardState(target){
+ const payload={type:'MAJICK_REWARD_INVENTORY',inventory:inventory(),room:roomState(),equipment:equipment()};
+ const frames=target?[target]:[...document.querySelectorAll('.v3317SanctuaryFrame,#phase4SanctuaryFrame')].map(f=>f.contentWindow);
+ for(const frame of frames)try{frame?.postMessage(payload,location.origin)}catch(_){}
+}
+function placeReward(id,stored=false){
+ const it=TREASURES.find(x=>x.id===id),r=account()?.rewardCore;
+ if(!it||it.kind==='accessory'||!r?.blueprints.includes(id))return false;
+ r.sanctuary=r.sanctuary||{stored:[],positions:{}};
+ const rows=new Set(r.sanctuary.stored||[]);if(stored)rows.add(id);else rows.delete(id);r.sanctuary.stored=[...rows];
+ save();pushRewardState();refreshVault();return true;
+}
+function equipReward(id,petId,remove=false){
+ const it=TREASURES.find(x=>x.id===id),r=account()?.rewardCore,p=(state()?.legacy?.pets||[]).find(x=>x.id===petId);
+ if(!p||it?.kind!=='accessory'||!r?.collectibles.includes(id))return false;
+ if(remove){if(equippedItem(p)!==id)return false;p.rewardAccessoryId=null;p.accessory=''}
+ else {p.rewardAccessoryId=id;p.accessory=it.icon+' '+it.name}
+ save();window.MajickGuardianCare?.broadcastState?.();pushRewardState();refreshVault();return true;
+}
+function vaultCard(it,owned){
+ const pet=activePet(),room=roomState(),stored=room?.stored?.includes(it.id),isEquipped=equippedItem(pet)===it.id,wearers=(state()?.legacy?.pets||[]).filter(p=>equippedItem(p)===it.id);
+ const action=owned?(it.kind==='accessory'?'<label class="majEquipTarget">Guardian<select data-equip-target="'+E(it.id)+'">'+(state()?.legacy?.pets||[]).map(p=>'<option value="'+E(p.id)+'" '+(p.id===pet?.id?'selected':'')+'>'+E(p.name||window.MajickGuardianRegistry?.getFor?.(p)?.name||'Guardian')+'</option>').join('')+'</select></label><button type="button" data-equip-item="'+E(it.id)+'" '+(pet?'':'disabled')+'>'+(pet?'Equip':'Hatch a Guardian first')+'</button>'+wearers.map(p=>'<button type="button" data-unequip-item="'+E(it.id)+'" data-pet-id="'+E(p.id)+'">Unequip '+E(p.name||'Guardian')+'</button>').join(''):'<button type="button" data-place-item="'+E(it.id)+'" data-stored="'+(!stored)+'">'+(stored?'Place in Sanctuary':'Store item')+'</button><button type="button" onclick="navigate(\'companions\')">Open Sanctuary</button>'):'';
+ return '<article class="majVaultItem '+E(it.rarity)+(owned?'':' isLocked')+'"><button type="button" class="majVaultItemArt" data-preview-item="'+E(it.id)+'" aria-label="Preview '+E(it.name)+'"><img src="'+E(it.image)+'" alt="'+E(it.name)+'" loading="lazy"></button><small>'+E(rarityLabel(it.rarity))+' • '+E(it.kind)+'</small><h4>'+E(it.name)+'</h4><p>'+(owned?(it.kind==='accessory'?'Choose a bonded Guardian to wear this treasure.':stored?'Stored safely. Place it to decorate your room.':'Placed in your Sanctuary. Use Edit Room to arrange it.'):'Undiscovered • mastery rewards and study treasure can reveal this item')+'</p><b class="majVaultOwnership">'+(owned?'✦ '+(it.kind==='accessory'?(wearers.length?'Equipped on '+wearers.map(p=>p.name||'Guardian').join(', '):'Collected'):stored?'Stored':'Placed'):'◇ Still to discover')+'</b><div class="majVaultItemActions">'+action+'</div></article>';
+}
+window.addEventListener('message',ev=>{
+ if(ev.origin!==location.origin||![...document.querySelectorAll('.v3317SanctuaryFrame,#phase4SanctuaryFrame')].some(f=>f.contentWindow===ev.source))return;
+ const d=ev.data||{};
+ if(d.type==='MAJICK_SANCTUARY_READY'||d.type==='MAJICK_REWARD_REQUEST'){pushRewardState(ev.source);return}
+ if(d.type==='MAJICK_REWARD_ROOM_EDIT'){
+  const r=account()?.rewardCore;if(!r)return;
+  if(d.id){if(!r.blueprints.includes(d.id))return;if(typeof d.stored==='boolean'){placeReward(d.id,d.stored);return}
+   const pos=d.position;if(!pos||!['x','y','scale','rotation'].every(k=>Number.isFinite(pos[k])))return;
+   r.sanctuary=r.sanctuary||{stored:[],positions:{}};r.sanctuary.positions[d.id]={x:Math.max(70,Math.min(2400,pos.x)),y:Math.max(180,Math.min(930,pos.y)),scale:Math.max(.2,Math.min(2,pos.scale)),rotation:pos.rotation};
+  }else if(d.room&&!r.sanctuary){const valid=new Set(r.blueprints);r.sanctuary={stored:(d.room.stored||[]).filter(id=>valid.has(id)),positions:{}};for(const [id,v] of Object.entries(d.room.positions||{}))if(valid.has(id)&&['x','y','scale','rotation'].every(k=>Number.isFinite(v[k])))r.sanctuary.positions[id]=v}
+  save();pushRewardState();refreshVault();
+ }
+});
+function previewItem(id){
+ const it=TREASURES.find(x=>x.id===id);if(!it)return;
+ document.getElementById('majItemPreview')?.remove();
+ const dialog=document.createElement('dialog');dialog.id='majItemPreview';dialog.className='majItemPreview';dialog.setAttribute('aria-labelledby','majItemPreviewTitle');
+ dialog.innerHTML='<button type="button" class="majPreviewClose" autofocus aria-label="Close artwork preview">✕ Close</button><img src="'+E(it.image)+'" alt="'+E(it.name)+'"><h3 id="majItemPreviewTitle">'+E(it.name)+'</h3><p>'+E(rarityLabel(it.rarity))+' • '+E(it.kind)+'</p>';
+ document.body.appendChild(dialog);dialog.querySelector('button').onclick=()=>dialog.close();dialog.addEventListener('close',()=>{dialog.remove();document.querySelector('[data-preview-item="'+id+'"]')?.focus()});dialog.showModal();
+}
+document.addEventListener('click',ev=>{
+ const b=ev.target.closest?.('[data-place-item],[data-equip-item],[data-unequip-item],[data-preview-item]');if(!b)return;
+ if(b.dataset.previewItem){previewItem(b.dataset.previewItem);return}
+ if(b.dataset.placeItem)placeReward(b.dataset.placeItem,b.dataset.stored==='true');
+ if(b.dataset.equipItem){const id=b.dataset.equipItem,select=document.querySelector('[data-equip-target="'+id+'"]');equipReward(id,select?.value)}
+ if(b.dataset.unequipItem)equipReward(b.dataset.unequipItem,b.dataset.petId,true);
+});
 function vaultPanelHTML(){
  const inv=inventory(),r=account()?.rewardCore||{},owned=new Set([...inv.collectibles,...inv.blueprints]);
  const ingredients=Object.entries(inv.ingredients).filter(([,n])=>Number(n)>0);
@@ -323,10 +381,11 @@ function patchLegacyGameRewards(){
  };fn.__majickRewardCore=true;window.grantMoonlight=fn;
 }
 function inspect(){const a=account(),r=a?.rewardCore;return {version:VERSION,xp:a?.xp||0,crystals:a?.crystals||0,chests:a?.chests||0,eggFragments:r?.eggFragments||0,ingredients:{...(r?.ingredients||{})},collectibles:[...(r?.collectibles||[])],blueprints:[...(r?.blueprints||[])],stats:{...(r?.stats||{})},lastReceipt:r?.lastReceipt||null}}
-window.MajickRewardCore={VERSION,RARITIES,INGREDIENTS,TREASURES,RECIPES,award,rewardPreview,inventory,craft,usePotion,showConjuring,conjureEgg,vaultPanelHTML,patchVault,inspect,patchLegacyGameRewards};
+window.MajickRewardCore={VERSION,RARITIES,INGREDIENTS,TREASURES,RECIPES,award,rewardPreview,inventory,craft,usePotion,showConjuring,conjureEgg,vaultPanelHTML,patchVault,inspect,patchLegacyGameRewards,placeReward,equipReward,pushRewardState,ITEM_ART};
 window.majickConjureEgg=()=>showConjuring();
 window.majickCraftPotion=id=>{const r=craft(id);try{window.rewardToast?.(r.ok?'⚗ Potion crafted':'Missing ingredients',r.ok?r.recipe.name:r.message)}catch(_){if(!r.ok)alert(r.message)};try{window.render?.()}catch(_){};return r};
 window.majickUsePotion=id=>{const ok=usePotion(id);try{window.rewardToast?.(ok?'✦ Potion activated':'No potion available',ok?(RECIPES.find(x=>x.id===id)?.effect||'Magic stirred.'):'Craft one first.')}catch(_){};try{window.render?.()}catch(_){};return ok};
 document.documentElement.dataset.majickRewardCore=VERSION;
 setTimeout(()=>{patchLegacyGameRewards();patchVault()},0);
 })();
+
