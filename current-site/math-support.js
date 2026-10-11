@@ -1,6 +1,6 @@
 (()=>{
 'use strict';
-const VERSION='3.4.3-math-support';
+const VERSION='3.4.4-math-support';
 const COURSE='D772';
 const E=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const FORMULAS=[
@@ -37,16 +37,36 @@ function panel(){
  '<header><div><small>MATH SUPPORT • SAME RIGOR, MORE STRUCTURE</small><h3>🧮 Formula Coach</h3></div><span>'+lvl.toUpperCase()+' RIGOR</span></header>'+
  '<p class="v343MathRule">'+(lvl==='easy'?'Formula shown automatically while you learn the procedure.':lvl==='medium'?'Choose the strategy first; formula available if you need it.':'OA-style support faded: formula hidden unless you ask for it.')+'</p>'+
  (show?formulaCard(f):'<button class="v343Reveal" type="button" data-v343-reveal>Show Formula / Help Me Set It Up</button><div data-v343-slot></div>')+
- '<div class="v343MathActions"><button type="button" data-v343-action="read">Read the formula in plain English</button><button type="button" data-v343-action="slots">What goes where?</button><button type="button" data-v343-action="template">Show substitution template</button></div>'+
+ '<div class="v343MathActions"><button type="button" data-v343-action="read">Read the formula in plain English</button><button type="button" data-v343-action="slots">What goes where?</button><button type="button" data-v343-action="template">Show substitution template</button><button type="button" data-v343-action="organize">Break the problem down</button></div>'+
  '<div data-v343-help></div></aside>';
 }
 function formulaCard(f){
  return '<div class="v343FormulaCard"><small>'+E(f.label)+'</small><strong>'+E(f.formula)+'</strong><p>'+E(f.plain)+'</p><em>Watch out: '+E(f.trap)+'</em></div>';
 }
+function mathState(){
+ const p=window.S?.progress?.[COURSE];if(!p)return {};
+ p.mathWork=p.mathWork||{};
+ const id=current().concept?.id||formulaFor()?.label||'general';
+ p.mathWork[id]=p.mathWork[id]||{given:'',find:'',formula:'',substitute:'',solve:'',interpret:''};
+ return p.mathWork[id];
+}
+function organizer(){
+ const f=formulaFor(),w=mathState();if(!f)return '';
+ return '<div class="v343Organizer"><b>Problem Setup Board</b><p>Do not calculate yet. First organize what the question is telling you.</p>'+
+ [['given','1. What do I know?','List the numbers, outcomes, probabilities, or data the problem gives you.'],
+  ['find','2. What am I finding?','Write the exact quantity the question asks for.'],
+  ['formula','3. Which formula/rule fits?','Name the formula or decision rule before using numbers.'],
+  ['substitute','4. Substitute','Put the given numbers into the formula.'],
+  ['solve','5. Solve','Do the arithmetic one step at a time.'],
+  ['interpret','6. Interpret','Write what the answer means in the situation, including units or percent.']]
+ .map(x=>'<label><span><strong>'+x[1]+'</strong><small>'+x[2]+'</small></span><textarea data-v343-work="'+x[0]+'" placeholder="'+E(x[2])+'">'+E(w[x[0]]||'')+'</textarea></label>').join('')+
+ '<div class="v343OrganizerTip">Guardian rule: if you are stuck, identify which box is the problem. Is it the story, the formula, number placement, signs, arithmetic, or interpretation?</div></div>';
+}
 function help(kind){
  const f=formulaFor(); if(!f)return '';
  if(kind==='read')return '<div class="v343Help"><b>Say it like this:</b><p>'+E(f.plain)+'</p></div>';
  if(kind==='slots')return '<div class="v343Help"><b>What each part means</b>'+f.parts.map(x=>'<p><strong>'+E(x[0])+'</strong> = '+E(x[1])+'</p>').join('')+'</div>';
+ if(kind==='organize')return organizer();
  return '<div class="v343Help"><b>Set it up before calculating</b><code>'+E(f.template)+'</code><p>Fill the blanks from the story first. Then calculate. Do not do both steps in your head at once.</p></div>';
 }
 function decorate(){
@@ -62,6 +82,9 @@ function decorate(){
  });
  root?.querySelectorAll('[data-v343-action]').forEach(b=>b.addEventListener('click',()=>{
    const box=root.querySelector('[data-v343-help]'); if(box)box.innerHTML=help(b.dataset.v343Action);
+   root.querySelectorAll('[data-v343-work]').forEach(t=>t.addEventListener('input',()=>{
+     const w=mathState();w[t.dataset.v343Work]=t.value;try{window.save?.()}catch(_){}
+   }));
  }));
 }
 if(window.MajickRenderQueue?.register){
