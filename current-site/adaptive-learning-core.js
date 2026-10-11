@@ -1,6 +1,6 @@
 (()=>{
 'use strict';
-const VERSION='3.4.9-shared-adaptive';
+const VERSION='3.4.10-shared-adaptive';
 const STEPS=['What am I learning?','Quick Check','Teach Me','Show Me','Why Does This Work?','Help Me Try','My Turn','Related Mistakes','Mix It Up','Retrieve It','Mastery Check','Schedule Review'];
 const E=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const MICRO_SKILLS={
@@ -136,8 +136,15 @@ function microState(){
  return obj;
 }
 function creditMicro(ids,correct,{support=false}={}){
- const ms=microState(),arr=Array.isArray(ids)?ids:[ids],at=Date.now();
- arr.filter(Boolean).forEach(id=>{if(!ms[id])ms[id]={attempts:0,correct:0,support:0,lastAt:0};ms[id].attempts++;if(correct)ms[id].correct++;if(support)ms[id].support++;ms[id].lastAt=at});save();
+ const ms=microState(),arr=Array.isArray(ids)?ids:[ids],at=Date.now(),conceptId=current().concept.id;
+ arr.filter(Boolean).forEach(id=>{
+   if(!ms[id])ms[id]={attempts:0,correct:0,support:0,lastAt:0};
+   const before=ms[id].attempts>=2&&(ms[id].correct/ms[id].attempts)>=.85;
+   ms[id].attempts++;if(correct)ms[id].correct++;if(support)ms[id].support++;ms[id].lastAt=at;
+   const after=ms[id].attempts>=2&&(ms[id].correct/ms[id].attempts)>=.85;
+   if(!before&&after)try{window.MajickRewardCore?.award?.('micro-skill-mastered',{key:'micro:'+cid()+':'+conceptId+':'+id,course:cid(),conceptId,microSkill:id})}catch(_){}
+ });
+ save();
 }
 function microReceipt(){
  const ms=microState();
@@ -276,6 +283,8 @@ function record(q,choice,source,{assisted=false,transfer=false}={}){
  if(!ok){
    const tag=inferError(q,choice);misconception=rememberMisconception(q,choice);
    progress().errorTags.push({conceptId:current().concept.id,tag,misconception,at,qid:q.id||q.qid});
+ }else{
+   repairMisconceptionIfEarned(q,choice,{assisted,transfer});
  }
  save();return {ok,misconception};
 }
@@ -299,6 +308,26 @@ function misconceptionKey(q,choice){
 function rememberMisconception(q,choice){
  const p=progress(),key=misconceptionKey(q,choice),row=p.misconceptionMemory[key]||{count:0,concepts:{},lastAt:0};
  row.count++;row.concepts[current().concept.id]=(row.concepts[current().concept.id]||0)+1;row.lastAt=Date.now();p.misconceptionMemory[key]=row;return key;
+}
+function repairMisconceptionIfEarned(q,choice,{assisted=false,transfer=false}={}){
+ const p=progress(),key=misconceptionKey(q,choice),row=p.misconceptionMemory?.[key];
+ if(!row||Number(row.count||0)<2||row.repairedAt||assisted)return null;
+ const recent=conceptAnswers().slice(-5),independentCorrect=recent.filter(x=>x.correct&&!x.assisted).length;
+ if(independentCorrect<2&&!transfer)return null;
+ row.repairedAt=Date.now();row.repairedConcept=current().concept.id;
+ try{window.MajickRewardCore?.award?.('misconception-repaired',{key:'repair:'+cid()+':'+key,course:cid(),conceptId:current().concept.id,misconception:key,independent:true,transfer})}catch(_){}
+ return key;
+}
+function rewardMasteryMilestones(){
+ const {lesson,concept}=current(),m=mastery();
+ if(!m.ready)return;
+ try{window.MajickRewardCore?.award?.('concept-mastered',{key:'concept:'+cid()+':'+concept.id,course:cid(),conceptId:concept.id,lessonId:lesson.id})}catch(_){}
+ const ids=(lesson.concepts||[]).map(c=>typeof c==='string'?c:c?.id).filter(Boolean);
+ if(ids.length){
+   const ledger=window.S?.majickAccount?.rewardCore?.ledger||{};
+   const all=ids.every(id=>ledger['concept:'+cid()+':'+id]);
+   if(all)try{window.MajickRewardCore?.award?.('lesson-mastered',{key:'lesson:'+cid()+':'+lesson.id,course:cid(),lessonId:lesson.id})}catch(_){}
+ }
 }
 
 function misconceptionMemoryHtml(){
@@ -561,7 +590,7 @@ function stepBody(){
 }
 function tutorButtons(){return '<div class="v346TutorButtons"><button data-v346-tutor="simple">Explain Simpler</button><button data-v346-tutor="example">Give Me an Example</button><button data-v346-tutor="quiz">Quiz Me on This Page</button><button data-v346-tutor="mistakes">Related Mistakes</button></div><div id="v346TutorOut"></div>'}
 function panelHtml(){
- const {lesson,concept}=current(),g=guardian(),m=mastery();try{window.MajickLearningProfiles?.saveProfile?.(concept,lesson,cid())}catch(_){}
+ const {lesson,concept}=current(),g=guardian(),m=mastery();try{window.MajickLearningProfiles?.saveProfile?.(concept,lesson,cid())}catch(_){};try{rewardMasteryMilestones()}catch(_){}
  return '<section class="v346SharedAdaptive"><header><div><small>SHARED LEARNING ENGINE • '+E(cid())+'</small><h1>'+E(concept.title||lesson.title)+'</h1><p>'+E(course().title||cid())+'</p>'+pathMeterHtml()+supportMeterHtml()+'</div><select id="v346Lesson">'+lessons().map((l,i)=>'<option value="'+i+'" '+(i===state().lessonIndex?'selected':'')+'>'+E(l.title)+'</option>').join('')+'</select></header><div class="v346Grid"><nav>'+STEPS.map((x,i)=>'<button data-v346-step="'+i+'" class="'+(i===state().step?'active':'')+'"><i>'+(i+1)+'</i><span>'+E(x)+'</span></button>').join('')+'</nav><main>'+stepBody()+'</main><aside><div class="v346Guardian"><span>'+g.emoji+'</span><b>'+E(g.name)+'</b><p>'+(m.recurring?'“I see a repeated trap. We are repairing that exact distinction.”':m.independent>=2?'“You are showing independence. I will give fewer cues unless you ask.”':'“Name the strategy before you answer. Recognition comes before recall.”')+'</p></div><div class="v346Evidence"><small>SKILL EVIDENCE</small><b>'+Math.round(m.acc*100)+'%</b><span>'+m.independent+' independent • '+m.transfer+' transfer</span></div></aside></div></section>';
 }
 function renderAdaptive(){const box=document.getElementById('adaptiveLearningCore');if(!box)return;box.innerHTML=panelHtml();bindAdaptive(box)}
