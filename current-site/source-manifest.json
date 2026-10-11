@@ -144,7 +144,7 @@
     "guardian-registry.js": "b20170b996ddf065f33bb37332c8a9fce68ae104914e3e94ffe9aa44b7b612f3",
     "home-focus.css": "cbb719eb8e78701717b4016388d511553f2785212d839815ed006651ae738b2b",
     "home-focus.js": "c4b28238d5f38e0401df2933fcf64991b928631e488a79f80301b20174f1968b",
-    "index.html": "b81131359f45cc183b9b5c2a871843f123dd24b00db85125d56c2193d9ed9c55",
+    "index.html": "bb0c878a1cb1da60c1441768788abef24220a1bf0516ddc714950ed0b6fd9388",
     "learn-mode.css": "30181250c67efe7bd97c9276706a804a551e7904a2bb28160eeb0c193f35c002",
     "learn-mode.js": "f6647cd013d5bc59a319710c45ac806b56585c7fc5c912afa88857d2f16f82e0",
     "learning-lab.css": "6ed48d27023052a714d27c027f25828bc5ad74edccb172704e823a58b26d6844",
@@ -401,7 +401,9 @@
     "assets/boxplot-exercise.svg": "617c9eddef0699fec10c4c7fb5b27a4c68281aeead6350865b6722c42795bed8",
     "assets/boxplot-heights.svg": "7939d0a74fffe127e905fe3a13e4bc93db43ae9188eae7ce265d71e3e12c831a",
     "assets/boxplot-phones.svg": "3ed42e541d8e8039d2b270f4b76ec634918e02db245e085e38088ea05d7ef727",
-    "math-support.js": "82c20923a01f9af01953e767c5cbd83fe803b25efd8e41976287425428e867ac",
-    "math-support.css": "b2980d7022c3d89aadf89b52a55869d29f394f8ced0649ba67b3be66cda7c6d4"
+    "math-support.js": "58d39c90f612199d12672e16fc8567bcc17782835a07852a6c4a7a41249997d6",
+    "math-support.css": "b2980d7022c3d89aadf89b52a55869d29f394f8ced0649ba67b3be66cda7c6d4",
+    "adaptive-learning-core.js": "414efcb9c0e9711ec186f960372b7567d74ec662fe9ddfeb8ca403d4f579f4f0",
+    "adaptive-learning-core.css": "efc0654554ea9cac86d17ef6f7bc48cb48242f97818f01a0cda14e2a8bf13782"
   }
 }
