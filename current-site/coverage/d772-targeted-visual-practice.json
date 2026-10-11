@@ -3,10 +3,10 @@
   "type": "original-targeted-visual-practice",
   "officialAssessmentItems": false,
   "counts": {
-    "mean": 12,
-    "median": 12,
+    "mean": 16,
+    "median": 16,
     "ratio": 12,
-    "probability": 20
+    "probability": 32
   },
   "questions": [
     {
@@ -827,7 +827,7 @@
         "2:3"
       ],
       "answer": 3,
-      "rationale": "Online to in person is 4:6. Divide both counts by 2 to get 2:3. The order matters. 2:5 compares online with the total; 3:2 reverses the requested order. A ratio compares the specified groups.",
+      "rationale": "Online:in person is 4:6. Divide both counts by their greatest common factor, 2, to get 2:3. Keep the requested order. Online:all compares a different pair; reversing the ratio compares in person with online.",
       "hint": "Identify the first and second groups before simplifying.",
       "visual": {
         "type": "table",
@@ -849,7 +849,7 @@
             10
           ]
         ],
-        "alt": "Enrollment counts: Online, 4; In person, 6; Total, 10",
+        "alt": "Enrollment counts: Online 4; In person 6; Total 10.",
         "caption": "Enrollment counts"
       },
       "sourceLabel": "MAJICK ORIGINAL \u00b7 WGU-STYLE SKILL PRACTICE"
@@ -868,7 +868,7 @@
         "2/3"
       ],
       "answer": 2,
-      "rationale": "All learners = 6+9 = 15. Online/all = 6/15 = 2/5 = 40%. 2/3 compares online with in-person learners, not all learners. 3/5 is the in-person proportion. The numerator is part of the denominator.",
+      "rationale": "All learners = 6+9 = 15. Online/all = 6/15 = 2/5. Online/in person uses the wrong denominator; in person/all answers the opposite group; all/online reverses the requested proportion.",
       "hint": "A proportion uses the part divided by the whole.",
       "visual": {
         "type": "table",
@@ -890,7 +890,7 @@
             15
           ]
         ],
-        "alt": "Enrollment counts: Online, 6; In person, 9; Total, 15",
+        "alt": "Enrollment counts: Online 6; In person 9; Total 15.",
         "caption": "Enrollment counts"
       },
       "sourceLabel": "MAJICK ORIGINAL \u00b7 WGU-STYLE SKILL PRACTICE"
@@ -909,7 +909,7 @@
         "5 minutes per question"
       ],
       "answer": 1,
-      "rationale": "Divide minutes by questions: 30/5 = 6 minutes/question. 1/6 is questions per minute, the reverse unit. The other values are the total time and total questions rather than a unit rate.",
+      "rationale": "Divide minutes by questions: 30/5 = 6 minutes/question. Reversing the division gives questions per minute, the wrong unit. Total minutes and total questions are not unit rates.",
       "hint": "Check the units: minutes \u00f7 questions.",
       "visual": {
         "type": "table",
@@ -934,15 +934,15 @@
       "learningPathLessonId": "d772-s2-l4-ratios",
       "topicId": "d772-s2-l4-ratios",
       "skill": "ratio",
-      "prompt": "A training program has 2 online learners and 3 in-person learners. What is the ratio of online to in-person learners in simplest form?",
+      "prompt": "A training program has 2 online learners and 6 in-person learners. What is the ratio of online to in-person learners in simplest form?",
       "options": [
-        "2:3",
-        "2:5",
-        "3:2",
-        "5:2"
+        "1:3",
+        "1:4",
+        "3:1",
+        "4:1"
       ],
       "answer": 0,
-      "rationale": "Online to in person is 2:3. Divide both counts by 1 to get 2:3. The order matters. 2:5 compares online with the total; 3:2 reverses the requested order. A ratio compares the specified groups.",
+      "rationale": "Online:in person is 2:6. Divide both counts by their greatest common factor, 2, to get 1:3. Keep the requested order. Online:all compares a different pair; reversing the ratio compares in person with online.",
       "hint": "Identify the first and second groups before simplifying.",
       "visual": {
         "type": "table",
@@ -957,14 +957,14 @@
           ],
           [
             "In person",
-            3
+            6
           ],
           [
             "Total",
-            5
+            8
           ]
         ],
-        "alt": "Enrollment counts: Online, 2; In person, 3; Total, 5",
+        "alt": "Enrollment counts: Online 2; In person 6; Total 8.",
         "caption": "Enrollment counts"
       },
       "sourceLabel": "MAJICK ORIGINAL \u00b7 WGU-STYLE SKILL PRACTICE"
@@ -975,15 +975,15 @@
       "learningPathLessonId": "d772-s2-l4-ratios",
       "topicId": "d772-s2-l4-ratios",
       "skill": "ratio",
-      "prompt": "A training program has 4 online learners and 6 in-person learners. What proportion of all learners study online?",
+      "prompt": "A training program has 4 online learners and 9 in-person learners. What proportion of all learners study online?",
       "options": [
-        "2/3",
-        "3/5",
-        "5/2",
-        "2/5"
+        "4/9",
+        "9/13",
+        "13/4",
+        "4/13"
       ],
       "answer": 3,
-      "rationale": "All learners = 4+6 = 10. Online/all = 4/10 = 2/5 = 40%. 2/3 compares online with in-person learners, not all learners. 3/5 is the in-person proportion. The numerator is part of the denominator.",
+      "rationale": "All learners = 4+9 = 13. Online/all = 4/13 = 4/13. Online/in person uses the wrong denominator; in person/all answers the opposite group; all/online reverses the requested proportion.",
       "hint": "A proportion uses the part divided by the whole.",
       "visual": {
         "type": "table",
@@ -998,14 +998,14 @@
           ],
           [
             "In person",
-            6
+            9
           ],
           [
             "Total",
-            10
+            13
           ]
         ],
-        "alt": "Enrollment counts: Online, 4; In person, 6; Total, 10",
+        "alt": "Enrollment counts: Online 4; In person 9; Total 13.",
         "caption": "Enrollment counts"
       },
       "sourceLabel": "MAJICK ORIGINAL \u00b7 WGU-STYLE SKILL PRACTICE"
@@ -1016,15 +1016,15 @@
       "learningPathLessonId": "d772-s2-l4-ratios",
       "topicId": "d772-s2-l4-ratios",
       "skill": "ratio",
-      "prompt": "A student answers 8 practice questions in 48 minutes at a constant rate. How many minutes per question is this?",
+      "prompt": "A student answers 8 practice questions in 32 minutes at a constant rate. How many minutes per question is this?",
       "options": [
         "8 minutes per question",
-        "1/6 minute per question",
-        "6 minutes per question",
-        "48 minutes per question"
+        "1/4 minute per question",
+        "4 minutes per question",
+        "32 minutes per question"
       ],
       "answer": 2,
-      "rationale": "Divide minutes by questions: 48/8 = 6 minutes/question. 1/6 is questions per minute, the reverse unit. The other values are the total time and total questions rather than a unit rate.",
+      "rationale": "Divide minutes by questions: 32/8 = 4 minutes/question. Reversing the division gives questions per minute, the wrong unit. Total minutes and total questions are not unit rates.",
       "hint": "Check the units: minutes \u00f7 questions.",
       "visual": {
         "type": "table",
@@ -1035,7 +1035,7 @@
         "rows": [
           [
             8,
-            48
+            32
           ]
         ],
         "alt": "Practice rate: 8, 48",
@@ -1049,15 +1049,15 @@
       "learningPathLessonId": "d772-s2-l4-ratios",
       "topicId": "d772-s2-l4-ratios",
       "skill": "ratio",
-      "prompt": "A training program has 8 online learners and 12 in-person learners. What is the ratio of online to in-person learners in simplest form?",
+      "prompt": "A training program has 8 online learners and 6 in-person learners. What is the ratio of online to in-person learners in simplest form?",
       "options": [
-        "5:2",
-        "2:3",
-        "2:5",
-        "3:2"
+        "7:4",
+        "4:3",
+        "4:7",
+        "3:4"
       ],
       "answer": 1,
-      "rationale": "Online to in person is 8:12. Divide both counts by 4 to get 2:3. The order matters. 2:5 compares online with the total; 3:2 reverses the requested order. A ratio compares the specified groups.",
+      "rationale": "Online:in person is 8:6. Divide both counts by their greatest common factor, 2, to get 4:3. Keep the requested order. Online:all compares a different pair; reversing the ratio compares in person with online.",
       "hint": "Identify the first and second groups before simplifying.",
       "visual": {
         "type": "table",
@@ -1072,14 +1072,14 @@
           ],
           [
             "In person",
-            12
+            6
           ],
           [
             "Total",
-            20
+            14
           ]
         ],
-        "alt": "Enrollment counts: Online, 8; In person, 12; Total, 20",
+        "alt": "Enrollment counts: Online 8; In person 6; Total 14.",
         "caption": "Enrollment counts"
       },
       "sourceLabel": "MAJICK ORIGINAL \u00b7 WGU-STYLE SKILL PRACTICE"
@@ -1090,15 +1090,15 @@
       "learningPathLessonId": "d772-s2-l4-ratios",
       "topicId": "d772-s2-l4-ratios",
       "skill": "ratio",
-      "prompt": "A training program has 2 online learners and 3 in-person learners. What proportion of all learners study online?",
+      "prompt": "A training program has 2 online learners and 9 in-person learners. What proportion of all learners study online?",
       "options": [
-        "2/5",
-        "2/3",
-        "3/5",
-        "5/2"
+        "2/11",
+        "2/9",
+        "9/11",
+        "11/2"
       ],
       "answer": 0,
-      "rationale": "All learners = 2+3 = 5. Online/all = 2/5 = 2/5 = 40%. 2/3 compares online with in-person learners, not all learners. 3/5 is the in-person proportion. The numerator is part of the denominator.",
+      "rationale": "All learners = 2+9 = 11. Online/all = 2/11 = 2/11. Online/in person uses the wrong denominator; in person/all answers the opposite group; all/online reverses the requested proportion.",
       "hint": "A proportion uses the part divided by the whole.",
       "visual": {
         "type": "table",
@@ -1113,14 +1113,14 @@
           ],
           [
             "In person",
-            3
+            9
           ],
           [
             "Total",
-            5
+            11
           ]
         ],
-        "alt": "Enrollment counts: Online, 2; In person, 3; Total, 5",
+        "alt": "Enrollment counts: Online 2; In person 9; Total 11.",
         "caption": "Enrollment counts"
       },
       "sourceLabel": "MAJICK ORIGINAL \u00b7 WGU-STYLE SKILL PRACTICE"
@@ -1131,15 +1131,15 @@
       "learningPathLessonId": "d772-s2-l4-ratios",
       "topicId": "d772-s2-l4-ratios",
       "skill": "ratio",
-      "prompt": "A student answers 11 practice questions in 66 minutes at a constant rate. How many minutes per question is this?",
+      "prompt": "A student answers 11 practice questions in 77 minutes at a constant rate. How many minutes per question is this?",
       "options": [
-        "66 minutes per question",
+        "77 minutes per question",
         "11 minutes per question",
-        "1/6 minute per question",
-        "6 minutes per question"
+        "1/7 minute per question",
+        "7 minutes per question"
       ],
       "answer": 3,
-      "rationale": "Divide minutes by questions: 66/11 = 6 minutes/question. 1/6 is questions per minute, the reverse unit. The other values are the total time and total questions rather than a unit rate.",
+      "rationale": "Divide minutes by questions: 77/11 = 7 minutes/question. Reversing the division gives questions per minute, the wrong unit. Total minutes and total questions are not unit rates.",
       "hint": "Check the units: minutes \u00f7 questions.",
       "visual": {
         "type": "table",
@@ -1150,7 +1150,7 @@
         "rows": [
           [
             11,
-            66
+            77
           ]
         ],
         "alt": "Practice rate: 11, 66",
@@ -1164,15 +1164,15 @@
       "learningPathLessonId": "d772-s2-l4-ratios",
       "topicId": "d772-s2-l4-ratios",
       "skill": "ratio",
-      "prompt": "A training program has 6 online learners and 9 in-person learners. What is the ratio of online to in-person learners in simplest form?",
+      "prompt": "A training program has 6 online learners and 6 in-person learners. What is the ratio of online to in-person learners in simplest form?",
       "options": [
-        "3:2",
-        "5:2",
-        "2:3",
-        "2:5"
+        "2:1",
+        "0",
+        "1:1",
+        "1:2"
       ],
       "answer": 2,
-      "rationale": "Online to in person is 6:9. Divide both counts by 3 to get 2:3. The order matters. 2:5 compares online with the total; 3:2 reverses the requested order. A ratio compares the specified groups.",
+      "rationale": "Online:in person is 6:6. Divide both counts by their greatest common factor, 6, to get 1:1. Keep the requested order. Online:all compares a different pair; reversing the ratio compares in person with online.",
       "hint": "Identify the first and second groups before simplifying.",
       "visual": {
         "type": "table",
@@ -1187,14 +1187,14 @@
           ],
           [
             "In person",
-            9
+            6
           ],
           [
             "Total",
-            15
+            12
           ]
         ],
-        "alt": "Enrollment counts: Online, 6; In person, 9; Total, 15",
+        "alt": "Enrollment counts: Online 6; In person 6; Total 12.",
         "caption": "Enrollment counts"
       },
       "sourceLabel": "MAJICK ORIGINAL \u00b7 WGU-STYLE SKILL PRACTICE"
@@ -1205,15 +1205,15 @@
       "learningPathLessonId": "d772-s2-l4-ratios",
       "topicId": "d772-s2-l4-ratios",
       "skill": "ratio",
-      "prompt": "A training program has 8 online learners and 12 in-person learners. What proportion of all learners study online?",
+      "prompt": "A training program has 8 online learners and 9 in-person learners. What proportion of all learners study online?",
       "options": [
-        "5/2",
-        "2/5",
-        "2/3",
-        "3/5"
+        "17/8",
+        "8/17",
+        "8/9",
+        "9/17"
       ],
       "answer": 1,
-      "rationale": "All learners = 8+12 = 20. Online/all = 8/20 = 2/5 = 40%. 2/3 compares online with in-person learners, not all learners. 3/5 is the in-person proportion. The numerator is part of the denominator.",
+      "rationale": "All learners = 8+9 = 17. Online/all = 8/17 = 8/17. Online/in person uses the wrong denominator; in person/all answers the opposite group; all/online reverses the requested proportion.",
       "hint": "A proportion uses the part divided by the whole.",
       "visual": {
         "type": "table",
@@ -1228,14 +1228,14 @@
           ],
           [
             "In person",
-            12
+            9
           ],
           [
             "Total",
-            20
+            17
           ]
         ],
-        "alt": "Enrollment counts: Online, 8; In person, 12; Total, 20",
+        "alt": "Enrollment counts: Online 8; In person 9; Total 17.",
         "caption": "Enrollment counts"
       },
       "sourceLabel": "MAJICK ORIGINAL \u00b7 WGU-STYLE SKILL PRACTICE"
@@ -1246,15 +1246,15 @@
       "learningPathLessonId": "d772-s2-l4-ratios",
       "topicId": "d772-s2-l4-ratios",
       "skill": "ratio",
-      "prompt": "A student answers 14 practice questions in 84 minutes at a constant rate. How many minutes per question is this?",
+      "prompt": "A student answers 14 practice questions in 70 minutes at a constant rate. How many minutes per question is this?",
       "options": [
-        "6 minutes per question",
-        "84 minutes per question",
+        "5 minutes per question",
+        "70 minutes per question",
         "14 minutes per question",
-        "1/6 minute per question"
+        "1/5 minute per question"
       ],
       "answer": 0,
-      "rationale": "Divide minutes by questions: 84/14 = 6 minutes/question. 1/6 is questions per minute, the reverse unit. The other values are the total time and total questions rather than a unit rate.",
+      "rationale": "Divide minutes by questions: 70/14 = 5 minutes/question. Reversing the division gives questions per minute, the wrong unit. Total minutes and total questions are not unit rates.",
       "hint": "Check the units: minutes \u00f7 questions.",
       "visual": {
         "type": "table",
@@ -1265,7 +1265,7 @@
         "rows": [
           [
             14,
-            84
+            70
           ]
         ],
         "alt": "Practice rate: 14, 84",
@@ -1976,6 +1976,762 @@
         "caption": "Two draws without replacement"
       },
       "sourceLabel": "MAJICK ORIGINAL \u00b7 WGU-STYLE SKILL PRACTICE"
+    },
+    {
+      "id": "hub-mean-13",
+      "lessonId": "d772-s2-l4-1",
+      "learningPathLessonId": "d772-s2-l4-1",
+      "topicId": "d772-s2-l4-1",
+      "skill": "mean",
+      "prompt": "A student\u2019s mean score across four practice checks is 5. Three scores are 3, 5, 6. What is the missing fourth score?",
+      "rationale": "A mean of 5 across four scores requires a total of 5\u00d74=20. The known scores total 14. Missing score = 20\u221214=6. The mean itself is not necessarily the missing observation; use the required total.",
+      "hint": "Mean \u00d7 count gives the required total. Subtract the known values.",
+      "visual": {
+        "type": "table",
+        "headers": [
+          "Check",
+          "Score"
+        ],
+        "rows": [
+          [
+            "1",
+            3
+          ],
+          [
+            "2",
+            5
+          ],
+          [
+            "3",
+            6
+          ],
+          [
+            "4",
+            "?"
+          ]
+        ],
+        "caption": "Mean of all four scores: 5",
+        "alt": "Mean of all four scores: 5: 1, 3; 2, 5; 3, 6; 4, ?"
+      },
+      "sourceLabel": "MAJICK ORIGINAL \u00b7 WGU-STYLE SKILL PRACTICE",
+      "options": [
+        "5",
+        "20",
+        "14",
+        "6"
+      ],
+      "answer": 3
+    },
+    {
+      "id": "hub-median-13",
+      "lessonId": "d772-s2-l4-1",
+      "learningPathLessonId": "d772-s2-l4-1",
+      "topicId": "d772-s2-l4-1",
+      "skill": "median",
+      "prompt": "Five students report 11, 3, 8, 4, and 6 completed lessons. What is the median number of completed lessons?",
+      "rationale": "Sort the observations: 3, 4, 6, 8, 11. Five values have one middle position: (5+1)/2=3. The third value is 6. Use an observation\u2019s position after sorting, rather than averaging the adjacent values or summing the whole set.",
+      "hint": "For an odd count, the median is the single middle observation after sorting.",
+      "visual": {
+        "type": "dots",
+        "values": [
+          3,
+          4,
+          6,
+          8,
+          11
+        ],
+        "min": 2,
+        "max": 12,
+        "xLabel": "Completed lessons",
+        "alt": "Dot plot: 3, 4, 6, 8, 11. Five observations.",
+        "caption": "Each dot is one student\u2019s count"
+      },
+      "sourceLabel": "MAJICK ORIGINAL \u00b7 WGU-STYLE SKILL PRACTICE",
+      "options": [
+        "4",
+        "8",
+        "32",
+        "6"
+      ],
+      "answer": 3
+    },
+    {
+      "id": "hub-mean-14",
+      "lessonId": "d772-s2-l4-1",
+      "learningPathLessonId": "d772-s2-l4-1",
+      "topicId": "d772-s2-l4-1",
+      "skill": "mean",
+      "prompt": "A student\u2019s mean score across four practice checks is 6. Three scores are 4, 6, 7. What is the missing fourth score?",
+      "rationale": "A mean of 6 across four scores requires a total of 6\u00d74=24. The known scores total 17. Missing score = 24\u221217=7. The mean itself is not necessarily the missing observation; use the required total.",
+      "hint": "Mean \u00d7 count gives the required total. Subtract the known values.",
+      "visual": {
+        "type": "table",
+        "headers": [
+          "Check",
+          "Score"
+        ],
+        "rows": [
+          [
+            "1",
+            4
+          ],
+          [
+            "2",
+            6
+          ],
+          [
+            "3",
+            7
+          ],
+          [
+            "4",
+            "?"
+          ]
+        ],
+        "caption": "Mean of all four scores: 6",
+        "alt": "Mean of all four scores: 6: 1, 4; 2, 6; 3, 7; 4, ?"
+      },
+      "sourceLabel": "MAJICK ORIGINAL \u00b7 WGU-STYLE SKILL PRACTICE",
+      "options": [
+        "24",
+        "17",
+        "7",
+        "6"
+      ],
+      "answer": 2
+    },
+    {
+      "id": "hub-median-14",
+      "lessonId": "d772-s2-l4-1",
+      "learningPathLessonId": "d772-s2-l4-1",
+      "topicId": "d772-s2-l4-1",
+      "skill": "median",
+      "prompt": "Five students report 12, 4, 9, 5, and 7 completed lessons. What is the median number of completed lessons?",
+      "rationale": "Sort the observations: 4, 5, 7, 9, 12. Five values have one middle position: (5+1)/2=3. The third value is 7. Use an observation\u2019s position after sorting, rather than averaging the adjacent values or summing the whole set.",
+      "hint": "For an odd count, the median is the single middle observation after sorting.",
+      "visual": {
+        "type": "dots",
+        "values": [
+          4,
+          5,
+          7,
+          9,
+          12
+        ],
+        "min": 3,
+        "max": 13,
+        "xLabel": "Completed lessons",
+        "alt": "Dot plot: 4, 5, 7, 9, 12. Five observations.",
+        "caption": "Each dot is one student\u2019s count"
+      },
+      "sourceLabel": "MAJICK ORIGINAL \u00b7 WGU-STYLE SKILL PRACTICE",
+      "options": [
+        "9",
+        "37",
+        "7",
+        "5"
+      ],
+      "answer": 2
+    },
+    {
+      "id": "hub-mean-15",
+      "lessonId": "d772-s2-l4-1",
+      "learningPathLessonId": "d772-s2-l4-1",
+      "topicId": "d772-s2-l4-1",
+      "skill": "mean",
+      "prompt": "A student\u2019s mean score across four practice checks is 7. Three scores are 5, 7, 8. What is the missing fourth score?",
+      "rationale": "A mean of 7 across four scores requires a total of 7\u00d74=28. The known scores total 20. Missing score = 28\u221220=8. The mean itself is not necessarily the missing observation; use the required total.",
+      "hint": "Mean \u00d7 count gives the required total. Subtract the known values.",
+      "visual": {
+        "type": "table",
+        "headers": [
+          "Check",
+          "Score"
+        ],
+        "rows": [
+          [
+            "1",
+            5
+          ],
+          [
+            "2",
+            7
+          ],
+          [
+            "3",
+            8
+          ],
+          [
+            "4",
+            "?"
+          ]
+        ],
+        "caption": "Mean of all four scores: 7",
+        "alt": "Mean of all four scores: 7: 1, 5; 2, 7; 3, 8; 4, ?"
+      },
+      "sourceLabel": "MAJICK ORIGINAL \u00b7 WGU-STYLE SKILL PRACTICE",
+      "options": [
+        "20",
+        "8",
+        "7",
+        "28"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "hub-median-15",
+      "lessonId": "d772-s2-l4-1",
+      "learningPathLessonId": "d772-s2-l4-1",
+      "topicId": "d772-s2-l4-1",
+      "skill": "median",
+      "prompt": "Five students report 13, 5, 10, 6, and 8 completed lessons. What is the median number of completed lessons?",
+      "rationale": "Sort the observations: 5, 6, 8, 10, 13. Five values have one middle position: (5+1)/2=3. The third value is 8. Use an observation\u2019s position after sorting, rather than averaging the adjacent values or summing the whole set.",
+      "hint": "For an odd count, the median is the single middle observation after sorting.",
+      "visual": {
+        "type": "dots",
+        "values": [
+          5,
+          6,
+          8,
+          10,
+          13
+        ],
+        "min": 4,
+        "max": 14,
+        "xLabel": "Completed lessons",
+        "alt": "Dot plot: 5, 6, 8, 10, 13. Five observations.",
+        "caption": "Each dot is one student\u2019s count"
+      },
+      "sourceLabel": "MAJICK ORIGINAL \u00b7 WGU-STYLE SKILL PRACTICE",
+      "options": [
+        "42",
+        "8",
+        "6",
+        "10"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "hub-mean-16",
+      "lessonId": "d772-s2-l4-1",
+      "learningPathLessonId": "d772-s2-l4-1",
+      "topicId": "d772-s2-l4-1",
+      "skill": "mean",
+      "prompt": "A student\u2019s mean score across four practice checks is 8. Three scores are 6, 8, 9. What is the missing fourth score?",
+      "rationale": "A mean of 8 across four scores requires a total of 8\u00d74=32. The known scores total 23. Missing score = 32\u221223=9. The mean itself is not necessarily the missing observation; use the required total.",
+      "hint": "Mean \u00d7 count gives the required total. Subtract the known values.",
+      "visual": {
+        "type": "table",
+        "headers": [
+          "Check",
+          "Score"
+        ],
+        "rows": [
+          [
+            "1",
+            6
+          ],
+          [
+            "2",
+            8
+          ],
+          [
+            "3",
+            9
+          ],
+          [
+            "4",
+            "?"
+          ]
+        ],
+        "caption": "Mean of all four scores: 8",
+        "alt": "Mean of all four scores: 8: 1, 6; 2, 8; 3, 9; 4, ?"
+      },
+      "sourceLabel": "MAJICK ORIGINAL \u00b7 WGU-STYLE SKILL PRACTICE",
+      "options": [
+        "9",
+        "8",
+        "32",
+        "23"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "hub-median-16",
+      "lessonId": "d772-s2-l4-1",
+      "learningPathLessonId": "d772-s2-l4-1",
+      "topicId": "d772-s2-l4-1",
+      "skill": "median",
+      "prompt": "Five students report 14, 6, 11, 7, and 9 completed lessons. What is the median number of completed lessons?",
+      "rationale": "Sort the observations: 6, 7, 9, 11, 14. Five values have one middle position: (5+1)/2=3. The third value is 9. Use an observation\u2019s position after sorting, rather than averaging the adjacent values or summing the whole set.",
+      "hint": "For an odd count, the median is the single middle observation after sorting.",
+      "visual": {
+        "type": "dots",
+        "values": [
+          6,
+          7,
+          9,
+          11,
+          14
+        ],
+        "min": 5,
+        "max": 15,
+        "xLabel": "Completed lessons",
+        "alt": "Dot plot: 6, 7, 9, 11, 14. Five observations.",
+        "caption": "Each dot is one student\u2019s count"
+      },
+      "sourceLabel": "MAJICK ORIGINAL \u00b7 WGU-STYLE SKILL PRACTICE",
+      "options": [
+        "9",
+        "7",
+        "11",
+        "47"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "hub-probability-21",
+      "lessonId": "d772-s3-l3-4",
+      "learningPathLessonId": "d772-s3-l3-4",
+      "topicId": "d772-s3-l3-4",
+      "skill": "probability",
+      "prompt": "A machine\u2019s probability of producing a defective part is 1/5. What is the probability that the next part is NOT defective?",
+      "rationale": "Defective and not defective are complements, so their probabilities total 1. P(not defective)=1\u22121/5=4/5. Repeating the defect probability answers the wrong event; adding or taking a reciprocal does not form a complement.",
+      "hint": "NOT indicates the complement: subtract the event probability from 1.",
+      "visual": {
+        "type": "table",
+        "headers": [
+          "Event",
+          "Probability"
+        ],
+        "rows": [
+          [
+            "Defective",
+            "1/5"
+          ],
+          [
+            "Not defective",
+            "?"
+          ]
+        ],
+        "caption": "Complementary events",
+        "alt": "Complementary events: Defective, 1/5; Not defective, ?"
+      },
+      "sourceLabel": "MAJICK ORIGINAL \u00b7 WGU-STYLE SKILL PRACTICE",
+      "options": [
+        "1/5",
+        "6/5",
+        "5",
+        "4/5"
+      ],
+      "answer": 3
+    },
+    {
+      "id": "hub-probability-22",
+      "lessonId": "d772-s3-l3-4",
+      "learningPathLessonId": "d772-s3-l3-4",
+      "topicId": "d772-s3-l3-4",
+      "skill": "probability",
+      "prompt": "A machine\u2019s probability of producing a defective part is 3/10. What is the probability that the next part is NOT defective?",
+      "rationale": "Defective and not defective are complements, so their probabilities total 1. P(not defective)=1\u22123/10=7/10. Repeating the defect probability answers the wrong event; adding or taking a reciprocal does not form a complement.",
+      "hint": "NOT indicates the complement: subtract the event probability from 1.",
+      "visual": {
+        "type": "table",
+        "headers": [
+          "Event",
+          "Probability"
+        ],
+        "rows": [
+          [
+            "Defective",
+            "3/10"
+          ],
+          [
+            "Not defective",
+            "?"
+          ]
+        ],
+        "caption": "Complementary events",
+        "alt": "Complementary events: Defective, 3/10; Not defective, ?"
+      },
+      "sourceLabel": "MAJICK ORIGINAL \u00b7 WGU-STYLE SKILL PRACTICE",
+      "options": [
+        "13/10",
+        "10/3",
+        "7/10",
+        "3/10"
+      ],
+      "answer": 2
+    },
+    {
+      "id": "hub-probability-23",
+      "lessonId": "d772-s3-l3-4",
+      "learningPathLessonId": "d772-s3-l3-4",
+      "topicId": "d772-s3-l3-4",
+      "skill": "probability",
+      "prompt": "A machine\u2019s probability of producing a defective part is 2/5. What is the probability that the next part is NOT defective?",
+      "rationale": "Defective and not defective are complements, so their probabilities total 1. P(not defective)=1\u22122/5=3/5. Repeating the defect probability answers the wrong event; adding or taking a reciprocal does not form a complement.",
+      "hint": "NOT indicates the complement: subtract the event probability from 1.",
+      "visual": {
+        "type": "table",
+        "headers": [
+          "Event",
+          "Probability"
+        ],
+        "rows": [
+          [
+            "Defective",
+            "2/5"
+          ],
+          [
+            "Not defective",
+            "?"
+          ]
+        ],
+        "caption": "Complementary events",
+        "alt": "Complementary events: Defective, 2/5; Not defective, ?"
+      },
+      "sourceLabel": "MAJICK ORIGINAL \u00b7 WGU-STYLE SKILL PRACTICE",
+      "options": [
+        "5/2",
+        "3/5",
+        "2/5",
+        "7/5"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "hub-probability-24",
+      "lessonId": "d772-s3-l3-4",
+      "learningPathLessonId": "d772-s3-l3-4",
+      "topicId": "d772-s3-l3-4",
+      "skill": "probability",
+      "prompt": "A machine\u2019s probability of producing a defective part is 1/2. What is the probability that the next part is NOT defective?",
+      "rationale": "Defective and not defective are complements, so their probabilities total 1. P(not defective)=1\u22121/2=1/2. Repeating the defect probability answers the wrong event; adding or taking a reciprocal does not form a complement.",
+      "hint": "NOT indicates the complement: subtract the event probability from 1.",
+      "visual": {
+        "type": "table",
+        "headers": [
+          "Event",
+          "Probability"
+        ],
+        "rows": [
+          [
+            "Defective",
+            "1/2"
+          ],
+          [
+            "Not defective",
+            "?"
+          ]
+        ],
+        "caption": "Complementary events",
+        "alt": "Complementary events: Defective, 1/2; Not defective, ?"
+      },
+      "sourceLabel": "MAJICK ORIGINAL \u00b7 WGU-STYLE SKILL PRACTICE",
+      "options": [
+        "1/2",
+        "3/2",
+        "2",
+        "0"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "hub-probability-25",
+      "lessonId": "d772-s3-l2-1",
+      "learningPathLessonId": "d772-s3-l2-1",
+      "topicId": "d772-s3-l2-1",
+      "skill": "probability",
+      "prompt": "Two learners work independently. The probability that the first completes a lesson today is 1/2, and the probability that the second does is 1/5. What is the probability that BOTH complete the lesson?",
+      "rationale": "Independence allows multiplication: P(both)=(1/2)\u00d7(1/5)=1/10. Adding probabilities does not calculate this AND event. Either single probability describes only one learner. Without independence, the second probability would need to be conditioned on the first event.",
+      "hint": "BOTH means AND. Independence is the condition that lets you multiply the two individual probabilities.",
+      "visual": {
+        "type": "table",
+        "headers": [
+          "Learner",
+          "Completion probability"
+        ],
+        "rows": [
+          [
+            "First",
+            "1/2"
+          ],
+          [
+            "Second",
+            "1/5"
+          ]
+        ],
+        "caption": "Independent completion events",
+        "alt": "Independent completion events: First, 1/2; Second, 1/5"
+      },
+      "sourceLabel": "MAJICK ORIGINAL \u00b7 WGU-STYLE SKILL PRACTICE",
+      "options": [
+        "7/10",
+        "1/5",
+        "1/2",
+        "1/10"
+      ],
+      "answer": 3
+    },
+    {
+      "id": "hub-probability-26",
+      "lessonId": "d772-s3-l2-1",
+      "learningPathLessonId": "d772-s3-l2-1",
+      "topicId": "d772-s3-l2-1",
+      "skill": "probability",
+      "prompt": "Two learners work independently. The probability that the first completes a lesson today is 1/2, and the probability that the second does is 3/10. What is the probability that BOTH complete the lesson?",
+      "rationale": "Independence allows multiplication: P(both)=(1/2)\u00d7(3/10)=3/20. Adding probabilities does not calculate this AND event. Either single probability describes only one learner. Without independence, the second probability would need to be conditioned on the first event.",
+      "hint": "BOTH means AND. Independence is the condition that lets you multiply the two individual probabilities.",
+      "visual": {
+        "type": "table",
+        "headers": [
+          "Learner",
+          "Completion probability"
+        ],
+        "rows": [
+          [
+            "First",
+            "1/2"
+          ],
+          [
+            "Second",
+            "3/10"
+          ]
+        ],
+        "caption": "Independent completion events",
+        "alt": "Independent completion events: First, 1/2; Second, 3/10"
+      },
+      "sourceLabel": "MAJICK ORIGINAL \u00b7 WGU-STYLE SKILL PRACTICE",
+      "options": [
+        "3/10",
+        "1/2",
+        "3/20",
+        "4/5"
+      ],
+      "answer": 2
+    },
+    {
+      "id": "hub-probability-27",
+      "lessonId": "d772-s3-l2-1",
+      "learningPathLessonId": "d772-s3-l2-1",
+      "topicId": "d772-s3-l2-1",
+      "skill": "probability",
+      "prompt": "Two learners work independently. The probability that the first completes a lesson today is 1/2, and the probability that the second does is 2/5. What is the probability that BOTH complete the lesson?",
+      "rationale": "Independence allows multiplication: P(both)=(1/2)\u00d7(2/5)=1/5. Adding probabilities does not calculate this AND event. Either single probability describes only one learner. Without independence, the second probability would need to be conditioned on the first event.",
+      "hint": "BOTH means AND. Independence is the condition that lets you multiply the two individual probabilities.",
+      "visual": {
+        "type": "table",
+        "headers": [
+          "Learner",
+          "Completion probability"
+        ],
+        "rows": [
+          [
+            "First",
+            "1/2"
+          ],
+          [
+            "Second",
+            "2/5"
+          ]
+        ],
+        "caption": "Independent completion events",
+        "alt": "Independent completion events: First, 1/2; Second, 2/5"
+      },
+      "sourceLabel": "MAJICK ORIGINAL \u00b7 WGU-STYLE SKILL PRACTICE",
+      "options": [
+        "1/2",
+        "1/5",
+        "9/10",
+        "2/5"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "hub-probability-28",
+      "lessonId": "d772-s3-l2-1",
+      "learningPathLessonId": "d772-s3-l2-1",
+      "topicId": "d772-s3-l2-1",
+      "skill": "probability",
+      "prompt": "Two learners work independently. The probability that the first completes a lesson today is 1/2, and the probability that the second does is 1/2. What is the probability that BOTH complete the lesson?",
+      "rationale": "Independence allows multiplication: P(both)=(1/2)\u00d7(1/2)=1/4. Adding probabilities does not calculate this AND event. Either single probability describes only one learner. Without independence, the second probability would need to be conditioned on the first event.",
+      "hint": "BOTH means AND. Independence is the condition that lets you multiply the two individual probabilities.",
+      "visual": {
+        "type": "table",
+        "headers": [
+          "Learner",
+          "Completion probability"
+        ],
+        "rows": [
+          [
+            "First",
+            "1/2"
+          ],
+          [
+            "Second",
+            "1/2"
+          ]
+        ],
+        "caption": "Independent completion events",
+        "alt": "Independent completion events: First, 1/2; Second, 1/2"
+      },
+      "sourceLabel": "MAJICK ORIGINAL \u00b7 WGU-STYLE SKILL PRACTICE",
+      "options": [
+        "1/4",
+        "1",
+        "1/2",
+        "0"
+      ],
+      "answer": 0
+    },
+    {
+      "id": "hub-probability-29",
+      "lessonId": "d772-s3-l4-1",
+      "learningPathLessonId": "d772-s3-l4-1",
+      "topicId": "d772-s3-l4-1",
+      "skill": "probability",
+      "prompt": "A game pays $12 with probability 1/4 and $0 with probability 3/4. It costs $2 to play once. What is the expected NET gain per play?",
+      "rationale": "Expected payout = (12\u00d71/4)+(0\u00d73/4)=$3. Subtract the $2 cost: expected net gain = $1. Gross expected payout ignores the fee; the winning net outcome is not an average; an unweighted mean treats unequal probabilities as equal. Expected value describes a long-run average, not a guaranteed single outcome.",
+      "hint": "Multiply each payout by its probability, add, then subtract the cost once.",
+      "visual": {
+        "type": "table",
+        "headers": [
+          "Payout",
+          "Probability"
+        ],
+        "rows": [
+          [
+            "$12",
+            "1/4"
+          ],
+          [
+            "$0",
+            "3/4"
+          ]
+        ],
+        "caption": "Payout distribution; cost $2 per play",
+        "alt": "Payout distribution; cost $2 per play: $12, 1/4; $0, 3/4"
+      },
+      "sourceLabel": "MAJICK ORIGINAL \u00b7 WGU-STYLE SKILL PRACTICE",
+      "options": [
+        "$3",
+        "$10",
+        "$4",
+        "$1"
+      ],
+      "answer": 3
+    },
+    {
+      "id": "hub-probability-30",
+      "lessonId": "d772-s3-l4-1",
+      "learningPathLessonId": "d772-s3-l4-1",
+      "topicId": "d772-s3-l4-1",
+      "skill": "probability",
+      "prompt": "A game pays $16 with probability 1/4 and $0 with probability 3/4. It costs $2 to play once. What is the expected NET gain per play?",
+      "rationale": "Expected payout = (16\u00d71/4)+(0\u00d73/4)=$4. Subtract the $2 cost: expected net gain = $2. Gross expected payout ignores the fee; the winning net outcome is not an average; an unweighted mean treats unequal probabilities as equal. Expected value describes a long-run average, not a guaranteed single outcome.",
+      "hint": "Multiply each payout by its probability, add, then subtract the cost once.",
+      "visual": {
+        "type": "table",
+        "headers": [
+          "Payout",
+          "Probability"
+        ],
+        "rows": [
+          [
+            "$16",
+            "1/4"
+          ],
+          [
+            "$0",
+            "3/4"
+          ]
+        ],
+        "caption": "Payout distribution; cost $2 per play",
+        "alt": "Payout distribution; cost $2 per play: $16, 1/4; $0, 3/4"
+      },
+      "sourceLabel": "MAJICK ORIGINAL \u00b7 WGU-STYLE SKILL PRACTICE",
+      "options": [
+        "$14",
+        "$6",
+        "$2",
+        "$4"
+      ],
+      "answer": 2
+    },
+    {
+      "id": "hub-probability-31",
+      "lessonId": "d772-s3-l4-1",
+      "learningPathLessonId": "d772-s3-l4-1",
+      "topicId": "d772-s3-l4-1",
+      "skill": "probability",
+      "prompt": "A game pays $20 with probability 1/4 and $0 with probability 3/4. It costs $2 to play once. What is the expected NET gain per play?",
+      "rationale": "Expected payout = (20\u00d71/4)+(0\u00d73/4)=$5. Subtract the $2 cost: expected net gain = $3. Gross expected payout ignores the fee; the winning net outcome is not an average; an unweighted mean treats unequal probabilities as equal. Expected value describes a long-run average, not a guaranteed single outcome.",
+      "hint": "Multiply each payout by its probability, add, then subtract the cost once.",
+      "visual": {
+        "type": "table",
+        "headers": [
+          "Payout",
+          "Probability"
+        ],
+        "rows": [
+          [
+            "$20",
+            "1/4"
+          ],
+          [
+            "$0",
+            "3/4"
+          ]
+        ],
+        "caption": "Payout distribution; cost $2 per play",
+        "alt": "Payout distribution; cost $2 per play: $20, 1/4; $0, 3/4"
+      },
+      "sourceLabel": "MAJICK ORIGINAL \u00b7 WGU-STYLE SKILL PRACTICE",
+      "options": [
+        "$8",
+        "$3",
+        "$5",
+        "$18"
+      ],
+      "answer": 1
+    },
+    {
+      "id": "hub-probability-32",
+      "lessonId": "d772-s3-l4-1",
+      "learningPathLessonId": "d772-s3-l4-1",
+      "topicId": "d772-s3-l4-1",
+      "skill": "probability",
+      "prompt": "A game pays $24 with probability 1/4 and $0 with probability 3/4. It costs $2 to play once. What is the expected NET gain per play?",
+      "rationale": "Expected payout = (24\u00d71/4)+(0\u00d73/4)=$6. Subtract the $2 cost: expected net gain = $4. Gross expected payout ignores the fee; the winning net outcome is not an average; an unweighted mean treats unequal probabilities as equal. Expected value describes a long-run average, not a guaranteed single outcome.",
+      "hint": "Multiply each payout by its probability, add, then subtract the cost once.",
+      "visual": {
+        "type": "table",
+        "headers": [
+          "Payout",
+          "Probability"
+        ],
+        "rows": [
+          [
+            "$24",
+            "1/4"
+          ],
+          [
+            "$0",
+            "3/4"
+          ]
+        ],
+        "caption": "Payout distribution; cost $2 per play",
+        "alt": "Payout distribution; cost $2 per play: $24, 1/4; $0, 3/4"
+      },
+      "sourceLabel": "MAJICK ORIGINAL \u00b7 WGU-STYLE SKILL PRACTICE",
+      "options": [
+        "$4",
+        "$6",
+        "$22",
+        "$10"
+      ],
+      "answer": 0
     }
   ]
 }
