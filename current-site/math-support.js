@@ -142,7 +142,7 @@ function interactiveFormula(){
 }
 function checkRole(value,slot){
  const v=String(value||''),money=/\$/.test(v),percent=/%/.test(v),decimal=/^0?\.\d+/.test(v);
- if(/probability|P\\(|P\\(outcome\\)/i.test(slot)){
+ if(/probability|P\(|P\(outcome\)/i.test(slot)){
    if(money)return 'That number is a dollar amount. This slot needs how likely the outcome is.';
    if(percent||decimal||/\\//.test(v))return 'Good fit: this looks like a probability.';
  }
