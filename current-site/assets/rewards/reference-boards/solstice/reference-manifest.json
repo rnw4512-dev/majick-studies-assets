@@ -1,0 +1,222 @@
+{
+  "version": "3.4.2",
+  "guardian": "solstice",
+  "status": "approved-reference-board",
+  "individualAssets": "generation-in-progress",
+  "palette": [
+    "amber",
+    "antique gold",
+    "teal",
+    "forest green",
+    "midnight blue",
+    "ruby-red accents"
+  ],
+  "board": "assets/rewards/reference-boards/solstice/solstice-collection-reference-board.webp",
+  "runtimeBoard": "assets/rewards/reference-boards/solstice/solstice-collection-reference-board-runtime.webp",
+  "items": [
+    {
+      "id": "solstice-reading-chaise",
+      "name": "Solstice’s Reading Chaise",
+      "kind": "furniture",
+      "rarity": "rare"
+    },
+    {
+      "id": "solstice-star-pouf",
+      "name": "Solstice’s Star Pouf",
+      "kind": "furniture",
+      "rarity": "enchanted"
+    },
+    {
+      "id": "solstice-explorer-telescope",
+      "name": "Solstice’s Explorer Telescope",
+      "kind": "furniture",
+      "rarity": "arcane"
+    },
+    {
+      "id": "solstice-starlight-hammock",
+      "name": "Solstice’s Starlight Hammock",
+      "kind": "furniture",
+      "rarity": "rare"
+    },
+    {
+      "id": "solstice-galaxy-vanity",
+      "name": "Solstice’s Galaxy Vanity",
+      "kind": "furniture",
+      "rarity": "arcane"
+    },
+    {
+      "id": "solstice-nebula-bowl",
+      "name": "Solstice’s Nebula Bowl",
+      "kind": "decor",
+      "rarity": "arcane"
+    },
+    {
+      "id": "solstice-solar-orrery",
+      "name": "Solstice’s Solar Orrery",
+      "kind": "toy",
+      "rarity": "celestial"
+    },
+    {
+      "id": "solstice-astronomy-bookshelf",
+      "name": "Solstice’s Astronomy Bookshelf",
+      "kind": "furniture",
+      "rarity": "rare"
+    },
+    {
+      "id": "solstice-fox-star-den",
+      "name": "Solstice’s Fox Star Den",
+      "kind": "furniture",
+      "rarity": "celestial"
+    },
+    {
+      "id": "solstice-constellation-rug",
+      "name": "Solstice’s Constellation Rug",
+      "kind": "furniture",
+      "rarity": "rare"
+    },
+    {
+      "id": "solstice-exploration-chest",
+      "name": "Solstice’s Exploration Chest",
+      "kind": "toy",
+      "rarity": "rare"
+    },
+    {
+      "id": "solstice-planet-climbing-tower",
+      "name": "Solstice’s Planet Climbing Tower",
+      "kind": "toy",
+      "rarity": "rare"
+    },
+    {
+      "id": "solstice-amber-canopy-bed",
+      "name": "Solstice’s Amber Canopy Bed",
+      "kind": "furniture",
+      "rarity": "celestial"
+    },
+    {
+      "id": "solstice-star-perch-tree",
+      "name": "Solstice’s Star Perch Tree",
+      "kind": "toy",
+      "rarity": "rare"
+    },
+    {
+      "id": "solstice-moon-writing-desk",
+      "name": "Solstice’s Moon Writing Desk",
+      "kind": "furniture",
+      "rarity": "arcane"
+    },
+    {
+      "id": "solstice-fox-ear-reading-chair",
+      "name": "Solstice’s Fox-Ear Reading Chair",
+      "kind": "furniture",
+      "rarity": "rare"
+    },
+    {
+      "id": "solstice-crescent-lantern",
+      "name": "Solstice’s Crescent Lantern",
+      "kind": "decor",
+      "rarity": "enchanted"
+    },
+    {
+      "id": "solstice-astral-doorway",
+      "name": "Solstice’s Astral Doorway",
+      "kind": "decor",
+      "rarity": "arcane"
+    },
+    {
+      "id": "solstice-galaxy-folding-screen",
+      "name": "Solstice’s Galaxy Folding Screen",
+      "kind": "furniture",
+      "rarity": "arcane"
+    },
+    {
+      "id": "solstice-orbit-play-ball",
+      "name": "Solstice’s Orbit Play Ball",
+      "kind": "toy",
+      "rarity": "enchanted"
+    },
+    {
+      "id": "solstice-star-charm-rack",
+      "name": "Solstice’s Star Charm Rack",
+      "kind": "toy",
+      "rarity": "rare"
+    },
+    {
+      "id": "solstice-solar-circlet",
+      "name": "Solstice’s Solar Circlet",
+      "kind": "accessory",
+      "rarity": "celestial"
+    },
+    {
+      "id": "solstice-moon-collar",
+      "name": "Solstice’s Moon Collar",
+      "kind": "accessory",
+      "rarity": "enchanted"
+    },
+    {
+      "id": "solstice-nebula-wand",
+      "name": "Solstice’s Nebula Wand",
+      "kind": "accessory",
+      "rarity": "arcane"
+    },
+    {
+      "id": "solstice-star-glasses",
+      "name": "Solstice’s Star Glasses",
+      "kind": "accessory",
+      "rarity": "rare"
+    },
+    {
+      "id": "solstice-orbit-bracelet",
+      "name": "Solstice’s Orbit Bracelet",
+      "kind": "accessory",
+      "rarity": "rare"
+    },
+    {
+      "id": "solstice-explorer-satchel",
+      "name": "Solstice’s Explorer Satchel",
+      "kind": "accessory",
+      "rarity": "rare"
+    },
+    {
+      "id": "solstice-galaxy-cape",
+      "name": "Solstice’s Galaxy Cape",
+      "kind": "accessory",
+      "rarity": "celestial"
+    },
+    {
+      "id": "solstice-astronomy-book-stack",
+      "name": "Solstice’s Astronomy Book Stack",
+      "kind": "decor",
+      "rarity": "enchanted"
+    },
+    {
+      "id": "solstice-planet-mobile",
+      "name": "Solstice’s Planet Mobile",
+      "kind": "decor",
+      "rarity": "rare"
+    },
+    {
+      "id": "solstice-starlight-tea-table",
+      "name": "Solstice’s Starlight Tea Table",
+      "kind": "furniture",
+      "rarity": "rare"
+    },
+    {
+      "id": "solstice-cosmic-orbit-puzzle",
+      "name": "Solstice’s Cosmic Orbit Puzzle",
+      "kind": "toy",
+      "rarity": "arcane"
+    },
+    {
+      "id": "solstice-sun-globe-lamp",
+      "name": "Solstice’s Sun Globe Lamp",
+      "kind": "decor",
+      "rarity": "arcane"
+    },
+    {
+      "id": "solstice-celestial-fox-gateway",
+      "name": "Solstice’s Celestial Fox Gateway",
+      "kind": "decor",
+      "rarity": "celestial"
+    }
+  ]
+}

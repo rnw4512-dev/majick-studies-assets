@@ -429,6 +429,9 @@
     "assets/rewards/items/velvet-study-chair.webp": "3057edacc502c62fb7022117b8ba0b0b3ce7ea5bde4c4901606c93bba84af52c",
     "assets/rewards/reference-boards/aurelia/aurelia-collection-reference-board-runtime.webp": "64e99f0e1cf9d712a754687f51d7aa6912e8bdd2719c66fd14ebbd1f79f27f8e",
     "assets/rewards/reference-boards/aurelia/reference-manifest.json": "bd43b3b2aaf9c1aadb889bb48670a6569b40e9b2aacc72cc47667534efc10461",
-    "assets/rewards/reference-boards/aurelia/aurelia-collection-reference-board.webp": "f6f6e692d5d5bf1ea0b2c56b5cb224e5ff283c5de89664a06f1fa04fcae2caa1"
+    "assets/rewards/reference-boards/aurelia/aurelia-collection-reference-board.webp": "f6f6e692d5d5bf1ea0b2c56b5cb224e5ff283c5de89664a06f1fa04fcae2caa1",
+    "assets/rewards/reference-boards/solstice/solstice-collection-reference-board-runtime.webp": "c9eb1ee5caa631a4d16fc5dd6b78da3d8100a2a3ad015f25483fccafd666738c",
+    "assets/rewards/reference-boards/solstice/solstice-collection-reference-board.webp": "a7ce3b72ff7437af8dca4d509ce80e0fc015c7f2ed4453bce4b0107b2667f908",
+    "assets/rewards/reference-boards/solstice/reference-manifest.json": "125bb1e6de8f89fa41478f4e3ba44a1d6f3429803f15cc6a5b1c5d5d11c9fbd8"
   }
 }
