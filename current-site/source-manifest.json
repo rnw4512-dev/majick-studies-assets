@@ -426,6 +426,9 @@
     "assets/rewards/items/fortune-seer-monocle.webp": "0bde37961261892876fb780e7177579d6c6ae31e59f5899ee739aa4e68752439",
     "assets/rewards/items/moon-phase-wall-hanging.webp": "6b82658f21d63644f8a9415b65428c83dccb05f17ed828f17177e108606f8e0f",
     "assets/rewards/items/scholar-rune-circlet.webp": "96ea9ac63ed0be6e0102e08d2f6ef49e1934ab981140b45efd3383ba30f1664d",
-    "assets/rewards/items/velvet-study-chair.webp": "3057edacc502c62fb7022117b8ba0b0b3ce7ea5bde4c4901606c93bba84af52c"
+    "assets/rewards/items/velvet-study-chair.webp": "3057edacc502c62fb7022117b8ba0b0b3ce7ea5bde4c4901606c93bba84af52c",
+    "assets/rewards/reference-boards/aurelia/aurelia-collection-reference-board-runtime.webp": "64e99f0e1cf9d712a754687f51d7aa6912e8bdd2719c66fd14ebbd1f79f27f8e",
+    "assets/rewards/reference-boards/aurelia/reference-manifest.json": "bd43b3b2aaf9c1aadb889bb48670a6569b40e9b2aacc72cc47667534efc10461",
+    "assets/rewards/reference-boards/aurelia/aurelia-collection-reference-board.webp": "f6f6e692d5d5bf1ea0b2c56b5cb224e5ff283c5de89664a06f1fa04fcae2caa1"
   }
 }

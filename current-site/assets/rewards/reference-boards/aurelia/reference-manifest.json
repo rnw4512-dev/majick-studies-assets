@@ -1,0 +1,143 @@
+{
+  "version": "3.4.2",
+  "guardian": "aurelia",
+  "status": "reference-board",
+  "individualAssets": "not-yet-generated",
+  "palette": [
+    "ivory cream",
+    "ruby red",
+    "rose gold",
+    "forest green",
+    "sage green",
+    "soft peach"
+  ],
+  "motifs": [
+    "rabbit ears",
+    "feathered wings",
+    "roses",
+    "moons",
+    "warm stars"
+  ],
+  "personality": [
+    "cozy",
+    "nurturing",
+    "books",
+    "feeding"
+  ],
+  "board": "assets/rewards/reference-boards/aurelia/aurelia-collection-reference-board.webp",
+  "runtimeBoard": "assets/rewards/reference-boards/aurelia/aurelia-collection-reference-board-runtime.webp",
+  "items": [
+    {
+      "boardIndex": 1,
+      "name": "Bunny-Ear Reading Chair"
+    },
+    {
+      "boardIndex": 2,
+      "name": "Wingback Reading Chaise"
+    },
+    {
+      "boardIndex": 3,
+      "name": "Quilted Ruby Canopy Bed"
+    },
+    {
+      "boardIndex": 4,
+      "name": "Burrow Hammock"
+    },
+    {
+      "boardIndex": 5,
+      "name": "Velvet Footstool"
+    },
+    {
+      "boardIndex": 6,
+      "name": "Scholar Writing Desk"
+    },
+    {
+      "boardIndex": 7,
+      "name": "Arched Bookcase"
+    },
+    {
+      "boardIndex": 8,
+      "name": "Rose Crystal Lamp"
+    },
+    {
+      "boardIndex": 9,
+      "name": "Wing-Framed Moon Mirror"
+    },
+    {
+      "boardIndex": 10,
+      "name": "Feather Lantern"
+    },
+    {
+      "boardIndex": 11,
+      "name": "Flowering Sage Planter"
+    },
+    {
+      "boardIndex": 12,
+      "name": "Feeding and Water Station"
+    },
+    {
+      "boardIndex": 13,
+      "name": "Potion Apothecary"
+    },
+    {
+      "boardIndex": 14,
+      "name": "Wing-Embroidered Rug"
+    },
+    {
+      "boardIndex": 15,
+      "name": "Rose Tea Table"
+    },
+    {
+      "boardIndex": 16,
+      "name": "Feather Play Wand"
+    },
+    {
+      "boardIndex": 17,
+      "name": "Rune Play Ball"
+    },
+    {
+      "boardIndex": 18,
+      "name": "Treat Puzzle Carousel"
+    },
+    {
+      "boardIndex": 19,
+      "name": "Bunny Toy Trunk"
+    },
+    {
+      "boardIndex": 20,
+      "name": "Hopping Stones"
+    },
+    {
+      "boardIndex": 21,
+      "name": "Rose and Star Mobile"
+    },
+    {
+      "boardIndex": 22,
+      "name": "Ruby Rose Circlet"
+    },
+    {
+      "boardIndex": 23,
+      "name": "Sage Moon Collar"
+    },
+    {
+      "boardIndex": 24,
+      "name": "Scholar Glasses"
+    },
+    {
+      "boardIndex": 25,
+      "name": "Wing-and-Petal Cloak"
+    },
+    {
+      "boardIndex": 26,
+      "name": "Scholar Satchel"
+    },
+    {
+      "boardIndex": 27,
+      "name": "Rose-Heart Arcane Orb"
+    },
+    {
+      "boardIndex": 28,
+      "name": "Celestial Rabbit Dream Altar"
+    }
+  ]
+}
