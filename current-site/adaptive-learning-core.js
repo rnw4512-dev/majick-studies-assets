@@ -151,6 +151,7 @@ function masteryReceiptHtml(){
 function pathMeterHtml(){
  return '<div class="v347PathMeter">'+learningPath().map(([label,on],i)=>'<span class="'+(on?'done':'')+'"><i>'+(on?'●':'○')+'</i>'+E(label)+'</span>').join('<b>→</b>')+'</div>';
 }
+function noMathUnlocked(q){const k=q?.id||q?.qid;return !!(k&&state().noMath?.[k]?.unlocked)}
 function noMathYetHtml(q){
  if(!q)return '';
  const st=state();st.noMath=st.noMath||{};const key=q.id||q.qid;st.noMath[key]=st.noMath[key]||{testing:'',info:'',strategy:'',unlocked:false};
@@ -263,12 +264,12 @@ function stepBody(){
  }
  if(step===4)return '<small>⑤ WHY DOES THIS WORK?</small><h2>Connect the rule to the meaning</h2><p class="lead">'+E(concept?.explain?.model||concept?.why||concept?.anchor?.trap||'Explain the reason the correct strategy fits this scenario, not just which answer is correct.')+'</p><button class="btn primary" data-v346-next>Help Me Try →</button>';
  if(step===5)return '<small>⑥ HELP ME TRY</small><h2>Guided practice</h2>'+qHtml(ensureQuestion('help'),'help');
- if(step===6){const q=ensureQuestion('turn');return '<small>⑦ MY TURN</small><h2>Try it independently</h2>'+noMathYetHtml(q)+qHtml(q,'turn');}
+ if(step===6){const q=ensureQuestion('turn');return '<small>⑦ MY TURN</small><h2>Try it independently</h2>'+(noMathUnlocked(q)?qHtml(q,'turn'):noMathYetHtml(q));}
  if(step===7){
    const counts=m.counts,cat=course().misconceptionCatalog||[];
    return '<small>⑧ RELATED MISTAKES</small><h2>Learn the tempting wrong answer</h2><div class="v346Mistakes">'+(concept?.anchor?.trap?'<p>⚠ '+E(concept.anchor.trap)+'</p>':'')+cat.slice(0,3).map(x=>'<p>⚠ '+E(x.description||x.label||x.title||String(x))+'</p>').join('')+Object.entries(counts).map(([k,v])=>'<span>'+E(k)+' • '+v+'×</span>').join('')+'</div><button class="btn primary" data-v346-next>Mix It Up →</button>';
  }
- if(step===8){const q=ensureQuestion('mix',true);return '<small>⑨ MIX IT UP</small><h2>Choose the strategy from the scenario</h2><p>Majick does not tell you which lesson this came from.</p>'+noMathYetHtml(q)+qHtml(q,'mix');}
+ if(step===8){const q=ensureQuestion('mix',true);return '<small>⑨ MIX IT UP</small><h2>Choose the strategy from the scenario</h2><p>Majick does not tell you which lesson this came from.</p>'+(noMathUnlocked(q)?qHtml(q,'mix'):noMathYetHtml(q));}
  if(step===9){
    const due=progress().spacedQueue.filter(x=>x.dueAt<=Date.now()),q=due.length?bank().find(x=>questionTopic(x)===String(due[0].topicId).replace('adaptive:','')):ensureQuestion('retrieve',true);
    return '<small>⑩ RETRIEVE IT</small><h2>No notes first</h2><p>Recall before rereading.</p>'+qHtml(q||ensureQuestion('retrieve',true),'retrieve');
