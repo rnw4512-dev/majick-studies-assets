@@ -144,7 +144,7 @@
     "guardian-registry.js": "b20170b996ddf065f33bb37332c8a9fce68ae104914e3e94ffe9aa44b7b612f3",
     "home-focus.css": "cbb719eb8e78701717b4016388d511553f2785212d839815ed006651ae738b2b",
     "home-focus.js": "c4b28238d5f38e0401df2933fcf64991b928631e488a79f80301b20174f1968b",
-    "index.html": "3beb271776f20d6665dfabdffcd8cae50dd11b44ac37f9e09c1e666e0d64e1d2",
+    "index.html": "3c86d0431731a2ee18e7ca5481e656399c1999855552ff5693ab247d4ea82603",
     "learn-mode.css": "30181250c67efe7bd97c9276706a804a551e7904a2bb28160eeb0c193f35c002",
     "learn-mode.js": "f6647cd013d5bc59a319710c45ac806b56585c7fc5c912afa88857d2f16f82e0",
     "learning-lab.css": "6ed48d27023052a714d27c027f25828bc5ad74edccb172704e823a58b26d6844",
@@ -401,10 +401,10 @@
     "assets/boxplot-exercise.svg": "617c9eddef0699fec10c4c7fb5b27a4c68281aeead6350865b6722c42795bed8",
     "assets/boxplot-heights.svg": "7939d0a74fffe127e905fe3a13e4bc93db43ae9188eae7ce265d71e3e12c831a",
     "assets/boxplot-phones.svg": "3ed42e541d8e8039d2b270f4b76ec634918e02db245e085e38088ea05d7ef727",
-    "math-support.js": "68c75a39a2f2ecef740cf5f6f6eb80a2d0f8f696f541aa98c3627baf091716bb",
-    "math-support.css": "df8674300b07991af4fa4dd84db43d0e3045e2c5037924c11e326d7dd5144b7f",
-    "adaptive-learning-core.js": "95183fd32468df5912ebea043db66c5e9b71e888acf222cc6b4458e89bc97d2d",
-    "adaptive-learning-core.css": "48084c93e0c39f72c84fd69aeccbeaacfc882484198a8535197552236b7be504",
+    "math-support.js": "b83f030c4fdf5793c7fc0f418685aa10495b3ea90c0ffa1e40cc4fa7ecc5e2ae",
+    "math-support.css": "450f81a8f786d6bb9a1aff897ad2276ed96cf0e0c6fae20cb3754c70b4f3736b",
+    "adaptive-learning-core.js": "ea10559c9249c918d4681f597c1cdb8e9107510d726ce34a73a4864453cd244f",
+    "adaptive-learning-core.css": "f984e356b6efa4d7608e1226aec5df13f024f702ea3a51b56d8c75a589a44646",
     "course-learning-profiles.js": "60d25988b6ae0ed1cab981ce99d2d8ed49fe9c8553b189df3d83103797bfe925",
     "course-learning-profiles.css": "f0f4f53b2c9422f0ed884d4688af1d8367e63851b367331f78b994b6548b5caa"
   }
