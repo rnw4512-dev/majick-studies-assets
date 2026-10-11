@@ -86,7 +86,7 @@ function organizer(){
 }
 
 function progressState(){
- const p=window.S?.progress?.[COURSE];if(!p)return {};
+ const p=window.S?.progress?.[cid()];if(!p)return {};
  p.mathSupport=p.mathSupport||{issues:{},numberRoles:{},estimates:{},calculatorUses:0,guardianNotes:[]};
  return p.mathSupport;
 }
@@ -213,7 +213,7 @@ function decorate(){
  const root=stage.querySelector('.v343MathCoach');
  root?.querySelector('[data-v343-reveal]')?.addEventListener('click',()=>{
    const slot=root.querySelector('[data-v343-slot]');if(slot)slot.innerHTML=formulaCard(formulaFor());
-   try{window.S.progress[cid()].answers=window.S.progress[COURSE].answers||[];window.S.progress[COURSE].mathSupportUse=(window.S.progress[COURSE].mathSupportUse||0)+1;window.save?.()}catch(_){}
+   try{window.S.progress[cid()].answers=window.S.progress[cid()].answers||[];window.S.progress[cid()].mathSupportUse=(window.S.progress[cid()].mathSupportUse||0)+1;window.save?.()}catch(_){}
  });
  root?.querySelectorAll('[data-v343-action]').forEach(b=>b.addEventListener('click',()=>{
    const box=root.querySelector('[data-v343-help]'); if(box)box.innerHTML=help(b.dataset.v343Action);
