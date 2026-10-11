@@ -147,7 +147,7 @@ function checkRole(value,slot){
    if(percent||decimal||/\//.test(v))return 'Good fit: this looks like a probability.';
  }
  if(/value|payoff|outcome value/i.test(slot)){
-   if(money||(!percent&&!/\\//.test(v)))return 'Good fit: this can represent an outcome value.';
+   if(money||(!percent&&!/\//.test(v)))return 'Good fit: this can represent an outcome value.';
  }
  if(/total trials|total outcomes|number of values/i.test(slot)){
    if(percent||money)return 'This slot needs a count, not a percent or dollar amount.';
