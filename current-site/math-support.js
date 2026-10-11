@@ -1,7 +1,7 @@
 (()=>{
 'use strict';
-const VERSION='3.4.5-math-support';
-const COURSE='D772';
+const VERSION='3.4.6-math-support';
+const cid=()=>String(window.S?.activeCourse||'');
 const E=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const FAMILY_CARDS=[
  ['OR','Union','P(A or B)','Combine A, B, and the overlap once.'],
@@ -30,6 +30,13 @@ const FORMULAS=[
 ];
 function current(){
  try{
+  const adaptiveVisible=!!document.querySelector('.learnPanel[data-panel="adaptive"]:not([hidden])');
+  const ax=adaptiveVisible?window.MajickAdaptiveLearning?.current?.():null;
+  if(ax?.concept){
+    const step=Number(window.MajickAdaptiveLearning?.state?.()?.step||0);
+    const title=[ax.concept?.title,ax.concept?.teach,ax.lesson?.title,ax.lesson?.goal].filter(Boolean).join(' ');
+    return {phase:step,concept:ax.concept,title};
+  }
   const x=window.MajickInstruction?.current?.();
   const title=[x?.concept?.title,x?.concept?.teach,x?.lesson?.title].filter(Boolean).join(' ');
   return {phase:Number(x?.st?.phase||0),concept:x?.concept,title};
@@ -59,7 +66,7 @@ function formulaCard(f){
  return '<div class="v343FormulaCard"><small>'+E(f.label)+'</small><strong>'+E(f.formula)+'</strong><p>'+E(f.plain)+'</p><em>Watch out: '+E(f.trap)+'</em></div>';
 }
 function mathState(){
- const p=window.S?.progress?.[COURSE];if(!p)return {};
+ const p=window.S?.progress?.[cid()];if(!p)return {};
  p.mathWork=p.mathWork||{};
  const id=current().concept?.id||formulaFor()?.label||'general';
  p.mathWork[id]=p.mathWork[id]||{given:'',find:'',formula:'',substitute:'',solve:'',interpret:''};
@@ -85,7 +92,7 @@ function progressState(){
 }
 function conceptKey(){return current().concept?.id||formulaFor()?.label||'general'}
 function visibleProblemText(){
- const stage=document.querySelector('.v3338Stage,.v3338Opening,.v3338Checkpoint>article');
+ const stage=document.querySelector('.v346Grid>main,.v3338Stage,.v3338Opening,.v3338Checkpoint>article');
  if(!stage)return current().title||'';
  const nodes=[...stage.querySelectorAll('h2,h3,.question,.v3338Choices,.workedSteps')];
  return nodes.map(n=>n.innerText||'').join(' ').replace(/\s+/g,' ').trim().slice(0,1400)||current().title||'';
@@ -198,7 +205,7 @@ function help(kind){
  return '<div class="v343Help"><b>Set it up before calculating</b><code>'+E(f.template)+'</code><p>Fill the blanks from the story first. Then calculate. Do not do both steps in your head at once.</p></div>';
 }
 function decorate(){
- if(window.S?.screen!=='learninglab'||window.S?.activeCourse!==COURSE)return;
+ if(window.S?.screen!=='learninglab'||!cid())return;
  const stage=document.querySelector('.v3338Stage,.v3338Opening,.v3338Checkpoint>article');
  if(!stage||stage.querySelector('.v343MathCoach'))return;
  const html=panel(); if(!html)return;
@@ -206,7 +213,7 @@ function decorate(){
  const root=stage.querySelector('.v343MathCoach');
  root?.querySelector('[data-v343-reveal]')?.addEventListener('click',()=>{
    const slot=root.querySelector('[data-v343-slot]');if(slot)slot.innerHTML=formulaCard(formulaFor());
-   try{window.S.progress[COURSE].answers=window.S.progress[COURSE].answers||[];window.S.progress[COURSE].mathSupportUse=(window.S.progress[COURSE].mathSupportUse||0)+1;window.save?.()}catch(_){}
+   try{window.S.progress[cid()].answers=window.S.progress[COURSE].answers||[];window.S.progress[COURSE].mathSupportUse=(window.S.progress[COURSE].mathSupportUse||0)+1;window.save?.()}catch(_){}
  });
  root?.querySelectorAll('[data-v343-action]').forEach(b=>b.addEventListener('click',()=>{
    const box=root.querySelector('[data-v343-help]'); if(box)box.innerHTML=help(b.dataset.v343Action);
