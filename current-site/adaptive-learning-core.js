@@ -1,8 +1,70 @@
 (()=>{
 'use strict';
-const VERSION='3.4.6-shared-adaptive';
+const VERSION='3.4.7-shared-adaptive';
 const STEPS=['What am I learning?','Quick Check','Teach Me','Show Me','Why Does This Work?','Help Me Try','My Turn','Related Mistakes','Mix It Up','Retrieve It','Mastery Check','Schedule Review'];
 const E=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const MICRO_SKILLS={
+ D772:{
+  'expected-value':[
+   ['recognize','Recognizes an expected-value situation'],
+   ['percent-decimal','Converts percentages to decimals'],
+   ['probabilities','Identifies outcome probabilities'],
+   ['signs','Assigns positive/negative signs'],
+   ['substitution','Substitutes values correctly'],
+   ['multiply','Performs probability × value multiplication'],
+   ['sum','Adds weighted outcomes'],
+   ['interpret','Interprets expected value in context'],
+   ['compare','Compares two decisions using expected value']
+  ],
+  'empirical-probability':[
+   ['recognize','Recognizes observed-trial data'],
+   ['numerator','Identifies successful/target outcomes'],
+   ['denominator','Uses total trials as denominator'],
+   ['divide','Performs division'],
+   ['round','Rounds only at the end'],
+   ['interpret','Interprets relative frequency']
+  ],
+  'theoretical-probability':[
+   ['recognize','Recognizes equally likely outcomes'],
+   ['favorable','Counts favorable outcomes'],
+   ['total','Counts the sample space'],
+   ['divide','Computes favorable ÷ total'],
+   ['convert','Converts fraction/decimal/percent']
+  ],
+  'union':[
+   ['recognize','Recognizes OR / union wording'],
+   ['regions','Includes A only, B only, and overlap'],
+   ['overlap','Avoids double-counting overlap'],
+   ['calculate','Calculates union probability']
+  ],
+  'intersection':[
+   ['recognize','Recognizes AND / intersection wording'],
+   ['overlap','Finds outcomes shared by both events'],
+   ['calculate','Calculates intersection probability']
+  ],
+  'complement':[
+   ['recognize','Recognizes NOT / complement wording'],
+   ['whole','Understands the whole probability is 1'],
+   ['subtract','Uses 1 − P(A)'],
+   ['convert','Converts the final form when needed']
+  ],
+  'five-number-summary':[
+   ['order','Orders data correctly'],
+   ['median','Finds the median'],
+   ['quartiles','Finds Q1 and Q3'],
+   ['iqr','Computes Q3 − Q1'],
+   ['interpret','Interprets spread versus count']
+  ]
+ }
+};
+const GENERIC_MICRO=[
+ ['recognize','Recognizes what the question is asking'],
+ ['select','Selects the correct rule or strategy'],
+ ['apply','Applies the rule correctly'],
+ ['interpret','Explains the answer in context'],
+ ['transfer','Uses the skill in a new scenario']
+];
+
 const cid=()=>String(window.S?.activeCourse||'');
 const course=()=>window.S?.courses?.[cid()]||{id:cid(),title:cid(),questionBank:[],concepts:[],misconceptionCatalog:[]};
 function progress(){
@@ -12,7 +74,7 @@ function progress(){
  p.answers=Array.isArray(p.answers)?p.answers:[];
  p.spacedQueue=Array.isArray(p.spacedQueue)?p.spacedQueue:[];
  p.errorTags=Array.isArray(p.errorTags)?p.errorTags:[];
- p.adaptiveLearning=p.adaptiveLearning||{lessonIndex:0,step:0,diagnostics:{},checks:{},support:{},currentQuestion:null};
+ p.adaptiveLearning=p.adaptiveLearning||{lessonIndex:0,step:0,diagnostics:{},checks:{},support:{},currentQuestion:null,microSkills:{},path:{},workedErrors:{}};
  return p;
 }
 function state(){return progress()?.adaptiveLearning||{}}
@@ -39,6 +101,75 @@ function current(){
  return {lesson,concept,li};
 }
 function bank(){return Array.isArray(course().questionBank)?course().questionBank.filter(q=>Array.isArray(q.options)&&q.options.length>=2):[]}
+function normId(v){return String(v||'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')}
+function microDefs(){
+ const c=current().concept,key=normId(c?.id||c?.title),map=MICRO_SKILLS[cid()]||{};
+ for(const [k,v] of Object.entries(map)){if(key.includes(k)||k.includes(key))return v}
+ return GENERIC_MICRO;
+}
+function microState(){
+ const st=state(),key=current().concept.id;st.microSkills=st.microSkills||{};st.microSkills[key]=st.microSkills[key]||{};
+ const obj=st.microSkills[key];for(const [id] of microDefs())obj[id]=obj[id]||{attempts:0,correct:0,support:0,lastAt:0};
+ return obj;
+}
+function creditMicro(ids,correct,{support=false}={}){
+ const ms=microState(),arr=Array.isArray(ids)?ids:[ids],at=Date.now();
+ arr.filter(Boolean).forEach(id=>{if(!ms[id])ms[id]={attempts:0,correct:0,support:0,lastAt:0};ms[id].attempts++;if(correct)ms[id].correct++;if(support)ms[id].support++;ms[id].lastAt=at});save();
+}
+function microReceipt(){
+ const ms=microState();
+ return microDefs().map(([id,label])=>{const r=ms[id]||{},acc=r.attempts?Math.round(r.correct/r.attempts*100):0;return{id,label,attempts:r.attempts||0,correct:r.correct||0,support:r.support||0,accuracy:acc,status:!r.attempts?'Not yet':acc>=85&&r.attempts>=2?'Strong':acc>=65?'Developing':'Needs support'}})
+}
+function inferMicro(q,choice,ok){
+ const text=(String(q?.prompt||'')+' '+String(q?.why||'')+' '+String(current().concept?.title||'')).toLowerCase(),defs=microDefs(),ids=[];
+ for(const [id,label] of defs){const t=(id+' '+label).toLowerCase();if(t.split(/\s+/).some(w=>w.length>5&&text.includes(w)))ids.push(id)}
+ if(!ids.length)ids.push(defs[0]?.[0],defs[1]?.[0]);
+ if(!ok&&/percent|decimal/.test(text))ids.push('percent-decimal','convert');
+ if(!ok&&/loss|negative|win|expected value/.test(text))ids.push('signs');
+ if(!ok&&/denominator|total trials/.test(text))ids.push('denominator');
+ if(!ok&&/round|hundredth/.test(text))ids.push('round');
+ return [...new Set(ids.filter(Boolean))];
+}
+function learningPath(){
+ const m=mastery(),p=progress(),topic='adaptive:'+current().concept.id,due=p.spacedQueue.find(x=>x.topicId===topic);
+ return [
+  ['Understand',(state().step||0)>=4],
+  ['Guided',(state().step||0)>=6],
+  ['Independent',m.independent>=2],
+  ['Mixed',m.transfer>=1],
+  ['Delayed Recall',!!due&&due.stage>=2]
+ ];
+}
+function masteryReceiptHtml(){
+ const m=mastery(),micro=microReceipt(),path=learningPath();
+ const delayed=progress().spacedQueue.filter(x=>x.topicId==='adaptive:'+current().concept.id&&x.stage>=2).length;
+ return '<div class="v347Receipt"><b>Mastery Receipt</b><p>This is why Majick considers this skill '+(m.ready?'ready':'still developing')+'.</p><div class="v347ReceiptGrid">'+
+  '<span>✓ '+Math.round(m.acc*100)+'% recent accuracy</span><span>✓ '+m.independent+' correct without help</span><span>✓ '+m.transfer+' mixed/transfer correct</span><span>✓ '+delayed+' delayed recall evidence</span>'+
+  (m.recurring?'<span class="warn">⚠ recurring misconception remains</span>':'<span>✓ no recurring critical misconception</span>')+
+ '</div><details><summary>Micro-skill evidence</summary>'+micro.map(x=>'<div class="v347MicroRow"><span>'+E(x.label)+'</span><b class="'+normId(x.status)+'">'+E(x.status)+'</b><small>'+x.correct+'/'+x.attempts+' correct'+(x.support?' • '+x.support+' with support':'')+'</small></div>').join('')+'</details></div>';
+}
+function pathMeterHtml(){
+ return '<div class="v347PathMeter">'+learningPath().map(([label,on],i)=>'<span class="'+(on?'done':'')+'"><i>'+(on?'●':'○')+'</i>'+E(label)+'</span>').join('<b>→</b>')+'</div>';
+}
+function noMathYetHtml(q){
+ if(!q)return '';
+ const st=state();st.noMath=st.noMath||{};const key=q.id||q.qid;st.noMath[key]=st.noMath[key]||{testing:'',info:'',strategy:'',unlocked:false};
+ const x=st.noMath[key];
+ if(x.unlocked)return '';
+ return '<div class="v347NoMath"><small>NO MATH YET</small><h3>Understand the problem before touching the numbers</h3>'+
+ ['testing|1. What is this problem testing?','info|2. Which information actually matters?','strategy|3. Which formula or rule fits?'].map(row=>{const [id,label]=row.split('|');return '<label><span>'+label+'</span><textarea data-v347-nomath="'+id+'">'+E(x[id]||'')+'</textarea></label>'}).join('')+
+ '<button class="btn primary" data-v347-unlock '+(x.testing&&x.info&&x.strategy?'':'disabled')+'>Unlock the math</button></div>';
+}
+function workedErrorHtml(){
+ const c=current().concept,title=String(c?.title||'').toLowerCase();
+ let ex=null;
+ if(/empirical/.test(title))ex={work:'P(A) = 20/20 = 1',q:'What went wrong?',a:'The denominator used only the successful outcomes instead of all trials.'};
+ else if(/expected/.test(title))ex={work:'EV = (.30)(3) + (.70)(2)',q:'What went wrong?',a:'A $3 loss must be entered as −3, not +3.'};
+ else if(/union/.test(title))ex={work:'P(A or B)=P(A)+P(B)',q:'What could be wrong?',a:'If A and B overlap, the intersection must be subtracted once.'};
+ if(!ex)return '';
+ return '<div class="v347WorkedError"><small>WORKED ERROR</small><code>'+E(ex.work)+'</code><b>'+E(ex.q)+'</b><button data-v347-show-error>Reveal the repair</button><p data-v347-error hidden>'+E(ex.a)+'</p></div>';
+}
+
 function questionTopic(q){return String(q?.topicId||q?.learningPathLessonId||q?.sectionId||q?.conceptId||'mixed')}
 function matchesCurrent(q){
  const {lesson,concept}=current(),t=questionTopic(q).toLowerCase(),hay=[lesson.id,lesson.title,concept?.id,concept?.title].filter(Boolean).join(' ').toLowerCase();
@@ -84,6 +215,7 @@ function record(q,choice,source,{assisted=false,transfer=false}={}){
  if(window.MajickStudyProgress?.creditAnswer){
    window.MajickStudyProgress.creditAnswer({key:cid()+':'+source+':'+(q.id||q.qid)+':'+at,course:cid(),source,qid:q.id||q.qid,topicId,correct:ok,difficulty:source==='adaptive-mastery'?5:source==='adaptive-mix'?4:3,chosen:choice,answer:q.answer,at,assisted,transfer});
  }else progress().answers.push({qid:q.id||q.qid,topicId,correct:ok,chosen:choice,answer:q.answer,source,assisted,transfer,at});
+ const mids=inferMicro(q,choice,ok);creditMicro(mids,ok,{support:assisted});
  if(!ok){
    const tag=inferError(q,choice);
    progress().errorTags.push({conceptId:current().concept.id,tag,at,qid:q.id||q.qid});
@@ -127,33 +259,33 @@ function stepBody(){
  if(step===2)return '<small>③ TEACH ME</small><h2>'+E(concept.title||lesson.title)+'</h2><p class="lead">'+E(concept.teach||lesson.goal)+'</p>'+tutorButtons()+'<button class="btn primary" data-v346-next>Show Me →</button>';
  if(step===3){
    const ex=concept?.worked?.scenario||concept?.examples?.[0]||concept.teach||lesson.goal,steps=concept?.worked?.steps||['Identify what the scenario is asking.','Name the concept or strategy.','Apply the rule.','Check the answer against the scenario.'];
-   return '<small>④ SHOW ME • WATCH FIRST</small><h2>Worked example</h2><div class="v346Worked"><p>'+E(ex)+'</p><ol>'+steps.map(x=>'<li>'+E(x)+'</li>').join('')+'</ol></div><button class="btn primary" data-v346-next>Why does this work? →</button>';
+   return '<small>④ SHOW ME • WATCH FIRST</small><h2>Worked example</h2><div class="v346Worked"><p>'+E(ex)+'</p><ol>'+steps.map(x=>'<li>'+E(x)+'</li>').join('')+'</ol></div>'+workedErrorHtml()+'<button class="btn primary" data-v346-next>Why does this work? →</button>';
  }
  if(step===4)return '<small>⑤ WHY DOES THIS WORK?</small><h2>Connect the rule to the meaning</h2><p class="lead">'+E(concept?.explain?.model||concept?.why||concept?.anchor?.trap||'Explain the reason the correct strategy fits this scenario, not just which answer is correct.')+'</p><button class="btn primary" data-v346-next>Help Me Try →</button>';
  if(step===5)return '<small>⑥ HELP ME TRY</small><h2>Guided practice</h2>'+qHtml(ensureQuestion('help'),'help');
- if(step===6)return '<small>⑦ MY TURN</small><h2>Try it independently</h2>'+qHtml(ensureQuestion('turn'),'turn');
+ if(step===6){const q=ensureQuestion('turn');return '<small>⑦ MY TURN</small><h2>Try it independently</h2>'+noMathYetHtml(q)+qHtml(q,'turn');}
  if(step===7){
    const counts=m.counts,cat=course().misconceptionCatalog||[];
    return '<small>⑧ RELATED MISTAKES</small><h2>Learn the tempting wrong answer</h2><div class="v346Mistakes">'+(concept?.anchor?.trap?'<p>⚠ '+E(concept.anchor.trap)+'</p>':'')+cat.slice(0,3).map(x=>'<p>⚠ '+E(x.description||x.label||x.title||String(x))+'</p>').join('')+Object.entries(counts).map(([k,v])=>'<span>'+E(k)+' • '+v+'×</span>').join('')+'</div><button class="btn primary" data-v346-next>Mix It Up →</button>';
  }
- if(step===8)return '<small>⑨ MIX IT UP</small><h2>Choose the strategy from the scenario</h2><p>Majick does not tell you which lesson this came from.</p>'+qHtml(ensureQuestion('mix',true),'mix');
+ if(step===8){const q=ensureQuestion('mix',true);return '<small>⑨ MIX IT UP</small><h2>Choose the strategy from the scenario</h2><p>Majick does not tell you which lesson this came from.</p>'+noMathYetHtml(q)+qHtml(q,'mix');}
  if(step===9){
    const due=progress().spacedQueue.filter(x=>x.dueAt<=Date.now()),q=due.length?bank().find(x=>questionTopic(x)===String(due[0].topicId).replace('adaptive:','')):ensureQuestion('retrieve',true);
    return '<small>⑩ RETRIEVE IT</small><h2>No notes first</h2><p>Recall before rereading.</p>'+qHtml(q||ensureQuestion('retrieve',true),'retrieve');
  }
  if(step===10){
    const ckey=current().concept.id,check=st.checks[ckey]||(st.checks[ckey]={ids:qset(3).map(q=>q.id||q.qid),index:0,answers:[],done:false});
-   if(check.done)return '<small>⑪ MASTERY GATE</small><h2>'+(m.ready?'Ready to advance':'Continue with review active')+'</h2><div class="v346Gate"><span><b>'+Math.round(m.acc*100)+'%</b> recent accuracy</span><span><b>'+m.independent+'</b> independent</span><span><b>'+m.transfer+'</b> transfer</span><span><b>'+(m.recurring?'Yes':'No')+'</b> recurring trap</span></div><p>'+(m.ready?'Mastery evidence is strong. The skill will still return later.':'You may continue. Majick will schedule more mixed and delayed retrieval instead of requiring 100%.')+'</p><button class="btn primary" data-v346-next>Schedule Review →</button>';
+   if(check.done)return '<small>⑪ MASTERY GATE</small><h2>'+(m.ready?'Ready to advance':'Continue with review active')+'</h2>'+pathMeterHtml()+'<div class="v346Gate"><span><b>'+Math.round(m.acc*100)+'%</b> recent accuracy</span><span><b>'+m.independent+'</b> independent</span><span><b>'+m.transfer+'</b> transfer</span><span><b>'+(m.recurring?'Yes':'No')+'</b> recurring trap</span></div>'+masteryReceiptHtml()+'<p>'+(m.ready?'Mastery evidence is strong. The skill will still return later.':'You may continue. Majick will schedule more mixed and delayed retrieval instead of requiring 100%.')+'</p><button class="btn primary" data-v346-next>Schedule Review →</button>';
    const q=byId(check.ids[check.index]);
    return '<small>⑪ MASTERY CHECK • 3 ITEMS</small><h2>Prove it independently</h2>'+qHtml(q,'mastery');
  }
  const due=progress().spacedQueue.find(x=>x.topicId==='adaptive:'+current().concept.id);
- return '<small>⑫ SCHEDULE REVIEW</small><h2>Learning continues after the lesson</h2><p>Majick will bring this concept back in mixed practice and delayed retrieval.</p><div class="v346Review"><b>'+(due?'Next review '+new Date(due.dueAt).toLocaleDateString():'Schedule your first delayed review')+'</b><span>'+Math.round(m.acc*100)+'% recent accuracy • '+m.independent+' independent correct</span></div><button class="btn primary" data-v346-schedule>Schedule Review</button>';
+ return '<small>⑫ SCHEDULE REVIEW</small><h2>Learning continues after the lesson</h2>'+pathMeterHtml()+'<p>Majick will bring this concept back in mixed practice and delayed retrieval.</p><div class="v346Review"><b>'+(due?'Next review '+new Date(due.dueAt).toLocaleDateString():'Schedule your first delayed review')+'</b><span>'+Math.round(m.acc*100)+'% recent accuracy • '+m.independent+' independent correct</span></div>'+masteryReceiptHtml()+'<button class="btn primary" data-v346-schedule>Schedule Review</button>';
 }
 function tutorButtons(){return '<div class="v346TutorButtons"><button data-v346-tutor="simple">Explain Simpler</button><button data-v346-tutor="example">Give Me an Example</button><button data-v346-tutor="quiz">Quiz Me on This Page</button><button data-v346-tutor="mistakes">Related Mistakes</button></div><div id="v346TutorOut"></div>'}
 function panelHtml(){
  const {lesson,concept}=current(),g=guardian(),m=mastery();
- return '<section class="v346SharedAdaptive"><header><div><small>SHARED LEARNING ENGINE • '+E(cid())+'</small><h1>'+E(concept.title||lesson.title)+'</h1><p>'+E(course().title||cid())+'</p></div><select id="v346Lesson">'+lessons().map((l,i)=>'<option value="'+i+'" '+(i===state().lessonIndex?'selected':'')+'>'+E(l.title)+'</option>').join('')+'</select></header><div class="v346Grid"><nav>'+STEPS.map((x,i)=>'<button data-v346-step="'+i+'" class="'+(i===state().step?'active':'')+'"><i>'+(i+1)+'</i><span>'+E(x)+'</span></button>').join('')+'</nav><main>'+stepBody()+'</main><aside><div class="v346Guardian"><span>'+g.emoji+'</span><b>'+E(g.name)+'</b><p>'+(m.recurring?'“I see a repeated trap. We are repairing that exact distinction.”':m.independent>=2?'“You are showing independence. I will give fewer cues unless you ask.”':'“Name the strategy before you answer. Recognition comes before recall.”')+'</p></div><div class="v346Evidence"><small>SKILL EVIDENCE</small><b>'+Math.round(m.acc*100)+'%</b><span>'+m.independent+' independent • '+m.transfer+' transfer</span></div></aside></div></section>';
+ return '<section class="v346SharedAdaptive"><header><div><small>SHARED LEARNING ENGINE • '+E(cid())+'</small><h1>'+E(concept.title||lesson.title)+'</h1><p>'+E(course().title||cid())+'</p>'+pathMeterHtml()+'</div><select id="v346Lesson">'+lessons().map((l,i)=>'<option value="'+i+'" '+(i===state().lessonIndex?'selected':'')+'>'+E(l.title)+'</option>').join('')+'</select></header><div class="v346Grid"><nav>'+STEPS.map((x,i)=>'<button data-v346-step="'+i+'" class="'+(i===state().step?'active':'')+'"><i>'+(i+1)+'</i><span>'+E(x)+'</span></button>').join('')+'</nav><main>'+stepBody()+'</main><aside><div class="v346Guardian"><span>'+g.emoji+'</span><b>'+E(g.name)+'</b><p>'+(m.recurring?'“I see a repeated trap. We are repairing that exact distinction.”':m.independent>=2?'“You are showing independence. I will give fewer cues unless you ask.”':'“Name the strategy before you answer. Recognition comes before recall.”')+'</p></div><div class="v346Evidence"><small>SKILL EVIDENCE</small><b>'+Math.round(m.acc*100)+'%</b><span>'+m.independent+' independent • '+m.transfer+' transfer</span></div></aside></div></section>';
 }
 function renderAdaptive(){const box=document.getElementById('adaptiveLearningCore');if(!box)return;box.innerHTML=panelHtml();bindAdaptive(box)}
 function showAdaptive(){
@@ -181,6 +313,14 @@ function bindAdaptive(root){
  root.querySelectorAll('[data-v346-diag]').forEach(b=>b.addEventListener('click',()=>{const d=diagnostic(),i=Number(b.dataset.v346Diag),q=byId(d.questions[i]);if(d.answers[i])return;d.answers[i]={choice:b.dataset.choice,correct:String(b.dataset.choice)===String(q?.answer)};save();renderAdaptive()}));
  root.querySelectorAll('[data-v346-tutor]').forEach(b=>b.addEventListener('click',()=>{const out=root.querySelector('#v346TutorOut');if(out)out.innerHTML='<div class="v346TutorCard">'+E(tutorText(b.dataset.v346Tutor))+'</div>';if(b.dataset.v346Tutor==='quiz'){state().step=5;save();renderAdaptive()}}));
  root.querySelector('[data-v346-schedule]')?.addEventListener('click',()=>{const days=scheduleReview();root.querySelector('[data-v346-schedule]').textContent='✓ Review scheduled in '+days+' days'});
+ root.querySelectorAll('[data-v347-nomath]').forEach(t=>t.addEventListener('input',()=>{
+   const q=ensureQuestion(state().step===8?'mix':'turn',state().step===8),k=q?.id||q?.qid;if(!k)return;state().noMath=state().noMath||{};state().noMath[k]=state().noMath[k]||{testing:'',info:'',strategy:'',unlocked:false};state().noMath[k][t.dataset.v347Nomath]=t.value;
+   const btn=root.querySelector('[data-v347-unlock]'),x=state().noMath[k];if(btn)btn.disabled=!(x.testing&&x.info&&x.strategy);save();
+ }));
+ root.querySelector('[data-v347-unlock]')?.addEventListener('click',()=>{
+   const q=ensureQuestion(state().step===8?'mix':'turn',state().step===8),k=q?.id||q?.qid;if(!k)return;state().noMath[k].unlocked=true;creditMicro(['recognize','select'],true);save();renderAdaptive();
+ });
+ root.querySelector('[data-v347-show-error]')?.addEventListener('click',()=>{const p=root.querySelector('[data-v347-error]');if(p)p.hidden=false});
 }
 function patch(){
  if(!window.MajickLearningLab||window.MajickLearningLab.__sharedAdaptive)return;
@@ -200,6 +340,6 @@ function patch(){
  window.MajickLearningLab.__sharedAdaptive=true;
 }
 patch();
-window.MajickAdaptiveLearning={VERSION,STEPS,lessons,current,mastery,show:showAdaptive,render:renderAdaptive,state,progress};
+window.MajickAdaptiveLearning={VERSION,STEPS,lessons,current,mastery,microDefs,microReceipt,learningPath,show:showAdaptive,render:renderAdaptive,state,progress};
 document.documentElement.dataset.majickAdaptiveLearning=VERSION;
 })();
