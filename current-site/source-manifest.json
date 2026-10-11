@@ -144,7 +144,7 @@
     "guardian-registry.js": "b20170b996ddf065f33bb37332c8a9fce68ae104914e3e94ffe9aa44b7b612f3",
     "home-focus.css": "cbb719eb8e78701717b4016388d511553f2785212d839815ed006651ae738b2b",
     "home-focus.js": "c4b28238d5f38e0401df2933fcf64991b928631e488a79f80301b20174f1968b",
-    "index.html": "",
+    "index.html": "080cf12a87c5fcee4ed5137d886e5950cb0619635b212090ffafcd6ac378a183",
     "learn-mode.css": "30181250c67efe7bd97c9276706a804a551e7904a2bb28160eeb0c193f35c002",
     "learn-mode.js": "f6647cd013d5bc59a319710c45ac806b56585c7fc5c912afa88857d2f16f82e0",
     "learning-lab.css": "6ed48d27023052a714d27c027f25828bc5ad74edccb172704e823a58b26d6844",
@@ -401,7 +401,7 @@
     "assets/boxplot-exercise.svg": "617c9eddef0699fec10c4c7fb5b27a4c68281aeead6350865b6722c42795bed8",
     "assets/boxplot-heights.svg": "7939d0a74fffe127e905fe3a13e4bc93db43ae9188eae7ce265d71e3e12c831a",
     "assets/boxplot-phones.svg": "3ed42e541d8e8039d2b270f4b76ec634918e02db245e085e38088ea05d7ef727",
-    "math-support.js": "",
+    "math-support.js": "cd4748914bff6c5fdabfa45dda0e58b9606407819fd4a8b46b718ec6551a30e4",
     "math-support.css": "f5585ddfbbbe8eec2ec6694a60735776fac2793648c47347315b6da861d934bc"
   }
 }
