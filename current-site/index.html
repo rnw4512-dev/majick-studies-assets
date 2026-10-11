@@ -1193,7 +1193,7 @@ body.mcFocus .lfPetEntity *,body.mcFocus .lfRoomWindow *,body.mcFocus .lfWeather
 <link rel="stylesheet" href="./home-focus.css?v=3377">
 <link rel="stylesheet" href="./product-core.css?v=3400">
 <link rel="stylesheet" href="./duplicate-safe-hatch.css?v=3375">
-<link rel="stylesheet" href="./math-support.css?v=349">\n<link rel="stylesheet" href="./adaptive-learning-core.css?v=349">\n<link rel="stylesheet" href="./course-learning-profiles.css?v=347">\n</head>
+<link rel="stylesheet" href="./math-support.css?v=349">\n<link rel="stylesheet" href="./adaptive-learning-core.css?v=349">\n<link rel="stylesheet" href="./course-learning-profiles.css?v=347">\n<link rel="stylesheet" href="./reward-core.css?v=3410">\n</head>
 <body>
 <div id="app" class="app"></div>
 <script src="./save-safety.js"></script>
@@ -1394,7 +1394,7 @@ const _feedbackV2=feedbackHTML;feedbackHTML=function(q){let base=_feedbackV2(q),
 function saveLunaExplanation(){let t=document.getElementById('lunaText');if(!t?.value.trim())return;prog().explanations.push({qid:session.current.id,topicId:session.current.topicId,text:t.value.trim(),audience:'Luna',at:Date.now()});prog().companion.bond=(prog().companion.bond||0)+2;save();t.value='✓ Luna heard you.'}
 function saveProfessionalVoice(){let t=document.getElementById('professionalText');if(!t?.value.trim())return;prog().explanations.push({qid:session.current.id,topicId:session.current.topicId,text:t.value.trim(),audience:session.audience,at:Date.now()});prog().voicePractices=(prog().voicePractices||0)+1;save();t.value='✓ Professional explanation saved.'}
 const _grantV2=grantMoonlight;grantMoonlight=function(q){let before=(prog().xp||0);_grantV2(q);let p=prog();if(session.combo>0&&session.combo%5===0){p.crystals+=3;rewardToast('+3 bonus crystals 💎',`Transformation combo x${session.combo}`)}if(session.combo>0&&session.combo%10===0){p.chests=(p.chests||0)+1;rewardToast('🎁 Crystal Chest earned!',`10-answer transformation streak`)}let oldM=Math.floor(before/250),newM=Math.floor((p.xp||0)/250);if(newM>oldM){p.chests=(p.chests||0)+1;rewardToast('🎁 Mastery Chest earned!','Your XP crossed a new mastery milestone.')}save()}
-const _finishV2=finishSession;finishSession=function(){let was=session&&session.finished;_finishV2();if(session&&!was&&session.finished){let p=prog();if(['boss','bossrush'].includes(session.type)&&session.bossHP<=0){p.chests=(p.chests||0)+1;p.crystals+=8;save();setTimeout(()=>rewardToast('🎁 Boss chest + 8 💎','Guardian victory!'),120)}if(['test','finaltest'].includes(session.type)&&session.review?.length>=30){let acc=session.review.filter(x=>x.correct).length/session.review.length;if(acc>=.75){p.chests=(p.chests||0)+1;p.crystals+=10;save();setTimeout(()=>rewardToast('🎁 Endurance chest + 10 💎',`${Math.round(acc*100)}% simulation`),120)}}}}
+const _finishV2=finishSession;finishSession=function(){let was=session&&session.finished;_finishV2();if(session&&!was&&session.finished){if(['boss','bossrush'].includes(session.type)&&session.bossHP<=0){if(window.MajickRewardCore?.award)window.MajickRewardCore.award('boss-victory',{key:'boss:'+String(S.activeCourse||'')+':'+String(session.type)+':'+String(session.startedAt||Date.now()),course:S.activeCourse,source:session.type});else{let p=prog();p.chests=(p.chests||0)+1;p.crystals+=8;save()}}if(['test','finaltest'].includes(session.type)&&session.review?.length>=30){let acc=session.review.filter(x=>x.correct).length/session.review.length;if(acc>=.75){if(window.MajickRewardCore?.award)window.MajickRewardCore.award('endurance-test',{key:'endurance:'+String(S.activeCourse||'')+':'+String(session.startedAt||Date.now()),course:S.activeCourse,source:session.type,accuracy:acc});else{let p=prog();p.chests=(p.chests||0)+1;p.crystals+=10;save()}}}}}
 const _resultV2=resultHTML;resultHTML=function(){let x=_resultV2();if(session?.finalTransformation){let acc=session.review?.length?Math.round(session.review.filter(z=>z.correct).length/session.review.length*100):0;return x+`<div class="card glowCard" style="margin-top:18px;text-align:center"><div style="font-size:42px">🌙✨👑</div><h2>Final Transformation Result</h2><p>${acc>=80?'Your performance is showing strong transfer across mixed concepts.':acc>=70?'You are close. Use the Grimoire and weakest constellation stars for targeted repair.':'Do not grind random questions. Repair the lowest concepts, then retest.'}</p><button class="btn violet" onclick="navigate('constellation')">See what to repair</button></div>`}return x}
 const _testHTMLV2=testHTML;testHTML=function(){return _testHTMLV2()+`<div class="grid"><div class="card c12 gameCard" onclick="startFinalTransformationTest()"><div class="gameIcon">🌙✨👑</div><h3>Final Transformation Test</h3><p>45 mixed questions. No topic labels, no practice framing, delayed feedback, full readiness breakdown at the end.</p></div></div>`}
 const _analyticsV2=analyticsHTML;analyticsHTML=function(){let d=readinessDimensions();return `<div class="sectionTitle"><div><h2>Course Readiness & Thinking Analytics</h2><p>Measures study performance—not intelligence—and shows exactly what to repair.</p></div></div><div class="readinessGrid">${Object.entries(d).map(([k,v])=>`<div class="readinessPill"><b>${v}%</b><small>${esc(k)}</small><div class="progress" style="margin-top:7px"><i style="width:${v}%"></i></div></div>`).join('')}</div>`+_analyticsV2()}
@@ -4085,7 +4085,7 @@ try{render()}catch(e){console.error('V3.3.8 canon guardian boot',e)}
 <script src="./study-ui-compat.js?v=stability-1"></script>
 <script src="./guardian-registry.js?v=stability-1"></script>
 <script src="./majick-state-core.js?v=3322-recovery"></script>
-<script src="./guardian-care-economy.js?v=3347-stations"></script>
+<script src="./guardian-care-economy.js?v=3347-stations"></script>\n<script src="./reward-core.js?v=3410"></script>
 <script src="./learning-lab.js?v=3319-mistake-journal"></script>
 <script src="./learning-plan.js?v=3324"></script>
 <script src="./course-tutor.js?v=3402-s2-l2-graphs"></script>
@@ -4096,7 +4096,7 @@ try{render()}catch(e){console.error('V3.3.8 canon guardian boot',e)}
 <script src="./magical-college-home.js?v=3337"></script>
 <script src="./app-recovery.js?v=3322"></script>
 <script src="./guardian-core.js?v=3400"></script>
-<script src="./study-progress-bridge.js?v=3342"></script>
+<script src="./study-progress-bridge.js?v=3410"></script>
 <script src="./guardian-life-main.js?v=3342"></script>
 <script src="./campus-runtime.js?v=3361"></script>
 <script src="./game-realm.js?v=3402-s2-l2-graphs"></script>
@@ -4117,7 +4117,7 @@ try{render()}catch(e){console.error('V3.3.8 canon guardian boot',e)}
 <script src="./source-provenance.js?v=3372"></script>
 <script src="./duplicate-safe-hatch.js?v=3375"></script>
 <script src="./home-focus.js?v=3400"></script>
-<script src="./product-core.js?v=3400"></script>\n<script src="./course-learning-profiles.js?v=347"></script>\n<script src="./adaptive-learning-core.js?v=349"></script>\n<script src="./math-support.js?v=349"></script>
+<script src="./product-core.js?v=3400"></script>\n<script src="./course-learning-profiles.js?v=347"></script>\n<script src="./adaptive-learning-core.js?v=3410"></script>\n<script src="./math-support.js?v=349"></script>
 <script>
 MajickSaveSafety.attach({get:()=>S,set:value=>{S=value;window.majickSaveLoadBlocked=false;session=null;S.screen='home';},refresh:()=>{ensureV4();ensureV5();render();}});
 exportSave=()=>MajickSaveSafety.download();
