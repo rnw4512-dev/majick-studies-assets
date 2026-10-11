@@ -97,6 +97,11 @@ function progress(){
  p.spacedQueue=Array.isArray(p.spacedQueue)?p.spacedQueue:[];
  p.errorTags=Array.isArray(p.errorTags)?p.errorTags:[];
  p.adaptiveLearning=p.adaptiveLearning||{lessonIndex:0,step:0,diagnostics:{},checks:{},support:{},currentQuestion:null,microSkills:{},path:{},workedErrors:{},confidence:{},supportEvents:[],branches:{},sessionSeen:[],lastVisit:0};
+ const st=p.adaptiveLearning;
+ for(const key of ['diagnostics','checks','support','microSkills','path','workedErrors','confidence','branches','currentQuestions']){
+   if(!st[key]||typeof st[key]!=='object'||Array.isArray(st[key]))st[key]={};
+ }
+ for(const key of ['supportEvents','sessionSeen'])if(!Array.isArray(st[key]))st[key]=[];
  p.misconceptionMemory=p.misconceptionMemory&&typeof p.misconceptionMemory==='object'?p.misconceptionMemory:{};
  return p;
 }
