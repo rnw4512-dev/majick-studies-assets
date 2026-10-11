@@ -6,3 +6,6 @@
 @media(max-width:720px){.v347NoMath label{grid-template-columns:1fr}.v347ReceiptGrid{grid-template-columns:1fr}.v347MicroRow{grid-template-columns:1fr auto}.v347MicroRow small{grid-column:1/-1}}
 
 .v347ProfileGuide{margin:10px 0;padding:11px;border-left:3px solid #9b7f4c;background:#15110d;border-radius:0 9px 9px 0}.v347ProfileGuide b{display:block;color:#ead080;font-size:10px}.v347ProfileGuide p{margin:5px 0;color:#c6b9a1;font-size:9px;line-height:1.5}
+
+.v347NoMath section{margin-top:10px;padding-top:9px;border-top:1px solid #352b1c}.v347NoMath section>b{display:block;color:#e2c98b;font-size:10px;margin-bottom:7px}.v347ChoiceGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}.v347ChoiceGrid button,.v347WordBank button{padding:8px;border:1px solid #5e4b35;border-radius:8px;background:#15110d;color:#d6c6aa;cursor:pointer;text-align:left}.v347ChoiceGrid button.selected,.v347WordBank button.selected{border-color:#d0ad61;background:#302815;color:#f0d58d}.v347WordBank>p{margin:4px 0 7px;color:#a7977d;font-size:8px}.v347WordBank>div{display:flex;flex-wrap:wrap;gap:6px}.v347WordBank button{width:auto;font-size:8px;text-align:center}
+@media(max-width:720px){.v347ChoiceGrid{grid-template-columns:1fr}}
