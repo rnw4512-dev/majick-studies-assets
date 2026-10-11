@@ -114,7 +114,7 @@ function creditAnswer(evt={}){
   if(l.events[key])return false;
   l.events[key]={source:evt.source||'study',course:evt.course||window.S?.activeCourse||'',qid:evt.qid||'',correct:!!evt.correct,difficulty:Number(evt.difficulty||3),at:Number(evt.at||Date.now()),historical:!!evt.historical};
   canonicalAnswer(evt);
-  if(!evt.historical&&window.MajickRewardCore?.award){
+  if(!evt.historical&&evt.correct&&window.MajickRewardCore?.award){
     window.MajickRewardCore.award('correct-answer',{
       key:'study:'+key,
       course:evt.course||window.S?.activeCourse||'',
