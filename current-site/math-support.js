@@ -144,7 +144,7 @@ function checkRole(value,slot){
  const v=String(value||''),money=/\$/.test(v),percent=/%/.test(v),decimal=/^0?\.\d+/.test(v);
  if(/probability|P\(|P\(outcome\)/i.test(slot)){
    if(money)return 'That number is a dollar amount. This slot needs how likely the outcome is.';
-   if(percent||decimal||/\\//.test(v))return 'Good fit: this looks like a probability.';
+   if(percent||decimal||/\//.test(v))return 'Good fit: this looks like a probability.';
  }
  if(/value|payoff|outcome value/i.test(slot)){
    if(money||(!percent&&!/\\//.test(v)))return 'Good fit: this can represent an outcome value.';
@@ -262,7 +262,7 @@ function help(kind){
 }
 function decorate(){
  if(window.S?.screen!=='learninglab'||!cid())return;
- const stage=document.querySelector('.v3338Stage,.v3338Opening,.v3338Checkpoint>article');
+ const stage=document.querySelector('.v346Grid>main,.v3338Stage,.v3338Opening,.v3338Checkpoint>article');
  if(!stage||stage.querySelector('.v343MathCoach'))return;
  const html=panel(); if(!html)return;
  stage.insertAdjacentHTML('beforeend',html);
