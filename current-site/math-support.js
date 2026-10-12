@@ -286,6 +286,16 @@ function help(kind){
  if(kind==='lost')return lostPanel()+preAlgebraRescue();
  return '<div class="v343Help"><b>Set it up before calculating</b><code>'+E(f.template)+'</code><p>Fill the blanks from the story first. Then calculate. Do not do both steps in your head at once.</p></div>';
 }
+function markMathAssist(kind){
+ const session=window.MajickActiveQuestionSession?.();
+ if(session?.current&&!session.finished){
+   session.mathCoachAssisted=true;
+   session.mathCoachHelpTypes=session.mathCoachHelpTypes||[];
+   if(!session.mathCoachHelpTypes.includes(kind))session.mathCoachHelpTypes.push(kind);
+ }
+ const p=window.S?.progress?.[cid()];
+ if(p){p.mathAssistedUses=(p.mathAssistedUses||0)+1;try{window.save?.()}catch(_){}}
+}
 function decorate(){
  if(window.S?.screen!=='learninglab'||!cid())return;
  const stage=document.querySelector('.v346Grid>main,.v3338Stage,.v3338Opening,.v3338Checkpoint>article');
@@ -294,10 +304,12 @@ function decorate(){
  stage.insertAdjacentHTML('beforeend',html);
  const root=stage.querySelector('.v343MathCoach');
  root?.querySelector('[data-v343-reveal]')?.addEventListener('click',()=>{
+   markMathAssist('formula');
    const slot=root.querySelector('[data-v343-slot]');if(slot)slot.innerHTML=formulaCard(formulaFor());
    try{window.S.progress[cid()].answers=window.S.progress[cid()].answers||[];window.S.progress[cid()].mathSupportUse=(window.S.progress[cid()].mathSupportUse||0)+1;window.save?.()}catch(_){}
  });
  root?.querySelectorAll('[data-v343-action]').forEach(b=>b.addEventListener('click',()=>{
+   markMathAssist(b.dataset.v343Action||'coach');
    const box=root.querySelector('[data-v343-help]'); if(box)box.innerHTML=help(b.dataset.v343Action);
    root.querySelectorAll('[data-v343-work]').forEach(t=>t.addEventListener('input',()=>{
      const w=mathState();w[t.dataset.v343Work]=t.value;try{window.save?.()}catch(_){}
