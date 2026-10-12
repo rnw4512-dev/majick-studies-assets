@@ -115,6 +115,7 @@ function creditAnswer(evt={}){
   if(l.events[key])return false;
   l.events[key]={source:evt.source||'study',course:evt.course||window.S?.activeCourse||'',qid:evt.qid||'',correct:!!evt.correct,difficulty:Number(evt.difficulty||3),at:Number(evt.at||Date.now()),historical:!!evt.historical};
   canonicalAnswer(evt);
+  if(!evt.historical&&evt.correct)try{window.MajickAtelier?.creditSewing?.(key)}catch(_){}
   if(!evt.historical&&evt.correct&&window.MajickRewardCore?.award){
     window.MajickRewardCore.award('correct-answer',{
       key:'study:'+key,
@@ -194,6 +195,7 @@ function wrapLegacyRecord(){
     const r=old.apply(this,arguments);
     const l=ledger(),at=Date.now(),key='legacy:'+String(window.S?.activeCourse||'')+':'+String(q?.id||'q')+':'+at;
     l.events[key]={source:'game-realm',course:window.S?.activeCourse||'',qid:q?.id||'',correct:!!correct,difficulty:Number(q?.difficulty||1),at,legacyAwarded:true};
+    if(correct)try{window.MajickAtelier?.creditSewing?.(key)}catch(_){}
     save();
     return r;
   };
