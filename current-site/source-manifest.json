@@ -144,7 +144,7 @@
     "guardian-registry.js": "b20170b996ddf065f33bb37332c8a9fce68ae104914e3e94ffe9aa44b7b612f3",
     "home-focus.css": "cbb719eb8e78701717b4016388d511553f2785212d839815ed006651ae738b2b",
     "home-focus.js": "c4b28238d5f38e0401df2933fcf64991b928631e488a79f80301b20174f1968b",
-    "index.html": "75871d00537b8374f61698c8ff0457bb65dfac4a64f137d70b86eecdfbe1ae3d",
+    "index.html": "28d436d75dd999b16ce28cedcd3f17f297e89bd34e489d4498e3579332e85132",
     "learn-mode.css": "30181250c67efe7bd97c9276706a804a551e7904a2bb28160eeb0c193f35c002",
     "learn-mode.js": "f6647cd013d5bc59a319710c45ac806b56585c7fc5c912afa88857d2f16f82e0",
     "learning-lab.css": "6ed48d27023052a714d27c027f25828bc5ad74edccb172704e823a58b26d6844",
@@ -361,7 +361,7 @@
     "study-material/materialParser.js": "066d34acc159d5b8b1bc22b4248e6ca4bc178063ef5849b23bc38c5017d140c0",
     "study-material/materialStoreModel.js": "9ab5a2da2b179a001653f88dfaf840f7bc2a053afa3038407d41042d6552ecad",
     "study-material/questionBuilder.js": "6f00659e4091e594a5924aa664c38d52f53dc3b5c69eb862934a70cd55b47c64",
-    "study-progress-bridge.js": "91c3e67ad1902625fac9b8d86f73bf531de8743ffa9e7c05e7c37529f04decf3",
+    "study-progress-bridge.js": "729c2eb815d528860f6b87dd758408435a7d62a73c03d44a5ef4e2b30c534f6f",
     "study-ui-compat.js": "66064dd5b52a05e0fcd72a4c7fc5ff4735de1e5dffaa58286113aeae15c85ae9",
     "ui-compat.js": "619bae70177344b2311b7d63075658b9fc9c452c9447ab03bf76a2176a9f3c34",
     "v3310-main.css": "504ec87be04c7c4f18531d56ed31d83b04f486b8e8725b08b65fab610f4715ec",
@@ -503,7 +503,8 @@
     "assets/rewards/aurelia/items/treat-puzzle-carousel.webp": "e3f9675b47ac0ad0ae75667f3e6f565bd91cf5e92cf6a640c5248a8d549f1f4d",
     "assets/rewards/aurelia/items/flowering-sage-planter.webp": "34c168e82b480b132b8531d07006e4355bf5e802a647109128261d9556a26e3d",
     "assets/rewards/aurelia/items/feather-play-wand.webp": "ddef86bed10da763f1749c3e5b93ebb69098ef1eb0b1ccab8a759285895bf86e",
-    "enchanted-atelier.js": "b59e0cf855503dac6b7a231b2e556e2cdfc56c1b4406f00b1e422572d48640c4",
-    "scholar-companion.js": "2062927bbf7308e76b73dd583c4c9158b3c2a9c2956785e6f9357ba9c3e9cb9a"
+    "enchanted-atelier.js": "abd2348b8951fab705ceb54f3d2d8115ba4f3209d3013e825b289c5cbfd326ae",
+    "scholar-companion.js": "2062927bbf7308e76b73dd583c4c9158b3c2a9c2956785e6f9357ba9c3e9cb9a",
+    "scholar-progression.js": "144f346b7ab0a531224b0534f6589e5216d7f07065f800830412725c8beeaadd"
   }
 }
