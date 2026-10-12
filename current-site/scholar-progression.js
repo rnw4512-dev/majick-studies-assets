@@ -20,8 +20,8 @@ const ITEMS=[
 const BONDS=[['Velora','velora'],['Cascade','cascade'],['Solstice','solstice'],['Aurelia','aurelia'],['Vesper','vesper'],['Briar','briar'],['Zephyr','zephyr'],['Prism','prism'],['Rook','rook'],['Solara','solara']];
 for(const [name,id] of BONDS)ITEMS.push({id:'bond-'+id,name:name+' Bond Brooch',slot:'jewelry',rarity:'Epic',guardian:id,bond:5});
 function identity(){const s=window.S;if(!s)return null;s.majickIdentity=s.majickIdentity||{};const a=s.majickIdentity;a.atelier=a.atelier||{};return a.atelier}
-function events(){try{return window.MajickStateCore?.account?.()?.studyProgressBridge?.events||window.MajickStateCore?.getAccount?.()?.studyProgressBridge?.events||window.S?.studyProgressBridge?.events||{}}catch(_){return {}}}
-function bridge(){const a=window.MajickStateCore;try{return a?.account?.()||a?.getAccount?.()||null}catch(_){return null}}
+function events(){try{return window.MajickStateCore?.ensureAccount?.()?.studyProgressBridge?.events||window.S?.majickAccount?.studyProgressBridge?.events||{}}catch(_){return {}}}
+function bridge(){const a=window.MajickStateCore;try{return a?.ensureAccount?.()||window.S?.majickAccount||null}catch(_){return null}}
 function validEvents(){const stored=bridge()?.studyProgressBridge?.events||events();return Object.entries(stored).filter(([k,v])=>v&&v.correct&&!v.historical&&!v.legacyAwarded&&!String(k).startsWith('hist:'))}
 function score(){return validEvents().reduce((sum,[,e])=>sum+(e.independent===false?2:5),0)}
 function guardianRows(){const rows=window.S?.legacy?.pets||[];return Array.isArray(rows)?rows:[]}
