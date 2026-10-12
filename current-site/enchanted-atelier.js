@@ -1,6 +1,6 @@
 (()=>{
 'use strict';
-const VERSION='3.4.2-atelier-4-illustrated-assets';
+const VERSION='3.4.2-atelier-5-avatar-upload';
 const HAIR=['Locs','Braids','Curls','Afro','Twists','Waves'];
 const SKIN=['#70412f','#9d6345','#bf8766','#deb192','#f0cdb4','#513024'];
 const ROBES=['Plum Scholar','Midnight Velvet','Emerald Witch','Moonlit Silver'];
@@ -73,14 +73,17 @@ function checkAvatarArt(){
 }
 function illustratedAvatar(p){
  if(!artChecked)checkAvatarArt();
- if(!artReady)return layeredAvatar(p);
+ // Preserve working customizations until matching illustrated artwork exists for them.
+ const supportedHair=Object.prototype.hasOwnProperty.call(AVATAR_HAIR,p.hair);
+ const supportedRobe=Object.prototype.hasOwnProperty.call(AVATAR_ROBES,p.robe);
+ if(!artReady||!supportedHair||!supportedRobe||Number(p.color)!==0||p.accessory||(p.equipped!==null&&p.equipped!==undefined))return layeredAvatar(p);
  const layers=[
- (Number(p.skin)===0||Number(p.skin)===1?'layer-body-deep.webp':'layer-body-warm.webp'),
- AVATAR_ROBES[p.robe]||'layer-dress-plum.webp',
+ (Number(p.skin)===0||Number(p.skin)===5?'layer-body-deep.webp':'layer-body-warm.webp'),
+ AVATAR_ROBES[p.robe],
  'layer-boots-plum.webp',
- AVATAR_HAIR[p.hair]||'layer-hair-afro.webp'
+ AVATAR_HAIR[p.hair]
  ];
- return '<div class="atelierIllustrated" aria-label="Illustrated layered customizable scholar avatar">'+layers.map((src,i)=>'<img alt="" draggable="false" class="atelierArtLayer atelierArtLayer'+i+'" src="'+AVATAR_ASSET_ROOT+src+'">').join('')+'</div>';
+ return '<div class="atelierIllustrated" aria-label="Illustrated layered customizable scholar avatar">'+layers.map((src,i)=>'<img alt="" draggable="false" class="atelierArtLayer atelierArtLayer'+i+'" src="'+AVATAR_ASSET_ROOT+src+'" onerror="this.style.display=\'none\'">').join('')+'</div>';
 }
 function avatar(p){
  const items=sharedVault(p);
