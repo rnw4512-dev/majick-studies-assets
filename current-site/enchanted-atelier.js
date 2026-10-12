@@ -1,6 +1,6 @@
 (()=>{
 'use strict';
-const VERSION='3.4.2-atelier-fitted-9';
+const VERSION='3.4.2-atelier-fitted-10';
 const HAIR=['Locs','Braids','Curls','Afro','Twists','Waves'];
 const SKIN=['#70412f','#9d6345','#bf8766','#deb192','#f0cdb4','#513024'];
 const ROBES=['Plum Scholar','Midnight Velvet','Emerald Witch','Moonlit Silver'];
@@ -23,7 +23,7 @@ function save(){try{window.save?.()}catch(_){}}
 function iconButton(){if(document.getElementById('atelierLaunch'))return;const b=document.createElement('button');b.id='atelierLaunch';b.textContent='✦ Enchanted Atelier';b.className='atelierLaunch';b.type='button';b.addEventListener('click',open);document.body.append(b)}
 function open(){const p=player();if(!p)return;let el=document.getElementById('atelierOverlay');if(!el){el=document.createElement('div');el.id='atelierOverlay';el.className='atelierOverlay';el.setAttribute('role','dialog');el.setAttribute('aria-modal','true');el.setAttribute('aria-label','Enchanted Atelier');document.body.append(el)}render();el.hidden=false;el.querySelector('#atelierClose')?.focus()}
 function close(){const el=document.getElementById('atelierOverlay');if(el)el.hidden=true}
-function select(label,kind,array,current){return '<label>'+E(label)+'<select data-atelier="'+kind+'">'+array.map((v,i)=>'<option value="'+i+'" '+(i===current?'selected':'')+((kind==='hair'&&![0,1,4].includes(i))||(kind==='robe'&&i===3)?' disabled':'')+'>'+E(v)+((kind==='hair'&&![0,1,4].includes(i))||(kind==='robe'&&i===3)?' · artwork pending':'')+'</option>').join('')+'</select></label>'}
+function select(label,kind,array,current){const art=kind==='hair'?AVATAR_HAIR:kind==='robe'?AVATAR_ROBES:null;return '<label>'+E(label)+'<select data-atelier="'+kind+'">'+array.map((v,i)=>{const pending=art&&!Object.prototype.hasOwnProperty.call(art,i);return '<option value="'+i+'" '+(i===current?'selected':'')+(pending?' disabled':'')+'>'+E(v)+(pending?' · artwork pending':'')+'</option>'}).join('')+'</select></label>'}
 function sharedVault(p){
  const inv=window.MajickRewardCore?.inventory?.()||{collectibles:[],treasures:[]};
  return (inv.treasures||[]).filter(t=>t.kind==='accessory'&&(inv.collectibles||[]).includes(t.id));
@@ -61,8 +61,8 @@ function layeredAvatar(p){
  '</svg>';
 }
 const AVATAR_ASSET_ROOT='./assets/atelier/avatars/';
-const AVATAR_HAIR={0:'layer-hair-locs-v2.webp',1:'layer-hair-braids-v2.webp',4:'layer-hair-twists-v2.webp'};
-const AVATAR_ROBES={0:'layer-dress-plum.webp',1:'layer-dress-midnight.webp',2:'layer-dress-emerald-v1.webp'};
+const AVATAR_HAIR={0:'layer-hair-locs-v2.webp',1:'layer-hair-braids-v2.webp',2:'layer-hair-curls-v1.webp',3:'layer-hair-afro-v2.webp',4:'layer-hair-twists-v2.webp',5:'layer-hair-waves-v1.webp'};
+const AVATAR_ROBES={0:'layer-dress-plum.webp',1:'layer-dress-midnight.webp',2:'layer-dress-emerald-v1.webp',3:'layer-dress-silver-v1.webp'};
 let artReady=false,artChecked=false;
 function checkAvatarArt(){
  if(artChecked)return;artChecked=true;
@@ -182,6 +182,10 @@ const fittingStyle=document.createElement('style');fittingStyle.textContent=`
 .atelierArtLayer[data-avatar-layer="layer-hair-braids-v2.webp"]{transform:translateY(2.05%) scale(.88,.75);transform-origin:50% 0}
 .atelierArtLayer[data-avatar-layer="layer-hair-twists-v2.webp"]{transform:translateY(1.17%) scale(.88,.75);transform-origin:50% 0}
 .atelierArtLayer[data-avatar-layer="layer-hair-locs-v2.webp"]{transform:translateY(.73%) scale(.88,.75);transform-origin:50% 0}
+.atelierArtLayer[data-avatar-layer="layer-hair-afro-v2.webp"]{transform:translateY(-.5%) scale(.8,.65);transform-origin:50% 0}
+.atelierArtLayer[data-avatar-layer="layer-hair-curls-v1.webp"]{transform:translateY(-.2%) scale(.88,.75);transform-origin:50% 0}
+.atelierArtLayer[data-avatar-layer="layer-hair-waves-v1.webp"]{transform:translateY(-.5%) scale(.88,.75);transform-origin:50% 0}
+.atelierArtLayer[data-avatar-layer="layer-dress-silver-v1.webp"]{inset:auto;left:7.8%;top:14%;width:84.4%;height:84.4%;object-fit:fill}
 .atelierArtLayer[data-avatar-layer="layer-boots-plum.webp"]{transform:scaleX(1.25)}
 .mscSmall .atelierIllustrated{height:52px;width:auto;margin:0}
 .mscLarge .atelierIllustrated{height:100%;width:auto;max-width:100%;margin:auto}
