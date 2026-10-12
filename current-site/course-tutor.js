@@ -3216,6 +3216,7 @@ function questionsForLesson(lesson,id=cid()){
       learningPathLessonId:q.learningPathLessonId||lesson.id,
       topicId:q.topicId||lesson.id+'-role-type',
       testedConcept:lesson.title,
+      anchorChart:q.anchorChart||(q.skill?{type:q.skill}:undefined),
       rigorLevel:i<2?1:i<6?2:3,
       visual:q.visual||null,
       sourceName:q.sourceLabel||official.sourceLabel||'D772 course-provided material'

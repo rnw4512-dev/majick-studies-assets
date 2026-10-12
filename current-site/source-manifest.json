@@ -113,7 +113,7 @@
     "collegium-atmosphere.css": "5271d724452e7db7de987c7dcdc49d89e988e8a6b25fcc55211daa40eb6d1ca0",
     "collegium-atmosphere.js": "dbb7419f838e747258649238666935d2fc348443a824c9f9e0b159eb7b27dd02",
     "course-tutor.css": "05805333c8b49b3a0ed86a0d45911776d7bf8ae0187b0647d4bf5447579c9faf",
-    "course-tutor.js": "1c4591f9f69924f685c245b04b8e3cf28ba56d1f4717cadae8a7c937c4bd0e17",
+    "course-tutor.js": "b06aa4e63ebc0d568aac22e92cc36436ea53c2d27c7cd89d414e85f61ada17a0",
     "courseManager.js": "5a3bed03fc53028587e4a14d19056489b83e411ea1ecff5a4afbf196c5196681",
     "d755-retake.css": "e487a5e8ca4c069b7b9e9dabb603c8462ddcf81cb432b33b2e3395cce3a721d3",
     "d755-retake.js": "504ece754402f90278b7af02d6fd01c9183639c6777c43c75db06e44815b1935",
@@ -503,10 +503,10 @@
     "assets/rewards/aurelia/items/treat-puzzle-carousel.webp": "e3f9675b47ac0ad0ae75667f3e6f565bd91cf5e92cf6a640c5248a8d549f1f4d",
     "assets/rewards/aurelia/items/flowering-sage-planter.webp": "34c168e82b480b132b8531d07006e4355bf5e802a647109128261d9556a26e3d",
     "assets/rewards/aurelia/items/feather-play-wand.webp": "ddef86bed10da763f1749c3e5b93ebb69098ef1eb0b1ccab8a759285895bf86e",
-    "enchanted-atelier.js": "c76b365a796cd8288be6a18b275081de6d6ad33363e5e7b6c2e554956e0fe6c8",
+    "enchanted-atelier.js": "c7c9e273b37d97fa6616bf11be9b1a5c2aa37e9f3a5be00d1af92d4a483c3828",
     "scholar-companion.js": "d83769aa36160d3d8ed4903dbc25ab657f7a51bed82c739cfc3304e87ad7f231",
-    "scholar-progression.js": "793f0199ec1dec91618528e620f72e861c814f6726b76c9a7d232c6fa8b6c9d9",
-    "study-visual-anchors.js": "0ac0978efe20a86fb0f675129f2a46551a1d9d8be51b550c4954b78c68caab39",
+    "scholar-progression.js": "8f9d0579c140edbef4108b71263255106f7fca423a8e95d961842a0563109ca1",
+    "study-visual-anchors.js": "a536d7542e22f1fa3591c9843ec11881a1e50bb448c08790d73ac336c02ece36",
     "assets/atelier/avatars/layer-dress-emerald-v1.webp": "c866a6836ac0521f8bfab5c7cfcb2644efa4e4cedb92bce2360b899aa7f387e1",
     "assets/atelier/avatars/layer-hair-twists-v1.webp": "56a057ceabb0532a70cab5b66be16637854adc6e991fcb41bd925e360f5a3cff"
   }

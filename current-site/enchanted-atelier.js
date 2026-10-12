@@ -67,7 +67,7 @@ let artReady=false,artChecked=false;
 function checkAvatarArt(){
  if(artChecked)return;artChecked=true;
  const img=new Image();
- img.onload=()=>{artReady=true;if(!document.getElementById('atelierOverlay')?.hidden&&tab==='avatar')render()};
+ img.onload=()=>{artReady=true;window.MajickScholarCompanion?.refresh?.(true);if(!document.getElementById('atelierOverlay')?.hidden&&tab==='avatar')render()};
  img.onerror=()=>{artReady=false};
  img.src=AVATAR_ASSET_ROOT+'layer-body-warm.webp';
 }
