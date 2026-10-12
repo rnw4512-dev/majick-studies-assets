@@ -1,6 +1,6 @@
 (()=>{
 'use strict';
-const VERSION='3.4.2-atelier-6-scholar-wardrobe';
+const VERSION='3.4.2-atelier-7-stable-illustration';
 const HAIR=['Locs','Braids','Curls','Afro','Twists','Waves'];
 const SKIN=['#70412f','#9d6345','#bf8766','#deb192','#f0cdb4','#513024'];
 const ROBES=['Plum Scholar','Midnight Velvet','Emerald Witch','Moonlit Silver'];
@@ -73,17 +73,19 @@ function checkAvatarArt(){
 }
 function illustratedAvatar(p){
  if(!artChecked)checkAvatarArt();
- // Preserve working customizations until matching illustrated artwork exists for them.
- const supportedHair=Object.prototype.hasOwnProperty.call(AVATAR_HAIR,p.hair);
- const supportedRobe=Object.prototype.hasOwnProperty.call(AVATAR_ROBES,p.robe);
- if(!artReady||!supportedHair||!supportedRobe||Number(p.color)!==0||p.accessory||(p.equipped!==null&&p.equipped!==undefined))return layeredAvatar(p);
+ if(!artReady)return '<div class="atelierArtLoading">Preparing your illustrated scholar…</div>';
+ const robe=AVATAR_ROBES[p.robe]||AVATAR_ROBES[0];
+ const hair=AVATAR_HAIR[p.hair]||AVATAR_HAIR[3];
  const layers=[
  (Number(p.skin)===0||Number(p.skin)===5?'layer-body-deep.webp':'layer-body-warm.webp'),
- AVATAR_ROBES[p.robe],
- 'layer-boots-plum.webp',
- AVATAR_HAIR[p.hair]
+ robe,'layer-boots-plum.webp',hair
  ];
- return '<div class="atelierIllustrated" aria-label="Illustrated layered customizable scholar avatar">'+layers.map((src,i)=>'<img alt="" draggable="false" class="atelierArtLayer atelierArtLayer'+i+'" src="'+AVATAR_ASSET_ROOT+src+'" onerror="this.style.display=\'none\'">').join('')+'</div>';
+ const notes=[];
+ if(!Object.prototype.hasOwnProperty.call(AVATAR_HAIR,p.hair))notes.push('Your selected hairstyle needs fitted artwork; displaying Afro preview.');
+ if(!Object.prototype.hasOwnProperty.call(AVATAR_ROBES,p.robe))notes.push('Your selected robe needs fitted artwork; displaying Plum Scholar preview.');
+ if(Number(p.color)!==0)notes.push('This palette is saved but does not have an illustrated layer yet.');
+ if(p.accessory||p.equipped!=null)notes.push('Your accessory or crafted item is saved; fitted art is pending.');
+ return '<div class="atelierIllustrated" aria-label="Illustrated scholar outfit preview">'+layers.map((src,i)=>'<img alt="" draggable="false" class="atelierArtLayer atelierArtLayer'+i+'" src="'+AVATAR_ASSET_ROOT+src+'" onerror="this.style.visibility=\'hidden\'">').join('')+'</div>'+(notes.length?'<p class="atelierPreviewNotice">'+notes.join(' ')+'</p>':'');
 }
 function avatar(p){
  const items=sharedVault(p);
