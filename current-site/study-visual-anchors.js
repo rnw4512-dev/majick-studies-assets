@@ -18,8 +18,74 @@ function renderGraphExample(){return svg(txt(18,27,'Two variables: look for a pa
 function renderCalculatorSteps(type){const d={range:['Identify maximum 8 and minimum 4','Enter 8 − 4','Range: 4 in the original units'],mean:['Enter (4 + 6 + 8) ÷ 3','Press =','Result: 6'],median:['Sort: 3, 5, 7, 10, 15','Five numbers → third is middle','Median: 7'],ratio:['Enter (3 × 20) ÷ 12','Press =','Result: 5 notebooks'],probability:['Enter (1 ÷ 2) × (1 ÷ 2)','Press =','Result: 0.25 or 25%'],boxplot:['Sort 2, 4, 6, 8, 10, 12, 14','Q3 − Q1 = 12 − 4','IQR = 8'],histogram:['Read bar counts and axis scales','Check peak, tail, center and spread','Do not average category labels'],graph:['Read labels and units first','Look for trend and outliers','Association does not prove causation']};return (d[type]||d.graph).map(x=>'<li>'+esc(x)+'</li>').join('')}
 function renderWhiteboardSetup(type){const x={range:'Write maximum − minimum. Use every observation when finding the extremes.',mean:'Write Σx ÷ n. Add values, then divide by the count.',median:'Sort the numbers. Mark the central position(s).',ratio:'Draw equivalent fractions. Keep units aligned.',probability:'Draw branches; multiply along AND paths, add nonoverlapping OR paths.',boxplot:'List minimum, Q1, median, Q3, maximum. Draw a number line.',histogram:'Label axes; note bin widths, peaks, tails, and range.',graph:'Label x and y variables, direction, form and unusual points.'};return esc(x[type]||x.graph)}
 const MAP={range:renderRangeWorkedExample,mean:renderMeanWorkedExample,median:renderMedianWorkedExample,ratio:renderRatioModel,probability:renderProbabilityTree,boxplot:renderBoxPlotExample,histogram:renderHistogramExample,graph:renderGraphExample};
-function kind(q={}){const m=q.anchorChart?.type;if(m&&MAP[m])return m;const t=[q.prompt,q.topicId,q.keyClue].join(' ').toLowerCase();if(/five.number|box.plot|quartile|iqr/.test(t))return 'boxplot';if(/median/.test(t))return 'median';if(/mean|average/.test(t))return 'mean';if(/\brange\b/.test(t))return 'range';if(/probab|dependent|independent|disjoint|coin|dice/.test(t))return 'probability';if(/ratio|proportion|percent|rate/.test(t))return 'ratio';if(/histogram|distribution|skew|modal|long tail/.test(t)||/^d772-s2-l3(?:-|$)/.test(q.learningPathLessonId||''))return 'histogram';return 'graph'}
-function render(q){const type=kind(q),label={range:'Range',mean:'Mean',median:'Median',ratio:'Ratio and proportion',probability:'Probability tree',boxplot:'Box plot and five-number summary',histogram:'Histogram',graph:'Graph interpretation'}[type];return '<section class="majVisualExample"><h4>1 · Identify the problem: '+label+'</h4><h4>2 · Whiteboard setup</h4><p>'+renderWhiteboardSetup(type)+'</p><h4>3 · Worked visual (practice example)</h4>'+MAP[type]()+ '<h4>4 · Calculator / calculation walkthrough</h4><ol>'+renderCalculatorSteps(type)+'</ol><h4>5 · Apply it to this question</h4><p>Use the same method with the numbers and labels in <b>your actual question</b>. These example numbers are not its answer.</p></section>'}
+function kind(q={}){const m=q.anchorChart?.type;if(m&&MAP[m])return m;const t=[q.prompt,q.topicId,q.keyClue].join(' ').toLowerCase();if(/five.number|box.plot|quartile|iqr/.test(t))return 'boxplot';if(/median/.test(t))return 'median';if(/mean|average/.test(t))return 'mean';if(/\brange\b/.test(t))return 'range';if(/probab|complement|union|intersection|p\(|dependent|independent|disjoint|coin|dice/.test(t))return 'probability';if(/ratio|proportion|percent|rate/.test(t))return 'ratio';if(/histogram|distribution|skew|modal|long tail/.test(t)||/^d772-s2-l3(?:-|$)/.test(q.learningPathLessonId||''))return 'histogram';return 'graph'}
+// Each card teaches one decision or calculation; extra tools stay collapsed.
+function focusedSkill(q={}){
+ const t=String(q.prompt||'').toLowerCase(),family=kind(q);
+ if(/bias|voluntary response|convenience|loaded question|non.?response/.test(t))return 'bias';
+ if(/sampling method|stratified|cluster|systematic|simple random/.test(t))return 'sampling';
+ if(/experiment|observational|placebo|blinding|random assignment/.test(t))return 'design';
+ if(/population|sample|parameter|statistic/.test(t)&&family==='graph')return 'data';
+ if(/significan|p.value/.test(t))return 'significance';
+ if(/mean/.test(t)&&/added|outlier|extreme|increas|decreas|pull/.test(t))return 'mean-effect';
+ if(/median/.test(t)&&/outlier|extreme|resist|skew/.test(t))return 'median-effect';
+ if(/iqr|interquartile/.test(t))return 'iqr';
+ if(/quartile|percentile|25%|50%|75%/.test(t)&&family==='boxplot')return 'quartiles';
+ if(/explanatory|response variable/.test(t))return 'variables';
+ if(family==='probability'){
+  if(/complement|at least one|probability.*not|p\(not|neither/.test(t))return 'complement';
+  if(/disjoint|mutually exclusive/.test(t))return 'disjoint';
+  if(/independent|dependent/.test(t)&&!/probability.*both|probability.*and|probability.*two/.test(t))return 'independence';
+  if(/empirical|observed|relative frequency/.test(t))return 'empirical';
+  if(/union|\bor\b/.test(t))return 'union';
+  if(/intersection|\bboth\b|\band\b|two.*flips/.test(t))return 'intersection';
+  return 'simple-probability';
+ }
+ if(family==='histogram'){
+  if(/tail|skew/.test(t))return 'skew';
+  if(/peak|modal|modality|uniform/.test(t))return 'modality';
+  if(/symmetric|symmetry|normal|bell/.test(t))return 'symmetry';
+  return 'histogram';
+ }
+ if(/explanatory|response variable/.test(t))return 'variables';
+ if(/categorical|quantitative|best.*graph|graph.*best|display.*appropriate/.test(t))return 'choose-graph';
+ if(/scatter|correlation|association/.test(t))return 'association';
+ return family==='graph'?'read-question':family;
+}
+const CARDS={
+ mean:['Calculate the mean','Mean = total ÷ number of values.',['Add every value, including repeats.','Divide by how many values there are.'],'For 4, 6, 8: 18 ÷ 3 = 6.','mean'],
+ 'mean-effect':['How an added value affects the mean','Compare the new value with the old mean.',['Above the old mean → mean rises.','Below the old mean → mean falls; equal → unchanged.'],'If the old mean is 6, adding 20 pulls it upward.'],
+ median:['Find the median','Sort first, then find the middle.',['Odd count: use the single middle value.','Even count: average the two middle values.'],'For 3, 5, 7, 10, 15: the middle value is 7.','median'],
+ 'median-effect':['Median and extreme values','The median depends on position in the sorted list.',['Find the middle position(s).','An extreme value often changes the mean more than the median.'],'In 2, 4, 6, replacing 6 with 60 leaves the median at 4.'],
+ range:['Calculate the range','Range = maximum − minimum.',['Find the largest and smallest values.','Subtract; keep the original units.'],'For 4, 6, 8: range = 8 − 4 = 4.','range'],
+ iqr:['Calculate the IQR','IQR = Q3 − Q1.',['Use the upper quartile and lower quartile.','Subtract to find the spread of the middle 50%.'],'If Q1 = 4 and Q3 = 12, IQR = 8.'],
+ quartiles:['Read quartiles','Quartiles divide ordered observations into four groups.',['Q1, median and Q3 mark about 25%, 50% and 75%.','Each consecutive box-plot segment contains about 25%, even when lengths differ.'],'A longer segment means more spread, not more observations.'],
+ boxplot:['Read a box plot','Locate minimum, Q1, median, Q3 and maximum.',['Read each position against the number-line scale.','The box covers the middle 50% of observations.'],'The line inside the box marks the median.','boxplot'],
+ ratio:['Set up the proportion','Keep the same quantities in the same order.',['Label what each numerator and denominator represents.','Scale both quantities by the same factor.'],'3 notebooks for 12 students → 5 notebooks for 20 students.','ratio'],
+ complement:['Find the complement','P(not A) = 1 − P(A).',['Identify the event being excluded.','Subtract its probability from 1.'],'If P(A) = 0.30, P(not A) = 0.70.'],
+ union:['Find “A or B”','P(A or B) = P(A) + P(B) − P(A and B).',['Add the two event probabilities.','Subtract the overlap so it is counted once.'],'0.40 + 0.30 − 0.10 = 0.60.'],
+ intersection:['Find “A and B”','Use the probability of both events happening.',['Multiply P(A) by P(B given A).','For independent events, P(B given A) = P(B).'],'For independent fair coin flips: ½ × ½ = ¼.','probability'],
+ independence:['Independent or dependent?','Ask whether the first outcome changes the next probability.',['Unchanged probability → independent.','Changed probability → dependent.'],'Drawing without replacement changes the available objects.'],
+ disjoint:['Disjoint events','Disjoint events cannot happen together.',['Check whether the events overlap.','If they are disjoint, P(A and B) = 0.'],'One die roll cannot be both 2 and 5.'],
+ empirical:['Empirical probability','Use observed successes ÷ total trials.',['Count the outcomes of interest.','Divide by every trial, not just successes.'],'8 successes in 20 trials gives 8/20 = 0.40.'],
+ 'simple-probability':['Calculate a simple probability','For equally likely outcomes: favorable ÷ total.',['Count the outcomes that satisfy the event.','Count all possible outcomes.'],'On a fair die, rolling 1 or 2 gives 2 favorable outcomes out of 6: 2/6 = 1/3.'],
+ skew:['Identify skew','Name the direction of the long tail.',['Long right tail → skewed right.','Long left tail → skewed left.'],'Most values can sit on the left while the distribution is skewed right.'],
+ modality:['Count the peaks','Modality describes the number of meaningful peaks.',['One peak → unimodal; two → bimodal.','Uniform means roughly equal heights, without a main peak.'],'Two peaks can have different heights and still be bimodal.'],
+ symmetry:['Check symmetry','Compare the left and right sides of the distribution.',['Mirror-like sides → approximately symmetric.','A normal distribution is symmetric with one bell-shaped peak.'],'A flat uniform distribution can be symmetric without being normal.'],
+ histogram:['Read a histogram','Each bar counts observations in a numerical interval.',['Read the interval on the horizontal axis.','Read its count on the vertical axis.'],'A bar of height 5 represents five observations in that interval.','histogram'],
+ association:['Read association','Look at the overall direction of the points.',['Rising left to right → positive; falling → negative.','Association alone does not establish causation.'],'Higher x paired with higher y suggests positive association.','graph'],
+ variables:['Identify the variable roles','The explanatory variable may help explain the response.',['Ask which variable is used to predict or explain.','The outcome being explained is the response.'],'Study time may explain an exam score.'],
+ 'choose-graph':['Choose the display','Match the display to the variable type.',['One categorical variable: bar chart or pie chart.','One quantitative variable: histogram, dot plot or stem-and-leaf; two quantitative variables: scatterplot.'],'Heights are quantitative, so a histogram can show their distribution.'],
+ sampling:['Recognize the sampling method','Focus on how individuals are selected.',['Some individuals from every group → stratified.','Whole selected groups → cluster; every kth individual → systematic.'],'Selecting five students from every grade is stratified.'],
+ design:['Recognize the study design','Look for researcher-assigned treatments.',['Assigned treatments → experiment.','No assigned treatment → observational study or survey.'],'Random assignment helps support a causal conclusion.'],
+ bias:['Recognize the bias','Find the feature that can systematically distort the result.',['Check who was included or left out.','Check whether wording or incentives could influence responses.'],'An optional online poll can attract people with unusually strong opinions.'],
+ data:['Population, sample, parameter or statistic','First decide whether the statement describes everyone or only the observed group.',['Entire group / its numerical summary → population / parameter.','Observed subset / its numerical summary → sample / statistic.'],'An average from 50 surveyed students is a statistic.'],
+ significance:['Interpret statistical significance','Ask how surprising the result would be under the null hypothesis.',['A small p-value gives evidence against the null.','Statistical significance does not automatically mean a large practical effect.'],'Compare the p-value with the stated significance level.'],
+ 'read-question':['Focus on this question','Find the exact decision the question asks you to make.',['Identify the quantity or term requested.','Use only the data and defining clues needed for that decision.'],'Ignore story details that do not change the requested quantity.']
+};
+function render(q){const skill=focusedSkill(q),c=CARDS[skill]||CARDS['read-question'],visual=c[4];
+ return '<section class="anchorChart focusedAnchor" data-anchor-skill="'+skill+'"><h3>'+esc(c[0])+'</h3><p class="anchorRule"><b>'+esc(c[1])+'</b></p><ul>'+c[2].map(x=>'<li>'+esc(x)+'</li>').join('')+'</ul><p><b>Skill example:</b> '+esc(c[3])+'</p>'+(visual?'<details><summary>See one visual example</summary>'+MAP[visual]()+'</details><details><summary>Whiteboard setup</summary><p>'+renderWhiteboardSetup(visual)+'</p></details>'+(['mean','median','range','ratio','probability'].includes(visual)?'<details><summary>Calculator steps for the example</summary><ol>'+renderCalculatorSteps(visual)+'</ol></details>':''):'')+'<small>Support marks this attempt as guided.</small></section>';
+}
 const style=document.createElement('style');style.textContent='.majVisualExample{margin-top:16px;padding:14px;border:1px solid #bba26b;border-radius:12px;background:#fff8e8;color:#352943}.majVisualExample h4{font:700 15px Georgia,serif;margin:13px 0 7px;color:#594269}.majVisualExample li{margin:5px 0;line-height:1.5}.majVisualExample p{line-height:1.6}';document.head.appendChild(style);
-window.MajickVisualAnchors={render,kind,renderMeanWorkedExample,renderMedianWorkedExample,renderRatioModel,renderProbabilityTree,renderBoxPlotExample,renderHistogramExample,renderGraphExample,renderCalculatorSteps,renderWhiteboardSetup,VERSION:'3.4.2-visual-anchors-1'};
+window.MajickVisualAnchors={render,kind,focusedSkill,renderMeanWorkedExample,renderMedianWorkedExample,renderRatioModel,renderProbabilityTree,renderBoxPlotExample,renderHistogramExample,renderGraphExample,renderCalculatorSteps,renderWhiteboardSetup,VERSION:'3.4.2-visual-anchors-1'};
 })();

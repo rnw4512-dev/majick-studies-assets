@@ -144,7 +144,7 @@
     "guardian-registry.js": "b20170b996ddf065f33bb37332c8a9fce68ae104914e3e94ffe9aa44b7b612f3",
     "home-focus.css": "cbb719eb8e78701717b4016388d511553f2785212d839815ed006651ae738b2b",
     "home-focus.js": "c4b28238d5f38e0401df2933fcf64991b928631e488a79f80301b20174f1968b",
-    "index.html": "e02eafba6923d017c949dc27d87c142db90629b0ff524950093bac70c93cfd8e",
+    "index.html": "32ff2dda1e75b526d0edf1fa06250add624187a5e3b20e22732cd6a0203c33fa",
     "learn-mode.css": "30181250c67efe7bd97c9276706a804a551e7904a2bb28160eeb0c193f35c002",
     "learn-mode.js": "f6647cd013d5bc59a319710c45ac806b56585c7fc5c912afa88857d2f16f82e0",
     "learning-lab.css": "6ed48d27023052a714d27c027f25828bc5ad74edccb172704e823a58b26d6844",
@@ -376,8 +376,8 @@
     "v3316-main.css": "29d19e98ed797222ad34906647f1d02ab4b23b99b1965a441f40753ebbc2b451",
     "v339-main.css": "95fd6cb51076da0a40e5406b450eff11effb2af3c824172b9793dc032d0e6e72",
     "v339-main.js": "e1346861d157c7b1ddf8693ce81610abd6e750843ca665c5a4aee93e7464d202",
-    "wgu-practice.css": "38f0f8bf1a0a6de0e7234dfc6e9c25bae5adc64f7bad90597e5ff5f122532eed",
-    "wgu-practice.js": "0f4735bbcfab55704a0b04dbbf2487c23fafa30142f6bf5b632904a88608e3f3",
+    "wgu-practice.css": "89d5168c2f642ea248670a7489a8dc14a1ad4172480f89cd52e9f9f15cddb1b3",
+    "wgu-practice.js": "eb41c27fb9eef60f2205f7ad54427a02115b7bb7e4ea972dcbcc765fa23da8ab",
     "coverage/d772-s2-l2-3.json": "05265a3d4372a4d4075dbc0e75f87743da0f2896493367285d909cc2dd59be22",
     "coverage/d772-s2-l2-summary.json": "d6c5a146210d14d520c720499a0ae93152bdca24c901db983bf97bcc08152118",
     "coverage/d772-s2-l2-quiz.json": "36433aca0c1ecbc57e655ed29da9a1d3e9fcc8f1bcfd01a31f067e4d9c6fbf19",
@@ -506,7 +506,7 @@
     "enchanted-atelier.js": "c7c9e273b37d97fa6616bf11be9b1a5c2aa37e9f3a5be00d1af92d4a483c3828",
     "scholar-companion.js": "d83769aa36160d3d8ed4903dbc25ab657f7a51bed82c739cfc3304e87ad7f231",
     "scholar-progression.js": "8f9d0579c140edbef4108b71263255106f7fca423a8e95d961842a0563109ca1",
-    "study-visual-anchors.js": "a536d7542e22f1fa3591c9843ec11881a1e50bb448c08790d73ac336c02ece36",
+    "study-visual-anchors.js": "680c114977f04ba7a6aff647991021791e627226211bba8545abb957b21994e0",
     "assets/atelier/avatars/layer-dress-emerald-v1.webp": "c866a6836ac0521f8bfab5c7cfcb2644efa4e4cedb92bce2360b899aa7f387e1",
     "assets/atelier/avatars/layer-hair-twists-v1.webp": "56a057ceabb0532a70cab5b66be16637854adc6e991fcb41bd925e360f5a3cff"
   }

@@ -27,3 +27,5 @@
 .v3333QuestionCard>button.btn.ghost{color:#382342!important;background:#f9edcf!important;border:1px solid #80668e!important;opacity:1!important}
 .v3333QuestionCard>button.btn.ghost:disabled{color:#53445a!important;background:#e8dbbf!important}
 .v3333QuestionCard .anchorChart,.v3333QuestionCard .majVisualExample{font-size:17px;line-height:1.65}
+
+.focusedAnchor{max-width:760px}.focusedAnchor h3{margin-bottom:8px}.focusedAnchor ul{margin:8px 0 12px;padding-left:22px}.focusedAnchor details{margin:10px 0;border-top:1px solid #c5af84;padding-top:8px}.focusedAnchor summary{color:#4a2854;font-weight:700;cursor:pointer}.focusedAnchor details svg{display:block;max-width:440px;margin:10px auto}.focusedAnchor small{margin-top:12px}
