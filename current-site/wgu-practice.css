@@ -20,3 +20,10 @@
 @media(max-width:600px){.v3333Mission,.v3333QuestionShell{border-radius:35px 35px 14px 14px;padding:14px 10px}.v3333QTop{flex-wrap:wrap}.v3333QuestionCard{padding:18px 14px}.v3333Prompt{font-size:19px}}
 
 .v3333Scope{padding:20px;border:1px solid #a78a56;border-radius:16px;background:linear-gradient(135deg,#30213b,#201828);color:#f4e7d4}.v3333Scope h3{color:#edcf98;margin:0 0 8px;font:700 22px Georgia,serif}.v3333Scope p{line-height:1.5}.v3333Scope>div{display:grid;gap:10px;margin-top:15px}.v3333Scope button{width:100%}.v3333Mission>details{margin-top:24px}.questionDataVisual svg{max-width:100%;height:auto}.v3333QuestionCard .anchorChart{margin-top:12px}
+/* Parchment support panels must override the campus's pale text rules. */
+.v3333QuestionCard .anchorChart,.v3333QuestionCard .majVisualExample{color:#302337!important;background:#fff5df!important;opacity:1!important}
+.v3333QuestionCard .anchorChart :is(p,li,ol,ul,small,b,strong,span),.v3333QuestionCard .majVisualExample :is(p,li,ol,ul,small,b,strong,span){color:#302337!important;opacity:1!important}
+.v3333QuestionCard .anchorChart :is(h3,h4),.v3333QuestionCard .majVisualExample :is(h3,h4){color:#4a2854!important;opacity:1!important}
+.v3333QuestionCard>button.btn.ghost{color:#382342!important;background:#f9edcf!important;border:1px solid #80668e!important;opacity:1!important}
+.v3333QuestionCard>button.btn.ghost:disabled{color:#53445a!important;background:#e8dbbf!important}
+.v3333QuestionCard .anchorChart,.v3333QuestionCard .majVisualExample{font-size:17px;line-height:1.65}

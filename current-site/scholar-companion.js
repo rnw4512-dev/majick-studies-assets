@@ -16,12 +16,7 @@ function scene(){
  if(/learn lab/.test(heading))return 'lab';
  return SCENES[s]?s:'home';
 }
-function art(p){
- const hair=HAIR[p.hair],robe=ROBE[p.robe];
- 
- const body=Number(p.skin)===0||Number(p.skin)===5?'layer-body-deep.webp':'layer-body-warm.webp';
- return '<div class="mscLayers">'+[body,robe||ROBE[0],'layer-boots-plum.webp',hair||HAIR[3]].map(src=>'<img draggable="false" alt="" loading="lazy" src="'+ROOT+src+'">').join('')+'</div>';
-}
+function art(p){return window.MajickAtelier?.renderAvatar?.(p,true)||''}
 function ensure(){
  if(!document.body||dock)return;
  dock=document.createElement('aside');dock.id='majickScholarCompanion';dock.setAttribute('aria-label','Your scholar companion');

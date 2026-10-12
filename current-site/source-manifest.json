@@ -144,7 +144,7 @@
     "guardian-registry.js": "b20170b996ddf065f33bb37332c8a9fce68ae104914e3e94ffe9aa44b7b612f3",
     "home-focus.css": "cbb719eb8e78701717b4016388d511553f2785212d839815ed006651ae738b2b",
     "home-focus.js": "c4b28238d5f38e0401df2933fcf64991b928631e488a79f80301b20174f1968b",
-    "index.html": "1f57e39027f714d0209446d7aa5ed1af5d8d21ef06c4b453f23d728f332581ca",
+    "index.html": "e02eafba6923d017c949dc27d87c142db90629b0ff524950093bac70c93cfd8e",
     "learn-mode.css": "30181250c67efe7bd97c9276706a804a551e7904a2bb28160eeb0c193f35c002",
     "learn-mode.js": "f6647cd013d5bc59a319710c45ac806b56585c7fc5c912afa88857d2f16f82e0",
     "learning-lab.css": "6ed48d27023052a714d27c027f25828bc5ad74edccb172704e823a58b26d6844",
@@ -376,7 +376,7 @@
     "v3316-main.css": "29d19e98ed797222ad34906647f1d02ab4b23b99b1965a441f40753ebbc2b451",
     "v339-main.css": "95fd6cb51076da0a40e5406b450eff11effb2af3c824172b9793dc032d0e6e72",
     "v339-main.js": "e1346861d157c7b1ddf8693ce81610abd6e750843ca665c5a4aee93e7464d202",
-    "wgu-practice.css": "c1d50e6ef77bc1c909426aa13032cefddec0976c592c6f619300636d16df0d64",
+    "wgu-practice.css": "38f0f8bf1a0a6de0e7234dfc6e9c25bae5adc64f7bad90597e5ff5f122532eed",
     "wgu-practice.js": "0f4735bbcfab55704a0b04dbbf2487c23fafa30142f6bf5b632904a88608e3f3",
     "coverage/d772-s2-l2-3.json": "05265a3d4372a4d4075dbc0e75f87743da0f2896493367285d909cc2dd59be22",
     "coverage/d772-s2-l2-summary.json": "d6c5a146210d14d520c720499a0ae93152bdca24c901db983bf97bcc08152118",
@@ -503,9 +503,11 @@
     "assets/rewards/aurelia/items/treat-puzzle-carousel.webp": "e3f9675b47ac0ad0ae75667f3e6f565bd91cf5e92cf6a640c5248a8d549f1f4d",
     "assets/rewards/aurelia/items/flowering-sage-planter.webp": "34c168e82b480b132b8531d07006e4355bf5e802a647109128261d9556a26e3d",
     "assets/rewards/aurelia/items/feather-play-wand.webp": "ddef86bed10da763f1749c3e5b93ebb69098ef1eb0b1ccab8a759285895bf86e",
-    "enchanted-atelier.js": "423111384052ea6acea70d65c36b7008f5db05025372750a2bd3a59e440b13cd",
-    "scholar-companion.js": "0fea5a145e6477836763b0c6e0db59702b735c6879eeeac1cf3a4860f8b2c2b5",
+    "enchanted-atelier.js": "c76b365a796cd8288be6a18b275081de6d6ad33363e5e7b6c2e554956e0fe6c8",
+    "scholar-companion.js": "d83769aa36160d3d8ed4903dbc25ab657f7a51bed82c739cfc3304e87ad7f231",
     "scholar-progression.js": "793f0199ec1dec91618528e620f72e861c814f6726b76c9a7d232c6fa8b6c9d9",
-    "study-visual-anchors.js": "0f228cc0b1587fae5255993c5c52ee605cf2c6c9dba56e159e4805687b297826"
+    "study-visual-anchors.js": "5aa4d18897a58d2750c1c0ef1a5ade1eb83518ef709883908cb347e18633576e",
+    "assets/atelier/avatars/layer-dress-emerald-v1.webp": "c866a6836ac0521f8bfab5c7cfcb2644efa4e4cedb92bce2360b899aa7f387e1",
+    "assets/atelier/avatars/layer-hair-twists-v1.webp": "56a057ceabb0532a70cab5b66be16637854adc6e991fcb41bd925e360f5a3cff"
   }
 }
