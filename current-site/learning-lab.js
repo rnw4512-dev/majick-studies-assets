@@ -303,21 +303,31 @@ function renderPractice(){
  const bank=(cobj().questionBank||[]).filter(q=>Array.isArray(q.options)&&q.options.length>=2);
  if(!bank.length){box.innerHTML='<div class="learnEmpty"><h3>No guided questions yet</h3><p>Add notes and forge questions for this class first.</p><button class="btn primary" id="practiceAddNotes">Add Study Material</button></div>';document.getElementById('practiceAddNotes')?.addEventListener('click',()=>navigate('addmaterial'));return}
  const state={assisted:true,retry:false,answered:false,used:new Set()};
- function pick(){const pool=bank.filter(q=>!state.used.has(String(q.id||q.qid)));const choices=pool.length?pool:bank;const q=choices[Math.floor(Math.random()*choices.length)];state.used.add(String(q.id||q.qid));return q}
+ const saved=pstate();saved.guidedPractice=saved.guidedPractice||{assistedAttempts:0,assistedCorrect:0,independentAttempts:0,independentCorrect:0};
+ const metrics=saved.guidedPractice;
+ const idOf=q=>String(q.id||q.qid||q.prompt);
+ function available(){return bank.filter(q=>!state.used.has(idOf(q)))}
+ function canRetry(){return available().length>0}
+ function pick(){const pool=available();if(!pool.length)return null;const q=pool[Math.floor(Math.random()*pool.length)];state.used.add(idOf(q));return q}
  let q=pick();
+ if(!q)return;
  function isCorrect(choice){
   if(typeof q.answer==='number')return Number(choice)===q.answer;
   return String(q.options[Number(choice)])===String(q.answer);
  }
  function draw(){
+  if(!q)return;
   const independent=state.retry&&!state.assisted;
   box.innerHTML='<div class="learnStepHeader"><div><span>STEP 4 • PRACTICE AND PROVE IT</span><h3>Guided Question</h3><small>Guided coaching builds understanding; only a fresh, unassisted attempt can count toward independent mastery.</small></div></div>'+
-   '<article class="guidedQuestion"><div role="status" aria-live="polite" style="margin-bottom:12px;padding:12px;border:1px solid currentColor;border-radius:10px"><b>'+(independent?'✦ Independent Retry — no hints':'☾ Assisted Practice — not independent mastery')+'</b><p style="margin:6px 0 0">'+(independent?'Fresh question, no revealed answer. An independently correct response is recorded in your existing course progress.':'Use this question to learn. Even a correct answer here does not count as independent mastery.')+'</p></div><h3>'+E(q.prompt)+'</h3><div>'+q.options.map((o,i)=>'<button class="guidedOption" type="button" data-guide-index="'+i+'" '+(state.answered?'disabled':'')+'>'+E(o)+'</button>').join('')+'</div><div id="guidedFeedback" role="status" aria-live="polite"></div><div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:14px"><button type="button" class="btn primary" id="guideRetry">Retry independently with a NEW question</button><button type="button" class="btn" id="guideMore">More assisted practice</button></div></article>'+
+   '<article class="guidedQuestion"><p><strong>Assisted:</strong> '+metrics.assistedCorrect+'/'+metrics.assistedAttempts+' correct · <strong>Independent retries:</strong> '+metrics.independentCorrect+'/'+metrics.independentAttempts+' correct</p><div role="status" aria-live="polite" style="margin-bottom:12px;padding:12px;border:1px solid currentColor;border-radius:10px"><b>'+(independent?'✦ Independent Retry — no hints':'☾ Assisted Practice — not independent mastery')+'</b><p style="margin:6px 0 0">'+(independent?'Fresh question, no revealed answer. An independently correct response is recorded in your existing course progress.':'Use this question to learn. Even a correct answer here does not count as independent mastery.')+'</p></div><h3>'+E(q.prompt)+'</h3><div>'+q.options.map((o,i)=>'<button class="guidedOption" type="button" data-guide-index="'+i+'" '+(state.answered?'disabled':'')+'>'+E(o)+'</button>').join('')+'</div><div id="guidedFeedback" role="status" aria-live="polite"></div><div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:14px"><button type="button" class="btn primary" id="guideRetry">Retry independently with a NEW question</button><button type="button" class="btn" id="guideMore">More assisted practice</button></div></article>'+
    '<div class="independentCall"><span>STEP 5 • PROVE IT</span><b>Build lasting independent mastery</b><p>Correct independent retries join the existing course answer history; mastery still requires repeated evidence.</p><button class="btn primary" id="goIndependent">Start Study Now</button></div>';
   box.querySelectorAll('[data-guide-index]').forEach(btn=>btn.addEventListener('click',()=>{
    if(state.answered)return;
    const choice=Number(btn.dataset.guideIndex),ok=isCorrect(choice),wasIndependent=state.retry&&!state.assisted;
    state.answered=true;box.querySelectorAll('[data-guide-index]').forEach(b=>b.disabled=true);
+   if(wasIndependent){metrics.independentAttempts++;if(ok)metrics.independentCorrect++;}
+   else{metrics.assistedAttempts++;if(ok)metrics.assistedCorrect++;}
+   persist();
    if(wasIndependent){
     const at=Date.now(),qid=String(q.id||q.qid||'guided-retry'),topicId=String(q.topicId||q.learningPathLessonId||'guided');
     if(window.MajickStudyProgress?.creditAnswer){
@@ -329,8 +339,8 @@ function renderPractice(){
    const f=box.querySelector('#guidedFeedback');
    if(f)f.innerHTML='<div class="'+(ok?'guideRight':'guideWrong')+'"><b>'+(wasIndependent?(ok?'✓ Independent correct — recorded':'Independent attempt recorded — review needed'):(ok?'✓ Assisted correct — practice only':'Assisted practice — try again after review'))+'</b><p>'+E(q.why||q.rationale||(ok?'You chose the correct answer.':'Review the question and the strategy.'))+'</p><small>'+(wasIndependent?'This attempt was unassisted. One correct answer alone does not establish mastery.':'No independent mastery credit was granted for this coached question.')+'</small></div>';
   }));
-  box.querySelector('#guideRetry')?.addEventListener('click',()=>{state.retry=true;state.assisted=false;state.answered=false;q=pick();draw()});
-  box.querySelector('#guideMore')?.addEventListener('click',()=>{state.retry=false;state.assisted=true;state.answered=false;q=pick();draw()});
+  box.querySelector('#guideRetry')?.addEventListener('click',()=>{if(!canRetry())return;state.retry=true;state.assisted=false;state.answered=false;q=pick();draw()});
+  box.querySelector('#guideMore')?.addEventListener('click',()=>{state.retry=false;state.assisted=true;state.answered=false;if(!canRetry())state.used.clear();q=pick();draw()});
   box.querySelector('#goIndependent')?.addEventListener('click',()=>navigate('mission'));
  }
  draw();
