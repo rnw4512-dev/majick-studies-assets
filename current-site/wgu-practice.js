@@ -73,7 +73,7 @@ function questionHtml(q){
   }).join('');
   const label=E(session?.opts?.label||'D772 Practice');
   const progress=(session?.index||1)+(session?.opts?.limit?'/'+session.opts.limit:'');
-  return '<div class="v3333QuestionShell '+(oa?'oaMode':'practiceMode')+'"><div class="v3333QTop"><div><span class="v3333Eyebrow">D772 • STATISTICAL DATA LITERACY</span><h2>'+label+'</h2></div><div class="v3333QCount">Question '+progress+'</div><button class="btn ghost" onclick="session=null;navigate(\'mission\')">Choose section</button></div>'+(oa?'<div class="v3333OANote">No hints or lesson labels during the simulation.</div>':'')+'<article class="v3333QuestionCard"><div class="v3333Prompt">'+E(q.prompt)+'</div>'+(visualHtml(q.visual)||window.MajickCourseTutor?.questionVisualHtml?.(q)||'')+(!oa?'<button class="btn ghost" '+(session.answered?'disabled':'')+' onclick="toggleAnchorChart()">'+(session.chartOpen?'Hide':'Open')+' skill anchor chart</button>':'')+(!oa&&session.chartOpen?anchorChartHTML(q):'')+(clue?'<div class="v3333ClueTraining">'+clueHTML(cleanPrompt(q.prompt))+'</div>':'')+confidenceHtml()+'<div class="v3333Options">'+options+'</div>'+(!session.answered?'<button type="button" class="btn primary v3333Submit" '+(selected?'':'disabled')+' onclick="MajickWGUPractice.submit()">Submit</button>':'')+(!oa&&session.answered?practiceFeedback(q):'')+'</article></div>';
+  return '<div class="v3333QuestionShell '+(oa?'oaMode':'practiceMode')+'"><div class="v3333QTop"><div><span class="v3333Eyebrow">D772 • STATISTICAL DATA LITERACY</span><h2>'+label+'</h2></div><div class="v3333QCount">Question '+progress+'</div><button class="btn ghost" onclick="session=null;navigate(\'mission\')">Choose section</button></div>'+(oa?'<div class="v3333OANote">No hints or lesson labels during the simulation.</div>':'')+(session?.opts?.timeLimitMs?'<div id="v342AssessClock" role="timer">Time remaining: '+Math.max(0,Math.ceil((session.opts.timeLimitMs-(Date.now()-session.start))/1000))+' seconds</div>':'')+'<article class="v3333QuestionCard"><div class="v3333Prompt">'+E(q.prompt)+'</div>'+(visualHtml(q.visual)||window.MajickCourseTutor?.questionVisualHtml?.(q)||'')+(!oa?'<button class="btn ghost" '+(session.answered?'disabled':'')+' onclick="toggleAnchorChart()">'+(session.chartOpen?'Hide':'Open')+' skill anchor chart</button>':'')+(!oa&&session.chartOpen?anchorChartHTML(q):'')+(clue?'<div class="v3333ClueTraining">'+clueHTML(cleanPrompt(q.prompt))+'</div>':'')+confidenceHtml()+'<div class="v3333Options">'+options+'</div>'+(!session.answered?'<button type="button" class="btn primary v3333Submit" '+(selected?'':'disabled')+' onclick="MajickWGUPractice.submit()">Submit</button>':'')+(!oa&&session.answered?practiceFeedback(q):'')+'</article></div>';
 }
 function select(choice){
   if(!session||session.answered)return;
@@ -247,6 +247,40 @@ function startSection(scope,independent=false){
  session={type:independent?'test':'adaptive',opts:{label:label+(independent?' · Independent OA practice':' · Assisted practice'),limit:questions.length,kind:'d772-section-practice',scope,hideMeta:independent},index:1,score:0,combo:0,questions,current:questions[0],answered:false,confidence:'sure',review:[],start:Date.now(),pendingChoice:null};
  S.screen='mission';render();
 }
+// Assessments use the existing session renderer but never write mastery or rewards.
+const originalAssessmentAnswer=answerQ;
+answerQ=function(choice){
+ if(!session?.opts?.assessmentOnly)return originalAssessmentAnswer(choice);
+ if(session.answered||session.finished)return;
+ const q=session.current,correct=String(choice)===String(q.answer);
+ session.chosen=choice;session.answered=true;session.score+=correct?1:0;
+ session.review.push({q,chosen:choice,correct});
+ setTimeout(()=>{
+  if(!session||session.finished||!session.opts?.assessmentOnly)return;
+  if(session.index>=session.questions.length)finishSession();
+  else{session.current=session.questions[session.index++];session.answered=false;session.chosen=null;render()}
+ },120);
+};
+let assessmentClock=null;
+function tickAssessmentClock(){
+ const s=session;
+ if(!s?.opts?.assessmentOnly||s.finished){if(assessmentClock){clearInterval(assessmentClock);assessmentClock=null}return}
+ const limit=s.opts.timeLimitMs;
+ if(!limit)return;
+ const remaining=Math.max(0,limit-(Date.now()-s.start));
+ const el=document.getElementById('v342AssessClock');
+ if(el)el.textContent='Time remaining: '+Math.floor(remaining/60000)+':'+String(Math.floor(remaining/1000)%60).padStart(2,'0');
+ if(!remaining){
+  if(!s.answered&&s.current)s.review.push({q:s.current,chosen:null,correct:false});
+  for(const q of s.questions.slice(s.index))s.review.push({q,chosen:null,correct:false});
+  finishSession();
+ }
+}
+function launchAssessmentClock(){
+ if(assessmentClock)clearInterval(assessmentClock);
+ assessmentClock=setInterval(tickAssessmentClock,1000);
+ tickAssessmentClock();
+}
 function balancedMixedAssessment(limit=30){
  const pool=practicePool('mixed'),sets=[1,2,3].map(n=>shuffleCopy(pool.filter(q=>sectionNumber(q)===n))),chosen=[],used=new Set();
  for(let i=0;i<limit&&sets.some(a=>a.length);){
@@ -268,7 +302,7 @@ function startMixedOA(){
  const coverage=new Set(questions.map(sectionNumber));
  if(coverage.size!==3)return window.rewardToast?.('Full simulation not ready','All three sections need questions before this simulation can claim full-course coverage.');
  session={type:'test',opts:{label:'D772 Full-Course OA Simulation',limit:questions.length,kind:'d772-mixed-oa',hideMeta:true,assessmentOnly:true,timeLimitMs:questions.length*90000},index:1,score:0,combo:0,questions,current:questions[0],answered:false,confidence:'sure',review:[],start:Date.now(),pendingChoice:null};
- S.screen='mission';render();
+ S.screen='mission';render();launchAssessmentClock();
 }
 function assessmentReport(){
  const rows=session.review||[],total=rows.length,correct=rows.filter(x=>x.correct).length;
