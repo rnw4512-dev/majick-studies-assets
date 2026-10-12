@@ -46,6 +46,31 @@ function whyList(q){
     return '<div class="'+(ok?'isCorrect':'')+'"><b>'+(ok?'✓ ':'')+E(o)+'</b><p>'+E(txt)+'</p></div>';
   }).join('')+'</div></details>';
 }
+function repairLesson(q){
+ if(!session||session.type==='test')return '';
+ const chosen=String(session.chosen??''),coach=q.choiceCoach||{};
+ const why=coach[chosen]||'The selected term does not fit the defining clue in this scenario.';
+ const example=window.MajickVisualAnchors?.render?.(q)||'';
+ const rule=String(q.wguClue||q.keyClue||q.why||'Find the words that determine which statistical rule applies.');
+ const id=encodeURIComponent(String(q.id||q.qid||''));
+ return '<div class="v342Repair" style="padding:1rem;border:1px solid #ad8c55;border-radius:12px;margin:.8rem 0;background:#f6ebd9;color:#30233d">'+
+ '<h3>Professor’s Repair Lesson</h3><p><b>Why your choice did not fit:</b> '+E(why)+'</p>'+
+ '<p><b>Clue to look for next time:</b> '+E(rule)+'</p>'+
+ '<ol><li>Read the quantity or concept being asked for.</li><li>Underline the deciding clue.</li><li>Match the clue to the rule or formula.</li><li>Explain why your original choice does not fit.</li></ol>'+
+ (example?'<details><summary>Separate visual worked example</summary>'+example+'</details>':'')+
+ '<button type="button" class="btn primary" onclick="MajickWGUPractice.startRepairTransfer(decodeURIComponent(\''+id+'\'))">Try a fresh question without hints →</button>'+
+ '<small style="display:block">Guided explanations do not count as independent mastery.</small></div>';
+}
+function startRepairTransfer(id){
+ const original=String(id||''),source=practicePool('mixed').find(q=>String(q.id||q.qid||'')===original);
+ if(!source)return window.rewardToast?.('Review unavailable','Original question not found.');
+ const lesson=String(source.learningPathLessonId||source.topicId||'');
+ const candidates=shuffleCopy(practicePool('mixed').filter(q=>String(q.id||q.qid||'')!==original&&String(q.learningPathLessonId||q.topicId||'')===lesson));
+ if(!candidates.length)return window.rewardToast?.('No fresh question','No different question is available for this lesson.');
+ const q=candidates[0];
+ session={type:'test',opts:{label:'Independent Transfer Check',limit:1,kind:'d772-diagnostic',hideMeta:true,assessmentOnly:true},index:1,score:0,combo:0,questions:[q],current:q,answered:false,confidence:'sure',review:[],start:Date.now(),pendingChoice:null};
+ S.screen='mission';render();
+}
 function practiceFeedback(q){
   const wrong=session?.chosen!==q.answer;
   const reason=String(q.why||'').replace(/\s+/g,' ').trim();
@@ -53,7 +78,7 @@ function practiceFeedback(q){
   if(session?.type==='reason'){
     reasonBox='<div class="v3333Reason"><b>Explain it in one sentence</b><p>Use the WGU term and the clue from the scenario.</p><textarea id="reasonText" placeholder="The best answer is ___ because the scenario says ___..."></textarea><div><button class="btn ghost" onclick="saveReason(false)">Save explanation</button><button class="btn ghost" onclick="saveReason(true)">I explained it aloud</button></div></div>';
   }
-  return '<section class="v3333Feedback '+(wrong?'needsRepair':'correct')+'"><div class="v3333FeedbackTitle">'+(wrong?'Review the distinction':'Correct')+'</div><p><b>Best answer:</b> '+E(q.answer)+'</p><p>'+E(reason)+'</p>'+whyList(q)+reasonBox+'<button class="btn primary v3333Next" onclick="continueSession()">Next question →</button></section>';
+  return '<section class="v3333Feedback '+(wrong?'needsRepair':'correct')+'"><div class="v3333FeedbackTitle">'+(wrong?'Review the distinction':'Correct')+'</div><p><b>Best answer:</b> '+E(q.answer)+'</p><p>'+E(reason)+'</p>'+whyList(q)+(wrong?repairLesson(q):'')+reasonBox+'<button class="btn primary v3333Next" onclick="continueSession()">Next question →</button></section>';
 }
 function confidenceHtml(){
   if(session?.opts?.kind==='d772-section1-oa')return '';
@@ -372,7 +397,7 @@ function bootD772Practice(){
     }
   }catch(e){console.warn('D772 Practice Lab boot',e)}
 }
-window.MajickWGUPractice={VERSION,select,submit,startSection,startDiagnostic,startMixedOA,balancedMixedAssessment,practicePool,sectionNumber,startOA,startFocusedReview,startSampling,startStudyDesign,startLabelStudy,startExperiments,visualHtml,whyList,balancedOA,isD772Question,ensureD772Bank,bootD772Practice};
+window.MajickWGUPractice={VERSION,select,submit,startSection,startDiagnostic,startMixedOA,startRepairTransfer,balancedMixedAssessment,practicePool,sectionNumber,startOA,startFocusedReview,startSampling,startStudyDesign,startLabelStudy,startExperiments,visualHtml,whyList,balancedOA,isD772Question,ensureD772Bank,bootD772Practice};
 document.documentElement.dataset.majickWguPractice='3.3.36';
 bootD772Practice();
 })();
