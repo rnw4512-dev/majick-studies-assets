@@ -21,7 +21,15 @@ const MAP={range:renderRangeWorkedExample,mean:renderMeanWorkedExample,median:re
 function kind(q={}){const m=q.anchorChart?.type;if(m&&MAP[m])return m;const t=[q.prompt,q.topicId,q.keyClue].join(' ').toLowerCase();if(/five.number|box.plot|quartile|iqr/.test(t))return 'boxplot';if(/median/.test(t))return 'median';if(/mean|average/.test(t))return 'mean';if(/\brange\b/.test(t))return 'range';if(/probab|complement|union|intersection|p\(|dependent|independent|disjoint|coin|dice/.test(t))return 'probability';if(/ratio|proportion|percent|rate/.test(t))return 'ratio';if(/histogram|distribution|skew|modal|long tail/.test(t)||/^d772-s2-l3(?:-|$)/.test(q.learningPathLessonId||''))return 'histogram';return 'graph'}
 // Each card teaches one decision or calculation; extra tools stay collapsed.
 function focusedSkill(q={}){
+ const explicit=q.anchorChart?.type;
+ if(explicit&&Object.prototype.hasOwnProperty.call(CARDS,explicit))return explicit;
  const t=String(q.prompt||'').toLowerCase(),family=kind(q);
+ if(/expected\s+(?:value|net|payout|return|cost)|\be\(x\)/.test(t)||/^d772-s3-l4(?:-|$)/.test(q.learningPathLessonId||'')){
+  if(/cost.*less|less.*cost|expected.*cost/.test(t))return 'expected-cost';
+  if(/fair|unknown.*amount|unknown.*loss/.test(t)&&!/fair.*(?:die|dice)/.test(t))return 'fair-game';
+  if(/which.*investment|compare|plan a.*plan b/.test(t))return 'expected-value-compare';
+  return 'expected-value';
+ }
  if(/bias|voluntary response|convenience|loaded question|non.?response/.test(t))return 'bias';
  if(/sampling method|stratified|cluster|systematic|simple random/.test(t))return 'sampling';
  if(/experiment|observational|placebo|blinding|random assignment/.test(t))return 'design';
@@ -53,6 +61,10 @@ function focusedSkill(q={}){
  return family==='graph'?'read-question':family;
 }
 const CARDS={
+ 'expected-value':['Calculate expected net value','E = sum of (signed net outcome × its probability).',['Include costs once; use a negative sign for losses.','Multiply each outcome by its probability, then add; interpret the sign as a long-run average.'],'Net outcomes +$8 (0.25) and −$2 (0.75): E = 2 − 1.50 = +$0.50.'],
+ 'fair-game':['Check whether a game is fair','A fair game has expected net value E = 0.',['Use signed net gains and losses, including the entry cost.','For an unknown amount, set the weighted sum equal to 0 and solve.'],'Win $12 with chance 0.25 or lose Z with chance 0.75: 3 − 0.75Z = 0, so Z = $4.'],
+ 'expected-value-compare':['Compare expected returns','Choose the larger expected net return for the higher long-run average.',['Calculate each option with the same viewpoint and consistent costs.','Compare the two averages; a larger possible prize or win probability alone is not enough.'],'A: 0.6(100) + 0.4(−20) = $52. B: 0.8(70) + 0.2(−10) = $54; B has the larger average.'],
+ 'expected-cost':['Compare expected costs','Expected total cost = certain price + probability × additional damage cost.',['Include the purchase price whether or not failure happens.','Choose the smaller positive expected cost.'],'A: 150 + 0.02(2,000) = $190. B: 80 + 0.06(2,000) = $200; A costs less on average.'],
  mean:['Calculate the mean','Mean = total ÷ number of values.',['Add every value, including repeats.','Divide by how many values there are.'],'For 4, 6, 8: 18 ÷ 3 = 6.','mean'],
  'mean-effect':['How an added value affects the mean','Compare the new value with the old mean.',['Above the old mean → mean rises.','Below the old mean → mean falls; equal → unchanged.'],'If the old mean is 6, adding 20 pulls it upward.'],
  median:['Find the median','Sort first, then find the middle.',['Odd count: use the single middle value.','Even count: average the two middle values.'],'For 3, 5, 7, 10, 15: the middle value is 7.','median'],

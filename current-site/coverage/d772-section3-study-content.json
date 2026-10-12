@@ -3,8 +3,8 @@
     "id": "d772-s3",
     "title": "Section 3: Applying Principles of Probability",
     "provenance": {
-      "courseStructure": "User-provided WGU D772 Section 3 outline",
-      "teaching": "Original supplemental study explanations and practice corroborated against OpenStax; not WGU assessment questions",
+      "courseStructure": "User-provided full D772 course outline verified 2026-10-12; existing lesson IDs and learner mastery preserved.",
+      "teaching": "User-provided Lesson 4.2 practice, video transcript, Lesson 4 and Section 3 summaries; other lesson explanations remain supplemental.",
       "corroboration": [
         {
           "source": "OpenStax Introductory Statistics 2e",
@@ -521,7 +521,8 @@
             "traps": [
               "Do not confuse disjoint events with independent events.",
               "Read whether a question asks for payout or net value."
-            ]
+            ],
+            "sourceUrl": "https://apps.cgp-oex.wgu.edu/learning/course/course-v1:WGUx+OEX0516+v01/block-v1:WGUx+OEX0516+v01+type@sequential+block@24f1530cc8d94cf9ad06493024268f62/block-v1:WGUx+OEX0516+v01+type@vertical+block@9395188784a64ab6ba54e54c82346db8"
           },
           {
             "id": "d772-s3-l4-2",
@@ -546,7 +547,8 @@
             "traps": [
               "Do not confuse disjoint events with independent events.",
               "Read whether a question asks for payout or net value."
-            ]
+            ],
+            "sourceUrl": "https://apps.cgp-oex.wgu.edu/learning/course/course-v1:WGUx+OEX0516+v01/block-v1:WGUx+OEX0516+v01+type@sequential+block@24f1530cc8d94cf9ad06493024268f62/block-v1:WGUx+OEX0516+v01+type@vertical+block@f3a635cdeda84c40ab910112078f3326"
           },
           {
             "id": "d772-s3-l4-summary",
@@ -571,7 +573,8 @@
             "traps": [
               "Do not confuse disjoint events with independent events.",
               "Read whether a question asks for payout or net value."
-            ]
+            ],
+            "sourceUrl": "https://apps.cgp-oex.wgu.edu/learning/course/course-v1:WGUx+OEX0516+v01/block-v1:WGUx+OEX0516+v01+type@sequential+block@24f1530cc8d94cf9ad06493024268f62/block-v1:WGUx+OEX0516+v01+type@vertical+block@6bfe6ccb9f96416ab0fa3103b258531d"
           },
           {
             "id": "d772-s3-l4-quiz",
@@ -596,9 +599,11 @@
             "traps": [
               "Do not confuse disjoint events with independent events.",
               "Read whether a question asks for payout or net value."
-            ]
+            ],
+            "sourceUrl": "https://apps.cgp-oex.wgu.edu/learning/course/course-v1:WGUx+OEX0516+v01/block-v1:WGUx+OEX0516+v01+type@sequential+block@24f1530cc8d94cf9ad06493024268f62/block-v1:WGUx+OEX0516+v01+type@vertical+block@618232d4f0494e909e6f4bbd804e4df5"
           }
-        ]
+        ],
+        "sourceUrl": "https://apps.cgp-oex.wgu.edu/learning/course/course-v1:WGUx+OEX0516+v01/block-v1:WGUx+OEX0516+v01+type@sequential+block@24f1530cc8d94cf9ad06493024268f62/block-v1:WGUx+OEX0516+v01+type@vertical+block@236466364f844030b1dd347a7bffa37b"
       },
       {
         "id": "d772-s3-review",
@@ -1802,45 +1807,70 @@
       ]
     },
     "d772-s3-l4-2": {
-      "sourceLabel": "CORROBORATED PROBABILITY STUDY NOTES",
-      "overview": "Interpret long-run value and risk.",
+      "sourceLabel": "COURSE-PROVIDED D772 · SECTION 3 · LESSON 4.2",
+      "overview": "Use expected net value to judge fairness, find an unknown loss, and compare games, protection plans, investments, and repair choices.",
       "objectives": [
-        "Interpret long-run value and risk",
-        "Explain the denominator, relationship, or net value before calculating."
+        "Calculate expected net value from every outcome.",
+        "Identify a fair activity by E = 0 and solve for an unknown outcome.",
+        "Compare larger expected returns or smaller expected costs.",
+        "Interpret results as long-run averages from the stated viewpoint."
       ],
       "teach": [
         {
-          "title": "Interpret long-run value and risk",
-          "text": "Expected value is a long-run average, not a promised result on the next trial; it may not be a possible single outcome. For a decision, compare net values consistently and consider variability, affordability, and model assumptions."
+          "title": "Calculate and interpret expected net value",
+          "text": "E(X) = Σ xP(x). List all outcomes, make losses negative, subtract fees from each applicable outcome, multiply by probabilities, and add. Probabilities must total 1. A fair activity has expected net value 0; positive and negative values indicate average gain and loss."
+        },
+        {
+          "title": "Choose the viewpoint before comparing",
+          "text": "Use the same person’s gains and losses throughout. A customer’s payment is a loss to the customer and revenue to the store. Compare the larger expected net return when maximizing gains, or the smaller expected total cost when minimizing costs. Expected value describes a long-run average, not a guaranteed single outcome."
+        },
+        {
+          "title": "Video example 1 — A 20-sided die game",
+          "text": "Win $50 for 1 or 20; lose $10 for 2–10; lose $5 for 11–15; gain $0 for 16–19. The probabilities are 2/20, 9/20, 5/20, and 4/20. E = (2/20)(50) + (9/20)(−10) + (5/20)(−5) + (4/20)(0) = 5 − 4.50 − 1.25 = −$0.75. The game loses $0.75 per play on average."
+        },
+        {
+          "title": "Video example 2 — Compare investments",
+          "text": "Option A: 0.84(1,000) + 0.16(−1,000) = $680. Option B: 0.61(2,000) + 0.39(−1,000) = $830. Option B has the higher expected return even though its chance of a gain is lower. The higher average does not mean an identical risk or guaranteed next result."
+        },
+        {
+          "title": "Video example 3 — A store’s protection plan",
+          "text": "An oven store collects $100 for a plan and replaces a $1,400 oven for 5% of plan holders. From the store’s viewpoint, no replacement gives +$100; replacement gives $100 − $1,400 = −$1,300. E = 0.95(100) + 0.05(−1,300) = 95 − 65 = +$30 per plan before other costs."
         }
       ],
       "memory": [
-        "Read the event and conditions before choosing a rule."
+        "Net value includes every fee or cost once.",
+        "E > 0: favorable average; E < 0: unfavorable average; E = 0: fair.",
+        "For costs, choose the smaller positive expected cost."
       ],
       "anchorChart": {
-        "title": "Interpret long-run value and risk",
-        "rule": "Expected value is a long-run average, not a promised result on the next trial; it may not be a possible single outcome.",
+        "title": "Calculate expected net value",
+        "rule": "E = sum of each signed net outcome multiplied by its probability.",
         "columns": [
           [
-            "Cue",
-            "Interpretation"
+            "Step",
+            "Action"
           ],
           [
-            "Count",
-            "Define the sample space or conditioning group."
+            "Net values",
+            "Include fees once; make losses negative."
           ],
           [
-            "Rule",
-            "Justify the rule; do not multiply or add automatically."
+            "Weighted sum",
+            "Multiply each net value by its probability and add."
+          ],
+          [
+            "Interpret",
+            "E > 0 gain; E < 0 loss; E = 0 fair."
           ]
         ]
       },
       "weDo": {
-        "prompt": "A service charges $18. It pays a $250 repair bill with probability 0.04.",
+        "prompt": "Use the video’s fair 20-sided die to decide whether the game is profitable on average.",
         "steps": [
-          "Expected repair payout=250(0.04)=$10.",
-          "Expected provider margin before other expenses=$18−$10=$8.",
-          "That average does not guarantee an $8 margin on one customer."
+          "Count the four disjoint groups: 2, 9, 5, and 4 labels; they total 20.",
+          "Use probabilities 2/20, 9/20, 5/20, 4/20 and signed values +50, −10, −5, 0.",
+          "Multiply and add: 5 − 4.50 − 1.25 + 0 = −$0.75.",
+          "Interpret: a long-run average loss of $0.75 per play, not a profitable game."
         ]
       },
       "practice": [
@@ -1885,9 +1915,280 @@
           "rationale": "A higher expectation alone does not determine one-trial results or variability.",
           "learningPathLessonId": "d772-s3-l4-2",
           "topicId": "d772-s3-l4-2"
+        },
+        {
+          "id": "d772-s3-l4-2-course-q1",
+          "lessonId": "d772-s3-l4-2",
+          "learningPathLessonId": "d772-s3-l4-2",
+          "topicId": "d772-s3-l4-2",
+          "sourceLabel": "COURSE-PROVIDED D772 · SECTION 3 · LESSON 4.2",
+          "prompt": "A raffle ticket costs $2. The prizes are $50 with probability 0.02, $20 with probability 0.05, and no prize with probability 0.93. Is this raffle fair? Why or why not?",
+          "options": [
+            "Yes, because the expected value is $0.",
+            "No, because the expected value is $23.33.",
+            "Cannot be determined from the given information.",
+            "Yes, because the better prizes have a lower probability."
+          ],
+          "answer": 0,
+          "rationale": "Subtract the $2 ticket cost from every prize: net outcomes are $48, $18, and −$2. E = 0.02(48) + 0.05(18) + 0.93(−2) = 0.96 + 0.90 − 1.86 = $0. A fair game has expected net value $0. $23.33 is an unweighted average of the prizes and ignores the fee; rare large prizes alone do not establish fairness.",
+          "hint": "Use net winnings, including the ticket cost when there is no prize.",
+          "skill": "fair-game",
+          "anchorChart": {
+            "type": "fair-game"
+          },
+          "visual": {
+            "type": "table",
+            "headers": [
+              "Prize",
+              "Probability"
+            ],
+            "rows": [
+              [
+                "$50",
+                "0.02"
+              ],
+              [
+                "$20",
+                "0.05"
+              ],
+              [
+                "$0",
+                "0.93"
+              ]
+            ],
+            "caption": "Raffle payout distribution · ticket cost $2",
+            "alt": "Raffle payout distribution · ticket cost $2: $50, 0.02; $20, 0.05; $0, 0.93"
+          }
+        },
+        {
+          "id": "d772-s3-l4-2-course-q2",
+          "lessonId": "d772-s3-l4-2",
+          "learningPathLessonId": "d772-s3-l4-2",
+          "topicId": "d772-s3-l4-2",
+          "sourceLabel": "COURSE-PROVIDED D772 · SECTION 3 · LESSON 4.2",
+          "prompt": "In a game, you win $50 with probability 0.2 or lose an unknown amount Z with probability 0.8. If the game is fair, what is Z?",
+          "options": [
+            "$6.25",
+            "$12.50",
+            "$15.00",
+            "$10.00"
+          ],
+          "answer": 1,
+          "rationale": "A fair game satisfies E = 0. Use a negative sign for the loss: 0.2(50) + 0.8(−Z) = 0, so 10 − 0.8Z = 0. Therefore Z = 10/0.8 = $12.50. The loss is $12.50, so its signed net value is −$12.50. $10 is the winning contribution, not the loss amount.",
+          "hint": "Set the probability-weighted net gain equal to zero, then solve for the loss.",
+          "skill": "fair-game",
+          "anchorChart": {
+            "type": "fair-game"
+          },
+          "visual": {
+            "type": "table",
+            "headers": [
+              "Net outcome",
+              "Probability"
+            ],
+            "rows": [
+              [
+                "+$50",
+                "0.2"
+              ],
+              [
+                "−Z",
+                "0.8"
+              ]
+            ],
+            "caption": "Fair game with an unknown loss",
+            "alt": "Fair game with an unknown loss: +$50, 0.2; −Z, 0.8"
+          }
+        },
+        {
+          "id": "d772-s3-l4-2-course-q3",
+          "lessonId": "d772-s3-l4-2",
+          "learningPathLessonId": "d772-s3-l4-2",
+          "topicId": "d772-s3-l4-2",
+          "sourceLabel": "COURSE-PROVIDED D772 · SECTION 3 · LESSON 4.2",
+          "prompt": "Roll a fair ten-sided die labeled 1 through 10. Rolling 8, 9, or 10 wins $25; rolling 4, 5, 6, or 7 loses $5; rolling 1, 2, or 3 loses $15. Will this game be profitable on average? Why or why not?",
+          "options": [
+            "No, because the expected value is negative.",
+            "Yes, because the expected value is negative.",
+            "No, because the expected value is positive.",
+            "Yes, because the expected value is positive."
+          ],
+          "answer": 3,
+          "rationale": "Count the labels in each group: 3/10, 4/10, and 3/10. E = 0.3(25) + 0.4(−5) + 0.3(−15) = 7.50 − 2.00 − 4.50 = +$1 per play. A positive expected net value means a profit on average over many plays, not a guaranteed win on one roll.",
+          "hint": "Convert each group of die labels to a probability before multiplying.",
+          "skill": "expected-value",
+          "anchorChart": {
+            "type": "expected-value"
+          },
+          "visual": {
+            "type": "table",
+            "headers": [
+              "Die labels",
+              "Net gain",
+              "Probability"
+            ],
+            "rows": [
+              [
+                "8, 9, 10",
+                "+$25",
+                "3/10"
+              ],
+              [
+                "4, 5, 6, 7",
+                "−$5",
+                "4/10"
+              ],
+              [
+                "1, 2, 3",
+                "−$15",
+                "3/10"
+              ]
+            ],
+            "caption": "Ten-sided die · no additional entry fee stated",
+            "alt": "Ten-sided die · no additional entry fee stated: 8, 9, 10, +$25, 3/10; 4, 5, 6, 7, −$5, 4/10; 1, 2, 3, −$15, 3/10"
+          }
+        },
+        {
+          "id": "d772-s3-l4-2-course-q4",
+          "lessonId": "d772-s3-l4-2",
+          "learningPathLessonId": "d772-s3-l4-2",
+          "topicId": "d772-s3-l4-2",
+          "sourceLabel": "COURSE-PROVIDED D772 · SECTION 3 · LESSON 4.2",
+          "prompt": "A phone costs $500. A protection plan costs $150 and replaces the phone if it is lost or damaged. The probability of loss or damage is 20%. Based on expected monetary value, is buying the plan a good idea?",
+          "options": [
+            "Yes, because the expected value is positive.",
+            "No, because the expected value is positive.",
+            "Yes, because the expected value is negative.",
+            "No, because the expected value is negative."
+          ],
+          "answer": 3,
+          "rationale": "From the customer’s perspective, net values are $500 − $150 = +$350 if replacement is needed, and −$150 otherwise. E = 0.2(350) + 0.8(−150) = 70 − 120 = −$50. Equivalently, expected benefit $100 minus plan cost $150 is −$50. By expected monetary value, the plan loses money on average; this does not predict the outcome for a particular customer.",
+          "hint": "Choose the customer’s viewpoint and subtract the plan price in both outcomes.",
+          "skill": "expected-value",
+          "anchorChart": {
+            "type": "expected-value"
+          },
+          "visual": {
+            "type": "table",
+            "headers": [
+              "Replacement benefit",
+              "Probability"
+            ],
+            "rows": [
+              [
+                "$500",
+                "0.20"
+              ],
+              [
+                "$0",
+                "0.80"
+              ]
+            ],
+            "caption": "Customer’s protection plan · cost $150",
+            "alt": "Customer’s protection plan · cost $150: $500, 0.20; $0, 0.80"
+          }
+        },
+        {
+          "id": "d772-s3-l4-2-course-q5",
+          "lessonId": "d772-s3-l4-2",
+          "learningPathLessonId": "d772-s3-l4-2",
+          "topicId": "d772-s3-l4-2",
+          "sourceLabel": "COURSE-PROVIDED D772 · SECTION 3 · LESSON 4.2",
+          "prompt": "Investment A has a 60% chance of gaining $10,000 and a 40% chance of losing $3,000. Investment B has a 70% chance of gaining $8,000 and a 30% chance of losing $2,000. Which investment makes more money on average?",
+          "options": [
+            "Cannot be determined from this information",
+            "Investment B",
+            "Investment A",
+            "They have the same average return."
+          ],
+          "answer": 1,
+          "rationale": "E(A) = 0.6(10,000) + 0.4(−3,000) = 6,000 − 1,200 = $4,800. E(B) = 0.7(8,000) + 0.3(−2,000) = 5,600 − 600 = $5,000. Investment B has a $200 higher expected return. A larger possible win does not necessarily mean a larger average, and neither investment guarantees its expected return.",
+          "hint": "Calculate each expected net return separately, then compare the results.",
+          "skill": "expected-value-compare",
+          "anchorChart": {
+            "type": "expected-value-compare"
+          },
+          "visual": {
+            "type": "table",
+            "headers": [
+              "Investment",
+              "Gain",
+              "P(gain)",
+              "Loss",
+              "P(loss)"
+            ],
+            "rows": [
+              [
+                "A",
+                "$10,000",
+                "0.60",
+                "−$3,000",
+                "0.40"
+              ],
+              [
+                "B",
+                "$8,000",
+                "0.70",
+                "−$2,000",
+                "0.30"
+              ]
+            ],
+            "caption": "Compare expected investment returns",
+            "alt": "Compare expected investment returns: A, $10,000, 0.60, −$3,000, 0.40; B, $8,000, 0.70, −$2,000, 0.30"
+          }
+        },
+        {
+          "id": "d772-s3-l4-2-course-q6",
+          "lessonId": "d772-s3-l4-2",
+          "learningPathLessonId": "d772-s3-l4-2",
+          "topicId": "d772-s3-l4-2",
+          "sourceLabel": "COURSE-PROVIDED D772 · SECTION 3 · LESSON 4.2",
+          "prompt": "A mechanic chooses between two engine parts. Brand A costs $200 and has a 0.01 probability of malfunctioning. Brand B costs $100 and has a 0.05 probability of malfunctioning. A malfunction causes an additional $3,000 repair cost. Which brand costs less on average?",
+          "options": [
+            "Cannot be determined from this information",
+            "Brand B",
+            "They will cost the same on average.",
+            "Brand A"
+          ],
+          "answer": 3,
+          "rationale": "Expected cost A = 200 + 0.01(3,000) = $230. Expected cost B = 100 + 0.05(3,000) = $250. Brand A costs $20 less on average. Using signed money changes gives 0.99(−200)+0.01(−3,200)=−$230 and 0.95(−100)+0.05(−3,100)=−$250. Include the part price even when it malfunctions; the lowest purchase price alone does not decide the lowest expected cost.",
+          "hint": "Add the certain part price to the probability-weighted additional repair cost.",
+          "skill": "expected-cost",
+          "anchorChart": {
+            "type": "expected-cost"
+          },
+          "visual": {
+            "type": "table",
+            "headers": [
+              "Brand",
+              "Part price",
+              "P(malfunction)",
+              "Additional damage"
+            ],
+            "rows": [
+              [
+                "A",
+                "$200",
+                "0.01",
+                "$3,000"
+              ],
+              [
+                "B",
+                "$100",
+                "0.05",
+                "$3,000"
+              ]
+            ],
+            "caption": "Compare total expected costs",
+            "alt": "Compare total expected costs: A, $200, 0.01, $3,000; B, $100, 0.05, $3,000"
+          }
         }
       ],
       "references": [
+        {
+          "source": "WGU D772 Lesson 4.2 Applications of Expected Value",
+          "url": "https://apps.cgp-oex.wgu.edu/learning/course/course-v1:WGUx+OEX0516+v01/block-v1:WGUx+OEX0516+v01+type@sequential+block@24f1530cc8d94cf9ad06493024268f62/block-v1:WGUx+OEX0516+v01+type@vertical+block@f3a635cdeda84c40ab910112078f3326"
+        },
         {
           "source": "OpenStax Introductory Statistics 2e",
           "url": "https://openstax.org/books/introductory-statistics-2e/pages/3-1-terminology"
@@ -1907,14 +2208,23 @@
       ],
       "vocab": [
         [
-          "Net value",
-          "Payout or benefit after subtracting the cost."
+          "Expected value",
+          "The long-term average found by summing each outcome value multiplied by its probability."
         ],
         [
-          "Variability",
-          "How much individual outcomes differ; expectation alone does not describe this risk."
+          "Fair",
+          "An activity with expected net value 0."
+        ],
+        [
+          "Net value",
+          "Money gained or lost after including the costs."
         ]
-      ]
+      ],
+      "sourceMetadata": {
+        "courseMaterial": "User-provided Lesson 4.2 practice and Lesson 4/Section 3 summaries, 2026-10-12",
+        "videoTranscript": "User-provided D772 Expected Value Applications Video Transcript",
+        "question3Repair": "Restored the omitted probability factors 3/10, 4/10, 3/10 in the explanation."
+      }
     },
     "d772-s3-l1": {
       "sourceLabel": "CORROBORATED PROBABILITY STUDY NOTES",
@@ -2640,24 +2950,29 @@
       ]
     },
     "d772-s3-l4": {
-      "sourceLabel": "CORROBORATED PROBABILITY STUDY NOTES",
-      "overview": "Expected Value.",
+      "sourceLabel": "COURSE-PROVIDED D772 · SECTION 3 · LESSON 4.2",
+      "overview": "Calculate expected value and apply it to fairness, long-run profit, protection plans, investments, and costs.",
       "objectives": [
         "Calculate a probability-weighted mean.",
         "Interpret long-run value and risk."
       ],
       "teach": [
         {
-          "title": "Calculate a probability-weighted mean",
-          "text": "Expected value is E(X)=Σ xP(x): multiply each outcome value by its probability, then add. A valid discrete distribution has nonnegative probabilities totaling 1. Do not use an unweighted average unless all outcomes are equally likely."
+          "title": "Multiply, then add",
+          "text": "Expected value is the sum of every outcome’s probability multiplied by its signed value. Include fees and costs when calculating net outcomes."
         },
         {
-          "title": "Interpret long-run value and risk",
-          "text": "Expected value is a long-run average, not a promised result on the next trial; it may not be a possible single outcome. For a decision, compare net values consistently and consider variability, affordability, and model assumptions."
+          "title": "Interpret the average",
+          "text": "Expected value quantifies the long-run average. A positive expected net value favors a gain; a negative one indicates a loss. Compare the appropriate averages when choosing between alternatives."
+        },
+        {
+          "title": "Check fairness",
+          "text": "A game or activity is fair when its expected net value is 0. This means neither an average gain nor an average loss over many repetitions."
         }
       ],
       "memory": [
-        "Explain the event, then choose the rule."
+        "E(X) = Σ xP(x).",
+        "Fair means expected net value = 0."
       ],
       "weDo": {
         "prompt": "A game pays $20 with probability 0.10 and $0 otherwise. A ticket costs $3.",
@@ -2688,19 +3003,15 @@
       "vocab": [
         [
           "Expected value",
-          "A probability-weighted average of numerical outcomes."
+          "The long-term average found by summing each outcome value multiplied by its probability."
         ],
         [
-          "Discrete probability distribution",
-          "Possible discrete values with nonnegative probabilities that total 1."
+          "Fair",
+          "An activity with expected net value 0."
         ],
         [
           "Net value",
-          "Payout or benefit after subtracting the cost."
-        ],
-        [
-          "Variability",
-          "How much individual outcomes differ; expectation alone does not describe this risk."
+          "Money gained or lost after including the costs."
         ]
       ],
       "practiceLessonIds": [
@@ -2709,24 +3020,30 @@
       ]
     },
     "d772-s3-l4-summary": {
-      "sourceLabel": "CORROBORATED PROBABILITY STUDY NOTES",
-      "overview": "Lesson 4: Summary: Expected Value",
+      "sourceLabel": "COURSE-PROVIDED D772 · SECTION 3 · LESSON 4.2",
+      "overview": "Calculate expected value, use it to compare average outcomes, and test whether a scenario is fair.",
       "objectives": [
-        "Calculate a probability-weighted mean.",
-        "Interpret long-run value and risk."
+        "Calculate expected value by multiplying and summing.",
+        "Use expected value to identify favorable and unfavorable average outcomes.",
+        "Check fairness by testing whether expected net value equals 0."
       ],
       "teach": [
         {
-          "title": "Calculate a probability-weighted mean",
-          "text": "Expected value is E(X)=Σ xP(x): multiply each outcome value by its probability, then add. A valid discrete distribution has nonnegative probabilities totaling 1. Do not use an unweighted average unless all outcomes are equally likely."
+          "title": "Multiply, then add",
+          "text": "Expected value is the sum of every outcome’s probability multiplied by its signed value. Include fees and costs when calculating net outcomes."
         },
         {
-          "title": "Interpret long-run value and risk",
-          "text": "Expected value is a long-run average, not a promised result on the next trial; it may not be a possible single outcome. For a decision, compare net values consistently and consider variability, affordability, and model assumptions."
+          "title": "Interpret the average",
+          "text": "Expected value quantifies the long-run average. A positive expected net value favors a gain; a negative one indicates a loss. Compare the appropriate averages when choosing between alternatives."
+        },
+        {
+          "title": "Check fairness",
+          "text": "A game or activity is fair when its expected net value is 0. This means neither an average gain nor an average loss over many repetitions."
         }
       ],
       "memory": [
-        "Explain the event, then choose the rule."
+        "E(X) = Σ xP(x).",
+        "Fair means expected net value = 0."
       ],
       "weDo": {
         "prompt": "A game pays $20 with probability 0.10 and $0 otherwise. A ticket costs $3.",
@@ -2757,19 +3074,15 @@
       "vocab": [
         [
           "Expected value",
-          "A probability-weighted average of numerical outcomes."
+          "The long-term average found by summing each outcome value multiplied by its probability."
         ],
         [
-          "Discrete probability distribution",
-          "Possible discrete values with nonnegative probabilities that total 1."
+          "Fair",
+          "An activity with expected net value 0."
         ],
         [
           "Net value",
-          "Payout or benefit after subtracting the cost."
-        ],
-        [
-          "Variability",
-          "How much individual outcomes differ; expectation alone does not describe this risk."
+          "Money gained or lost after including the costs."
         ]
       ],
       "practiceLessonIds": [
@@ -2847,56 +3160,25 @@
       ]
     },
     "d772-s3-review": {
-      "sourceLabel": "CORROBORATED PROBABILITY REVIEW",
-      "overview": "Combine probability types, event relationships, set operations, and expected value.",
+      "sourceLabel": "COURSE-PROVIDED D772 · SECTION 3 SUMMARY",
+      "overview": "Apply principles of probability to make informed decisions: probability models, event relationships and set operations, and expected value.",
       "objectives": [
-        "Choose a justified probability rule.",
-        "Explain expected value as a long-run net average."
+        "Distinguish theoretical and empirical probability and explain the Law of Large Numbers.",
+        "Identify independent, dependent, and disjoint events and calculate unions, intersections, and complements.",
+        "Calculate expected value and use it to evaluate fairness and compare average outcomes."
       ],
       "teach": [
         {
-          "title": "Read probability notation",
-          "text": "An outcome is one result. The sample space S lists all possible results; an event A is a set of results. P(A) is between 0 and 1. A probability of 0.25 means 25%, not 25 successes guaranteed in every 100 trials."
+          "title": "Probability models and repeated trials",
+          "text": "Use probability terminology and notation, distinguish theoretical probability from observed empirical proportions, and apply the Law of Large Numbers: observed proportions tend toward the modeled probabilities over many suitable repetitions."
         },
         {
-          "title": "Use equally likely outcomes",
-          "text": "For equally likely outcomes, P(A)=favorable outcomes / total outcomes. Count the same kind of outcome in numerator and denominator. This counting rule needs equally likely outcomes; a biased spinner needs its actual sector probabilities."
+          "title": "Event relationships and operations",
+          "text": "Distinguish independent, dependent, and disjoint events. Union means OR, intersection means AND, and complement means NOT. Choose the rule from the relationship and avoid double-counting overlap."
         },
         {
-          "title": "Estimate from observations",
-          "text": "Empirical probability is observed successes / trials. With many independent repetitions under the same conditions, relative frequency tends toward the underlying probability. More trials do not force an exact match or make a losing streak require a win next."
-        },
-        {
-          "title": "Separate independent from dependent",
-          "text": "Independent events do not change each other’s probability: P(B|A)=P(B). For independent events, P(A and B)=P(A)P(B). Drawing without replacement usually changes the next draw’s probability because the bag’s contents change."
-        },
-        {
-          "title": "Disjoint does not mean independent",
-          "text": "Disjoint, or mutually exclusive, events cannot occur together: P(A and B)=0. If both have positive probability, they are not independent: learning that one occurred rules out the other."
-        },
-        {
-          "title": "Read all four Venn regions",
-          "text": "A Venn diagram separates A only, both, B only, and neither. The rectangle represents the full sample space. Include the overlap when counting all of A or all of B; count it once for the union."
-        },
-        {
-          "title": "OR is the inclusive union",
-          "text": "A union B, written A ∪ B, includes A, B, or both. P(A or B)=P(A)+P(B)−P(A and B). Subtract the overlap once because adding both probabilities counts it twice."
-        },
-        {
-          "title": "AND is the intersection",
-          "text": "A intersection B, written A ∩ B, contains the overlap. In general P(A and B)=P(A)P(B|A). Use P(A)P(B) only when independence is justified; without replacement usually requires the changed second probability."
-        },
-        {
-          "title": "NOT is the complement",
-          "text": "The complement Aᶜ contains every outcome not in A. P(not A)=1−P(A). For at least one success, the complementary event is no successes. Multiply failure probabilities only if the trials are independent."
-        },
-        {
-          "title": "Calculate a probability-weighted mean",
-          "text": "Expected value is E(X)=Σ xP(x): multiply each outcome value by its probability, then add. A valid discrete distribution has nonnegative probabilities totaling 1. Do not use an unweighted average unless all outcomes are equally likely."
-        },
-        {
-          "title": "Interpret long-run value and risk",
-          "text": "Expected value is a long-run average, not a promised result on the next trial; it may not be a possible single outcome. For a decision, compare net values consistently and consider variability, affordability, and model assumptions."
+          "title": "Expected value and decisions",
+          "text": "Multiply every signed outcome value by its probability and sum. Include costs, state the viewpoint, check fairness with E = 0, and compare larger expected returns or smaller expected costs. Interpret the result as an average over the long run."
         }
       ],
       "references": [
