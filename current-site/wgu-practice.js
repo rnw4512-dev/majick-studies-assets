@@ -46,6 +46,15 @@ function whyList(q){
     return '<div class="'+(ok?'isCorrect':'')+'"><b>'+(ok?'✓ ':'')+E(o)+'</b><p>'+E(txt)+'</p></div>';
   }).join('')+'</div></details>';
 }
+function boardStore(){const c=String(window.S?.activeCourse||'D772');window.S.progress=window.S.progress||{};const p=window.S.progress[c]=window.S.progress[c]||{};return p.questionWhiteboards=p.questionWhiteboards||{}}
+function saveBoard(id,field,value){if(!['clue','setup','work','check'].includes(field))return;const store=boardStore(),r=store[id]||{};r[field]=String(value).slice(0,6000);r.updatedAt=Date.now();store[id]=r;try{window.save?.()}catch(_){}}
+function questionBoard(q){
+ const id=String(q.id||q.qid||q.prompt||'unknown').slice(0,220),row=boardStore()[id]||{};
+ const fields=[['clue','What does the question ask?'],['setup','Formula or diagram setup'],['work','Calculations and reasoning'],['check','Estimate and answer with units']];
+ return '<details class="v342Whiteboard" style="padding:1rem;margin:1rem 0;border:1px solid #ad8c55;border-radius:12px;background:#fff7e8;color:#342944"><summary>✎ My whiteboard · autosaved</summary><p>Saved with this question. Notes never award mastery.</p>'+fields.map(([k,l])=>'<label style="display:block;margin:.5rem 0"><b>'+E(l)+'</b><textarea style="width:100%;min-height:68px;display:block" data-v342-field="'+k+'" data-v342-key="'+encodeURIComponent(id)+'">'+E(row[k]||'')+'</textarea></label>').join('')+'</details>';
+}
+function mistakeType(q){const reason=String(q.choiceCoach?.[String(session?.chosen??'')]||'').toLowerCase();if(/formula|equation|method|rule/.test(reason))return 'Formula-selection';if(/arithmetic|multiply|divide|subtract|add|round|decimal|calculat/.test(reason))return 'Calculation';if(/misread|question asks|instead|not asking/.test(reason))return 'Question interpretation';return 'Concept distinction or interpretation (provisional)'}
+document.addEventListener('input',e=>{const n=e.target,key=n?.dataset?.v342Key,field=n?.dataset?.v342Field;if(key&&field)saveBoard(decodeURIComponent(key),field,n.value)});
 function repairLesson(q){
  if(!session||session.type==='test')return '';
  const chosen=String(session.chosen??''),coach=q.choiceCoach||{};
@@ -54,7 +63,7 @@ function repairLesson(q){
  const rule=String(q.wguClue||q.keyClue||q.why||'Find the words that determine which statistical rule applies.');
  const id=encodeURIComponent(String(q.id||q.qid||''));
  return '<div class="v342Repair" style="padding:1rem;border:1px solid #ad8c55;border-radius:12px;margin:.8rem 0;background:#f6ebd9;color:#30233d">'+
- '<h3>Professor’s Repair Lesson</h3><p><b>Why your choice did not fit:</b> '+E(why)+'</p>'+
+ '<h3>Professor’s Repair Lesson</h3><p><b>Likely error category:</b> '+E(mistakeType(q))+' — check your whiteboard work.</p><p><b>Why your choice did not fit:</b> '+E(why)+'</p>'+
  '<p><b>Clue to look for next time:</b> '+E(rule)+'</p>'+
  '<ol><li>Read the quantity or concept being asked for.</li><li>Underline the deciding clue.</li><li>Match the clue to the rule or formula.</li><li>Explain why your original choice does not fit.</li></ol>'+
  (example?'<details><summary>Separate visual worked example</summary>'+example+'</details>':'')+
@@ -98,7 +107,7 @@ function questionHtml(q){
   }).join('');
   const label=E(session?.opts?.label||'D772 Practice');
   const progress=(session?.index||1)+(session?.opts?.limit?'/'+session.opts.limit:'');
-  return '<div class="v3333QuestionShell '+(oa?'oaMode':'practiceMode')+'"><div class="v3333QTop"><div><span class="v3333Eyebrow">D772 • STATISTICAL DATA LITERACY</span><h2>'+label+'</h2></div><div class="v3333QCount">Question '+progress+'</div><button class="btn ghost" onclick="session=null;navigate(\'mission\')">Choose section</button></div>'+(oa?'<div class="v3333OANote">No hints or lesson labels during the simulation.</div>':'')+(session?.opts?.timeLimitMs?'<div id="v342AssessClock" role="timer">Time remaining: '+Math.max(0,Math.ceil((session.opts.timeLimitMs-(Date.now()-session.start))/1000))+' seconds</div>':'')+'<article class="v3333QuestionCard"><div class="v3333Prompt">'+E(q.prompt)+'</div>'+(visualHtml(q.visual)||window.MajickCourseTutor?.questionVisualHtml?.(q)||'')+(!oa?'<button class="btn ghost" '+(session.answered?'disabled':'')+' onclick="toggleAnchorChart()">'+(session.chartOpen?'Hide':'Open')+' skill anchor chart</button>':'')+(!oa&&session.chartOpen?anchorChartHTML(q):'')+(clue?'<div class="v3333ClueTraining">'+clueHTML(cleanPrompt(q.prompt))+'</div>':'')+confidenceHtml()+'<div class="v3333Options">'+options+'</div>'+(!session.answered?'<button type="button" class="btn primary v3333Submit" '+(selected?'':'disabled')+' onclick="MajickWGUPractice.submit()">Submit</button>':'')+(!oa&&session.answered?practiceFeedback(q):'')+'</article></div>';
+  return '<div class="v3333QuestionShell '+(oa?'oaMode':'practiceMode')+'"><div class="v3333QTop"><div><span class="v3333Eyebrow">D772 • STATISTICAL DATA LITERACY</span><h2>'+label+'</h2></div><div class="v3333QCount">Question '+progress+'</div><button class="btn ghost" onclick="session=null;navigate(\'mission\')">Choose section</button></div>'+(oa?'<div class="v3333OANote">No hints or lesson labels during the simulation.</div>':'')+(session?.opts?.timeLimitMs?'<div id="v342AssessClock" role="timer">Time remaining: '+Math.max(0,Math.ceil((session.opts.timeLimitMs-(Date.now()-session.start))/1000))+' seconds</div>':'')+'<article class="v3333QuestionCard"><div class="v3333Prompt">'+E(q.prompt)+'</div>'+(visualHtml(q.visual)||window.MajickCourseTutor?.questionVisualHtml?.(q)||'')+(!oa?'<button class="btn ghost" '+(session.answered?'disabled':'')+' onclick="toggleAnchorChart()">'+(session.chartOpen?'Hide':'Open')+' skill anchor chart</button>':'')+(!oa&&session.chartOpen?anchorChartHTML(q):'')+(clue?'<div class="v3333ClueTraining">'+clueHTML(cleanPrompt(q.prompt))+'</div>':'')+confidenceHtml()+questionBoard(q)+'<div class="v3333Options">'+options+'</div>'+(!session.answered?'<button type="button" class="btn primary v3333Submit" '+(selected?'':'disabled')+' onclick="MajickWGUPractice.submit()">Submit</button>':'')+(!oa&&session.answered?practiceFeedback(q):'')+'</article></div>';
 }
 function select(choice){
   if(!session||session.answered)return;
