@@ -299,16 +299,41 @@ function renderGame(){
   }));
 }
 function renderPractice(){
-  const box=document.getElementById('learnPractice');if(!box)return;
-  const bank=(cobj().questionBank||[]).filter(q=>Array.isArray(q.options)&&q.options.length>=2);
-  if(!bank.length){box.innerHTML='<div class="learnEmpty"><h3>No guided questions yet</h3><p>Add notes and forge questions for this class first.</p><button class="btn primary" id="practiceAddNotes">Add Study Material</button></div>';document.getElementById('practiceAddNotes')?.addEventListener('click',()=>navigate('addmaterial'));return}
-  const q=bank[Math.floor(Math.random()*bank.length)];
-  box.innerHTML='<div class="learnStepHeader"><div><span>STEP 4 • TRY IT WITH ME</span><h3>Guided Question</h3><small>This check does not count against your practice record.</small></div></div><article class="guidedQuestion"><h3>'+E(q.prompt)+'</h3><div>'+q.options.map(o=>'<button class="guidedOption" type="button" data-guide-answer="'+E(o)+'">'+E(o)+'</button>').join('')+'</div><div id="guidedFeedback"></div></article><div class="independentCall"><span>STEP 5 • PROVE IT</span><b>Ready to practice independently?</b><button class="btn primary" id="goIndependent">Start Study Now</button></div>';
-  box.querySelectorAll('[data-guide-answer]').forEach(btn=>btn.addEventListener('click',()=>{
-    const ok=String(btn.dataset.guideAnswer)===String(q.answer);
-    const f=document.getElementById('guidedFeedback');if(f)f.innerHTML='<div class="'+(ok?'guideRight':'guideWrong')+'"><b>'+(ok?'✓ Yes':'Try again')+'</b><p>'+E(ok?(q.why||'That matches the course material.'):'Look back at the explanation, eliminate choices, and try again.')+'</p></div>';
+ const box=document.getElementById('learnPractice');if(!box)return;
+ const bank=(cobj().questionBank||[]).filter(q=>Array.isArray(q.options)&&q.options.length>=2);
+ if(!bank.length){box.innerHTML='<div class="learnEmpty"><h3>No guided questions yet</h3><p>Add notes and forge questions for this class first.</p><button class="btn primary" id="practiceAddNotes">Add Study Material</button></div>';document.getElementById('practiceAddNotes')?.addEventListener('click',()=>navigate('addmaterial'));return}
+ const state={assisted:true,retry:false,answered:false,used:new Set()};
+ function pick(){const pool=bank.filter(q=>!state.used.has(String(q.id||q.qid)));const choices=pool.length?pool:bank;const q=choices[Math.floor(Math.random()*choices.length)];state.used.add(String(q.id||q.qid));return q}
+ let q=pick();
+ function isCorrect(choice){
+  if(typeof q.answer==='number')return Number(choice)===q.answer;
+  return String(q.options[Number(choice)])===String(q.answer);
+ }
+ function draw(){
+  const independent=state.retry&&!state.assisted;
+  box.innerHTML='<div class="learnStepHeader"><div><span>STEP 4 • PRACTICE AND PROVE IT</span><h3>Guided Question</h3><small>Guided coaching builds understanding; only a fresh, unassisted attempt can count toward independent mastery.</small></div></div>'+
+   '<article class="guidedQuestion"><div role="status" aria-live="polite" style="margin-bottom:12px;padding:12px;border:1px solid currentColor;border-radius:10px"><b>'+(independent?'✦ Independent Retry — no hints':'☾ Assisted Practice — not independent mastery')+'</b><p style="margin:6px 0 0">'+(independent?'Fresh question, no revealed answer. An independently correct response is recorded in your existing course progress.':'Use this question to learn. Even a correct answer here does not count as independent mastery.')+'</p></div><h3>'+E(q.prompt)+'</h3><div>'+q.options.map((o,i)=>'<button class="guidedOption" type="button" data-guide-index="'+i+'" '+(state.answered?'disabled':'')+'>'+E(o)+'</button>').join('')+'</div><div id="guidedFeedback" role="status" aria-live="polite"></div><div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:14px"><button type="button" class="btn primary" id="guideRetry">Retry independently with a NEW question</button><button type="button" class="btn" id="guideMore">More assisted practice</button></div></article>'+
+   '<div class="independentCall"><span>STEP 5 • PROVE IT</span><b>Build lasting independent mastery</b><p>Correct independent retries join the existing course answer history; mastery still requires repeated evidence.</p><button class="btn primary" id="goIndependent">Start Study Now</button></div>';
+  box.querySelectorAll('[data-guide-index]').forEach(btn=>btn.addEventListener('click',()=>{
+   if(state.answered)return;
+   const choice=Number(btn.dataset.guideIndex),ok=isCorrect(choice),wasIndependent=state.retry&&!state.assisted;
+   state.answered=true;box.querySelectorAll('[data-guide-index]').forEach(b=>b.disabled=true);
+   if(wasIndependent){
+    const at=Date.now(),qid=String(q.id||q.qid||'guided-retry'),topicId=String(q.topicId||q.learningPathLessonId||'guided');
+    if(window.MajickStudyProgress?.creditAnswer){
+      window.MajickStudyProgress.creditAnswer({key:cid()+':guided-independent:'+qid+':'+at,course:cid(),source:'guided-independent-retry',qid,topicId,correct:ok,chosen:q.options[choice],answer:typeof q.answer==='number'?q.options[q.answer]:q.answer,difficulty:Number(q.difficulty||3),assisted:false,at});
+    }else{
+      const p=window.S?.progress?.[cid()];if(p){p.answers=p.answers||[];p.answers.push({qid,topicId,correct:ok,chosen:q.options[choice],answer:typeof q.answer==='number'?q.options[q.answer]:q.answer,source:'guided-independent-retry',assisted:false,at});persist()}
+    }
+   }
+   const f=box.querySelector('#guidedFeedback');
+   if(f)f.innerHTML='<div class="'+(ok?'guideRight':'guideWrong')+'"><b>'+(wasIndependent?(ok?'✓ Independent correct — recorded':'Independent attempt recorded — review needed'):(ok?'✓ Assisted correct — practice only':'Assisted practice — try again after review'))+'</b><p>'+E(q.why||q.rationale||(ok?'You chose the correct answer.':'Review the question and the strategy.'))+'</p><small>'+(wasIndependent?'This attempt was unassisted. One correct answer alone does not establish mastery.':'No independent mastery credit was granted for this coached question.')+'</small></div>';
   }));
-  document.getElementById('goIndependent')?.addEventListener('click',()=>navigate('mission'));
+  box.querySelector('#guideRetry')?.addEventListener('click',()=>{state.retry=true;state.assisted=false;state.answered=false;q=pick();draw()});
+  box.querySelector('#guideMore')?.addEventListener('click',()=>{state.retry=false;state.assisted=true;state.answered=false;q=pick();draw()});
+  box.querySelector('#goIndependent')?.addEventListener('click',()=>navigate('mission'));
+ }
+ draw();
 }
 function graphSVG(values){
   const a=numberList(values);if(!a.length)return '<div class="toolEmpty">Enter data to draw a graph.</div>';
