@@ -3760,6 +3760,6 @@ MajickLearningLab.bind=function(){
 };
 const baseRefresh=MajickLearningLab.refresh;
 MajickLearningLab.refresh=function(){baseRefresh();hydrate()};
-window.MajickCourseTutor={VERSION,D772_SECTION_ONE,D772_SECTION_TWO,D772_SECTION_THREE,D772_SECTION_ONE_CONTENT,D772_SECTION_TWO_CONTENT,D772_SECTION_THREE_CONTENT,D772_TUTOR_HELP,sectionUnits,allOfficialLessons,hydrate,sections,classifySource,annotateSource,tagD772Generated,classifyD772Item,d772Segments,sourcesForLesson,questionsForLesson,mastery,sectionProgress,chapter,mergeLessonTeaching,officialD772Content,startPractice,show,renderPath,renderTutor,renderTutorAssist,openLesson,selectedLesson};
+window.MajickCourseTutor={VERSION,questionVisualHtml,D772_SECTION_ONE,D772_SECTION_TWO,D772_SECTION_THREE,D772_SECTION_ONE_CONTENT,D772_SECTION_TWO_CONTENT,D772_SECTION_THREE_CONTENT,D772_TUTOR_HELP,sectionUnits,allOfficialLessons,hydrate,sections,classifySource,annotateSource,tagD772Generated,classifyD772Item,d772Segments,sourcesForLesson,questionsForLesson,mastery,sectionProgress,chapter,mergeLessonTeaching,officialD772Content,startPractice,show,renderPath,renderTutor,renderTutorAssist,openLesson,selectedLesson};
 })();
 

@@ -1266,7 +1266,7 @@ function d772StudyNowBank(){
   const secId=String(lesson?.id||q.learningPathLessonId||q.topicId||'');
   const num=secId.match(/d772-s([123])(?:-|$)/)?.[1]||String(section||q.section||'').match(/section\s*([123])/i)?.[1]||'1';
   const name={1:'Section 1 · Credibility',2:'Section 2 · Data and Graphs',3:'Section 3 · Probability'}[num];
-  out.push({...q,id:key,options,answer,section:name,topicId:q.topicId||lesson?.id||'d772-s'+num,why:q.why||q.rationale||''});
+  out.push({...q,id:key,options,answer,section:name,learningPathLessonId:q.learningPathLessonId||lesson?.id,topicId:q.topicId||lesson?.id||'d772-s'+num,why:q.why||q.rationale||''});
  };
  for(const sec of t.sections('D772')||[]){
   for(const lesson of t.sectionUnits(sec)||[]){
@@ -1696,7 +1696,7 @@ function v5TotalAnswers(){return Object.values(S.progress||{}).reduce((n,p)=>n+(
 function v5FamilyKey(q){let toks=promptTokens(cleanPrompt(q?.prompt||'')).slice(0,8).sort();return `${q?.topicId||'mixed'}::${toks.join('|')}`}
 function v5QuestionWasSeen(q){return (prog().answers||[]).some(a=>a.qid===q.id)}
 window.MajickActiveQuestionSession=()=>session;
-function v5AssistUsed(){return !!(session?.petHint||session?.petEliminated||session?.revealedClue||session?.usedPetAbility||session?.usedClueCharm||session?.mathCoachAssisted)}
+function v5AssistUsed(){return !!(session?.chartUsed||session?.petHint||session?.petEliminated||session?.revealedClue||session?.usedPetAbility||session?.usedClueCharm||session?.mathCoachAssisted)}
 function v5TodayKey(ts=Date.now()){let d=new Date(ts);return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`}
 function v5ConceptTitle(id){return course().concepts?.find(c=>c.id===id)?.title||id||'Mixed'}
 function v5StudySection(topicId){return (course().studySections||[]).find(s=>(s.concepts||[]).includes(topicId))}
@@ -4144,7 +4144,7 @@ try{render()}catch(e){console.error('V3.3.8 canon guardian boot',e)}
 <script src="./course-tutor.js?v=342-working-controls"></script>
 <script src="./learn-mode.js?v=3400-product-flow"></script>
 <script src="./d755-retake.js?v=3340-study-shelf-resume"></script>
-<script src="./wgu-practice.js?v=3336-designed-experiments"></script>
+<script src="./wgu-practice.js?v=342-section-practice-designed-experiments"></script>
 <script src="./app-runtime.js?v=3402-s2-l2-graphs"></script>
 <script src="./magical-college-home.js?v=3337"></script>
 <script src="./app-recovery.js?v=3322"></script>

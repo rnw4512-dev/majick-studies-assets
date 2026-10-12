@@ -18,3 +18,5 @@
 .v3333Option{background:#fff8e8;color:#302337;border-color:#9d88a9}.v3333Option:hover:not(:disabled),.v3333Option:focus-visible:not(:disabled){background:#e6d6f0;border-color:#563268;outline:2px solid #805696;outline-offset:2px}.v3333Option.selected{background:#e8d6f1;color:#302337;border-color:#663a83}.v3333Letter{border-color:#8b729b;background:#eee0f3;color:#4d2d63}
 .v3333QuestionCard .v3333Feedback{background:#20182d;color:#eee4f4;border-color:#8b72a0}.v3333QuestionCard .v3333Feedback p{color:#eee4f4}
 @media(max-width:600px){.v3333Mission,.v3333QuestionShell{border-radius:35px 35px 14px 14px;padding:14px 10px}.v3333QTop{flex-wrap:wrap}.v3333QuestionCard{padding:18px 14px}.v3333Prompt{font-size:19px}}
+
+.v3333Scope{padding:20px;border:1px solid #a78a56;border-radius:16px;background:linear-gradient(135deg,#30213b,#201828);color:#f4e7d4}.v3333Scope h3{color:#edcf98;margin:0 0 8px;font:700 22px Georgia,serif}.v3333Scope p{line-height:1.5}.v3333Scope>div{display:grid;gap:10px;margin-top:15px}.v3333Scope button{width:100%}.v3333Mission>details{margin-top:24px}.questionDataVisual svg{max-width:100%;height:auto}.v3333QuestionCard .anchorChart{margin-top:12px}

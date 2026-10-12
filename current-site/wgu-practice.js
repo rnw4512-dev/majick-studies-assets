@@ -61,7 +61,7 @@ function confidenceHtml(){
   return '<div class="v3333Confidence"><span>How sure are you?</span>'+items.map(([v,l])=>'<button type="button" class="'+(session.confidence===v?'sel':'')+'" onclick="setConfidence(\''+v+'\')">'+l+'</button>').join('')+'</div>';
 }
 function questionHtml(q){
-  const oa=session?.opts?.kind==='d772-section1-oa';
+  const oa=session?.type==='test';
   const clue=session?.type==='clue'&&!oa&&!session.answered;
   const selected=session?.pendingChoice;
   const options=(q.options||[]).map((o,i)=>{
@@ -71,9 +71,9 @@ function questionHtml(q){
     if(session.answered&&o===session.chosen&&o!==q.answer)cls.push('wrong');
     return '<button type="button" class="'+cls.join(' ')+'" '+(session.answered?'disabled':'')+' onclick=\'MajickWGUPractice.select('+JSON.stringify(o)+')\'><span class="v3333Letter">'+String.fromCharCode(65+i)+'</span><span>'+E(o)+'</span></button>';
   }).join('');
-  const label=oa?'Section 1 OA Simulation':E(session?.opts?.label||'D772 Practice');
+  const label=E(session?.opts?.label||'D772 Practice');
   const progress=(session?.index||1)+(session?.opts?.limit?'/'+session.opts.limit:'');
-  return '<div class="v3333QuestionShell '+(oa?'oaMode':'practiceMode')+'"><div class="v3333QTop"><div><span class="v3333Eyebrow">D772 • STATISTICAL DATA LITERACY</span><h2>'+label+'</h2></div><div class="v3333QCount">Question '+progress+'</div></div>'+(oa?'<div class="v3333OANote">No hints or lesson labels during the simulation.</div>':'')+'<article class="v3333QuestionCard"><div class="v3333Prompt">'+E(q.prompt)+'</div>'+visualHtml(q.visual)+(clue?'<div class="v3333ClueTraining">'+clueHTML(cleanPrompt(q.prompt))+'</div>':'')+confidenceHtml()+'<div class="v3333Options">'+options+'</div>'+(!session.answered?'<button type="button" class="btn primary v3333Submit" '+(selected?'':'disabled')+' onclick="MajickWGUPractice.submit()">Submit</button>':'')+(!oa&&session.answered?practiceFeedback(q):'')+'</article></div>';
+  return '<div class="v3333QuestionShell '+(oa?'oaMode':'practiceMode')+'"><div class="v3333QTop"><div><span class="v3333Eyebrow">D772 • STATISTICAL DATA LITERACY</span><h2>'+label+'</h2></div><div class="v3333QCount">Question '+progress+'</div></div>'+(oa?'<div class="v3333OANote">No hints or lesson labels during the simulation.</div>':'')+'<article class="v3333QuestionCard"><div class="v3333Prompt">'+E(q.prompt)+'</div>'+(visualHtml(q.visual)||window.MajickCourseTutor?.questionVisualHtml?.(q)||'')+(!oa?'<button class="btn ghost" '+(session.answered?'disabled':'')+' onclick="toggleAnchorChart()">'+(session.chartOpen?'Hide':'Open')+' anchor chart · worked example</button>':'')+(!oa&&session.chartOpen?anchorChartHTML(q):'')+(clue?'<div class="v3333ClueTraining">'+clueHTML(cleanPrompt(q.prompt))+'</div>':'')+confidenceHtml()+'<div class="v3333Options">'+options+'</div>'+(!session.answered?'<button type="button" class="btn primary v3333Submit" '+(selected?'':'disabled')+' onclick="MajickWGUPractice.submit()">Submit</button>':'')+(!oa&&session.answered?practiceFeedback(q):'')+'</article></div>';
 }
 function select(choice){
   if(!session||session.answered)return;
@@ -85,7 +85,7 @@ function submit(){
   const choice=session.pendingChoice;
   session.pendingChoice=null;
   answerQ(choice);
-  if(fixedPractice())session.review.push({q:session.current,chosen:choice,correct:choice===session.current.answer});
+  if(fixedPractice()&&session.type!=='test'&&session.answered)session.review.push({q:session.current,chosen:choice,correct:choice===session.current.answer});
 }
 const SAMPLING_REASONS={
  'Stratified':'The population is divided into groups, and some individuals are randomly selected from every group. Equal numbers from the groups are not required.',
@@ -133,7 +133,7 @@ function startExperiments(){
  session={type:'adaptive',opts:{label:'Designed Experiments Drill',limit:questions.length,kind:'d772-experiments-drill'},index:1,score:0,combo:0,questions,current:questions[0],answered:false,confidence:'sure',review:[],start:Date.now(),pendingChoice:null};
  S.screen='mission';render();
 }
-function fixedPractice(){return ['d772-focused-review','d772-sampling-drill','d772-study-design-drill','d772-label-study','d772-experiments-drill'].includes(session?.opts?.kind)}
+function fixedPractice(){return ['d772-section-practice','d772-focused-review','d772-sampling-drill','d772-study-design-drill','d772-label-study','d772-experiments-drill'].includes(session?.opts?.kind)}
 function balancedOA(){
   const all=window.MajickQuestionBuilder?.d772Questions?.('d772-master-section-1')||[];
   const ids=['d772-s1-l1','d772-s1-l2','d772-s1-l3','d772-s1-l4'];
@@ -227,10 +227,29 @@ window.startReason=wguStartReason;
 
 function fixedResult(){
  const review=session.review||[],missed=review.filter(x=>!x.correct);
- return '<div class="v3333Result"><section class="v3333ResultHero"><h2>'+E(session.opts.label)+' complete</h2><p>You scored '+session.score+'/'+review.length+'.</p><div class="v3333ResultActions">'+(session.opts.kind==='d772-experiments-drill'?'<button class="btn primary" onclick="MajickWGUPractice.startExperiments()">Practice designed experiments again</button>':session.opts.kind==='d772-label-study'?'<button class="btn primary" onclick="MajickWGUPractice.startLabelStudy()">Label another study</button>':session.opts.kind==='d772-study-design-drill'?'<button class="btn primary" onclick="MajickWGUPractice.startStudyDesign()">Play study design drill again</button>':session.opts.kind==='d772-sampling-drill'?'<button class="btn primary" onclick="MajickWGUPractice.startSampling()">Play sampling drill again</button>':missed.length?'<button class="btn primary" onclick="MajickWGUPractice.startFocusedReview()">Practice my missed lessons →</button>':'')+'<button class="btn ghost" onclick="session=null;navigate(\'mission\')">Return to Practice Lab</button></div></section><details class="v3333Missed"><summary>Review missed questions ('+missed.length+')</summary>'+missed.map(x=>'<article><b>'+E(x.q.prompt)+'</b><p>You chose: '+E(x.chosen)+'</p><p>Best answer: '+E(x.q.answer)+'</p><p>'+E(x.q.why)+'</p>'+whyList(x.q)+'</article>').join('')+'</details></div>';
+ return '<div class="v3333Result"><section class="v3333ResultHero"><h2>'+E(session.opts.label)+' complete</h2><p>You scored '+session.score+'/'+review.length+'.</p><div class="v3333ResultActions">'+(session.opts.kind==='d772-section-practice'?'<button class="btn primary" onclick="MajickWGUPractice.startSection(\''+E(session.opts.scope)+'\','+(session.type==='test')+')">Practice this selection again</button>':session.opts.kind==='d772-experiments-drill'?'<button class="btn primary" onclick="MajickWGUPractice.startExperiments()">Practice designed experiments again</button>':session.opts.kind==='d772-label-study'?'<button class="btn primary" onclick="MajickWGUPractice.startLabelStudy()">Label another study</button>':session.opts.kind==='d772-study-design-drill'?'<button class="btn primary" onclick="MajickWGUPractice.startStudyDesign()">Play study design drill again</button>':session.opts.kind==='d772-sampling-drill'?'<button class="btn primary" onclick="MajickWGUPractice.startSampling()">Play sampling drill again</button>':missed.length?'<button class="btn primary" onclick="MajickWGUPractice.startFocusedReview()">Practice my missed lessons →</button>':'')+'<button class="btn ghost" onclick="session=null;navigate(\'mission\')">Return to Practice Lab</button></div></section><details class="v3333Missed"><summary>Review missed questions ('+missed.length+')</summary>'+missed.map(x=>'<article><b>'+E(x.q.prompt)+'</b><p>You chose: '+E(x.chosen)+'</p><p>Best answer: '+E(x.q.answer)+'</p><p>'+E(x.q.why)+'</p>'+whyList(x.q)+'</article>').join('')+'</details></div>';
+}
+function sectionNumber(q){return Number(String(q.learningPathLessonId||q.topicId||'').match(/d772-s([123])(?:-|$)/)?.[1]||String(q.section||'').match(/section\s*([123])/i)?.[1]||1)}
+function practicePool(scope){
+ const rows=questionPool();
+ if(scope==='mixed')return rows;
+ if(scope==='2c')return rows.filter(q=>sectionNumber(q)===2&&/d772-s2-l[34](?:-|$)/.test(String(q.learningPathLessonId||q.topicId||'')));
+ return rows.filter(q=>sectionNumber(q)===Number(scope));
+}
+function startSection(scope,independent=false){
+ if(!activeD772())return;
+ const pool=practicePool(scope),groups=[1,2,3].map(n=>shuffleCopy(pool.filter(q=>sectionNumber(q)===n)));
+ const questions=[];
+ // Round-robin section quotas guarantee that mixed practice reaches every available section.
+ while(questions.length<15&&groups.some(g=>g.length))for(const group of groups)if(group.length&&questions.length<15)questions.push(group.pop());
+ if(!questions.length){window.rewardToast?.('No practice available','This section has no usable questions yet.');return;}
+ const label=scope==='mixed'?'Mixed · Sections 1, 2 and 3':scope==='2c'?'Section 2C · Distributions and descriptive statistics':'Section '+scope;
+ session={type:independent?'test':'adaptive',opts:{label:label+(independent?' · Independent OA practice':' · Assisted practice'),limit:questions.length,kind:'d772-section-practice',scope,hideMeta:independent},index:1,score:0,combo:0,questions,current:questions[0],answered:false,confidence:'sure',review:[],start:Date.now(),pendingChoice:null};
+ S.screen='mission';render();
 }
 function missionLanding(){
-  return '<div class="v3333Mission"><div class="v3333MissionHead"><span class="v3333Eyebrow">D772 • SECTION 1</span><h2>WGU-Style Practice</h2><p>Practice course concepts with scenarios, focused drills, and different levels of support.</p></div><div class="v3333MissionGrid"><button onclick="MajickWGUPractice.startExperiments()"><span>Designed Experiments Drill</span><b>8 scenarios · course transcript practice</b><small>Treatments, response variables, controls, placebos, random assignment, and blinding.</small></button><button onclick="MajickWGUPractice.startLabelStudy()"><span>Lesson 1.2 Label the Study</span><b>One scenario · six labels</b><small>Population, sample, parameter, statistic, variable, and data.</small></button><button onclick="MajickWGUPractice.startStudyDesign()"><span>Lesson 1.3 Study Design Drill</span><b>9 fresh study scenarios</b><small>Experiment, observational study, or sample survey. Identify the most specific design.</small></button><button onclick="MajickWGUPractice.startSampling()"><span>Sampling Method Drill</span><b>8 fresh study scenarios</b><small>Stratified, cluster, systematic, and simple random. Feedback stays until you choose Next.</small></button><button onclick="startAdaptive()"><span>Adaptive Practice</span><b>12 WGU-style scenarios</b><small>Targets concepts that need more practice.</small></button><button onclick="startClueHunter()"><span>Clue Training</span><b>10 WGU-style scenarios</b><small>Practice finding the words that control the answer.</small></button><button onclick="startReason()"><span>Reasoning Practice</span><b>10 WGU-style scenarios</b><small>Answer, then explain why the correct choice wins.</small></button><button class="oa" onclick="MajickWGUPractice.startOA()"><span>Section 1 OA Simulation</span><b>30 mixed questions</b><small>No hints. No lesson labels. Readiness breakdown at the end.</small></button></div></div>';
+ const scopes=[['1','Section 1','Credibility, sampling, bias and study design'],['2','Section 2','Data, graphs and descriptive statistics'],['2c','Section 2C','Distributions, measures of center, spread and box plots'],['3','Section 3','Probability, events and probability rules'],['mixed','Mixed · All three sections','Balanced questions from each available section']];
+ return '<div class="v3333Mission"><div class="v3333MissionHead"><span class="v3333Eyebrow">D772 · SECTIONS 1, 2 AND 3</span><h2>Study Now</h2><p>Choose your section. Assisted practice offers anchor charts; independent OA practice keeps support closed.</p></div><div class="v3333MissionGrid">'+scopes.map(([id,title,detail])=>{const n=practicePool(id).length;return '<article class="v3333Scope"><h3>'+title+'</h3><p>'+detail+'</p><small>'+n+' available questions</small><div><button '+(!n?'disabled':'')+' onclick="MajickWGUPractice.startSection(\''+id+'\')"><span>Assisted practice</span><small>Anchor charts and worked examples</small></button><button '+(!n?'disabled':'')+' onclick="MajickWGUPractice.startSection(\''+id+'\',true)"><span>Independent OA practice</span><small>No hints or support</small></button></div></article>'}).join('')+'</div><details><summary>Section 1 focused drills</summary><div class="v3333MissionGrid"><button onclick="MajickWGUPractice.startExperiments()">Designed experiments</button><button onclick="MajickWGUPractice.startLabelStudy()">Label the study</button><button onclick="MajickWGUPractice.startStudyDesign()">Study design</button><button onclick="MajickWGUPractice.startSampling()">Sampling methods</button></div></details></div>';
 }
 const originalSessionHTML=window.sessionHTML||sessionHTML;
 const originalResultHTML=window.resultHTML||resultHTML;
@@ -241,7 +260,7 @@ sessionHTML=function(){
   if(!activeD772()||!session)return originalSessionHTML();
   if(session.finished&&fixedPractice())return fixedResult();
   if(session.finished&&session.opts?.kind==='d772-section1-oa')return oaResult();
-  if(isD772Question(session.current))return questionHtml(session.current);
+  if(session.opts?.kind==='d772-section-practice'||isD772Question(session.current))return questionHtml(session.current);
   return originalSessionHTML();
 };
 resultHTML=function(){
@@ -257,15 +276,16 @@ missionHTML=function(){
 };
 nextQuestion=function(){
   if(fixedPractice()){
+    if(session.type!=='test'&&session.answered&&!session.review.some(x=>x.q.id===session.current.id))session.review.push({q:session.current,chosen:session.chosen,correct:session.chosen===session.current.answer});
     if(session.index>=session.questions.length){finishSession();return;}
-    session.current=session.questions[session.index++];session.answered=false;session.chosen=null;session.pendingChoice=null;session.confidence='sure';return;
+    session.current=session.questions[session.index++];session.chartUsed=false;session.chartOpen=false;session.petHint=null;session.petEliminated=null;session.revealedClue=false;session.usedPetAbility=false;session.usedClueCharm=false;session.mathCoachAssisted=false;session.mathCoachHelpTypes=[];session.questionStartedAt=Date.now();session.answered=false;session.chosen=null;session.pendingChoice=null;session.confidence='sure';return;
   }
   const out=originalNextQuestion.apply(this,arguments);
   if(session)session.pendingChoice=null;
   return out;
 };
 startMixed=function(){
-  if(activeD772())return startOA();
+  if(activeD772())return startSection('mixed',true);
   return originalStartMixed.apply(this,arguments);
 };
 function bootD772Practice(){
@@ -285,7 +305,7 @@ function bootD772Practice(){
     }
   }catch(e){console.warn('D772 Practice Lab boot',e)}
 }
-window.MajickWGUPractice={VERSION,select,submit,startOA,startFocusedReview,startSampling,startStudyDesign,startLabelStudy,startExperiments,visualHtml,whyList,balancedOA,isD772Question,ensureD772Bank,bootD772Practice};
+window.MajickWGUPractice={VERSION,select,submit,startSection,practicePool,sectionNumber,startOA,startFocusedReview,startSampling,startStudyDesign,startLabelStudy,startExperiments,visualHtml,whyList,balancedOA,isD772Question,ensureD772Bank,bootD772Practice};
 document.documentElement.dataset.majickWguPractice='3.3.36';
 bootD772Practice();
 })();
