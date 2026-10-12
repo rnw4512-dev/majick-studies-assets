@@ -3494,26 +3494,52 @@ function lessonExperienceHtml(official){
   return objectives+visuals+dataVisuals+anchor+we+practice;
 }
 function bindLessonExperience(official,lessonId,courseId=cid()){
-  if(!visiblePracticeRows(official).length)return;
-  document.querySelectorAll('[data-v3401-q]').forEach((card,i)=>{
-    const q=visiblePracticeRows(official)[i];if(!q)return;
-    const work=card.querySelector('textarea'),st=tutorState(courseId);
-    if(work){work.maxLength=3000;work.value=st.workDrafts?.[q.id]||'';work.addEventListener('change',()=>{st.workDrafts=st.workDrafts||{};st.workDrafts[q.id]=work.value;try{save()}catch(_){}})}
-    card.querySelectorAll('[data-v3401-answer]').forEach(btn=>btn.addEventListener('click',()=>{
-      const pick=Number(btn.dataset.v3401Answer),correct=pick===Number(q.answer);
-      card.querySelectorAll('[data-v3401-answer]').forEach(x=>x.disabled=true);
-      btn.classList.add(correct?'correct':'incorrect');
-      const fb=card.querySelector('.v3401Feedback');
-      if(fb)fb.innerHTML='<b>'+(correct?'✓ Correct':'Not yet')+'</b> '+E(q.rationale);
-      try{
-        const p=prog(courseId);p.answers=Array.isArray(p.answers)?p.answers:[];
-        p.answers.push({qid:q.id,chosen:q.options[pick],correct,at:Date.now(),source:'lesson-you-do',lessonId});
-        if(p.answers.length>1200)p.answers=p.answers.slice(-1200);
-        save();
-      }catch(_){}
-      try{window.MajickProductCore?.record?.('concept-complete',{course:courseId,lessonId,qid:q.id,correct})}catch(_){}
-    }));
-  });
+ const questions=visiblePracticeRows(official);
+ if(!questions.length)return;
+ document.querySelectorAll('[data-v3401-q]').forEach((card,i)=>{
+  const q=questions[i];if(!q)return;
+  const work=card.querySelector('textarea'),st=tutorState(courseId);
+  let assisted=false,answered=false;
+  const hint=card.querySelector('.questionHint');
+  const status=document.createElement('p');
+  status.className='v3401AttemptStatus';
+  status.setAttribute('role','status');
+  status.textContent='Independent attempt — no hints used';
+  card.querySelector('.v3401Feedback')?.before(status);
+  hint?.addEventListener('toggle',()=>{if(hint.open&&!answered){assisted=true;status.textContent='Assisted Practice — hint viewed; this answer will not count as independent mastery.'}});
+  if(work){work.maxLength=3000;work.value=st.workDrafts?.[q.id]||'';work.addEventListener('input',()=>{st.workDrafts=st.workDrafts||{};st.workDrafts[q.id]=work.value;try{save()}catch(_){}})}
+  card.querySelectorAll('[data-v3401-answer]').forEach(btn=>btn.addEventListener('click',()=>{
+   if(answered)return;
+   answered=true;
+   const pick=Number(btn.dataset.v3401Answer),correct=pick===Number(q.answer);
+   card.querySelectorAll('[data-v3401-answer]').forEach(x=>x.disabled=true);
+   btn.classList.add(correct?'correct':'incorrect');
+   const fb=card.querySelector('.v3401Feedback');
+   if(fb)fb.innerHTML='<b>'+(correct?'✓ Correct':'Not yet')+'</b> '+E(q.rationale||'Review the exact data and try a different question.');
+   status.textContent=assisted?(correct?'Assisted correct — practice credit only':'Assisted attempt — review needed'):(correct?'Independent correct — saved as evidence, not automatic mastery':'Independent attempt — review needed');
+   const at=Date.now();
+   try{
+    if(window.MajickStudyProgress?.creditAnswer){
+     window.MajickStudyProgress.creditAnswer({key:courseId+':lesson-you-do:'+String(q.id||i)+':'+at,course:courseId,source:'lesson-you-do',qid:q.id||String(i),topicId:q.topicId||lessonId,correct,assisted,chosen:q.options[pick],answer:q.options[Number(q.answer)],difficulty:Number(q.difficulty||3),at});
+    }else{
+     const p=prog(courseId);p.answers=Array.isArray(p.answers)?p.answers:[];
+     p.answers.push({qid:q.id,topicId:q.topicId||lessonId,chosen:q.options[pick],correct,assisted,at,source:'lesson-you-do',lessonId});
+     if(p.answers.length>1200)p.answers=p.answers.slice(-1200);save();
+    }
+   }catch(_){}
+   try{window.MajickProductCore?.record?.('concept-complete',{course:courseId,lessonId,qid:q.id,correct})}catch(_){}
+   const next=document.createElement('button');
+   next.type='button';next.className='btn primary';
+   next.textContent=i<questions.length-1?'Next question →':'More independent practice →';
+   next.addEventListener('click',()=>{
+    if(i<questions.length-1){
+     const target=document.querySelectorAll('[data-v3401-q]')[i+1];
+     if(target){target.scrollIntoView({behavior:'smooth',block:'start'});target.querySelector('[data-v3401-answer]')?.focus()}
+    }else startPractice(selectedLesson(courseId)||{id:lessonId,title:'D772 practice',review:false},courseId);
+   });
+   card.append(next);
+  }));
+ });
 }
 
 function helpFor(lesson){return D772_TUTOR_HELP[lesson?.id]||null}
