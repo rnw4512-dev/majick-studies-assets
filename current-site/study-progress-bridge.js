@@ -56,6 +56,7 @@ function canonicalAnswer(evt){
     chosen:evt.chosen||'',
     answer:evt.answer||'',
     correct:!!evt.correct,
+    assisted:evt.assisted===true,
     confidence:evt.confidence||'sure',
     mode:evt.source||'study',
     difficulty:Number(evt.difficulty||3),
