@@ -1,9 +1,6 @@
 (()=>{
 'use strict';
 if(window.MajickScholarCompanion)return;
-const ROOT='./assets/atelier/avatars/';
-const HAIR={0:'layer-hair-locs.webp',1:'layer-hair-braids.webp',3:'layer-hair-afro.webp'};
-const ROBE={0:'layer-dress-plum.webp',1:'layer-dress-midnight.webp'};
 const SCENES={home:['Collegium','idle','✦'],mission:['Study Now','studying','📖'],guide:['Study Guide','reading','📚'],lab:['Learn Lab','studying','📖'],learn:['Learn Lab','studying','📖'],journal:['Journal','writing','✒'],grimoire:['Grimoire','writing','✒'],sanctuary:['Sanctuary','guardian-bonding','♡'],games:['Game Realm','game-cheer','✦'],test:['OA Practice','thinking','✧'],analytics:['Progress','reading','✧'],vault:['Magic Vault','idle','✦']};
 let dock=null,opened=false,poseUntil=0,specialPose='',current='';
 const state=()=>window.MajickAtelier?.player?.()||window.S?.majickIdentity?.atelier||{};
@@ -16,7 +13,7 @@ function scene(){
  if(/learn lab/.test(heading))return 'lab';
  return SCENES[s]?s:'home';
 }
-function art(p){return window.MajickAtelier?.renderAvatar?.(p,true)||''}
+function art(p,pose=''){return window.MajickAtelier?.renderAvatar?.(p,true,pose)||''}
 function ensure(){
  if(!document.body||dock)return;
  dock=document.createElement('aside');dock.id='majickScholarCompanion';dock.setAttribute('aria-label','Your scholar companion');
@@ -34,7 +31,7 @@ function refresh(force=false){
  dock.dataset.scene=s;dock.dataset.pose=pose;
  const markup=art(p);
  dock.querySelector('.mscSmall').innerHTML=markup;
- dock.querySelector('.mscLarge').innerHTML=markup;
+ dock.querySelector('.mscLarge').innerHTML=art(p,pose);
  dock.querySelector('.mscLabel').innerHTML='<b>'+esc(p.name||'Scholar')+'</b><small>'+esc(info[0])+'</small>';
  dock.querySelector('.mscScene').textContent=info[0]+' · '+pose.replaceAll('-',' ');
  dock.querySelector('.mscEffect').textContent=pose==='celebrating'?'✦ ✨ ✦':info[2];
@@ -82,6 +79,6 @@ function start(){
  window.addEventListener('majick-save-status',()=>refresh());
  setInterval(()=>refresh(),2500);
 }
-window.MajickScholarCompanion={refresh,react,version:'3.4.2-companion-1'};
+window.MajickScholarCompanion={refresh,react,version:'3.4.2-companion-2'};
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});else start();
 })();

@@ -1,6 +1,6 @@
 (()=>{
 'use strict';
-const VERSION='3.4.2-atelier-fitted-10';
+const VERSION='3.4.2-atelier-fitted-11';
 const HAIR=['Locs','Braids','Curls','Afro','Twists','Waves'];
 const SKIN=['#70412f','#9d6345','#bf8766','#deb192','#f0cdb4','#513024'];
 const ROBES=['Plum Scholar','Midnight Velvet','Emerald Witch','Moonlit Silver'];
@@ -63,6 +63,9 @@ function layeredAvatar(p){
 const AVATAR_ASSET_ROOT='./assets/atelier/avatars/';
 const AVATAR_HAIR={0:'layer-hair-locs-v2.webp',1:'layer-hair-braids-v2.webp',2:'layer-hair-curls-v1.webp',3:'layer-hair-afro-v2.webp',4:'layer-hair-twists-v2.webp',5:'layer-hair-waves-v1.webp'};
 const AVATAR_ROBES={0:'layer-dress-plum.webp',1:'layer-dress-midnight.webp',2:'layer-dress-emerald-v1.webp',3:'layer-dress-silver-v1.webp'};
+const ACTIVITY_PORTRAITS={sleeping:'Sleeping',playing:'Playing',studying:'Studying',walking:'Walking',talking:'Talking',companion:'With Velora'};
+function portrait(activity){const key=Object.prototype.hasOwnProperty.call(ACTIVITY_PORTRAITS,activity)?activity:'studying';return '<div class="atelierActivityArt" data-activity="'+key+'"><img src="'+AVATAR_ASSET_ROOT+'activity-plum-locs-warm-'+key+'-v1.webp" alt="Warm-brown scholar with locs in her Plum Scholar gown · '+E(ACTIVITY_PORTRAITS[key])+'" draggable="false"></div>'}
+function portraits(p){const key=Object.prototype.hasOwnProperty.call(ACTIVITY_PORTRAITS,p.activityPortrait)?p.activityPortrait:'studying';return '<section class="atelierPortraitCollection"><h3>✦ A Scholar’s Day</h3><p>Warm brown · Locs · Plum Scholar</p><div class="atelierPortraitButtons" aria-label="Choose an activity portrait">'+Object.entries(ACTIVITY_PORTRAITS).map(([k,label])=>'<button type="button" data-activity-portrait="'+k+'" aria-pressed="'+(key===k)+'">'+E(label)+'</button>').join('')+'</div><figure>'+portrait(key)+'<figcaption>'+E(ACTIVITY_PORTRAITS[key])+'</figcaption></figure><p class="atelierPortraitNote">This first portrait collection uses the look above. Your saved wardrobe stays in Avatar & Outfits.</p></section>'}
 let artReady=false,artChecked=false;
 function checkAvatarArt(){
  if(artChecked)return;artChecked=true;
@@ -71,9 +74,11 @@ function checkAvatarArt(){
  img.onerror=()=>{artReady=false};
  img.src=AVATAR_ASSET_ROOT+'layer-body-warm-v2.webp';
 }
-function illustratedAvatar(p,compact=false){
+function illustratedAvatar(p,compact=false,activity=''){
  if(!artChecked)checkAvatarArt();
  if(!artReady)return '<div class="atelierArtLoading">Preparing your illustrated scholar…</div>';
+ const moment=({reading:'studying',writing:'studying','game-cheer':'playing','guardian-bonding':'companion'})[activity]||activity;
+ if(activity&&![0,5].includes(Number(p.skin))&&Number(p.hair)===0&&Number(p.robe)===0&&Object.prototype.hasOwnProperty.call(ACTIVITY_PORTRAITS,moment))return portrait(moment);
  const robe=AVATAR_ROBES[p.robe]||AVATAR_ROBES[0];
  const hair=AVATAR_HAIR[p.hair]||AVATAR_HAIR[0];
  const layers=[
@@ -161,8 +166,8 @@ function embroideryPoint(ev){
 
 function board(){let seed=BOARD[round%BOARD.length].split('');const others='ETASRIONDLPC';while(seed.length<16)seed.push(others[(round*7+seed.length*5)%others.length]);return seed}
 function rune(p){const tiles=board();return '<p>Trace adjacent letters to make words of three or more letters. Your path may not reuse a tile. This is a vocabulary warm-up, not an OA mastery score.</p><div class="atelierRuneBoard">'+tiles.map((c,i)=>'<button data-cell="'+i+'" class="'+(chosen.includes(i)?'picked':'')+'">'+c+'</button>').join('')+'</div><p><b>Word:</b> '+E(chosen.map(i=>tiles[i]).join(''))+'</p><div class="atelierActions"><button data-action="submit-word">Submit word</button><button data-action="clear-word">Clear selection</button><button data-action="next-round">New board</button></div><p aria-live="polite">'+E(feedback)+'</p><p><b>Words found this round:</b> '+(found.length?found.map(E).join(' · '):'None yet')+'</p><p>Lifetime valid words: '+p.runeWords+' · Boards played: '+p.runeRounds+'</p>'}
-function render(){const el=document.getElementById('atelierOverlay'),p=player();if(!el||!p)return;el.innerHTML='<div class="atelierWindow"><header><div><small>THE MOONLIT COLLEGIUM</small><h2>✦ Enchanted Atelier</h2><p>Create your witch, tailor a wardrobe, and weave rune words.</p></div><button id="atelierClose" aria-label="Close atelier">✕</button></header><nav>'+[['avatar','Avatar & Outfits'],['sew','Dressmaking'],['rune','Runeweaver']].map(([k,l])=>'<button data-tab="'+k+'" aria-pressed="'+(tab===k)+'">'+l+'</button>').join('')+'</nav><main>'+(tab==='avatar'?avatar(p):tab==='sew'?sew(p):rune(p))+'</main><footer>One scholar identity · No duplicate XP or mastery engine · Saved with your app progress</footer></div>';bind(el)}
-function bind(el){el.querySelector('#atelierClose')?.addEventListener('click',close);el.querySelectorAll('[data-tab]').forEach(b=>b.addEventListener('click',()=>{tab=b.dataset.tab;render()}));el.querySelectorAll('[data-atelier]').forEach(c=>c.addEventListener('change',()=>{player()[c.dataset.atelier]=Number(c.value);save();render()}));el.querySelector('[data-atelier-name]')?.addEventListener('change',e=>{player().name=e.target.value.trim().slice(0,26)||'Scholar';save();render()});el.querySelector('[data-vault-accessory]')?.addEventListener('change',e=>{player().accessory=e.target.value||null;save();render()});el.querySelectorAll('[data-outfit]').forEach(b=>b.addEventListener('click',()=>{const o=player().outfits[Number(b.dataset.outfit)];Object.assign(player(),{hair:o.hair,skin:o.skin,robe:o.robe,color:o.color,accessory:o.accessory||null,equipped:o.equipped??null});save();render()}));el.querySelectorAll('[data-equip]').forEach(b=>b.addEventListener('click',()=>{player().equipped=Number(b.dataset.equip);save();render()}));el.querySelectorAll('[data-cell]').forEach(b=>b.addEventListener('click',()=>{const i=Number(b.dataset.cell),last=chosen.at(-1);if(chosen.includes(i))return;if(last!==undefined&&Math.max(Math.abs(Math.floor(last/4)-Math.floor(i/4)),Math.abs(last%4-i%4))!==1){feedback='Choose an adjacent letter.';render();return}chosen.push(i);feedback='';render()}));el.querySelectorAll('[data-pattern-point]').forEach(dot=>dot.addEventListener('pointerdown',event=>{event.preventDefault();sewingPoint(Number(dot.dataset.patternPoint))}));
+function render(){const el=document.getElementById('atelierOverlay'),p=player();if(!el||!p)return;el.innerHTML='<div class="atelierWindow"><header><div><small>THE MOONLIT COLLEGIUM</small><h2>✦ Enchanted Atelier</h2><p>Create your witch, tailor a wardrobe, and weave rune words.</p></div><button id="atelierClose" aria-label="Close atelier">✕</button></header><nav>'+[['avatar','Avatar & Outfits'],['portraits','Activity Portraits'],['sew','Dressmaking'],['rune','Runeweaver']].map(([k,l])=>'<button data-tab="'+k+'" aria-pressed="'+(tab===k)+'">'+l+'</button>').join('')+'</nav><main>'+(tab==='avatar'?avatar(p):tab==='portraits'?portraits(p):tab==='sew'?sew(p):rune(p))+'</main><footer>One scholar identity · No duplicate XP or mastery engine · Saved with your app progress</footer></div>';bind(el)}
+function bind(el){el.querySelectorAll('[data-activity-portrait]').forEach(b=>b.addEventListener('click',()=>{player().activityPortrait=b.dataset.activityPortrait;save();render()}));el.querySelector('#atelierClose')?.addEventListener('click',close);el.querySelectorAll('[data-tab]').forEach(b=>b.addEventListener('click',()=>{tab=b.dataset.tab;render()}));el.querySelectorAll('[data-atelier]').forEach(c=>c.addEventListener('change',()=>{player()[c.dataset.atelier]=Number(c.value);save();render()}));el.querySelector('[data-atelier-name]')?.addEventListener('change',e=>{player().name=e.target.value.trim().slice(0,26)||'Scholar';save();render()});el.querySelector('[data-vault-accessory]')?.addEventListener('change',e=>{player().accessory=e.target.value||null;save();render()});el.querySelectorAll('[data-outfit]').forEach(b=>b.addEventListener('click',()=>{const o=player().outfits[Number(b.dataset.outfit)];Object.assign(player(),{hair:o.hair,skin:o.skin,robe:o.robe,color:o.color,accessory:o.accessory||null,equipped:o.equipped??null});save();render()}));el.querySelectorAll('[data-equip]').forEach(b=>b.addEventListener('click',()=>{player().equipped=Number(b.dataset.equip);save();render()}));el.querySelectorAll('[data-cell]').forEach(b=>b.addEventListener('click',()=>{const i=Number(b.dataset.cell),last=chosen.at(-1);if(chosen.includes(i))return;if(last!==undefined&&Math.max(Math.abs(Math.floor(last/4)-Math.floor(i/4)),Math.abs(last%4-i%4))!==1){feedback='Choose an adjacent letter.';render();return}chosen.push(i);feedback='';render()}));el.querySelectorAll('[data-pattern-point]').forEach(dot=>dot.addEventListener('pointerdown',event=>{event.preventDefault();sewingPoint(Number(dot.dataset.patternPoint))}));
  el.querySelectorAll('[data-seam]').forEach(dot=>dot.addEventListener('click',()=>seamPoint(Number(dot.dataset.seam),Number(dot.dataset.end))));
  el.querySelectorAll('[data-embroidery]').forEach(btn=>btn.addEventListener('click',()=>{const c=craft(player());c.embroidery=btn.dataset.embroidery;c.message='Tap the garment to place your motif.';save();render()}));
  el.querySelector('#atelierFabricBoard')?.addEventListener('click',event=>{if(craft(player()).stage==='embroider')embroideryPoint(event)});
@@ -175,6 +180,21 @@ iconButton();document.addEventListener('keydown',e=>{if(e.key==='Escape')close()
 })();
 const fittingStyle=document.createElement('style');fittingStyle.textContent=`
 .atelierIllustrated{overflow:hidden}
+.atelierWindow>nav{grid-template-columns:repeat(4,minmax(0,1fr))!important}
+.atelierPortraitCollection{max-width:860px;margin:auto;text-align:center;color:#f4dfcf}
+.atelierPortraitCollection h3{color:#f3d39d;margin:0}
+.atelierPortraitCollection>p{margin:8px 0}
+.atelierPortraitButtons{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin:12px 0}
+.atelierPortraitButtons button{color:#f8e3cb;background:#38273f;border:1px solid #8f716c;border-radius:9px;padding:10px 16px;cursor:pointer}
+.atelierPortraitButtons button[aria-pressed="true"]{background:#745269;border-color:#e4c18b}
+.atelierPortraitCollection figure{margin:0;padding:12px;border:1px solid #8f716c;border-radius:18px;background:radial-gradient(ellipse at 50% 35%,#65516a,#261c31 72%)}
+.atelierActivityArt{height:clamp(260px,calc(100dvh - 470px),400px);max-width:100%;margin:auto;aspect-ratio:3/4}
+.atelierPortraitCollection .atelierActivityArt[data-activity="sleeping"]{width:100%;aspect-ratio:3/2}
+.atelierActivityArt img{width:100%;height:100%;object-fit:contain;display:block}
+.atelierPortraitCollection figcaption{color:#f6d9a6;margin-top:10px;font-size:19px}
+.atelierPortraitNote{font:13px/1.5 system-ui;color:#e7cedc!important}
+.mscLarge .atelierActivityArt{height:100%;width:100%;margin:0}
+@media(max-width:600px){.atelierWindow>nav{grid-template-columns:repeat(2,minmax(0,1fr))!important}}
 .atelierIllustrated[data-footwear="boots"] .atelierArtLayer0{clip-path:inset(0 0 11.73% 0)}
 .atelierArtLayer[data-avatar-layer="layer-dress-plum.webp"]{transform:translateY(-5.57%)}
 .atelierArtLayer[data-avatar-layer="layer-dress-midnight.webp"]{transform:translateY(-5.57%) scaleX(1.18)}

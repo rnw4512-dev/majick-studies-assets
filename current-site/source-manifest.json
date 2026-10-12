@@ -503,8 +503,8 @@
     "assets/rewards/aurelia/items/treat-puzzle-carousel.webp": "e3f9675b47ac0ad0ae75667f3e6f565bd91cf5e92cf6a640c5248a8d549f1f4d",
     "assets/rewards/aurelia/items/flowering-sage-planter.webp": "34c168e82b480b132b8531d07006e4355bf5e802a647109128261d9556a26e3d",
     "assets/rewards/aurelia/items/feather-play-wand.webp": "ddef86bed10da763f1749c3e5b93ebb69098ef1eb0b1ccab8a759285895bf86e",
-    "enchanted-atelier.js": "72a2db7405d30681e23ff540efe23dfa114bf0f24111454bb0c9e493875533ae",
-    "scholar-companion.js": "d83769aa36160d3d8ed4903dbc25ab657f7a51bed82c739cfc3304e87ad7f231",
+    "enchanted-atelier.js": "b9f1736c4dc51ffd3bb535be0b554d2e602c0d016314747bc1c098c932ce58b9",
+    "scholar-companion.js": "6af37282a99d75b3d01f5cee93625213757d41da068329efc1c8f25adc180337",
     "scholar-progression.js": "c7be90447c9015186e438d44034fe90fecd15e9926203f55ab89cd062ec9090c",
     "study-visual-anchors.js": "680c114977f04ba7a6aff647991021791e627226211bba8545abb957b21994e0",
     "assets/atelier/avatars/layer-dress-emerald-v1.webp": "c866a6836ac0521f8bfab5c7cfcb2644efa4e4cedb92bce2360b899aa7f387e1",
@@ -517,6 +517,13 @@
     "assets/atelier/avatars/layer-hair-afro-v2.webp": "6d1856de8ee11f93980e24b417d76e74d3672eee9084d0cec587b26c5050c0cf",
     "assets/atelier/avatars/layer-hair-curls-v1.webp": "8df8ddf5fe4cdba58351be04df7604f5f28099448997a65db92f37c424a2427d",
     "assets/atelier/avatars/layer-hair-waves-v1.webp": "d86efd957a150257f00215ab0e5e3f7ba242b0315b7f4f3bf8909a5ce02039ca",
-    "assets/atelier/avatars/layer-dress-silver-v1.webp": "f3f3baf201c9479571e4dd80ca18a42edd8b30d65edf0b789e84f03db13c53ac"
+    "assets/atelier/avatars/layer-dress-silver-v1.webp": "f3f3baf201c9479571e4dd80ca18a42edd8b30d65edf0b789e84f03db13c53ac",
+    "assets/atelier/avatars/README.md": "85c665df748989cb8808f255c012fe7afc8f9863661519270727adb24e4ad6d1",
+    "assets/atelier/avatars/activity-plum-locs-warm-playing-v1.webp": "2415d42e5d2804a3d0965cafd0be78875a80a8c415fca611148c0e1e2afab85a",
+    "assets/atelier/avatars/activity-plum-locs-warm-walking-v1.webp": "daefc65a00f4caa9e05602aec8596b63cf8e5fab2908be237f75947f340724c3",
+    "assets/atelier/avatars/activity-plum-locs-warm-talking-v1.webp": "feb55706def5718dca31bf0e6d7332521d0b1bae2eea12a48413d46e27b96183",
+    "assets/atelier/avatars/activity-plum-locs-warm-studying-v1.webp": "6962c5728b4db606f357711c500d674a88b7bb8447aa301d600fa989b35e26ca",
+    "assets/atelier/avatars/activity-plum-locs-warm-companion-v1.webp": "9b165a71632bc444c4c77010234e17cf524f67aecaaded4e6832f0d6f125794a",
+    "assets/atelier/avatars/activity-plum-locs-warm-sleeping-v1.webp": "f7a3d2da71d597a3fef56717b6f43c0545bedff9cccf9ce224b0b1a538a5b5d5"
   }
 }
