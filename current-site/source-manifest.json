@@ -503,11 +503,16 @@
     "assets/rewards/aurelia/items/treat-puzzle-carousel.webp": "e3f9675b47ac0ad0ae75667f3e6f565bd91cf5e92cf6a640c5248a8d549f1f4d",
     "assets/rewards/aurelia/items/flowering-sage-planter.webp": "34c168e82b480b132b8531d07006e4355bf5e802a647109128261d9556a26e3d",
     "assets/rewards/aurelia/items/feather-play-wand.webp": "ddef86bed10da763f1749c3e5b93ebb69098ef1eb0b1ccab8a759285895bf86e",
-    "enchanted-atelier.js": "c7c9e273b37d97fa6616bf11be9b1a5c2aa37e9f3a5be00d1af92d4a483c3828",
+    "enchanted-atelier.js": "b2f06b910d2ea7a83bbda421804749c109ad5502c9a64fbda7583aefabef9e1e",
     "scholar-companion.js": "d83769aa36160d3d8ed4903dbc25ab657f7a51bed82c739cfc3304e87ad7f231",
     "scholar-progression.js": "8f9d0579c140edbef4108b71263255106f7fca423a8e95d961842a0563109ca1",
     "study-visual-anchors.js": "680c114977f04ba7a6aff647991021791e627226211bba8545abb957b21994e0",
     "assets/atelier/avatars/layer-dress-emerald-v1.webp": "c866a6836ac0521f8bfab5c7cfcb2644efa4e4cedb92bce2360b899aa7f387e1",
-    "assets/atelier/avatars/layer-hair-twists-v1.webp": "56a057ceabb0532a70cab5b66be16637854adc6e991fcb41bd925e360f5a3cff"
+    "assets/atelier/avatars/layer-hair-twists-v1.webp": "56a057ceabb0532a70cab5b66be16637854adc6e991fcb41bd925e360f5a3cff",
+    "assets/atelier/avatars/layer-body-warm-v2.webp": "90b51e362abf1de85e116d1840fc38cfe58036b50c2e0307a55dbe2ffdc89aa6",
+    "assets/atelier/avatars/layer-body-deep-v2.webp": "8e60236fc1fcf7a00716e140a85111dd6b5e5a59bcf014278ffca213b203b4af",
+    "assets/atelier/avatars/layer-hair-locs-v2.webp": "a2b78a8df4cca4cf3bd2a78309c7dbfb7ad6297263376e7fab7b07870a084e31",
+    "assets/atelier/avatars/layer-hair-braids-v2.webp": "e2bed0067f7de361335fa9e1a0bce1308d6c222f6924c89aa9a6f63fa645e714",
+    "assets/atelier/avatars/layer-hair-twists-v2.webp": "b7f33a1ca59564d07c14d49c0acffc79b04a5adba9cb27494cfc7dd9d7a29dba"
   }
 }
