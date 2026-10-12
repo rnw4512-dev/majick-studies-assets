@@ -18,9 +18,9 @@ function scene(){
 }
 function art(p){
  const hair=HAIR[p.hair],robe=ROBE[p.robe];
- if(!hair||!robe||Number(p.color||0)!==0||p.accessory||p.equipped!=null)return '<span class="mscFallback">☾</span>';
+ 
  const body=Number(p.skin)===0||Number(p.skin)===5?'layer-body-deep.webp':'layer-body-warm.webp';
- return '<div class="mscLayers">'+[body,robe,'layer-boots-plum.webp',hair].map(src=>'<img draggable="false" alt="" loading="lazy" src="'+ROOT+src+'">').join('')+'</div>';
+ return '<div class="mscLayers">'+[body,robe||ROBE[0],'layer-boots-plum.webp',hair||HAIR[3]].map(src=>'<img draggable="false" alt="" loading="lazy" src="'+ROOT+src+'">').join('')+'</div>';
 }
 function ensure(){
  if(!document.body||dock)return;
