@@ -53,6 +53,21 @@ function questionBoard(q){
  const fields=[['clue','What does the question ask?'],['setup','Formula or diagram setup'],['work','Calculations and reasoning'],['check','Estimate and answer with units']];
  return '<details class="v342Whiteboard" style="padding:1rem;margin:1rem 0;border:1px solid #ad8c55;border-radius:12px;background:#fff7e8;color:#342944"><summary>✎ My whiteboard · autosaved</summary><p>Saved with this question. Notes never award mastery.</p>'+fields.map(([k,l])=>'<label style="display:block;margin:.5rem 0"><b>'+E(l)+'</b><textarea style="width:100%;min-height:68px;display:block" data-v342-field="'+k+'" data-v342-key="'+encodeURIComponent(id)+'">'+E(row[k]||'')+'</textarea></label>').join('')+'</details>';
 }
+function exactWorked(q){
+ const verified=q?.workedExample;
+ if(verified&&Array.isArray(verified.steps)&&verified.steps.length&&verified.steps.every(x=>typeof x==='string'))return '<ol>'+verified.steps.map(x=>'<li>'+E(x)+'</li>').join('')+'</ol>';
+ const prompt=String(q?.prompt||''),m=prompt.match(/(?:data set|data values|values are|numbers are)\s*:?\s*(-?\d+(?:\.\d+)?(?:\s*,\s*-?\d+(?:\.\d+)?){2,})(?=[.?!\s]|$)/i);
+ if(!m)return '<p>This question needs a verified list of numbers before a question-specific calculation can be generated. Copy the givens to your whiteboard and choose a method.</p>';
+ const nums=m[1].split(',').map(Number);
+ if(nums.some(x=>!Number.isFinite(x))||nums.length>30)return '<p>Use the whiteboard to verify the data set before calculating.</p>';
+ const sorted=[...nums].sort((a,b)=>a-b),sum=nums.reduce((a,b)=>a+b,0),n=nums.length,txt=prompt.toLowerCase();
+ let steps=[];
+ if(/\bmedian\b/.test(txt)){const v=n%2?sorted[(n-1)/2]:(sorted[n/2-1]+sorted[n/2])/2;steps=['Sort the values: '+sorted.join(', '),'Identify '+(n%2?'the middle position':'the two middle positions'),'Median = '+v]}
+ else if(/\bmean\b|\baverage\b/.test(txt))steps=['Add values: '+nums.join(' + ')+' = '+sum,'Count the values: '+n,'Mean = '+sum+' ÷ '+n+' = '+Number((sum/n).toFixed(5))];
+ else if(/\brange\b/.test(txt))steps=['Smallest = '+sorted[0]+'; largest = '+sorted[n-1],'Range = largest − smallest','Range = '+(sorted[n-1]-sorted[0])];
+ else return '<p>These data have been identified, but this question needs an explicit verified formula template. Write the setup first.</p>';
+ return '<ol>'+steps.map(x=>'<li>'+E(x)+'</li>').join('')+'</ol>';
+}
 function mistakeType(q){const reason=String(q.choiceCoach?.[String(session?.chosen??'')]||'').toLowerCase();if(/formula|equation|method|rule/.test(reason))return 'Formula-selection';if(/arithmetic|multiply|divide|subtract|add|round|decimal|calculat/.test(reason))return 'Calculation';if(/misread|question asks|instead|not asking/.test(reason))return 'Question interpretation';return 'Concept distinction or interpretation (provisional)'}
 document.addEventListener('input',e=>{const n=e.target,key=n?.dataset?.v342Key,field=n?.dataset?.v342Field;if(key&&field)saveBoard(decodeURIComponent(key),field,n.value)});
 function repairLesson(q){
@@ -66,7 +81,7 @@ function repairLesson(q){
  '<h3>Professor’s Repair Lesson</h3><p><b>Likely error category:</b> '+E(mistakeType(q))+' — check your whiteboard work.</p><p><b>Why your choice did not fit:</b> '+E(why)+'</p>'+
  '<p><b>Clue to look for next time:</b> '+E(rule)+'</p>'+
  '<ol><li>Read the quantity or concept being asked for.</li><li>Underline the deciding clue.</li><li>Match the clue to the rule or formula.</li><li>Explain why your original choice does not fit.</li></ol>'+
- (example?'<details><summary>Separate visual worked example</summary>'+example+'</details>':'')+
+ '<details><summary>Worked steps with this question’s numbers, when verified</summary>'+exactWorked(q)+'</details>'+ (example?'<details><summary>Separate visual worked example</summary>'+example+'</details>':'')+
  '<button type="button" class="btn primary" onclick="MajickWGUPractice.startRepairTransfer(decodeURIComponent(\''+id+'\'))">Try a fresh question without hints →</button>'+
  '<small style="display:block">Guided explanations do not count as independent mastery.</small></div>';
 }
