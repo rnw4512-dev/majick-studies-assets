@@ -144,7 +144,7 @@
     "guardian-registry.js": "b20170b996ddf065f33bb37332c8a9fce68ae104914e3e94ffe9aa44b7b612f3",
     "home-focus.css": "cbb719eb8e78701717b4016388d511553f2785212d839815ed006651ae738b2b",
     "home-focus.js": "c4b28238d5f38e0401df2933fcf64991b928631e488a79f80301b20174f1968b",
-    "index.html": "b31a2a8d45a17f47e798c0f5673b992f559709a59e0e92ae3feeef554de8d819",
+    "index.html": "e2d62d775a238a4a4ee02b3093f53220418ab7601eb58ed3c19fe35cc4f525dc",
     "learn-mode.css": "30181250c67efe7bd97c9276706a804a551e7904a2bb28160eeb0c193f35c002",
     "learn-mode.js": "f6647cd013d5bc59a319710c45ac806b56585c7fc5c912afa88857d2f16f82e0",
     "learning-lab.css": "6ed48d27023052a714d27c027f25828bc5ad74edccb172704e823a58b26d6844",
@@ -361,7 +361,7 @@
     "study-material/materialParser.js": "066d34acc159d5b8b1bc22b4248e6ca4bc178063ef5849b23bc38c5017d140c0",
     "study-material/materialStoreModel.js": "9ab5a2da2b179a001653f88dfaf840f7bc2a053afa3038407d41042d6552ecad",
     "study-material/questionBuilder.js": "6f00659e4091e594a5924aa664c38d52f53dc3b5c69eb862934a70cd55b47c64",
-    "study-progress-bridge.js": "866d1abdd520196c7102a0aa82a31b74e7c0148528770e478b38786ef9fe6b26",
+    "study-progress-bridge.js": "8abc727d21d2dbc66b0c0613a0b239a8fbcb741444dd9429dcb0584768dda1e7",
     "study-ui-compat.js": "66064dd5b52a05e0fcd72a4c7fc5ff4735de1e5dffaa58286113aeae15c85ae9",
     "ui-compat.js": "619bae70177344b2311b7d63075658b9fc9c452c9447ab03bf76a2176a9f3c34",
     "v3310-main.css": "504ec87be04c7c4f18531d56ed31d83b04f486b8e8725b08b65fab610f4715ec",
@@ -503,6 +503,6 @@
     "assets/rewards/aurelia/items/treat-puzzle-carousel.webp": "e3f9675b47ac0ad0ae75667f3e6f565bd91cf5e92cf6a640c5248a8d549f1f4d",
     "assets/rewards/aurelia/items/flowering-sage-planter.webp": "34c168e82b480b132b8531d07006e4355bf5e802a647109128261d9556a26e3d",
     "assets/rewards/aurelia/items/feather-play-wand.webp": "ddef86bed10da763f1749c3e5b93ebb69098ef1eb0b1ccab8a759285895bf86e",
-    "enchanted-atelier.js": "d0385482531ac7ac02277012b0afc79708c6b22bb263ab2a311af356f670cb9b"
+    "enchanted-atelier.js": "154665c48001740a1e061701573465973e6b4ef45f37aae6ad32651a22a815fe"
   }
 }
