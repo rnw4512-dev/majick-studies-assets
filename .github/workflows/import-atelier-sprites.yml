@@ -1,0 +1,73 @@
+name: Import Atelier sprite ZIP
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'majick-game-sprites-upload.zip'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: atelier-sprite-import
+  cancel-in-progress: false
+
+jobs:
+  import-sprites:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - name: Extract sprites safely and update integrity manifest
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import json, hashlib, zipfile
+          from pathlib import Path
+
+          archive = Path('majick-game-sprites-upload.zip')
+          if not archive.exists():
+              print('No new upload found; nothing to import.')
+              raise SystemExit(0)
+          destination = Path('current-site/assets/atelier/v2/sprites')
+          manifest_path = Path('current-site/source-manifest.json')
+          manifest = json.loads(manifest_path.read_text(encoding='utf-8'))
+          members = 0
+          with zipfile.ZipFile(archive) as z:
+              for item in z.infolist():
+                  if item.is_dir():
+                      continue
+                  p = Path(item.filename)
+                  if p.is_absolute() or '..' in p.parts or p.suffix.lower() != '.webp':
+                      raise ValueError('Unexpected path or non-WebP image: ' + item.filename)
+                  if len(p.parts) < 2 or p.parts[0] not in {'body','hair','outfits','poses','companions','accessories'}:
+                      raise ValueError('Invalid sprite folder: ' + item.filename)
+                  if item.file_size > 5_000_000:
+                      raise ValueError('Unexpectedly large image: ' + item.filename)
+                  target = destination / p
+                  if target.exists():
+                      raise FileExistsError('Refusing to overwrite existing artwork: ' + str(target))
+                  payload = z.read(item)
+                  if not payload.startswith(b'RIFF') or payload[8:12] != b'WEBP':
+                      raise ValueError('Invalid WebP file: ' + item.filename)
+                  target.parent.mkdir(parents=True, exist_ok=True)
+                  target.write_bytes(payload)
+                  rel = target.relative_to(Path('current-site')).as_posix()
+                  manifest['files'][rel] = hashlib.sha256(payload).hexdigest()
+                  members += 1
+          if members == 0:
+              raise ValueError('Archive contains no WebP images')
+          manifest_path.write_text(json.dumps(manifest, indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
+          print(f'Imported {members} sprite files and registered SHA-256 hashes')
+          PY
+      - name: Commit extracted files and remove upload ZIP
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add current-site/assets/atelier/v2/sprites current-site/source-manifest.json
+          git rm -f majick-game-sprites-upload.zip
+          git commit -m "Import isolated Atelier V2 WebP sprites"
+          git push
