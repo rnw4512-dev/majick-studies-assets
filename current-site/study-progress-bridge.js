@@ -113,7 +113,7 @@ function creditAnswer(evt={}){
   if(!evt||!evt.key)return false;
   const l=ledger(),key=String(evt.key);
   if(l.events[key])return false;
-  l.events[key]={source:evt.source||'study',course:evt.course||window.S?.activeCourse||'',qid:evt.qid||'',correct:!!evt.correct,difficulty:Number(evt.difficulty||3),at:Number(evt.at||Date.now()),historical:!!evt.historical};
+  l.events[key]={source:evt.source||'study',course:evt.course||window.S?.activeCourse||'',qid:evt.qid||'',correct:!!evt.correct,independent:evt.assisted!==true,difficulty:Number(evt.difficulty||3),at:Number(evt.at||Date.now()),historical:!!evt.historical};
   canonicalAnswer(evt);
   if(!evt.historical&&evt.correct)try{window.MajickAtelier?.creditSewing?.(key)}catch(_){}
   if(!evt.historical&&evt.correct&&window.MajickRewardCore?.award){
