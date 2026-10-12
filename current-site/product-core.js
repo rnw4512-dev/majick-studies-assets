@@ -165,7 +165,7 @@ function loopHtml(){
   '<header><div><small>DAILY STUDY LOOP</small><h3>'+escape(s.next.label)+'</h3><p>'+escape(s.next.detail||'')+'</p></div><b>'+s.progress.done+'/'+s.progress.total+'</b></header>'+
   '<ol>'+items+'</ol>'+
   '<div class="v3400LoopActions"><button class="v34Button primary" type="button" data-v3400-next>'+escape(s.next.stage==='complete'?'Visit Dormitory':s.next.label)+'</button><span>'+escape(d?.lessonTitle||s.lesson?.title||s.course)+'</span></div>'+
- '</section>'+reviewHtml();
+ reviewHtml()+'</section>';
 }
 function decorateHome(){
  if(window.S?.screen!=='home')return;
