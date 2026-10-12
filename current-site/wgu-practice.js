@@ -133,7 +133,7 @@ function startExperiments(){
  session={type:'adaptive',opts:{label:'Designed Experiments Drill',limit:questions.length,kind:'d772-experiments-drill'},index:1,score:0,combo:0,questions,current:questions[0],answered:false,confidence:'sure',review:[],start:Date.now(),pendingChoice:null};
  S.screen='mission';render();
 }
-function fixedPractice(){return ['d772-section-practice','d772-focused-review','d772-sampling-drill','d772-study-design-drill','d772-label-study','d772-experiments-drill'].includes(session?.opts?.kind)}
+function fixedPractice(){return ['d772-diagnostic','d772-mixed-oa','d772-section-practice','d772-focused-review','d772-sampling-drill','d772-study-design-drill','d772-label-study','d772-experiments-drill'].includes(session?.opts?.kind)}
 function balancedOA(){
   const all=window.MajickQuestionBuilder?.d772Questions?.('d772-master-section-1')||[];
   const ids=['d772-s1-l1','d772-s1-l2','d772-s1-l3','d772-s1-l4'];
@@ -247,9 +247,40 @@ function startSection(scope,independent=false){
  session={type:independent?'test':'adaptive',opts:{label:label+(independent?' · Independent OA practice':' · Assisted practice'),limit:questions.length,kind:'d772-section-practice',scope,hideMeta:independent},index:1,score:0,combo:0,questions,current:questions[0],answered:false,confidence:'sure',review:[],start:Date.now(),pendingChoice:null};
  S.screen='mission';render();
 }
+function balancedMixedAssessment(limit=30){
+ const pool=practicePool('mixed'),sets=[1,2,3].map(n=>shuffleCopy(pool.filter(q=>sectionNumber(q)===n))),chosen=[],used=new Set();
+ for(let i=0;i<limit&&sets.some(a=>a.length);){
+  for(const group of sets){if(i>=limit)break;while(group.length){const q=group.pop(),key=String(q.id||q.qid||q.prompt);if(used.has(key))continue;used.add(key);chosen.push(q);i++;break}}
+ }
+ return chosen;
+}
+function startDiagnostic(){
+ if(!activeD772())return;
+ const questions=balancedMixedAssessment(12);
+ if(!questions.length)return window.rewardToast?.('Diagnostic unavailable','No D772 question pool found.');
+ session={type:'test',opts:{label:'D772 Starting Diagnostic',limit:questions.length,kind:'d772-diagnostic',hideMeta:true,assessmentOnly:true},index:1,score:0,combo:0,questions,current:questions[0],answered:false,confidence:'sure',review:[],start:Date.now(),pendingChoice:null};
+ S.screen='mission';render();
+}
+function startMixedOA(){
+ if(!activeD772())return;
+ const questions=balancedMixedAssessment(30);
+ if(!questions.length)return window.rewardToast?.('Simulation unavailable','No D772 question pool found.');
+ const coverage=new Set(questions.map(sectionNumber));
+ if(coverage.size!==3)return window.rewardToast?.('Full simulation not ready','All three sections need questions before this simulation can claim full-course coverage.');
+ session={type:'test',opts:{label:'D772 Full-Course OA Simulation',limit:questions.length,kind:'d772-mixed-oa',hideMeta:true,assessmentOnly:true,timeLimitMs:questions.length*90000},index:1,score:0,combo:0,questions,current:questions[0],answered:false,confidence:'sure',review:[],start:Date.now(),pendingChoice:null};
+ S.screen='mission';render();
+}
+function assessmentReport(){
+ const rows=session.review||[],total=rows.length,correct=rows.filter(x=>x.correct).length;
+ const groups=[1,2,3].map(n=>{const r=rows.filter(x=>sectionNumber(x.q)===n);return {n,count:r.length,correct:r.filter(x=>x.correct).length}});
+ const elapsed=Math.max(0,Date.now()-session.start),mins=Math.floor(elapsed/60000),secs=String(Math.floor(elapsed/1000)%60).padStart(2,'0');
+ return '<div class="v3333Result"><section class="v3333ResultHero"><h2>'+E(session.opts.label)+' complete</h2><p>'+correct+' / '+total+' correct · '+(total?Math.round(correct/total*100):0)+'% · '+mins+':'+secs+' elapsed</p><p>Practice evidence only, not a prediction of your official WGU result. Diagnostic results are not mastery credit.</p></section>'+
+ '<section class="v3333Readiness"><h3>Performance by section</h3><div class="v3333LessonGrid">'+groups.map(g=>'<article><b>Section '+g.n+'</b><p>'+g.correct+' / '+g.count+' correct</p><small>'+(g.count?Math.round(g.correct/g.count*100)+'%':'No questions included')+'</small></article>').join('')+'</div></section>'+
+ '<details open class="v3333Missed"><summary>Answer review ('+total+' questions)</summary>'+rows.map((x,i)=>'<article><b>Question '+(i+1)+': '+E(x.q?.prompt||'')+'</b><p>Your answer: '+E(x.chosen??'Not answered')+'</p><p>Correct answer: '+E(x.q?.answer||'')+'</p><p>'+E(x.q?.why||'Check the related lesson for an explanation.')+'</p></article>').join('')+'</details><button class="btn primary" onclick="session=null;navigate(\'mission\')">Return to Study Now</button></div>';
+}
 function missionLanding(){
  const scopes=[['1','Section 1','Credibility, sampling, bias and study design'],['2','Section 2','Data, graphs and descriptive statistics'],['2c','Section 2C','Distributions, measures of center, spread and box plots'],['3','Section 3','Probability, events and probability rules'],['mixed','Mixed · All three sections','Balanced questions from each available section']];
- return '<div class="v3333Mission"><div class="v3333MissionHead"><span class="v3333Eyebrow">D772 · SECTIONS 1, 2 AND 3</span><h2>Study Now</h2><p>Choose your section. Assisted practice offers anchor charts; independent OA practice keeps support closed.</p></div><div class="v3333MissionGrid">'+scopes.map(([id,title,detail])=>{const n=practicePool(id).length;return '<article class="v3333Scope"><h3>'+title+'</h3><p>'+detail+'</p><small>'+n+' available questions</small><div><button '+(!n?'disabled':'')+' onclick="MajickWGUPractice.startSection(\''+id+'\')"><span>Assisted practice</span><small>Anchor charts and worked examples</small></button><button '+(!n?'disabled':'')+' onclick="MajickWGUPractice.startSection(\''+id+'\',true)"><span>Independent OA practice</span><small>No hints or support</small></button></div></article>'}).join('')+'</div><details><summary>Section 1 focused drills</summary><div class="v3333MissionGrid"><button onclick="MajickWGUPractice.startExperiments()">Designed experiments</button><button onclick="MajickWGUPractice.startLabelStudy()">Label the study</button><button onclick="MajickWGUPractice.startStudyDesign()">Study design</button><button onclick="MajickWGUPractice.startSampling()">Sampling methods</button></div></details></div>';
+ return '<div class="v3333Mission"><section class="v3333Scope"><h3>Four assessment paths</h3><p>Diagnostic checks your starting knowledge; guided practice teaches; independent mastery removes hints; the full OA simulation mixes Sections 1–3.</p><div><button onclick="MajickWGUPractice.startDiagnostic()">Starting diagnostic</button><button onclick="MajickWGUPractice.startMixedOA()">Timed full-course OA simulation</button></div></section><div class="v3333MissionHead"><span class="v3333Eyebrow">D772 · SECTIONS 1, 2 AND 3</span><h2>Study Now</h2><p>Choose your section. Assisted practice offers anchor charts; independent OA practice keeps support closed.</p></div><div class="v3333MissionGrid">'+scopes.map(([id,title,detail])=>{const n=practicePool(id).length;return '<article class="v3333Scope"><h3>'+title+'</h3><p>'+detail+'</p><small>'+n+' available questions</small><div><button '+(!n?'disabled':'')+' onclick="MajickWGUPractice.startSection(\''+id+'\')"><span>Assisted practice</span><small>Anchor charts and worked examples</small></button><button '+(!n?'disabled':'')+' onclick="MajickWGUPractice.startSection(\''+id+'\',true)"><span>Independent OA practice</span><small>No hints or support</small></button></div></article>'}).join('')+'</div><details><summary>Section 1 focused drills</summary><div class="v3333MissionGrid"><button onclick="MajickWGUPractice.startExperiments()">Designed experiments</button><button onclick="MajickWGUPractice.startLabelStudy()">Label the study</button><button onclick="MajickWGUPractice.startStudyDesign()">Study design</button><button onclick="MajickWGUPractice.startSampling()">Sampling methods</button></div></details></div>';
 }
 const originalSessionHTML=window.sessionHTML||sessionHTML;
 const originalResultHTML=window.resultHTML||resultHTML;
@@ -258,12 +289,14 @@ const originalNextQuestion=window.nextQuestion||nextQuestion;
 const originalStartMixed=window.startMixed||startMixed;
 sessionHTML=function(){
   if(!activeD772()||!session)return originalSessionHTML();
+  if(session.finished&&['d772-diagnostic','d772-mixed-oa'].includes(session.opts?.kind))return assessmentReport();
   if(session.finished&&fixedPractice())return fixedResult();
   if(session.finished&&session.opts?.kind==='d772-section1-oa')return oaResult();
   if(session.opts?.kind==='d772-section-practice'||isD772Question(session.current))return questionHtml(session.current);
   return originalSessionHTML();
 };
 resultHTML=function(){
+  if(activeD772()&&['d772-diagnostic','d772-mixed-oa'].includes(session?.opts?.kind))return assessmentReport();
   if(activeD772()&&session?.opts?.kind==='d772-section1-oa')return oaResult();
   return originalResultHTML();
 };
@@ -305,7 +338,7 @@ function bootD772Practice(){
     }
   }catch(e){console.warn('D772 Practice Lab boot',e)}
 }
-window.MajickWGUPractice={VERSION,select,submit,startSection,practicePool,sectionNumber,startOA,startFocusedReview,startSampling,startStudyDesign,startLabelStudy,startExperiments,visualHtml,whyList,balancedOA,isD772Question,ensureD772Bank,bootD772Practice};
+window.MajickWGUPractice={VERSION,select,submit,startSection,startDiagnostic,startMixedOA,balancedMixedAssessment,practicePool,sectionNumber,startOA,startFocusedReview,startSampling,startStudyDesign,startLabelStudy,startExperiments,visualHtml,whyList,balancedOA,isD772Question,ensureD772Bank,bootD772Practice};
 document.documentElement.dataset.majickWguPractice='3.3.36';
 bootD772Practice();
 })();
