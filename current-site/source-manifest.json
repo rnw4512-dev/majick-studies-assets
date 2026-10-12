@@ -144,7 +144,7 @@
     "guardian-registry.js": "b20170b996ddf065f33bb37332c8a9fce68ae104914e3e94ffe9aa44b7b612f3",
     "home-focus.css": "cbb719eb8e78701717b4016388d511553f2785212d839815ed006651ae738b2b",
     "home-focus.js": "c4b28238d5f38e0401df2933fcf64991b928631e488a79f80301b20174f1968b",
-    "index.html": "1f4d14847b3c63ecdd8db33b5c650f4c0b40a1a8928997f79039c2756a2b324c",
+    "index.html": "d105fa8bf22af7663fd7685f85545d52723c8a9cb3057e8037a3d9e2e65869e9",
     "learn-mode.css": "30181250c67efe7bd97c9276706a804a551e7904a2bb28160eeb0c193f35c002",
     "learn-mode.js": "f6647cd013d5bc59a319710c45ac806b56585c7fc5c912afa88857d2f16f82e0",
     "learning-lab.css": "6ed48d27023052a714d27c027f25828bc5ad74edccb172704e823a58b26d6844",
@@ -502,6 +502,7 @@
     "assets/rewards/aurelia/items/velvet-footstool.webp": "3c66b787f305b924921da24c8e251306fd4ce0aa0c9d7e0403420cec601178b3",
     "assets/rewards/aurelia/items/treat-puzzle-carousel.webp": "e3f9675b47ac0ad0ae75667f3e6f565bd91cf5e92cf6a640c5248a8d549f1f4d",
     "assets/rewards/aurelia/items/flowering-sage-planter.webp": "34c168e82b480b132b8531d07006e4355bf5e802a647109128261d9556a26e3d",
-    "assets/rewards/aurelia/items/feather-play-wand.webp": "ddef86bed10da763f1749c3e5b93ebb69098ef1eb0b1ccab8a759285895bf86e"
+    "assets/rewards/aurelia/items/feather-play-wand.webp": "ddef86bed10da763f1749c3e5b93ebb69098ef1eb0b1ccab8a759285895bf86e",
+    "enchanted-atelier.js": "711bd297b26294b1c275e4a3a413231e88cfab0df797a1d8473c265c05ccf7ac"
   }
 }
