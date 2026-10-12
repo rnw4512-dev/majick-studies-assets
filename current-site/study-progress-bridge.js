@@ -133,6 +133,7 @@ function creditAnswer(evt={}){
   }else{
     awardGuardians(evt);
   }
+  if(!evt.historical)try{window.MajickScholarCompanion?.react?.(evt.correct?'celebrating':'thinking')}catch(_){}
   save();
   return true;
 }
