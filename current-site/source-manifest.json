@@ -144,7 +144,7 @@
     "guardian-registry.js": "b20170b996ddf065f33bb37332c8a9fce68ae104914e3e94ffe9aa44b7b612f3",
     "home-focus.css": "cbb719eb8e78701717b4016388d511553f2785212d839815ed006651ae738b2b",
     "home-focus.js": "c4b28238d5f38e0401df2933fcf64991b928631e488a79f80301b20174f1968b",
-    "index.html": "3e9ed52673cacbe106c472668286e7d25cb4f41e983f90e4fd5e3e6de4339258",
+    "index.html": "3a5fbae9e337c5693f0fba69350c6ed22d3b1fc4bd6e9244c7b1e422aa524fcf",
     "learn-mode.css": "30181250c67efe7bd97c9276706a804a551e7904a2bb28160eeb0c193f35c002",
     "learn-mode.js": "f6647cd013d5bc59a319710c45ac806b56585c7fc5c912afa88857d2f16f82e0",
     "learning-lab.css": "6ed48d27023052a714d27c027f25828bc5ad74edccb172704e823a58b26d6844",
@@ -503,8 +503,8 @@
     "assets/rewards/aurelia/items/treat-puzzle-carousel.webp": "e3f9675b47ac0ad0ae75667f3e6f565bd91cf5e92cf6a640c5248a8d549f1f4d",
     "assets/rewards/aurelia/items/flowering-sage-planter.webp": "34c168e82b480b132b8531d07006e4355bf5e802a647109128261d9556a26e3d",
     "assets/rewards/aurelia/items/feather-play-wand.webp": "ddef86bed10da763f1749c3e5b93ebb69098ef1eb0b1ccab8a759285895bf86e",
-    "enchanted-atelier.js": "abd2348b8951fab705ceb54f3d2d8115ba4f3209d3013e825b289c5cbfd326ae",
-    "scholar-companion.js": "2062927bbf7308e76b73dd583c4c9158b3c2a9c2956785e6f9357ba9c3e9cb9a",
+    "enchanted-atelier.js": "423111384052ea6acea70d65c36b7008f5db05025372750a2bd3a59e440b13cd",
+    "scholar-companion.js": "0fea5a145e6477836763b0c6e0db59702b735c6879eeeac1cf3a4860f8b2c2b5",
     "scholar-progression.js": "793f0199ec1dec91618528e620f72e861c814f6726b76c9a7d232c6fa8b6c9d9",
     "study-visual-anchors.js": "0f228cc0b1587fae5255993c5c52ee605cf2c6c9dba56e159e4805687b297826"
   }
