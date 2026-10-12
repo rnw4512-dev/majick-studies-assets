@@ -136,6 +136,25 @@ const UI={
  pill(label,{className=''}={}){return '<span class="v34Pill '+className+'">'+escape(label)+'</span>'},
  card(body,{className=''}={}){return '<section class="v34Card '+className+'">'+body+'</section>'}
 };
+function reviewQueue(){
+ if(course()!=='D772')return null;
+ try{
+  const q=window.MajickAdaptiveLearning?.tomorrowQueue?.();
+  return q?{delayed:Math.max(0,Number(q.delayed)||0),weak:Math.max(0,Number(q.weak)||0),mixed:Math.max(0,Number(q.mixed)||0)}:null;
+ }catch(_){return null}
+}
+function reviewHtml(){
+ const q=reviewQueue();if(!q)return '';
+ const total=q.delayed+q.weak+q.mixed;
+ return '<aside class="v3400MemoryQuest" style="margin-top:.8rem;padding:.9rem;border:1px solid #ae895e;border-radius:12px;background:#f5e7d2;color:#35243f"><strong>☾ Memory Quest · D772</strong>'+
+ '<p style="margin:.35rem 0">Scheduled recall: '+q.delayed+' · Skills needing help: '+q.weak+' · Mixed transfer: '+q.mixed+'</p>'+
+ '<small>'+(total?'Review these before treating the topic as mastered.':'Nothing currently queued. Keep practicing independently to test retention.')+'</small>'+
+ '<div style="margin-top:.6rem"><button type="button" class="v34Button" data-v3400-memory>Open adaptive review →</button></div></aside>';
+}
+function openMemoryReview(){
+ if(window.S?.screen!=='learninglab')window.navigate?.('learninglab');
+ setTimeout(()=>window.MajickAdaptiveLearning?.show?.(),120);
+}
 function loopHtml(){
  const s=snapshot(),d=s.daily;
  const items=STAGES.map(stage=>{
@@ -146,7 +165,7 @@ function loopHtml(){
   '<header><div><small>DAILY STUDY LOOP</small><h3>'+escape(s.next.label)+'</h3><p>'+escape(s.next.detail||'')+'</p></div><b>'+s.progress.done+'/'+s.progress.total+'</b></header>'+
   '<ol>'+items+'</ol>'+
   '<div class="v3400LoopActions"><button class="v34Button primary" type="button" data-v3400-next>'+escape(s.next.stage==='complete'?'Visit Dormitory':s.next.label)+'</button><span>'+escape(d?.lessonTitle||s.lesson?.title||s.course)+'</span></div>'+
- '</section>';
+ '</section>'+reviewHtml();
 }
 function decorateHome(){
  if(window.S?.screen!=='home')return;
@@ -156,6 +175,7 @@ function decorateHome(){
  const wrap=document.createElement('div');wrap.innerHTML=loopHtml();const el=wrap.firstElementChild;
  if(doors.id==='v3377CampusDoors')doors.insertAdjacentElement('beforebegin',el);else doors.insertAdjacentElement('afterend',el);
  el.querySelector('[data-v3400-next]')?.addEventListener('click',goNext);
+ el.querySelector('[data-v3400-memory]')?.addEventListener('click',openMemoryReview);
  if(!ensure()?.stages?.entered)record('enter-college',{screen:'home'});
 }
 function dormStoryHtml(){
@@ -182,5 +202,5 @@ function decorate(){decorateHome();decorateDorm();document.documentElement.datas
 const q=window.MajickRenderQueue;
 if(q?.register){q.register('product-core-v34',decorate,15);q.schedule()}else setTimeout(decorate,120);
 window.MajickUI=window.MajickUI||UI;
-window.MajickProductCore={VERSION,SCHEMA,STAGES,EVENT_STAGE,ensure,record,nextAction,progress,snapshot,courseModel,goNext,loopHtml,dormStoryHtml,decorate,UI,dayKey};
+window.MajickProductCore={VERSION,SCHEMA,STAGES,EVENT_STAGE,ensure,record,nextAction,progress,snapshot,courseModel,goNext,loopHtml,dormStoryHtml,decorate,UI,dayKey,reviewQueue,reviewHtml,openMemoryReview};
 })();
