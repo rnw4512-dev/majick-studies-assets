@@ -32,6 +32,7 @@ const BANK={
  ]}
  ]
 };
+for(const task of window.MajickLessonActivities?.tasks||[]){if(BANK[task.course]&&!BANK[task.course].some(x=>x.id===task.id))BANK[task.course].push(task)}
 const STATES=new WeakMap();
 function stageTitle(t,s){return t.kind==='math'?['Identify the knowns and unknown','Choose a formula','Place values into slots','Calculate your answer','Interpret your result','Independent transfer'][s]:t.kind==='graph'?['Read the target frequencies','Build the graph','Find the modal interval','Count total frequency','Explain the pattern','Independent graph challenge'][s]:['Read the scenario','Choose the first step','Arrange the full response','Explain your decision','Review your construction','Independent new scenario'][s]}
 const numeric=(a,b)=>a!==''&&a!=null&&Number.isFinite(Number(a))&&Math.abs(Number(a)-Number(b))<=Math.max(.0002,Math.abs(b)*.00005);
@@ -91,15 +92,20 @@ const OBJECTIVES={
  {match:/section 3.*lesson 2|plaafp|annual goals/i,task:'goal',objective:'Construct a measurable annual goal from a stated condition, behavior and criterion.'}
  ]
 };
-function choose(host){const cid=window.S?.activeCourse,items=BANK[cid];if(!items)return null;
- const title=host.closest('.studyCard')?.querySelector('h3')?.textContent||'';
- if(!title){return items[0]}
- const mapping=OBJECTIVES[cid]?.find(item=>item.match.test(title));
- if(!mapping)return null;
- const task=items.find(item=>item.id===mapping.task);
- if(task)task.objective=mapping.objective;
- return task||null;
+function choose(host){
+ const cid=window.S?.activeCourse,items=BANK[cid];if(!items?.length)return null;
+ const card=host.closest('.studyCard'),title=card?.querySelector('h3')?.textContent||'';
+ const selected=host.dataset.selectedTask;
+ if(selected){const found=items.find(x=>x.id===selected);if(found)return found}
+ if(!card)return items.find(t=>t.lessonId)||items[0];
+ const numbered=title.match(/Section\\s*([123])[^\\n]*Lesson\\s*(\\d+)/i);
+ if(numbered){const lesson=cid.toLowerCase()+'-s'+numbered[1]+'-l'+numbered[2];
+ const exact=items.find(x=>x.lessonId===lesson);if(exact)return exact}
+ const match=OBJECTIVES[cid]?.find(x=>x.match.test(title));
+ if(match)return items.find(x=>x.id===match.task)||null;
+ return null;
 }
+
 function rubric(task,ex,answer,stage){
  const response=String(answer||'').toLowerCase().trim();
  const tokens=response.split(/\s+/).filter(Boolean);
@@ -113,7 +119,27 @@ function rubric(task,ex,answer,stage){
  if(missing.length)return {ok:false,feedback:'Your explanation needs stronger evidence: '+missing.join(' ')};
  return {ok:true,feedback:'Your explanation addresses the key ideas. This is rule-based guidance, not a teacher-graded semantic assessment; compare your explanation with the model reasoning: '+String(ex.interpret||ex.why||ex.reason||'')};
 }
-function mount(){const root=document.getElementById('content');if(!root)return;const screen=window.S?.screen;if(!['guide','mission','games'].includes(screen))return;let cards=screen==='guide'?[...root.querySelectorAll('.studyCard')]:[root];for(let card of cards){let host=card.querySelector(':scope > .mjSolutionEngine');if(!host){host=document.createElement('section');host.className='mjSolutionEngine';if(screen==='guide')card.append(host);else (root.querySelector('.sectionTitle')||root).after(host)}const task=choose(host);if(task)render(host,task);else host.remove()}}
+function mount(){const root=document.getElementById('content');if(!root)return;const screen=window.S?.screen,cid=window.S?.activeCourse;if(!['guide','mission','games'].includes(screen))return;
+ const all=BANK[cid]||[];
+ let cards=screen==='guide'?[...root.querySelectorAll('.studyCard')]:[root];
+ for(const card of cards){
+  let host=card.querySelector(':scope > .mjSolutionEngine');
+  if(!host){host=document.createElement('section');host.className='mjSolutionEngine';if(screen==='guide')card.append(host);else (root.querySelector('.sectionTitle')||root).after(host)}
+  if(screen!=='guide'){
+   let picker=host.querySelector('.mjSeTaskSelect'),picked=picker?.value||'';
+   if(!picker){picker=document.createElement('select');picker.className='mjSeTaskSelect';picker.setAttribute('aria-label','Choose course lesson activity')}
+   picker.innerHTML='<option value="">Choose lesson activity</option>'+all.filter(x=>x.lessonId).map(x=>'<option value="'+esc(x.id)+'">'+esc(x.lessonId+' — '+x.title)+'</option>').join('');
+   if(picked&&all.some(x=>x.id===picked))picker.value=picked;else if(all.length)picker.value=all.find(x=>x.lessonId)?.id||all[0].id;
+   host.dataset.selectedTask=picker.value;
+   const task=choose(host);
+   if(task)render(host,task);else host.textContent='No curriculum activities available for this course.';
+   host.prepend(picker);picker.onchange=()=>{host.dataset.selectedTask=picker.value;const choice=choose(host);if(choice)render(host,choice);else host.textContent='No mapped activity available.';host.prepend(picker)};
+  }else{
+   const task=choose(host);if(task)render(host,task);else host.remove();
+  }
+ }
+}
+
 let style=document.createElement('style');style.textContent='.mjSolutionEngine{background:#2b2139;border:1px solid #c4a673;color:#fff0eb;margin:16px 0;padding:16px;border-radius:16px}.mjSolutionEngine h3{color:#f0cf98}.mjSeHead{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}.mjSeHead strong{color:#f2d095}.mjSeSteps{display:flex;gap:6px;margin:12px 0}.mjSeSteps span{padding:5px 10px;border:1px solid #947e95;border-radius:50%}.mjSeSteps .active{background:#9972aa}.mjSeLabel{display:flex;flex-direction:column;gap:5px;margin:9px 0}.mjSeLabel input,.mjSeBar input{background:#fff8ed;color:#1f1829;border-radius:7px;padding:10px;max-width:100%}.mjSeActions{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0}.mjSolutionEngine button{background:#695277;color:#fff0da;border:1px solid #bfa17b;border-radius:8px;padding:9px;margin:4px;cursor:pointer}.mjSolutionEngine button:focus-visible,.mjSolutionEngine input:focus-visible{outline:3px solid #f7cf7d}.mjSeGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:9px}.mjSeGraph{display:flex;align-items:end;gap:10px;min-height:210px;overflow-x:auto}.mjSeBar{display:flex;flex-direction:column;align-items:center;min-width:85px}.mjSeTower{width:42px;background:linear-gradient(#f0cd84,#aa7dbe);min-height:3px}.mjSeBar input{width:72px}.mjSeFoot{font-size:12px;opacity:.8}.mjSeFeedback,.mjSeHelp{background:#493851;border-left:3px solid #f2cc88;padding:11px}';document.head.append(style);
 const old=window.render;if(typeof old==='function')window.render=function(){let value=old.apply(this,arguments);setTimeout(mount,50);return value};setTimeout(mount,500);window.MajickSolutionEngine={version:'1.0',refresh:mount,activities:Object.values(BANK).flat().length};
 })();
