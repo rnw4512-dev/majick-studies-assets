@@ -1356,6 +1356,23 @@ function toggleClue(i){let a=session.highlight,ix=a.indexOf(i);ix>=0?a.splice(ix
 function setConfidence(x){session.confidence=x;render()}
 function answerQ(chosen){if(!session||session.answered)return;let q=session.current,correct=chosen===q.answer;session.chosen=chosen;session.answered=true;session.score+=correct?1:0;session.combo=correct?session.combo+1:0;if(session.type==='rush'&&!correct)session.lives--;if(session.type==='boss'){session.bossHP-=correct?Math.min(18,8+(q.difficulty||1)*2):0;if(!correct)session.playerHP--}record(q,chosen,correct,session.confidence,session.type);if(correct){if(session.chartUsed&&window.MajickRewardCore?.award){window.MajickRewardCore.award('correct-answer',{key:'guided-study:'+String(S.activeCourse||'')+':'+q.id+':'+Date.now(),course:S.activeCourse,qid:q.id,difficulty:q.difficulty||1,independent:false,source:'guided-anchor-chart'});session.reward={xp:0,cr:0}}else grantMoonlight(q);sparkle(true);playChime(true);if(session.combo>0&&session.combo%5===0)transformationBurst();if(session.combo>=3&&(q.difficulty||1)>=3)requestAIChallenge(q)}else{playChime(false)}if(session.type==='test'){session.review.push({q,chosen,correct});setTimeout(()=>{if(session.index>=session.questions.length){finishSession()}else{session.current=session.questions[session.index++];session.answered=false;render()}},100);return}render()}
 function grantMoonlight(q){let p=prog();let base=8+(q.difficulty||1)*3,bonus=Math.min(15,Math.max(0,(session.combo||1)-1)*2),xp=base+bonus,cr=(q.difficulty||1)>=4?2:1;p.xp=(p.xp||0)+xp;p.crystals=(p.crystals||0)+cr;session.reward={xp,cr};let milestones=[[25,'Crescent Charm'],[75,'Starlight Charm'],[150,'Crystal Heart'],[300,'Moon Crown']];p.charms=p.charms||[];for(const [n,name] of milestones)if(p.xp>=n&&!p.charms.includes(name))p.charms.push(name);save();rewardToast(`+${xp} XP  ✦  +${cr} 💎`,session.combo>=5?`Transformation streak x${session.combo}!`:`Correct answer • difficulty ${q.difficulty||1}`)}
+function grantInteractiveMoonlight(taskId,kind){
+ if(!S?.activeCourse||!S.progress?.[S.activeCourse]||!['participation','transfer'].includes(kind))return {awarded:false};
+ const p=prog(),courseId=S.activeCourse,key=String(taskId||'').replace(/[^a-z0-9_-]/gi,'').slice(0,80);
+ if(!key)return {awarded:false};
+ p.interactiveRewardLedger=p.interactiveRewardLedger||{};
+ const id=courseId+':'+key+':'+kind+(kind==='participation'?':'+new Date().toISOString().slice(0,10):'');
+ if(p.interactiveRewardLedger[id])return {awarded:false,reason:'previously-earned'};
+ const xp=kind==='participation'?3:12,cr=kind==='participation'?0:1;
+ p.interactiveRewardLedger[id]=Date.now();
+ p.xp=Number(p.xp||0)+xp;p.crystals=Number(p.crystals||0)+cr;
+ p.charms=p.charms||[];
+ for(const [n,name] of [[25,'Crescent Charm'],[75,'Starlight Charm'],[150,'Crystal Heart'],[300,'Moon Crown']])if(p.xp>=n&&!p.charms.includes(name))p.charms.push(name);
+ try{window.MajickProductCore?.record?.('reward-earned',{course:courseId,label:'Interactive '+kind+' • '+key,xp,crystals:cr})}catch(_){}
+ save();rewardToast('+'+xp+' XP'+(cr?'  ✦  +'+cr+' 💎':''),kind==='participation'?'Hands-on participation':'Independent transfer practice');
+ return {awarded:true,xp,crystals:cr};
+}
+window.MajickInteractiveRewards={award:grantInteractiveMoonlight};
 function rewardToast(big,mini){let t=document.createElement('div');t.className='rewardToast';t.innerHTML=`<div class="big">${esc(big)}</div><div class="mini">${esc(mini)}</div>`;document.body.appendChild(t);setTimeout(()=>t.remove(),1450)}
 function transformationBurst(){let d=document.createElement('div');d.className='transformation';d.innerHTML='<div class="sigil">☾✦</div>';document.body.appendChild(d);setTimeout(()=>d.remove(),1150);glitterBurst(38)}
 function glitterBurst(n=24){let box=document.createElement('div');box.className='glitterBurst';let icons=['✦','✧','☆','♡','◇','☾'];for(let i=0;i<n;i++){let b=document.createElement('span');b.className='glitterBit';b.textContent=icons[Math.floor(Math.random()*icons.length)];b.style.left=(45+Math.random()*10)+'vw';b.style.top=(42+Math.random()*12)+'vh';b.style.color=['#f4c95d','#ee8fbd','#9b7ae0','#8fd8d1','#a8d9ff'][i%5];b.style.setProperty('--dx',((Math.random()-.5)*520)+'px');b.style.setProperty('--dy',((Math.random()-.42)*420)+'px');box.appendChild(b)}document.body.appendChild(box);setTimeout(()=>box.remove(),1350)}
