@@ -1,0 +1,173 @@
+{
+  "method": "measured from individual 512x768 body images",
+  "frames": [
+    {
+      "frame": "front_idle",
+      "head": [
+        256,
+        49
+      ],
+      "neck": [
+        256,
+        106
+      ],
+      "footBaseline": 767,
+      "headRadius": 43.5,
+      "preview": "assets/atelier/v2/fitted/previews/front_idle.webp"
+    },
+    {
+      "frame": "front_step_left",
+      "head": [
+        246,
+        49
+      ],
+      "neck": [
+        246,
+        105
+      ],
+      "footBaseline": 767,
+      "headRadius": 43.0,
+      "preview": "assets/atelier/v2/fitted/previews/front_step_left.webp"
+    },
+    {
+      "frame": "front_step_right",
+      "head": [
+        258,
+        50
+      ],
+      "neck": [
+        258,
+        108
+      ],
+      "footBaseline": 767,
+      "headRadius": 44.5,
+      "preview": "assets/atelier/v2/fitted/previews/front_step_right.webp"
+    },
+    {
+      "frame": "side_left_idle",
+      "head": [
+        255,
+        54
+      ],
+      "neck": [
+        255,
+        117
+      ],
+      "footBaseline": 767,
+      "headRadius": 48.5,
+      "preview": "assets/atelier/v2/fitted/previews/side_left_idle.webp"
+    },
+    {
+      "frame": "side_left_walk",
+      "head": [
+        249,
+        88
+      ],
+      "neck": [
+        249,
+        148
+      ],
+      "footBaseline": 767,
+      "headRadius": 46.0,
+      "preview": "assets/atelier/v2/fitted/previews/side_left_walk.webp"
+    },
+    {
+      "frame": "side_right_walk",
+      "head": [
+        243,
+        90
+      ],
+      "neck": [
+        243,
+        151
+      ],
+      "footBaseline": 767,
+      "headRadius": 47.0,
+      "preview": "assets/atelier/v2/fitted/previews/side_right_walk.webp"
+    },
+    {
+      "frame": "back_idle",
+      "head": [
+        255,
+        50
+      ],
+      "neck": [
+        255,
+        108
+      ],
+      "footBaseline": 767,
+      "headRadius": 44.5,
+      "preview": "assets/atelier/v2/fitted/previews/back_idle.webp"
+    },
+    {
+      "frame": "back_step_left",
+      "head": [
+        248,
+        85
+      ],
+      "neck": [
+        248,
+        139
+      ],
+      "footBaseline": 767,
+      "headRadius": 42.0,
+      "preview": "assets/atelier/v2/fitted/previews/back_step_left.webp"
+    },
+    {
+      "frame": "back_step_right",
+      "head": [
+        254,
+        50
+      ],
+      "neck": [
+        254,
+        108
+      ],
+      "footBaseline": 765,
+      "headRadius": 44.5,
+      "preview": "assets/atelier/v2/fitted/previews/back_step_right.webp"
+    },
+    {
+      "frame": "threequarter_left_forward",
+      "head": [
+        260,
+        50
+      ],
+      "neck": [
+        260,
+        107
+      ],
+      "footBaseline": 767,
+      "headRadius": 44.0,
+      "preview": "assets/atelier/v2/fitted/previews/threequarter_left_forward.webp"
+    },
+    {
+      "frame": "threequarter_left_step",
+      "head": [
+        264,
+        50
+      ],
+      "neck": [
+        264,
+        107
+      ],
+      "footBaseline": 767,
+      "headRadius": 44.0,
+      "preview": "assets/atelier/v2/fitted/previews/threequarter_left_step.webp"
+    },
+    {
+      "frame": "threequarter_left_walk",
+      "head": [
+        261,
+        52
+      ],
+      "neck": [
+        261,
+        110
+      ],
+      "footBaseline": 767,
+      "headRadius": 45.0,
+      "preview": "assets/atelier/v2/fitted/previews/threequarter_left_walk.webp"
+    }
+  ]
+}

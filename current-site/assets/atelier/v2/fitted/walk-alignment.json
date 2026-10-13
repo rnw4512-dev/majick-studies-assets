@@ -21,187 +21,343 @@
     "neck": "Shoulder/neck meeting point, measured per frame",
     "footBaseline": "Lowest grounded foot, measured per frame"
   },
-  "alignmentStatus": "not_measured",
+  "alignmentStatus": "measured_candidates_pending_visual_confirmation",
   "frames": {
     "front_idle": {
-      "head": null,
-      "neck": null,
-      "footBaseline": null,
+      "head": [
+        256,
+        49
+      ],
+      "neck": [
+        256,
+        106
+      ],
+      "footBaseline": 767,
       "offsets": {
         "body": [
           0,
           0
         ],
-        "outfit": null,
-        "hair": null,
+        "outfit": [
+          0,
+          0
+        ],
+        "hair": [
+          0,
+          0
+        ],
         "accessories": {}
       },
-      "validated": false
+      "validated": false,
+      "method": "skin-pixel head scan + alpha foot bbox; confirm visually"
     },
     "front_step_left": {
-      "head": null,
-      "neck": null,
-      "footBaseline": null,
+      "head": [
+        246,
+        49
+      ],
+      "neck": [
+        246,
+        105
+      ],
+      "footBaseline": 767,
       "offsets": {
         "body": [
           0,
           0
         ],
-        "outfit": null,
-        "hair": null,
+        "outfit": [
+          0,
+          0
+        ],
+        "hair": [
+          0,
+          0
+        ],
         "accessories": {}
       },
-      "validated": false
+      "validated": false,
+      "method": "skin-pixel head scan + alpha foot bbox; confirm visually"
     },
     "front_step_right": {
-      "head": null,
-      "neck": null,
-      "footBaseline": null,
+      "head": [
+        258,
+        50
+      ],
+      "neck": [
+        258,
+        108
+      ],
+      "footBaseline": 767,
       "offsets": {
         "body": [
           0,
           0
         ],
-        "outfit": null,
-        "hair": null,
+        "outfit": [
+          0,
+          0
+        ],
+        "hair": [
+          0,
+          0
+        ],
         "accessories": {}
       },
-      "validated": false
+      "validated": false,
+      "method": "skin-pixel head scan + alpha foot bbox; confirm visually"
     },
     "side_left_idle": {
-      "head": null,
-      "neck": null,
-      "footBaseline": null,
+      "head": [
+        255,
+        54
+      ],
+      "neck": [
+        255,
+        117
+      ],
+      "footBaseline": 767,
       "offsets": {
         "body": [
           0,
           0
         ],
-        "outfit": null,
-        "hair": null,
+        "outfit": [
+          0,
+          0
+        ],
+        "hair": [
+          0,
+          0
+        ],
         "accessories": {}
       },
-      "validated": false
+      "validated": false,
+      "method": "skin-pixel head scan + alpha foot bbox; confirm visually"
     },
     "side_left_walk": {
-      "head": null,
-      "neck": null,
-      "footBaseline": null,
+      "head": [
+        249,
+        88
+      ],
+      "neck": [
+        249,
+        148
+      ],
+      "footBaseline": 767,
       "offsets": {
         "body": [
           0,
           0
         ],
-        "outfit": null,
-        "hair": null,
+        "outfit": [
+          0,
+          0
+        ],
+        "hair": [
+          0,
+          0
+        ],
         "accessories": {}
       },
-      "validated": false
+      "validated": false,
+      "method": "skin-pixel head scan + alpha foot bbox; confirm visually"
     },
     "side_right_walk": {
-      "head": null,
-      "neck": null,
-      "footBaseline": null,
+      "head": [
+        243,
+        90
+      ],
+      "neck": [
+        243,
+        151
+      ],
+      "footBaseline": 767,
       "offsets": {
         "body": [
           0,
           0
         ],
-        "outfit": null,
-        "hair": null,
+        "outfit": [
+          0,
+          0
+        ],
+        "hair": [
+          0,
+          0
+        ],
         "accessories": {}
       },
-      "validated": false
+      "validated": false,
+      "method": "skin-pixel head scan + alpha foot bbox; confirm visually"
     },
     "back_idle": {
-      "head": null,
-      "neck": null,
-      "footBaseline": null,
+      "head": [
+        255,
+        50
+      ],
+      "neck": [
+        255,
+        108
+      ],
+      "footBaseline": 767,
       "offsets": {
         "body": [
           0,
           0
         ],
-        "outfit": null,
-        "hair": null,
+        "outfit": [
+          0,
+          0
+        ],
+        "hair": [
+          0,
+          0
+        ],
         "accessories": {}
       },
-      "validated": false
+      "validated": false,
+      "method": "skin-pixel head scan + alpha foot bbox; confirm visually"
     },
     "back_step_left": {
-      "head": null,
-      "neck": null,
-      "footBaseline": null,
+      "head": [
+        248,
+        85
+      ],
+      "neck": [
+        248,
+        139
+      ],
+      "footBaseline": 767,
       "offsets": {
         "body": [
           0,
           0
         ],
-        "outfit": null,
-        "hair": null,
+        "outfit": [
+          0,
+          0
+        ],
+        "hair": [
+          0,
+          0
+        ],
         "accessories": {}
       },
-      "validated": false
+      "validated": false,
+      "method": "skin-pixel head scan + alpha foot bbox; confirm visually"
     },
     "back_step_right": {
-      "head": null,
-      "neck": null,
-      "footBaseline": null,
+      "head": [
+        254,
+        50
+      ],
+      "neck": [
+        254,
+        108
+      ],
+      "footBaseline": 765,
       "offsets": {
         "body": [
           0,
           0
         ],
-        "outfit": null,
-        "hair": null,
+        "outfit": [
+          0,
+          0
+        ],
+        "hair": [
+          0,
+          0
+        ],
         "accessories": {}
       },
-      "validated": false
+      "validated": false,
+      "method": "skin-pixel head scan + alpha foot bbox; confirm visually"
     },
     "threequarter_left_forward": {
-      "head": null,
-      "neck": null,
-      "footBaseline": null,
+      "head": [
+        260,
+        50
+      ],
+      "neck": [
+        260,
+        107
+      ],
+      "footBaseline": 767,
       "offsets": {
         "body": [
           0,
           0
         ],
-        "outfit": null,
-        "hair": null,
+        "outfit": [
+          0,
+          0
+        ],
+        "hair": [
+          0,
+          0
+        ],
         "accessories": {}
       },
-      "validated": false
+      "validated": false,
+      "method": "skin-pixel head scan + alpha foot bbox; confirm visually"
     },
     "threequarter_left_step": {
-      "head": null,
-      "neck": null,
-      "footBaseline": null,
+      "head": [
+        264,
+        50
+      ],
+      "neck": [
+        264,
+        107
+      ],
+      "footBaseline": 767,
       "offsets": {
         "body": [
           0,
           0
         ],
-        "outfit": null,
-        "hair": null,
+        "outfit": [
+          0,
+          0
+        ],
+        "hair": [
+          0,
+          0
+        ],
         "accessories": {}
       },
-      "validated": false
+      "validated": false,
+      "method": "skin-pixel head scan + alpha foot bbox; confirm visually"
     },
     "threequarter_left_walk": {
-      "head": null,
-      "neck": null,
-      "footBaseline": null,
+      "head": [
+        261,
+        52
+      ],
+      "neck": [
+        261,
+        110
+      ],
+      "footBaseline": 767,
       "offsets": {
         "body": [
           0,
           0
         ],
-        "outfit": null,
-        "hair": null,
+        "outfit": [
+          0,
+          0
+        ],
+        "hair": [
+          0,
+          0
+        ],
         "accessories": {}
       },
-      "validated": false
+      "validated": false,
+      "method": "skin-pixel head scan + alpha foot bbox; confirm visually"
     }
   },
   "fallbackPolicy": {

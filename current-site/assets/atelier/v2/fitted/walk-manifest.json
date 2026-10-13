@@ -24,91 +24,91 @@
     "skin": "warm"
   },
   "enabled": false,
-  "reason": "No repaired registered locs layers exist; fitted outfit candidates also await visual approval.",
+  "reason": "All twelve generated locs frames exist but final visual QA and browser walk-controller acceptance remain required.",
   "frames": {
     "front_idle": {
       "body": "assets/atelier/v2/fitted/body/front_idle.webp",
       "outfit": "assets/atelier/v2/fitted/outfits/midnight_velvet/front_idle.webp",
-      "hair": null,
+      "hair": "assets/atelier/v2/fitted/hair/locs/front_idle.webp",
       "accessories": [],
-      "status": "blocked_missing_validated_hair"
+      "status": "candidate_requires_visual_review"
     },
     "front_step_left": {
       "body": "assets/atelier/v2/fitted/body/front_step_left.webp",
       "outfit": "assets/atelier/v2/fitted/outfits/midnight_velvet/front_step_left.webp",
-      "hair": null,
+      "hair": "assets/atelier/v2/fitted/hair/locs/front_step_left.webp",
       "accessories": [],
-      "status": "blocked_missing_validated_hair"
+      "status": "candidate_requires_visual_review"
     },
     "front_step_right": {
       "body": "assets/atelier/v2/fitted/body/front_step_right.webp",
       "outfit": "assets/atelier/v2/fitted/outfits/midnight_velvet/front_step_right.webp",
-      "hair": null,
+      "hair": "assets/atelier/v2/fitted/hair/locs/front_step_right.webp",
       "accessories": [],
-      "status": "blocked_missing_validated_hair"
+      "status": "candidate_requires_visual_review"
     },
     "side_left_idle": {
       "body": "assets/atelier/v2/fitted/body/side_left_idle.webp",
       "outfit": "assets/atelier/v2/fitted/outfits/midnight_velvet/side_left_idle.webp",
-      "hair": null,
+      "hair": "assets/atelier/v2/fitted/hair/locs/side_left_idle.webp",
       "accessories": [],
-      "status": "blocked_missing_validated_hair"
+      "status": "candidate_requires_visual_review"
     },
     "side_left_walk": {
       "body": "assets/atelier/v2/fitted/body/side_left_walk.webp",
       "outfit": "assets/atelier/v2/fitted/outfits/midnight_velvet/side_left_walk.webp",
-      "hair": null,
+      "hair": "assets/atelier/v2/fitted/hair/locs/side_left_walk.webp",
       "accessories": [],
-      "status": "blocked_missing_validated_hair"
+      "status": "candidate_requires_visual_review"
     },
     "side_right_walk": {
       "body": "assets/atelier/v2/fitted/body/side_right_walk.webp",
       "outfit": "assets/atelier/v2/fitted/outfits/midnight_velvet/side_right_walk.webp",
-      "hair": null,
+      "hair": "assets/atelier/v2/fitted/hair/locs/side_right_walk.webp",
       "accessories": [],
-      "status": "blocked_missing_validated_hair"
+      "status": "candidate_requires_visual_review"
     },
     "back_idle": {
       "body": "assets/atelier/v2/fitted/body/back_idle.webp",
       "outfit": "assets/atelier/v2/fitted/outfits/midnight_velvet/back_idle.webp",
-      "hair": null,
+      "hair": "assets/atelier/v2/fitted/hair/locs/back_idle.webp",
       "accessories": [],
-      "status": "blocked_missing_validated_hair"
+      "status": "candidate_requires_visual_review"
     },
     "back_step_left": {
       "body": "assets/atelier/v2/fitted/body/back_step_left.webp",
       "outfit": "assets/atelier/v2/fitted/outfits/midnight_velvet/back_step_left.webp",
-      "hair": null,
+      "hair": "assets/atelier/v2/fitted/hair/locs/back_step_left.webp",
       "accessories": [],
-      "status": "blocked_missing_validated_hair"
+      "status": "candidate_requires_visual_review"
     },
     "back_step_right": {
       "body": "assets/atelier/v2/fitted/body/back_step_right.webp",
       "outfit": "assets/atelier/v2/fitted/outfits/midnight_velvet/back_step_right.webp",
-      "hair": null,
+      "hair": "assets/atelier/v2/fitted/hair/locs/back_step_right.webp",
       "accessories": [],
-      "status": "blocked_missing_validated_hair"
+      "status": "candidate_requires_visual_review"
     },
     "threequarter_left_forward": {
       "body": "assets/atelier/v2/fitted/body/threequarter_left_forward.webp",
       "outfit": "assets/atelier/v2/fitted/outfits/midnight_velvet/threequarter_left_forward.webp",
-      "hair": null,
+      "hair": "assets/atelier/v2/fitted/hair/locs/threequarter_left_forward.webp",
       "accessories": [],
-      "status": "blocked_missing_validated_hair"
+      "status": "candidate_requires_visual_review"
     },
     "threequarter_left_step": {
       "body": "assets/atelier/v2/fitted/body/threequarter_left_step.webp",
       "outfit": "assets/atelier/v2/fitted/outfits/midnight_velvet/threequarter_left_step.webp",
-      "hair": null,
+      "hair": "assets/atelier/v2/fitted/hair/locs/threequarter_left_step.webp",
       "accessories": [],
-      "status": "blocked_missing_validated_hair"
+      "status": "candidate_requires_visual_review"
     },
     "threequarter_left_walk": {
       "body": "assets/atelier/v2/fitted/body/threequarter_left_walk.webp",
       "outfit": "assets/atelier/v2/fitted/outfits/midnight_velvet/threequarter_left_walk.webp",
-      "hair": null,
+      "hair": "assets/atelier/v2/fitted/hair/locs/threequarter_left_walk.webp",
       "accessories": [],
-      "status": "blocked_missing_validated_hair"
+      "status": "candidate_requires_visual_review"
     }
   }
 }
