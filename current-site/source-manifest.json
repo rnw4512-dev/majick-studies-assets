@@ -789,6 +789,7 @@
     "assets/atelier/v2/fitted/contact-sheets/afro_full.png": "65294ef9c97b537d5169e2ee84c9781efc91d39728bd9affc45b275cb87739ee",
     "assets/atelier/v3/sprite-registry.json": "ae716a28e90d2699cfdd3cad01fea009d361ecf86b074493c0ffc808a4b7278f",
     "d772-shared-oa-questions.js": "a53a01e3800a7674f3b3344a56da23195b286eeadef84f993208f55d393fa500",
-    "d756-hands-on.js": "69761b019d90a0b559ae20aa6b5183429483ea846b2b51d5d967d2b0b42713d6"
+    "d756-hands-on.js": "69761b019d90a0b559ae20aa6b5183429483ea846b2b51d5d967d2b0b42713d6",
+    "interactive-formula-lab.js": "0ad379b7f1e43cf051b119177584d538cff786cda9ec8a921562b7c500534cba"
   }
 }
