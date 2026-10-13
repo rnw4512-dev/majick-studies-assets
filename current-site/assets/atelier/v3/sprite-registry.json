@@ -1,0 +1,425 @@
+{
+  "schemaVersion": 1,
+  "project": "Majick Studies V3 Scholar",
+  "canonical": "current-site",
+  "productionEnabled": false,
+  "referenceStatus": "user_approved_two_concept_sheets",
+  "requiredCanvas": [
+    512,
+    768
+  ],
+  "requiredLayers": [
+    "body",
+    "outfit",
+    "hair"
+  ],
+  "layerOrder": [
+    "body",
+    "outfit",
+    "hair",
+    "accessories"
+  ],
+  "fallback": "existing_fitted_avatar",
+  "styleNames": [
+    "locs",
+    "locs_beaded",
+    "updo_twist",
+    "afro_full"
+  ],
+  "frames": {
+    "locs": {
+      "front_idle": {
+        "master": null,
+        "body": null,
+        "outfit": null,
+        "hair": null,
+        "qa": "not_created",
+        "approved": false
+      },
+      "front_step_left": {
+        "master": null,
+        "body": null,
+        "outfit": null,
+        "hair": null,
+        "qa": "not_created",
+        "approved": false
+      },
+      "front_step_right": {
+        "master": null,
+        "body": null,
+        "outfit": null,
+        "hair": null,
+        "qa": "not_created",
+        "approved": false
+      },
+      "side_left_idle": {
+        "master": null,
+        "body": null,
+        "outfit": null,
+        "hair": null,
+        "qa": "not_created",
+        "approved": false
+      },
+      "side_left_walk": {
+        "master": null,
+        "body": null,
+        "outfit": null,
+        "hair": null,
+        "qa": "not_created",
+        "approved": false
+      },
+      "side_right_walk": {
+        "master": null,
+        "body": null,
+        "outfit": null,
+        "hair": null,
+        "qa": "not_created",
+        "approved": false
+      },
+      "back_idle": {
+        "master": null,
+        "body": null,
+        "outfit": null,
+        "hair": null,
+        "qa": "not_created",
+        "approved": false
+      },
+      "back_step_left": {
+        "master": null,
+        "body": null,
+        "outfit": null,
+        "hair": null,
+        "qa": "not_created",
+        "approved": false
+      },
+      "back_step_right": {
+        "master": null,
+        "body": null,
+        "outfit": null,
+        "hair": null,
+        "qa": "not_created",
+        "approved": false
+      },
+      "threequarter_left_forward": {
+        "master": null,
+        "body": null,
+        "outfit": null,
+        "hair": null,
+        "qa": "not_created",
+        "approved": false
+      },
+      "threequarter_left_step": {
+        "master": null,
+        "body": null,
+        "outfit": null,
+        "hair": null,
+        "qa": "not_created",
+        "approved": false
+      },
+      "threequarter_left_walk": {
+        "master": null,
+        "body": null,
+        "outfit": null,
+        "hair": null,
+        "qa": "not_created",
+        "approved": false
+      }
+    },
+    "locs_beaded": {
+      "front_idle": {
+        "master": null,
+        "body": null,
+        "outfit": null,
+        "hair": null,
+        "qa": "not_created",
+        "approved": false
+      },
+      "front_step_left": {
+        "master": null,
+        "body": null,
+        "outfit": null,
+        "hair": null,
+        "qa": "not_created",
+        "approved": false
+      },
+      "front_step_right": {
+        "master": null,
+        "body": null,
+        "outfit": null,
+        "hair": null,
+        "qa": "not_created",
+        "approved": false
+      },
+      "side_left_idle": {
+        "master": null,
+        "body": null,
+        "outfit": null,
+        "hair": null,
+        "qa": "not_created",
+        "approved": false
+      },
+      "side_left_walk": {
+        "master": null,
+        "body": null,
+        "outfit": null,
+        "hair": null,
+        "qa": "not_created",
+        "approved": false
+      },
+      "side_right_walk": {
+        "master": null,
+        "body": null,
+        "outfit": null,
+        "hair": null,
+        "qa": "not_created",
+        "approved": false
+      },
+      "back_idle": {
+        "master": null,
+        "body": null,
+        "outfit": null,
+        "hair": null,
+        "qa": "not_created",
+        "approved": false
+      },
+      "back_step_left": {
+        "master": null,
+        "body": null,
+        "outfit": null,
+        "hair": null,
+        "qa": "not_created",
+        "approved": false
+      },
+      "back_step_right": {
+        "master": null,
+        "body": null,
+        "outfit": null,
+        "hair": null,
+        "qa": "not_created",
+        "approved": false
+      },
+      "threequarter_left_forward": {
+        "master": null,
+        "body": null,
+        "outfit": null,
+        "hair": null,
+        "qa": "not_created",
+        "approved": false
+      },
+      "threequarter_left_step": {
+        "master": null,
+        "body": null,
+        "outfit": null,
+        "hair": null,
+        "qa": "not_created",
+        "approved": false
+      },
+      "threequarter_left_walk": {
+        "master": null,
+        "body": null,
+        "outfit": null,
+        "hair": null,
+        "qa": "not_created",
+        "approved": false
+      }
+    },
+    "updo_twist": {
+      "front_idle": {
+        "master": null,
+        "body": null,
+        "outfit": null,
+        "hair": null,
+        "qa": "not_created",
+        "approved": false
+      },
+      "front_step_left": {
+        "master": null,
+        "body": null,
+        "outfit": null,
+        "hair": null,
+        "qa": "not_created",
+        "approved": false
+      },
+      "front_step_right": {
+        "master": null,
+        "body": null,
+        "outfit": null,
+        "hair": null,
+        "qa": "not_created",
+        "approved": false
+      },
+      "side_left_idle": {
+        "master": null,
+        "body": null,
+        "outfit": null,
+        "hair": null,
+        "qa": "not_created",
+        "approved": false
+      },
+      "side_left_walk": {
+        "master": null,
+        "body": null,
+        "outfit": null,
+        "hair": null,
+        "qa": "not_created",
+        "approved": false
+      },
+      "side_right_walk": {
+        "master": null,
+        "body": null,
+        "outfit": null,
+        "hair": null,
+        "qa": "not_created",
+        "approved": false
+      },
+      "back_idle": {
+        "master": null,
+        "body": null,
+        "outfit": null,
+        "hair": null,
+        "qa": "not_created",
+        "approved": false
+      },
+      "back_step_left": {
+        "master": null,
+        "body": null,
+        "outfit": null,
+        "hair": null,
+        "qa": "not_created",
+        "approved": false
+      },
+      "back_step_right": {
+        "master": null,
+        "body": null,
+        "outfit": null,
+        "hair": null,
+        "qa": "not_created",
+        "approved": false
+      },
+      "threequarter_left_forward": {
+        "master": null,
+        "body": null,
+        "outfit": null,
+        "hair": null,
+        "qa": "not_created",
+        "approved": false
+      },
+      "threequarter_left_step": {
+        "master": null,
+        "body": null,
+        "outfit": null,
+        "hair": null,
+        "qa": "not_created",
+        "approved": false
+      },
+      "threequarter_left_walk": {
+        "master": null,
+        "body": null,
+        "outfit": null,
+        "hair": null,
+        "qa": "not_created",
+        "approved": false
+      }
+    },
+    "afro_full": {
+      "front_idle": {
+        "master": null,
+        "body": null,
+        "outfit": null,
+        "hair": null,
+        "qa": "not_created",
+        "approved": false
+      },
+      "front_step_left": {
+        "master": null,
+        "body": null,
+        "outfit": null,
+        "hair": null,
+        "qa": "not_created",
+        "approved": false
+      },
+      "front_step_right": {
+        "master": null,
+        "body": null,
+        "outfit": null,
+        "hair": null,
+        "qa": "not_created",
+        "approved": false
+      },
+      "side_left_idle": {
+        "master": null,
+        "body": null,
+        "outfit": null,
+        "hair": null,
+        "qa": "not_created",
+        "approved": false
+      },
+      "side_left_walk": {
+        "master": null,
+        "body": null,
+        "outfit": null,
+        "hair": null,
+        "qa": "not_created",
+        "approved": false
+      },
+      "side_right_walk": {
+        "master": null,
+        "body": null,
+        "outfit": null,
+        "hair": null,
+        "qa": "not_created",
+        "approved": false
+      },
+      "back_idle": {
+        "master": null,
+        "body": null,
+        "outfit": null,
+        "hair": null,
+        "qa": "not_created",
+        "approved": false
+      },
+      "back_step_left": {
+        "master": null,
+        "body": null,
+        "outfit": null,
+        "hair": null,
+        "qa": "not_created",
+        "approved": false
+      },
+      "back_step_right": {
+        "master": null,
+        "body": null,
+        "outfit": null,
+        "hair": null,
+        "qa": "not_created",
+        "approved": false
+      },
+      "threequarter_left_forward": {
+        "master": null,
+        "body": null,
+        "outfit": null,
+        "hair": null,
+        "qa": "not_created",
+        "approved": false
+      },
+      "threequarter_left_step": {
+        "master": null,
+        "body": null,
+        "outfit": null,
+        "hair": null,
+        "qa": "not_created",
+        "approved": false
+      },
+      "threequarter_left_walk": {
+        "master": null,
+        "body": null,
+        "outfit": null,
+        "hair": null,
+        "qa": "not_created",
+        "approved": false
+      }
+    }
+  },
+  "legacyV2": "rejected_due_to_incomplete_outfits_and_unreliable_hair",
+  "activationRule": "Require all assets, measured anchors, verified QA, and explicit release before rendering."
+}
