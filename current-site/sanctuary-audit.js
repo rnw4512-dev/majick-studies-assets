@@ -40,7 +40,11 @@
      // An unanswered iframe request is not evidence of missing Guardians.
      const box=banner(frame);if(!box)return;
      box.dataset.status='unverified';
-     box.textContent='Sanctuary room status could not be verified. Your Guardians and saved room are unchanged.';
+     box.replaceChildren();
+     const msg=document.createElement('span');msg.textContent='Sanctuary room status could not be verified. Your Guardians and saved room are unchanged.';
+     const retry=document.createElement('button');retry.type='button';retry.textContent='Check again';
+     retry.addEventListener('click',()=>{states.delete(frame);request(frame)});
+     box.append(msg,retry);
      states.set(frame,{expected:expected().length,unverified:true,reason:'roster-timeout'});
    },6500);
  }
