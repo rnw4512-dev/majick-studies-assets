@@ -1,0 +1,114 @@
+{
+  "schemaVersion": 1,
+  "version": "3.4.2",
+  "renderer": "existing_MajickAtelier",
+  "canvas": [
+    512,
+    768
+  ],
+  "layerOrder": [
+    "body",
+    "outfit",
+    "hair",
+    "accessories"
+  ],
+  "requiredLayers": [
+    "body",
+    "outfit",
+    "hair"
+  ],
+  "fallback": "existing_V1_fitted_avatar",
+  "supportedLook": {
+    "hair": 0,
+    "robe": 1,
+    "skin": "warm"
+  },
+  "enabled": false,
+  "reason": "No repaired registered locs layers exist; fitted outfit candidates also await visual approval.",
+  "frames": {
+    "front_idle": {
+      "body": "assets/atelier/v2/fitted/body/front_idle.webp",
+      "outfit": "assets/atelier/v2/fitted/outfits/midnight_velvet/front_idle.webp",
+      "hair": null,
+      "accessories": [],
+      "status": "blocked_missing_validated_hair"
+    },
+    "front_step_left": {
+      "body": "assets/atelier/v2/fitted/body/front_step_left.webp",
+      "outfit": "assets/atelier/v2/fitted/outfits/midnight_velvet/front_step_left.webp",
+      "hair": null,
+      "accessories": [],
+      "status": "blocked_missing_validated_hair"
+    },
+    "front_step_right": {
+      "body": "assets/atelier/v2/fitted/body/front_step_right.webp",
+      "outfit": "assets/atelier/v2/fitted/outfits/midnight_velvet/front_step_right.webp",
+      "hair": null,
+      "accessories": [],
+      "status": "blocked_missing_validated_hair"
+    },
+    "side_left_idle": {
+      "body": "assets/atelier/v2/fitted/body/side_left_idle.webp",
+      "outfit": "assets/atelier/v2/fitted/outfits/midnight_velvet/side_left_idle.webp",
+      "hair": null,
+      "accessories": [],
+      "status": "blocked_missing_validated_hair"
+    },
+    "side_left_walk": {
+      "body": "assets/atelier/v2/fitted/body/side_left_walk.webp",
+      "outfit": "assets/atelier/v2/fitted/outfits/midnight_velvet/side_left_walk.webp",
+      "hair": null,
+      "accessories": [],
+      "status": "blocked_missing_validated_hair"
+    },
+    "side_right_walk": {
+      "body": "assets/atelier/v2/fitted/body/side_right_walk.webp",
+      "outfit": "assets/atelier/v2/fitted/outfits/midnight_velvet/side_right_walk.webp",
+      "hair": null,
+      "accessories": [],
+      "status": "blocked_missing_validated_hair"
+    },
+    "back_idle": {
+      "body": "assets/atelier/v2/fitted/body/back_idle.webp",
+      "outfit": "assets/atelier/v2/fitted/outfits/midnight_velvet/back_idle.webp",
+      "hair": null,
+      "accessories": [],
+      "status": "blocked_missing_validated_hair"
+    },
+    "back_step_left": {
+      "body": "assets/atelier/v2/fitted/body/back_step_left.webp",
+      "outfit": "assets/atelier/v2/fitted/outfits/midnight_velvet/back_step_left.webp",
+      "hair": null,
+      "accessories": [],
+      "status": "blocked_missing_validated_hair"
+    },
+    "back_step_right": {
+      "body": "assets/atelier/v2/fitted/body/back_step_right.webp",
+      "outfit": "assets/atelier/v2/fitted/outfits/midnight_velvet/back_step_right.webp",
+      "hair": null,
+      "accessories": [],
+      "status": "blocked_missing_validated_hair"
+    },
+    "threequarter_left_forward": {
+      "body": "assets/atelier/v2/fitted/body/threequarter_left_forward.webp",
+      "outfit": "assets/atelier/v2/fitted/outfits/midnight_velvet/threequarter_left_forward.webp",
+      "hair": null,
+      "accessories": [],
+      "status": "blocked_missing_validated_hair"
+    },
+    "threequarter_left_step": {
+      "body": "assets/atelier/v2/fitted/body/threequarter_left_step.webp",
+      "outfit": "assets/atelier/v2/fitted/outfits/midnight_velvet/threequarter_left_step.webp",
+      "hair": null,
+      "accessories": [],
+      "status": "blocked_missing_validated_hair"
+    },
+    "threequarter_left_walk": {
+      "body": "assets/atelier/v2/fitted/body/threequarter_left_walk.webp",
+      "outfit": "assets/atelier/v2/fitted/outfits/midnight_velvet/threequarter_left_walk.webp",
+      "hair": null,
+      "accessories": [],
+      "status": "blocked_missing_validated_hair"
+    }
+  }
+}
