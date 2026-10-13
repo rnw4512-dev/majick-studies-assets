@@ -1257,21 +1257,34 @@ const D756_INSTRUCTOR_OVERVIEW={
   {id:'d756-s3-instructor-orientation',title:'Section 3 · IEP components and writing (instructor overview)',icon:'✦',concepts:['iep_components','iep_writing'],summary:'Section 3 covers the parts of an IEP and helps prepare for Task 1, writing an IEP using the electronic form and learner case study.',rows:[['Task 1','Write an IEP using the learner case study and electronic IEP creation tool','Follow the task rubric and sample IEP'],['Start','Open Task Overview, locate IEP creation tool and learner case study below rubric, then choose Create','Instructor recommends Chrome and Word'],['Export','In Auto Audit and Finalize use the print icon to save the IEP document/PDF','Instructor says print works more reliably than download'],['Submit','Upload the saved IEP file to the task; do not submit a link','Add initials/date to filenames to track revisions'],['Task 2','Conduct a short simulated IEP meeting','Schedule from the D756 course, not the old dashboard']],trap:'The electronic IEP may autofill fields and calculations, but its output still needs review against case facts and rubric.'}
  ]
 };
+const D756_OFFICIAL_COURSE_MAP={"version":"2026-10-13-course-outline-1","sourceId":"d756-official-outline-2026-10","sections":[{"number":1,"title":"Collaboration and Communication","competency":"2042.12.1","lessons":[["Communication and Collaboration Stakeholders",["Individual Education Plan (IEP) Team","Communication and Collaboration Skills"]],["Responsive Communication",["Responsive Communication"]]]},{"number":2,"title":"Collaboration and Resources","competency":"2042.12.2","lessons":[["Communication and Collaboration with Stakeholders",["Collaboration with Families and Colleagues"]],["Culturally Responsive Collaboration",["Culturally Responsive Collaboration"]]]},{"number":3,"title":"Individualized Education Plan (IEP)","competency":"2042.12.3","lessons":[["Creating the IEP with a Team",["Collaboration with Families and Colleagues"]],["PLAAFP and Annual Goals",["PLAAFP","Measurable Annual Goals"]],["Services, Supports, and Progress Monitoring",["Special Education Services and Supports","Least Restrictive Environment (LRE)","Monitoring and Communicating Progress"]],["Transition Plan",["Transition Plan","Writing a Transition Plan"]]]}],"overviewAliases":{"Section 3 Lesson 2":"Goals and Progress","Section 3 Lesson 3":"Student Goals and Accommodations","Section 3 Lesson 4":"Transition Planning"},"taskTips":{"task1":["Open the Task 1 overview, rubric, learner case study, and IEP Creator tool.","Use Google Chrome and Microsoft Word.","Make all revisions in the IEP Creator tool, not directly in the exported Word document.","Review the sample IEP and Section 3 lessons.","Use the print icon under Auto Audit and Finalize; rename the saved file so versions are clear.","Upload the saved document or PDF, not a link."],"task2":["Contact the course instructor early about expectations and scheduling.","Review the detailed case study and simulation checklist.","Practice collaborative listening, respectful responses, consensus-building, and information-gathering with live-actor avatars.","Prepare for a 15–20-minute simulated IEP meeting; arrive on time.","If rescheduling is necessary, cancel at least two hours in advance; two late cancellations or no-shows cause a seven-calendar-day scheduling pause.","Find the Mursion simulation schedule and dashboard through the course and expect a recording approximately 48 hours later."]},"links":[{"label":"Mursion simulation schedule","url":"https://assets.wgu.edu/39567b8a962178f7d3378b7f94d63ef9"},{"label":"Mursion dashboard","url":"https://lrps.wgu.edu/provision/440304873"},{"label":"Simulated classroom checklist","url":"https://lrps.wgu.edu/provision/467515913"}]};
 function startD756Course(){
  const code='D756',title='Individualized Education Plan (IEP) Collaboration and Communication with Parents and School Staff';
- if(!S.courses[code]){
-   S.courses[code]={id:code,title,version:'starter-empty-1',concepts:[],glossary:[],questionBank:[],misconceptionCatalog:[],studySections:[],sources:[],sourceText:'',localGenerated:false,awaitingCourseMaterial:true};
- }
+ if(!S.courses[code])S.courses[code]={id:code,title,version:'d756-outline-1',concepts:[],glossary:[],questionBank:[],misconceptionCatalog:[],studySections:[],sources:[],sourceText:'',localGenerated:false};
  const course=S.courses[code];
  course.studySections=Array.isArray(course.studySections)?course.studySections:[];
- for(const section of D756_INSTRUCTOR_OVERVIEW.sections){
-   if(!course.studySections.some(row=>row.id===section.id))course.studySections.push(JSON.parse(JSON.stringify(section)));
+ const legacyIds=new Set(D756_INSTRUCTOR_OVERVIEW.sections.map(s=>s.id));
+ course.studySections=course.studySections.filter(row=>!legacyIds.has(row?.id));
+ for(const section of D756_OFFICIAL_COURSE_MAP.sections){
+   for(let i=0;i<section.lessons.length;i++){
+     const lesson=section.lessons[i],id='d756-s'+section.number+'-l'+(i+1);
+     if(course.studySections.some(row=>row.id===id))continue;
+     course.studySections.push({id,title:'Section '+section.number+' · Lesson '+(i+1)+': '+lesson[0],section:'Section '+section.number,competency:section.competency,icon:'✦',
+       concepts:lesson[1].map((_,j)=>id+'-p'+(j+1)),
+       summary:'Official outline: '+lesson[0]+'. Detailed lesson content and rubric are not yet uploaded.',
+       rows:lesson[1].map((heading,j)=>['Lesson '+(i+1)+'.'+(j+1),heading,'Lesson page content pending source upload']),
+       trap:'Outline and instructor guidance are not substitutes for the lesson content. Guided practice, quiz and section test remain pending.'});
+   }
  }
+ course.d756TaskTips=JSON.parse(JSON.stringify(D756_OFFICIAL_COURSE_MAP.taskTips));
+ course.d756TaskLinks=JSON.parse(JSON.stringify(D756_OFFICIAL_COURSE_MAP.links));
+ course.d756Competencies=D756_OFFICIAL_COURSE_MAP.sections.map(row=>({id:row.competency,section:row.number,title:row.title}));
+ course.d756OutlineVersion=D756_OFFICIAL_COURSE_MAP.version;
  course.sources=Array.isArray(course.sources)?course.sources:[];
- if(!course.sources.some(row=>row.id===D756_INSTRUCTOR_OVERVIEW.sourceId)){
-   course.sources.push({id:D756_INSTRUCTOR_OVERVIEW.sourceId,title:D756_INSTRUCTOR_OVERVIEW.sourceTitle,type:'instructor_orientation'});
- }
- course.awaitingCourseMaterial=true; // Official detailed outline and rubric are not yet provided.
+ const sources=[{id:D756_INSTRUCTOR_OVERVIEW.sourceId,title:D756_INSTRUCTOR_OVERVIEW.sourceTitle,type:'instructor_orientation'},
+ {id:D756_OFFICIAL_COURSE_MAP.sourceId,title:'D756 course outline, competencies and two performance-task instructions',type:'course_outline'}];
+ for(const source of sources)if(!course.sources.some(row=>row.id===source.id))course.sources.push(source);
+ course.awaitingCourseMaterial=true;
  S.progress[code]=S.progress[code]||{answers:[],explanations:[],repair:[],streak:0,lastDay:'',bossWins:0,xp:0,crystals:0};
  S.activeCourse=code;session=null;S.screen='home';save();render();
 }
