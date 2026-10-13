@@ -49,6 +49,8 @@ async function solveMean(values,sum,count,mean){
  await solveMean('11, 17, 23, 29, 35',115,5,23);
  await solveMean('9, 13, 17, 21, 25',85,5,17);
  await enterAndCheck({transfer:17});
+ const masteryEvidence=await evalPage('({mastery:S.progress.D772.interactiveMastery||{},lastAnswer:S.progress.D772.answers?.slice(-2),feedback:document.querySelector(".mjSeFeedback")?.textContent,phase:document.querySelector(".mjSolutionEngine h3")?.textContent,fields:[...document.querySelectorAll(".mjSolutionEngine [data-field]")].map(x=>x.dataset.field),lesson:document.querySelector(".mjSeTaskSelect")?.value,bridge:!!window.MajickInteractiveMastery})');
+ console.log('Browser full-transfer diagnostic:',JSON.stringify(masteryEvidence));
  assert.equal(await evalPage('!!S.progress.D772.interactiveMastery?.["interactive-independent:D772:mean"]'),true,'Unassisted transfer must be recorded as mastery');
  assert((await evalPage('S.progress.D772.crystals'))>=1,'Independent transfer should earn an existing crystal reward');
  const before=await evalPage('S.progress.D772.xp');
