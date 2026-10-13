@@ -1039,7 +1039,7 @@
   function buildD772SectionReview(){
     const pool=realmQuestionPool().filter(q=>q?.prompt&&q?.options?.length>=2&&q?.answer);
     const sections=[
-      pool.filter(q=>['Data Collection','Bias & Credibility','Misrepresentation','Conclusions'].includes(q.section)),
+      pool.filter(q=>['Data Collection','Bias & Credibility','Misrepresentation','Conclusions'].includes(q.section)||/^Section 1(?:\b|\s| ·)/.test(String(q.section||''))),
       pool.filter(q=>String(q.section||'').startsWith('Section 2')),
       pool.filter(q=>String(q.section||'').startsWith('Section 3'))
     ];
@@ -1102,10 +1102,11 @@
   };
   globalThis.gauntletNext=function(){
     if(!session||session.type!=='gauntlet'||session.finished)return;
-    nextGauntlet();render?.();
+    if(!nextGauntlet()){session.finished=true;session.won=false;session.recordOutcome=recordRealm('gauntlet',session.score,session.round,false)}
+    render?.();
   };
   function gauntletHTML(){
-    if(session.finished)return realmResultHTML(session.reviewMode?'D772 All-Section Review':'Guardian Gauntlet','gauntlet',session.score,Math.max(1,session.round),session.won,session.reviewMode?('Balanced Section 1 review complete • '+session.score+'/'+session.round+' correct'):(session.won?(session.guardianName+' helped you break the boss ward.'):'The boss ward held this time. Your run still added practice data.'));
+    if(session.finished)return realmResultHTML(session.reviewMode?'D772 All-Section Review':'Guardian Gauntlet','gauntlet',session.score,Math.max(1,session.round),session.won,session.reviewMode?('Balanced Sections 1–3 review complete • '+session.score+'/'+session.round+' correct'):(session.won?(session.guardianName+' helped you break the boss ward.'):'The boss ward held this time. Your run still added practice data.'));
     const q=session.current,phase=bossPhase(session.bossHP);
     return '<div class="qwrap realmMode realmGauntlet '+phase.className+'">'+realmScene('gauntlet')+guardianBanner(session.guardianMessage||(session.shieldUsed?'The shield is spent. I am still with you.':'I can absorb one missed answer for you this run.'))+
       '<div class="qtop"><span class="qbadge">♛ '+E(session.reviewMode?'D772 All-Section Review':'Guardian Gauntlet')+'</span><div><span class="hearts">'+('💗'.repeat(session.playerHP))+'</span> <span class="comboGlow">✦ x'+Math.max(1,session.combo)+'</span></div></div>'+trialProgress('gauntlet')+trialGuide('gauntlet')+
