@@ -41,6 +41,27 @@ function audit(questions){
  const rows=(Array.isArray(questions)?questions:[]).map(q=>{const result=evidence(q);return {id:String(q?.id||q?.qid||''),required:result.required,status:result.ok?'usable':'blocked',source:result.source,reason:result.reason||''}});
  return {total:rows.length,requiringVisual:rows.filter(x=>x.required).length,blocked:rows.filter(x=>x.status==='blocked'),rows};
 }
+function generatedPlot(v){
+ const type=String(v?.type||'').toLowerCase();
+ const wrap=(plot,title)=>'<figure class="majickEvidenceChart" style="padding:14px;background:#24142f;color:#fff1dd;border:1px solid #cfae8a;border-radius:12px;margin:1rem 0"><figcaption><b>'+escape(title)+'</b></figcaption><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 460 255" style="display:block;width:100%;max-width:620px" role="img" aria-label="'+escape(v.alt||title)+'"><line x1="48" y1="210" x2="430" y2="210" stroke="#f7e4ce"/><line x1="48" y1="22" x2="48" y2="210" stroke="#f7e4ce"/>'+plot+'</svg><figcaption>'+escape(v.caption||'Interpret the displayed values before answering.')+'</figcaption></figure>';
+ if(type==='scatter'||type==='scatterplot'){
+  if(!Array.isArray(v.points))return '';
+  const xs=v.points.map(p=>Number(p[0])),ys=v.points.map(p=>Number(p[1])),minx=Math.min(...xs),maxx=Math.max(...xs),miny=Math.min(...ys),maxy=Math.max(...ys);
+  const px=x=>48+((x-minx)/(maxx-minx||1))*364,py=y=>210-((y-miny)/(maxy-miny||1))*170;
+  const dots=v.points.map(p=>'<circle cx="'+px(Number(p[0]))+'" cy="'+py(Number(p[1]))+'" r="5" fill="#e6b2db"/>').join('');
+  const labels='<text x="230" y="245" fill="#fff1dd" text-anchor="middle" font-size="13">'+escape(v.xLabel||'x')+'</text><text x="20" y="122" fill="#fff1dd" font-size="13" text-anchor="middle" transform="rotate(-90 20 122)">'+escape(v.yLabel||'y')+'</text>';
+  return wrap(dots+labels,'Scatterplot');
+ }
+ if(type==='box'||type==='boxplot'||type==='box-plot'){
+  const a=(v.fiveNumber||v.fiveNumberSummary||v.values).map(Number),min=a[0],max=a[4],range=max-min||1;
+  const x=n=>48+(n-min)/range*364;
+  let plot='<line x1="'+x(a[0])+'" y1="110" x2="'+x(a[4])+'" y2="110" stroke="#eac4ef" stroke-width="3"/><rect x="'+x(a[1])+'" y="75" width="'+Math.max(1,x(a[3])-x(a[1]))+'" height="70" fill="#8152aa" stroke="#f4ddbc" stroke-width="2"/><line x1="'+x(a[2])+'" y1="75" x2="'+x(a[2])+'" y2="145" stroke="#fff1dd" stroke-width="4"/>';
+  [0,4].forEach(i=>{plot+='<line x1="'+x(a[i])+'" y1="88" x2="'+x(a[i])+'" y2="132" stroke="#f4ddbc" stroke-width="3"/>'});
+  a.forEach((n,i)=>{plot+='<text x="'+x(n)+'" y="'+(i%2?174:192)+'" text-anchor="middle" font-size="12" fill="#fff1dd">'+escape(n)+'</text>'});
+  return wrap(plot,'Box plot: minimum, Q1, median, Q3 and maximum');
+ }
+ return '';
+}
 function evidence(q,extraRenderer){
  const prompt=String(q?.prompt||'');
  if(knownSalary(q))return {required:true,ok:true,prompt:'Examine the salary histogram. What is its modality?',html:salaryHistogram(),source:'verified-example'};
@@ -50,6 +71,7 @@ function evidence(q,extraRenderer){
  let html='';
  if(q?.visual){const check=validateVisual(q.visual);if(!check.ok)return {required:true,ok:false,prompt,html:'',source:'invalid-visual',reason:check.reason};}
  if(typeof q?.visualHtml==='string'&&/<(?:svg|img|canvas|table|figure)\b/i.test(q.visualHtml))html=q.visualHtml;
+ if(!html&&q?.visual)html=generatedPlot(q.visual);
  if(!html&&q?.visual&&typeof extraRenderer==='function'){try{html=String(extraRenderer(q)||'')}catch(error){html=''}}
  if(!html&&q?.visual&&typeof globalThis.MajickCourseTutor?.questionVisualHtml==='function'){try{html=String(globalThis.MajickCourseTutor.questionVisualHtml(q)||'')}catch(error){html=''}}
  // Do not confuse a blank string or a label-only fragment with visual evidence.
