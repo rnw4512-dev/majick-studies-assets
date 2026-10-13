@@ -153,12 +153,22 @@ function questionHtml(q){
   }).join('');
   const label=E(session?.opts?.label||'D772 Practice');
   const progress=(session?.index||1)+(session?.opts?.limit?'/'+session.opts.limit:'');
-  return '<div class="v3333QuestionShell '+(oa?'oaMode':'practiceMode')+'"><div class="v3333QTop"><div><span class="v3333Eyebrow">D772 • STATISTICAL DATA LITERACY</span><h2>'+label+'</h2></div><div class="v3333QCount">Question '+progress+'</div><button class="btn ghost" onclick="session=null;navigate(\'mission\')">Choose section</button></div>'+(oa?'<div class="v3333OANote">No hints or lesson labels during the simulation.</div>':'')+(session?.opts?.timeLimitMs?'<div id="v342AssessClock" role="timer">Time remaining: '+Math.max(0,Math.ceil((session.opts.timeLimitMs-(Date.now()-session.start))/1000))+' seconds</div>':'')+'<article class="v3333QuestionCard"><div class="v3333Prompt">'+E(q.prompt)+'</div>'+(visualHtml(q.visual)||window.MajickCourseTutor?.questionVisualHtml?.(q)||'')+(!oa&&evidenceOk?'<button class="btn ghost" '+(session.answered?'disabled':'')+' onclick="toggleAnchorChart()">'+(session.chartOpen?'Hide':'Open')+' skill anchor chart</button>':'')+(!oa&&session.chartOpen?anchorChartHTML(q):'')+(clue?'<div class="v3333ClueTraining">'+clueHTML(cleanPrompt(q.prompt))+'</div>':'')+confidenceHtml()+questionBoard(q)+'<div class="v3333Options">'+(evidenceOk?options:'')+'</div>'+(!session.answered&&evidenceOk?'<button type="button" class="btn primary v3333Submit" '+(selected?'':'disabled')+' onclick="MajickWGUPractice.submit()">Submit</button>':'')+(!oa&&session.answered?practiceFeedback(q):'')+'</article></div>';
+  return '<div class="v3333QuestionShell '+(oa?'oaMode':'practiceMode')+'"><div class="v3333QTop"><div><span class="v3333Eyebrow">D772 • STATISTICAL DATA LITERACY</span><h2>'+label+'</h2></div><div class="v3333QCount">Question '+progress+'</div><button class="btn ghost" onclick="session=null;navigate(\'mission\')">Choose section</button></div>'+(oa?'<div class="v3333OANote">No hints or lesson labels during the simulation.</div>':'')+(session?.opts?.timeLimitMs?'<div id="v342AssessClock" role="timer">Time remaining: '+Math.max(0,Math.ceil((session.opts.timeLimitMs-(Date.now()-session.start))/1000))+' seconds</div>':'')+'<article class="v3333QuestionCard"><div class="v3333Prompt">'+E(ev?.prompt||q.prompt)+'</div>'+(evidenceOk?ev.html:(globalThis.MajickVisualEvidence?.blockedHtml()||'<p role="alert">Visual evidence unavailable; do not answer.</p>')+'<button type="button" class="btn ghost" onclick="MajickWGUPractice.skipBrokenVisual()">Replace broken question without penalty →</button>')+(!oa&&evidenceOk?'<button class="btn ghost" '+(session.answered?'disabled':'')+' onclick="toggleAnchorChart()">'+(session.chartOpen?'Hide':'Open')+' skill anchor chart</button>':'')+(!oa&&session.chartOpen?anchorChartHTML(q):'')+(clue?'<div class="v3333ClueTraining">'+clueHTML(cleanPrompt(q.prompt))+'</div>':'')+confidenceHtml()+questionBoard(q)+'<div class="v3333Options">'+(evidenceOk?options:'')+'</div>'+(!session.answered&&evidenceOk?'<button type="button" class="btn primary v3333Submit" '+(selected?'':'disabled')+' onclick="MajickWGUPractice.submit()">Submit</button>':'')+(!oa&&session.answered?practiceFeedback(q):'')+'</article></div>';
 }
 function select(choice){
   if(!session||session.answered||!globalThis.MajickVisualEvidence?.evidence(session.current,x=>visualHtml(x.visual)||window.MajickCourseTutor?.questionVisualHtml?.(x)||'')?.ok)return;
   session.pendingChoice=choice;
   render();
+}
+function skipBrokenVisual(){
+  if(!session||session.answered||globalThis.MajickVisualEvidence?.evidence(session.current,x=>visualHtml(x.visual)||window.MajickCourseTutor?.questionVisualHtml?.(x)||'')?.ok)return;
+  const current=session.current,used=new Set((session.questions||[]).map(x=>String(x?.id||x?.qid||x?.prompt||'')));
+  const candidates=shuffleCopy(practicePool('mixed').filter(x=>x?.prompt&&x?.options?.length&&sectionNumber(x)===sectionNumber(current)&&!used.has(String(x.id||x.qid||x.prompt||''))));
+  const next=candidates.find(x=>globalThis.MajickVisualEvidence?.evidence(x,v=>visualHtml(v.visual)||window.MajickCourseTutor?.questionVisualHtml?.(v)||'')?.ok);
+  if(!next){window.rewardToast?.('Graph missing','No valid replacement in this section. Return to Choose section. Nothing was graded.');return}
+  session.current=next;session.pendingChoice=null;session.chosen=null;session.answered=false;
+  if(Array.isArray(session.questions)&&session.index>0)session.questions[session.index-1]=next;
+  session.chartOpen=false;session.chartUsed=false;render();
 }
 function submit(){
   if(!session||session.answered||!session.pendingChoice||!globalThis.MajickVisualEvidence?.evidence(session.current,x=>visualHtml(x.visual)||window.MajickCourseTutor?.questionVisualHtml?.(x)||'')?.ok)return;
@@ -452,7 +462,7 @@ function bootD772Practice(){
     }
   }catch(e){console.warn('D772 Practice Lab boot',e)}
 }
-window.MajickWGUPractice={VERSION,select,submit,startSection,startDiagnostic,startMixedOA,startRepairTransfer,balancedMixedAssessment,practicePool,sectionNumber,startOA,startFocusedReview,startSampling,startStudyDesign,startLabelStudy,startExperiments,visualHtml,whyList,balancedOA,isD772Question,ensureD772Bank,bootD772Practice};
+window.MajickWGUPractice={VERSION,select,submit,skipBrokenVisual,startSection,startDiagnostic,startMixedOA,startRepairTransfer,balancedMixedAssessment,practicePool,sectionNumber,startOA,startFocusedReview,startSampling,startStudyDesign,startLabelStudy,startExperiments,visualHtml,whyList,balancedOA,isD772Question,ensureD772Bank,bootD772Practice};
 document.documentElement.dataset.majickWguPractice='3.3.36';
 bootD772Practice();
 })();
