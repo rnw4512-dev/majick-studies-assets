@@ -125,6 +125,8 @@ function startRepairTransfer(id){
  S.screen='mission';render();
 }
 function practiceFeedback(q){
+  if(session?.answered&&session.current===q&&!session.adaptiveTracked){session.adaptiveTracked=true;try{window.MajickLearningContinuity?.skillResult(q,session.chosen===q.answer,!!session.mathCoachAssisted,'study-now')}catch(_){}}
+
   const wrong=session?.chosen!==q.answer;
   const reason=String(q.why||'').replace(/\s+/g,' ').trim();
   let reasonBox='';
