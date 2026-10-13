@@ -3,20 +3,20 @@
 if(window.MajickSpriteActions)return;
 const ROOT='./assets/atelier/v2/sprites/';
 const POSES=Object.freeze({idle:'standing.webp',study:'studying_read.webp',write:'writing.webp',feed:'feeding_pets.webp',play:'playing.webp',sleep:'sleeping.webp'});
-const LABELS={idle:'Stand',study:'Read',write:'Write',feed:'Feed Guardian',play:'Play',sleep:'Rest'};
+const LABELS={idle:'Stand',study:'Read',write:'Write',feed:'Feed Guardian',play:'Play with Guardian',sleep:'Rest'};
 const DEFAULT_MSG='The original fitted scholar remains your saved appearance. These fixed-look poses are separate action sprites.';
-let mode='idle',timer=null,frame=0,live=false;
+let mode='idle',timer=null,frame=0,live=false,lastCareMessage='';
 let pane=null;
 const poseSrc=k=>ROOT+'poses/'+POSES[k];
 function p(){return window.MajickAtelier?.player?.()||{}}
-function compatible(){const s=p();return Number(s.hair)===0&&Number(s.robe)===0&&![0,5].includes(Number(s.skin))}
+function compatible(){const s=p();return Number(s.hair)===0&&Number(s.robe)===1&&![0,5].includes(Number(s.skin))}
 function dock(){return document.querySelector('#majickScholarCompanion .mscPanel')}
 function stop(){if(timer){clearInterval(timer);timer=null}frame=0}
 function draw(){
  const d=dock();if(!d)return;
  if(!pane){pane=document.createElement('section');pane.className='mscSpriteActions';pane.setAttribute('aria-label','Scholar activity controls');d.append(pane)}
  const okay=compatible();
- pane.innerHTML='<div class="mscActionHeader"><strong>Scholar activities</strong><small>'+ (okay?'Fixed-look activity illustrations available':'Activity illustrations do not match your current outfit or hairstyle')+'</small></div><div class="mscActionButtons">'+Object.keys(POSES).map(k=>'<button type="button" data-action-pose="'+k+'" aria-pressed="'+(mode===k)+'">'+LABELS[k]+'</button>').join('')+'<button type="button" data-action-pose="walk" aria-pressed="'+(mode==='walk')+'">Walk</button></div><p class="mscSpriteStatus" role="status">'+(mode==='walk'?'A short walk preview is active.':DEFAULT_MSG)+'</p>';
+ pane.innerHTML='<div class="mscActionHeader"><strong>Scholar activities</strong><small>'+ (okay?'Fixed-look activity illustrations available':'Activity illustrations do not match your current outfit or hairstyle')+'</small></div><div class="mscActionButtons">'+Object.keys(POSES).map(k=>'<button type="button" data-action-pose="'+k+'" aria-pressed="'+(mode===k)+'">'+LABELS[k]+'</button>').join('')+'<button type="button" data-action-pose="walk" aria-pressed="'+(mode==='walk')+'">Walk</button></div><p class="mscSpriteStatus" role="status">'+(lastCareMessage||DEFAULT_MSG)+'</p>';
  pane.querySelectorAll('[data-action-pose]').forEach(b=>b.addEventListener('click',()=>activate(b.dataset.actionPose)));
 }
 function showAction(k){
@@ -37,7 +37,24 @@ function showAction(k){
 }
 function activate(action){
  stop();
+ lastCareMessage='';
  mode=action;
+ if(action==='feed'||action==='play'){
+  const care=window.MajickGuardianCare;
+  const snap=care?.snapshot?.();
+  const guardian=snap?.roster?.find(g=>g.petId===snap.focusPetId)||snap?.roster?.[0];
+  if(!guardian||!care?.performAction){
+   lastCareMessage='No bonded Guardian is available. Open Sanctuary to bond with a Guardian first.';
+   mode='idle';draw();return;
+  }
+  const result=care.performAction(guardian.petId,action,{objectId:action==='feed'?'guardian-food-bowl':'guardian-play-rug'});
+  lastCareMessage=result?.message||'Guardian care could not be completed.';
+  if(!result?.ok){
+   mode='idle';draw();return;
+  }
+  care.broadcastState?.();
+  try{window.render?.()}catch(_){}
+ }
  if(action==='walk'){
   const target=dock()?.querySelector('.mscLarge');
   if(!compatible()){
