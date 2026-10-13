@@ -246,7 +246,8 @@ function renderLesson(){
     return;
   }
   box.innerHTML='<div class="learnStepHeader"><div><span>STEP 3 • EXPLAIN + SEE IT</span><h3>'+E(l.title)+'</h3><small>'+E(l.source||'Course lesson')+'</small></div><div class="lessonCount">'+(i+1)+' / '+rows.length+'</div></div>'+
-    '<div class="lessonGrid"><article class="lessonExplain"><h4>What it means</h4><p>'+E(l.explain)+'</p><div class="lessonActions"><button class="btn ghost" id="learnPrevLesson" '+(i===0?'disabled':'')+'>← Previous</button><button class="btn primary" id="learnNextLesson">'+(i===rows.length-1?'Guided question →':'Next lesson →')+'</button></div></article>'+visual(l.type)+'</div>';
+    '<div class="lessonGrid"><article class="lessonExplain"><h4>What it means</h4><p>'+E(l.explain)+'</p><div class="lessonActions"><button class="btn ghost" id="learnPrevLesson" '+(i===0?'disabled':'')+'>← Previous</button><button class="btn primary" id="learnNextLesson">'+(i===rows.length-1?'Guided question →':'Next lesson →')+'</button></div></article>'+visual(l.type)+'</div><div id="learnInlinePractice" class="learnInlinePractice" aria-label="Practice this lesson"></div>';
+  window.MajickInlineLessonPractice?.mount?.(box,l,i);
   document.getElementById('learnPrevLesson')?.addEventListener('click',()=>{st.lessonIndex=Math.max(0,i-1);persist();renderLesson()});
   document.getElementById('learnNextLesson')?.addEventListener('click',()=>{if(i<rows.length-1){st.lessonIndex=i+1;persist();renderLesson()}else showTab('practice')});
 }
