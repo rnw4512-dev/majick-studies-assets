@@ -36,7 +36,25 @@ for(const task of window.MajickLessonActivities?.tasks||[]){if(BANK[task.course]
 const STATES=new WeakMap();
 function stageTitle(t,s){return t.kind==='math'?['Identify the knowns and unknown','Choose a formula','Place values into slots','Calculate your answer','Interpret your result','Independent transfer'][s]:t.kind==='graph'?['Read the target frequencies','Build the graph','Find the modal interval','Count total frequency','Explain the pattern','Independent graph challenge'][s]:['Read the scenario','Choose the first step','Arrange the full response','Explain your decision','Review your construction','Independent new scenario'][s]}
 const numeric=(a,b)=>a!==''&&a!=null&&Number.isFinite(Number(a))&&Math.abs(Number(a)-Number(b))<=Math.max(.0002,Math.abs(b)*.00005);
-function setup(host,task){if(host.dataset.engineTask!==task.id||host.dataset.engineCourse!==window.S.activeCourse){host.dataset.engineTask=task.id;host.dataset.engineCourse=window.S.activeCourse;STATES.set(host,{stage:0,answers:{},caseIndex:0,feedback:'',error:false,hint:false,finished:false})}}
+function knownsValid(task,ex,known,unknown){
+ const text=String(known||'').toLowerCase(),need=String(unknown||'').toLowerCase();
+ const expected=task.id==='mean'?/mean|average/:task.id==='median'?/median|middle/:/probab|chance|likelihood|p\(/;
+ if(!expected.test(need))return false;
+ const source=(ex.known||ex.numbers?.join(', ')||'').match(/\d+(?:\.\d+)?/g)||[];
+ return source.length>0&&source.every(n=>new RegExp('(^|\\D)'+n.replace('.','\\.')+'(\\D|$)').test(text));
+}
+function reasoningCheck(task,ex,answer){
+ const text=String(answer||'').toLowerCase().trim(),result=task.kind==='math'?ex.answer:ex.total;
+ if(text.split(/\s+/).filter(Boolean).length<9)return {ok:false,feedback:'Give a complete explanation: state the answer, the relevant evidence, and why the method fits this situation.'};
+ const hasNumber=new RegExp('(^|\\D)'+String(Number(result).toFixed(task.id==='probability'?2:0)).replace('.','\\.')+'(\\D|$)').test(text)||text.includes(String(Number(result)))||task.kind==='graph'&&text.includes(String(ex.total));
+ if(!hasNumber)return {ok:false,feedback:'Include the actual calculated result or total from this specific problem.'};
+ if(task.id==='mean'&&!/mean|average/.test(text))return {ok:false,feedback:'Identify the mean and explain how the total was divided by the number of observations.'};
+ if(task.id==='median'&&!/median|middle/.test(text))return {ok:false,feedback:'Identify the median and describe the ordered middle values.'};
+ if(task.id==='probability'&&!/probab|chance|likelihood|percent|%/.test(text))return {ok:false,feedback:'Interpret the result as a probability or chance in the context of the draws.'};
+ if(task.kind==='graph'&&!/frequen|interval|bar|histogram|count/.test(text))return {ok:false,feedback:'Describe what the bar heights or frequency intervals represent.'};
+ return {ok:true,feedback:'Your response identifies the result and relevant statistical context. This automated check is limited; compare your interpretation with the model.'};
+}
+function setup(host,task){if(host.dataset.engineTask!==task.id||host.dataset.engineCourse!==window.S.activeCourse){host.dataset.engineTask=task.id;host.dataset.engineCourse=window.S.activeCourse;STATES.set(host,{stage:0,answers:{},caseIndex:0,feedback:'',error:false,hint:false,finished:false,verified:{0:[],1:[]}})}}
 function render(host,task){setup(host,task);const st=STATES.get(host),ex=task.cases[st.caseIndex],independent=st.caseIndex===1,step=st.stage;let body='',a=st.answers;
 const input=(id,label,placeholder='Your answer')=>'<label class="mjSeLabel">'+esc(label)+'<input data-field="'+id+'" value="'+esc(a[id]||'')+'" placeholder="'+esc(placeholder)+'" autocomplete="off"></label>';
 if(task.kind==='math'){
@@ -69,16 +87,26 @@ host.querySelectorAll('[data-delta]').forEach(el=>el.onclick=()=>{let i=el.datas
 host.querySelectorAll('[data-choice]').forEach(el=>el.onclick=()=>{a.formula=task.alternatives[Number(el.dataset.choice)];render(host,task)});
 host.querySelectorAll('[data-add]').forEach(el=>el.onclick=()=>{a.order=a.order||[];let n=Number(el.dataset.add);if(!a.order.includes(n))a.order.push(n);render(host,task)});
 host.querySelector('[data-undo]')?.addEventListener('click',()=>{a.order?.pop();render(host,task)});
-host.querySelector('[data-reset]').onclick=()=>{STATES.set(host,{stage:0,answers:{},caseIndex:st.caseIndex,feedback:'',error:false,hint:false});render(host,task)};
+host.querySelector('[data-reset]').onclick=()=>{STATES.set(host,{stage:0,answers:{},caseIndex:st.caseIndex,feedback:'',error:false,hint:false,verified:{0:[],1:[]}});render(host,task)};
 host.querySelector('[data-hint]')?.addEventListener('click',()=>{st.hint=true;render(host,task)});
 host.querySelector('[data-check]').onclick=()=>{let good=false,reason='';
- if(task.kind==='math'){if(step===0)good=(a.known||'').trim().length>2&&(a.unknown||'').trim().length>2;else if(step===1)good=a.formula===task.formula;else if(step===2)good=ex.slots.every((v,i)=>numeric(a['slot'+i],v));else if(step===3||step===5)good=numeric(a[step===5?'transfer':'result'],ex.answer);else {const review=rubric(task,ex,a.meaning,step);good=review.ok;reason=review.feedback}if(step!==4)reason=ex.why}
- else if(task.kind==='graph'){if(step===0)good=numeric(a.identified,ex.freq.length);else if(step===1||step===5)good=ex.freq.every((v,i)=>numeric(a['bar'+i],v));else if(step===2)good=String(a.mode||'').trim()===ex.mode;else if(step===3)good=numeric(a.total,ex.total);else {const review=rubric(task,ex,a.meaning,step);good=review.ok;reason=review.feedback}if(step!==4)reason=ex.interpret}
+ if(task.kind==='math'){if(step===0)good=knownsValid(task,ex,a.known,a.unknown);else if(step===1)good=a.formula===task.formula;else if(step===2)good=ex.slots.every((v,i)=>numeric(a['slot'+i],v));else if(step===3||step===5)good=numeric(a[step===5?'transfer':'result'],ex.answer);else {const review=reasoningCheck(task,ex,a.meaning);good=review.ok;reason=review.feedback}if(step!==4)reason=ex.why}
+ else if(task.kind==='graph'){if(step===0)good=numeric(a.identified,ex.freq.length);else if(step===1||step===5)good=ex.freq.every((v,i)=>numeric(a['bar'+i],v));else if(step===2)good=String(a.mode||'').trim()===ex.mode;else if(step===3)good=numeric(a.total,ex.total);else {const review=reasoningCheck(task,ex,a.meaning);good=review.ok;reason=review.feedback}if(step!==4)reason=ex.interpret}
  else{if(step===0)good=(a.focus||'').trim().split(/\s+/).length>=4;else if(step===3||step===4){const review=rubric(task,ex,a.meaning,step);good=review.ok;reason=review.feedback}else if(step===1)good=a.order?.[0]===ex.correct[0];else good=JSON.stringify(a.order)===JSON.stringify(ex.correct);if(step!==3&&step!==4)reason=ex.reason}
  if(!good){st.feedback=(step===4|| (task.kind==='sequence'&&step===3))?reason:'Not yet. Revisit this step and try again.';render(host,task);return}
- if(step===5){if(st.finished){st.feedback='This transfer has already been completed. Restart to practice again.';render(host,task);return}st.finished=true;const reward=window.MajickInteractiveRewards?.award?.(task.id,'transfer');st.feedback='Independent transfer practice completed. '+reason+(reward?.awarded?' Reward: +'+reward.xp+' XP and +'+reward.crystals+' crystal.':' Reward for this activity was already earned.');render(host,task);return}
+ if(step===5){
+  if(st.finished){st.feedback='This transfer has already been completed.';render(host,task);return}
+  const full=[0,1,2,3,4].every(n=>(st.verified?.[1]||[]).includes(n));
+  if(!full){st.feedback='Independent completion requires all five prior steps to be checked on the new scenario.';render(host,task);return}
+  st.finished=true;
+  const mastered=window.MajickInteractiveMastery?.record?.({taskId:task.id,lessonId:task.lesson,kind:task.kind,allStagesVerified:full,hintFreeTransfer:!st.transferHintUsed&&task.kind!=='sequence'});
+  const reward=window.MajickInteractiveRewards?.award?.(task.id,'transfer');
+  st.feedback='Transfer complete. '+(mastered?.recorded?'Independently verified calculation recorded. ':'Practice completed; mastery is not asserted. ')+reason+(reward?.awarded?' Reward: +'+reward.xp+' XP and +'+reward.crystals+' crystal.':' Reward already earned.');
+  render(host,task);return
+}
+ (st.verified[independent?1:0]||(st.verified[independent?1:0]=[])).push(step);
  if(step===4){if(independent){st.stage=5;st.feedback='Now complete the final independent answer or construction.';render(host,task);return}st.caseIndex=1;st.stage=0;st.answers={};st.hint=false;st.feedback='New scenario: complete every step without hints.';render(host,task);return}
- if(step===0&&!independent)window.MajickInteractiveRewards?.award?.(task.id,'participation');st.stage++;st.feedback='Step correct. '+(step===3?reason:'Continue to the next step.');render(host,task)
+ if(step===0&&!independent)window.MajickInteractiveRewards?.award?.(task.id,'participation');(st.verified[independent?1:0]||(st.verified[independent?1:0]=[])).push(step);st.stage++;st.feedback='Step correct. '+(step===3?reason:'Continue to the next step.');render(host,task)
  };
 }
 const OBJECTIVES={
