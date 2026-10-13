@@ -244,7 +244,7 @@
           gameCard('ᚱ','Rune Sort','Sort D772 prompts into Data Collection, Bias & Credibility, Misrepresentation, and Conclusions when D772 is active.','startRuneSort()')+
           (globalThis.S?.activeCourse==='D755'?gameCard('✥','Assessment Sigil Sort','Sort D755 scenarios through Qualitative/Quantitative, Formal/Informal, Formative/Summative, Norm/Criterion, Screening/Monitoring, or Observation/Anecdotal gates.','startAssessmentSigilSort()','D755 TRIAL'):'')+
           gameCard('◉','Oracle Lens','Identify the controlling statistical clue first, then answer through that clue.','startOracleLens()')+
-          (globalThis.S?.activeCourse==='D772'?gameCard('♛','Section 1 Review Gauntlet','A balanced 12-question D772 review: three questions each from Data Collection, Bias, Misrepresentation, and Conclusions.','startD772SectionReview()','D772 REVIEW'):gameCard('♛','Guardian Gauntlet','A multi-round boss run with hearts, boss HP, combos, and one Guardian shield.','startGuardianGauntlet()'))+
+          (globalThis.S?.activeCourse==='D772'?gameCard('♛','All-Section Review Gauntlet','Twelve D772 questions drawn equally from Sections 1, 2, and 3.','startD772SectionReview()','D772 REVIEW'):gameCard('♛','Guardian Gauntlet','A multi-round boss run with hearts, boss HP, combos, and one Guardian shield.','startGuardianGauntlet()'))+
           gameCard('✧','Memory Constellation','Match controlling clues to the correct answers and build a glowing constellation.','startMemoryConstellation()')+
           gameCard('⬡','Hex Breaker','Judge a statistical claim, expose the misconception, and repair it with the correct concept.','startHexBreaker()')+
         '</div>'+
@@ -433,11 +433,254 @@
     {id:'v3355-d772-l4-06',section:'Conclusions',prompt:'Which statement best follows the rule “the claim cannot be stronger than the evidence”?',options:['State only the conclusion the study design and data support','Always use causal language','Generalize every sample result to everyone','Ignore sampling limitations if the p-value is small'],answer:'State only the conclusion the study design and data support',keyClue:'match the wording of the conclusion to the strength of the evidence',why:'Sound conclusions respect the limits of sampling, design, and analysis.',difficulty:2}
   ];
 
+  const D772_ALL_SECTION_SUPPLEMENT=[
+  {
+    "id": "d772-realm-s2-01",
+    "section": "Section 2 · Graphs",
+    "prompt": "Which graph best shows the distribution of students’ heights?",
+    "options": [
+      "Histogram",
+      "Pie chart",
+      "Bar chart of favorite subjects",
+      "Two-way table"
+    ],
+    "answer": "Histogram",
+    "keyClue": "Heights are quantitative; histograms show distributions of quantitative values.",
+    "why": "Heights are quantitative; histograms show distributions of quantitative values.",
+    "difficulty": 2
+  },
+  {
+    "id": "d772-realm-s2-02",
+    "section": "Section 2 · Graphs",
+    "prompt": "Which display is most appropriate for one categorical variable, such as preferred school lunch?",
+    "options": [
+      "Bar chart",
+      "Histogram",
+      "Scatterplot",
+      "Box plot"
+    ],
+    "answer": "Bar chart",
+    "keyClue": "Bar charts compare frequencies or percentages across categories.",
+    "why": "Bar charts compare frequencies or percentages across categories.",
+    "difficulty": 2
+  },
+  {
+    "id": "d772-realm-s2-03",
+    "section": "Section 2 · Distributions",
+    "prompt": "A histogram of salaries has most values at the low end and a long tail toward high values. What shape is it?",
+    "options": [
+      "Skewed right",
+      "Skewed left",
+      "Uniform",
+      "Symmetric"
+    ],
+    "answer": "Skewed right",
+    "keyClue": "A right skew has its longer tail toward higher values.",
+    "why": "A right skew has its longer tail toward higher values.",
+    "difficulty": 2
+  },
+  {
+    "id": "d772-realm-s2-04",
+    "section": "Section 2 · Distributions",
+    "prompt": "A distribution has one clear peak. How is its modality described?",
+    "options": [
+      "Unimodal",
+      "Bimodal",
+      "Multimodal",
+      "Uniform"
+    ],
+    "answer": "Unimodal",
+    "keyClue": "Unimodal means one prominent mode or peak.",
+    "why": "Unimodal means one prominent mode or peak.",
+    "difficulty": 2
+  },
+  {
+    "id": "d772-realm-s2-05",
+    "section": "Section 2 · Statistics",
+    "prompt": "Find the median of 2, 4, 7, 9, 11.",
+    "options": [
+      "7",
+      "4",
+      "9",
+      "6.6"
+    ],
+    "answer": "7",
+    "keyClue": "Order the five values; the middle (third) value is 7.",
+    "why": "Order the five values; the middle (third) value is 7.",
+    "difficulty": 2
+  },
+  {
+    "id": "d772-realm-s2-06",
+    "section": "Section 2 · Statistics",
+    "prompt": "Find the mean of 3, 5, 7, and 9.",
+    "options": [
+      "6",
+      "5",
+      "7",
+      "24"
+    ],
+    "answer": "6",
+    "keyClue": "Sum to 24 and divide by the four observations.",
+    "why": "Sum to 24 and divide by the four observations.",
+    "difficulty": 2
+  },
+  {
+    "id": "d772-realm-s2-07",
+    "section": "Section 2 · Statistics",
+    "prompt": "What is the range of 4, 8, 11, 15, 19?",
+    "options": [
+      "15",
+      "19",
+      "11",
+      "4"
+    ],
+    "answer": "15",
+    "keyClue": "Range is maximum minus minimum: 19 − 4 = 15.",
+    "why": "Range is maximum minus minimum: 19 − 4 = 15.",
+    "difficulty": 2
+  },
+  {
+    "id": "d772-realm-s2-08",
+    "section": "Section 2 · Graphs",
+    "prompt": "Which display best examines the relationship between hours studied and exam score?",
+    "options": [
+      "Scatterplot",
+      "Pie chart",
+      "Single-variable histogram",
+      "Bar chart of majors"
+    ],
+    "answer": "Scatterplot",
+    "keyClue": "Two quantitative variables are appropriately shown in a scatterplot.",
+    "why": "Two quantitative variables are appropriately shown in a scatterplot.",
+    "difficulty": 2
+  },
+  {
+    "id": "d772-realm-s3-01",
+    "section": "Section 3 · Probability",
+    "prompt": "A fair six-sided die is rolled once. What is P(rolling an even number)?",
+    "options": [
+      "1/2",
+      "1/6",
+      "1/3",
+      "2/3"
+    ],
+    "answer": "1/2",
+    "keyClue": "Three of six outcomes (2, 4, 6) are even.",
+    "why": "Three of six outcomes (2, 4, 6) are even.",
+    "difficulty": 2
+  },
+  {
+    "id": "d772-realm-s3-02",
+    "section": "Section 3 · Probability",
+    "prompt": "A bag has 3 red and 7 blue marbles. What is P(red) on one random draw?",
+    "options": [
+      "3/10",
+      "7/10",
+      "3/7",
+      "1/3"
+    ],
+    "answer": "3/10",
+    "keyClue": "Three favorable outcomes out of ten equally likely marbles.",
+    "why": "Three favorable outcomes out of ten equally likely marbles.",
+    "difficulty": 2
+  },
+  {
+    "id": "d772-realm-s3-03",
+    "section": "Section 3 · Probability",
+    "prompt": "If P(rain) = 0.30, what is P(no rain)?",
+    "options": [
+      "0.70",
+      "0.30",
+      "1.30",
+      "0.09"
+    ],
+    "answer": "0.70",
+    "keyClue": "A complement has probability 1 − P(event).",
+    "why": "A complement has probability 1 − P(event).",
+    "difficulty": 2
+  },
+  {
+    "id": "d772-realm-s3-04",
+    "section": "Section 3 · Probability",
+    "prompt": "Two independent fair coins are tossed. What is the probability of two heads?",
+    "options": [
+      "1/4",
+      "1/2",
+      "3/4",
+      "1/8"
+    ],
+    "answer": "1/4",
+    "keyClue": "Multiply independent probabilities: 1/2 × 1/2.",
+    "why": "Multiply independent probabilities: 1/2 × 1/2.",
+    "difficulty": 2
+  },
+  {
+    "id": "d772-realm-s3-05",
+    "section": "Section 3 · Probability",
+    "prompt": "What does mutually exclusive mean for two events?",
+    "options": [
+      "They cannot occur together",
+      "They must be independent",
+      "They always occur together",
+      "Each has probability 1/2"
+    ],
+    "answer": "They cannot occur together",
+    "keyClue": "Disjoint events have no outcomes in common.",
+    "why": "Disjoint events have no outcomes in common.",
+    "difficulty": 2
+  },
+  {
+    "id": "d772-realm-s3-06",
+    "section": "Section 3 · Probability",
+    "prompt": "What is P(A or B) if A and B are disjoint, P(A)=0.2 and P(B)=0.35?",
+    "options": [
+      "0.55",
+      "0.07",
+      "0.15",
+      "0.65"
+    ],
+    "answer": "0.55",
+    "keyClue": "For disjoint events, add their probabilities.",
+    "why": "For disjoint events, add their probabilities.",
+    "difficulty": 2
+  },
+  {
+    "id": "d772-realm-s3-07",
+    "section": "Section 3 · Probability",
+    "prompt": "What is the empirical probability of success after 18 successes in 30 trials?",
+    "options": [
+      "0.60",
+      "0.40",
+      "0.18",
+      "0.30"
+    ],
+    "answer": "0.60",
+    "keyClue": "Observed relative frequency is 18/30.",
+    "why": "Observed relative frequency is 18/30.",
+    "difficulty": 2
+  },
+  {
+    "id": "d772-realm-s3-08",
+    "section": "Section 3 · Probability",
+    "prompt": "Drawing a card without replacement changes the probabilities for the next draw. The draws are…",
+    "options": [
+      "Dependent",
+      "Independent",
+      "Disjoint events",
+      "Complements"
+    ],
+    "answer": "Dependent",
+    "keyClue": "The first draw changes the remaining deck, affecting the second probability.",
+    "why": "The first draw changes the remaining deck, affecting the second probability.",
+    "difficulty": 2
+  }
+];
+
   function realmQuestionPool(opts){
     const base=(typeof questionPool==='function'?questionPool(opts):[])||[];
     if(globalThis.S?.activeCourse!== 'D772')return base;
     const seen=new Set(),out=[];
-    for(const q of [...base,...D772_REALM_SUPPLEMENT]){
+    for(const q of [...base,...D772_REALM_SUPPLEMENT,...D772_ALL_SECTION_SUPPLEMENT]){
       if(!q?.prompt||!q?.answer)continue;
       const key=normalize(q.prompt)+'|'+normalize(q.answer);
       if(seen.has(key))continue;
@@ -786,14 +1029,13 @@
   /* ---------- Guardian Gauntlet ---------- */
   function buildD772SectionReview(){
     const pool=realmQuestionPool().filter(q=>q?.prompt&&q?.options?.length>=2&&q?.answer);
-    const domains=['Data Collection','Bias & Credibility','Misrepresentation','Conclusions'];
-    const selected=[];
-    for(const domain of domains){
-      const rows=shuffleCopy(pool.filter(q=>q.section===domain));
-      if(rows.length<3)return null;
-      selected.push(...rows.slice(0,3));
-    }
-    return shuffleCopy(selected);
+    const sections=[
+      pool.filter(q=>['Data Collection','Bias & Credibility','Misrepresentation','Conclusions'].includes(q.section)),
+      pool.filter(q=>String(q.section||'').startsWith('Section 2')),
+      pool.filter(q=>String(q.section||'').startsWith('Section 3'))
+    ];
+    if(sections.some(rows=>rows.length<4))return null;
+    return shuffleCopy(sections.flatMap(rows=>shuffleCopy(rows).slice(0,4)));
   }
   function nextGauntlet(){
     let q=null;
@@ -815,9 +1057,9 @@
   globalThis.startD772SectionReview=function(){
     if(globalThis.S?.activeCourse!=='D772')return globalThis.startGuardianGauntlet();
     const queue=buildD772SectionReview();
-    if(!queue){try{alert('Section 1 Review needs at least three usable questions in each D772 Section 1 domain.')}catch(_){}return}
+    if(!queue){try{alert('All-Section Review needs four usable questions from each D772 section.')}catch(_){}return}
     const g=guardian();
-    session={type:'gauntlet',opts:{label:'D772 Section 1 Review'},reviewMode:true,reviewQueue:queue,round:0,limit:12,score:0,combo:0,maxCombo:0,playerHP:5,bossHP:100,shield:true,shieldUsed:false,finished:false,won:false,questions:[],guardianName:g?.name||'Guardian'};
+    session={type:'gauntlet',opts:{label:'D772 All-Section Review'},reviewMode:true,reviewQueue:queue,round:0,limit:12,score:0,combo:0,maxCombo:0,playerHP:5,bossHP:100,shield:true,shieldUsed:false,finished:false,won:false,questions:[],guardianName:g?.name||'Guardian'};
     nextGauntlet();if(globalThis.S)S.screen='mission';render?.();
   };
   globalThis.gauntletAnswer=function(chosen){
@@ -849,10 +1091,10 @@
     nextGauntlet();render?.();
   };
   function gauntletHTML(){
-    if(session.finished)return realmResultHTML(session.reviewMode?'D772 Section 1 Review':'Guardian Gauntlet','gauntlet',session.score,Math.max(1,session.round),session.won,session.reviewMode?('Balanced Section 1 review complete • '+session.score+'/'+session.round+' correct'):(session.won?(session.guardianName+' helped you break the boss ward.'):'The boss ward held this time. Your run still added practice data.'));
+    if(session.finished)return realmResultHTML(session.reviewMode?'D772 All-Section Review':'Guardian Gauntlet','gauntlet',session.score,Math.max(1,session.round),session.won,session.reviewMode?('Balanced Section 1 review complete • '+session.score+'/'+session.round+' correct'):(session.won?(session.guardianName+' helped you break the boss ward.'):'The boss ward held this time. Your run still added practice data.'));
     const q=session.current,phase=bossPhase(session.bossHP);
     return '<div class="qwrap realmMode realmGauntlet '+phase.className+'">'+realmScene('gauntlet')+guardianBanner(session.guardianMessage||(session.shieldUsed?'The shield is spent. I am still with you.':'I can absorb one missed answer for you this run.'))+
-      '<div class="qtop"><span class="qbadge">♛ '+E(session.reviewMode?'D772 Section 1 Review':'Guardian Gauntlet')+'</span><div><span class="hearts">'+('💗'.repeat(session.playerHP))+'</span> <span class="comboGlow">✦ x'+Math.max(1,session.combo)+'</span></div></div>'+trialProgress('gauntlet')+trialGuide('gauntlet')+
+      '<div class="qtop"><span class="qbadge">♛ '+E(session.reviewMode?'D772 All-Section Review':'Guardian Gauntlet')+'</span><div><span class="hearts">'+('💗'.repeat(session.playerHP))+'</span> <span class="comboGlow">✦ x'+Math.max(1,session.combo)+'</span></div></div>'+trialProgress('gauntlet')+trialGuide('gauntlet')+
       '<div class="realmBossHUD"><div><div class="realmBossPhase"><small>'+E(phase.name)+'</small><b>Boss Ward</b><em>'+E(phase.line)+'</em></div><div class="bossBar"><i style="width:'+session.bossHP+'%"></i></div><small>'+session.bossHP+'% remaining</small></div><span class="realmShield '+(session.shieldUsed?'spent':'ready')+'">'+(session.shieldUsed?'◇ Shield spent':'◇ Guardian shield ready')+'</span></div>'+
       '<div class="card"><div class="tiny">'+E(q.section||'Mixed')+' • Difficulty '+Number(q.difficulty||1)+' • Round '+session.round+'/'+session.limit+'</div><div class="question">'+E(q.prompt)+'</div>'+
       '<div class="options">'+q.options.map(o=>'<button class="opt '+(session.answered?(o===q.answer?'correct':o===session.chosen?'wrong':''):'')+'" '+(session.answered?'disabled':'')+' data-answer="'+E(o)+'" onclick="gauntletAnswer(this.dataset.answer)">'+E(o)+'</button>').join('')+'</div>'+
