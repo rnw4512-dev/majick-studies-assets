@@ -666,6 +666,8 @@
     "assets/atelier/v2/fitted/outfits/midnight_velvet/threequarter_left_forward.webp": "3d76b56d2c1e16f11ddb34e0a8be6f7d52929484db91d5707ab4403e2e47d8e7",
     "assets/atelier/v2/fitted/outfits/midnight_velvet/threequarter_left_step.webp": "8f53359f95f86ba9101fc00278684b90d6368f01a600975893c7ed2821ce3efa",
     "assets/atelier/v2/fitted/outfits/midnight_velvet/threequarter_left_walk.webp": "bad18b6a9faea7b073b7ea42dc20ff221a93e07eeb1f10ce13e5651ecd56ee05",
-    "assets/atelier/v2/fitted/production-status.json": "eeb648eacd00352db7679d53c0db6e40958b7a52a778c2ac4723e880f258b115"
+    "assets/atelier/v2/fitted/production-status.json": "eeb648eacd00352db7679d53c0db6e40958b7a52a778c2ac4723e880f258b115",
+    "assets/atelier/v2/fitted/walk-manifest.json": "7db980a1965fe9cc57ca6c1fb9f7bc55d6045485e75b2dfc930aecd56e9e30fb",
+    "assets/atelier/v2/fitted/walk-alignment.json": "c40c380004aafe870f148dadbbfd6529fd4486eca42ca23cdda19842c213ef1c"
   }
 }
