@@ -32,6 +32,9 @@ jobs:
       - name: Verify and publish current source only
         run: python pages-release/current/build.py current-site _site
 
+      - name: Browser test interactive lessons, rewards, course isolation and save/reload
+        run: node pages-release/current/browser-interactions.cjs _site
+
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
 
