@@ -26,3 +26,9 @@ Record exact completed work, files and commit, visible behavior, pass/fail/untes
 
 ## Safe recovery
 D756 issue: inspect startD756Course and save/render in index.html and D756 course/progress records; revert only the broken change without clearing storage. D772 issue: verify shared question script inclusion and lesson/section filters in game-realm.js; preserve answer history. V3 avatar issue: fall back to the fitted avatar and repair layers/registry/animation before approving. Stale build: check GitHub Pages run, current-site/source-manifest.json, service worker cache and browser reload without clearing local data.
+
+## Follow-up repairs (2026-10-13)
+- Game Realm: Section 1 selection now recognizes explicit Section 1 tags as well as legacy topic labels; the completed D772 review says Sections 1–3, and exhausted review queues finish safely rather than repeating a random question.
+- Sanctuary: unanswered iframe status requests expose a safe Check again button instead of falsely marking Guardians missing or forcing an iframe reload.
+- Avatar V3 artwork remains ON HOLD by user decision. Do not create, approve, or activate new avatar art until revised design direction is approved.
+- Files updated in GitHub; browser visual and runtime tests remain pending. Preserve all learner saves.
