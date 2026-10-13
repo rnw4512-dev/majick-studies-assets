@@ -3698,7 +3698,7 @@ function compactClassroom(box,ch,lesson){
   if(!panels.opening.querySelector('.v3401Objectives'))panels.opening.insertAdjacentHTML('afterbegin','<h3>What am I learning?</h3><p>'+E(lesson.goal||lesson.title)+'</p><h4>Lesson skills</h4><ul>'+(lesson.thinking||[]).map(x=>'<li>'+E(x)+'</li>').join('')+'</ul>');
   panels.opening.insertAdjacentHTML('beforeend','<h4>What to watch for in questions</h4><ul>'+(lesson.traps||[]).map(x=>'<li>'+E(x)+'</li>').join('')+'</ul>');
   if(!panels.example.children.length)panels.example.innerHTML='<p>'+E(helpFor(lesson)?.example||'A worked example has not been supplied for this lesson yet. Check the teaching notes and source coverage in Review.')+'</p>';
-  if(!panels.turn.children.length)panels.turn.innerHTML='<p>Open Review & Tutor to use the lesson quick check or start adaptive practice.</p>';
+  if(!panels.turn.children.length&&!window.MajickYourTurn)panels.turn.innerHTML='<p>Practice is being prepared for this lesson. Open Review & Tutor for an adaptive check.</p>';
   const footer=document.createElement('div');footer.className='classroomNavigation';footer.innerHTML='<button type="button" class="classroomPrevious">← Previous</button><span aria-live="polite"></span><button type="button" class="classroomNext">Next →</button>';
   const scrollTools=document.createElement('div');scrollTools.className='classroomScrollTools';scrollTools.setAttribute('aria-label','Parchment scrolling');
   scrollTools.innerHTML='<span>Lesson parchment</span><button type="button" aria-label="Scroll lesson up">↑ Up</button><button type="button" aria-label="Scroll lesson down">↓ Down</button><button type="button" aria-label="Return to top of lesson parchment">↑ Top</button>';
