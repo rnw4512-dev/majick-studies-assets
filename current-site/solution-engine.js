@@ -1,0 +1,87 @@
+(()=>{
+'use strict';
+if(window.MajickSolutionEngine)return;
+const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&apos;'}[c]));
+const BANK={
+ D772:[
+ {id:'mean',section:2,lesson:'d772-s2-l4',title:'Mean: rebuild the calculation',kind:'math',formula:'sum / count',alternatives:['sum / count','sum × count','count / sum'],cases:[
+ {numbers:[8,12,16,20],known:'8, 12, 16, 20',unknown:'mean',slots:[56,4],answer:14,interpret:'The mean is 14, the equal-share value for these four observations.',why:'Add all values (56) and divide by four.'},
+ {numbers:[11,17,23,29,35],known:'11, 17, 23, 29, 35',unknown:'mean',slots:[115,5],answer:23,interpret:'The five measurements have a mean of 23.',why:'The sum is 115 and there are five observations.'}
+ ]},
+ {id:'median',section:2,lesson:'d772-s2-l4',title:'Median: solve the center',kind:'math',formula:'(middle A + middle B) / 2',alternatives:['(middle A + middle B) / 2','sum / count','largest − smallest'],cases:[
+ {numbers:[3,7,11,19],known:'sorted values: 3, 7, 11, 19',unknown:'median',slots:[7,11],answer:9,interpret:'Half the ordered observations are at or below the median of 9.',why:'For four numbers average the two middle values.'},
+ {numbers:[4,6,10,20,26,30],known:'sorted values: 4, 6, 10, 20, 26, 30',unknown:'median',slots:[10,20],answer:15,interpret:'The median is 15, midway between 10 and 20.',why:'Six values: use the third and fourth ordered values.'}
+ ]},
+ {id:'probability',section:3,lesson:'d772-s3-l1',title:'Probability: dependent draws',kind:'math',formula:'(first favorable / first total) × (second favorable / second total)',alternatives:['(first favorable / first total) × (second favorable / second total)','first favorable / first total','first favorable + second favorable'],cases:[
+ {known:'5 green and 3 purple counters; draw two greens without replacement',unknown:'P(two greens)',slots:[5,8,4,7],answer:5/14,interpret:'About 35.7% of two-draw sequences produce two green counters.',why:'After one green is drawn, there are four green counters among seven total.'},
+ {known:'4 green and 2 purple counters; draw two greens without replacement',unknown:'P(two greens)',slots:[4,6,3,5],answer:0.4,interpret:'There is a 40% probability of two greens without replacement.',why:'After the first green is removed, 3 of 5 remain green.'}
+ ]},
+ {id:'histogram',section:2,lesson:'d772-s2-l2',title:'Histogram: build and interpret',kind:'graph',cases:[
+ {labels:['0–9','10–19','20–29'],freq:[2,5,3],mode:'10–19',total:10,interpret:'10–19 is the modal interval; the total frequency is 10.'},
+ {labels:['0–9','10–19','20–29'],freq:[4,3,6],mode:'20–29',total:13,interpret:'20–29 is the modal interval; the total frequency is 13.'}
+ ]}
+ ],
+ D756:[
+ {id:'meeting',section:1,lesson:'d756-s1-l2',title:'Collaborative meeting response',kind:'sequence',cases:[
+ {prompt:'A caregiver worries the team has ignored their observations.',parts:['Acknowledge the concern','Invite the caregiver to explain','Summarize and agree on next steps'],correct:[0,1,2],reason:'Acknowledge, seek information, then agree on actions.'},
+ {prompt:'A colleague disagrees about an instructional support.',parts:['Listen to the different perspective','Review student evidence together','Record the agreed next step'],correct:[0,1,2],reason:'Start by understanding, examine evidence, and document the outcome.'}
+ ]},
+ {id:'goal',section:3,lesson:'d756-s3-l2',title:'Construct a measurable IEP goal',kind:'sequence',cases:[
+ {prompt:'Construct a model measurable reading goal.',parts:['Given a grade-level passage','Identify the main idea','At least 8 of 10 times across three probes'],correct:[0,1,2],reason:'Condition, observable behavior, and measurable criterion.'},
+ {prompt:'Construct a model writing goal.',parts:['Given a writing prompt','Write a complete paragraph','Include 4 of 5 rubric elements on three samples'],correct:[0,1,2],reason:'Specify conditions, behavior, and a measurable criterion.'}
+ ]}
+ ]
+};
+const STATES=new WeakMap();
+function stageTitle(t,s){return t.kind==='math'?['Identify the knowns and unknown','Choose a formula','Place values into slots','Calculate your answer','Interpret your result','Independent transfer'][s]:t.kind==='graph'?['Read the target frequencies','Build the graph','Find the modal interval','Count total frequency','Explain the pattern','Independent graph challenge'][s]:['Read the scenario','Choose the first step','Arrange the full response','Explain your decision','Review your construction','Independent new scenario'][s]}
+const numeric=(a,b)=>a!==''&&a!=null&&Number.isFinite(Number(a))&&Math.abs(Number(a)-Number(b))<=Math.max(.0002,Math.abs(b)*.00005);
+function setup(host,task){if(host.dataset.engineTask!==task.id||host.dataset.engineCourse!==window.S.activeCourse){host.dataset.engineTask=task.id;host.dataset.engineCourse=window.S.activeCourse;STATES.set(host,{stage:0,answers:{},caseIndex:0,feedback:'',error:false,hint:false,finished:false})}}
+function render(host,task){setup(host,task);const st=STATES.get(host),ex=task.cases[st.caseIndex],independent=st.caseIndex===1,step=st.stage;let body='',a=st.answers;
+const input=(id,label,placeholder='Your answer')=>'<label class="mjSeLabel">'+esc(label)+'<input data-field="'+id+'" value="'+esc(a[id]||'')+'" placeholder="'+esc(placeholder)+'" autocomplete="off"></label>';
+if(task.kind==='math'){
+ const known=ex.known||ex.numbers?.join(', ')||'';
+ if(step===0)body='<p><b>Scenario:</b> '+esc(known)+'</p>'+input('known','Copy the known values or counts')+input('unknown','What are you finding?');
+ if(step===1)body='<p>Choose the formula before substituting values.</p>'+task.alternatives.map((v,i)=>'<button data-choice="'+i+'" aria-pressed="'+(a.formula===v)+'">'+esc(v)+'</button>').join('');
+ if(step===2)body='<p>Fill every formula slot. Select the correct numerators, denominators, or totals.</p><div class="mjSeGrid">'+ex.slots.map((v,i)=>input('slot'+i,'Formula slot '+(i+1))).join('')+'</div>';
+ if(step===3)body='<p>Calculate the result using your completed formula. Enter a number or decimal.</p>'+input('result','Calculated value');
+ if(step===4)body='<p>Interpret the answer in the context of the original scenario.</p>'+input('meaning','What does your answer mean?','Write a sentence');
+ if(step===5)body='<p>Now use different numbers with <b>no hints</b>. Start by identifying the values, then solve the new problem independently.</p><p>'+esc(known)+'</p>'+input('transfer','Final solution');
+}
+if(task.kind==='graph'){
+ if(step===0)body='<p>Target frequencies: '+ex.labels.map((l,i)=>esc(l)+': '+ex.freq[i]).join(' · ')+'</p>'+input('identified','How many intervals are given?');
+ if(step===1||step===5){body='<p>Use the buttons or number inputs to set bar heights accurately.</p><div class="mjSeGraph">'+ex.labels.map((l,i)=>{let n=Number(a['bar'+i]??0);return '<div class="mjSeBar"><div class="mjSeTower" style="height:'+(Math.max(0,Math.min(10,n))*13)+'px"></div><small>'+esc(l)+'</small><input data-bar="'+i+'" type="number" min="0" max="10" value="'+n+'" aria-label="Frequency '+esc(l)+'"><div><button data-delta="-1" data-i="'+i+'">−</button><button data-delta="1" data-i="'+i+'">+</button></div></div>'}).join('')+'</div>'}
+ if(step===2)body='<p>Which interval has the highest frequency?</p>'+input('mode','Modal interval');
+ if(step===3)body=input('total','Total frequency');
+ if(step===4)body=input('meaning','Describe the frequency distribution','Write a sentence');
+}
+if(task.kind==='sequence'){
+ body='<p>'+esc(ex.prompt)+'</p>';let order=a.order||[];
+ if(step===0)body+=input('focus','Who or what needs attention?');
+ else if(step===1)body+=ex.parts.map((p,i)=>'<button data-add="'+i+'">'+esc(p)+'</button>').join('');
+ else if(step===2||step===5)body+='<p>Tap each piece in the order you would use it.</p>'+ex.parts.map((p,i)=>'<button data-add="'+i+'" '+(order.includes(i)?'disabled':'')+'>'+esc(p)+'</button>').join('')+'<p>Built sequence: '+order.map(i=>esc(ex.parts[i])).join(' → ')+'</p><button data-undo>Undo</button>';
+ else body+=input('meaning','Explain why this approach supports the student and team','Write a sentence');
+}
+const canHint=!independent;host.innerHTML='<div class="mjSeHead"><strong>✦ Solution Workshop</strong><small>'+esc(window.S.activeCourse)+' · '+esc(task.title)+'</small></div><div class="mjSeSteps">'+Array.from({length:6},(_,i)=>'<span class="'+(i===step?'active':'')+'">'+(i+1)+'</span>').join('')+'</div><h3>'+esc(stageTitle(task,step))+'</h3>'+body+'<div class="mjSeActions"><button data-check>Check step</button>'+(canHint?'<button data-hint>Hint</button>':'')+'<button data-reset>Restart scenario</button></div>'+(st.hint?'<p class="mjSeHelp">Think about what information the situation provides and what you must determine before computing or acting.</p>':'')+(st.feedback?'<p class="mjSeFeedback" role="status">'+esc(st.feedback)+'</p>':'')+'<p class="mjSeFoot">Guided attempts are separate from independent mastery; no XP or saved progress is changed.</p>';
+host.querySelectorAll('[data-field]').forEach(el=>el.oninput=()=>{a[el.dataset.field]=el.value;st.feedback=''});
+host.querySelectorAll('[data-bar]').forEach(el=>el.oninput=()=>{a['bar'+el.dataset.bar]=Math.max(0,Math.min(10,Number(el.value)));render(host,task)});
+host.querySelectorAll('[data-delta]').forEach(el=>el.onclick=()=>{let i=el.dataset.i;a['bar'+i]=Math.max(0,Math.min(10,Number(a['bar'+i]||0)+Number(el.dataset.delta)));render(host,task)});
+host.querySelectorAll('[data-choice]').forEach(el=>el.onclick=()=>{a.formula=task.alternatives[Number(el.dataset.choice)];render(host,task)});
+host.querySelectorAll('[data-add]').forEach(el=>el.onclick=()=>{a.order=a.order||[];let n=Number(el.dataset.add);if(!a.order.includes(n))a.order.push(n);render(host,task)});
+host.querySelector('[data-undo]')?.addEventListener('click',()=>{a.order?.pop();render(host,task)});
+host.querySelector('[data-reset]').onclick=()=>{STATES.set(host,{stage:0,answers:{},caseIndex:st.caseIndex,feedback:'',error:false,hint:false});render(host,task)};
+host.querySelector('[data-hint]')?.addEventListener('click',()=>{st.hint=true;render(host,task)});
+host.querySelector('[data-check]').onclick=()=>{let good=false,reason='';
+ if(task.kind==='math'){if(step===0)good=(a.known||'').trim().length>2&&(a.unknown||'').trim().length>2;else if(step===1)good=a.formula===task.formula;else if(step===2)good=ex.slots.every((v,i)=>numeric(a['slot'+i],v));else if(step===3||step===5)good=numeric(a[step===5?'transfer':'result'],ex.answer);else good=(a.meaning||'').trim().split(/\s+/).length>=5;reason=ex.why}
+ else if(task.kind==='graph'){if(step===0)good=numeric(a.identified,ex.freq.length);else if(step===1||step===5)good=ex.freq.every((v,i)=>numeric(a['bar'+i],v));else if(step===2)good=String(a.mode||'').trim()===ex.mode;else if(step===3)good=numeric(a.total,ex.total);else good=(a.meaning||'').trim().split(/\s+/).length>=5;reason=ex.interpret}
+ else{if(step===0||step===3||step===4)good=(a[step===0?'focus':'meaning']||'').trim().split(/\s+/).length>=4;else if(step===1)good=a.order?.[0]===ex.correct[0];else good=JSON.stringify(a.order)===JSON.stringify(ex.correct);reason=ex.reason}
+ if(!good){st.feedback='Not yet. Revisit this step and try again.';render(host,task);return}
+ if(step===5){st.feedback='Independent transfer completed (practice only). '+reason;st.finished=true;render(host,task);return}
+ if(step===4){st.caseIndex=1;st.stage=5;st.answers={};st.hint=false;st.feedback='Good. New scenario: solve without hints.';render(host,task);return}
+ st.stage++;st.feedback='Step correct. '+(step===3?reason:'Continue to the next step.');render(host,task)
+ };
+}
+function choose(host){let id=window.S?.activeCourse;if(!BANK[id])return null;const card=host.closest('.studyCard');let title=card?.querySelector('h3')?.textContent||'';let sec=Number(title.match(/Section\s*([123])/i)?.[1]||0);const options=BANK[id];if(id==='D756')return options.find(x=>sec===x.section)||options[0];if(sec===3)return options[2];if(/graph|display|histogram/i.test(title))return options[3];if(/median/i.test(title))return options[1];return options[0]}
+function mount(){const root=document.getElementById('content');if(!root)return;const screen=window.S?.screen;if(!['guide','mission','games'].includes(screen))return;let cards=screen==='guide'?[...root.querySelectorAll('.studyCard')]:[root];for(let card of cards){let host=card.querySelector(':scope > .mjSolutionEngine');if(!host){host=document.createElement('section');host.className='mjSolutionEngine';if(screen==='guide')card.append(host);else (root.querySelector('.sectionTitle')||root).after(host)}const task=choose(host);if(task)render(host,task);else host.remove()}}
+let style=document.createElement('style');style.textContent='.mjSolutionEngine{background:#2b2139;border:1px solid #c4a673;color:#fff0eb;margin:16px 0;padding:16px;border-radius:16px}.mjSolutionEngine h3{color:#f0cf98}.mjSeHead{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}.mjSeHead strong{color:#f2d095}.mjSeSteps{display:flex;gap:6px;margin:12px 0}.mjSeSteps span{padding:5px 10px;border:1px solid #947e95;border-radius:50%}.mjSeSteps .active{background:#9972aa}.mjSeLabel{display:flex;flex-direction:column;gap:5px;margin:9px 0}.mjSeLabel input,.mjSeBar input{background:#fff8ed;color:#1f1829;border-radius:7px;padding:10px;max-width:100%}.mjSeActions{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0}.mjSolutionEngine button{background:#695277;color:#fff0da;border:1px solid #bfa17b;border-radius:8px;padding:9px;margin:4px;cursor:pointer}.mjSolutionEngine button:focus-visible,.mjSolutionEngine input:focus-visible{outline:3px solid #f7cf7d}.mjSeGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:9px}.mjSeGraph{display:flex;align-items:end;gap:10px;min-height:210px;overflow-x:auto}.mjSeBar{display:flex;flex-direction:column;align-items:center;min-width:85px}.mjSeTower{width:42px;background:linear-gradient(#f0cd84,#aa7dbe);min-height:3px}.mjSeBar input{width:72px}.mjSeFoot{font-size:12px;opacity:.8}.mjSeFeedback,.mjSeHelp{background:#493851;border-left:3px solid #f2cc88;padding:11px}';document.head.append(style);
+const old=window.render;if(typeof old==='function')window.render=function(){let value=old.apply(this,arguments);setTimeout(mount,50);return value};setTimeout(mount,500);window.MajickSolutionEngine={version:'1.0',refresh:mount,activities:Object.values(BANK).flat().length};
+})();
