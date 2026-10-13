@@ -1,0 +1,123 @@
+name: Rebuild and validate Atelier V2 alignment families
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/rebuild-atelier-v2-alignment.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  rebuild:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.11'}
+      - run: python -m pip install pillow
+      - name: Rebuild all hairstyle families and check frame continuity
+        run: |
+          python3 - <<'PY'
+          from PIL import Image,ImageDraw
+          import math,hashlib,json,statistics
+          from pathlib import Path
+          root=Path('current-site'); fit=root/'assets/atelier/v2/fitted'
+          measurements=json.loads((fit/'walk-measurements.json').read_text())['frames']
+          meta={d['frame']:d for d in measurements}
+          manifest_file=fit/'walk-manifest.json'
+          align_file=fit/'walk-alignment.json'
+          manifest=json.loads(manifest_file.read_text());align=json.loads(align_file.read_text())
+          integrity_file=root/'source-manifest.json'; integrity=json.loads(integrity_file.read_text())
+          styles=['locs','locs_beaded','updo_twist','afro_full']
+          results=[]
+          for name in styles:
+            for frame,d in meta.items():
+              body=Image.open(fit/'body'/f'{frame}.webp').convert('RGBA')
+              outfit=Image.open(fit/'outfits/midnight_velvet'/f'{frame}.webp').convert('RGBA')
+              if body.size!=(512,768) or outfit.size!=body.size:raise ValueError(frame+' canvas mismatch')
+              cx,hy=d['head']; neck=d['neck'][1]
+              # The first scan had false positives on walking side/back views.
+              # Rebuild a continuous anchor from the reliable same-direction standing pose.
+              family='back' if frame.startswith('back') else 'side' if frame.startswith('side') else 'threequarter' if frame.startswith('threequarter') else 'front'
+              standing={'back':'back_idle','side':'side_left_idle','front':'front_idle','threequarter':'threequarter_left_forward'}[family]
+              reference=meta[standing]
+              cx=max(reference['head'][0]-16,min(reference['head'][0]+16,cx))
+              hy=reference['head'][1]
+              neck=reference['neck'][1]
+              r=31 if family=='side' else 35
+              top=max(0,round(hy-r))
+              back=family=='back'; side=family=='side'
+              im=Image.new('RGBA',(512,768)); draw=ImageDraw.Draw(im)
+              dark=(30,16,22,255);base=(64,35,32,252);shine=(131,77,52,180)
+              if name=='afro_full':
+                for j in range(14):
+                  angle=math.pi*2*j/14
+                  px=cx+math.cos(angle)*r*.83
+                  py=hy+math.sin(angle)*r*.70-r*.48
+                  rr=r*(.53+.07*(j%3))
+                  draw.ellipse((px-rr,py-rr,px+rr,py+rr),fill=dark)
+                  draw.ellipse((px-rr*.78,py-rr*.85,px+rr*.78,py+rr*.78),fill=base)
+                if back:draw.ellipse((cx-r*1.3,top+15,cx+r*1.3,top+r*2.15),fill=base)
+              elif name=='updo_twist':
+                draw.ellipse((cx-r,top-2,cx+r,top+r*1.5),fill=dark)
+                draw.ellipse((cx-r*.7,top-r*.68,cx+r*.7,top+r*.25),fill=base)
+                for j in range(9):
+                  x=cx-r*.8+j*r*.2
+                  draw.arc((x-9,top+3,x+10,top+21),180,340,fill=shine,width=2)
+              else:
+                strands=26 if name=='locs' else 23
+                for j in range(strands):
+                  t=j/(strands-1)
+                  sx=cx+(t-.5)*r*1.92
+                  sy=top+4+7*math.sin(t*math.pi)
+                  if back:ex=cx+(t-.5)*r*2.7
+                  elif side:ex=cx+(t-.5)*r*2.1+r*.15
+                  else:ex=cx+(-1 if t<.5 else 1)*r*1.3+(t-.5)*r*.77
+                  length=r*(3.8 if back else 3.1)
+                  points=[]
+                  for k in range(14):
+                    z=k/13
+                    points.append((round(sx+(ex-sx)*z+math.sin(z*7+j*.6)*2*z),round(sy+length*z+math.sin(j*.73)*5*z)))
+                  draw.line(points,fill=dark,width=7,joint='curve')
+                  draw.line(points,fill=base,width=4,joint='curve')
+                  draw.line([(x-1,y) for x,y in points[2:-2]],fill=shine,width=1)
+                  if name=='locs_beaded':
+                    bx,by=points[-4]
+                    draw.ellipse((bx-4,by-4,bx+4,by+4),fill=(211,177,91,255))
+                draw.pieslice((cx-r,top-6,cx+r,top+r*1.2),180,360,fill=dark)
+              if im.getchannel('A').getbbox() is None:raise ValueError(frame+' blank generated hair')
+              target=fit/'hair'/name/f'{frame}.webp';target.parent.mkdir(parents=True,exist_ok=True);im.save(target,'WEBP',lossless=True)
+              preview=Image.alpha_composite(Image.alpha_composite(body,outfit),im)
+              pt=fit/'previews'/name/f'{frame}.webp';pt.parent.mkdir(parents=True,exist_ok=True);preview.save(pt,'WEBP',quality=86)
+              for file in (target,pt):
+                integrity['files'][file.relative_to(root).as_posix()]=hashlib.sha256(file.read_bytes()).hexdigest()
+              results.append({'style':name,'frame':frame,'head':[cx,hy],'neck':[cx,neck],'footBaseline':d['footBaseline'],'candidate':target.relative_to(root).as_posix(),'preview':pt.relative_to(root).as_posix()})
+              if name=='locs':
+                manifest['frames'][frame]['hair']=target.relative_to(root).as_posix()
+                align['frames'][frame]['head']=[cx,hy]
+                align['frames'][frame]['neck']=[cx,neck]
+                align['frames'][frame]['method']='frame-family standing reference with <=16px horizontal walking excursion; visual review required'
+          assert len(results)==48
+          manifest['hairStyleFamilies']={name:{frame:(fit/'hair'/name/f'{frame}.webp').relative_to(root).as_posix() for frame in meta} for name in styles}
+          manifest['enabled']=False
+          manifest['reason']='48 candidate hair sprites generated with consistent directional anchors; visual QA and wearability testing required before live walk.'
+          align['alignmentStatus']='frame_family_normalized_unreviewed'
+          align['layerOrder']=['body','outfit','hair','accessories']
+          summary={'schemaVersion':1,'generatedFrames':48,'styles':styles,'artValidation':'candidates_not_approved','guarantees':['each hair layer 512x768 with transparency','deterministic per-direction anchors','no original image overwrite','preview exists for each hairstyle and frame'],'stillRequired':['visual review of hand-drawn hair quality','face/collar occlusion inspection','walking and Sanctuary interaction testing'],'results':results}
+          report=fit/'hair-alignment-audit.json';report.write_text(json.dumps(summary,indent=2)+'\n')
+          for file,obj in ((manifest_file,manifest),(align_file,align)):
+            file.write_text(json.dumps(obj,indent=2)+'\n')
+          for file in (report,manifest_file,align_file):
+            integrity['files'][file.relative_to(root).as_posix()]=hashlib.sha256(file.read_bytes()).hexdigest()
+          integrity_file.write_text(json.dumps(integrity,indent=2,ensure_ascii=False)+'\n')
+          print('Generated',len(results),'transparent hairstyle layers and composite previews; no live activation')
+          PY
+      - name: Commit all aligned candidates and source hashes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add current-site/assets/atelier/v2/fitted/hair current-site/assets/atelier/v2/fitted/previews current-site/assets/atelier/v2/fitted/walk-*.json current-site/assets/atelier/v2/fitted/hair-alignment-audit.json current-site/source-manifest.json
+          if ! git diff --cached --quiet; then
+            git commit -m "Generate four consistent hairstyle frame families and normalize head anchors"
+            git push
+          fi
