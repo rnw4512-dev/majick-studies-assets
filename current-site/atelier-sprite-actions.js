@@ -3,7 +3,7 @@
 if(window.MajickSpriteActions)return;
 // This module owns activity controls only. The Atelier owns scholar identity/rendering;
 // MajickGuardianCare owns Guardian effects and Sanctuary owns Guardian entities.
-const ROOT='./assets/atelier/v2/sprites/poses/';
+const ROOT='./assets/atelier/v2/fitted/poses/';
 const POSES=Object.freeze({study:'studying_read.webp',write:'writing.webp',feed:'feeding_pets.webp',play:'playing.webp',sleep:'sleeping.webp'});
 const LABELS={study:'Study',write:'Write',feed:'Feed Guardian',play:'Play with Guardian',sleep:'Rest'};
 const EXPECTED=new Set(Object.keys(POSES));
