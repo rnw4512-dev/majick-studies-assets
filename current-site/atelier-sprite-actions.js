@@ -1,93 +1,109 @@
 (()=>{
 'use strict';
 if(window.MajickSpriteActions)return;
-const ROOT='./assets/atelier/v2/sprites/';
-const POSES=Object.freeze({idle:'standing.webp',study:'studying_read.webp',write:'writing.webp',feed:'feeding_pets.webp',play:'playing.webp',sleep:'sleeping.webp'});
-const LABELS={idle:'Stand',study:'Read',write:'Write',feed:'Feed Guardian',play:'Play with Guardian',sleep:'Rest'};
-const DEFAULT_MSG='The original fitted scholar remains your saved appearance. These fixed-look poses are separate action sprites.';
-let mode='idle',timer=null,frame=0,live=false,lastCareMessage='';
-let pane=null;
-const poseSrc=k=>ROOT+'poses/'+POSES[k];
-function p(){return window.MajickAtelier?.player?.()||{}}
-function compatible(){const s=p();return Number(s.hair)===0&&Number(s.robe)===1&&![0,5].includes(Number(s.skin))}
-function dock(){return document.querySelector('#majickScholarCompanion .mscPanel')}
-function stop(){if(timer){clearInterval(timer);timer=null}frame=0}
-function draw(){
- const d=dock();if(!d)return;
- if(!pane){pane=document.createElement('section');pane.className='mscSpriteActions';pane.setAttribute('aria-label','Scholar activity controls');d.append(pane)}
- const okay=compatible();
- pane.innerHTML='<div class="mscActionHeader"><strong>Scholar activities</strong><small>'+ (okay?'Fixed-look activity illustrations available':'Activity illustrations do not match your current outfit or hairstyle')+'</small></div><div class="mscActionButtons">'+Object.keys(POSES).map(k=>'<button type="button" data-action-pose="'+k+'" aria-pressed="'+(mode===k)+'">'+LABELS[k]+'</button>').join('')+'<button type="button" disabled title="Awaiting validated fitted walk-cycle frames">Walk · artwork pending</button></div><p class="mscSpriteStatus" role="status">'+DEFAULT_MSG+'</p>';
- pane.querySelector('.mscSpriteStatus').textContent=lastCareMessage||DEFAULT_MSG;
- pane.querySelectorAll('[data-action-pose]').forEach(b=>b.addEventListener('click',()=>activate(b.dataset.actionPose)));
+// This module owns activity controls only. The Atelier owns scholar identity/rendering;
+// MajickGuardianCare owns Guardian effects and Sanctuary owns Guardian entities.
+const ROOT='./assets/atelier/v2/sprites/poses/';
+const POSES=Object.freeze({study:'studying_read.webp',write:'writing.webp',feed:'feeding_pets.webp',play:'playing.webp',sleep:'sleeping.webp'});
+const LABELS={study:'Study',write:'Write',feed:'Feed Guardian',play:'Play with Guardian',sleep:'Rest'};
+const EXPECTED=new Set(Object.keys(POSES));
+let mode='idle',message='',revision=0,host=null;
+const state=()=>window.MajickAtelier?.player?.()||null;
+function compatible(){
+ const p=state();
+ return !!p && Number(p.hair)===0 && Number(p.robe)===1 && ![0,5].includes(Number(p.skin));
 }
-function showAction(k){
- const panel=dock();const target=panel?.querySelector('.mscLarge');if(!target)return;
- if(k==='idle'){window.MajickScholarCompanion?.refresh?.(true);return}
- // The generated pose illustrations are complete characters, not fitted wearable layers.
- // Never override someone else's equipped appearance without disclosing the mismatch.
- if(!compatible()){
-   window.MajickScholarCompanion?.react?.(k==='feed'||k==='play'?'guardian-bonding':'studying');
-   const status=pane?.querySelector('.mscSpriteStatus');if(status)status.textContent=(lastCareMessage?lastCareMessage+' ':'')+'Kept your equipped appearance; a matching layered pose for this outfit is not ready.';
-   return;
- }
- const source=poseSrc(k==='walk'?'idle':k);
- const image=new Image();image.alt=LABELS[k]||'Scholar';image.decoding='async';
- image.onerror=()=>{window.MajickScholarCompanion?.refresh?.(true);const status=pane?.querySelector('.mscSpriteStatus');if(status)status.textContent='This action sprite did not load; your usual avatar was restored.'};
- image.src=source;
- image.onload=()=>{if(mode!==k)return;target.replaceChildren(image);target.classList.add('mscSpritePose')};
+function panel(){return document.querySelector('#majickScholarCompanion .mscPanel')}
+function original(){
+ const el=panel()?.querySelector('.mscLarge');
+ el?.classList.remove('mscSpritePose');
+ window.MajickScholarCompanion?.refresh?.(true);
+}
+function status(text){message=String(text||'');const el=host?.querySelector('[data-sprite-message]');if(el)el.textContent=message;}
+function renderControls(){
+ const p=panel();
+ if(!p){host=null;return}
+ if(host && host.parentElement!==p)host=null;
+ if(!host){host=document.createElement('section');host.className='mscSpriteActions';host.setAttribute('aria-label','Scholar activity controls');p.append(host)}
+ const supports=compatible();
+ host.innerHTML='<div class="mscActionHeader"><strong>Scholar activities</strong><small>'+(supports?'Fixed-look V2 poses · Midnight Velvet + Locs':'Your current appearance is preserved; matched V2 poses are pending')+'</small></div><div class="mscActionButtons">'+
+ Object.keys(POSES).map(k=>'<button type="button" data-action-pose="'+k+'" aria-pressed="'+(mode===k)+'">'+LABELS[k]+'</button>').join('')+
+ '<button type="button" data-action-pose="idle" aria-pressed="'+(mode==='idle')+'">Return to idle</button>'+
+ '<button type="button" disabled title="Waiting on registered and visually validated hair, outfit, and walk frames">Walk · art pending</button></div><p data-sprite-message role="status" class="mscSpriteStatus"></p>';
+ host.querySelector('[data-sprite-message]').textContent=message||'Your fitted Atelier avatar stays the default. The V2 poses have a fixed appearance.';
+ host.querySelectorAll('[data-action-pose]').forEach(el=>el.addEventListener('click',()=>activate(el.dataset.actionPose)));
+}
+function applyPose(k,token){
+ if(!compatible()){status((message?message+' ':'')+'Kept your selected appearance because this action has no matching fitted layers.');return}
+ const target=panel()?.querySelector('.mscLarge');
+ if(!target)return;
+ const image=new Image();
+ image.alt=LABELS[k]+' — fixed-look scholar activity illustration';
+ image.decoding='async';
+ image.onload=()=>{
+   if(revision!==token || mode!==k || !compatible() || !target.isConnected)return;
+   target.replaceChildren(image);target.classList.add('mscSpritePose');
+ };
+ image.onerror=()=>{
+   if(revision!==token)return;
+   mode='idle';original();renderControls();
+   status('Action artwork failed to load. Your fitted avatar was restored.');
+ };
+ image.src=ROOT+POSES[k];
+}
+function performGuardianAction(action){
+ const care=window.MajickGuardianCare;
+ const snap=care?.snapshot?.();
+ const pet=snap?.roster?.find(g=>g.petId===snap.focusPetId)||snap?.roster?.[0];
+ if(!pet||!care?.performAction)return {ok:false,message:'No bonded Guardian is available. Open Sanctuary to bond with a Guardian first.'};
+ // Invoke the authoritative care function once. Never add separate XP, inventory, or bond updates.
+ const result=care.performAction(pet.petId,action,{objectId:action==='feed'?'guardian-food-bowl':'guardian-play-rug'});
+ if(result?.ok){care.broadcastState?.();try{window.render?.()}catch(_){}}
+ return result||{ok:false,message:'Guardian action did not complete.'};
 }
 function activate(action){
- stop();
- lastCareMessage='';
- mode=action;
+ if(action!=='idle'&&!EXPECTED.has(action))return false;
+ const token=++revision;
+ if(action==='idle'){mode='idle';message='';original();renderControls();return true}
  if(action==='feed'||action==='play'){
-  const care=window.MajickGuardianCare;
-  const snap=care?.snapshot?.();
-  const guardian=snap?.roster?.find(g=>g.petId===snap.focusPetId)||snap?.roster?.[0];
-  if(!guardian||!care?.performAction){
-   lastCareMessage='No bonded Guardian is available. Open Sanctuary to bond with a Guardian first.';
-   mode='idle';draw();return;
-  }
-  const result=care.performAction(guardian.petId,action,{objectId:action==='feed'?'guardian-food-bowl':'guardian-play-rug'});
-  lastCareMessage=result?.message||'Guardian care could not be completed.';
-  if(!result?.ok){
-   mode='idle';draw();return;
-  }
-  care.broadcastState?.();
-  try{window.render?.()}catch(_){}
+   const result=performGuardianAction(action);
+   message=result.message||'Guardian interaction could not be completed.';
+   if(!result.ok){mode='idle';original();renderControls();return false}
  }
- if(action==='walk'){
-  const target=dock()?.querySelector('.mscLarge');
-  if(!compatible()){
-   window.MajickScholarCompanion?.react?.('walking');
-   mode='idle';draw();return;
-  }
-  const frames=['standing.webp','studying_read.webp'];
-  // No two validated, matching walk frames currently exist; retain the fitted idle avatar.
-  mode='idle';window.MajickScholarCompanion?.refresh?.(true);draw();
-  const status=pane?.querySelector('.mscSpriteStatus');if(status)status.textContent='Walking requires two matching, fitted frames. Existing movement is preserved; the extracted body frames are not safe to equip.';
-  return;
+ mode=action;
+ if(action==='study'||action==='write'||action==='sleep'){
+   // Trigger existing companion state without creating a duplicate render loop.
+   window.MajickScholarCompanion?.react?.(action==='sleep'?'sleeping':'studying');
+ }else{
+   window.MajickScholarCompanion?.react?.('guardian-bonding');
  }
- if(action==='feed'||action==='play')window.MajickScholarCompanion?.react?.('guardian-bonding');
- else if(action==='study'||action==='write')window.MajickScholarCompanion?.react?.('studying');
- else if(action==='sleep')window.MajickScholarCompanion?.react?.('sleeping');
- draw();showAction(action);
+ renderControls();
+ applyPose(action,token);
+ return true;
 }
 function refresh(){
- if(!dock()){pane=null;return}
- if(pane&&!pane.isConnected)pane=null;
- if(!pane)draw();
+ const el=panel();
+ if(!el){host=null;return}
+ if(!host || !host.isConnected)renderControls();
 }
 const style=document.createElement('style');style.textContent=`
 .mscSpriteActions{padding:11px 13px;border-top:1px solid #70536f;background:#241b2b;color:#f5e5d2}
-.mscActionHeader{display:flex;flex-direction:column;gap:4px}.mscActionHeader strong{font:700 14px Georgia,serif}.mscActionHeader small{font:11px/1.45 system-ui;color:#e9c9bf}
+.mscActionHeader{display:flex;flex-direction:column;gap:4px}.mscActionHeader strong{font:700 14px Georgia,serif}
+.mscActionHeader small{font:11px/1.45 system-ui;color:#e9c9bf}
 .mscActionButtons{display:flex;flex-wrap:wrap;gap:5px;margin-top:9px}
 .mscActionButtons button{font:11px system-ui;padding:7px 8px;border:1px solid #ab8a72;border-radius:7px;color:#fff2dd;background:#47304c}
 .mscActionButtons button[aria-pressed="true"]{outline:2px solid #e8c18c}
+.mscActionButtons button:disabled{opacity:.52;cursor:not-allowed}
 .mscSpriteStatus{font:11px/1.4 system-ui;color:#d8c7d5;margin:7px 0 0}
 .mscLarge.mscSpritePose img{display:block;width:100%;height:100%;object-fit:contain}
 `;document.head.append(style);
-window.MajickSpriteActions={activate,refresh,available:Object.keys(POSES),get mode(){return mode},version:'3.4.2-activity-gated-1'};
-function start(){refresh();const root=document.getElementById('majickScholarCompanion');if(root)new MutationObserver(refresh).observe(root,{childList:true,subtree:false});document.addEventListener('click',ev=>{const t=ev.target;if(!(t instanceof Element))return;if(t.closest('.mscToggle'))queueMicrotask(refresh)},true);document.addEventListener('majick-scholar-react',()=>{if(mode!=='idle'){mode='idle';refresh()}},true)}
+window.MajickSpriteActions={activate,refresh,available:Object.keys(POSES),get mode(){return mode},version:'3.4.2-unified-action-2'};
+function start(){
+ refresh();
+ document.addEventListener('click',e=>{if(e.target instanceof Element && e.target.closest('.mscToggle'))queueMicrotask(refresh)},true);
+ window.addEventListener('majick-save-status',()=>{
+   if(mode!=='idle'&&!compatible()){++revision;mode='idle';original();renderControls()}
+ });
+}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});else start();
 })();
