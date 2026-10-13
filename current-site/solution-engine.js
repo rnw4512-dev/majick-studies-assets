@@ -76,7 +76,7 @@ host.querySelector('[data-check]').onclick=()=>{let good=false,reason='';
  else{if(step===0||step===3||step===4)good=(a[step===0?'focus':'meaning']||'').trim().split(/\s+/).length>=4;else if(step===1)good=a.order?.[0]===ex.correct[0];else good=JSON.stringify(a.order)===JSON.stringify(ex.correct);reason=ex.reason}
  if(!good){st.feedback='Not yet. Revisit this step and try again.';render(host,task);return}
  if(step===5){st.feedback='Independent transfer completed (practice only). '+reason;st.finished=true;render(host,task);return}
- if(step===4){st.caseIndex=1;st.stage=5;st.answers={};st.hint=false;st.feedback='Good. New scenario: solve without hints.';render(host,task);return}
+ if(step===4){if(independent){st.stage=5;st.feedback='Now complete the final independent answer or construction.';render(host,task);return}st.caseIndex=1;st.stage=0;st.answers={};st.hint=false;st.feedback='New scenario: complete every step without hints.';render(host,task);return}
  st.stage++;st.feedback='Step correct. '+(step===3?reason:'Continue to the next step.');render(host,task)
  };
 }
