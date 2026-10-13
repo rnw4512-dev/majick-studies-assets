@@ -4,6 +4,9 @@ on:
     branches: [main]
     paths:
       - '.github/workflows/rebuild-atelier-v2-alignment.yml'
+      - 'current-site/assets/atelier/v2/fitted/body/**'
+      - 'current-site/assets/atelier/v2/fitted/outfits/midnight_velvet/**'
+      - 'current-site/assets/atelier/v2/fitted/walk-measurements.json'
   workflow_dispatch:
 permissions:
   contents: write
