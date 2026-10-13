@@ -148,7 +148,7 @@
     "learn-mode.css": "30181250c67efe7bd97c9276706a804a551e7904a2bb28160eeb0c193f35c002",
     "learn-mode.js": "f6647cd013d5bc59a319710c45ac806b56585c7fc5c912afa88857d2f16f82e0",
     "learning-lab.css": "6ed48d27023052a714d27c027f25828bc5ad74edccb172704e823a58b26d6844",
-    "learning-lab.js": "c6e256fc48d7981f7a2aef9ad3398bdba0199cba82fb403c8747a1f15a83d8cc",
+    "learning-lab.js": "322642e1af779e0336c4e4e59e954e3517555d4385bf406743c28b2ffa762f17",
     "learning-plan.css": "4df1aa3903289b91a3d9794037362e70dd65a7a6d98e37a0650e2755fab4b691",
     "learning-plan.js": "17065278ae1b7c45c95e68daeba4118476a400ddb267ff725dfdafc13437bde0",
     "living-collegium.css": "97735a3580b0c2a1f1ae7a3122f55b5021079342f46ef04971f558abef15820b",
@@ -802,6 +802,6 @@
     "inline-learning-tabs.js": "3e7758230e01114990f5d412265e82dd6dcb8dfc2a71747daea24f7a9e7433df",
     "your-turn-practice.js": "db6d72ac0f257adfcd72c1ab0a81b18ec922ac1997c77fcd650095cec59e368d",
     "visual-evidence-gate.js": "5fa23cc0687e4ed4e5a66fc5190b096c9db1e3b9eb5b2a2e9c0b996ee7a6bdd9",
-    "generated-question-engine.js": "6d97aae55af559ed12fd9df9003b1fab0163985eb1d36af244f462a0d29eaeb7"
+    "generated-question-engine.js": "9998eeedf9d0d0f531489bc468caf67a4780bb226a79d177a2ac40142b452fb3"
   }
 }
