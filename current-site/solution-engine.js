@@ -165,7 +165,7 @@ function mount(){const root=document.getElementById('content');if(!root)return;c
   if(screen!=='guide'){
    let picker=host.querySelector('.mjSeTaskSelect'),picked=picker?.value||'';
    if(!picker){picker=document.createElement('select');picker.className='mjSeTaskSelect';picker.setAttribute('aria-label','Choose course lesson activity')}
-   picker.innerHTML='<option value="">Choose lesson activity</option>'+all.filter(x=>x.lessonId).map(x=>'<option value="'+esc(x.id)+'">'+esc(x.lessonId+' — '+x.title)+'</option>').join('');
+   picker.innerHTML='<option value="">Choose lesson activity</option>'+all.filter(x=>x.lessonId||x.lesson).map(x=>'<option value="'+esc(x.id)+'">'+esc((x.lessonId||x.lesson)+' — '+x.title)+'</option>').join('');
    if(picked&&all.some(x=>x.id===picked))picker.value=picked;else if(all.length)picker.value=all.find(x=>x.lessonId)?.id||all[0].id;
    host.dataset.selectedTask=picker.value;
    const task=choose(host);
