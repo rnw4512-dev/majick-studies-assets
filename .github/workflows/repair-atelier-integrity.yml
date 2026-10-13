@@ -7,6 +7,7 @@ on:
       - 'current-site/atelier-sprite-actions.js'
       - 'current-site/atelier-fit-review.html'
       - 'current-site/atelier-v2-approval-gate.js'
+      - 'current-site/game-realm.js'
       - 'current-site/assets/atelier/v2/fitted/approval-registry.json'
   workflow_dispatch:
 
@@ -27,7 +28,7 @@ jobs:
           base=Path('current-site')
           manifest_path=base/'source-manifest.json'
           manifest=json.loads(manifest_path.read_text(encoding='utf-8'))
-          for relative in ('index.html','atelier-sprite-actions.js','assets/atelier/v2/sprites/sprite-audit.json','assets/atelier/v2/fitted/walk-manifest.json','assets/atelier/v2/fitted/walk-alignment.json','atelier-fit-review.html','atelier-v2-approval-gate.js','assets/atelier/v2/fitted/approval-registry.json'):
+          for relative in ('index.html','atelier-sprite-actions.js','assets/atelier/v2/sprites/sprite-audit.json','assets/atelier/v2/fitted/walk-manifest.json','assets/atelier/v2/fitted/walk-alignment.json','atelier-fit-review.html','atelier-v2-approval-gate.js','assets/atelier/v2/fitted/approval-registry.json','game-realm.js'):
               path=base/relative
               assert path.is_file(), 'Missing: '+relative
               digest=hashlib.sha256(path.read_bytes()).hexdigest()
