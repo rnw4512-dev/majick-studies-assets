@@ -51,7 +51,9 @@ async function solveMean(values,sum,count,mean){
  await enterAndCheck({transfer:17});
  const masteryEvidence=await evalPage('({mastery:S.progress.D772.interactiveMastery||{},lastAnswer:S.progress.D772.answers?.slice(-2),feedback:document.querySelector(".mjSeFeedback")?.textContent,phase:document.querySelector(".mjSolutionEngine h3")?.textContent,fields:[...document.querySelectorAll(".mjSolutionEngine [data-field]")].map(x=>x.dataset.field),lesson:document.querySelector(".mjSeTaskSelect")?.value,bridge:!!window.MajickInteractiveMastery})');
  console.log('Browser full-transfer diagnostic:',JSON.stringify(masteryEvidence));
- assert.equal(await evalPage('!!S.progress.D772.interactiveMastery?.["interactive-independent:D772:mean"]'),true,'Unassisted transfer must be recorded as mastery');
+ const mastered=await evalPage('!!S.progress.D772.interactiveMastery?.["interactive-independent:D772:mean"]');
+ if(!mastered)console.error('Mastery flow diagnostic',JSON.stringify(await evalPage('({step:document.querySelector(".mjSeStage h3")?.textContent,feedback:document.querySelector(".mjSeFeedback")?.textContent,header:document.querySelector(".mjSeDifficulty")?.textContent,fields:[...document.querySelectorAll("[data-field]")].map(x=>({id:x.dataset.field,value:x.value})),mastery:S.progress.D772.interactiveMastery||{}})')));
+ assert.equal(mastered,true,'Unassisted transfer must be recorded as mastery');
  assert((await evalPage('S.progress.D772.crystals'))>=1,'Independent transfer should earn an existing crystal reward');
  const before=await evalPage('S.progress.D772.xp');
  await action('window.MajickInteractiveRewards.award("browser-qa","participation")');
