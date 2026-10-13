@@ -34,5 +34,23 @@ function generate(skill='boxplot',difficulty=2){const n=difficulty>=3?9:7,base=r
  return item(skill,vals,difficulty)
 }
 function batch(count=10,difficulty=2){const skills=['mean','median','boxplot','histogram','scatterplot','probability'],out=[];for(let i=0;i<count;i++){const q=generate(skills[i%skills.length],difficulty);if(q)out.push(q)}return out}
-window.MajickGeneratedPractice=Object.freeze({generate,batch,validate,median,quartiles,render:{dots,box,histogram,scatter,probability}});
+function mountLab(root,lessonText){
+ if(!root||!window.S||window.S.activeCourse!=='D772')return;
+ const text=String(lessonText||'').toLowerCase();
+ let skill=/probab|replacement|sample space/.test(text)?'probability':/scatter|association/.test(text)?'scatterplot':/histogram|distribution|skew|modality/.test(text)?'histogram':/quartile|box.plot|five.number/.test(text)?'boxplot':/median/.test(text)?'median':/mean|statistics|descriptive/.test(text)?'mean':null;
+ if(!skill)return;
+ const q=generate(skill,2);if(!q)return;
+ const section=document.createElement('section');section.className='majickGeneratedLab';section.style.cssText='border:1px solid #c1a476;border-radius:15px;background:#32253e;color:#fff0db;padding:16px;margin:16px 0';
+ section.innerHTML='<h4>✦ Generated Data Workshop · Five Learning Stages</h4><p><b>1 · Observe:</b> Read the complete graph and describe what the axes, values, or counters show.</p>'+q.visualHtml+'<p><b>2 · Interpret:</b> '+E(q.prompt)+'</p><label>Independent answer <input data-answer style="display:block;width:100%;max-width:340px;padding:10px;margin:8px 0" autocomplete="off"></label><p><b>3 · Explain:</b> Show your method or whiteboard steps.</p><textarea data-reason rows="3" style="width:100%;padding:10px" placeholder="I used the values because…"></textarea><p><b>4 · Transfer:</b> Create a new data set and solve without hints.</p><button type="button" data-fresh class="btn ghost">Generate new data →</button><p><b>5 · Teach:</b> A student is struggling with this mistake: '+E(q.misconception)+'. How would you model and check a correction?</p><textarea data-teach rows="3" style="width:100%;padding:10px" placeholder="I would show my student…"></textarea><div><button type="button" data-check class="btn primary">Check calculation and coach me</button></div><p data-feedback role="status" aria-live="polite">Written reasoning and teaching are coaching tasks, not automatically certified mastery.</p>';
+ root.appendChild(section);
+ section.querySelector('[data-fresh]').onclick=()=>{section.remove();mountLab(root,lessonText)};
+ section.querySelector('[data-check]').onclick=()=>{
+  const answer=section.querySelector('[data-answer]').value.trim(),correct=answer===String(q.answer);
+  const reason=section.querySelector('[data-reason]').value.trim(),teach=section.querySelector('[data-teach]').value.trim();
+  const feedback=section.querySelector('[data-feedback]');
+  feedback.textContent=(correct?'Correct calculation. ':'Check the calculation again. ')+(reason.length<25?'Explain the evidence and steps in more detail. ':'Your reasoning has been saved for self-review. ')+(teach.length<35?'Describe what you would model and how you would check understanding. ':'Compare your teaching strategy with the misconception and worked solution. ')+ 'Worked reasoning: '+q.why+' This guided workshop does not count as independent mastery.';
+  try{window.MajickLearningContinuity?.record?.({courseId:'D772',lessonTitle:lessonText,term:q.learningPathLessonId,correct:correct&&reason.length>=25,activity:'generated-lab-guided'})}catch(_){}
+ };
+}
+window.MajickGeneratedPractice=Object.freeze({generate,batch,validate,median,quartiles,render:{dots,box,histogram,scatter,probability},mountLab});
 })();
