@@ -1,0 +1,213 @@
+{
+  "schemaVersion": 1,
+  "canvas": [
+    512,
+    768
+  ],
+  "coordinateSystem": "top-left pixel coordinates",
+  "layerOrder": [
+    "body",
+    "outfit",
+    "hair",
+    "accessories"
+  ],
+  "requiredLayers": [
+    "body",
+    "outfit",
+    "hair"
+  ],
+  "anchorDefinitions": {
+    "head": "Center of head, measured per frame",
+    "neck": "Shoulder/neck meeting point, measured per frame",
+    "footBaseline": "Lowest grounded foot, measured per frame"
+  },
+  "alignmentStatus": "not_measured",
+  "frames": {
+    "front_idle": {
+      "head": null,
+      "neck": null,
+      "footBaseline": null,
+      "offsets": {
+        "body": [
+          0,
+          0
+        ],
+        "outfit": null,
+        "hair": null,
+        "accessories": {}
+      },
+      "validated": false
+    },
+    "front_step_left": {
+      "head": null,
+      "neck": null,
+      "footBaseline": null,
+      "offsets": {
+        "body": [
+          0,
+          0
+        ],
+        "outfit": null,
+        "hair": null,
+        "accessories": {}
+      },
+      "validated": false
+    },
+    "front_step_right": {
+      "head": null,
+      "neck": null,
+      "footBaseline": null,
+      "offsets": {
+        "body": [
+          0,
+          0
+        ],
+        "outfit": null,
+        "hair": null,
+        "accessories": {}
+      },
+      "validated": false
+    },
+    "side_left_idle": {
+      "head": null,
+      "neck": null,
+      "footBaseline": null,
+      "offsets": {
+        "body": [
+          0,
+          0
+        ],
+        "outfit": null,
+        "hair": null,
+        "accessories": {}
+      },
+      "validated": false
+    },
+    "side_left_walk": {
+      "head": null,
+      "neck": null,
+      "footBaseline": null,
+      "offsets": {
+        "body": [
+          0,
+          0
+        ],
+        "outfit": null,
+        "hair": null,
+        "accessories": {}
+      },
+      "validated": false
+    },
+    "side_right_walk": {
+      "head": null,
+      "neck": null,
+      "footBaseline": null,
+      "offsets": {
+        "body": [
+          0,
+          0
+        ],
+        "outfit": null,
+        "hair": null,
+        "accessories": {}
+      },
+      "validated": false
+    },
+    "back_idle": {
+      "head": null,
+      "neck": null,
+      "footBaseline": null,
+      "offsets": {
+        "body": [
+          0,
+          0
+        ],
+        "outfit": null,
+        "hair": null,
+        "accessories": {}
+      },
+      "validated": false
+    },
+    "back_step_left": {
+      "head": null,
+      "neck": null,
+      "footBaseline": null,
+      "offsets": {
+        "body": [
+          0,
+          0
+        ],
+        "outfit": null,
+        "hair": null,
+        "accessories": {}
+      },
+      "validated": false
+    },
+    "back_step_right": {
+      "head": null,
+      "neck": null,
+      "footBaseline": null,
+      "offsets": {
+        "body": [
+          0,
+          0
+        ],
+        "outfit": null,
+        "hair": null,
+        "accessories": {}
+      },
+      "validated": false
+    },
+    "threequarter_left_forward": {
+      "head": null,
+      "neck": null,
+      "footBaseline": null,
+      "offsets": {
+        "body": [
+          0,
+          0
+        ],
+        "outfit": null,
+        "hair": null,
+        "accessories": {}
+      },
+      "validated": false
+    },
+    "threequarter_left_step": {
+      "head": null,
+      "neck": null,
+      "footBaseline": null,
+      "offsets": {
+        "body": [
+          0,
+          0
+        ],
+        "outfit": null,
+        "hair": null,
+        "accessories": {}
+      },
+      "validated": false
+    },
+    "threequarter_left_walk": {
+      "head": null,
+      "neck": null,
+      "footBaseline": null,
+      "offsets": {
+        "body": [
+          0,
+          0
+        ],
+        "outfit": null,
+        "hair": null,
+        "accessories": {}
+      },
+      "validated": false
+    }
+  },
+  "fallbackPolicy": {
+    "missingLayer": "render_existing_fitted_avatar",
+    "invalidAnchor": "render_existing_fitted_avatar",
+    "unapprovedFrame": "render_existing_fitted_avatar",
+    "neverExposeUndergarmentBody": true
+  }
+}
