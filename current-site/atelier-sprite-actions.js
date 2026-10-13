@@ -16,7 +16,7 @@ function draw(){
  const d=dock();if(!d)return;
  if(!pane){pane=document.createElement('section');pane.className='mscSpriteActions';pane.setAttribute('aria-label','Scholar activity controls');d.append(pane)}
  const okay=compatible();
- pane.innerHTML='<div class="mscActionHeader"><strong>Scholar activities</strong><small>'+ (okay?'Fixed-look activity illustrations available':'Activity illustrations do not match your current outfit or hairstyle')+'</small></div><div class="mscActionButtons">'+Object.keys(POSES).map(k=>'<button type="button" data-action-pose="'+k+'" aria-pressed="'+(mode===k)+'">'+LABELS[k]+'</button>').join('')+'<button type="button" data-action-pose="walk" aria-pressed="'+(mode==='walk')+'">Walk</button></div><p class="mscSpriteStatus" role="status">'+DEFAULT_MSG+'</p>';
+ pane.innerHTML='<div class="mscActionHeader"><strong>Scholar activities</strong><small>'+ (okay?'Fixed-look activity illustrations available':'Activity illustrations do not match your current outfit or hairstyle')+'</small></div><div class="mscActionButtons">'+Object.keys(POSES).map(k=>'<button type="button" data-action-pose="'+k+'" aria-pressed="'+(mode===k)+'">'+LABELS[k]+'</button>').join('')+'<button type="button" disabled title="Awaiting validated fitted walk-cycle frames">Walk · artwork pending</button></div><p class="mscSpriteStatus" role="status">'+DEFAULT_MSG+'</p>';
  pane.querySelector('.mscSpriteStatus').textContent=lastCareMessage||DEFAULT_MSG;
  pane.querySelectorAll('[data-action-pose]').forEach(b=>b.addEventListener('click',()=>activate(b.dataset.actionPose)));
 }
