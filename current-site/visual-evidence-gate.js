@@ -22,6 +22,8 @@ const finite=n=>Number.isFinite(Number(n));
 function validateVisual(v){
  if(!v||typeof v!=='object')return {ok:false,reason:'missing visual specification'};
  const type=String(v.type||'').toLowerCase();
+ if(type==='scatter'&&typeof v.pattern==='string'&&!v.points)return {ok:['positive','negative','strong-positive','nonlinear','outlier'].includes(v.pattern),type,reason:'scatter pattern unavailable'};
+ if(type==='truncated-bar'||type==='icons')return {ok:true,type};
  if(type==='bars'||type==='histogram'){
   if(!Array.isArray(v.values)||!v.values.length||v.values.length>40||!v.values.every(n=>finite(n)&&Number(n)>=0))return {ok:false,reason:'invalid bar frequencies'};
   if(!Array.isArray(v.labels)||v.labels.length!==v.values.length)return {ok:false,reason:'interval labels do not match frequencies'};
