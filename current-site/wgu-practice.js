@@ -128,12 +128,16 @@ function practiceFeedback(q){
   if(session?.answered&&session.current===q&&!session.adaptiveTracked){session.adaptiveTracked=true;try{window.MajickLearningContinuity?.skillResult(q,session.chosen===q.answer,!!session.mathCoachAssisted,'study-now')}catch(_){}}
 
   const wrong=session?.chosen!==q.answer;
+  const skillId=q.learningPathLessonId||q.lessonId||window.MajickLearningContinuity?.identify?.(q.prompt);
+  const skillRow=window.S?.progress?.[window.S.activeCourse]?.adaptiveSkills?.[skillId];
+  const adaptivePanel=skillRow?.status==='review-needed'?'<section role="status" style="padding:12px;margin:12px 0;border:1px solid #d7ad75;border-radius:12px"><b>Professor recommends a targeted review</b><p>You have struggled on several questions about this concept. Review the skill using a different explanation, then try fresh questions.</p><button type="button" class="btn primary" onclick="MajickLearningContinuity.skillReview('+JSON.stringify(skillId)+')">Open Learning Hub →</button></section>':'';
+
   const reason=String(q.why||'').replace(/\s+/g,' ').trim();
   let reasonBox='';
   if(session?.type==='reason'){
     reasonBox='<div class="v3333Reason"><b>Explain it in one sentence</b><p>Use the WGU term and the clue from the scenario.</p><textarea id="reasonText" placeholder="The best answer is ___ because the scenario says ___..."></textarea><div><button class="btn ghost" onclick="saveReason(false)">Save explanation</button><button class="btn ghost" onclick="saveReason(true)">I explained it aloud</button></div></div>';
   }
-  return '<section class="v3333Feedback '+(wrong?'needsRepair':'correct')+'"><div class="v3333FeedbackTitle">'+(wrong?'Review the distinction':'Correct')+'</div><p><b>Best answer:</b> '+E(q.answer)+'</p><p>'+E(reason)+'</p>'+whyList(q)+(wrong?repairLesson(q):'')+reasonBox+'<button class="btn primary v3333Next" onclick="continueSession()">Next question →</button></section>';
+  return '<section class="v3333Feedback '+(wrong?'needsRepair':'correct')+'"><div class="v3333FeedbackTitle">'+(wrong?'Review the distinction':'Correct')+'</div><p><b>Best answer:</b> '+E(q.answer)+'</p><p>'+E(reason)+'</p>'+whyList(q)+(wrong?repairLesson(q):'')+reasonBox+adaptivePanel+'<button class="btn primary v3333Next" onclick="continueSession()">Next question →</button></section>';
 }
 function confidenceHtml(){
   if(session?.opts?.kind==='d772-section1-oa')return '';
@@ -437,7 +441,7 @@ nextQuestion=function(){
   if(fixedPractice()){
     if(session.type!=='test'&&session.answered&&!session.review.some(x=>x.q.id===session.current.id))session.review.push({q:session.current,chosen:session.chosen,correct:session.chosen===session.current.answer});
     if(session.index>=session.questions.length){finishSession();return;}
-    session.current=session.questions[session.index++];session.chartUsed=false;session.chartOpen=false;session.petHint=null;session.petEliminated=null;session.revealedClue=false;session.usedPetAbility=false;session.usedClueCharm=false;session.mathCoachAssisted=false;session.mathCoachHelpTypes=[];session.questionStartedAt=Date.now();session.answered=false;session.chosen=null;session.pendingChoice=null;session.confidence='sure';return;
+    session.current=session.questions[session.index++];session.chartUsed=false;session.chartOpen=false;session.petHint=null;session.petEliminated=null;session.revealedClue=false;session.usedPetAbility=false;session.usedClueCharm=false;session.mathCoachAssisted=false;session.mathCoachHelpTypes=[];session.questionStartedAt=Date.now();session.answered=false;session.chosen=null;session.pendingChoice=null;session.adaptiveTracked=false;session.confidence='sure';return;
   }
   const out=originalNextQuestion.apply(this,arguments);
   if(session)session.pendingChoice=null;
