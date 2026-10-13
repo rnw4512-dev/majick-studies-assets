@@ -346,7 +346,8 @@ function startSkillRetry(id){
  if(!activeD772())return;
  const gate=window.MajickVisualEvidence;
  const learned=window.S?.progress?.D772?.adaptiveSkills?.[id];
- const rows=shuffleCopy(practicePool('mixed').filter(q=>(q.learningPathLessonId||q.lessonId||window.MajickLearningContinuity?.identify?.(q.prompt))===id&&q.options?.length>=2&&(!gate||gate.evidence(q,v=>visualHtml(v.visual)||window.MajickCourseTutor?.questionVisualHtml?.(v)||'').ok)));
+ const generated=Array.from({length:18},(_,i)=>window.MajickGeneratedPractice?.generate?.(({ 'd772-s2-l4':['mean','median','boxplot'], 'd772-s2-l3':['histogram'], 'd772-s2-l2':['scatterplot'], 'd772-s3-l3':['probability']})[id]?.[i%(({ 'd772-s2-l4':['mean','median','boxplot'], 'd772-s2-l3':['histogram'], 'd772-s2-l2':['scatterplot'], 'd772-s3-l3':['probability']})[id]?.length||1)]||'boxplot',2)).filter(q=>q&&q.learningPathLessonId===id);
+ const rows=shuffleCopy(practicePool('mixed').concat(generated).filter(q=>(q.learningPathLessonId||q.lessonId||window.MajickLearningContinuity?.identify?.(q.prompt))===id&&q.options?.length>=2&&(!gate||gate.evidence(q,v=>visualHtml(v.visual)||window.MajickCourseTutor?.questionVisualHtml?.(v)||'').ok)));
  if(!rows.length){window.rewardToast?.('More practice needed','No verified new questions for this lesson yet.');return}
  const fresh=rows.filter(q=>!(learned?.seen||[]).includes(String(q.id||q.prompt)));
  const complexity=q=>Number(q.difficulty||1);
@@ -375,7 +376,8 @@ function selectVariedQuestions(rows,limit){
 }
 function startSection(scope,independent=false){
  if(!activeD772())return;
- const pool=practicePool(scope),groups=[1,2,3].map(n=>selectVariedQuestions(shuffleCopy(pool.filter(q=>sectionNumber(q)===n)),15));
+ const generated=(scope==='2'||scope==='2c'||scope==='3'||scope==='mixed')?(window.MajickGeneratedPractice?.batch?.(24,independent?3:2)||[]):[];
+ const pool=practicePool(scope).concat(generated.filter(q=>scope==='mixed'||scope==='2'&&sectionNumber(q)===2||scope==='2c'&&sectionNumber(q)===2||scope==='3'&&sectionNumber(q)===3)),groups=[1,2,3].map(n=>selectVariedQuestions(shuffleCopy(pool.filter(q=>sectionNumber(q)===n)),15));
  const questions=[];
  // Round-robin section quotas guarantee that mixed practice reaches every available section.
  while(questions.length<15&&groups.some(g=>g.length))for(const group of groups)if(group.length&&questions.length<15)questions.push(group.pop());
