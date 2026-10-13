@@ -32,3 +32,12 @@ D756 issue: inspect startD756Course and save/render in index.html and D756 cours
 - Sanctuary: unanswered iframe status requests expose a safe Check again button instead of falsely marking Guardians missing or forcing an iframe reload.
 - Avatar V3 artwork remains ON HOLD by user decision. Do not create, approve, or activate new avatar art until revised design direction is approved.
 - Files updated in GitHub; browser visual and runtime tests remain pending. Preserve all learner saves.
+
+## D756 official course outline intake (2026-10-13)
+- User-supplied WGU course outline maps competencies 2042.12.1, 2042.12.2, 2042.12.3 to three sections, eight lessons, and thirteen numbered concept pages; repeated Section 3 block is treated as a duplicate.
+- `index.html` now includes source-tagged D756 course-map data and task directions. Calling Start D756 merges lessons by stable ID into the D756 course, removing old orientation pseudo-lessons while preserving genuine course content and existing progress.
+- Task 1: IEP Creator in Chrome/Word; all changes must be made in the IEP Creator rather than editing a Word export directly; print and finalize, then upload actual document/PDF.
+- Task 2: Mursion live-actor IEP meeting, 15–20 minutes; recommend meeting instructor, preparing with case study/checklist, scheduling through course and giving at least two hours' notice for cancellation. Two late cancellations/no-shows trigger seven-day scheduling pause; recording usually provided around 48 hours after.
+- Short introduction overview differs from detailed outline for Section 3 lesson labels; detailed user-provided outline controls navigation, names in overview preserved as reference aliases.
+- This is a course structure, NOT completed learning explanations or official quiz questions. Need actual lesson content, case study, exemplar and rubrics to support faithful detailed instruction and evaluation.
+- Safe recovery: revert isolated index.html update only, do not delete D756 or D772 save records. Avatar art remains on hold; five visible UI screenshot bugs remain open.
