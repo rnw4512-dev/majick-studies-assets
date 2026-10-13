@@ -1,0 +1,132 @@
+name: Produce and measure fitted locs walk frames
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/generate-fitted-locs.yml']
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.11'}
+      - run: python -m pip install pillow
+      - name: Measure anchors, build loc layers and validate previews
+        run: |
+          python3 - <<'PY'
+          import math,random,json,hashlib
+          from pathlib import Path
+          from PIL import Image,ImageDraw
+          root=Path('current-site'); asset=root/'assets/atelier/v2/fitted'
+          hair_dir=asset/'hair/locs'
+          hair_dir.mkdir(parents=True,exist_ok=True)
+          frames=['front_idle','front_step_left','front_step_right','side_left_idle','side_left_walk','side_right_walk','back_idle','back_step_left','back_step_right','threequarter_left_forward','threequarter_left_step','threequarter_left_walk']
+          manifest_path=asset/'walk-manifest.json'; alignment_path=asset/'walk-alignment.json'
+          manifest=json.loads(manifest_path.read_text()); alignment=json.loads(alignment_path.read_text())
+          source_manifest=root/'source-manifest.json'; integrity=json.loads(source_manifest.read_text())
+          preview_dir=asset/'previews';preview_dir.mkdir(exist_ok=True)
+          stats=[]
+          for frame in frames:
+            source=asset/'body'/f'{frame}.webp'
+            outfit=asset/'outfits/midnight_velvet'/f'{frame}.webp'
+            if not source.exists() or not outfit.exists():continue
+            body=Image.open(source).convert('RGBA'); robe=Image.open(outfit).convert('RGBA')
+            w,h=body.size; assert (w,h)==(512,768)
+            px=body.load()
+            # Detect the visibly colored head and shoulders; ignore stray red crop artifacts.
+            skin=[]
+            for y in range(0, min(h,175)):
+              for x in range(70,w-70):
+                r,g,b,a=px[x,y]
+                if a<160:continue
+                if r>g*1.15 and g>b*1.11 and 24<r<235 and 15<g<186 and 7<b<155:
+                  skin.append((x,y))
+            # The body top is head only. Determine bounding box from dense scanlines.
+            rows={}
+            for x,y in skin: rows.setdefault(y,[]).append(x)
+            head_rows=[(y,min(xs),max(xs)) for y,xs in rows.items() if len(xs)>=18 and y<130]
+            if len(head_rows)<20:
+              raise ValueError('Could not establish head region for '+frame)
+            top=min(y for y,_,_ in head_rows)
+            mid=[(l+r)/2 for y,l,r in head_rows if top+14<=y<=top+55]
+            cx=round(sorted(mid)[len(mid)//2])
+            # Neck break occurs near lower head/upper torso; y is measured against body.
+            head_width=max(r-l+1 for y,l,r in head_rows if y<=top+85)
+            head_radius=max(24,min(49,head_width/2))
+            head_y=top+round(head_radius*.95)
+            neck_y=min(165,top+round(head_radius*2.25))
+            bbox=body.getchannel('A').getbbox()
+            foot_y=bbox[3]-1 if bbox else h-1
+            # Organic, narrow rope-like loc strands with painted highlights.
+            # Hair is isolated RGBA. Face opening is preserved, never a mask hole.
+            locs=Image.new('RGBA',(w,h)); d=ImageDraw.Draw(locs)
+            back=frame.startswith('back');side=frame.startswith('side');three=frame.startswith('threequarter')
+            rng=random.Random(31415) # same strand variations across movements
+            dark=(35,17,20,245);midcolor=(74,35,31,248);light=(130,69,39,185)
+            length=min(round(head_radius*3.15),170)
+            for i in range(28):
+              t=i/27
+              startx=cx+round((t-.5)*head_radius*1.80)
+              starty=top+round(3+8*math.sin(t*math.pi))
+              if back:
+                endx=cx+round((t-.5)*head_radius*2.75)
+              elif side:
+                endx=cx+round((t-.5)*head_radius*2.05+head_radius*.23)
+              else:
+                # Parted front locs frame face rather than crossing it.
+                endx=cx+round(((-1 if t<.5 else 1)*head_radius*1.46)+(t-.5)*head_radius*.74)
+              endy=top+length+round(7*math.sin(t*math.pi)+rng.randrange(-13,14))
+              points=[]
+              for step in range(15):
+                u=step/14
+                bx=startx+(endx-startx)*u
+                sway=math.sin(u*math.pi*1.8+i*.63)*2.5*u
+                points.append((round(bx+sway),round(starty+(endy-starty)*u)))
+              thickness= max(3,round(head_radius*.105))
+              d.line(points,fill=dark,width=thickness+3,joint='curve')
+              d.line(points,fill=midcolor,width=thickness,joint='curve')
+              shine=[(x-1,y) for x,y in points[1:-2]]
+              d.line(shine,fill=light,width=1,joint='curve')
+            # Hair crown closes scalp, but leaves lower face clear.
+            d.pieslice((cx-head_radius*1.03,top-4,cx+head_radius*1.03,top+head_radius*1.08),180,360,fill=dark)
+            for i in range(14):
+              t=i/13
+              x=cx+int((t-.5)*head_radius*1.9)
+              y=top+round(3+math.sin(t*math.pi)*8)
+              d.arc((x-4,y-3,x+5,y+7),190,350,fill=midcolor,width=2)
+            # Render a preview over ALL layers, but never deploy the preview as a live character.
+            comp=Image.alpha_composite(body,robe)
+            comp=Image.alpha_composite(comp,locs)
+            target=hair_dir/f'{frame}.webp'
+            locs.save(target,'WEBP',lossless=True)
+            preview=preview_dir/f'{frame}.webp';comp.save(preview,'WEBP',quality=85)
+            manifest['frames'][frame]['hair']=target.relative_to(root).as_posix()
+            manifest['frames'][frame]['status']='candidate_requires_visual_review'
+            alignment['frames'][frame]={'head':[cx,head_y],'neck':[cx,neck_y],'footBaseline':foot_y,'offsets':{'body':[0,0],'outfit':[0,0],'hair':[0,0],'accessories':{}},'validated':False,'method':'skin-pixel head scan + alpha foot bbox; confirm visually'}
+            stats.append({'frame':frame,'head':[cx,head_y],'neck':[cx,neck_y],'footBaseline':foot_y,'headRadius':round(head_radius,1),'preview':preview.relative_to(root).as_posix()})
+            for file in [target,preview]:
+              integrity['files'][file.relative_to(root).as_posix()]=hashlib.sha256(file.read_bytes()).hexdigest()
+          assert len(stats)==12
+          manifest['enabled']=False
+          manifest['reason']='All twelve generated locs frames exist but final visual QA and browser walk-controller acceptance remain required.'
+          alignment['alignmentStatus']='measured_candidates_pending_visual_confirmation'
+          for file,data in [(manifest_path,manifest),(alignment_path,alignment)]:
+            file.write_text(json.dumps(data,indent=2)+'\n')
+            integrity['files'][file.relative_to(root).as_posix()]=hashlib.sha256(file.read_bytes()).hexdigest()
+          measurements=asset/'walk-measurements.json';measurements.write_text(json.dumps({'method':'measured from individual 512x768 body images','frames':stats},indent=2)+'\n')
+          integrity['files'][measurements.relative_to(root).as_posix()]=hashlib.sha256(measurements.read_bytes()).hexdigest()
+          source_manifest.write_text(json.dumps(integrity,indent=2,ensure_ascii=False)+'\n')
+          print('Generated and measured',len(stats),'locs frames, each with a composite preview')
+          PY
+      - name: Commit generated candidates and hashes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add current-site/assets/atelier/v2/fitted/hair current-site/assets/atelier/v2/fitted/previews current-site/assets/atelier/v2/fitted/walk-*.json current-site/source-manifest.json
+          if ! git diff --cached --quiet; then
+            git commit -m "Measure scholar anchors and produce twelve locs walk candidates"
+            git push
+          fi
