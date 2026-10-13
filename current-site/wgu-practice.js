@@ -142,6 +142,8 @@ function questionHtml(q){
   const oa=session?.type==='test';
   const clue=session?.type==='clue'&&!oa&&!session.answered;
   const selected=session?.pendingChoice;
+  const ev=globalThis.MajickVisualEvidence?.evidence(q,x=>visualHtml(x.visual)||window.MajickCourseTutor?.questionVisualHtml?.(x)||'');
+  const evidenceOk=!!ev?.ok;
   const options=(q.options||[]).map((o,i)=>{
     const cls=['v3333Option'];
     if(selected===o&&!session.answered)cls.push('selected');
@@ -151,15 +153,15 @@ function questionHtml(q){
   }).join('');
   const label=E(session?.opts?.label||'D772 Practice');
   const progress=(session?.index||1)+(session?.opts?.limit?'/'+session.opts.limit:'');
-  return '<div class="v3333QuestionShell '+(oa?'oaMode':'practiceMode')+'"><div class="v3333QTop"><div><span class="v3333Eyebrow">D772 • STATISTICAL DATA LITERACY</span><h2>'+label+'</h2></div><div class="v3333QCount">Question '+progress+'</div><button class="btn ghost" onclick="session=null;navigate(\'mission\')">Choose section</button></div>'+(oa?'<div class="v3333OANote">No hints or lesson labels during the simulation.</div>':'')+(session?.opts?.timeLimitMs?'<div id="v342AssessClock" role="timer">Time remaining: '+Math.max(0,Math.ceil((session.opts.timeLimitMs-(Date.now()-session.start))/1000))+' seconds</div>':'')+'<article class="v3333QuestionCard"><div class="v3333Prompt">'+E(q.prompt)+'</div>'+(visualHtml(q.visual)||window.MajickCourseTutor?.questionVisualHtml?.(q)||'')+(!oa?'<button class="btn ghost" '+(session.answered?'disabled':'')+' onclick="toggleAnchorChart()">'+(session.chartOpen?'Hide':'Open')+' skill anchor chart</button>':'')+(!oa&&session.chartOpen?anchorChartHTML(q):'')+(clue?'<div class="v3333ClueTraining">'+clueHTML(cleanPrompt(q.prompt))+'</div>':'')+confidenceHtml()+questionBoard(q)+'<div class="v3333Options">'+options+'</div>'+(!session.answered?'<button type="button" class="btn primary v3333Submit" '+(selected?'':'disabled')+' onclick="MajickWGUPractice.submit()">Submit</button>':'')+(!oa&&session.answered?practiceFeedback(q):'')+'</article></div>';
+  return '<div class="v3333QuestionShell '+(oa?'oaMode':'practiceMode')+'"><div class="v3333QTop"><div><span class="v3333Eyebrow">D772 • STATISTICAL DATA LITERACY</span><h2>'+label+'</h2></div><div class="v3333QCount">Question '+progress+'</div><button class="btn ghost" onclick="session=null;navigate(\'mission\')">Choose section</button></div>'+(oa?'<div class="v3333OANote">No hints or lesson labels during the simulation.</div>':'')+(session?.opts?.timeLimitMs?'<div id="v342AssessClock" role="timer">Time remaining: '+Math.max(0,Math.ceil((session.opts.timeLimitMs-(Date.now()-session.start))/1000))+' seconds</div>':'')+'<article class="v3333QuestionCard"><div class="v3333Prompt">'+E(q.prompt)+'</div>'+(visualHtml(q.visual)||window.MajickCourseTutor?.questionVisualHtml?.(q)||'')+(!oa&&evidenceOk?'<button class="btn ghost" '+(session.answered?'disabled':'')+' onclick="toggleAnchorChart()">'+(session.chartOpen?'Hide':'Open')+' skill anchor chart</button>':'')+(!oa&&session.chartOpen?anchorChartHTML(q):'')+(clue?'<div class="v3333ClueTraining">'+clueHTML(cleanPrompt(q.prompt))+'</div>':'')+confidenceHtml()+questionBoard(q)+'<div class="v3333Options">'+(evidenceOk?options:'')+'</div>'+(!session.answered&&evidenceOk?'<button type="button" class="btn primary v3333Submit" '+(selected?'':'disabled')+' onclick="MajickWGUPractice.submit()">Submit</button>':'')+(!oa&&session.answered?practiceFeedback(q):'')+'</article></div>';
 }
 function select(choice){
-  if(!session||session.answered)return;
+  if(!session||session.answered||!globalThis.MajickVisualEvidence?.evidence(session.current,x=>visualHtml(x.visual)||window.MajickCourseTutor?.questionVisualHtml?.(x)||'')?.ok)return;
   session.pendingChoice=choice;
   render();
 }
 function submit(){
-  if(!session||session.answered||!session.pendingChoice)return;
+  if(!session||session.answered||!session.pendingChoice||!globalThis.MajickVisualEvidence?.evidence(session.current,x=>visualHtml(x.visual)||window.MajickCourseTutor?.questionVisualHtml?.(x)||'')?.ok)return;
   const choice=session.pendingChoice;
   session.pendingChoice=null;
   answerQ(choice);
