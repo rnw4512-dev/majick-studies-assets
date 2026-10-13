@@ -799,6 +799,7 @@
     "inline-lesson-practice.js": "d8ba76d8f575e175105c9f5391edcfe57c4e5bce0ab6b6835362b992bf15f6ab",
     "learning-continuity.js": "ca968798a7edd4186b6ac0e757c015265a6d10cd43552f7a9d40f9fe914a8e6f",
     "teach-back.js": "6991f50b2521879b9111406ec0944d2493a7341a2c9fe33113e8a9fdbd702355",
-    "inline-learning-tabs.js": "747cda5d4f06749ae5d4504b029230778f352d73de35bc2a163932bd07bf8a9d"
+    "inline-learning-tabs.js": "747cda5d4f06749ae5d4504b029230778f352d73de35bc2a163932bd07bf8a9d",
+    "your-turn-practice.js": "db6d72ac0f257adfcd72c1ab0a81b18ec922ac1997c77fcd650095cec59e368d"
   }
 }
