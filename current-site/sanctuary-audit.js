@@ -1,6 +1,6 @@
 (()=>{
  'use strict';
- const VERSION='3.3.50',states=new WeakMap();
+ const VERSION='3.4.2',states=new WeakMap();
  function expected(){return (window.S?.legacy?.pets||[]).filter(p=>p?.id).map(p=>({id:String(p.id),name:p.name||'Guardian'}))}
  function frameFor(source){return [...document.querySelectorAll('.v3317SanctuaryFrame')].find(f=>f.contentWindow===source)}
  function banner(frame){
@@ -37,7 +37,11 @@
    try{frame.contentWindow?.postMessage({type:'MAJICK_SANCTUARY_ROSTER_REQUEST_V3350'},location.origin)}catch(_){}
    setTimeout(()=>{
      if(!frame.isConnected||states.has(frame))return;
-     show(frame,[]);
+     // An unanswered iframe request is not evidence of missing Guardians.
+     const box=banner(frame);if(!box)return;
+     box.dataset.status='unverified';
+     box.textContent='Sanctuary room status could not be verified. Your Guardians and saved room are unchanged.';
+     states.set(frame,{expected:expected().length,unverified:true,reason:'roster-timeout'});
    },6500);
  }
  function mount(){document.querySelectorAll('.v3317SanctuaryFrame').forEach(f=>{if(!f.dataset.v3350Audit){f.dataset.v3350Audit='1';request(f)}})}
