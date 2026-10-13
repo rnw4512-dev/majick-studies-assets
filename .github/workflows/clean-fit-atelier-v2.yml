@@ -1,0 +1,120 @@
+name: Clean and fit Atelier V2 sprite assets
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/clean-fit-atelier-v2.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  process:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install pillow
+      - name: Clean sprites and produce registered fitted candidates
+        shell: bash
+        run: |
+          python - <<'PY'
+          from PIL import Image
+          from collections import deque
+          from pathlib import Path
+          import hashlib,json
+          base=Path('current-site')
+          src=base/'assets/atelier/v2/sprites'
+          out=base/'assets/atelier/v2/fitted'
+          manifest=base/'source-manifest.json'
+          catalog=json.loads(manifest.read_text(encoding='utf-8'))
+          audit_path=src/'sprite-audit.json'
+          audit=json.loads(audit_path.read_text(encoding='utf-8'))
+          results=[]
+
+          def clean(im,min_area=20,keep_all=False):
+              im=im.convert('RGBA')
+              if keep_all:return im
+              # Remove only very small disconnected alpha speckles.
+              # Retain floating bubbles, necklaces and magical adornments.
+              mask=im.getchannel('A').point(lambda a:255 if a>12 else 0)
+              pix=mask.load(); w,h=im.size; seen=bytearray(w*h); drop=[]
+              for y in range(h):
+                  for x in range(w):
+                      i=y*w+x
+                      if seen[i] or not pix[x,y]:continue
+                      q=[(x,y)];seen[i]=1; k=0
+                      while k<len(q):
+                          u,v=q[k];k+=1
+                          for nx,ny in ((u-1,v),(u+1,v),(u,v-1),(u,v+1)):
+                              if nx<0 or nx>=w or ny<0 or ny>=h:continue
+                              j=ny*w+nx
+                              if seen[j] or not pix[nx,ny]:continue
+                              seen[j]=1;q.append((nx,ny))
+                      if len(q)<min_area:drop.extend(q)
+              if drop:
+                  pixels=im.load()
+                  for x,y in drop:pixels[x,y]=(0,0,0,0)
+              return im
+
+          def put(group,name,im,status):
+              target=out/group/name
+              target.parent.mkdir(parents=True,exist_ok=True)
+              im.save(target,'WEBP',lossless=True,method=4)
+              rel=target.relative_to(base).as_posix()
+              catalog['files'][rel]=hashlib.sha256(target.read_bytes()).hexdigest()
+              results.append({'path':rel,'status':status,'width':im.width,'height':im.height})
+
+          for group in ('body','companions','accessories','poses'):
+              for f in sorted((src/group).glob('*.webp')):
+                  im=Image.open(f).convert('RGBA')
+                  # Pose drawings have backgrounds blended into large components;
+                  # only eliminate isolated noise, never remove complete anatomy.
+                  threshold=32 if group=='body' else 14
+                  put(group,f.name,clean(im,threshold), 'cleaned_only_needs_visual_approval' if group in ('body','poses') else 'cleaned_candidate_needs_canon_validation' if group=='companions' else 'item_icon_not_wearable')
+          # Create a reproducible fitted alignment candidate for each of 12
+          # frames. This is NOT declared a ready changeable outfit until visually reviewed.
+          # The body itself is intentionally not published as a standalone visual.
+          for f in sorted((src/'body').glob('*.webp')):
+              robe=src/'outfits/midnight_velvet'/f.name
+              if not robe.is_file():continue
+              base_im=Image.open(f).convert('RGBA')
+              garment=Image.open(robe).convert('RGBA')
+              b=base_im.getchannel('A').getbbox()
+              g=garment.getchannel('A').getbbox()
+              if not b or not g:continue
+              # Fit broad garment around the base shoulder axis, not onto face.
+              # Derive placement from visible bounds on each original frame.
+              bw=b[2]-b[0];bh=b[3]-b[1];gw=g[2]-g[0];gh=g[3]-g[1]
+              target_w=round(bw*1.18)
+              target_h=min(round(bh*.91),round(target_w*gh/gw))
+              scale=min(target_w/gw,target_h/gh)
+              crop=garment.crop(g)
+              size=(max(1,round(gw*scale)),max(1,round(gh*scale)))
+              resized=crop.resize(size,Image.Resampling.LANCZOS)
+              canvas=Image.new('RGBA',base_im.size)
+              x=round((b[0]+b[2]-size[0])/2)
+              y=min(base_im.height-size[1],round(b[3]-size[1]))
+              canvas.alpha_composite(resized,(x,y))
+              put('outfits/midnight_velvet',f.name,canvas,'fitted_candidate_manual_review_required')
+          report={'version':'3.4.2','generatedFrom':'original imported V2 sprite files','warning':'Automated fitted layers and cleaned files are candidates, not proof of production-ready animation or interchangeable layer alignment. Broken original hair crops remain excluded.','hairStatus':'unusable_needs_true_layer_regeneration','results':results}
+          report_path=out/'production-status.json'
+          report_path.write_text(json.dumps(report,indent=2)+'\n',encoding='utf-8')
+          catalog['files'][report_path.relative_to(base).as_posix()]=hashlib.sha256(report_path.read_bytes()).hexdigest()
+          catalog['files'][audit_path.relative_to(base).as_posix()]=hashlib.sha256(audit_path.read_bytes()).hexdigest()
+          manifest.write_text(json.dumps(catalog,indent=2,ensure_ascii=False)+'\n',encoding='utf-8')
+          print('Prepared',len(results),'cleaned/fitted assets. Hair deliberately excluded.')
+          PY
+      - name: Commit processed assets without replacing originals
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add current-site/assets/atelier/v2/fitted current-site/source-manifest.json
+          if ! git diff --cached --quiet; then
+            git commit -m "Build safe cleaned and aligned V2 sprite candidates"
+            git push
+          fi
