@@ -33,6 +33,10 @@ const BANK={
  ]
 };
 for(const task of window.MajickLessonActivities?.tasks||[]){if(BANK[task.course]&&!BANK[task.course].some(x=>x.id===task.id))BANK[task.course].push(task)}
+BANK.D772.find(x=>x.id==='mean').cases.push({numbers:[9,13,17,21,25],known:'9, 13, 17, 21, 25',unknown:'mean',slots:[85,5],answer:17,interpret:'The mean is 17 across five measurements.',why:'Sum 85 divided by five.'});
+BANK.D772.find(x=>x.id==='median').cases.push({numbers:[2,6,8,12,14,18],known:'sorted values: 2, 6, 8, 12, 14, 18',unknown:'median',slots:[8,12],answer:10,interpret:'The median is 10, between 8 and 12.',why:'Average the third and fourth values.'});
+BANK.D772.find(x=>x.id==='probability').cases.push({known:'6 green and 4 purple counters; draw two greens without replacement',unknown:'P(two greens)',slots:[6,10,5,9],answer:1/3,interpret:'The probability of two greens is one-third.',why:'6/10 multiplied by 5/9 = 1/3.'});
+BANK.D772.find(x=>x.id==='histogram').cases.push({labels:['0–9','10–19','20–29','30–39'],freq:[2,6,4,3],mode:'10–19',total:15,rawData:[2,8,10,11,12,15,16,19,20,22,25,29,30,34,38],interpret:'The modal interval is 10–19 (6 of 15 observations).'});
 const STATES=new WeakMap();
 function stageTitle(t,s){return t.kind==='math'?['Identify the knowns and unknown','Choose a formula','Place values into slots','Calculate your answer','Interpret your result','Independent transfer'][s]:t.kind==='graph'?['Read the target frequencies','Build the graph','Find the modal interval','Count total frequency','Explain the pattern','Independent graph challenge'][s]:['Read the scenario','Choose the first step','Arrange the full response','Explain your decision','Review your construction','Independent new scenario'][s]}
 const numeric=(a,b)=>a!==''&&a!=null&&Number.isFinite(Number(a))&&Math.abs(Number(a)-Number(b))<=Math.max(.0002,Math.abs(b)*.00005);
@@ -58,7 +62,7 @@ function reasoningCheck(task,ex,answer){
  return {ok:true,feedback:'Your response identifies the result and relevant statistical context. This automated check is limited; compare your interpretation with the model.'};
 }
 function setup(host,task){if(host.dataset.engineTask!==task.id||host.dataset.engineCourse!==window.S.activeCourse){host.dataset.engineTask=task.id;host.dataset.engineCourse=window.S.activeCourse;STATES.set(host,{stage:0,answers:{},caseIndex:0,feedback:'',error:false,hint:false,finished:false,verified:{0:[],1:[]}})}}
-function render(host,task){setup(host,task);const st=STATES.get(host),ex=task.cases[st.caseIndex],independent=st.caseIndex===1,step=st.stage;let body='',a=st.answers;
+function render(host,task){setup(host,task);const st=STATES.get(host),ex=task.cases[st.caseIndex],independent=st.caseIndex===task.cases.length-1,step=st.stage;let body='',a=st.answers;
 const input=(id,label,placeholder='Your answer')=>'<label class="mjSeLabel">'+esc(label)+'<input data-field="'+id+'" value="'+esc(a[id]||'')+'" placeholder="'+esc(placeholder)+'" autocomplete="off"></label>';
 if(task.kind==='math'){
  const known=ex.known||ex.numbers?.join(', ')||'';
@@ -70,8 +74,8 @@ if(task.kind==='math'){
  if(step===5)body='<p>Now use different numbers with <b>no hints</b>. Start by identifying the values, then solve the new problem independently.</p><p>'+esc(known)+'</p>'+input('transfer','Final solution');
 }
 if(task.kind==='graph'){
- if(step===0)body='<p>Target frequencies: '+ex.labels.map((l,i)=>esc(l)+': '+ex.freq[i]).join(' · ')+'</p>'+input('identified','How many intervals are given?');
- if(step===1||step===5){body='<p>Use the buttons or number inputs to set bar heights accurately.</p><div class="mjSeGraph">'+ex.labels.map((l,i)=>{let n=Number(a['bar'+i]??0);return '<div class="mjSeBar"><div class="mjSeTower" style="height:'+(Math.max(0,Math.min(10,n))*13)+'px"></div><small>'+esc(l)+'</small><input data-bar="'+i+'" type="number" min="0" max="10" value="'+n+'" aria-label="Frequency '+esc(l)+'"><div><button data-delta="-1" data-i="'+i+'">−</button><button data-delta="1" data-i="'+i+'">+</button></div></div>'}).join('')+'</div>'}
+ if(step===0)body='<p>'+(independent&&ex.rawData?'Raw observations: '+ex.rawData.join(', '):'Target frequencies: '+ex.labels.map((l,i)=>esc(l)+': '+ex.freq[i]).join(' · '))+'</p>'+input('identified','How many intervals are given?');
+ if(step===1||step===5){body='<p>'+(independent&&ex.rawData?'Count the observations per interval.':'Use the buttons or number inputs to set bar heights accurately.')+'</p><div class="mjSeGraph">'+ex.labels.map((l,i)=>{let n=Number(a['bar'+i]??0);return '<div class="mjSeBar"><div class="mjSeTower" style="height:'+(Math.max(0,Math.min(10,n))*13)+'px"></div><small>'+esc(l)+'</small><input data-bar="'+i+'" type="number" min="0" max="10" value="'+n+'" aria-label="Frequency '+esc(l)+'"><div><button data-delta="-1" data-i="'+i+'">−</button><button data-delta="1" data-i="'+i+'">+</button></div></div>'}).join('')+'</div>'}
  if(step===2)body='<p>Which interval has the highest frequency?</p>'+input('mode','Modal interval');
  if(step===3)body=input('total','Total frequency');
  if(step===4)body=input('meaning','Describe the frequency distribution','Write a sentence');
@@ -101,7 +105,7 @@ host.querySelector('[data-check]').onclick=()=>{let good=false,reason='';
  if(!good){st.feedback=(step===4|| (task.kind==='sequence'&&step===3))?reason:'Not yet. Revisit this step and try again.';render(host,task);return}
  if(step===5){
   if(st.finished){st.feedback='This transfer has already been completed.';render(host,task);return}
-  const full=[0,1,2,3,4].every(n=>(st.verified?.[1]||[]).includes(n));
+  const full=[0,1,2,3,4].every(n=>(st.verified?.[st.caseIndex]||[]).includes(n));
   if(!full){st.feedback='Independent completion requires all five prior steps to be checked on the new scenario.';render(host,task);return}
   st.finished=true;
   const mastered=window.MajickInteractiveMastery?.record?.({taskId:task.id,lessonId:task.lesson,kind:task.kind,allStagesVerified:full,hintFreeTransfer:!st.transferHintUsed&&task.kind!=='sequence'});
@@ -109,8 +113,8 @@ host.querySelector('[data-check]').onclick=()=>{let good=false,reason='';
   st.feedback='Transfer complete. '+(mastered?.recorded?'Independently verified calculation recorded. ':'Practice completed; mastery is not asserted. ')+reason+(reward?.awarded?' Reward: +'+reward.xp+' XP and +'+reward.crystals+' crystal.':' Reward already earned.');
   render(host,task);return
 }
- (st.verified[independent?1:0]||(st.verified[independent?1:0]=[])).push(step);
- if(step===4){if(independent){st.stage=5;st.feedback='Now complete the final independent answer or construction.';render(host,task);return}st.caseIndex=1;st.stage=0;st.answers={};st.hint=false;st.feedback='New scenario: complete every step without hints.';render(host,task);return}
+ (st.verified[st.caseIndex]||(st.verified[independent?1:0]=[])).push(step);
+ if(step===4){if(independent){st.stage=5;st.feedback='Now complete the final independent answer or construction.';render(host,task);return}st.caseIndex=Math.min(st.caseIndex+1,task.cases.length-1);st.stage=0;st.answers={};st.hint=false;st.feedback=st.caseIndex===task.cases.length-1?'Independent transfer: solve every step without hints.':'Next guided example: slightly harder.';render(host,task);return}
  if(step===0&&!independent)window.MajickInteractiveRewards?.award?.(task.id,'participation');(st.verified[independent?1:0]||(st.verified[independent?1:0]=[])).push(step);st.stage++;st.feedback='Step correct. '+(step===3?reason:'Continue to the next step.');render(host,task)
  };
 }
