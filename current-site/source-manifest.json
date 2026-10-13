@@ -144,7 +144,7 @@
     "guardian-registry.js": "b20170b996ddf065f33bb37332c8a9fce68ae104914e3e94ffe9aa44b7b612f3",
     "home-focus.css": "cbb719eb8e78701717b4016388d511553f2785212d839815ed006651ae738b2b",
     "home-focus.js": "69b58966e19ba611d5e1789b6a342317067f1f0f4b718619062bd7277811a695",
-    "index.html": "5f025ab3dbd6f80083e2a8d7174eab506cd63722e5a037f406f0450f69634c9d",
+    "index.html": "6ad78f71b91ea96dcaa3bab1156722425d006d1d8b8bde459a5a6481c79f610c",
     "learn-mode.css": "30181250c67efe7bd97c9276706a804a551e7904a2bb28160eeb0c193f35c002",
     "learn-mode.js": "f6647cd013d5bc59a319710c45ac806b56585c7fc5c912afa88857d2f16f82e0",
     "learning-lab.css": "6ed48d27023052a714d27c027f25828bc5ad74edccb172704e823a58b26d6844",
@@ -607,6 +607,6 @@
     "assets/atelier/v2/sprites/poses/standing.webp": "18e7a49425b545010f947d298d6b84aa7c35c6614044b52d3b9805691f31e4fd",
     "assets/atelier/v2/sprites/poses/studying_read.webp": "0b3c3755759f936acd86d66e1bfbdecf6e3e69be8150b03aadb30baa9c5dfd03",
     "assets/atelier/v2/sprites/poses/writing.webp": "9b0003acac0b198aedd4864f05bbcdd07df66cf6c013734077c8893ddbc179c2",
-    "atelier-sprite-actions.js": "db4c70ed03f0787ddcaee8682371ce6c9a3d4880698aeacaf8951fd1a25cec08"
+    "atelier-sprite-actions.js": "53a9aa0373514cf4b92c9c591f7b6a1bc885b4a664fd81f867db1e495b8b6581"
   }
 }
