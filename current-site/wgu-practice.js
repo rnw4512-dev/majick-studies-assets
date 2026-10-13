@@ -349,7 +349,15 @@ function startSkillRetry(id){
  const rows=shuffleCopy(practicePool('mixed').filter(q=>(q.learningPathLessonId||q.lessonId||window.MajickLearningContinuity?.identify?.(q.prompt))===id&&q.options?.length>=2&&(!gate||gate.evidence(q,v=>visualHtml(v.visual)||window.MajickCourseTutor?.questionVisualHtml?.(v)||'').ok)));
  if(!rows.length){window.rewardToast?.('More practice needed','No verified new questions for this lesson yet.');return}
  const fresh=rows.filter(q=>!(learned?.seen||[]).includes(String(q.id||q.prompt)));
- const questions=(fresh.length>=3?fresh:rows).slice(0,5);
+ const complexity=q=>Number(q.difficulty||1);
+ const accuracy=learned?.attempts?.length?learned.attempts.filter(x=>x.correct&&!x.assisted).length/learned.attempts.length:0.5;
+ const targetLevel=accuracy>=.8?3:accuracy<.4?1:2;
+ const ordered=(fresh.length>=3?fresh:rows).sort((a,b)=>Math.abs(complexity(a)-targetLevel)-Math.abs(complexity(b)-targetLevel));
+ const signatures=new Set();
+ const questions=ordered.filter(q=>{
+  const sign=String(q.prompt||'').toLowerCase().replace(/\d+(?:\.\d+)?/g,'#').replace(/\s+/g,' ').trim();
+  if(signatures.has(sign))return false;signatures.add(sign);return true;
+ }).slice(0,5);
  session={type:'test',opts:{label:'Independent skill recovery · '+id,limit:questions.length,kind:'d772-section-practice',scope:'retry',hideMeta:true},index:1,score:0,combo:0,questions,current:questions[0],answered:false,confidence:'sure',review:[],start:Date.now(),pendingChoice:null,adaptiveTracked:false};
  if(learned){learned.status='retry';learned.seen=(learned.seen||[]).concat(questions.map(q=>String(q.id||q.prompt))).slice(-70);}
  S.screen='mission';try{save()}catch(_){}render();
