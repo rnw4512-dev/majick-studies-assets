@@ -680,7 +680,7 @@
     const base=(typeof questionPool==='function'?questionPool(opts):[])||[];
     if(globalThis.S?.activeCourse!== 'D772')return base;
     const seen=new Set(),out=[];
-    for(const q of [...base,...D772_REALM_SUPPLEMENT,...D772_ALL_SECTION_SUPPLEMENT]){
+    for(const q of [...base,...D772_REALM_SUPPLEMENT,...D772_ALL_SECTION_SUPPLEMENT,...(globalThis.MajickD772SharedQuestions?.questions||[])]){
       if(!q?.prompt||!q?.answer)continue;
       const key=normalize(q.prompt)+'|'+normalize(q.answer);
       if(seen.has(key))continue;
