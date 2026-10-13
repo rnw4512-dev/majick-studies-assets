@@ -682,6 +682,8 @@
     const seen=new Set(),out=[];
     for(const q of [...base,...D772_REALM_SUPPLEMENT,...D772_ALL_SECTION_SUPPLEMENT,...(globalThis.MajickD772SharedQuestions?.questions||[])]){
       if(!q?.prompt||!q?.answer)continue;
+      const evidence=globalThis.MajickVisualEvidence?.evidence(q);
+      if(evidence&&!evidence.ok)continue; // Shared gate serves every Game Realm mode.
       const key=normalize(q.prompt)+'|'+normalize(q.answer);
       if(seen.has(key))continue;
       seen.add(key);out.push(q);
