@@ -115,9 +115,9 @@ host.querySelector('[data-check]').onclick=()=>{let good=false,reason='';
   st.feedback='Transfer complete. '+(mastered?.recorded?'Independently verified calculation recorded. ':'Practice completed; mastery is not asserted. ')+reason+(reward?.awarded?' Reward: +'+reward.xp+' XP and +'+reward.crystals+' crystal.':' Reward already earned.');
   render(host,task);return
 }
- (st.verified[st.caseIndex]||(st.verified[independent?1:0]=[])).push(step);
+ (st.verified[st.caseIndex]||(st.verified[st.caseIndex]=[])).push(step);
  if(step===4){if(independent){st.stage=5;st.feedback='Now complete the final independent answer or construction.';render(host,task);return}st.caseIndex=Math.min(st.caseIndex+1,task.cases.length-1);st.stage=0;st.answers={};st.hint=false;st.feedback=st.caseIndex===task.cases.length-1?'Independent transfer: solve every step without hints.':'Next guided example: slightly harder.';render(host,task);return}
- if(step===0&&!independent)window.MajickInteractiveRewards?.award?.(task.id,'participation');(st.verified[independent?1:0]||(st.verified[independent?1:0]=[])).push(step);st.stage++;st.feedback='Step correct. '+(step===3?reason:'Continue to the next step.');render(host,task)
+ if(step===0&&!independent)window.MajickInteractiveRewards?.award?.(task.id,'participation');(st.verified[st.caseIndex]||(st.verified[st.caseIndex]=[])).push(step);st.stage++;st.feedback='Step correct. '+(step===3?reason:'Continue to the next step.');render(host,task)
  };
 }
 const OBJECTIVES={
