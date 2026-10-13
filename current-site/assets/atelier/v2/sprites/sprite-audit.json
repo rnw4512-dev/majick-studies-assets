@@ -1,0 +1,756 @@
+{
+  "schemaVersion": 1,
+  "canonicalApp": "3.4.2",
+  "purpose": "Safety gate for imported image sprites; no asset is approved as an interchangeable animated layer without manual visual validation.",
+  "counts": {
+    "body": 12,
+    "hair": 24,
+    "outfits": 12,
+    "accessories": 11,
+    "poses": 6,
+    "companions": 16
+  },
+  "testedExamples": [
+    "body/front_idle.webp",
+    "outfits/midnight_velvet/front_idle.webp",
+    "hair/locs_loose_front.webp",
+    "hair/locs_loose_front_threequarter.webp"
+  ],
+  "observations": [
+    "All 81 WebP assets are committed and addressed at stable paths.",
+    "Spot-check confirms that equal 512×768 canvases do not imply matching body/head/feet anchor coordinates.",
+    "Hair sprite crops contain adjacent artwork or mismatched view labels; cannot safely use them as changeable hair during walking.",
+    "Keep the existing fitted Atelier layers and protected Sanctuary Guardian renderer until new layers pass visual registration."
+  ],
+  "entries": [
+    {
+      "id": "accessories/book_bag",
+      "path": "assets/atelier/v2/sprites/accessories/book_bag.webp",
+      "group": "accessories",
+      "status": "needs_anchor_mapping",
+      "equippable": false,
+      "walkCycleReady": false,
+      "notes": "Individual accessory art lacks tested attachment offsets and scales."
+    },
+    {
+      "id": "accessories/bracelet_gold",
+      "path": "assets/atelier/v2/sprites/accessories/bracelet_gold.webp",
+      "group": "accessories",
+      "status": "needs_anchor_mapping",
+      "equippable": false,
+      "walkCycleReady": false,
+      "notes": "Individual accessory art lacks tested attachment offsets and scales."
+    },
+    {
+      "id": "accessories/bracelet_stack",
+      "path": "assets/atelier/v2/sprites/accessories/bracelet_stack.webp",
+      "group": "accessories",
+      "status": "needs_anchor_mapping",
+      "equippable": false,
+      "walkCycleReady": false,
+      "notes": "Individual accessory art lacks tested attachment offsets and scales."
+    },
+    {
+      "id": "accessories/earring_left",
+      "path": "assets/atelier/v2/sprites/accessories/earring_left.webp",
+      "group": "accessories",
+      "status": "needs_anchor_mapping",
+      "equippable": false,
+      "walkCycleReady": false,
+      "notes": "Individual accessory art lacks tested attachment offsets and scales."
+    },
+    {
+      "id": "accessories/earring_right",
+      "path": "assets/atelier/v2/sprites/accessories/earring_right.webp",
+      "group": "accessories",
+      "status": "needs_anchor_mapping",
+      "equippable": false,
+      "walkCycleReady": false,
+      "notes": "Individual accessory art lacks tested attachment offsets and scales."
+    },
+    {
+      "id": "accessories/headpiece",
+      "path": "assets/atelier/v2/sprites/accessories/headpiece.webp",
+      "group": "accessories",
+      "status": "needs_anchor_mapping",
+      "equippable": false,
+      "walkCycleReady": false,
+      "notes": "Individual accessory art lacks tested attachment offsets and scales."
+    },
+    {
+      "id": "accessories/necklace",
+      "path": "assets/atelier/v2/sprites/accessories/necklace.webp",
+      "group": "accessories",
+      "status": "needs_anchor_mapping",
+      "equippable": false,
+      "walkCycleReady": false,
+      "notes": "Individual accessory art lacks tested attachment offsets and scales."
+    },
+    {
+      "id": "accessories/ring_gem",
+      "path": "assets/atelier/v2/sprites/accessories/ring_gem.webp",
+      "group": "accessories",
+      "status": "needs_anchor_mapping",
+      "equippable": false,
+      "walkCycleReady": false,
+      "notes": "Individual accessory art lacks tested attachment offsets and scales."
+    },
+    {
+      "id": "accessories/ring_moon",
+      "path": "assets/atelier/v2/sprites/accessories/ring_moon.webp",
+      "group": "accessories",
+      "status": "needs_anchor_mapping",
+      "equippable": false,
+      "walkCycleReady": false,
+      "notes": "Individual accessory art lacks tested attachment offsets and scales."
+    },
+    {
+      "id": "accessories/ring_star",
+      "path": "assets/atelier/v2/sprites/accessories/ring_star.webp",
+      "group": "accessories",
+      "status": "needs_anchor_mapping",
+      "equippable": false,
+      "walkCycleReady": false,
+      "notes": "Individual accessory art lacks tested attachment offsets and scales."
+    },
+    {
+      "id": "accessories/skirt_overlay",
+      "path": "assets/atelier/v2/sprites/accessories/skirt_overlay.webp",
+      "group": "accessories",
+      "status": "needs_anchor_mapping",
+      "equippable": false,
+      "walkCycleReady": false,
+      "notes": "Individual accessory art lacks tested attachment offsets and scales."
+    },
+    {
+      "id": "body/back_idle",
+      "path": "assets/atelier/v2/sprites/body/back_idle.webp",
+      "group": "body",
+      "status": "needs_alignment",
+      "equippable": false,
+      "walkCycleReady": false,
+      "notes": "Isolated bald base poses; alignment with outfit and hair unverified."
+    },
+    {
+      "id": "body/back_step_left",
+      "path": "assets/atelier/v2/sprites/body/back_step_left.webp",
+      "group": "body",
+      "status": "needs_alignment",
+      "equippable": false,
+      "walkCycleReady": false,
+      "notes": "Isolated bald base poses; alignment with outfit and hair unverified."
+    },
+    {
+      "id": "body/back_step_right",
+      "path": "assets/atelier/v2/sprites/body/back_step_right.webp",
+      "group": "body",
+      "status": "needs_alignment",
+      "equippable": false,
+      "walkCycleReady": false,
+      "notes": "Isolated bald base poses; alignment with outfit and hair unverified."
+    },
+    {
+      "id": "body/front_idle",
+      "path": "assets/atelier/v2/sprites/body/front_idle.webp",
+      "group": "body",
+      "status": "needs_alignment",
+      "equippable": false,
+      "walkCycleReady": false,
+      "notes": "Isolated bald base poses; alignment with outfit and hair unverified."
+    },
+    {
+      "id": "body/front_step_left",
+      "path": "assets/atelier/v2/sprites/body/front_step_left.webp",
+      "group": "body",
+      "status": "needs_alignment",
+      "equippable": false,
+      "walkCycleReady": false,
+      "notes": "Isolated bald base poses; alignment with outfit and hair unverified."
+    },
+    {
+      "id": "body/front_step_right",
+      "path": "assets/atelier/v2/sprites/body/front_step_right.webp",
+      "group": "body",
+      "status": "needs_alignment",
+      "equippable": false,
+      "walkCycleReady": false,
+      "notes": "Isolated bald base poses; alignment with outfit and hair unverified."
+    },
+    {
+      "id": "body/side_left_idle",
+      "path": "assets/atelier/v2/sprites/body/side_left_idle.webp",
+      "group": "body",
+      "status": "needs_alignment",
+      "equippable": false,
+      "walkCycleReady": false,
+      "notes": "Isolated bald base poses; alignment with outfit and hair unverified."
+    },
+    {
+      "id": "body/side_left_walk",
+      "path": "assets/atelier/v2/sprites/body/side_left_walk.webp",
+      "group": "body",
+      "status": "needs_alignment",
+      "equippable": false,
+      "walkCycleReady": false,
+      "notes": "Isolated bald base poses; alignment with outfit and hair unverified."
+    },
+    {
+      "id": "body/side_right_walk",
+      "path": "assets/atelier/v2/sprites/body/side_right_walk.webp",
+      "group": "body",
+      "status": "needs_alignment",
+      "equippable": false,
+      "walkCycleReady": false,
+      "notes": "Isolated bald base poses; alignment with outfit and hair unverified."
+    },
+    {
+      "id": "body/threequarter_left_forward",
+      "path": "assets/atelier/v2/sprites/body/threequarter_left_forward.webp",
+      "group": "body",
+      "status": "needs_alignment",
+      "equippable": false,
+      "walkCycleReady": false,
+      "notes": "Isolated bald base poses; alignment with outfit and hair unverified."
+    },
+    {
+      "id": "body/threequarter_left_step",
+      "path": "assets/atelier/v2/sprites/body/threequarter_left_step.webp",
+      "group": "body",
+      "status": "needs_alignment",
+      "equippable": false,
+      "walkCycleReady": false,
+      "notes": "Isolated bald base poses; alignment with outfit and hair unverified."
+    },
+    {
+      "id": "body/threequarter_left_walk",
+      "path": "assets/atelier/v2/sprites/body/threequarter_left_walk.webp",
+      "group": "body",
+      "status": "needs_alignment",
+      "equippable": false,
+      "walkCycleReady": false,
+      "notes": "Isolated bald base poses; alignment with outfit and hair unverified."
+    },
+    {
+      "id": "companions/aurelia_sit_idle",
+      "path": "assets/atelier/v2/sprites/companions/aurelia_sit_idle.webp",
+      "group": "companions",
+      "status": "needs_canon_validation",
+      "equippable": false,
+      "walkCycleReady": false,
+      "notes": "Standalone companions require verification against existing canonical Guardian identity and movement assets."
+    },
+    {
+      "id": "companions/aurelia_sleep",
+      "path": "assets/atelier/v2/sprites/companions/aurelia_sleep.webp",
+      "group": "companions",
+      "status": "needs_canon_validation",
+      "equippable": false,
+      "walkCycleReady": false,
+      "notes": "Standalone companions require verification against existing canonical Guardian identity and movement assets."
+    },
+    {
+      "id": "companions/aurelia_walk_1",
+      "path": "assets/atelier/v2/sprites/companions/aurelia_walk_1.webp",
+      "group": "companions",
+      "status": "needs_canon_validation",
+      "equippable": false,
+      "walkCycleReady": false,
+      "notes": "Standalone companions require verification against existing canonical Guardian identity and movement assets."
+    },
+    {
+      "id": "companions/aurelia_walk_2",
+      "path": "assets/atelier/v2/sprites/companions/aurelia_walk_2.webp",
+      "group": "companions",
+      "status": "needs_canon_validation",
+      "equippable": false,
+      "walkCycleReady": false,
+      "notes": "Standalone companions require verification against existing canonical Guardian identity and movement assets."
+    },
+    {
+      "id": "companions/cascade_sit_idle",
+      "path": "assets/atelier/v2/sprites/companions/cascade_sit_idle.webp",
+      "group": "companions",
+      "status": "needs_canon_validation",
+      "equippable": false,
+      "walkCycleReady": false,
+      "notes": "Standalone companions require verification against existing canonical Guardian identity and movement assets."
+    },
+    {
+      "id": "companions/cascade_sleep",
+      "path": "assets/atelier/v2/sprites/companions/cascade_sleep.webp",
+      "group": "companions",
+      "status": "needs_canon_validation",
+      "equippable": false,
+      "walkCycleReady": false,
+      "notes": "Standalone companions require verification against existing canonical Guardian identity and movement assets."
+    },
+    {
+      "id": "companions/cascade_walk_1",
+      "path": "assets/atelier/v2/sprites/companions/cascade_walk_1.webp",
+      "group": "companions",
+      "status": "needs_canon_validation",
+      "equippable": false,
+      "walkCycleReady": false,
+      "notes": "Standalone companions require verification against existing canonical Guardian identity and movement assets."
+    },
+    {
+      "id": "companions/cascade_walk_2",
+      "path": "assets/atelier/v2/sprites/companions/cascade_walk_2.webp",
+      "group": "companions",
+      "status": "needs_canon_validation",
+      "equippable": false,
+      "walkCycleReady": false,
+      "notes": "Standalone companions require verification against existing canonical Guardian identity and movement assets."
+    },
+    {
+      "id": "companions/solstice_sit_idle",
+      "path": "assets/atelier/v2/sprites/companions/solstice_sit_idle.webp",
+      "group": "companions",
+      "status": "needs_canon_validation",
+      "equippable": false,
+      "walkCycleReady": false,
+      "notes": "Standalone companions require verification against existing canonical Guardian identity and movement assets."
+    },
+    {
+      "id": "companions/solstice_sleep",
+      "path": "assets/atelier/v2/sprites/companions/solstice_sleep.webp",
+      "group": "companions",
+      "status": "needs_canon_validation",
+      "equippable": false,
+      "walkCycleReady": false,
+      "notes": "Standalone companions require verification against existing canonical Guardian identity and movement assets."
+    },
+    {
+      "id": "companions/solstice_walk_1",
+      "path": "assets/atelier/v2/sprites/companions/solstice_walk_1.webp",
+      "group": "companions",
+      "status": "needs_canon_validation",
+      "equippable": false,
+      "walkCycleReady": false,
+      "notes": "Standalone companions require verification against existing canonical Guardian identity and movement assets."
+    },
+    {
+      "id": "companions/solstice_walk_2",
+      "path": "assets/atelier/v2/sprites/companions/solstice_walk_2.webp",
+      "group": "companions",
+      "status": "needs_canon_validation",
+      "equippable": false,
+      "walkCycleReady": false,
+      "notes": "Standalone companions require verification against existing canonical Guardian identity and movement assets."
+    },
+    {
+      "id": "companions/velora_sit_idle",
+      "path": "assets/atelier/v2/sprites/companions/velora_sit_idle.webp",
+      "group": "companions",
+      "status": "needs_canon_validation",
+      "equippable": false,
+      "walkCycleReady": false,
+      "notes": "Standalone companions require verification against existing canonical Guardian identity and movement assets."
+    },
+    {
+      "id": "companions/velora_sleep",
+      "path": "assets/atelier/v2/sprites/companions/velora_sleep.webp",
+      "group": "companions",
+      "status": "needs_canon_validation",
+      "equippable": false,
+      "walkCycleReady": false,
+      "notes": "Standalone companions require verification against existing canonical Guardian identity and movement assets."
+    },
+    {
+      "id": "companions/velora_walk_1",
+      "path": "assets/atelier/v2/sprites/companions/velora_walk_1.webp",
+      "group": "companions",
+      "status": "needs_canon_validation",
+      "equippable": false,
+      "walkCycleReady": false,
+      "notes": "Standalone companions require verification against existing canonical Guardian identity and movement assets."
+    },
+    {
+      "id": "companions/velora_walk_2",
+      "path": "assets/atelier/v2/sprites/companions/velora_walk_2.webp",
+      "group": "companions",
+      "status": "needs_canon_validation",
+      "equippable": false,
+      "walkCycleReady": false,
+      "notes": "Standalone companions require verification against existing canonical Guardian identity and movement assets."
+    },
+    {
+      "id": "hair/afro_full_back",
+      "path": "assets/atelier/v2/sprites/hair/afro_full_back.webp",
+      "group": "hair",
+      "status": "needs_cleanup",
+      "equippable": false,
+      "walkCycleReady": false,
+      "notes": "Original hairstyle sheet was sliced into a 6×4 grid although the visual layout is different; adjacent fragments and incorrect named views can occur. Recrop/redraw before equipping."
+    },
+    {
+      "id": "hair/afro_full_back_alt",
+      "path": "assets/atelier/v2/sprites/hair/afro_full_back_alt.webp",
+      "group": "hair",
+      "status": "needs_cleanup",
+      "equippable": false,
+      "walkCycleReady": false,
+      "notes": "Original hairstyle sheet was sliced into a 6×4 grid although the visual layout is different; adjacent fragments and incorrect named views can occur. Recrop/redraw before equipping."
+    },
+    {
+      "id": "hair/afro_full_back_threequarter",
+      "path": "assets/atelier/v2/sprites/hair/afro_full_back_threequarter.webp",
+      "group": "hair",
+      "status": "needs_cleanup",
+      "equippable": false,
+      "walkCycleReady": false,
+      "notes": "Original hairstyle sheet was sliced into a 6×4 grid although the visual layout is different; adjacent fragments and incorrect named views can occur. Recrop/redraw before equipping."
+    },
+    {
+      "id": "hair/afro_full_front",
+      "path": "assets/atelier/v2/sprites/hair/afro_full_front.webp",
+      "group": "hair",
+      "status": "needs_cleanup",
+      "equippable": false,
+      "walkCycleReady": false,
+      "notes": "Original hairstyle sheet was sliced into a 6×4 grid although the visual layout is different; adjacent fragments and incorrect named views can occur. Recrop/redraw before equipping."
+    },
+    {
+      "id": "hair/afro_full_front_threequarter",
+      "path": "assets/atelier/v2/sprites/hair/afro_full_front_threequarter.webp",
+      "group": "hair",
+      "status": "needs_cleanup",
+      "equippable": false,
+      "walkCycleReady": false,
+      "notes": "Original hairstyle sheet was sliced into a 6×4 grid although the visual layout is different; adjacent fragments and incorrect named views can occur. Recrop/redraw before equipping."
+    },
+    {
+      "id": "hair/afro_full_side",
+      "path": "assets/atelier/v2/sprites/hair/afro_full_side.webp",
+      "group": "hair",
+      "status": "needs_cleanup",
+      "equippable": false,
+      "walkCycleReady": false,
+      "notes": "Original hairstyle sheet was sliced into a 6×4 grid although the visual layout is different; adjacent fragments and incorrect named views can occur. Recrop/redraw before equipping."
+    },
+    {
+      "id": "hair/locs_beaded_back",
+      "path": "assets/atelier/v2/sprites/hair/locs_beaded_back.webp",
+      "group": "hair",
+      "status": "needs_cleanup",
+      "equippable": false,
+      "walkCycleReady": false,
+      "notes": "Original hairstyle sheet was sliced into a 6×4 grid although the visual layout is different; adjacent fragments and incorrect named views can occur. Recrop/redraw before equipping."
+    },
+    {
+      "id": "hair/locs_beaded_back_alt",
+      "path": "assets/atelier/v2/sprites/hair/locs_beaded_back_alt.webp",
+      "group": "hair",
+      "status": "needs_cleanup",
+      "equippable": false,
+      "walkCycleReady": false,
+      "notes": "Original hairstyle sheet was sliced into a 6×4 grid although the visual layout is different; adjacent fragments and incorrect named views can occur. Recrop/redraw before equipping."
+    },
+    {
+      "id": "hair/locs_beaded_back_threequarter",
+      "path": "assets/atelier/v2/sprites/hair/locs_beaded_back_threequarter.webp",
+      "group": "hair",
+      "status": "needs_cleanup",
+      "equippable": false,
+      "walkCycleReady": false,
+      "notes": "Original hairstyle sheet was sliced into a 6×4 grid although the visual layout is different; adjacent fragments and incorrect named views can occur. Recrop/redraw before equipping."
+    },
+    {
+      "id": "hair/locs_beaded_front",
+      "path": "assets/atelier/v2/sprites/hair/locs_beaded_front.webp",
+      "group": "hair",
+      "status": "needs_cleanup",
+      "equippable": false,
+      "walkCycleReady": false,
+      "notes": "Original hairstyle sheet was sliced into a 6×4 grid although the visual layout is different; adjacent fragments and incorrect named views can occur. Recrop/redraw before equipping."
+    },
+    {
+      "id": "hair/locs_beaded_front_threequarter",
+      "path": "assets/atelier/v2/sprites/hair/locs_beaded_front_threequarter.webp",
+      "group": "hair",
+      "status": "needs_cleanup",
+      "equippable": false,
+      "walkCycleReady": false,
+      "notes": "Original hairstyle sheet was sliced into a 6×4 grid although the visual layout is different; adjacent fragments and incorrect named views can occur. Recrop/redraw before equipping."
+    },
+    {
+      "id": "hair/locs_beaded_side",
+      "path": "assets/atelier/v2/sprites/hair/locs_beaded_side.webp",
+      "group": "hair",
+      "status": "needs_cleanup",
+      "equippable": false,
+      "walkCycleReady": false,
+      "notes": "Original hairstyle sheet was sliced into a 6×4 grid although the visual layout is different; adjacent fragments and incorrect named views can occur. Recrop/redraw before equipping."
+    },
+    {
+      "id": "hair/locs_loose_back",
+      "path": "assets/atelier/v2/sprites/hair/locs_loose_back.webp",
+      "group": "hair",
+      "status": "needs_cleanup",
+      "equippable": false,
+      "walkCycleReady": false,
+      "notes": "Original hairstyle sheet was sliced into a 6×4 grid although the visual layout is different; adjacent fragments and incorrect named views can occur. Recrop/redraw before equipping."
+    },
+    {
+      "id": "hair/locs_loose_back_alt",
+      "path": "assets/atelier/v2/sprites/hair/locs_loose_back_alt.webp",
+      "group": "hair",
+      "status": "needs_cleanup",
+      "equippable": false,
+      "walkCycleReady": false,
+      "notes": "Original hairstyle sheet was sliced into a 6×4 grid although the visual layout is different; adjacent fragments and incorrect named views can occur. Recrop/redraw before equipping."
+    },
+    {
+      "id": "hair/locs_loose_back_threequarter",
+      "path": "assets/atelier/v2/sprites/hair/locs_loose_back_threequarter.webp",
+      "group": "hair",
+      "status": "needs_cleanup",
+      "equippable": false,
+      "walkCycleReady": false,
+      "notes": "Original hairstyle sheet was sliced into a 6×4 grid although the visual layout is different; adjacent fragments and incorrect named views can occur. Recrop/redraw before equipping."
+    },
+    {
+      "id": "hair/locs_loose_front",
+      "path": "assets/atelier/v2/sprites/hair/locs_loose_front.webp",
+      "group": "hair",
+      "status": "needs_cleanup",
+      "equippable": false,
+      "walkCycleReady": false,
+      "notes": "Original hairstyle sheet was sliced into a 6×4 grid although the visual layout is different; adjacent fragments and incorrect named views can occur. Recrop/redraw before equipping."
+    },
+    {
+      "id": "hair/locs_loose_front_threequarter",
+      "path": "assets/atelier/v2/sprites/hair/locs_loose_front_threequarter.webp",
+      "group": "hair",
+      "status": "needs_cleanup",
+      "equippable": false,
+      "walkCycleReady": false,
+      "notes": "Original hairstyle sheet was sliced into a 6×4 grid although the visual layout is different; adjacent fragments and incorrect named views can occur. Recrop/redraw before equipping."
+    },
+    {
+      "id": "hair/locs_loose_side",
+      "path": "assets/atelier/v2/sprites/hair/locs_loose_side.webp",
+      "group": "hair",
+      "status": "needs_cleanup",
+      "equippable": false,
+      "walkCycleReady": false,
+      "notes": "Original hairstyle sheet was sliced into a 6×4 grid although the visual layout is different; adjacent fragments and incorrect named views can occur. Recrop/redraw before equipping."
+    },
+    {
+      "id": "hair/updo_twist_back",
+      "path": "assets/atelier/v2/sprites/hair/updo_twist_back.webp",
+      "group": "hair",
+      "status": "needs_cleanup",
+      "equippable": false,
+      "walkCycleReady": false,
+      "notes": "Original hairstyle sheet was sliced into a 6×4 grid although the visual layout is different; adjacent fragments and incorrect named views can occur. Recrop/redraw before equipping."
+    },
+    {
+      "id": "hair/updo_twist_back_alt",
+      "path": "assets/atelier/v2/sprites/hair/updo_twist_back_alt.webp",
+      "group": "hair",
+      "status": "needs_cleanup",
+      "equippable": false,
+      "walkCycleReady": false,
+      "notes": "Original hairstyle sheet was sliced into a 6×4 grid although the visual layout is different; adjacent fragments and incorrect named views can occur. Recrop/redraw before equipping."
+    },
+    {
+      "id": "hair/updo_twist_back_threequarter",
+      "path": "assets/atelier/v2/sprites/hair/updo_twist_back_threequarter.webp",
+      "group": "hair",
+      "status": "needs_cleanup",
+      "equippable": false,
+      "walkCycleReady": false,
+      "notes": "Original hairstyle sheet was sliced into a 6×4 grid although the visual layout is different; adjacent fragments and incorrect named views can occur. Recrop/redraw before equipping."
+    },
+    {
+      "id": "hair/updo_twist_front",
+      "path": "assets/atelier/v2/sprites/hair/updo_twist_front.webp",
+      "group": "hair",
+      "status": "needs_cleanup",
+      "equippable": false,
+      "walkCycleReady": false,
+      "notes": "Original hairstyle sheet was sliced into a 6×4 grid although the visual layout is different; adjacent fragments and incorrect named views can occur. Recrop/redraw before equipping."
+    },
+    {
+      "id": "hair/updo_twist_front_threequarter",
+      "path": "assets/atelier/v2/sprites/hair/updo_twist_front_threequarter.webp",
+      "group": "hair",
+      "status": "needs_cleanup",
+      "equippable": false,
+      "walkCycleReady": false,
+      "notes": "Original hairstyle sheet was sliced into a 6×4 grid although the visual layout is different; adjacent fragments and incorrect named views can occur. Recrop/redraw before equipping."
+    },
+    {
+      "id": "hair/updo_twist_side",
+      "path": "assets/atelier/v2/sprites/hair/updo_twist_side.webp",
+      "group": "hair",
+      "status": "needs_cleanup",
+      "equippable": false,
+      "walkCycleReady": false,
+      "notes": "Original hairstyle sheet was sliced into a 6×4 grid although the visual layout is different; adjacent fragments and incorrect named views can occur. Recrop/redraw before equipping."
+    },
+    {
+      "id": "outfits/midnight_velvet/back_idle",
+      "path": "assets/atelier/v2/sprites/outfits/midnight_velvet/back_idle.webp",
+      "group": "outfits",
+      "status": "needs_alignment",
+      "equippable": false,
+      "walkCycleReady": false,
+      "notes": "Independent garment images include boots and pose variants; not yet registered to the body joints."
+    },
+    {
+      "id": "outfits/midnight_velvet/back_step_left",
+      "path": "assets/atelier/v2/sprites/outfits/midnight_velvet/back_step_left.webp",
+      "group": "outfits",
+      "status": "needs_alignment",
+      "equippable": false,
+      "walkCycleReady": false,
+      "notes": "Independent garment images include boots and pose variants; not yet registered to the body joints."
+    },
+    {
+      "id": "outfits/midnight_velvet/back_step_right",
+      "path": "assets/atelier/v2/sprites/outfits/midnight_velvet/back_step_right.webp",
+      "group": "outfits",
+      "status": "needs_alignment",
+      "equippable": false,
+      "walkCycleReady": false,
+      "notes": "Independent garment images include boots and pose variants; not yet registered to the body joints."
+    },
+    {
+      "id": "outfits/midnight_velvet/front_idle",
+      "path": "assets/atelier/v2/sprites/outfits/midnight_velvet/front_idle.webp",
+      "group": "outfits",
+      "status": "needs_alignment",
+      "equippable": false,
+      "walkCycleReady": false,
+      "notes": "Independent garment images include boots and pose variants; not yet registered to the body joints."
+    },
+    {
+      "id": "outfits/midnight_velvet/front_step_left",
+      "path": "assets/atelier/v2/sprites/outfits/midnight_velvet/front_step_left.webp",
+      "group": "outfits",
+      "status": "needs_alignment",
+      "equippable": false,
+      "walkCycleReady": false,
+      "notes": "Independent garment images include boots and pose variants; not yet registered to the body joints."
+    },
+    {
+      "id": "outfits/midnight_velvet/front_step_right",
+      "path": "assets/atelier/v2/sprites/outfits/midnight_velvet/front_step_right.webp",
+      "group": "outfits",
+      "status": "needs_alignment",
+      "equippable": false,
+      "walkCycleReady": false,
+      "notes": "Independent garment images include boots and pose variants; not yet registered to the body joints."
+    },
+    {
+      "id": "outfits/midnight_velvet/side_left_idle",
+      "path": "assets/atelier/v2/sprites/outfits/midnight_velvet/side_left_idle.webp",
+      "group": "outfits",
+      "status": "needs_alignment",
+      "equippable": false,
+      "walkCycleReady": false,
+      "notes": "Independent garment images include boots and pose variants; not yet registered to the body joints."
+    },
+    {
+      "id": "outfits/midnight_velvet/side_left_walk",
+      "path": "assets/atelier/v2/sprites/outfits/midnight_velvet/side_left_walk.webp",
+      "group": "outfits",
+      "status": "needs_alignment",
+      "equippable": false,
+      "walkCycleReady": false,
+      "notes": "Independent garment images include boots and pose variants; not yet registered to the body joints."
+    },
+    {
+      "id": "outfits/midnight_velvet/side_right_walk",
+      "path": "assets/atelier/v2/sprites/outfits/midnight_velvet/side_right_walk.webp",
+      "group": "outfits",
+      "status": "needs_alignment",
+      "equippable": false,
+      "walkCycleReady": false,
+      "notes": "Independent garment images include boots and pose variants; not yet registered to the body joints."
+    },
+    {
+      "id": "outfits/midnight_velvet/threequarter_left_forward",
+      "path": "assets/atelier/v2/sprites/outfits/midnight_velvet/threequarter_left_forward.webp",
+      "group": "outfits",
+      "status": "needs_alignment",
+      "equippable": false,
+      "walkCycleReady": false,
+      "notes": "Independent garment images include boots and pose variants; not yet registered to the body joints."
+    },
+    {
+      "id": "outfits/midnight_velvet/threequarter_left_step",
+      "path": "assets/atelier/v2/sprites/outfits/midnight_velvet/threequarter_left_step.webp",
+      "group": "outfits",
+      "status": "needs_alignment",
+      "equippable": false,
+      "walkCycleReady": false,
+      "notes": "Independent garment images include boots and pose variants; not yet registered to the body joints."
+    },
+    {
+      "id": "outfits/midnight_velvet/threequarter_left_walk",
+      "path": "assets/atelier/v2/sprites/outfits/midnight_velvet/threequarter_left_walk.webp",
+      "group": "outfits",
+      "status": "needs_alignment",
+      "equippable": false,
+      "walkCycleReady": false,
+      "notes": "Independent garment images include boots and pose variants; not yet registered to the body joints."
+    },
+    {
+      "id": "poses/feeding_pets",
+      "path": "assets/atelier/v2/sprites/poses/feeding_pets.webp",
+      "group": "poses",
+      "status": "composite_only",
+      "equippable": false,
+      "walkCycleReady": false,
+      "notes": "Full-character composite activity poses, not interchangeable body/robe/hair layers."
+    },
+    {
+      "id": "poses/playing",
+      "path": "assets/atelier/v2/sprites/poses/playing.webp",
+      "group": "poses",
+      "status": "composite_only",
+      "equippable": false,
+      "walkCycleReady": false,
+      "notes": "Full-character composite activity poses, not interchangeable body/robe/hair layers."
+    },
+    {
+      "id": "poses/sleeping",
+      "path": "assets/atelier/v2/sprites/poses/sleeping.webp",
+      "group": "poses",
+      "status": "composite_only",
+      "equippable": false,
+      "walkCycleReady": false,
+      "notes": "Full-character composite activity poses, not interchangeable body/robe/hair layers."
+    },
+    {
+      "id": "poses/standing",
+      "path": "assets/atelier/v2/sprites/poses/standing.webp",
+      "group": "poses",
+      "status": "composite_only",
+      "equippable": false,
+      "walkCycleReady": false,
+      "notes": "Full-character composite activity poses, not interchangeable body/robe/hair layers."
+    },
+    {
+      "id": "poses/studying_read",
+      "path": "assets/atelier/v2/sprites/poses/studying_read.webp",
+      "group": "poses",
+      "status": "composite_only",
+      "equippable": false,
+      "walkCycleReady": false,
+      "notes": "Full-character composite activity poses, not interchangeable body/robe/hair layers."
+    },
+    {
+      "id": "poses/writing",
+      "path": "assets/atelier/v2/sprites/poses/writing.webp",
+      "group": "poses",
+      "status": "composite_only",
+      "equippable": false,
+      "walkCycleReady": false,
+      "notes": "Full-character composite activity poses, not interchangeable body/robe/hair layers."
+    }
+  ]
+}
