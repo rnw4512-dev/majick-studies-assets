@@ -1091,7 +1091,12 @@
       }
     }
     recordAnswer(q,chosen,correct,'gauntlet');
-    if(session.bossHP<=0){session.finished=true;session.won=true;session.recordOutcome=recordRealm('gauntlet',session.score,session.round,true);addReward('Guardian Gauntlet victory',24,2);guardianReact('mastery',{mode:'gauntlet'})}
+    // A 12-question academic review must actually present all twelve items.
+    // Boss damage is visual feedback, not an early-exit condition for review mode.
+    if(session.reviewMode){
+      session.bossHP=Math.max(0,Math.round(100*(session.limit-session.round)/session.limit));
+    }
+    if(!session.reviewMode&&session.bossHP<=0){session.finished=true;session.won=true;session.recordOutcome=recordRealm('gauntlet',session.score,session.round,true);addReward('Guardian Gauntlet victory',24,2);guardianReact('mastery',{mode:'gauntlet'})}
     else if(session.playerHP<=0||session.round>=session.limit){session.finished=true;session.won=session.bossHP<=0;session.recordOutcome=recordRealm('gauntlet',session.score,session.round,session.won);if(session.score>=7)addReward('Guardian Gauntlet run',14,1)}
     render?.();
   };
