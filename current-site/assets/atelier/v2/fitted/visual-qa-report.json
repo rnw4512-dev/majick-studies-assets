@@ -1,0 +1,550 @@
+{
+  "schemaVersion": 1,
+  "totalFrames": 48,
+  "fileChecksPassing": 48,
+  "visuallyApproved": 0,
+  "verdict": "NOT CONFIRMED NATURAL",
+  "explanation": "Raster measurements do not establish believable hair growth, collar clearance, consistent face shape or stable motion. Candidate sprites must be visually reviewed.",
+  "styles": [
+    "locs",
+    "locs_beaded",
+    "updo_twist",
+    "afro_full"
+  ],
+  "contactSheets": [
+    "assets/atelier/v2/fitted/contact-sheets/locs.png",
+    "assets/atelier/v2/fitted/contact-sheets/locs_beaded.png",
+    "assets/atelier/v2/fitted/contact-sheets/updo_twist.png",
+    "assets/atelier/v2/fitted/contact-sheets/afro_full.png"
+  ],
+  "results": [
+    {
+      "style": "locs",
+      "direction": "front",
+      "frame": "front_idle",
+      "fileAvailable": true,
+      "automatedIssues": [
+        "not visually validated"
+      ],
+      "visualAcceptance": "not_reviewed",
+      "approvalRecommendation": "hold_until_visual_review"
+    },
+    {
+      "style": "locs",
+      "direction": "front",
+      "frame": "front_step_left",
+      "fileAvailable": true,
+      "automatedIssues": [
+        "not visually validated"
+      ],
+      "visualAcceptance": "not_reviewed",
+      "approvalRecommendation": "hold_until_visual_review"
+    },
+    {
+      "style": "locs",
+      "direction": "front",
+      "frame": "front_step_right",
+      "fileAvailable": true,
+      "automatedIssues": [
+        "not visually validated"
+      ],
+      "visualAcceptance": "not_reviewed",
+      "approvalRecommendation": "hold_until_visual_review"
+    },
+    {
+      "style": "locs",
+      "direction": "side",
+      "frame": "side_left_idle",
+      "fileAvailable": true,
+      "automatedIssues": [
+        "not visually validated"
+      ],
+      "visualAcceptance": "not_reviewed",
+      "approvalRecommendation": "hold_until_visual_review"
+    },
+    {
+      "style": "locs",
+      "direction": "side",
+      "frame": "side_left_walk",
+      "fileAvailable": true,
+      "automatedIssues": [
+        "not visually validated"
+      ],
+      "visualAcceptance": "not_reviewed",
+      "approvalRecommendation": "hold_until_visual_review"
+    },
+    {
+      "style": "locs",
+      "direction": "side",
+      "frame": "side_right_walk",
+      "fileAvailable": true,
+      "automatedIssues": [
+        "not visually validated"
+      ],
+      "visualAcceptance": "not_reviewed",
+      "approvalRecommendation": "hold_until_visual_review"
+    },
+    {
+      "style": "locs",
+      "direction": "back",
+      "frame": "back_idle",
+      "fileAvailable": true,
+      "automatedIssues": [
+        "not visually validated"
+      ],
+      "visualAcceptance": "not_reviewed",
+      "approvalRecommendation": "hold_until_visual_review"
+    },
+    {
+      "style": "locs",
+      "direction": "back",
+      "frame": "back_step_left",
+      "fileAvailable": true,
+      "automatedIssues": [
+        "not visually validated"
+      ],
+      "visualAcceptance": "not_reviewed",
+      "approvalRecommendation": "hold_until_visual_review"
+    },
+    {
+      "style": "locs",
+      "direction": "back",
+      "frame": "back_step_right",
+      "fileAvailable": true,
+      "automatedIssues": [
+        "not visually validated"
+      ],
+      "visualAcceptance": "not_reviewed",
+      "approvalRecommendation": "hold_until_visual_review"
+    },
+    {
+      "style": "locs",
+      "direction": "threequarter",
+      "frame": "threequarter_left_forward",
+      "fileAvailable": true,
+      "automatedIssues": [
+        "not visually validated"
+      ],
+      "visualAcceptance": "not_reviewed",
+      "approvalRecommendation": "hold_until_visual_review"
+    },
+    {
+      "style": "locs",
+      "direction": "threequarter",
+      "frame": "threequarter_left_step",
+      "fileAvailable": true,
+      "automatedIssues": [
+        "not visually validated"
+      ],
+      "visualAcceptance": "not_reviewed",
+      "approvalRecommendation": "hold_until_visual_review"
+    },
+    {
+      "style": "locs",
+      "direction": "threequarter",
+      "frame": "threequarter_left_walk",
+      "fileAvailable": true,
+      "automatedIssues": [
+        "not visually validated"
+      ],
+      "visualAcceptance": "not_reviewed",
+      "approvalRecommendation": "hold_until_visual_review"
+    },
+    {
+      "style": "locs_beaded",
+      "direction": "front",
+      "frame": "front_idle",
+      "fileAvailable": true,
+      "automatedIssues": [
+        "not visually validated"
+      ],
+      "visualAcceptance": "not_reviewed",
+      "approvalRecommendation": "hold_until_visual_review"
+    },
+    {
+      "style": "locs_beaded",
+      "direction": "front",
+      "frame": "front_step_left",
+      "fileAvailable": true,
+      "automatedIssues": [
+        "not visually validated"
+      ],
+      "visualAcceptance": "not_reviewed",
+      "approvalRecommendation": "hold_until_visual_review"
+    },
+    {
+      "style": "locs_beaded",
+      "direction": "front",
+      "frame": "front_step_right",
+      "fileAvailable": true,
+      "automatedIssues": [
+        "not visually validated"
+      ],
+      "visualAcceptance": "not_reviewed",
+      "approvalRecommendation": "hold_until_visual_review"
+    },
+    {
+      "style": "locs_beaded",
+      "direction": "side",
+      "frame": "side_left_idle",
+      "fileAvailable": true,
+      "automatedIssues": [
+        "not visually validated"
+      ],
+      "visualAcceptance": "not_reviewed",
+      "approvalRecommendation": "hold_until_visual_review"
+    },
+    {
+      "style": "locs_beaded",
+      "direction": "side",
+      "frame": "side_left_walk",
+      "fileAvailable": true,
+      "automatedIssues": [
+        "not visually validated"
+      ],
+      "visualAcceptance": "not_reviewed",
+      "approvalRecommendation": "hold_until_visual_review"
+    },
+    {
+      "style": "locs_beaded",
+      "direction": "side",
+      "frame": "side_right_walk",
+      "fileAvailable": true,
+      "automatedIssues": [
+        "not visually validated"
+      ],
+      "visualAcceptance": "not_reviewed",
+      "approvalRecommendation": "hold_until_visual_review"
+    },
+    {
+      "style": "locs_beaded",
+      "direction": "back",
+      "frame": "back_idle",
+      "fileAvailable": true,
+      "automatedIssues": [
+        "not visually validated"
+      ],
+      "visualAcceptance": "not_reviewed",
+      "approvalRecommendation": "hold_until_visual_review"
+    },
+    {
+      "style": "locs_beaded",
+      "direction": "back",
+      "frame": "back_step_left",
+      "fileAvailable": true,
+      "automatedIssues": [
+        "not visually validated"
+      ],
+      "visualAcceptance": "not_reviewed",
+      "approvalRecommendation": "hold_until_visual_review"
+    },
+    {
+      "style": "locs_beaded",
+      "direction": "back",
+      "frame": "back_step_right",
+      "fileAvailable": true,
+      "automatedIssues": [
+        "not visually validated"
+      ],
+      "visualAcceptance": "not_reviewed",
+      "approvalRecommendation": "hold_until_visual_review"
+    },
+    {
+      "style": "locs_beaded",
+      "direction": "threequarter",
+      "frame": "threequarter_left_forward",
+      "fileAvailable": true,
+      "automatedIssues": [
+        "not visually validated"
+      ],
+      "visualAcceptance": "not_reviewed",
+      "approvalRecommendation": "hold_until_visual_review"
+    },
+    {
+      "style": "locs_beaded",
+      "direction": "threequarter",
+      "frame": "threequarter_left_step",
+      "fileAvailable": true,
+      "automatedIssues": [
+        "not visually validated"
+      ],
+      "visualAcceptance": "not_reviewed",
+      "approvalRecommendation": "hold_until_visual_review"
+    },
+    {
+      "style": "locs_beaded",
+      "direction": "threequarter",
+      "frame": "threequarter_left_walk",
+      "fileAvailable": true,
+      "automatedIssues": [
+        "not visually validated"
+      ],
+      "visualAcceptance": "not_reviewed",
+      "approvalRecommendation": "hold_until_visual_review"
+    },
+    {
+      "style": "updo_twist",
+      "direction": "front",
+      "frame": "front_idle",
+      "fileAvailable": true,
+      "automatedIssues": [
+        "not visually validated"
+      ],
+      "visualAcceptance": "not_reviewed",
+      "approvalRecommendation": "hold_until_visual_review"
+    },
+    {
+      "style": "updo_twist",
+      "direction": "front",
+      "frame": "front_step_left",
+      "fileAvailable": true,
+      "automatedIssues": [
+        "not visually validated"
+      ],
+      "visualAcceptance": "not_reviewed",
+      "approvalRecommendation": "hold_until_visual_review"
+    },
+    {
+      "style": "updo_twist",
+      "direction": "front",
+      "frame": "front_step_right",
+      "fileAvailable": true,
+      "automatedIssues": [
+        "not visually validated"
+      ],
+      "visualAcceptance": "not_reviewed",
+      "approvalRecommendation": "hold_until_visual_review"
+    },
+    {
+      "style": "updo_twist",
+      "direction": "side",
+      "frame": "side_left_idle",
+      "fileAvailable": true,
+      "automatedIssues": [
+        "not visually validated"
+      ],
+      "visualAcceptance": "not_reviewed",
+      "approvalRecommendation": "hold_until_visual_review"
+    },
+    {
+      "style": "updo_twist",
+      "direction": "side",
+      "frame": "side_left_walk",
+      "fileAvailable": true,
+      "automatedIssues": [
+        "not visually validated"
+      ],
+      "visualAcceptance": "not_reviewed",
+      "approvalRecommendation": "hold_until_visual_review"
+    },
+    {
+      "style": "updo_twist",
+      "direction": "side",
+      "frame": "side_right_walk",
+      "fileAvailable": true,
+      "automatedIssues": [
+        "not visually validated"
+      ],
+      "visualAcceptance": "not_reviewed",
+      "approvalRecommendation": "hold_until_visual_review"
+    },
+    {
+      "style": "updo_twist",
+      "direction": "back",
+      "frame": "back_idle",
+      "fileAvailable": true,
+      "automatedIssues": [
+        "not visually validated"
+      ],
+      "visualAcceptance": "not_reviewed",
+      "approvalRecommendation": "hold_until_visual_review"
+    },
+    {
+      "style": "updo_twist",
+      "direction": "back",
+      "frame": "back_step_left",
+      "fileAvailable": true,
+      "automatedIssues": [
+        "not visually validated"
+      ],
+      "visualAcceptance": "not_reviewed",
+      "approvalRecommendation": "hold_until_visual_review"
+    },
+    {
+      "style": "updo_twist",
+      "direction": "back",
+      "frame": "back_step_right",
+      "fileAvailable": true,
+      "automatedIssues": [
+        "not visually validated"
+      ],
+      "visualAcceptance": "not_reviewed",
+      "approvalRecommendation": "hold_until_visual_review"
+    },
+    {
+      "style": "updo_twist",
+      "direction": "threequarter",
+      "frame": "threequarter_left_forward",
+      "fileAvailable": true,
+      "automatedIssues": [
+        "not visually validated"
+      ],
+      "visualAcceptance": "not_reviewed",
+      "approvalRecommendation": "hold_until_visual_review"
+    },
+    {
+      "style": "updo_twist",
+      "direction": "threequarter",
+      "frame": "threequarter_left_step",
+      "fileAvailable": true,
+      "automatedIssues": [
+        "not visually validated"
+      ],
+      "visualAcceptance": "not_reviewed",
+      "approvalRecommendation": "hold_until_visual_review"
+    },
+    {
+      "style": "updo_twist",
+      "direction": "threequarter",
+      "frame": "threequarter_left_walk",
+      "fileAvailable": true,
+      "automatedIssues": [
+        "not visually validated"
+      ],
+      "visualAcceptance": "not_reviewed",
+      "approvalRecommendation": "hold_until_visual_review"
+    },
+    {
+      "style": "afro_full",
+      "direction": "front",
+      "frame": "front_idle",
+      "fileAvailable": true,
+      "automatedIssues": [
+        "not visually validated"
+      ],
+      "visualAcceptance": "not_reviewed",
+      "approvalRecommendation": "hold_until_visual_review"
+    },
+    {
+      "style": "afro_full",
+      "direction": "front",
+      "frame": "front_step_left",
+      "fileAvailable": true,
+      "automatedIssues": [
+        "not visually validated"
+      ],
+      "visualAcceptance": "not_reviewed",
+      "approvalRecommendation": "hold_until_visual_review"
+    },
+    {
+      "style": "afro_full",
+      "direction": "front",
+      "frame": "front_step_right",
+      "fileAvailable": true,
+      "automatedIssues": [
+        "not visually validated"
+      ],
+      "visualAcceptance": "not_reviewed",
+      "approvalRecommendation": "hold_until_visual_review"
+    },
+    {
+      "style": "afro_full",
+      "direction": "side",
+      "frame": "side_left_idle",
+      "fileAvailable": true,
+      "automatedIssues": [
+        "not visually validated"
+      ],
+      "visualAcceptance": "not_reviewed",
+      "approvalRecommendation": "hold_until_visual_review"
+    },
+    {
+      "style": "afro_full",
+      "direction": "side",
+      "frame": "side_left_walk",
+      "fileAvailable": true,
+      "automatedIssues": [
+        "not visually validated"
+      ],
+      "visualAcceptance": "not_reviewed",
+      "approvalRecommendation": "hold_until_visual_review"
+    },
+    {
+      "style": "afro_full",
+      "direction": "side",
+      "frame": "side_right_walk",
+      "fileAvailable": true,
+      "automatedIssues": [
+        "not visually validated"
+      ],
+      "visualAcceptance": "not_reviewed",
+      "approvalRecommendation": "hold_until_visual_review"
+    },
+    {
+      "style": "afro_full",
+      "direction": "back",
+      "frame": "back_idle",
+      "fileAvailable": true,
+      "automatedIssues": [
+        "not visually validated"
+      ],
+      "visualAcceptance": "not_reviewed",
+      "approvalRecommendation": "hold_until_visual_review"
+    },
+    {
+      "style": "afro_full",
+      "direction": "back",
+      "frame": "back_step_left",
+      "fileAvailable": true,
+      "automatedIssues": [
+        "not visually validated"
+      ],
+      "visualAcceptance": "not_reviewed",
+      "approvalRecommendation": "hold_until_visual_review"
+    },
+    {
+      "style": "afro_full",
+      "direction": "back",
+      "frame": "back_step_right",
+      "fileAvailable": true,
+      "automatedIssues": [
+        "not visually validated"
+      ],
+      "visualAcceptance": "not_reviewed",
+      "approvalRecommendation": "hold_until_visual_review"
+    },
+    {
+      "style": "afro_full",
+      "direction": "threequarter",
+      "frame": "threequarter_left_forward",
+      "fileAvailable": true,
+      "automatedIssues": [
+        "not visually validated"
+      ],
+      "visualAcceptance": "not_reviewed",
+      "approvalRecommendation": "hold_until_visual_review"
+    },
+    {
+      "style": "afro_full",
+      "direction": "threequarter",
+      "frame": "threequarter_left_step",
+      "fileAvailable": true,
+      "automatedIssues": [
+        "not visually validated"
+      ],
+      "visualAcceptance": "not_reviewed",
+      "approvalRecommendation": "hold_until_visual_review"
+    },
+    {
+      "style": "afro_full",
+      "direction": "threequarter",
+      "frame": "threequarter_left_walk",
+      "fileAvailable": true,
+      "automatedIssues": [
+        "not visually validated"
+      ],
+      "visualAcceptance": "not_reviewed",
+      "approvalRecommendation": "hold_until_visual_review"
+    }
+  ]
+}
