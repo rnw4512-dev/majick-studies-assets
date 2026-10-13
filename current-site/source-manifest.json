@@ -607,7 +607,7 @@
     "assets/atelier/v2/sprites/poses/standing.webp": "18e7a49425b545010f947d298d6b84aa7c35c6614044b52d3b9805691f31e4fd",
     "assets/atelier/v2/sprites/poses/studying_read.webp": "0b3c3755759f936acd86d66e1bfbdecf6e3e69be8150b03aadb30baa9c5dfd03",
     "assets/atelier/v2/sprites/poses/writing.webp": "9b0003acac0b198aedd4864f05bbcdd07df66cf6c013734077c8893ddbc179c2",
-    "atelier-sprite-actions.js": "0781cb58d62e87d061a8bdf93632bd31027b93845bda96345093136983bb18e6",
+    "atelier-sprite-actions.js": "d9e5f7a40029db8c5ecd13935af4cf7205591b08f5ebd918f570103ac9cefbed",
     "assets/atelier/v2/sprites/sprite-audit.json": "81eed51d29232d02865cf7c6bbd8bec6e43c559ddc98395b37e72a4c6ef06dec"
   }
 }
