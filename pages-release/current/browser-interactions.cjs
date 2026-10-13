@@ -10,6 +10,18 @@ function call(method,params={}){return new Promise((resolve,reject)=>{const n=++
 async function evalPage(expression){const x=await call('Runtime.evaluate',{expression,returnByValue:true,awaitPromise:true});if(x.result?.exceptionDetails)throw Error(JSON.stringify(x.result.exceptionDetails));return x.result?.result?.value}
 async function waitFor(expression){for(let n=0;n<100;n++){try{if(await evalPage(expression))return}catch{}await sleep(250)}throw Error('Page condition failed '+expression)}
 async function action(statement){return evalPage('(()=>{'+statement+';return true})()')}
+async function enterAndCheck(fields){
+ const statement='const values='+JSON.stringify(fields)+';for(const [id,value] of Object.entries(values)){const field=document.querySelector(\'[data-field="\'+id+\'"]\');if(!field)throw Error("Missing interactive field "+id);field.value=String(value);field.dispatchEvent(new Event("input",{bubbles:true}))}document.querySelector("[data-check]").click()';
+ await action(statement);
+}
+async function solveMean(values,sum,count,mean){
+ await enterAndCheck({known:values,unknown:'mean'});
+ await action('const first=document.querySelector("[data-choice=\\"0\\"]");if(!first)throw Error("Missing formula options");first.click();document.querySelector("[data-check]").click()');
+ await enterAndCheck({slot0:sum,slot1:count});
+ await enterAndCheck({result:mean});
+ await enterAndCheck({meaning:'The mean of these observations is '+mean+' because total '+sum+' divided by '+count+' observations equals '+mean+'.'});
+}
+
 (async()=>{
  await new Promise(r=>server.listen(0,'127.0.0.1',r));
  const url='http://127.0.0.1:'+server.address().port+'/index.html';
@@ -33,8 +45,12 @@ async function action(statement){return evalPage('(()=>{'+statement+';return tru
  assert((await evalPage('document.querySelectorAll(".mjSeTaskSelect option").length'))>=12);
  await action('const s=document.querySelector(".mjSeTaskSelect");s.value="mean";s.dispatchEvent(new Event("change",{bubbles:true}))');
  await waitFor('!!document.querySelector("[data-field=known]")');
- await action('const a=document.querySelector("[data-field=known]"),b=document.querySelector("[data-field=unknown]");a.value="8, 12, 16, 20";a.dispatchEvent(new Event("input"));b.value="mean";b.dispatchEvent(new Event("input"));document.querySelector("[data-check]").click()');
- await waitFor('!!document.querySelector("[data-choice]")');
+ await solveMean('8, 12, 16, 20',56,4,14);
+ await solveMean('11, 17, 23, 29, 35',115,5,23);
+ await solveMean('9, 13, 17, 21, 25',85,5,17);
+ await enterAndCheck({transfer:17});
+ assert.equal(await evalPage('!!S.progress.D772.interactiveMastery?.["interactive-independent:D772:mean"]'),true,'Unassisted transfer must be recorded as mastery');
+ assert((await evalPage('S.progress.D772.crystals'))>=1,'Independent transfer should earn an existing crystal reward');
  const before=await evalPage('S.progress.D772.xp');
  await action('window.MajickInteractiveRewards.award("browser-qa","participation")');
  const increased=await evalPage('S.progress.D772.xp');
@@ -47,5 +63,5 @@ async function action(statement){return evalPage('(()=>{'+statement+';return tru
  await waitFor('!!document.querySelector(".mjSeTaskSelect")');
  assert.equal(await evalPage('S.activeCourse'),'D756');
  assert.equal(await evalPage('S.progress.D772.xp'),increased);
- console.log('PASS browser: course lesson selection, form input, participation XP, save/reload, duplicate prevention, D756 isolation');
+ console.log('PASS browser: three-level mean worked solutions, independent transfer mastery, course lesson selection, participation XP, save/reload, duplicate prevention and D756 isolation');
 })().catch(e=>{console.error('FAIL browser QA:',e.stack||e);process.exitCode=1}).finally(async()=>{try{ws?.close()}catch{}try{child?.kill()}catch{}await new Promise(r=>server.close(r));try{fs.rmSync(profile,{recursive:true,force:true})}catch{}});
