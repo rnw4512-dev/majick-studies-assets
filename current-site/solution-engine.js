@@ -61,7 +61,7 @@ if(task.kind==='sequence'){
  else if(step===2||step===5)body+='<p>Tap each piece in the order you would use it.</p>'+ex.parts.map((p,i)=>'<button data-add="'+i+'" '+(order.includes(i)?'disabled':'')+'>'+esc(p)+'</button>').join('')+'<p>Built sequence: '+order.map(i=>esc(ex.parts[i])).join(' → ')+'</p><button data-undo>Undo</button>';
  else body+=input('meaning','Explain why this approach supports the student and team','Write a sentence');
 }
-const canHint=!independent;host.innerHTML='<div class="mjSeHead"><strong>✦ Solution Workshop</strong><small>'+esc(window.S.activeCourse)+' · '+esc(task.title)+'</small></div><div class="mjSeSteps">'+Array.from({length:6},(_,i)=>'<span class="'+(i===step?'active':'')+'">'+(i+1)+'</span>').join('')+'</div><h3>'+esc(stageTitle(task,step))+'</h3>'+body+'<div class="mjSeActions"><button data-check>Check step</button>'+(canHint?'<button data-hint>Hint</button>':'')+'<button data-reset>Restart scenario</button></div>'+(st.hint?'<p class="mjSeHelp">Think about what information the situation provides and what you must determine before computing or acting.</p>':'')+(st.feedback?'<p class="mjSeFeedback" role="status">'+esc(st.feedback)+'</p>':'')+'<p class="mjSeFoot">Guided attempts are separate from independent mastery; no XP or saved progress is changed.</p>';
+const canHint=!independent;host.innerHTML='<div class="mjSeHead"><strong>✦ Solution Workshop</strong><small>'+esc(window.S.activeCourse)+' · '+esc(task.title)+'</small></div><div class="mjSeSteps">'+Array.from({length:6},(_,i)=>'<span class="'+(i===step?'active':'')+'">'+(i+1)+'</span>').join('')+'</div><h3>'+esc(stageTitle(task,step))+'</h3>'+body+'<div class="mjSeActions"><button data-check>Check step</button>'+(canHint?'<button data-hint>Hint</button>':'')+'<button data-reset>Restart scenario</button></div>'+(st.hint?'<p class="mjSeHelp">Think about what information the situation provides and what you must determine before computing or acting.</p>':'')+(st.feedback?'<p class="mjSeFeedback" role="status">'+esc(st.feedback)+'</p>':'')+'<p class="mjSeFoot">Objective: '+esc(task.objective||'Apply this lesson concept')+'. Guided attempts are separate from independent mastery; no XP or saved progress is changed.</p>';
 host.querySelectorAll('[data-field]').forEach(el=>el.oninput=()=>{a[el.dataset.field]=el.value;st.feedback=''});
 host.querySelectorAll('[data-bar]').forEach(el=>el.oninput=()=>{a['bar'+el.dataset.bar]=Math.max(0,Math.min(10,Number(el.value)));render(host,task)});
 host.querySelectorAll('[data-delta]').forEach(el=>el.onclick=()=>{let i=el.dataset.i;a['bar'+i]=Math.max(0,Math.min(10,Number(a['bar'+i]||0)+Number(el.dataset.delta)));render(host,task)});
@@ -71,16 +71,48 @@ host.querySelector('[data-undo]')?.addEventListener('click',()=>{a.order?.pop();
 host.querySelector('[data-reset]').onclick=()=>{STATES.set(host,{stage:0,answers:{},caseIndex:st.caseIndex,feedback:'',error:false,hint:false});render(host,task)};
 host.querySelector('[data-hint]')?.addEventListener('click',()=>{st.hint=true;render(host,task)});
 host.querySelector('[data-check]').onclick=()=>{let good=false,reason='';
- if(task.kind==='math'){if(step===0)good=(a.known||'').trim().length>2&&(a.unknown||'').trim().length>2;else if(step===1)good=a.formula===task.formula;else if(step===2)good=ex.slots.every((v,i)=>numeric(a['slot'+i],v));else if(step===3||step===5)good=numeric(a[step===5?'transfer':'result'],ex.answer);else good=(a.meaning||'').trim().split(/\s+/).length>=5;reason=ex.why}
- else if(task.kind==='graph'){if(step===0)good=numeric(a.identified,ex.freq.length);else if(step===1||step===5)good=ex.freq.every((v,i)=>numeric(a['bar'+i],v));else if(step===2)good=String(a.mode||'').trim()===ex.mode;else if(step===3)good=numeric(a.total,ex.total);else good=(a.meaning||'').trim().split(/\s+/).length>=5;reason=ex.interpret}
- else{if(step===0||step===3||step===4)good=(a[step===0?'focus':'meaning']||'').trim().split(/\s+/).length>=4;else if(step===1)good=a.order?.[0]===ex.correct[0];else good=JSON.stringify(a.order)===JSON.stringify(ex.correct);reason=ex.reason}
- if(!good){st.feedback='Not yet. Revisit this step and try again.';render(host,task);return}
+ if(task.kind==='math'){if(step===0)good=(a.known||'').trim().length>2&&(a.unknown||'').trim().length>2;else if(step===1)good=a.formula===task.formula;else if(step===2)good=ex.slots.every((v,i)=>numeric(a['slot'+i],v));else if(step===3||step===5)good=numeric(a[step===5?'transfer':'result'],ex.answer);else {const review=rubric(task,ex,a.meaning,step);good=review.ok;reason=review.feedback}if(step!==4)reason=ex.why}
+ else if(task.kind==='graph'){if(step===0)good=numeric(a.identified,ex.freq.length);else if(step===1||step===5)good=ex.freq.every((v,i)=>numeric(a['bar'+i],v));else if(step===2)good=String(a.mode||'').trim()===ex.mode;else if(step===3)good=numeric(a.total,ex.total);else {const review=rubric(task,ex,a.meaning,step);good=review.ok;reason=review.feedback}if(step!==4)reason=ex.interpret}
+ else{if(step===0)good=(a.focus||'').trim().split(/\s+/).length>=4;else if(step===3||step===4){const review=rubric(task,ex,a.meaning,step);good=review.ok;reason=review.feedback}else if(step===1)good=a.order?.[0]===ex.correct[0];else good=JSON.stringify(a.order)===JSON.stringify(ex.correct);if(step!==3&&step!==4)reason=ex.reason}
+ if(!good){st.feedback=(step===4|| (task.kind==='sequence'&&step===3))?reason:'Not yet. Revisit this step and try again.';render(host,task);return}
  if(step===5){st.feedback='Independent transfer completed (practice only). '+reason;st.finished=true;render(host,task);return}
  if(step===4){if(independent){st.stage=5;st.feedback='Now complete the final independent answer or construction.';render(host,task);return}st.caseIndex=1;st.stage=0;st.answers={};st.hint=false;st.feedback='New scenario: complete every step without hints.';render(host,task);return}
  st.stage++;st.feedback='Step correct. '+(step===3?reason:'Continue to the next step.');render(host,task)
  };
 }
-function choose(host){let id=window.S?.activeCourse;if(!BANK[id])return null;const card=host.closest('.studyCard');let title=card?.querySelector('h3')?.textContent||'';let sec=Number(title.match(/Section\s*([123])/i)?.[1]||0);const options=BANK[id];if(id==='D756')return options.find(x=>sec===x.section)||options[0];if(sec===3)return options[2];if(/graph|display|histogram/i.test(title))return options[3];if(/median/i.test(title))return options[1];return options[0]}
+const OBJECTIVES={
+ D772:[
+ {match:/section 2.*lesson 2|graphical displays|choosing graphical|histogram/i,task:'histogram',objective:'Build and interpret a frequency distribution using correctly labeled numerical intervals.'},
+ {match:/section 2.*lesson 4|descriptive statistics|single-variable descriptive/i,task:'mean',objective:'Calculate and interpret a mean from observed values.'},
+ {match:/section 3.*lesson 1|probability|independent.*dependent/i,task:'probability',objective:'Calculate dependent probabilities, accounting for outcomes removed.'}
+ ],
+ D756:[
+ {match:/section 1.*lesson 2|responsive communication/i,task:'meeting',objective:'Respond to stakeholder concerns with listening, collaboration and documented next steps.'},
+ {match:/section 3.*lesson 2|plaafp|annual goals/i,task:'goal',objective:'Construct a measurable annual goal from a stated condition, behavior and criterion.'}
+ ]
+};
+function choose(host){const cid=window.S?.activeCourse,items=BANK[cid];if(!items)return null;
+ const title=host.closest('.studyCard')?.querySelector('h3')?.textContent||'';
+ if(!title){return items[0]}
+ const mapping=OBJECTIVES[cid]?.find(item=>item.match.test(title));
+ if(!mapping)return null;
+ const task=items.find(item=>item.id===mapping.task);
+ if(task)task.objective=mapping.objective;
+ return task||null;
+}
+function rubric(task,ex,answer,stage){
+ const response=String(answer||'').toLowerCase().trim();
+ const tokens=response.split(/\s+/).filter(Boolean);
+ if(tokens.length<7)return {ok:false,feedback:'Explain your reasoning in a complete sentence. State what the result means for the scenario, not just the number.'};
+ const rules=task.kind==='math'
+ ?[[/mean|average|median|middle|probab|chance|likely|percent|%/, 'Name the statistic or probability you calculated.'],[/\d|value|score|observation|counter|draw|data/, 'Connect your explanation to the numerical results or observations.']]
+ :task.kind==='graph'
+ ?[ [/interval|range|bar|frequency|distribution/, 'Identify the interval or frequency pattern you observed.'],[/highest|most|more|less|modal|total|count/, 'Explain what the bar heights show, such as highest frequency or total.']]
+ :[ [/parent|family|caregiver|team|student|colleague|meeting|goal/, 'Identify the family, team or student need being addressed.'],[/listen|ask|invite|collaborat|respect|share|agree|support|measure|criterion|progress|communicat/, 'Explain the action and why it supports collaboration or a measurable goal.']];
+ const missing=rules.filter(([pattern])=>!pattern.test(response)).map(([,message])=>message);
+ if(missing.length)return {ok:false,feedback:'Your explanation needs stronger evidence: '+missing.join(' ')};
+ return {ok:true,feedback:'Your explanation addresses the key ideas. This is rule-based guidance, not a teacher-graded semantic assessment; compare your explanation with the model reasoning: '+String(ex.interpret||ex.why||ex.reason||'')};
+}
 function mount(){const root=document.getElementById('content');if(!root)return;const screen=window.S?.screen;if(!['guide','mission','games'].includes(screen))return;let cards=screen==='guide'?[...root.querySelectorAll('.studyCard')]:[root];for(let card of cards){let host=card.querySelector(':scope > .mjSolutionEngine');if(!host){host=document.createElement('section');host.className='mjSolutionEngine';if(screen==='guide')card.append(host);else (root.querySelector('.sectionTitle')||root).after(host)}const task=choose(host);if(task)render(host,task);else host.remove()}}
 let style=document.createElement('style');style.textContent='.mjSolutionEngine{background:#2b2139;border:1px solid #c4a673;color:#fff0eb;margin:16px 0;padding:16px;border-radius:16px}.mjSolutionEngine h3{color:#f0cf98}.mjSeHead{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}.mjSeHead strong{color:#f2d095}.mjSeSteps{display:flex;gap:6px;margin:12px 0}.mjSeSteps span{padding:5px 10px;border:1px solid #947e95;border-radius:50%}.mjSeSteps .active{background:#9972aa}.mjSeLabel{display:flex;flex-direction:column;gap:5px;margin:9px 0}.mjSeLabel input,.mjSeBar input{background:#fff8ed;color:#1f1829;border-radius:7px;padding:10px;max-width:100%}.mjSeActions{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0}.mjSolutionEngine button{background:#695277;color:#fff0da;border:1px solid #bfa17b;border-radius:8px;padding:9px;margin:4px;cursor:pointer}.mjSolutionEngine button:focus-visible,.mjSolutionEngine input:focus-visible{outline:3px solid #f7cf7d}.mjSeGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:9px}.mjSeGraph{display:flex;align-items:end;gap:10px;min-height:210px;overflow-x:auto}.mjSeBar{display:flex;flex-direction:column;align-items:center;min-width:85px}.mjSeTower{width:42px;background:linear-gradient(#f0cd84,#aa7dbe);min-height:3px}.mjSeBar input{width:72px}.mjSeFoot{font-size:12px;opacity:.8}.mjSeFeedback,.mjSeHelp{background:#493851;border-left:3px solid #f2cc88;padding:11px}';document.head.append(style);
 const old=window.render;if(typeof old==='function')window.render=function(){let value=old.apply(this,arguments);setTimeout(mount,50);return value};setTimeout(mount,500);window.MajickSolutionEngine={version:'1.0',refresh:mount,activities:Object.values(BANK).flat().length};
