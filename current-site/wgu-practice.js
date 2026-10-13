@@ -72,19 +72,48 @@ function mistakeType(q){const reason=String(q.choiceCoach?.[String(session?.chos
 document.addEventListener('input',e=>{const n=e.target,key=n?.dataset?.v342Key,field=n?.dataset?.v342Field;if(key&&field)saveBoard(decodeURIComponent(key),field,n.value)});
 function repairLesson(q){
  if(!session||session.type==='test')return '';
- const chosen=String(session.chosen??''),coach=q.choiceCoach||{};
- const why=coach[chosen]||'The selected term does not fit the defining clue in this scenario.';
- const example=window.MajickVisualAnchors?.render?.(q)||'';
- const rule=String(q.wguClue||q.keyClue||q.why||'Find the words that determine which statistical rule applies.');
- const id=encodeURIComponent(String(q.id||q.qid||''));
- return '<div class="v342Repair" style="padding:1rem;border:1px solid #ad8c55;border-radius:12px;margin:.8rem 0;background:#f6ebd9;color:#30233d">'+
- '<h3>Professor’s Repair Lesson</h3><p><b>Likely error category:</b> '+E(mistakeType(q))+' — check your whiteboard work.</p><p><b>Why your choice did not fit:</b> '+E(why)+'</p>'+
- '<p><b>Clue to look for next time:</b> '+E(rule)+'</p>'+
- '<ol><li>Read the quantity or concept being asked for.</li><li>Underline the deciding clue.</li><li>Match the clue to the rule or formula.</li><li>Explain why your original choice does not fit.</li></ol>'+
- '<details><summary>Worked steps with this question’s numbers, when verified</summary>'+exactWorked(q)+'</details>'+ (example?'<details><summary>Separate visual worked example</summary>'+example+'</details>':'')+
- '<button type="button" class="btn primary" onclick="MajickWGUPractice.startRepairTransfer(decodeURIComponent(\''+id+'\'))">Try a fresh question without hints →</button>'+
- '<small style="display:block">Guided explanations do not count as independent mastery.</small></div>';
+ const chosen=String(session.chosen??''),correct=String(q.answer??''),coach=q.choiceCoach||{};
+ const wrongReason=String(coach[chosen]||'This answer does not match the defining evidence in the question.');
+ const clue=String(q.wguClue||q.keyClue||q.why||'Identify the details that distinguish the correct concept.');
+ const questionId=String(q.id||q.qid||q.prompt||''), encoded=encodeURIComponent(questionId);
+ const optionReason=String(coach[correct]||q.why||'Compare the correct answer with the key evidence.');
+ const hasWorked=!!q?.workedExample?.steps?.length||/(?:data set|data values|values are|numbers are)\s*:?\s*-?\d+(?:\.\d+)?(?:\s*,\s*-?\d+(?:\.\d+)?){2,}/i.test(String(q.prompt||''));
+ const steps=hasWorked?'<details class="v342MatchedWork"><summary>Show the calculations using these exact values</summary>'+exactWorked(q)+'</details>':'<p>This question tests a concept or an interpretation. Use its actual clue and answer comparison below rather than an unrelated numerical example.</p>';
+ return '<section class="v342Repair" data-repair-question="'+E(questionId)+'" style="padding:1rem;border:1px solid #ad8c55;border-radius:12px;margin:.8rem 0;background:#f6ebd9;color:#30233d">'+
+ '<h3>Professor’s Repair · Your Actual Question</h3>'+
+ '<p><b>Question:</b> '+E(q.prompt||'')+'</p>'+
+ '<p><b>You selected:</b> '+E(chosen)+'</p><p><b>Correct answer:</b> '+E(correct)+'</p>'+
+ '<p><b>Why your answer needs revision:</b> '+E(wrongReason)+'</p>'+
+ '<div class="v342RepairSteps"><div><b>1 · Find the deciding clue</b><p>'+E(clue)+'</p></div>'+
+ '<div><b>2 · Connect the clue to the rule</b><p>'+E(optionReason)+'</p></div>'+
+ '<div><b>3 · Work it through</b>'+steps+'</div>'+
+ '<div><b>4 · Explain your thinking</b><p>What in the question made your first answer tempting? Which detail changes your reasoning?</p>'+
+ '<textarea data-repair-thinking rows="3" style="width:100%;min-height:84px" placeholder="I chose ___ because ___. Now I see ___ in this question, which means ___..."></textarea>'+
+ '<button type="button" class="btn ghost" data-repair-check>Check my explanation</button>'+
+ '<p data-repair-feedback role="status" aria-live="polite"></p></div></div>'+
+ '<button type="button" class="btn primary" data-repair-transfer disabled>Try a different question on this same lesson →</button>'+
+ '<small style="display:block">Repair is guided support, not independently verified mastery. The next problem is a separate transfer challenge.</small></section>';
 }
+function checkRepairExplanation(box){
+ const q=session?.current;if(!box||!q)return;
+ const input=box.querySelector('[data-repair-thinking]'),feedback=box.querySelector('[data-repair-feedback]'),transfer=box.querySelector('[data-repair-transfer]');
+ const text=String(input?.value||'').trim(),words=text.split(/\s+/).filter(Boolean);
+ const reasonWords=/because|since|instead|rather|clue|evidence|shows|indicat|means|therefore|first|now|mistake|thought/i.test(text);
+ const contrast=/but|instead|however|now|rather|correct|actually|should|different/i.test(text);
+ const supplied=words.length>=15&&reasonWords&&contrast;
+ feedback.textContent=supplied?'You have compared your original thinking with new reasoning. Read the model explanation above and check that your claim matches this exact scenario.':'Add why you chose the original answer AND what evidence in this question changes your thinking. Aim for a full explanation, not a single word.';
+ transfer.disabled=!supplied;
+}
+document.addEventListener('click',event=>{
+ const button=event.target.closest?.('[data-repair-check],[data-repair-transfer]');
+ if(!button)return;
+ const box=button.closest('.v342Repair');if(!box)return;
+ if(button.matches('[data-repair-check]')){checkRepairExplanation(box);return}
+ if(button.matches('[data-repair-transfer]')&&!button.disabled){
+  const id=box.dataset.repairQuestion;
+  startRepairTransfer(id);
+ }
+});
 function startRepairTransfer(id){
  const original=String(id||''),source=practicePool('mixed').find(q=>String(q.id||q.qid||'')===original);
  if(!source)return window.rewardToast?.('Review unavailable','Original question not found.');
