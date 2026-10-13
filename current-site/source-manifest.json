@@ -144,7 +144,7 @@
     "guardian-registry.js": "b20170b996ddf065f33bb37332c8a9fce68ae104914e3e94ffe9aa44b7b612f3",
     "home-focus.css": "cbb719eb8e78701717b4016388d511553f2785212d839815ed006651ae738b2b",
     "home-focus.js": "69b58966e19ba611d5e1789b6a342317067f1f0f4b718619062bd7277811a695",
-    "index.html": "6ad78f71b91ea96dcaa3bab1156722425d006d1d8b8bde459a5a6481c79f610c",
+    "index.html": "340ee326d29ed8da2c9cb78ad3e8bfa044a63caadc635acae76d848a8c47f091",
     "learn-mode.css": "30181250c67efe7bd97c9276706a804a551e7904a2bb28160eeb0c193f35c002",
     "learn-mode.js": "f6647cd013d5bc59a319710c45ac806b56585c7fc5c912afa88857d2f16f82e0",
     "learning-lab.css": "6ed48d27023052a714d27c027f25828bc5ad74edccb172704e823a58b26d6844",
@@ -779,6 +779,8 @@
     "assets/atelier/v2/fitted/hair/afro_full/threequarter_left_walk.webp": "05806fbc6921cb83cbf5eae3f2e6b9a253c1ada84044cfc067f41dfaff650af7",
     "assets/atelier/v2/fitted/previews/afro_full/threequarter_left_walk.webp": "237a731fb96217394dbd9ef7a8ca980daebad47b9c8dd702fa2e413b67c242ac",
     "assets/atelier/v2/fitted/hair-alignment-audit.json": "b00c11e04f3f7e6f06a03678737f0ff18adba9e564a988ff2c1ef84f1d3e67db",
-    "atelier-fit-review.html": "5461edb44cfc468143fda8b58960287afdd7a8118b94d13baa587b887ba7f7ea"
+    "atelier-fit-review.html": "1267f1dd9214f2094d92d4ceab22955214dad27fcb706742977bcf9cea6d7453",
+    "atelier-v2-approval-gate.js": "76d48503cc554fd5b270e958c756e127fefbfd9c4b830afaac5b6f0d82643a0c",
+    "assets/atelier/v2/fitted/approval-registry.json": "28fccf84473cdfdc6238f0fed59858926cf418d9db1b4f823b61026a6514b01c"
   }
 }
