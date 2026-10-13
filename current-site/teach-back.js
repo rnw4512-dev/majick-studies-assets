@@ -1,5 +1,5 @@
 (()=>{'use strict';if(window.MajickTeachBack)return;
-const E=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const E=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const tips={
 'd772-s1-l1':['Population = EVERYONE you want to understand; sample = SOMEONE you actually measure.','Ask: Who do we want answers about? Who did we actually ask?'],
 'd772-s1-l2':['BIAS check: Who is missing? Who benefits? How was the question worded?','Teach students to redesign an unfair poll, not just name its bias.'],
