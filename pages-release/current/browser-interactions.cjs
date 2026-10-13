@@ -5,7 +5,7 @@ const chrome=['google-chrome','google-chrome-stable','chromium','chromium-browse
 if(!chrome)throw Error('Chrome or Chromium not available');
 const profile=fs.mkdtempSync(path.join(os.tmpdir(),'majick-chrome-'));
 const server=http.createServer((req,res)=>{try{const name=new URL(req.url,'http://localhost').pathname.slice(1)||'index.html',file=path.resolve(root,name);if(!file.startsWith(root+path.sep))return res.writeHead(403).end();const ext=path.extname(file);const bytes=fs.readFileSync(file);res.writeHead(200,{'Content-Type':ext==='.js'?'text/javascript':ext==='.html'?'text/html':'application/octet-stream','Cache-Control':'no-store'}).end(bytes)}catch{res.writeHead(404).end()}});
-let child,ws,id=0;const wait=new Map();
+let child,ws,id=0,chromeStderr='';const wait=new Map();
 function call(method,params={}){return new Promise((resolve,reject)=>{const n=++id;wait.set(n,{resolve,reject});ws.send(JSON.stringify({id:n,method,params}));setTimeout(()=>{if(wait.has(n)){wait.delete(n);reject(Error('CDP timeout '+method))}},12000)})}
 async function evalPage(expression){const x=await call('Runtime.evaluate',{expression,returnByValue:true,awaitPromise:true});if(x.exceptionDetails)throw Error(JSON.stringify(x.exceptionDetails));return x.result?.value}
 async function waitFor(expression){for(let n=0;n<100;n++){try{if(await evalPage(expression))return}catch{}await sleep(250)}throw Error('Page condition failed '+expression)}
@@ -13,10 +13,10 @@ async function action(statement){return evalPage('(()=>{'+statement+';return tru
 (async()=>{
  await new Promise(r=>server.listen(0,'127.0.0.1',r));
  const url='http://127.0.0.1:'+server.address().port+'/index.html';
- child=spawn(chrome,['--headless=new','--no-sandbox','--disable-dev-shm-usage','--disable-gpu','--remote-allow-origins=*','--remote-debugging-port=0','--user-data-dir='+profile,url],{stdio:'ignore'});
+ child=spawn(chrome,['--headless=new','--no-sandbox','--disable-dev-shm-usage','--disable-gpu','--remote-allow-origins=*','--remote-debugging-port=0','--user-data-dir='+profile,url],{stdio:['ignore','ignore','pipe']});child.stderr.on('data',d=>chromeStderr+=String(d).slice(-4000));
  const portFile=path.join(profile,'DevToolsActivePort');let port;
  for(let n=0;n<120;n++){if(fs.existsSync(portFile)){port=+fs.readFileSync(portFile,'utf8').split('\n')[0];break}await sleep(150)}
- if(!port)throw Error('Chrome debugging port missing');
+ if(!port)throw Error('Chrome debugging port missing; command='+chrome+' exit='+child.exitCode+' stderr='+chromeStderr.slice(-2500));
  const tabs=await(await fetch('http://127.0.0.1:'+port+'/json/list')).json(),tab=tabs.find(x=>x.type==='page');
  if(!tab)throw Error('Chrome tab missing');
  ws=new WebSocket(tab.webSocketDebuggerUrl);
