@@ -44,6 +44,8 @@ function mount(_box,lesson,index){
  if(st.mode==='match'){total=rows.length;right=rows.filter((_,i)=>st.matched[i]===i).length}
  else{total=Math.min(3,rows.length);right=rows.slice(0,total).filter((_,i)=>st.fills[i]===i).length}
  st.feedback=right===total?'✓ All '+total+' correct! Try the other tab or continue the lesson.':'You matched '+right+' of '+total+'. Review the definitions and adjust your choices.';
+ window.MajickLearningContinuity?.record?.({courseId:m.course,lessonTitle:lesson.title,term:lesson.title,correct:right===total,activity:'learn-lab-'+st.mode});
+ if(right<total)st.feedback+=' This skill will also be prioritized in Study Realm and Game Realm.';
  if(right===total){const reward=window.MajickInteractiveRewards?.award?.('learn-vocab-'+index+'-'+st.mode,'participation');if(reward?.awarded)st.feedback+=' +'+reward.xp+' XP earned through the existing reward system.'}
  draw();
  };
