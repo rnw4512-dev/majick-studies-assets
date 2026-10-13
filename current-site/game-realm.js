@@ -369,8 +369,8 @@
     const q=session.items[session.index],cfg=ASSESSMENT_SIGIL_FAMILIES[session.family];
     return '<div class="qwrap realmMode realmAssessmentSigil">'+realmScene('assessmentsigilsort')+guardianBanner(session.guardianMessage||'Read the scenario carefully. Decide which sigil gate it belongs to.')+
       '<div class="qtop"><span class="qbadge">✥ '+E(cfg.label)+'</span><b>'+(session.index+1)+' / '+session.items.length+'</b></div>'+trialProgress('assessmentsigilsort')+trialGuide('assessmentsigilsort')+
-      '<div class="card assessmentSigilCard"><small>D755 • WHAT TYPE OF ASSESSMENT IS THIS?</small><div class="question">'+E(q.prompt)+'</div>'+
-      '<div class="assessmentSigilGates">'+[cfg.left,cfg.right].map(v=>'<button type="button" '+(session.answered?'disabled':'')+' class="'+(session.answered?(normalize(v)===normalize(q.sigilAnswer)?'correct':normalize(v)===normalize(session.choice)?'wrong':''):'')+'" onclick="answerAssessmentSigil(\''+E(v)+'\')"><span>✥</span><b>'+E(v)+'</b></button>').join('')+'</div>'+
+      '<div class="card assessmentSigilCard"><small>D755 • WHAT TYPE OF ASSESSMENT IS THIS?</small><div class="question">'+E(evidence.prompt)+'</div>'+evidence.visual+
+      '<div class="assessmentSigilGates">'+[cfg.left,cfg.right].map(v=>'<button type="button" '+(session.answered?'disabled':'')+' class="'+(session.answered?(normalize(v)===normalize(q.sigilAnswer)?'correct':normalize(v)===normalize(session.choice)?'wrong':''):'')+'" onclick="answerAssessmentSigil(\''+E(v)+'\')"><span>✥</span><b>'+E(v)+'</b></button>').join('')+'</div>')+
       (session.answered?'<div class="realmSigilFeedback '+(normalize(session.choice)===normalize(q.sigilAnswer)?'strong':'weak')+'"><b>'+(normalize(session.choice)===normalize(q.sigilAnswer)?'✓ Sigil aligned':'✕ Wrong gate')+'</b><p>'+E(q.why||'Use the assessment purpose and administration clues in the scenario.')+'</p><button class="btn violet" onclick="nextAssessmentSigil()">'+(session.index<session.items.length-1?'Next sigil →':'See result →')+'</button></div>':'')+
       '</div></div>';
   }
@@ -1105,14 +1105,40 @@
     if(!nextGauntlet()){session.finished=true;session.won=false;session.recordOutcome=recordRealm('gauntlet',session.score,session.round,false)}
     render?.();
   };
+  /* Graph evidence belongs inside the actual Gauntlet question, never an unrelated repair panel. */
+  function gauntletEvidence(q){
+    const prompt=String(q?.prompt||'');
+    if(/supplied salary histogram/i.test(prompt)){
+      const bins=[12,9,6,4,2,1],labels=['20–39','40–59','60–79','80–99','100–119','120–139'];
+      const bars=bins.map((v,i)=>'<rect x="'+(51+i*48)+'" y="'+(176-v*10)+'" width="47" height="'+(v*10)+'" fill="#ad75cf" stroke="#f7d5a1" stroke-width="1"/>').join('');
+      const ticks=labels.map((v,i)=>'<text x="'+(74+i*48)+'" y="195" text-anchor="middle" fill="#f4e8ff" font-size="10">'+v+'</text>').join('');
+      return {prompt:'Examine the salary histogram. How many meaningful peaks does its distribution have (what is its modality)?',visual:'<figure style="margin:1rem 0;padding:1rem;border:1px solid #d4af82;border-radius:14px;background:#24162f;color:#f8e8fa"><figcaption><strong>Salary distribution</strong> · Illustrative practice data (not actual salary survey results)</figcaption><svg viewBox="0 0 370 229" role="img" aria-label="Histogram with touching bars: salaries in thousands of dollars 20 to 39: 12 people, 40 to 59: 9, 60 to 79: 6, 80 to 99: 4, 100 to 119: 2, 120 to 139: 1. One peak at the low salary range." style="display:block;width:100%;max-width:570px;margin:auto"><line x1="51" y1="176" x2="339" y2="176" stroke="#f4e8ff"/><line x1="51" y1="44" x2="51" y2="176" stroke="#f4e8ff"/>'+bars+ticks+'<text x="196" y="217" text-anchor="middle" fill="#f4e8ff" font-size="12">Salary (thousands of dollars)</text><text x="14" y="110" transform="rotate(-90 14 110)" text-anchor="middle" fill="#f4e8ff" font-size="12">Frequency</text><text x="44" y="179" text-anchor="end" fill="#f4e8ff" font-size="10">0</text><text x="44" y="117" text-anchor="end" fill="#f4e8ff" font-size="10">6</text><text x="44" y="57" text-anchor="end" fill="#f4e8ff" font-size="10">12</text></svg></figure>',missing:false};
+    }
+    if(/\b(?:supplied|shown|pictured|provided|accompanying)\b.{0,90}\b(?:histogram|scatterplot|box plot|chart|graph|plot|diagram)\b/i.test(prompt)){
+      return {prompt,visual:'<div role="alert" style="padding:1rem;border:2px solid #e8ba75;border-radius:12px;margin:1rem 0"><strong>Missing visual evidence</strong><p>The required graph was not included with this question. Do not guess: skip it without losing a heart or shield.</p><button type="button" class="btn violet" onclick="gauntletSkipBrokenVisual()">Skip broken question without penalty →</button></div>',missing:true};
+    }
+    return {prompt,visual:'',missing:false};
+  }
+  globalThis.gauntletSkipBrokenVisual=function(){
+    if(!session||session.type!=='gauntlet'||session.answered||!gauntletEvidence(session.current).missing)return;
+    const broken=session.current;
+    if(session.reviewMode){
+      const replacement=realmQuestionPool({hard:true}).find(q=>q?.id!==broken?.id&&q?.options?.length>=2&&q?.section===broken?.section&&!gauntletEvidence(q).missing&&!session.questions.includes(q.id));
+      if(replacement)session.reviewQueue.unshift(replacement);
+    }
+    session.round=Math.max(0,session.round-1);
+    if(!nextGauntlet()){session.finished=true;session.won=false;}
+    session.guardianMessage='A missing graph is an app issue, not a learning mistake. No heart or shield was lost.';
+    render?.();
+  };
   function gauntletHTML(){
     if(session.finished)return realmResultHTML(session.reviewMode?'D772 All-Section Review':'Guardian Gauntlet','gauntlet',session.score,Math.max(1,session.round),session.won,session.reviewMode?('Balanced Sections 1–3 review complete • '+session.score+'/'+session.round+' correct'):(session.won?(session.guardianName+' helped you break the boss ward.'):'The boss ward held this time. Your run still added practice data.'));
-    const q=session.current,phase=bossPhase(session.bossHP);
+    const q=session.current,phase=bossPhase(session.bossHP),evidence=gauntletEvidence(q);
     return '<div class="qwrap realmMode realmGauntlet '+phase.className+'">'+realmScene('gauntlet')+guardianBanner(session.guardianMessage||(session.shieldUsed?'The shield is spent. I am still with you.':'I can absorb one missed answer for you this run.'))+
       '<div class="qtop"><span class="qbadge">♛ '+E(session.reviewMode?'D772 All-Section Review':'Guardian Gauntlet')+'</span><div><span class="hearts">'+('💗'.repeat(session.playerHP))+'</span> <span class="comboGlow">✦ x'+Math.max(1,session.combo)+'</span></div></div>'+trialProgress('gauntlet')+trialGuide('gauntlet')+
       '<div class="realmBossHUD"><div><div class="realmBossPhase"><small>'+E(phase.name)+'</small><b>Boss Ward</b><em>'+E(phase.line)+'</em></div><div class="bossBar"><i style="width:'+session.bossHP+'%"></i></div><small>'+session.bossHP+'% remaining</small></div><span class="realmShield '+(session.shieldUsed?'spent':'ready')+'">'+(session.shieldUsed?'◇ Shield spent':'◇ Guardian shield ready')+'</span></div>'+
       '<div class="card"><div class="tiny">'+E(q.section||'Mixed')+' • Difficulty '+Number(q.difficulty||1)+' • Round '+session.round+'/'+session.limit+'</div><div class="question">'+E(q.prompt)+'</div>'+
-      '<div class="options">'+q.options.map(o=>'<button class="opt '+(session.answered?(o===q.answer?'correct':o===session.chosen?'wrong':''):'')+'" '+(session.answered?'disabled':'')+' data-answer="'+E(o)+'" onclick="gauntletAnswer(this.dataset.answer)">'+E(o)+'</button>').join('')+'</div>'+
+      (evidence.missing?'':'<div class="options">'+q.options.map(o=>'<button class="opt '+(session.answered?(o===q.answer?'correct':o===session.chosen?'wrong':''):'')+'" '+(session.answered?'disabled':'')+' data-answer="'+E(o)+'" onclick="gauntletAnswer(this.dataset.answer)">'+E(o)+'</button>').join('')+'</div>'+
       (session.answered?'<div class="realmGauntletFeedback"><p class="'+(session.chosen===q.answer?'strong':'weak')+'">'+(session.chosen===q.answer?'Direct hit! The boss ward cracked.':session.shieldUsed&&session.playerHP===5?'Your Guardian blocked that hit.':'The boss struck back.')+'</p><p>'+E(q.why||'Review the controlling clue before the next round.')+'</p>'+(session.finished?'':'<button class="btn violet" onclick="gauntletNext()">Next round →</button>')+'</div>':'')+
       '</div></div>';
   }
