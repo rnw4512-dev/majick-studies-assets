@@ -788,6 +788,7 @@
     "assets/atelier/v2/fitted/contact-sheets/locs.png": "a301d18e4fa56d109321527c3cb5c7ad4aa63e104d8070fdd6778370fa40e3c4",
     "assets/atelier/v2/fitted/contact-sheets/afro_full.png": "65294ef9c97b537d5169e2ee84c9781efc91d39728bd9affc45b275cb87739ee",
     "assets/atelier/v3/sprite-registry.json": "ae716a28e90d2699cfdd3cad01fea009d361ecf86b074493c0ffc808a4b7278f",
-    "d772-shared-oa-questions.js": "a53a01e3800a7674f3b3344a56da23195b286eeadef84f993208f55d393fa500"
+    "d772-shared-oa-questions.js": "a53a01e3800a7674f3b3344a56da23195b286eeadef84f993208f55d393fa500",
+    "d756-hands-on.js": "3b655ed95baa1140df62add46ce0b894f0c57fe05ed0c74e86c7e24d53eeed06"
   }
 }
