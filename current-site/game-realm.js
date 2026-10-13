@@ -1072,7 +1072,7 @@
     nextGauntlet();if(globalThis.S)S.screen='mission';render?.();
   };
   globalThis.gauntletAnswer=function(chosen){
-    if(!session||session.type!=='gauntlet'||session.answered)return;
+    if(!session||session.type!=='gauntlet'||session.answered||gauntletEvidence(session.current).missing)return;
     const q=session.current,correct=chosen===q.answer;
     session.chosen=chosen;session.answered=true;
     if(correct){
@@ -1107,17 +1107,9 @@
   };
   /* Graph evidence belongs inside the actual Gauntlet question, never an unrelated repair panel. */
   function gauntletEvidence(q){
-    const prompt=String(q?.prompt||'');
-    if(/supplied salary histogram/i.test(prompt)){
-      const bins=[12,9,6,4,2,1],labels=['20–39','40–59','60–79','80–99','100–119','120–139'];
-      const bars=bins.map((v,i)=>'<rect x="'+(51+i*48)+'" y="'+(176-v*10)+'" width="47" height="'+(v*10)+'" fill="#ad75cf" stroke="#f7d5a1" stroke-width="1"/>').join('');
-      const ticks=labels.map((v,i)=>'<text x="'+(74+i*48)+'" y="195" text-anchor="middle" fill="#f4e8ff" font-size="10">'+v+'</text>').join('');
-      return {prompt:'Examine the salary histogram. How many meaningful peaks does its distribution have (what is its modality)?',visual:'<figure style="margin:1rem 0;padding:1rem;border:1px solid #d4af82;border-radius:14px;background:#24162f;color:#f8e8fa"><figcaption><strong>Salary distribution</strong> · Illustrative practice data (not actual salary survey results)</figcaption><svg viewBox="0 0 370 229" role="img" aria-label="Histogram with touching bars: salaries in thousands of dollars 20 to 39: 12 people, 40 to 59: 9, 60 to 79: 6, 80 to 99: 4, 100 to 119: 2, 120 to 139: 1. One peak at the low salary range." style="display:block;width:100%;max-width:570px;margin:auto"><line x1="51" y1="176" x2="339" y2="176" stroke="#f4e8ff"/><line x1="51" y1="44" x2="51" y2="176" stroke="#f4e8ff"/>'+bars+ticks+'<text x="196" y="217" text-anchor="middle" fill="#f4e8ff" font-size="12">Salary (thousands of dollars)</text><text x="14" y="110" transform="rotate(-90 14 110)" text-anchor="middle" fill="#f4e8ff" font-size="12">Frequency</text><text x="44" y="179" text-anchor="end" fill="#f4e8ff" font-size="10">0</text><text x="44" y="117" text-anchor="end" fill="#f4e8ff" font-size="10">6</text><text x="44" y="57" text-anchor="end" fill="#f4e8ff" font-size="10">12</text></svg></figure>',missing:false};
-    }
-    if(/\b(?:supplied|shown|pictured|provided|accompanying)\b.{0,90}\b(?:histogram|scatterplot|box plot|chart|graph|plot|diagram)\b/i.test(prompt)){
-      return {prompt,visual:'<div role="alert" style="padding:1rem;border:2px solid #e8ba75;border-radius:12px;margin:1rem 0"><strong>Missing visual evidence</strong><p>The required graph was not included with this question. Do not guess: skip it without losing a heart or shield.</p><button type="button" class="btn violet" onclick="gauntletSkipBrokenVisual()">Skip broken question without penalty →</button></div>',missing:true};
-    }
-    return {prompt,visual:'',missing:false};
+    const ev=globalThis.MajickVisualEvidence?.evidence(q);
+    if(!ev)return {prompt:String(q?.prompt||''),visual:'<div role="alert">Visual evidence checker unavailable. Do not answer.</div>',missing:true};
+    return {prompt:ev.prompt,visual:ev.ok?ev.html:globalThis.MajickVisualEvidence.blockedHtml()+'<button type="button" class="btn violet" onclick="gauntletSkipBrokenVisual()">Skip broken question without penalty →</button>',missing:!ev.ok};
   }
   globalThis.gauntletSkipBrokenVisual=function(){
     if(!session||session.type!=='gauntlet'||session.answered||!gauntletEvidence(session.current).missing)return;
