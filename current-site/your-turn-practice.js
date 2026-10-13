@@ -36,7 +36,7 @@ function mount(panel,lesson,course){if(!panel)return;const data=itemsFor(course,
  container.querySelectorAll('[data-pick]').forEach(b=>b.onclick=()=>{let arr=s.answers[idx]||[];arr.push(Number(b.dataset.pick));s.answers[idx]=arr;s.feedback[idx]='';draw()});
  container.querySelector('[data-undo]')?.addEventListener('click',()=>{s.answers[idx]?.pop();s.feedback[idx]='';draw()});
  container.querySelector('[data-check]').onclick=()=>{
- let ok=item.type==='number'?saved!==''&&saved!==undefined&&Math.abs(Number(s.answers[idx])-item.answer)<.00015:JSON.stringify(s.answers[idx]||[])===JSON.stringify(item.correct);
+ let ok=item.type==='number'?s.answers[idx]!==''&&s.answers[idx]!==undefined&&Math.abs(Number(s.answers[idx])-item.answer)<.00015:JSON.stringify(s.answers[idx]||[])===JSON.stringify(item.correct);
  s.revealed[idx]=ok;s.feedback[idx]=ok?'✓ Correct. Explain the reasoning aloud, then try the next problem.':'Not yet. Revisit the steps or values, then check again.';
  if(!ok)window.MajickLearningContinuity?.record?.({courseId:course,lessonTitle:lesson.title,term:data.key,correct:false,activity:'your-turn'});
  else{window.MajickLearningContinuity?.record?.({courseId:course,lessonTitle:lesson.title,term:data.key,correct:true,activity:'your-turn'});window.MajickInteractiveRewards?.award?.('yourturn-'+data.key+'-'+idx,'participation')}
