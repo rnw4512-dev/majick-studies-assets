@@ -91,6 +91,7 @@
   }
   function recordAnswer(q,chosen,correct,mode){
     try{record?.(q,chosen,correct,'sure',mode)}catch(_){}
+    try{window.MajickLearningContinuity?.skillResult(q,correct,false,'game-realm')}catch(_){}
     if(correct){
       try{grantMoonlight?.(q)}catch(_){}
       try{sparkle?.(true);playChime?.(true)}catch(_){}
