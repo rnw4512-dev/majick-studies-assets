@@ -1,0 +1,744 @@
+{
+  "schemaVersion": 1,
+  "generatedFrames": 48,
+  "styles": [
+    "locs",
+    "locs_beaded",
+    "updo_twist",
+    "afro_full"
+  ],
+  "artValidation": "candidates_not_approved",
+  "guarantees": [
+    "each hair layer 512x768 with transparency",
+    "deterministic per-direction anchors",
+    "no original image overwrite",
+    "preview exists for each hairstyle and frame"
+  ],
+  "stillRequired": [
+    "visual review of hand-drawn hair quality",
+    "face/collar occlusion inspection",
+    "walking and Sanctuary interaction testing"
+  ],
+  "results": [
+    {
+      "style": "locs",
+      "frame": "front_idle",
+      "head": [
+        256,
+        49
+      ],
+      "neck": [
+        256,
+        106
+      ],
+      "footBaseline": 767,
+      "candidate": "assets/atelier/v2/fitted/hair/locs/front_idle.webp",
+      "preview": "assets/atelier/v2/fitted/previews/locs/front_idle.webp"
+    },
+    {
+      "style": "locs",
+      "frame": "front_step_left",
+      "head": [
+        246,
+        49
+      ],
+      "neck": [
+        246,
+        106
+      ],
+      "footBaseline": 767,
+      "candidate": "assets/atelier/v2/fitted/hair/locs/front_step_left.webp",
+      "preview": "assets/atelier/v2/fitted/previews/locs/front_step_left.webp"
+    },
+    {
+      "style": "locs",
+      "frame": "front_step_right",
+      "head": [
+        258,
+        49
+      ],
+      "neck": [
+        258,
+        106
+      ],
+      "footBaseline": 767,
+      "candidate": "assets/atelier/v2/fitted/hair/locs/front_step_right.webp",
+      "preview": "assets/atelier/v2/fitted/previews/locs/front_step_right.webp"
+    },
+    {
+      "style": "locs",
+      "frame": "side_left_idle",
+      "head": [
+        255,
+        54
+      ],
+      "neck": [
+        255,
+        117
+      ],
+      "footBaseline": 767,
+      "candidate": "assets/atelier/v2/fitted/hair/locs/side_left_idle.webp",
+      "preview": "assets/atelier/v2/fitted/previews/locs/side_left_idle.webp"
+    },
+    {
+      "style": "locs",
+      "frame": "side_left_walk",
+      "head": [
+        249,
+        54
+      ],
+      "neck": [
+        249,
+        117
+      ],
+      "footBaseline": 767,
+      "candidate": "assets/atelier/v2/fitted/hair/locs/side_left_walk.webp",
+      "preview": "assets/atelier/v2/fitted/previews/locs/side_left_walk.webp"
+    },
+    {
+      "style": "locs",
+      "frame": "side_right_walk",
+      "head": [
+        243,
+        54
+      ],
+      "neck": [
+        243,
+        117
+      ],
+      "footBaseline": 767,
+      "candidate": "assets/atelier/v2/fitted/hair/locs/side_right_walk.webp",
+      "preview": "assets/atelier/v2/fitted/previews/locs/side_right_walk.webp"
+    },
+    {
+      "style": "locs",
+      "frame": "back_idle",
+      "head": [
+        255,
+        50
+      ],
+      "neck": [
+        255,
+        108
+      ],
+      "footBaseline": 767,
+      "candidate": "assets/atelier/v2/fitted/hair/locs/back_idle.webp",
+      "preview": "assets/atelier/v2/fitted/previews/locs/back_idle.webp"
+    },
+    {
+      "style": "locs",
+      "frame": "back_step_left",
+      "head": [
+        248,
+        50
+      ],
+      "neck": [
+        248,
+        108
+      ],
+      "footBaseline": 767,
+      "candidate": "assets/atelier/v2/fitted/hair/locs/back_step_left.webp",
+      "preview": "assets/atelier/v2/fitted/previews/locs/back_step_left.webp"
+    },
+    {
+      "style": "locs",
+      "frame": "back_step_right",
+      "head": [
+        254,
+        50
+      ],
+      "neck": [
+        254,
+        108
+      ],
+      "footBaseline": 765,
+      "candidate": "assets/atelier/v2/fitted/hair/locs/back_step_right.webp",
+      "preview": "assets/atelier/v2/fitted/previews/locs/back_step_right.webp"
+    },
+    {
+      "style": "locs",
+      "frame": "threequarter_left_forward",
+      "head": [
+        260,
+        50
+      ],
+      "neck": [
+        260,
+        107
+      ],
+      "footBaseline": 767,
+      "candidate": "assets/atelier/v2/fitted/hair/locs/threequarter_left_forward.webp",
+      "preview": "assets/atelier/v2/fitted/previews/locs/threequarter_left_forward.webp"
+    },
+    {
+      "style": "locs",
+      "frame": "threequarter_left_step",
+      "head": [
+        264,
+        50
+      ],
+      "neck": [
+        264,
+        107
+      ],
+      "footBaseline": 767,
+      "candidate": "assets/atelier/v2/fitted/hair/locs/threequarter_left_step.webp",
+      "preview": "assets/atelier/v2/fitted/previews/locs/threequarter_left_step.webp"
+    },
+    {
+      "style": "locs",
+      "frame": "threequarter_left_walk",
+      "head": [
+        261,
+        50
+      ],
+      "neck": [
+        261,
+        107
+      ],
+      "footBaseline": 767,
+      "candidate": "assets/atelier/v2/fitted/hair/locs/threequarter_left_walk.webp",
+      "preview": "assets/atelier/v2/fitted/previews/locs/threequarter_left_walk.webp"
+    },
+    {
+      "style": "locs_beaded",
+      "frame": "front_idle",
+      "head": [
+        256,
+        49
+      ],
+      "neck": [
+        256,
+        106
+      ],
+      "footBaseline": 767,
+      "candidate": "assets/atelier/v2/fitted/hair/locs_beaded/front_idle.webp",
+      "preview": "assets/atelier/v2/fitted/previews/locs_beaded/front_idle.webp"
+    },
+    {
+      "style": "locs_beaded",
+      "frame": "front_step_left",
+      "head": [
+        246,
+        49
+      ],
+      "neck": [
+        246,
+        106
+      ],
+      "footBaseline": 767,
+      "candidate": "assets/atelier/v2/fitted/hair/locs_beaded/front_step_left.webp",
+      "preview": "assets/atelier/v2/fitted/previews/locs_beaded/front_step_left.webp"
+    },
+    {
+      "style": "locs_beaded",
+      "frame": "front_step_right",
+      "head": [
+        258,
+        49
+      ],
+      "neck": [
+        258,
+        106
+      ],
+      "footBaseline": 767,
+      "candidate": "assets/atelier/v2/fitted/hair/locs_beaded/front_step_right.webp",
+      "preview": "assets/atelier/v2/fitted/previews/locs_beaded/front_step_right.webp"
+    },
+    {
+      "style": "locs_beaded",
+      "frame": "side_left_idle",
+      "head": [
+        255,
+        54
+      ],
+      "neck": [
+        255,
+        117
+      ],
+      "footBaseline": 767,
+      "candidate": "assets/atelier/v2/fitted/hair/locs_beaded/side_left_idle.webp",
+      "preview": "assets/atelier/v2/fitted/previews/locs_beaded/side_left_idle.webp"
+    },
+    {
+      "style": "locs_beaded",
+      "frame": "side_left_walk",
+      "head": [
+        249,
+        54
+      ],
+      "neck": [
+        249,
+        117
+      ],
+      "footBaseline": 767,
+      "candidate": "assets/atelier/v2/fitted/hair/locs_beaded/side_left_walk.webp",
+      "preview": "assets/atelier/v2/fitted/previews/locs_beaded/side_left_walk.webp"
+    },
+    {
+      "style": "locs_beaded",
+      "frame": "side_right_walk",
+      "head": [
+        243,
+        54
+      ],
+      "neck": [
+        243,
+        117
+      ],
+      "footBaseline": 767,
+      "candidate": "assets/atelier/v2/fitted/hair/locs_beaded/side_right_walk.webp",
+      "preview": "assets/atelier/v2/fitted/previews/locs_beaded/side_right_walk.webp"
+    },
+    {
+      "style": "locs_beaded",
+      "frame": "back_idle",
+      "head": [
+        255,
+        50
+      ],
+      "neck": [
+        255,
+        108
+      ],
+      "footBaseline": 767,
+      "candidate": "assets/atelier/v2/fitted/hair/locs_beaded/back_idle.webp",
+      "preview": "assets/atelier/v2/fitted/previews/locs_beaded/back_idle.webp"
+    },
+    {
+      "style": "locs_beaded",
+      "frame": "back_step_left",
+      "head": [
+        248,
+        50
+      ],
+      "neck": [
+        248,
+        108
+      ],
+      "footBaseline": 767,
+      "candidate": "assets/atelier/v2/fitted/hair/locs_beaded/back_step_left.webp",
+      "preview": "assets/atelier/v2/fitted/previews/locs_beaded/back_step_left.webp"
+    },
+    {
+      "style": "locs_beaded",
+      "frame": "back_step_right",
+      "head": [
+        254,
+        50
+      ],
+      "neck": [
+        254,
+        108
+      ],
+      "footBaseline": 765,
+      "candidate": "assets/atelier/v2/fitted/hair/locs_beaded/back_step_right.webp",
+      "preview": "assets/atelier/v2/fitted/previews/locs_beaded/back_step_right.webp"
+    },
+    {
+      "style": "locs_beaded",
+      "frame": "threequarter_left_forward",
+      "head": [
+        260,
+        50
+      ],
+      "neck": [
+        260,
+        107
+      ],
+      "footBaseline": 767,
+      "candidate": "assets/atelier/v2/fitted/hair/locs_beaded/threequarter_left_forward.webp",
+      "preview": "assets/atelier/v2/fitted/previews/locs_beaded/threequarter_left_forward.webp"
+    },
+    {
+      "style": "locs_beaded",
+      "frame": "threequarter_left_step",
+      "head": [
+        264,
+        50
+      ],
+      "neck": [
+        264,
+        107
+      ],
+      "footBaseline": 767,
+      "candidate": "assets/atelier/v2/fitted/hair/locs_beaded/threequarter_left_step.webp",
+      "preview": "assets/atelier/v2/fitted/previews/locs_beaded/threequarter_left_step.webp"
+    },
+    {
+      "style": "locs_beaded",
+      "frame": "threequarter_left_walk",
+      "head": [
+        261,
+        50
+      ],
+      "neck": [
+        261,
+        107
+      ],
+      "footBaseline": 767,
+      "candidate": "assets/atelier/v2/fitted/hair/locs_beaded/threequarter_left_walk.webp",
+      "preview": "assets/atelier/v2/fitted/previews/locs_beaded/threequarter_left_walk.webp"
+    },
+    {
+      "style": "updo_twist",
+      "frame": "front_idle",
+      "head": [
+        256,
+        49
+      ],
+      "neck": [
+        256,
+        106
+      ],
+      "footBaseline": 767,
+      "candidate": "assets/atelier/v2/fitted/hair/updo_twist/front_idle.webp",
+      "preview": "assets/atelier/v2/fitted/previews/updo_twist/front_idle.webp"
+    },
+    {
+      "style": "updo_twist",
+      "frame": "front_step_left",
+      "head": [
+        246,
+        49
+      ],
+      "neck": [
+        246,
+        106
+      ],
+      "footBaseline": 767,
+      "candidate": "assets/atelier/v2/fitted/hair/updo_twist/front_step_left.webp",
+      "preview": "assets/atelier/v2/fitted/previews/updo_twist/front_step_left.webp"
+    },
+    {
+      "style": "updo_twist",
+      "frame": "front_step_right",
+      "head": [
+        258,
+        49
+      ],
+      "neck": [
+        258,
+        106
+      ],
+      "footBaseline": 767,
+      "candidate": "assets/atelier/v2/fitted/hair/updo_twist/front_step_right.webp",
+      "preview": "assets/atelier/v2/fitted/previews/updo_twist/front_step_right.webp"
+    },
+    {
+      "style": "updo_twist",
+      "frame": "side_left_idle",
+      "head": [
+        255,
+        54
+      ],
+      "neck": [
+        255,
+        117
+      ],
+      "footBaseline": 767,
+      "candidate": "assets/atelier/v2/fitted/hair/updo_twist/side_left_idle.webp",
+      "preview": "assets/atelier/v2/fitted/previews/updo_twist/side_left_idle.webp"
+    },
+    {
+      "style": "updo_twist",
+      "frame": "side_left_walk",
+      "head": [
+        249,
+        54
+      ],
+      "neck": [
+        249,
+        117
+      ],
+      "footBaseline": 767,
+      "candidate": "assets/atelier/v2/fitted/hair/updo_twist/side_left_walk.webp",
+      "preview": "assets/atelier/v2/fitted/previews/updo_twist/side_left_walk.webp"
+    },
+    {
+      "style": "updo_twist",
+      "frame": "side_right_walk",
+      "head": [
+        243,
+        54
+      ],
+      "neck": [
+        243,
+        117
+      ],
+      "footBaseline": 767,
+      "candidate": "assets/atelier/v2/fitted/hair/updo_twist/side_right_walk.webp",
+      "preview": "assets/atelier/v2/fitted/previews/updo_twist/side_right_walk.webp"
+    },
+    {
+      "style": "updo_twist",
+      "frame": "back_idle",
+      "head": [
+        255,
+        50
+      ],
+      "neck": [
+        255,
+        108
+      ],
+      "footBaseline": 767,
+      "candidate": "assets/atelier/v2/fitted/hair/updo_twist/back_idle.webp",
+      "preview": "assets/atelier/v2/fitted/previews/updo_twist/back_idle.webp"
+    },
+    {
+      "style": "updo_twist",
+      "frame": "back_step_left",
+      "head": [
+        248,
+        50
+      ],
+      "neck": [
+        248,
+        108
+      ],
+      "footBaseline": 767,
+      "candidate": "assets/atelier/v2/fitted/hair/updo_twist/back_step_left.webp",
+      "preview": "assets/atelier/v2/fitted/previews/updo_twist/back_step_left.webp"
+    },
+    {
+      "style": "updo_twist",
+      "frame": "back_step_right",
+      "head": [
+        254,
+        50
+      ],
+      "neck": [
+        254,
+        108
+      ],
+      "footBaseline": 765,
+      "candidate": "assets/atelier/v2/fitted/hair/updo_twist/back_step_right.webp",
+      "preview": "assets/atelier/v2/fitted/previews/updo_twist/back_step_right.webp"
+    },
+    {
+      "style": "updo_twist",
+      "frame": "threequarter_left_forward",
+      "head": [
+        260,
+        50
+      ],
+      "neck": [
+        260,
+        107
+      ],
+      "footBaseline": 767,
+      "candidate": "assets/atelier/v2/fitted/hair/updo_twist/threequarter_left_forward.webp",
+      "preview": "assets/atelier/v2/fitted/previews/updo_twist/threequarter_left_forward.webp"
+    },
+    {
+      "style": "updo_twist",
+      "frame": "threequarter_left_step",
+      "head": [
+        264,
+        50
+      ],
+      "neck": [
+        264,
+        107
+      ],
+      "footBaseline": 767,
+      "candidate": "assets/atelier/v2/fitted/hair/updo_twist/threequarter_left_step.webp",
+      "preview": "assets/atelier/v2/fitted/previews/updo_twist/threequarter_left_step.webp"
+    },
+    {
+      "style": "updo_twist",
+      "frame": "threequarter_left_walk",
+      "head": [
+        261,
+        50
+      ],
+      "neck": [
+        261,
+        107
+      ],
+      "footBaseline": 767,
+      "candidate": "assets/atelier/v2/fitted/hair/updo_twist/threequarter_left_walk.webp",
+      "preview": "assets/atelier/v2/fitted/previews/updo_twist/threequarter_left_walk.webp"
+    },
+    {
+      "style": "afro_full",
+      "frame": "front_idle",
+      "head": [
+        256,
+        49
+      ],
+      "neck": [
+        256,
+        106
+      ],
+      "footBaseline": 767,
+      "candidate": "assets/atelier/v2/fitted/hair/afro_full/front_idle.webp",
+      "preview": "assets/atelier/v2/fitted/previews/afro_full/front_idle.webp"
+    },
+    {
+      "style": "afro_full",
+      "frame": "front_step_left",
+      "head": [
+        246,
+        49
+      ],
+      "neck": [
+        246,
+        106
+      ],
+      "footBaseline": 767,
+      "candidate": "assets/atelier/v2/fitted/hair/afro_full/front_step_left.webp",
+      "preview": "assets/atelier/v2/fitted/previews/afro_full/front_step_left.webp"
+    },
+    {
+      "style": "afro_full",
+      "frame": "front_step_right",
+      "head": [
+        258,
+        49
+      ],
+      "neck": [
+        258,
+        106
+      ],
+      "footBaseline": 767,
+      "candidate": "assets/atelier/v2/fitted/hair/afro_full/front_step_right.webp",
+      "preview": "assets/atelier/v2/fitted/previews/afro_full/front_step_right.webp"
+    },
+    {
+      "style": "afro_full",
+      "frame": "side_left_idle",
+      "head": [
+        255,
+        54
+      ],
+      "neck": [
+        255,
+        117
+      ],
+      "footBaseline": 767,
+      "candidate": "assets/atelier/v2/fitted/hair/afro_full/side_left_idle.webp",
+      "preview": "assets/atelier/v2/fitted/previews/afro_full/side_left_idle.webp"
+    },
+    {
+      "style": "afro_full",
+      "frame": "side_left_walk",
+      "head": [
+        249,
+        54
+      ],
+      "neck": [
+        249,
+        117
+      ],
+      "footBaseline": 767,
+      "candidate": "assets/atelier/v2/fitted/hair/afro_full/side_left_walk.webp",
+      "preview": "assets/atelier/v2/fitted/previews/afro_full/side_left_walk.webp"
+    },
+    {
+      "style": "afro_full",
+      "frame": "side_right_walk",
+      "head": [
+        243,
+        54
+      ],
+      "neck": [
+        243,
+        117
+      ],
+      "footBaseline": 767,
+      "candidate": "assets/atelier/v2/fitted/hair/afro_full/side_right_walk.webp",
+      "preview": "assets/atelier/v2/fitted/previews/afro_full/side_right_walk.webp"
+    },
+    {
+      "style": "afro_full",
+      "frame": "back_idle",
+      "head": [
+        255,
+        50
+      ],
+      "neck": [
+        255,
+        108
+      ],
+      "footBaseline": 767,
+      "candidate": "assets/atelier/v2/fitted/hair/afro_full/back_idle.webp",
+      "preview": "assets/atelier/v2/fitted/previews/afro_full/back_idle.webp"
+    },
+    {
+      "style": "afro_full",
+      "frame": "back_step_left",
+      "head": [
+        248,
+        50
+      ],
+      "neck": [
+        248,
+        108
+      ],
+      "footBaseline": 767,
+      "candidate": "assets/atelier/v2/fitted/hair/afro_full/back_step_left.webp",
+      "preview": "assets/atelier/v2/fitted/previews/afro_full/back_step_left.webp"
+    },
+    {
+      "style": "afro_full",
+      "frame": "back_step_right",
+      "head": [
+        254,
+        50
+      ],
+      "neck": [
+        254,
+        108
+      ],
+      "footBaseline": 765,
+      "candidate": "assets/atelier/v2/fitted/hair/afro_full/back_step_right.webp",
+      "preview": "assets/atelier/v2/fitted/previews/afro_full/back_step_right.webp"
+    },
+    {
+      "style": "afro_full",
+      "frame": "threequarter_left_forward",
+      "head": [
+        260,
+        50
+      ],
+      "neck": [
+        260,
+        107
+      ],
+      "footBaseline": 767,
+      "candidate": "assets/atelier/v2/fitted/hair/afro_full/threequarter_left_forward.webp",
+      "preview": "assets/atelier/v2/fitted/previews/afro_full/threequarter_left_forward.webp"
+    },
+    {
+      "style": "afro_full",
+      "frame": "threequarter_left_step",
+      "head": [
+        264,
+        50
+      ],
+      "neck": [
+        264,
+        107
+      ],
+      "footBaseline": 767,
+      "candidate": "assets/atelier/v2/fitted/hair/afro_full/threequarter_left_step.webp",
+      "preview": "assets/atelier/v2/fitted/previews/afro_full/threequarter_left_step.webp"
+    },
+    {
+      "style": "afro_full",
+      "frame": "threequarter_left_walk",
+      "head": [
+        261,
+        50
+      ],
+      "neck": [
+        261,
+        107
+      ],
+      "footBaseline": 767,
+      "candidate": "assets/atelier/v2/fitted/hair/afro_full/threequarter_left_walk.webp",
+      "preview": "assets/atelier/v2/fitted/previews/afro_full/threequarter_left_walk.webp"
+    }
+  ]
+}

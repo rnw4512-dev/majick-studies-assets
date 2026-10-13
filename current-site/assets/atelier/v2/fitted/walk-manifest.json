@@ -24,7 +24,7 @@
     "skin": "warm"
   },
   "enabled": false,
-  "reason": "All twelve generated locs frames exist but final visual QA and browser walk-controller acceptance remain required.",
+  "reason": "48 candidate hair sprites generated with consistent directional anchors; visual QA and wearability testing required before live walk.",
   "frames": {
     "front_idle": {
       "body": "assets/atelier/v2/fitted/body/front_idle.webp",
@@ -109,6 +109,64 @@
       "hair": "assets/atelier/v2/fitted/hair/locs/threequarter_left_walk.webp",
       "accessories": [],
       "status": "candidate_requires_visual_review"
+    }
+  },
+  "hairStyleFamilies": {
+    "locs": {
+      "front_idle": "assets/atelier/v2/fitted/hair/locs/front_idle.webp",
+      "front_step_left": "assets/atelier/v2/fitted/hair/locs/front_step_left.webp",
+      "front_step_right": "assets/atelier/v2/fitted/hair/locs/front_step_right.webp",
+      "side_left_idle": "assets/atelier/v2/fitted/hair/locs/side_left_idle.webp",
+      "side_left_walk": "assets/atelier/v2/fitted/hair/locs/side_left_walk.webp",
+      "side_right_walk": "assets/atelier/v2/fitted/hair/locs/side_right_walk.webp",
+      "back_idle": "assets/atelier/v2/fitted/hair/locs/back_idle.webp",
+      "back_step_left": "assets/atelier/v2/fitted/hair/locs/back_step_left.webp",
+      "back_step_right": "assets/atelier/v2/fitted/hair/locs/back_step_right.webp",
+      "threequarter_left_forward": "assets/atelier/v2/fitted/hair/locs/threequarter_left_forward.webp",
+      "threequarter_left_step": "assets/atelier/v2/fitted/hair/locs/threequarter_left_step.webp",
+      "threequarter_left_walk": "assets/atelier/v2/fitted/hair/locs/threequarter_left_walk.webp"
+    },
+    "locs_beaded": {
+      "front_idle": "assets/atelier/v2/fitted/hair/locs_beaded/front_idle.webp",
+      "front_step_left": "assets/atelier/v2/fitted/hair/locs_beaded/front_step_left.webp",
+      "front_step_right": "assets/atelier/v2/fitted/hair/locs_beaded/front_step_right.webp",
+      "side_left_idle": "assets/atelier/v2/fitted/hair/locs_beaded/side_left_idle.webp",
+      "side_left_walk": "assets/atelier/v2/fitted/hair/locs_beaded/side_left_walk.webp",
+      "side_right_walk": "assets/atelier/v2/fitted/hair/locs_beaded/side_right_walk.webp",
+      "back_idle": "assets/atelier/v2/fitted/hair/locs_beaded/back_idle.webp",
+      "back_step_left": "assets/atelier/v2/fitted/hair/locs_beaded/back_step_left.webp",
+      "back_step_right": "assets/atelier/v2/fitted/hair/locs_beaded/back_step_right.webp",
+      "threequarter_left_forward": "assets/atelier/v2/fitted/hair/locs_beaded/threequarter_left_forward.webp",
+      "threequarter_left_step": "assets/atelier/v2/fitted/hair/locs_beaded/threequarter_left_step.webp",
+      "threequarter_left_walk": "assets/atelier/v2/fitted/hair/locs_beaded/threequarter_left_walk.webp"
+    },
+    "updo_twist": {
+      "front_idle": "assets/atelier/v2/fitted/hair/updo_twist/front_idle.webp",
+      "front_step_left": "assets/atelier/v2/fitted/hair/updo_twist/front_step_left.webp",
+      "front_step_right": "assets/atelier/v2/fitted/hair/updo_twist/front_step_right.webp",
+      "side_left_idle": "assets/atelier/v2/fitted/hair/updo_twist/side_left_idle.webp",
+      "side_left_walk": "assets/atelier/v2/fitted/hair/updo_twist/side_left_walk.webp",
+      "side_right_walk": "assets/atelier/v2/fitted/hair/updo_twist/side_right_walk.webp",
+      "back_idle": "assets/atelier/v2/fitted/hair/updo_twist/back_idle.webp",
+      "back_step_left": "assets/atelier/v2/fitted/hair/updo_twist/back_step_left.webp",
+      "back_step_right": "assets/atelier/v2/fitted/hair/updo_twist/back_step_right.webp",
+      "threequarter_left_forward": "assets/atelier/v2/fitted/hair/updo_twist/threequarter_left_forward.webp",
+      "threequarter_left_step": "assets/atelier/v2/fitted/hair/updo_twist/threequarter_left_step.webp",
+      "threequarter_left_walk": "assets/atelier/v2/fitted/hair/updo_twist/threequarter_left_walk.webp"
+    },
+    "afro_full": {
+      "front_idle": "assets/atelier/v2/fitted/hair/afro_full/front_idle.webp",
+      "front_step_left": "assets/atelier/v2/fitted/hair/afro_full/front_step_left.webp",
+      "front_step_right": "assets/atelier/v2/fitted/hair/afro_full/front_step_right.webp",
+      "side_left_idle": "assets/atelier/v2/fitted/hair/afro_full/side_left_idle.webp",
+      "side_left_walk": "assets/atelier/v2/fitted/hair/afro_full/side_left_walk.webp",
+      "side_right_walk": "assets/atelier/v2/fitted/hair/afro_full/side_right_walk.webp",
+      "back_idle": "assets/atelier/v2/fitted/hair/afro_full/back_idle.webp",
+      "back_step_left": "assets/atelier/v2/fitted/hair/afro_full/back_step_left.webp",
+      "back_step_right": "assets/atelier/v2/fitted/hair/afro_full/back_step_right.webp",
+      "threequarter_left_forward": "assets/atelier/v2/fitted/hair/afro_full/threequarter_left_forward.webp",
+      "threequarter_left_step": "assets/atelier/v2/fitted/hair/afro_full/threequarter_left_step.webp",
+      "threequarter_left_walk": "assets/atelier/v2/fitted/hair/afro_full/threequarter_left_walk.webp"
     }
   }
 }

@@ -21,7 +21,7 @@
     "neck": "Shoulder/neck meeting point, measured per frame",
     "footBaseline": "Lowest grounded foot, measured per frame"
   },
-  "alignmentStatus": "measured_candidates_pending_visual_confirmation",
+  "alignmentStatus": "frame_family_normalized_unreviewed",
   "frames": {
     "front_idle": {
       "head": [
@@ -49,7 +49,7 @@
         "accessories": {}
       },
       "validated": false,
-      "method": "skin-pixel head scan + alpha foot bbox; confirm visually"
+      "method": "frame-family standing reference with <=16px horizontal walking excursion; visual review required"
     },
     "front_step_left": {
       "head": [
@@ -58,7 +58,7 @@
       ],
       "neck": [
         246,
-        105
+        106
       ],
       "footBaseline": 767,
       "offsets": {
@@ -77,16 +77,16 @@
         "accessories": {}
       },
       "validated": false,
-      "method": "skin-pixel head scan + alpha foot bbox; confirm visually"
+      "method": "frame-family standing reference with <=16px horizontal walking excursion; visual review required"
     },
     "front_step_right": {
       "head": [
         258,
-        50
+        49
       ],
       "neck": [
         258,
-        108
+        106
       ],
       "footBaseline": 767,
       "offsets": {
@@ -105,7 +105,7 @@
         "accessories": {}
       },
       "validated": false,
-      "method": "skin-pixel head scan + alpha foot bbox; confirm visually"
+      "method": "frame-family standing reference with <=16px horizontal walking excursion; visual review required"
     },
     "side_left_idle": {
       "head": [
@@ -133,16 +133,16 @@
         "accessories": {}
       },
       "validated": false,
-      "method": "skin-pixel head scan + alpha foot bbox; confirm visually"
+      "method": "frame-family standing reference with <=16px horizontal walking excursion; visual review required"
     },
     "side_left_walk": {
       "head": [
         249,
-        88
+        54
       ],
       "neck": [
         249,
-        148
+        117
       ],
       "footBaseline": 767,
       "offsets": {
@@ -161,16 +161,16 @@
         "accessories": {}
       },
       "validated": false,
-      "method": "skin-pixel head scan + alpha foot bbox; confirm visually"
+      "method": "frame-family standing reference with <=16px horizontal walking excursion; visual review required"
     },
     "side_right_walk": {
       "head": [
         243,
-        90
+        54
       ],
       "neck": [
         243,
-        151
+        117
       ],
       "footBaseline": 767,
       "offsets": {
@@ -189,7 +189,7 @@
         "accessories": {}
       },
       "validated": false,
-      "method": "skin-pixel head scan + alpha foot bbox; confirm visually"
+      "method": "frame-family standing reference with <=16px horizontal walking excursion; visual review required"
     },
     "back_idle": {
       "head": [
@@ -217,16 +217,16 @@
         "accessories": {}
       },
       "validated": false,
-      "method": "skin-pixel head scan + alpha foot bbox; confirm visually"
+      "method": "frame-family standing reference with <=16px horizontal walking excursion; visual review required"
     },
     "back_step_left": {
       "head": [
         248,
-        85
+        50
       ],
       "neck": [
         248,
-        139
+        108
       ],
       "footBaseline": 767,
       "offsets": {
@@ -245,7 +245,7 @@
         "accessories": {}
       },
       "validated": false,
-      "method": "skin-pixel head scan + alpha foot bbox; confirm visually"
+      "method": "frame-family standing reference with <=16px horizontal walking excursion; visual review required"
     },
     "back_step_right": {
       "head": [
@@ -273,7 +273,7 @@
         "accessories": {}
       },
       "validated": false,
-      "method": "skin-pixel head scan + alpha foot bbox; confirm visually"
+      "method": "frame-family standing reference with <=16px horizontal walking excursion; visual review required"
     },
     "threequarter_left_forward": {
       "head": [
@@ -301,7 +301,7 @@
         "accessories": {}
       },
       "validated": false,
-      "method": "skin-pixel head scan + alpha foot bbox; confirm visually"
+      "method": "frame-family standing reference with <=16px horizontal walking excursion; visual review required"
     },
     "threequarter_left_step": {
       "head": [
@@ -329,16 +329,16 @@
         "accessories": {}
       },
       "validated": false,
-      "method": "skin-pixel head scan + alpha foot bbox; confirm visually"
+      "method": "frame-family standing reference with <=16px horizontal walking excursion; visual review required"
     },
     "threequarter_left_walk": {
       "head": [
         261,
-        52
+        50
       ],
       "neck": [
         261,
-        110
+        107
       ],
       "footBaseline": 767,
       "offsets": {
@@ -357,7 +357,7 @@
         "accessories": {}
       },
       "validated": false,
-      "method": "skin-pixel head scan + alpha foot bbox; confirm visually"
+      "method": "frame-family standing reference with <=16px horizontal walking excursion; visual review required"
     }
   },
   "fallbackPolicy": {
