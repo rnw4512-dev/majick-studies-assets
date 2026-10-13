@@ -332,6 +332,18 @@ function practicePool(scope){
  if(scope==='2c')return rows.filter(q=>sectionNumber(q)===2&&/d772-s2-l[34](?:-|$)/.test(String(q.learningPathLessonId||q.topicId||'')));
  return rows.filter(q=>sectionNumber(q)===Number(scope));
 }
+function startSkillRetry(id){
+ if(!activeD772())return;
+ const gate=window.MajickVisualEvidence;
+ const learned=window.S?.progress?.D772?.adaptiveSkills?.[id];
+ const rows=shuffleCopy(practicePool('mixed').filter(q=>(q.learningPathLessonId||q.lessonId||window.MajickLearningContinuity?.identify?.(q.prompt))===id&&q.options?.length>=2&&(!gate||gate.evidence(q,v=>visualHtml(v.visual)||window.MajickCourseTutor?.questionVisualHtml?.(v)||'').ok)));
+ if(!rows.length){window.rewardToast?.('More practice needed','No verified new questions for this lesson yet.');return}
+ const fresh=rows.filter(q=>!(learned?.seen||[]).includes(String(q.id||q.prompt)));
+ const questions=(fresh.length>=3?fresh:rows).slice(0,5);
+ session={type:'test',opts:{label:'Independent skill recovery · '+id,limit:questions.length,kind:'d772-section-practice',scope:'retry',hideMeta:true},index:1,score:0,combo:0,questions,current:questions[0],answered:false,confidence:'sure',review:[],start:Date.now(),pendingChoice:null,adaptiveTracked:false};
+ if(learned){learned.status='retry';learned.seen=(learned.seen||[]).concat(questions.map(q=>String(q.id||q.prompt))).slice(-70);}
+ S.screen='mission';try{save()}catch(_){}render();
+}
 function startSection(scope,independent=false){
  if(!activeD772())return;
  const pool=practicePool(scope),groups=[1,2,3].map(n=>shuffleCopy(pool.filter(q=>sectionNumber(q)===n)));
@@ -468,7 +480,7 @@ function bootD772Practice(){
     }
   }catch(e){console.warn('D772 Practice Lab boot',e)}
 }
-window.MajickWGUPractice={VERSION,select,submit,skipBrokenVisual,startSection,startDiagnostic,startMixedOA,startRepairTransfer,balancedMixedAssessment,practicePool,sectionNumber,startOA,startFocusedReview,startSampling,startStudyDesign,startLabelStudy,startExperiments,visualHtml,whyList,balancedOA,isD772Question,ensureD772Bank,bootD772Practice};
+window.MajickWGUPractice={VERSION,select,submit,skipBrokenVisual,startSection,startSkillRetry,startDiagnostic,startMixedOA,startRepairTransfer,balancedMixedAssessment,practicePool,sectionNumber,startOA,startFocusedReview,startSampling,startStudyDesign,startLabelStudy,startExperiments,visualHtml,whyList,balancedOA,isD772Question,ensureD772Bank,bootD772Practice};
 document.documentElement.dataset.majickWguPractice='3.3.36';
 bootD772Practice();
 })();
