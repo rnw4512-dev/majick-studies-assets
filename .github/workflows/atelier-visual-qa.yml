@@ -1,0 +1,86 @@
+name: Atelier visual contact sheets and continuity QA
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/atelier-visual-qa.yml']
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  qa:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install Pillow
+      - name: Build full contact sheets, check shape and alignment
+        run: |
+          python - <<'PY'
+          from PIL import Image,ImageDraw,ImageFont
+          from pathlib import Path
+          import json,hashlib,statistics
+          base=Path('current-site')
+          fitted=base/'assets/atelier/v2/fitted'
+          styles=['locs','locs_beaded','updo_twist','afro_full']
+          directions={'front':['front_idle','front_step_left','front_step_right'],'side':['side_left_idle','side_left_walk','side_right_walk'],'back':['back_idle','back_step_left','back_step_right'],'threequarter':['threequarter_left_forward','threequarter_left_step','threequarter_left_walk']}
+          alignment=json.loads((fitted/'walk-alignment.json').read_text())
+          manifest=json.loads((fitted/'walk-manifest.json').read_text())
+          results=[]
+          out=fitted/'contact-sheets';out.mkdir(exist_ok=True)
+          for style in styles:
+            sheet=Image.new('RGB',(4*250,3*395),(35,24,42))
+            painter=ImageDraw.Draw(sheet)
+            for col,(direction,frames) in enumerate(directions.items()):
+              for row,frame in enumerate(frames):
+                p=fitted/'previews'/style/(frame+'.webp')
+                h=fitted/'hair'/style/(frame+'.webp')
+                b=fitted/'body'/(frame+'.webp')
+                o=fitted/'outfits/midnight_velvet'/(frame+'.webp')
+                missing=[str(x) for x in [p,h,b,o] if not x.exists()]
+                errs=[]
+                if missing:errs.append('missing images')
+                if not missing:
+                  previews=[Image.open(x).convert('RGBA') for x in (p,h,b,o)]
+                  if any(im.size!=(512,768) for im in previews):errs.append('canvas mismatch')
+                  if not previews[1].getchannel('A').getbbox():errs.append('empty hairstyle layer')
+                  image=previews[0]
+                  image.thumbnail((230,343))
+                  background=Image.new('RGB',(230,343),(74,55,80))
+                  background.paste(image,((230-image.width)//2,(343-image.height)//2),image)
+                  sheet.paste(background,(col*250+10,row*395+32))
+                a=alignment['frames'].get(frame,{})
+                if a.get('validated') is not True:errs.append('not visually validated')
+                if a.get('footBaseline') is None:errs.append('unmeasured feet')
+                painter.text((col*250+7,row*395+4),style+' | '+frame,fill=(255,221,160))
+                results.append({'style':style,'direction':direction,'frame':frame,'fileAvailable':not missing,'automatedIssues':errs,'visualAcceptance':'not_reviewed','approvalRecommendation':'hold_until_visual_review'})
+            filename=out/(style+'.png')
+            sheet.save(filename,optimize=True)
+          assert len(results)==48
+          review={
+            'schemaVersion':1,'totalFrames':48,
+            'fileChecksPassing':sum(r['fileAvailable'] for r in results),
+            'visuallyApproved':0,
+            'verdict':'NOT CONFIRMED NATURAL',
+            'explanation':'Raster measurements do not establish believable hair growth, collar clearance, consistent face shape or stable motion. Candidate sprites must be visually reviewed.',
+            'styles':styles,'contactSheets':[str((out/(s+'.png')).relative_to(base)) for s in styles],
+            'results':results
+          }
+          report=fitted/'visual-qa-report.json'
+          report.write_text(json.dumps(review,indent=2)+'\n')
+          source=base/'source-manifest.json'; data=json.loads(source.read_text())
+          for file in [report,*out.glob('*.png')]:
+            data['files'][file.relative_to(base).as_posix()]=hashlib.sha256(file.read_bytes()).hexdigest()
+          source.write_text(json.dumps(data,indent=2,ensure_ascii=False)+'\n')
+          print('Contact sheets',len(styles),'frame checks',len(results),'visual verdict: NOT CONFIRMED')
+          PY
+      - name: Commit QA artifacts
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add current-site/assets/atelier/v2/fitted/contact-sheets current-site/assets/atelier/v2/fitted/visual-qa-report.json current-site/source-manifest.json
+          if ! git diff --cached --quiet; then
+            git commit -m "Publish 48-frame visual QA contact sheets without false approvals"
+            git push
+          fi
