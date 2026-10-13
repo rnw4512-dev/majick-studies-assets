@@ -3211,7 +3211,8 @@ function officialPracticeRows(official){
 function questionsForLesson(lesson,id=cid()){
   if(id==='D772'){
     const official=officialD772Content(lesson,id);
-    const officialPractice=officialPracticeRows(official).map((q,i)=>({
+    const sharedPractice=(window.MajickD772SharedQuestions?.forLesson?.(lesson.id)||[]).map(q=>({...q,sourceName:q.sourceLabel}));
+    const officialPractice=[...officialPracticeRows(official).map((q,i)=>({
       id:q.id||('official-'+lesson.id+'-'+i),
       prompt:q.prompt,
       choices:q.options||[],
@@ -3225,7 +3226,7 @@ function questionsForLesson(lesson,id=cid()){
       rigorLevel:i<2?1:i<6?2:3,
       visual:q.visual||null,
       sourceName:q.sourceLabel||official.sourceLabel||'D772 course-provided material'
-    }));
+    })),...sharedPractice];
     if(lesson.review){
       const sec=sections(id).find(s=>sectionUnits(s).some(l=>l.id===lesson.id));
       const lessonIds=new Set(sectionUnits(sec).filter(l=>!l.review).map(l=>l.id));
