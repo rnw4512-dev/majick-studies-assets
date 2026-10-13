@@ -1,0 +1,264 @@
+{
+  "schemaVersion": 1,
+  "version": "3.4.2",
+  "enabled": false,
+  "reviewPolicy": "Client-side review selections do not enable rendering; approved frames must be visually reviewed and committed to this registry with alignment validated.",
+  "styles": {
+    "locs": {
+      "frames": {
+        "front_idle": {
+          "status": "unreviewed",
+          "visualQA": false,
+          "notes": ""
+        },
+        "front_step_left": {
+          "status": "unreviewed",
+          "visualQA": false,
+          "notes": ""
+        },
+        "front_step_right": {
+          "status": "unreviewed",
+          "visualQA": false,
+          "notes": ""
+        },
+        "side_left_idle": {
+          "status": "unreviewed",
+          "visualQA": false,
+          "notes": ""
+        },
+        "side_left_walk": {
+          "status": "unreviewed",
+          "visualQA": false,
+          "notes": ""
+        },
+        "side_right_walk": {
+          "status": "unreviewed",
+          "visualQA": false,
+          "notes": ""
+        },
+        "back_idle": {
+          "status": "unreviewed",
+          "visualQA": false,
+          "notes": ""
+        },
+        "back_step_left": {
+          "status": "unreviewed",
+          "visualQA": false,
+          "notes": ""
+        },
+        "back_step_right": {
+          "status": "unreviewed",
+          "visualQA": false,
+          "notes": ""
+        },
+        "threequarter_left_forward": {
+          "status": "unreviewed",
+          "visualQA": false,
+          "notes": ""
+        },
+        "threequarter_left_step": {
+          "status": "unreviewed",
+          "visualQA": false,
+          "notes": ""
+        },
+        "threequarter_left_walk": {
+          "status": "unreviewed",
+          "visualQA": false,
+          "notes": ""
+        }
+      }
+    },
+    "locs_beaded": {
+      "frames": {
+        "front_idle": {
+          "status": "unreviewed",
+          "visualQA": false,
+          "notes": ""
+        },
+        "front_step_left": {
+          "status": "unreviewed",
+          "visualQA": false,
+          "notes": ""
+        },
+        "front_step_right": {
+          "status": "unreviewed",
+          "visualQA": false,
+          "notes": ""
+        },
+        "side_left_idle": {
+          "status": "unreviewed",
+          "visualQA": false,
+          "notes": ""
+        },
+        "side_left_walk": {
+          "status": "unreviewed",
+          "visualQA": false,
+          "notes": ""
+        },
+        "side_right_walk": {
+          "status": "unreviewed",
+          "visualQA": false,
+          "notes": ""
+        },
+        "back_idle": {
+          "status": "unreviewed",
+          "visualQA": false,
+          "notes": ""
+        },
+        "back_step_left": {
+          "status": "unreviewed",
+          "visualQA": false,
+          "notes": ""
+        },
+        "back_step_right": {
+          "status": "unreviewed",
+          "visualQA": false,
+          "notes": ""
+        },
+        "threequarter_left_forward": {
+          "status": "unreviewed",
+          "visualQA": false,
+          "notes": ""
+        },
+        "threequarter_left_step": {
+          "status": "unreviewed",
+          "visualQA": false,
+          "notes": ""
+        },
+        "threequarter_left_walk": {
+          "status": "unreviewed",
+          "visualQA": false,
+          "notes": ""
+        }
+      }
+    },
+    "updo_twist": {
+      "frames": {
+        "front_idle": {
+          "status": "unreviewed",
+          "visualQA": false,
+          "notes": ""
+        },
+        "front_step_left": {
+          "status": "unreviewed",
+          "visualQA": false,
+          "notes": ""
+        },
+        "front_step_right": {
+          "status": "unreviewed",
+          "visualQA": false,
+          "notes": ""
+        },
+        "side_left_idle": {
+          "status": "unreviewed",
+          "visualQA": false,
+          "notes": ""
+        },
+        "side_left_walk": {
+          "status": "unreviewed",
+          "visualQA": false,
+          "notes": ""
+        },
+        "side_right_walk": {
+          "status": "unreviewed",
+          "visualQA": false,
+          "notes": ""
+        },
+        "back_idle": {
+          "status": "unreviewed",
+          "visualQA": false,
+          "notes": ""
+        },
+        "back_step_left": {
+          "status": "unreviewed",
+          "visualQA": false,
+          "notes": ""
+        },
+        "back_step_right": {
+          "status": "unreviewed",
+          "visualQA": false,
+          "notes": ""
+        },
+        "threequarter_left_forward": {
+          "status": "unreviewed",
+          "visualQA": false,
+          "notes": ""
+        },
+        "threequarter_left_step": {
+          "status": "unreviewed",
+          "visualQA": false,
+          "notes": ""
+        },
+        "threequarter_left_walk": {
+          "status": "unreviewed",
+          "visualQA": false,
+          "notes": ""
+        }
+      }
+    },
+    "afro_full": {
+      "frames": {
+        "front_idle": {
+          "status": "unreviewed",
+          "visualQA": false,
+          "notes": ""
+        },
+        "front_step_left": {
+          "status": "unreviewed",
+          "visualQA": false,
+          "notes": ""
+        },
+        "front_step_right": {
+          "status": "unreviewed",
+          "visualQA": false,
+          "notes": ""
+        },
+        "side_left_idle": {
+          "status": "unreviewed",
+          "visualQA": false,
+          "notes": ""
+        },
+        "side_left_walk": {
+          "status": "unreviewed",
+          "visualQA": false,
+          "notes": ""
+        },
+        "side_right_walk": {
+          "status": "unreviewed",
+          "visualQA": false,
+          "notes": ""
+        },
+        "back_idle": {
+          "status": "unreviewed",
+          "visualQA": false,
+          "notes": ""
+        },
+        "back_step_left": {
+          "status": "unreviewed",
+          "visualQA": false,
+          "notes": ""
+        },
+        "back_step_right": {
+          "status": "unreviewed",
+          "visualQA": false,
+          "notes": ""
+        },
+        "threequarter_left_forward": {
+          "status": "unreviewed",
+          "visualQA": false,
+          "notes": ""
+        },
+        "threequarter_left_step": {
+          "status": "unreviewed",
+          "visualQA": false,
+          "notes": ""
+        },
+        "threequarter_left_walk": {
+          "status": "unreviewed",
+          "visualQA": false,
+          "notes": ""
+        }
+      }
+    }
+  }
+}
