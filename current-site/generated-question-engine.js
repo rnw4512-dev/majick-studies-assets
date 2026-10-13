@@ -23,10 +23,26 @@ function item(skill,values,difficulty){
  if(skill==='probability'){lessonId='d772-s3-l3';const [g,p]=values;answer=String(g*(g-1))+'/'+String((g+p)*(g+p-1));const num=g*(g-1),den=(g+p)*(g+p-1),gcd=(a,b)=>b?gcd(b,a%b):a,div=gcd(num,den);answer=(num/div)+'/'+(den/div);prompt='A bag contains the displayed counters. What is the probability of drawing two green counters without replacement?';visualHtml=probability(g,p);why='Multiply '+g+'/'+(g+p)+' by '+(g-1)+'/'+(g+p-1)+' to obtain '+answer+'.';mistake='Forgetting the denominator and numerator change without replacement';add(answer);add((g+'/'+(g+p)));add('1/2');add('1/'+(g+p))}
  if(!prompt||!answer)return null;
  const choices=[...options];if(choices.length<4)return null;for(let i=choices.length-1;i>0;i--){const j=randint(0,i);[choices[i],choices[j]]=[choices[j],choices[i]]}
- const q={id,course:'D772',learningPathLessonId:lessonId,skill,difficulty,prompt,answer,options:choices,visualHtml,why,misconception:mistake,teachBackPrompt:'A student makes this mistake: '+mistake+'. Model a correction and check understanding.',generated:true,source:'verified-local-generator'};
+ const q={id,course:'D772',learningPathLessonId:lessonId,skill,difficulty,data:values,prompt,answer,options:choices,visualHtml,why,misconception:mistake,teachBackPrompt:'A student makes this mistake: '+mistake+'. Model a correction and check understanding.',generated:true,source:'verified-local-generator'};
  return validate(q)?q:null;
 }
-function validate(q){if(!q||!q.visualHtml?.includes('<svg')||!q.options?.includes(q.answer))return false;return /<figure[^>]*>[\s\S]*<svg/.test(q.visualHtml)&&new Set(q.options).size===4}
+function validate(q){
+ if(!q||!q.visualHtml?.includes('<svg')||!q.options?.includes(q.answer)||!Array.isArray(q.data))return false;
+ if(!/<figure[^>]*>[\s\S]*<svg/.test(q.visualHtml)||new Set(q.options).size!==4)return false;
+ const v=q.data;
+ if(!v.every(x=>typeof x==='number'&&Number.isFinite(x)||Array.isArray(x)&&x.every(n=>typeof n==='number'&&Number.isFinite(n))))return false;
+ let expected;
+ switch(q.skill){
+  case 'mean':expected=String(v.reduce((a,b)=>a+b,0)/v.length);break;
+  case 'median':expected=String(median(v));break;
+  case 'boxplot':{const five=quartiles(v);expected=String(five[3]-five[1]);break}
+  case 'histogram':expected=String(v.filter((n,i)=>n===Math.max(...v)).length===1?'Unimodal':'Bimodal');break;
+  case 'scatterplot':expected='Positive association';if(v.length<2||!v.every(p=>Array.isArray(p)&&p.length===2))return false;break;
+  case 'probability':{const [g,p]=v;if(!(g>1&&p>0))return false;let a=g*(g-1),b=(g+p)*(g+p-1);const gcd=(x,y)=>y?gcd(y,x%y):x,k=gcd(a,b);expected=(a/k)+'/'+(b/k);break}
+  default:return false;
+ }
+ return expected===String(q.answer);
+}
 function generate(skill='boxplot',difficulty=2){const n=difficulty>=3?9:7,base=randint(3,9),step=randint(2,4);let vals=Array.from({length:n},(_,i)=>base+i*step);if(skill==='mean'){const m=randint(8,16);vals=[m-6,m-3,m,m+3,m+6]}if(skill==='median')vals=vals.sort(()=>Math.random()-.5);
  if(skill==='histogram')vals=[randint(8,13),randint(5,7),randint(3,4),2,1];
  if(skill==='scatterplot')vals=Array.from({length:9},(_,i)=>[i+1,Math.min(10,i+1+randint(-1,1))]);
