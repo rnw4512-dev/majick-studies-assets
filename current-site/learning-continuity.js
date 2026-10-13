@@ -54,5 +54,33 @@ function learned({courseId=course(),lessonId,independent=false}={}){
  row.successes=Math.max(row.successes||0,row.struggles||0);row.updated=Date.now();
  try{if(typeof save==='function')save()}catch(_){}
 }
-window.MajickLearningContinuity={version:'1.0',identify,record,needs,recommend,learned};
+function skillResult(q,correct,assisted=false,origin='practice'){
+ const id=String(q?.learningPathLessonId||q?.lessonId||'')||identify([q?.prompt,q?.section,q?.wguTerm].join(' '));
+ const p=window.S?.progress?.[course()];if(!p||!id)return null;
+ const book=p.adaptiveSkills||(p.adaptiveSkills={});
+ const row=book[id]||(book[id]={lessonId:id,attempts:[],cycles:0,status:'practice',errors:[]});
+ row.attempts.push({correct:!!correct,assisted:!!assisted,origin,time:Date.now()});
+ row.attempts=row.attempts.slice(-5);
+ if(!correct)row.errors.push({prompt:String(q?.prompt||'').slice(0,240),answer:String(q?.answer||''),kind:/mean|median|probability|calculate/i.test(q?.prompt||'')?'calculation-or-formula':/graph|histogram|plot|chart/i.test(q?.prompt||'')?'visual-interpretation':'concept-or-misconception'});
+ row.errors=row.errors.slice(-8);
+ const count=row.attempts.length,wrong=row.attempts.filter(x=>!x.correct).length,independent=row.attempts.filter(x=>x.correct&&!x.assisted).length;
+ if((count>=3&&wrong>=2)||(count===5&&independent<4))row.status='review-needed';
+ if(count===5&&independent>=4)row.status='ready-for-teachback';
+ row.updated=Date.now();try{window.save?.()}catch(_){}
+ return row;
+}
+function skillNeeds(){return Object.values(window.S?.progress?.[course()]?.adaptiveSkills||{}).filter(x=>x.status==='review-needed')}
+function skillReview(id){
+ const row=window.S?.progress?.[course()]?.adaptiveSkills?.[id];if(!row)return;
+ const styles=['explain','simpler','example','quiz'];
+ row.status='reviewing';row.method=styles[row.cycles%styles.length];row.cycles++;row.attempts=[];
+ try{window.save?.()}catch(_){}
+ window.MajickCourseTutor?.openLesson?.(id,row.method,course());
+}
+function skillRetry(id){
+ const row=window.S?.progress?.[course()]?.adaptiveSkills?.[id];if(!row)return;
+ row.status='retry';row.attempts=[];try{window.save?.()}catch(_){}
+ window.MajickWGUPractice?.startSkillRetry?.(id);
+}
+window.MajickLearningContinuity={version:'1.1',identify,record,needs,recommend,learned,skillResult,skillNeeds,skillReview,skillRetry};
 })();
