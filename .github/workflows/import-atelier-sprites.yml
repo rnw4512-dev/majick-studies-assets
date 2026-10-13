@@ -3,7 +3,8 @@ on:
   push:
     branches: [main]
     paths:
-      - 'majick-game-sprites-upload.zip'
+      - 'majick-game-sprites-upload*.zip'
+      - '.github/workflows/import-atelier-sprites.yml'
   workflow_dispatch:
 
 permissions:
@@ -27,10 +28,14 @@ jobs:
           import json, hashlib, zipfile
           from pathlib import Path
 
-          archive = Path('majick-game-sprites-upload.zip')
-          if not archive.exists():
+          archives = sorted(Path('.').glob('majick-game-sprites-upload*.zip'))
+          if not archives:
               print('No new upload found; nothing to import.')
               raise SystemExit(0)
+          if len(archives) != 1:
+              raise ValueError('Multiple upload ZIPs found; remove duplicates first: ' + str(archives))
+          archive = archives[0]
+          print('Importing ZIP:', archive)
           destination = Path('current-site/assets/atelier/v2/sprites')
           manifest_path = Path('current-site/source-manifest.json')
           manifest = json.loads(manifest_path.read_text(encoding='utf-8'))
@@ -68,6 +73,6 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add current-site/assets/atelier/v2/sprites current-site/source-manifest.json
-          git rm -f majick-game-sprites-upload.zip
+          git rm -f -- majick-game-sprites-upload*.zip
           git commit -m "Import isolated Atelier V2 WebP sprites"
           git push
