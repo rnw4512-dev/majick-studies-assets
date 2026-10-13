@@ -4,6 +4,7 @@ on:
     branches: [main]
     paths:
       - '.github/workflows/repair-atelier-integrity.yml'
+      - 'current-site/atelier-sprite-actions.js'
   workflow_dispatch:
 
 permissions:
