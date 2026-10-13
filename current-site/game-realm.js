@@ -241,7 +241,7 @@
         realmProgressHTML()+
         '<div class="realmStats"><span>ᚱ '+E(bestText('runesort'))+' Rune Sort</span><span>◉ '+E(bestText('oraclelens'))+' Oracle Lens</span><span>♛ '+E(bestText('gauntlet'))+' Gauntlet</span><span>✧ '+E(bestText('constellation'))+' Constellation</span><span>⬡ '+E(bestText('hexbreaker'))+' Hex Breaker</span></div>'+
         '<div class="realmFeaturedGrid">'+
-          gameCard('ᚱ','Rune Sort','Sort D772 prompts into Data Collection, Bias & Credibility, Misrepresentation, and Conclusions when D772 is active.','startRuneSort()')+
+          gameCard('ᚱ','Rune Sort','Sort D772 questions spanning research credibility, graphs and statistics, and probability when D772 is active.','startRuneSort()')+
           (globalThis.S?.activeCourse==='D755'?gameCard('✥','Assessment Sigil Sort','Sort D755 scenarios through Qualitative/Quantitative, Formal/Informal, Formative/Summative, Norm/Criterion, Screening/Monitoring, or Observation/Anecdotal gates.','startAssessmentSigilSort()','D755 TRIAL'):'')+
           gameCard('◉','Oracle Lens','Identify the controlling statistical clue first, then answer through that clue.','startOracleLens()')+
           (globalThis.S?.activeCourse==='D772'?gameCard('♛','All-Section Review Gauntlet','Twelve D772 questions drawn equally from Sections 1, 2, and 3.','startD772SectionReview()','D772 REVIEW'):gameCard('♛','Guardian Gauntlet','A multi-round boss run with hearts, boss HP, combos, and one Guardian shield.','startGuardianGauntlet()'))+
@@ -698,7 +698,16 @@
       if(!groups.has(key))groups.set(key,[]);
       groups.get(key).push(q);
     });
-    const categories=shuffleCopy([...groups.entries()].filter(([,rows])=>rows.length>=2)).slice(0,4).map(([name])=>name);
+    const eligible=[...groups.entries()].filter(([,rows])=>rows.length>=2);
+    let categories;
+    if(globalThis.S?.activeCourse==='D772'){
+      const sectionNumber=name=>['Data Collection','Bias & Credibility','Misrepresentation','Conclusions'].includes(name)?1:/^Section 2(?:\\b|\\s| ·)/.test(name)?2:/^Section 3(?:\\b|\\s| ·)/.test(name)?3:0;
+      const bySection=[1,2,3].map(n=>shuffleCopy(eligible.filter(([name])=>sectionNumber(name)===n)));
+      if(bySection.some(rows=>rows.length===0))return null;
+      categories=bySection.map(rows=>rows[0][0]);
+      const extras=shuffleCopy(eligible.filter(([name])=>!categories.includes(name))).slice(0,1);
+      categories.push(...extras.map(([name])=>name));
+    }else categories=shuffleCopy(eligible).slice(0,4).map(([name])=>name);
     if(categories.length<2)return null;
     const items=[];
     categories.forEach(cat=>shuffleCopy(groups.get(cat)).slice(0,2).forEach(q=>items.push({id:q.id,prompt:q.prompt,section:cat,choice:null,ok:null,rewarded:false,attempts:0,tried:[]})));
