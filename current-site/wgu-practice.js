@@ -362,9 +362,20 @@ function startSkillRetry(id){
  if(learned){learned.status='retry';learned.seen=(learned.seen||[]).concat(questions.map(q=>String(q.id||q.prompt))).slice(-70);}
  S.screen='mission';try{save()}catch(_){}render();
 }
+function selectVariedQuestions(rows,limit){
+ const seen=new Set(),ordered=[];
+ for(const q of rows){
+  const key=String(q.prompt||'').toLowerCase().replace(/\d+(?:\.\d+)?/g,'#').replace(/\s+/g,' ').trim();
+  if(!key||seen.has(key))continue;
+  if(window.MajickVisualEvidence&&!window.MajickVisualEvidence.evidence(q,x=>visualHtml(x.visual)||window.MajickCourseTutor?.questionVisualHtml?.(x)||'').ok)continue;
+  seen.add(key);ordered.push(q);
+  if(ordered.length>=limit)break;
+ }
+ return ordered;
+}
 function startSection(scope,independent=false){
  if(!activeD772())return;
- const pool=practicePool(scope),groups=[1,2,3].map(n=>shuffleCopy(pool.filter(q=>sectionNumber(q)===n)));
+ const pool=practicePool(scope),groups=[1,2,3].map(n=>selectVariedQuestions(shuffleCopy(pool.filter(q=>sectionNumber(q)===n)),15));
  const questions=[];
  // Round-robin section quotas guarantee that mixed practice reaches every available section.
  while(questions.length<15&&groups.some(g=>g.length))for(const group of groups)if(group.length&&questions.length<15)questions.push(group.pop());
@@ -408,7 +419,7 @@ function launchAssessmentClock(){
  tickAssessmentClock();
 }
 function balancedMixedAssessment(limit=30){
- const pool=practicePool('mixed'),sets=[1,2,3].map(n=>shuffleCopy(pool.filter(q=>sectionNumber(q)===n))),chosen=[],used=new Set();
+ const pool=practicePool('mixed'),sets=[1,2,3].map(n=>selectVariedQuestions(shuffleCopy(pool.filter(q=>sectionNumber(q)===n)),limit)),chosen=[],used=new Set();
  for(let i=0;i<limit&&sets.some(a=>a.length);){
   for(const group of sets){if(i>=limit)break;while(group.length){const q=group.pop(),key=String(q.id||q.qid||q.prompt);if(used.has(key))continue;used.add(key);chosen.push(q);i++;break}}
  }
