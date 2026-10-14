@@ -89,3 +89,12 @@ button.realmTrialCard :is(p,small,span,b,strong) {
   padding:2px 6px;
   opacity:1!important;
 }
+
+/* Rendered parchment audit: the broad light-text theme rule previously overrode
+   the text of the top-level instructional repair section. */
+body > section.v342Repair > p,
+body > section.v342Repair > :is(small,span,li,label,strong,b,h3,h4) {
+  color:#261b2e!important;
+  opacity:1!important;
+  text-shadow:none!important;
+}
