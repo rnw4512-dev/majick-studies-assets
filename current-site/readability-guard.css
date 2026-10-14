@@ -38,3 +38,13 @@
 .majickRealmQuestionVisual{padding:12px!important}
 .v3333QuestionCard :is(.majickGeneratedFigure,.questionDataVisual,.v3333Visual,.majickEvidenceChart){padding:12px!important}
 @media(max-width:650px){.v3333QuestionCard svg,.majickQuestionVisual svg,.majickLessonVisualCard svg,.majickRealmQuestionVisual svg{max-height:280px}}
+
+/* Phase 1 accessible instructional surfaces: explicit high-contrast text and controls. */
+.realmTrialCard{background-color:#1c1425}
+.realmTrialCard :is(p,small),.realmSceneCopy p{color:#fff3e5!important;opacity:1!important}
+.v3333MissionGrid button small,.v3333MissionGrid button span{color:#f4e7dc!important;opacity:1!important}
+.mjSeTaskSelect,.mjSeTaskSelect option{color:#24182e!important;background-color:#fff5e5!important}
+.learnLab :is(.guidedOption,.gameOptions button,.focusButtons button){color:#fff4e7!important;background-color:#32213f!important}
+.learnLab :is(button,[role="button"]):focus-visible,
+body[data-majick-room=games] :is(button,[role="button"]):focus-visible,
+body[data-majick-room=mission] :is(button,[role="button"]):focus-visible{outline:3px solid #ffe2a6!important;outline-offset:3px}
