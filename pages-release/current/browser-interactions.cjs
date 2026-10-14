@@ -51,6 +51,7 @@ async function solveMean(values,sum,count,mean){
  await waitFor('document.querySelectorAll(".majickLessonVisualGallery svg").length>=2');
  assert((await evalPage('document.querySelectorAll(".majickLessonVisualGallery svg").length'))>=2,'Graphical Displays Visuals tab requires two real SVG charts');
  await action('const tab=document.querySelector("[data-classroom-tab=visual]");if(!tab)throw Error("Missing Visuals & Charts tab");tab.click()');
+ console.log('D772 VISUAL DISPLAY DIAGNOSTIC',JSON.stringify(await evalPage('([...document.querySelectorAll(".majickLessonVisualGallery svg")].map(el=>({width:el.getBoundingClientRect().width,height:el.getBoundingClientRect().height,panel:el.closest("[role=tabpanel]")?.id,hidden:el.closest("[hidden]")?.outerHTML?.slice(0,130),screen:S.screen,tab:document.querySelector("[data-classroom-tab=visual]")?.getAttribute("aria-selected")})))')));
  assert((await evalPage('(()=>{const el=document.querySelector(".majickLessonVisualGallery svg");return !!el&&el.getBoundingClientRect().width>100&&el.getBoundingClientRect().height>100})()')),'The lesson charts must be rendered at a readable size');
  console.log('PASS browser: Graphical Displays lesson mounts visible histogram/scatterplot SVGs.');
  await action('navigate("mission")');
