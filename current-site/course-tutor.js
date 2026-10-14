@@ -3489,7 +3489,7 @@ function renderPath(){
       }).join('')+'</div></section>';
     }).join('');
   box.querySelectorAll('[data-recovery-review]').forEach(b=>b.addEventListener('click',()=>openLesson(b.dataset.recoveryReview,'simpler',id)));
-  box.querySelectorAll('[data-recovery-retry]').forEach(b=>b.addEventListener('click',()=>{const lid=b.dataset.recoveryRetry;window.MajickLearningContinuity?.skillRetry?.(lid);if(id==='D772')window.MajickWGUPractice?.startSkillRetry?.(lid)}));
+  box.querySelectorAll('[data-recovery-retry]').forEach(b=>b.addEventListener('click',()=>{const lid=b.dataset.recoveryRetry;if(id==='D772'&&window.MajickWGUPractice?.startSkillRetry)window.MajickWGUPractice.startSkillRetry(lid);else window.MajickLearningContinuity?.skillRetry?.(lid)}));
   document.getElementById('continueTutor')?.addEventListener('click',()=>enterClassroom());
   box.querySelectorAll('[data-tutor-lesson]').forEach(btn=>btn.addEventListener('click',()=>{
     tutorState(id).selectedLesson=btn.dataset.tutorLesson;try{save()}catch(_){}
