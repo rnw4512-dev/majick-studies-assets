@@ -67,8 +67,21 @@ function skillResult(q,correct,assisted=false,origin='practice'){
  const count=row.attempts.length,wrong=row.attempts.filter(x=>!x.correct).length,independent=row.attempts.filter(x=>x.correct&&!x.assisted).length;
  if((count>=3&&wrong>=2)||(count===5&&independent<4))row.status='review-needed';
  if(count===5&&independent>=4)row.status='ready-for-teachback';
+ // Readiness for a teaching check is not certification. Require separate independent
+ // transfer evidence and an evaluated teach-back before the mastery flag can be true.
+ row.masteryCertified=false;
+ row.masteryEvidence={independentCorrect:independent,attempts:count,transferVerified:false,teachBackVerified:false};
  row.updated=Date.now();try{window.save?.()}catch(_){}
  return row;
+}
+function masteryStatus(id){
+ const row=window.S?.progress?.[course()]?.adaptiveSkills?.[id];
+ if(!row)return {certified:false,reason:'No independently demonstrated skill evidence'};
+ const independent=(row.attempts||[]).filter(x=>x.correct&&!x.assisted);
+ const transfer=independent.some(x=>x.origin==='independent-transfer'&&x.verified===true);
+ const teaching=row.teachBackAssessment?.evaluated===true&&row.teachBackAssessment?.passed===true;
+ const certified=independent.length>=4&&transfer&&teaching;
+ return {certified,independentCorrect:independent.length,transferVerified:transfer,teachBackVerified:teaching,status:row.status};
 }
 function skillNeeds(){return Object.values(window.S?.progress?.[course()]?.adaptiveSkills||{}).filter(x=>x.status==='review-needed')}
 function skillReview(id){
@@ -83,5 +96,5 @@ function skillRetry(id){
  row.status='retry';row.attempts=[];try{window.save?.()}catch(_){}
  window.MajickWGUPractice?.startSkillRetry?.(id);
 }
-window.MajickLearningContinuity={version:'1.1',identify,record,needs,recommend,learned,skillResult,skillNeeds,skillReview,skillRetry};
+window.MajickLearningContinuity={version:'1.1',identify,record,needs,recommend,learned,skillResult,masteryStatus,skillNeeds,skillReview,skillRetry};
 })();
