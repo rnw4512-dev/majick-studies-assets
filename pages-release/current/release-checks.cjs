@@ -41,6 +41,27 @@ check('reward replay, focused eggs, course isolation and saved reload',()=>{
 });
 console.log('Canonical release checks passed. Browser interaction and cloud-sync checks remain separate.');
 
+check('Mistake, guided retry, Guardian and Sanctuary persistence across course switching',()=>{
+ const state={activeCourse:'D772',progress:{D772:{answers:[]},D756:{answers:[{qid:'iepa',correct:true}]}},majickAccount:{xp:35,crystals:12,sanctuaryFurniture:{owned:['bed'],placements:{bed:{x:15,y:22,rotation:0}}}},legacy:{activePetId:'g1',pets:[{id:'g1',name:'Velora',studyXP:0}],eggs:[{id:'egg1',progress:0,goal:20}]}};
+ let c=context(state);load(c,'study-progress-bridge.js');const api=c.MajickStudyProgress;
+ const mistake={key:'phase1-mistake',course:'D772',qid:'median',topicId:'d772-s2-l4-1',correct:false};
+ assert.equal(api.creditAnswer(mistake),true,'A missed question must be recorded');
+ const before=state.legacy.pets[0].studyXP||0;
+ assert.equal(api.creditAnswer(mistake),false,'Repeating an already recorded attempt must not add rewards');
+ assert.equal(state.legacy.pets[0].studyXP||0,before,'A wrong answer must not award Guardian XP');
+ const guided={key:'phase1-guided',course:'D772',qid:'median',topicId:'d772-s2-l4-1',correct:true,assisted:true};
+ assert.equal(api.creditAnswer(guided),true,'Guided correction should be tracked as practice');
+ assert.equal(api.creditAnswer(guided),false,'Guided retry must not award duplicate rewards');
+ state.activeCourse='D756';const saved=JSON.parse(JSON.stringify(state));
+ c=context(saved);load(c,'study-progress-bridge.js');
+ assert.equal(saved.progress.D756.answers.length,1,'D756 must remain separate from D772');
+ assert.equal(saved.progress.D772.answers.length,2,'Both D772 attempts must survive a reload');
+ assert.equal(saved.majickAccount.sanctuaryFurniture.placements.bed.x,15,'Sanctuary furniture placement must survive');
+ assert.equal(saved.majickAccount.crystals,12,'Existing crystals must remain intact');
+ assert.equal(saved.legacy.pets[0].name,'Velora','Guardian identity must survive course switching');
+ assert.equal(c.MajickStudyProgress.creditAnswer(guided),false,'Retry must still be deduplicated after reload');
+ saved.activeCourse='D772';assert.equal(saved.progress.D756.answers.length,1,'Switching back must preserve D756 progress');
+});
 check('Academic mastery requires independently verified transfer and teaching',()=>{
  const c=context({activeCourse:'D772',progress:{D772:{}}});load(c,'learning-continuity.js');
  const x=c.MajickLearningContinuity,q={id:'qa',learningPathLessonId:'d772-s2-l4-1',prompt:'Calculate the median',answer:'5'};
