@@ -161,10 +161,18 @@ function questionHtml(q){
   const progress=(session?.index||1)+(session?.opts?.limit?'/'+session.opts.limit:'');
   return '<div class="v3333QuestionShell '+(oa?'oaMode':'practiceMode')+'"><div class="v3333QTop"><div><span class="v3333Eyebrow">D772 • STATISTICAL DATA LITERACY</span><h2>'+label+'</h2></div><div class="v3333QCount">Question '+progress+'</div><button class="btn ghost" onclick="session=null;navigate(\'mission\')">Choose section</button></div>'+(oa?'<div class="v3333OANote">No hints or lesson labels during the simulation.</div>':'')+(session?.opts?.timeLimitMs?'<div id="v342AssessClock" role="timer">Time remaining: '+Math.max(0,Math.ceil((session.opts.timeLimitMs-(Date.now()-session.start))/1000))+' seconds</div>':'')+'<article class="v3333QuestionCard"><div class="v3333Prompt">'+E(ev?.prompt||q.prompt)+'</div>'+(evidenceOk?ev.html:(globalThis.MajickVisualEvidence?.blockedHtml()||'<p role="alert">Visual evidence unavailable; do not answer.</p>')+'<button type="button" class="btn ghost" onclick="MajickWGUPractice.skipBrokenVisual()">Replace broken question without penalty →</button>')+(!oa&&evidenceOk?'<button class="btn ghost" '+(session.answered?'disabled':'')+' onclick="toggleAnchorChart()">'+(session.chartOpen?'Hide':'Open')+' skill anchor chart</button>':'')+(!oa&&session.chartOpen?anchorChartHTML(q):'')+(clue?'<div class="v3333ClueTraining">'+clueHTML(cleanPrompt(q.prompt))+'</div>':'')+confidenceHtml()+questionBoard(q)+'<div class="v3333Options">'+(evidenceOk?options:'')+'</div>'+(!session.answered&&evidenceOk?'<button type="button" class="btn primary v3333Submit" '+(selected?'':'disabled')+' onclick="MajickWGUPractice.submit()">Submit</button>':'')+(!oa&&session.answered?practiceFeedback(q):'')+'</article></div>';
 }
+function preserveAnswerScroll(action){
+ const screen=window.S?.screen,docY=window.scrollY||0;
+ const stage=document.querySelector('.classroomStage');const stageY=stage?.scrollTop||0;
+ const result=action();
+ const restore=()=>{if(window.S?.screen!==screen)return;window.scrollTo({top:docY,behavior:'instant'});const current=document.querySelector('.classroomStage');if(current)current.scrollTop=stageY};
+ restore();if(typeof requestAnimationFrame==='function')requestAnimationFrame(restore);
+ return result;
+}
 function select(choice){
   if(!session||session.answered||!globalThis.MajickVisualEvidence?.evidence(session.current,x=>visualHtml(x.visual)||window.MajickCourseTutor?.questionVisualHtml?.(x)||'')?.ok)return;
   session.pendingChoice=choice;
-  render();
+  preserveAnswerScroll(()=>render());
 }
 function skipBrokenVisual(){
   if(!session||session.answered||globalThis.MajickVisualEvidence?.evidence(session.current,x=>visualHtml(x.visual)||window.MajickCourseTutor?.questionVisualHtml?.(x)||'')?.ok)return;
@@ -180,7 +188,7 @@ function submit(){
   if(!session||session.answered||!session.pendingChoice||!globalThis.MajickVisualEvidence?.evidence(session.current,x=>visualHtml(x.visual)||window.MajickCourseTutor?.questionVisualHtml?.(x)||'')?.ok)return;
   const choice=session.pendingChoice;
   session.pendingChoice=null;
-  answerQ(choice);
+  preserveAnswerScroll(()=>answerQ(choice));
   if(fixedPractice()&&session.type!=='test'&&session.answered)session.review.push({q:session.current,chosen:choice,correct:choice===session.current.answer});
 }
 const SAMPLING_REASONS={
