@@ -67,5 +67,24 @@ async function solveMean(values,sum,count,mean){
  await waitFor('!!document.querySelector(".mjSeTaskSelect")');
  assert.equal(await evalPage('S.activeCourse'),'D756');
  assert.equal(await evalPage('S.progress.D772.xp'),increased);
+ // Verify the six-stage WGU sequence workshop, including the final guided reconstruction.
+ await action('switchCourse("D772");navigate("mission")');
+ await waitFor('!!document.querySelector(".mjSeTaskSelect")');
+ await action('const picker=document.querySelector(".mjSeTaskSelect");picker.value="d772-data";picker.dispatchEvent(new Event("change",{bubbles:true}))');
+ await waitFor('!!document.querySelector("[data-focus]")');
+ await action('document.querySelectorAll("[data-focus]")[4].click();document.querySelector("[data-check]").click()');
+ await waitFor('!!document.querySelector("[data-add=\\"2\\"]")');
+ await action('document.querySelector("[data-add=\\"2\\"]").click();document.querySelector("[data-check]").click()');
+ await action('document.querySelector("[data-add=\\"0\\"]").click()');
+ await action('document.querySelector("[data-add=\\"1\\"]").click();document.querySelector("[data-check]").click()');
+ await waitFor('!!document.querySelector("[data-meaning]")');
+ await action('document.querySelectorAll("[data-meaning]")[0].click();document.querySelector("[data-check]").click()');
+ await action('document.querySelector("[data-check]").click()');
+ assert.equal(await evalPage('document.querySelector(".mjSeStage h3")?.textContent'),"Independent reconstruction","Stage 6 should unlock after stage 5");
+ await action('document.querySelector("[data-add=\\"2\\"]").click()');
+ await action('document.querySelector("[data-add=\\"0\\"]").click()');
+ await action('document.querySelector("[data-add=\\"1\\"]").click();document.querySelector("[data-check]").click()');
+ assert.equal(await evalPage('document.querySelector(".mjSeStage")?.textContent?.includes("A school wants family feedback")'),true,"Stage 6 must advance to a new scenario");
+ console.log('PASS browser: sequence stages 5 and 6 unlock, require a fresh response, and advance.');
  console.log('PASS browser: three-level mean worked solutions, independent transfer mastery, course lesson selection, participation XP, save/reload, duplicate prevention and D756 isolation');
 })().catch(e=>{console.error('FAIL browser QA:',e.stack||e);process.exitCode=1}).finally(async()=>{try{ws?.close()}catch{}try{child?.kill()}catch{}await new Promise(r=>server.close(r));try{fs.rmSync(profile,{recursive:true,force:true})}catch{}});
