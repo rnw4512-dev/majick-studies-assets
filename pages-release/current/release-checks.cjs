@@ -52,7 +52,7 @@ check('D772 generated Section 2 math, charts and visual evidence across fresh da
    assert.equal(new Set(q.options).size,4,'duplicate choices: '+skill);
    assert(q.options.includes(q.answer),'answer missing from choices: '+skill);
    const result=gate.evidence(q);
-   assert(result.required&&result.ok&&/<svg\\b/.test(result.html),'unrenderable generated graph: '+skill);
+   assert(result.required&&result.ok&&/<svg\b/.test(result.html),'unrenderable generated graph: '+skill);
    if(skill==='histogram')assert(q.visualHtml.includes('Quiz score intervals')&&q.visualHtml.includes('Frequency'),'histogram lacks labeled axes');
    if(skill==='scatterplot')assert(q.visualHtml.includes('Weekly practice hours')&&q.visualHtml.includes('Performance score'),'scatterplot axes unlabeled');
    if(skill==='boxplot')assert(q.why.includes('Q3')&&q.why.includes('Q1'),'missing IQR reasoning');
