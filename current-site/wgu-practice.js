@@ -349,8 +349,21 @@ function startSkillRetry(id){
  if(!activeD772())return;
  const gate=window.MajickVisualEvidence;
  const learned=window.S?.progress?.D772?.adaptiveSkills?.[id];
- const generated=Array.from({length:18},(_,i)=>window.MajickGeneratedPractice?.generate?.(({ 'd772-s2-l4':['mean','median','boxplot'], 'd772-s2-l3':['histogram'], 'd772-s2-l2':['scatterplot'], 'd772-s3-l3':['probability']})[id]?.[i%(({ 'd772-s2-l4':['mean','median','boxplot'], 'd772-s2-l3':['histogram'], 'd772-s2-l2':['scatterplot'], 'd772-s3-l3':['probability']})[id]?.length||1)]||'boxplot',2)).filter(q=>q&&q.learningPathLessonId===id);
- const rows=shuffleCopy(practicePool('mixed').concat(generated).filter(q=>(q.learningPathLessonId||q.lessonId||window.MajickLearningContinuity?.identify?.(q.prompt))===id&&q.options?.length>=2&&(!gate||gate.evidence(q,v=>visualHtml(v.visual)||window.MajickCourseTutor?.questionVisualHtml?.(v)||'').ok)));
+ const retrySkills={
+  'd772-s2-l4':['mean','median','boxplot'],
+  'd772-s2-l4-1':['mean','median'],
+  'd772-s2-l4-3':['boxplot'],
+  'd772-s2-l3':['histogram'],
+  'd772-s2-l3-1':['histogram'],
+  'd772-s2-l2':['scatterplot'],
+  'd772-s2-l2-3':['scatterplot'],
+  'd772-s3-l2':['probability'],
+  'd772-s3-l2-1':['probability']
+ };
+ const skills=retrySkills[id]||[];
+ const generated=skills.length?Array.from({length:18},(_,i)=>window.MajickGeneratedPractice?.generate?.(skills[i%skills.length],2)).filter(q=>q&&(q.learningPathLessonId===id||q.learningPathLessonId?.startsWith(id+'-'))):[];
+ const matchesLesson=q=>{const lesson=String(q.learningPathLessonId||q.lessonId||window.MajickLearningContinuity?.identify?.(q.prompt)||'');return lesson===id||lesson.startsWith(id+'-')};
+ const rows=shuffleCopy(practicePool('mixed').concat(generated).filter(q=>matchesLesson(q)&&q.options?.length>=2&&(!gate||gate.evidence(q,v=>visualHtml(v.visual)||window.MajickCourseTutor?.questionVisualHtml?.(v)||'').ok)));
  if(!rows.length){window.rewardToast?.('More practice needed','No verified new questions for this lesson yet.');return}
  const fresh=rows.filter(q=>!(learned?.seen||[]).includes(String(q.id||q.prompt)));
  const complexity=q=>Number(q.difficulty||1);
