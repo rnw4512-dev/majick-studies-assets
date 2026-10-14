@@ -112,6 +112,17 @@ function pinClassroomAnchors(){
  const examples={mean:renderMeanWorkedExample,median:renderMedianWorkedExample,boxplot:renderBoxPlotExample,histogram:renderHistogramExample,graph:renderGraphExample,probability:renderProbabilityTree,ratio:renderRatioModel};
  for(const [key,label] of presets){const b=document.createElement('button');b.type='button';b.textContent=label;b.addEventListener('click',()=>{buttons.querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));body.innerHTML='<h4>'+esc(label)+'</h4>'+examples[key]()+('<p class="majickAnchorTip">'+(key==='histogram'?'Start with axes and equal-width intervals; inspect shape, center, spread and outliers.':key==='graph'?'Describe direction, form and strength; association alone never proves causation.':key==='boxplot'?'Order observations; use minimum, Q1, median, Q3 and maximum. IQR = Q3 − Q1.':'Identify the given values, name the formula or rule, and check your result in context.')+'</p>')});buttons.appendChild(b)}
  root.prepend(host);
+ const reviews=window.S?.progress?.D772?.adaptiveSkills||{};
+ const pending=Object.values(reviews).filter(x=>x.status==='review-needed'||x.status==='reviewing'||x.status==='retry');
+ if(pending.length){
+  const footer=document.createElement('div');footer.className='majickAnchorRepair';footer.style.cssText='padding:10px;border-top:1px solid #c7a56f';
+  const label=document.createElement('strong');label.textContent='Professor’s Recovery Circle · '+pending.length+' skill(s) to revisit';footer.append(label);
+  for(const item of pending.slice(0,4)){
+   const button=document.createElement('button');button.type='button';button.style.margin='6px';button.textContent=(item.status==='review-needed'?'Reteach ':'Practice again ')+item.lessonId;
+   button.addEventListener('click',()=>{if(item.status==='review-needed')window.MajickLearningContinuity?.skillReview?.(item.lessonId);else window.MajickLearningContinuity?.skillRetry?.(item.lessonId)});footer.append(button)
+  }
+  host.querySelector('details').append(footer);
+ }
 }
 const anchorStyle=document.createElement('style');
 anchorStyle.textContent='.majickClassroomAnchorShelf{position:relative;z-index:2;margin:12px 16px;padding:12px;background:#2d203b;color:#fff3dd;border:2px solid #c7a56f;border-radius:15px}.majickClassroomAnchorShelf summary{cursor:pointer;font-weight:800;font-size:1.05rem;color:#ffe0a5}.majickAnchorButtons{display:flex;flex-wrap:wrap;gap:6px;padding:10px 0}.majickAnchorButtons button{background:#5e426e;color:#fff6e7;border:1px solid #d1af80;border-radius:8px;padding:9px;cursor:pointer}.majickAnchorButtons button[aria-pressed=true]{background:#936ca5;border:2px solid #ffe0a5}.majickAnchorContent{max-width:700px}.majickAnchorContent p{color:#fff3dd!important}.majickClassroomAnchorShelf svg{width:100%;height:auto;max-width:620px}.majickClassroomAnchorShelf button:focus-visible{outline:3px solid #fff0b0}';
