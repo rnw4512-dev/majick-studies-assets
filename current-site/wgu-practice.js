@@ -247,17 +247,25 @@ function startOA(){
 function startFocusedReview(){
   if(!activeD772()||!session?.finished)return;
   const missed=(session.review||[]).filter(x=>!x.correct);
-  const lessons=new Set(missed.map(x=>x.q?.learningPathLessonId).filter(Boolean));
+  const lessons=new Set(missed.map(x=>x.q?.learningPathLessonId||x.q?.lessonId).filter(Boolean));
   if(!lessons.size)return;
-  const seen=new Set((session.review||[]).map(x=>x.q?.id));
-  const pool=(window.MajickQuestionBuilder?.d772Questions?.('d772-master-section-1')||[]).filter(q=>lessons.has(q.learningPathLessonId));
-  const fresh=shuffleCopy(pool.filter(q=>!seen.has(q.id)));
-  const repeated=shuffleCopy(pool.filter(q=>seen.has(q.id)));
+  const seen=new Set((session.review||[]).map(x=>String(x.q?.id||'')));
+  // Use the same verified practice intake as Study Now instead of the legacy Section 1-only bank.
+  const gate=window.MajickVisualEvidence;
+  const pool=practicePool('mixed').filter(q=>{
+    const key=String(q.learningPathLessonId||q.lessonId||'');
+    if(![...lessons].some(id=>key===id||key.startsWith(id+'-')))return false;
+    if(!Array.isArray(q.options)||q.options.length<2||!q.options.includes(q.answer))return false;
+    return !gate||gate.evidence(q,v=>visualHtml(v.visual)||window.MajickCourseTutor?.questionVisualHtml?.(v)||'').ok;
+  });
+  const fresh=shuffleCopy(pool.filter(q=>!seen.has(String(q.id||''))));
+  const repeated=shuffleCopy(pool.filter(q=>seen.has(String(q.id||''))));
   const arr=[...fresh,...repeated].slice(0,10);
-  if(!arr.length)return;
-  session={type:'adaptive',opts:{label:'Section 1 Focused Review',limit:arr.length,kind:'d772-focused-review'},index:1,score:0,combo:0,questions:arr,current:arr[0],answered:false,confidence:'sure',review:[],start:Date.now(),pendingChoice:null};
+  if(!arr.length){window.rewardToast?.('Review unavailable','No valid questions were found for the missed skills. Your results are preserved.');return}
+  session={type:'adaptive',opts:{label:'D772 Missed-Skill Focused Review',limit:arr.length,kind:'d772-focused-review'},index:1,score:0,combo:0,questions:arr,current:arr[0],answered:false,confidence:'sure',review:[],start:Date.now(),pendingChoice:null};
   S.screen='mission';render();
 }
+
 function lessonSummary(review){
   const rows={};
   Object.entries(LESSON_NAMES).forEach(([id,title])=>rows[id]={id,title,total:0,correct:0});
