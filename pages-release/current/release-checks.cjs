@@ -40,6 +40,28 @@ check('reward replay, focused eggs, course isolation and saved reload',()=>{
  const reloaded=context(JSON.parse(JSON.stringify(restored)));load(reloaded,'study-progress-bridge.js');reloaded.MajickCelestialIncubator.complete('e2');assert.equal(reloaded.S.legacy.pets.length,2);
 });
 console.log('Canonical release checks passed. Browser interaction and cloud-sync checks remain separate.');
+
+check('D772 generated Section 2 math, charts and visual evidence across fresh datasets',()=>{
+ const c=context({activeCourse:'D772',progress:{D772:{}}});load(c,'generated-question-engine.js');load(c,'visual-evidence-gate.js');
+ const g=c.MajickGeneratedPractice,gate=c.MajickVisualEvidence;
+ for(const skill of ['mean','median','boxplot','histogram','scatterplot','probability']){
+  for(let i=0;i<30;i++){
+   const q=g.generate(skill,i%2?2:3);
+   assert(q,'generator returned no question for '+skill);
+   assert(g.validate(q),'mathematical answer incorrect: '+skill);
+   assert.equal(new Set(q.options).size,4,'duplicate choices: '+skill);
+   assert(q.options.includes(q.answer),'answer missing from choices: '+skill);
+   const result=gate.evidence(q);
+   assert(result.required&&result.ok&&/<svg\\b/.test(result.html),'unrenderable generated graph: '+skill);
+   if(skill==='histogram')assert(q.visualHtml.includes('Quiz score intervals')&&q.visualHtml.includes('Frequency'),'histogram lacks labeled axes');
+   if(skill==='scatterplot')assert(q.visualHtml.includes('Weekly practice hours')&&q.visualHtml.includes('Performance score'),'scatterplot axes unlabeled');
+   if(skill==='boxplot')assert(q.why.includes('Q3')&&q.why.includes('Q1'),'missing IQR reasoning');
+  }
+ }
+ const missing=gate.evidence({id:'broken-chart',prompt:'Use the supplied histogram to identify its shape.',answer:'Right skew'});
+ assert(missing.required&&!missing.ok,'a missing graph must never be graded');
+});
+
 check('save migration, backups, corruption recovery and storage failure',()=>{
  const data=new Map();let fail=false;const storage={getItem:k=>data.get(k)||null,setItem:(k,v)=>{if(fail)throw Error('Storage full');data.set(k,String(v))}};
  const c=context();c.localStorage=storage;load(c,'save-safety.js');const a=c.MajickSaveSafety;
