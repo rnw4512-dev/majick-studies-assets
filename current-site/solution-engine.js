@@ -119,7 +119,7 @@ host.querySelector('[data-check]').onclick=()=>{let good=false,reason='';
   render(host,task);return
 }
  (st.verified[st.caseIndex]||(st.verified[st.caseIndex]=[])).push(step);
- if(step===4){st.stage=5;st.answers={};st.feedback='Stage 6 unlocked: rebuild the answer without copying the guided work. This is a practice check, not automatic mastery.';render(host,task);return}
+ if(step===4){if(!independent&&task.kind!=='sequence'){st.caseIndex++;st.stage=0;st.answers={};st.hint=false;st.feedback='';render(host,task);return}st.stage=5;st.answers={};st.feedback='Stage 6 unlocked: rebuild the answer without copying the guided work. This is a practice check, not automatic mastery.';render(host,task);return}
  if(step===0&&!independent)window.MajickInteractiveRewards?.award?.(task.id,'participation');st.stage++;st.feedback='Step correct. '+(step===3?reason:'Continue to the next step.');render(host,task)
  };
 }
