@@ -73,6 +73,7 @@ async function solveMean(values,sum,count,mean){
 
  // Theme contrast regression: instructional parchment and disabled controls must remain legible.
  const contrastQA=await evalPage('(()=>{const panel=document.createElement("section");panel.className="v342Repair";panel.style.cssText="padding:12px";panel.innerHTML="<p>Explain your reasoning using the evidence.</p><button disabled data-repair-transfer>Try a different question</button>";document.body.append(panel);const text=panel.querySelector("p"),button=panel.querySelector("button");const rgba=x=>(x.match(/[\\d.]+/g)||[]).map(Number);const luminance=x=>{const n=rgba(x).slice(0,3).map(v=>{v/=255;return v<=.04045?v/12.92:((v+.055)/1.055)**2.4});return .2126*n[0]+.7152*n[1]+.0722*n[2]};const contrast=(a,b)=>{let x=luminance(a),y=luminance(b);return (Math.max(x,y)+.05)/(Math.min(x,y)+.05)};const result={parchment:contrast(getComputedStyle(text).color,getComputedStyle(panel).backgroundColor),disabledButton:contrast(getComputedStyle(button).color,getComputedStyle(button).backgroundColor)};panel.remove();return result})()');
+ console.log('PARCHMENT COMPUTED CONTRAST DIAGNOSTIC',JSON.stringify(contrastQA));
  assert(contrastQA.parchment>=4.5,'Instructional text on parchment fails WCAG AA contrast');
  assert(contrastQA.disabledButton>=4.5,'Disabled instructional button is illegible');
  console.log('PASS browser: repair parchment text and disabled action pass 4.5:1 contrast',JSON.stringify(contrastQA));
