@@ -106,7 +106,7 @@ function pinClassroomAnchors(){
  let host=root.querySelector('#majickClassroomAnchorShelf');
  if(host)return;
  host=document.createElement('aside');host.id='majickClassroomAnchorShelf';host.className='majickClassroomAnchorShelf';
- host.innerHTML='<details><summary>✦ Professor’s Anchor Wall · WGU reference charts</summary><p>Study the chart, vocabulary and whiteboard method before attempting independent mastery. Use the exact question graph when a problem provides one.</p><div class="majickAnchorButtons"></div><div class="majickAnchorContent" aria-live="polite"></div></details>';
+ host.innerHTML='<details open><summary>✦ Professor’s Anchor Wall · WGU reference charts</summary><p>Study the chart, vocabulary and whiteboard method before attempting independent mastery. Use the exact question graph when a problem provides one.</p><div class="majickAnchorButtons"></div><div class="majickAnchorContent" aria-live="polite"></div></details>';
  const presets=[['mean','Mean & averages'],['median','Median & quartiles'],['boxplot','Box plot & IQR'],['histogram','Histogram'],['graph','Scatterplot'],['probability','Probability'],['ratio','Ratio & proportion']];
  const buttons=host.querySelector('.majickAnchorButtons'),body=host.querySelector('.majickAnchorContent');
  const examples={mean:renderMeanWorkedExample,median:renderMedianWorkedExample,boxplot:renderBoxPlotExample,histogram:renderHistogramExample,graph:renderGraphExample,probability:renderProbabilityTree,ratio:renderRatioModel};
