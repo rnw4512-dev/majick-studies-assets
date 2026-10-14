@@ -3700,6 +3700,19 @@ function compactClassroom(box,ch,lesson){
   panels.opening.insertAdjacentHTML('beforeend','<h4>What to watch for in questions</h4><ul>'+(lesson.traps||[]).map(x=>'<li>'+E(x)+'</li>').join('')+'</ul>');
   if(!panels.example.children.length)panels.example.innerHTML='<p>'+E(helpFor(lesson)?.example||'A worked example has not been supplied for this lesson yet. Check the teaching notes and source coverage in Review.')+'</p>';
   if(!panels.turn.children.length&&!window.MajickYourTurn)panels.turn.innerHTML='<p>Practice is being prepared for this lesson. Open Review & Tutor for an adaptive check.</p>';
+  const courseId=cid(),courseLessons=sections(courseId).flatMap(sectionUnits),lessonPosition=courseLessons.findIndex(item=>item.id===lesson.id);
+  const upcomingLesson=lessonPosition>=0?courseLessons[lessonPosition+1]:null;
+  const reviewContinue=document.createElement('div');reviewContinue.className='classroomReviewContinue';
+  const reviewNextButton=document.createElement('button');reviewNextButton.type='button';reviewNextButton.className='btn primary';
+  reviewNextButton.textContent=upcomingLesson?'Continue to Next Lesson →':'Return to Course Path →';
+  reviewNextButton.setAttribute('aria-label',upcomingLesson?'Continue to '+upcomingLesson.title:'Return to course path');
+  reviewNextButton.addEventListener('click',()=>{
+    if(cid()!==courseId)return;
+    if(upcomingLesson){const state=tutorState(courseId);state.classroomSteps=state.classroomSteps||{};state.classroomSteps[upcomingLesson.id]=0;openLesson(upcomingLesson.id,null,courseId)}
+    else show('path');
+  });
+  reviewContinue.append(reviewNextButton);
+  panels.review.append(reviewContinue);
   const footer=document.createElement('div');footer.className='classroomNavigation';footer.innerHTML='<button type="button" class="classroomPrevious">← Previous</button><span aria-live="polite"></span><button type="button" class="classroomNext">Next →</button>';
   const scrollTools=document.createElement('div');scrollTools.className='classroomScrollTools';scrollTools.setAttribute('aria-label','Parchment scrolling');
   scrollTools.innerHTML='<span>Lesson parchment</span><button type="button" aria-label="Scroll lesson up">↑ Up</button><button type="button" aria-label="Scroll lesson down">↓ Down</button><button type="button" aria-label="Return to top of lesson parchment">↑ Top</button>';
@@ -3708,9 +3721,9 @@ function compactClassroom(box,ch,lesson){
   box.append(nav,scrollTools,stage,footer);
   const classroomState=tutorState(cid());const remembered=classroomState.classroomSteps?.[lesson.id];
   let active=0;
-  function select(index){active=index;classroomState.classroomSteps=classroomState.classroomSteps||{};classroomState.classroomSteps[lesson.id]=active;try{save()}catch(_){};groups.forEach(([key],i)=>{panels[key].hidden=i!==active;const b=nav.children[i];b.setAttribute('aria-selected',String(i===active));b.tabIndex=i===active?0:-1});footer.querySelector('span').textContent=(active+1)+' / '+groups.length+' · '+groups[active][1];footer.querySelector('.classroomPrevious').disabled=active===0;footer.querySelector('.classroomNext').disabled=active===groups.length-1}
+  function select(index){active=index;classroomState.classroomSteps=classroomState.classroomSteps||{};classroomState.classroomSteps[lesson.id]=active;try{save()}catch(_){};groups.forEach(([key],i)=>{panels[key].hidden=i!==active;const b=nav.children[i];b.setAttribute('aria-selected',String(i===active));b.tabIndex=i===active?0:-1});footer.querySelector('span').textContent=(active+1)+' / '+groups.length+' · '+groups[active][1];footer.querySelector('.classroomPrevious').disabled=active===0;const nextButton=footer.querySelector('.classroomNext');nextButton.disabled=false;nextButton.textContent=active===groups.length-1?(upcomingLesson?'Next Lesson →':'Course Path →'):'Next →'}
   nav.querySelectorAll('button').forEach((b,i)=>{b.addEventListener('click',()=>select(i));b.addEventListener('keydown',e=>{if(['ArrowLeft','ArrowRight','Home','End'].includes(e.key)){e.preventDefault();const next=e.key==='Home'?0:e.key==='End'?groups.length-1:(i+(e.key==='ArrowRight'?1:-1)+groups.length)%groups.length;select(next);nav.children[next].focus()}})});
-  footer.querySelector('.classroomPrevious').onclick=()=>select(active-1);footer.querySelector('.classroomNext').onclick=()=>select(active+1);
+  footer.querySelector('.classroomPrevious').onclick=()=>select(active-1);footer.querySelector('.classroomNext').onclick=()=>active===groups.length-1?reviewNextButton.click():select(active+1);
   function paginate(parent,nodes,label){if(nodes.length<2)return;let current=0;const controls=document.createElement('div');controls.className='classroomNavigation';const prev=document.createElement('button'),next=document.createElement('button'),status=document.createElement('span');prev.type=next.type='button';prev.textContent='← '+label;next.textContent=label+' →';status.setAttribute('aria-live','polite');controls.append(prev,status,next);parent.append(controls);const update=()=>{nodes.forEach((n,i)=>n.hidden=i!==current);prev.disabled=current===0;next.disabled=current===nodes.length-1;status.textContent=label+' '+(current+1)+' of '+nodes.length};prev.onclick=()=>{current--;update()};next.onclick=()=>{current++;update()};update()}
   const teaching=panels.teach.querySelector('.tutorOfficialTeaching');if(teaching){paginate(teaching,Array.from(teaching.querySelectorAll('.tutorOfficialTopic')),'Concept');teaching.querySelectorAll('.tutorMemoryCues,.tutorSourceRefs').forEach(n=>panels.review.append(n))}
   const practice=panels.turn.querySelector('.v3401Practice');if(practice)paginate(practice,Array.from(practice.children),'Question');
