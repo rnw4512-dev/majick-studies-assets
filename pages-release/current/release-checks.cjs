@@ -22,7 +22,7 @@ check('course units, question keys, coverage and visual assets',()=>{
  const center=t.officialD772Content({id:'d772-s2-l4-1'},'D772');const supplied=center.practice.filter(q=>q.id.startsWith('s2l41-course-'));assert.equal(supplied.length,6);assert.deepEqual(Array.from(supplied,q=>q.answer),[2,0,1,3,0,1]);assert.equal([1,1,1,3,6,6].reduce((a,b)=>a+b,0)/6,3);assert.equal([2,3,5,5,7,8,8,9].reduce((a,b)=>a+b,0)/8,5.875);
  const shape=t.officialD772Content({id:'d772-s2-l3-1'},'D772');assert.equal(shape.practice.length,8);
  assert.equal(t.officialD772Content({id:'d772-s2-l2-quiz'},'D772').provenance.reportedResult.correct,10);
- for(const file of fs.readdirSync(path.join(root,'coverage'))){const record=JSON.parse(fs.readFileSync(path.join(root,'coverage',file)));assert(units.some(u=>u.id===record.lessonId));}
+ for(const file of fs.readdirSync(path.join(root,'coverage'))){const record=JSON.parse(fs.readFileSync(path.join(root,'coverage',file)));if(record.lessonId)assert(units.some(u=>u.id===record.lessonId),'Unknown coverage lesson '+file+': '+record.lessonId);else assert(record.courseId==='D772'||record.section?.id==='d772-s3','Unexpected coverage metadata '+file);}
 });
 check('games have unique usable D772 questions and valid answer choices',()=>{
  const c=context({activeCourse:'D772',progress:{},courses:{D772:{questionBank:[]}}});load(c,'game-realm.js');
