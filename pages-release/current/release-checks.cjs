@@ -41,6 +41,19 @@ check('reward replay, focused eggs, course isolation and saved reload',()=>{
 });
 console.log('Canonical release checks passed. Browser interaction and cloud-sync checks remain separate.');
 
+check('Academic mastery requires independently verified transfer and teaching',()=>{
+ const c=context({activeCourse:'D772',progress:{D772:{}}});load(c,'learning-continuity.js');
+ const x=c.MajickLearningContinuity,q={id:'qa',learningPathLessonId:'d772-s2-l4-1',prompt:'Calculate the median',answer:'5'};
+ for(let i=0;i<5;i++)x.skillResult(q,true,false,'study-now');
+ let m=x.masteryStatus('d772-s2-l4-1');
+ assert.equal(m.certified,false,'Correct recall cannot certify mastery');
+ assert.equal(m.independentCorrect,5);
+ const row=c.S.progress.D772.adaptiveSkills['d772-s2-l4-1'];
+ row.attempts[0].origin='independent-transfer';row.attempts[0].verified=true;
+ assert.equal(x.masteryStatus('d772-s2-l4-1').certified,false,'Transfer alone cannot certify teaching');
+ row.teachBackAssessment={evaluated:true,passed:true};
+ assert.equal(x.masteryStatus('d772-s2-l4-1').certified,true,'Verified transfer and teaching should certify when independent threshold met');
+});
 check('D772 generated Section 2 math, charts and visual evidence across fresh datasets',()=>{
  const c=context({activeCourse:'D772',progress:{D772:{}}});load(c,'generated-question-engine.js');load(c,'visual-evidence-gate.js');
  const g=c.MajickGeneratedPractice,gate=c.MajickVisualEvidence;
