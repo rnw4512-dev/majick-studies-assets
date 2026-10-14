@@ -41,6 +41,9 @@ async function solveMean(values,sum,count,mean){
  }
  assert.equal(await evalPage('window.MajickLessonActivities.tasks.length'),19);
 
+
+ await action('if(!S.courses.D772)throw Error("D772 course unavailable");switchCourse("D772");navigate("mission")');
+ await waitFor('!!document.querySelector(".mjSeTaskSelect")');
  // D772 all-section intake and original-source bridge integrity (no replacement bank).
  await waitFor('!!window.MajickCourseTutor&&!!window.MajickWGUPractice&&!!window.MajickGameRealm&&!!window.MajickD772VerifiedSource');
  const sourceResults=await evalPage('(()=>{const src=MajickD772VerifiedSource.questions();const practice=MajickWGUPractice;const realm=MajickGameRealm.d772RealmPool();return {sourceIds:src.map(q=>q.id),sourceAnswers:src.every(q=>q.options.includes(q.answer)&&q.why),lessonQuestions:MajickCourseTutor.questionsForLesson({id:"d772-s2-l4-1",title:"Measures of Center"},"D772").map(q=>q.id),practice:([1,2,3].map(n=>practice.practicePool(String(n)).length)),section2c:practice.practicePool("2c").length,section2:practice.practicePool("2").length,practiceIds:practice.practicePool("2").map(q=>q.id),realmIds:realm.map(q=>q.id),realmSections:realm.map(q=>String(q.section||""))}})()');
@@ -54,8 +57,6 @@ async function solveMean(values,sum,count,mean){
  for(const n of [1,2,3])assert(sourceResults.realmSections.some(label=>new RegExp('Section '+n+'(?:\\\\b|\\\\s| ·)').test(label)),'Game Realm missing Section '+n);
  console.log('PASS browser: verified source questions reachable in tutor, Study Now, and Game Realm; three section scopes present; 2C alias preserved');
 
- await action('if(!S.courses.D772)throw Error("D772 course unavailable");switchCourse("D772");navigate("mission")');
- await waitFor('!!document.querySelector(".mjSeTaskSelect")');
  assert((await evalPage('document.querySelectorAll(".mjSeTaskSelect option").length'))>=12);
  await action('const s=document.querySelector(".mjSeTaskSelect");s.value="mean";s.dispatchEvent(new Event("change",{bubbles:true}))');
  await waitFor('!!document.querySelector("[data-field=known]")');
