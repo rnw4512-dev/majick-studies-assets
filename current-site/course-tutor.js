@@ -3010,7 +3010,7 @@ function d772Segments(row){
   const section=d772SectionForRow(row);
   for(const lesson of sectionUnits(section).filter(x=>!x.review)){
     const patterns=[
-      new RegExp('\\bLesson\\s*'+lesson.number+'\\b[^\\n]{0,120}','ig'),
+      new RegExp('\bLesson\\s*'+lesson.number+'\b[^\\n]{0,120}','ig'),
       new RegExp(escRx(lesson.title),'ig')
     ];
     for(const rx of patterns){
@@ -3426,7 +3426,7 @@ function renderCourseNavigator(){
  if(id==='D772'){const practice=document.createElement('div');practice.className='hubSkillShortcuts';practice.innerHTML='<b>Extra help · choose a skill</b>'+[['mean','Mean','d772-s2-l4-1'],['median','Median','d772-s2-l4-1'],['ratio','Ratios & Rates','d772-s2-l4-ratios'],['probability','Probability','d772-s3-review']].map(([skill,label,lesson])=>'<button type="button" data-skill="'+skill+'" data-lesson="'+lesson+'">'+label+'</button>').join('');host.append(practice);practice.querySelectorAll('button').forEach(b=>b.onclick=()=>{tutorState(id).selectedLesson=b.dataset.lesson;tutorState(id).practiceFocus=b.dataset.skill;try{save()}catch(_){}show('tutor');document.querySelector('[data-classroom-tab="turn"]')?.click()})}
 }
 function questionVisualHtml(q){
- if(typeof q.visualHtml==='string'&&/<(?:svg|figure|img|table)\\b/i.test(q.visualHtml))return '<div class="majickQuestionVisual">'+q.visualHtml+'</div>';
+ if(typeof q.visualHtml==='string'&&/<(?:svg|figure|img|table)\b/i.test(q.visualHtml))return '<div class="majickQuestionVisual">'+q.visualHtml+'</div>';
  if(!q.visual)return '';
  const v=q.visual;let plot='';const text=(x,y,t)=>'<text x="'+x+'" y="'+y+'" text-anchor="middle">'+E(t)+'</text>';
  if(v.type==='bars'){
@@ -3503,7 +3503,7 @@ function visualHtml(lesson){
   if(cid()!=='D772')return path;
   const title=String(lesson.title||'').toLowerCase(),id=String(lesson.id||'');
   const topics=/graphical display|choosing graph/.test(title)||/d772-s2-l2$/.test(id)?['histogram','scatterplot']:/histogram|distribution|skew|modality/.test(title)?['histogram']:/quartile|box.plot|five.number/.test(title)?['boxplot']:/scatter|two.variable/.test(title)?['scatterplot']:/probab|dependent|event|intersection|union|complement/.test(title)?['probability']:/mean|median|mode|descriptive/.test(title)?['mean','median']:[];
-  const questions=topics.map(skill=>window.MajickGeneratedPractice?.generate?.(skill,2)).filter(q=>q&&typeof q.visualHtml==='string'&&/<svg\\b/i.test(q.visualHtml));
+  const questions=topics.map(skill=>window.MajickGeneratedPractice?.generate?.(skill,2)).filter(q=>q&&typeof q.visualHtml==='string'&&/<svg\b/i.test(q.visualHtml));
   if(!questions.length)return path;
   return '<div class="majickLessonVisualGallery" aria-label="Illustrative lesson graphs">'+questions.map(q=>'<figure class="majickLessonVisualCard"><h4>'+E(q.prompt)+'</h4>'+q.visualHtml+'<figcaption>Majick-generated illustrative data, not an original WGU diagram. Inspect the labels before answering.</figcaption></figure>').join('')+'</div>'+path;
 }
