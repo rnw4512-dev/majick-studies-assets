@@ -680,7 +680,7 @@
   function realmVisibleChart(q){
     const result=globalThis.MajickVisualEvidence?.evidence?.(q,x=>globalThis.MajickCourseTutor?.questionVisualHtml?.(x)||'');
     if(result?.required&&!result.ok)return '<p role="alert">The chart could not be verified. This question must not be scored.</p>';
-    const html=result?.html||(!result?.required&&typeof q?.visualHtml==='string'&&/<svg\\b/i.test(q.visualHtml)?q.visualHtml:'');
+    const html=result?.html||(!result?.required&&typeof q?.visualHtml==='string'&&/<svg\b/i.test(q.visualHtml)?q.visualHtml:'');
     return html?'<div class="majickRealmQuestionVisual" aria-label="Question data visual">'+html+'</div>':'';
   }
   function realmQuestionPool(opts){
@@ -711,7 +711,7 @@
     const eligible=[...groups.entries()].filter(([,rows])=>rows.length>=2);
     let categories;
     if(globalThis.S?.activeCourse==='D772'){
-      const sectionNumber=name=>['Data Collection','Bias & Credibility','Misrepresentation','Conclusions'].includes(name)?1:/^Section 2(?:\\b|\\s| ·)/.test(name)?2:/^Section 3(?:\\b|\\s| ·)/.test(name)?3:0;
+      const sectionNumber=name=>['Data Collection','Bias & Credibility','Misrepresentation','Conclusions'].includes(name)?1:/^Section 2(?:\b|\\s| ·)/.test(name)?2:/^Section 3(?:\b|\\s| ·)/.test(name)?3:0;
       const bySection=[1,2,3].map(n=>shuffleCopy(eligible.filter(([name])=>sectionNumber(name)===n)));
       if(bySection.some(rows=>rows.length===0))return null;
       categories=bySection.map(rows=>rows[0][0]);
