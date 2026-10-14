@@ -506,7 +506,7 @@
     "enchanted-atelier.js": "1879c30b7771263d6b1ee41197c3f52f6562ba9cad5c33da391497e744a1a136",
     "scholar-companion.js": "6af37282a99d75b3d01f5cee93625213757d41da068329efc1c8f25adc180337",
     "scholar-progression.js": "c7be90447c9015186e438d44034fe90fecd15e9926203f55ab89cd062ec9090c",
-    "study-visual-anchors.js": "d4dd987cd32f0cc738adccf4c30c1480777be89f7a002871aaeb8c3866ae4fc8",
+    "study-visual-anchors.js": "7fc476d656ea0fb7f79c2fee14e4eab48bff4866290788f1fcadf730ee6ee686",
     "assets/atelier/avatars/layer-dress-emerald-v1.webp": "c866a6836ac0521f8bfab5c7cfcb2644efa4e4cedb92bce2360b899aa7f387e1",
     "assets/atelier/avatars/layer-hair-twists-v1.webp": "56a057ceabb0532a70cab5b66be16637854adc6e991fcb41bd925e360f5a3cff",
     "assets/atelier/avatars/layer-body-warm-v2.webp": "90b51e362abf1de85e116d1840fc38cfe58036b50c2e0307a55dbe2ffdc89aa6",
@@ -802,6 +802,7 @@
     "inline-learning-tabs.js": "3e7758230e01114990f5d412265e82dd6dcb8dfc2a71747daea24f7a9e7433df",
     "your-turn-practice.js": "931262bb3c063d9b5210b80433136dbabd1d7e8d3ef3c96617ce46a6b83f199e",
     "visual-evidence-gate.js": "5fa23cc0687e4ed4e5a66fc5190b096c9db1e3b9eb5b2a2e9c0b996ee7a6bdd9",
-    "generated-question-engine.js": "d282a883cb0fa2dc69dfc8b94b037204b977e10fd68e491e4e5c9295d2ee8f2a"
+    "generated-question-engine.js": "d282a883cb0fa2dc69dfc8b94b037204b977e10fd68e491e4e5c9295d2ee8f2a",
+    "anchor-interactives.js": "3706e9457cffa8820e1afe1eb8a01b538fb209ceabed504ebdca66f63d066436"
   }
 }
