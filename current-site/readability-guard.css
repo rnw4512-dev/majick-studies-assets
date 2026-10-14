@@ -1,0 +1,21 @@
+/* Majick Studies accessibility invariant: instructional text takes precedence over ambience. */
+:root{--majick-readable-light:#fff5e8;--majick-readable-gold:#ffdc9b;--majick-readable-dark:#31233a;--majick-readable-ink:#302334}
+:is(.mjSolutionEngine,.mjtYourTurn,.mjtCoach,.mjAdaptiveSummary,.majickGeneratedLab,.majickGeneratedFigure,.majickClassroomAnchorShelf,.mjConstructActivity,.classroomReviewContinue) {opacity:1!important;text-shadow:none}
+:is(.mjSolutionEngine,.mjtYourTurn,.mjtCoach,.mjAdaptiveSummary,.majickGeneratedLab,.majickGeneratedFigure,.majickClassroomAnchorShelf,.mjConstructActivity) :is(p,li,span,label,small,strong,b,h3,h4,h5,legend,summary,figcaption){color:var(--majick-readable-light)!important;opacity:1!important;filter:none!important}
+:is(.mjSolutionEngine,.mjtYourTurn,.mjtCoach,.mjAdaptiveSummary,.majickGeneratedLab,.majickClassroomAnchorShelf,.mjConstructActivity) :is(h2,h3,h4,h5){color:var(--majick-readable-gold)!important}
+:is(.mjSolutionEngine,.mjtYourTurn,.mjtCoach,.mjAdaptiveSummary,.majickGeneratedLab,.majickClassroomAnchorShelf,.mjConstructActivity) :is(button,[role="button"]){color:#fff8ed!important;background-color:#654978;border-color:#deb982}
+:is(.mjSolutionEngine,.mjtYourTurn,.mjtCoach,.mjAdaptiveSummary,.majickGeneratedLab,.majickClassroomAnchorShelf,.mjConstructActivity) :is(button,[role="button"]):disabled{opacity:.75!important}
+:is(.mjSolutionEngine,.mjtYourTurn,.mjtCoach,.mjAdaptiveSummary,.majickGeneratedLab,.majickClassroomAnchorShelf,.mjConstructActivity) :is(input,textarea,select){color:#241b2d!important;background:#fffaf1!important;border:1px solid #8c7297;opacity:1!important}
+:is(.mjSolutionEngine,.mjtYourTurn,.mjtCoach,.mjAdaptiveSummary,.majickGeneratedLab,.majickClassroomAnchorShelf,.mjConstructActivity) :is(input,textarea)::placeholder{color:#62566b!important;opacity:1}
+.mjtQuestion,.mjtQuestion>p,.mjtHeader>p,.mjSeStage>p,.mjSeStage h3,.mjSeSelection,.mjSeFeedback,.mjSeHelp{color:#fff5e8!important;opacity:1!important}
+.mjSeFeedback,.mjSeHelp,.mjtFeedback,.mjtReason,.mjtBuilt{background:#4b3854!important;color:#fff5e8!important}
+.classroomTabs button[aria-selected="true"]{color:#352337!important;background:#efd5a7!important}
+.classroomTabs button:not([aria-selected="true"]){color:#fff3e4!important;background:#3f2d4c!important}
+.classroomStage :is(.v3401YouDo,.v3401WeDo,.tutorChapterBlock,.tutorHelpBar,.tutorLessonHead,.tutorTwoCol,.tutorNext){opacity:1!important}
+.classroomStage :is(.v3401YouDo,.v3401WeDo,.tutorChapterBlock,.tutorHelpBar) :is(p,li,small,label,span){opacity:1!important}
+.classroomStage :is(.v3401YouDo,.v3401WeDo,.tutorChapterBlock,.tutorHelpBar){color:#302334;background-color:#f3e4c9}
+.classroomStage :is(.v3401YouDo,.v3401WeDo,.tutorChapterBlock,.tutorHelpBar) :is(p,li,small,label,span,h3,h4){color:#302334!important}
+.classroomStage :is(.v3401YouDo,.v3401WeDo,.tutorChapterBlock,.tutorHelpBar) button{color:#fff5e8;background:#60476c}
+.classroomStage :is(.mjtCoach,.mjSolutionEngine,.mjtYourTurn,.majickGeneratedLab) :is(p,li,span,label,small,h3,h4){color:#fff5e8!important}
+:where(.classroomStage,.mjSolutionEngine,.mjtYourTurn,.majickClassroomAnchorShelf) :focus-visible{outline:3px solid #ffd98d!important;outline-offset:3px}
+@media(prefers-reduced-motion:reduce){.classroomStage :is(button,a){transition:none!important}}
