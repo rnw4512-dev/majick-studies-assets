@@ -38,7 +38,7 @@ BANK.D772.find(x=>x.id==='median').cases.push({numbers:[2,6,8,12,14,18],known:'s
 BANK.D772.find(x=>x.id==='probability').cases.push({known:'6 green and 4 purple counters; draw two greens without replacement',unknown:'P(two greens)',slots:[6,10,5,9],answer:1/3,interpret:'The probability of two greens is one-third.',why:'6/10 multiplied by 5/9 = 1/3.'});
 BANK.D772.find(x=>x.id==='histogram').cases.push({labels:['0–9','10–19','20–29','30–39'],freq:[2,6,4,3],mode:'10–19',total:15,rawData:[2,8,10,11,12,15,16,19,20,22,25,29,30,34,38],interpret:'The modal interval is 10–19 (6 of 15 observations).'});
 const STATES=new WeakMap();
-function stageTitle(t,s){return t.kind==='math'?['Identify the knowns and unknown','Choose a formula','Place values into slots','Calculate your answer','Interpret your result','Independent transfer'][s]:t.kind==='graph'?['Read the target frequencies','Build the graph','Find the modal interval','Count total frequency','Explain the pattern','Independent graph challenge'][s]:['Read the scenario','Choose the first step','Arrange the full response','Explain your decision','Review your construction','Independent new scenario'][s]}
+function stageTitle(t,s){return t.kind==='math'?['Identify the knowns and unknown','Choose a formula','Place values into slots','Calculate your answer','Interpret your result','Independent transfer'][s]:t.kind==='graph'?['Read the target frequencies','Build the graph','Find the modal interval','Count total frequency','Explain the pattern','Independent graph challenge'][s]:['Read the scenario','Choose the first step','Arrange the full response','Explain your decision','Review your construction','Independent reconstruction'][s]}
 const numeric=(a,b)=>a!==''&&a!=null&&Number.isFinite(Number(a))&&Math.abs(Number(a)-Number(b))<=Math.max(.0002,Math.abs(b)*.00005);
 function knownsValid(task,ex,known,unknown){
  const text=String(known||'').toLowerCase(),need=String(unknown||'').toLowerCase();
@@ -110,7 +110,8 @@ host.querySelector('[data-check]').onclick=()=>{let good=false,reason='';
  if(step===5){
   if(st.finished){st.feedback='This transfer has already been completed.';render(host,task);return}
   const full=[0,1,2,3,4].every(n=>(st.verified?.[st.caseIndex]||[]).includes(n));
-  if(!full){st.feedback='Independent completion requires all five prior steps to be checked on the new scenario.';render(host,task);return}
+  if(!full){st.feedback='Complete stages 1–5 on this scenario before stage 6.';render(host,task);return}
+  if(!independent){st.caseIndex++;st.stage=0;st.answers={};st.hint=false;st.feedback='Guided reconstruction completed. Now try a different case; previous progress remains intact.';render(host,task);return}
   st.finished=true;
   const mastered=window.MajickInteractiveMastery?.record?.({taskId:task.id,lessonId:task.lesson,kind:task.kind,allStagesVerified:full,hintFreeTransfer:!st.transferHintUsed&&task.kind!=='sequence'});
   const reward=window.MajickInteractiveRewards?.award?.(task.id,'transfer');
@@ -118,7 +119,7 @@ host.querySelector('[data-check]').onclick=()=>{let good=false,reason='';
   render(host,task);return
 }
  (st.verified[st.caseIndex]||(st.verified[st.caseIndex]=[])).push(step);
- if(step===4){if(independent){st.stage=5;st.answers={};st.feedback='Complete the independent transfer using a fresh response, without copying your guided answer.';render(host,task);return}st.caseIndex=Math.min(st.caseIndex+1,task.cases.length-1);st.stage=0;st.answers={};st.hint=false;st.feedback='';render(host,task);return}
+ if(step===4){st.stage=5;st.answers={};st.feedback='Stage 6 unlocked: rebuild the answer without copying the guided work. This is a practice check, not automatic mastery.';render(host,task);return}
  if(step===0&&!independent)window.MajickInteractiveRewards?.award?.(task.id,'participation');st.stage++;st.feedback='Step correct. '+(step===3?reason:'Continue to the next step.');render(host,task)
  };
 }
