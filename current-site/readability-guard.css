@@ -48,3 +48,44 @@
 .learnLab :is(button,[role="button"]):focus-visible,
 body[data-majick-room=games] :is(button,[role="button"]):focus-visible,
 body[data-majick-room=mission] :is(button,[role="button"]):focus-visible{outline:3px solid #ffe2a6!important;outline-offset:3px}
+
+/* Phase 1 rendered contrast repairs. Browser-computed styles showed pale native
+   button backgrounds beneath light labels in Study Now and Game Realm. */
+body[data-majick-room="mission"] .v3333Scope button,
+body[data-majick-room="mission"] .v3333MissionGrid button {
+  background:#30213d!important;
+  color:#fff8ed!important;
+  border:2px solid #b49ac4!important;
+  opacity:1!important;
+}
+body[data-majick-room="mission"] .v3333Scope button :is(small,span,p,b,strong),
+body[data-majick-room="mission"] .v3333MissionGrid button :is(small,span,p,b,strong) {
+  color:#fff6e8!important;
+  opacity:1!important;
+}
+body[data-majick-room="games"] button.realmTrialCard {
+  background-color:#23162f!important;
+  background-image:none!important;
+  color:#fff8ed!important;
+  border:2px solid #ba9bca!important;
+  opacity:1!important;
+}
+body[data-majick-room="games"] button.realmTrialCard :is(p,small,span,b,strong) {
+  color:#fff8ed!important;
+  opacity:1!important;
+}
+.mjSolutionEngine .mjSeSteps button.active {
+  background:#332041!important;
+  color:#fff4df!important;
+  border:2px solid #f2d38e!important;
+  opacity:1!important;
+}
+.familiarPortrait .v3313Stage {
+  display:inline-block;
+  background:#26162e!important;
+  color:#fff7e9!important;
+  border:1px solid #b995c0;
+  border-radius:6px;
+  padding:2px 6px;
+  opacity:1!important;
+}
