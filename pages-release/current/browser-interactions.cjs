@@ -40,6 +40,20 @@ async function solveMean(values,sum,count,mean){
   console.error('Browser diagnostic:',JSON.stringify(state));throw e;
  }
  assert.equal(await evalPage('window.MajickLessonActivities.tasks.length'),19);
+
+ // D772 all-section intake and original-source bridge integrity (no replacement bank).
+ await waitFor('!!window.MajickCourseTutor&&!!window.MajickWGUPractice&&!!window.MajickGameRealm&&!!window.MajickD772VerifiedSource');
+ const sourceResults=await evalPage('(()=>{const src=MajickD772VerifiedSource.questions();const practice=MajickWGUPractice;const realm=MajickGameRealm.d772RealmPool();return {sourceIds:src.map(q=>q.id),sourceAnswers:src.every(q=>q.options.includes(q.answer)&&q.why),lessonQuestions:MajickCourseTutor.questionsForLesson({id:"d772-s2-l4-1",title:"Measures of Center"},"D772").map(q=>q.id),practice:([1,2,3].map(n=>practice.practicePool(String(n)).length)),section2c:practice.practicePool("2c").length,section2:practice.practicePool("2").length,practiceIds:practice.practicePool("2").map(q=>q.id),realmIds:realm.map(q=>q.id),realmSections:realm.map(q=>String(q.section||""))}})()');
+ assert.equal(sourceResults.sourceIds.length,6,'Six previously entered WGU-attributed Lesson 4.1 items must be exposed by the tutor bridge');
+ assert(sourceResults.sourceAnswers,'Source bridge must preserve valid answer keys and rationales');
+ assert(sourceResults.sourceIds.every(id=>sourceResults.lessonQuestions.includes(id)),'Original questions must remain accessible in tutor');
+ assert(sourceResults.practice.every(n=>n>0),'Study Now needs questions from all three D772 sections');
+ assert.equal(sourceResults.section2c,sourceResults.section2,'Section 2C must be a Section 2 alias');
+ assert(sourceResults.sourceIds.every(id=>sourceResults.practiceIds.includes(id)),'Study Now must see source questions from tutor');
+ assert(sourceResults.sourceIds.every(id=>sourceResults.realmIds.includes(id)),'Game Realm must see source questions from tutor');
+ for(const n of [1,2,3])assert(sourceResults.realmSections.some(label=>new RegExp('Section '+n+'(?:\\\\b|\\\\s| ·)').test(label)),'Game Realm missing Section '+n);
+ console.log('PASS browser: verified source questions reachable in tutor, Study Now, and Game Realm; three section scopes present; 2C alias preserved');
+
  await action('if(!S.courses.D772)throw Error("D772 course unavailable");switchCourse("D772");navigate("mission")');
  await waitFor('!!document.querySelector(".mjSeTaskSelect")');
  assert((await evalPage('document.querySelectorAll(".mjSeTaskSelect option").length'))>=12);
