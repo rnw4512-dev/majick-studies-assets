@@ -53,6 +53,24 @@ async function solveMean(values,sum,count,mean){
  await action('const tab=document.querySelector("[data-classroom-tab=visual]");if(!tab)throw Error("Missing Visuals & Charts tab");tab.click()');
  console.log('D772 VISUAL DISPLAY DIAGNOSTIC',JSON.stringify(await evalPage('([...document.querySelectorAll(".majickLessonVisualGallery svg")].map(el=>({width:el.getBoundingClientRect().width,height:el.getBoundingClientRect().height,panel:el.closest("[role=tabpanel]")?.id,hidden:el.closest("[hidden]")?.outerHTML?.slice(0,130),screen:S.screen,tab:document.querySelector("[data-classroom-tab=visual]")?.getAttribute("aria-selected")})))')));
  assert((await evalPage('(()=>{const el=document.querySelector(".majickLessonVisualGallery svg");return !!el&&el.getBoundingClientRect().width>100&&el.getBoundingClientRect().height>100})()')),'The lesson charts must be rendered at a readable size');
+
+ // Classroom first-wrong-answer → Try Again → corrected response; no unexpected scroll movement.
+ await action('document.querySelector("[data-classroom-tab=turn]")?.click()');
+ await waitFor('document.querySelectorAll("[data-v3401-q] [data-v3401-answer]").length>=2');
+ const retryQA=await evalPage('(()=>{const card=document.querySelector("[data-v3401-q]");if(!card)return {error:"no lesson card"};const buttons=[...card.querySelectorAll("[data-v3401-answer]")];const first=buttons.findIndex(b=>b.textContent.trim().length);return {count:buttons.length,first,cardId:card.dataset.v3401Q}})()');
+ assert(retryQA.count>=2,'Learn Lab questions need actionable choices');
+ await action('const card=document.querySelector("[data-v3401-q]");window.scrollTo({top:200,behavior:"instant"});card.querySelectorAll("[data-v3401-answer]")[0].click()');
+ const answered=await evalPage('(()=>{const c=document.querySelector("[data-v3401-q]");return {feedback:c.querySelector(".v3401Feedback")?.textContent,wrong:!!c.querySelector("[data-v3401-answer].incorrect"),retry:!!c.querySelector("[data-v3401-retry]"),top:window.scrollY}})()');
+ assert(answered.feedback,'Learn Lab must show answer feedback');
+ if(answered.wrong){
+   assert(answered.retry,'Wrong Learn Lab answer must provide Try Again');
+   await action('document.querySelector("[data-v3401-retry]").click()');
+   assert.equal(await evalPage('document.querySelector("[data-v3401-q] [data-v3401-answer]")?.disabled'),false,'Retry must reenable the original question choices');
+   assert.equal(await evalPage('document.querySelector("[data-v3401-q] .v3401AttemptStatus")?.textContent.includes("assisted correction")'),true,'Retry must not be recorded as independent mastery');
+   await action('document.querySelector("[data-v3401-q] [data-v3401-answer]").click()');
+   assert(await evalPage('!!document.querySelector("[data-v3401-q] .v3401Feedback")?.textContent'),'Reattempt must show feedback');
+ }
+ console.log('PASS browser: classroom answer feedback and incorrect-response retry availability');
  console.log('PASS browser: Graphical Displays lesson mounts visible histogram/scatterplot SVGs.');
  await action('navigate("mission")');
  await waitFor('!!document.querySelector(".mjSeTaskSelect")');
