@@ -158,7 +158,8 @@ async function solveMean(values,sum,count,mean){
   await action('document.querySelector(".mjCounter").click()');
   assert.equal(await evalPage('document.querySelectorAll(".mjCounter").length'),starting-1,'Counter must be removed on '+screen);
   if(scrollProbe?.top>=35){
-    const after=await evalPage('(()=>{const el='+ "scrollProbeNAME" +';return el?.scrollTop??null})()'.replace("scrollProbeNAME",scrollProbe.name==='document'?'document.scrollingElement':scrollProbe.name==='content'?'document.querySelector(".content")':'document.querySelector(".classroomStage")'));
+    const scrollElementExpr=scrollProbe.name==='document'?'document.scrollingElement':scrollProbe.name==='content'?'document.querySelector(".content")':'document.querySelector(".classroomStage")';
+    const after=await evalPage('(()=>{const el='+scrollElementExpr+';return el?.scrollTop??null})()');
     assert(after!==null&&Math.abs(after-scrollProbe.top)<=16,'Unexpected scroll jump after counter answer in '+screen+': '+scrollProbe.top+' → '+after);
   }
 
