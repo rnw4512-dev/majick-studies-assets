@@ -24,6 +24,27 @@ check('course units, question keys, coverage and visual assets',()=>{
  assert.equal(t.officialD772Content({id:'d772-s2-l2-quiz'},'D772').provenance.reportedResult.correct,10);
  for(const file of fs.readdirSync(path.join(root,'coverage'))){const record=JSON.parse(fs.readFileSync(path.join(root,'coverage',file)));if(record.lessonId)assert(units.some(u=>u.id===record.lessonId),'Unknown coverage lesson '+file+': '+record.lessonId);else assert(record.courseId==='D772'||record.section?.id==='d772-s3','Unexpected coverage metadata '+file);}
 });
+check('D772 lesson completeness inventory (gaps reported, not silently marked complete)',()=>{
+ const c=context();load(c,'course-tutor.js');const t=c.MajickCourseTutor;
+ const lessons=t.allOfficialLessons().filter(u=>String(u.id||'').startsWith('d772-'));
+ const gaps=[];const totals={lessons:lessons.length,scenario:0,explanation:0,visual:0,worked:0,interaction:0,practice:0,teacher:0};
+ for(const unit of lessons){
+  const content=t.officialD772Content(unit,'D772')||{};
+  const has={
+   scenario:!!(content.weDo?.prompt||content.scenario||content.overview),
+   explanation:!!(content.teach?.length||content.overview||content.explanation),
+   visual:!!(content.visuals?.length||content.anchor||unit.visual),
+   worked:!!(content.weDo?.steps?.length||content.workedExample?.steps?.length),
+   interaction:!!(content.practice?.length||content.activities?.length),
+   practice:!!content.practice?.length,
+   teacher:!!(content.teacherApplication||content.teachBack||content.teacherTip)
+  };
+  for(const [k,v] of Object.entries(has)){if(v)totals[k]++;else gaps.push({lesson:unit.id,component:k})}
+ }
+ console.log('AUDIT D772 ACADEMIC COVERAGE',JSON.stringify(totals));
+ console.log('AUDIT D772 INSTRUCTION GAPS',JSON.stringify(gaps.slice(0,150)));
+ assert(lessons.length>0,'D772 lesson registry missing');
+});
 check('games have unique usable D772 questions and valid answer choices',()=>{
  const c=context({activeCourse:'D772',progress:{},courses:{D772:{questionBank:[]}}});load(c,'game-realm.js');
  const qs=c.MajickGameRealm.d772RealmPool();assert(qs.length>20);assert.equal(new Set(qs.map(q=>q.id)).size,qs.length);
