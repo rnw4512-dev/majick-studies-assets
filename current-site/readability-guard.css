@@ -51,26 +51,26 @@ body[data-majick-room=mission] :is(button,[role="button"]):focus-visible{outline
 
 /* Phase 1 rendered contrast repairs. Browser-computed styles showed pale native
    button backgrounds beneath light labels in Study Now and Game Realm. */
-body[data-majick-room="mission"] .v3333Scope button,
-body[data-majick-room="mission"] .v3333MissionGrid button {
+.v3333Scope button,
+.v3333MissionGrid button {
   background:#30213d!important;
   color:#fff8ed!important;
   border:2px solid #b49ac4!important;
   opacity:1!important;
 }
-body[data-majick-room="mission"] .v3333Scope button :is(small,span,p,b,strong),
-body[data-majick-room="mission"] .v3333MissionGrid button :is(small,span,p,b,strong) {
+.v3333Scope button :is(small,span,p,b,strong),
+.v3333MissionGrid button :is(small,span,p,b,strong) {
   color:#fff6e8!important;
   opacity:1!important;
 }
-body[data-majick-room="games"] button.realmTrialCard {
+button.realmTrialCard {
   background-color:#23162f!important;
   background-image:none!important;
   color:#fff8ed!important;
   border:2px solid #ba9bca!important;
   opacity:1!important;
 }
-body[data-majick-room="games"] button.realmTrialCard :is(p,small,span,b,strong) {
+button.realmTrialCard :is(p,small,span,b,strong) {
   color:#fff8ed!important;
   opacity:1!important;
 }
