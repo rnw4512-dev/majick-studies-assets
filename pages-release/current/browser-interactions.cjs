@@ -217,7 +217,9 @@ async function solveMean(values,sum,count,mean){
  const savedBefore=JSON.parse(phase1Before),savedAfter=JSON.parse(phase1After);
  const diffs=[];
  for(const key of Object.keys(savedBefore))if(JSON.stringify(savedBefore[key])!==JSON.stringify(savedAfter[key]))diffs.push(key);
- console.log('PHASE1 SAVE RELOAD COMPARISON',JSON.stringify({fields:Object.keys(savedBefore),different:diffs}));
+ const accountKeys=[...new Set([...Object.keys(savedBefore.majickAccount||{}),...Object.keys(savedAfter.majickAccount||{})])];
+ const accountChanges=accountKeys.filter(k=>JSON.stringify(savedBefore.majickAccount?.[k])!==JSON.stringify(savedAfter.majickAccount?.[k])).map(k=>({key:k,before:JSON.stringify(savedBefore.majickAccount?.[k])?.slice(0,240),after:JSON.stringify(savedAfter.majickAccount?.[k])?.slice(0,240)}));
+ console.log('PHASE1 SAVE RELOAD COMPARISON',JSON.stringify({fields:Object.keys(savedBefore),different:diffs,accountChanges}));
  assert.equal(diffs.length,0,'Reload changed learner academic/world state: '+diffs.join(', '));
  console.log('PASS browser: full core state JSON equivalence after reload');
  assert.equal(unnamed.length,0,'Visible controls without accessible names: '+JSON.stringify(unnamed.slice(0,8)));
