@@ -3456,7 +3456,7 @@ function show(name){
   if(name==='path')renderPath();
   if(name==='tutor'){document.querySelector('.learnLab')?.classList.remove('instructionFocus');renderTutor();}
 }
-const recoveryStyle=document.createElement('style');recoveryStyle.textContent='.mjCourseRecovery{padding:16px;margin:18px 0;border:2px solid #d5b276;background:#30233d;color:#fff3df;border-radius:16px}.mjCourseRecovery h3,.mjCourseRecovery h4,.mjCourseRecovery p{color:#fff3df!important}.mjCourseRecovery article{padding:12px;margin:10px 0;border:1px solid #ae8da9;border-radius:10px}.mjCourseRecovery button{background:#70517d;border:1px solid #e3be89;color:#fff9ec;padding:9px;border-radius:8px;cursor:pointer}';document.head.append(recoveryStyle);
+if(typeof document!=='undefined'&&typeof document.createElement==='function'&&document.head){const recoveryStyle=document.createElement('style');recoveryStyle.textContent='.mjCourseRecovery{padding:16px;margin:18px 0;border:2px solid #d5b276;background:#30233d;color:#fff3df;border-radius:16px}.mjCourseRecovery h3,.mjCourseRecovery h4,.mjCourseRecovery p{color:#fff3df!important}.mjCourseRecovery article{padding:12px;margin:10px 0;border:1px solid #ae8da9;border-radius:10px}.mjCourseRecovery button{background:#70517d;border:1px solid #e3be89;color:#fff9ec;padding:9px;border-radius:8px;cursor:pointer}';document.head.append(recoveryStyle);}
 function courseRecoveryItems(id=cid()){
  const lessons=sections(id).flatMap(sectionUnits).filter(l=>!l.review&&l.unitType!=='quiz'&&l.unitType!=='test');
  const skills=window.S?.progress?.[id]?.adaptiveSkills||{};
