@@ -377,7 +377,7 @@
     "v339-main.css": "95fd6cb51076da0a40e5406b450eff11effb2af3c824172b9793dc032d0e6e72",
     "v339-main.js": "e1346861d157c7b1ddf8693ce81610abd6e750843ca665c5a4aee93e7464d202",
     "wgu-practice.css": "89d5168c2f642ea248670a7489a8dc14a1ad4172480f89cd52e9f9f15cddb1b3",
-    "wgu-practice.js": "760a4238db292556a91bc61a136649c72f3874314fce5f42414fd0777c959ee5",
+    "wgu-practice.js": "a9d2712d5de1686de7bfa40190fa88640557290bd89b028b793eb859290c666b",
     "coverage/d772-s2-l2-3.json": "05265a3d4372a4d4075dbc0e75f87743da0f2896493367285d909cc2dd59be22",
     "coverage/d772-s2-l2-summary.json": "d6c5a146210d14d520c720499a0ae93152bdca24c901db983bf97bcc08152118",
     "coverage/d772-s2-l2-quiz.json": "36433aca0c1ecbc57e655ed29da9a1d3e9fcc8f1bcfd01a31f067e4d9c6fbf19",
@@ -802,7 +802,7 @@
     "inline-learning-tabs.js": "3e7758230e01114990f5d412265e82dd6dcb8dfc2a71747daea24f7a9e7433df",
     "your-turn-practice.js": "931262bb3c063d9b5210b80433136dbabd1d7e8d3ef3c96617ce46a6b83f199e",
     "visual-evidence-gate.js": "5fa23cc0687e4ed4e5a66fc5190b096c9db1e3b9eb5b2a2e9c0b996ee7a6bdd9",
-    "generated-question-engine.js": "d282a883cb0fa2dc69dfc8b94b037204b977e10fd68e491e4e5c9295d2ee8f2a",
+    "generated-question-engine.js": "229688ef27d96d164c63fe95e62929c50484d8ee2b32237156bb93470d5d7e11",
     "anchor-interactives.js": "3706e9457cffa8820e1afe1eb8a01b538fb209ceabed504ebdca66f63d066436"
   }
 }
