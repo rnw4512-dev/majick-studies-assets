@@ -86,5 +86,44 @@ async function solveMean(values,sum,count,mean){
  await action('document.querySelector("[data-add=\\"1\\"]").click();document.querySelector("[data-check]").click()');
  assert.equal(await evalPage('document.querySelector(".mjSeStage")?.textContent?.includes("A school wants family feedback")'),true,"Stage 6 must advance to a new scenario");
  console.log('PASS browser: sequence stages 5 and 6 unlock, require a fresh response, and advance.');
+
+ // Priority 2: verify actual click interactions in each live classroom mode.
+ for(const screen of ['learninglab','mission','games']){
+  await action('navigate('+JSON.stringify(screen)+')');
+  await waitFor('!!document.querySelector("#majickClassroomAnchorShelf")');
+  await action('const d=document.querySelector("#majickClassroomAnchorShelf details");d.open=true');
+  await action('const buttons=[...document.querySelectorAll(".majickAnchorButtons button")];buttons.find(b=>b.textContent.includes("Box plot")).click()');
+  await waitFor('document.querySelectorAll(".mjConstructInputs input").length===5');
+  assert.equal(await evalPage('document.querySelectorAll(".mjConstructInputs input").length'),5,'Box plot requires five interactive number fields on '+screen);
+  await action('const b=[...document.querySelectorAll(".majickAnchorButtons button")].find(x=>x.textContent==="Probability");b.click()');
+  await waitFor('document.querySelectorAll(".mjCounter").length>=5');
+  const starting=await evalPage('document.querySelectorAll(".mjCounter").length');
+  await action('document.querySelector(".mjCounter").click()');
+  assert.equal(await evalPage('document.querySelectorAll(".mjCounter").length'),starting-1,'Counter must be removed on '+screen);
+  await action('const buttons=[...document.querySelectorAll(".mjConstructActivity button")];buttons.find(b=>b.textContent==="Reset counters").click()');
+  assert.equal(await evalPage('document.querySelectorAll(".mjCounter").length'),starting,'Reset must restore counter bank on '+screen);
+  await action('const b=[...document.querySelectorAll(".majickAnchorButtons button")].find(x=>x.textContent==="Histogram");b.click()');
+  await waitFor('!!document.querySelector(".mjConstructActivity")');
+  await action('document.querySelector(".mjConstructActivity button").click()');
+  assert.equal(await evalPage('document.querySelector(".mjConstructActivity [role=status]")?.textContent?.includes("Correct WGU terminology.")'),true,'WGU graph interpretation must respond on '+screen);
+ }
+ console.log('PASS browser: Learning Lab, Study Now, Game Realm anchor controls and live counter reset');
+ // Recovery follows a course-specific skill record across a full page reload.
+ await action('navigate("mission");const q={learningPathLessonId:"d772-s2-l4",prompt:"Find the mean of these scores",answer:"12"};MajickLearningContinuity.skillResult(q,false,false,"study-now");MajickLearningContinuity.skillResult(q,false,false,"study-now");MajickLearningContinuity.skillResult(q,true,false,"study-now")');
+ assert.equal(await evalPage('S.progress.D772.adaptiveSkills["d772-s2-l4"].status'),'review-needed');
+ await call('Page.reload',{ignoreCache:true});
+ await waitFor('!!window.MajickLearningContinuity&&!!S.progress?.D772');
+ assert.equal(await evalPage('S.progress.D772.adaptiveSkills["d772-s2-l4"].status'),'review-needed','Review need must survive reload');
+ assert.equal(await evalPage('S.progress.D772.adaptiveSkills["d772-s2-l4"].attempts.length'),3,'Attempt history must survive reload');
+ await action('MajickLearningContinuity.skillReview("d772-s2-l4")');
+ assert.equal(await evalPage('S.progress.D772.adaptiveSkills["d772-s2-l4"].status'),'reviewing');
+ await action('MajickLearningContinuity.skillRetry("d772-s2-l4")');
+ assert.equal(await evalPage('S.progress.D772.adaptiveSkills["d772-s2-l4"].status'),'retry');
+ await call('Page.reload',{ignoreCache:true});
+ await waitFor('!!window.MajickLearningContinuity&&!!S.progress?.D772');
+ assert.equal(await evalPage('S.progress.D772.adaptiveSkills["d772-s2-l4"].status'),'retry','Retry state must survive reload');
+ assert.equal(await evalPage('S.progress.D772.adaptiveSkills["d772-s2-l4"].cycles'),1,'Reteach count must survive reload');
+ console.log('PASS browser: adaptive review and retry persist across reloads without resetting academic progress');
+
  console.log('PASS browser: three-level mean worked solutions, independent transfer mastery, course lesson selection, participation XP, save/reload, duplicate prevention and D756 isolation');
 })().catch(e=>{console.error('FAIL browser QA:',e.stack||e);process.exitCode=1}).finally(async()=>{try{ws?.close()}catch{}try{child?.kill()}catch{}await new Promise(r=>server.close(r));try{fs.rmSync(profile,{recursive:true,force:true})}catch{}});
