@@ -23,7 +23,7 @@ function item(skill,values,difficulty){
  if(skill==='probability'){lessonId='d772-s3-l3';const [g,p]=values;answer=String(g*(g-1))+'/'+String((g+p)*(g+p-1));const num=g*(g-1),den=(g+p)*(g+p-1),gcd=(a,b)=>b?gcd(b,a%b):a,div=gcd(num,den);answer=(num/div)+'/'+(den/div);prompt='A bag contains the displayed counters. What is the probability of drawing two green counters without replacement?';visualHtml=probability(g,p);why='Multiply '+g+'/'+(g+p)+' by '+(g-1)+'/'+(g+p-1)+' to obtain '+answer+'.';mistake='Forgetting the denominator and numerator change without replacement';add(answer);add((g+'/'+(g+p)));add('1/2');add('1/'+(g+p))}
  if(!prompt||!answer)return null;
  for(let offset=1;options.length<4&&offset<30;offset++){const base=Number(answer);if(Number.isFinite(base)){add(base+offset);add(base-offset)}else if(skill==='probability'){add((offset+1)+'/'+(g=>g)(values[0]+values[1]+offset+2))}else add('Alternative '+offset)}
- const choices=[...options];if(choices.length<4)return null;for(let i=choices.length-1;i>0;i--){const j=randint(0,i);[choices[i],choices[j]]=[choices[j],choices[i]]}
+ const choices=options.slice(0,4);if(choices.length<4)return null;for(let i=choices.length-1;i>0;i--){const j=randint(0,i);[choices[i],choices[j]]=[choices[j],choices[i]]}
  const q={id,course:'D772',learningPathLessonId:lessonId,skill,difficulty,data:values,prompt,answer,options:choices,visualHtml,why,misconception:mistake,teachBackPrompt:'A student makes this mistake: '+mistake+'. Model a correction and check understanding.',generated:true,source:'verified-local-generator'};
  return validate(q)?q:null;
 }
