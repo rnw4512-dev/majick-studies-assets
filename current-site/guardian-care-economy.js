@@ -160,7 +160,9 @@ function applyDecay(a){
   if(!a?.guardianCare)return;
   // Guardian care is optional. Returning after days away must not lower needs
   // or make the player repay a hidden care debt.
-  a.guardianCare.lastDecayAt=Date.now();
+  // Care is optional and does not decay over time. Reading state must not mutate saves.
+  // Preserve lastDecayAt for migrated saves; initialize only when an older save lacks it.
+  if(!Number.isFinite(Number(a.guardianCare.lastDecayAt)))a.guardianCare.lastDecayAt=Date.now();
 }
 
 function state(target){
