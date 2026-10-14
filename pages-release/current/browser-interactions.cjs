@@ -219,7 +219,9 @@ async function solveMean(values,sum,count,mean){
  for(const key of Object.keys(savedBefore))if(JSON.stringify(savedBefore[key])!==JSON.stringify(savedAfter[key]))diffs.push(key);
  const accountKeys=[...new Set([...Object.keys(savedBefore.majickAccount||{}),...Object.keys(savedAfter.majickAccount||{})])];
  const accountChanges=accountKeys.filter(k=>JSON.stringify(savedBefore.majickAccount?.[k])!==JSON.stringify(savedAfter.majickAccount?.[k])).map(k=>({key:k,before:JSON.stringify(savedBefore.majickAccount?.[k])?.slice(0,240),after:JSON.stringify(savedAfter.majickAccount?.[k])?.slice(0,240)}));
- console.log('PHASE1 SAVE RELOAD COMPARISON',JSON.stringify({fields:Object.keys(savedBefore),different:diffs,accountChanges}));
+ const differentPaths=[];function walk(a,b,p,depth){if(differentPaths.length>=30||depth>8)return;if(JSON.stringify(a)===JSON.stringify(b))return;if(a&&b&&typeof a==='object'&&typeof b==='object'){for(const k of new Set([...Object.keys(a),...Object.keys(b)]))walk(a[k],b[k],p+'.'+k,depth+1)}else differentPaths.push({path:p,before:JSON.stringify(a)?.slice(0,75),after:JSON.stringify(b)?.slice(0,75)})}
+ walk(savedBefore.majickAccount,savedAfter.majickAccount,'majickAccount',0);
+ console.log('PHASE1 SAVE RELOAD COMPARISON',JSON.stringify({fields:Object.keys(savedBefore),different:diffs,accountChanges,exactChanges:differentPaths}));
  assert.equal(diffs.length,0,'Reload changed learner academic/world state: '+diffs.join(', '));
  console.log('PASS browser: full core state JSON equivalence after reload');
  assert.equal(unnamed.length,0,'Visible controls without accessible names: '+JSON.stringify(unnamed.slice(0,8)));
