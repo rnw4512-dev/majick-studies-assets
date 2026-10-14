@@ -60,7 +60,7 @@ function skillResult(q,correct,assisted=false,origin='practice'){
  const p=window.S?.progress?.[course()];if(!p||!id)return null;
  const book=p.adaptiveSkills||(p.adaptiveSkills={});
  const row=book[id]||(book[id]={lessonId:id,attempts:[],cycles:0,status:'practice',errors:[]});
- row.attempts.push({correct:!!correct,assisted:!!assisted,origin,time:Date.now()});
+ row.attempts.push({correct:!!correct,assisted:!!assisted,origin,verified:origin==='independent-transfer'&&!!correct&&!assisted,time:Date.now()});
  row.attempts=row.attempts.slice(-5);
  if(!correct)row.errors.push({prompt:String(q?.prompt||'').slice(0,240),answer:String(q?.answer||''),kind:/mean|median|probability|calculate/i.test(q?.prompt||'')?'calculation-or-formula':/graph|histogram|plot|chart/i.test(q?.prompt||'')?'visual-interpretation':'concept-or-misconception'});
  row.errors=row.errors.slice(-8);
