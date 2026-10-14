@@ -696,7 +696,8 @@
       if(seen.has(key))continue;
       seen.add(key);out.push(q);
     }
-    return out;
+    const gaps=globalThis.S?.progress?.D772?.adaptiveSkills||{};
+    return out.sort((a,b)=>Number(['review-needed','reviewing','retry'].includes(gaps[b.learningPathLessonId]?.status))-Number(['review-needed','reviewing','retry'].includes(gaps[a.learningPathLessonId]?.status)));
   }
 
   /* ---------- Rune Sort ---------- */
