@@ -100,7 +100,7 @@ host.querySelectorAll('[data-meaning]').forEach(el=>el.onclick=()=>{a.meaning=el
 host.querySelectorAll('[data-choice]').forEach(el=>el.onclick=()=>{a.formula=task.alternatives[Number(el.dataset.choice)];render(host,task)});
 host.querySelectorAll('[data-add]').forEach(el=>el.onclick=()=>{a.order=a.order||[];let n=Number(el.dataset.add);if(step===1)a.order=[n];else if(!a.order.includes(n))a.order.push(n);render(host,task)});
 host.querySelector('[data-undo]')?.addEventListener('click',()=>{a.order?.pop();render(host,task)});
-host.querySelector('[data-reset]').onclick=()=>{STATES.set(host,{stage:0,answers:{},caseIndex:st.caseIndex,feedback:'',error:false,hint:false,verified:{0:[],1:[]}});render(host,task)};
+host.querySelector('[data-reset]').onclick=()=>{const nextCase=(st.caseIndex+1)%task.cases.length;STATES.set(host,{stage:0,answers:{},caseIndex:nextCase,feedback:'New scenario selected. Practice the same WGU skill using different evidence.',error:false,hint:false,verified:{}});render(host,task)};
 host.querySelector('[data-hint]')?.addEventListener('click',()=>{st.hint=true;render(host,task)});
 host.querySelector('[data-check]').onclick=()=>{let good=false,reason='';
  if(task.kind==='math'){if(step===0)good=knownsValid(task,ex,a.known,a.unknown);else if(step===1)good=a.formula===task.formula;else if(step===2)good=ex.slots.every((v,i)=>numeric(a['slot'+i],v));else if(step===3||step===5)good=numeric(a[step===5?'transfer':'result'],ex.answer);else {const review=reasoningCheck(task,ex,a.meaning);good=review.ok;reason=review.feedback}if(step!==4)reason=ex.why}
