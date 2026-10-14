@@ -19,3 +19,22 @@
 .classroomStage :is(.mjtCoach,.mjSolutionEngine,.mjtYourTurn,.majickGeneratedLab) :is(p,li,span,label,small,h3,h4){color:#fff5e8!important}
 :where(.classroomStage,.mjSolutionEngine,.mjtYourTurn,.majickClassroomAnchorShelf) :focus-visible{outline:3px solid #ffd98d!important;outline-offset:3px}
 @media(prefers-reduced-motion:reduce){.classroomStage :is(button,a){transition:none!important}}
+
+/* Readability and stable visual frames: text contrast follows the actual surface. */
+.v342Repair,.v342Repair :is(p,small,span,li,label,strong,b,h3,h4),.v342RepairSteps,.v342RepairSteps p{color:#261b2e!important;opacity:1!important;text-shadow:none!important}
+.v342Repair{background:#f6ebd9!important}
+.v342Repair [data-repair-thinking]{color:#fff8ef!important;background:#30213a!important;border:2px solid #85639a!important;opacity:1}
+.v342Repair [data-repair-thinking]::placeholder{color:#efe1ee!important;opacity:1}
+.v342Repair :is([data-repair-check],[data-repair-transfer]){background:#49325b!important;color:#fff8ef!important;border:2px solid #c09bba!important;opacity:1!important}
+.v342Repair :is([data-repair-check],[data-repair-transfer]):disabled{background:#e6d8e7!important;color:#392945!important;border-color:#8d738f!important;opacity:1!important}
+.v342Repair [data-repair-feedback]{color:#253b2f!important;font-weight:700}
+.v3333QuestionCard :is(.majickGeneratedFigure,.questionDataVisual,.v3333Visual,.majickEvidenceChart),
+.majickQuestionVisual,.majickLessonVisualCard,.majickRealmQuestionVisual{box-sizing:border-box;display:block;width:100%;max-width:100%;height:auto!important;min-height:0!important;margin:12px 0!important;overflow:visible}
+.v3333QuestionCard :is(.majickGeneratedFigure,.questionDataVisual,.v3333Visual,.majickEvidenceChart) svg,
+.majickQuestionVisual svg,.majickLessonVisualCard svg,.majickRealmQuestionVisual svg{display:block;width:100%;max-width:100%;height:auto!important;min-height:0!important;max-height:350px;overflow:visible}
+.v3333QuestionCard :is(.majickGeneratedFigure,.questionDataVisual,.v3333Visual,.majickEvidenceChart) figcaption,
+.majickQuestionVisual figcaption,.majickLessonVisualCard figcaption,.majickRealmQuestionVisual figcaption{font-size:1rem;line-height:1.55;opacity:1!important}
+.majickLessonVisualCard{padding:14px!important}
+.majickRealmQuestionVisual{padding:12px!important}
+.v3333QuestionCard :is(.majickGeneratedFigure,.questionDataVisual,.v3333Visual,.majickEvidenceChart){padding:12px!important}
+@media(max-width:650px){.v3333QuestionCard svg,.majickQuestionVisual svg,.majickLessonVisualCard svg,.majickRealmQuestionVisual svg{max-height:280px}}
