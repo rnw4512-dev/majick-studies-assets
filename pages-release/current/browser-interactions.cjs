@@ -144,9 +144,16 @@ async function solveMean(values,sum,count,mean){
   assert.equal(await evalPage('document.querySelectorAll(".mjConstructInputs input").length'),5,'Box plot requires five interactive number fields on '+screen);
   await action('const b=[...document.querySelectorAll(".majickAnchorButtons button")].find(x=>x.textContent==="Probability");b.click()');
   await waitFor('document.querySelectorAll(".mjCounter").length>=5');
+  // Scroll stability: hold whichever actual app container can scroll before interacting.
+  const scrollProbe=await evalPage('(()=>{const c=[["document",document.scrollingElement],["content",document.querySelector(".content")],["stage",document.querySelector(".classroomStage")]].find(([name,el])=>el&&el.scrollHeight>el.clientHeight+40);if(!c)return null;c[1].scrollTop=Math.min(120,c[1].scrollHeight-c[1].clientHeight);return {name:c[0],top:c[1].scrollTop}})()');
   const starting=await evalPage('document.querySelectorAll(".mjCounter").length');
   await action('document.querySelector(".mjCounter").click()');
   assert.equal(await evalPage('document.querySelectorAll(".mjCounter").length'),starting-1,'Counter must be removed on '+screen);
+  if(scrollProbe?.top>=35){
+    const after=await evalPage('(()=>{const el='+ "scrollProbeNAME" +';return el?.scrollTop??null})()'.replace("scrollProbeNAME",scrollProbe.name==='document'?'document.scrollingElement':scrollProbe.name==='content'?'document.querySelector(".content")':'document.querySelector(".classroomStage")'));
+    assert(after!==null&&Math.abs(after-scrollProbe.top)<=16,'Unexpected scroll jump after counter answer in '+screen+': '+scrollProbe.top+' → '+after);
+  }
+
   await action('const buttons=[...document.querySelectorAll(".mjConstructActivity button")];buttons.find(b=>b.textContent==="Reset counters").click()');
   assert.equal(await evalPage('document.querySelectorAll(".mjCounter").length'),starting,'Reset must restore counter bank on '+screen);
   await action('const b=[...document.querySelectorAll(".majickAnchorButtons button")].find(x=>x.textContent==="Histogram");b.click()');
