@@ -34,7 +34,8 @@ function identify(terms='',courseId=course()){
 function record({courseId=course(),lessonTitle='',term='',correct=false,activity='vocab'}={}){
  if(!window.S?.progress?.[courseId]||courseId!==course())return null;
  const p=S.progress[courseId];p.learningNeeds=p.learningNeeds||{};
- const exact=String(term||'').toLowerCase().match(/^(d772-s[123]-l[1-4]|d756-s[123]-l[1-4])$/)?.[1];
+ const explicit=[term,lessonTitle].map(v=>String(v||'').trim().toLowerCase()).find(v=>/^(?:d772-s[123]-l[1-4]|d756-s[123]-l[1-4])(?:-[1-9][0-9]*)?$/.test(v));
+ const exact=explicit||null;
  const lessonId=exact||identify(lessonTitle+' '+term,courseId);
  if(!lessonId)return null;const old=p.learningNeeds[lessonId]||{struggles:0,successes:0,activities:[],updated:0,lessonId};
  if(correct){old.successes=(old.successes||0)+1}else old.struggles=(old.struggles||0)+1;
