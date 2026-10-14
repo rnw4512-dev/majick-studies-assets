@@ -77,6 +77,7 @@ async function solveMean(values,sum,count,mean){
  await action('document.querySelector("[data-add=\\"2\\"]").click();document.querySelector("[data-check]").click()');
  await action('document.querySelector("[data-add=\\"0\\"]").click()');
  await action('document.querySelector("[data-add=\\"1\\"]").click();document.querySelector("[data-check]").click()');
+ console.log('DEBUG sequence stage after ordering:',await evalPage('({stage:document.querySelector(".mjSeStage h3")?.textContent,feedback:document.querySelector(".mjSeFeedback")?.textContent,parts:[...document.querySelectorAll("[data-add]")].map(x=>({text:x.textContent,disabled:x.disabled})),selected:document.querySelector(".mjSeSelection")?.textContent})'));
  await waitFor('!!document.querySelector("[data-meaning]")');
  await action('document.querySelectorAll("[data-meaning]")[0].click();document.querySelector("[data-check]").click()');
  await action('document.querySelector("[data-check]").click()');
