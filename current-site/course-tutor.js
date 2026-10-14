@@ -3530,7 +3530,7 @@ function bindLessonExperience(official,lessonId,courseId=cid()){
  document.querySelectorAll('[data-v3401-q]').forEach((card,i)=>{
   const q=questions[i];if(!q)return;
   const work=card.querySelector('textarea'),st=tutorState(courseId);
-  let assisted=false,answered=false;
+  let assisted=false,answered=false,firstAttemptRecorded=false,retryCount=0;
   const hint=card.querySelector('.questionHint');
   const status=document.createElement('p');
   status.className='v3401AttemptStatus';
@@ -3543,12 +3543,15 @@ function bindLessonExperience(official,lessonId,courseId=cid()){
    if(answered)return;
    answered=true;
    const pick=Number(btn.dataset.v3401Answer),correct=pick===Number(q.answer);
+   const isRetry=retryCount>0;
+   if(isRetry)assisted=true;
    card.querySelectorAll('[data-v3401-answer]').forEach(x=>x.disabled=true);
    btn.classList.add(correct?'correct':'incorrect');
    const fb=card.querySelector('.v3401Feedback');
    if(fb)fb.innerHTML='<b>'+(correct?'✓ Correct':'Not yet')+'</b> '+E(q.rationale||'Review the exact data and try a different question.');
-   status.textContent=assisted?(correct?'Assisted correct — practice credit only':'Assisted attempt — review needed'):(correct?'Independent correct — saved as evidence, not automatic mastery':'Independent attempt — review needed');
+   status.textContent=isRetry?(correct?'Correct on retry — guided recovery, not independent mastery':'Retry attempted — review the feedback and try again'):assisted?(correct?'Assisted correct — practice credit only':'Assisted attempt — review needed'):(correct?'Independent correct — saved as evidence, not automatic mastery':'Independent attempt — review needed');
    const at=Date.now();
+   if(!firstAttemptRecorded){firstAttemptRecorded=true;
    try{
     if(window.MajickStudyProgress?.creditAnswer){
      window.MajickStudyProgress.creditAnswer({key:courseId+':lesson-you-do:'+String(q.id||i)+':'+at,course:courseId,source:'lesson-you-do',qid:q.id||String(i),topicId:q.topicId||lessonId,correct,assisted,chosen:q.options[pick],answer:q.options[Number(q.answer)],difficulty:Number(q.difficulty||3),at});
@@ -3559,8 +3562,22 @@ function bindLessonExperience(official,lessonId,courseId=cid()){
     }
    }catch(_){}
    try{window.MajickProductCore?.record?.('concept-complete',{course:courseId,lessonId,qid:q.id,correct})}catch(_){}
+   }
+   if(!correct){
+    let retry=card.querySelector('[data-v3401-retry]');
+    if(!retry){retry=document.createElement('button');retry.type='button';retry.className='btn ghost';retry.dataset.v3401Retry='true';retry.textContent='↻ Try Again · Same Question';card.append(retry)}
+    retry.disabled=false;
+    retry.onclick=()=>{
+      answered=false;assisted=true;retryCount++;
+      card.querySelectorAll('[data-v3401-answer]').forEach(x=>{x.disabled=false;x.classList.remove('correct','incorrect')});
+      card.querySelectorAll('.v3401NextQuestion').forEach(x=>x.remove());
+      retry.remove();
+      const fb=card.querySelector('.v3401Feedback');if(fb)fb.textContent='Try again using the clue and explanation above. This is guided recovery, not an independent mastery attempt.';
+      status.textContent='Retry '+retryCount+' · assisted correction; original answer preserved';
+    };
+   }
    const next=document.createElement('button');
-   next.type='button';next.className='btn primary';
+   next.type='button';next.className='btn primary v3401NextQuestion';
    next.textContent=i<questions.length-1?'Next question →':'More independent practice →';
    next.addEventListener('click',()=>{
     if(i<questions.length-1){
