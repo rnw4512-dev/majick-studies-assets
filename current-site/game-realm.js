@@ -677,6 +677,12 @@
   }
 ];
 
+  function realmVisibleChart(q){
+    const result=globalThis.MajickVisualEvidence?.evidence?.(q,x=>globalThis.MajickCourseTutor?.questionVisualHtml?.(x)||'');
+    if(result?.required&&!result.ok)return '<p role="alert">The chart could not be verified. This question must not be scored.</p>';
+    const html=result?.html||(!result?.required&&typeof q?.visualHtml==='string'&&/<svg\\b/i.test(q.visualHtml)?q.visualHtml:'');
+    return html?'<div class="majickRealmQuestionVisual" aria-label="Question data visual">'+html+'</div>':'';
+  }
   function realmQuestionPool(opts){
     const base=(typeof questionPool==='function'?questionPool(opts):[])||[];
     if(globalThis.S?.activeCourse!== 'D772')return base;
@@ -806,6 +812,7 @@
     return '<div class="qwrap realmMode realmOracle">'+realmScene('oraclelens')+guardianBanner(session.guardianMessage||'Find what actually controls the answer before you commit.')+
       '<div class="qtop"><span class="qbadge">◉ Oracle Lens</span><div class="realmMiniHUD"><span>Round '+session.round+'/'+session.limit+'</span><span>Clarity ✦ '+session.clarityStreak+'</span></div></div>'+trialProgress('oraclelens')+trialGuide('oraclelens')+
       '<div class="card"><div class="tiny">'+E(q.section||'Mixed')+' • Difficulty '+Number(q.difficulty||1)+'</div><div class="question">'+E(q.prompt)+'</div>'+
+      realmVisibleChart(q)+
       '<h3>1. Which clue should the Oracle focus on?</h3><div class="realmLensChoices">'+session.lenses.map(l=>'<button class="'+(session.lensChoice===l?(session.lensCorrect?'correct':'selected'):'')+'" '+(session.answered?'disabled':'')+' data-lens="'+E(l)+'" onclick="oracleChooseLens(this.dataset.lens)">'+E(l)+'</button>').join('')+'</div>'+
       (session.lensChoice?'<p class="'+(session.lensCorrect?'strong':'weak')+'">'+(session.lensCorrect?'✦ Lens aligned. Now answer through that clue.':'That clue is related, but another clue controls the answer more directly.')+'</p>':'')+
       '<h3>2. Choose the best answer.</h3><div class="options">'+q.options.map(o=>'<button class="opt '+(session.answered?(o===q.answer?'correct':o===session.chosen?'wrong':''):'')+'" '+(!session.lensChoice||session.answered?'disabled':'')+' data-answer="'+E(o)+'" onclick="oracleAnswer(this.dataset.answer)">'+E(o)+'</button>').join('')+'</div>'+
@@ -1027,6 +1034,7 @@
     return '<div class="qwrap realmMode realmHexBreaker">'+realmScene('hexbreaker')+guardianBanner(session.guardianMessage||'Do not trust every glowing claim. Decide whether it is sound before you repair it.')+
       '<div class="qtop"><span class="qbadge">⬡ Hex Breaker</span><div class="realmMiniHUD"><span>Hex '+session.round+'/'+session.limit+'</span><span>Break streak ✦ '+session.breakStreak+'</span></div></div>'+trialProgress('hexbreaker')+trialGuide('hexbreaker')+
       '<div class="card"><div class="tiny">'+E(q.section||'Mixed')+' • '+E(q.prompt)+'</div>'+
+      realmVisibleChart(q)+
       '<div class="realmHexClaim"><small>ENCHANTED CLAIM</small><blockquote>'+E(session.claim)+'</blockquote></div>'+
       '<h3>1. Is this claim valid or hexed?</h3><div class="realmHexJudge">'+
         '<button class="'+(session.judgment==='valid'?'selected':'')+'" '+(session.answered?'disabled':'')+' onclick="hexJudge(&quot;valid&quot;)">✓ Valid</button>'+
