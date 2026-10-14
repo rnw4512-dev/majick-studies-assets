@@ -179,8 +179,9 @@ function reconcileHistorical(){
   for(const evt of all){
     if(creditAnswer(evt)){credited++;if(evt.correct)correct++}
   }
-  const l=ledger();l.reconciledAt=Date.now();l.reconciledCount=Number(l.reconciledCount||0)+credited;
-  save();
+  const l=ledger();
+  // Reconciliation with no new credits is read-only: preserve stable saved history.
+  if(credited){l.reconciledAt=Date.now();l.reconciledCount=Number(l.reconciledCount||0)+credited;save();}
   if(credited){
     try{
       window.rewardToast?.('✦ Guardian progress restored',credited+' saved study answers were credited to your Guardian journey'+(correct?' • '+correct+' correct':'')+'.');
