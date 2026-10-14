@@ -131,7 +131,7 @@ function startRepairTransfer(id){
  S.screen='mission';render();
 }
 function practiceFeedback(q){
-  if(session?.answered&&session.current===q&&!session.adaptiveTracked){session.adaptiveTracked=true;try{window.MajickLearningContinuity?.skillResult(q,session.chosen===q.answer,!!session.mathCoachAssisted,'study-now')}catch(_){}}
+  if(session?.answered&&session.current===q&&!session.adaptiveTracked){session.adaptiveTracked=true;try{window.MajickLearningContinuity?.skillResult(q,session.chosen===q.answer,!!session.mathCoachAssisted,session?.opts?.label==='Independent Transfer Check'?'independent-transfer':'study-now')}catch(_){}}
 
   const wrong=session?.chosen!==q.answer;
   const skillId=q.learningPathLessonId||q.lessonId||window.MajickLearningContinuity?.identify?.(q.prompt);
