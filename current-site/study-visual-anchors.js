@@ -99,5 +99,25 @@ function render(q){const skill=focusedSkill(q),c=CARDS[skill]||CARDS['read-quest
  return '<section class="anchorChart focusedAnchor" data-anchor-skill="'+skill+'"><h3>'+esc(c[0])+'</h3><p class="anchorRule"><b>'+esc(c[1])+'</b></p><ul>'+c[2].map(x=>'<li>'+esc(x)+'</li>').join('')+'</ul><p><b>Skill example:</b> '+esc(c[3])+'</p>'+(visual?'<details><summary>See one visual example</summary>'+MAP[visual]()+'</details><details><summary>Whiteboard setup</summary><p>'+renderWhiteboardSetup(visual)+'</p></details>'+(['mean','median','range','ratio','probability'].includes(visual)?'<details><summary>Calculator steps for the example</summary><ol>'+renderCalculatorSteps(visual)+'</ol></details>':''):'')+'<small>Support marks this attempt as guided.</small></section>';
 }
 const style=document.createElement('style');style.textContent='.majVisualExample{margin-top:16px;padding:14px;border:1px solid #bba26b;border-radius:12px;background:#fff8e8;color:#352943}.majVisualExample h4{font:700 15px Georgia,serif;margin:13px 0 7px;color:#594269}.majVisualExample li{margin:5px 0;line-height:1.5}.majVisualExample p{line-height:1.6}';document.head.appendChild(style);
-window.MajickVisualAnchors={render,kind,focusedSkill,renderMeanWorkedExample,renderMedianWorkedExample,renderRatioModel,renderProbabilityTree,renderBoxPlotExample,renderHistogramExample,renderGraphExample,renderCalculatorSteps,renderWhiteboardSetup,VERSION:'3.4.2-visual-anchors-1'};
+function pinClassroomAnchors(){
+ const root=document.getElementById('content');if(!root||window.S?.activeCourse!=='D772')return;
+ const screen=String(window.S?.screen||'');
+ if(!['learninglab','mission','games','guide'].includes(screen))return;
+ let host=root.querySelector('#majickClassroomAnchorShelf');
+ if(host)return;
+ host=document.createElement('aside');host.id='majickClassroomAnchorShelf';host.className='majickClassroomAnchorShelf';
+ host.innerHTML='<details><summary>✦ Professor’s Anchor Wall · WGU reference charts</summary><p>Study the chart, vocabulary and whiteboard method before attempting independent mastery. Use the exact question graph when a problem provides one.</p><div class="majickAnchorButtons"></div><div class="majickAnchorContent" aria-live="polite"></div></details>';
+ const presets=[['mean','Mean & averages'],['median','Median & quartiles'],['boxplot','Box plot & IQR'],['histogram','Histogram'],['graph','Scatterplot'],['probability','Probability'],['ratio','Ratio & proportion']];
+ const buttons=host.querySelector('.majickAnchorButtons'),body=host.querySelector('.majickAnchorContent');
+ const examples={mean:renderMeanWorkedExample,median:renderMedianWorkedExample,boxplot:renderBoxPlotExample,histogram:renderHistogramExample,graph:renderGraphExample,probability:renderProbabilityTree,ratio:renderRatioModel};
+ for(const [key,label] of presets){const b=document.createElement('button');b.type='button';b.textContent=label;b.addEventListener('click',()=>{buttons.querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));body.innerHTML='<h4>'+esc(label)+'</h4>'+examples[key]()+('<p class="majickAnchorTip">'+(key==='histogram'?'Start with axes and equal-width intervals; inspect shape, center, spread and outliers.':key==='graph'?'Describe direction, form and strength; association alone never proves causation.':key==='boxplot'?'Order observations; use minimum, Q1, median, Q3 and maximum. IQR = Q3 − Q1.':'Identify the given values, name the formula or rule, and check your result in context.')+'</p>')});buttons.appendChild(b)}
+ root.prepend(host);
+}
+const anchorStyle=document.createElement('style');
+anchorStyle.textContent='.majickClassroomAnchorShelf{position:relative;z-index:2;margin:12px 16px;padding:12px;background:#2d203b;color:#fff3dd;border:2px solid #c7a56f;border-radius:15px}.majickClassroomAnchorShelf summary{cursor:pointer;font-weight:800;font-size:1.05rem;color:#ffe0a5}.majickAnchorButtons{display:flex;flex-wrap:wrap;gap:6px;padding:10px 0}.majickAnchorButtons button{background:#5e426e;color:#fff6e7;border:1px solid #d1af80;border-radius:8px;padding:9px;cursor:pointer}.majickAnchorButtons button[aria-pressed=true]{background:#936ca5;border:2px solid #ffe0a5}.majickAnchorContent{max-width:700px}.majickAnchorContent p{color:#fff3dd!important}.majickClassroomAnchorShelf svg{width:100%;height:auto;max-width:620px}.majickClassroomAnchorShelf button:focus-visible{outline:3px solid #fff0b0}';
+document.head.append(anchorStyle);
+const legacyRender=window.render;
+if(typeof legacyRender==='function')window.render=function(){const out=legacyRender.apply(this,arguments);setTimeout(pinClassroomAnchors,70);return out};
+setTimeout(pinClassroomAnchors,500);
+window.MajickVisualAnchors={render,kind,focusedSkill,pinClassroomAnchors,renderMeanWorkedExample,renderMedianWorkedExample,renderRatioModel,renderProbabilityTree,renderBoxPlotExample,renderHistogramExample,renderGraphExample,renderCalculatorSteps,renderWhiteboardSetup,VERSION:'3.4.2-visual-anchors-1'};
 })();
