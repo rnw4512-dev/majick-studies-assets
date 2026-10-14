@@ -17,7 +17,30 @@
       "d772-s1-l3",
       "d772-s1-l4"
     ],
-    "status": "source study notes recovered; exact original question-by-question verification still pending"
+    "status": "source study notes recovered; exact original question-by-question verification still pending",
+    "sourceReconciliation": {
+      "originalUploads": "WGU D772 Section 1 lesson/course examples pasted September 2026; exact original quiz answers and feedback not fully retrievable here",
+      "derivedStudyDocument": "D772_Statistical_Data_Literacy_Study_Notes_v3_Section_1_Complete",
+      "originalQuestionStatus": "NOT VERIFIED VERBATIM; study notes are an adaptation and not the original quiz archive",
+      "referenceFallback": [
+        {
+          "source": "OpenStax Introductory Statistics 2e",
+          "url": "https://openstax.org/books/introductory-statistics-2e/pages/1-2-data-sampling-and-variation-in-data-and-sampling",
+          "label": "SUPPLEMENTAL"
+        },
+        {
+          "source": "American Statistical Association P-Value Statement",
+          "url": "https://www.amstat.org/asa/files/pdfs/P-ValueStatement.pdf",
+          "label": "SUPPLEMENTAL"
+        },
+        {
+          "source": "US Office of Research Integrity",
+          "url": "https://ori.hhs.gov/definition-research-misconduct",
+          "label": "SUPPLEMENTAL"
+        }
+      ],
+      "status": "Source curriculum and study notes recovered; original question choice/feedback equality remains unverified; do not mark complete"
+    }
   },
   "section2": {
     "source": "WGU lessons uploaded October 3–4, 2026",
@@ -332,12 +355,64 @@
         "currentAppQuestionCount": 3,
         "doNotConflateWithSupplemental": true
       }
-    ]
+    ],
+    "exactSourceReconciliation": {
+      "lesson11": {
+        "quizCount": 10,
+        "providedByUser": true,
+        "pastedOn": "2026-10-07",
+        "exactQuestionOptionsAndFeedbackRecoveredHere": false,
+        "referenceFallback": [
+          {
+            "source": "Math Is Fun",
+            "subject": "Decimal fraction percentage conversion; simplifying fractions",
+            "label": "COURSE-REFERENCED RESOURCE, exact URLs not recovered in this pass"
+          },
+          {
+            "source": "OpenStax Introductory Statistics 2e",
+            "url": "https://openstax.org/books/introductory-statistics-2e/pages/3-1-terminology",
+            "label": "SUPPLEMENTAL"
+          }
+        ]
+      },
+      "lesson12": {
+        "quizCount": 5,
+        "providedByUser": true,
+        "pastedOn": "2026-10-07",
+        "exactQuestionOptionsAndFeedbackRecoveredHere": false,
+        "referenceFallback": [
+          {
+            "source": "OpenStax Introductory Statistics 2e",
+            "url": "https://openstax.org/books/introductory-statistics-2e/pages/3-1-terminology",
+            "label": "SUPPLEMENTAL"
+          }
+        ]
+      },
+      "lesson13": {
+        "quizCount": 5,
+        "providedByUser": true,
+        "pastedOn": "2026-10-07",
+        "exactQuestionOptionsAndFeedbackRecoveredHere": false,
+        "referenceFallback": [
+          {
+            "source": "OpenStax Introductory Statistics 2e",
+            "url": "https://openstax.org/books/introductory-statistics-2e/pages/3-4-contingency-tables",
+            "label": "SUPPLEMENTAL — verify topic applicability before using"
+          }
+        ]
+      },
+      "policy": "Retain user-supplied WGU quizzes as separately tracked original sets, but do not manufacture exact source choices or feedback where not retrieved; keep existing three supplemental items per sublesson."
+    }
   },
   "screens": {
     "learnLab": "needs browser verification for original-item availability",
     "studyNow": "needs original-item crosswalk and browser verification",
-    "gameRealm": "needs original-item crosswalk and browser verification"
+    "gameRealm": "needs original-item crosswalk and browser verification",
+    "browserTestFinding": {
+      "failedCommit": "a2d38c4",
+      "reason": "Added browser test called MajickGameRealm.d772RealmPool(), which is a fixed supplement preview instead of actual realmQuestionPool(); test corrected to exercise realmQuestionPool() in subsequent commit d57ac46.",
+      "latestExpandedResult": "PENDING"
+    }
   },
   "nextSteps": [
     "Compare original WGU pasted items word-for-word to tutor and question records",
@@ -345,5 +420,5 @@
     "Run independent graph/arithmetical tests and browser navigation",
     "Do not create replacement questions for unmatched originals"
   ],
-  "status": "six Section 2 Lesson 4.1 app answer keys independently recalculated; original WGU exact text still unverified; Section 3 original quiz metadata recovered without fabricating choices"
+  "status": "Section 1/3 original quiz existence confirmed from prior user uploads; exact original options/feedback still not available for source-accurate restoration; reference-based coaching must be labeled supplemental."
 }
