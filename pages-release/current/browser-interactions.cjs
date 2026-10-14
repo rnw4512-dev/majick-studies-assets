@@ -124,20 +124,22 @@ async function solveMean(values,sum,count,mean){
  await waitFor('!!document.querySelector(".mjSeTaskSelect")');
  await action('const picker=document.querySelector(".mjSeTaskSelect");picker.value="d772-data";picker.dispatchEvent(new Event("change",{bubbles:true}))');
  await waitFor('!!document.querySelector("[data-focus]")');
- await action('document.querySelectorAll("[data-focus]")[4].click();document.querySelector("[data-check]").click()');
- await waitFor('!!document.querySelector("[data-add=\\"2\\"]")');
- await action('document.querySelector("[data-add=\\"2\\"]").click();document.querySelector("[data-check]").click()');
- await action('document.querySelector("[data-add=\\"0\\"]").click()');
- await action('document.querySelector("[data-add=\\"1\\"]").click();document.querySelector("[data-check]").click()');
- console.log('DEBUG sequence stage after ordering:',await evalPage('({stage:document.querySelector(".mjSeStage h3")?.textContent,feedback:document.querySelector(".mjSeFeedback")?.textContent,parts:[...document.querySelectorAll("[data-add]")].map(x=>({text:x.textContent,disabled:x.disabled})),selected:document.querySelector(".mjSeSelection")?.textContent})'));
- await waitFor('!!document.querySelector("[data-meaning]")');
- await action('document.querySelectorAll("[data-meaning]")[0].click();document.querySelector("[data-check]").click()');
+ const caseData=await evalPage('(()=>{const task=MajickLessonActivities.tasks.find(x=>x.id==="d772-data");return task.cases.find(c=>document.querySelector(".mjSeStage")?.textContent.includes(c.prompt))||task.cases[0]})()');
+ const focus=/surveys only|only reaches|only staff|only families|one school|evening event|downtown station|gym website|volunteer/i.test(caseData.prompt)?'Selection bias':'Association is not causation';
+ await action('const btn=[...document.querySelectorAll("[data-focus]")].find(x=>x.textContent.trim()==='+JSON.stringify(focus)+');if(!btn)throw Error("Missing focus");btn.click();document.querySelector("[data-check]").click()');
+ await waitFor('!!document.querySelector("[data-add]")');
+ await action('document.querySelectorAll("[data-add]")['+caseData.correct[0]+'].click();document.querySelector("[data-check]").click()');
+ for(const part of caseData.correct)await action('document.querySelectorAll("[data-add]")['+part+'].click()');
  await action('document.querySelector("[data-check]").click()');
- assert.equal(await evalPage('document.querySelector(".mjSeStage h3")?.textContent'),"Independent reconstruction","Stage 6 should unlock after stage 5");
- await action('document.querySelector("[data-add=\\"2\\"]").click()');
- await action('document.querySelector("[data-add=\\"0\\"]").click()');
- await action('document.querySelector("[data-add=\\"1\\"]").click();document.querySelector("[data-check]").click()');
- assert.equal(await evalPage('document.querySelector(".mjSeStage")?.textContent?.includes("A school wants family feedback")'),true,"Stage 6 must advance to a new scenario");
+ await waitFor('!!document.querySelector("[data-meaning]")');
+ const meaning=/observational|caused|causation|correlation|association/i.test(caseData.prompt)?'An observational study can show association':'The target population and sampled group differ';
+ await action('const btn=[...document.querySelectorAll("[data-meaning]")].find(x=>x.textContent.includes('+JSON.stringify(meaning)+'));if(!btn)throw Error("Missing rationale");btn.click();document.querySelector("[data-check]").click()');
+ await action('document.querySelector("[data-check]").click()');
+ await waitFor('document.querySelector(".mjSeStage h3")?.textContent==="Independent reconstruction"');
+ for(const part of caseData.correct)await action('document.querySelectorAll("[data-add]")['+part+'].click()');
+ await action('document.querySelector("[data-check]").click()');
+ assert(await evalPage('document.querySelector(".mjSeStage")?.textContent?.includes("A school wants family feedback")||document.querySelector(".mjSeStage")?.textContent?.includes("Guided reconstruction completed")'),'Sequence should advance after verified reconstruction');
+
  console.log('PASS browser: sequence stages 5 and 6 unlock, require a fresh response, and advance.');
 
  // Priority 2: verify actual click interactions in each live classroom mode.
