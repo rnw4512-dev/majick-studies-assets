@@ -90,7 +90,7 @@ function illustratedAvatar(p,compact=false,activity=''){
  if(!Object.prototype.hasOwnProperty.call(AVATAR_ROBES,p.robe))notes.push('Your selected robe needs fitted artwork; displaying Plum Scholar preview.');
  if(Number(p.color)!==0)notes.push('Robe tint is a visual preview. Fitted recolored artwork is not yet available.');
  if(p.accessory||p.equipped!=null)notes.push('Your accessory or crafted item is saved; fitted art is pending.');
- return '<div class="atelierIllustrated" data-footwear="boots" aria-label="Illustrated scholar outfit preview">'+layers.map((src,i)=> '<img alt="" draggable="false" class="atelierArtLayer atelierArtLayer'+i+'" data-avatar-layer="'+src+'" src="'+AVATAR_ASSET_ROOT+src+'" onerror="this.style.visibility=\'hidden\'">').join('')+'</div>'+(!compact&&notes.length?'<p class="atelierPreviewNotice">'+notes.join(' ')+'</p>':'');
+ return '<div class="atelierIllustrated" data-footwear="boots" data-wand-palette="'+Math.max(0,Math.min(COLORS.length-1,Number(p.color)||0))+'" aria-label="Illustrated scholar outfit preview">'+layers.map((src,i)=> '<img alt="" draggable="false" class="atelierArtLayer atelierArtLayer'+i+'" data-avatar-layer="'+src+'" src="'+AVATAR_ASSET_ROOT+src+'" onerror="this.style.visibility=\'hidden\'">').join('')+'</div>'+(!compact&&notes.length?'<p class="atelierPreviewNotice">'+notes.join(' ')+'</p>':'');
 }
 let atelierZoom=1,atelierFocus='full';
 const atelierViews={full:[1,0],hair:[1.9,33],jewelry:[1.7,13],fabric:[1.55,-17],boots:[1.8,-45]};
