@@ -3634,6 +3634,12 @@ function renderTutorAssist(kind,lesson,ch,id=cid()){
   panel.hidden=false;
   panel.innerHTML='<div class="tutorAssistHead"><div><small>MAJICK TUTOR • '+E(lessonNumberLabel(lesson))+'</small><h3>'+E(title)+'</h3></div><button type="button" id="tutorAssistClose" aria-label="Close tutor help">×</button></div><div class="tutorAssistBody">'+body+'</div>';
   document.getElementById('tutorAssistClose')?.addEventListener('click',()=>{panel.hidden=true;panel.innerHTML=''});
+  const flow=sections(id).flatMap(sectionUnits),position=flow.findIndex(x=>x.id===lesson.id),nextLesson=position>=0?flow[position+1]:null;
+  const advance=document.createElement('button');advance.type='button';advance.className='btn primary';advance.id='tutorAssistContinue';
+  advance.textContent=nextLesson?'Continue to Next Lesson →':'Return to Course Path →';
+  advance.addEventListener('click',()=>{panel.hidden=true;panel.innerHTML='';if(nextLesson)openLesson(nextLesson.id,null,id);else show('path')});
+  panel.append(advance);
+
   if(kind==='quiz'){
     const adaptive=adaptiveCheck(lesson,id);
     if(adaptive?.check){
