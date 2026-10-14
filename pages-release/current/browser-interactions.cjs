@@ -191,5 +191,36 @@ async function solveMean(values,sum,count,mean){
  assert.equal(await evalPage('S.progress.D772.adaptiveSkills["d772-s2-l4"].cycles'),1,'Reteach count must survive reload');
  console.log('PASS browser: adaptive review and retry persist across reloads without resetting academic progress');
 
+
+ // Phase 1 browser coverage expansion: rendered controls, contrast and saved state.
+ // This is deliberately scoped to observed app screens, not a claim of universal WCAG conformance.
+ const phase1={screens:[],state:null};
+ for(const viewport of [{width:390,height:844},{width:1365,height:900}]){
+   await call('Emulation.setDeviceMetricsOverride',{width:viewport.width,height:viewport.height,deviceScaleFactor:1,mobile:viewport.width<500});
+   for(const screen of ['learninglab','mission','games']){
+     await action('navigate('+JSON.stringify(screen)+')');
+     await sleep(180);
+     const sample=await evalPage('(()=>{const vis=e=>{const r=e.getBoundingClientRect(),s=getComputedStyle(e);return r.width>0&&r.height>0&&s.visibility!=="hidden"&&s.display!=="none"};const rgba=c=>{const m=c.match(/rgba?\\(([^)]+)\\)/);return m?m[1].split(",").map(Number):null};const lum=rgb=>{const v=rgb.slice(0,3).map(x=>{x/=255;return x<=0.04045?x/12.92:((x+0.055)/1.055)**2.4});return .2126*v[0]+.7152*v[1]+.0722*v[2]};const ratio=(a,b)=>{const x=lum(a),y=lum(b);return (Math.max(x,y)+.05)/(Math.min(x,y)+.05)};const control=[...document.querySelectorAll("button,input,select,textarea,a[href],[role=button]")].filter(vis);const unnamed=control.filter(e=>!(e.getAttribute("aria-label")||e.getAttribute("aria-labelledby")||e.getAttribute("title")||e.innerText||e.value||"").trim()).slice(0,15).map(e=>e.outerHTML.slice(0,160));const bad=[];const candidates=[...document.querySelectorAll("p,label,button,small,span,li,svg text")].filter(vis).slice(0,1300);for(const e of candidates){if(!e.textContent.trim()||e.children.length>2)continue;const cs=getComputedStyle(e),fg=rgba(cs.color);let bg=null,n=e;while(n&&!bg){const a=rgba(getComputedStyle(n).backgroundColor);if(a&&a[3]!==0)bg=a;n=n.parentElement}if(!bg||!fg||fg[3]===0)continue;const r=ratio(fg,bg),size=parseFloat(cs.fontSize),large=size>=24||(size>=18.66&&parseInt(cs.fontWeight)>=700);if(r<(large?3:4.5)){bad.push({tag:e.tagName,text:e.textContent.trim().slice(0,45),ratio:+r.toFixed(2),size})}}const tooSmall=[...document.querySelectorAll("svg text")].filter(vis).filter(e=>parseFloat(getComputedStyle(e).fontSize)<11).slice(0,12).map(e=>e.textContent.trim().slice(0,30));return {screen:S.screen,course:S.activeCourse,controls:control.length,unnamed,badContrast:bad.slice(0,20),badContrastCount:bad.length,tinySVG:tooSmall}})()');
+     phase1.screens.push({viewport,requested:screen,...sample});
+   }
+ }
+ await call('Emulation.clearDeviceMetricsOverride');
+ console.log('PHASE1 RENDERED ACCESSIBILITY AUDIT',JSON.stringify(phase1.screens));
+ const unnamed=phase1.screens.flatMap(x=>x.unnamed.map(y=>({screen:x.screen,viewport:x.viewport.width,html:y})));
+ const contrast=phase1.screens.flatMap(x=>x.badContrast.map(y=>({...y,screen:x.screen,viewport:x.viewport.width})));
+ assert.equal(unnamed.length,0,'Visible controls without accessible names: '+JSON.stringify(unnamed.slice(0,8)));
+ assert.equal(contrast.length,0,'Computed color contrast below WCAG AA for sampled rendered content: '+JSON.stringify(contrast.slice(0,12)));
+ // Compare the actual serialized academic/world records through a fresh browser reload.
+ const before=await evalPage('JSON.stringify({courses:S.courses,progress:S.progress,majickAccount:S.majickAccount,legacy:S.legacy})');
+ await call('Page.reload',{ignoreCache:true});
+ await waitFor('!!window.MajickLearningContinuity&&!!S.courses&&!!S.progress');
+ const after=await evalPage('JSON.stringify({courses:S.courses,progress:S.progress,majickAccount:S.majickAccount,legacy:S.legacy})');
+ const savedBefore=JSON.parse(before),savedAfter=JSON.parse(after);
+ const diffs=[];
+ for(const key of Object.keys(savedBefore))if(JSON.stringify(savedBefore[key])!==JSON.stringify(savedAfter[key]))diffs.push(key);
+ console.log('PHASE1 SAVE RELOAD COMPARISON',JSON.stringify({fields:Object.keys(savedBefore),different:diffs}));
+ assert.equal(diffs.length,0,'Reload changed learner academic/world state: '+diffs.join(', '));
+ console.log('PASS browser: sampled mobile/desktop accessibility and full core state JSON equivalence after reload');
+
  console.log('PASS browser: three-level mean worked solutions, independent transfer mastery, course lesson selection, participation XP, save/reload, duplicate prevention and D756 isolation');
 })().catch(e=>{console.error('FAIL browser QA:',e.stack||e);process.exitCode=1}).finally(async()=>{try{ws?.close()}catch{}try{child?.kill()}catch{}await new Promise(r=>server.close(r));try{fs.rmSync(profile,{recursive:true,force:true})}catch{}});
