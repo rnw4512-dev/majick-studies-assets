@@ -46,7 +46,7 @@ function validate(q){
  }
  return expected===String(q.answer);
 }
-function generate(skill='boxplot',difficulty=2){const n=difficulty>=3?9:7,base=randint(3,9),step=randint(2,4);let vals=Array.from({length:n},(_,i)=>base+i*step);if(skill==='mean'){const m=randint(8,16);vals=[m-6,m-3,m,m+3,m+6]}if(skill==='median')vals=vals.sort(()=>Math.random()-.5);
+function generate(skill='boxplot',difficulty=2){const n=difficulty>=3?9:7,base=randint(3,9),step=randint(2,4);let vals=Array.from({length:n},(_,i)=>base+i*step);if(skill==='mean'){const m=randint(8,16);vals=[m-6,m-3,m,m+3,m+6]}if(skill==='median'){for(let i=vals.length-1;i>0;i--){const j=randint(0,i);[vals[i],vals[j]]=[vals[j],vals[i]];}}
  if(skill==='histogram')vals=[randint(8,13),randint(5,7),randint(3,4),2,1];
  if(skill==='scatterplot')vals=Array.from({length:9},(_,i)=>[i+1,Math.min(10,i+1+randint(-1,1))]);
  if(skill==='probability')vals=[randint(3,5),randint(2,4)];
