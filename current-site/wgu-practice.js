@@ -327,9 +327,12 @@ function fixedResult(){
 }
 function sectionNumber(q){return Number(String(q.learningPathLessonId||q.topicId||'').match(/d772-s([123])(?:-|$)/)?.[1]||String(q.section||'').match(/section\s*([123])/i)?.[1]||1)}
 function practicePool(scope){
- const rows=questionPool();
+ const base=questionPool();
+ const source=activeD772()?(window.MajickD772VerifiedSource?.questions?.()||[]):[];
+ const seen=new Set(base.map(q=>String(q.id)));
+ const rows=base.concat(source.filter(q=>!seen.has(String(q.id))));
  if(scope==='mixed')return rows;
- if(scope==='2c')return rows.filter(q=>sectionNumber(q)===2&&/d772-s2-l[34](?:-|$)/.test(String(q.learningPathLessonId||q.topicId||'')));
+ if(scope==='2c')scope='2'; // Legacy Section 2C is the same academic section as Section 2.
  return rows.filter(q=>sectionNumber(q)===Number(scope));
 }
 function skillGrowthDashboard(){
