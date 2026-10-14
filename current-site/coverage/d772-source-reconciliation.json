@@ -1,0 +1,180 @@
+{
+  "courseId": "D772",
+  "version": "1.0",
+  "purpose": "Trace source-provided lessons and questions without substituting supplemental or generated items.",
+  "policies": {
+    "section2CAlias": "d772-s2",
+    "neverEraseOriginals": true,
+    "preserveSupplementalPractice": true,
+    "sourceQuestionEquality": "exact original question, options, answer and feedback required; matching skill is insufficient",
+    "originalContentNoAutoMastery": true
+  },
+  "section1": {
+    "source": "WGU lesson uploads supplied September 2026; learner-derived study notes D772_Statistical_Data_Literacy_Study_Notes_v3_Section_1_Complete",
+    "lessons": [
+      "d772-s1-l1",
+      "d772-s1-l2",
+      "d772-s1-l3",
+      "d772-s1-l4"
+    ],
+    "status": "source study notes recovered; exact original question-by-question verification still pending"
+  },
+  "section2": {
+    "source": "WGU lessons uploaded October 3–4, 2026",
+    "lesson41OriginalQuestionTrace": [
+      {
+        "id": "s2l41-course-p1",
+        "lessonId": "d772-s2-l4-1",
+        "appLocation": "current-site/course-tutor.js",
+        "exactIdPresent": true,
+        "sourceAttribution": "User-provided Lesson 4.1 ungraded course question and correct-answer feedback, 2026-10-04",
+        "status": "app original-source claim present; original pasted question still requires literal source comparison"
+      },
+      {
+        "id": "s2l41-course-p2",
+        "lessonId": "d772-s2-l4-1",
+        "appLocation": "current-site/course-tutor.js",
+        "exactIdPresent": true,
+        "sourceAttribution": "User-provided Lesson 4.1 ungraded course question and correct-answer feedback, 2026-10-04",
+        "status": "app original-source claim present; original pasted question still requires literal source comparison"
+      },
+      {
+        "id": "s2l41-course-p3",
+        "lessonId": "d772-s2-l4-1",
+        "appLocation": "current-site/course-tutor.js",
+        "exactIdPresent": true,
+        "sourceAttribution": "User-provided Lesson 4.1 ungraded course question and correct-answer feedback, 2026-10-04",
+        "status": "app original-source claim present; original pasted question still requires literal source comparison"
+      },
+      {
+        "id": "s2l41-course-p4",
+        "lessonId": "d772-s2-l4-1",
+        "appLocation": "current-site/course-tutor.js",
+        "exactIdPresent": true,
+        "sourceAttribution": "User-provided Lesson 4.1 ungraded course question and correct-answer feedback, 2026-10-04",
+        "status": "app original-source claim present; original pasted question still requires literal source comparison"
+      },
+      {
+        "id": "s2l41-course-p5",
+        "lessonId": "d772-s2-l4-1",
+        "appLocation": "current-site/course-tutor.js",
+        "exactIdPresent": true,
+        "sourceAttribution": "User-provided Lesson 4.1 ungraded course question and correct-answer feedback, 2026-10-04",
+        "status": "app original-source claim present; original pasted question still requires literal source comparison"
+      },
+      {
+        "id": "s2l41-course-p6",
+        "lessonId": "d772-s2-l4-1",
+        "appLocation": "current-site/course-tutor.js",
+        "exactIdPresent": true,
+        "sourceAttribution": "User-provided Lesson 4.1 ungraded course question and correct-answer feedback, 2026-10-04",
+        "status": "app original-source claim present; original pasted question still requires literal source comparison"
+      }
+    ],
+    "otherCoverageFiles": [
+      "d772-s2-l2-3.json",
+      "d772-s2-l3-1.json",
+      "d772-s2-l4-2.json",
+      "d772-s2-l4-3.json"
+    ],
+    "status": "Lesson 4.1 ID/provenance match in course tutor. Remaining originals need exact text comparison and visual/math checks"
+  },
+  "section3": {
+    "source": "WGU probability lessons and quiz feedback pasted October 7–8, 2026",
+    "lessonTrace": [
+      {
+        "lessonId": "d772-s3-l1-1",
+        "sourceDescription": "WGU D772 probability lesson text/quiz pasted October 2026",
+        "knownOriginalQuestionCount": 10,
+        "existingSupplementalItems": [
+          {
+            "id": "d772-s3-l1-1-practice-1",
+            "answerIndex": 0,
+            "optionCount": 4,
+            "rationalePresent": true
+          },
+          {
+            "id": "d772-s3-l1-1-practice-2",
+            "answerIndex": 1,
+            "optionCount": 4,
+            "rationalePresent": true
+          },
+          {
+            "id": "d772-s3-l1-1-practice-3",
+            "answerIndex": 3,
+            "optionCount": 4,
+            "rationalePresent": true
+          }
+        ],
+        "sourceStatus": "supplemental; original WGU question text, choices and individual answer feedback NOT verified as equivalent",
+        "appRecord": "current-site/coverage/d772-section3-study-content.json"
+      },
+      {
+        "lessonId": "d772-s3-l1-2",
+        "sourceDescription": "WGU D772 probability lesson text/quiz pasted October 2026",
+        "knownOriginalQuestionCount": 5,
+        "existingSupplementalItems": [
+          {
+            "id": "d772-s3-l1-2-practice-1",
+            "answerIndex": 1,
+            "optionCount": 4,
+            "rationalePresent": true
+          },
+          {
+            "id": "d772-s3-l1-2-practice-2",
+            "answerIndex": 2,
+            "optionCount": 4,
+            "rationalePresent": true
+          },
+          {
+            "id": "d772-s3-l1-2-practice-3",
+            "answerIndex": 1,
+            "optionCount": 4,
+            "rationalePresent": true
+          }
+        ],
+        "sourceStatus": "supplemental; original WGU question text, choices and individual answer feedback NOT verified as equivalent",
+        "appRecord": "current-site/coverage/d772-section3-study-content.json"
+      },
+      {
+        "lessonId": "d772-s3-l1-3",
+        "sourceDescription": "WGU D772 probability lesson text/quiz pasted October 2026",
+        "knownOriginalQuestionCount": null,
+        "existingSupplementalItems": [
+          {
+            "id": "d772-s3-l1-3-practice-1",
+            "answerIndex": 1,
+            "optionCount": 4,
+            "rationalePresent": true
+          },
+          {
+            "id": "d772-s3-l1-3-practice-2",
+            "answerIndex": 3,
+            "optionCount": 4,
+            "rationalePresent": true
+          },
+          {
+            "id": "d772-s3-l1-3-practice-3",
+            "answerIndex": 1,
+            "optionCount": 4,
+            "rationalePresent": true
+          }
+        ],
+        "sourceStatus": "supplemental; original WGU question text, choices and individual answer feedback NOT verified as equivalent",
+        "appRecord": "current-site/coverage/d772-section3-study-content.json"
+      }
+    ],
+    "status": "Source topics recovered but supplemental question bank is not original WGU quiz archive"
+  },
+  "screens": {
+    "learnLab": "needs browser verification for original-item availability",
+    "studyNow": "needs original-item crosswalk and browser verification",
+    "gameRealm": "needs original-item crosswalk and browser verification"
+  },
+  "nextSteps": [
+    "Compare original WGU pasted items word-for-word to tutor and question records",
+    "Verify original choices, answer keys, explanations and references",
+    "Run independent graph/arithmetical tests and browser navigation",
+    "Do not create replacement questions for unmatched originals"
+  ]
+}
