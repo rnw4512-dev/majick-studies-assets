@@ -77,7 +77,127 @@
       "d772-s2-l4-2.json",
       "d772-s2-l4-3.json"
     ],
-    "status": "Lesson 4.1 ID/provenance match in course tutor. Remaining originals need exact text comparison and visual/math checks"
+    "status": "Lesson 4.1 ID/provenance match in course tutor. Remaining originals need exact text comparison and visual/math checks",
+    "lesson41ExactAppRecords": [
+      {
+        "id": "s2l41-course-p1",
+        "lessonId": "d772-s2-l4-1",
+        "question": "What is the mean of {1,1,1,3,6,6}?",
+        "options": [
+          "2",
+          "2.5",
+          "3",
+          "3.5"
+        ],
+        "answerIndex": 2,
+        "answerText": "3",
+        "feedback": "The six observations total 18. Mean = 18/6 = 3. Count each repeated observation.",
+        "sourceAttribution": "User-provided Lesson 4.1 ungraded course question and correct-answer feedback, 2026-10-04",
+        "mathVerified": true,
+        "computedAnswer": "3",
+        "exactOriginalPasteCompared": false,
+        "appLocation": "current-site/course-tutor.js"
+      },
+      {
+        "id": "s2l41-course-p2",
+        "lessonId": "d772-s2-l4-1",
+        "question": "What is the median of {1,1,1,3,6,6}?",
+        "options": [
+          "2",
+          "3.5",
+          "3",
+          "2.5"
+        ],
+        "answerIndex": 0,
+        "answerText": "2",
+        "feedback": "The data are sorted and n=6. The third and fourth values are 1 and 3, so median = (1+3)/2 = 2. Average the values, not their position numbers.",
+        "sourceAttribution": "User-provided Lesson 4.1 ungraded course question and correct-answer feedback, 2026-10-04",
+        "mathVerified": true,
+        "computedAnswer": "2",
+        "exactOriginalPasteCompared": false,
+        "appLocation": "current-site/course-tutor.js"
+      },
+      {
+        "id": "s2l41-course-p3",
+        "lessonId": "d772-s2-l4-1",
+        "question": "What is the mode of {1,1,1,3,6,6}?",
+        "options": [
+          "There is no mode",
+          "1",
+          "6",
+          "1 and 6"
+        ],
+        "answerIndex": 1,
+        "answerText": "1",
+        "feedback": "1 occurs three times, 6 twice, and 3 once. Only 1 has the greatest frequency. Repetition alone does not make 6 another mode.",
+        "sourceAttribution": "User-provided Lesson 4.1 ungraded course question and correct-answer feedback, 2026-10-04",
+        "mathVerified": true,
+        "computedAnswer": "1",
+        "exactOriginalPasteCompared": false,
+        "appLocation": "current-site/course-tutor.js"
+      },
+      {
+        "id": "s2l41-course-p4",
+        "lessonId": "d772-s2-l4-1",
+        "question": "What is the mean of {2,3,5,5,7,8,8,9}?",
+        "options": [
+          "5.5",
+          "5.75",
+          "6",
+          "5.875"
+        ],
+        "answerIndex": 3,
+        "answerText": "5.875",
+        "feedback": "The total is 47 over eight observations. Mean = 47/8 = 5.875; keep the exact result when it appears among the choices.",
+        "sourceAttribution": "User-provided Lesson 4.1 ungraded course question and correct-answer feedback, 2026-10-04",
+        "mathVerified": true,
+        "computedAnswer": "5.875",
+        "exactOriginalPasteCompared": false,
+        "appLocation": "current-site/course-tutor.js"
+      },
+      {
+        "id": "s2l41-course-p5",
+        "lessonId": "d772-s2-l4-1",
+        "question": "What is the median of {6,1,12,13,4,9,4}?",
+        "options": [
+          "6",
+          "5",
+          "7",
+          "13"
+        ],
+        "answerIndex": 0,
+        "answerText": "6",
+        "feedback": "Sort first: {1,4,4,6,9,12,13}. With seven observations, the fourth value is the median: 6.",
+        "sourceAttribution": "User-provided Lesson 4.1 ungraded course question and correct-answer feedback, 2026-10-04",
+        "mathVerified": true,
+        "computedAnswer": "6",
+        "exactOriginalPasteCompared": false,
+        "appLocation": "current-site/course-tutor.js"
+      },
+      {
+        "id": "s2l41-course-p6",
+        "lessonId": "d772-s2-l4-1",
+        "question": "What are the modes of {2,3,5,5,7,8,8,9}?",
+        "options": [
+          "5",
+          "5 and 8",
+          "8",
+          "There is no mode"
+        ],
+        "answerIndex": 1,
+        "answerText": "5 and 8",
+        "feedback": "5 and 8 each occur twice, tying for the highest frequency. Both are modes.",
+        "sourceAttribution": "User-provided Lesson 4.1 ungraded course question and correct-answer feedback, 2026-10-04",
+        "mathVerified": true,
+        "computedAnswer": "5 and 8",
+        "exactOriginalPasteCompared": false,
+        "appLocation": "current-site/course-tutor.js"
+      }
+    ],
+    "mathKeyCheck": {
+      "passed": 6,
+      "total": 6
+    }
   },
   "section3": {
     "source": "WGU probability lessons and quiz feedback pasted October 7–8, 2026",
@@ -164,7 +284,55 @@
         "appRecord": "current-site/coverage/d772-section3-study-content.json"
       }
     ],
-    "status": "Source topics recovered but supplemental question bank is not original WGU quiz archive"
+    "status": "Source topics recovered but supplemental question bank is not original WGU quiz archive",
+    "originalQuizRecoveredMetadata": [
+      {
+        "lessonId": "d772-s3-l1-1",
+        "sourceQuizCount": 10,
+        "source": "User WGU paste 2026-10-07",
+        "sourceReferences": [
+          "Math Is Fun decimal, fraction, percentage conversions",
+          "Math Is Fun simplifying fractions"
+        ],
+        "verbatimQuestionTextAvailable": false,
+        "sourceOptionsVerified": false,
+        "sourceFeedbackVerified": false,
+        "currentAppQuestionCount": 3,
+        "doNotConflateWithSupplemental": true
+      },
+      {
+        "lessonId": "d772-s3-l1-2",
+        "sourceQuizCount": 5,
+        "source": "User WGU paste 2026-10-07",
+        "recoverableVerifiedResultSummaries": [
+          {
+            "scenario": "Fair die, number greater than 4",
+            "answer": "1/3"
+          },
+          {
+            "scenario": "Fair five-wedge spinner, event blue or purple",
+            "answer": "2/5"
+          },
+          {
+            "scenario": "Raffle four winners out of 100 tickets",
+            "answer": "1/25"
+          },
+          {
+            "scenario": "Ten red marbles among 25",
+            "answer": "0.4"
+          },
+          {
+            "scenario": "Fair coin, heads and tails equally likely",
+            "answer": "Both equally likely"
+          }
+        ],
+        "verbatimQuestionTextAvailable": false,
+        "sourceOptionsVerified": false,
+        "sourceFeedbackVerified": false,
+        "currentAppQuestionCount": 3,
+        "doNotConflateWithSupplemental": true
+      }
+    ]
   },
   "screens": {
     "learnLab": "needs browser verification for original-item availability",
@@ -176,5 +344,6 @@
     "Verify original choices, answer keys, explanations and references",
     "Run independent graph/arithmetical tests and browser navigation",
     "Do not create replacement questions for unmatched originals"
-  ]
+  ],
+  "status": "six Section 2 Lesson 4.1 app answer keys independently recalculated; original WGU exact text still unverified; Section 3 original quiz metadata recovered without fabricating choices"
 }
