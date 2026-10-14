@@ -211,11 +211,11 @@ async function solveMean(values,sum,count,mean){
  assert.equal(unnamed.length,0,'Visible controls without accessible names: '+JSON.stringify(unnamed.slice(0,8)));
  assert.equal(contrast.length,0,'Computed color contrast below WCAG AA for sampled rendered content: '+JSON.stringify(contrast.slice(0,12)));
  // Compare the actual serialized academic/world records through a fresh browser reload.
- const before=await evalPage('JSON.stringify({courses:S.courses,progress:S.progress,majickAccount:S.majickAccount,legacy:S.legacy})');
+ const phase1Before=await evalPage('JSON.stringify({courses:S.courses,progress:S.progress,majickAccount:S.majickAccount,legacy:S.legacy})');
  await call('Page.reload',{ignoreCache:true});
  await waitFor('!!window.MajickLearningContinuity&&!!S.courses&&!!S.progress');
- const after=await evalPage('JSON.stringify({courses:S.courses,progress:S.progress,majickAccount:S.majickAccount,legacy:S.legacy})');
- const savedBefore=JSON.parse(before),savedAfter=JSON.parse(after);
+ const phase1After=await evalPage('JSON.stringify({courses:S.courses,progress:S.progress,majickAccount:S.majickAccount,legacy:S.legacy})');
+ const savedBefore=JSON.parse(phase1Before),savedAfter=JSON.parse(phase1After);
  const diffs=[];
  for(const key of Object.keys(savedBefore))if(JSON.stringify(savedBefore[key])!==JSON.stringify(savedAfter[key]))diffs.push(key);
  console.log('PHASE1 SAVE RELOAD COMPARISON',JSON.stringify({fields:Object.keys(savedBefore),different:diffs}));
