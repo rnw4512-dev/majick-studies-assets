@@ -385,7 +385,7 @@ function startSkillRetry(id){
  const complexity=q=>Number(q.difficulty||1);
  const accuracy=learned?.attempts?.length?learned.attempts.filter(x=>x.correct&&!x.assisted).length/learned.attempts.length:0.5;
  const targetLevel=accuracy>=.8?3:accuracy<.4?1:2;
- const ordered=(fresh.length>=3?fresh:rows).sort((a,b)=>Math.abs(complexity(a)-targetLevel)-Math.abs(complexity(b)-targetLevel));
+ const ordered=(fresh.length?fresh:rows).sort((a,b)=>Math.abs(complexity(a)-targetLevel)-Math.abs(complexity(b)-targetLevel));
  const signatures=new Set();
  const questions=ordered.filter(q=>{
   const sign=(q.generated?String(q.skill||'')+'|'+JSON.stringify(q.data):String(q.prompt||'').toLowerCase().replace(/\d+(?:\.\d+)?/g,'#').replace(/\s+/g,' ').trim());
