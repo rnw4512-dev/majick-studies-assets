@@ -136,6 +136,11 @@ async function solveMean(values,sum,count,mean){
   await action('document.querySelector(".mjConstructActivity button").click()');
   assert.equal(await evalPage('document.querySelector(".mjConstructActivity [role=status]")?.textContent?.includes("Correct WGU terminology.")'),true,'WGU graph interpretation must respond on '+screen);
  }
+ // Verify that anchor interactions do not replace the academic course context.
+ for(const screen of ['learninglab','mission','games']){
+   await action('navigate('+JSON.stringify(screen)+')');
+   assert.equal(await evalPage('S.activeCourse'),'D772','Course context changed in '+screen);
+ }
  console.log('PASS browser: Learning Lab, Study Now, Game Realm anchor controls and live counter reset');
  // Recovery follows a course-specific skill record across a full page reload.
  await action('navigate("mission");const q={learningPathLessonId:"d772-s2-l4",prompt:"Find the mean of these scores",answer:"12"};MajickLearningContinuity.skillResult(q,false,false,"study-now");MajickLearningContinuity.skillResult(q,false,false,"study-now");MajickLearningContinuity.skillResult(q,true,false,"study-now")');
