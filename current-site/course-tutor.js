@@ -3456,6 +3456,17 @@ function show(name){
   if(name==='path')renderPath();
   if(name==='tutor'){document.querySelector('.learnLab')?.classList.remove('instructionFocus');renderTutor();}
 }
+const recoveryStyle=document.createElement('style');recoveryStyle.textContent='.mjCourseRecovery{padding:16px;margin:18px 0;border:2px solid #d5b276;background:#30233d;color:#fff3df;border-radius:16px}.mjCourseRecovery h3,.mjCourseRecovery h4,.mjCourseRecovery p{color:#fff3df!important}.mjCourseRecovery article{padding:12px;margin:10px 0;border:1px solid #ae8da9;border-radius:10px}.mjCourseRecovery button{background:#70517d;border:1px solid #e3be89;color:#fff9ec;padding:9px;border-radius:8px;cursor:pointer}';document.head.append(recoveryStyle);
+function courseRecoveryItems(id=cid()){
+ const lessons=sections(id).flatMap(sectionUnits).filter(l=>!l.review&&l.unitType!=='quiz'&&l.unitType!=='test');
+ const skills=window.S?.progress?.[id]?.adaptiveSkills||{};
+ return lessons.map(lesson=>{const m=mastery(lesson,id),a=skills[lesson.id],wrong=(a?.errors||[]).slice(-3);return {lesson,mastery:m,adaptive:a,wrong}}).filter(row=>row.mastery.status==='Needs Review'||row.mastery.status==='Developing'||row.mastery.status==='Learning'||row.adaptive?.status==='review-needed'||row.wrong.length>0).sort((a,b)=>{const score=x=>(x.adaptive?.status==='review-needed'?0:x.mastery.status==='Needs Review'?1:x.mastery.status==='Developing'?2:3);return score(a)-score(b)});
+}
+function renderCourseRecovery(id=cid()){
+ const rows=courseRecoveryItems(id);
+ if(!rows.length)return '<section class="mjCourseRecovery"><h3>✦ Mastery Recovery Circle</h3><p>No low-mastery skills have been identified from your current results. You can still revisit lessons and take independent practice.</p></section>';
+ return '<section class="mjCourseRecovery" aria-label="Mastery Recovery Circle"><h3>✦ Mastery Recovery Circle</h3><p>Return to skills that need strengthening. Review the misconception, then solve fresh questions on the same concept. Guided answers never count as independent mastery.</p>'+rows.map(row=>'<article><h4>'+E(row.lesson.title)+'</h4><p>'+E(row.mastery.status)+' · '+row.mastery.accuracy+'% accuracy · '+row.mastery.attempts+' recorded attempts</p>'+(row.wrong.length?'<p><b>Review:</b> '+E(row.wrong[row.wrong.length-1].kind||'Revisit your recent errors')+'</p>':'')+'<button type="button" data-recovery-review="'+E(row.lesson.id)+'">Reteach this lesson</button> <button type="button" data-recovery-retry="'+E(row.lesson.id)+'">Fresh same-skill questions</button></article>').join('')+'</section>';
+}
 function renderPath(){
   const box=document.getElementById('courseTutorPath');if(!box)return;
   const id=cid(),secs=sections(id);
@@ -3463,7 +3474,7 @@ function renderPath(){
   const pathHero=id==='D772'
     ? '<div class="tutorHero tutorHeroCompact"><div><span>D772 • MULTI-SECTION COURSE PATH</span><h3>Sections 1–3 have their course structure in place.</h3><p>Teaching expands as you add material. Section 3 probability lessons include explanations, worked examples, and practice.</p></div><button class="btn primary" id="continueTutor">'+(active?'Continue '+E(active.short||active.title):'Open Tutor')+' →</button></div>'
     : '<div class="tutorHero"><div><span>MAJICK COURSE TUTOR • '+E(id)+'</span><h3>Learn the course in order. Prove each lesson at higher rigor.</h3><p>Your uploaded notes automatically fill this path. Repeated material is deduplicated in the tutor chapter and the active question bank.</p></div><button class="btn primary" id="continueTutor">'+(active?'Continue '+E(active.short||active.title):'Open Tutor')+' →</button></div>';
-  box.innerHTML=pathHero+
+  box.innerHTML=pathHero+renderCourseRecovery(id)+
     secs.map(sec=>{
       const sp=sectionProgress(sec,id);
       return '<section class="pathSection"><div class="pathSectionHead"><div><span>LEARNING PATH</span><h3>'+E(sec.title)+'</h3></div><div class="pathProgress"><b>'+sp.pct+'%</b><small>'+ (sp.ready?'section material loaded':'add lesson notes as you go')+'</small></div></div><div class="pathRail">'+sec.lessons.map((lesson,i)=>{
@@ -3477,6 +3488,8 @@ function renderPath(){
         return main+subs;
       }).join('')+'</div></section>';
     }).join('');
+  box.querySelectorAll('[data-recovery-review]').forEach(b=>b.addEventListener('click',()=>openLesson(b.dataset.recoveryReview,'simpler',id)));
+  box.querySelectorAll('[data-recovery-retry]').forEach(b=>b.addEventListener('click',()=>{const lid=b.dataset.recoveryRetry;window.MajickLearningContinuity?.skillRetry?.(lid);if(id==='D772')window.MajickWGUPractice?.startSkillRetry?.(lid)}));
   document.getElementById('continueTutor')?.addEventListener('click',()=>enterClassroom());
   box.querySelectorAll('[data-tutor-lesson]').forEach(btn=>btn.addEventListener('click',()=>{
     tutorState(id).selectedLesson=btn.dataset.tutorLesson;try{save()}catch(_){}
@@ -3704,8 +3717,8 @@ function compactClassroom(box,ch,lesson){
   const upcomingLesson=lessonPosition>=0?courseLessons[lessonPosition+1]:null;
   const reviewContinue=document.createElement('div');reviewContinue.className='classroomReviewContinue';
   const reviewNextButton=document.createElement('button');reviewNextButton.type='button';reviewNextButton.className='btn primary';
-  reviewNextButton.textContent=upcomingLesson?'Continue to Next Lesson →':'Return to Course Path →';
-  reviewNextButton.setAttribute('aria-label',upcomingLesson?'Continue to '+upcomingLesson.title:'Return to course path');
+  reviewNextButton.textContent=upcomingLesson?'Continue to Next Lesson →':'Review Course Skills →';
+  reviewNextButton.setAttribute('aria-label',upcomingLesson?'Continue to '+upcomingLesson.title:'Review course skills and misconceptions');
   reviewNextButton.addEventListener('click',()=>{
     if(cid()!==courseId)return;
     if(upcomingLesson){const state=tutorState(courseId);state.classroomSteps=state.classroomSteps||{};state.classroomSteps[upcomingLesson.id]=0;openLesson(upcomingLesson.id,null,courseId)}
