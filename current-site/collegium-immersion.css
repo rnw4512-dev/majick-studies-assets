@@ -1,0 +1,29 @@
+/* Moonlit Collegium — atmospheric layer; never lowers instructional contrast. */
+.learnLab,.v3333Mission,.gameRealm,.realmPage{position:relative;isolation:isolate}
+.learnLab{background-image:radial-gradient(ellipse at 85% 4%,rgba(200,159,242,.12),transparent 38%),radial-gradient(ellipse at 5% 75%,rgba(210,166,105,.10),transparent 42%)}
+.v3333Mission{background-image:radial-gradient(ellipse at 80% 15%,rgba(162,113,213,.13),transparent 40%)}
+.gameRealm,.realmPage{background-image:radial-gradient(ellipse at 50% 0,rgba(133,91,207,.16),transparent 60%)}
+.learnLab::before,.v3333Mission::before,.gameRealm::before,.realmPage::before{content:"✧   ☾   ✦   ✧";pointer-events:none;position:absolute;top:10px;right:18px;z-index:0;font-size:clamp(20px,3vw,34px);letter-spacing:14px;color:#e8c78d;opacity:.33;animation:collegiumLevitate 8s ease-in-out infinite alternate}
+.learnLab>* ,.v3333Mission>* ,.gameRealm>* ,.realmPage>*{position:relative;z-index:1}
+.majickClassroomAnchorShelf{box-shadow:0 0 0 1px #d6b78b,0 10px 32px rgba(11,6,26,.24);background:#2d203b!important;color:#fff5e6!important}
+.majickClassroomAnchorShelf details[open]>summary{border-bottom:1px solid #af8e6e;padding-bottom:10px;margin-bottom:8px}
+.majickClassroomAnchorShelf .majickAnchorContent{max-width:100%;color:#fff5e6}
+.majickClassroomAnchorShelf .majickAnchorTip{color:#fff5e6!important;font-weight:600}
+.atelierWandSwatches{display:flex;flex-wrap:wrap;gap:10px;margin:12px 0}
+.atelierWandSwatches button{width:48px;height:48px;border-radius:50%;border:2px solid #e6c58d;background:var(--wand-tint);cursor:pointer;display:grid;place-items:center;font-size:22px;color:#fff;box-shadow:0 3px 12px #0005}
+.atelierWandSwatches button[aria-pressed="true"]{outline:3px solid #fff1bb;outline-offset:3px}
+.atelierWandFeedback{color:#fff0cf!important;opacity:1!important}
+.atelierIllustrated[data-wand-palette="1"] .atelierArtLayer1{filter:hue-rotate(115deg) saturate(1.22)}
+.atelierIllustrated[data-wand-palette="2"] .atelierArtLayer1{filter:hue-rotate(225deg) saturate(1.12)}
+.atelierIllustrated[data-wand-palette="3"] .atelierArtLayer1{filter:hue-rotate(55deg) saturate(.65) brightness(1.18)}
+.atelierIllustrated[data-wand-palette="4"] .atelierArtLayer1{filter:hue-rotate(305deg) sepia(.32) saturate(1.2)}
+.atelierV2Mirror.wandCasting::after{content:"✦ ✧ ✨ ✦";position:absolute;inset:24% 6% auto;display:block;text-align:center;color:#ffdf92;font-size:clamp(26px,5vw,54px);pointer-events:none;z-index:5;animation:collegiumSpell .9s ease-out forwards}
+.atelierV2Mirror .atelierV2Crest{animation:collegiumGlow 6s ease-in-out infinite}
+.atelierV2Stage{position:relative}
+.atelierV2Stage::before{content:"✧";pointer-events:none;position:absolute;left:8%;top:18%;font-size:27px;color:#edcaa0;opacity:.75;animation:collegiumLevitate 7s ease-in-out infinite alternate}
+.mjSolutionEngine .mjSeFeedback,.mjtYourTurn .mjtFeedback{position:relative}
+.mjSolutionEngine .mjSeFeedback:not(:empty)::before,.mjtYourTurn .mjtFeedback:not(:empty)::before{content:"✦ ";color:#fbe3ab}
+@keyframes collegiumLevitate{from{transform:translateY(0) rotate(-3deg);opacity:.25}to{transform:translateY(15px) rotate(4deg);opacity:.52}}
+@keyframes collegiumGlow{50%{text-shadow:0 0 17px #e9b7e6}}
+@keyframes collegiumSpell{0%{opacity:0;transform:translateY(20px) scale(.6)}30%{opacity:1;transform:translateY(0) scale(1.2)}100%{opacity:0;transform:translateY(-32px) scale(1.5)}}
+@media(prefers-reduced-motion:reduce){.learnLab::before,.v3333Mission::before,.gameRealm::before,.realmPage::before,.atelierV2Mirror .atelierV2Crest,.atelierV2Stage::before,.atelierV2Mirror.wandCasting::after{animation:none!important}.atelierV2Mirror.wandCasting::after{display:none}}
