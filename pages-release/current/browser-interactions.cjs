@@ -57,20 +57,19 @@ async function solveMean(values,sum,count,mean){
  // Classroom first-wrong-answer → Try Again → corrected response; no unexpected scroll movement.
  await action('document.querySelector("[data-classroom-tab=turn]")?.click()');
  await waitFor('document.querySelectorAll("[data-v3401-q] [data-v3401-answer]").length>=2');
- const retryQA=await evalPage('(()=>{const card=document.querySelector("[data-v3401-q]");if(!card)return {error:"no lesson card"};const buttons=[...card.querySelectorAll("[data-v3401-answer]")];const first=buttons.findIndex(b=>b.textContent.trim().length);return {count:buttons.length,first,cardId:card.dataset.v3401Q}})()');
- assert(retryQA.count>=2,'Learn Lab questions need actionable choices');
- await action('const card=document.querySelector("[data-v3401-q]");window.scrollTo({top:200,behavior:"instant"});card.querySelectorAll("[data-v3401-answer]")[0].click()');
- const answered=await evalPage('(()=>{const c=document.querySelector("[data-v3401-q]");return {feedback:c.querySelector(".v3401Feedback")?.textContent,wrong:!!c.querySelector("[data-v3401-answer].incorrect"),retry:!!c.querySelector("[data-v3401-retry]"),top:window.scrollY}})()');
- assert(answered.feedback,'Learn Lab must show answer feedback');
- if(answered.wrong){
-   assert(answered.retry,'Wrong Learn Lab answer must provide Try Again');
-   await action('document.querySelector("[data-v3401-retry]").click()');
-   assert.equal(await evalPage('document.querySelector("[data-v3401-q] [data-v3401-answer]")?.disabled'),false,'Retry must reenable the original question choices');
-   assert.equal(await evalPage('document.querySelector("[data-v3401-q] .v3401AttemptStatus")?.textContent.includes("assisted correction")'),true,'Retry must not be recorded as independent mastery');
-   await action('document.querySelector("[data-v3401-q] [data-v3401-answer]").click()');
-   assert(await evalPage('!!document.querySelector("[data-v3401-q] .v3401Feedback")?.textContent'),'Reattempt must show feedback');
- }
- console.log('PASS browser: classroom answer feedback and incorrect-response retry availability');
+ const retryQA=await evalPage('(()=>{const card=document.querySelector("[data-v3401-q]");if(!card)return {error:"no lesson card"};const buttons=[...card.querySelectorAll("[data-v3401-answer]")];const qid=card.dataset.v3401Q;const lesson=MajickCourseTutor.officialD772Content({id:"d772-s2-l2"},"D772");const question=(lesson?.practice||[]).find(q=>String(q.id)===String(qid));if(!question)return {error:"source question not found",qid};const correct=Number(question.answer);return {count:buttons.length,wrongIndex:buttons.findIndex(b=>Number(b.dataset.v3401Answer)!==correct),correctIndex:correct,qid}})()');
+ assert(!retryQA.error,JSON.stringify(retryQA));
+ assert(retryQA.count>=2&&retryQA.wrongIndex>=0&&retryQA.correctIndex>=0,'Learn Lab requires a known wrong answer and known correct answer');
+ await action('const card=document.querySelector("[data-v3401-q]");window.scrollTo({top:200,behavior:"instant"});card.querySelectorAll("[data-v3401-answer]")['+retryQA.wrongIndex+'].click()');
+ const answered=await evalPage('(()=>{const c=document.querySelector("[data-v3401-q]");return {feedback:c.querySelector(".v3401Feedback")?.textContent,wrong:!!c.querySelector("[data-v3401-answer].incorrect"),retry:!!c.querySelector("[data-v3401-retry]"),top:window.scrollY,allDisabled:[...c.querySelectorAll("[data-v3401-answer]")].every(x=>x.disabled)}})()');
+ assert(answered.feedback&&answered.wrong&&answered.retry&&answered.allDisabled,'Wrong Learn Lab answer must show feedback, disable answers, and provide Try Again');
+ await action('document.querySelector("[data-v3401-retry]").click()');
+ assert.equal(await evalPage('[...document.querySelectorAll("[data-v3401-q] [data-v3401-answer]")].every(b=>!b.disabled)'),true,'Retry must reenable every question choice');
+ assert.equal(await evalPage('document.querySelector("[data-v3401-q] .v3401AttemptStatus")?.textContent.includes("assisted correction")'),true,'Retry must not be recorded as independent mastery');
+ await action('document.querySelector("[data-v3401-q] [data-v3401-answer]")['+retryQA.correctIndex+'].click()');
+ const corrected=await evalPage('(()=>{const c=document.querySelector("[data-v3401-q]");return {feedback:c.querySelector(".v3401Feedback")?.textContent,status:c.querySelector(".v3401AttemptStatus")?.textContent,correct:!!c.querySelector("[data-v3401-answer].correct")}})()');
+ assert(corrected.correct&&corrected.feedback&&/guided recovery|not independent mastery/i.test(corrected.status),'Corrected retry must give accurate feedback without independent mastery');
+ console.log('PASS browser: forced incorrect response, Try Again, enabled choices, correct recovery, and no automatic mastery');
 
  // Theme contrast regression: instructional parchment and disabled controls must remain legible.
  const contrastQA=await evalPage('(()=>{const panel=document.createElement("section");panel.className="v342Repair";panel.style.cssText="padding:12px";panel.innerHTML="<p>Explain your reasoning using the evidence.</p><button disabled data-repair-transfer>Try a different question</button>";document.body.append(panel);const text=panel.querySelector("p"),button=panel.querySelector("button");const rgba=x=>(x.match(/[\\d.]+/g)||[]).map(Number);const luminance=x=>{const n=rgba(x).slice(0,3).map(v=>{v/=255;return v<=.04045?v/12.92:((v+.055)/1.055)**2.4});return .2126*n[0]+.7152*n[1]+.0722*n[2]};const contrast=(a,b)=>{let x=luminance(a),y=luminance(b);return (Math.max(x,y)+.05)/(Math.min(x,y)+.05)};const result={parchment:contrast(getComputedStyle(text).color,getComputedStyle(panel).backgroundColor),disabledButton:contrast(getComputedStyle(button).color,getComputedStyle(button).backgroundColor)};panel.remove();return result})()');
