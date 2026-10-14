@@ -3795,6 +3795,11 @@ MajickLearningLab.bind=function(){
 };
 const baseRefresh=MajickLearningLab.refresh;
 MajickLearningLab.refresh=function(){baseRefresh();hydrate()};
+function sourceVerifiedD772Questions(){
+ const selected=D772_SECTION_TWO_CONTENT['d772-s2-l4-1']?.practice||[];
+ return selected.filter(q=>/^s2l41-course-p[1-6]$/.test(String(q.id))&&q.provenance&&Array.isArray(q.options)&&Number.isInteger(q.answer)&&q.options[q.answer]&&q.rationale).map(q=>({id:q.id,courseId:'D772',section:'Section 2 · Statistics',lessonId:'d772-s2-l4-1',learningPathLessonId:'d772-s2-l4-1',topicId:'d772-s2-l4-1',prompt:q.prompt,options:[...q.options],answer:q.options[q.answer],why:q.rationale,rationale:q.rationale,sourceLabel:q.provenance,sourceProvenance:'user-provided-wgu-lesson-question',assistedPractice:true,independentMastery:true}));
+}
+window.MajickD772VerifiedSource=Object.freeze({questions:sourceVerifiedD772Questions});
 window.MajickCourseTutor={VERSION,questionVisualHtml,D772_SECTION_ONE,D772_SECTION_TWO,D772_SECTION_THREE,D772_SECTION_ONE_CONTENT,D772_SECTION_TWO_CONTENT,D772_SECTION_THREE_CONTENT,D772_TUTOR_HELP,sectionUnits,allOfficialLessons,hydrate,sections,classifySource,annotateSource,tagD772Generated,classifyD772Item,d772Segments,sourcesForLesson,questionsForLesson,mastery,sectionProgress,chapter,mergeLessonTeaching,officialD772Content,startPractice,show,renderPath,renderTutor,renderTutorAssist,openLesson,selectedLesson};
 })();
 
