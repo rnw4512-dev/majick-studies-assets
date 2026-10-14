@@ -805,6 +805,7 @@
     "generated-question-engine.js": "e83d595eedd5a21351a76b675b4b8118f2c15c067cf563fc518beee622aec553",
     "anchor-interactives.js": "3706e9457cffa8820e1afe1eb8a01b538fb209ceabed504ebdca66f63d066436",
     "readability-guard.css": "867a81ab3b904a6c376baeea64ca1bde456ac571d59bc9c8fcac31506e21adf6",
-    "collegium-immersion.css": "a871552fa1698bc032590a584a85782fc44dee9aff8926d0d78d7fc73b41f38c"
+    "collegium-immersion.css": "a871552fa1698bc032590a584a85782fc44dee9aff8926d0d78d7fc73b41f38c",
+    "coverage/d772-source-reconciliation.json": "ab8db85647a42ec2badd5c06352f8586f06b037751a39c05b46f3fd5f447402a"
   }
 }
