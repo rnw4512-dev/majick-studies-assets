@@ -356,7 +356,7 @@ function startSkillRetry(id){
  const ordered=(fresh.length>=3?fresh:rows).sort((a,b)=>Math.abs(complexity(a)-targetLevel)-Math.abs(complexity(b)-targetLevel));
  const signatures=new Set();
  const questions=ordered.filter(q=>{
-  const sign=String(q.prompt||'').toLowerCase().replace(/\d+(?:\.\d+)?/g,'#').replace(/\s+/g,' ').trim();
+  const sign=(q.generated?String(q.skill||'')+'|'+JSON.stringify(q.data):String(q.prompt||'').toLowerCase().replace(/\d+(?:\.\d+)?/g,'#').replace(/\s+/g,' ').trim());
   if(signatures.has(sign))return false;signatures.add(sign);return true;
  }).slice(0,5);
  session={type:'test',opts:{label:'Independent skill recovery · '+id,limit:questions.length,kind:'d772-section-practice',scope:'retry',hideMeta:true},index:1,score:0,combo:0,questions,current:questions[0],answered:false,confidence:'sure',review:[],start:Date.now(),pendingChoice:null,adaptiveTracked:false};
@@ -366,7 +366,7 @@ function startSkillRetry(id){
 function selectVariedQuestions(rows,limit){
  const seen=new Set(),ordered=[];
  for(const q of rows){
-  const key=String(q.prompt||'').toLowerCase().replace(/\d+(?:\.\d+)?/g,'#').replace(/\s+/g,' ').trim();
+  const key=q.generated?String(q.skill||'')+'|'+JSON.stringify(q.data):String(q.prompt||'').toLowerCase().replace(/\d+(?:\.\d+)?/g,'#').replace(/\s+/g,' ').trim();
   if(!key||seen.has(key))continue;
   if(window.MajickVisualEvidence&&!window.MajickVisualEvidence.evidence(q,x=>visualHtml(x.visual)||window.MajickCourseTutor?.questionVisualHtml?.(x)||'').ok)continue;
   seen.add(key);ordered.push(q);
