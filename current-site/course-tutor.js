@@ -3679,7 +3679,7 @@ function openLesson(lessonId,helpKind=null,id='D772'){
 function compactClassroom(box,ch,lesson){
   // Move the existing lesson nodes into one classroom; preserve their bindings and data owners.
   box.classList.add('compactClassroom');
-  const groups=[['opening','Opening'],['teach','Teach'],['visual','Visuals & Charts'],['example','Worked Example'],['turn','Your Turn'],['review','Review & Tutor']];
+  const groups=[['opening','Opening'],['teach','Teach'],['visual','Visuals & Charts'],['example','Worked Example'],['turn','Your Turn'],['workshop','Reasoning Workshop'],['review','Review & Tutor']];
   const nav=document.createElement('nav');nav.className='classroomTabs';nav.setAttribute('role','tablist');nav.setAttribute('aria-label','Lesson parts');
   const stage=document.createElement('div');stage.className='classroomStage';
   const panels={};
@@ -3695,6 +3695,7 @@ function compactClassroom(box,ch,lesson){
     const key=n.matches('.v3401Objectives,.tutorNext')?'opening':n.matches('.v3401Anchor')||n.querySelector('.questionDataVisual')&&!n.matches('.v3401YouDo')||n.querySelector('.v3401AnchorGrid')||text.includes('SEE IT')?'visual':n.matches('.v3401WeDo')?'example':n.matches('.v3401YouDo')?'turn':text.includes('TEACH ME')?'teach':'review';
     panels[key].append(n);
   });
+  const workshop=document.createElement('section');workshop.className='mjParchmentWorkshop';panels.workshop.append(workshop);window.MajickSolutionEngine?.mountLesson?.(workshop,lesson.id);
   if(!panels.opening.querySelector('.v3401Objectives'))panels.opening.insertAdjacentHTML('afterbegin','<h3>What am I learning?</h3><p>'+E(lesson.goal||lesson.title)+'</p><h4>Lesson skills</h4><ul>'+(lesson.thinking||[]).map(x=>'<li>'+E(x)+'</li>').join('')+'</ul>');
   panels.opening.insertAdjacentHTML('beforeend','<h4>What to watch for in questions</h4><ul>'+(lesson.traps||[]).map(x=>'<li>'+E(x)+'</li>').join('')+'</ul>');
   if(!panels.example.children.length)panels.example.innerHTML='<p>'+E(helpFor(lesson)?.example||'A worked example has not been supplied for this lesson yet. Check the teaching notes and source coverage in Review.')+'</p>';
