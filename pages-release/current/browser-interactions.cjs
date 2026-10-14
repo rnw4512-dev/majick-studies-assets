@@ -66,7 +66,7 @@ async function solveMean(values,sum,count,mean){
  await action('document.querySelector("[data-v3401-retry]").click()');
  assert.equal(await evalPage('[...document.querySelectorAll("[data-v3401-q] [data-v3401-answer]")].every(b=>!b.disabled)'),true,'Retry must reenable every question choice');
  assert.equal(await evalPage('document.querySelector("[data-v3401-q] .v3401AttemptStatus")?.textContent.includes("assisted correction")'),true,'Retry must not be recorded as independent mastery');
- await action('document.querySelector("[data-v3401-q] [data-v3401-answer]")['+retryQA.correctIndex+'].click()');
+ await action('document.querySelectorAll("[data-v3401-q] [data-v3401-answer]")['+retryQA.correctIndex+'].click()');
  const corrected=await evalPage('(()=>{const c=document.querySelector("[data-v3401-q]");return {feedback:c.querySelector(".v3401Feedback")?.textContent,status:c.querySelector(".v3401AttemptStatus")?.textContent,correct:!!c.querySelector("[data-v3401-answer].correct")}})()');
  assert(corrected.correct&&corrected.feedback&&/guided recovery|not independent mastery/i.test(corrected.status),'Corrected retry must give accurate feedback without independent mastery');
  console.log('PASS browser: forced incorrect response, Try Again, enabled choices, correct recovery, and no automatic mastery');
