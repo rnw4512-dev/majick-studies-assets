@@ -115,11 +115,17 @@ document.addEventListener('click',event=>{
  }
 });
 function startRepairTransfer(id){
- const original=String(id||''),source=practicePool('mixed').find(q=>String(q.id||q.qid||'')===original);
+ const original=String(id||'');
+ // The current repaired item can come from a generated/inline pool, not just Study Now's fixed bank.
+ const source=session?.current&&String(session.current.id||session.current.qid||session.current.prompt||'')===original?session.current:practicePool('mixed').find(q=>String(q.id||q.qid||q.prompt||'')===original);
  if(!source)return window.rewardToast?.('Review unavailable','Original question not found.');
- const lesson=String(source.learningPathLessonId||source.topicId||'');
- const candidates=shuffleCopy(practicePool('mixed').filter(q=>String(q.id||q.qid||'')!==original&&String(q.learningPathLessonId||q.topicId||'')===lesson));
- if(!candidates.length)return window.rewardToast?.('No fresh question','No different question is available for this lesson.');
+ const lesson=String(source.learningPathLessonId||source.lessonId||source.topicId||'');
+ const valid=q=>String(q.id||q.qid||q.prompt||'')!==original&&String(q.learningPathLessonId||q.lessonId||q.topicId||'')===lesson&&q.options?.includes(q.answer)&&(!window.MajickVisualEvidence||window.MajickVisualEvidence.evidence(q).ok);
+ let candidates=shuffleCopy(practicePool('mixed').filter(valid));
+ if(!candidates.length&&source.skill&&window.MajickGeneratedPractice?.generate){
+  candidates=Array.from({length:8},()=>window.MajickGeneratedPractice.generate(source.skill,2)).filter(q=>q&&valid(q));
+ }
+ if(!candidates.length)return window.rewardToast?.('No fresh question','No different verified question is available for this lesson. Your repair progress was preserved.');
  const q=candidates[0];
  session={type:'test',opts:{label:'Independent Transfer Check',limit:1,kind:'d772-diagnostic',hideMeta:true,assessmentOnly:true},index:1,score:0,combo:0,questions:[q],current:q,answered:false,confidence:'sure',review:[],start:Date.now(),pendingChoice:null};
  S.screen='mission';render();
