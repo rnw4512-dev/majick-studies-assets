@@ -208,8 +208,7 @@ async function solveMean(values,sum,count,mean){
  console.log('PHASE1 RENDERED ACCESSIBILITY AUDIT',JSON.stringify(phase1.screens));
  const unnamed=phase1.screens.flatMap(x=>x.unnamed.map(y=>({screen:x.screen,viewport:x.viewport.width,html:y})));
  const contrast=phase1.screens.flatMap(x=>x.badContrast.map(y=>({...y,screen:x.screen,viewport:x.viewport.width})));
- assert.equal(unnamed.length,0,'Visible controls without accessible names: '+JSON.stringify(unnamed.slice(0,8)));
- assert.equal(contrast.length,0,'Computed color contrast below WCAG AA for sampled rendered content: '+JSON.stringify(contrast.slice(0,12)));
+ console.log('PHASE1 ACCESSIBILITY FINDINGS',JSON.stringify({unnamed:unnamed.slice(0,8),contrast:contrast.slice(0,20),totalContrast:contrast.length}));
  // Compare the actual serialized academic/world records through a fresh browser reload.
  const phase1Before=await evalPage('JSON.stringify({courses:S.courses,progress:S.progress,majickAccount:S.majickAccount,legacy:S.legacy})');
  await call('Page.reload',{ignoreCache:true});
@@ -220,7 +219,10 @@ async function solveMean(values,sum,count,mean){
  for(const key of Object.keys(savedBefore))if(JSON.stringify(savedBefore[key])!==JSON.stringify(savedAfter[key]))diffs.push(key);
  console.log('PHASE1 SAVE RELOAD COMPARISON',JSON.stringify({fields:Object.keys(savedBefore),different:diffs}));
  assert.equal(diffs.length,0,'Reload changed learner academic/world state: '+diffs.join(', '));
- console.log('PASS browser: sampled mobile/desktop accessibility and full core state JSON equivalence after reload');
+ console.log('PASS browser: full core state JSON equivalence after reload');
+ assert.equal(unnamed.length,0,'Visible controls without accessible names: '+JSON.stringify(unnamed.slice(0,8)));
+ assert.equal(contrast.length,0,'Computed color contrast below WCAG AA for sampled rendered content: '+JSON.stringify(contrast.slice(0,12)));
+ console.log('PASS browser: sampled mobile/desktop accessibility contrast checks');
 
  console.log('PASS browser: three-level mean worked solutions, independent transfer mastery, course lesson selection, participation XP, save/reload, duplicate prevention and D756 isolation');
 })().catch(e=>{console.error('FAIL browser QA:',e.stack||e);process.exitCode=1}).finally(async()=>{try{ws?.close()}catch{}try{child?.kill()}catch{}await new Promise(r=>server.close(r));try{fs.rmSync(profile,{recursive:true,force:true})}catch{}});
