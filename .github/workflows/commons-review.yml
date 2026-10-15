@@ -27,7 +27,7 @@ jobs:
       - name: Canonical build
         run: python pages-release/current/build.py current-site _site
       - name: Commons rendered audit and screenshots
-        run: timeout 150s node pages-release/current/browser-commons.cjs _site
+        run: timeout 480s node pages-release/current/browser-commons.cjs _site
       - name: Preserve visual evidence
         if: always()
         uses: actions/upload-artifact@v4

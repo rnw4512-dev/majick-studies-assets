@@ -98,3 +98,15 @@ body[data-majick-room=home] #majickLivingMagic,
 #majCommonsHub .v3327PortalHero{background:#34223f!important}
 #majCommonsHub .majCommonsWelcome{background:radial-gradient(circle at 90% 0,#4a3344,transparent 40%),linear-gradient(130deg,#27172d,#34223f)!important}
 #majCommonsHub .majCommonsStep button{background:#34223f!important;color:#fff6e8!important;box-shadow:none!important}
+#majCommonsHub .majCommonsRecordShelf{border:1px solid #b99a60;border-radius:10px;background:#f2e1c3;color:#241827;padding:12px}
+#majCommonsHub .majCommonsRecordShelf>summary{font-weight:700;cursor:pointer;min-height:40px;display:list-item;align-content:center}
+#majCommonsHub .majCommonsRecordShelf[open]>.v3327StudentRecord{margin-top:12px}
+#majCommonsHub .majCommonsRecordShelf>summary:focus-visible{outline:3px solid #805006;outline-offset:3px}
+#majCommonsHub .v3400DailyLoop{background:linear-gradient(120deg,#f2e1c3,#ead4b0)!important;color:#241827!important;padding:18px;margin:0!important}
+#majCommonsHub .v3400DailyLoop :is(h3,header p,header small,header>b,.v3400LoopActions>span,li,li span,li i){color:#241827!important}
+#majCommonsHub .v3400DailyLoop :is(header>b,li){background:#fff8e9!important;border-color:#b99a60!important}
+#majCommonsHub .v3400DailyLoop li.current{border:2px solid #805006!important;box-shadow:inset 0 -3px #b99a60!important}
+#majCommonsHub .majEggIncubator{margin-top:14px;background:#34223f;color:#fff6e8;border:1px solid #b99a60;padding:14px;border-radius:12px}
+#majCommonsHub .majEggIncubator :is(h3,p,small,b,em,.eyebrow){color:#fff6e8!important;opacity:1!important}
+#majCommonsHub .majEggEmpty{color:#fff6e8!important;padding:12px;border:1px solid #b99a60;border-radius:10px}
+@media(max-width:650px){#majCommonsHub .majCommonsWelcome h2{font-size:25px!important}#majCommonsHub .majCommonsWelcome{padding:14px 16px}#majCommonsHub .majCommonsWelcome p{font-size:15px!important}}

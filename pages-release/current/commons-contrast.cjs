@@ -61,15 +61,16 @@ module.exports=async function({call,ev,tab,width,out}){
   }finally{await ev(`(()=>{document.querySelectorAll('[data-commons-audit-style]').forEach(e=>{e.setAttribute('style',e.dataset.commonsAuditStyle);delete e.dataset.commonsAuditStyle})})()`)}
   const image=pngPixels(Buffer.from(shot.result.data,'base64'));
   for(const item of info){
-   const rgba=item.color.match(/[\d.]+/g).map(Number),alpha=(rgba[3]??1)*item.opacity,required=item.size>=24||(item.size>=18.66&&item.weight>=700)?3:4.5;let ratio=Infinity,samples=0;
+   const rgba=item.color.match(/[\d.]+/g).map(Number),alpha=(rgba[3]??1)*item.opacity,required=item.size>=24||(item.size>=18.66&&item.weight>=700)?3:4.5;let ratio=Infinity,samples=0,minimumPixel=null;
    for(const r of item.rects){
     // A line partly behind a fixed header is measured when scrolled fully into view.
     if(r.y<105||r.y+r.h>image.height-75)continue;
-    for(let y=Math.max(0,Math.ceil(r.y+2));y<Math.min(image.height,Math.floor(r.y+r.h-2));y+=2)for(let x=Math.max(0,Math.ceil(r.x+2));x<Math.min(image.width,Math.floor(r.x+r.w-2));x+=2){const bg=image.pixel(x,y),fg=rgba.slice(0,3).map((v,i)=>v*alpha+bg[i]*(1-alpha));ratio=Math.min(ratio,contrast(fg,bg));samples++}
+    for(let y=Math.max(0,Math.ceil(r.y+2));y<Math.min(image.height,Math.floor(r.y+r.h-2));y+=2)for(let x=Math.max(0,Math.ceil(r.x+2));x<Math.min(image.width,Math.floor(r.x+r.w-2));x+=2){const bg=image.pixel(x,y),fg=rgba.slice(0,3).map((v,i)=>v*alpha+bg[i]*(1-alpha));const value=contrast(fg,bg);if(value<ratio){ratio=value;minimumPixel={x,y,bg,fg}}samples++}
    }
    if(!samples)continue;if(!seen.has(item.index)){count++;seen.add(item.index)}minimum=Math.min(minimum,ratio);
-   if(ratio<required)failures.push({...item,rects:undefined,frame:frames,ratio:+ratio.toFixed(2),required});
+   if(ratio<required)failures.push({...item,minimumPixel,frame:frames,ratio:+ratio.toFixed(2),required});
   }
+  if(out&&failures.some(f=>f.frame===frames))fs.writeFileSync(path.join(out,width+'-'+tab+'-'+frames+'-background.png'),Buffer.from(shot.result.data,'base64'));
   frames++;if(offset>=scrollInfo.height-scrollInfo.viewport)break;
  }}finally{await ev(`(()=>{const s=document.querySelector('[data-commons-scroll]');s.scrollTop=0;delete s.dataset.commonsScroll})()`)}
  const report={width,tab,count,frames,minimum:+minimum.toFixed(2),failures};

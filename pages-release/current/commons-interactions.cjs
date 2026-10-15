@@ -6,6 +6,8 @@ module.exports=async function({ev,waitFor,call,sleep}){
  const routes=[
   ['overview','.v3327HeroActions .v3327Primary','learninglab'],
   ['overview','.v3327HeroActions button[onclick*="mission"]','mission'],
+  ['overview','.v3327HeroActions button[onclick*="grimoire"]','grimoire'],
+  ['overview','.v3327HeroActions button[onclick*="addmaterial"]','addmaterial'],
   ['overview','#v3377CampusDoors [data-go="livinggrimoire"]','livinggrimoire'],
   ['overview','#v3377CampusDoors [data-go="games"]','games'],
   ['overview','#v3377CampusDoors [data-go="companions"]','companions'],
@@ -17,6 +19,10 @@ module.exports=async function({ev,waitFor,call,sleep}){
  ];
  for(const [tab,selector,screen] of routes){await home(tab);await click(selector);await waitFor('S.screen==='+JSON.stringify(screen));assert((await ev('document.querySelector("#content").textContent.trim().length'))>20,'Empty destination '+screen)}
  console.log('PASS Commons existing Learn, Study Now, Grimoire, Realm, Guardian, Sanctuary, material, daily-loop and Memory Quest actions');
+ await home('guardians');
+ const eggs=await ev('MajickGuardianCare.snapshot().eggs');
+ assert.equal(await ev('document.querySelectorAll("#commons-panel-guardians .majEggFocus").length'),eggs.length,'All real eggs must appear in Guardians');
+ if(eggs.length){await click('#commons-panel-guardians .majEggFocus');await waitFor('document.querySelector("#commons-panel-guardians .majEggFocus[aria-pressed=true]")');}
  // All original questions remain browsable; guided errors never certify mastery.
  await home('review');await ev('document.querySelector("#mjPreassessmentReview details").open=true');
  await ev('const s=document.querySelector("#mjPaOriginal");s.value="49";s.dispatchEvent(new Event("change",{bubbles:true}))');

@@ -156,7 +156,7 @@
     "living-magic.css": "fe10eec2b9ea646a3559aa407ffd55a2034eb6dff0263da995414581a86c18f0",
     "living-magic.js": "91c6a9f590932a7cdca5fe0005f0c6231adfc407bedc7e57326660ba2eb39a3f",
     "magical-college-home.css": "4a2dfcf497db1fecd0caa2caedb1b69334b15b19c9061dbe2029bb6c17020f28",
-    "magical-college-home.js": "a91645337d3727101ad3ee649ec402ea092b4ab53584876c86a43adcb661d861",
+    "magical-college-home.js": "7ab85e24df68b661318a9e9c15adca9ebd46b7942c573371901681c26fdaf133",
     "majick-state-core.js": "fc6262a0acf4a3ce8fe2e188fd20841d813dab286df5a08b39ac35ee85975003",
     "manifest.webmanifest": "901f097a7c8cea86f9637e0105ce1b46d312e38613513b814581a70077188b67",
     "mobile-cleanup.css": "0d269da4401e8a281fde92948e139f925110d2ce937fd4d95783269dce36987c",
@@ -814,7 +814,7 @@
     "d772-preassessment-review.js": "62f18fda8ac6ae91df3ed20ba101437382bbf615e0848ff858427dadad679064",
     "d772-preassessment-deep-practice.js": "e8beed6936534fb91af552dd78b2928655eee66225e22dce73140fcb0c4b3a75",
     "d772-adaptive-mastery.js": "07f55f82e3a6c73b6eae1e170a2468a250422c93b43dd4952e32a168f161627b",
-    "collegium-commons.js": "9f7e11dcaa7f1dfb5590687aef798e78d273507084508b57c78715a0455eb862",
-    "collegium-commons.css": "7ac1154b6cfc45f9a3870f6f50c846b3908ac5d0eb365fba7b5d5ae117806d2a"
+    "collegium-commons.js": "ab218b16072be19ae397a52710a1401d6b1a4dbc5c9f0a8ce16b2c7e5a908be3",
+    "collegium-commons.css": "648b46ab2df2ee2885c61000fad689170d85a08ab5a67d206acfb7b53a79647b"
   }
 }

@@ -8,7 +8,7 @@ let proc,ws,id=0,stderr='';const contrastFailures=[];const inflight=new Map();
 async function call(method,params={}){const n=++id;return new Promise((resolve,reject)=>{inflight.set(n,{resolve,reject});ws.send(JSON.stringify({id:n,method,params}));setTimeout(()=>{if(inflight.has(n)){inflight.delete(n);reject(Error('Timed out '+method))}},14000)})}
 async function ev(js){let r=await call('Runtime.evaluate',{expression:js,returnByValue:true,awaitPromise:true});if(r.result?.exceptionDetails)throw Error(JSON.stringify(r.result.exceptionDetails));return r.result?.result?.value}
 async function waitFor(js){for(let n=0;n<100;n++){try{if(await ev(js))return}catch(e){if(/Timed out/.test(e.message))throw e}await sleep(250)}throw Error('Page condition: '+js)}
-const deadline=setTimeout(()=>{console.error('Commons audit exceeded 180 seconds');try{proc?.kill()}catch{};server.closeAllConnections();process.exit(1)},180000);deadline.unref();
+const deadline=setTimeout(()=>{console.error('Commons audit exceeded 480 seconds');try{proc?.kill()}catch{};server.closeAllConnections();process.exit(1)},480000);deadline.unref();
 async function run(){
  await new Promise(r=>server.listen(0,'127.0.0.1',r));const url='http://127.0.0.1:'+server.address().port+'/index.html';
  proc=spawn(chrome,['--headless=new','--no-sandbox','--disable-dev-shm-usage','--disable-gpu','--remote-allow-origins=*','--remote-debugging-port=0','--user-data-dir='+profile,url],{stdio:['ignore','ignore','pipe']});proc.stderr.on('data',d=>stderr+=String(d).slice(-3000));
@@ -50,6 +50,7 @@ async function run(){
    let snapshot=await ev('(()=>{const h=document.querySelector("#majCommonsHub"),a=[...h.querySelectorAll("[data-commons-panel]")].filter(x=>!x.hidden);return {panel:a[0]?.dataset.commonsPanel,count:a.length,selected:h.querySelector("[aria-selected=true]")?.dataset.commonsTab,escaped:[...document.querySelector("#content").children].filter(x=>x!==h&&x.nodeType===1).length}})()');
    const audit=await require('./commons-contrast.cjs')({call,ev,tab,width,out:process.env.COMMONS_QA_DIR||'commons-qa'});
    contrastFailures.push(...audit.failures.map(f=>({...f,width,tab})));
+   if(tab==='overview'&&width===1366){await ev('document.querySelector(".majCommonsRecordShelf").open=true');const recordAudit=await require('./commons-contrast.cjs')({call,ev,tab:'student-record',width,out:'commons-qa'});contrastFailures.push(...recordAudit.failures);await ev('document.querySelector(".majCommonsRecordShelf").open=false')}
    assert.equal(snapshot.count,1);assert.equal(snapshot.panel,tab);assert.equal(snapshot.selected,tab);assert.equal(snapshot.escaped,0);
   }
   await ev('document.querySelector("[data-commons-next]").click()');assert.equal(await ev('document.querySelector("[aria-selected=true]")?.dataset.commonsTab'),'overview');
