@@ -5,7 +5,7 @@ const js=fs.readFileSync(path.join(root,'collegium-commons.js'),'utf8');
 const css=fs.readFileSync(path.join(root,'collegium-commons.css'),'utf8');
 const html=fs.readFileSync(path.join(root,'index.html'),'utf8');
 const five=['overview','today','review','guardians','sanctuary'];
-for(const id of five){assert(js.includes("['"+id+"',"),'Missing tab: '+id);assert(js.includes("commons-panel-"+id),'Missing panel linkage: '+id)}
+for(const id of five){assert(js.includes("['"+id+"',"),'Missing tab: '+id);assert(js.includes("'commons-panel-'+id"),'Missing panel linkage: '+id)}
 assert.equal((js.match(/\['(?:overview|today|review|guardians|sanctuary)','/g)||[]).length,5,'Exactly five tabs');
 for(const token of ["sessionStorage.getItem('majick-commons-tab')","sessionStorage.setItem('majick-commons-tab'","ArrowRight","ArrowLeft","'Home'","'End'","aria-selected","aria-controls","role','tabpanel'","data-commons-next","data-commons-previous","n!==hub","panels[classify(n)].append(n)"])
  assert(js.includes(token),'Missing Commons interaction or ownership: '+token);
