@@ -30,3 +30,31 @@
 #majCommonsHub [data-commons-panel] :is(#mjD772WguHistory,#mjPreassessmentReview,#mjAdaptiveMastery,#mjMisrepresentationLab,#mjD772AxisLab) :is(h3,h4,p,label,legend,summary,td,th){color:#241827!important;text-shadow:none!important;opacity:1!important}
 #majCommonsHub [data-commons-panel] .btn{min-height:41px}
 @media(max-width:650px){#majCommonsHub .majCommonsWelcome{padding:18px}#majCommonsHub .majCommonsPanels{padding:10px}#majCommonsHub .majCommonsTabs button{flex:1 1 42%}#majCommonsHub .majCommonsWelcome:after{right:10px;top:10px;font-size:16px}}
+
+/* Campus-wide readable parchment (not limited to imported D772 panels). Keep dark velvet cards light-on-dark. */
+#majCommonsHub [data-commons-panel] :is(.v3327AcademicHall,.v3327StudentRecord,.v3327HallGrid,.v3327CoursePace,.v3327PaceCard,.v3327GuardianHall,.majDailyStudyLoop,.memoryQuest,.dailyStudyLoop) {
+  color:#241827;
+}
+#majCommonsHub [data-commons-panel] :is(.v3327AcademicHall,.v3327StudentRecord,.v3327CoursePace,.v3327PaceCard,.majDailyStudyLoop,.memoryQuest,.dailyStudyLoop) :is(p,span,small,div,dt,dd,label,strong,h2,h3,h4,h5) {
+  opacity:1!important;
+  text-shadow:none!important;
+}
+#majCommonsHub [data-commons-panel] :is(.v3327AcademicHall,.v3327StudentRecord,.v3327CoursePace,.v3327PaceCard,.majDailyStudyLoop,.memoryQuest,.dailyStudyLoop) :is(p,span,small,dt,dd,label,h2,h3,h4,h5) {
+  color:#241827!important;
+}
+#majCommonsHub [data-commons-panel] :is(.v3327GuardianHall,.v3327PortalHero) {
+  color:#fff1d9;
+}
+#majCommonsHub [data-commons-panel] :is(.v3327GuardianHall,.v3327PortalHero) :is(p,span,small,label,h2,h3,h4,h5) {
+  color:#fff1d9!important;
+  opacity:1!important;
+}
+#majCommonsHub [data-commons-panel] :is(button,input,select,textarea):focus-visible{
+ outline:3px solid #ad6c07!important;outline-offset:3px;
+}
+#majCommonsHub [data-commons-panel] :is(button,select,input,textarea){font-family:Inter,system-ui,sans-serif;min-height:40px;}
+#majCommonsHub [data-commons-panel] p,
+#majCommonsHub [data-commons-panel] li{line-height:1.55;}
+@media(prefers-reduced-motion:reduce){
+ #majCommonsHub *,#majCommonsHub *::before,#majCommonsHub *::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+}
