@@ -58,3 +58,23 @@
 @media(prefers-reduced-motion:reduce){
  #majCommonsHub *,#majCommonsHub *::before,#majCommonsHub *::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
 }
+
+/* Pair ink with explicit paper surfaces: these legacy halls originally used dark gradients. */
+#majCommonsHub [data-commons-panel] :is(.v3327AcademicHall,.v3327StudentRecord){
+ background:#f2e1c3!important;color:#241827!important;border-color:#b99a60;
+}
+#majCommonsHub [data-commons-panel] :is(.v3327AcademicHall,.v3327StudentRecord) :is(.v3327CourseScroll,.v3337PaceCard,.v3337PaceWindow i,.v3327AcademicMetrics>div,.v3327AccountRecord>div,.v3327RecordGrid article,.v3337PaceTop>span,.v3327Status){
+ background:#fff8e9!important;color:#241827!important;border-color:#b99a60;
+}
+#majCommonsHub [data-commons-panel] :is(.v3327AcademicHall,.v3327StudentRecord) :is(p,span,small,dt,dd,label,h2,h3,h4,h5,b,strong,em,i,li){
+ color:#241827!important;opacity:1!important;text-shadow:none!important;
+}
+#majCommonsHub [data-commons-panel] :is(.v3327AcademicHall,.v3327StudentRecord) button,
+#majCommonsHub [data-commons-panel] :is(.v3327AcademicHall,.v3327StudentRecord) button :is(span,small,b,strong){
+ background:#34223f!important;color:#fff6e8!important;opacity:1!important;
+}
+/* Keep the welcome compact and stationary while retaining velvet and antique gold. */
+#majCommonsHub .majCommonsWelcome{padding:16px 22px}
+#majCommonsHub .majCommonsWelcome h2{margin:7px 0;font-size:clamp(24px,2.6vw,34px)!important}
+#majCommonsHub .majCommonsWelcome p{margin:8px 0}
+#majCommonsHub .majCommonsWelcome p:not(.majCommonsCourse){max-width:76ch}

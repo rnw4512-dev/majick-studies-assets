@@ -6,6 +6,15 @@ const valid=id=>TABS.some(t=>t[0]===id);
 function preferred(){try{const id=sessionStorage.getItem('majick-commons-tab');return valid(id)?id:'overview'}catch(_){return 'overview'}}
 selected=preferred();
 function classify(node){
+ // Stable component identity wins over incidental words in buttons and descriptions.
+ const identities=[
+  ['today','#v3400DailyLoop,.v3400DailyLoop,.majDailyStudyLoop,.dailyStudyLoop,.v3327AcademicHall'],
+  ['overview','#v3377CampusDoors,.v3377CampusDoors,.v3327PortalHero,.v3327StudentRecord,#majickRoomRibbon'],
+  ['review','.v3400MemoryQuest,#mjPreassessmentReview,#mjAdaptiveMastery,#mjD772WguHistory,#mjMisrepresentationLab,#mjD772AxisLab'],
+  ['guardians','.v3327GuardianHall'],
+  ['sanctuary','.v3317HomeSanctuary,.v3327CampusSanctuary']
+ ];
+ for(const [tab,selector] of identities)if(node.matches?.(selector))return tab;
  const id=(node.id||'').toLowerCase(),t=((node.textContent||'').slice(0,550)).toLowerCase(),c=(node.className&&typeof node.className==='string'?node.className:'').toLowerCase();
  if(/mjpreassessmentreview|mjadaptivemastery|mjd772wguhistory|mjmisrepresentationlab|mjd772axislab|mjmemor|review|preassessment|adaptive|misrepresentation|memory|recall|misconception/.test(id+' '+c+' '+t))return 'review';
  if(/sanctuary|dorm|atelier|furniture|decor|room collection/.test(id+' '+c+' '+t))return 'sanctuary';
@@ -56,11 +65,22 @@ function attach(){
   oldHome.remove();
  }
  [...root.children].filter(n=>n!==hub&&n.nodeType===1).forEach(n=>panels[classify(n)].append(n));
+ // Reconcile late additions inside existing panels as well as new root children.
+ for(const [tab,panel] of Object.entries(panels))for(const node of [...panel.children]){
+  const destination=classify(node);
+  if(destination!==tab)panels[destination].append(node);
+ }
  navigateTab(selected);
  }catch(e){console.warn('Commons layout preserved original content:',e)}finally{updating=false}
+}
+function needsSync(){
+ const root=document.querySelector('#content'),hub=root?.querySelector(':scope > #majCommonsHub');
+ if(!root)return false;
+ if(!hub||[...root.children].some(n=>n!==hub))return true;
+ return [...hub.querySelectorAll('[data-commons-panel]')].some(p=>[...p.children].some(n=>classify(n)!==p.dataset.commonsPanel));
 }
 function sync(){if(window.S?.screen==='home')attach()}
 window.MajickCollegiumCommons={attach,sync,select:n=>{if(TABS.some(t=>t[0]===n))navigateTab(n)},tabs:TABS.map(x=>x[0])};
 if(window.MajickRenderQueue?.register){window.MajickRenderQueue.register('collegium-commons-home',sync,98);window.MajickRenderQueue.schedule()}
-document.addEventListener('DOMContentLoaded',()=>{sync();const host=document.querySelector('#app')||document.body;const observer=new MutationObserver(()=>{if(window.S?.screen==='home'&&!updating&&document.querySelector('#content > :not(#majCommonsHub)'))queueMicrotask(sync)});observer.observe(host,{childList:true,subtree:true})});
+document.addEventListener('DOMContentLoaded',()=>{sync();const host=document.querySelector('#app')||document.body;const observer=new MutationObserver(()=>{if(window.S?.screen==='home'&&!updating&&needsSync())queueMicrotask(sync)});observer.observe(host,{childList:true,subtree:true})});
 })();
