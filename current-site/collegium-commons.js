@@ -68,6 +68,8 @@ function attach(){
  // Keep the full existing record within reach without another long default stack.
  const record=panels.overview.querySelector(':scope > .v3327StudentRecord');
  if(record){const shelf=document.createElement('details');shelf.className='majCommonsRecordShelf';const summary=document.createElement('summary');summary.textContent='Open your Student Record · coursework and Majick progress';shelf.append(summary);record.before(shelf);shelf.append(record)}
+ const hero=panels.overview.querySelector('.v3327PortalHero'),guardian=hero?.querySelector('.v3341GuardianHero');
+ if(guardian){let shelf=hero.querySelector('.majCommonsGuardianShelf');if(!shelf){shelf=document.createElement('details');shelf.className='majCommonsGuardianShelf';const summary=document.createElement('summary');shelf.append(summary);guardian.before(shelf);shelf.append(guardian)}const name=guardian.querySelector('h3')?.textContent||'Your Guardian';const summary=shelf.querySelector('summary');const label=name+' is nearby · bond and study settings';if(summary.textContent!==label)summary.textContent=label}
  // Reconcile late additions inside existing panels as well as new root children.
  for(const [tab,panel] of Object.entries(panels))for(const node of [...panel.children]){
   const destination=classify(node);

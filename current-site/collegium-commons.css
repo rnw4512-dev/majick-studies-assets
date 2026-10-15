@@ -110,3 +110,23 @@ body[data-majick-room=home] #majickLivingMagic,
 #majCommonsHub .majEggIncubator :is(h3,p,small,b,em,.eyebrow){color:#fff6e8!important;opacity:1!important}
 #majCommonsHub .majEggEmpty{color:#fff6e8!important;padding:12px;border:1px solid #b99a60;border-radius:10px}
 @media(max-width:650px){#majCommonsHub .majCommonsWelcome h2{font-size:25px!important}#majCommonsHub .majCommonsWelcome{padding:14px 16px}#majCommonsHub .majCommonsWelcome p{font-size:15px!important}}
+/* The existing Guardian card folds into a quiet presence until its details are needed. */
+#majCommonsHub .v3327PortalHero{grid-template-columns:minmax(0,1fr)!important;gap:14px;min-height:0!important;padding:20px}
+#majCommonsHub .majCommonsGuardianShelf{min-width:0;border-top:1px solid #b99a60;padding-top:10px;color:#fff6e8}
+#majCommonsHub .majCommonsGuardianShelf>summary{min-height:38px;align-content:center;cursor:pointer;font-weight:600;font-size:14px}
+#majCommonsHub .majCommonsGuardianShelf>summary:focus-visible{outline:3px solid #f6cb6c;outline-offset:3px}
+#majCommonsHub .majCommonsGuardianShelf .v3341GuardianHero{margin-top:10px;min-width:0;grid-template-columns:90px minmax(0,1fr)}
+#majCommonsHub .majCommonsGuardianShelf .v3341GuardianHeroPortrait{width:80px;height:100px}
+body[data-majick-room=home] .top{height:auto;min-height:82px;gap:12px;flex-wrap:wrap;padding-block:12px}
+body[data-majick-room=home] .top .titleline{min-width:0;flex:1 1 220px}
+body[data-majick-room=home] .top .pill{display:block;max-width:100%;white-space:normal;overflow-wrap:anywhere}
+@media(max-width:1000px){body[data-majick-room=home] .top .courseSelect{min-width:0;max-width:100%;flex:1 1 220px}body[data-majick-room=home] .top .titleline{flex-basis:100%}}
+@media(max-width:500px){#majCommonsHub .majCommonsGuardianShelf .v3341GuardianHero{grid-template-columns:minmax(0,1fr)}body[data-majick-room=home] .top{padding:12px 16px}}
+@media(max-width:650px){
+ body[data-majick-room=home] .app{height:auto!important;overflow:visible!important}
+ body[data-majick-room=home] .main{height:auto!important;max-height:none!important;overflow:visible!important}
+ body[data-majick-room=home] .side{position:relative!important;height:auto!important;min-height:0!important;padding:8px!important}
+ body[data-majick-room=home] .side :is(.brand,.sidefoot){display:none!important}
+ body[data-majick-room=home] .side .nav{display:flex!important;overflow-x:auto;gap:6px;padding-bottom:4px}
+ body[data-majick-room=home] .side .nav button{flex:0 0 78px;min-height:56px;margin:0!important}
+}

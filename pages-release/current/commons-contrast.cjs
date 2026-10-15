@@ -30,7 +30,7 @@ module.exports=async function({call,ev,tab,width,out}){
  const fs=require('node:fs'),path=require('node:path');
  if(out)fs.mkdirSync(out,{recursive:true});
  await ev('document.fonts.ready');
- const scrollInfo=await ev(`(()=>{const hub=document.querySelector('#majCommonsHub');let scroller;for(let n=hub.parentElement;n;n=n.parentElement){const s=getComputedStyle(n);if(/auto|scroll/.test(s.overflowY)&&n.scrollHeight>n.clientHeight+1){scroller=n;break}}scroller=scroller||document.scrollingElement;scroller.dataset.commonsScroll='true';return {height:scroller.scrollHeight,viewport:scroller.clientHeight,tag:scroller.tagName,className:scroller.className}})()`);
+ const scrollInfo=await ev(`(()=>{const hub=document.querySelector('#majCommonsHub');let scroller;for(let n=hub.parentElement;n;n=n.parentElement){const s=getComputedStyle(n);if(/auto|scroll/.test(s.overflowY)&&n.scrollHeight>n.clientHeight+1){scroller=n;break}}scroller=scroller||document.scrollingElement;scroller.dataset.commonsScroll='true';return {height:scroller.scrollHeight,viewport:Math.min(scroller.clientHeight,innerHeight-Math.max(0,scroller.getBoundingClientRect().top)),tag:scroller.tagName,className:scroller.className}})()`);
  console.log('Commons scroll geometry '+JSON.stringify({width,tab,...scrollInfo}));
  const failures=[],seen=new Set();let count=0,minimum=Infinity,frames=0;
  const step=Math.max(200,scrollInfo.viewport-180);
