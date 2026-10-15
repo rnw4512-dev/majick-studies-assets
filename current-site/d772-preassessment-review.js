@@ -13,7 +13,7 @@ const SUPPORT=[
 {id:'disjoint',lessonId:'d772-s3-l2',prompt:'On one fair die roll, event A is odd ({1,3,5}) and event B is less than 3 ({1,2}). Are A and B disjoint?',choices:['Yes, both are possible','No, they overlap at 1','Yes, because they have different numbers of outcomes'],correct:1,why:'Disjoint events have no shared outcomes. Both events contain 1, so they are not disjoint.'},
 {id:'expected-value',lessonId:'d772-s3-l3',prompt:'A game pays $12 with probability 1/4 and loses $4 with probability 3/4. What is the expected gain or loss per play?',choices:['$8 gain','Break even ($0)','$4 loss'],correct:1,why:'Expected value = (1/4 × $12) + (3/4 × −$4) = $3 − $3 = $0. It is a long-run average, not a guaranteed result.'},
 {id:'decision-ev',lessonId:'d772-s3-l3',prompt:'Game A awards 18 points with a 20% chance; game B awards 8 points with a 60% chance. All other outcomes award zero. Which has higher expected points?',choices:['A because 18 is larger','B, with 4.8 expected points versus 3.6','Equal expected points'],correct:1,why:'EV(A)=18×0.20=3.6; EV(B)=8×0.60=4.8. Compare probability-weighted payoffs, not only the prize size.'}
-].map(q=>Object.freeze({...q,sourceLabel:'MAJICK ORIGINAL • SUPPLEMENTAL OA-STYLE PRACTICE — NOT OFFICIAL WGU',courseId:'D772'}));
+].map(q=>Object.freeze({...q,sourceLabel:'MAJICK ORIGINAL • SUPPLEMENTAL OA-STYLE PRACTICE — NOT OFFICIAL WGU',courseId:'D772'})).concat(window.MajickD772PreassessmentDeepPractice?.questions||[]);
 function state(){const p=window.S?.progress?.D772;if(!p)return null;return p.preassessmentReview||(p.preassessmentReview={version:1,sourceId:SOURCE_ID,attempts:[],position:0,practiceIndex:0,importedAt:Date.now()})}
 function save(){try{if(typeof window.save==='function')window.save();else if(typeof save==='function')save()}catch(e){console.warn('D772 preassessment review could not save',e)}}
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;','\'':'&#39;'}[c]));
@@ -50,7 +50,7 @@ function render(){
  }
  origSelect.value='9';origSelect.addEventListener('change',showOriginal);showOriginal();
  const topic=section.querySelector('#mjPaPracticeTopic'),pane=section.querySelector('[data-mj-pa-practice]'),opts=section.querySelector('[data-mj-pa-options]'),fb=section.querySelector('[data-mj-pa-feedback]');
- SUPPORT.forEach((q,i)=>{const opt=document.createElement('option');opt.value=String(i);opt.textContent=(i+1)+'. '+q.id.replaceAll('-',' ');topic.append(opt)});
+ SUPPORT.forEach((q,i)=>{const opt=document.createElement('option');opt.value=String(i);opt.textContent=(i+1)+'. '+(q.skill||q.id.replaceAll('-',' '));topic.append(opt)});
  function question(){return SUPPORT[Number(topic.value)]}
  function showPractice(){const q=question();pane.textContent=q.prompt;opts.replaceChildren();q.choices.forEach((c,i)=>{const lbl=document.createElement('label');lbl.style.cssText='display:block;margin:8px 0;color:#281d30';const radio=document.createElement('input');radio.type='radio';radio.name='mjPaPracticeChoice';radio.value=String(i);lbl.append(radio,document.createTextNode(' '+c));opts.append(lbl)});fb.textContent=''}
  topic.value=String(Math.min(st.practiceIndex||0,SUPPORT.length-1));topic.addEventListener('change',showPractice);
