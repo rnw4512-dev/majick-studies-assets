@@ -38,6 +38,8 @@ async function run(){
  for(const width of widths){
   await call('Emulation.setDeviceMetricsOverride',{width,height:860,deviceScaleFactor:1,mobile:width<600});
   await sleep(350);
+  const header=await ev('(()=>{const top=document.querySelector(".top"),r=top.getBoundingClientRect();return [...top.children].filter(e=>e.getClientRects().length&&getComputedStyle(e).position!=="absolute").map(e=>({tag:e.tagName,bottom:e.getBoundingClientRect().bottom,parentBottom:r.bottom}))})()');
+  for(const child of header)assert(child.bottom<=child.parentBottom+2,'Header control escapes into reading area at '+width+': '+JSON.stringify(child));
   let baseline=await ev('(()=>{const h=document.querySelector("#majCommonsHub"),t=[...h.querySelectorAll("[data-commons-tab]")],p=[...h.querySelectorAll("[data-commons-panel]")];return {tabs:t.length,panels:p.length,active:p.filter(x=>!x.hidden).length,escaped:[...document.querySelector("#content").children].filter(x=>x!==h&&x.nodeType===1).map(x=>x.className||x.id),scrollWidth:document.documentElement.scrollWidth,clientWidth:document.documentElement.clientWidth}})()');
   const placement=await ev(`(()=>{
    const expected={'.v3400MemoryQuest':'review','#v3400DailyLoop':'today','#v3377CampusDoors':'overview','.v3327PortalHero':'overview','.v3327StudentRecord':'overview','.v3327AcademicHall':'today','.v3327GuardianHall':'guardians','.v3317HomeSanctuary':'sanctuary','#mjPreassessmentReview':'review','#mjAdaptiveMastery':'review'};
