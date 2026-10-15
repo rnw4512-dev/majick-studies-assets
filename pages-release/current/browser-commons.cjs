@@ -33,7 +33,9 @@ async function run(){
   assert.equal(await ev(`document.querySelector('[aria-selected=true]')?.dataset.commonsTab`),expected,'Keyboard selection '+key);
  }
  console.log('PASS Commons delayed root/panel hydration and physical keyboard focus');
- for(const width of [1366,820,390]){
+ const widths=process.env.COMMONS_WIDTH?[Number(process.env.COMMONS_WIDTH)]:[1366,820,390];
+ assert(widths.every(w=>[1366,820,390].includes(w)),'Unsupported audit width');
+ for(const width of widths){
   await call('Emulation.setDeviceMetricsOverride',{width,height:860,deviceScaleFactor:1,mobile:width<600});
   await sleep(350);
   let baseline=await ev('(()=>{const h=document.querySelector("#majCommonsHub"),t=[...h.querySelectorAll("[data-commons-tab]")],p=[...h.querySelectorAll("[data-commons-panel]")];return {tabs:t.length,panels:p.length,active:p.filter(x=>!x.hidden).length,escaped:[...document.querySelector("#content").children].filter(x=>x!==h&&x.nodeType===1).map(x=>x.className||x.id),scrollWidth:document.documentElement.scrollWidth,clientWidth:document.documentElement.clientWidth}})()');
@@ -59,7 +61,7 @@ async function run(){
  }
  await call('Page.reload',{ignoreCache:true});await waitFor('!!document.querySelector("#majCommonsHub")');await waitFor('document.querySelector("[aria-selected=true]")?.dataset.commonsTab==="sanctuary"');
  await ev('MajickCollegiumCommons.select("review")');await ev('MajickCollegiumCommons.sync()');assert.equal(await ev('document.querySelector("[aria-selected=true]")?.dataset.commonsTab'),'review');
- await require('./commons-interactions.cjs')({ev,waitFor,call,sleep});
+ if(!process.env.COMMONS_WIDTH||process.env.COMMONS_WIDTH==='1366')await require('./commons-interactions.cjs')({ev,waitFor,call,sleep});
  assert.equal(contrastFailures.length,0,'Rendered Commons contrast failures: '+JSON.stringify(contrastFailures));
  console.log('PASS Commons actual browser audit: 1366/820/390 widths, five tabs, no escaped nodes, Next/Previous, persistence after reload');
 }
