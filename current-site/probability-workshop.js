@@ -62,7 +62,20 @@ function mount(){
   const result=C().probabilityCheck(kind,values);t.feedback=result.message;window.save?.();mount();
  };
  host.querySelector('[data-prob-fresh]')?.addEventListener('click',()=>{const next=C().probabilityFresh(kind);if(next)mount();else open('repair');});
- host.querySelector('[data-prob-next]')?.addEventListener('click',()=>{C().probabilityTask('reasoning');mount();});
+ // Both pointer activation and keyboard click must advance exactly once, even if
+ // the campus render queue detaches the original button during pointer release.
+ const next=host.querySelector('[data-prob-next]');
+ if(next){
+  const fromId=t.id;
+  const advance=()=>{
+   const current=C().probabilityState(false)?.tasks.reasoning;
+   if(current?.id!==fromId||!current.completed)return;
+   C().probabilityTask('reasoning');
+   mount();
+  };
+  next.addEventListener('pointerup',advance);
+  next.addEventListener('click',advance);
+ }
 }
 window.MajickProbabilityWorkshop={mount,open};
 setTimeout(mount,0);
