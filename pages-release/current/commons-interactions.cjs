@@ -18,6 +18,17 @@ module.exports=async function({ev,waitFor,call,sleep}){
   ['review','[data-v3400-memory]','learninglab']
  ];
  for(const [tab,selector,screen] of routes){await home(tab);await click(selector);await waitFor('S.screen==='+JSON.stringify(screen));assert((await ev('document.querySelector("#content").textContent.trim().length'))>20,'Empty destination '+screen)}
+ // Exercise every current sidebar destination and every campus-tools action.
+ await home('overview');
+ const navigation=await ev('[...document.querySelectorAll(".nav button[data-nav]")].map(b=>b.dataset.nav)');
+ assert(navigation.length>=10,'Expected existing app navigation');
+ for(const route of navigation){await click('.nav button[data-nav="'+route+'"]');await waitFor('S.screen==='+JSON.stringify(route));assert((await ev('document.querySelector("#content").textContent.trim().length'))>0,'Empty app screen '+route)}
+ await home('overview');
+ const tools=await ev('[...document.querySelectorAll("#v3377CampusDoors details [data-go]")].map(b=>b.dataset.go)');
+ for(const route of tools){await home('overview');await ev('document.querySelector("#v3377CampusDoors details").open=true');await click('#v3377CampusDoors [data-go="'+route+'"]');await waitFor('S.screen==='+JSON.stringify(route))}
+ const quickRoutes=['learninglab','guide','analytics','vault'];
+ for(const route of quickRoutes){await home('overview');await ev('document.querySelector(".majCommonsRecordShelf").open=true');await click('.v3327QuickLinks button[onclick*="'+route+'"]');await waitFor('S.screen==='+JSON.stringify(route))}
+ console.log('PASS every current sidebar destination, campus tools and expanded Student Record navigation');
  console.log('PASS Commons existing Learn, Study Now, Grimoire, Realm, Guardian, Sanctuary, material, daily-loop and Memory Quest actions');
  await home('guardians');
  const eggs=await ev('MajickGuardianCare.snapshot().eggs');
@@ -46,7 +57,8 @@ module.exports=async function({ev,waitFor,call,sleep}){
  await click('[data-am-work] button');assert((await ev('document.querySelector("[data-am-work]").textContent')).includes('awaiting review'));
  const d772=await ev('JSON.stringify(S.progress.D772)');
  for(const course of ['D755','D756','D772']){
-  await ev(course==='D756'?'startD756Course();navigate("home")':'switchCourse('+JSON.stringify(course)+');navigate("home")');await waitFor('!!document.querySelector("#majCommonsHub")');
+  if(course==='D756')await ev('startD756Course();navigate("home")');
+  await ev('(()=>{const s=document.querySelector(".top select");s.value='+JSON.stringify(course)+';s.dispatchEvent(new Event("change",{bubbles:true}))})()');await waitFor('!!document.querySelector("#majCommonsHub")');
   assert.equal(await ev('S.activeCourse'),course);
   assert.equal(await ev('JSON.stringify(S.progress.D772)'),d772,'D772 academic state changed on course switch '+course);
   assert.equal(await ev('!!document.querySelector("#mjPreassessmentReview")'),course==='D772','D772 panels leaked across courses');

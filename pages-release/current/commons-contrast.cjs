@@ -33,7 +33,8 @@ module.exports=async function({call,ev,tab,width,out}){
  const scrollInfo=await ev(`(()=>{const hub=document.querySelector('#majCommonsHub');let scroller;for(let n=hub.parentElement;n;n=n.parentElement){const s=getComputedStyle(n);if(/auto|scroll/.test(s.overflowY)&&n.scrollHeight>n.clientHeight+1){scroller=n;break}}scroller=scroller||document.scrollingElement;scroller.dataset.commonsScroll='true';return {height:scroller.scrollHeight,viewport:Math.min(scroller.clientHeight,innerHeight-Math.max(0,scroller.getBoundingClientRect().top)),tag:scroller.tagName,className:scroller.className}})()`);
  console.log('Commons scroll geometry '+JSON.stringify({width,tab,...scrollInfo}));
  const failures=[],seen=new Set();let count=0,minimum=Infinity,frames=0;
- const step=Math.max(200,scrollInfo.viewport-180);
+ const header=await ev('document.querySelector(".top")?.getBoundingClientRect().height||105');
+ const step=Math.max(200,scrollInfo.viewport-header-150);
  try{for(let offset=0;offset<=scrollInfo.height;offset+=step){
   await ev(`(()=>{const s=document.querySelector('[data-commons-scroll]');s.scrollTop=${offset};document.querySelectorAll('#majCommonsHub details').forEach(d=>{if(d.dataset.commonsAuditOpen)d.open=true})})()`);
   await ev('new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)))');
@@ -44,8 +45,9 @@ module.exports=async function({call,ev,tab,width,out}){
     const s=getComputedStyle(e);if(s.visibility!=='visible')continue;
     const range=document.createRange();range.selectNode(n);
     const rects=[...range.getClientRects()].filter(r=>r.width>3&&r.height>3&&r.bottom>0&&r.top<innerHeight&&r.right>0&&r.left<innerWidth).map(r=>({x:r.x,y:r.y,w:r.width,h:r.height})).filter(r=>{
-     const hit=document.elementFromPoint(Math.min(innerWidth-2,Math.max(2,r.x+r.w/2)),Math.min(innerHeight-2,Math.max(2,r.y+r.h/2)));
-     return hit&&(hit===e||e.contains(hit));
+     if(r.x<0||r.y<0||r.x+r.w>innerWidth||r.y+r.h>innerHeight)return false;
+     const points=[[r.x+2,r.y+2],[r.x+r.w-2,r.y+2],[r.x+2,r.y+r.h-2],[r.x+r.w-2,r.y+r.h-2],[r.x+r.w/2,r.y+r.h/2]];
+     return points.every(([x,y])=>{const hit=document.elementFromPoint(x,y);return hit&&(hit===e||e.contains(hit))});
     });
     if(!rects.length)continue;
     let opacity=1;for(let a=e;a;a=a.parentElement)opacity*=Number(getComputedStyle(a).opacity);
@@ -78,3 +80,5 @@ module.exports=async function({call,ev,tab,width,out}){
  console.log('COMMONS RENDERED CONTRAST '+JSON.stringify(report));
  assert(count>0,'No visible text measured');return report;
 };
+module.exports.pngPixels=pngPixels;
+module.exports.contrast=contrast;

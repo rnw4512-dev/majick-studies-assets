@@ -130,3 +130,9 @@ body[data-majick-room=home] .top .pill{display:block;max-width:100%;white-space:
  body[data-majick-room=home] .side .nav{display:flex!important;overflow-x:auto;gap:6px;padding-bottom:4px}
  body[data-majick-room=home] .side .nav button{flex:0 0 78px;min-height:56px;margin:0!important}
 }
+/* Long source questions and native select labels must fit the narrow paper column. */
+#majCommonsHub :is(.majCommonsPanels,[data-commons-panel],[data-commons-panel]>*,#mjPreassessmentReview,#mjAdaptiveMastery){min-width:0;max-width:100%;box-sizing:border-box;overflow-wrap:anywhere}
+#majCommonsHub :is(select,textarea){max-width:100%!important;box-sizing:border-box;width:100%}
+#majCommonsHub fieldset{min-inline-size:0;max-width:100%}
+#majCommonsHub #majickRoomRibbon em{color:#fff1d9!important;font-size:12px!important}
+#majCommonsHub .v3377CampusDoors summary{color:#fff1d9!important}

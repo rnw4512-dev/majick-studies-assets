@@ -185,9 +185,13 @@ async function solveMean(values,sum,count,mean){
  await waitFor('!!window.MajickLearningContinuity&&!!S.progress?.D772');
  assert.equal(await evalPage('S.progress.D772.adaptiveSkills["d772-s2-l4"].status'),'review-needed','Review need must survive reload');
  assert.equal(await evalPage('S.progress.D772.adaptiveSkills["d772-s2-l4"].attempts.length'),3,'Attempt history must survive reload');
- await action('MajickLearningContinuity.skillReview("d772-s2-l4")');
+ await action('navigate("mission")');
+ await waitFor('!!document.querySelector(".v3333Scope button[onclick*=skillReview]")');
+ await action('const b=document.querySelector(".v3333Scope button[onclick*=skillReview]");if(typeof b.onclick!=="function")throw Error("Malformed review button handler");b.click()');
  assert.equal(await evalPage('S.progress.D772.adaptiveSkills["d772-s2-l4"].status'),'reviewing');
- await action('MajickLearningContinuity.skillRetry("d772-s2-l4")');
+ await action('navigate("mission")');
+ await waitFor('!!document.querySelector(".v3333Scope button[onclick*=startSkillRetry]")');
+ await action('const b=document.querySelector(".v3333Scope button[onclick*=startSkillRetry]");if(typeof b.onclick!=="function")throw Error("Malformed retry button handler");b.click()');
  assert.equal(await evalPage('S.progress.D772.adaptiveSkills["d772-s2-l4"].status'),'retry');
  await call('Page.reload',{ignoreCache:true});
  await waitFor('!!window.MajickLearningContinuity&&!!S.progress?.D772');

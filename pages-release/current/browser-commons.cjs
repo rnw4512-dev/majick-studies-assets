@@ -5,10 +5,10 @@ const chrome=['google-chrome','google-chrome-stable','chromium','chromium-browse
 const profile=fs.mkdtempSync(path.join(os.tmpdir(),'maj-commons-'));
 const server=http.createServer((req,res)=>{try{const pathname=new URL(req.url,'http://localhost').pathname.slice(1)||'index.html',file=path.resolve(root,pathname);if(!file.startsWith(root+path.sep))return res.writeHead(403).end();const ext=path.extname(file),mime={'.js':'text/javascript','.css':'text/css','.html':'text/html','.json':'application/json','.svg':'image/svg+xml','.png':'image/png','.webp':'image/webp','.jpg':'image/jpeg','.woff2':'font/woff2'};res.writeHead(200,{'Content-Type':mime[ext]||'application/octet-stream','Cache-Control':'no-store'}).end(fs.readFileSync(file))}catch{if(!res.headersSent)res.writeHead(404).end();else if(!res.writableEnded)res.end()}});
 let proc,ws,id=0,stderr='';const contrastFailures=[];const inflight=new Map();
-async function call(method,params={}){const n=++id;return new Promise((resolve,reject)=>{inflight.set(n,{resolve,reject});ws.send(JSON.stringify({id:n,method,params}));setTimeout(()=>{if(inflight.has(n)){inflight.delete(n);reject(Error('Timed out '+method))}},14000)})}
+async function call(method,params={}){const n=++id;return new Promise((resolve,reject)=>{inflight.set(n,{resolve,reject});ws.send(JSON.stringify({id:n,method,params}));setTimeout(()=>{if(inflight.has(n)){inflight.delete(n);reject(Error('Timed out '+method))}},method==='Page.captureScreenshot'?45000:14000)})}
 async function ev(js){let r=await call('Runtime.evaluate',{expression:js,returnByValue:true,awaitPromise:true});if(r.result?.exceptionDetails)throw Error(JSON.stringify(r.result.exceptionDetails));return r.result?.result?.value}
 async function waitFor(js){for(let n=0;n<100;n++){try{if(await ev(js))return}catch(e){if(/Timed out/.test(e.message))throw e}await sleep(250)}throw Error('Page condition: '+js)}
-const deadline=setTimeout(()=>{console.error('Commons audit exceeded 480 seconds');try{proc?.kill()}catch{};server.closeAllConnections();process.exit(1)},480000);deadline.unref();
+const deadline=setTimeout(()=>{console.error('Commons audit exceeded 480 seconds');try{proc?.kill()}catch{};server.closeAllConnections();process.exit(1)},process.env.COMMONS_WIDTH?480000:900000);deadline.unref();
 async function run(){
  await new Promise(r=>server.listen(0,'127.0.0.1',r));const url='http://127.0.0.1:'+server.address().port+'/index.html';
  proc=spawn(chrome,['--headless=new','--no-sandbox','--disable-dev-shm-usage','--disable-gpu','--remote-allow-origins=*','--remote-debugging-port=0','--user-data-dir='+profile,url],{stdio:['ignore','ignore','pipe']});proc.stderr.on('data',d=>stderr+=String(d).slice(-3000));
@@ -54,6 +54,7 @@ async function run(){
    contrastFailures.push(...audit.failures.map(f=>({...f,width,tab})));
    if(tab==='overview'&&width===1366){await ev('document.querySelector(".majCommonsRecordShelf").open=true');const recordAudit=await require('./commons-contrast.cjs')({call,ev,tab:'student-record',width,out:'commons-qa'});contrastFailures.push(...recordAudit.failures);await ev('document.querySelector(".majCommonsRecordShelf").open=false')}
    assert.equal(snapshot.count,1);assert.equal(snapshot.panel,tab);assert.equal(snapshot.selected,tab);assert.equal(snapshot.escaped,0);
+   assert(await ev('document.documentElement.scrollWidth<=innerWidth+2'),'Horizontal overflow in '+tab+' at '+width);
   }
   await ev('document.querySelector("[data-commons-next]").click()');assert.equal(await ev('document.querySelector("[aria-selected=true]")?.dataset.commonsTab'),'overview');
   await ev('document.querySelector("[data-commons-previous]").click()');assert.equal(await ev('document.querySelector("[aria-selected=true]")?.dataset.commonsTab'),'sanctuary');
@@ -61,7 +62,7 @@ async function run(){
  }
  await call('Page.reload',{ignoreCache:true});await waitFor('!!document.querySelector("#majCommonsHub")');await waitFor('document.querySelector("[aria-selected=true]")?.dataset.commonsTab==="sanctuary"');
  await ev('MajickCollegiumCommons.select("review")');await ev('MajickCollegiumCommons.sync()');assert.equal(await ev('document.querySelector("[aria-selected=true]")?.dataset.commonsTab'),'review');
- if(!process.env.COMMONS_WIDTH||process.env.COMMONS_WIDTH==='1366')await require('./commons-interactions.cjs')({ev,waitFor,call,sleep});
+ if(!process.env.COMMONS_WIDTH||process.env.COMMONS_WIDTH==='1366'){await call('Emulation.setDeviceMetricsOverride',{width:1366,height:860,deviceScaleFactor:1,mobile:false});await require('./commons-control-states.cjs')({ev,call});await require('./commons-interactions.cjs')({ev,waitFor,call,sleep})}
  assert.equal(contrastFailures.length,0,'Rendered Commons contrast failures: '+JSON.stringify(contrastFailures));
  console.log('PASS Commons actual browser audit: 1366/820/390 widths, five tabs, no escaped nodes, Next/Previous, persistence after reload');
 }
