@@ -1,7 +1,7 @@
 'use strict';
 const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),vm=require('node:vm');
 const root=path.resolve(process.argv[2]||'current-site');
-const names=['d772-preassessment-source.js','d772-preassessment-review.js'];
+const names=['d772-preassessment-source.js','d772-preassessment-deep-practice.js','d772-preassessment-review.js'];
 const window={MajickRenderQueue:{register(){},schedule(){}},S:{progress:{D772:{}}}};
 const context=vm.createContext({window,document:{addEventListener(){}},console});
 for(const n of names)vm.runInContext(fs.readFileSync(path.join(root,n),'utf8'),context,{filename:n});
@@ -19,7 +19,8 @@ for(const q of items){
  if(q.mathOrImageGap)assert.notEqual(q.mathOrImageGap,null);
 }
 for(let n=53;n<=58;n++)assert(items[n-1].mathOrImageGap,'do not falsely certify incomplete math Q'+n);
-assert.equal(practice.length,10,'targeted supplement count');
+assert.equal(practice.length,30,'targeted supplement count');
+assert.equal(new Set(practice.map(q=>q.id)).size,30,'unique practice identifiers');
 for(const q of practice){
  assert.equal(q.sourceLabel.includes('NOT OFFICIAL WGU'),true,q.id);
  assert(q.choices[q.correct],'valid answer for '+q.id);
