@@ -84,3 +84,14 @@ Next: finish the latest review, repair any genuine failures, inspect desktop/tab
 - Location: D772 → Connected Learning · Probability → Repair / Independent OA reasoning; type in Whiteboard and use the task buttons.
 - Recovery: if inputs lose focus or clicks vanish, run `node pages-release/current/browser-probability.cjs _site` against a canonical build and inspect DOM identity assertions. If feedback becomes stale, ensure new rendered state is included in the view key; do not include drafts in that key. Revert only the view-guard hunk and its matching manifest hash to undo this fix. Never reset learner progress, rewards, Guardian or Sanctuary stores.
 - Next: obtain passing full browser sequence on the review commit, then record its run and result. Broader Commons and WGU work remains in PR #131.
+
+
+## 2026-10-15 — Probability CI failure follow-up
+
+- **Confirmed run:** [38821912593](https://github.com/rnw4512-dev/majick-studies-assets/actions/runs/38821912593), on `198fbd0`. Desktop 1366px failed in `browser-probability.cjs:104` when the next independent task retained a previously seen dataset. Earlier pointer-retention, typing, guided-repair and Commons interaction tests passed. Tablet 820px and mobile 390px review jobs passed but did not run the full probability sequence.
+- **Changed:** `pages-release/current/browser-probability.cjs` (commit `a18e16eb`) waits for the task ID to change after a real click before testing dataset freshness. This does not weaken the dataset assertion.
+- **Changed:** `current-site/probability-workshop.js` (commit `cd9a7abf`) defers render-queue replacement of a pressed probability control until after the browser completes its native click. Existing draft, focus and task-change protections remain intact.
+- **Integrity:** `current-site/source-manifest.json` updated (commit `1ac4b857`), new SHA-256 for probability workshop `096ed4f0f2ff68c4fd9b3cb199d7df98338ac465432394ec1a93b9e51eaef83e`.
+- **Verification:** The initial CI run was inspected. **The new full sequence is not yet confirmed passing.** Inspect the new review run for HEAD `1ac4b857`; do not merge or deploy until the complete probability suite, browser matrix and screenshot evidence are verified.
+- **Recovery:** If pointer events interfere with task controls, revert the `cd9a7abf` code change and restore its matching canonical manifest hash. If the wait assertion fails, investigate whether the native click reaches the Next handler; never relax dataset uniqueness. Do not clear or overwrite academic state, XP, crystals, Guardian/egg state, inventory or Sanctuary saves.
+- **Remaining:** Full sequence confirmation, 1366/820/390 screenshot inspection, lesson-by-lesson instructional coverage and targeted mean/median/graph/probability upgrades.
