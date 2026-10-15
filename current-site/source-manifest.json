@@ -5,7 +5,7 @@
     "PROJECT_PROGRESS.md": "1caf0c0c2b1cb559946d8d54b2b2b4388e46c412ff56f14ef679c0720aba31fc",
     "app-progress.json": "ea63deb5f34de88052d17908afa7785ac34540b86871e24544ab019429835aae",
     "app-recovery.js": "4a93fed37d5f93cdb1b60962745ebf128714cc2f0d2f8bc1119cba504192838d",
-    "app-runtime.js": "dc0559edb6f14843f3972c7816856469e258ed3d7af400b5e5b7bf200d85e988",
+    "app-runtime.js": "ee4f3c55576429084286252bccb8f314d4c159a48af76f741a69ed2b81701bd1",
     "assets/academy_hero.jpg": "d8bf97204e8886747bd527341d8e8056b40dcd840619ed943e70d63d47681a55",
     "assets/approved_sanctuary_backdrop.jpg": "122878f7f87e40b720f26994f154dd1d8409bd70c4fcc0d2922e4e4f65e28779",
     "assets/familiars/approved_registry/manifest.json": "b4e80a2ae289094e058a918b0ff5a1dd97624e412935d853154c3eac78007877",
@@ -154,7 +154,7 @@
     "living-collegium.css": "97735a3580b0c2a1f1ae7a3122f55b5021079342f46ef04971f558abef15820b",
     "living-collegium.js": "cd2471a20c79c9dd7b2053403f93588cfc63bba5bab18cb8d77f9cc13ae6d251",
     "living-magic.css": "fe10eec2b9ea646a3559aa407ffd55a2034eb6dff0263da995414581a86c18f0",
-    "living-magic.js": "9a3626f3af3293d2b927cc87b92a515b1254c4be934cacd7f45f00bcc53f67e8",
+    "living-magic.js": "91c6a9f590932a7cdca5fe0005f0c6231adfc407bedc7e57326660ba2eb39a3f",
     "magical-college-home.css": "4a2dfcf497db1fecd0caa2caedb1b69334b15b19c9061dbe2029bb6c17020f28",
     "magical-college-home.js": "a91645337d3727101ad3ee649ec402ea092b4ab53584876c86a43adcb661d861",
     "majick-state-core.js": "fc6262a0acf4a3ce8fe2e188fd20841d813dab286df5a08b39ac35ee85975003",
@@ -813,8 +813,8 @@
     "d772-preassessment-source.js": "ae5d1a3404db25e74ae5a08887a39d4679b123d02f6c07af1307b51779c88172",
     "d772-preassessment-review.js": "62f18fda8ac6ae91df3ed20ba101437382bbf615e0848ff858427dadad679064",
     "d772-preassessment-deep-practice.js": "e8beed6936534fb91af552dd78b2928655eee66225e22dce73140fcb0c4b3a75",
-    "d772-adaptive-mastery.js": "22413b334fe722c594573bc8469b94658449ed693d02477ad383ba537d28a838",
+    "d772-adaptive-mastery.js": "07f55f82e3a6c73b6eae1e170a2468a250422c93b43dd4952e32a168f161627b",
     "collegium-commons.js": "9f7e11dcaa7f1dfb5590687aef798e78d273507084508b57c78715a0455eb862",
-    "collegium-commons.css": "53f2c91fdd9127187fa8db83b037584e2ca2333d6a4f6d184e70e89c4bbcf624"
+    "collegium-commons.css": "7ac1154b6cfc45f9a3870f6f50c846b3908ac5d0eb365fba7b5d5ae117806d2a"
   }
 }

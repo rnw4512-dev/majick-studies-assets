@@ -28,36 +28,52 @@ function contrast(a,b){const x=luminance(a),y=luminance(b);return (Math.max(x,y)
 
 module.exports=async function({call,ev,tab,width,out}){
  const fs=require('node:fs'),path=require('node:path');
- const info=await ev(`(()=>{
-  const hub=document.querySelector('#majCommonsHub'),walker=document.createTreeWalker(hub,NodeFilter.SHOW_TEXT),items=[];let n;
-  while(n=walker.nextNode()){
-   const e=n.parentElement;if(!n.textContent.trim()||e.closest('[hidden],script,style,svg,option')||!e.getClientRects().length)continue;
-   const s=getComputedStyle(e);if(s.visibility!=='visible')continue;
-   const range=document.createRange();range.selectNode(n);
-   const rects=[...range.getClientRects()].filter(r=>r.width>3&&r.height>3).map(r=>({x:r.x+scrollX,y:r.y+scrollY,w:r.width,h:r.height}));
-   if(!rects.length)continue;
-   let opacity=1;for(let a=e;a;a=a.parentElement)opacity*=Number(getComputedStyle(a).opacity);
-   items.push({text:n.textContent.trim().slice(0,110),color:s.color,opacity,size:parseFloat(s.fontSize),weight:parseFloat(s.fontWeight),className:e.className,rects});
+ if(out)fs.mkdirSync(out,{recursive:true});
+ await ev('document.fonts.ready');
+ const scrollInfo=await ev(`(()=>{const hub=document.querySelector('#majCommonsHub');let scroller;for(let n=hub.parentElement;n;n=n.parentElement){const s=getComputedStyle(n);if(/auto|scroll/.test(s.overflowY)&&n.scrollHeight>n.clientHeight+1){scroller=n;break}}scroller=scroller||document.scrollingElement;scroller.dataset.commonsScroll='true';return {height:scroller.scrollHeight,viewport:scroller.clientHeight,tag:scroller.tagName,className:scroller.className}})()`);
+ console.log('Commons scroll geometry '+JSON.stringify({width,tab,...scrollInfo}));
+ const failures=[],seen=new Set();let count=0,minimum=Infinity,frames=0;
+ const step=Math.max(200,scrollInfo.viewport-180);
+ try{for(let offset=0;offset<=scrollInfo.height;offset+=step){
+  await ev(`(()=>{const s=document.querySelector('[data-commons-scroll]');s.scrollTop=${offset};document.querySelectorAll('#majCommonsHub details').forEach(d=>{if(d.dataset.commonsAuditOpen)d.open=true})})()`);
+  await ev('new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)))');
+  const info=await ev(`(()=>{
+   const hub=document.querySelector('#majCommonsHub'),walker=document.createTreeWalker(hub,NodeFilter.SHOW_TEXT),items=[];let n,index=0;
+   while(n=walker.nextNode()){
+    index++;const e=n.parentElement;if(!n.textContent.trim()||e.closest('[hidden],[aria-hidden=true],script,style,svg,option')||!e.getClientRects().length)continue;
+    const s=getComputedStyle(e);if(s.visibility!=='visible')continue;
+    const range=document.createRange();range.selectNode(n);
+    const rects=[...range.getClientRects()].filter(r=>r.width>3&&r.height>3&&r.bottom>0&&r.top<innerHeight&&r.right>0&&r.left<innerWidth).map(r=>({x:r.x,y:r.y,w:r.width,h:r.height})).filter(r=>{
+     const hit=document.elementFromPoint(Math.min(innerWidth-2,Math.max(2,r.x+r.w/2)),Math.min(innerHeight-2,Math.max(2,r.y+r.h/2)));
+     return hit&&(hit===e||e.contains(hit));
+    });
+    if(!rects.length)continue;
+    let opacity=1;for(let a=e;a;a=a.parentElement)opacity*=Number(getComputedStyle(a).opacity);
+    items.push({index,text:n.textContent.trim().slice(0,110),color:s.color,opacity,size:parseFloat(s.fontSize),weight:parseFloat(s.fontWeight),className:e.className,rects});
+   }return items;
+  })()`);
+  const screenshot=await call('Page.captureScreenshot',{format:'png'});
+  if(out)fs.writeFileSync(path.join(out,width+'-'+tab+'-'+frames+'.png'),Buffer.from(screenshot.result.data,'base64'));
+  let shot;try{
+   await ev(`(()=>{document.querySelectorAll('#majCommonsHub,#majCommonsHub *').forEach(e=>{e.dataset.commonsAuditStyle=e.getAttribute('style')||'';e.style.setProperty('color','transparent','important');e.style.setProperty('-webkit-text-fill-color','transparent','important');e.style.setProperty('text-shadow','none','important')})})()`);
+   await ev('new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)))');
+   shot=await call('Page.captureScreenshot',{format:'png'});
+  }finally{await ev(`(()=>{document.querySelectorAll('[data-commons-audit-style]').forEach(e=>{e.setAttribute('style',e.dataset.commonsAuditStyle);delete e.dataset.commonsAuditStyle})})()`)}
+  const image=pngPixels(Buffer.from(shot.result.data,'base64'));
+  for(const item of info){
+   const rgba=item.color.match(/[\d.]+/g).map(Number),alpha=(rgba[3]??1)*item.opacity,required=item.size>=24||(item.size>=18.66&&item.weight>=700)?3:4.5;let ratio=Infinity,samples=0;
+   for(const r of item.rects){
+    // A line partly behind a fixed header is measured when scrolled fully into view.
+    if(r.y<105||r.y+r.h>image.height-75)continue;
+    for(let y=Math.max(0,Math.ceil(r.y+2));y<Math.min(image.height,Math.floor(r.y+r.h-2));y+=2)for(let x=Math.max(0,Math.ceil(r.x+2));x<Math.min(image.width,Math.floor(r.x+r.w-2));x+=2){const bg=image.pixel(x,y),fg=rgba.slice(0,3).map((v,i)=>v*alpha+bg[i]*(1-alpha));ratio=Math.min(ratio,contrast(fg,bg));samples++}
+   }
+   if(!samples)continue;if(!seen.has(item.index)){count++;seen.add(item.index)}minimum=Math.min(minimum,ratio);
+   if(ratio<required)failures.push({...item,rects:undefined,frame:frames,ratio:+ratio.toFixed(2),required});
   }
-  return items;
- })()`);
- const metrics=(await call('Page.getLayoutMetrics')).result.cssContentSize;
- const clip={x:0,y:0,width:Math.ceil(metrics.width),height:Math.ceil(metrics.height),scale:1};
- if(out){fs.mkdirSync(out,{recursive:true});const screenshot=await call('Page.captureScreenshot',{format:'png',captureBeyondViewport:true,clip});fs.writeFileSync(path.join(out,width+'-'+tab+'.png'),Buffer.from(screenshot.result.data,'base64'))}
- let shot;
- try{
-  await ev(`(()=>{document.querySelectorAll('#majCommonsHub,#majCommonsHub *').forEach(e=>{e.dataset.commonsAuditStyle=e.getAttribute('style')||'';e.style.setProperty('color','transparent','important');e.style.setProperty('-webkit-text-fill-color','transparent','important');e.style.setProperty('text-shadow','none','important')})})()`);
-  shot=await call('Page.captureScreenshot',{format:'png',captureBeyondViewport:true,clip});
- }finally{await ev(`(()=>{document.querySelectorAll('[data-commons-audit-style]').forEach(e=>{e.setAttribute('style',e.dataset.commonsAuditStyle);delete e.dataset.commonsAuditStyle})})()`)}
- const image=pngPixels(Buffer.from(shot.result.data,'base64')),failures=[];let count=0,min=Infinity;
- for(const item of info){
-  const rgba=item.color.match(/[\d.]+/g).map(Number),alpha=(rgba[3]??1)*item.opacity,required=item.size>=24||(item.size>=18.66&&item.weight>=700)?3:4.5;let ratio=Infinity,samples=0;
-  for(const r of item.rects)for(let y=Math.max(0,Math.ceil(r.y+2));y<Math.min(image.height,Math.floor(r.y+r.h-2));y+=2)for(let x=Math.max(0,Math.ceil(r.x+2));x<Math.min(image.width,Math.floor(r.x+r.w-2));x+=2){const bg=image.pixel(x,y),fg=rgba.slice(0,3).map((v,i)=>v*alpha+bg[i]*(1-alpha));ratio=Math.min(ratio,contrast(fg,bg));samples++}
-  if(!samples)continue;count++;min=Math.min(min,ratio);
-  if(ratio<required)failures.push({...item,rects:undefined,ratio:+ratio.toFixed(2),required});
- }
- const report={width,tab,count,minimum:+min.toFixed(2),failures};
+  frames++;if(offset>=scrollInfo.height-scrollInfo.viewport)break;
+ }}finally{await ev(`(()=>{const s=document.querySelector('[data-commons-scroll]');s.scrollTop=0;delete s.dataset.commonsScroll})()`)}
+ const report={width,tab,count,frames,minimum:+minimum.toFixed(2),failures};
  if(out)fs.writeFileSync(path.join(out,width+'-'+tab+'-contrast.json'),JSON.stringify(report,null,2));
  console.log('COMMONS RENDERED CONTRAST '+JSON.stringify(report));
- return report;
+ assert(count>0,'No visible text measured');return report;
 };

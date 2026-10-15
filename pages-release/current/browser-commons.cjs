@@ -18,7 +18,6 @@ async function run(){
  await waitFor('!!window.MajickCollegiumCommons && !!document.querySelector("#content")');
  await ev('switchCourse("D772");navigate("home");MajickCollegiumCommons.sync()');await waitFor('!!document.querySelector("#majCommonsHub")');
  console.log('Commons D772 Home mounted');
- console.log('Commons D772 Home mounted');
  // Exercise real delayed insertions into a wrong panel and at the Home root.
  await ev(`(()=>{const n=document.createElement('section');n.className='dailyStudyLoop';n.id='commonsDelayedProbe';n.textContent='Delayed daily study with a dorm shortcut';document.querySelector('[data-commons-panel=sanctuary]').append(n)})()`);
  await waitFor(`document.querySelector('#commonsDelayedProbe')?.closest('[data-commons-panel]')?.dataset.commonsPanel==='today'`);
@@ -59,6 +58,7 @@ async function run(){
  }
  await call('Page.reload',{ignoreCache:true});await waitFor('!!document.querySelector("#majCommonsHub")');await waitFor('document.querySelector("[aria-selected=true]")?.dataset.commonsTab==="sanctuary"');
  await ev('MajickCollegiumCommons.select("review")');await ev('MajickCollegiumCommons.sync()');assert.equal(await ev('document.querySelector("[aria-selected=true]")?.dataset.commonsTab'),'review');
+ await require('./commons-interactions.cjs')({ev,waitFor,call,sleep});
  assert.equal(contrastFailures.length,0,'Rendered Commons contrast failures: '+JSON.stringify(contrastFailures));
  console.log('PASS Commons actual browser audit: 1366/820/390 widths, five tabs, no escaped nodes, Next/Previous, persistence after reload');
 }

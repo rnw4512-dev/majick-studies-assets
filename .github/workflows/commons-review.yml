@@ -27,16 +27,16 @@ jobs:
       - name: Canonical build
         run: python pages-release/current/build.py current-site _site
       - name: Commons rendered audit and screenshots
-        run: node pages-release/current/browser-commons.cjs _site
-      - name: Full interaction regression
-        if: always()
-        run: node pages-release/current/browser-interactions.cjs _site
-      - name: Connected probability regression
-        if: always()
-        run: node pages-release/current/browser-probability.cjs _site
+        run: timeout 150s node pages-release/current/browser-commons.cjs _site
       - name: Preserve visual evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: commons-visual-audit
           path: commons-qa/
+      - name: Full interaction regression
+        if: always()
+        run: timeout 150s node pages-release/current/browser-interactions.cjs _site
+      - name: Connected probability regression
+        if: always()
+        run: timeout 150s node pages-release/current/browser-probability.cjs _site

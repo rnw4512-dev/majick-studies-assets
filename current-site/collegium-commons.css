@@ -91,3 +91,10 @@
 #majCommonsHub .v3400MemoryQuest :is(p,small,strong){color:#241827!important;opacity:1!important}
 #majCommonsHub [data-commons-panel] .v3400DailyLoop ol{gap:8px}
 #majCommonsHub [data-commons-panel] .v3400DailyLoop li{min-height:56px}
+/* Reading surfaces stay still; moonlight and candlelight are painted into the frame. */
+body[data-majick-room=home] #majickLivingMagic,
+#majCommonsHub .ancientLibraryMagic{display:none!important}
+#majCommonsHub .v3327Constellation{display:none!important}
+#majCommonsHub .v3327PortalHero{background:#34223f!important}
+#majCommonsHub .majCommonsWelcome{background:radial-gradient(circle at 90% 0,#4a3344,transparent 40%),linear-gradient(130deg,#27172d,#34223f)!important}
+#majCommonsHub .majCommonsStep button{background:#34223f!important;color:#fff6e8!important;box-shadow:none!important}
