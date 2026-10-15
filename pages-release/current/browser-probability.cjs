@@ -38,7 +38,9 @@ async function click(selector){
  }
 
  await waitFor('!!window.MajickProbabilityWorkshop&&!!window.MajickLearningContinuity');
- await action('startD756Course();switchCourse("D755");S.progress.D755.answers.push({qid:"phase2-d755-history",correct:true});switchCourse("D756");S.progress.D756.answers.push({qid:"phase2-d756-history",correct:false});switchCourse("D772");navigate("games")');
+ await action('startD756Course();switchCourse("D755");S.progress.D755.answers.push({qid:"phase2-d755-history",correct:true});switchCourse("D756");S.progress.D756.answers.push({qid:"phase2-d756-history",correct:false});switchCourse("D772");navigate("home")');
+ await waitFor('!!document.querySelector("#mjAdaptiveMastery")');
+ await action('navigate("games")');
  await waitFor('!!document.querySelector("#connectedProbability")');
  await call('Page.reload',{ignoreCache:true});await waitFor('!!document.querySelector("#connectedProbability")');
  const backState=await evalPage('JSON.stringify(S.progress)');
@@ -119,7 +121,7 @@ async function click(selector){
   await action('switchCourse('+JSON.stringify(course)+');navigate("mission")');
   await sleep(200);assert.equal(await evalPage('!!document.querySelector("#connectedProbability")'),false);
  }
- await action('switchCourse("D772");navigate("games")');await waitFor('!!document.querySelector("#connectedProbability")');
+ await action('switchCourse("D772");navigate("home")');await waitFor('!!document.querySelector("#connectedProbability")');
  assert.equal(await evalPage('MajickLearningContinuity.probabilityMastery().certified'),true);
  await action('document.querySelector("#connectedProbability").scrollIntoView({block:"start"})');
  await waitFor('!document.querySelector("#majickCampusPortal.active")');await sleep(200);
