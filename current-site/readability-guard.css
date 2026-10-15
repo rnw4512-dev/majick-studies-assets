@@ -98,3 +98,60 @@ body > section.v342Repair > :is(small,span,li,label,strong,b,h3,h4) {
   opacity:1!important;
   text-shadow:none!important;
 }
+
+/* Explicit surfaces keep instructional ink and Guardian metadata readable,
+   independent of translucent campus themes and per-Guardian accent colors. */
+.classroomStage :is(.v3401YouDo,.v3401WeDo,.tutorChapterBlock,.tutorHelpBar){
+  background:#f3e4c9!important;
+}
+.classroomStage .tutorBlockTitle > span{
+  background:#624878!important;
+  color:#fff5e8!important;
+}
+.classroomFloatingCharts button{
+  background:#ebd7af!important;
+  color:#453137!important;
+}
+body.majickCampus .sidefoot.unifiedFamiliarSide{
+  background:#291c35!important;
+}
+body.majickCampus .sidefoot.unifiedFamiliarSide .copy small{
+  color:#eadce4!important;
+}
+body.majickCampus .sidefoot.unifiedFamiliarSide .familiarRole,
+body.majickCampus .rewardChip{
+  background:#3d2b49!important;
+  color:#fff4e7!important;
+}
+
+.realmHeroGuardian{
+  background:#291c35!important;
+}
+.realmHeroGuardian small{
+  color:#eadce4!important;
+}
+body.majickCampus .titleline .pill.v4Badge{
+  background:#3d2b49!important;
+  color:#fff4e7!important;
+}
+
+/* Lesson navigation can hydrate after the classroom has opened. */
+.lessonActions button.btn.ghost,
+.mliLessonNav button,
+.mliTabs button{
+  background:#49325b!important;
+  color:#fff4e7!important;
+  opacity:1!important;
+}
+
+/* Connected probability uses the shared practice palette with explicit surfaces. */
+.connectedProbability{margin:16px 0;padding:20px;border:2px solid #c4a475;border-radius:16px;background:#291c35!important;color:#fff4e7!important}
+.connectedProbability :is(p,label,span,h2,h3){color:#fff4e7!important;opacity:1!important}
+.connectedProbability nav,.connectedCounters{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+.connectedProbability button{background:#49325b!important;color:#fff4e7!important;padding:10px 14px;border:1px solid #c4a475;border-radius:8px;cursor:pointer}
+.connectedProbability button:disabled{background:#3d2b49!important;color:#eadce4!important;opacity:1!important;cursor:default}
+.connectedProbability :is(input,textarea,select){display:block;box-sizing:border-box;width:100%;margin:6px 0 12px;padding:10px;background:#fff5e8!important;color:#302334!important;border:2px solid #aa8a59;border-radius:6px;font-size:16px}
+.connectedProbability :focus-visible{outline:3px solid #ffd98d!important;outline-offset:3px}
+.connectedFields{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(220px,100%),1fr));gap:12px}
+.connectedCounters :is(button,span){display:grid;place-items:center;min-width:44px;min-height:44px;border:2px solid #fff4e7;border-radius:50%}
+.connectedCounters span{background:#49325b}

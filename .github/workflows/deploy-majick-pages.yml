@@ -35,6 +35,9 @@ jobs:
       - name: Browser test interactive lessons, rewards, course isolation and save/reload
         run: node pages-release/current/browser-interactions.cjs _site
 
+      - name: Browser test connected probability learning and teaching mastery
+        run: node pages-release/current/browser-probability.cjs _site
+
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
 

@@ -128,3 +128,38 @@ check('save migration, backups, corruption recovery and storage failure',()=>{
  assert.throws(()=>a.preview({schemaVersion:2,state:next}),/newer/);assert.throws(()=>a.preview({courses:{},progress:{D772:{answers:'bad'}}}),/Invalid/);
  const before=storage.getItem(a.keys.KEY);fail=true;assert.throws(()=>a.write(next),/Storage full/);assert.equal(storage.getItem(a.keys.KEY),before);assert.equal(a.status().ok,false);
 });
+
+check('connected probability evidence, freshness, replay safety and course isolation',()=>{
+ const state={activeCourse:'D772',screen:'games',progress:{D772:{answers:[{qid:'historic',correct:false}]},D755:{answers:[{qid:'retake'}]},D756:{answers:[{qid:'iep'}]}},majickAccount:{xp:400,crystals:30},legacy:{pets:[{id:'keep'}],eggs:[{id:'egg',progress:4}]}};
+ const c=context(state);let credits=0;c.MajickStudyProgress={creditAnswer:()=>{credits++}};
+ load(c,'generated-question-engine.js');load(c,'learning-continuity.js');const api=c.MajickLearningContinuity,id='d772-s3-l2-1';
+ const other=JSON.stringify([state.progress.D755,state.progress.D756,state.majickAccount,state.legacy]);
+ api.skillResult({...c.MajickGeneratedPractice.generate('probability'),course:'D755'},false,false,'game-realm');
+ assert.equal(api.probabilityState(false),null,'foreign questions must not change active academics');
+ const originalMiss=c.MajickGeneratedPractice.probabilityCase(0);api.skillResult(originalMiss,false,false,'game-realm');
+ assert.equal(api.probabilityState().need.origin,'game-realm');assert.equal(api.probabilityTask('transfer'),null);
+ function values(t){const [g,p]=t.q.data;return {first:String(g),total:String(g+p),second:String(t.q.event==='green-purple'?p:g-1),remaining:String(g+p-1),result:t.q.answer,rule:'multiply-conditional',whiteboard:'A draft, not automatic semantic certification',diagnosis:'sample-space',model:'remove',probe:'new-draw',teaching:'Model, question and student evidence'};}
+ const signatures=new Set();function fresh(kind){const t=api.probabilityTask(kind);assert(t);const sig=JSON.stringify(t.q.data);assert(!signatures.has(sig),'dataset repeated');signatures.add(sig);assert(c.MajickGeneratedPractice.validate(t.q));return t;}
+ let t=fresh('repair');assert.notDeepEqual(Array.from(t.q.data),Array.from(originalMiss.data),'repair must use different data from the native miss');assert.equal(api.probabilityCheck('repair',values(t)).ok,false,'must manipulate counters');
+ api.probabilityFresh('repair');t=api.probabilityState().tasks.repair;api.probabilityRemove();assert(api.probabilityCheck('repair',values(t)).ok);
+ assert.equal(api.masteryStatus(id).independentCorrect,0);assert.equal(api.masteryStatus(id).certified,false);
+ assert.equal(api.probabilityCheck('repair',values(t)).ok,false,'replay must not earn credit');assert.equal(credits,1);
+ for(let i=0;i<2;i++){t=fresh('reasoning');assert(api.probabilityCheck('reasoning',values(t)).ok);}
+ assert.equal(api.masteryStatus(id).certified,false);assert.equal(api.probabilityTask('teaching'),null);
+ t=fresh('transfer');assert.equal(t.q.event,'green-purple');assert(api.probabilityCheck('transfer',values(t)).ok);
+ t=fresh('teaching');
+ const rejected=context(JSON.parse(JSON.stringify(state)));load(rejected,'generated-question-engine.js');load(rejected,'learning-continuity.js');
+ assert.equal(rejected.MajickLearningContinuity.probabilityCheck('teaching',{...values(t),diagnosis:'rounding',teaching:'A very long fluent explanation '.repeat(30)}).ok,false,'prose length cannot replace teaching evidence');
+ assert.equal(rejected.MajickLearningContinuity.masteryStatus(id).certified,false);
+ assert(api.probabilityCheck('teaching',values(t)).ok);assert(api.masteryStatus(id).certified);
+ assert.equal(credits,4,'teacher response must not award another answer reward');
+ api.skillResult(c.MajickGeneratedPractice.generate('probability'),true,true,'game-realm');assert(state.progress.D772.adaptiveSkills[id].masteryCertified,'assisted follow-up must preserve already-earned explicit certification');
+ const dataSignatures=new Set();for(let i=0;i<42;i++)for(const transfer of [false,true]){const q=c.MajickGeneratedPractice.probabilityCase(i,transfer);assert(c.MajickGeneratedPractice.validate(q));if(!transfer)dataSignatures.add(JSON.stringify(q.data));}
+ assert.equal(dataSignatures.size,42);assert.equal(c.MajickGeneratedPractice.probabilityCase(42),null,'do not recycle exhausted datasets');
+
+ assert.equal(JSON.stringify([state.progress.D755,state.progress.D756,state.majickAccount,state.legacy]),other);
+ assert.equal(state.progress.D772.answers[0].qid,'historic');
+ const restored=JSON.parse(JSON.stringify(state)),d=context(restored);load(d,'generated-question-engine.js');load(d,'learning-continuity.js');assert(d.MajickLearningContinuity.masteryStatus(id).certified);
+ restored.activeCourse='D756';const before=JSON.stringify(restored);assert.equal(d.MajickLearningContinuity.probabilityTask('repair'),null);assert.equal(d.MajickLearningContinuity.probabilityCheck('reasoning',{}).ok,false);assert.equal(JSON.stringify(restored),before);
+ restored.activeCourse='D772';d.MajickLearningContinuity.skillResult(d.MajickGeneratedPractice.generate('probability'),false,false,'study-now');assert.equal(d.MajickLearningContinuity.masteryStatus(id).certified,false,'new misconception invalidates certification until repaired');
+});

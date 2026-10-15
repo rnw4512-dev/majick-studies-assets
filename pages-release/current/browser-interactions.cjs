@@ -238,4 +238,5 @@ async function solveMean(values,sum,count,mean){
  console.log('PASS browser: sampled mobile/desktop accessibility contrast checks');
 
  console.log('PASS browser: three-level mean worked solutions, independent transfer mastery, course lesson selection, participation XP, save/reload, duplicate prevention and D756 isolation');
+ await require('./parchment-contrast.cjs')({call,evalPage,action,waitFor,sleep});
 })().catch(e=>{console.error('FAIL browser QA:',e.stack||e);process.exitCode=1}).finally(async()=>{try{ws?.close()}catch{}try{child?.kill()}catch{}await new Promise(r=>server.close(r));try{fs.rmSync(profile,{recursive:true,force:true})}catch{}});
