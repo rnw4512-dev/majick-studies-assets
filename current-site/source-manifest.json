@@ -144,7 +144,7 @@
     "guardian-registry.js": "b20170b996ddf065f33bb37332c8a9fce68ae104914e3e94ffe9aa44b7b612f3",
     "home-focus.css": "cbb719eb8e78701717b4016388d511553f2785212d839815ed006651ae738b2b",
     "home-focus.js": "69b58966e19ba611d5e1789b6a342317067f1f0f4b718619062bd7277811a695",
-    "index.html": "742da2d02d629b3fc1eaaf206239ed11d1a7b22fcce16331c637571bf5267a8c",
+    "index.html": "4caf58f81f733c71ec9d0a4315ac9ee2fc6e9d6ca7a5768f43ad4428b3c113f8",
     "learn-mode.css": "30181250c67efe7bd97c9276706a804a551e7904a2bb28160eeb0c193f35c002",
     "learn-mode.js": "f6647cd013d5bc59a319710c45ac806b56585c7fc5c912afa88857d2f16f82e0",
     "learning-lab.css": "6ed48d27023052a714d27c027f25828bc5ad74edccb172704e823a58b26d6844",
@@ -807,6 +807,7 @@
     "readability-guard.css": "230b76dbe43883d688290444dddf0b9137a250b4f608c7fa80ee1ab0de78a9ed",
     "collegium-immersion.css": "a871552fa1698bc032590a584a85782fc44dee9aff8926d0d78d7fc73b41f38c",
     "coverage/d772-source-reconciliation.json": "cbb3fa8174376366036382aee751ef36eb905430a2046207c289091cd576238f",
-    "probability-workshop.js": "82201d8ac14f0c1da15e70c98da93d6d42f3fba0eb25e09556f06f16be276365"
+    "probability-workshop.js": "82201d8ac14f0c1da15e70c98da93d6d42f3fba0eb25e09556f06f16be276365",
+    "d772-historical-quiz-results.js": "1f7196f2c945e2a29db60eb5ee0110a1eeea42f501a6f155f378920203ca63c9"
   }
 }
