@@ -37,7 +37,7 @@ module.exports=async function({call,ev,tab,width,out}){
  const step=Math.max(200,scrollInfo.viewport-header-150);
  try{for(let offset=0;offset<=scrollInfo.height;offset+=step){
   await ev(`(()=>{const s=document.querySelector('[data-commons-scroll]');s.scrollTop=${offset};document.querySelectorAll('#majCommonsHub details').forEach(d=>{if(d.dataset.commonsAuditOpen)d.open=true})})()`);
-  await ev('new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)))');
+  await ev('new Promise(r=>{setTimeout(r,250);requestAnimationFrame(()=>requestAnimationFrame(r))})');
   const info=await ev(`(()=>{
    const hub=document.querySelector('#majCommonsHub'),walker=document.createTreeWalker(hub,NodeFilter.SHOW_TEXT),items=[];let n,index=0;
    while(n=walker.nextNode()){
@@ -58,7 +58,7 @@ module.exports=async function({call,ev,tab,width,out}){
   if(out)fs.writeFileSync(path.join(out,width+'-'+tab+'-'+frames+'.png'),Buffer.from(screenshot.result.data,'base64'));
   let shot;try{
    await ev(`(()=>{document.querySelectorAll('#majCommonsHub,#majCommonsHub *').forEach(e=>{e.dataset.commonsAuditStyle=e.getAttribute('style')||'';e.style.setProperty('color','transparent','important');e.style.setProperty('-webkit-text-fill-color','transparent','important');e.style.setProperty('text-shadow','none','important')})})()`);
-   await ev('new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)))');
+   await ev('new Promise(r=>{setTimeout(r,250);requestAnimationFrame(()=>requestAnimationFrame(r))})');
    shot=await call('Page.captureScreenshot',{format:'png'});
   }finally{await ev(`(()=>{document.querySelectorAll('[data-commons-audit-style]').forEach(e=>{e.setAttribute('style',e.dataset.commonsAuditStyle);delete e.dataset.commonsAuditStyle})})()`)}
   const image=pngPixels(Buffer.from(shot.result.data,'base64'));

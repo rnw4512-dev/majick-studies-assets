@@ -74,4 +74,18 @@ module.exports=async function({ev,waitFor,call,sleep}){
  await call('Page.reload',{ignoreCache:true});await waitFor('!!window.MajickGuardianCare&&S.screen==="companions"');await sleep(250);
  assert.equal(await ev('JSON.stringify({guardianCare:S.majickAccount.guardianCare,inventory:S.majickAccount.inventory,legacy:S.legacy})'),world,'Care/world state lost after reload');
  console.log('PASS real Guardian water action and persisted care/world data without academic/currency changes');
+ // Exercise the existing Phaser furniture controls and the parent persistence bridge.
+ await home('sanctuary');
+ await waitFor('!!document.querySelector(".v3317SanctuaryFrame")?.contentWindow?.majickPhaserGame?.scene?.getScene("Game")?.v3321FurnitureButton?.active');
+ const storedBefore=await ev('document.querySelector(".v3317SanctuaryFrame").contentWindow.majickPhaserGame.scene.getScene("Game").v3321FurnitureState.stored.slice()');
+ await ev('(()=>{const s=document.querySelector(".v3317SanctuaryFrame").contentWindow.majickPhaserGame.scene.getScene("Game");s.v3321FurnitureButton.emit("pointerup");const b=s.v3321FurnitureManager.list.find(n=>n.text==="STORE");if(!b)throw Error("No placed furniture action");b.emit("pointerup")})()');
+ const stored=await ev('document.querySelector(".v3317SanctuaryFrame").contentWindow.majickPhaserGame.scene.getScene("Game").v3321FurnitureState.stored.slice()');
+ assert.equal(stored.length,storedBefore.length+1);const item=stored.find(id=>!storedBefore.includes(id));
+ await waitFor('S.majickAccount.sanctuaryFurniture.stored.includes('+JSON.stringify(item)+')');
+ await call('Page.reload',{ignoreCache:true});await waitFor('!!document.querySelector(".v3317SanctuaryFrame")?.contentWindow?.majickPhaserGame?.scene?.getScene("Game")?.v3321FurnitureButton?.active');
+ await waitFor('document.querySelector(".v3317SanctuaryFrame").contentWindow.majickPhaserGame.scene.getScene("Game").v3321FurnitureState.stored.includes('+JSON.stringify(item)+')');
+ await ev('(()=>{const s=document.querySelector(".v3317SanctuaryFrame").contentWindow.majickPhaserGame.scene.getScene("Game");s.v3321FurnitureButton.emit("pointerup");const id='+JSON.stringify(item)+',name=document.querySelector(".v3317SanctuaryFrame").contentWindow.MajickSanctuaryCustomize.manifestObjects(s).find(x=>x.id===id).displayName,row=s.v3321FurnitureManager.list.find(n=>n.text===name);const b=s.v3321FurnitureManager.list.find(n=>n.text==="PLACE"&&Math.abs(n.y-row.y)<10);if(!b)throw Error("Missing stored item PLACE control");b.emit("pointerup")})()');
+ await waitFor('!S.majickAccount.sanctuaryFurniture.stored.includes('+JSON.stringify(item)+')');
+ console.log('PASS Sanctuary furniture STORE/PLACE handlers, parent save bridge and actual reload');
+
 };

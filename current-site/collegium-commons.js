@@ -22,6 +22,14 @@ function classify(node){
  if(/daily study|continue d772|continue course|study loop|quick check|moon path|tonight/.test(id+' '+c+' '+t))return 'today';
  return 'overview';
 }
+const sanctuaryVisibility=new WeakMap();
+function syncSanctuaryMotion(){
+ document.querySelectorAll('#majCommonsHub .v3317SanctuaryFrame').forEach(frame=>{
+  if(!frame.dataset.commonsLifecycle){frame.dataset.commonsLifecycle='true';frame.addEventListener('load',()=>{sanctuaryVisibility.delete(frame);syncSanctuaryMotion()})}
+  const visible=selected==='sanctuary';
+  try{const loop=frame.contentWindow?.majickPhaserGame?.loop;if(loop&&sanctuaryVisibility.get(frame)!==visible){if(visible)loop.wake();else loop.sleep();sanctuaryVisibility.set(frame,visible)}}catch(_){}
+ });
+}
 function navigateTab(next){
  if(!valid(next))return;
  selected=next;
@@ -29,6 +37,7 @@ function navigateTab(next){
  const hub=document.getElementById('majCommonsHub');if(!hub)return;
  hub.querySelectorAll('[data-commons-tab]').forEach(b=>{const active=b.dataset.commonsTab===selected;b.setAttribute('aria-selected',String(active));b.tabIndex=active?0:-1;b.setAttribute('aria-current',active?'page':'false')});
  hub.querySelectorAll('[data-commons-panel]').forEach(p=>{p.hidden=p.dataset.commonsPanel!==selected;p.setAttribute('tabindex','0')});
+ syncSanctuaryMotion();
  const title=hub.querySelector('[data-commons-current]');if(title)title.textContent=TABS.find(t=>t[0]===selected)?.[1]||'Overview';
 }
 function attach(){

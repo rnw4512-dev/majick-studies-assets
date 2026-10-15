@@ -17,7 +17,7 @@ console.log('PASS Commons: five tabs, original DOM ownership, navigation, sessio
 
 // Exercise the actual classifier; incidental navigation copy must not decide ownership.
 const vm=require('node:vm');
-const classifier=js.slice(js.indexOf('function classify(node)'),js.indexOf('function navigateTab'));
+const classifier=js.slice(js.indexOf('function classify(node)'),js.indexOf('\n}',js.indexOf('function classify(node)'))+2);
 const classify=vm.runInNewContext('('+classifier.trim()+')');
 for(const [id,classes,text,expected] of [
  ['v3400DailyLoop','v3400DailyLoop','Daily Study Loop · Review · Guardian · Dorm','today'],
