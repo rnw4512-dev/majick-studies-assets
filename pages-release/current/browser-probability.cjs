@@ -99,7 +99,9 @@ async function click(selector){
  assert.equal(await evalPage('document.querySelector("[data-prob-field=whiteboard]").value'),draft);
  await action('document.querySelector("[data-prob-form] button[type=submit]").click()');
  assert.equal(await evalPage('MajickLearningContinuity.probabilityMastery().independentCorrect'),1);
+ const priorReasoningId=await evalPage('MajickLearningContinuity.probabilityState().tasks.reasoning.id');
  await click('[data-prob-next]');
+ await waitFor('MajickLearningContinuity.probabilityState().tasks.reasoning.id!=='+JSON.stringify(priorReasoningId));
  task=await evalPage('MajickLearningContinuity.probabilityState().tasks.reasoning');
  assert(!datasets.has(JSON.stringify(task.q.data)));datasets.add(JSON.stringify(task.q.data));
  await fillTask(task);await click('[data-prob-form] button[type=submit]');
