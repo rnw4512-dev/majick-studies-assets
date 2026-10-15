@@ -131,6 +131,8 @@ async function solveMean(values,sum,count,mean){
  await action('document.querySelectorAll("[data-add]")['+caseData.correct[0]+'].click();document.querySelector("[data-check]").click()');
  for(const part of caseData.correct)await action('document.querySelectorAll("[data-add]")['+part+'].click()');
  await action('document.querySelector("[data-check]").click()');
+ const stageDiagnostic=await evalPage('({title:document.querySelector(".mjSeStage h3")?.textContent,feedback:document.querySelector(".mjSeFeedback")?.textContent,scenario:document.querySelector(".mjSeStage")?.textContent?.slice(0,600),selectedTask:document.querySelector(".mjSeTaskSelect")?.value})');
+ console.log('SEQUENCE STAGE AFTER THIRD CHECK',JSON.stringify({caseData,stageDiagnostic}));
  await waitFor('!!document.querySelector("[data-meaning]")');
  const meaning=/observational|caused|causation|correlation|association/i.test(caseData.prompt)?'An observational study can show association':'The target population and sampled group differ';
  await action('const btn=[...document.querySelectorAll("[data-meaning]")].find(x=>x.textContent.includes('+JSON.stringify(meaning)+'));if(!btn)throw Error("Missing rationale");btn.click();document.querySelector("[data-check]").click()');
