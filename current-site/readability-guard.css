@@ -159,3 +159,49 @@ body.majickCampus .titleline .pill.v4Badge{
 /* Reward celebrations are informational overlays; never trap learning controls beneath. */
 .majRewardCard{pointer-events:none!important}
 .majRewardCard :is(button,a,[role="button"]){pointer-events:auto!important}
+
+/* D772 preassessment + adaptive mastery: preserve readable parchment contrast in dark academy themes. */
+#mjPreassessmentReview,
+#mjAdaptiveMastery,
+#mjPreassessmentReview [data-mj-pa-practice],
+#mjPreassessmentReview [data-mj-pa-source],
+#mjAdaptiveMastery [data-am-work] {
+  background-color:#fff8eb!important;
+  color:#241827!important;
+  opacity:1!important;
+  text-shadow:none!important;
+}
+#mjPreassessmentReview :is(h1,h2,h3,h4,h5,h6,p,span,label,legend,summary,strong,em,small,li,fieldset,option),
+#mjAdaptiveMastery :is(h1,h2,h3,h4,h5,h6,p,span,label,legend,summary,strong,em,small,li,fieldset,option) {
+  color:#241827!important;
+  opacity:1!important;
+  text-shadow:none!important;
+}
+#mjPreassessmentReview :is(select,textarea,input:not([type="radio"]):not([type="checkbox"])),
+#mjAdaptiveMastery :is(select,textarea,input:not([type="radio"]):not([type="checkbox"])) {
+  background:#fffdf7!important;
+  color:#241827!important;
+  border:2px solid #72577b!important;
+  opacity:1!important;
+  font-size:16px!important;
+}
+#mjPreassessmentReview :is(button,[role="button"]),
+#mjAdaptiveMastery :is(button,[role="button"]) {
+  background:#392348!important;
+  color:#fffaf1!important;
+  opacity:1!important;
+  text-shadow:none!important;
+  border:2px solid #aa8ab0!important;
+  font-size:16px!important;
+  min-height:42px;
+}
+#mjPreassessmentReview :is(button,[role="button"]):focus-visible,
+#mjAdaptiveMastery :is(button,[role="button"]):focus-visible,
+#mjPreassessmentReview :is(select,textarea,input):focus-visible,
+#mjAdaptiveMastery :is(select,textarea,input):focus-visible {
+  outline:3px solid #bd6b0c!important;
+  outline-offset:3px;
+}
+#mjPreassessmentReview input[type="radio"],
+#mjAdaptiveMastery input[type="radio"]{accent-color:#563268!important;opacity:1!important}
+#mjPreassessmentReview a{color:#39216f!important;text-decoration:underline!important}
