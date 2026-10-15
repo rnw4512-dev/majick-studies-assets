@@ -2,19 +2,24 @@
 (()=>{'use strict';if(window.MajickCollegiumCommons)return;
 const TABS=[['overview','✦ Overview'],['today','☀ Today'],['review','☾ Review'],['guardians','✧ Guardians'],['sanctuary','⌂ Sanctuary']];
 let selected='overview',updating=false;
+const valid=id=>TABS.some(t=>t[0]===id);
+function preferred(){try{const id=sessionStorage.getItem('majick-commons-tab');return valid(id)?id:'overview'}catch(_){return 'overview'}}
+selected=preferred();
 function classify(node){
  const id=(node.id||'').toLowerCase(),t=((node.textContent||'').slice(0,550)).toLowerCase(),c=(node.className&&typeof node.className==='string'?node.className:'').toLowerCase();
- if(/preassessment|adaptive|misrepresentation|memory|recall|review|misconception/.test(id+' '+c+' '+t))return 'review';
+ if(/mjpreassessmentreview|mjadaptivemastery|mjd772wguhistory|mjmisrepresentationlab|mjd772axislab|mjmemor|review|preassessment|adaptive|misrepresentation|memory|recall|misconception/.test(id+' '+c+' '+t))return 'review';
  if(/sanctuary|dorm|atelier|furniture|decor|room collection/.test(id+' '+c+' '+t))return 'sanctuary';
  if(/guardian|egg|bond|solara|velora|aurelia|cascade|solstice|vesper/.test(id+' '+c+' '+t))return 'guardians';
  if(/daily study|continue d772|continue course|study loop|quick check|moon path|tonight/.test(id+' '+c+' '+t))return 'today';
  return 'overview';
 }
 function navigateTab(next){
+ if(!valid(next))return;
  selected=next;
+ try{sessionStorage.setItem('majick-commons-tab',next)}catch(_){}
  const hub=document.getElementById('majCommonsHub');if(!hub)return;
- hub.querySelectorAll('[data-commons-tab]').forEach(b=>{const active=b.dataset.commonsTab===selected;b.setAttribute('aria-selected',String(active));b.tabIndex=active?0:-1});
- hub.querySelectorAll('[data-commons-panel]').forEach(p=>{p.hidden=p.dataset.commonsPanel!==selected});
+ hub.querySelectorAll('[data-commons-tab]').forEach(b=>{const active=b.dataset.commonsTab===selected;b.setAttribute('aria-selected',String(active));b.tabIndex=active?0:-1;b.setAttribute('aria-current',active?'page':'false')});
+ hub.querySelectorAll('[data-commons-panel]').forEach(p=>{p.hidden=p.dataset.commonsPanel!==selected;p.setAttribute('tabindex','0')});
  const title=hub.querySelector('[data-commons-current]');if(title)title.textContent=TABS.find(t=>t[0]===selected)?.[1]||'Overview';
 }
 function attach(){
@@ -30,7 +35,7 @@ function attach(){
   TABS.forEach(([id,name])=>{const b=document.createElement('button');b.type='button';b.role='tab';b.dataset.commonsTab=id;b.id='commons-tab-'+id;b.textContent=name;b.setAttribute('aria-controls','commons-panel-'+id);b.addEventListener('click',()=>navigateTab(id));list.append(b);const panel=document.createElement('div');panel.dataset.commonsPanel=id;panel.id='commons-panel-'+id;panel.setAttribute('role','tabpanel');panel.setAttribute('aria-labelledby',b.id);panels.append(panel)});
   const delta=n=>{const i=TABS.findIndex(x=>x[0]===selected);navigateTab(TABS[(i+n+TABS.length)%TABS.length][0])};
   hub.querySelector('[data-commons-previous]').addEventListener('click',()=>delta(-1));hub.querySelector('[data-commons-next]').addEventListener('click',()=>delta(1));
-  list.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key==='ArrowLeft'){e.preventDefault();delta(e.key==='ArrowRight'?1:-1);list.querySelector('[aria-selected=true]')?.focus()}});
+  list.addEventListener('keydown',e=>{if(['ArrowRight','ArrowLeft','Home','End'].includes(e.key)){e.preventDefault();if(e.key==='Home')navigateTab(TABS[0][0]);else if(e.key==='End')navigateTab(TABS[TABS.length-1][0]);else delta(e.key==='ArrowRight'?1:-1);list.querySelector('[aria-selected="true"]')?.focus()}});
   root.prepend(hub);
  }
  hub.querySelector('.majCommonsCourse').textContent='Currently studying · '+(document.querySelector('.top select')?.selectedOptions?.[0]?.textContent||window.S?.activeCourse||'Your course');
