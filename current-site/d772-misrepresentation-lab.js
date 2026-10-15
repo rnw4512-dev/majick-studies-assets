@@ -27,7 +27,24 @@ function problem(kind,index){
 function visual(q){
  if(q.kind==='truncated'){const y=v=>162-(v-q.axis)/(100-q.axis)*117;return '<svg viewBox="0 0 340 200" role="img" aria-label="Attendance '+q.a+' and '+q.b+' percent with truncated axis starting at '+q.axis+'" style="width:min(100%,420px);background:#fff;border:1px solid #bcae9c;border-radius:5px"><line x1="52" y1="24" x2="52" y2="163" stroke="#33243c" stroke-width="2"/><line x1="52" y1="163" x2="322" y2="163" stroke="#33243c" stroke-width="2"/><text x="44" y="165" font-size="14" text-anchor="end" fill="#271b2d">'+q.axis+'%</text><rect x="88" y="'+y(q.a)+'" width="70" height="'+(162-y(q.a))+'" fill="#54416e"/><rect x="210" y="'+y(q.b)+'" width="70" height="'+(162-y(q.b))+'" fill="#967446"/><text x="123" y="'+(y(q.a)-5)+'" text-anchor="middle" fill="#271b2d">'+q.a+'%</text><text x="245" y="'+(y(q.b)-5)+'" text-anchor="middle" fill="#271b2d">'+q.b+'%</text><text x="123" y="182" text-anchor="middle" fill="#271b2d">Before</text><text x="245" y="182" text-anchor="middle" fill="#271b2d">After</text></svg>';}
  if(q.kind==='icons'){const scale=q.b/q.a,side=42*scale;return '<svg viewBox="0 0 340 175" role="img" aria-label="Pictograms for '+q.a+' and '+q.b+' books are scaled in two dimensions, exaggerating their relative areas" style="width:min(100%,420px);background:#fff;border:1px solid #bcae9c;border-radius:5px"><rect x="58" y="'+(130-42)+'" width="42" height="42" rx="4" fill="#554171"/><rect x="196" y="'+(130-side)+'" width="'+side+'" height="'+side+'" rx="4" fill="#967446"/><text x="80" y="148" text-anchor="middle" fill="#271b2d">'+q.a+' books</text><text x="230" y="148" text-anchor="middle" fill="#271b2d">'+q.b+' books</text><text x="170" y="20" text-anchor="middle" fill="#271b2d">Compare symbol area carefully</text></svg>';}
- if(q.kind==='pie')return '<svg viewBox="0 0 340 125" role="img" aria-label="Three survey categories '+q.a+', '+q.b+', and '+q.c+' percent; beware 3-D perspective distortion" style="width:min(100%,420px);background:#fff;border:1px solid #bcae9c;border-radius:5px"><text x="170" y="25" text-anchor="middle" fill="#271b2d">Reported parts of the whole</text><rect x="30" y="49" width="'+(280*q.a/100)+'" height="32" fill="#554171"/><rect x="'+(30+280*q.a/100)+'" y="49" width="'+(280*q.b/100)+'" height="32" fill="#967446"/><rect x="'+(30+280*(q.a+q.b)/100)+'" y="49" width="'+(280*q.c/100)+'" height="32" fill="#548075"/><text x="170" y="106" text-anchor="middle" fill="#271b2d">'+q.a+'% + '+q.b+'% + '+q.c+'% = 100%</text></svg>';
+ if(q.kind==='pie'){
+  const values=[q.a,q.b,q.c],colors=['#554171','#967446','#548075'];
+  const wedge=(cx,cy,rx,ry,start,fraction,color)=>{
+   const end=start+fraction*Math.PI*2;
+   const point=t=>[(cx+rx*Math.cos(t)).toFixed(2),(cy+ry*Math.sin(t)).toFixed(2)];
+   const x=point(start),y=point(end);
+   return '<path d="M '+cx+' '+cy+' L '+x.join(' ')+' A '+rx+' '+ry+' 0 '+(fraction>0.5?1:0)+' 1 '+y.join(' ')+' Z" fill="'+color+'" stroke="#fff" stroke-width="1.5"/>';
+  };
+  let t=-Math.PI/2,flat='',tilted='';
+  values.forEach((v,i)=>{flat+=wedge(81,83,49,49,t,v/100,colors[i]);tilted+=wedge(247,91,61,27,t,v/100,colors[i]);t+=v/100*Math.PI*2});
+  return '<svg viewBox="0 0 340 176" role="img" aria-label="Accurate flat pie chart next to a visually distorted perspective pie, both representing '+q.a+', '+q.b+', and '+q.c+' percent" style="width:min(100%,440px);background:#fff;border:1px solid #bcae9c;border-radius:5px">'+
+  '<text x="82" y="19" text-anchor="middle" fill="#271b2d" font-size="14">Flat 2-D</text>'+
+  '<text x="247" y="19" text-anchor="middle" fill="#271b2d" font-size="14">Tilted perspective</text>'+
+  flat+'<ellipse cx="247" cy="103" rx="61" ry="27" fill="#493747" opacity=".75"/>'+tilted+
+  '<text x="170" y="153" text-anchor="middle" fill="#271b2d" font-size="13">'+q.a+'% + '+q.b+'% + '+q.c+'% = 100%</text>'+
+  '<text x="170" y="169" text-anchor="middle" fill="#271b2d" font-size="11">Same shares, different visual impression</text></svg>';
+ }
+
  return '<div style="padding:12px;background:#fff;border:1px solid #bcae9c;border-radius:5px;color:#271b2d">p = <strong>'+q.p.toFixed(2)+'</strong> | Average improvement = <strong>'+q.improvement.toFixed(1)+' points</strong><p>Statistical evidence and practical importance answer different questions.</p></div>';
 }
 function render(){
