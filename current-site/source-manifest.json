@@ -162,7 +162,7 @@
     "mobile-cleanup.css": "0d269da4401e8a281fde92948e139f925110d2ce937fd4d95783269dce36987c",
     "mobile-cleanup.js": "28aeb85477824c3b547310750fefd71f5c23861ab0eb6fdfc24e4437656389ef",
     "product-core.css": "08eafcb9c9e72c9f8b0106bc7a7de4450c07dbdd1047051bd342a2cb125dba9e",
-    "product-core.js": "16a02a03705c4d36579e40fdbb47e98fc97e563d63fc6a4d24e7860f01496754",
+    "product-core.js": "1e3e7ee3ef131ca3932f4e5a32d05f9cfd186d6a4e02bf532e0c38ce8b2117f7",
     "recovery/current_progress_2026-09-19.json": "51b2d54c4125ed77f0644fbef1b82597315fd7d9491ef32f8266b647606fed48",
     "refresh-v3317.html": "adbdcfeed0db95bb5687678e1eeaaa5f2a327431848f1150af7239adf08d536a",
     "sanctuary/Boot.js": "13175ee1eeac8a34e8744636d94d60d7504e1baa8d3bb7eb004fec8061d9338e",
@@ -814,7 +814,7 @@
     "d772-preassessment-review.js": "62f18fda8ac6ae91df3ed20ba101437382bbf615e0848ff858427dadad679064",
     "d772-preassessment-deep-practice.js": "e8beed6936534fb91af552dd78b2928655eee66225e22dce73140fcb0c4b3a75",
     "d772-adaptive-mastery.js": "22413b334fe722c594573bc8469b94658449ed693d02477ad383ba537d28a838",
-    "collegium-commons.js": "0e6f92abf6af711501e1cb15d0b0bff5316356a42249f97ce83bfc805793c4b2",
-    "collegium-commons.css": "f05d3156eb1c437c8de35c71e09e08d8efa1ee299b84d57c3db89fb211719fdf"
+    "collegium-commons.js": "9f7e11dcaa7f1dfb5590687aef798e78d273507084508b57c78715a0455eb862",
+    "collegium-commons.css": "9c64b0d3b2583e907b245273def77d10068cda98348beef67a6abe20b12e90ce"
   }
 }
