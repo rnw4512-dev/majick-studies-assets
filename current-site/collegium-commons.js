@@ -35,6 +35,21 @@ function attach(){
  }
  hub.querySelector('.majCommonsCourse').textContent='Currently studying · '+(document.querySelector('.top select')?.selectedOptions?.[0]?.textContent||window.S?.activeCourse||'Your course');
  const panels=Object.fromEntries([...hub.querySelectorAll('[data-commons-panel]')].map(p=>[p.dataset.commonsPanel,p]));
+ // Preserve the original magical college renderers; redistribute their existing nodes rather than rebuilding features.
+ const oldHome=[...root.children].find(n=>n.classList?.contains('v3327Home'));
+ if(oldHome){
+  for(const p of Object.values(panels))p.classList.add('v3327Home');
+  [...oldHome.children].forEach(n=>{
+   if(n.classList?.contains('v3327HallGrid')){
+    const academic=n.querySelector('.v3327AcademicHall'),guardian=n.querySelector('.v3327GuardianHall');
+    if(academic)panels.today.append(academic);
+    if(guardian)panels.guardians.append(guardian);
+    if(n.children.length)panels.overview.append(n);else n.remove();
+   }else if(n.classList?.contains('v3327PortalHero')||n.classList?.contains('v3327StudentRecord'))panels.overview.append(n);
+   else panels[classify(n)].append(n);
+  });
+  oldHome.remove();
+ }
  [...root.children].filter(n=>n!==hub&&n.nodeType===1).forEach(n=>panels[classify(n)].append(n));
  navigateTab(selected);
  }catch(e){console.warn('Commons layout preserved original content:',e)}finally{updating=false}
