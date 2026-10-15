@@ -12,6 +12,7 @@ async function waitFor(expression){for(let n=0;n<100;n++){try{if(await evalPage(
 async function action(statement){return evalPage('(()=>{'+statement+';return true})()')}
 async function click(selector){
  await action('document.querySelector('+JSON.stringify(selector)+').scrollIntoView({block:"center",behavior:"instant"})');
+ if(selector==='[data-prob-next]'){const detail=await evalPage('(()=>{const e=document.querySelector("[data-prob-next]");if(!e)return {found:false};const r=e.getBoundingClientRect(),h=document.elementFromPoint(r.x+r.width/2,r.y+r.height/2);return {disabled:e.disabled,rect:{x:r.x,y:r.y,w:r.width,h:r.height},hit:h?.outerHTML.slice(0,300),button:e.outerHTML.slice(0,300),screen:S.screen,history:!!document.querySelector("#mjD772WguHistory")}})()');console.log('PROBABILITY NEXT HIT TEST',JSON.stringify(detail))}
  await waitFor('(()=>{const e=document.querySelector('+JSON.stringify(selector)+');if(!e||e.disabled)return false;const r=e.getBoundingClientRect(),hit=document.elementFromPoint(r.x+r.width/2,r.y+r.height/2);return hit===e||e.contains(hit)})()');
  const r=await evalPage('(()=>{const r=document.querySelector('+JSON.stringify(selector)+').getBoundingClientRect();return {x:r.x+r.width/2,y:r.y+r.height/2}})()');
  await call('Input.dispatchMouseEvent',{type:'mousePressed',button:'left',clickCount:1,...r});
