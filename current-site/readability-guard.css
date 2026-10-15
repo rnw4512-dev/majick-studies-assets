@@ -155,3 +155,7 @@ body.majickCampus .titleline .pill.v4Badge{
 .connectedFields{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(220px,100%),1fr));gap:12px}
 .connectedCounters :is(button,span){display:grid;place-items:center;min-width:44px;min-height:44px;border:2px solid #fff4e7;border-radius:50%}
 .connectedCounters span{background:#49325b}
+
+/* Reward celebrations are informational overlays; never trap learning controls beneath. */
+.majRewardCard{pointer-events:none!important}
+.majRewardCard :is(button,a,[role="button"]){pointer-events:auto!important}
