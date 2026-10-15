@@ -3211,7 +3211,7 @@ function officialPracticeRows(official){
 function questionsForLesson(lesson,id=cid()){
   if(id==='D772'){
     const official=officialD772Content(lesson,id);
-    const sharedPractice=(window.MajickD772SharedQuestions?.forLesson?.(lesson.id)||[]).map(q=>({...q,sourceName:q.sourceLabel}));
+    const sharedPractice=[...(window.MajickD772SharedQuestions?.forLesson?.(lesson.id)||[]),...(window.MajickD772PreassessmentReview?.forLesson?.(lesson.id)||[])].map(q=>({...q,sourceName:q.sourceLabel}));
     const officialPractice=[...officialPracticeRows(official).map((q,i)=>({
       id:q.id||('official-'+lesson.id+'-'+i),
       prompt:q.prompt,

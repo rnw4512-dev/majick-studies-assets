@@ -356,7 +356,7 @@ function fixedResult(){
 function sectionNumber(q){return Number(String(q.learningPathLessonId||q.topicId||'').match(/d772-s([123])(?:-|$)/)?.[1]||String(q.section||'').match(/section\s*([123])/i)?.[1]||1)}
 function practicePool(scope){
  const base=questionPool();
- const source=activeD772()?(window.MajickD772VerifiedSource?.questions?.()||[]):[];
+ const source=activeD772()?[...(window.MajickD772VerifiedSource?.questions?.()||[]),...(window.MajickD772PreassessmentReview?.practiceQuestions?.()||[])]:[];
  const seen=new Set(base.map(q=>String(q.id)));
  const rows=base.concat(source.filter(q=>!seen.has(String(q.id))));
  if(scope==='mixed')return rows;

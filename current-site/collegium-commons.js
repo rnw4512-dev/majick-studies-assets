@@ -43,6 +43,8 @@ function navigateTab(next){
 function attach(){
  if(updating||window.S?.screen!=='home')return;
  const root=document.querySelector('#content');if(!root)return;
+ document.querySelectorAll('.nav button[data-nav]').forEach(b=>{const name=b.querySelector('.label')?.textContent?.trim();if(name){b.setAttribute('aria-label',name);b.title=name}});
+ document.querySelector('.top select')?.setAttribute('aria-label','Active course');
  updating=true;
  try{
  let hub=root.querySelector(':scope > #majCommonsHub');

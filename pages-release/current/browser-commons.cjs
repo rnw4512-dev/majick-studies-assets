@@ -11,9 +11,9 @@ async function waitFor(js){for(let n=0;n<100;n++){try{if(await ev(js))return}cat
 const deadline=setTimeout(()=>{console.error('Commons audit exceeded 480 seconds');try{proc?.kill()}catch{};server.closeAllConnections();process.exit(1)},process.env.COMMONS_WIDTH?480000:900000);deadline.unref();
 async function run(){
  await new Promise(r=>server.listen(0,'127.0.0.1',r));const url='http://127.0.0.1:'+server.address().port+'/index.html';
- proc=spawn(chrome,['--headless=new','--no-sandbox','--disable-dev-shm-usage','--disable-gpu','--remote-allow-origins=*','--remote-debugging-port=0','--user-data-dir='+profile,url],{stdio:['ignore','ignore','pipe']});proc.stderr.on('data',d=>stderr+=String(d).slice(-3000));
- let port;for(let k=0;k<120;k++){const f=path.join(profile,'DevToolsActivePort');if(fs.existsSync(f)){port=+fs.readFileSync(f,'utf8').split('\n')[0];break}await sleep(150)}if(!port)throw Error('Chrome start '+stderr.slice(-1500));
- const tabs=await(await fetch('http://127.0.0.1:'+port+'/json/list')).json();ws=new WebSocket(tabs.find(x=>x.type==='page').webSocketDebuggerUrl);await new Promise((res,rej)=>{ws.onopen=res;ws.onerror=rej});ws.onmessage=e=>{const m=JSON.parse(e.data),p=inflight.get(m.id);if(p){inflight.delete(m.id);m.error?p.reject(Error(m.error.message)):p.resolve(m)}};await call('Runtime.enable');await call('Page.enable');
+ proc=spawn(chrome,['--headless=new','--no-sandbox','--disable-dev-shm-usage','--disable-gpu','--remote-allow-origins=*','--remote-debugging-port=0','--no-first-run','--no-default-browser-check','--disable-background-networking','--user-data-dir='+profile,'about:blank'],{stdio:['ignore','ignore','pipe']});proc.stderr.on('data',d=>stderr+=String(d).slice(-3000));
+ let port;for(let k=0;k<400;k++){const f=path.join(profile,'DevToolsActivePort');if(fs.existsSync(f)){port=+fs.readFileSync(f,'utf8').split('\n')[0];break}await sleep(150)}if(!port)throw Error('Chrome start '+stderr.slice(-1500));
+ const tabs=await(await fetch('http://127.0.0.1:'+port+'/json/list')).json();ws=new WebSocket(tabs.find(x=>x.type==='page').webSocketDebuggerUrl);await new Promise((res,rej)=>{ws.onopen=res;ws.onerror=rej});ws.onmessage=e=>{const m=JSON.parse(e.data),p=inflight.get(m.id);if(p){inflight.delete(m.id);m.error?p.reject(Error(m.error.message)):p.resolve(m)}};await call('Runtime.enable');await call('Page.enable');await call('Page.navigate',{url});
  console.log('Commons Chrome connected');
  await waitFor('!!window.MajickCollegiumCommons && !!document.querySelector("#content")');
  await ev('switchCourse("D772");navigate("home");MajickCollegiumCommons.sync()');await waitFor('!!document.querySelector("#majCommonsHub")');
@@ -62,7 +62,7 @@ async function run(){
  }
  await call('Page.reload',{ignoreCache:true});await waitFor('!!document.querySelector("#majCommonsHub")');await waitFor('document.querySelector("[aria-selected=true]")?.dataset.commonsTab==="sanctuary"');
  await ev('MajickCollegiumCommons.select("review")');await ev('MajickCollegiumCommons.sync()');assert.equal(await ev('document.querySelector("[aria-selected=true]")?.dataset.commonsTab'),'review');
- if(!process.env.COMMONS_WIDTH||process.env.COMMONS_WIDTH==='1366'){await call('Emulation.setDeviceMetricsOverride',{width:1366,height:860,deviceScaleFactor:1,mobile:false});await require('./commons-control-states.cjs')({ev,call});await require('./commons-interactions.cjs')({ev,waitFor,call,sleep})}
+ if(!process.env.COMMONS_WIDTH||process.env.COMMONS_WIDTH==='1366'){await call('Emulation.setDeviceMetricsOverride',{width:1366,height:860,deviceScaleFactor:1,mobile:false});await sleep(400);await require('./commons-control-states.cjs')({ev,call});await require('./commons-interactions.cjs')({ev,waitFor,call,sleep})}
  assert.equal(contrastFailures.length,0,'Rendered Commons contrast failures: '+JSON.stringify(contrastFailures));
  console.log('PASS Commons actual browser audit: 1366/820/390 widths, five tabs, no escaped nodes, Next/Previous, persistence after reload');
 }

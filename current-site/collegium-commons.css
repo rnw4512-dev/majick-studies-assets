@@ -136,3 +136,11 @@ body[data-majick-room=home] .top .pill{display:block;max-width:100%;white-space:
 #majCommonsHub fieldset{min-inline-size:0;max-width:100%}
 #majCommonsHub #majickRoomRibbon em{color:#fff1d9!important;font-size:12px!important}
 #majCommonsHub .v3377CampusDoors summary{color:#fff1d9!important}
+/* Legacy inline rules fixed the header at 82px; allow all rows to occupy real space. */
+body[data-majick-room=home] .top{height:auto!important;min-height:82px!important;max-height:none!important;flex-wrap:wrap!important}
+body[data-majick-room=home] .top .courseSelect{min-width:0!important;max-width:100%!important;width:auto!important}
+@media(max-width:650px){
+ body[data-majick-room=home] .side .nav{height:72px!important;max-height:72px!important;align-items:stretch!important;overflow-x:auto!important;overflow-y:hidden!important}
+ body[data-majick-room=home] .side .nav button{height:56px!important;min-height:56px!important;max-height:56px!important;padding:6px!important}
+ body[data-majick-room=home] .top .caAmbience{width:100%;flex:1 1 100%;margin:0}
+}

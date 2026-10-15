@@ -17,7 +17,7 @@ function answer(topic,selected){
  const c=cycle(topic),phase=c?.stage;if(!c||!['diagnostic','independent','transfer'].includes(phase))return null;
  const q=pick(topic,phase,c);if(!q)return {error:'No distinct question available for this step; please choose a different topic.'};
  const correct=Number(selected)===q.correct;
- const item={topic:topic.id,stage:phase,qid:q.id,selected:Number(selected),correct,at:Date.now(),assisted:phase==='diagnostic'};
+ const item={topic:topic.id,stage:phase,qid:q.id,selected:Number(selected),correct,questionRevision:q.revision||1,at:Date.now(),assisted:phase==='diagnostic'};
  c.attempts.push(item);state().history.push(item);
  if(phase==='diagnostic'){c.first=q.id;c.stage='repair';c.status='in-progress'}
  else if(!correct){c.stage='repair';c.status='needs-repair';c.independent=null;c.transfer=null;c.teaching=null;c.serial++;}
@@ -54,7 +54,7 @@ function render(){
    line('h5',c.stage==='diagnostic'?'Diagnose the starting skill':c.stage==='independent'?'Independent reasoning · no hints':'Transfer to a different case · no hints');
    line('p',q.prompt);
    const group=document.createElement('fieldset');group.setAttribute('aria-label',q.prompt);group.style.cssText='border:0;padding:0';work.append(group);
-   q.choices.forEach((choice,i)=>{const label=document.createElement('label');label.style.cssText='display:block;padding:6px;color:#271b2d';const radio=document.createElement('input');radio.type='radio';radio.name='mjAdaptiveChoice';radio.value=String(i);label.append(radio,document.createTextNode(' '+choice));group.append(label)});
+   q.choices.forEach((choice,i)=>{const label=document.createElement('label');label.style.cssText='display:block;padding:6px;color:#271b2d';const radio=document.createElement('input');radio.type='radio';radio.name='mjAdaptiveChoice';radio.value=String(i);label.append(radio,document.createTextNode(' '+String.fromCharCode(65+i)+'. '+choice));group.append(label)});
    button('Submit '+c.stage+' answer',()=>{const v=group.querySelector('input:checked');if(!v){status.textContent='Choose an answer before submitting.';return}const r=answer(t,v.value);if(r?.error){status.textContent=r.error;return}draw();const p=line('p',(r.correct?'Correct. ':'Not yet. ')+r.why);p.setAttribute('role','status')});
   }else if(c.stage==='repair'){
    line('h5','Guided misconception repair');

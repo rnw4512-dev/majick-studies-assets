@@ -2,7 +2,7 @@
 const assert=require('node:assert/strict');
 module.exports=async function({ev,waitFor,call,sleep}){
  async function home(tab){await ev('navigate("home")');await waitFor('!!document.querySelector("#majCommonsHub")');await ev('document.querySelector("[data-commons-tab='+tab+']").click()')}
- async function click(selector){await ev('(()=>{const b=document.querySelector('+JSON.stringify(selector)+');if(!b||!b.getClientRects().length)throw Error("Missing visible action: '+selector.replace(/"/g,'')+'");b.click()})()')}
+ async function click(selector){await waitFor('(()=>{const e=document.querySelector('+JSON.stringify(selector)+');return !!e&&e.getClientRects().length>0})()');await ev('(()=>{const b=document.querySelector('+JSON.stringify(selector)+');if(!b||!b.getClientRects().length)throw Error("Missing visible action: '+selector.replace(/"/g,'')+'");b.click()})()')}
  const routes=[
   ['overview','.v3327HeroActions .v3327Primary','learninglab'],
   ['overview','.v3327HeroActions button[onclick*="mission"]','mission'],

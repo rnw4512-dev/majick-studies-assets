@@ -13,9 +13,19 @@ Implemented repairs on review branch `commons-rendered-certification` (PR #131):
 - Shortened the welcome; preserved stationary plum/velvet, parchment, antique gold, moonlight and existing campus art. Removed drifting decorations over Home reading surfaces. Corrected cramped tablet header and oversized mobile chrome.
 - Reused the existing real egg-incubator renderer in Guardian House. No new egg, Guardian, XP or mastery store.
 - Removed the hard-coded D772 lesson from the global release badge and made the room ribbon reflect the selected course.
-- Associated adaptive teaching text with its label and identified question groups for screen readers.
+- Associated adaptive teaching text with its label and identified question groups for screen readers; supplied names for the active-course selector and icon-only Home navigation.
 - Repaired malformed HTML action attributes in WGU Study Now review/retry controls and answer choices by escaping serialized JavaScript arguments for HTML attributes.
 - Added actual rendered-pixel contrast/viewport/interaction checks, visual artifacts and independent desktop/tablet/mobile review jobs. Tests now click the formerly malformed Review/Try new questions buttons.
+
+## WGU-language alignment and in-card Back
+
+- Revised all 30 original D772 preassessment-based supplements to scenario/task stems, four plausible responses, one best answer, and WGU terminology grounded in the supplied 58-item preassessment. The original 58 source items remain unchanged, including flagged missing mathematics.
+- Explanations connect exam terms to plain English after answering. Correct positions vary. Generated probability distractors now use distinct mathematical values instead of equivalent fractions.
+- One normalized question adapter supplies Learn Lab, Study Now and Game Realm. Revision metadata distinguishes new attempts without rewriting prior history. Future writing rules: `D772_WGU_LANGUAGE_STANDARD.md`.
+- Added a visible Back control inside Connected Learning · Probability, as requested in the screenshot. It reuses existing campus navigation history and preserves drafts/evidence; browser coverage clicks it and checks academic state.
+- Fixed final header height overrides that allowed the course/ambience controls to overlap the reading area.
+
+If wording or an answer fails: identify the question ID/revision, check its four alternatives against its worked rationale, repair that canonical item and update the manifest hash. Keep original source and learner history intact. If the in-card Back fails, check `probability-workshop.js` binding to `majickBack` and existing session navigation history; do not clear course saves.
 
 ## How I did it / exact locations
 

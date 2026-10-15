@@ -41,6 +41,12 @@ async function click(selector){
  await action('startD756Course();switchCourse("D755");S.progress.D755.answers.push({qid:"phase2-d755-history",correct:true});switchCourse("D756");S.progress.D756.answers.push({qid:"phase2-d756-history",correct:false});switchCourse("D772");navigate("games")');
  await waitFor('!!document.querySelector("#connectedProbability")');
  await call('Page.reload',{ignoreCache:true});await waitFor('!!document.querySelector("#connectedProbability")');
+ const backState=await evalPage('JSON.stringify(S.progress)');
+ await click('[data-connected-back]');
+ await waitFor('S.screen!=="games"');
+ assert.equal(await evalPage('JSON.stringify(S.progress)'),backState,'Local probability Back preserves academic progress');
+ await action('navigate("games")');await waitFor('!!document.querySelector("[data-connected-back]")');
+ console.log('PASS probability: in-card Back returns to the previous room and preserves progress');
  // Fixture selects a probability question; the actual wrong answer is clicked in Oracle Lens.
  await action('startOracleLens();session.current=MajickGeneratedPractice.probabilityCase(0);session.current.section="Section 3 · Probability";render()');
  await waitFor('!!document.querySelector(".realmLensChoices button")');
