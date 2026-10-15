@@ -22,6 +22,11 @@ function mount(){
  let box=document.getElementById('connectedProbability');
  if(!box){box=document.createElement('section');box.id='connectedProbability';box.className='connectedProbability';box.setAttribute('aria-label','Connected probability learning');content.prepend(box);}
  const st=C().probabilityState(false),m=C().probabilityMastery();
+ // Repeated render-queue passes must not replace an unchanged form between
+ // pointer-down and pointer-up or discard focus while a learner is typing.
+ const view=JSON.stringify({screen:S.screen,focus:st?.focus,need:st?.need,mastery:m,task:st?.tasks[st?.focus]});
+ if(box.__majickProbabilityView===view)return;
+ box.__majickProbabilityView=view;
  const nav=Object.keys(labels).map(k=>{
  const unlocked=k==='repair'||m.repairVerified&&(k==='reasoning'||m.independentCorrect>=2&&(k==='transfer'||m.transferVerified));
  return '<button type="button" data-connected-open="'+k+'" '+(!unlocked?'disabled':'')+'>'+labels[k]+'</button>';

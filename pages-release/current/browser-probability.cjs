@@ -17,6 +17,7 @@ async function click(selector){
  await waitFor('(()=>{const e=document.querySelector('+JSON.stringify(selector)+');if(!e||e.disabled)return false;const r=e.getBoundingClientRect(),hit=document.elementFromPoint(r.x+r.width/2,r.y+r.height/2);return hit===e||e.contains(hit)})()');
  const r=await evalPage('(()=>{const r=document.querySelector('+JSON.stringify(selector)+').getBoundingClientRect();return {x:r.x+r.width/2,y:r.y+r.height/2}})()');
  await call('Input.dispatchMouseEvent',{type:'mousePressed',button:'left',clickCount:1,...r});
+ await action('MajickProbabilityWorkshop.mount();MajickProbabilityWorkshop.mount()');
  await call('Input.dispatchMouseEvent',{type:'mouseReleased',button:'left',clickCount:1,...r});
 }
 (async()=>{
@@ -75,6 +76,16 @@ async function click(selector){
  }
  let task=await openKind('repair');
  assert.equal(await evalPage('document.querySelector("[data-connected-open=transfer]").disabled'),true);
+ // Real keyboard input and selection must survive unrelated render-queue passes.
+ await click('[data-prob-field=whiteboard]');
+ await call('Input.insertText',{text:'Recount the remaining outcomes.'});
+ await action('window.__probInput=document.querySelector("[data-prob-field=whiteboard]");window.__probForm=document.querySelector("[data-prob-form]");__probInput.setSelectionRange(8,11);for(let i=0;i<20;i++)MajickProbabilityWorkshop.mount()');
+ assert.equal(await evalPage('document.querySelector("[data-prob-form]")===window.__probForm && document.activeElement===window.__probInput && __probInput.selectionStart===8 && __probInput.selectionEnd===11'),true,'Repeated mounts preserve actual form, focus and selection');
+ await call('Input.insertText',{text:'these'});
+ assert.equal(await evalPage('document.querySelector("[data-prob-field=whiteboard]").value'),'Recount these remaining outcomes.');
+ assert.equal(await evalPage('MajickLearningContinuity.probabilityState().drafts.repair.whiteboard'),'Recount these remaining outcomes.');
+ console.log('PASS probability: repeated mounts preserve typing, selection and saved draft; pointer clicks include an intervening mount');
+
  await click('[data-remove-green]');
  assert.equal(await evalPage('document.querySelectorAll("[data-remove-green]:disabled").length'),task.q.data[0]-1);
  await fillTask(task);await click('[data-prob-form] button[type=submit]');

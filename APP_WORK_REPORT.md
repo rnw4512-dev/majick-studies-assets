@@ -74,3 +74,13 @@ For full release rollback, revert the merged PR through Git and republish using 
 No save reset, account-store replacement, reward engine, duplicate Guardian renderer, or Sanctuary motion replacement. Academic course records remain separate; shared identity, earned rewards, Guardians, eggs and inventory remain shared through existing stores.
 
 Next: finish the latest review, repair any genuine failures, inspect desktop/tablet/mobile screenshots, then merge and publish through the established Pages workflow. Acceptance requires passing current source, browser, contrast, course/world preservation checks and verified live build identity. Update this report with final commit, run IDs, deployment result and any remaining limits before completion.
+
+
+## Probability render stability follow-up
+
+- Change: completed the pending unchanged-view guard in `current-site/probability-workshop.js`. Repeated mounts reuse the existing form when screen, task, recommendation and mastery are unchanged; drafts are deliberately excluded so each keystroke does not rebuild its own input. Actual task changes still refresh counters, feedback and locks. No extra state owner or save migration.
+- Regression: `pages-release/current/browser-probability.cjs` now mounts twice between pointer-down and pointer-up for real pointer clicks, and types with browser input events while asserting form identity, focus, selection and persisted draft after 20 mounts. The existing full sequence still checks repair, two independent questions, transfer, teaching, reload, Back, course isolation, reward replay and shared misconceptions.
+- Verification: canonical build, release checks and test syntax passed locally. Local browser rerun blocked by Chrome socket permission failure; GitHub PR #131 rerun is pending. Not deployed or visually certified by this follow-up.
+- Location: D772 → Connected Learning · Probability → Repair / Independent OA reasoning; type in Whiteboard and use the task buttons.
+- Recovery: if inputs lose focus or clicks vanish, run `node pages-release/current/browser-probability.cjs _site` against a canonical build and inspect DOM identity assertions. If feedback becomes stale, ensure new rendered state is included in the view key; do not include drafts in that key. Revert only the view-guard hunk and its matching manifest hash to undo this fix. Never reset learner progress, rewards, Guardian or Sanctuary stores.
+- Next: obtain passing full browser sequence on the review commit, then record its run and result. Broader Commons and WGU work remains in PR #131.
