@@ -7,14 +7,18 @@ const server=http.createServer((req,res)=>{try{const pathname=new URL(req.url,'h
 let proc,ws,id=0,stderr='';const contrastFailures=[];const inflight=new Map();
 async function call(method,params={}){const n=++id;return new Promise((resolve,reject)=>{inflight.set(n,{resolve,reject});ws.send(JSON.stringify({id:n,method,params}));setTimeout(()=>{if(inflight.has(n)){inflight.delete(n);reject(Error('Timed out '+method))}},14000)})}
 async function ev(js){let r=await call('Runtime.evaluate',{expression:js,returnByValue:true,awaitPromise:true});if(r.result?.exceptionDetails)throw Error(JSON.stringify(r.result.exceptionDetails));return r.result?.result?.value}
-async function waitFor(js){for(let n=0;n<100;n++){try{if(await ev(js))return}catch{}await sleep(250)}throw Error('Page condition: '+js)}
+async function waitFor(js){for(let n=0;n<100;n++){try{if(await ev(js))return}catch(e){if(/Timed out/.test(e.message))throw e}await sleep(250)}throw Error('Page condition: '+js)}
+const deadline=setTimeout(()=>{console.error('Commons audit exceeded 180 seconds');try{proc?.kill()}catch{};server.closeAllConnections();process.exit(1)},180000);deadline.unref();
 async function run(){
  await new Promise(r=>server.listen(0,'127.0.0.1',r));const url='http://127.0.0.1:'+server.address().port+'/index.html';
  proc=spawn(chrome,['--headless=new','--no-sandbox','--disable-dev-shm-usage','--disable-gpu','--remote-allow-origins=*','--remote-debugging-port=0','--user-data-dir='+profile,url],{stdio:['ignore','ignore','pipe']});proc.stderr.on('data',d=>stderr+=String(d).slice(-3000));
  let port;for(let k=0;k<120;k++){const f=path.join(profile,'DevToolsActivePort');if(fs.existsSync(f)){port=+fs.readFileSync(f,'utf8').split('\n')[0];break}await sleep(150)}if(!port)throw Error('Chrome start '+stderr.slice(-1500));
  const tabs=await(await fetch('http://127.0.0.1:'+port+'/json/list')).json();ws=new WebSocket(tabs.find(x=>x.type==='page').webSocketDebuggerUrl);await new Promise((res,rej)=>{ws.onopen=res;ws.onerror=rej});ws.onmessage=e=>{const m=JSON.parse(e.data),p=inflight.get(m.id);if(p){inflight.delete(m.id);m.error?p.reject(Error(m.error.message)):p.resolve(m)}};await call('Runtime.enable');await call('Page.enable');
+ console.log('Commons Chrome connected');
  await waitFor('!!window.MajickCollegiumCommons && !!document.querySelector("#content")');
  await ev('switchCourse("D772");navigate("home");MajickCollegiumCommons.sync()');await waitFor('!!document.querySelector("#majCommonsHub")');
+ console.log('Commons D772 Home mounted');
+ console.log('Commons D772 Home mounted');
  // Exercise real delayed insertions into a wrong panel and at the Home root.
  await ev(`(()=>{const n=document.createElement('section');n.className='dailyStudyLoop';n.id='commonsDelayedProbe';n.textContent='Delayed daily study with a dorm shortcut';document.querySelector('[data-commons-panel=sanctuary]').append(n)})()`);
  await waitFor(`document.querySelector('#commonsDelayedProbe')?.closest('[data-commons-panel]')?.dataset.commonsPanel==='today'`);
@@ -58,4 +62,4 @@ async function run(){
  assert.equal(contrastFailures.length,0,'Rendered Commons contrast failures: '+JSON.stringify(contrastFailures));
  console.log('PASS Commons actual browser audit: 1366/820/390 widths, five tabs, no escaped nodes, Next/Previous, persistence after reload');
 }
-run().catch(e=>{console.error('FAIL Commons browser:',e.stack||e);process.exitCode=1}).finally(async()=>{try{ws?.close()}catch{}try{proc?.kill()}catch{}await new Promise(r=>server.close(r));try{fs.rmSync(profile,{recursive:true,force:true})}catch{}});
+run().catch(e=>{console.error('FAIL Commons browser:',e.stack||e);process.exitCode=1}).finally(async()=>{clearTimeout(deadline);try{ws?.close()}catch{}try{proc?.kill()}catch{}server.closeAllConnections();await new Promise(r=>server.close(r));try{fs.rmSync(profile,{recursive:true,force:true})}catch{}});

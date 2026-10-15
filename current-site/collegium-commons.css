@@ -78,3 +78,16 @@
 #majCommonsHub .majCommonsWelcome h2{margin:7px 0;font-size:clamp(24px,2.6vw,34px)!important}
 #majCommonsHub .majCommonsWelcome p{margin:8px 0}
 #majCommonsHub .majCommonsWelcome p:not(.majCommonsCourse){max-width:76ch}
+
+/* Tab ownership supersedes the former compact-Home hiding rules. */
+#majCommonsHub [data-commons-panel] :is(.v3327StudentRecord,.v3317HomeSanctuary){display:block!important}
+#majCommonsHub .v3327HeroActions button{display:inline-flex!important;align-items:center;justify-content:center}
+#majCommonsHub [data-commons-panel] :is(small,.tiny,.v3400DailyLoop li span,.v3377CampusDoors summary,.v3377CampusDoors>header>span,.v3400LoopActions>span){font-size:12px!important;line-height:1.5!important}
+#majCommonsHub [data-commons-panel] :is(p,li){font-size:15px}
+#majCommonsHub [data-commons-panel] button{background:#34223f!important;color:#fff6e8!important;opacity:1!important;font-size:14px;white-space:normal}
+#majCommonsHub [data-commons-panel] button :is(b,strong,span,small){color:#fff6e8!important;opacity:1!important}
+#majCommonsHub .v3400DailyLoop :is(header p,.v3400LoopActions>span,li){color:#fff0dc!important;opacity:1!important}
+#majCommonsHub .v3377CampusDoors>header>span{color:#eadcc9!important}
+#majCommonsHub .v3400MemoryQuest :is(p,small,strong){color:#241827!important;opacity:1!important}
+#majCommonsHub [data-commons-panel] .v3400DailyLoop ol{gap:8px}
+#majCommonsHub [data-commons-panel] .v3400DailyLoop li{min-height:56px}
