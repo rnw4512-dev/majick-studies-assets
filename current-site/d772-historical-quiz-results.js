@@ -39,6 +39,7 @@ function render(){
  '<div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;color:#271b2d"><thead><tr><th scope="col">Date</th><th scope="col">WGU quiz</th><th scope="col">Score</th><th scope="col">Source</th></tr></thead><tbody>'+
  data.map(r=>'<tr><td>'+escapeHtml(r.date)+'</td><td>'+escapeHtml(r.form)+'</td><td>'+escapeHtml(r.percent)+'%</td><td>'+escapeHtml(r.source)+'</td></tr>').join('')+
  '</tbody></table></div><p style="color:#35283a">A quiz score indicates review priority but does not establish independent mastery or identify individual missed questions.</p></details>';
+ el.querySelectorAll('h3,p,summary,td,th,strong').forEach(node=>node.style.setProperty('color','#271b2d','important'));
  el.querySelectorAll('td,th').forEach(cell=>cell.style.cssText='border-bottom:1px solid #b49b91;padding:8px;text-align:left;color:#271b2d');
  root.prepend(el);
 }
