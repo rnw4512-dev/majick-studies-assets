@@ -41,7 +41,7 @@ function validate(q){
   case 'boxplot':{const five=quartiles(v);expected=String(five[3]-five[1]);break}
   case 'histogram':expected=String(v.filter((n,i)=>n===Math.max(...v)).length===1?'Unimodal':'Bimodal');break;
   case 'scatterplot':expected='Positive association';if(v.length<2||!v.every(p=>Array.isArray(p)&&p.length===2))return false;break;
-  case 'probability':{const [g,p]=v;if(!(g>1&&p>0))return false;let a=g*(g-1),b=(g+p)*(g+p-1);const gcd=(x,y)=>y?gcd(y,x%y):x,k=gcd(a,b);expected=(a/k)+'/'+(b/k);break}
+  case 'probability':{const [g,p]=v;if(!(g>1&&p>0))return false;let a=g*(q.event==='green-purple'?p:g-1),b=(g+p)*(g+p-1);const gcd=(x,y)=>y?gcd(y,x%y):x,k=gcd(a,b);expected=(a/k)+'/'+(b/k);break}
   default:return false;
  }
  return expected===String(q.answer);
@@ -52,6 +52,22 @@ function generate(skill='boxplot',difficulty=2){const n=difficulty>=3?9:7,base=r
  if(skill==='probability')vals=[randint(3,5),randint(2,4)];
  return item(skill,vals,difficulty)
 }
+// Persisted ordinal selects a new dataset; IDs alone do not establish freshness.
+function probabilityCase(ordinal=0,transfer=false){
+ if(!Number.isInteger(ordinal)||ordinal<0||ordinal>=42)return null;
+ const g=3+ordinal%6,p=2+Math.floor(ordinal/6),q=item('probability',[g,p],3);
+ q.id='connected-probability-'+ordinal;q.connectedProbability=true;q.event=transfer?'green-purple':'green-green';
+ q.topicId=q.learningPathLessonId;q.section='Section 3 · Probability';q.misconceptionId='unchanged-sample-space';q.rigor='multi-step-conditional-reasoning';q.sourceLabel='Original simulated practice; not official WGU questions';
+ if(transfer){
+  const n=g*p,d=(g+p)*(g+p-1),gcd=(a,b)=>b?gcd(b,a%b):a,k=gcd(n,d);
+  q.answer=(n/k)+'/'+(d/k);
+  q.prompt='A teacher randomly assigns classroom roles using '+g+' green reader cards and '+p+' purple recorder cards. Two cards are drawn without replacement. What is P(reader first AND recorder second)?';
+  q.why='Multiply '+g+'/'+(g+p)+' by '+p+'/'+(g+p-1)+'. Removing a green card leaves the purple count unchanged but reduces the total.';
+  q.options=[q.answer,'1/2',g+'/'+(g+p),'1/'+(g+p)].filter((v,i,a)=>a.indexOf(v)===i);
+  for(let i=2;q.options.length<4;i++)if(!q.options.includes('1/'+(g+p+i)))q.options.push('1/'+(g+p+i));
+ }
+ return q;
+}
 function batch(count=10,difficulty=2){const skills=['mean','median','boxplot','histogram','scatterplot','probability'],out=[];for(let i=0;i<count;i++){const q=generate(skills[i%skills.length],difficulty);if(q)out.push(q)}return out}
 function mountLab(root,lessonText){
  if(!root||!window.S||window.S.activeCourse!=='D772')return;
@@ -60,7 +76,7 @@ function mountLab(root,lessonText){
  if(!skill)return;
  const q=generate(skill,2);if(!q)return;
  const section=document.createElement('section');section.className='majickGeneratedLab';section.style.cssText='border:1px solid #c1a476;border-radius:15px;background:#32253e;color:#fff0db;padding:16px;margin:16px 0';
- section.innerHTML='<h4>✦ Generated Data Workshop · Five Learning Stages</h4><p><b>1 · Observe:</b> Read the complete graph and describe what the axes, values, or counters show.</p>'+q.visualHtml+'<p><b>2 · Interpret:</b> '+E(q.prompt)+'</p><label>Independent answer <input data-answer style="display:block;width:100%;max-width:340px;padding:10px;margin:8px 0" autocomplete="off"></label><p><b>3 · Explain:</b> Show your method or whiteboard steps.</p><textarea data-reason rows="3" style="width:100%;padding:10px" placeholder="I used the values because…"></textarea><p><b>4 · Transfer:</b> Create a new data set and solve without hints.</p><button type="button" data-fresh class="btn ghost">Generate new data →</button><p><b>5 · Teach:</b> A student is struggling with this mistake: '+E(q.misconception)+'. How would you model and check a correction?</p><textarea data-teach rows="3" style="width:100%;padding:10px" placeholder="I would show my student…"></textarea><div><button type="button" data-check class="btn primary">Check calculation and coach me</button></div><p data-feedback role="status" aria-live="polite">Written reasoning and teaching are coaching tasks, not automatically certified mastery.</p>';
+ section.innerHTML='<h4>✦ Generated Data Workshop · Five Learning Stages</h4><p><b>1 · Observe:</b> Read the complete graph and describe what the axes, values, or counters show.</p>'+q.visualHtml+'<p><b>2 · Interpret:</b> '+E(q.prompt)+'</p><label>Guided practice answer <input data-answer style="display:block;width:100%;max-width:340px;padding:10px;margin:8px 0" autocomplete="off"></label><p><b>3 · Explain:</b> Show your method or whiteboard steps.</p><textarea data-reason rows="3" style="width:100%;padding:10px" placeholder="I used the values because…"></textarea><p><b>4 · Transfer:</b> Create a new data set and solve without hints.</p><button type="button" data-fresh class="btn ghost">Generate new data →</button><p><b>5 · Teach:</b> A student is struggling with this mistake: '+E(q.misconception)+'. How would you model and check a correction?</p><textarea data-teach rows="3" style="width:100%;padding:10px" placeholder="I would show my student…"></textarea><div><button type="button" data-check class="btn primary">Check calculation and coach me</button></div><p data-feedback role="status" aria-live="polite">Written reasoning and teaching are coaching tasks, not automatically certified mastery.</p>';
  root.appendChild(section);
  section.querySelector('[data-fresh]').onclick=()=>{section.remove();mountLab(root,lessonText)};
  section.querySelector('[data-check]').onclick=()=>{
@@ -68,8 +84,8 @@ function mountLab(root,lessonText){
   const reason=section.querySelector('[data-reason]').value.trim(),teach=section.querySelector('[data-teach]').value.trim();
   const feedback=section.querySelector('[data-feedback]');
   feedback.textContent=(correct?'Correct calculation. ':'Check the calculation again. ')+(reason.length<25?'Explain the evidence and steps in more detail. ':'Your reasoning has been saved for self-review. ')+(teach.length<35?'Describe what you would model and how you would check understanding. ':'Compare your teaching strategy with the misconception and worked solution. ')+ 'Worked reasoning: '+q.why+' This guided workshop does not count as independent mastery.';
-  try{window.MajickLearningContinuity?.record?.({courseId:'D772',lessonTitle:lessonText,term:q.learningPathLessonId,correct:correct&&reason.length>=25,activity:'generated-lab-guided'})}catch(_){}
+  try{window.MajickLearningContinuity?.record?.({courseId:'D772',lessonTitle:lessonText,term:q.learningPathLessonId,correct,activity:'generated-lab-guided',question:q})}catch(_){}
  };
 }
-window.MajickGeneratedPractice=Object.freeze({generate,batch,validate,median,quartiles,render:{dots,box,histogram,scatter,probability},mountLab});
+window.MajickGeneratedPractice=Object.freeze({generate,batch,validate,probabilityCase,median,quartiles,render:{dots,box,histogram,scatter,probability},mountLab});
 })();

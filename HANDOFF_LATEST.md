@@ -14,6 +14,25 @@ Updated: 2026-10-04
 - No learner saves, XP, crystals, eggs, courses, or stored progress were intentionally reset. Browser verification used a separate browser world.
 - Next reliability milestone: end-to-end browser release gate covering Learn → Practice → reward → Guardian/egg → reload; save export/recovery; current render-owner consolidation; then multi-user account isolation and sync before public onboarding.
 
+## 2026-10-14 — Contrast gate repair (milestone prerequisite)
+
+- Changed `current-site/readability-guard.css` to use explicit high-contrast surfaces for lesson badges, lesson navigation, chart controls, Guardian sidebar metadata/reward chips, Game Realm Guardian metadata, and the current lesson title badge. Updated only its hash in `current-site/source-manifest.json`.
+- Base: `984430497cc09558b0d03296b13e82d1dbdb32be`, review branch `phase2-connected-probability`; no deployment. Build ID: `ac29da174a745b3e`.
+- Verified canonical release checks, source-integrity/syntax build, and existing browser interaction assertions including full learner/world state equality after reload. Sampled mobile (390px) and desktop (1365px) solid-surface contrast gate now passes. Two gradient/image-backed lesson trap text samples remain unverified by the automatic audit; no claim of universal WCAG compliance or manual visual acceptance.
+- See changes in Learn Lab lesson headings/navigation, sidebar Guardian labels, and Game Realm. Local verification: `node pages-release/current/release-checks.cjs current-site`; `python3 pages-release/current/build.py current-site /workspace/majick-dev/contrast-final`; `node pages-release/current/browser-interactions.cjs /workspace/majick-dev/contrast-final`.
+- Recovery: if these elements become unreadable, inspect computed styles and whether readability-guard.css loaded; rebuild from current source to clear stale generated output. To roll back this change, remove only the added contrast blocks at the end of readability-guard.css and restore that file's previous manifest hash from the base commit. Do not reset unrelated work or learner storage. Motion assets, save schemas, XP, inventory and course separation are unchanged.
+- Next: review remaining gradient-backed lesson text visually, then publish through the established Pages workflow after review. Acceptance: readable lesson content on mobile/desktop, unchanged release/browser checks and retained learner saves.
+
+## 2026-10-14 — Phase 2 connected probability milestone (review branch)
+
+- Extended the existing continuity tracker, generated probability engine, native Study Now/Game Realm answer reporting and reward bridge. Added one shared probability UI adapter across Learn Lab, Study Now and Game Realm.
+- Flow: hands-on guided repair → two fresh independent OA-style responses with persisted whiteboard → changed-event classroom-role transfer → structured teacher diagnosis/model/exit question. Guided work cannot certify independence; written prose is saved but not semantically graded. New misconceptions revoke certification until repaired with fresh evidence.
+- D755/D756 academic records and previous D772 history remain isolated. Account XP/crystals/chests remain global; existing Guardians, eggs and Sanctuary are preserved. No save reset or schema replacement.
+- See `PHASE2_PROBABILITY.md` for exact changed files, source-manifest hashes, test commands, limits and safe recovery. New `browser-probability.cjs` is a required pre-deployment workflow gate. Protected motion hashes are unchanged. Preserved on `phase2-connected-probability` for PR review; no merge or deployment. Earlier contrast repair retained as a prerequisite for browser certification.
+- Verified final build `ab702a34384ff656`: nine grouped release checks, canonical integrity/syntax build, established browser gate and new full probability browser gate passed. New browser coverage includes physical mouse events, native misses in all three environments, distinct data from the original miss, academic isolation and reload/replay checks.
+- Remaining parchment accessibility checks are closed: actual mobile/desktop background-pixel measurements passed AA (initial manual minima 8.14:1 / 8.25:1). The complete browser gate now includes mandatory `parchment-contrast.cjs` assertions for both instances; no visual change, skipped check or waiver.
+- Scope: probability is the first end-to-end milestone. Other requested skills and broad Phase 2 completion remain outstanding.
+
 ## Historical notes below — reference only; not current deployment instructions
 
 # Majick Studies — LATEST HANDOFF

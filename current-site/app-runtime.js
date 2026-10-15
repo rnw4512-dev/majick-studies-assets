@@ -377,6 +377,7 @@ if(previousRender){
     if(window.S?.screen==='livinggrimoire')setTimeout(()=>window.MajickInstruction?.decorateGrimoire?.(),0);
     setTimeout(()=>{window.v3317PushGuardianLevels();window.v3321PushFurnitureState();},140);
     hydrateGeneratedQuestions();
+    setTimeout(()=>window.MajickProbabilityWorkshop?.mount?.(),0);
     applyReleaseBadge();
     setTimeout(ensureBackButton,0);
     if(window.__majickD772PracticeRefreshNotice){

@@ -130,8 +130,14 @@ function startRepairTransfer(id){
  session={type:'test',opts:{label:'Independent Transfer Check',limit:1,kind:'d772-diagnostic',hideMeta:true,assessmentOnly:true},index:1,score:0,combo:0,questions:[q],current:q,answered:false,confidence:'sure',review:[],start:Date.now(),pendingChoice:null};
  S.screen='mission';render();
 }
+function trackSkillAnswer(q){
+ if(!session?.answered||session.current!==q||session.adaptiveTracked)return;
+ session.adaptiveTracked=true;
+ const assisted=session.type!=='test'||!!(session.mathCoachAssisted||session.chartUsed||session.revealedClue||session.usedPetAbility);
+ try{window.MajickLearningContinuity?.skillResult(q,session.chosen===q.answer,assisted,session.opts?.label==='Independent Transfer Check'?'independent-transfer':'study-now')}catch(_){}
+}
 function practiceFeedback(q){
-  if(session?.answered&&session.current===q&&!session.adaptiveTracked){session.adaptiveTracked=true;try{window.MajickLearningContinuity?.skillResult(q,session.chosen===q.answer,!!session.mathCoachAssisted,session?.opts?.label==='Independent Transfer Check'?'independent-transfer':'study-now')}catch(_){}}
+  trackSkillAnswer(q);
 
   const wrong=session?.chosen!==q.answer;
   const skillId=q.learningPathLessonId||q.lessonId||window.MajickLearningContinuity?.identify?.(q.prompt);
@@ -424,14 +430,15 @@ function startSection(scope,independent=false){
  session={type:independent?'test':'adaptive',opts:{label:label+(independent?' · Independent OA practice':' · Assisted practice'),limit:questions.length,kind:'d772-section-practice',scope,hideMeta:independent},index:1,score:0,combo:0,questions,current:questions[0],answered:false,confidence:'sure',review:[],start:Date.now(),pendingChoice:null};
  S.screen='mission';render();
 }
-// Assessments use the existing session renderer but never write mastery or rewards.
+// Assessments reuse the renderer and report learning needs without awarding rewards.
 const originalAssessmentAnswer=answerQ;
 answerQ=function(choice){
- if(!session?.opts?.assessmentOnly)return originalAssessmentAnswer(choice);
+ if(!session?.opts?.assessmentOnly){const q=session?.current;const out=originalAssessmentAnswer(choice);trackSkillAnswer(q);return out;}
  if(session.answered||session.finished)return;
  const q=session.current,correct=String(choice)===String(q.answer);
  session.chosen=choice;session.answered=true;session.score+=correct?1:0;
  session.review.push({q,chosen:choice,correct});
+ trackSkillAnswer(q);
  setTimeout(()=>{
   if(!session||session.finished||!session.opts?.assessmentOnly)return;
   if(session.index>=session.questions.length)finishSession();
