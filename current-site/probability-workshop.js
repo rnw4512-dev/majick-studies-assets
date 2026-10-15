@@ -16,6 +16,17 @@ function open(kind){
   panel.scrollIntoView({block:'start',behavior:'instant'});
  },0);
 }
+let heldPointer=null;
+document.addEventListener('pointerdown',event=>{
+ const box=event.target.closest?.('#connectedProbability');
+ if(box&&event.target.closest('button,input,select,textarea'))heldPointer=box;
+},true);
+for(const type of ['pointerup','pointercancel'])document.addEventListener(type,()=>{
+ if(!heldPointer)return;
+ heldPointer=null;
+ // Allow the native click to reach its original element before refreshing.
+ setTimeout(()=>mount(),0);
+},true);
 function mount(){
  const content=document.getElementById('content');
  if(!content||window.S?.activeCourse!=='D772'||!['learninglab','mission','games'].includes(S.screen)){document.getElementById('connectedProbability')?.remove();return;}
@@ -25,7 +36,7 @@ function mount(){
  // Repeated render-queue passes must not replace an unchanged form between
  // pointer-down and pointer-up or discard focus while a learner is typing.
  const view=JSON.stringify({screen:S.screen,focus:st?.focus,need:st?.need,mastery:m,task:st?.tasks[st?.focus]});
- if(box.__majickProbabilityView===view)return;
+ if(heldPointer===box||box.__majickProbabilityView===view)return;
  box.__majickProbabilityView=view;
  const nav=Object.keys(labels).map(k=>{
  const unlocked=k==='repair'||m.repairVerified&&(k==='reasoning'||m.independentCorrect>=2&&(k==='transfer'||m.transferVerified));
