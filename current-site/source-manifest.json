@@ -144,7 +144,7 @@
     "guardian-registry.js": "b20170b996ddf065f33bb37332c8a9fce68ae104914e3e94ffe9aa44b7b612f3",
     "home-focus.css": "cbb719eb8e78701717b4016388d511553f2785212d839815ed006651ae738b2b",
     "home-focus.js": "69b58966e19ba611d5e1789b6a342317067f1f0f4b718619062bd7277811a695",
-    "index.html": "3ad1bf99c3126ce3b3b3d11fb6e40c501bc4a33abb0745a4b24f5501de04d97e",
+    "index.html": "2ae448e8473646f90488d41c94e46538c53162e0a2746a38ab7a6a2d7b79be35",
     "learn-mode.css": "30181250c67efe7bd97c9276706a804a551e7904a2bb28160eeb0c193f35c002",
     "learn-mode.js": "f6647cd013d5bc59a319710c45ac806b56585c7fc5c912afa88857d2f16f82e0",
     "learning-lab.css": "6ed48d27023052a714d27c027f25828bc5ad74edccb172704e823a58b26d6844",
@@ -811,6 +811,7 @@
     "d772-historical-quiz-results.js": "f4eb868c705edb74e61d72f87d550129e0c83fdc27e7e05d2e1a94bc5f6d8a2d",
     "d772-misrepresentation-lab.js": "de6e8c855c485a6e3b82a6acbd0215f075ef0719350e82f2b4fb4a564950ad33",
     "d772-preassessment-source.js": "ae5d1a3404db25e74ae5a08887a39d4679b123d02f6c07af1307b51779c88172",
-    "d772-preassessment-review.js": "edf64938803048cc2f08ee09698d989861ab4f3e9e5597f606c1a534c1e2ed7d"
+    "d772-preassessment-review.js": "62f18fda8ac6ae91df3ed20ba101437382bbf615e0848ff858427dadad679064",
+    "d772-preassessment-deep-practice.js": "e8beed6936534fb91af552dd78b2928655eee66225e22dce73140fcb0c4b3a75"
   }
 }
