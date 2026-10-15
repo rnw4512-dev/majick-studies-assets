@@ -25,7 +25,7 @@ function escapeHtml(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;',
 function render(){
  if(window.S?.activeCourse!=='D772')return;
  ensure();
- if(!['home','mission','learninglab'].includes(window.S?.screen))return;
+ if(window.S?.screen!=='home')return;
  const root=document.querySelector('.content');if(!root||root.querySelector('#mjD772WguHistory'))return;
  const data=records().filter(r=>r&&r.source==='Historical WGU quiz (user reported)'&&Number.isFinite(Number(r.percent))).sort((a,b)=>a.section-b.section||a.lesson-b.lesson);
  if(!data.length)return;
