@@ -31,6 +31,8 @@ jobs:
         run: node pages-release/current/release-checks.cjs current-site
       - name: Validate imported D772 preassessment and targeted practice
         run: node pages-release/current/test-d772-preassessment.cjs current-site
+      - name: Test D772 adaptive mastery lifecycle
+        run: node pages-release/current/test-d772-adaptive.cjs current-site
       - name: Verify and publish current source only
         run: python pages-release/current/build.py current-site _site
 
