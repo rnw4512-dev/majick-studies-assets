@@ -1,0 +1,7 @@
+/* Section shortcuts are a compact navigation strip; course forms remain untouched. */
+.majickRoomSections{display:flex;align-items:center;gap:7px;position:sticky;top:0;z-index:25;background:#261a32;color:#fff2dc;border:1px solid #bd9b73;border-radius:12px;padding:9px;margin:0 0 12px;max-width:100%;overflow-x:auto;white-space:nowrap;scrollbar-width:thin}
+.majickRoomSections strong{flex:0 0 auto;font-size:13px;color:#f7dca5;margin-right:6px}
+.majickRoomSections button{flex:0 0 auto;min-height:39px;max-width:205px;text-overflow:ellipsis;overflow:hidden;white-space:nowrap;border:1px solid #b39ab6;border-radius:9px;padding:7px 10px;background:#514060;color:#fff9ed;cursor:pointer}
+.majickRoomSections button:focus-visible{outline:3px solid #f5d595;outline-offset:2px}
+#content>section,#content>article{scroll-margin-top:78px}
+@media(max-width:650px){.majickRoomSections{padding:7px;gap:5px}.majickRoomSections button{max-width:150px;min-height:44px}}
