@@ -285,7 +285,7 @@ function guardianHeroHtml(){
   const p=activePet();if(!p)return '<div class="v3341GuardianHero empty"><span>✦</span><b>Your Study Guardian is waiting to awaken</b><button onclick="navigate(\'companions\')">Visit Guardian House</button></div>';
   const m=guardianMeta(p),q=questText(p),s=settings();
   return '<section class="v3341GuardianHero">'+
-    '<div class="v3341GuardianHeroPortrait" style="--guardian-accent:'+E(m.accent)+'">'+(m.image?'<img src="'+E(m.image)+'" alt="'+E(m.name)+'" style="filter:hue-rotate('+m.hue+'deg)">':'<span>'+E(m.icon)+'</span>')+'<i>✦</i></div>'+
+    '<div class="v3341GuardianHeroPortrait" style="--guardian-accent:'+E(m.accent)+'">'+(m.image?'<img src="'+E(m.image)+'" alt="'+E(m.name)+'" style="filter:hue-rotate('+m.hue+'deg)">':'<span>'+E(m.icon)+'</span>')+'<i aria-hidden="true">✦</i></div>'+
     '<div class="v3341GuardianHeroCopy"><small>ACTIVE STUDY GUARDIAN</small><h3>'+E(m.name)+'</h3><p>'+E(m.species)+' • '+E(m.stage)+' • '+E(m.mood)+' • Bond '+m.bond+'</p><p class="v3341GuardianPersonality">'+E(m.personality)+'</p>'+
       '<div class="v3341BondQuest"><div><span>Current Bond Quest</span><b>'+q.progress+' / '+q.target+'</b></div><i><em style="width:'+(q.progress/q.target*100)+'%"></em></i><small>Correct answers and completed concepts fill this. Complete it for +2 Bond.</small></div>'+
       '<div class="v3341GuardianHeroActions"><button class="primary" onclick="MajickGuardianCore.study()">Study with '+E(m.name)+'</button><button onclick="navigate(\'companions\')">Visit Sanctuary</button><button onclick="MajickGuardianCore.toggleSound()">'+(s.enabled?'🔊 Sound on':'🔇 Sound off')+'</button><button onclick="MajickGuardianCore.toggleDebrief()">📝 <span data-v3341-debrief-label>'+(debriefEnabled()?'Debrief on':'Debrief off')+'</span></button></div>'+
@@ -347,7 +347,14 @@ function observeReactions(){
         else if(el.matches?.('.conceptComplete,.d755Stage.complete'))kind='concept';
         else if(el.matches?.('.v3338CheckpointResult.ready'))kind='mastery';
         else if(el.matches?.('.v3316PassOverlay')||el.querySelector?.('.v3316PassOverlay'))kind='course-pass';
-        if(kind){seenNodes.add(el);react(kind,{screen:window.S?.screen})}
+        if(kind){
+          seenNodes.add(el);
+          // Existing verified completion surfaces are the authoritative triggers.
+          if(kind==='course-pass')window.MajickAnimationEffects?.play('course');
+          else if(el.matches?.('.d755Stage.complete'))window.MajickAnimationEffects?.play('lesson');
+          else if(kind==='mastery')window.MajickAnimationEffects?.play('mastery');
+          react(kind,{screen:window.S?.screen});
+        }
       }
     }
     setTimeout(decorate,0);
@@ -356,7 +363,7 @@ function observeReactions(){
 }
 function wrapCare(){
   const old=window.majickCareAction;if(typeof old!=='function'||old.__v3341)return;
-  const fn=function(){const r=old.apply(this,arguments);if(r?.ok)react('care',{action:arguments[1]});return r};fn.__v3341=true;window.majickCareAction=fn;
+  const fn=function(){const r=old.apply(this,arguments);if(r?.ok){react('care',{action:arguments[1]});window.MajickAnimationEffects?.play('guardian')}return r};fn.__v3341=true;window.majickCareAction=fn;
 }
 function wrapDebrief(){
   const old=window.ascStopRule;

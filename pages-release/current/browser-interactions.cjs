@@ -84,6 +84,10 @@ async function solveMean(values,sum,count,mean){
  // D772 all-section intake and original-source bridge integrity (no replacement bank).
  await waitFor('!!window.MajickCourseTutor&&!!window.MajickWGUPractice&&!!window.MajickGameRealm&&!!window.MajickD772VerifiedSource');
  const sourceResults=await evalPage('(()=>{const src=MajickD772VerifiedSource.questions();const practice=MajickWGUPractice;const realm=MajickGameRealm.realmQuestionPool();return {sourceIds:src.map(q=>q.id),sourceAnswers:src.every(q=>q.options.includes(q.answer)&&q.why),lessonQuestions:MajickCourseTutor.questionsForLesson({id:"d772-s2-l4-1",title:"Measures of Center"},"D772").map(q=>q.id),practice:([1,2,3].map(n=>practice.practicePool(String(n)).length)),section2c:practice.practicePool("2c").length,section2:practice.practicePool("2").length,practiceIds:practice.practicePool("2").map(q=>q.id),realmIds:realm.map(q=>q.id),realmSections:realm.map(q=>String(q.section||""))}})()');
+ const aligned=await evalPage('(()=>{const q=MajickD772PreassessmentReview.practiceQuestions();const study=[1,2,3].flatMap(n=>MajickWGUPractice.practicePool(String(n)));const realm=MajickGameRealm.realmQuestionPool();return q.map(x=>({id:x.id,four:x.options.length===4,study:study.some(y=>y.id===x.id),realm:realm.some(y=>y.id===x.id),tutor:MajickCourseTutor.questionsForLesson({id:x.lessonId,title:"D772 practice"},"D772").some(y=>y.id===x.id)}))})()');
+ assert.equal(aligned.length,30);
+ for(const q of aligned)assert(q.four&&q.study&&q.realm&&q.tutor,'Four-choice shared practice missing from a learning room: '+JSON.stringify(q));
+ console.log('PASS D772 language: all 30 four-choice supplements available in Learn Lab, Study Now and Game Realm');
  assert.equal(sourceResults.sourceIds.length,6,'Six previously entered WGU-attributed Lesson 4.1 items must be exposed by the tutor bridge');
  assert(sourceResults.sourceAnswers,'Source bridge must preserve valid answer keys and rationales');
  assert(sourceResults.sourceIds.every(id=>sourceResults.lessonQuestions.includes(id)),'Original questions must remain accessible in tutor');
@@ -185,9 +189,13 @@ async function solveMean(values,sum,count,mean){
  await waitFor('!!window.MajickLearningContinuity&&!!S.progress?.D772');
  assert.equal(await evalPage('S.progress.D772.adaptiveSkills["d772-s2-l4"].status'),'review-needed','Review need must survive reload');
  assert.equal(await evalPage('S.progress.D772.adaptiveSkills["d772-s2-l4"].attempts.length'),3,'Attempt history must survive reload');
- await action('MajickLearningContinuity.skillReview("d772-s2-l4")');
+ await action('navigate("mission")');
+ await waitFor('!!document.querySelector(".v3333Scope button[onclick*=skillReview]")');
+ await action('const b=document.querySelector(".v3333Scope button[onclick*=skillReview]");if(typeof b.onclick!=="function")throw Error("Malformed review button handler");b.click()');
  assert.equal(await evalPage('S.progress.D772.adaptiveSkills["d772-s2-l4"].status'),'reviewing');
- await action('MajickLearningContinuity.skillRetry("d772-s2-l4")');
+ await action('navigate("mission")');
+ await waitFor('!!document.querySelector(".v3333Scope button[onclick*=startSkillRetry]")');
+ await action('const b=document.querySelector(".v3333Scope button[onclick*=startSkillRetry]");if(typeof b.onclick!=="function")throw Error("Malformed retry button handler");b.click()');
  assert.equal(await evalPage('S.progress.D772.adaptiveSkills["d772-s2-l4"].status'),'retry');
  await call('Page.reload',{ignoreCache:true});
  await waitFor('!!window.MajickLearningContinuity&&!!S.progress?.D772');

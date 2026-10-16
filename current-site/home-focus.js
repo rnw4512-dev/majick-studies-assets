@@ -18,7 +18,7 @@ function d772SectionDoors(){
  if(window.S?.activeCourse!=='D772')return '';
  const sections=window.MajickCourseTutor?.sections?.('D772')||[];
  const E=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
- return '<section aria-label="D772 section navigation" style="margin-top:1rem;padding:1rem;border:1px solid #b58b59;border-radius:14px;background:#291a38;color:#f8e8cc"><h3 style="color:#fff2d7">Study Now — Choose a D772 Section</h3><p>All three sections, from credibility to probability.</p><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:.7rem">'+sections.map((section,i)=>'<button type="button" data-d772-open="'+E(section.lessons?.[0]?.id||'')+'" style="text-align:left;padding:1rem;border:1px solid #b58b59;border-radius:12px;background:#f4e6d3;color:#30203d;cursor:pointer"><strong>Section '+(i+1)+': '+E(section.title)+'</strong><small style="display:block;margin-top:.4rem">'+(section.lessons||[]).length+' lessons • Open →</small></button>').join('')+'</div></section>';
+ return '<section aria-label="D772 section navigation" style="margin-top:1rem;padding:1rem;border:1px solid #b58b59;border-radius:14px;background:#291a38;color:#f8e8cc"><h3 style="color:#fff2d7">Study Now — Choose a D772 Section</h3><p>All three sections, from credibility to probability.</p><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:.7rem">'+sections.map((section,i)=>'<button type="button" data-d772-open="'+E(section.lessons?.[0]?.id||'')+'" style="text-align:left;padding:1rem;border:1px solid #b58b59;border-radius:12px;background:#f4e6d3;color:#30203d;cursor:pointer"><strong>Section '+(i+1)+': '+E(String(section.title).replace(/^Section\s+\d+\s*:\s*/i,''))+'</strong><small style="display:block;margin-top:.4rem">'+(section.lessons||[]).length+' lessons • Open →</small></button>').join('')+'</div></section>';
 }
 function buildDoors(){
  if(!compactHome())return;
@@ -27,7 +27,7 @@ function buildDoors(){
  if(nav)nav.remove();
  nav=document.createElement('section');nav.id='v3377CampusDoors';nav.className='v3377CampusDoors';
  const next=window.MajickProductCore?.nextAction?.();
- nav.innerHTML='<header><div><small>CAMPUS ROOMS</small><h3>Your college, without the clutter.</h3></div><span>The Daily Loop above owns your next action. These are alternate destinations.</span></header><div class="v3377DoorGrid v3400RoomGrid">'+
+ nav.innerHTML='<header><div><small>CAMPUS ROOMS</small><h3>Choose your next campus room.</h3></div><span>Find your next study step in Today. Explore other campus rooms here.</span></header><div class="v3377DoorGrid v3400RoomGrid">'+
  '<button class="v34Button" data-go="livinggrimoire"><b>☾ Grimoire</b><small>Notes, references & course map</small></button>'+
  '<button class="v34Button" data-go="games"><b>✧ Game Realm</b><small>Practice, review & challenges</small></button>'+
  '<button class="v34Button" data-go="companions"><b>◆ Dormitory & Sanctuary</b><small>Your room, Guardians & visible progress</small></button>'+

@@ -142,7 +142,7 @@ function practiceFeedback(q){
   const wrong=session?.chosen!==q.answer;
   const skillId=q.learningPathLessonId||q.lessonId||window.MajickLearningContinuity?.identify?.(q.prompt);
   const skillRow=window.S?.progress?.[window.S.activeCourse]?.adaptiveSkills?.[skillId];
-  const adaptivePanel=skillRow?.status==='review-needed'?'<section role="status" style="padding:12px;margin:12px 0;border:1px solid #d7ad75;border-radius:12px"><b>Professor recommends a targeted review</b><p>You have struggled on several questions about this concept. Review the skill using a different explanation, then try fresh questions.</p><button type="button" class="btn primary" onclick="MajickLearningContinuity.skillReview('+JSON.stringify(skillId)+')">Open Learning Hub →</button></section>':'';
+  const adaptivePanel=skillRow?.status==='review-needed'?'<section role="status" style="padding:12px;margin:12px 0;border:1px solid #d7ad75;border-radius:12px"><b>Professor recommends a targeted review</b><p>You have struggled on several questions about this concept. Review the skill using a different explanation, then try fresh questions.</p><button type="button" class="btn primary" onclick="MajickLearningContinuity.skillReview('+E(JSON.stringify(skillId))+')">Open Learning Hub →</button></section>':'';
 
   const reason=String(q.why||'').replace(/\s+/g,' ').trim();
   let reasonBox='';
@@ -167,7 +167,7 @@ function questionHtml(q){
     if(selected===o&&!session.answered)cls.push('selected');
     if(session.answered&&o===q.answer)cls.push('correct');
     if(session.answered&&o===session.chosen&&o!==q.answer)cls.push('wrong');
-    return '<button type="button" class="'+cls.join(' ')+'" '+(session.answered?'disabled':'')+' onclick=\'MajickWGUPractice.select('+JSON.stringify(o)+')\'><span class="v3333Letter">'+String.fromCharCode(65+i)+'</span><span>'+E(o)+'</span></button>';
+    return '<button type="button" class="'+cls.join(' ')+'" '+(session.answered?'disabled':'')+' onclick=\'MajickWGUPractice.select('+E(JSON.stringify(o))+')\'><span class="v3333Letter">'+String.fromCharCode(65+i)+'</span><span>'+E(o)+'</span></button>';
   }).join('');
   const label=E(session?.opts?.label||'D772 Practice');
   const progress=(session?.index||1)+(session?.opts?.limit?'/'+session.opts.limit:'');
@@ -356,7 +356,7 @@ function fixedResult(){
 function sectionNumber(q){return Number(String(q.learningPathLessonId||q.topicId||'').match(/d772-s([123])(?:-|$)/)?.[1]||String(q.section||'').match(/section\s*([123])/i)?.[1]||1)}
 function practicePool(scope){
  const base=questionPool();
- const source=activeD772()?(window.MajickD772VerifiedSource?.questions?.()||[]):[];
+ const source=activeD772()?[...(window.MajickD772VerifiedSource?.questions?.()||[]),...(window.MajickD772PreassessmentReview?.practiceQuestions?.()||[])]:[];
  const seen=new Set(base.map(q=>String(q.id)));
  const rows=base.concat(source.filter(q=>!seen.has(String(q.id))));
  if(scope==='mixed')return rows;
@@ -370,7 +370,7 @@ function skillGrowthDashboard(){
  return '<section class="v3333Scope"><h3>Skill growth and review</h3><p>Assisted practice builds understanding; only independent practice counts toward readiness.</p>'+rows.map(x=>{
  const n=x.attempts.length,correct=x.attempts.filter(a=>a.correct&&!a.assisted).length,percent=n?Math.round(100*correct/n):0;
  const label=x.status==='review-needed'?'Review recommended':x.status==='ready-for-teachback'?'Teaching check next':x.status==='reviewing'?'Review underway':x.status==='retry'?'Retry practice':'Developing';
- return '<div style="padding:10px;margin:8px 0;border:1px solid #8e7797;border-radius:10px"><b>'+e(x.lessonId)+'</b><p>'+e(label)+' · '+correct+'/'+n+' independent correct · '+percent+'% · '+(x.cycles||0)+' reteaching cycles</p>'+(x.status==='review-needed'?'<button type="button" onclick="MajickLearningContinuity.skillReview('+JSON.stringify(x.lessonId)+')">Review lesson</button>':'')+(x.status==='reviewing'||x.status==='retry'?'<button type="button" onclick="MajickWGUPractice.startSkillRetry('+JSON.stringify(x.lessonId)+')">Try new questions</button>':'')+'</div>';
+ return '<div style="padding:10px;margin:8px 0;border:1px solid #8e7797;border-radius:10px"><b>'+e(x.lessonId)+'</b><p>'+e(label)+' · '+correct+'/'+n+' independent correct · '+percent+'% · '+(x.cycles||0)+' reteaching cycles</p>'+(x.status==='review-needed'?'<button type="button" onclick="MajickLearningContinuity.skillReview('+E(JSON.stringify(x.lessonId))+')">Review lesson</button>':'')+(x.status==='reviewing'||x.status==='retry'?'<button type="button" onclick="MajickWGUPractice.startSkillRetry('+E(JSON.stringify(x.lessonId))+')">Try new questions</button>':'')+'</div>';
  }).join('')+'</section>';
 }
 function startSkillRetry(id){

@@ -2,7 +2,7 @@
 'use strict';
 const VERSION='3.3.60';
 const ROOM_LABELS={
- home:{name:'Moonlit Collegium',detail:'Grand Hall • D772 Academic Wing',sigil:'✦'},
+ home:{name:'Moonlit Collegium',detail:'Grand Hall • Academic Wing',sigil:'✦'},
  learninglab:{name:'Candlelit Classroom',detail:'Learn Lab • instruction before practice',sigil:'☾'},
  livinggrimoire:{name:'Research Library',detail:'Grimoire Archives • notes, references & anchor charts',sigil:'❦'},
  games:{name:'Game Realm',detail:'Practice halls • Guardian trials',sigil:'✧'},
@@ -38,7 +38,7 @@ function ensureRoomRibbon(r){
  }
  ribbon.querySelector('.v3360RoomSigil').textContent=cfg.sigil;
  ribbon.querySelector('b').textContent=cfg.name;
- ribbon.querySelector('em').textContent=cfg.detail;
+ ribbon.querySelector('em').textContent=r==='home'?'Grand Hall • '+(window.S?.activeCourse||'Your course')+' Academic Wing':cfg.detail;
 }
 function markHeavySections(){
  document.querySelectorAll('.content > section,.content > div,.learnLab > section,.learnLab > div').forEach(el=>{

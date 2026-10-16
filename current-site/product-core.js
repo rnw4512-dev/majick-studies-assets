@@ -172,10 +172,12 @@ function decorateHome(){
  const doors=document.getElementById('v3377CampusDoors')||document.querySelector('.v3327PortalHero');
  if(!doors)return;
  document.getElementById('v3400DailyLoop')?.remove();
+ document.querySelectorAll('#content .v3400MemoryQuest').forEach(n=>n.remove());
  const wrap=document.createElement('div');wrap.innerHTML=loopHtml();const el=wrap.firstElementChild;
  if(doors.id==='v3377CampusDoors')doors.insertAdjacentElement('beforebegin',el);else doors.insertAdjacentElement('afterend',el);
  el.querySelector('[data-v3400-next]')?.addEventListener('click',goNext);
  el.querySelector('[data-v3400-memory]')?.addEventListener('click',openMemoryReview);
+ const memory=el.querySelector('.v3400MemoryQuest');if(memory)el.insertAdjacentElement('afterend',memory);
  if(!ensure()?.stages?.entered)record('enter-college',{screen:'home'});
 }
 function dormStoryHtml(){

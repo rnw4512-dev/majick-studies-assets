@@ -58,3 +58,89 @@
 @media(prefers-reduced-motion:reduce){
  #majCommonsHub *,#majCommonsHub *::before,#majCommonsHub *::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
 }
+
+/* Pair ink with explicit paper surfaces: these legacy halls originally used dark gradients. */
+#majCommonsHub [data-commons-panel] :is(.v3327AcademicHall,.v3327StudentRecord){
+ background:#f2e1c3!important;color:#241827!important;border-color:#b99a60;
+}
+#majCommonsHub [data-commons-panel] :is(.v3327AcademicHall,.v3327StudentRecord) :is(.v3327CourseScroll,.v3337PaceCard,.v3337PaceWindow i,.v3327AcademicMetrics>div,.v3327AccountRecord>div,.v3327RecordGrid article,.v3337PaceTop>span,.v3327Status){
+ background:#fff8e9!important;color:#241827!important;border-color:#b99a60;
+}
+#majCommonsHub [data-commons-panel] :is(.v3327AcademicHall,.v3327StudentRecord) :is(p,span,small,dt,dd,label,h2,h3,h4,h5,b,strong,em,i,li){
+ color:#241827!important;opacity:1!important;text-shadow:none!important;
+}
+#majCommonsHub [data-commons-panel] :is(.v3327AcademicHall,.v3327StudentRecord) button,
+#majCommonsHub [data-commons-panel] :is(.v3327AcademicHall,.v3327StudentRecord) button :is(span,small,b,strong){
+ background:#34223f!important;color:#fff6e8!important;opacity:1!important;
+}
+/* Keep the welcome compact and stationary while retaining velvet and antique gold. */
+#majCommonsHub .majCommonsWelcome{padding:16px 22px}
+#majCommonsHub .majCommonsWelcome h2{margin:7px 0;font-size:clamp(24px,2.6vw,34px)!important}
+#majCommonsHub .majCommonsWelcome p{margin:8px 0}
+#majCommonsHub .majCommonsWelcome p:not(.majCommonsCourse){max-width:76ch}
+
+/* Tab ownership supersedes the former compact-Home hiding rules. */
+#majCommonsHub [data-commons-panel] :is(.v3327StudentRecord,.v3317HomeSanctuary){display:block!important}
+#majCommonsHub .v3327HeroActions button{display:inline-flex!important;align-items:center;justify-content:center}
+#majCommonsHub [data-commons-panel] :is(small,.tiny,.v3400DailyLoop li span,.v3377CampusDoors summary,.v3377CampusDoors>header>span,.v3400LoopActions>span){font-size:12px!important;line-height:1.5!important}
+#majCommonsHub [data-commons-panel] :is(p,li){font-size:15px}
+#majCommonsHub [data-commons-panel] button{background:#34223f!important;color:#fff6e8!important;opacity:1!important;font-size:14px;white-space:normal}
+#majCommonsHub [data-commons-panel] button :is(b,strong,span,small){color:#fff6e8!important;opacity:1!important}
+#majCommonsHub .v3400DailyLoop :is(header p,.v3400LoopActions>span,li){color:#fff0dc!important;opacity:1!important}
+#majCommonsHub .v3377CampusDoors>header>span{color:#eadcc9!important}
+#majCommonsHub .v3400MemoryQuest :is(p,small,strong){color:#241827!important;opacity:1!important}
+#majCommonsHub [data-commons-panel] .v3400DailyLoop ol{gap:8px}
+#majCommonsHub [data-commons-panel] .v3400DailyLoop li{min-height:56px}
+/* Reading surfaces stay still; moonlight and candlelight are painted into the frame. */
+body[data-majick-room=home] #majickLivingMagic,
+#majCommonsHub .ancientLibraryMagic{display:none!important}
+#majCommonsHub .v3327Constellation{display:none!important}
+#majCommonsHub .v3327PortalHero{background:#34223f!important}
+#majCommonsHub .majCommonsWelcome{background:radial-gradient(circle at 90% 0,#4a3344,transparent 40%),linear-gradient(130deg,#27172d,#34223f)!important}
+#majCommonsHub .majCommonsStep button{background:#34223f!important;color:#fff6e8!important;box-shadow:none!important}
+#majCommonsHub .majCommonsRecordShelf{border:1px solid #b99a60;border-radius:10px;background:#f2e1c3;color:#241827;padding:12px}
+#majCommonsHub .majCommonsRecordShelf>summary{font-weight:700;cursor:pointer;min-height:40px;display:list-item;align-content:center}
+#majCommonsHub .majCommonsRecordShelf[open]>.v3327StudentRecord{margin-top:12px}
+#majCommonsHub .majCommonsRecordShelf>summary:focus-visible{outline:3px solid #805006;outline-offset:3px}
+#majCommonsHub .v3400DailyLoop{background:linear-gradient(120deg,#f2e1c3,#ead4b0)!important;color:#241827!important;padding:18px;margin:0!important}
+#majCommonsHub .v3400DailyLoop :is(h3,header p,header small,header>b,.v3400LoopActions>span,li,li span,li i){color:#241827!important}
+#majCommonsHub .v3400DailyLoop :is(header>b,li){background:#fff8e9!important;border-color:#b99a60!important}
+#majCommonsHub .v3400DailyLoop li.current{border:2px solid #805006!important;box-shadow:inset 0 -3px #b99a60!important}
+#majCommonsHub .majEggIncubator{margin-top:14px;background:#34223f;color:#fff6e8;border:1px solid #b99a60;padding:14px;border-radius:12px}
+#majCommonsHub .majEggIncubator :is(h3,p,small,b,em,.eyebrow){color:#fff6e8!important;opacity:1!important}
+#majCommonsHub .majEggEmpty{color:#fff6e8!important;padding:12px;border:1px solid #b99a60;border-radius:10px}
+@media(max-width:650px){#majCommonsHub .majCommonsWelcome h2{font-size:25px!important}#majCommonsHub .majCommonsWelcome{padding:14px 16px}#majCommonsHub .majCommonsWelcome p{font-size:15px!important}}
+/* The existing Guardian card folds into a quiet presence until its details are needed. */
+#majCommonsHub .v3327PortalHero{grid-template-columns:minmax(0,1fr)!important;gap:14px;min-height:0!important;padding:20px}
+#majCommonsHub .majCommonsGuardianShelf{min-width:0;border-top:1px solid #b99a60;padding-top:10px;color:#fff6e8}
+#majCommonsHub .majCommonsGuardianShelf>summary{min-height:38px;align-content:center;cursor:pointer;font-weight:600;font-size:14px}
+#majCommonsHub .majCommonsGuardianShelf>summary:focus-visible{outline:3px solid #f6cb6c;outline-offset:3px}
+#majCommonsHub .majCommonsGuardianShelf .v3341GuardianHero{margin-top:10px;min-width:0;grid-template-columns:90px minmax(0,1fr)}
+#majCommonsHub .majCommonsGuardianShelf .v3341GuardianHeroPortrait{width:80px;height:100px}
+body[data-majick-room=home] .top{height:auto;min-height:82px;gap:12px;flex-wrap:wrap;padding-block:12px}
+body[data-majick-room=home] .top .titleline{min-width:0;flex:1 1 220px}
+body[data-majick-room=home] .top .pill{display:block;max-width:100%;white-space:normal;overflow-wrap:anywhere}
+@media(max-width:1000px){body[data-majick-room=home] .top .courseSelect{min-width:0;max-width:100%;flex:1 1 220px}body[data-majick-room=home] .top .titleline{flex-basis:100%}}
+@media(max-width:500px){#majCommonsHub .majCommonsGuardianShelf .v3341GuardianHero{grid-template-columns:minmax(0,1fr)}body[data-majick-room=home] .top{padding:12px 16px}}
+@media(max-width:650px){
+ body[data-majick-room=home] .app{height:auto!important;overflow:visible!important}
+ body[data-majick-room=home] .main{height:auto!important;max-height:none!important;overflow:visible!important}
+ body[data-majick-room=home] .side{position:relative!important;height:auto!important;min-height:0!important;padding:8px!important}
+ body[data-majick-room=home] .side :is(.brand,.sidefoot){display:none!important}
+ body[data-majick-room=home] .side .nav{display:flex!important;overflow-x:auto;gap:6px;padding-bottom:4px}
+ body[data-majick-room=home] .side .nav button{flex:0 0 78px;min-height:56px;margin:0!important}
+}
+/* Long source questions and native select labels must fit the narrow paper column. */
+#majCommonsHub :is(.majCommonsPanels,[data-commons-panel],[data-commons-panel]>*,#mjPreassessmentReview,#mjAdaptiveMastery){min-width:0;max-width:100%;box-sizing:border-box;overflow-wrap:anywhere}
+#majCommonsHub :is(select,textarea){max-width:100%!important;box-sizing:border-box;width:100%}
+#majCommonsHub fieldset{min-inline-size:0;max-width:100%}
+#majCommonsHub #majickRoomRibbon em{color:#fff1d9!important;font-size:12px!important}
+#majCommonsHub .v3377CampusDoors summary{color:#fff1d9!important}
+/* Legacy inline rules fixed the header at 82px; allow all rows to occupy real space. */
+body[data-majick-room=home] .top{height:auto!important;min-height:82px!important;max-height:none!important;flex-wrap:wrap!important}
+body[data-majick-room=home] .top .courseSelect{min-width:0!important;max-width:100%!important;width:auto!important}
+@media(max-width:650px){
+ body[data-majick-room=home] .side .nav{height:72px!important;max-height:72px!important;align-items:stretch!important;overflow-x:auto!important;overflow-y:hidden!important}
+ body[data-majick-room=home] .side .nav button{height:56px!important;min-height:56px!important;max-height:56px!important;padding:6px!important}
+ body[data-majick-room=home] .top .caAmbience{width:100%;flex:1 1 100%;margin:0}
+}

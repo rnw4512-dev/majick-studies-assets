@@ -38,6 +38,9 @@ BANK.D772.find(x=>x.id==='median').cases.push({numbers:[2,6,8,12,14,18],known:'s
 BANK.D772.find(x=>x.id==='probability').cases.push({known:'6 green and 4 purple counters; draw two greens without replacement',unknown:'P(two greens)',slots:[6,10,5,9],answer:1/3,interpret:'The probability of two greens is one-third.',why:'6/10 multiplied by 5/9 = 1/3.'});
 BANK.D772.find(x=>x.id==='histogram').cases.push({labels:['0–9','10–19','20–29','30–39'],freq:[2,6,4,3],mode:'10–19',total:15,rawData:[2,8,10,11,12,15,16,19,20,22,25,29,30,34,38],interpret:'The modal interval is 10–19 (6 of 15 observations).'});
 const STATES=new WeakMap();
+// Preserve an in-progress six-stage response when the campus replaces its host.
+// Keep separate records for each course/task; never touch saved course progress.
+const ACTIVE_STATES=new Map();
 function stageTitle(t,s){return t.kind==='math'?['Identify the knowns and unknown','Choose a formula','Place values into slots','Calculate your answer','Interpret your result','Independent transfer'][s]:t.kind==='graph'?['Read the target frequencies','Build the graph','Find the modal interval','Count total frequency','Explain the pattern','Independent graph challenge'][s]:['Read the scenario','Choose the first step','Arrange the full response','Explain your decision','Review your construction','Independent reconstruction'][s]}
 const numeric=(a,b)=>a!==''&&a!=null&&Number.isFinite(Number(a))&&Math.abs(Number(a)-Number(b))<=Math.max(.0002,Math.abs(b)*.00005);
 function knownsValid(task,ex,known,unknown){
@@ -61,7 +64,7 @@ function reasoningCheck(task,ex,answer){
  if(task.kind==='graph'&&!/frequen|interval|bar|histogram|count/.test(text))return {ok:false,feedback:'Describe what the bar heights or frequency intervals represent.'};
  return {ok:true,feedback:'Your response identifies the result and relevant statistical context. This automated check is limited; compare your interpretation with the model.'};
 }
-function setup(host,task){if(host.dataset.engineTask!==task.id||host.dataset.engineCourse!==window.S.activeCourse){host.dataset.engineTask=task.id;host.dataset.engineCourse=window.S.activeCourse;STATES.set(host,{stage:0,answers:{},caseIndex:0,feedback:'',error:false,hint:false,finished:false,verified:{0:[],1:[]}})}}
+function setup(host,task){if(host.dataset.engineTask!==task.id||host.dataset.engineCourse!==window.S.activeCourse){host.dataset.engineTask=task.id;host.dataset.engineCourse=window.S.activeCourse;STATES.set(host,ACTIVE_STATES.get(window.S.activeCourse+':'+task.id)||{stage:0,answers:{},caseIndex:0,feedback:'',error:false,hint:false,finished:false,verified:{0:[],1:[]}});ACTIVE_STATES.set(window.S.activeCourse+':'+task.id,STATES.get(host))}}
 function render(host,task){const topBefore=host.isConnected?host.getBoundingClientRect().top:null;setup(host,task);const st=STATES.get(host),ex=task.cases[st.caseIndex],independent=st.caseIndex===task.cases.length-1,step=st.stage;let body='',a=st.answers;
 const input=(id,label,placeholder='Your answer')=>'<label class="mjSeLabel">'+esc(label)+'<input data-field="'+id+'" value="'+esc(a[id]||'')+'" placeholder="'+esc(placeholder)+'" autocomplete="off"></label>';
 if(task.kind==='math'){
@@ -100,7 +103,7 @@ host.querySelectorAll('[data-meaning]').forEach(el=>el.onclick=()=>{a.meaning=el
 host.querySelectorAll('[data-choice]').forEach(el=>el.onclick=()=>{a.formula=task.alternatives[Number(el.dataset.choice)];render(host,task)});
 host.querySelectorAll('[data-add]').forEach(el=>el.onclick=()=>{a.order=a.order||[];let n=Number(el.dataset.add);if(step===1)a.order=[n];else if(!a.order.includes(n))a.order.push(n);render(host,task)});
 host.querySelector('[data-undo]')?.addEventListener('click',()=>{a.order?.pop();render(host,task)});
-host.querySelector('[data-reset]').onclick=()=>{const nextCase=(st.caseIndex+1)%task.cases.length;STATES.set(host,{stage:0,answers:{},caseIndex:nextCase,feedback:'New scenario selected. Practice the same WGU skill using different evidence.',error:false,hint:false,verified:{}});render(host,task)};
+host.querySelector('[data-reset]').onclick=()=>{const nextCase=(st.caseIndex+1)%task.cases.length;STATES.set(host,{stage:0,answers:{},caseIndex:nextCase,feedback:'New scenario selected. Practice the same WGU skill using different evidence.',error:false,hint:false,verified:{}});ACTIVE_STATES.set(window.S.activeCourse+':'+task.id,STATES.get(host));render(host,task)};
 host.querySelector('[data-hint]')?.addEventListener('click',()=>{st.hint=true;render(host,task)});
 host.querySelector('[data-check]').onclick=()=>{let good=false,reason='';
  if(task.kind==='math'){if(step===0)good=knownsValid(task,ex,a.known,a.unknown);else if(step===1)good=a.formula===task.formula;else if(step===2)good=ex.slots.every((v,i)=>numeric(a['slot'+i],v));else if(step===3||step===5)good=numeric(a[step===5?'transfer':'result'],ex.answer);else {const review=reasoningCheck(task,ex,a.meaning);good=review.ok;reason=review.feedback}if(step!==4)reason=ex.why}

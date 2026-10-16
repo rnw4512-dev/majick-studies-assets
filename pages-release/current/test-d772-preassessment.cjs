@@ -24,6 +24,12 @@ assert.equal(new Set(practice.map(q=>q.id)).size,30,'unique practice identifiers
 for(const q of practice){
  assert.equal(q.sourceLabel.includes('NOT OFFICIAL WGU'),true,q.id);
  assert(q.choices[q.correct],'valid answer for '+q.id);
+ assert.equal(q.choices.length,4,'four WGU-aligned options '+q.id);
+ assert.equal(new Set(q.choices).size,4,'distinct response options '+q.id);
+ assert.equal(q.format,'single-best-answer');
+ assert.equal(q.revision,2);
+ assert(q.examLanguage?.meaning,'plain-English exam-language connection '+q.id);
+ assert(q.prompt.includes('\n\n'),'scenario and task separated '+q.id);
  assert(q.why.length>20,'worked rationale for '+q.id);
 }
 assert.equal(window.S.progress.D772.answers,undefined,'no official answer history rewritten');
@@ -31,5 +37,11 @@ assert.equal(window.S.majickAccount,undefined,'no reward/global state created');
 const index=fs.readFileSync(path.join(root,'index.html'),'utf8');
 for(const n of names)assert(index.includes('./'+n),'the app loads '+n);
 const game=fs.readFileSync(path.join(root,'game-realm.js'),'utf8');
-assert(game.includes('MajickD772PreassessmentReview?.questions'),'Game Realm uses the existing practice bank');
-console.log('PASS D772 preassessment: 58 original source items, 47 correct, 2 incorrect, 9 unanswered, 10 separated OA-style questions, safe app loading, intact learner and reward state');
+assert(game.includes('MajickD772PreassessmentReview?.practiceQuestions'),'Game Realm uses the existing practice bank');
+console.log('PASS D772 preassessment: 58 original source items, 47 correct, 2 incorrect, 9 unanswered, 30 separated four-option OA-style questions, safe app loading, intact learner and reward state');
+
+const normalized=window.MajickD772PreassessmentReview.practiceQuestions();
+assert.equal(normalized.length,30);
+for(const q of normalized){assert.equal(q.answer,q.options[q.correct]);assert.equal(q.sourceName,q.sourceLabel)}
+for(const n of [1,2,3])assert(normalized.some(q=>q.lessonId.startsWith('d772-s'+n+'-')));
+for(const file of ['course-tutor.js','wgu-practice.js'])assert(fs.readFileSync(path.join(root,file),'utf8').includes('MajickD772PreassessmentReview?.'),'Shared wording intake '+file);

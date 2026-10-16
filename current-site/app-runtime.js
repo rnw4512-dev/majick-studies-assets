@@ -2,8 +2,8 @@
 (function(){
 'use strict';
 
-const RELEASE_LABEL='D772 Section 2 Lesson 2 Graphical Displays • V3.4.2';
-const RELEASE_TITLE='Majick Studies — V3.4.2 D772 Section 2 Lesson 2 Graphical Displays';
+const RELEASE_LABEL='Collegium Commons • V3.4.2';
+const RELEASE_TITLE='Majick Studies — V3.4.2';
 const registry=()=>window.MajickGuardianRegistry;
 const canonOf=type=>registry()?.get?.(type)?.canon||String(type||'').toLowerCase();
 const STAGE_SLUGS=['new-bond','apprentice','guardian','ascendant','celestial'];

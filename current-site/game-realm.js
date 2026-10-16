@@ -688,7 +688,7 @@
     if(globalThis.S?.activeCourse!== 'D772')return base;
     const seen=new Set(),out=[];
     const generated=(globalThis.MajickGeneratedPractice?.batch?.(18,2)||[]).map(q=>({...q,section:q.learningPathLessonId?.startsWith('d772-s3')?'Section 3 · Probability':'Section 2 · Graphs and statistics'}));
-    for(const q of [...base,...D772_REALM_SUPPLEMENT,...D772_ALL_SECTION_SUPPLEMENT,...(globalThis.MajickD772SharedQuestions?.questions||[]),...(globalThis.MajickD772PreassessmentReview?.questions||[]).map(q=>({...q,options:q.choices,answer:q.choices[q.correct],why:q.why,section:q.lessonId.includes('-s1-')?'Section 1 · Research credibility':q.lessonId.includes('-s2-')?'Section 2 · Statistics and graphs':'Section 3 · Probability',sourceLabel:q.sourceLabel,whiteboard:'State the scenario, show the calculation or set operation, and explain why alternatives fail.',rigorLevel:3,independentMastery:true})),...(globalThis.MajickD772VerifiedSource?.questions?.()||[]),...generated]){
+    for(const q of [...base,...D772_REALM_SUPPLEMENT,...D772_ALL_SECTION_SUPPLEMENT,...(globalThis.MajickD772SharedQuestions?.questions||[]),...(globalThis.MajickD772PreassessmentReview?.practiceQuestions?.()||[]),...(globalThis.MajickD772VerifiedSource?.questions?.()||[]),...generated]){
       if(!q?.prompt||!q?.answer)continue;
       const evidence=globalThis.MajickVisualEvidence?.evidence(q);
       if(evidence&&!evidence.ok)continue; // Shared gate serves every Game Realm mode.

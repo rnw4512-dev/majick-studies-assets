@@ -14,9 +14,12 @@ async function click(selector){
  await action('document.querySelector('+JSON.stringify(selector)+').scrollIntoView({block:"center",behavior:"instant"})');
  if(selector==='[data-prob-next]'){const detail=await evalPage('(()=>{const e=document.querySelector("[data-prob-next]");if(!e)return {found:false};const r=e.getBoundingClientRect(),h=document.elementFromPoint(r.x+r.width/2,r.y+r.height/2);return {disabled:e.disabled,rect:{x:r.x,y:r.y,w:r.width,h:r.height},hit:h?.outerHTML.slice(0,300),button:e.outerHTML.slice(0,300),screen:S.screen,history:!!document.querySelector("#mjD772WguHistory")}})()');console.log('PROBABILITY NEXT HIT TEST',JSON.stringify(detail))}
  if(selector==='[data-prob-form] button[type=submit]'){const d=await evalPage('(()=>{const e=document.querySelector("[data-prob-form] button[type=submit]");if(!e)return {missing:true};const r=e.getBoundingClientRect(),hit=document.elementFromPoint(r.x+r.width/2,r.y+r.height/2);return {disabled:e.disabled,hit:hit?.outerHTML.slice(0,300),rect:{x:r.x,y:r.y,w:r.width,h:r.height},screen:S.screen}})()');console.log('PROBABILITY SUBMIT HIT',JSON.stringify(d))}
- await waitFor('(()=>{const e=document.querySelector('+JSON.stringify(selector)+');if(!e||e.disabled)return false;const r=e.getBoundingClientRect(),hit=document.elementFromPoint(r.x+r.width/2,r.y+r.height/2);return hit===e||e.contains(hit)})()');
+ // Delayed campus rendering may move a valid control after the first scroll.
+ // Reposition the actual element during hit testing; do not synthesize clicks.
+ await waitFor('(()=>{const e=document.querySelector('+JSON.stringify(selector)+');if(!e||e.disabled)return false;e.scrollIntoView({block:"center",behavior:"instant"});const r=e.getBoundingClientRect(),x=r.x+r.width/2,y=r.y+r.height/2;if(x<0||y<0||x>=innerWidth||y>=innerHeight)return false;const hit=document.elementFromPoint(x,y);return hit===e||e.contains(hit)})()');
  const r=await evalPage('(()=>{const r=document.querySelector('+JSON.stringify(selector)+').getBoundingClientRect();return {x:r.x+r.width/2,y:r.y+r.height/2}})()');
  await call('Input.dispatchMouseEvent',{type:'mousePressed',button:'left',clickCount:1,...r});
+ await action('MajickProbabilityWorkshop.mount();MajickProbabilityWorkshop.mount()');
  await call('Input.dispatchMouseEvent',{type:'mouseReleased',button:'left',clickCount:1,...r});
 }
 (async()=>{
@@ -38,9 +41,17 @@ async function click(selector){
  }
 
  await waitFor('!!window.MajickProbabilityWorkshop&&!!window.MajickLearningContinuity');
- await action('startD756Course();switchCourse("D755");S.progress.D755.answers.push({qid:"phase2-d755-history",correct:true});switchCourse("D756");S.progress.D756.answers.push({qid:"phase2-d756-history",correct:false});switchCourse("D772");navigate("games")');
+ await action('startD756Course();switchCourse("D755");S.progress.D755.answers.push({qid:"phase2-d755-history",correct:true});switchCourse("D756");S.progress.D756.answers.push({qid:"phase2-d756-history",correct:false});switchCourse("D772");navigate("home")');
+ await waitFor('!!document.querySelector("#mjAdaptiveMastery")');
+ await action('navigate("games")');
  await waitFor('!!document.querySelector("#connectedProbability")');
  await call('Page.reload',{ignoreCache:true});await waitFor('!!document.querySelector("#connectedProbability")');
+ const backState=await evalPage('JSON.stringify(S.progress)');
+ await click('[data-connected-back]');
+ await waitFor('S.screen!=="games"');
+ assert.equal(await evalPage('JSON.stringify(S.progress)'),backState,'Local probability Back preserves academic progress');
+ await action('navigate("games")');await waitFor('!!document.querySelector("[data-connected-back]")');
+ console.log('PASS probability: in-card Back returns to the previous room and preserves progress');
  // Fixture selects a probability question; the actual wrong answer is clicked in Oracle Lens.
  await action('startOracleLens();session.current=MajickGeneratedPractice.probabilityCase(0);session.current.section="Section 3 · Probability";render()');
  await waitFor('!!document.querySelector(".realmLensChoices button")');
@@ -67,6 +78,16 @@ async function click(selector){
  }
  let task=await openKind('repair');
  assert.equal(await evalPage('document.querySelector("[data-connected-open=transfer]").disabled'),true);
+ // Real keyboard input and selection must survive unrelated render-queue passes.
+ await click('[data-prob-field=whiteboard]');
+ await call('Input.insertText',{text:'Recount the remaining outcomes.'});
+ await action('window.__probInput=document.querySelector("[data-prob-field=whiteboard]");window.__probForm=document.querySelector("[data-prob-form]");__probInput.setSelectionRange(8,11);for(let i=0;i<20;i++)MajickProbabilityWorkshop.mount()');
+ assert.equal(await evalPage('document.querySelector("[data-prob-form]")===window.__probForm && document.activeElement===window.__probInput && __probInput.selectionStart===8 && __probInput.selectionEnd===11'),true,'Repeated mounts preserve actual form, focus and selection');
+ await call('Input.insertText',{text:'these'});
+ assert.equal(await evalPage('document.querySelector("[data-prob-field=whiteboard]").value'),'Recount these remaining outcomes.');
+ assert.equal(await evalPage('MajickLearningContinuity.probabilityState().drafts.repair.whiteboard'),'Recount these remaining outcomes.');
+ console.log('PASS probability: repeated mounts preserve typing, selection and saved draft; pointer clicks include an intervening mount');
+
  await click('[data-remove-green]');
  assert.equal(await evalPage('document.querySelectorAll("[data-remove-green]:disabled").length'),task.q.data[0]-1);
  await fillTask(task);await click('[data-prob-form] button[type=submit]');
@@ -80,7 +101,9 @@ async function click(selector){
  assert.equal(await evalPage('document.querySelector("[data-prob-field=whiteboard]").value'),draft);
  await action('document.querySelector("[data-prob-form] button[type=submit]").click()');
  assert.equal(await evalPage('MajickLearningContinuity.probabilityMastery().independentCorrect'),1);
+ const priorReasoningId=await evalPage('MajickLearningContinuity.probabilityState().tasks.reasoning.id');
  await click('[data-prob-next]');
+ await waitFor('MajickLearningContinuity.probabilityState().tasks.reasoning.id!=='+JSON.stringify(priorReasoningId));
  task=await evalPage('MajickLearningContinuity.probabilityState().tasks.reasoning');
  assert(!datasets.has(JSON.stringify(task.q.data)));datasets.add(JSON.stringify(task.q.data));
  await fillTask(task);await click('[data-prob-form] button[type=submit]');
@@ -99,7 +122,8 @@ async function click(selector){
  console.log('PASS probability: Game Realm transfer and structured classroom teach-back unlock certification separately');
  const screenshot=await call('Page.captureScreenshot',{format:'png'});fs.writeFileSync(path.join(os.tmpdir(),'majick-phase2-certified.png'),Buffer.from(screenshot.result.data,'base64'));
  const persisted=await evalPage('JSON.stringify(MajickLearningContinuity.probabilityState())');
- await call('Page.reload',{ignoreCache:true});await waitFor('!!document.querySelector("#connectedProbability")');
+ await call('Page.reload',{ignoreCache:true});await waitFor('!!window.MajickProbabilityWorkshop&&!!window.MajickLearningContinuity&&!!window.S');
+ await action('switchCourse("D772");navigate("learninglab")');await waitFor('!!document.querySelector("#connectedProbability")');
  assert.equal(await evalPage('JSON.stringify(MajickLearningContinuity.probabilityState())'),persisted);
  assert.equal(await evalPage('MajickLearningContinuity.probabilityMastery().certified'),true);
  await action('document.querySelector("[data-prob-form] button[type=submit]").click()');
@@ -113,7 +137,7 @@ async function click(selector){
   await action('switchCourse('+JSON.stringify(course)+');navigate("mission")');
   await sleep(200);assert.equal(await evalPage('!!document.querySelector("#connectedProbability")'),false);
  }
- await action('switchCourse("D772");navigate("games")');await waitFor('!!document.querySelector("#connectedProbability")');
+ await action('switchCourse("D772");navigate("learninglab")');await waitFor('!!document.querySelector("#connectedProbability")');
  assert.equal(await evalPage('MajickLearningContinuity.probabilityMastery().certified'),true);
  await action('document.querySelector("#connectedProbability").scrollIntoView({block:"start"})');
  await waitFor('!document.querySelector("#majickCampusPortal.active")');await sleep(200);
@@ -135,8 +159,8 @@ async function click(selector){
  await action('navigate("learninglab")');
  await waitFor('!!document.querySelector("#learnLesson")');await sleep(300);
  await action('MajickLearningLab.showTab("learn");let steps=0;while(!/probability/i.test(document.querySelector(".learnStepHeader h3")?.textContent||"")){if(++steps>MajickLearningLab.lessons().length)throw Error("Probability lesson missing");document.querySelector("#learnNextLesson").click()}');
- await waitFor('!!document.querySelector(".majickGeneratedLab [data-check]")');
- await action('const box=document.querySelector(".majickGeneratedLab");box.querySelector("[data-answer]").value="0/1";box.querySelector("[data-reason]").value="Wrong sample-space explanation";box.querySelector("[data-check]").click()');
+ await waitFor('!!document.querySelector(".majickGeneratedLab [data-lab-guided]")');
+ await action('const box=document.querySelector(".majickGeneratedLab");box.querySelector("[data-lab-field=guided]").value="0/1";box.querySelector("[data-lab-field=reason]").value="Wrong sample-space explanation";box.querySelector("[data-lab-guided]").click()');
  await waitFor('MajickLearningContinuity.probabilityState().need?.origin==="generated-lab-guided"');
  await action('navigate("mission")');await waitFor('document.querySelector("#connectedProbability").textContent.includes("generated-lab-guided")');
  console.log('PASS probability: native Learn Lab guided miss produces shared Study Now recommendation');

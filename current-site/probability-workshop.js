@@ -16,17 +16,44 @@ function open(kind){
   panel.scrollIntoView({block:'start',behavior:'instant'});
  },0);
 }
+let heldPointer=null;
+document.addEventListener('pointerdown',event=>{
+ const box=event.target.closest?.('#connectedProbability');
+ if(box&&event.target.closest('button,input,select,textarea'))heldPointer=box;
+},true);
+for(const type of ['pointerup','pointercancel'])document.addEventListener(type,()=>{
+ if(!heldPointer)return;
+ heldPointer=null;
+ // Allow the native click to reach its original element before refreshing.
+ setTimeout(()=>mount(),0);
+},true);
 function mount(){
  const content=document.getElementById('content');
  if(!content||window.S?.activeCourse!=='D772'||!['learninglab','mission','games'].includes(S.screen)){document.getElementById('connectedProbability')?.remove();return;}
  let box=document.getElementById('connectedProbability');
  if(!box){box=document.createElement('section');box.id='connectedProbability';box.className='connectedProbability';box.setAttribute('aria-label','Connected probability learning');content.prepend(box);}
  const st=C().probabilityState(false),m=C().probabilityMastery();
+ // Repeated render-queue passes must not replace an unchanged form between
+ // pointer-down and pointer-up or discard focus while a learner is typing.
+ const view=JSON.stringify({screen:S.screen,focus:st?.focus,need:st?.need,mastery:m,task:st?.tasks[st?.focus]});
+ if(heldPointer===box||box.__majickProbabilityView===view)return;
+ box.__majickProbabilityView=view;
  const nav=Object.keys(labels).map(k=>{
  const unlocked=k==='repair'||m.repairVerified&&(k==='reasoning'||m.independentCorrect>=2&&(k==='transfer'||m.transferVerified));
  return '<button type="button" data-connected-open="'+k+'" '+(!unlocked?'disabled':'')+'>'+labels[k]+'</button>';
  }).join('');
- box.innerHTML='<h2>Connected Learning · Probability</h2><p>Original simulated OA-style practice · D772 · Dependent events without replacement</p>'+(st?.need?'<p role="status">Practice recommendation from '+E(st.need.origin)+': recount the remaining favorable outcomes and sample space. This need follows you into Learn Lab, Study Now and Game Realm.</p>':'')+'<p data-connected-evidence>Repair: '+(m.repairVerified?'verified':'needed')+' · Independent reasoning: '+m.independentCorrect+'/2 · Transfer: '+(m.transferVerified?'verified':'needed')+' · Structured teach-back: '+(m.teachBackVerified?'verified':'needed')+' · '+(m.certified?'Probability skill certified':'Not yet certified')+'</p><nav aria-label="Probability learning flow">'+nav+'</nav><div data-connected-task></div><p>Guided work never counts as independent mastery. Written whiteboard and teaching explanations are saved for review; only the structured checks are automatically evaluated.</p>';
+ box.innerHTML='<button type="button" class="connectedBack" data-connected-back aria-label="Back to previous campus room">← Back</button><h2>Connected Learning · Probability</h2><p>Original simulated OA-style practice · D772 · Dependent events without replacement</p>'+(st?.need?'<p role="status">Practice recommendation from '+E(st.need.origin)+': recount the remaining favorable outcomes and sample space. This need follows you into Learn Lab, Study Now and Game Realm.</p>':'')+'<p data-connected-evidence>Repair: '+(m.repairVerified?'verified':'needed')+' · Independent reasoning: '+m.independentCorrect+'/2 · Transfer: '+(m.transferVerified?'verified':'needed')+' · Structured teach-back: '+(m.teachBackVerified?'verified':'needed')+' · '+(m.certified?'Probability skill certified':'Not yet certified')+'</p><nav aria-label="Probability learning flow">'+nav+'</nav><div data-connected-task></div><p>Guided work never counts as independent mastery. Written whiteboard and teaching explanations are saved for review; only the structured checks are automatically evaluated.</p>';
+ const back=box.querySelector('[data-connected-back]');
+ const backScreen=S.screen;
+ const leaveRoom=()=>{
+  if(S.screen!==backScreen)return;
+  window.majickBack?.();
+  // Reloads and direct links may have no history entry; never strand Back.
+  if(S.screen===backScreen)window.navigate?.('home');
+ };
+ // A real pointer release must work even when a render pass interrupts click.
+ back.addEventListener('pointerup',leaveRoom);
+ back.addEventListener('click',leaveRoom);
  box.querySelectorAll('[data-connected-open]').forEach(b=>b.onclick=()=>open(b.dataset.connectedOpen));
  const kind=st?.focus,t=st?.tasks[kind];if(!t||places[kind]!==S.screen)return;
  const host=box.querySelector('[data-connected-task]'),draft=st.drafts[kind]||{},q=t.q,[g,p]=q.data,total=g+p;
@@ -42,11 +69,35 @@ function mount(){
  host.querySelectorAll('[data-prob-field]').forEach(el=>el.addEventListener('input',()=>C().probabilityDraft(kind,{[el.dataset.probField]:el.value})));
  host.querySelector('form').onsubmit=e=>{
   e.preventDefault();const values=Object.fromEntries([...host.querySelectorAll('[data-prob-field]')].map(el=>[el.dataset.probField,el.value]));
-  const result=C().probabilityCheck(kind,values);t.feedback=result.message;window.save?.();mount();
+  const result=C().probabilityCheck(kind,values);t.feedback=result.message;window.save?.();mount();if(result.ok)window.MajickAnimationEffects?.play(kind==='teaching'?'mastery':kind==='repair'?'success':kind==='transfer'?'lesson':'success');
  };
  host.querySelector('[data-prob-fresh]')?.addEventListener('click',()=>{const next=C().probabilityFresh(kind);if(next)mount();else open('repair');});
- host.querySelector('[data-prob-next]')?.addEventListener('click',()=>{C().probabilityTask('reasoning');mount();});
+ // Both pointer activation and keyboard click must advance exactly once, even if
+ // the campus render queue detaches the original button during pointer release.
+ const next=host.querySelector('[data-prob-next]');
+ if(next){
+  const fromId=t.id;
+  const advance=()=>{
+   const current=C().probabilityState(false)?.tasks.reasoning;
+   if(current?.id!==fromId||!current.completed)return;
+   C().probabilityTask('reasoning');
+   mount();
+  };
+  next.addEventListener('pointerup',advance);
+  next.addEventListener('click',advance);
+ }
 }
 window.MajickProbabilityWorkshop={mount,open};
 setTimeout(mount,0);
+// The main campus can rebuild #content after a saved-screen reload.
+// Observe only the root's direct replacement, not every form input or child.
+const appRoot=document.getElementById('content');
+const parent=appRoot?.parentElement;
+if(parent&&window.MutationObserver){
+ const hydrationObserver=new MutationObserver(records=>{
+  if(records.some(record=>[...record.addedNodes].some(node=>node.id==='content'||node.querySelector?.('#content'))))setTimeout(mount,0);
+ });
+ hydrationObserver.observe(parent,{childList:true});
+}
+window.addEventListener('pageshow',()=>setTimeout(mount,0));
 })();

@@ -111,6 +111,9 @@ function sanctuary(){
     return '<section class="v3317HomeSanctuary v3327CampusSanctuary"><div class="v3327SanctuaryTitle"><div><small>LIVING CAMPUS</small><h3>Guardian Sanctuary</h3><p>Your companions grow beside your coursework—rest, bond, customize, then return to your studies.</p></div><button class="v3327TextBtn" onclick="navigate(\'companions\')">Open Guardian House →</button></div>'+html+'</section>';
   }catch(_){return ''}
 }
+function incubatorHTML(){
+ try{const care=window.MajickGuardianCare;return care?.eggIncubatorHTML?.(care.snapshot())||''}catch(_){return ''}
+}
 function magicalHomeHTML(){
   const a=academic(),acct=account(),pets=guardians();
   const answers=(a.p?.answers||[]).length;
@@ -127,7 +130,7 @@ function magicalHomeHTML(){
   return '<div class="v3327Home">'+
     '<section class="v3327PortalHero">'+
       '<div class="v3327Constellation" aria-hidden="true"><i>✦</i><i>☾</i><i>✧</i><i>✦</i><i>⋆</i></div>'+
-      '<div class="v3327HeroCopy"><span class="v3327Eyebrow">MOONLIT COLLEGIUM • STUDENT ARCANA PORTAL</span><h2>'+E(a.id)+' • '+E(a.c.title)+'</h2><p>Your coursework and Guardian magic belong to the same world. Study the lesson, strengthen your mastery, earn Moon Crystals, and grow your Guardian House.</p><div class="v3327HeroActions"><button class="v3327Primary" onclick="v3327OpenTutor()">✦ Enter Course Tutor</button><button onclick="navigate(\'mission\')">Study Now</button><button onclick="navigate(\'grimoire\')">Living Grimoire</button><button onclick="navigate(\'addmaterial\')">Add Course Notes</button></div></div>'+
+      '<div class="v3327HeroCopy"><span class="v3327Eyebrow">MOONLIT COLLEGIUM • STUDENT ARCANA PORTAL</span><h2>'+E(a.id)+' • '+E(a.c.title)+'</h2><p>Current lesson · '+E(lessonTitle)+'</p><div class="v3327HeroActions"><button class="v3327Primary" onclick="v3327OpenTutor()">✦ Enter Course Tutor</button><button onclick="navigate(\'mission\')">Study Now</button><button onclick="navigate(\'grimoire\')">Living Grimoire</button><button onclick="navigate(\'addmaterial\')">Add Course Notes</button></div></div>'+
       '<div class="v3327RegistrarSeal"><span>☾</span><small>ARCANE REGISTRAR</small><b>'+E(a.id)+'</b><em>'+sectionPct+'% section progress</em></div>'+
     '</section>'+
 
@@ -141,7 +144,7 @@ function magicalHomeHTML(){
       '</section>'+
 
       '<section class="v3327Hall v3327GuardianHall"><header><div><small>GUARDIAN HOUSE</small><h3>Your Magical Campus Life</h3></div><button class="v3327TextBtn" onclick="navigate(\'companions\')">Care & bond →</button></header>'+
-        '<div class="v3327GuardianGrid">'+guardianCards()+'</div>'+
+        '<div class="v3327GuardianGrid">'+guardianCards()+'</div>'+incubatorHTML()+
         '<div class="v3327AccountRecord"><div><span>✦</span><b>'+Math.round(Number(acct.xp)||0)+'</b><small>Majick XP</small></div><div><span>◆</span><b>'+Math.round(Number(acct.crystals)||0)+'</b><small>Moon Crystals</small></div><div><span>☾</span><b>'+streak+'</b><small>day streak</small></div><div><span>✧</span><b>'+pets.length+'</b><small>hatched Guardians</small></div></div>'+
         '<div class="v3327HouseMessage">Academic progress fuels the magical side of campus. Study success earns the resources that care for, evolve, and personalize your Guardian House.</div>'+
       '</section>'+
