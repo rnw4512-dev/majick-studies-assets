@@ -186,9 +186,21 @@ function probabilityCheck(kind,values={}){
  persist();
  return {ok:correct,message:correct?(kind==='repair'?'Guided repair recorded; no independent mastery credit.':kind==='teaching'?'Structured teaching model and diagnostic probe verified. Written explanation saved for review.':'Independent conditional reasoning verified.'):'Not yet. Recount the sample space after the first draw. This attempt is saved; repair and then use a fresh challenge.'};
 }
+function probabilityAdvanceReasoning(expectedId){
+ const st=probabilityState(false),current=st?.tasks?.reasoning;
+ if(!current||current.id!==expectedId||!current.submitted||!current.completed)return null;
+ if(probabilityMastery().independentCorrect>=2)return null;
+ // Do not discard a verified answer or its dataset history; only replace the
+ // completed task slot. A second pointer/click event cannot advance it twice.
+ delete st.tasks.reasoning;
+ delete st.drafts.reasoning;
+ const fresh=probabilityTask('reasoning');
+ if(!fresh){st.tasks.reasoning=current;persist();return null;}
+ persist();return fresh;
+}
 function probabilityFresh(kind){
  const st=probabilityState(false),t=st?.tasks[kind];if(!t||!t.submitted||t.completed)return null;
  delete st.tasks[kind];delete st.drafts[kind];return probabilityTask(kind);
 }
-window.MajickLearningContinuity={version:'2.0-probability',identify,record,needs,recommend,learned,skillResult,masteryStatus,skillNeeds,skillReview,skillRetry,probabilityState,probabilityNeed,probabilityTask,probabilityMastery,probabilityDraft,probabilityRemove,probabilityCheck,probabilityFresh};
+window.MajickLearningContinuity={version:'2.0-probability',identify,record,needs,recommend,learned,skillResult,masteryStatus,skillNeeds,skillReview,skillRetry,probabilityState,probabilityNeed,probabilityTask,probabilityMastery,probabilityDraft,probabilityRemove,probabilityCheck,probabilityFresh,probabilityAdvanceReasoning};
 })();
