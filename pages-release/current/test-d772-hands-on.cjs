@@ -8,7 +8,7 @@ const rules=[
  [/given\.length===expected\.length&&given\.every/,'Every input observation must be ordered before a check passes'],
  [/data-sort-clear/,'Same-dataset clear and retry is required'],
  [/data-sort-feedback/,'Accessible feedback is required'],
- [/data-lab-repair/,'Wrong independent answer must offer guided repair'],
+ [/repair\.dataset\.labRepair/,'Wrong independent answer must offer guided repair'],
  [/section\.querySelector\('\[data-lab-guided\]'\)/,'Guided review must return to the existing lesson owner'],
  [/generated-lab-independent-formative/,'Independent formative response must stay in existing tracker'],
  [/skillResult\?\.\(q,correct,false,'generated-lab-independent-formative'\)/,'Formative attempt must not be marked as certified transfer']
