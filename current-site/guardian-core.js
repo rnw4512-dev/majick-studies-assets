@@ -347,7 +347,14 @@ function observeReactions(){
         else if(el.matches?.('.conceptComplete,.d755Stage.complete'))kind='concept';
         else if(el.matches?.('.v3338CheckpointResult.ready'))kind='mastery';
         else if(el.matches?.('.v3316PassOverlay')||el.querySelector?.('.v3316PassOverlay'))kind='course-pass';
-        if(kind){seenNodes.add(el);react(kind,{screen:window.S?.screen})}
+        if(kind){
+          seenNodes.add(el);
+          // Existing verified completion surfaces are the authoritative triggers.
+          if(kind==='course-pass')window.MajickAnimationEffects?.play('course');
+          else if(el.matches?.('.d755Stage.complete'))window.MajickAnimationEffects?.play('lesson');
+          else if(kind==='mastery')window.MajickAnimationEffects?.play('mastery');
+          react(kind,{screen:window.S?.screen});
+        }
       }
     }
     setTimeout(decorate,0);
@@ -356,7 +363,7 @@ function observeReactions(){
 }
 function wrapCare(){
   const old=window.majickCareAction;if(typeof old!=='function'||old.__v3341)return;
-  const fn=function(){const r=old.apply(this,arguments);if(r?.ok)react('care',{action:arguments[1]});return r};fn.__v3341=true;window.majickCareAction=fn;
+  const fn=function(){const r=old.apply(this,arguments);if(r?.ok){react('care',{action:arguments[1]});window.MajickAnimationEffects?.play('guardian')}return r};fn.__v3341=true;window.majickCareAction=fn;
 }
 function wrapDebrief(){
   const old=window.ascStopRule;
