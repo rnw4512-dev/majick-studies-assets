@@ -187,3 +187,12 @@ Next: finish the latest review, repair any genuine failures, inspect desktop/tab
 - **Manifest:** workshop SHA-256 `7c2f8a5de384dd7b707428f55578c9121fb20c06b4020edfce725f1c1d2b3e52` in commit `7b0b7046`.
 - **Release gate:** new review PR and full desktop/tablet/mobile review must pass, then a new main merge must pass the production Pages workflow including connected probability. Do not imply prior main merge means the deployed page changed.
 - **Recovery:** revert only `c09d2c67` and the matching manifest hash if physical Back press triggers unwanted navigation; restore without touching learner saves or Sanctuary.
+
+
+## 2026-10-15 — D772 Phases 2–4C: first cross-room remediation implementation
+- Branch: `d772-phases-2-4c-instruction`, isolated from the previously merged/production version.
+- `current-site/generated-question-engine.js`: Before the instructional generated workshop, surface existing D772 `MajickLearningContinuity.needs('D772')` for the same lesson, making weak skills visible without adding a duplicate state system. After a fresh independent formative answer, send the result to both existing `record` and `skillResult`, so Learn Lab, Study Now, and Game Realm can recognize the same misconception via course-scoped adaptive skills.
+- **Mastery safety:** `skillResult` origin is `generated-lab-independent-formative`, not `independent-transfer`; this is a formative attempt and cannot automatically certify transfer mastery. Existing WGU question sources, correct answers, progress, XP, inventory, Guardians and Sanctuary are unchanged.
+- Updated `current-site/source-manifest.json` SHA256: `generated-question-engine.js` = `2a1f9dca7b1880a14be948c923d14f5ce40c561a9e1186fb2443a698d37ecc21`.
+- Verification required: full PR review, actual weak-skill remediation in all three rooms, no duplicate achievements, course isolation, fresh dataset accuracy, teacher rubric and persistence. Do not claim Phases 2–4C fully complete.
+- Recovery: revert instructional integration and its manifest edit only. Do not reset existing course progress or global rewards.
