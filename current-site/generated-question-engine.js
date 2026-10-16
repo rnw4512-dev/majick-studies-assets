@@ -130,7 +130,12 @@ function mountLab(root,lessonText){
    feedback.textContent=right
     ?'Correct ordering. '+(skill==='boxplot'?'Find Q1 and Q3 from the lower and upper halves, then subtract for IQR.':'Find the middle observation or average the two middle observations.')
     :'Not yet. Compare the smallest remaining values; every observation must appear exactly once. Clear and resubmit without losing your lesson.';
-   if(!right)window.MajickLearningContinuity?.record?.({courseId:'D772',term:guided.learningPathLessonId,lessonTitle:lessonText,correct:false,activity:'hands-on-sort-guided',question:guided});
+   if(right){
+    if(!work.dataset.celebrated){
+     work.dataset.celebrated='true';
+     window.MajickAnimationEffects?.play?.('success',{target:work.querySelector('[data-sort-check]'),label:'Data ordered'});
+    }
+   }else window.MajickLearningContinuity?.record?.({courseId:'D772',term:guided.learningPathLessonId,lessonTitle:lessonText,correct:false,activity:'hands-on-sort-guided',question:guided});
   };
   updateSort();
   section.querySelector('[data-lab-guided]').before(work);
