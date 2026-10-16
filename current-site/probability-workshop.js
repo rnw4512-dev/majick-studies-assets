@@ -92,8 +92,8 @@ function mount(){
   const advance=()=>{
    const current=C().probabilityState(false)?.tasks.reasoning;
    if(current?.id!==fromId||!current.completed)return;
-   C().probabilityTask('reasoning');
-   mount();
+   const fresh=C().probabilityAdvanceReasoning?.(fromId);
+   if(fresh)mount();
   };
   next.addEventListener('pointerup',advance);
   next.addEventListener('click',advance);
