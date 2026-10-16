@@ -52,6 +52,9 @@ function mount(){
   if(S.screen===backScreen)window.navigate?.('home');
  };
  // A real pointer release must work even when a render pass interrupts click.
+ // Capture the press before any queued renderer can detach the button.
+ // Mouse and touch use pointerdown; keyboard continues through click.
+ back.addEventListener('pointerdown',leaveRoom);
  back.addEventListener('pointerup',leaveRoom);
  back.addEventListener('click',leaveRoom);
  box.querySelectorAll('[data-connected-open]').forEach(b=>b.onclick=()=>open(b.dataset.connectedOpen));
