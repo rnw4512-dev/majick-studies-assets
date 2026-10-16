@@ -58,6 +58,18 @@ function attach(){
   const list=hub.querySelector('.majCommonsTabs'),panels=hub.querySelector('.majCommonsPanels');
   TABS.forEach(([id,name])=>{const b=document.createElement('button');b.type='button';b.role='tab';b.dataset.commonsTab=id;b.id='commons-tab-'+id;b.textContent=name;b.setAttribute('aria-controls','commons-panel-'+id);b.addEventListener('click',()=>navigateTab(id));list.append(b);const panel=document.createElement('div');panel.dataset.commonsPanel=id;panel.id='commons-panel-'+id;panel.setAttribute('role','tabpanel');panel.setAttribute('aria-labelledby',b.id);panels.append(panel)});
   const delta=n=>{const i=TABS.findIndex(x=>x[0]===selected);navigateTab(TABS[(i+n+TABS.length)%TABS.length][0])};
+  // Analytics belongs to the existing app-wide Observatory, never a duplicate Commons panel.
+  const analyticsAccess=document.createElement('button');
+  analyticsAccess.type='button';
+  analyticsAccess.className='majCommonsAnalyticsAccess';
+  analyticsAccess.textContent='◈ Open App-wide Analytics';
+  analyticsAccess.setAttribute('aria-label','Open the app-wide Analytics Observatory');
+  analyticsAccess.addEventListener('click',()=>{
+    const navButton=document.querySelector('.nav button[data-nav="analytics"]');
+    if(navButton){navButton.click();return}
+    if(typeof navigate==='function')navigate('analytics');
+  });
+  hub.querySelector('.majCommonsStepButtons').append(analyticsAccess);
   hub.querySelector('[data-commons-previous]').addEventListener('click',()=>delta(-1));hub.querySelector('[data-commons-next]').addEventListener('click',()=>delta(1));
   list.addEventListener('keydown',e=>{if(['ArrowRight','ArrowLeft','Home','End'].includes(e.key)){e.preventDefault();if(e.key==='Home')navigateTab(TABS[0][0]);else if(e.key==='End')navigateTab(TABS[TABS.length-1][0]);else delta(e.key==='ArrowRight'?1:-1);list.querySelector('[aria-selected="true"]')?.focus()}});
   root.prepend(hub);
