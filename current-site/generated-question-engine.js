@@ -73,21 +73,44 @@ function probabilityCase(ordinal=0,transfer=false){
 function batch(count=10,difficulty=2){const skills=['mean','median','boxplot','histogram','scatterplot','probability'],out=[];for(let i=0;i<count;i++){const q=generate(skills[i%skills.length],difficulty);if(q)out.push(q)}return out}
 function mountLab(root,lessonText){
  if(!root||!window.S||window.S.activeCourse!=='D772')return;
- const text=String(lessonText||'').toLowerCase();
- let skill=/probab|replacement|sample space/.test(text)?'probability':/scatter|association/.test(text)?'scatterplot':/histogram|distribution|skew|modality/.test(text)?'histogram':/quartile|box.plot|five.number/.test(text)?'boxplot':/median/.test(text)?'median':/mean|statistics|descriptive/.test(text)?'mean':null;
+ const title=String(lessonText||'').toLowerCase();
+ const skill=/probab|replacement|sample space/.test(title)?'probability':/scatter|association/.test(title)?'scatterplot':/histogram|distribution|skew|modality/.test(title)?'histogram':/quartile|box.plot|five.number/.test(title)?'boxplot':/median/.test(title)?'median':/mean|statistics|descriptive/.test(title)?'mean':null;
  if(!skill)return;
- const q=generate(skill,2);if(!q)return;
- const section=document.createElement('section');section.className='majickGeneratedLab';section.style.cssText='border:1px solid #c1a476;border-radius:15px;background:#32253e;color:#fff0db;padding:16px;margin:16px 0';
- section.innerHTML='<h4>✦ Generated Data Workshop · Five Learning Stages</h4><p><b>1 · Observe:</b> Read the complete graph and describe what the axes, values, or counters show.</p>'+q.visualHtml+'<p><b>2 · Interpret:</b> '+E(q.prompt)+'</p><label>Guided practice answer <input data-answer style="display:block;width:100%;max-width:340px;padding:10px;margin:8px 0" autocomplete="off"></label><p><b>3 · Explain:</b> Show your method or whiteboard steps.</p><textarea data-reason rows="3" style="width:100%;padding:10px" placeholder="I used the values because…"></textarea><p><b>4 · Transfer:</b> Create a new data set and solve without hints.</p><button type="button" data-fresh class="btn ghost">Generate new data →</button><p><b>5 · Teach:</b> A student is struggling with this mistake: '+E(q.misconception)+'. How would you model and check a correction?</p><textarea data-teach rows="3" style="width:100%;padding:10px" placeholder="I would show my student…"></textarea><div><button type="button" data-check class="btn primary">Check calculation and coach me</button></div><p data-feedback role="status" aria-live="polite">Written reasoning and teaching are coaching tasks, not automatically certified mastery.</p>';
+ const guided=generate(skill,2);if(!guided)return;
+ let independent=null,completed=false;
+ const section=document.createElement('section');section.className='majickGeneratedLab';
+ section.style.cssText='border:1px solid #c1a476;border-radius:15px;background:#32253e;color:#fff0db;padding:16px;margin:16px 0';
+ const field=(id,label,rows=0)=>'<label style="display:block;margin:12px 0">'+E(label)+(rows?'<textarea data-lab-field="'+id+'" rows="'+rows+'" style="display:block;width:100%;padding:10px;background:#fff8ed;color:#261b2e"></textarea>':'<input data-lab-field="'+id+'" style="display:block;width:100%;max-width:390px;padding:10px;background:#fff8ed;color:#261b2e" autocomplete="off">')+'</label>';
+ section.innerHTML='<h4>✦ Generated Data Workshop · Worked example → Independent application → Teach-back</h4><p><b>1 · Study the scenario.</b> '+E(guided.prompt)+'</p>'+guided.visualHtml+'<p><b>2 · Whiteboard setup.</b> Identify the values or event, write the appropriate method and check that the displayed data agree with your calculation.</p><p><b>Worked solution:</b> '+E(guided.why)+' <b>Result:</b> '+E(guided.answer)+'.</p><p><b>3 · Guided reconstruction.</b> Solve the same scenario after studying the explanation. Guided work does not count as independent mastery.</p>'+field('guided','Recalculate the worked example')+field('reason','Explain why the method applies',3)+'<button type="button" data-lab-guided>Check guided reasoning</button><p data-lab-guided-feedback role="status"></p><hr><h4>4 · Fresh independent application</h4><p>Use a different data set, without consulting the worked solution. Submit before viewing the answer.</p><div data-lab-independent></div><button type="button" data-lab-new>Generate a different independent problem</button><hr><h4>5 · Teach the correction</h4><p>A student makes this error: '+E(guided.misconception)+'. Explain the misconception, model the correct method, and ask a different diagnostic question.</p>'+field('teach','Your explanation, visual/model, and exit question',4)+'<button type="button" data-lab-teach>Review my teaching plan</button><p data-lab-teach-feedback role="status"></p><p><small>Majick original supplemental practice, not official WGU material. Automatic feedback on writing checks structure, not the quality of your teaching. This workshop does not independently certify mastery.</small></p>';
  root.appendChild(section);
- section.querySelector('[data-fresh]').onclick=()=>{section.remove();mountLab(root,lessonText)};
- section.querySelector('[data-check]').onclick=()=>{
-  const answer=section.querySelector('[data-answer]').value.trim(),correct=answer===String(q.answer);
-  const reason=section.querySelector('[data-reason]').value.trim(),teach=section.querySelector('[data-teach]').value.trim();
-  const feedback=section.querySelector('[data-feedback]');
-  feedback.textContent=(correct?'Correct calculation. ':'Check the calculation again. ')+(reason.length<25?'Explain the evidence and steps in more detail. ':'Your reasoning has been saved for self-review. ')+(teach.length<35?'Describe what you would model and how you would check understanding. ':'Compare your teaching strategy with the misconception and worked solution. ')+ 'Worked reasoning: '+q.why+' This guided workshop does not count as independent mastery.';
-  try{window.MajickLearningContinuity?.record?.({courseId:'D772',lessonTitle:lessonText,term:q.learningPathLessonId,correct,activity:'generated-lab-guided',question:q})}catch(_){}
+ const input=name=>section.querySelector('[data-lab-field="'+name+'"]');
+ section.querySelector('[data-lab-guided]').onclick=()=>{
+  const correct=input('guided').value.trim()===String(guided.answer),reason=input('reason').value.trim();
+  section.querySelector('[data-lab-guided-feedback]').textContent=(correct?'Correct reconstruction. ':'Check the result using the matching visual. ')+(reason.length>=35?'Compare your explanation with the worked solution above.':'Name the operation, the evidence, and why it fits this question.')+' Guided work is not independent mastery.';
+  window.MajickLearningContinuity?.record?.({courseId:'D772',term:guided.learningPathLessonId,lessonTitle:lessonText,correct,activity:'generated-lab-guided',question:guided});
  };
+ const host=section.querySelector('[data-lab-independent]');
+ function fresh(){
+  const previous=independent&&JSON.stringify(independent.data);
+  let q=null;for(let n=0;n<35;n++){const candidate=generate(skill,3);if(candidate&&JSON.stringify(candidate.data)!==JSON.stringify(guided.data)&&JSON.stringify(candidate.data)!==previous){q=candidate;break}}
+  independent=q;completed=false;
+  if(!q){host.textContent='A different dataset could not be produced. Previous evidence is retained; try again later.';return}
+  host.innerHTML='<p>'+E(q.prompt)+'</p>'+q.visualHtml+field('independent','Your independent answer')+field('independent-why','Show your whiteboard reasoning and interpretation',3)+'<button type="button" data-lab-submit>Submit independent response</button><p data-lab-independent-feedback role="status"></p>';
+  host.querySelector('[data-lab-submit]').onclick=()=>{
+   if(completed)return;completed=true;
+   const answer=host.querySelector('[data-lab-field="independent"]').value.trim(),explanation=host.querySelector('[data-lab-field="independent-why"]').value.trim(),correct=answer===String(q.answer);
+   host.querySelector('[data-lab-independent-feedback]').textContent=(correct?'Correct. ':'Not yet. ')+(explanation.length<35?'Strengthen your written reasoning: name the method and explain the result in context. ':'Compare your interpretation against the scenario. ')+'Worked reasoning: '+q.why+' This is a formative independent attempt, not automatically certified mastery.';
+   host.querySelector('[data-lab-submit]').disabled=true;
+   window.MajickLearningContinuity?.record?.({courseId:'D772',term:q.learningPathLessonId,lessonTitle:lessonText,correct,activity:'generated-lab-independent-formative',question:q});
+   window.save?.();
+  };
+ }
+ section.querySelector('[data-lab-new]').onclick=fresh;
+ section.querySelector('[data-lab-teach]').onclick=()=>{
+  const text=input('teach').value.trim(),hasModel=/show|model|counter|sort|plot|draw|visual|calculate|demonstrate/i.test(text),hasCheck=/ask|check|exit|question|try|explain/i.test(text);
+  section.querySelector('[data-lab-teach-feedback]').textContent='Teaching rubric: '+(text.length>=80?'✓ detailed explanation; ':'add a clear explanation; ')+(hasModel?'✓ proposed model; ':'name a specific visual or model; ')+(hasCheck?'✓ proposed understanding check.':'add a fresh diagnostic exit question.')+' Automatic checks cannot verify conceptual accuracy; compare with the worked solution. No mastery credit awarded.';
+ };
+ fresh();
 }
 window.MajickGeneratedPractice=Object.freeze({generate,batch,validate,probabilityCase,median,quartiles,render:{dots,box,histogram,scatter,probability},mountLab});
 })();
