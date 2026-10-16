@@ -30,6 +30,8 @@ jobs:
         run: node pages-release/current/test-d772-preassessment.cjs current-site
       - name: Adaptive mastery regression
         run: node pages-release/current/test-d772-adaptive.cjs current-site
+      - name: Cross-room D772 weakness and mastery safety regression
+        run: node pages-release/current/test-d772-cross-room.cjs current-site
       - name: Canonical build
         run: python pages-release/current/build.py current-site _site
       - name: Commons rendered audit and screenshots
