@@ -54,7 +54,7 @@ function attach(){
  let hub=root.querySelector(':scope > #majCommonsHub');
  if(!hub){
   hub=document.createElement('section');hub.id='majCommonsHub';hub.setAttribute('aria-label','Collegium Commons campus hub');
-  hub.innerHTML='<div class="majCommonsWelcome"><span class="majCommonsEyebrow">✦ COLLEGIUM COMMONS · YOUR MAGICAL CAMPUS</span><h2>Welcome to the Commons</h2><p>Your next lesson, reflection desk, and Guardian residence—one quiet corner of your magical campus.</p><p class="majCommonsCourse"></p></div><div class="majCommonsTabs" role="tablist" aria-label="Campus hub sections"></div><div class="majCommonsStep"><strong data-commons-current>✦ Overview</strong><div class="majCommonsStepButtons"><button type="button" data-commons-previous aria-label="Previous campus tab">← Previous</button><button type="button" data-commons-next aria-label="Next campus tab">Next →</button></div></div><div class="majCommonsPanels"></div>';
+  hub.innerHTML='<div class="majCommonsWelcome"><span class="majCommonsEyebrow">✦ COLLEGIUM COMMONS · YOUR MAGICAL CAMPUS</span><h2>Welcome to the Commons</h2><p class="majCommonsCourse"></p></div><div class="majCommonsTabs" role="tablist" aria-label="Campus hub sections"></div><div class="majCommonsStep"><strong data-commons-current>✦ Overview</strong><div class="majCommonsStepButtons"><button type="button" data-commons-previous aria-label="Previous campus tab">← Previous</button><button type="button" data-commons-next aria-label="Next campus tab">Next →</button></div></div><div class="majCommonsPanels"></div>';
   const list=hub.querySelector('.majCommonsTabs'),panels=hub.querySelector('.majCommonsPanels');
   TABS.forEach(([id,name])=>{const b=document.createElement('button');b.type='button';b.role='tab';b.dataset.commonsTab=id;b.id='commons-tab-'+id;b.textContent=name;b.setAttribute('aria-controls','commons-panel-'+id);b.addEventListener('click',()=>navigateTab(id));list.append(b);const panel=document.createElement('div');panel.dataset.commonsPanel=id;panel.id='commons-panel-'+id;panel.setAttribute('role','tabpanel');panel.setAttribute('aria-labelledby',b.id);panels.append(panel)});
   const delta=n=>{const i=TABS.findIndex(x=>x[0]===selected);navigateTab(TABS[(i+n+TABS.length)%TABS.length][0])};
@@ -85,6 +85,20 @@ function attach(){
  if(record){const shelf=document.createElement('details');shelf.className='majCommonsRecordShelf';const summary=document.createElement('summary');summary.textContent='Open your Student Record · coursework and Majick progress';shelf.append(summary);record.before(shelf);shelf.append(record)}
  const hero=panels.overview.querySelector('.v3327PortalHero'),guardian=hero?.querySelector('.v3341GuardianHero');
  if(guardian){let shelf=hero.querySelector('.majCommonsGuardianShelf');if(!shelf){shelf=document.createElement('details');shelf.className='majCommonsGuardianShelf';const summary=document.createElement('summary');shelf.append(summary);guardian.before(shelf);shelf.append(guardian)}const name=guardian.querySelector('h3')?.textContent||'Your Guardian';const summary=shelf.querySelector('summary');const label=name+' is nearby · bond and study settings';if(summary.textContent!==label)summary.textContent=label}
+ // Keep secondary destinations and review tools reachable without a default long stack.
+ function shelf(node,label,tab){
+  if(!node||node.closest('.majCommonsToolShelf'))return;
+  const wrap=document.createElement('details');wrap.className='majCommonsToolShelf';
+  wrap.dataset.commonsOwner=tab;wrap.name='commons-tools-'+tab;
+  const heading=document.createElement('summary');heading.textContent=label;
+  wrap.append(heading);node.before(wrap);wrap.append(node);
+ }
+ shelf(panels.overview.querySelector(':scope > #v3377CampusDoors'),'Explore campus rooms and course sections','overview');
+ for(const node of [...panels.review.children]){
+  if(node.matches('details'))continue;
+  const label=node.querySelector('h2,h3,h4')?.textContent?.trim()||'Review and practice';
+  shelf(node,label,'review');
+ }
  // Reconcile late additions inside existing panels as well as new root children.
  for(const [tab,panel] of Object.entries(panels))for(const node of [...panel.children]){
   const destination=classify(node);
@@ -104,3 +118,4 @@ window.MajickCollegiumCommons={attach,sync,select:n=>{if(TABS.some(t=>t[0]===n))
 if(window.MajickRenderQueue?.register){window.MajickRenderQueue.register('collegium-commons-home',sync,98);window.MajickRenderQueue.schedule()}
 document.addEventListener('DOMContentLoaded',()=>{sync();const host=document.querySelector('#app')||document.body;const observer=new MutationObserver(()=>{if(window.S?.screen==='home'&&!updating&&needsSync())queueMicrotask(sync)});observer.observe(host,{childList:true,subtree:true})});
 })();
+

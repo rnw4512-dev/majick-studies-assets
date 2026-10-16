@@ -6,8 +6,9 @@ for(const [name,text] of [['animation-effects',owner],['guardian-care',guardian]
 assert(owner.includes("guardian:['guardians/")&&owner.includes("sanctuary:['celebrations/")&&owner.includes("lesson:['celebrations/"),'Existing event visuals must remain distinct');
 assert(/if\(r\?\.ok&&\['feed','water','treat','groom','play','affection'\]/.test(guardian),'Guardian feedback must require successful care');
 assert(guardian.includes("MajickAnimationEffects?.play?.('guardian'"),'Guardian events must reuse shared owner');
-assert(room.includes("if(placed&&typeof window!=='undefined')window.MajickAnimationEffects?.play?.('sanctuary'"),'Only placed owned furniture should celebrate');
-assert(room.indexOf('this.v3321CommitFurnitureState();')<room.indexOf("MajickAnimationEffects?.play?.('sanctuary'"),'Furniture state must commit first');
+assert(room.includes("const newlyPlaced=placed&&stored.has(id)")&&room.includes("if(newlyPlaced&&typeof window"),'Only a new owned placement should celebrate');
+assert(room.includes('window.parent?.MajickAnimationEffects'),'Framed Sanctuary must reuse host effects');
+assert(room.indexOf('this.v3321CommitFurnitureState();')<room.indexOf("effects?.play?.('sanctuary'"),'Furniture state must commit first');
 assert(learn.includes('work.dataset.celebrated'),'Learn Lab event must remain one-shot');
 assert(!/S\.progress\s*=|S\.majickAccount\s*=/.test(owner),'Animation owner cannot mutate academic or Guardian saves');
 console.log('PASS Phase 6 ownership: existing visual effects, successful care and placement only, one-shot learning, no reward owner duplication');

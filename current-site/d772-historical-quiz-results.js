@@ -25,8 +25,9 @@ function escapeHtml(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;',
 function render(){
  if(window.S?.activeCourse!=='D772')return;
  ensure();
- if(window.S?.screen!=='home')return;
- const root=document.querySelector('.content');if(!root||root.querySelector('#mjD772WguHistory'))return;
+ if(!['home','analytics'].includes(window.S?.screen))return;
+ const reports=window.S.screen==='analytics';
+ const root=document.querySelector('.content');if(!root||root.querySelector(reports?'#mjD772WguHistory':'#mjD772AxisLab'))return;
  const data=records().filter(r=>r&&r.source==='Historical WGU quiz (user reported)'&&Number.isFinite(Number(r.percent))).sort((a,b)=>a.section-b.section||a.lesson-b.lesson);
  if(!data.length)return;
  const average=(data.reduce((s,r)=>s+Number(r.percent),0)/data.length).toFixed(1).replace(/\.0$/,'');
@@ -39,6 +40,7 @@ function render(){
  '<div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;color:#271b2d"><thead><tr><th scope="col">Date</th><th scope="col">WGU quiz</th><th scope="col">Score</th><th scope="col">Source</th></tr></thead><tbody>'+
  data.map(r=>'<tr><td>'+escapeHtml(r.date)+'</td><td>'+escapeHtml(r.form)+'</td><td>'+escapeHtml(r.percent)+'%</td><td>'+escapeHtml(r.source)+'</td></tr>').join('')+
  '</tbody></table></div><p style="color:#35283a">A quiz score indicates review priority but does not establish independent mastery or identify individual missed questions.</p></details>';
+ if(reports){root.prepend(el);return}
  const activity=document.createElement('section');
  activity.id='mjD772AxisLab';
  activity.style.cssText='margin-top:16px;padding:15px;border:2px solid #9c7d60;border-radius:10px;background:#fff7e9;color:#271b2d';
@@ -81,7 +83,7 @@ function render(){
  drawAxis();
  el.querySelectorAll('h3,p,summary,td,th,strong').forEach(node=>node.style.setProperty('color','#271b2d','important'));
  el.querySelectorAll('td,th').forEach(cell=>cell.style.cssText='border-bottom:1px solid #b49b91;padding:8px;text-align:left;color:#271b2d');
- root.prepend(el);
+ root.prepend(activity);
 }
 window.MajickD772QuizHistory={source:SOURCE,seed:ROWS,records,ensure,render};
 if(window.MajickRenderQueue?.register){window.MajickRenderQueue.register('d772-historical-quiz-results',render,78);window.MajickRenderQueue.schedule()}
