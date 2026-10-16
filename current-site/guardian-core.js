@@ -334,32 +334,29 @@ function cycle(){
   const rows=pets(),p=activePet();if(rows.length<2)return;
   const i=Math.max(0,rows.findIndex(x=>x.id===p?.id));setActive(rows[(i+1)%rows.length].id);
 }
+// Academic reactions only observe an accepted, deduplicated study ledger event.
+// Rendered success cards are not proof of independent mastery or a course pass.
 function observeReactions(){
-  if(!document.body||window.__v3341Observer)return;
-  window.__v3341Observer=new MutationObserver(records=>{
-    for(const rec of records)for(const node of rec.addedNodes){
-      if(!(node instanceof Element))continue;
-      const candidates=[node,...(node.querySelectorAll?.('.v3333Feedback.correct,.v3338Feedback.correct,.d755Feedback.correct,.conceptComplete,.d755Stage.complete,.v3338CheckpointResult.ready,.v3316PassOverlay')||[])];
-      for(const el of candidates){
-        if(seenNodes.has(el))continue;
-        let kind=null;
-        if(el.matches?.('.v3333Feedback.correct,.v3338Feedback.correct,.d755Feedback.correct'))kind='correct';
-        else if(el.matches?.('.conceptComplete,.d755Stage.complete'))kind='concept';
-        else if(el.matches?.('.v3338CheckpointResult.ready'))kind='mastery';
-        else if(el.matches?.('.v3316PassOverlay')||el.querySelector?.('.v3316PassOverlay'))kind='course-pass';
-        if(kind){
-          seenNodes.add(el);
-          // Existing verified completion surfaces are the authoritative triggers.
-          if(kind==='course-pass')window.MajickAnimationEffects?.play('course');
-          else if(el.matches?.('.d755Stage.complete'))window.MajickAnimationEffects?.play('lesson');
-          else if(kind==='mastery')window.MajickAnimationEffects?.play('mastery');
-          react(kind,{screen:window.S?.screen});
-        }
-      }
+  if(window.__v3341VerifiedReactionListener)return;
+  const handler=event=>{
+    const d=event?.detail||{};
+    if(!d.key||!d.correct||d.historical)return;
+    const p=activePet();if(!p)return;
+    const independent=d.independent===true;
+    const kind=independent?'correct':'guided';
+    const dock=document.querySelector('.v3341StudyGuardian,.v3341GuardianHero');
+    const line=dock?.querySelector('.v3341ReactionLine');
+    if(line)line.textContent=independent?'I saw your independent reasoning!':'Good guided practice. Keep building the skill.';
+    if(dock){dock.classList.remove('reacting');void dock.offsetWidth;dock.classList.add('reacting')}
+    if(independent){
+      sparks(dock?.querySelector?.('.v3341StudyGuardianPortrait,.v3341GuardianHeroPortrait')||dock,14);
+      window.MajickAnimationEffects?.play?.('correct');
     }
-    setTimeout(decorate,0);
-  });
-  window.__v3341Observer.observe(document.body,{childList:true,subtree:true});
+    // The study/reward core alone owns XP, mastery and bond advancement.
+    broadcastReaction(kind,p,{course:d.course,source:d.source,assisted:!independent,key:d.key});
+  };
+  window.__v3341VerifiedReactionListener=handler;
+  document.addEventListener('majick:verified-study-answer',handler);
 }
 function wrapCare(){
   const old=window.majickCareAction;if(typeof old!=='function'||old.__v3341)return;
