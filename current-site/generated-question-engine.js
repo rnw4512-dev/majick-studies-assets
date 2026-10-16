@@ -73,12 +73,18 @@ function probabilityCase(ordinal=0,transfer=false){
 function batch(count=10,difficulty=2){const skills=['mean','median','boxplot','histogram','scatterplot','probability'],out=[];for(let i=0;i<count;i++){const q=generate(skills[i%skills.length],difficulty);if(q)out.push(q)}return out}
 function mountLab(root,lessonText){
  if(!root||!window.S||window.S.activeCourse!=='D772')return;
+ // The campus may invoke this after delayed renders. Never replace an active
+ // learner's typed responses or attach duplicate event controls.
+ const lessonKey=String(lessonText||'').trim();
+ const prior=root.querySelector(':scope > .majickGeneratedLab');
+ if(prior?.dataset.lessonKey===lessonKey)return;
+ if(prior)prior.remove();
  const title=String(lessonText||'').toLowerCase();
  const skill=/probab|replacement|sample space/.test(title)?'probability':/scatter|association/.test(title)?'scatterplot':/histogram|distribution|skew|modality/.test(title)?'histogram':/quartile|box.plot|five.number/.test(title)?'boxplot':/median/.test(title)?'median':/mean|statistics|descriptive/.test(title)?'mean':null;
  if(!skill)return;
  const guided=generate(skill,2);if(!guided)return;
  let independent=null,completed=false;
- const section=document.createElement('section');section.className='majickGeneratedLab';
+ const section=document.createElement('section');section.className='majickGeneratedLab';section.dataset.lessonKey=lessonKey;
  section.style.cssText='border:1px solid #c1a476;border-radius:15px;background:#32253e;color:#fff0db;padding:16px;margin:16px 0';
  const field=(id,label,rows=0)=>'<label style="display:block;margin:12px 0">'+E(label)+(rows?'<textarea data-lab-field="'+id+'" rows="'+rows+'" style="display:block;width:100%;padding:10px;background:#fff8ed;color:#261b2e"></textarea>':'<input data-lab-field="'+id+'" style="display:block;width:100%;max-width:390px;padding:10px;background:#fff8ed;color:#261b2e" autocomplete="off">')+'</label>';
  section.innerHTML='<h4>✦ Generated Data Workshop · Worked example → Independent application → Teach-back</h4><p><b>1 · Study the scenario.</b> '+E(guided.prompt)+'</p>'+guided.visualHtml+'<p><b>2 · Whiteboard setup.</b> Identify the values or event, write the appropriate method and check that the displayed data agree with your calculation.</p><p><b>Worked solution:</b> '+E(guided.why)+' <b>Result:</b> '+E(guided.answer)+'.</p><p><b>3 · Guided reconstruction.</b> Solve the same scenario after studying the explanation. Guided work does not count as independent mastery.</p>'+field('guided','Recalculate the worked example')+field('reason','Explain why the method applies',3)+'<button type="button" data-lab-guided>Check guided reasoning</button><p data-lab-guided-feedback role="status"></p><hr><h4>4 · Fresh independent application</h4><p>Use a different data set, without consulting the worked solution. Submit before viewing the answer.</p><div data-lab-independent></div><button type="button" data-lab-new>Generate a different independent problem</button><hr><h4>5 · Teach the correction</h4><p>A student makes this error: '+E(guided.misconception)+'. Explain the misconception, model the correct method, and ask a different diagnostic question.</p>'+field('teach','Your explanation, visual/model, and exit question',4)+'<button type="button" data-lab-teach>Review my teaching plan</button><p data-lab-teach-feedback role="status"></p><p><small>Majick original supplemental practice, not official WGU material. Automatic feedback on writing checks structure, not the quality of your teaching. This workshop does not independently certify mastery.</small></p>';
