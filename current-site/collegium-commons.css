@@ -227,3 +227,6 @@ body[data-majick-room=home] .top .courseSelect{min-width:0!important;max-width:1
 @keyframes majickLoungeMoonBreath{0%,75%,100%{opacity:.3;filter:brightness(1)}85%{opacity:.55;filter:brightness(1.14)}}
 @keyframes majickLoungeStarGlimmer{0%,65%,100%{opacity:.48;transform:scale(1)}73%{opacity:.95;transform:scale(1.08)}}
 @media(prefers-reduced-motion:reduce){#majCommonsHub .majCommonsWelcome:before,#majCommonsHub .majCommonsWelcome:after{animation:none!important}}
+
+/* Stable reading surface protects welcome copy from brighter celestial gradient samples. */
+#majCommonsHub .majCommonsWelcome p:not(.majCommonsCourse){background:#241827!important;color:#fff2e5!important;display:table;padding:4px 8px!important;border-radius:7px;max-width:min(64ch,100%);box-sizing:border-box}
