@@ -59,7 +59,7 @@ function mount(){
  host.querySelectorAll('[data-prob-field]').forEach(el=>el.addEventListener('input',()=>C().probabilityDraft(kind,{[el.dataset.probField]:el.value})));
  host.querySelector('form').onsubmit=e=>{
   e.preventDefault();const values=Object.fromEntries([...host.querySelectorAll('[data-prob-field]')].map(el=>[el.dataset.probField,el.value]));
-  const result=C().probabilityCheck(kind,values);t.feedback=result.message;window.save?.();mount();
+  const result=C().probabilityCheck(kind,values);t.feedback=result.message;window.save?.();mount();if(result.ok)window.MajickAnimationEffects?.play(kind==='teaching'?'mastery':kind==='repair'?'success':kind==='transfer'?'lesson':'success');
  };
  host.querySelector('[data-prob-fresh]')?.addEventListener('click',()=>{const next=C().probabilityFresh(kind);if(next)mount();else open('repair');});
  // Both pointer activation and keyboard click must advance exactly once, even if
