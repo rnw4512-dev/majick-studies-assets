@@ -49,7 +49,7 @@ module.exports=async({ev,call,waitFor})=>{
   S.activeCourse=original;
   root.remove();
   window.save?.();
-  return {wrong,firstAttempts,need:record.struggles,isolated,lesson:key};
+  return {wrong,firstAttempts,need:record.struggles,isolated,lesson:key,worldBefore:before};
  })()`);
  assert(snapshot.firstAttempts>=1,'Formative error must contribute an adaptive attempt');
  assert(snapshot.isolated,'Guardian and D756 state must not mutate');
@@ -63,5 +63,7 @@ module.exports=async({ev,call,waitFor})=>{
  assert(persisted.attempts>=snapshot.firstAttempts,'Reload erased corrected attempt');
  assert(persisted.need>=snapshot.need,'Reload erased misconception');
  assert.equal(persisted.mastery,false,'Assisted formative practice certified mastery');
+ const worldAfter=await ev('JSON.stringify({account:S.majickAccount,legacy:S.legacy,other:S.progress?.D756})');
+ assert.equal(worldAfter,snapshot.worldBefore,'Reload altered Guardian/account, Sanctuary legacy, or D756 records');
  console.log('PASS real browser D772: wrong answer → guided repair → sortable reset → fresh problem → course isolation → saved reload; guardian/account unchanged');
 };
