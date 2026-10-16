@@ -141,3 +141,11 @@ Next: finish the latest review, repair any genuine failures, inspect desktop/tab
 - **Unfinished:** Browser confirmation on newest commit; independent review of completion-trigger semantics at all course ends; richer egg/hatch, inventory and Sanctuary event wiring; additional requested illustrations.
 
 - **Actual rendered browser coverage added:** `pages-release/current/browser-commons.cjs` commit `3e2f601d` now mounts a real course sigil at each viewport (1366, 820, 390) and asserts one noninteractive overlay, 22 actual particles, visible dimensions, zero academic-progress mutation, and reduced-motion Guardian effect containing no particles. It cleans each visual before continuing Commons checks. The latest commit must pass CI before calling this complete.
+
+
+## 2026-10-15 — Phase 1 browser release-gate continuation
+- Reviewed workflow [38829093924](https://github.com/rnw4512-dev/majick-studies-assets/actions/runs/38829093924): 820px and 390px jobs passed; desktop screenshot/Commons review still running when checked. This is not a complete green release gate.
+- Updated `pages-release/current/browser-probability.cjs` in commit `74f45a92`. The last documented probability failure was a real Next button whose center point left the hittable viewport during delayed campus rendering. The browser helper now scrolls the **actual** control to center on each hit-check, verifies viewport bounds and `elementFromPoint`, then uses real CDP mouse-down / mouse-up. It retains the intentionally adversarial intervening `MajickProbabilityWorkshop.mount()` calls and unique dataset assertions. No scripted `.click()` substitutes for the user event.
+- Does not change grading, question generation, production UI, saved progress, XP, Guardians or Sanctuary state.
+- Verification required on commit `74f45a92` or a descendant: canonical checks, full Commons browser matrix and desktop-only probability and interaction suites; inspect screenshot artifacts before merge.
+- Recovery: revert only the browser helper change `74f45a92` if it masks a legitimate overlap/scroll issue. Do not weaken task freshness, button hit-test, or state-persistence assertions.
