@@ -76,6 +76,7 @@ async function run(){
  await call('Page.reload',{ignoreCache:true});await waitFor('!!document.querySelector("#majCommonsHub")');await waitFor('document.querySelector("[aria-selected=true]")?.dataset.commonsTab==="sanctuary"');
  await ev('MajickCollegiumCommons.select("review")');await ev('MajickCollegiumCommons.sync()');assert.equal(await ev('document.querySelector("[aria-selected=true]")?.dataset.commonsTab'),'review');
  if(!process.env.COMMONS_WIDTH||process.env.COMMONS_WIDTH==='1366'){await call('Emulation.setDeviceMetricsOverride',{width:1366,height:860,deviceScaleFactor:1,mobile:false});await sleep(400);await require('./commons-control-states.cjs')({ev,call});await require('./commons-interactions.cjs')({ev,waitFor,call,sleep})}
+ if(!process.env.COMMONS_WIDTH||process.env.COMMONS_WIDTH==='1366')await require('./browser-hands-on-recovery.cjs')({ev,call,waitFor});
  assert.equal(contrastFailures.length,0,'Rendered Commons contrast failures: '+JSON.stringify(contrastFailures));
  console.log('PASS Commons actual browser audit: 1366/820/390 widths, five tabs, no escaped nodes, Next/Previous, persistence after reload');
 }
