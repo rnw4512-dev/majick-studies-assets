@@ -227,3 +227,14 @@ Next: finish the latest review, repair any genuine failures, inspect desktop/tab
 - **Checks:** `pages-release/current/test-compact-navigation.cjs` static safety checks and `test-practice-retry-controls.cjs` are required in responsive CI. Real screenshots and real click/retry/reload checks at 390px, 820px, 1366px must still pass; no publish on pending/red CI.
 - **Still open:** All-screen true pagination (as opposed to safe quick-jump), short-page IA design for each room, real user acceptance of collapsed content, and any broken control observed during Phase 5 browser review. Do not describe this partial work as complete app-wide pagination.
 - **Rollback:** Revert Commons ownership/classification, room-nav stylesheet/script includes/module, retry-control changes and their matching manifest SHA256 in a dedicated revert. Do not delete course histories, XP, Guardians, eggs, inventory or Sanctuary saves.
+
+
+## 2026-10-15 — Atmosphere polish without any version rollback
+- User clarified previous visual references are **guides**, never instructions to revert Home or learning rooms to an older version.
+- Inspected current `main` history and existing five-tab Commons owner. Kept all existing Home tabs, DOM placement, student records, Guardian care, Sanctuary links, Learn Lab, and Study Now renderers.
+- `current-site/collegium-commons.css`: added static celestial gold/plum lounge framing, compact greeting, academic-first spacing, tighter portal and expandable shelves; never moves, removes, or animates student content.
+- `current-site/learning-lab.css`: tightened oversized header/cards, made original lesson tabs horizontally usable on mobile, improved dark-panel text and focus rings; no new lesson renderer.
+- `current-site/collegium-immersion.css`: brought Study Now typography and static candle-gold ambiance into agreement with Commons; ensured visible focus indicators and responsive control containment. No moving scene behind study text.
+- SHA256 for three changed CSS files updated in `current-site/source-manifest.json`. No learner saves/progress, XP, Guardian, egg, inventory or Sanctuary state changed.
+- **Verification outstanding:** 390/820/1366 browser screenshots, actual WCAG contrast on gradients, tab/keyboard/lesson/retry behavior. Earlier review run covers prior head only; newest CSS requires rerun and green status.
+- **Repair:** adjust the final additive CSS rules if a layout/contrast failure is observed. **Do not restore old layouts or reset any learner records.** If necessary, revert only these latest additive style blocks with their matching manifest entries, leaving all feature owners and newer screen content in place.
