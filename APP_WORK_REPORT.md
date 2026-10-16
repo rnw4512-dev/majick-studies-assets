@@ -301,3 +301,5 @@ Next: finish the latest review, repair any genuine failures, inspect desktop/tab
 - Browser coverage opens the actual summaries for control tests, checks both compact screenshots and expanded contrast, verifies Analytics is a single destination and reports are absent from Home, and checks the Sanctuary placement effect in the parent.
 - Current contrast-only commit 22df5f7 passed phone/tablet and full probability; these additional user-directed changes require a fresh gate. No publication claimed yet.
 - Recovery: repair expansion at collegium-commons.js; report rendering at magical-college-home.js and d772-historical-quiz-results.js; framed effects at sanctuary-customize.js. Revert only the affected change and matching manifest hash. Never wipe learner records, shared rewards, Guardian care, eggs or inventory.
+
+- Follow-up browser failure on e3d9f5b: legacy product-core inserts Daily Loop/Memory Quest beside campus doors inside their new shelf. Commons now reconciles those known nested nodes to Today/Review and removes empty shelves left when legacy Home refreshes replace their child. Placement assertions remain unchanged.

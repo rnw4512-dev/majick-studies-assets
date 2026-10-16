@@ -85,6 +85,12 @@ function attach(){
  if(record){const shelf=document.createElement('details');shelf.className='majCommonsRecordShelf';const summary=document.createElement('summary');summary.textContent='Open your Student Record · coursework and Majick progress';shelf.append(summary);record.before(shelf);shelf.append(record)}
  const hero=panels.overview.querySelector('.v3327PortalHero'),guardian=hero?.querySelector('.v3341GuardianHero');
  if(guardian){let shelf=hero.querySelector('.majCommonsGuardianShelf');if(!shelf){shelf=document.createElement('details');shelf.className='majCommonsGuardianShelf';const summary=document.createElement('summary');shelf.append(summary);guardian.before(shelf);shelf.append(guardian)}const name=guardian.querySelector('h3')?.textContent||'Your Guardian';const summary=shelf.querySelector('summary');const label=name+' is nearby · bond and study settings';if(summary.textContent!==label)summary.textContent=label}
+ // Legacy Home refreshes insert the Daily Loop beside campus doors, even when
+ // those doors are inside a shelf. Reconcile these known nested nodes first.
+ for(const [selector,tab] of [['#v3400DailyLoop','today'],['.v3400MemoryQuest','review']]){
+  root.querySelectorAll(selector).forEach(node=>{if(node.closest('[data-commons-panel]')!==panels[tab])place(panels[tab],node,tab)});
+ }
+ hub.querySelectorAll('.majCommonsToolShelf').forEach(d=>{if(![...d.children].some(n=>n.tagName!=='SUMMARY'))d.remove()});
  // Keep secondary destinations and review tools reachable without a default long stack.
  function shelf(node,label,tab){
   if(!node||node.closest('.majCommonsToolShelf'))return;
@@ -111,6 +117,8 @@ function needsSync(){
  const root=document.querySelector('#content'),hub=root?.querySelector(':scope > #majCommonsHub');
  if(!root)return false;
  if(!hub||[...root.children].some(n=>n!==hub))return true;
+ if([...hub.querySelectorAll('.majCommonsToolShelf')].some(d=>![...d.children].some(n=>n.tagName!=='SUMMARY')))return true;
+ if([['#v3400DailyLoop','today'],['.v3400MemoryQuest','review']].some(([selector,tab])=>[...root.querySelectorAll(selector)].some(n=>n.closest('[data-commons-panel]')?.dataset.commonsPanel!==tab)))return true;
  return [...hub.querySelectorAll('[data-commons-panel]')].some(p=>[...p.children].some(n=>classify(n)!==p.dataset.commonsPanel));
 }
 function sync(){if(window.S?.screen==='home')attach()}
@@ -118,4 +126,5 @@ window.MajickCollegiumCommons={attach,sync,select:n=>{if(TABS.some(t=>t[0]===n))
 if(window.MajickRenderQueue?.register){window.MajickRenderQueue.register('collegium-commons-home',sync,98);window.MajickRenderQueue.schedule()}
 document.addEventListener('DOMContentLoaded',()=>{sync();const host=document.querySelector('#app')||document.body;const observer=new MutationObserver(()=>{if(window.S?.screen==='home'&&!updating&&needsSync())queueMicrotask(sync)});observer.observe(host,{childList:true,subtree:true})});
 })();
+
 
