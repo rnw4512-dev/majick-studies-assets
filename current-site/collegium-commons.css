@@ -220,3 +220,10 @@ body[data-majick-room=home] .top .courseSelect{min-width:0!important;max-width:1
 @media(prefers-reduced-motion:reduce){
  #majCommonsHub .majCommonsTabs button{transition:none!important}
 }
+
+/* Infrequent ambient lunar shimmer — behind decoration, never behind text. */
+#majCommonsHub .majCommonsWelcome:before{animation:majickLoungeMoonBreath 18s ease-in-out infinite}
+#majCommonsHub .majCommonsWelcome:after{animation:majickLoungeStarGlimmer 23s ease-in-out infinite}
+@keyframes majickLoungeMoonBreath{0%,75%,100%{opacity:.3;filter:brightness(1)}85%{opacity:.55;filter:brightness(1.14)}}
+@keyframes majickLoungeStarGlimmer{0%,65%,100%{opacity:.48;transform:scale(1)}73%{opacity:.95;transform:scale(1.08)}}
+@media(prefers-reduced-motion:reduce){#majCommonsHub .majCommonsWelcome:before,#majCommonsHub .majCommonsWelcome:after{animation:none!important}}
