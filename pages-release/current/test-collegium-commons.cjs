@@ -7,7 +7,7 @@ const html=fs.readFileSync(path.join(root,'index.html'),'utf8');
 const five=['overview','today','review','guardians','sanctuary'];
 for(const id of five){assert(js.includes("['"+id+"',"),'Missing tab: '+id);assert(js.includes("'commons-panel-'+id"),'Missing panel linkage: '+id)}
 assert.equal((js.slice(js.indexOf('const TABS='),js.indexOf('let selected=')).match(/\['(?:overview|today|review|guardians|sanctuary)','/g)||[]).length,5,'Exactly five tabs');
-for(const token of ["sessionStorage.getItem('majick-commons-tab')","sessionStorage.setItem('majick-commons-tab'","ArrowRight","ArrowLeft","'Home'","'End'","aria-selected","aria-controls","role','tabpanel'","data-commons-next","data-commons-previous","n!==hub","panels[classify(n)].append(n)"])
+for(const token of ["sessionStorage.getItem('majick-commons-tab')","sessionStorage.setItem('majick-commons-tab'","ArrowRight","ArrowLeft","'Home'","'End'","aria-selected","aria-controls","role','tabpanel'","data-commons-next","data-commons-previous","n!==hub","node.dataset?.commonsOwner","place(panels[tab],n,tab)"])
  assert(js.includes(token),'Missing Commons interaction or ownership: '+token);
 for(const token of ['#241827','Cinzel','Cormorant Garamond','Inter','[hidden]','prefers-reduced-motion',':focus-visible'])
  assert(css.includes(token),'Missing theme/accessibility feature: '+token);
@@ -30,3 +30,6 @@ for(const [id,classes,text,expected] of [
  assert.equal(classify(node),expected,'Component ownership: '+(id||classes));
 }
 console.log('PASS Commons stable component ownership despite cross-tab action labels');
+assert(js.includes('if(node.dataset?.commonsOwner&&valid(node.dataset.commonsOwner))return node.dataset.commonsOwner'),'Previously assigned panels must remain stable');
+assert(!js.includes('panels[classify(n)].append(n)'),'Reclassification must use stable ownership helper');
+
