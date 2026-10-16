@@ -94,7 +94,13 @@ function mountLab(root,lessonText){
   const notice=document.createElement('p');
   notice.className='majickGeneratedRemediation';
   notice.style.cssText='padding:12px;border-left:4px solid #e7bb74;background:#422b52;color:#fff3dc';
-  notice.textContent='Connected review: this skill has '+lessonNeed.struggles+' recorded difficulty attempt(s). Work the visual, explain your solution, then try the fresh independent problem. Your needs follow you into Learn Lab, Study Now and Game Realm.';
+  const lastError=window.S?.progress?.D772?.adaptiveSkills?.[guided.learningPathLessonId]?.errors?.slice(-1)[0];
+  const misconception=lastError?.kind==='calculation-or-formula'
+    ?'Recheck the sample size, write the formula, and substitute the actual dataset before calculating.'
+    :lastError?.kind==='visual-interpretation'
+    ?'Identify both axes, their units and the plotted distribution before choosing an interpretation.'
+    :'Read the scenario carefully and state what evidence supports the conclusion.';
+  notice.textContent='Connected review: '+lessonNeed.struggles+' difficulty attempt(s) across your study areas. '+misconception+' Study the visual, then reconstruct the answer and try a fresh independent question. Guided work never certifies mastery.';
   section.insertBefore(notice,section.querySelector('[data-lab-independent]').previousElementSibling);
  }
  root.appendChild(section);
