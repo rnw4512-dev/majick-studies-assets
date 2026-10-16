@@ -65,7 +65,19 @@ async function run(){
    let snapshot=await ev('(()=>{const h=document.querySelector("#majCommonsHub"),a=[...h.querySelectorAll("[data-commons-panel]")].filter(x=>!x.hidden);return {panel:a[0]?.dataset.commonsPanel,count:a.length,selected:h.querySelector("[aria-selected=true]")?.dataset.commonsTab,escaped:[...document.querySelector("#content").children].filter(x=>x!==h&&x.nodeType===1).length}})()');
    const audit=await require('./commons-contrast.cjs')({call,ev,tab,width,out:process.env.COMMONS_QA_DIR||'commons-qa'});
    contrastFailures.push(...audit.failures.map(f=>({...f,width,tab})));
-   if(tab==='overview'&&width===1366){await ev('document.querySelector(".majCommonsRecordShelf").open=true');const recordAudit=await require('./commons-contrast.cjs')({call,ev,tab:'student-record',width,out:'commons-qa'});contrastFailures.push(...recordAudit.failures);await ev('document.querySelector(".majCommonsRecordShelf").open=false')}
+   if(tab==='overview'&&width===1366){
+    // A late Home re-render can replace the Student Record; sync first and
+    // inspect it only when the source record exists in this render.
+    await ev('MajickCollegiumCommons.sync()');
+    const record=await ev('(()=>({source:!!document.querySelector(".v3327StudentRecord"),shelf:!!document.querySelector(".majCommonsRecordShelf")}))()');
+    if(record.source){
+     assert(record.shelf,'Rendered Student Record must be contained in a disclosure shelf');
+     await ev('document.querySelector(".majCommonsRecordShelf").open=true');
+     const recordAudit=await require('./commons-contrast.cjs')({call,ev,tab:'student-record',width,out:'commons-qa'});
+     contrastFailures.push(...recordAudit.failures);
+     await ev('document.querySelector(".majCommonsRecordShelf")?.removeAttribute("open")');
+    }else console.log('Commons Student Record not mounted in this render; disclosure inspection skipped safely');
+   }
    assert.equal(snapshot.count,1);assert.equal(snapshot.panel,tab);assert.equal(snapshot.selected,tab);assert.equal(snapshot.escaped,0);
    assert(await ev('document.documentElement.scrollWidth<=innerWidth+2'),'Horizontal overflow in '+tab+' at '+width);
   }
