@@ -135,6 +135,14 @@ function creditAnswer(evt={}){
   }
   if(!evt.historical)try{window.MajickScholarCompanion?.react?.(evt.correct?'celebrating':'thinking')}catch(_){}
   save();
+  // Emit only after the existing ledger has accepted and saved this unique answer.
+  // Consumers must never award XP or mastery from this presentation event.
+  if(!evt.historical)try{
+    document.dispatchEvent(new CustomEvent('majick:verified-study-answer',{detail:{
+      key,course:evt.course||window.S?.activeCourse||'',source:evt.source||'study',
+      correct:!!evt.correct,independent:evt.assisted!==true,historical:false
+    }}));
+  }catch(_){}
   return true;
 }
 function bankQ(course,qid){
