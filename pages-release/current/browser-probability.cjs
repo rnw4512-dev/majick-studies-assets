@@ -158,8 +158,8 @@ async function click(selector){
  await action('navigate("learninglab")');
  await waitFor('!!document.querySelector("#learnLesson")');await sleep(300);
  await action('MajickLearningLab.showTab("learn");let steps=0;while(!/probability/i.test(document.querySelector(".learnStepHeader h3")?.textContent||"")){if(++steps>MajickLearningLab.lessons().length)throw Error("Probability lesson missing");document.querySelector("#learnNextLesson").click()}');
- await waitFor('!!document.querySelector(".majickGeneratedLab [data-check]")');
- await action('const box=document.querySelector(".majickGeneratedLab");box.querySelector("[data-answer]").value="0/1";box.querySelector("[data-reason]").value="Wrong sample-space explanation";box.querySelector("[data-check]").click()');
+ await waitFor('!!document.querySelector(".majickGeneratedLab [data-lab-guided]")');
+ await action('const box=document.querySelector(".majickGeneratedLab");box.querySelector("[data-lab-field=guided]").value="0/1";box.querySelector("[data-lab-field=reason]").value="Wrong sample-space explanation";box.querySelector("[data-lab-guided]").click()');
  await waitFor('MajickLearningContinuity.probabilityState().need?.origin==="generated-lab-guided"');
  await action('navigate("mission")');await waitFor('document.querySelector("#connectedProbability").textContent.includes("generated-lab-guided")');
  console.log('PASS probability: native Learn Lab guided miss produces shared Study Now recommendation');
