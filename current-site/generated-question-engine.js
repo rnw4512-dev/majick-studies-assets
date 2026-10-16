@@ -82,6 +82,15 @@ function mountLab(root,lessonText){
  section.style.cssText='border:1px solid #c1a476;border-radius:15px;background:#32253e;color:#fff0db;padding:16px;margin:16px 0';
  const field=(id,label,rows=0)=>'<label style="display:block;margin:12px 0">'+E(label)+(rows?'<textarea data-lab-field="'+id+'" rows="'+rows+'" style="display:block;width:100%;padding:10px;background:#fff8ed;color:#261b2e"></textarea>':'<input data-lab-field="'+id+'" style="display:block;width:100%;max-width:390px;padding:10px;background:#fff8ed;color:#261b2e" autocomplete="off">')+'</label>';
  section.innerHTML='<h4>✦ Generated Data Workshop · Worked example → Independent application → Teach-back</h4><p><b>1 · Study the scenario.</b> '+E(guided.prompt)+'</p>'+guided.visualHtml+'<p><b>2 · Whiteboard setup.</b> Identify the values or event, write the appropriate method and check that the displayed data agree with your calculation.</p><p><b>Worked solution:</b> '+E(guided.why)+' <b>Result:</b> '+E(guided.answer)+'.</p><p><b>3 · Guided reconstruction.</b> Solve the same scenario after studying the explanation. Guided work does not count as independent mastery.</p>'+field('guided','Recalculate the worked example')+field('reason','Explain why the method applies',3)+'<button type="button" data-lab-guided>Check guided reasoning</button><p data-lab-guided-feedback role="status"></p><hr><h4>4 · Fresh independent application</h4><p>Use a different data set, without consulting the worked solution. Submit before viewing the answer.</p><div data-lab-independent></div><button type="button" data-lab-new>Generate a different independent problem</button><hr><h4>5 · Teach the correction</h4><p>A student makes this error: '+E(guided.misconception)+'. Explain the misconception, model the correct method, and ask a different diagnostic question.</p>'+field('teach','Your explanation, visual/model, and exit question',4)+'<button type="button" data-lab-teach>Review my teaching plan</button><p data-lab-teach-feedback role="status"></p><p><small>Majick original supplemental practice, not official WGU material. Automatic feedback on writing checks structure, not the quality of your teaching. This workshop does not independently certify mastery.</small></p>';
+ // Surface existing cross-room misconception evidence instead of opening a parallel tracker.
+ const lessonNeed=window.MajickLearningContinuity?.needs?.('D772')?.find(x=>x.lessonId===guided.learningPathLessonId);
+ if(lessonNeed){
+  const notice=document.createElement('p');
+  notice.className='majickGeneratedRemediation';
+  notice.style.cssText='padding:12px;border-left:4px solid #e7bb74;background:#422b52;color:#fff3dc';
+  notice.textContent='Connected review: this skill has '+lessonNeed.struggles+' recorded difficulty attempt(s). Work the visual, explain your solution, then try the fresh independent problem. Your needs follow you into Learn Lab, Study Now and Game Realm.';
+  section.insertBefore(notice,section.querySelector('[data-lab-independent]').previousElementSibling);
+ }
  root.appendChild(section);
  const input=name=>section.querySelector('[data-lab-field="'+name+'"]');
  section.querySelector('[data-lab-guided]').onclick=()=>{
@@ -102,6 +111,9 @@ function mountLab(root,lessonText){
    host.querySelector('[data-lab-independent-feedback]').textContent=(correct?'Correct. ':'Not yet. ')+(explanation.length<35?'Strengthen your written reasoning: name the method and explain the result in context. ':'Compare your interpretation against the scenario. ')+'Worked reasoning: '+q.why+' This is a formative independent attempt, not automatically certified mastery.';
    host.querySelector('[data-lab-submit]').disabled=true;
    window.MajickLearningContinuity?.record?.({courseId:'D772',term:q.learningPathLessonId,lessonTitle:lessonText,correct,activity:'generated-lab-independent-formative',question:q});
+   // Share formative result with the existing adaptive skill tracker. The
+   // origin is not independent-transfer, so this NEVER grants mastery.
+   window.MajickLearningContinuity?.skillResult?.(q,correct,false,'generated-lab-independent-formative');
    window.save?.();
   };
  }
