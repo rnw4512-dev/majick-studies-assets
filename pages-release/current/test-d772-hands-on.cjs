@@ -8,6 +8,8 @@ const rules=[
  [/given\.length===expected\.length&&given\.every/,'Every input observation must be ordered before a check passes'],
  [/data-sort-clear/,'Same-dataset clear and retry is required'],
  [/data-sort-feedback/,'Accessible feedback is required'],
+ [/work\.dataset\.celebrated/,'Success animation must be one-time per physical activity'],
+ [/MajickAnimationEffects\?\.play\?\.\('success'/,'Existing visual-only effects owner must be reused'],
  [/repair\.dataset\.labRepair/,'Wrong independent answer must offer guided repair'],
  [/section\.querySelector\('\[data-lab-guided\]'\)/,'Guided review must return to the existing lesson owner'],
  [/generated-lab-independent-formative/,'Independent formative response must stay in existing tracker'],
