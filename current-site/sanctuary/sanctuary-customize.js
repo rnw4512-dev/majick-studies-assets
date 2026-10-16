@@ -137,6 +137,7 @@ Game.prototype.v3321SetPlaced=function(id,placed){
   state.preset=null;
   this.v3321ApplyFurnitureVisibility();
   this.v3321CommitFurnitureState();
+  if(placed&&typeof window!=='undefined')window.MajickAnimationEffects?.play?.('sanctuary',{label:'Furniture placed'});
   this.v3320RefreshObjectBadges?.(this.v3317CareState);
   this.v3321BuildFurnitureManager(this.v3321ManagerPage||0);
   this.showToast?.(placed?'Furniture placed':'Furniture stored',
