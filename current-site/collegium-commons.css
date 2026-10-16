@@ -229,4 +229,4 @@ body[data-majick-room=home] .top .courseSelect{min-width:0!important;max-width:1
 @media(prefers-reduced-motion:reduce){#majCommonsHub .majCommonsWelcome:before,#majCommonsHub .majCommonsWelcome:after{animation:none!important}}
 
 /* Stable reading surface protects welcome copy from brighter celestial gradient samples. */
-#majCommonsHub .majCommonsWelcome p:not(.majCommonsCourse){background:#241827!important;color:#fff2e5!important;display:table;padding:4px 8px!important;border-radius:7px;max-width:min(64ch,100%);box-sizing:border-box}
+#majCommonsHub .majCommonsWelcome p:not(.majCommonsCourse){background:#241827!important;color:#fff2e5!important;display:block!important;width:100%!important;padding:7px 10px!important;border-radius:7px;max-width:100%!important;box-sizing:border-box}
