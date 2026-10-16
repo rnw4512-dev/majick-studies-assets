@@ -22,6 +22,8 @@ jobs:
           node-version: '22'
       - name: Canonical release checks
         run: node pages-release/current/release-checks.cjs current-site
+      - name: Animation safety regression (desktop tablet mobile)
+        run: node pages-release/current/test-animation-effects.cjs current-site
       - name: Commons deterministic regression
         run: node pages-release/current/test-collegium-commons.cjs current-site
       - name: Preassessment regression
