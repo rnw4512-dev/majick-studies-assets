@@ -122,7 +122,8 @@ async function click(selector){
  console.log('PASS probability: Game Realm transfer and structured classroom teach-back unlock certification separately');
  const screenshot=await call('Page.captureScreenshot',{format:'png'});fs.writeFileSync(path.join(os.tmpdir(),'majick-phase2-certified.png'),Buffer.from(screenshot.result.data,'base64'));
  const persisted=await evalPage('JSON.stringify(MajickLearningContinuity.probabilityState())');
- await call('Page.reload',{ignoreCache:true});await waitFor('!!document.querySelector("#connectedProbability")');
+ await call('Page.reload',{ignoreCache:true});await waitFor('!!window.MajickProbabilityWorkshop&&!!window.MajickLearningContinuity&&!!window.S');
+ await action('switchCourse("D772");navigate("learninglab")');await waitFor('!!document.querySelector("#connectedProbability")');
  assert.equal(await evalPage('JSON.stringify(MajickLearningContinuity.probabilityState())'),persisted);
  assert.equal(await evalPage('MajickLearningContinuity.probabilityMastery().certified'),true);
  await action('document.querySelector("[data-prob-form] button[type=submit]").click()');
@@ -136,7 +137,7 @@ async function click(selector){
   await action('switchCourse('+JSON.stringify(course)+');navigate("mission")');
   await sleep(200);assert.equal(await evalPage('!!document.querySelector("#connectedProbability")'),false);
  }
- await action('switchCourse("D772");navigate("home")');await waitFor('!!document.querySelector("#connectedProbability")');
+ await action('switchCourse("D772");navigate("learninglab")');await waitFor('!!document.querySelector("#connectedProbability")');
  assert.equal(await evalPage('MajickLearningContinuity.probabilityMastery().certified'),true);
  await action('document.querySelector("#connectedProbability").scrollIntoView({block:"start"})');
  await waitFor('!document.querySelector("#majickCampusPortal.active")');await sleep(200);
