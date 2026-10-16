@@ -230,3 +230,6 @@ body[data-majick-room=home] .top .courseSelect{min-width:0!important;max-width:1
 
 /* Stable reading surface protects welcome copy from brighter celestial gradient samples. */
 #majCommonsHub .majCommonsWelcome p:not(.majCommonsCourse){background:#241827!important;color:#fff2e5!important;display:table;padding:4px 8px!important;border-radius:7px;max-width:min(64ch,100%);box-sizing:border-box}
+
+/* Phase 6 tablet contrast gate: a solid dark reading plate behind welcome copy. */
+#majCommonsHub .majCommonsWelcome p:not(.majCommonsCourse){background:#100b16!important;color:#fff8ed!important;display:block!important;width:fit-content;max-width:min(64ch,100%);padding:6px 10px!important;border-radius:7px;text-shadow:none!important;box-shadow:0 0 0 2px #100b16!important;}
