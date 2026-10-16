@@ -163,3 +163,11 @@ Next: finish the latest review, repair any genuine failures, inspect desktop/tab
 - **Manifest:** commit `a57a32db`, workshop SHA-256 `f23e7e5f708e815c580efb446cbd6dc362dfd458ea52dc1716292519fa2dcc45`.
 - **Still required:** all three jobs fully green on final head, especially probability Back/unique datasets/repair/transfer/teach-back, before merging and publishing. Do not describe as verified until CI completes.
 - **Recovery:** revert `948ac0a8` and its manifest hash if Back double-navigates; do not clear saved progress, Guardian care, eggs, inventory or Sanctuary.
+
+
+## 2026-10-15 — Certification reached; reload hydration uncovered
+- **CI** [38830421953](https://github.com/rnw4512-dev/majick-studies-assets/actions/runs/38830421953): 390px and 820px fully green; desktop rendered Commons and entire general interaction suite green. Probability test passed in-card Back, Oracle Lens misconception, focus-safe typing, guided repair, two fresh independent questions, transfer and structured teaching mastery. It then failed waiting for `#connectedProbability` after reloading the completed certified state.
+- **Fix** `current-site/probability-workshop.js` commit `65f497d5`: add pageshow mount and root-hydration observer for the probability panel, without duplicating a renderer, altering saved state or writing rewards. Canonical manifest SHA-256 `f7447896e7b354050522b21b63bd836ebe5305a26a8090d1391de62e4abf6fd0` updated in commit `1f2f5a47`.
+- **Regression compatibility** `pages-release/current/browser-probability.cjs` commit `3a70719b` updates the generated-lab follow-up step to the new `data-lab-guided` and `data-lab-field` controls already shipped by Phase 2; the wrong answer and cross-screen recommendation assertions are retained.
+- **Gate** still strictly requires a new all-green full matrix on the exact commit, including post-certification reload, course isolation, saved rewards, misconception reopening and responsive fitting. Not yet merged/published.
+- **Recovery** revert `65f497d5` and corresponding manifest change if it causes excess mounts; the previous guard retains controls while the page is unchanged. Never delete save files, XP, crystals, Guardians, eggs, furniture or Sanctuary state.
