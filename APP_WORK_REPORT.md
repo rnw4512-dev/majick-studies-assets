@@ -206,3 +206,12 @@ Next: finish the latest review, repair any genuine failures, inspect desktop/tab
 - **Manifest:** updated `generated-question-engine.js` SHA256 to `c4ef0a3a32585140e5d3b73d501d9343129683357fe6eeb6c8f09249257a09b6`.
 - **Still required before declaring Phases 2–4C complete:** source-by-source comparison with every uploaded lesson/assessment; specific S3 L4 title/content; extensive new datasets and distractor validation; real browser screen-to-screen wrong/retry/mastery flow; check Guardian/reward/course records after reload; teacher-response quality rubric that checks mathematical meaning, not only length.
 - **Recovery:** revert these supplemental prompt/bridge changes plus matching manifest, test and workflow additions. Do not reset progress, XP, Guardians, eggs, inventory or Sanctuary.
+
+
+## 2026-10-15 — Parallel Phase 5 reliability start
+- Scope: duplicate-mount prevention for existing generated D772 workshop, stacked on Phase 2–4C branch to preserve its academic changes. No new reward or learning state owner.
+- `current-site/generated-question-engine.js` now leaves a lesson's existing mounted DOM and typed fields untouched when the campus calls `mountLab` again for the same lesson. When the lesson actually changes, it removes only the prior generated workshop and creates the new lesson's workshop. Correctness logic and the learner's persisted academic state are not rewritten.
+- `current-site/source-manifest.json` updated SHA256 of the changed engine to `9bfed0d008d3a62672750d3c84f113ad4cc6a61b2372af11ab26fa87e6ca1ded`.
+- Parallel Phase 2–4C academic regression tests include cross-room misconception/misclassification and randomized generated-question correctness; these remain required before merge.
+- **Verification pending:** desktop/tablet/mobile review, repeated mount with actual typed text, course switch, and source manifest checks. Phase 5 is in progress; Phases 6–8 are not yet scoped as authoritative product requirements.
+- **Recovery:** revert this single workshop-mount patch and corresponding manifest entry. Do not clear any progress, XP, Guardian, egg, inventory or Sanctuary saves.
