@@ -187,3 +187,22 @@ Next: finish the latest review, repair any genuine failures, inspect desktop/tab
 - **Manifest:** workshop SHA-256 `7c2f8a5de384dd7b707428f55578c9121fb20c06b4020edfce725f1c1d2b3e52` in commit `7b0b7046`.
 - **Release gate:** new review PR and full desktop/tablet/mobile review must pass, then a new main merge must pass the production Pages workflow including connected probability. Do not imply prior main merge means the deployed page changed.
 - **Recovery:** revert only `c09d2c67` and the matching manifest hash if physical Back press triggers unwanted navigation; restore without touching learner saves or Sanctuary.
+
+
+## 2026-10-15 — D772 Phases 2–4C: first cross-room remediation implementation
+- Branch: `d772-phases-2-4c-instruction`, isolated from the previously merged/production version.
+- `current-site/generated-question-engine.js`: Before the instructional generated workshop, surface existing D772 `MajickLearningContinuity.needs('D772')` for the same lesson, making weak skills visible without adding a duplicate state system. After a fresh independent formative answer, send the result to both existing `record` and `skillResult`, so Learn Lab, Study Now, and Game Realm can recognize the same misconception via course-scoped adaptive skills.
+- **Mastery safety:** `skillResult` origin is `generated-lab-independent-formative`, not `independent-transfer`; this is a formative attempt and cannot automatically certify transfer mastery. Existing WGU question sources, correct answers, progress, XP, inventory, Guardians and Sanctuary are unchanged.
+- Updated `current-site/source-manifest.json` SHA256: `generated-question-engine.js` = `2a1f9dca7b1880a14be948c923d14f5ce40c561a9e1186fb2443a698d37ecc21`.
+- Verification required: full PR review, actual weak-skill remediation in all three rooms, no duplicate achievements, course isolation, fresh dataset accuracy, teacher rubric and persistence. Do not claim Phases 2–4C fully complete.
+- Recovery: revert instructional integration and its manifest edit only. Do not reset existing course progress or global rewards.
+
+
+## 2026-10-15 — D772 lesson reconciliation and reasoning depth follow-up
+- **Source reconciliation:** `D772_PHASES_2_TO_4_COVERAGE.md` now records all twelve lesson slots by known source concepts, existing implementation owner, and remaining gaps. This is a taxonomy and provenance reconciliation, **not** an assertion that unseen textbook examples or S3 L4 source material have been fully verified. No original user-provided or WGU-labeled questions were modified.
+- **Multi-step OA-style reasoning:** `current-site/generated-question-engine.js` now situates mean, median, box plot/IQR, histogram, scatter association, and probability questions in concrete classroom/study scenarios. Prompts ask for first identifying the relevant data/model and then interpreting the statistical result. The existing SVG plots remain tied to those exact datasets; arithmetic, answer choices and `validate()` remain in their existing owner.
+- **Cross-room integration:** Continued from previous commit: formative generated wrong answers are passed into existing `MajickLearningContinuity.skillResult`; a matching existing weakness is surfaced in the workshop without opening another XP or mastery engine.
+- **Automated test:** `pages-release/current/test-d772-cross-room.cjs` simulates one lesson weakness recorded in Learn Lab, Study Now and Game Realm, verifies the shared D772 lesson record, false independent certification, `review-needed` after repeated misses, untouched D755/D756 progress, and save-path calls. Added to the three-width Commons CI matrix via `.github/workflows/commons-review.yml`. This unit-style test **does not replace** physical clicks in each screen.
+- **Manifest:** updated `generated-question-engine.js` SHA256 to `c4ef0a3a32585140e5d3b73d501d9343129683357fe6eeb6c8f09249257a09b6`.
+- **Still required before declaring Phases 2–4C complete:** source-by-source comparison with every uploaded lesson/assessment; specific S3 L4 title/content; extensive new datasets and distractor validation; real browser screen-to-screen wrong/retry/mastery flow; check Guardian/reward/course records after reload; teacher-response quality rubric that checks mathematical meaning, not only length.
+- **Recovery:** revert these supplemental prompt/bridge changes plus matching manifest, test and workflow additions. Do not reset progress, XP, Guardians, eggs, inventory or Sanctuary.

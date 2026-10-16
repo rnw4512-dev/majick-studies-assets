@@ -42,3 +42,24 @@ CI run 38823269557: desktop Full interaction failed waiting for `[data-meaning]`
 
 ## Provenance
 Original 58 supplied preassessment records are never relabeled as generated practice; the 30 revised supplements remain distinct and must retain four plausible, single-best-answer options and original-style exam terminology.
+
+## Lesson-by-lesson source reconciliation — implementation register (2026-10-15)
+
+This reconciles **source presence and taxonomy**, not full verbatim WGU textbook verification. Primary original preassessment items are kept in `d772-preassessment-source.js`; user-provided specific lesson/quiz results are represented in `course-tutor.js` where available; `d772-preassessment-deep-practice.js` and `generated-question-engine.js` are supplemental only. No synthetic question is attributed to WGU.
+
+| Lesson | Source concepts present in course records | Existing interactive owner / gap |
+|---|---|---|
+| S1 L1 | Population, sample, stratified/cluster/systematic/random sampling, observational versus experimental | `course-tutor.js`, `lesson-activity-bank.js`; independent classroom-transfer source matching remains to audit |
+| S1 L2 | Convenience, voluntary response, nonresponse, loaded wording, response bias | Tutor, sequence workshop; authentic wrong-answer differentiation needs per-case checking |
+| S1 L3 | Truncated axes, misleading icons/3D, data falsification | Tutor and misrepresentation lab; graphical repair validation remains |
+| S1 L4 | Significance, limitations, generalizability, causation | Tutor and deep preassessment questions; verify sample-size counterexamples |
+| S2 L1 | Categorical/quantitative data, variable roles | Tutor section-two record; numeric labels versus quantities remain an edge case |
+| S2 L2 | Categorical bar/pie and quantitative histogram/dot/stem-leaf, two-variable scatter | Tutor and generated scatterplot; display choice case set needs broader source matching |
+| S2 L3 | Symmetry, skew, modality and outliers | Tutor and generated histogram; modal-bar interpretation is not a full skew explanation |
+| S2 L4 | Mean, median, quartiles/IQR and distribution summaries | Tutor and generated visual/whiteboard workshops; varied outlier impact needs further independent evidence |
+| S3 L1 | Theoretical versus empirical probability and sample spaces | Tutor section-three record; verify complete worked sample-space lesson |
+| S3 L2 | Independent/dependent/disjoint, unions/intersections/complements | Tutor, probability workshop and generated conditional draws; verify distinction of disjoint vs independent |
+| S3 L3 | Applied probability and classroom scenarios | Tutor section-three record; require a verified non-replacement worked example |
+| S3 L4 | Lesson slot recognized by catalog | **Source title/lesson text not independently confirmed**; no full-coverage claim or invented source questions |
+
+**Source alignment status:** taxonomy reconciled for 12 lesson slots, but full per-question/per-example textual mapping and instruction completeness are **not yet certified**. The next audit must compare each actual uploaded lesson and assessment, including exact distractor/rationale meaning, without duplicating it. Retain original versus generated provenance throughout.
