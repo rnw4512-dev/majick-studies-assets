@@ -91,7 +91,7 @@ if(task.kind==='sequence'){
  else{const bank=window.S.activeCourse==='D772'?['The target population and sampled group differ, so representativeness must be evaluated.','An observational study can show association, but cannot by itself establish causation.','Convenience or voluntary sampling can introduce selection bias and limit generalizability.','The evidence supports a cautious conclusion, not a universal causal claim.']:['Use family and student input to select measurable, individualized supports.','Document team decisions and identify a measurable follow-up.'];body+='<p>Select the best WGU-aligned justification. The choice must match the scenario, not just sound academic.</p><div class="mjSeBank">'+bank.map((line,i)=>'<button type="button" data-meaning="'+i+'" aria-pressed="'+(a.meaning===line)+'">'+esc(line)+'</button>').join('')+'</div><p class="mjSeSelection">'+esc(a.meaning||'Choose a supported explanation')+'</p>'}
 }
 const canHint=!independent;const taskPicker=host.querySelector('.mjSeTaskSelect');
-host.innerHTML='<div class="mjSeHead"><strong>✦ Reasoning Workshop · Optional Parchment Practice</strong><small>'+esc(window.S.activeCourse)+' · '+esc(task.title)+'</small></div><nav class="mjSeSteps" aria-label="Solution steps">'+Array.from({length:6},(_,i)=>'<button type="button" data-stage="'+i+'" '+(i===step?'aria-current="step"':'')+' '+(i>step||!(st.verified?.[st.caseIndex]||[]).includes(i)?'disabled':'')+' class="'+(i===step?'active':'')+'" title="'+esc(stageTitle(task,i))+'">'+(i+1)+'</button>').join('')+'</nav><div class="mjSeStage"><h3>'+esc(stageTitle(task,step))+'</h3>'+body+'</div><div class="mjSeActions"><button data-check>Check step</button>'+(canHint?'<button data-hint>Hint</button>':'')+'<button data-reset>Restart scenario</button></div>'+(st.hint?'<p class="mjSeHelp">Think about what information the situation provides and what you must determine before computing or acting.</p>':'')+(st.feedback?'<p class="mjSeFeedback" role="status">'+esc(st.feedback)+'</p>':'')+'<p class="mjSeFoot">Objective: '+esc(task.objective||'Apply this lesson concept')+'. Hands-on participation can earn XP. Completing an unassisted transfer can earn a one-time XP/crystal bonus. Neither replaces validated course mastery.</p>';
+host.innerHTML='<div class="mjSeHead"><strong>✦ Reasoning Workshop · Optional Parchment Practice</strong><small>'+esc(window.S.activeCourse)+' · '+esc(task.title)+'</small></div><nav class="mjSeSteps" aria-label="Solution steps">'+Array.from({length:6},(_,i)=>'<button type="button" data-stage="'+i+'" '+(i===step?'aria-current="step"':'')+' '+(i>step||!(st.verified?.[st.caseIndex]||[]).includes(i)?'disabled':'')+' class="'+(i===step?'active':'')+'" title="'+esc(stageTitle(task,i))+'">'+(i+1)+'</button>').join('')+'</nav><div class="mjSeStage"><h3>'+esc(stageTitle(task,step))+'</h3>'+body+'</div><div class="mjSeActions"><button type="button" data-check>'+(st.error?'Resubmit answer':'Check step')+'</button><button type="button" data-clear>Clear answer</button>'+(canHint?'<button data-hint>Hint</button>':'')+'<button data-reset>Restart scenario</button></div>'+(st.hint?'<p class="mjSeHelp">Think about what information the situation provides and what you must determine before computing or acting.</p>':'')+(st.feedback?'<p class="mjSeFeedback" role="status">'+esc(st.feedback)+'</p>':'')+'<p class="mjSeFoot">Objective: '+esc(task.objective||'Apply this lesson concept')+'. Hands-on participation can earn XP. Completing an unassisted transfer can earn a one-time XP/crystal bonus. Neither replaces validated course mastery.</p>';
 if(taskPicker)host.prepend(taskPicker);
 if(topBefore!==null&&host.isConnected){const delta=host.getBoundingClientRect().top-topBefore;if(Math.abs(delta)>2)window.scrollBy(0,delta)}
 host.querySelectorAll('[data-stage]').forEach(button=>button.onclick=()=>{const dest=Number(button.dataset.stage);if(dest<st.stage&&(st.verified?.[st.caseIndex]||[]).includes(dest)){st.verified[st.caseIndex]=st.verified[st.caseIndex].filter(n=>n<dest);st.stage=dest;st.finished=false;st.feedback='Review this step, then check it again to continue.';render(host,task)}});
@@ -103,25 +103,44 @@ host.querySelectorAll('[data-meaning]').forEach(el=>el.onclick=()=>{a.meaning=el
 host.querySelectorAll('[data-choice]').forEach(el=>el.onclick=()=>{a.formula=task.alternatives[Number(el.dataset.choice)];render(host,task)});
 host.querySelectorAll('[data-add]').forEach(el=>el.onclick=()=>{a.order=a.order||[];let n=Number(el.dataset.add);if(step===1)a.order=[n];else if(!a.order.includes(n))a.order.push(n);render(host,task)});
 host.querySelector('[data-undo]')?.addEventListener('click',()=>{a.order?.pop();render(host,task)});
+host.querySelector('[data-clear]').onclick=()=>{
+ // Clear only this step's answer; keep earlier verified steps and scenario.
+ if(task.kind==='sequence'){
+  if(step===0)delete a.focus;
+  else if(step===1||step===2||step===5)delete a.order;
+  else delete a.meaning;
+ }else if(task.kind==='graph'){
+  if(step===0)delete a.identified;
+  else if(step===1||step===5){for(let i=0;i<ex.freq.length;i++)delete a['bar'+i]}
+  else if(step===2)delete a.mode;
+  else if(step===3)delete a.total;
+  else delete a.meaning;
+ }else{
+  const fields={0:['known','unknown'],1:['formula'],2:ex.slots.map((_,i)=>'slot'+i),3:['result'],4:['meaning'],5:['transfer']};
+  for(const key of fields[step]||[])delete a[key];
+ }
+ st.feedback='Answer cleared. Choose a new response, then check again.';
+ st.error=false;render(host,task);
+};
 host.querySelector('[data-reset]').onclick=()=>{const nextCase=(st.caseIndex+1)%task.cases.length;STATES.set(host,{stage:0,answers:{},caseIndex:nextCase,feedback:'New scenario selected. Practice the same WGU skill using different evidence.',error:false,hint:false,verified:{}});ACTIVE_STATES.set(window.S.activeCourse+':'+task.id,STATES.get(host));render(host,task)};
 host.querySelector('[data-hint]')?.addEventListener('click',()=>{st.hint=true;render(host,task)});
 host.querySelector('[data-check]').onclick=()=>{let good=false,reason='';
  if(task.kind==='math'){if(step===0)good=knownsValid(task,ex,a.known,a.unknown);else if(step===1)good=a.formula===task.formula;else if(step===2)good=ex.slots.every((v,i)=>numeric(a['slot'+i],v));else if(step===3||step===5)good=numeric(a[step===5?'transfer':'result'],ex.answer);else {const review=reasoningCheck(task,ex,a.meaning);good=review.ok;reason=review.feedback}if(step!==4)reason=ex.why}
  else if(task.kind==='graph'){if(step===0)good=numeric(a.identified,ex.freq.length);else if(step===1||step===5)good=ex.freq.every((v,i)=>numeric(a['bar'+i],v));else if(step===2)good=String(a.mode||'').trim()===ex.mode;else if(step===3)good=numeric(a.total,ex.total);else {const review=reasoningCheck(task,ex,a.meaning);good=review.ok;reason=review.feedback}if(step!==4)reason=ex.interpret}
  else{if(step===0){good=window.S.activeCourse==='D772'?String(a.focus||'')===(/surveys only|only reaches|only staff|only families|one school|evening event|downtown station|gym website|volunteer/i.test(ex.prompt||'')?'Selection bias':'Association is not causation'):!!a.focus}else if(step===3||step===4){const text=String(a.meaning||'');const scenario=String(ex.prompt||'');const causal=/observational|caused|causation|correlation|association/i.test(scenario),sampling=/surveys only|samples only|sample|population|one school|one homeroom|only staff|only families|only reaches|evening event|downtown station|gym website|volunteer|commuters at one/i.test(scenario);good=!!text&&(causal?/observational study can show association|evidence supports a cautious conclusion/i.test(text):sampling?/sampled group differ|selection bias and limit generalizability/i.test(text):window.S.activeCourse==='D756'&&/family and student input|document team decisions/i.test(text));reason=good?'The selected justification matches the evidence and the WGU concept.': 'Choose a justification that matches this specific study design or sampling limitation. Association alone does not establish causation.'}else if(step===1)good=a.order?.[0]===ex.correct[0];else good=JSON.stringify(a.order)===JSON.stringify(ex.correct);if(step!==3&&step!==4)reason=ex.reason}
- if(!good){st.feedback=task.kind==='sequence'&&step===0&&window.S.activeCourse==='D772'?'Not yet. This scenario calls for recognizing selection bias or limits of observational inference. Identify the specific source of the problem before moving on.':((step===4|| (task.kind==='sequence'&&step===3))?reason:'Not yet. Revisit this step and try again.');render(host,task);return}
+ if(!good){st.error=true;if(independent)st.transferHintUsed=true;st.feedback=task.kind==='sequence'&&step===0&&window.S.activeCourse==='D772'?'Not yet. This scenario calls for recognizing selection bias or limits of observational inference. Identify the specific source of the problem before moving on.':((step===4|| (task.kind==='sequence'&&step===3))?reason:'Not yet. Revisit this step and try again.');render(host,task);return}
  if(step===5){
   if(st.finished){st.feedback='This transfer has already been completed.';render(host,task);return}
   const full=[0,1,2,3,4].every(n=>(st.verified?.[st.caseIndex]||[]).includes(n));
   if(!full){st.feedback='Complete stages 1–5 on this scenario before stage 6.';render(host,task);return}
-  if(!independent){st.caseIndex++;st.stage=0;st.answers={};st.hint=false;st.feedback='Guided reconstruction completed. Now try a different case; previous progress remains intact.';render(host,task);return}
+  if(!independent){st.caseIndex++;st.stage=0;st.answers={};st.hint=false;st.transferHintUsed=false;st.feedback='Guided reconstruction completed. Now try a different case; previous progress remains intact.';render(host,task);return}
   st.finished=true;
   const mastered=window.MajickInteractiveMastery?.record?.({taskId:task.id,lessonId:task.lesson,kind:task.kind,allStagesVerified:full,hintFreeTransfer:!st.transferHintUsed&&task.kind!=='sequence'});
-  const reward=window.MajickInteractiveRewards?.award?.(task.id,'transfer');
-  st.feedback='Transfer complete. '+(mastered?.recorded?'Independently verified calculation recorded. ':'Practice completed; mastery is not asserted. ')+reason+(reward?.awarded?' Reward: +'+reward.xp+' XP and +'+reward.crystals+' crystal.':' Reward already earned.');
+  const reward=!st.transferHintUsed?window.MajickInteractiveRewards?.award?.(task.id,'transfer'):null;
+  st.feedback='Transfer complete. '+(mastered?.recorded?'Independently verified calculation recorded. ':'Practice completed; mastery is not asserted. ')+reason+(st.transferHintUsed?' This was a corrected attempt; retry on a fresh independent case to earn unassisted transfer credit.':reward?.awarded?' Reward: +'+reward.xp+' XP and +'+reward.crystals+' crystal.':' Reward already earned.');
   render(host,task);return
 }
- (st.verified[st.caseIndex]||(st.verified[st.caseIndex]=[])).push(step);
+ st.error=false;(st.verified[st.caseIndex]||(st.verified[st.caseIndex]=[])).push(step);
  if(step===4){if(!independent&&task.kind!=='sequence'){st.caseIndex++;st.stage=0;st.answers={};st.hint=false;st.feedback='';render(host,task);return}st.stage=5;st.answers={};st.feedback='Stage 6 unlocked: rebuild the answer without copying the guided work. This is a practice check, not automatic mastery.';render(host,task);return}
  if(step===0&&!independent)window.MajickInteractiveRewards?.award?.(task.id,'participation');st.stage++;st.feedback='Step correct. '+(step===3?reason:'Continue to the next step.');render(host,task)
  };

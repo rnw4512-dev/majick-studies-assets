@@ -15,3 +15,29 @@
 .masterySummary{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px}.masterySummary article{padding:15px;border:1px solid #594a6a;border-radius:14px;background:#15111d}.masterySummary b{display:block;font-size:26px;color:#dfc47d}.masterySummary span{font-size:12px;color:#a99faf}.masteryGrid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.masteryRow{display:grid;grid-template-columns:minmax(100px,1fr) 2fr 50px;gap:8px;align-items:center;margin:9px 0}.masteryRow>div{height:8px;background:#31283b;border-radius:9px;overflow:hidden}.masteryRow i{display:block;height:100%;background:#a58bca}.mistakeCard{padding:10px;border-bottom:1px solid #493e54}.mistakeCard small{display:block;color:#b2a8bb;margin-top:4px}.learnEmpty{padding:24px;text-align:center;border:1px dashed #655477;border-radius:16px;color:#bdb2c7}
 @media(max-width:760px){.lessonGrid,.toolGrid,.masteryGrid{grid-template-columns:1fr}.toolCard.wide{grid-column:auto}.masterySummary{grid-template-columns:repeat(2,1fr)}.gameOptions{grid-template-columns:1fr}.learnHero{align-items:flex-start}.learnHeroSigil{font-size:34px}.notesSearch{flex-direction:column}}
 @media(prefers-reduced-motion:reduce){.learnLab *{scroll-behavior:auto!important;transition:none!important}}
+/* Refinement overlay, not a return to an older screen or another renderer. */
+.learnLab{gap:12px!important;min-width:0}
+.learnLab:not(.instructionFocus) .learnHero{
+ padding:14px 18px!important;min-height:0!important;
+ background:radial-gradient(circle at 92% 8%,rgba(216,182,116,.17),transparent 33%),linear-gradient(130deg,#20162d,#34223f)!important;
+ border:1px solid #a88b65!important;border-radius:16px!important;
+}
+.learnLab:not(.instructionFocus) .learnHero h2{font-family:Cinzel,Georgia,serif!important;font-size:clamp(23px,2.5vw,31px)!important;line-height:1.25!important;margin:2px 0 5px!important;color:#f5daa1!important}
+.learnLab:not(.instructionFocus) .learnHero p{color:#fff2e1!important;font:500 15px/1.5 Inter,system-ui,sans-serif!important}
+.learnRecommendation{padding:10px 14px!important;border-color:#a58a6c!important;border-radius:12px!important;min-height:0!important}
+.learnTabs{gap:6px!important;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:thin;padding:3px 0 6px}
+.learnTabs button{flex:0 0 auto;min-height:43px;border-color:#b59a74!important;background:#30233e!important;color:#fff1df!important;font:600 14px Inter,system-ui,sans-serif!important}
+.learnTabs button.active{background:#e5cfaa!important;color:#241827!important;border-color:#b58d4c!important}
+.learnTabs button:focus-visible{outline:3px solid #f5d28c!important;outline-offset:2px}
+.lessonGrid{gap:12px!important}
+.lessonExplain,.learnVisual,.toolCard,.guidedQuestion,.independentCall,.masteryGrid>section,.gameQuestion,.gameIntro,.gameDone{padding:15px!important;border-color:#a48a6b!important;border-radius:14px!important;min-width:0}
+.learnVisual{min-height:175px!important}
+.learnStepHeader{margin-bottom:10px!important}
+.lessonExplain p{line-height:1.55!important}
+@media(max-width:760px){
+ .learnLab{gap:9px!important}
+ .lessonGrid{grid-template-columns:minmax(0,1fr)!important}
+ .learnLab:not(.instructionFocus) .learnHero{padding:11px 13px!important}
+ .learnVisual{min-height:155px!important}
+}
+@media(prefers-reduced-motion:reduce){.learnTabs button{transition:none!important}}

@@ -1,0 +1,17 @@
+'use strict';
+const fs=require('node:fs'),path=require('node:path'),vm=require('node:vm'),assert=require('node:assert/strict');
+const root=path.resolve(process.argv[2]||'current-site');
+const get=p=>fs.readFileSync(path.join(root,p),'utf8');
+const commons=get('collegium-commons.js'),room=get('room-section-nav.js'),css=get('collegium-commons.css'),rcss=get('room-section-nav.css'),html=get('index.html');
+for(const [name,src] of [['collegium-commons.js',commons],['room-section-nav.js',room]])new vm.Script(src,{filename:name});
+assert(commons.includes('node.dataset?.commonsOwner'),'Home must stabilize tab ownership');
+assert(commons.includes('place(panels[tab],n,tab)'),'New Home content must belong to an existing tab');
+assert(commons.includes('data-commons-panel'),'Existing Home tabpanels must be preserved');
+assert(css.includes('[data-commons-panel][hidden]{display:none!important}'),'Only the selected Home panel may be shown');
+assert(css.includes('.majCommonsTabs{position:sticky'),'Keep Home tabs accessible when content grows');
+assert(room.includes('scrollIntoView')&&room.includes('replaceChildren'),'Room shortcuts must remain navigable');
+assert(!/\.hidden\s*=|setAttribute\(['"]hidden/.test(room),'Room shortcuts must not hide academic controls');
+assert(!/\.append\(el\)|\.prepend\(el\)/.test(room),'Room shortcuts must not move academic panels');
+assert(rcss.includes('overflow-x:auto')&&rcss.includes(':focus-visible'),'Responsive and keyboard navigation required');
+assert(html.includes('./room-section-nav.js?v=1')&&html.includes('./room-section-nav.css?v=1'),'New room navigation must load');
+console.log('PASS compact navigation: stable Commons ownership, tab visibility, shortcut safety, keyboard focus and responsive styling');

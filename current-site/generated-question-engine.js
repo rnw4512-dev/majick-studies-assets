@@ -73,12 +73,18 @@ function probabilityCase(ordinal=0,transfer=false){
 function batch(count=10,difficulty=2){const skills=['mean','median','boxplot','histogram','scatterplot','probability'],out=[];for(let i=0;i<count;i++){const q=generate(skills[i%skills.length],difficulty);if(q)out.push(q)}return out}
 function mountLab(root,lessonText){
  if(!root||!window.S||window.S.activeCourse!=='D772')return;
+ // The campus may invoke this after delayed renders. Never replace an active
+ // learner's typed responses or attach duplicate event controls.
+ const lessonKey=String(lessonText||'').trim();
+ const prior=root.querySelector(':scope > .majickGeneratedLab');
+ if(prior?.dataset.lessonKey===lessonKey)return;
+ if(prior)prior.remove();
  const title=String(lessonText||'').toLowerCase();
  const skill=/probab|replacement|sample space/.test(title)?'probability':/scatter|association/.test(title)?'scatterplot':/histogram|distribution|skew|modality/.test(title)?'histogram':/quartile|box.plot|five.number/.test(title)?'boxplot':/median/.test(title)?'median':/mean|statistics|descriptive/.test(title)?'mean':null;
  if(!skill)return;
  const guided=generate(skill,2);if(!guided)return;
  let independent=null,completed=false;
- const section=document.createElement('section');section.className='majickGeneratedLab';
+ const section=document.createElement('section');section.className='majickGeneratedLab';section.dataset.lessonKey=lessonKey;
  section.style.cssText='border:1px solid #c1a476;border-radius:15px;background:#32253e;color:#fff0db;padding:16px;margin:16px 0';
  const field=(id,label,rows=0)=>'<label style="display:block;margin:12px 0">'+E(label)+(rows?'<textarea data-lab-field="'+id+'" rows="'+rows+'" style="display:block;width:100%;padding:10px;background:#fff8ed;color:#261b2e"></textarea>':'<input data-lab-field="'+id+'" style="display:block;width:100%;max-width:390px;padding:10px;background:#fff8ed;color:#261b2e" autocomplete="off">')+'</label>';
  section.innerHTML='<h4>✦ Generated Data Workshop · Worked example → Independent application → Teach-back</h4><p><b>1 · Study the scenario.</b> '+E(guided.prompt)+'</p>'+guided.visualHtml+'<p><b>2 · Whiteboard setup.</b> Identify the values or event, write the appropriate method and check that the displayed data agree with your calculation.</p><p><b>Worked solution:</b> '+E(guided.why)+' <b>Result:</b> '+E(guided.answer)+'.</p><p><b>3 · Guided reconstruction.</b> Solve the same scenario after studying the explanation. Guided work does not count as independent mastery.</p>'+field('guided','Recalculate the worked example')+field('reason','Explain why the method applies',3)+'<button type="button" data-lab-guided>Check guided reasoning</button><p data-lab-guided-feedback role="status"></p><hr><h4>4 · Fresh independent application</h4><p>Use a different data set, without consulting the worked solution. Submit before viewing the answer.</p><div data-lab-independent></div><button type="button" data-lab-new>Generate a different independent problem</button><hr><h4>5 · Teach the correction</h4><p>A student makes this error: '+E(guided.misconception)+'. Explain the misconception, model the correct method, and ask a different diagnostic question.</p>'+field('teach','Your explanation, visual/model, and exit question',4)+'<button type="button" data-lab-teach>Review my teaching plan</button><p data-lab-teach-feedback role="status"></p><p><small>Majick original supplemental practice, not official WGU material. Automatic feedback on writing checks structure, not the quality of your teaching. This workshop does not independently certify mastery.</small></p>';
@@ -88,10 +94,52 @@ function mountLab(root,lessonText){
   const notice=document.createElement('p');
   notice.className='majickGeneratedRemediation';
   notice.style.cssText='padding:12px;border-left:4px solid #e7bb74;background:#422b52;color:#fff3dc';
-  notice.textContent='Connected review: this skill has '+lessonNeed.struggles+' recorded difficulty attempt(s). Work the visual, explain your solution, then try the fresh independent problem. Your needs follow you into Learn Lab, Study Now and Game Realm.';
+  const lastError=window.S?.progress?.D772?.adaptiveSkills?.[guided.learningPathLessonId]?.errors?.slice(-1)[0];
+  const misconception=lastError?.kind==='calculation-or-formula'
+    ?'Recheck the sample size, write the formula, and substitute the actual dataset before calculating.'
+    :lastError?.kind==='visual-interpretation'
+    ?'Identify both axes, their units and the plotted distribution before choosing an interpretation.'
+    :'Read the scenario carefully and state what evidence supports the conclusion.';
+  notice.textContent='Connected review: '+lessonNeed.struggles+' difficulty attempt(s) across your study areas. '+misconception+' Study the visual, then reconstruct the answer and try a fresh independent question. Guided work never certifies mastery.';
   section.insertBefore(notice,section.querySelector('[data-lab-independent]').previousElementSibling);
  }
  root.appendChild(section);
+ // A physical data-building step belongs to this workshop owner, not a new game engine.
+ if(skill==='boxplot'||skill==='median'){
+  const ordered=[],numbers=guided.data.map((value,index)=>({value,index}));
+  const work=document.createElement('div');
+  work.className='majickHandsOnData';
+  work.style.cssText='margin:12px 0;padding:12px;border:1px solid #d8b674;border-radius:12px;background:#241a31;color:#fff5e8';
+  work.innerHTML='<h5>✦ Build the data display yourself</h5><p>Tap each observation from smallest to largest. Equal values must each be included. Then check your ordered data before interpreting the plot.</p><div data-sort-pool style="display:flex;flex-wrap:wrap;gap:8px"></div><p data-sort-built role="status">Ordered observations: none selected</p><button type="button" data-sort-check>Check ordered data</button> <button type="button" data-sort-clear>Clear selection</button><p data-sort-feedback role="status"></p>';
+  const pool=work.querySelector('[data-sort-pool]'),built=work.querySelector('[data-sort-built]'),feedback=work.querySelector('[data-sort-feedback]');
+  function updateSort(){
+   pool.replaceChildren();
+   numbers.forEach(n=>{
+    const button=document.createElement('button');button.type='button';button.textContent=String(n.value);
+    button.disabled=ordered.includes(n.index);button.setAttribute('aria-label','Add observation '+n.value);
+    button.style.cssText='min-width:44px;min-height:44px;background:#594269;color:#fff8ef;border:1px solid #d8b674;border-radius:8px';
+    button.onclick=()=>{ordered.push(n.index);feedback.textContent='';updateSort()};
+    pool.append(button);
+   });
+   built.textContent='Ordered observations: '+(ordered.length?ordered.map(i=>numbers[i].value).join(', '):'none selected');
+  }
+  work.querySelector('[data-sort-clear]').onclick=()=>{ordered.length=0;feedback.textContent='Selection cleared. Try this same dataset again.';updateSort()};
+  work.querySelector('[data-sort-check]').onclick=()=>{
+   const given=ordered.map(i=>numbers[i].value),expected=[...guided.data].sort((a,b)=>a-b);
+   const right=given.length===expected.length&&given.every((v,i)=>v===expected[i]);
+   feedback.textContent=right
+    ?'Correct ordering. '+(skill==='boxplot'?'Find Q1 and Q3 from the lower and upper halves, then subtract for IQR.':'Find the middle observation or average the two middle observations.')
+    :'Not yet. Compare the smallest remaining values; every observation must appear exactly once. Clear and resubmit without losing your lesson.';
+   if(right){
+    if(!work.dataset.celebrated){
+     work.dataset.celebrated='true';
+     window.MajickAnimationEffects?.play?.('success',{target:work.querySelector('[data-sort-check]'),label:'Data ordered'});
+    }
+   }else window.MajickLearningContinuity?.record?.({courseId:'D772',term:guided.learningPathLessonId,lessonTitle:lessonText,correct:false,activity:'hands-on-sort-guided',question:guided});
+  };
+  updateSort();
+  section.querySelector('[data-lab-guided]').before(work);
+ }
  const input=name=>section.querySelector('[data-lab-field="'+name+'"]');
  section.querySelector('[data-lab-guided]').onclick=()=>{
   const correct=input('guided').value.trim()===String(guided.answer),reason=input('reason').value.trim();
@@ -110,6 +158,16 @@ function mountLab(root,lessonText){
    const answer=host.querySelector('[data-lab-field="independent"]').value.trim(),explanation=host.querySelector('[data-lab-field="independent-why"]').value.trim(),correct=answer===String(q.answer);
    host.querySelector('[data-lab-independent-feedback]').textContent=(correct?'Correct. ':'Not yet. ')+(explanation.length<35?'Strengthen your written reasoning: name the method and explain the result in context. ':'Compare your interpretation against the scenario. ')+'Worked reasoning: '+q.why+' This is a formative independent attempt, not automatically certified mastery.';
    host.querySelector('[data-lab-submit]').disabled=true;
+   if(!correct){
+    const repair=document.createElement('button');repair.type='button';repair.dataset.labRepair='';
+    repair.textContent='Repair this skill with guided steps';
+    repair.onclick=()=>{
+     section.querySelector('[data-lab-guided]')?.scrollIntoView({block:'center',behavior:'instant'});
+     section.querySelector('[data-lab-field="guided"]')?.focus();
+     host.querySelector('[data-lab-independent-feedback]').textContent='Your earlier attempt is saved. Rebuild the method using the worked visual and hands-on steps, then select a fresh independent problem. This repair will not award independent mastery.';
+    };
+    host.querySelector('[data-lab-independent-feedback]').after(repair);
+   }
    window.MajickLearningContinuity?.record?.({courseId:'D772',term:q.learningPathLessonId,lessonTitle:lessonText,correct,activity:'generated-lab-independent-formative',question:q});
    // Share formative result with the existing adaptive skill tracker. The
    // origin is not independent-transfer, so this NEVER grants mastery.

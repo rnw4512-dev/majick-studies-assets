@@ -6,6 +6,9 @@ const valid=id=>TABS.some(t=>t[0]===id);
 function preferred(){try{const id=sessionStorage.getItem('majick-commons-tab');return valid(id)?id:'overview'}catch(_){return 'overview'}}
 selected=preferred();
 function classify(node){
+ // Once an existing Home component has been placed, never move it because a
+ // later feedback message happens to mention Guardian, Review or Sanctuary.
+ if(node.dataset?.commonsOwner&&valid(node.dataset.commonsOwner))return node.dataset.commonsOwner;
  // Stable component identity wins over incidental words in buttons and descriptions.
  const identities=[
   ['today','#v3400DailyLoop,.v3400DailyLoop,.majDailyStudyLoop,.dailyStudyLoop,.v3327AcademicHall'],
@@ -30,6 +33,7 @@ function syncSanctuaryMotion(){
   try{const loop=frame.contentWindow?.majickPhaserGame?.loop;if(loop&&sanctuaryVisibility.get(frame)!==visible){if(visible)loop.wake();else loop.sleep();sanctuaryVisibility.set(frame,visible)}}catch(_){}
  });
 }
+function place(panel,node,tab){panel.append(node);if(node.dataset)node.dataset.commonsOwner=tab}
 function navigateTab(next){
  if(!valid(next))return;
  selected=next;
@@ -67,15 +71,15 @@ function attach(){
   [...oldHome.children].forEach(n=>{
    if(n.classList?.contains('v3327HallGrid')){
     const academic=n.querySelector('.v3327AcademicHall'),guardian=n.querySelector('.v3327GuardianHall');
-    if(academic)panels.today.append(academic);
-    if(guardian)panels.guardians.append(guardian);
-    if(n.children.length)panels.overview.append(n);else n.remove();
-   }else if(n.classList?.contains('v3327PortalHero')||n.classList?.contains('v3327StudentRecord'))panels.overview.append(n);
-   else panels[classify(n)].append(n);
+    if(academic)place(panels.today,academic,'today');
+    if(guardian)place(panels.guardians,guardian,'guardians');
+    if(n.children.length)place(panels.overview,n,'overview');else n.remove();
+   }else if(n.classList?.contains('v3327PortalHero')||n.classList?.contains('v3327StudentRecord'))place(panels.overview,n,'overview');
+   else {const tab=classify(n);place(panels[tab],n,tab)}
   });
   oldHome.remove();
  }
- [...root.children].filter(n=>n!==hub&&n.nodeType===1).forEach(n=>panels[classify(n)].append(n));
+ [...root.children].filter(n=>n!==hub&&n.nodeType===1).forEach(n=>{const tab=classify(n);place(panels[tab],n,tab)});
  // Keep the full existing record within reach without another long default stack.
  const record=panels.overview.querySelector(':scope > .v3327StudentRecord');
  if(record){const shelf=document.createElement('details');shelf.className='majCommonsRecordShelf';const summary=document.createElement('summary');summary.textContent='Open your Student Record · coursework and Majick progress';shelf.append(summary);record.before(shelf);shelf.append(record)}
@@ -84,7 +88,7 @@ function attach(){
  // Reconcile late additions inside existing panels as well as new root children.
  for(const [tab,panel] of Object.entries(panels))for(const node of [...panel.children]){
   const destination=classify(node);
-  if(destination!==tab)panels[destination].append(node);
+  if(destination!==tab)place(panels[destination],node,destination);
  }
  navigateTab(selected);
  }catch(e){console.warn('Commons layout preserved original content:',e)}finally{updating=false}

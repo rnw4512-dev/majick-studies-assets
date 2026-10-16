@@ -553,6 +553,10 @@ window.majickFocusEgg=function(eggId){
 };
 window.majickCareAction=function(target,action,opts={}){
   const r=performAction(target,action,opts);
+  if(r?.ok&&['feed','water','treat','groom','play','affection'].includes(action)){
+    // Only a successful existing care action triggers a visual; rewards/bonds are owned elsewhere.
+    window.MajickAnimationEffects?.play?.('guardian',{label:action==='play'?'Playful bond':'Guardian cared for'});
+  }
   toastFromResult(r);
   if(r.needsShop){try{navigate('vault')}catch(_){}}
   try{render()}catch(_){}

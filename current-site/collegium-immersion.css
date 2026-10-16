@@ -27,3 +27,20 @@
 @keyframes collegiumGlow{50%{text-shadow:0 0 17px #e9b7e6}}
 @keyframes collegiumSpell{0%{opacity:0;transform:translateY(20px) scale(.6)}30%{opacity:1;transform:translateY(0) scale(1.2)}100%{opacity:0;transform:translateY(-32px) scale(1.5)}}
 @media(prefers-reduced-motion:reduce){.learnLab::before,.v3333Mission::before,.gameRealm::before,.realmPage::before,.atelierV2Mirror .atelierV2Crest,.atelierV2Stage::before,.atelierV2Mirror.wandCasting::after{animation:none!important}.atelierV2Mirror.wandCasting::after{display:none}}
+
+/* Study Now: cohesive moonlit teaching room, still text, minimal wasted space. */
+.v3333Mission{min-width:0}
+.v3333Mission :is(h1,h2){font-family:Cinzel,Georgia,serif}
+.v3333Mission :is(h3,h4){font-family:"Cormorant Garamond",Georgia,serif}
+.v3333Mission :is(p,li,label,input,textarea,select,button){font-family:Inter,system-ui,sans-serif}
+.v3333Mission :is(button,input,select,textarea):focus-visible{outline:3px solid #f5d28c!important;outline-offset:2px}
+.v3333Mission :is(.card,.panel,.missionCard){min-width:0;max-width:100%;box-sizing:border-box}
+.v3333Mission :is(input,textarea,select){max-width:100%;box-sizing:border-box}
+.v3333Mission{background-image:radial-gradient(ellipse at 95% 4%,rgba(216,182,116,.11),transparent 35%),radial-gradient(ellipse at 8% 85%,rgba(143,99,166,.08),transparent 42%)!important}
+@media(prefers-reduced-motion:reduce){.v3333Mission :is(button,.card,.panel){transition:none!important}}
+
+/* Ambient animation: rare, decorative glimmer outside the learning surface. */
+.learnLab::before{animation:majickQuietRoomGlimmer 28s ease-in-out infinite!important}
+.v3333Mission::before{animation:majickQuietRoomGlimmer 34s ease-in-out infinite!important}
+@keyframes majickQuietRoomGlimmer{0%,76%,100%{opacity:.16}84%{opacity:.48}90%{opacity:.22}}
+@media(prefers-reduced-motion:reduce){.learnLab::before,.v3333Mission::before{animation:none!important}}
