@@ -105,7 +105,7 @@ async function click(selector){
  await click('[data-prob-next]');
  await waitFor('MajickLearningContinuity.probabilityState().tasks.reasoning.id!=='+JSON.stringify(priorReasoningId));
  task=await evalPage('MajickLearningContinuity.probabilityState().tasks.reasoning');
- assert(!datasets.has(JSON.stringify(task.q.data)));datasets.add(JSON.stringify(task.q.data));
+ assert(!datasets.has(JSON.stringify(task.q.data)), 'Next independent question reused dataset '+JSON.stringify(task.q.data)+'; seen by browser='+JSON.stringify([...datasets])+'; tracked by engine='+JSON.stringify(await evalPage('MajickLearningContinuity.probabilityState().seenDatasets')));datasets.add(JSON.stringify(task.q.data));
  await fillTask(task);await click('[data-prob-form] button[type=submit]');
  assert.equal(await evalPage('MajickLearningContinuity.probabilityMastery().independentCorrect'),2);
  assert.equal(await evalPage('MajickLearningContinuity.probabilityMastery().certified'),false);
