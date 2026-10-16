@@ -144,7 +144,7 @@
     "guardian-registry.js": "b20170b996ddf065f33bb37332c8a9fce68ae104914e3e94ffe9aa44b7b612f3",
     "home-focus.css": "cbb719eb8e78701717b4016388d511553f2785212d839815ed006651ae738b2b",
     "home-focus.js": "f421d4c5e5b4193d1005e5ce5cdbeb0e969a0cffb8ece49b9dd7c255a16ca794",
-    "index.html": "9d02df6652c501dc2b8483431f02383f5b1d3f1b9536102411f3da0bbd92d87d",
+    "index.html": "65bbf8eb00c857934c68cd4da2f3fcd8be5cc38baafde80eaa4588ea0d7cc3e9",
     "learn-mode.css": "30181250c67efe7bd97c9276706a804a551e7904a2bb28160eeb0c193f35c002",
     "learn-mode.js": "f6647cd013d5bc59a319710c45ac806b56585c7fc5c912afa88857d2f16f82e0",
     "learning-lab.css": "6ed48d27023052a714d27c027f25828bc5ad74edccb172704e823a58b26d6844",
@@ -807,7 +807,7 @@
     "readability-guard.css": "8767d7f878f9f15232f35cdf0dc0adcd1e517f6028b295cda9e0014cb9661b99",
     "collegium-immersion.css": "a871552fa1698bc032590a584a85782fc44dee9aff8926d0d78d7fc73b41f38c",
     "coverage/d772-source-reconciliation.json": "cbb3fa8174376366036382aee751ef36eb905430a2046207c289091cd576238f",
-    "probability-workshop.js": "a9ae1c169015c3c73fd42578b6f07c998c9ef84c128233d031618a2806e9399d",
+    "probability-workshop.js": "a502f9c92c293b8ceee007390303754f305b40d586f6652ff67584ffe0df1a17",
     "d772-historical-quiz-results.js": "f4eb868c705edb74e61d72f87d550129e0c83fdc27e7e05d2e1a94bc5f6d8a2d",
     "d772-misrepresentation-lab.js": "de6e8c855c485a6e3b82a6acbd0215f075ef0719350e82f2b4fb4a564950ad33",
     "d772-preassessment-source.js": "ae5d1a3404db25e74ae5a08887a39d4679b123d02f6c07af1307b51779c88172",
@@ -815,6 +815,11 @@
     "d772-preassessment-deep-practice.js": "5aadf393fadd1639c668962fb8d6b6a45b069ebee2bf94a3617db3c362fdbb2f",
     "d772-adaptive-mastery.js": "f6a27ede880147f72ff457f7f36f4189a7edcb80ff995851c7e4890bd2b34d7b",
     "collegium-commons.js": "95b83dafbb30bbfc80692bee1d7dc8829b9b9ba3d5ab1286438f433778325106",
-    "collegium-commons.css": "45635182fd2829ac3b6a3dffaecdc92bf6539719842182bc7945158cd3054aa6"
+    "collegium-commons.css": "45635182fd2829ac3b6a3dffaecdc92bf6539719842182bc7945158cd3054aa6",
+    "assets/effects/celebrations/celebration-starburst.svg": "ef1d59a84c7f49296e1e0c004263b2770deafff1c0eaf4b8c5eb6e7ddfd847da",
+    "assets/effects/celebrations/celebration-constellation-ring.svg": "ae1302a0bd672e6df21f9827957262982db2ba6add4665df2f6b70033b45f6e3",
+    "assets/effects/guardians/guardian-heart-sigil.svg": "aef9ed713e6a52b117c1de6d60f8fcbf1a7da9d8e9014932cfc44d58c351213f",
+    "animation-effects.css": "017c51cbe04a73421414728b8323fb11c2aeb1712588ded3d2d63358efdff337",
+    "animation-effects.js": "a1ae1e4b329a149cd10a621b2ef96e1f27c1023a7c56ed851ef48891f230ddda"
   }
 }
