@@ -372,7 +372,25 @@ function checkpointNext(){
  const status=score>=Math.max(5,total-1)?'Ready to move on':score>=Math.max(4,total-2)?'One distinction to repair':'Needs another teaching pass';
  st.checkpoints[lesson.id]={score,total,status,answers:[...cp.answers],at:Date.now()};
  try{window.MajickProductCore?.record?.('quick-check-complete',{course:COURSE,lessonId:lesson.id,score,total,status})}catch(_){}
- st.mode='checkpointResult';persist();render();
+ st.mode='checkpointResult';persist();
+ // A saved independent checkpoint is the lesson-readiness authority.
+ // This is NOT proof of course completion or certified transfer mastery.
+ if(status==='Ready to move on')try{
+   const account=window.MajickStateCore?.ensureAccount?.()||window.S?.majickAccount;
+   if(account){
+     const bridge=account.studyProgressBridge||(account.studyProgressBridge={events:{}});
+     const milestones=bridge.verifiedLessonMilestones||(bridge.verifiedLessonMilestones={});
+     const key=COURSE+':'+lesson.id;
+     if(!milestones[key]){
+       milestones[key]={course:COURSE,lessonId:lesson.id,score,total,at:Date.now()};
+       persist();
+       document.dispatchEvent(new CustomEvent('majick:verified-academic-milestone',{
+         detail:{key,kind:'lesson',course:COURSE,lessonId:lesson.id,score,total,independent:true}
+       }));
+     }
+   }
+ }catch(e){console.warn('Lesson celebration skipped safely:',e)}
+ render();
 }
 function repairCheckpoint(){
  const {st,lesson}=current(),result=st.checkpoints[lesson.id];
