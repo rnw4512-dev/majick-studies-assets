@@ -43,13 +43,17 @@ function mount(){
  return '<button type="button" data-connected-open="'+k+'" '+(!unlocked?'disabled':'')+'>'+labels[k]+'</button>';
  }).join('');
  box.innerHTML='<button type="button" class="connectedBack" data-connected-back aria-label="Back to previous campus room">← Back</button><h2>Connected Learning · Probability</h2><p>Original simulated OA-style practice · D772 · Dependent events without replacement</p>'+(st?.need?'<p role="status">Practice recommendation from '+E(st.need.origin)+': recount the remaining favorable outcomes and sample space. This need follows you into Learn Lab, Study Now and Game Realm.</p>':'')+'<p data-connected-evidence>Repair: '+(m.repairVerified?'verified':'needed')+' · Independent reasoning: '+m.independentCorrect+'/2 · Transfer: '+(m.transferVerified?'verified':'needed')+' · Structured teach-back: '+(m.teachBackVerified?'verified':'needed')+' · '+(m.certified?'Probability skill certified':'Not yet certified')+'</p><nav aria-label="Probability learning flow">'+nav+'</nav><div data-connected-task></div><p>Guided work never counts as independent mastery. Written whiteboard and teaching explanations are saved for review; only the structured checks are automatically evaluated.</p>';
- box.querySelector('[data-connected-back]').onclick=()=>{
-  const from=S.screen;
+ const back=box.querySelector('[data-connected-back]');
+ const backScreen=S.screen;
+ const leaveRoom=()=>{
+  if(S.screen!==backScreen)return;
   window.majickBack?.();
-  // Direct links and reloads may have no room-history entry to pop.
-  // In that case Back must still leave this room without touching progress.
-  if(S.screen===from)window.navigate?.('home');
+  // Reloads and direct links may have no history entry; never strand Back.
+  if(S.screen===backScreen)window.navigate?.('home');
  };
+ // A real pointer release must work even when a render pass interrupts click.
+ back.addEventListener('pointerup',leaveRoom);
+ back.addEventListener('click',leaveRoom);
  box.querySelectorAll('[data-connected-open]').forEach(b=>b.onclick=()=>open(b.dataset.connectedOpen));
  const kind=st?.focus,t=st?.tasks[kind];if(!t||places[kind]!==S.screen)return;
  const host=box.querySelector('[data-connected-task]'),draft=st.drafts[kind]||{},q=t.q,[g,p]=q.data,total=g+p;
