@@ -138,7 +138,7 @@
     "guardian-care-economy.css": "6d0d30eb4cb79d96189530480438f8678ae818e51d10bac108f6f5b17ae2db05",
     "guardian-care-economy.js": "2b8c710b02a4f56736582b372ea0db3daf35e61643d0493c065a5cd5601e5251",
     "guardian-core.css": "3a1d473dcefc038e7330c3824473c593c62c13b90a2e3fecff6e15d231decde6",
-    "guardian-core.js": "45f067bb8031e4f50cdd8c9091d8369e8a03d828555dba9e83a22e5f10fa8c75",
+    "guardian-core.js": "e530ed578099ab0587ef9bfcb0d4db3efc06288f040de91d62c20cd79d981a66",
     "guardian-life-main.css": "96ab4cf8b050b6f09b692b93c485a602ed2acfa75f716cfdffd38fe6a109e97c",
     "guardian-life-main.js": "d6900cb82b2a661e180d6ac8e7572cf1a31bfbf90580c06efe0b09ca923d0559",
     "guardian-registry.js": "b20170b996ddf065f33bb37332c8a9fce68ae104914e3e94ffe9aa44b7b612f3",
@@ -819,7 +819,9 @@
     "assets/effects/celebrations/celebration-starburst.svg": "ef1d59a84c7f49296e1e0c004263b2770deafff1c0eaf4b8c5eb6e7ddfd847da",
     "assets/effects/celebrations/celebration-constellation-ring.svg": "ae1302a0bd672e6df21f9827957262982db2ba6add4665df2f6b70033b45f6e3",
     "assets/effects/guardians/guardian-heart-sigil.svg": "aef9ed713e6a52b117c1de6d60f8fcbf1a7da9d8e9014932cfc44d58c351213f",
-    "animation-effects.css": "017c51cbe04a73421414728b8323fb11c2aeb1712588ded3d2d63358efdff337",
-    "animation-effects.js": "a1ae1e4b329a149cd10a621b2ef96e1f27c1023a7c56ed851ef48891f230ddda"
+    "animation-effects.css": "851afc04da699fcedb2c3d511d3bb30f5e890e6b25d899d1b77aa5bc051ae66b",
+    "animation-effects.js": "85888321972ffa77c0809f3fba72e78fa1845c1d45a642796399e5e0a61d0505",
+    "assets/effects/celebrations/lesson-complete-seal.svg": "66d0d723db2bda1149c79bd1aa03e2c9be22df891ed9a5f842bf44cecf922ddf",
+    "assets/effects/celebrations/course-complete-sigil.svg": "5bb72f7c3da585d477527f057c9c42930abd859db8681edaac3616ed130ca1a6"
   }
 }
