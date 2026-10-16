@@ -144,7 +144,7 @@
     "guardian-registry.js": "b20170b996ddf065f33bb37332c8a9fce68ae104914e3e94ffe9aa44b7b612f3",
     "home-focus.css": "cbb719eb8e78701717b4016388d511553f2785212d839815ed006651ae738b2b",
     "home-focus.js": "f421d4c5e5b4193d1005e5ce5cdbeb0e969a0cffb8ece49b9dd7c255a16ca794",
-    "index.html": "65bbf8eb00c857934c68cd4da2f3fcd8be5cc38baafde80eaa4588ea0d7cc3e9",
+    "index.html": "09580a1b4b562e8a87d5130f3d9ea95a19a214cc655a46f694c057e07b1000c6",
     "learn-mode.css": "30181250c67efe7bd97c9276706a804a551e7904a2bb28160eeb0c193f35c002",
     "learn-mode.js": "f6647cd013d5bc59a319710c45ac806b56585c7fc5c912afa88857d2f16f82e0",
     "learning-lab.css": "6ed48d27023052a714d27c027f25828bc5ad74edccb172704e823a58b26d6844",
@@ -794,7 +794,7 @@
     "embedded-practice.js": "bfd40ca11870ab6e6041495e4b9a7e20d2f544d54b044ccaee9d402283aba893",
     "manipulatives.js": "549df6d1a0a33a538ed0c1469ec4b2284c76720d1bda69cedeca49c9dfd29b06",
     "curriculum-lab.js": "29edc47d8c36b88deaaef0116cffbe22297a081fed8874353cdadbc1e259c7d5",
-    "solution-engine.js": "e9c8cbc50f8ec3f5ee0a9b1eea9a1ffd6e4bd24a60634dd37bade14fbc1de409",
+    "solution-engine.js": "f72e5f102b48c07afe07f8dca468428c182df8fd34bceab07634f814dee070b7",
     "lesson-activity-bank.js": "f05001ede3815ff29491824d88cca6da6852f7b8fb3a070cdd5c2ef2154026ce",
     "inline-lesson-practice.js": "6545c1bc6b38a560bc2d861020081647aa9bdeef481cba5af16a8f14e2ce3c8e",
     "learning-continuity.js": "05e2e3e36582851cd6471cb7715ef290f3a700d8030f7259cb3e82c429fa937d",
@@ -814,14 +814,16 @@
     "d772-preassessment-review.js": "99ba28dad4ff318f26e59fef1c6b453f4fcb57cffff3c2ac299efdce45296713",
     "d772-preassessment-deep-practice.js": "5aadf393fadd1639c668962fb8d6b6a45b069ebee2bf94a3617db3c362fdbb2f",
     "d772-adaptive-mastery.js": "f6a27ede880147f72ff457f7f36f4189a7edcb80ff995851c7e4890bd2b34d7b",
-    "collegium-commons.js": "95b83dafbb30bbfc80692bee1d7dc8829b9b9ba3d5ab1286438f433778325106",
-    "collegium-commons.css": "45635182fd2829ac3b6a3dffaecdc92bf6539719842182bc7945158cd3054aa6",
+    "collegium-commons.js": "c3f200374792b0f855727699e0979d4eda5a899a4951db59849aed69828a7058",
+    "collegium-commons.css": "0064140c4e47b0c9a5185e70f2fe671ea8001fe5bf943b904b118f9cece182d6",
     "assets/effects/celebrations/celebration-starburst.svg": "ef1d59a84c7f49296e1e0c004263b2770deafff1c0eaf4b8c5eb6e7ddfd847da",
     "assets/effects/celebrations/celebration-constellation-ring.svg": "ae1302a0bd672e6df21f9827957262982db2ba6add4665df2f6b70033b45f6e3",
     "assets/effects/guardians/guardian-heart-sigil.svg": "aef9ed713e6a52b117c1de6d60f8fcbf1a7da9d8e9014932cfc44d58c351213f",
     "animation-effects.css": "851afc04da699fcedb2c3d511d3bb30f5e890e6b25d899d1b77aa5bc051ae66b",
     "animation-effects.js": "85888321972ffa77c0809f3fba72e78fa1845c1d45a642796399e5e0a61d0505",
     "assets/effects/celebrations/lesson-complete-seal.svg": "66d0d723db2bda1149c79bd1aa03e2c9be22df891ed9a5f842bf44cecf922ddf",
-    "assets/effects/celebrations/course-complete-sigil.svg": "5bb72f7c3da585d477527f057c9c42930abd859db8681edaac3616ed130ca1a6"
+    "assets/effects/celebrations/course-complete-sigil.svg": "5bb72f7c3da585d477527f057c9c42930abd859db8681edaac3616ed130ca1a6",
+    "room-section-nav.js": "bd9124934b4690f1ab043a59e0dc5b612de955d3db1e0ccf7528f80bf765eef5",
+    "room-section-nav.css": "13e365268595d22c6957fce8937757ee84b0f88145e62846a9f211e3b27c6915"
   }
 }
