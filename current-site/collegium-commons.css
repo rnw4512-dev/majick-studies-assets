@@ -144,3 +144,18 @@ body[data-majick-room=home] .top .courseSelect{min-width:0!important;max-width:1
  body[data-majick-room=home] .side .nav button{height:56px!important;min-height:56px!important;max-height:56px!important;padding:6px!important}
  body[data-majick-room=home] .top .caAmbience{width:100%;flex:1 1 100%;margin:0}
 }
+
+/* Phase 5: Home remains a set of real tabs, not a never-ending page. */
+#majCommonsHub .majCommonsWelcome{padding-block:12px!important}
+#majCommonsHub .majCommonsWelcome h2{font-size:clamp(23px,2.3vw,31px)!important;margin:4px 0!important}
+#majCommonsHub .majCommonsWelcome p{margin:3px 0!important;line-height:1.4!important}
+#majCommonsHub .majCommonsTabs{position:sticky;top:0;z-index:30;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:thin;box-shadow:0 4px 12px #1e122e44}
+#majCommonsHub .majCommonsTabs button{flex:1 0 max-content;min-width:102px;padding:9px 12px;min-height:45px}
+#majCommonsHub .majCommonsPanels{padding:12px!important}
+#majCommonsHub [data-commons-panel][hidden]{display:none!important}
+#majCommonsHub [data-commons-panel]{min-height:0!important}
+@media(max-width:650px){
+ #majCommonsHub .majCommonsTabs{gap:5px;padding:6px}
+ #majCommonsHub .majCommonsTabs button{flex:0 0 auto;min-width:90px;font-size:13px;padding:9px}
+ #majCommonsHub .majCommonsWelcome{padding:10px 12px!important}
+}
