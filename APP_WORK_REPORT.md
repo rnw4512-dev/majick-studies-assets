@@ -178,3 +178,12 @@ Next: finish the latest review, repair any genuine failures, inspect desktop/tab
 - Updated `pages-release/current/browser-probability.cjs` in commit `b588ee1e`: after reload, enter the actual D772 learning room, then require the panel, exact serialized saved probability state, certified mastery, disabled-response replay prevention, isolation and mobile fitting. The later return after D755/D756 switching now enters the learning room rather than expecting a Home panel. No production state owner or academic grading changed.
 - Must rerun the full release matrix on this commit; do not merge or publish without a green probability regression including the final incorrect-answer remediation.
 - Recovery: revert `b588ee1e` if a product requirement establishes that the probability panel must be displayed on Home; otherwise its prior assumption conflicts with the existing room-scoped mount. No learner data reset.
+
+
+## 2026-10-15 — Production deployment failed and isolated Back pointer race
+- **Successful review:** [38831716073](https://github.com/rnw4512-dev/majick-studies-assets/actions/runs/38831716073) had all three browser jobs green. PR #131 merged to `main` at `1b761e20ca62bcc3ee841be83db8797ae1251989`.
+- **Production blocker:** [38832322100](https://github.com/rnw4512-dev/majick-studies-assets/actions/runs/38832322100) failed the connected probability regression on `S.screen!=="games"` after physical in-card Back click following reload. The Pages workflow did not publish this commit. Previous push-triggered run `38832300850` was superseded/cancelled.
+- **New fix on review branch only:** `current-site/probability-workshop.js` commit `c09d2c67`: Back also handles actual `pointerdown`, which reaches the original control before render-queue remount can detach it between press and release. Pointerup and keyboard click stay wired with a guard against double navigation. No academic state, rewards or Guardian state touched.
+- **Manifest:** workshop SHA-256 `7c2f8a5de384dd7b707428f55578c9121fb20c06b4020edfce725f1c1d2b3e52` in commit `7b0b7046`.
+- **Release gate:** new review PR and full desktop/tablet/mobile review must pass, then a new main merge must pass the production Pages workflow including connected probability. Do not imply prior main merge means the deployed page changed.
+- **Recovery:** revert only `c09d2c67` and the matching manifest hash if physical Back press triggers unwanted navigation; restore without touching learner saves or Sanctuary.
