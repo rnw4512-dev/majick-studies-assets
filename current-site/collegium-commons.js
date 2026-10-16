@@ -79,7 +79,7 @@ function attach(){
   });
   oldHome.remove();
  }
- [...root.children].filter(n=>n!==hub&&n.nodeType===1).forEach(n=>panels[classify(n)].append(n));
+ [...root.children].filter(n=>n!==hub&&n.nodeType===1).forEach(n=>{const tab=classify(n);place(panels[tab],n,tab)});
  // Keep the full existing record within reach without another long default stack.
  const record=panels.overview.querySelector(':scope > .v3327StudentRecord');
  if(record){const shelf=document.createElement('details');shelf.className='majCommonsRecordShelf';const summary=document.createElement('summary');summary.textContent='Open your Student Record · coursework and Majick progress';shelf.append(summary);record.before(shelf);shelf.append(record)}
