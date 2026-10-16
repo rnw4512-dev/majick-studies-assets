@@ -244,3 +244,10 @@ Next: finish the latest review, repair any genuine failures, inspect desktop/tab
 - Files: `current-site/collegium-commons.css`, `current-site/collegium-immersion.css`, updated `current-site/source-manifest.json`. Existing `animation-effects.js` remains the sole event-effect controller. All motion is disabled by `prefers-reduced-motion: reduce`.
 - Required verification: canonical release SHA checks, actual 1366/820/390 screen rendering and readability/contrast, and focus/click preservation. PR review is required before merging; production deployment is not inferred from commits.
 - Repair: adjust or remove only the appended keyframes/pseudo-element animation rules and update their hashes if CSS overlay impacts readability or performance. Do not restore old Home/Lab layouts and do not touch learner data.
+
+## 2026-10-15 — Four-priority continuation and actual mobile contrast repair
+- Kept Home organization, Learn Lab interactions, shared misconception evidence and Guardian/Sanctuary persistence as four active priorities, without making a second owner or restoring an old layout.
+- Examined real CI `38840194474`: 820px passed, 390px failed the Commons rendered contrast audit. The measured Commons eyebrow was 4.20–4.27:1 in each tab, below the 4.5:1 normal-text gate. Its background is the existing moonlit plum gradient.
+- **Actual repair:** `current-site/collegium-commons.css` now sets the eyebrow to higher-luminance `#fff4dc` rather than `#efd29e`. No layout, controls or learning state touched. The exact changed source hash was updated in `current-site/source-manifest.json` to `1df0af1ff055ee7e0c48c0dbff1346ceba43f879f2535883cf33a85018d4cf2a`.
+- **Verification:** queued new 390/820/1366 Commons review on exact corrected commit, including pixel-based WCAG contrast. Do not relax contrast assertions or merge before green.
+- **Rollback/repair:** if text is still too pale against a lighter gradient sample, increase foreground luminance further or darken the header gradient only. Recalculate corresponding manifest hash. Do not revert to an earlier UI, delete Home tabs, or clear learner records.
