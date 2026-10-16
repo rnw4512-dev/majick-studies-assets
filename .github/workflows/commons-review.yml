@@ -63,3 +63,16 @@ jobs:
       - name: Connected probability regression
         if: always() && matrix.width == 1366
         run: timeout 150s node pages-release/current/browser-probability.cjs _site
+
+  probability-review:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Canonical build
+        run: python pages-release/current/build.py current-site _site
+      - name: Full probability pointer typing recovery and persistence sequence
+        run: timeout 150s node pages-release/current/browser-probability.cjs _site

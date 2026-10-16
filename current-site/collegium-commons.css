@@ -230,3 +230,10 @@ body[data-majick-room=home] .top .courseSelect{min-width:0!important;max-width:1
 
 /* Stable reading surface protects welcome copy from brighter celestial gradient samples. */
 #majCommonsHub .majCommonsWelcome p:not(.majCommonsCourse){background:#241827!important;color:#fff2e5!important;display:block!important;width:100%!important;padding:7px 10px!important;border-radius:7px;max-width:100%!important;box-sizing:border-box}
+
+/* Keep lunar ornaments behind every welcome line, including wrapped mobile copy. */
+#majCommonsHub .majCommonsWelcome{isolation:isolate}
+#majCommonsHub .majCommonsWelcome:before,#majCommonsHub .majCommonsWelcome:after{z-index:0}
+#majCommonsHub .majCommonsWelcome>*{position:relative;z-index:1}
+#majCommonsHub .majCommonsEyebrow{display:block;background:#241827!important;color:#fff4dc!important;padding:4px 8px;border-radius:7px;box-sizing:border-box}
+
