@@ -14,7 +14,7 @@ jobs:
       fail-fast: false
       matrix:
         width: [1366, 820, 390]
-    timeout-minutes: 15
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -54,6 +54,9 @@ jobs:
         with:
           name: commons-visual-audit-${{ matrix.width }}
           path: commons-qa/
+      - name: Sequential Commons cross-viewport contrast and panel retention
+        if: matrix.width == 1366
+        run: timeout 1000s node pages-release/current/browser-commons.cjs _site
       - name: Full interaction regression
         if: always() && matrix.width == 1366
         run: timeout 150s node pages-release/current/browser-interactions.cjs _site
