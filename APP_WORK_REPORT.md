@@ -149,3 +149,9 @@ Next: finish the latest review, repair any genuine failures, inspect desktop/tab
 - Does not change grading, question generation, production UI, saved progress, XP, Guardians or Sanctuary state.
 - Verification required on commit `74f45a92` or a descendant: canonical checks, full Commons browser matrix and desktop-only probability and interaction suites; inspect screenshot artifacts before merge.
 - Recovery: revert only the browser helper change `74f45a92` if it masks a legitimate overlap/scroll issue. Do not weaken task freshness, button hit-test, or state-persistence assertions.
+
+
+## 2026-10-15 — Publication gate and Back fallback
+- **Fix:** `current-site/probability-workshop.js` commit `a7cffdf1` now ensures the visible in-card Back control leaves the probability room if the shared `majickBack()` finds no history entry (common after a reload/deep link). Existing history navigation takes priority; home is only the fallback. Academic progress is not modified. Manifest rehashed in commit `d29f068c` (SHA-256 `d1fe0cc6f1de343b4c6110ca7bc16fae985f55664f993160b584e482a02060dc`).
+- **Release blocker:** prior review `38829419398` had green tablet/phone jobs but desktop still running at inspection. The **exact final commit** must pass all three responsive jobs, full desktop interactions, probability click/Back/unique-data/misconception/mastery/persistence, canonical hashes/build, and celebration/reduced-motion tests. Do not merge PR #131 or publish until green.
+- **Recovery:** revert only Back fallback commit `a7cffdf1` with matching manifest restoration if it navigates somewhere unexpectedly. No save deletion or reset.
