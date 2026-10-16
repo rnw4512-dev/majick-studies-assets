@@ -177,7 +177,7 @@ body[data-majick-room=home] .top .courseSelect{min-width:0!important;max-width:1
  content:"✦";position:absolute;right:41px;top:31px;
  color:#f1d49b;font:23px Georgia,serif;opacity:.9;
 }
-#majCommonsHub .majCommonsEyebrow{font-size:11px!important;letter-spacing:.14em!important;color:#efd29e!important}
+#majCommonsHub .majCommonsEyebrow{font-size:11px!important;letter-spacing:.14em!important;color:#fff4dc!important}
 #majCommonsHub .majCommonsWelcome h2{margin:2px 0 3px!important;font-size:clamp(23px,2.2vw,30px)!important;line-height:1.22!important}
 #majCommonsHub .majCommonsWelcome p{font-size:14px!important;line-height:1.4!important;max-width:64ch;margin:2px 0!important}
 #majCommonsHub .majCommonsCourse{display:inline-block;border:1px solid #b99664;border-radius:9px;padding:3px 10px;margin-top:5px!important;background:#271a32;color:#f8dcab!important}
