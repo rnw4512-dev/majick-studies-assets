@@ -357,6 +357,19 @@ function observeReactions(){
   };
   window.__v3341VerifiedReactionListener=handler;
   document.addEventListener('majick:verified-study-answer',handler);
+  document.addEventListener('majick:verified-academic-milestone',event=>{
+    const d=event?.detail||{};
+    if(d.kind!=='lesson'||!d.key||d.independent!==true)return;
+    const p=activePet();if(!p)return;
+    const dock=document.querySelector('.v3341StudyGuardian,.v3341GuardianHero');
+    const line=dock?.querySelector('.v3341ReactionLine');
+    if(line)line.textContent='Lesson checkpoint secured. Ready for your next challenge!';
+    if(dock){dock.classList.remove('reacting');void dock.offsetWidth;dock.classList.add('reacting')}
+    sparks(dock?.querySelector?.('.v3341StudyGuardianPortrait,.v3341GuardianHeroPortrait')||dock,22);
+    window.MajickAnimationEffects?.play?.('lesson');
+    // Visual Guardian/Sanctuary response only. No XP, bond or inventory award here.
+    broadcastReaction('lesson',p,{course:d.course,lessonId:d.lessonId,key:d.key});
+  });
 }
 function wrapCare(){
   const old=window.majickCareAction;if(typeof old!=='function'||old.__v3341)return;
