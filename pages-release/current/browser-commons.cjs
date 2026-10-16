@@ -38,6 +38,17 @@ async function run(){
  for(const width of widths){
   await call('Emulation.setDeviceMetricsOverride',{width,height:860,deviceScaleFactor:1,mobile:width<600});
   await sleep(350);
+  // Verify actual rendered effect layers at each physical viewport.
+  await waitFor('!!window.MajickAnimationEffects');
+  const visual=await ev('(()=>{const before=JSON.stringify(S.progress);const api=MajickAnimationEffects;api.play("course");const layer=document.querySelector(".majickFxLayer"),effect=layer?.querySelector(".majickFx"),rect=effect?.getBoundingClientRect();const style=layer&&getComputedStyle(layer);const out={type:effect?.dataset.fxType,particles:effect?.querySelectorAll(".majickFxParticle").length,pointerEvents:style?.pointerEvents,layerCount:document.querySelectorAll(".majickFxLayer").length,rendered:!!rect&&rect.width>20,noStateChange:before===JSON.stringify(S.progress)};api.clear();return out})()');
+  assert.equal(visual.type,'course');assert.equal(visual.particles,22);
+  assert.equal(visual.pointerEvents,'none');assert.equal(visual.layerCount,1);
+  assert(visual.rendered&&visual.noStateChange,'Celebration safety failed at '+width);
+  await call('Emulation.setEmulatedMedia',{features:[{name:'prefers-reduced-motion',value:'reduce'}]});
+  const reduced=await ev('(()=>{const api=MajickAnimationEffects;api.play("guardian");const x=document.querySelector(".majickFx");const out={type:x?.dataset.fxType,particles:x?.querySelectorAll(".majickFxParticle").length};api.clear();return out})()');
+  assert.equal(reduced.type,'guardian');assert.equal(reduced.particles,0,'Reduced motion must omit particles');
+  await call('Emulation.setEmulatedMedia',{features:[]});
+  console.log('PASS browser celebration viewport '+width+' overlay/no-clicks/reduced-motion/state isolation');
   const header=await ev('(()=>{const top=document.querySelector(".top"),r=top.getBoundingClientRect();return [...top.children].filter(e=>e.getClientRects().length&&getComputedStyle(e).position!=="absolute").map(e=>({tag:e.tagName,bottom:e.getBoundingClientRect().bottom,parentBottom:r.bottom}))})()');
   for(const child of header)assert(child.bottom<=child.parentBottom+2,'Header control escapes into reading area at '+width+': '+JSON.stringify(child));
   let baseline=await ev('(()=>{const h=document.querySelector("#majCommonsHub"),t=[...h.querySelectorAll("[data-commons-tab]")],p=[...h.querySelectorAll("[data-commons-panel]")];return {tabs:t.length,panels:p.length,active:p.filter(x=>!x.hidden).length,escaped:[...document.querySelector("#content").children].filter(x=>x!==h&&x.nodeType===1).map(x=>x.className||x.id),scrollWidth:document.documentElement.scrollWidth,clientWidth:document.documentElement.clientWidth}})()');
