@@ -89,4 +89,15 @@ function mount(){
 }
 window.MajickProbabilityWorkshop={mount,open};
 setTimeout(mount,0);
+// The main campus can rebuild #content after a saved-screen reload.
+// Observe only the root's direct replacement, not every form input or child.
+const appRoot=document.getElementById('content');
+const parent=appRoot?.parentElement;
+if(parent&&window.MutationObserver){
+ const hydrationObserver=new MutationObserver(records=>{
+  if(records.some(record=>[...record.addedNodes].some(node=>node.id==='content'||node.querySelector?.('#content'))))setTimeout(mount,0);
+ });
+ hydrationObserver.observe(parent,{childList:true});
+}
+window.addEventListener('pageshow',()=>setTimeout(mount,0));
 })();
