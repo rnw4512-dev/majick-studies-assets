@@ -53,7 +53,7 @@ async function run(){
   for(const child of header)assert(child.bottom<=child.parentBottom+2,'Header control escapes into reading area at '+width+': '+JSON.stringify(child));
   let baseline=await ev('(()=>{const h=document.querySelector("#majCommonsHub"),t=[...h.querySelectorAll("[data-commons-tab]")],p=[...h.querySelectorAll("[data-commons-panel]")];return {tabs:t.length,panels:p.length,active:p.filter(x=>!x.hidden).length,escaped:[...document.querySelector("#content").children].filter(x=>x!==h&&x.nodeType===1).map(x=>x.className||x.id),scrollWidth:document.documentElement.scrollWidth,clientWidth:document.documentElement.clientWidth}})()');
   const placement=await ev(`(()=>{
-   const expected={'.v3400MemoryQuest':'review','#v3400DailyLoop':'today','#v3377CampusDoors':'overview','.v3327PortalHero':'overview','.v3327StudentRecord':'overview','.v3327AcademicHall':'today','.v3327GuardianHall':'guardians','.v3317HomeSanctuary':'sanctuary','#mjPreassessmentReview':'review','#mjAdaptiveMastery':'review'};
+   const expected={'.v3400MemoryQuest':'review','#v3400DailyLoop':'today','#v3377CampusDoors':'overview','.v3327PortalHero':'overview','.v3327AcademicHall':'today','.v3327GuardianHall':'guardians','.v3317HomeSanctuary':'sanctuary','#mjPreassessmentReview':'review','#mjAdaptiveMastery':'review'};
    return Object.entries(expected).flatMap(([selector,tab])=>[...document.querySelectorAll(selector)].map(n=>({selector,expected:tab,actual:n.closest('[data-commons-panel]')?.dataset.commonsPanel})));
   })()`);
   assert(placement.some(x=>x.selector==='#mjPreassessmentReview'),'D772 preassessment must render');
@@ -63,9 +63,15 @@ async function run(){
   for(const tab of ['overview','today','review','guardians','sanctuary']){
    await ev('MajickCollegiumCommons.select('+JSON.stringify(tab)+')');
    let snapshot=await ev('(()=>{const h=document.querySelector("#majCommonsHub"),a=[...h.querySelectorAll("[data-commons-panel]")].filter(x=>!x.hidden);return {panel:a[0]?.dataset.commonsPanel,count:a.length,selected:h.querySelector("[aria-selected=true]")?.dataset.commonsTab,escaped:[...document.querySelector("#content").children].filter(x=>x!==h&&x.nodeType===1).length}})()');
+   // Capture the short default panel, then inspect every expanded tool as well.
+   await ev('document.querySelector("#majCommonsHub").scrollIntoView({block:"start"})');
+   const compactShot=await call('Page.captureScreenshot',{format:'png'});
+   fs.mkdirSync(process.env.COMMONS_QA_DIR||'commons-qa',{recursive:true});
+   fs.writeFileSync(path.join(process.env.COMMONS_QA_DIR||'commons-qa',width+'-'+tab+'-compact.png'),Buffer.from(compactShot.result.data,'base64'));
+   await ev('document.querySelectorAll("[data-commons-panel='+tab+'] .majCommonsToolShelf").forEach(d=>{d.removeAttribute("name");d.open=true})');
    const audit=await require('./commons-contrast.cjs')({call,ev,tab,width,out:process.env.COMMONS_QA_DIR||'commons-qa'});
    contrastFailures.push(...audit.failures.map(f=>({...f,width,tab})));
-   if(tab==='overview'&&width===1366){await ev('document.querySelector(".majCommonsRecordShelf").open=true');const recordAudit=await require('./commons-contrast.cjs')({call,ev,tab:'student-record',width,out:'commons-qa'});contrastFailures.push(...recordAudit.failures);await ev('document.querySelector(".majCommonsRecordShelf").open=false')}
+   await ev('document.querySelectorAll(".majCommonsToolShelf").forEach(d=>{d.open=false;d.name="commons-tools-"+d.dataset.commonsOwner})');
    assert.equal(snapshot.count,1);assert.equal(snapshot.panel,tab);assert.equal(snapshot.selected,tab);assert.equal(snapshot.escaped,0);
    assert(await ev('document.documentElement.scrollWidth<=innerWidth+2'),'Horizontal overflow in '+tab+' at '+width);
   }

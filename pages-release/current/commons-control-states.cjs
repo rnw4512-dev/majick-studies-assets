@@ -6,7 +6,7 @@ module.exports=async({call,ev})=>{
  const controls=[['overview','[data-commons-tab=overview]'],['overview','[data-commons-tab=review]'],['overview','[data-commons-next]'],['overview','.v3327Primary'],['today','[data-v3400-next]'],['review','[data-mj-pa-check]'],['review','[data-am-work] button'],['guardians','.v3327GuardianHall .v3327TextBtn'],['sanctuary','.v3327CampusSanctuary .v3327TextBtn']];
  for(let index=0;index<controls.length;index++){
   const [tab,selector]=controls[index];await ev('document.querySelector("[data-commons-tab='+tab+']").click()');
-  await ev('(()=>{const b=document.querySelector("#majCommonsHub '+selector+'");if(!b||!b.getClientRects().length)throw Error("Missing state-audit control");b.dataset.commonsControl="true";b.scrollIntoView({block:"center",behavior:"instant"})})()');
+  await ev('(()=>{const b=document.querySelector("#majCommonsHub '+selector+'");if(b){for(let p=b.parentElement;p;p=p.parentElement)if(p.tagName==="DETAILS")p.open=true}if(!b||!b.getClientRects().length)throw Error("Missing state-audit control");b.dataset.commonsControl="true";b.scrollIntoView({block:"center",behavior:"instant"})})()');
   const root=(await call('DOM.getDocument')).result.root.nodeId,nodeId=(await call('DOM.querySelector',{nodeId:root,selector:'[data-commons-control]'})).result.nodeId;
   const disabled=await ev('document.querySelector("[data-commons-control]").disabled');
   try{for(const state of ['normal','hover','focus','disabled']){

@@ -132,12 +132,16 @@ Game.prototype.v3321SetPlaced=function(id,placed){
   const state=this.v3321EnsureFurnitureState(this.v3321FurnitureState);
   if(!state.owned.includes(id))return {ok:false,id,message:'That furniture is not owned.'};
   const stored=new Set(state.stored);
+  const newlyPlaced=placed&&stored.has(id);
   if(placed)stored.delete(id);else stored.add(id);
   state.stored=[...stored];
   state.preset=null;
   this.v3321ApplyFurnitureVisibility();
   this.v3321CommitFurnitureState();
-  if(placed&&typeof window!=='undefined')window.MajickAnimationEffects?.play?.('sanctuary',{label:'Furniture placed'});
+  if(newlyPlaced&&typeof window!=='undefined'){
+    // Sanctuary is framed; reuse the host's existing visual owner after the save.
+    try{const effects=window.MajickAnimationEffects||window.parent?.MajickAnimationEffects;effects?.play?.('sanctuary',{label:'Furniture placed'})}catch(_){}
+  }
   this.v3320RefreshObjectBadges?.(this.v3317CareState);
   this.v3321BuildFurnitureManager(this.v3321ManagerPage||0);
   this.showToast?.(placed?'Furniture placed':'Furniture stored',
@@ -388,3 +392,4 @@ function inspect(scene){
 
 window.MajickSanctuaryCustomize={VERSION,COZY_DORM,manifestObjects,inspect};
 })();
+

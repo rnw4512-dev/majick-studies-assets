@@ -44,9 +44,6 @@ jobs:
       - name: Browser test Collegium Commons desktop tablet mobile and tab interactions
         run: node pages-release/current/browser-commons.cjs _site
 
-      - name: Browser certify Collegium Commons tabs and responsive Home
-        run: node pages-release/current/browser-commons.cjs _site
-
       - name: Browser test connected probability learning and teaching mastery
         run: node pages-release/current/browser-probability.cjs _site
 

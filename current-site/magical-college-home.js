@@ -114,6 +114,26 @@ function sanctuary(){
 function incubatorHTML(){
  try{const care=window.MajickGuardianCare;return care?.eggIncubatorHTML?.(care.snapshot())||''}catch(_){return ''}
 }
+function studentRecordHTML(){
+  const a=academic(),acct=account(),pets=guardians();
+  const answers=(a.p?.answers||[]).length;
+  const status=a.mastery?.status||'Not Started';
+  const target=a.mastery?.targetRigor||1;
+  const sectionPct=a.sectionProgress?.pct||0;
+  const sectionTitle=a.section?.title||'Course Path';
+  const lessonTitle=a.lesson?.title||'Choose your next lesson';
+  const recent=Math.round(Number(a.st?.acc||0)*100);
+  const readiness=Math.max(0,Math.min(100,Number(a.st?.readiness||0)));
+  const streak=(()=>{try{return dayStreak()}catch(_){return Number(a.p?.streak||0)}})();
+  const lessonNo=a.lesson?.review?'SECTION REVIEW':a.lesson?.number?('LESSON '+a.lesson.number):'CURRENT LESSON';
+
+
+ return '<section class="v3327StudentRecord"><div class="v3327RecordHead"><div><small>ARCANE STUDENT RECORD</small><h3>Course progress and Majick progress are tracked separately</h3></div><span>'+E(a.id)+' • '+E(status)+'</span></div><div class="v3327RecordGrid">'+
+      '<article><small>ACADEMIC RECORD</small><b>'+readiness+'% OA readiness</b><p>'+answers+' answered questions • '+recent+'% recent accuracy • '+sectionPct+'% through this section</p></article>'+
+      '<article><small>MAJICK RECORD</small><b>'+Math.round(Number(acct.xp)||0)+' XP • '+Math.round(Number(acct.crystals)||0)+' crystals</b><p>'+pets.length+' Guardians • '+streak+' day study streak • shared across every course</p></article>'+
+      '<article><small>QUICK HALLS</small><div class="v3327QuickLinks"><button onclick="navigate(\'learninglab\')">Course Path</button><button onclick="navigate(\'guide\')">Study Guide</button><button onclick="navigate(\'analytics\')">Analytics</button><button onclick="navigate(\'vault\')">Magic Vault</button></div></article>'+
+    '</div></section>';
+}
 function magicalHomeHTML(){
   const a=academic(),acct=account(),pets=guardians();
   const answers=(a.p?.answers||[]).length;
@@ -138,7 +158,6 @@ function magicalHomeHTML(){
       '<section class="v3327Hall v3327AcademicHall"><header><div><small>ACADEMIC HALL</small><h3>Your Current Learning Path</h3></div><span class="v3327Status '+E(status.toLowerCase().replace(/\s+/g,'-'))+'">'+E(status)+'</span></header>'+
         '<div class="v3327CourseScroll"><small>'+E(sectionTitle)+'</small><h2>'+E(lessonTitle)+'</h2><p>'+E(nextAcademicText(a))+'</p></div>'+
         paceCard(a)+
-        '<div class="v3327AcademicMetrics"><div><b>'+readiness+'%</b><span>OA readiness</span></div><div><b>'+recent+'%</b><span>recent accuracy</span></div><div><b>R'+target+'</b><span>next rigor</span></div><div><b>'+answers+'</b><span>course answers</span></div></div>'+
         '<div class="v3327SectionProgress"><div><span>'+E(lessonNo)+'</span><b>'+sectionPct+'%</b></div><i><em style="width:'+sectionPct+'%"></em></i></div>'+
         '<div class="v3327Ritual"><small>TODAY’S ACADEMIC RITUAL</small><ol><li>Open the current Tutor chapter.</li><li>Read until you can explain the key idea without looking.</li><li>Complete adaptive practice at R'+target+'.</li><li>Repair any concept that drops into Needs Review.</li></ol></div>'+
       '</section>'+
@@ -152,11 +171,7 @@ function magicalHomeHTML(){
 
     sanctuary()+
 
-    '<section class="v3327StudentRecord"><div class="v3327RecordHead"><div><small>ARCANE STUDENT RECORD</small><h3>Course progress and Majick progress are tracked separately</h3></div><span>'+E(a.id)+' • '+E(status)+'</span></div><div class="v3327RecordGrid">'+
-      '<article><small>ACADEMIC RECORD</small><b>'+readiness+'% OA readiness</b><p>'+answers+' answered questions • '+recent+'% recent accuracy • '+sectionPct+'% through this section</p></article>'+
-      '<article><small>MAJICK RECORD</small><b>'+Math.round(Number(acct.xp)||0)+' XP • '+Math.round(Number(acct.crystals)||0)+' crystals</b><p>'+pets.length+' Guardians • '+streak+' day study streak • shared across every course</p></article>'+
-      '<article><small>QUICK HALLS</small><div class="v3327QuickLinks"><button onclick="navigate(\'learninglab\')">Course Path</button><button onclick="navigate(\'guide\')">Study Guide</button><button onclick="navigate(\'analytics\')">Analytics</button><button onclick="navigate(\'vault\')">Magic Vault</button></div></article>'+
-    '</div></section>'+
+    '<button class="v3327TextBtn" data-home-analytics onclick="navigate(\'analytics\')">View Analytics · course and campus progress →</button>'+
   '</div>';
 }
 
@@ -166,12 +181,13 @@ const previousScreenHTML=window.screenHTML;
 if(typeof previousScreenHTML==='function'&&!previousScreenHTML.__v3327MoonlitHome){
   const moonlitScreenHTML=function(){
     if(window.S?.screen==='home')return magicalHomeHTML();
+    if(window.S?.screen==='analytics')return previousScreenHTML.apply(this,arguments)+studentRecordHTML();
     return previousScreenHTML.apply(this,arguments);
   };
   moonlitScreenHTML.__v3327MoonlitHome=true;
   window.screenHTML=moonlitScreenHTML;
 }
-window.MajickCollegeDashboard={VERSION,academic,coursePace,paceCard,magicalHomeHTML};
+window.MajickCollegeDashboard={VERSION,academic,coursePace,paceCard,studentRecordHTML,magicalHomeHTML};
 // The authoritative app runtime performs its first render before this overlay loads.
 // Re-render home once so Moonlit Collegium is the first screen, not a second-visit upgrade.
 if(window.S?.screen==='control'){
@@ -182,3 +198,4 @@ if(window.S?.screen==='home')setTimeout(()=>{
   if(!document.querySelector('.v3327Home'))try{window.render?.()}catch(e){console.warn('Moonlit Collegium first render',e)}
 },0);
 })();
+

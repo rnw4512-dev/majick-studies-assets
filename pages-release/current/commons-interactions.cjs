@@ -2,7 +2,7 @@
 const assert=require('node:assert/strict');
 module.exports=async function({ev,waitFor,call,sleep}){
  async function home(tab){await ev('navigate("home")');await waitFor('!!document.querySelector("#majCommonsHub")');await ev('document.querySelector("[data-commons-tab='+tab+']").click()')}
- async function click(selector){await waitFor('(()=>{const e=document.querySelector('+JSON.stringify(selector)+');return !!e&&e.getClientRects().length>0})()');await ev('(()=>{const b=document.querySelector('+JSON.stringify(selector)+');if(!b||!b.getClientRects().length)throw Error("Missing visible action: '+selector.replace(/"/g,'')+'");b.click()})()')}
+ async function click(selector){await ev('(()=>{const e=document.querySelector('+JSON.stringify(selector)+');for(let p=e?.parentElement;p;p=p.parentElement)if(p.tagName==="DETAILS"&&!p.open)p.querySelector(":scope > summary").click()})()');await waitFor('(()=>{const e=document.querySelector('+JSON.stringify(selector)+');return !!e&&e.getClientRects().length>0})()');await ev('(()=>{const b=document.querySelector('+JSON.stringify(selector)+');if(!b||!b.getClientRects().length)throw Error("Missing visible action: '+selector.replace(/"/g,'')+'");b.click()})()')}
  const routes=[
   ['overview','.v3327HeroActions .v3327Primary','learninglab'],
   ['overview','.v3327HeroActions button[onclick*="mission"]','mission'],
@@ -18,6 +18,10 @@ module.exports=async function({ev,waitFor,call,sleep}){
   ['review','[data-v3400-memory]','learninglab']
  ];
  for(const [tab,selector,screen] of routes){await home(tab);await click(selector);await waitFor('S.screen==='+JSON.stringify(screen));assert((await ev('document.querySelector("#content").textContent.trim().length'))>20,'Empty destination '+screen)}
+ await home('overview');
+ assert.equal(await ev('!!document.querySelector(".v3327StudentRecord,#mjD772WguHistory,.v3327AcademicMetrics")'),false,'Detailed analytics must not clutter Home');
+ await click('[data-home-analytics]');await waitFor('S.screen==="analytics"&&!!document.querySelector(".v3327StudentRecord")&&!!document.querySelector("#mjD772WguHistory")');
+ assert.equal(await ev('document.querySelectorAll(".nav [data-nav=analytics]").length'),1,'One global Analytics destination');
  // Exercise every current sidebar destination and every campus-tools action.
  await home('overview');
  const navigation=await ev('[...document.querySelectorAll(".nav button[data-nav]")].map(b=>b.dataset.nav)');
@@ -27,7 +31,7 @@ module.exports=async function({ev,waitFor,call,sleep}){
  const tools=await ev('[...document.querySelectorAll("#v3377CampusDoors details [data-go]")].map(b=>b.dataset.go)');
  for(const route of tools){await home('overview');await ev('document.querySelector("#v3377CampusDoors details").open=true');await click('#v3377CampusDoors [data-go="'+route+'"]');await waitFor('S.screen==='+JSON.stringify(route))}
  const quickRoutes=['learninglab','guide','analytics','vault'];
- for(const route of quickRoutes){await home('overview');await ev('document.querySelector(".majCommonsRecordShelf").open=true');await click('.v3327QuickLinks button[onclick*="'+route+'"]');await waitFor('S.screen==='+JSON.stringify(route))}
+ for(const route of quickRoutes){await home('overview');await click("[data-home-analytics]");await waitFor('S.screen==="analytics"&&!!document.querySelector(".v3327StudentRecord")');await click('.v3327QuickLinks button[onclick*="'+route+'"]');await waitFor('S.screen==='+JSON.stringify(route))}
  console.log('PASS every current sidebar destination, campus tools and expanded Student Record navigation');
  console.log('PASS Commons existing Learn, Study Now, Grimoire, Realm, Guardian, Sanctuary, material, daily-loop and Memory Quest actions');
  await home('guardians');
@@ -86,6 +90,7 @@ module.exports=async function({ev,waitFor,call,sleep}){
  await waitFor('document.querySelector(".v3317SanctuaryFrame").contentWindow.majickPhaserGame.scene.getScene("Game").v3321FurnitureState.stored.includes('+JSON.stringify(item)+')');
  await ev('(()=>{const s=document.querySelector(".v3317SanctuaryFrame").contentWindow.majickPhaserGame.scene.getScene("Game");s.v3321FurnitureButton.emit("pointerup");const id='+JSON.stringify(item)+',name=document.querySelector(".v3317SanctuaryFrame").contentWindow.MajickSanctuaryCustomize.manifestObjects(s).find(x=>x.id===id).displayName,row=s.v3321FurnitureManager.list.find(n=>n.text===name);const b=s.v3321FurnitureManager.list.find(n=>n.text==="PLACE"&&Math.abs(n.y-row.y)<10);if(!b)throw Error("Missing stored item PLACE control");b.emit("pointerup")})()');
  await waitFor('!S.majickAccount.sanctuaryFurniture.stored.includes('+JSON.stringify(item)+')');
+ assert.equal(await ev('document.querySelector(".majickFx")?.dataset.fxType'),'sanctuary','Phase 6 placement uses the visible parent effect owner');
  console.log('PASS Sanctuary furniture STORE/PLACE handlers, parent save bridge and actual reload');
 
 };
