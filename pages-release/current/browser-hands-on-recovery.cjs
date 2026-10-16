@@ -13,7 +13,7 @@ module.exports=async({ev,call,waitFor})=>{
   const key=lesson.dataset.lessonKey;
   const lab=lesson;
   const q=lab.querySelector('[data-lab-independent]');
-  const prompt=q.querySelector('p')?.textContent;
+  const visual=q.querySelector('figure')?.outerHTML;
   const vals=[...lab.querySelectorAll('[data-sort-pool] button')];
   if(!vals.length)throw Error('No physical sortable buttons');
   // A wrong answer is evaluated using the existing DOM handlers.
@@ -37,8 +37,8 @@ module.exports=async({ev,call,waitFor})=>{
   if([...lab.querySelectorAll('[data-sort-pool] button:disabled')].length)throw Error('Clear did not re-enable observations');
   lab.querySelector('[data-lab-new]').click();
   const next=lab.querySelector('[data-lab-independent]');
-  const nextPrompt=next.querySelector('p')?.textContent;
-  if(!nextPrompt||nextPrompt===prompt)throw Error('Fresh problem did not change scenario');
+  const nextVisual=next.querySelector('figure')?.outerHTML;
+  if(!nextVisual||nextVisual===visual)throw Error('Fresh problem reused the same plotted data');
   if(next.querySelector('[data-lab-submit]').disabled)throw Error('Fresh submission disabled');
   const progress=S.progress.D772.adaptiveSkills?.['d772-s2-l4-1'];
   if(progress?.masteryCertified)throw Error('Formative correction falsely certified mastery');
