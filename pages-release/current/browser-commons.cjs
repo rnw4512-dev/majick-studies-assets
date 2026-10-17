@@ -29,6 +29,8 @@ async function run(){
  await ev(`document.querySelector('[data-commons-tab=overview]').focus()`);
  for(const [key,code,expected] of [['ArrowRight','ArrowRight','today'],['End','End','sanctuary'],['Home','Home','overview'],['ArrowLeft','ArrowLeft','sanctuary']]){
   await call('Input.dispatchKeyEvent',{type:'keyDown',key,code});await call('Input.dispatchKeyEvent',{type:'keyUp',key,code});
+  const keyboardStatus=await ev(`(()=>({active:document.activeElement?.outerHTML?.slice(0,180),selected:[...document.querySelectorAll('#majCommonsHub [data-commons-tab]')].filter(x=>x.getAttribute('aria-selected')==='true').map(x=>x.dataset.commonsTab),screen:window.S?.screen,tabCount:document.querySelectorAll('#majCommonsHub [data-commons-tab]').length}))()`);
+  console.log('COMMONS PHYSICAL KEY',key,JSON.stringify(keyboardStatus));
   assert.equal(await ev(`document.activeElement?.dataset.commonsTab`),expected,'Keyboard focus '+key);
   assert.equal(await ev(`document.querySelector('[aria-selected=true]')?.dataset.commonsTab`),expected,'Keyboard selection '+key);
  }
