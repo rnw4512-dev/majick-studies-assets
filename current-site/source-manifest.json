@@ -407,7 +407,7 @@
     "adaptive-learning-core.css": "f984e356b6efa4d7608e1226aec5df13f024f702ea3a51b56d8c75a589a44646",
     "course-learning-profiles.js": "60d25988b6ae0ed1cab981ce99d2d8ed49fe9c8553b189df3d83103797bfe925",
     "course-learning-profiles.css": "f0f4f53b2c9422f0ed884d4688af1d8367e63851b367331f78b994b6548b5caa",
-    "reward-core.js": "1e9bab865eb510d2a8c7a100d46975885c4540d8623c750b0f8bad0c4804d55b",
+    "reward-core.js": "5628deb8798541d54df6cab00e3d2a791be06d5f7ed945c457f7e6215076b11b",
     "reward-core.css": "21e9a4623f58b5a8a4cc4a720d4dc12adf9781928b801c328aceb9e24d8f6922",
     "assets/rewards/reference-boards/cascade/cascade-collection-reference-board.webp": "1b4d05d2b5303afeec9d2b51713d3a1aef76754ff6c0e242724a165218f79b68",
     "assets/rewards/reference-boards/cascade/cascade-collection-reference-board-runtime.webp": "19a8202353e552f20173d109a6c7b61fcfe91420e5efa59de56bea771e745b1b",
@@ -504,7 +504,7 @@
     "assets/rewards/aurelia/items/flowering-sage-planter.webp": "34c168e82b480b132b8531d07006e4355bf5e802a647109128261d9556a26e3d",
     "assets/rewards/aurelia/items/feather-play-wand.webp": "ddef86bed10da763f1749c3e5b93ebb69098ef1eb0b1ccab8a759285895bf86e",
     "enchanted-atelier.js": "05b9b7e0f3d0e33d80ad833153703ccfe5a3a899a4be956e83797e474a007924",
-    "scholar-companion.js": "121b49ac5295b746d2da98013f6c92ce063ccb8a647cb33758112a968cdc8862",
+    "scholar-companion.js": "15d79346b05355c4f06f3763c7748dd17b42e5fddc8c62501bfc4930fc1b6fe4",
     "scholar-progression.js": "c7be90447c9015186e438d44034fe90fecd15e9926203f55ab89cd062ec9090c",
     "study-visual-anchors.js": "253ac1cf76f1e0e2fd73fa3cb72849a3592e838e2a46914f405f83043b3f5fce",
     "assets/atelier/avatars/layer-dress-emerald-v1.webp": "c866a6836ac0521f8bfab5c7cfcb2644efa4e4cedb92bce2360b899aa7f387e1",
@@ -824,6 +824,12 @@
     "assets/effects/celebrations/lesson-complete-seal.svg": "66d0d723db2bda1149c79bd1aa03e2c9be22df891ed9a5f842bf44cecf922ddf",
     "assets/effects/celebrations/course-complete-sigil.svg": "5bb72f7c3da585d477527f057c9c42930abd859db8681edaac3616ed130ca1a6",
     "room-section-nav.js": "bd9124934b4690f1ab043a59e0dc5b612de955d3db1e0ccf7528f80bf765eef5",
-    "room-section-nav.css": "13e365268595d22c6957fce8937757ee84b0f88145e62846a9f211e3b27c6915"
+    "room-section-nav.css": "13e365268595d22c6957fce8937757ee84b0f88145e62846a9f211e3b27c6915",
+    "assets/rewards/potions/clarity-potion.svg": "af088600115e517081dbd309fa00a74bf4b0f43e1e19ad32b1b47b44f14eb296",
+    "assets/rewards/potions/recall-draught.svg": "cd4683327f2ce3c2513bcce31e6284e748d3898712ad875bb831728a15bc55d9",
+    "assets/rewards/potions/moonfocus-elixir.svg": "78b7e391e9a92a8e7d239c7a47a520633e2344ced35fe9d03f028c510ac9227b",
+    "assets/rewards/potions/crystal-sight-potion.svg": "0e9d03abb0ea302ff651c308d0229b560be478bb19ea34f59b7053ed17d10991",
+    "assets/rewards/potions/starlight-tonic.svg": "ddff6a64fe1c0d552b8bc60c963485feddec10935ea110505fab84e58b12cb5a",
+    "assets/rewards/crystals/majick-crystal.svg": "39bb9ccaa6ea749f175414f8e5405195260cb2b1762a809f48f060419e45b9f2"
   }
 }
