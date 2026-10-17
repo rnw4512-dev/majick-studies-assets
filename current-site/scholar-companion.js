@@ -26,7 +26,7 @@ function ensure(){
 function refresh(force=false){
  ensure();if(!dock)return;
  const p=state(),s=scene(),info=SCENES[s]||SCENES.home,pose=Date.now()<poseUntil?specialPose:info[1];
- const key=[s,pose,p.name,p.skin,p.hair,p.robe,p.color,p.equipped,p.accessory,opened].join('|');
+ const key=[s,pose,p.name,p.skin,p.hair,p.robe,p.color,p.equipped,p.accessory,p.hairFit?.x||0,p.hairFit?.y||0,p.hairFit?.size||0,opened].join('|');
  if(!force&&key===current)return;current=key;
  dock.dataset.scene=s;dock.dataset.pose=pose;
  const markup=art(p);
@@ -76,6 +76,9 @@ function start(){
  const root=document.getElementById('app');
  if(root)new MutationObserver(()=>{if(!document.getElementById('atelierOverlay')?.hidden)return;refresh()}).observe(root,{childList:true,subtree:false});
  document.addEventListener('majick-scholar-react',e=>react(e.detail?.pose||'celebrating'));
+ // Celebrate only academic milestones that the learning owner has already verified.
+ document.addEventListener('majick:verified-academic-milestone',()=>react('celebrating'));
+
  window.addEventListener('majick-save-status',()=>refresh());
  setInterval(()=>refresh(),2500);
 }
