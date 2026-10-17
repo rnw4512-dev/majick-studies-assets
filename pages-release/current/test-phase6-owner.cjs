@@ -23,4 +23,8 @@ assert(companion.includes("majick:verified-academic-milestone"),'Scholar celebra
 for(const name of ['clarity-potion','recall-draught','moonfocus-elixir','crystal-sight-potion','starlight-tonic'])assert(fs.existsSync(path.join(root,'assets/rewards/potions',name+'.svg')),'Potion art missing: '+name);
 assert(fs.existsSync(path.join(root,'assets/rewards/crystals/majick-crystal.svg')),'Crystal art missing');
 assert(vault.includes('majPotionArt')&&vault.includes('majCrystalBalance'),'Potion and crystal art must be displayed by existing Vault');
-console.log('PASS shared scholar hair fit, room presence, potion and crystal artwork');
+assert(companion.includes("majick:verified-study-answer")&&companion.includes("d.correct===true&&d.independent===true"),'Scholar response must require verified independent success');
+assert(!companion.includes("if(t.closest('[data-correct],.correctAnswer,.is-correct'))react('celebrating')"),'Raw answer clicks must not trigger academic celebration');
+for(const kind of ["earned","crafted","potion","guardian-accessory"])assert(vault.includes("scholarVisual('"+kind+"'"),'Existing reward owner must emit '+kind+' only after successful state change');
+assert(companion.includes("majick:scholar-visual"),'Scholar must subscribe to verified economy changes');
+console.log('PASS shared scholar hair fit, room presence, evidence-driven reactions, potion and crystal artwork');
