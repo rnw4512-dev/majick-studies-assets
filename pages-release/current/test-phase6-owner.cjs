@@ -33,7 +33,14 @@ console.log('PASS Guardian motion static gate: real two-frame artwork, no rotati
 const workshop=load('solution-engine.js');new vm.Script(workshop,{filename:'solution-engine.js'});
 assert(workshop.includes("if(screen!=='mission')return"),'Reasoning Workshop must not auto-append to Study Guide or Game Realm');
 assert(workshop.includes("data-study-view=\"practice\"")&&workshop.includes("data-study-view=\"reasoning\""),'Studio tabs must share the Study Now shell');
-assert(workshop.includes("const MIX_ORDER=['d772-data','mean','probability'"),'Mixed OA order must interleave all three D772 sections');
+const bankCtx={window:{}};vm.runInNewContext(load('lesson-activity-bank.js'),bankCtx);
+const sourceTasks=bankCtx.window.MajickLessonActivities.tasks.filter(t=>t.course==='D772');
+const begin=workshop.indexOf('function mixTasks(cid)'),end=workshop.indexOf('\nfunction mount(){',begin);
+assert(begin>=0&&end>begin,'Mixed section selection implementation missing');
+const actual=new Function('BANK',workshop.slice(begin,end)+'\nreturn mixTasks("D772");')({D772:sourceTasks});
+assert.equal(actual.length,sourceTasks.length,'Mixed queue lost a real D772 activity');
+assert.equal(new Set(actual.map(t=>t.id)).size,sourceTasks.length,'Mixed queue repeats an activity unexpectedly');
+assert.deepEqual(actual.slice(0,9).map(t=>Number(t.section)),[1,2,3,1,2,3,1,2,3],'OA workshop must interleave sections 1, 2, and 3 across the actual source bank');
 assert(workshop.includes("id:'d772-s1")===false || workshop.includes("mixTasks"),'Mixed course task owner must exist');
 console.log('PASS Study Realm workshop: one panel, mixed Section 1/2/3 OA practice, no Guide stack');
 
