@@ -101,7 +101,7 @@ const PROTECTED_GUARDIAN_BLOB_SHA1={
 assert.equal(Object.keys(PROTECTED_GUARDIAN_BLOB_SHA1).length,33);
 for(const [file,expectedSha] of Object.entries(PROTECTED_GUARDIAN_BLOB_SHA1)){
  const bytes=fs.readFileSync(path.join(root,'sanctuary/assets/motion',file));
- const actualSha=crypto.createHash('sha1').update(Buffer.from('blob '+bytes.length+'\\0')).update(bytes).digest('hex');
+ const actualSha=crypto.createHash('sha1').update(Buffer.from('blob '+bytes.length+'\0')).update(bytes).digest('hex');
  assert.equal(actualSha,expectedSha,'Protected Guardian original changed: '+file);
 }
 console.log('PASS protected Guardian artwork: all 33 original binary assets byte-identical');
