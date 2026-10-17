@@ -59,6 +59,18 @@ async function until(expr,limit=110){for(let i=0;i<limit;i++){try{if(await ev(ex
  await ev('(()=>{const s=majickPhaserGame.scene.getScene("Game");for(const g of s.v3317CareState.roster){if(!["luna","ember","nova","mallow"].includes(g.type)){g.stageSlug="guardian";g.level=6}}s.v3348SyncRoster();return true})()');
  await until('(()=>{const s=majickPhaserGame.scene.getScene("Game");return ["vesper","briar","zephyr","prism","rook","solara"].every(t=>s.v3348Sprites?.["qa-"+t]?.texture?.key==="v3348-"+t+"-guardian-room")})()',90);
  console.log('PASS PHASER SIX-GUARDIAN STAGE CYCLING',JSON.stringify(stageResults));
+ // Verify actual play and sleep image selection, explicitly reporting legacy fallback gaps.
+ const actionFrames=[];
+ for(const type of ['luna','ember','nova','mallow']){
+  for(const action of ['play','sleep']){
+   await ev('(()=>{const s=majickPhaserGame.scene.getScene("Game");s.v3317ShowAction("'+type+'","'+action+'",4000);return true})()');
+   await until('(()=>{const s=majickPhaserGame.scene.getScene("Game");return !!s["v3317Action_'+type+'"]?.active})()',70);
+   const k=await ev('majickPhaserGame.scene.getScene("Game")["v3317Action_'+type+'"]?.texture?.key||""');
+   assert(k,'Original Guardian '+type+' '+action+' must show a pose image');
+   actionFrames.push({type,action,key:k,paintedOriginal:k.startsWith('v3317-original-')});
+  }
+ }
+ console.log('PHASER ORIGINAL CARE POSE SOURCES',JSON.stringify(actionFrames));
  const played=await ev('(()=>{const s=majickPhaserGame.scene.getScene("Game");for(const t of ["vesper","briar","zephyr","prism","rook","solara"]){s.v3317CareReaction?.({ok:true,guardianId:"qa-"+t,guardianType:t,action:"play",visualAction:"play"})}return ["vesper","briar","zephyr","prism","rook","solara"].map(t=>({type:t,state:s.v3348Sprites?.["qa-"+t]?.getData?.("v3351MotionState")}))})()');
  assert(played.some(x=>String(x.state).includes('play')),'Care interaction did not produce Guardian play motion');
  console.log('PASS REAL PHASER',JSON.stringify({width,guardianCount:initial.length,originalFramePairs:frame,stageImages:second.slice(4).map(x=>({type:x.type,key:x.key})),interaction:played}));
