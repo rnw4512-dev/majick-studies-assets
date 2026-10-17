@@ -60,7 +60,7 @@
   "loadingPolicy": {
     "preload": "current Guardian stage assets",
     "lazyLoad": "other stages on profile/evolution view",
-    "missingAssetFallback": "protected original movement art",
+    "missingAssetFallback": "Use same Guardian stage portrait; then same Guardian canonical portrait; never another Guardian or placeholder art unless both unavailable",
     "cacheKeyPattern": "evo-{guardian}-{stage}-{action}"
   },
   "renderPolicy": {
@@ -476,6 +476,402 @@
             "play": "evo-aurelia-celestial-play",
             "sleep": "evo-aurelia-celestial-sleep"
           }
+        }
+      }
+    },
+    "vesper": {
+      "displayName": "Vesper",
+      "internalId": "vesper",
+      "source": "assets/familiars/evolution_stages/",
+      "actionAssetsStatus": "not-created-do-not-substitute-other-guardian",
+      "fallbackPolicy": "same-guardian-stage-portrait",
+      "stageOrder": [
+        "new-bond",
+        "apprentice",
+        "guardian",
+        "ascendant",
+        "celestial"
+      ],
+      "stages": {
+        "new-bond": {
+          "portrait": "../assets/familiars/evolution_stages/vesper-new-bond.webp",
+          "assets": {},
+          "missingActions": [
+            "walk",
+            "play",
+            "sleep"
+          ],
+          "renderPolicy": "retain-existing-roster-motion-using-correct-stage-portrait"
+        },
+        "apprentice": {
+          "portrait": "../assets/familiars/evolution_stages/vesper-apprentice.webp",
+          "assets": {},
+          "missingActions": [
+            "walk",
+            "play",
+            "sleep"
+          ],
+          "renderPolicy": "retain-existing-roster-motion-using-correct-stage-portrait"
+        },
+        "guardian": {
+          "portrait": "../assets/familiars/evolution_stages/vesper-guardian.webp",
+          "assets": {},
+          "missingActions": [
+            "walk",
+            "play",
+            "sleep"
+          ],
+          "renderPolicy": "retain-existing-roster-motion-using-correct-stage-portrait"
+        },
+        "ascendant": {
+          "portrait": "../assets/familiars/evolution_stages/vesper-ascendant.webp",
+          "assets": {},
+          "missingActions": [
+            "walk",
+            "play",
+            "sleep"
+          ],
+          "renderPolicy": "retain-existing-roster-motion-using-correct-stage-portrait"
+        },
+        "celestial": {
+          "portrait": "../assets/familiars/evolution_stages/vesper-celestial.webp",
+          "assets": {},
+          "missingActions": [
+            "walk",
+            "play",
+            "sleep"
+          ],
+          "renderPolicy": "retain-existing-roster-motion-using-correct-stage-portrait"
+        }
+      }
+    },
+    "briar": {
+      "displayName": "Briar",
+      "internalId": "briar",
+      "source": "assets/familiars/evolution_stages/",
+      "actionAssetsStatus": "not-created-do-not-substitute-other-guardian",
+      "fallbackPolicy": "same-guardian-stage-portrait",
+      "stageOrder": [
+        "new-bond",
+        "apprentice",
+        "guardian",
+        "ascendant",
+        "celestial"
+      ],
+      "stages": {
+        "new-bond": {
+          "portrait": "../assets/familiars/evolution_stages/briar-new-bond.webp",
+          "assets": {},
+          "missingActions": [
+            "walk",
+            "play",
+            "sleep"
+          ],
+          "renderPolicy": "retain-existing-roster-motion-using-correct-stage-portrait"
+        },
+        "apprentice": {
+          "portrait": "../assets/familiars/evolution_stages/briar-apprentice.webp",
+          "assets": {},
+          "missingActions": [
+            "walk",
+            "play",
+            "sleep"
+          ],
+          "renderPolicy": "retain-existing-roster-motion-using-correct-stage-portrait"
+        },
+        "guardian": {
+          "portrait": "../assets/familiars/evolution_stages/briar-guardian.webp",
+          "assets": {},
+          "missingActions": [
+            "walk",
+            "play",
+            "sleep"
+          ],
+          "renderPolicy": "retain-existing-roster-motion-using-correct-stage-portrait"
+        },
+        "ascendant": {
+          "portrait": "../assets/familiars/evolution_stages/briar-ascendant.webp",
+          "assets": {},
+          "missingActions": [
+            "walk",
+            "play",
+            "sleep"
+          ],
+          "renderPolicy": "retain-existing-roster-motion-using-correct-stage-portrait"
+        },
+        "celestial": {
+          "portrait": "../assets/familiars/evolution_stages/briar-celestial.webp",
+          "assets": {},
+          "missingActions": [
+            "walk",
+            "play",
+            "sleep"
+          ],
+          "renderPolicy": "retain-existing-roster-motion-using-correct-stage-portrait"
+        }
+      }
+    },
+    "zephyr": {
+      "displayName": "Zephyr",
+      "internalId": "zephyr",
+      "source": "assets/familiars/evolution_stages/",
+      "actionAssetsStatus": "not-created-do-not-substitute-other-guardian",
+      "fallbackPolicy": "same-guardian-stage-portrait",
+      "stageOrder": [
+        "new-bond",
+        "apprentice",
+        "guardian",
+        "ascendant",
+        "celestial"
+      ],
+      "stages": {
+        "new-bond": {
+          "portrait": "../assets/familiars/evolution_stages/zephyr-new-bond.webp",
+          "assets": {},
+          "missingActions": [
+            "walk",
+            "play",
+            "sleep"
+          ],
+          "renderPolicy": "retain-existing-roster-motion-using-correct-stage-portrait"
+        },
+        "apprentice": {
+          "portrait": "../assets/familiars/evolution_stages/zephyr-apprentice.webp",
+          "assets": {},
+          "missingActions": [
+            "walk",
+            "play",
+            "sleep"
+          ],
+          "renderPolicy": "retain-existing-roster-motion-using-correct-stage-portrait"
+        },
+        "guardian": {
+          "portrait": "../assets/familiars/evolution_stages/zephyr-guardian.webp",
+          "assets": {},
+          "missingActions": [
+            "walk",
+            "play",
+            "sleep"
+          ],
+          "renderPolicy": "retain-existing-roster-motion-using-correct-stage-portrait"
+        },
+        "ascendant": {
+          "portrait": "../assets/familiars/evolution_stages/zephyr-ascendant.webp",
+          "assets": {},
+          "missingActions": [
+            "walk",
+            "play",
+            "sleep"
+          ],
+          "renderPolicy": "retain-existing-roster-motion-using-correct-stage-portrait"
+        },
+        "celestial": {
+          "portrait": "../assets/familiars/evolution_stages/zephyr-celestial.webp",
+          "assets": {},
+          "missingActions": [
+            "walk",
+            "play",
+            "sleep"
+          ],
+          "renderPolicy": "retain-existing-roster-motion-using-correct-stage-portrait"
+        }
+      }
+    },
+    "prism": {
+      "displayName": "Prism",
+      "internalId": "prism",
+      "source": "assets/familiars/evolution_stages/",
+      "actionAssetsStatus": "not-created-do-not-substitute-other-guardian",
+      "fallbackPolicy": "same-guardian-stage-portrait",
+      "stageOrder": [
+        "new-bond",
+        "apprentice",
+        "guardian",
+        "ascendant",
+        "celestial"
+      ],
+      "stages": {
+        "new-bond": {
+          "portrait": "../assets/familiars/evolution_stages/prism-new-bond.webp",
+          "assets": {},
+          "missingActions": [
+            "walk",
+            "play",
+            "sleep"
+          ],
+          "renderPolicy": "retain-existing-roster-motion-using-correct-stage-portrait"
+        },
+        "apprentice": {
+          "portrait": "../assets/familiars/evolution_stages/prism-apprentice.webp",
+          "assets": {},
+          "missingActions": [
+            "walk",
+            "play",
+            "sleep"
+          ],
+          "renderPolicy": "retain-existing-roster-motion-using-correct-stage-portrait"
+        },
+        "guardian": {
+          "portrait": "../assets/familiars/evolution_stages/prism-guardian.webp",
+          "assets": {},
+          "missingActions": [
+            "walk",
+            "play",
+            "sleep"
+          ],
+          "renderPolicy": "retain-existing-roster-motion-using-correct-stage-portrait"
+        },
+        "ascendant": {
+          "portrait": "../assets/familiars/evolution_stages/prism-ascendant.webp",
+          "assets": {},
+          "missingActions": [
+            "walk",
+            "play",
+            "sleep"
+          ],
+          "renderPolicy": "retain-existing-roster-motion-using-correct-stage-portrait"
+        },
+        "celestial": {
+          "portrait": "../assets/familiars/evolution_stages/prism-celestial.webp",
+          "assets": {},
+          "missingActions": [
+            "walk",
+            "play",
+            "sleep"
+          ],
+          "renderPolicy": "retain-existing-roster-motion-using-correct-stage-portrait"
+        }
+      }
+    },
+    "rook": {
+      "displayName": "Rook",
+      "internalId": "rook",
+      "source": "assets/familiars/evolution_stages/",
+      "actionAssetsStatus": "not-created-do-not-substitute-other-guardian",
+      "fallbackPolicy": "same-guardian-stage-portrait",
+      "stageOrder": [
+        "new-bond",
+        "apprentice",
+        "guardian",
+        "ascendant",
+        "celestial"
+      ],
+      "stages": {
+        "new-bond": {
+          "portrait": "../assets/familiars/evolution_stages/rook-new-bond.webp",
+          "assets": {},
+          "missingActions": [
+            "walk",
+            "play",
+            "sleep"
+          ],
+          "renderPolicy": "retain-existing-roster-motion-using-correct-stage-portrait"
+        },
+        "apprentice": {
+          "portrait": "../assets/familiars/evolution_stages/rook-apprentice.webp",
+          "assets": {},
+          "missingActions": [
+            "walk",
+            "play",
+            "sleep"
+          ],
+          "renderPolicy": "retain-existing-roster-motion-using-correct-stage-portrait"
+        },
+        "guardian": {
+          "portrait": "../assets/familiars/evolution_stages/rook-guardian.webp",
+          "assets": {},
+          "missingActions": [
+            "walk",
+            "play",
+            "sleep"
+          ],
+          "renderPolicy": "retain-existing-roster-motion-using-correct-stage-portrait"
+        },
+        "ascendant": {
+          "portrait": "../assets/familiars/evolution_stages/rook-ascendant.webp",
+          "assets": {},
+          "missingActions": [
+            "walk",
+            "play",
+            "sleep"
+          ],
+          "renderPolicy": "retain-existing-roster-motion-using-correct-stage-portrait"
+        },
+        "celestial": {
+          "portrait": "../assets/familiars/evolution_stages/rook-celestial.webp",
+          "assets": {},
+          "missingActions": [
+            "walk",
+            "play",
+            "sleep"
+          ],
+          "renderPolicy": "retain-existing-roster-motion-using-correct-stage-portrait"
+        }
+      }
+    },
+    "solara": {
+      "displayName": "Solara",
+      "internalId": "solara",
+      "source": "assets/familiars/evolution_stages/",
+      "actionAssetsStatus": "not-created-do-not-substitute-other-guardian",
+      "fallbackPolicy": "same-guardian-stage-portrait",
+      "stageOrder": [
+        "new-bond",
+        "apprentice",
+        "guardian",
+        "ascendant",
+        "celestial"
+      ],
+      "stages": {
+        "new-bond": {
+          "portrait": "../assets/familiars/evolution_stages/solara-new-bond.webp",
+          "assets": {},
+          "missingActions": [
+            "walk",
+            "play",
+            "sleep"
+          ],
+          "renderPolicy": "retain-existing-roster-motion-using-correct-stage-portrait"
+        },
+        "apprentice": {
+          "portrait": "../assets/familiars/evolution_stages/solara-apprentice.webp",
+          "assets": {},
+          "missingActions": [
+            "walk",
+            "play",
+            "sleep"
+          ],
+          "renderPolicy": "retain-existing-roster-motion-using-correct-stage-portrait"
+        },
+        "guardian": {
+          "portrait": "../assets/familiars/evolution_stages/solara-guardian.webp",
+          "assets": {},
+          "missingActions": [
+            "walk",
+            "play",
+            "sleep"
+          ],
+          "renderPolicy": "retain-existing-roster-motion-using-correct-stage-portrait"
+        },
+        "ascendant": {
+          "portrait": "../assets/familiars/evolution_stages/solara-ascendant.webp",
+          "assets": {},
+          "missingActions": [
+            "walk",
+            "play",
+            "sleep"
+          ],
+          "renderPolicy": "retain-existing-roster-motion-using-correct-stage-portrait"
+        },
+        "celestial": {
+          "portrait": "../assets/familiars/evolution_stages/solara-celestial.webp",
+          "assets": {},
+          "missingActions": [
+            "walk",
+            "play",
+            "sleep"
+          ],
+          "renderPolicy": "retain-existing-roster-motion-using-correct-stage-portrait"
         }
       }
     }
