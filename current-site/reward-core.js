@@ -71,6 +71,7 @@ function account(){
  return a;
 }
 function save(){try{window.save?.()}catch(_){}}
+function scholarVisual(kind,detail={}){try{document.dispatchEvent(new CustomEvent('majick:scholar-visual',{detail:{kind,...detail}}))}catch(_){}}
 function hash(str){
  let h=2166136261>>>0;for(let i=0;i<str.length;i++){h^=str.charCodeAt(i);h=Math.imul(h,16777619)}return h>>>0;
 }
@@ -212,6 +213,7 @@ function award(type,ctx={}){
  };
  r.ledger[key]={type,at:receipt.at,receipt};r.lastReceipt=receipt;
  save();pushRewardState();showReceipt(receipt);
+ if(receipt.drop||receipt.crystals>0||receipt.eggFragments>0||receipt.milestoneChest)scholarVisual('earned',{key:receipt.key,crystals:receipt.crystals,drop:receipt.drop?.name||'',eggFragments:receipt.eggFragments});
  try{window.MajickProductCore?.record?.('reward-earned',{type,xp,crystals,eggFragments:receipt.eggFragments,item:drop?.id||null})}catch(_){}
  return receipt;
 }
@@ -300,7 +302,7 @@ function equipReward(id,petId,remove=false){
  if(!p||it?.kind!=='accessory'||!r?.collectibles.includes(id))return false;
  if(remove){if(equippedItem(p)!==id)return false;p.rewardAccessoryId=null;p.accessory=''}
  else {p.rewardAccessoryId=id;p.accessory=it.icon+' '+it.name}
- save();window.MajickGuardianCare?.broadcastState?.();pushRewardState();refreshVault();return true;
+ save();window.MajickGuardianCare?.broadcastState?.();pushRewardState();refreshVault();scholarVisual('guardian-accessory',{item:it.name,petId,remove});return true;
 }
 function vaultCard(it,owned){
  const pet=activePet(),room=roomState(),stored=room?.stored?.includes(it.id),isEquipped=equippedItem(pet)===it.id,wearers=(state()?.legacy?.pets||[]).filter(p=>equippedItem(p)===it.id);
@@ -376,12 +378,12 @@ function inventory(){
 function craft(id){
  const a=account(),r=a.rewardCore,rec=RECIPES.find(x=>x.id===id);if(!rec)return {ok:false,message:'Unknown recipe.'};
  for(const [k,n] of Object.entries(rec.cost))if(Number(r.ingredients[k]||0)<n)return {ok:false,message:'You still need '+n+' '+(INGREDIENTS.find(x=>x.id===k)?.name||k)+'.'};
- for(const [k,n] of Object.entries(rec.cost))r.ingredients[k]-=n;r.potions[id]=Number(r.potions[id]||0)+1;save();
+ for(const [k,n] of Object.entries(rec.cost))r.ingredients[k]-=n;r.potions[id]=Number(r.potions[id]||0)+1;save();scholarVisual('crafted',{item:rec.name});
  return {ok:true,recipe:rec,count:r.potions[id]};
 }
 function usePotion(id){
  const a=account(),r=a.rewardCore;if(Number(r.potions[id]||0)<1)return false;r.potions[id]--;const fx=updateEffects();
- if(id==='moonfocus-elixir')fx.moonfocus=5;if(id==='starlight-tonic')fx.starlightTonic=3;if(id==='clarity-potion')fx.clarity=1;if(id==='recall-draught')fx.recall=1;if(id==='crystal-sight-potion')fx.crystalSight=1;save();return true;
+ if(id==='moonfocus-elixir')fx.moonfocus=5;if(id==='starlight-tonic')fx.starlightTonic=3;if(id==='clarity-potion')fx.clarity=1;if(id==='recall-draught')fx.recall=1;if(id==='crystal-sight-potion')fx.crystalSight=1;save();scholarVisual('potion',{item:RECIPES.find(x=>x.id===id)?.name||''});return true;
 }
 function rewardPreview(type,ctx={}){const x=baseFor(type,ctx);return {...x,type};}
 function patchLegacyGameRewards(){
