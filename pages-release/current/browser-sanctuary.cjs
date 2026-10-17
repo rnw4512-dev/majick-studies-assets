@@ -52,6 +52,8 @@ async function until(expr,limit=110){for(let i=0;i<limit;i++){try{if(await ev(ex
  const stageResults=[];
  for(const [slug,level] of [['new-bond',1],['apprentice',3],['guardian',6],['ascendant',8],['celestial',12]]){
   await ev('(()=>{const s=majickPhaserGame.scene.getScene("Game");for(const g of s.v3317CareState.roster){if(!["luna","ember","nova","mallow"].includes(g.type)){g.stageSlug='+JSON.stringify('PLACEHOLDER')+';g.level='+String(0)+'}}s.v3348SyncRoster();return true})()'.replace('"PLACEHOLDER"',JSON.stringify(slug)).replace('g.level=0','g.level='+level));
+  const stageDiagnostic=await ev('(()=>{const s=majickPhaserGame.scene.getScene("Game");return s.v3317CareState.roster.slice(4).map(g=>({type:g.type,stage:g.stageSlug,level:g.level,current:s.v3348Sprites?.[g.petId]?.texture?.key||null,expected:"v3348-"+g.type+"-'+slug+'-room",pending:Object.keys(s.v3348Loading||{})}))})()');
+  console.log('PHASER STAGE REQUEST',JSON.stringify({slug,stageDiagnostic}));
   await until('(()=>{const s=majickPhaserGame.scene.getScene("Game");return ["vesper","briar","zephyr","prism","rook","solara"].every(t=>s.v3348Sprites?.["qa-"+t]?.active&&s.v3348Sprites["qa-"+t].texture.key==="v3348-"+t+"-'+slug+'-room")})()',90);
   stageResults.push({slug,pass:true});
  }
