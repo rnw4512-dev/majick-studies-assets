@@ -30,6 +30,9 @@ Updated: 2026-10-17. Canonical source: `current-site/`. Live: https://rnw4512-de
 
 ## In Progress
 
+- **Companions page condensation** — development branch `companions-focused-tabs-20261017`: original Guardian cards, eggs, habitat, outfit/accessory drawer and room décor grouped into four keyboard tabs; canonical Guardian portraits with compact information under each card; personality/ability in optional expandable details. No Guardian or reward state owner changed. Needs visual/browser QA before merge.
+
+
 | Item | PR | Verified state |
 |---|---|---|
 | Phase 7 graduated magical atmosphere | [#137](https://github.com/rnw4512-dev/majick-studies-assets/pull/137) | Draft; latest 390 success, 820 Commons fail, 1366 probability fail |
@@ -152,3 +155,5 @@ Every change must append **date / area / commit or PR / what changed / how / act
 | Date | Scope | Changed | Tested | Outcome |
 |---|---|---|---|---|
 | 2026-10-17 | Board creation | Consolidated verified status, exact four sprint plan, transparent asset checklist and release gates | GitHub PR #137–140 and workflow result inspection | Planning artifact only; no live app deployment |\n| 2026-10-17 | Project synchronization | Added PROJECT_SYNC.md and CHATGPT_PROJECT_INSTRUCTIONS.txt, same-board update contract, CI board gate and hourly PR discrepancy watch | Verified connected GitHub reads/writes; created scheduled condition watch; PR gate committed, not yet merged | Project Settings still requires user paste; CI gate activates after merging #141; no native Project-file auto-refresh and no app deployment |
+
+| 2026-10-17 | Companions page UX | Added presentation-only `companion-tabs.js`, loaded by `index.html`, with focused tabs, canonical Guardian portrait cards, optional extended details and responsive styling | Source structure and canonical portrait-file presence checked; regression assertions added; browser QA still pending | Draft; no deploy; verify cards/actions, tab focus, duplicated status panels and persistence on 390/820/1366 |
