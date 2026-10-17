@@ -67,7 +67,9 @@ async function until(expr,limit=110){for(let i=0;i<limit;i++){try{if(await ev(ex
  for(const type of ['luna','ember','nova','mallow']){
   for(const action of ['play','sleep']){
    await ev('(()=>{const s=majickPhaserGame.scene.getScene("Game");s.v3317ShowAction("'+type+'","'+action+'",4000);return true})()');
-   await until('(()=>{const s=majickPhaserGame.scene.getScene("Game");return !!s["v3317Action_'+type+'"]?.active})()',70);
+   // A previous play overlay can remain alive while the next image is loading.
+   // Require the *requested* action texture so an old overlay cannot produce a false pass.
+   await until('(()=>{const s=majickPhaserGame.scene.getScene("Game"),p=s["v3317Action_'+type+'"];return !!p?.active&&(/(?:^|[-])'+(action==='sleep'?'sleep':'play|paw|pounce|wave')+'$/.test(p.texture?.key||""))})()',100);
    const k=await ev('majickPhaserGame.scene.getScene("Game")["v3317Action_'+type+'"]?.texture?.key||""');
    assert(k,'Original Guardian '+type+' '+action+' must show a pose image');
    actionFrames.push({type,action,key:k,paintedOriginal:k.startsWith('v3317-original-')});
