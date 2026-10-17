@@ -113,6 +113,12 @@ function attach(){
   if(destination!==tab)place(panels[destination],node,destination);
  }
  navigateTab(selected);
+ // The Commons can hydrate panels while a keyboard tab move is underway.
+ // Keep the focused tab attached after reclassification, not the detached old button.
+ if(window.S?.screen==='home'&&document.activeElement?.closest?.('#majCommonsHub [data-commons-tab]')){
+   const activeId=document.activeElement.dataset.commonsTab;
+   if(activeId!==selected)hub.querySelector('[data-commons-tab="'+selected+'"]')?.focus({preventScroll:true});
+ }
  }catch(e){console.warn('Commons layout preserved original content:',e)}finally{updating=false}
 }
 // The Home hub can rehydrate after the learner selects a tab. Delegate from the
