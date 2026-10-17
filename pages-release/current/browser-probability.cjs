@@ -19,7 +19,8 @@ async function click(selector){
  await waitFor('(()=>{const e=document.querySelector('+JSON.stringify(selector)+');if(!e||e.disabled)return false;e.scrollIntoView({block:"center",behavior:"instant"});const r=e.getBoundingClientRect(),x=r.x+r.width/2,y=r.y+r.height/2;if(x<0||y<0||x>=innerWidth||y>=innerHeight)return false;const hit=document.elementFromPoint(x,y);return hit===e||e.contains(hit)})()');
  const r=await evalPage('(()=>{const r=document.querySelector('+JSON.stringify(selector)+').getBoundingClientRect();return {x:r.x+r.width/2,y:r.y+r.height/2}})()');
  await call('Input.dispatchMouseEvent',{type:'mousePressed',button:'left',clickCount:1,...r});
- await action('MajickProbabilityWorkshop.mount();MajickProbabilityWorkshop.mount()');
+ // Let the real pointerup/click reach the SAME button that received pointerdown.
+ // Remounting twice between mousePressed and mouseReleased destroyed the target.
  await call('Input.dispatchMouseEvent',{type:'mouseReleased',button:'left',clickCount:1,...r});
 }
 (async()=>{
