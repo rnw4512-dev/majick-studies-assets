@@ -9,8 +9,9 @@ const server=http.createServer((req,res)=>{
   const file=path.resolve(root,new URL(req.url,'http://localhost').pathname.slice(1)||'sanctuary/index.html');
   if(!file.startsWith(root+path.sep))return res.writeHead(403).end();
   const mime={'.js':'text/javascript','.html':'text/html','.css':'text/css','.png':'image/png','.webp':'image/webp','.json':'application/json'};
-  res.writeHead(200,{'Content-Type':mime[path.extname(file)]||'application/octet-stream'}).end(fs.readFileSync(file));
- }catch{res.writeHead(404).end()}
+  const bytes=fs.readFileSync(file);
+  res.writeHead(200,{'Content-Type':mime[path.extname(file)]||'application/octet-stream'}).end(bytes);
+ }catch(err){if(!res.headersSent)res.writeHead(404).end();else if(!res.writableEnded)res.end()}
 });
 const profile=fs.mkdtempSync(path.join(os.tmpdir(),'majick-real-sanctuary-'));let child,ws,n=0;
 const pending=new Map();
