@@ -174,3 +174,20 @@ Every change must append **date / area / commit or PR / what changed / how / act
 | 2026-10-17 | Release certification | Replaced obsolete exactly-33 PNG build limit with 33 original SHA256 protections plus exact SHA1 approval for restored Cascade fly; repaired re-rendered Commons tab keyboard focus; added browser-sanctuary.cjs and wired actual Phaser tests on 390/820/1366 for ten Guardian sprites, movement, real dual-frame originals and care reactions | Source/static checks and workflow launches confirmed; new dedicated browser run not yet finished | PR #144 draft, production blocked; six original new Guardian action frames and four local-only action PNGs not yet committed; Scholar visual fitting and mixed OA freshness remain unverified |
 
 | 2026-10-17 | Real browser defect repair | Actual Phaser at 390/820 exposed stage skin override from `sanctuary-visual-authority.js` defeating painted-frame loader; removed duplicate owner and rewired active authority; fixed old Study Now interaction test selectors, enforced true 1/2/3 source task alternation | Canonical build and board contract passes on latest SHA; 390/820/1366 real browser QA currently rerunning | Real Phaser and end-to-end release gate awaiting results; 6 new Guardians still need independently painted action frames; Scholar cross-room visual QA pending; production not deployed |
+
+## Certification checkpoint — 2026-10-17, latest draft PR #144
+
+| Gate | Evidence | Status / required action |
+|---|---|---|
+| Canonical source hashes | Rehashed `collegium-commons.js` and `probability-workshop.js` after correcting CI "Unreviewed source change" error | Retest on latest SHA required |
+| Render ownership | Existing Phaser Game/roster, Reward Core and scholar identity retained | Static ownership checks passed previously; end-to-end audit open |
+| 1366px | Previous full run failed Commons ArrowRight keyboard focus and probability in-card Back | Fixes committed; browser rerun pending |
+| 820px | Previous full browser run passed | Latest SHA rerun pending |
+| 390px | Previous full browser run passed | Latest SHA rerun pending |
+| Original four motion | Git original 33 motion PNG SHAs identical to main; four pairs of distinct painted walk frames referenced | Actual Phaser frame switching requires latest browser confirmation; sleep/play from original optional PNGs still incomplete |
+| New six Phaser | All six registered with stage-aware textures; 30 of 30 requested evolution-stage portraits present; browser-sanctuary.cjs exercises 10 actor fixture | Dedicated walking/play/sleep frames absent: zero of 90 stage-action assets; **do not certify full motion** |
+| Scholar avatar | Existing identity, layers and hair fitting work in PRs #139/#142 | Actual style × skin × outfit screenshots and reload/cross-room persistence not certified |
+| Study Realm | Workshop moved into Study Now and queued across D772 Sections 1–3 | Verify real item availability, correctness, next question and mastery separation in browser |
+| Persistence | Existing saved XP/crystals/Guardians/inventory/academic records protected from refactor | Real save/reload + course switching E2E not certified |
+
+**Release verdict:** BLOCKED. Do not merge to main or deploy until 1366/820/390 on latest SHA all pass, Sanctuary real-frame checks pass, new six approved action artwork exists, and saved-progress/Scholar/Study Realm E2E tests are green. A ten-Guardian moving-portrait test does not establish six correct painted walk cycles.
