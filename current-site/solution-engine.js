@@ -186,15 +186,22 @@ function rubric(task,ex,answer,stage){
 // The Study Realm and Reasoning Workshop occupy one compact Study Now panel.
 // Every active D772 course gets a mixed sequence drawn from ALL three sections,
 // never a block of Section 1 followed by Section 2 followed by Section 3.
-const MIX_ORDER=['d772-data','mean','probability','d772-bias','histogram','d772-misrepresentation','median','d772-conclusions'];
 let mixIndex=0,studyView='practice';
 function mixTasks(cid){
  const list=BANK[cid]||[];
  if(cid!=='D772')return list;
- const byId=new Map(list.map(t=>[t.id,t]));
- const selected=MIX_ORDER.map(id=>byId.get(id)).filter(Boolean);
- for(const t of list)if(!selected.includes(t))selected.push(t);
- return selected;
+ // Interleave source sections by explicit content metadata, NOT guesses about IDs.
+ const buckets={1:[],2:[],3:[]},other=[];
+ for(const task of list){
+  const section=Number(task.section);
+  if(buckets[section])buckets[section].push(task);
+  else other.push(task);
+ }
+ const mixed=[];
+ while(buckets[1].length||buckets[2].length||buckets[3].length){
+  for(const section of [1,2,3])if(buckets[section].length)mixed.push(buckets[section].shift());
+ }
+ return [...mixed,...other];
 }
 function mount(){
  const root=document.getElementById('content');if(!root)return;
