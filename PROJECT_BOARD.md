@@ -54,7 +54,7 @@ Updated: 2026-10-17. Canonical source: `current-site/`. Live: https://rnw4512-de
 - [ ] Hair starter set — reuse existing locs, braids, curls, afro, twists, waves; QA at forehead/scalp/neck
 - [ ] Robe/uniform — reuse existing plum/midnight/emerald/silver layers; certify slot positioning
 - [ ] Casual/dorm outfit — make a distinct approved transparent outfit compatible with same body template
-- [ ] Accessories — define slots head/hair, ears, neck, wrist, back, hand, footwear with anchor template
+- [x] Define versioned layer order and accessory slot contract in `current-site/assets/atelier/avatars/scholar-layer-contract.json` (asset registry only; alignment unapproved)\n- [ ] Accessories — verify fitted head/hair, ears, neck, wrist, back, hand, footwear on real overlays
 - [ ] Pose variants — idle, study, celebrate, walk, seated/desk, Sanctuary visit, reward/crafting, companion interaction
 
 **Companion presence kit:** study, idle, celebrate, thinking, reward/crafting. Same saved appearance, no flattened incompatible pose substitution.
@@ -151,4 +151,4 @@ Every change must append **date / area / commit or PR / what changed / how / act
 
 | Date | Scope | Changed | Tested | Outcome |
 |---|---|---|---|---|
-| 2026-10-17 | Board creation | Consolidated verified status, exact four sprint plan, transparent asset checklist and release gates | GitHub PR #137–140 and workflow result inspection | Planning artifact only; no live app deployment |\n| 2026-10-17 | Project synchronization | Added PROJECT_SYNC.md and CHATGPT_PROJECT_INSTRUCTIONS.txt, same-board update contract, CI board gate and hourly PR discrepancy watch | Verified connected GitHub reads/writes; created scheduled condition watch; PR gate committed, not yet merged | Project Settings still requires user paste; CI gate activates after merging #141; no native Project-file auto-refresh and no app deployment |
+| 2026-10-17 | Board creation | Consolidated verified status, exact four sprint plan, transparent asset checklist and release gates | GitHub PR #137–140 and workflow result inspection | Planning artifact only; no live app deployment |\n| 2026-10-17 | Scholar base foundation | Added `scholar-layer-contract.json` registering existing body/face/hair/robe/boots art, layer order, attachment slots and eight pose states with honest approval status | File-presence inventory and existing V2 approval/alignment review; browser fit not tested | Sprint 1 contract drafted; unapproved poses are not enabled; not deployed |\n| 2026-10-17 | Project synchronization | Added PROJECT_SYNC.md and CHATGPT_PROJECT_INSTRUCTIONS.txt, same-board update contract, CI board gate and hourly PR discrepancy watch | Verified connected GitHub reads/writes; created scheduled condition watch; PR gate committed, not yet merged | Project Settings still requires user paste; CI gate activates after merging #141; no native Project-file auto-refresh and no app deployment |
