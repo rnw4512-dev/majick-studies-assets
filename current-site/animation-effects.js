@@ -5,7 +5,7 @@ const TYPES=Object.freeze({
  mastery:['celebrations/celebration-constellation-ring.svg',230,1250,'Mastery earned'],
  lesson:['celebrations/lesson-complete-seal.svg',285,1500,'Lesson complete'],
  course:['celebrations/course-complete-sigil.svg',340,1900,'Course complete'],
- guardian:['guardians/guardian-heart-sigil.svg',150,1000,'Bond strengthened'],
+ guardian:['guardians/guardian-constellation-bond.svg',150,1000,'Bond strengthened'],
  reward:['celebrations/celebration-starburst.svg',215,1150,'Reward unlocked'],
  egg:['celebrations/celebration-constellation-ring.svg',200,1300,'Almost ready'],
  match:['celebrations/celebration-starburst.svg',125,650,'Match'],
