@@ -21,7 +21,7 @@ additional={p.name:p for p in motion_dir.glob("*.png") if "sanctuary/assets/moti
 approved_extra_git_blobs={"ember-fly.png":"e7997580fdf1582bf12d30fc03fb6f04ac725b83"}
 assert set(additional).issubset(approved_extra_git_blobs), "Unapproved Guardian motion addition: "+str(sorted(additional))
 for name,file in additional.items():
- raw=file.read_bytes(); git_sha=hashlib.sha1(b"blob "+str(len(raw)).encode()+b"\\0"+raw).hexdigest()
+ raw=file.read_bytes(); git_sha=hashlib.sha1(b"blob "+str(len(raw)).encode()+b"\0"+raw).hexdigest()
  assert git_sha==approved_extra_git_blobs[name], "Unexpected Guardian motion binary: "+name
 if output.exists(): shutil.rmtree(output)
 shutil.copytree(source,output)
