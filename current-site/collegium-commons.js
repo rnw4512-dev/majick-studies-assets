@@ -30,6 +30,16 @@ function syncSanctuaryMotion(){
  document.querySelectorAll('#majCommonsHub .v3317SanctuaryFrame').forEach(frame=>{
   if(!frame.dataset.commonsLifecycle){frame.dataset.commonsLifecycle='true';frame.addEventListener('load',()=>{sanctuaryVisibility.delete(frame);syncSanctuaryMotion()})}
   const visible=selected==='sanctuary';
+  // Hidden Phaser frames must never take keyboard focus from the selected Commons tab.
+  // Keeping the frame mounted preserves in-session Sanctuary and Guardian state.
+  frame.tabIndex=visible?0:-1;
+  frame.inert=!visible;
+  frame.style.pointerEvents=visible?'auto':'none';
+  frame.setAttribute('aria-hidden',visible?'false':'true');
+  if(!visible&&document.activeElement===frame){
+    frame.blur();
+    document.querySelector('#majCommonsHub [data-commons-tab="'+selected+'"]')?.focus({preventScroll:true});
+  }
   try{const loop=frame.contentWindow?.majickPhaserGame?.loop;if(loop&&sanctuaryVisibility.get(frame)!==visible){if(visible)loop.wake();else loop.sleep();sanctuaryVisibility.set(frame,visible)}}catch(_){}
  });
 }
@@ -40,7 +50,7 @@ function navigateTab(next){
  try{sessionStorage.setItem('majick-commons-tab',next)}catch(_){}
  const hub=document.getElementById('majCommonsHub');if(!hub)return;
  hub.querySelectorAll('[data-commons-tab]').forEach(b=>{const active=b.dataset.commonsTab===selected;b.setAttribute('aria-selected',String(active));b.tabIndex=active?0:-1;b.setAttribute('aria-current',active?'page':'false')});
- hub.querySelectorAll('[data-commons-panel]').forEach(p=>{p.hidden=p.dataset.commonsPanel!==selected;p.setAttribute('tabindex','0')});
+ hub.querySelectorAll('[data-commons-panel]').forEach(p=>{const active=p.dataset.commonsPanel===selected;p.hidden=!active;p.inert=!active;p.setAttribute('tabindex',active?'0':'-1')});
  syncSanctuaryMotion();
  const title=hub.querySelector('[data-commons-current]');if(title)title.textContent=TABS.find(t=>t[0]===selected)?.[1]||'Overview';
 }
