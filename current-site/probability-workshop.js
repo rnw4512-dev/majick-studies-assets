@@ -16,6 +16,18 @@ function open(kind){
   panel.scrollIntoView({block:'start',behavior:'instant'});
  },0);
 }
+// Back must survive workshop DOM replacement during real mouse/touch release.
+// Delegate capture to the document; do not depend on a soon-to-be detached button.
+function leaveProbabilityRoom(event){
+ const button=event.target?.closest?.('#connectedProbability [data-connected-back]');
+ if(!button||!['games','learninglab','mission'].includes(window.S?.screen))return;
+ event.preventDefault();event.stopImmediatePropagation();
+ const before=window.S.screen;
+ try{window.majickBack?.()}catch(_){}
+ if(window.S?.screen===before)window.navigate?.('home');
+}
+document.addEventListener('pointerdown',leaveProbabilityRoom,true);
+document.addEventListener('click',leaveProbabilityRoom,true);
 let heldPointer=null;
 document.addEventListener('pointerdown',event=>{
  const box=event.target.closest?.('#connectedProbability');
