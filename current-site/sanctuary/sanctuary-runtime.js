@@ -394,7 +394,10 @@ Game.prototype.v3317ShowAction=function(type,action,duration){
  const lookup=ORIGINAL_MOTION[type];
  const originalAction=lookup&&(action==='sleep'?lookup.rest:action==='play'?lookup.play:action);
  const load=(originalAction&&/^(paw|sleep|sit|wave|fly|hop|pounce)$/.test(originalAction))
-   ?done=>this.v3317LoadOriginalMotion(type,originalAction,done)
+   ?done=>this.v3317LoadOriginalMotion(type,originalAction,key=>{
+       if(key)done(key);
+       else this.v3317LoadAction(type,action,done); // no disappearing care reaction before missing originals are uploaded
+     })
    :done=>this.v3317LoadAction(type,action,done);
  load(key=>{
    if(!key||!pet?.active)return;
