@@ -59,3 +59,49 @@ for(const kind of ['vesper','briar','zephyr','prism','rook','solara'])for(const 
 for(const kind of ['luna','ember','nova','mallow'])for(const frame of kind==='mallow'?['hop-1','hop-2']:['walk-1','walk-2'])assert(fs.existsSync(path.join(root,'sanctuary/assets/motion',kind+'-'+frame+'.png')),'Original protected animation frame missing '+kind+' '+frame);
 assert(fs.existsSync(path.join(root,'sanctuary/assets/motion/ember-fly.png')),'Existing Cascade flight PNG must be at runtime load path');
 console.log('PASS Sanctuary stage portraits (30), originals retained, real walk frame references, existing flight artwork');
+
+// Immutable-art gate: Git blob SHA-1 includes the exact binary bytes and length.
+// Reference captured from main's protected original 33 assets, not newly generated art.
+const crypto=require('node:crypto');
+const PROTECTED_GUARDIAN_BLOB_SHA1={
+  "ember-hop.png": "de6ef0e21e49574fb08ad84130666c6fc5151716",
+  "ember-idle.png": "5c0593940a6bc0fd54221cfd0426c789a0fbe7eb",
+  "ember-sit.png": "976468894359bfed453a6e5824ec9827c893682d",
+  "ember-sleep.png": "dc00a9feca74e65bce3c1079ddc8e88b44456983",
+  "ember-slither-1.png": "8ac7ef5bffe2d0e4351775eb68f996ec82472b79",
+  "ember-slither-2.png": "7c2cbbe6eb78c2a7c3feaf6269db81b620797c97",
+  "ember-walk-1.png": "7f4cd0f725952188b69da23d75fd960dff070c4c",
+  "ember-walk-2.png": "6c67f1947a4a002e31beae618b8e07701aa9b757",
+  "luna-hop.png": "8ab0d3d7741b499486d626290c9b9b60b6127843",
+  "luna-idle.png": "9f91276da1cf75ae03caa59300b95ae768b87745",
+  "luna-walk-1.png": "e96b4dc4c42457a33e0bbe700ef5dac90eb5321a",
+  "luna-walk-2.png": "ea4a8699f72367ec65e816b8b21f401b2bccc673",
+  "mallow-binky.png": "14d48e22d075073e604e1203b2fbeca4195d414f",
+  "mallow-fly-1.png": "3bd9f16a28b20b92f6bcb282fe75e82605c65e23",
+  "mallow-fly-2.png": "fe5ef5b9aa7f9f8889a72874a3d647369b39fa60",
+  "mallow-hop-1.png": "2d563d7de66e04f5d42502752875eb07fbdc7786",
+  "mallow-hop-2.png": "bd7435fb2d5c1fac053f970205882c169fdad3b2",
+  "mallow-idle.png": "ccc2cbb417e2c08fc4e4fb40ae1905f7500d044a",
+  "mallow-land.png": "1ba0ba359db946a4776d332d41fe73adb18c4625",
+  "mallow-paw.png": "fca8c6cdc5a222abdec08a0608232cbcaf17646b",
+  "mallow-sit.png": "e0b63ac58efd379401e9d3e334476e610a53c29a",
+  "mallow-sleep.png": "1b8c9dd583f8c274271b9ba14d3b100bcaa4ed03",
+  "nova-hop.png": "18b138d1ada82323ced19f09d8762e0b789c4814",
+  "nova-paw.png": "c0c92e3ddef29535d6b1599d09f1c2ce09d47b86",
+  "nova-pounce.png": "49819012358c9507496430e61562ad13a2d13982",
+  "nova-pounce2.png": "9d25af87c5c83b1433fcf23fe963c7b5d7ff6e2b",
+  "nova-pounce3.png": "cf0f66d4be8de60d3ebe4dbd9b469bd48178c53e",
+  "nova-run.png": "1777ba6eb6977bb2e293e0fcc5bba617c49d0cff",
+  "nova-sit.png": "4c81574337cf1ff039038f75798fedb2569353c4",
+  "nova-sleep.png": "e75761e8a725bd90c1174301c1acfdb9f3043f70",
+  "nova-spin.png": "1bac918bde43976fc9ba506f4ade21547d0cde92",
+  "nova-walk-1.png": "b21745a0a2b5bb7ad12f4589f11b8fb2bf30d57d",
+  "nova-walk-2.png": "23af933428715d198aba992bb522f6c37ccb4db8"
+};
+assert.equal(Object.keys(PROTECTED_GUARDIAN_BLOB_SHA1).length,33);
+for(const [file,expectedSha] of Object.entries(PROTECTED_GUARDIAN_BLOB_SHA1)){
+ const bytes=fs.readFileSync(path.join(root,'sanctuary/assets/motion',file));
+ const actualSha=crypto.createHash('sha1').update(Buffer.from('blob '+bytes.length+'\\0')).update(bytes).digest('hex');
+ assert.equal(actualSha,expectedSha,'Protected Guardian original changed: '+file);
+}
+console.log('PASS protected Guardian artwork: all 33 original binary assets byte-identical');
