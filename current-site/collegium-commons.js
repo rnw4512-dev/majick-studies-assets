@@ -149,13 +149,26 @@ function attach(){
 // The Home hub can rehydrate after the learner selects a tab. Delegate from the
 // document to survive button replacement and focus the currently mounted button.
 let pendingKeyboardFocus=false;
+let lastKeyboardTab=null,lastKeyboardFocusUntil=0;
+function restoreKeyboardTabFocus(){
+ if(!lastKeyboardTab||window.S?.screen!=='home'||performance.now()>lastKeyboardFocusUntil)return;
+ const tab=document.querySelector('#majCommonsHub [data-commons-tab="'+lastKeyboardTab+'"]');
+ if(!tab||selected!==lastKeyboardTab)return;
+ const active=document.activeElement;
+ if(active!==tab&&(!active||active===document.body||active===document.documentElement||active.matches?.('iframe,[data-commons-tab]')))tab.focus({preventScroll:true});
+}
+document.addEventListener('pointerdown',()=>{lastKeyboardFocusUntil=0},true);
+document.addEventListener('keydown',event=>{if(event.key==='Tab')lastKeyboardFocusUntil=0},true);
+document.addEventListener('focusin',()=>{if(lastKeyboardFocusUntil)queueMicrotask(restoreKeyboardTabFocus)},true);
 document.addEventListener('keydown',e=>{
  if(!['ArrowRight','ArrowLeft','Home','End'].includes(e.key))return;
  const target=e.target?.closest?.('#majCommonsHub [data-commons-tab]');
  if(!target||window.S?.screen!=='home')return;
  e.preventDefault();pendingKeyboardFocus=true;
+ lastKeyboardFocusUntil=performance.now()+700;
  const index=TABS.findIndex(t=>t[0]===selected),n=TABS.length;
  const next=e.key==='Home'?TABS[0][0]:e.key==='End'?TABS[n-1][0]:TABS[(index+(e.key==='ArrowRight'?1:-1)+n)%n][0];
+ lastKeyboardTab=next;
  navigateTab(next);
  const focus=()=>document.querySelector('#majCommonsHub [data-commons-tab="'+next+'"]')?.focus({preventScroll:true});
  focus();queueMicrotask(focus);
@@ -164,6 +177,8 @@ document.addEventListener('keyup',e=>{
  if(!pendingKeyboardFocus||!['ArrowRight','ArrowLeft','Home','End'].includes(e.key))return;
  pendingKeyboardFocus=false;
  document.querySelector('#majCommonsHub [data-commons-tab="'+selected+'"]')?.focus({preventScroll:true});
+ restoreKeyboardTabFocus();
+ for(const delay of [0,50,160,320])setTimeout(restoreKeyboardTabFocus,delay);
 },true);
 function needsSync(){
  const root=document.querySelector('#content'),hub=root?.querySelector(':scope > #majCommonsHub');
