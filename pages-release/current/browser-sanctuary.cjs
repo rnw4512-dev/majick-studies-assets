@@ -44,7 +44,7 @@ async function until(expr,limit=110){for(let i=0;i<limit;i++){try{if(await ev(ex
  // For original four, verify that the intended two painted walking frames both load.
  // Texture loading runs asynchronously; wait for both independently painted frames.
  await until('(()=>{const s=majickPhaserGame.scene.getScene("Game");return ["luna","ember","nova","mallow"].every(t=>{const v=s["v3317Walk_"+t]?.getData?.("motionFrames")||[];return v.length===2&&v[0]!==v[1]})})()',100).catch(()=>{});
- const frame=await ev('(()=>{const s=majickPhaserGame.scene.getScene("Game");return ["luna","ember","nova","mallow"].map(t=>({type:t,frames:s["v3317Walk_"+t]?.getData?.("motionFrames")||[],visible:!!s[t]?.active,walkActive:!!s["v3317Walk_"+t]?.active,loading:!!s["__v3317Walking_"+t]}))})()');
+ const frame=await ev('(()=>{const s=majickPhaserGame.scene.getScene("Game");return ["luna","ember","nova","mallow"].map(t=>({type:t,frames:s["v3317Walk_"+t]?.getData?.("motionFrames")||[],visible:!!s[t]?.active,walkActive:!!s["v3317Walk_"+t]?.active,loading:!!s["__v3317Walking_"+t],texture:s["v3317Walk_"+t]?.texture?.key||"",metadata:Object.keys(s["v3317Walk_"+t]?.data?.values||{}),owner:s.v3317EnsureWalkSkin?.toString?.().slice(0,110)}))})()');
  console.log('PHASER ORIGINAL FRAME DIAGNOSTICS',JSON.stringify(frame));
  assert(frame.every(x=>x.visible),'One of the protected four original Phaser bodies is missing');
  assert(frame.every(x=>x.frames.length===2&&x.frames[0]!==x.frames[1]),'Original four must have distinct painted walk frames, not one squashed image');
