@@ -42,7 +42,10 @@ async function until(expr,limit=110){for(let i=0;i<limit;i++){try{if(await ev(ex
  assert(second.slice(4).every((p,i)=>p.interactive),'Six Guardian care targets are not interactive');
  assert(second.slice(4).some((p,i)=>Math.abs(p.x-initial[i+4].x)>1||Math.abs(p.y-initial[i+4].y)>1),'None of six Guardians moved in actual Phaser time');
  // For original four, verify that the intended two painted walking frames both load.
- const frame=await ev('(()=>{const s=majickPhaserGame.scene.getScene("Game");return ["luna","ember","nova","mallow"].map(t=>({type:t,frames:s["v3317Walk_"+t]?.getData?.("motionFrames")||[],visible:!!s[t]?.active}))})()');
+ // Texture loading runs asynchronously; wait for both independently painted frames.
+ await until('(()=>{const s=majickPhaserGame.scene.getScene("Game");return ["luna","ember","nova","mallow"].every(t=>{const v=s["v3317Walk_"+t]?.getData?.("motionFrames")||[];return v.length===2&&v[0]!==v[1]})})()',100).catch(()=>{});
+ const frame=await ev('(()=>{const s=majickPhaserGame.scene.getScene("Game");return ["luna","ember","nova","mallow"].map(t=>({type:t,frames:s["v3317Walk_"+t]?.getData?.("motionFrames")||[],visible:!!s[t]?.active,walkActive:!!s["v3317Walk_"+t]?.active,loading:!!s["__v3317Walking_"+t]}))})()');
+ console.log('PHASER ORIGINAL FRAME DIAGNOSTICS',JSON.stringify(frame));
  assert(frame.every(x=>x.visible),'One of the protected four original Phaser bodies is missing');
  assert(frame.every(x=>x.frames.length===2&&x.frames[0]!==x.frames[1]),'Original four must have distinct painted walk frames, not one squashed image');
  const played=await ev('(()=>{const s=majickPhaserGame.scene.getScene("Game");for(const t of ["vesper","briar","zephyr","prism","rook","solara"]){s.v3317CareReaction?.({ok:true,guardianId:"qa-"+t,guardianType:t,action:"play",visualAction:"play"})}return ["vesper","briar","zephyr","prism","rook","solara"].map(t=>({type:t,state:s.v3348Sprites?.["qa-"+t]?.getData?.("v3351MotionState")}))})()');
