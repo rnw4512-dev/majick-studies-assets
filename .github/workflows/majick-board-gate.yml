@@ -1,0 +1,32 @@
+name: Majick Studies board update gate
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+permissions:
+  contents: read
+  pull-requests: read
+jobs:
+  board-contract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Require board update alongside development changes
+        env:
+          BASE_REF: ${{ github.event.pull_request.base.sha }}
+          HEAD_REF: ${{ github.event.pull_request.head.sha }}
+        run: |
+          python3 - <<'PY'
+          import os, subprocess, sys
+          base = os.environ['BASE_REF']
+          head = os.environ['HEAD_REF']
+          files = subprocess.check_output(['git','diff','--name-only',base,head],text=True).splitlines()
+          development = [p for p in files if p.startswith(('current-site/','pages-release/current/')) and not p.endswith(('.md','.txt'))]
+          if development and 'PROJECT_BOARD.md' not in files:
+              print('::error::Majick Studies app changes require a PROJECT_BOARD.md update in the same PR.')
+              print('Changed app files:',', '.join(development[:16]))
+              print('Update Done/In Progress/Broken and the mandatory work-session log, including tests and deployment status.')
+              sys.exit(1)
+          print('PASS Majick Studies board contract — app changes:',len(development),'board included:', 'PROJECT_BOARD.md' in files)
+          PY
