@@ -28,3 +28,11 @@ assert(!sanctuaryRuntime.includes("walk.setRotation(moving?step"),'Moving Guardi
 assert(sanctuaryRuntime.includes("this.v3317LoadAction(type,action,done)"),'Unavailable original care pose must fall back to known evolution art');
 assert(sanctuaryRuntime.includes("const pet=this[type]"),'Original Guardian motion owner must retain the existing Phaser controller');
 console.log('PASS Guardian motion static gate: real two-frame artwork, no rotation counterfeit, safe care fallback');
+
+// Study Now integrates the workshop in one panel; OA mixed queue crosses D772 sections.
+const workshop=load('solution-engine.js');new vm.Script(workshop,{filename:'solution-engine.js'});
+assert(workshop.includes("if(screen!=='mission')return"),'Reasoning Workshop must not auto-append to Study Guide or Game Realm');
+assert(workshop.includes("data-study-view=\"practice\"")&&workshop.includes("data-study-view=\"reasoning\""),'Studio tabs must share the Study Now shell');
+assert(workshop.includes("const MIX_ORDER=['d772-data','mean','probability'"),'Mixed OA order must interleave all three D772 sections');
+assert(workshop.includes("id:'d772-s1")===false || workshop.includes("mixTasks"),'Mixed course task owner must exist');
+console.log('PASS Study Realm workshop: one panel, mixed Section 1/2/3 OA practice, no Guide stack');
