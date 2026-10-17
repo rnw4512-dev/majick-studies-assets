@@ -1,7 +1,7 @@
 (()=>{
 'use strict';
 if(window.MajickScholarCompanion)return;
-const SCENES={home:['Collegium','idle','✦'],mission:['Study Now','studying','📖'],guide:['Study Guide','reading','📚'],lab:['Learn Lab','studying','📖'],learn:['Learn Lab','studying','📖'],journal:['Journal','writing','✒'],grimoire:['Grimoire','writing','✒'],sanctuary:['Sanctuary','guardian-bonding','♡'],games:['Game Realm','game-cheer','✦'],test:['OA Practice','thinking','✧'],analytics:['Progress','reading','✧'],vault:['Magic Vault','idle','✦']};
+const SCENES={learninglab:['Learn Lab','studying','📖'],livinggrimoire:['Grimoire','writing','✒'],companions:['Sanctuary','guardian-bonding','♡'],gamerealm:['Game Realm','game-cheer','✦'],studynow:['Study Now','studying','📖'],home:['Collegium','idle','✦'],mission:['Study Now','studying','📖'],guide:['Study Guide','reading','📚'],lab:['Learn Lab','studying','📖'],learn:['Learn Lab','studying','📖'],journal:['Journal','writing','✒'],grimoire:['Grimoire','writing','✒'],sanctuary:['Sanctuary','guardian-bonding','♡'],games:['Game Realm','game-cheer','✦'],test:['OA Practice','thinking','✧'],analytics:['Progress','reading','✧'],vault:['Magic Vault','idle','✦']};
 let dock=null,opened=false,poseUntil=0,specialPose='',current='';
 const state=()=>window.MajickAtelier?.player?.()||window.S?.majickIdentity?.atelier||{};
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
