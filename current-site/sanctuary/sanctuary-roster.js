@@ -16,8 +16,12 @@
  function identity(g){return window.MajickGuardianRegistry?.getFor?.(g)||window.MajickGuardianRegistry?.get?.(g.type)||null}
  function resolvedType(g){return identity(g)?.type||String(g.type||'')}
  function canon(g){return identity(g)?.canon||String(g.type).replace(/[^a-z0-9-]/gi,'').toLowerCase()}
- function imageKey(g){return 'v3348-'+canon(g)+'-room'}
- function imageURL(g){return '../assets/familiars/canon/'+canon(g)+'-guardian.webp?v=3348'}
+ // Stage portrait is the safe, same-identity visual until approved action art exists.
+ // Never fall back to a different species or stretch a portrait into fake walk frames.
+ function imageKey(g,scene){return 'v3348-'+canon(g)+'-'+stage(g,scene)+'-room'}
+ function imageURL(g,scene){return '../assets/familiars/evolution_stages/'+canon(g)+'-'+stage(g,scene)+'.webp?v=342-stage'}
+ function fallbackKey(g){return 'v3348-'+canon(g)+'-canonical-fallback'}
+ function fallbackURL(g){return '../assets/familiars/canon/'+canon(g)+'-guardian.webp?v=342-canon'}
  function tintValue(meta){
    const hex=String(meta?.accent||'').replace('#','');
    const n=parseInt(hex,16);
@@ -303,12 +307,12 @@
      this.load.once('loaderror',file=>{
        if(file?.key!==key)return;
        delete this.v3348Loading[key];
-       const fallback='v3350-icon-'+canon(g);
+       const fallback=fallbackKey(g);
        this.v3348Fallback[primary]=fallback;
        if(this.textures.exists(fallback)){this.v3348SyncRoster();return}
        this.load.once('filecomplete-image-'+fallback,()=>this.v3348SyncRoster());
        this.load.once('loaderror',f=>{if(f?.key===fallback){this.v3348Fallback[primary]='v3350-placeholder';this.v3348SyncRoster()}});
-       this.load.image(fallback,'../assets/familiars/icons/'+canon(g)+'-icon.webp?v=3350');this.load.start();
+       this.load.image(fallback,fallbackURL(g));this.load.start();
      });
      this.load.image(key,imageURL(g,this));this.load.start();
    });
