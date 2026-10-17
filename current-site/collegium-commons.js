@@ -163,7 +163,11 @@ document.addEventListener('focusin',()=>{if(lastKeyboardFocusUntil)queueMicrotas
 document.addEventListener('keydown',e=>{
  if(!['ArrowRight','ArrowLeft','Home','End'].includes(e.key))return;
  const target=e.target?.closest?.('#majCommonsHub [data-commons-tab]');
- if(!target||window.S?.screen!=='home')return;
+ // A campus rehydrate may momentarily leave focus on the document body after
+ // a valid keyboard tab move; continue ONLY that recent tab navigation sequence.
+ const continuing=!target&&(e.target===document.body||e.target===document.documentElement)
+   &&performance.now()<lastKeyboardFocusUntil&&lastKeyboardTab===selected;
+ if((!target&&!continuing)||window.S?.screen!=='home')return;
  e.preventDefault();pendingKeyboardFocus=true;
  lastKeyboardFocusUntil=performance.now()+700;
  const index=TABS.findIndex(t=>t[0]===selected),n=TABS.length;
