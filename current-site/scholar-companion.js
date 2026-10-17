@@ -2,7 +2,7 @@
 'use strict';
 if(window.MajickScholarCompanion)return;
 const SCENES={learninglab:['Learn Lab','studying','📖'],livinggrimoire:['Grimoire','writing','✒'],companions:['Sanctuary','guardian-bonding','♡'],gamerealm:['Game Realm','game-cheer','✦'],studynow:['Study Now','studying','📖'],home:['Collegium','idle','✦'],mission:['Study Now','studying','📖'],guide:['Study Guide','reading','📚'],lab:['Learn Lab','studying','📖'],learn:['Learn Lab','studying','📖'],journal:['Journal','writing','✒'],grimoire:['Grimoire','writing','✒'],sanctuary:['Sanctuary','guardian-bonding','♡'],games:['Game Realm','game-cheer','✦'],test:['OA Practice','thinking','✧'],analytics:['Progress','reading','✧'],vault:['Magic Vault','idle','✦']};
-let dock=null,opened=false,poseUntil=0,specialPose='',current='';
+let dock=null,opened=false,poseUntil=0,specialPose='',current='',recentVisual='';
 const state=()=>window.MajickAtelier?.player?.()||window.S?.majickIdentity?.atelier||{};
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 function scene(){
@@ -34,10 +34,10 @@ function refresh(force=false){
  dock.querySelector('.mscLarge').innerHTML=art(p,pose);
  dock.querySelector('.mscLabel').innerHTML='<b>'+esc(p.name||'Scholar')+'</b><small>'+esc(info[0])+'</small>';
  dock.querySelector('.mscScene').textContent=info[0]+' · '+pose.replaceAll('-',' ');
- dock.querySelector('.mscEffect').textContent=pose==='celebrating'?'✦ ✨ ✦':info[2];
- dock.querySelector('.mscLine').textContent=s==='sanctuary'?'Together with your Guardians in the Sanctuary.':pose==='celebrating'?'Excellent work! Your scholar celebrates with you.':pose==='thinking'?'Working through the question with you.':s==='journal'?'Keeping notes beside you.':s==='games'?'Ready for the next challenge.':'Your scholar is here while you learn.';
+ dock.querySelector('.mscEffect').textContent=pose==='celebrating'?'✦ ✨ ✦':pose==='guardian-bonding'?'♡ ✧ ♡':pose==='crafting'?'⚗ ✦ ⚗':info[2];
+ dock.querySelector('.mscLine').textContent=recentVisual&&Date.now()<poseUntil?recentVisual:s==='sanctuary'?'Together with your Guardians in the Sanctuary.':pose==='celebrating'?'Excellent work! Your scholar celebrates with you.':pose==='thinking'?'Working through the question with you.':s==='journal'?'Keeping notes beside you.':s==='games'?'Ready for the next challenge.':'Your scholar is here while you learn.';
 }
-function react(pose){specialPose=pose;poseUntil=Date.now()+3200;refresh(true)}
+function react(pose){if(pose!=='crafting'&&pose!=='guardian-bonding'&&pose!=='celebrating')recentVisual='';specialPose=pose;poseUntil=Date.now()+3200;refresh(true)}
 const style=document.createElement('style');
 style.textContent=`
 #majickScholarCompanion{position:fixed;bottom:12px;left:12px;z-index:935;color:#f4dfc2;font-family:Georgia,serif;pointer-events:none}
@@ -83,6 +83,7 @@ function start(){
  window.addEventListener('majick-save-status',()=>refresh());
  // Reward and wardrobe screens use the same persisted appearance; no new inventory is created.
  document.addEventListener('majick-scholar-inventory-changed',()=>refresh(true));
+ document.addEventListener('majick:scholar-visual',e=>{const d=e.detail||{};if(d.kind==='earned'){recentVisual=d.drop?'A new treasure was added to your collection.':d.crystals>0?'Moon crystals earned through your study.':'Your egg has gained fragments.';react('celebrating');}else if(d.kind==='crafted'||d.kind==='potion'){recentVisual=(d.kind==='crafted'?'Potion crafted: ':'Potion activated: ')+String(d.item||'magic');react('crafting');}else if(d.kind==='guardian-accessory'){recentVisual=(d.remove?'Guardian accessory removed: ':'Guardian accessory equipped: ')+String(d.item||'');react('guardian-bonding');}});
  setInterval(()=>refresh(),2500);
 }
 window.MajickScholarCompanion={refresh,react,version:'3.4.2-companion-2'};
