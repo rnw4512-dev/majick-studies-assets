@@ -107,16 +107,22 @@ function attach(){
 }
 // The Home hub can rehydrate after the learner selects a tab. Delegate from the
 // document to survive button replacement and focus the currently mounted button.
+let pendingKeyboardFocus=false;
 document.addEventListener('keydown',e=>{
  if(!['ArrowRight','ArrowLeft','Home','End'].includes(e.key))return;
  const target=e.target?.closest?.('#majCommonsHub [data-commons-tab]');
  if(!target||window.S?.screen!=='home')return;
- e.preventDefault();
+ e.preventDefault();pendingKeyboardFocus=true;
  const index=TABS.findIndex(t=>t[0]===selected),n=TABS.length;
  const next=e.key==='Home'?TABS[0][0]:e.key==='End'?TABS[n-1][0]:TABS[(index+(e.key==='ArrowRight'?1:-1)+n)%n][0];
  navigateTab(next);
  const focus=()=>document.querySelector('#majCommonsHub [data-commons-tab="'+next+'"]')?.focus({preventScroll:true});
  focus();queueMicrotask(focus);
+},true);
+document.addEventListener('keyup',e=>{
+ if(!pendingKeyboardFocus||!['ArrowRight','ArrowLeft','Home','End'].includes(e.key))return;
+ pendingKeyboardFocus=false;
+ document.querySelector('#majCommonsHub [data-commons-tab="'+selected+'"]')?.focus({preventScroll:true});
 },true);
 function needsSync(){
  const root=document.querySelector('#content'),hub=root?.querySelector(':scope > #majCommonsHub');
