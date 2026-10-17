@@ -19,7 +19,7 @@ function player(){
  root.atelier=root.atelier||{name:'Scholar',skin:2,hair:0,robe:0,fabric:0,color:0,pattern:0,inventory:[],outfits:[],equipped:null,runeRounds:0,runeWords:0,craftStage:0,craftQuality:0,accessory:null};
  return root.atelier;
 }
-function save(){try{window.save?.()}catch(_){}}
+function save(){try{window.save?.()}catch(_){}try{window.MajickScholarCompanion?.refresh?.(true)}catch(_){}}
 function iconButton(){if(document.getElementById('atelierLaunch'))return;const b=document.createElement('button');b.id='atelierLaunch';b.textContent='✦ Enchanted Atelier';b.className='atelierLaunch';b.type='button';b.addEventListener('click',open);document.body.append(b)}
 function open(){const p=player();if(!p)return;let el=document.getElementById('atelierOverlay');if(!el){el=document.createElement('div');el.id='atelierOverlay';el.className='atelierOverlay';el.setAttribute('role','dialog');el.setAttribute('aria-modal','true');el.setAttribute('aria-label','Enchanted Atelier');document.body.append(el)}render();el.hidden=false;el.querySelector('#atelierClose')?.focus()}
 function close(){const el=document.getElementById('atelierOverlay');if(el)el.hidden=true}
@@ -81,7 +81,7 @@ function illustratedAvatar(p,compact=false,activity=''){
  if(!artChecked)checkAvatarArt();
  if(!artReady)return '<div class="atelierArtLoading">Preparing your illustrated scholar…</div>';
  const moment=({reading:'studying',writing:'studying','game-cheer':'playing','guardian-bonding':'companion'})[activity]||activity;
- if(activity&&![0,5].includes(Number(p.skin))&&Number(p.hair)===0&&Number(p.robe)===0&&Object.prototype.hasOwnProperty.call(ACTIVITY_PORTRAITS,moment))return portrait(moment);
+ if(activity&&![0,5].includes(Number(p.skin))&&Number(p.hair)===0&&Number(p.robe)===0&&Object.values(hairFit(p)).every(v=>v===0)&&Object.prototype.hasOwnProperty.call(ACTIVITY_PORTRAITS,moment))return portrait(moment);
  const robe=AVATAR_ROBES[p.robe]||AVATAR_ROBES[0];
  const hair=AVATAR_HAIR[p.hair]||AVATAR_HAIR[0];
  const fit=hairFit(p);
