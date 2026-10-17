@@ -343,41 +343,74 @@ Game.prototype.v3317LoadAction=function(type,action,done){
   this.load.start();
 };
 
+// Dedicated original-motion frames: actual changing poses, not stretching one picture.
+// Canonical actor IDs stay legacy luna/ember/nova/mallow inside the protected Phaser owner.
+const ORIGINAL_MOTION={
+ luna:{walk:['walk-1','walk-2'],play:'paw',rest:'sleep'},
+ ember:{walk:['walk-1','walk-2'],play:'wave',rest:'sleep'},
+ nova:{walk:['walk-1','walk-2'],play:'pounce',rest:'sleep'},
+ mallow:{walk:['hop-1','hop-2'],play:'paw',rest:'sleep'}
+};
+Game.prototype.v3317LoadOriginalMotion=function(type,frame,done){
+ if(!ORIGINAL_MOTION[type]||!/^[a-z]+(?:-[12])?$/.test(frame)){done?.(null);return;}
+ const key='v3317-original-'+type+'-'+frame;
+ if(this.textures.exists(key)){done?.(key);return;}
+ const busy='__v3317Loading_'+key;
+ if(this[busy]){this.time.delayedCall(100,()=>this.v3317LoadOriginalMotion(type,frame,done));return;}
+ this[busy]=true;
+ let completed=false;
+ const finish=ok=>{if(completed)return;completed=true;this[busy]=false;done?.(ok&&this.textures.exists(key)?key:null);};
+ this.load.image(key,'./assets/motion/'+type+'-'+frame+'.png');
+ this.load.once('filecomplete-image-'+key,()=>finish(true));
+ this.load.once('loaderror',file=>{if(file?.key===key)finish(false)});
+ this.load.once('complete',()=>finish(this.textures.exists(key)));
+ this.load.start();
+};
 Game.prototype.v3317EnsureWalkSkin=function(type){
-  const pet=this[type];if(!pet?.active)return;
-  const expected=evoKey(this,type,'walk');
-  const old=this['v3317Walk_'+type];
-  if(old?.active&&old.texture?.key===expected)return;
-  try{old?.destroy()}catch(_){}
-  this['v3317Walk_'+type]=null;
-
-  this.v3317LoadAction(type,'walk',k=>{
-    if(!k||!pet?.active)return;
-    const img=this.add.image(pet.x,pet.y,k).setOrigin(.5,1).setDepth((pet.depth||70)+2);
-    const targetH=Math.max(285,Math.min(380,(pet.displayHeight||165)*2));
-    img.setScale(targetH/Math.max(1,img.height));
-    this['v3317Walk_'+type]=img;
-  });
+ const pet=this[type];if(!pet?.active)return;
+ const frames=ORIGINAL_MOTION[type]?.walk;
+ if(!frames)return;
+ const old=this['v3317Walk_'+type];
+ if(old?.active)return;
+ if(this['__v3317Walking_'+type])return;
+ this['__v3317Walking_'+type]=true;
+ this.v3317LoadOriginalMotion(type,frames[0],key=>{
+   this['__v3317Walking_'+type]=false;
+   if(!key||!pet?.active)return;
+   const img=this.add.image(pet.x,pet.y,key).setOrigin(.5,1).setDepth((pet.depth||70)+2);
+   const targetH=Math.max(145,Math.min(230,(pet.displayHeight||165)*1.2));
+   img.setScale(targetH/Math.max(1,img.height));
+   img.setData('motionFrames',[key,key]);
+   img.setData('motionLastFrame',0);
+   this['v3317Walk_'+type]=img;
+   this.v3317LoadOriginalMotion(type,frames[1],next=>{
+     if(next&&img.active)img.setData('motionFrames',[key,next]);
+   });
+ });
 };
 
 Game.prototype.v3317ShowAction=function(type,action,duration){
-  const pet=this[type];if(!pet?.active)return;
-  this.v3317LoadAction(type,action,k=>{
-    if(!k||!pet?.active)return;
-    const old=this['v3317Action_'+type];try{old?.destroy()}catch(_){}
-    const img=this.add.image(pet.x,pet.y,k).setOrigin(.5,1).setDepth((pet.depth||70)+3);
-    const targetH=Math.max(285,Math.min(380,(pet.displayHeight||165)*2));
-    img.setScale(targetH/Math.max(1,img.height));
-    this['v3317Action_'+type]=img;
-    const follow=this.time.addEvent({delay:45,loop:true,callback:()=>{
-      if(img.active&&pet.active)img.setPosition(pet.x,pet.y).setDepth((pet.depth||70)+3);
-    }});
-    this.time.delayedCall(Math.max(900,Number(duration)||2400),()=>{
-      follow.remove(false);
-      try{img.destroy()}catch(_){}
-      if(this['v3317Action_'+type]===img)this['v3317Action_'+type]=null;
-    });
-  });
+ const pet=this[type];if(!pet?.active)return;
+ const lookup=ORIGINAL_MOTION[type];
+ const originalAction=lookup&&(action==='sleep'?lookup.rest:action==='play'?lookup.play:action);
+ const load=(originalAction&&/^(paw|sleep|sit|wave|fly|hop|pounce)$/.test(originalAction))
+   ?done=>this.v3317LoadOriginalMotion(type,originalAction,done)
+   :done=>this.v3317LoadAction(type,action,done);
+ load(key=>{
+   if(!key||!pet?.active)return;
+   const old=this['v3317Action_'+type];try{old?.destroy()}catch(_){}
+   const img=this.add.image(pet.x,pet.y,key).setOrigin(.5,1).setDepth((pet.depth||70)+3);
+   const targetH=Math.max(145,Math.min(230,(pet.displayHeight||165)*1.2));
+   img.setScale(targetH/Math.max(1,img.height));
+   this['v3317Action_'+type]=img;
+   const follow=this.time.addEvent({delay:45,loop:true,callback:()=>{
+     if(img.active&&pet.active)img.setPosition(pet.x,pet.y).setDepth((pet.depth||70)+3);
+   }});
+   this.time.delayedCall(Math.max(900,Number(duration)||2400),()=>{
+     follow.remove(false);try{img.destroy()}catch(_){}
+     if(this['v3317Action_'+type]===img)this['v3317Action_'+type]=null;
+   });
+ });
 };
 
 Game.prototype.v3317UpdateGuardianVisuals=function(){
@@ -395,14 +428,15 @@ Game.prototype.v3317UpdateGuardianVisuals=function(){
     this.__v3317Prev[type]={x:pet.x,y:pet.y};
 
     if(walk?.active){
-      const base=walk.scaleX||1,step=Math.sin(now/92),breath=Math.sin(now/620);
+      // Animation is a true switch between independently painted limb positions.
+      const frames=walk.getData('motionFrames')||[];
+      const frameIndex=moving?(Math.floor(now/190)%2):0;
+      const next=frames[frameIndex]||frames[0];
+      if(next&&walk.texture?.key!==next&&this.textures.exists(next))walk.setTexture(next);
       walk.setVisible(!action?.active);
-      walk.setPosition(pet.x,pet.y+(moving?step*4:breath*2));
+      walk.setPosition(pet.x,pet.y);
       walk.setDepth((pet.depth||70)+2);
       if(dx<-.2)walk.setFlipX(true);else if(dx>.2)walk.setFlipX(false);
-      const abs=Math.abs(base);
-      walk.setScale(abs*(moving?1-step*.014:1+breath*.006),abs*(moving?1+step*.020:1-breath*.004));
-      walk.setRotation(moving?step*.009:0);
 
       // The original sprite stays alive and moving underneath as the controller.
       pet.setAlpha(.01).setVisible(true);
