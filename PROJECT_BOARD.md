@@ -30,6 +30,9 @@ Updated: 2026-10-17. Canonical source: `current-site/`. Live: https://rnw4512-de
 
 ## In Progress
 
+- **Companions page condensation** — development branch `companions-focused-tabs-20261017`: original Guardian cards, eggs, habitat, outfit/accessory drawer and room décor grouped into four keyboard tabs; canonical Guardian portraits with compact information under each card; personality/ability in optional expandable details. No Guardian or reward state owner changed. Needs visual/browser QA before merge.
+
+
 | Item | PR | Verified state |
 |---|---|---|
 | Phase 7 graduated magical atmosphere | [#137](https://github.com/rnw4512-dev/majick-studies-assets/pull/137) | Draft; latest 390 success, 820 Commons fail, 1366 probability fail |
@@ -152,3 +155,11 @@ Every change must append **date / area / commit or PR / what changed / how / act
 | Date | Scope | Changed | Tested | Outcome |
 |---|---|---|---|---|
 | 2026-10-17 | Board creation | Consolidated verified status, exact four sprint plan, transparent asset checklist and release gates | GitHub PR #137–140 and workflow result inspection | Planning artifact only; no live app deployment |\n| 2026-10-17 | Project synchronization | Added PROJECT_SYNC.md and CHATGPT_PROJECT_INSTRUCTIONS.txt, same-board update contract, CI board gate and hourly PR discrepancy watch | Verified connected GitHub reads/writes; created scheduled condition watch; PR gate committed, not yet merged | Project Settings still requires user paste; CI gate activates after merging #141; no native Project-file auto-refresh and no app deployment |
+
+| 2026-10-17 | Companions page UX | Added presentation-only `companion-tabs.js`, loaded by `index.html`, with focused tabs, canonical Guardian portrait cards, optional extended details and responsive styling | Source structure and canonical portrait-file presence checked; regression assertions added; browser QA still pending | Draft; no deploy; verify cards/actions, tab focus, duplicated status panels and persistence on 390/820/1366 |
+
+| 2026-10-17 | Canonical Guardian transparent upload review | Inspected 17 user-supplied transparent RGBA PNGs, including Vesper/Solara variants, Briar/Zephyr/Prism/Rook portraits, and original four motion references; prepared named staging ZIP and hash manifest | Confirmed 1254×1254 RGBA with transparency on all 17; runtime mapping and browser tests not run | Staged outside GitHub; must upload with correct canonical names, obtain visual approval, and integrate without touching protected 33 animations |
+
+| 2026-10-17 | Additional Guardian motion intake | Staged 19 unique RGBA 1254×1254 PNGs for Aurelia (legacy Mallow, 10 actions) and Solstice (legacy Nova, 9 actions) in a downloadable checksum manifest ZIP; skipped duplicate filename variants | Local alpha, dimensions and SHA-256 inspection passed; GitHub comparison and live Phaser/browser movement not completed | Protected 33 motion originals unchanged; staged only, not deployed; next reconcile checksum/path ownership then implement and certify |
+
+| 2026-10-17 | Protected motion reconciliation | Compared all 33 named protected Sanctuary PNG paths against the original transparent motion uploads; identified 5 missing actions (ember-fly, ember-wave, luna-paw, luna-sit, luna-sleep), built a verified 12 MB ZIP with correct canonical repository destinations and SHA256 manifest | Local 1254×1254 RGBA/alpha and checksums verified for all five; existing originals excluded; browser Phaser tests not run | Binary PNGs in downloadable staging patch, not GitHub or live app; require binary ingestion + existing renderer hookup + certification |

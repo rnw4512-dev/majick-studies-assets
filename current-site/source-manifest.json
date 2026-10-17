@@ -144,7 +144,7 @@
     "guardian-registry.js": "b20170b996ddf065f33bb37332c8a9fce68ae104914e3e94ffe9aa44b7b612f3",
     "home-focus.css": "cbb719eb8e78701717b4016388d511553f2785212d839815ed006651ae738b2b",
     "home-focus.js": "f421d4c5e5b4193d1005e5ce5cdbeb0e969a0cffb8ece49b9dd7c255a16ca794",
-    "index.html": "09580a1b4b562e8a87d5130f3d9ea95a19a214cc655a46f694c057e07b1000c6",
+    "index.html": "ef6a6ac06f9165d9ce2602d374a4d28cdc8bbac41242b9b09465a25756fc22b9",
     "learn-mode.css": "30181250c67efe7bd97c9276706a804a551e7904a2bb28160eeb0c193f35c002",
     "learn-mode.js": "49e424f3e40456772e4cb8adc550078c26ed793a5f83f9c216450609865ffa3c",
     "learning-lab.css": "b9c2c4f2ae393b3d291155a258cd01388bb71cd49a46d0187f224b03222ac2df",
@@ -824,6 +824,7 @@
     "assets/effects/celebrations/lesson-complete-seal.svg": "66d0d723db2bda1149c79bd1aa03e2c9be22df891ed9a5f842bf44cecf922ddf",
     "assets/effects/celebrations/course-complete-sigil.svg": "5bb72f7c3da585d477527f057c9c42930abd859db8681edaac3616ed130ca1a6",
     "room-section-nav.js": "bd9124934b4690f1ab043a59e0dc5b612de955d3db1e0ccf7528f80bf765eef5",
-    "room-section-nav.css": "13e365268595d22c6957fce8937757ee84b0f88145e62846a9f211e3b27c6915"
+    "room-section-nav.css": "13e365268595d22c6957fce8937757ee84b0f88145e62846a9f211e3b27c6915",
+    "companion-tabs.js": "daa624bbdbdb5c9d5c216ee8af3e50cd3d9a1ae98948a36e1c062f83d9bf9d56"
   }
 }
