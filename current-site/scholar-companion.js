@@ -71,15 +71,18 @@ function start(){
   if(t.closest('[data-nav],.nav button'))queueMicrotask(()=>refresh(true));
   if(t.closest('[data-guardian],[data-pet],.guardianAction,.mcPetAction'))react('guardian-bonding');
   if(t.closest('[data-hint],[data-action="hint"],.hintBtn'))react('thinking');
-  if(t.closest('[data-correct],.correctAnswer,.is-correct'))react('celebrating');
+  // No celebrations from raw clicks: only recorded academic evidence can trigger them.
  },true);
  const root=document.getElementById('app');
  if(root)new MutationObserver(()=>{if(!document.getElementById('atelierOverlay')?.hidden)return;refresh()}).observe(root,{childList:true,subtree:false});
  document.addEventListener('majick-scholar-react',e=>react(e.detail?.pose||'celebrating'));
  // Celebrate only academic milestones that the learning owner has already verified.
  document.addEventListener('majick:verified-academic-milestone',()=>react('celebrating'));
+ document.addEventListener('majick:verified-study-answer',e=>{const d=e.detail||{};if(d.historical)return;if(d.correct===true&&d.independent===true)react('celebrating');else if(d.correct===false)react('thinking');});
 
  window.addEventListener('majick-save-status',()=>refresh());
+ // Reward and wardrobe screens use the same persisted appearance; no new inventory is created.
+ document.addEventListener('majick-scholar-inventory-changed',()=>refresh(true));
  setInterval(()=>refresh(),2500);
 }
 window.MajickScholarCompanion={refresh,react,version:'3.4.2-companion-2'};
