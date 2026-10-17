@@ -11,3 +11,16 @@ assert(room.indexOf('this.v3321CommitFurnitureState();')<room.indexOf("MajickAni
 assert(learn.includes('work.dataset.celebrated'),'Learn Lab event must remain one-shot');
 assert(!/S\.progress\s*=|S\.majickAccount\s*=/.test(owner),'Animation owner cannot mutate academic or Guardian saves');
 console.log('PASS Phase 6 ownership: existing visual effects, successful care and placement only, one-shot learning, no reward owner duplication');
+
+
+/* Phase 7: shared scholar fitting + actual reward art verification. */
+const atelier=load('enchanted-atelier.js'),companion=load('scholar-companion.js'),vault=load('reward-core.js');
+for(const [name,src] of [['atelier',atelier],['scholar-companion',companion],['reward-core',vault]])new vm.Script(src,{filename:name+'.js'});
+assert(atelier.includes('function hairFit(p)')&&atelier.includes('data-hair-fit')&&atelier.includes('p.hairFit=hairFit('),'Hair fitting must use the saved scholar identity and working controls');
+assert(atelier.includes('MajickScholarCompanion?.refresh?.(true)'),'Outfit changes should immediately refresh scholar presence');
+for(const room of ['learninglab','livinggrimoire','companions','gamerealm','studynow'])assert(companion.includes(room+':'),'Scholar companion must recognize '+room);
+assert(companion.includes("majick:verified-academic-milestone"),'Scholar celebrations must use verified milestone events');
+for(const name of ['clarity-potion','recall-draught','moonfocus-elixir','crystal-sight-potion','starlight-tonic'])assert(fs.existsSync(path.join(root,'assets/rewards/potions',name+'.svg')),'Potion art missing: '+name);
+assert(fs.existsSync(path.join(root,'assets/rewards/crystals/majick-crystal.svg')),'Crystal art missing');
+assert(vault.includes('majPotionArt')&&vault.includes('majCrystalBalance'),'Potion and crystal art must be displayed by existing Vault');
+console.log('PASS shared scholar hair fit, room presence, potion and crystal artwork');
