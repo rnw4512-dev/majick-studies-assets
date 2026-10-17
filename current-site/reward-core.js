@@ -71,6 +71,7 @@ function account(){
  return a;
 }
 function save(){try{window.save?.()}catch(_){}}
+function scholarVisual(kind,detail={}){try{document.dispatchEvent(new CustomEvent('majick:scholar-visual',{detail:{kind,...detail}}))}catch(_){}}
 function hash(str){
  let h=2166136261>>>0;for(let i=0;i<str.length;i++){h^=str.charCodeAt(i);h=Math.imul(h,16777619)}return h>>>0;
 }
@@ -212,6 +213,7 @@ function award(type,ctx={}){
  };
  r.ledger[key]={type,at:receipt.at,receipt};r.lastReceipt=receipt;
  save();pushRewardState();showReceipt(receipt);
+ if(receipt.drop||receipt.crystals>0||receipt.eggFragments>0||receipt.milestoneChest)scholarVisual('earned',{key:receipt.key,crystals:receipt.crystals,drop:receipt.drop?.name||'',eggFragments:receipt.eggFragments});
  try{window.MajickProductCore?.record?.('reward-earned',{type,xp,crystals,eggFragments:receipt.eggFragments,item:drop?.id||null})}catch(_){}
  return receipt;
 }
@@ -300,7 +302,7 @@ function equipReward(id,petId,remove=false){
  if(!p||it?.kind!=='accessory'||!r?.collectibles.includes(id))return false;
  if(remove){if(equippedItem(p)!==id)return false;p.rewardAccessoryId=null;p.accessory=''}
  else {p.rewardAccessoryId=id;p.accessory=it.icon+' '+it.name}
- save();window.MajickGuardianCare?.broadcastState?.();pushRewardState();refreshVault();return true;
+ save();window.MajickGuardianCare?.broadcastState?.();pushRewardState();refreshVault();scholarVisual('guardian-accessory',{item:it.name,petId,remove});return true;
 }
 function vaultCard(it,owned){
  const pet=activePet(),room=roomState(),stored=room?.stored?.includes(it.id),isEquipped=equippedItem(pet)===it.id,wearers=(state()?.legacy?.pets||[]).filter(p=>equippedItem(p)===it.id);
@@ -347,10 +349,10 @@ function vaultPanelHTML(){
  const tabs='<nav class="majVaultTabs" role="tablist" aria-label="Magic Vault sections">'+VAULT_TABS.map(([id,label])=>'<button type="button" role="tab" id="majVault-tab-'+id+'" aria-controls="majVault-panel-'+id+'" aria-selected="'+(vaultTab===id)+'" tabindex="'+(vaultTab===id?'0':'-1')+'" onclick="majickVaultTab(\''+id+'\')" onkeydown="majickVaultTabKeys(event,\''+id+'\')">'+label+'</button>').join('')+'</nav>';
  const pagination='<nav class="majVaultPages" aria-label="Treasure pages"><button type="button" onclick="majickVaultPage('+(vaultPage-1)+')" '+(vaultPage===0?'disabled':'')+'>← Previous</button><span aria-live="polite">'+(finds.length?'Showing '+(vaultPage*VAULT_PAGE_SIZE+1)+'–'+Math.min(finds.length,(vaultPage+1)*VAULT_PAGE_SIZE)+' of '+finds.length:'No treasures')+' • Page '+(vaultPage+1)+' of '+pages+'</span><button type="button" onclick="majickVaultPage('+(vaultPage+1)+')" '+(vaultPage===pages-1?'disabled':'')+'>Next →</button></nav>';
  return '<section class="majArcaneVault" id="majArcaneVault"><header><div><small>MAGIC VAULT</small><h2>The treasures of your studies.</h2><p>Explore your discoveries, prepare a potion, and watch your next egg take shape.</p></div><button onclick="majickConjureEgg()" '+(ready?'':'disabled')+'>'+(ready?'✦ Conjure Egg':'🥚 '+remaining+' fragments to your next egg')+'</button></header>'+
- '<div class="majVaultStats"><span>✦ '+TREASURES.filter(it=>owned.has(it.id)).length+' / '+TREASURES.length+' treasures discovered</span><span>◇ '+Object.values(inv.ingredients).reduce((a,b)=>a+Number(b||0),0)+' ingredients</span><span>⚗ '+Object.values(inv.potions).reduce((a,b)=>a+Number(b||0),0)+' potions</span><span>🥚 '+inv.eggFragments+' egg fragments'+(ready?' • '+ready+' conjuring'+(ready===1?'':'s')+' ready':'')+'</span></div>'+
+ '<div class="majVaultStats"><span class="majCrystalBalance"><img src="assets/rewards/crystals/majick-crystal.svg" width="29" height="29" alt="" loading="lazy" style="vertical-align:middle;margin-right:7px">'+Number(account()?.crystals||0)+' crystals</span><span>✦ '+TREASURES.filter(it=>owned.has(it.id)).length+' / '+TREASURES.length+' treasures discovered</span><span>◇ '+Object.values(inv.ingredients).reduce((a,b)=>a+Number(b||0),0)+' ingredients</span><span>⚗ '+Object.values(inv.potions).reduce((a,b)=>a+Number(b||0),0)+' potions</span><span>🥚 '+inv.eggFragments+' egg fragments'+(ready?' • '+ready+' conjuring'+(ready===1?'':'s')+' ready':'')+'</span></div>'+
  tabs+
  panel('treasures')+'<h3 id="majVaultTreasureHeading" tabindex="-1">Your Treasure Collection</h3><div class="majVaultFilters">'+select('collection','Collection',[['all','All collections'],['solstice','Solstice'],['aurelia','Aurelia'],['shared','Shared treasures']])+select('status','Discovery',[['all','All treasures'],['owned','Owned'],['locked','Undiscovered']])+select('kind','Item type',[['all','All types'],['furniture','Furniture'],['decor','Decor'],['toy','Exploration toys'],['accessory','Accessories']])+select('rarity','Rarity',[['all','All rarities'],...RARITIES.map(x=>[x.id,x.label])])+'</div><div class="majVaultCollection">'+(finds.length?pageRows.map(it=>vaultCard(it,owned.has(it.id))).join(''):'<p class="majVaultEmpty">No treasures match these filters. Choose All treasures to explore the collection.</p>')+'</div>'+pagination+'</section>'+
- panel('potions')+'<div class="majRecipeShelf"><h3>Potion Workshop</h3>'+RECIPES.map(rec=>{const count=Number(inv.potions[rec.id]||0),can=Object.entries(rec.cost).every(([k,n])=>Number(inv.ingredients[k]||0)>=n);return '<div class="majRecipe"><span aria-hidden="true">'+E(rec.icon)+'</span><div><b>'+E(rec.name)+'</b><p>'+E(rec.effect)+'</p><div class="majRecipeCosts">'+Object.entries(rec.cost).map(([k,n])=>{const have=Number(inv.ingredients[k]||0);return '<span class="'+(have>=n?'ready':'missing')+'">'+E(ingredientName(k))+' '+have+'/'+n+(have>=n?' ✓':' • need '+(n-have))+'</span>'}).join('')+'</div></div><aside><button onclick="majickCraftPotion(\''+E(rec.id)+'\')" '+(can?'':'disabled')+'>'+ (can?'Craft potion':'Gather ingredients')+'</button>'+(count?'<button class="use" onclick="majickUsePotion(\''+E(rec.id)+'\')">Use • '+count+' owned</button>':'')+'</aside></div>'}).join('')+'</div>'+'</section>'+
+ panel('potions')+'<div class="majRecipeShelf"><h3>Potion Workshop</h3>'+RECIPES.map(rec=>{const count=Number(inv.potions[rec.id]||0),can=Object.entries(rec.cost).every(([k,n])=>Number(inv.ingredients[k]||0)>=n);return '<div class="majRecipe"><span aria-hidden="true" class="majPotionArt"><img src="assets/rewards/potions/'+E(rec.id)+'.svg" alt="" loading="lazy" width="64" height="64"></span><div><b>'+E(rec.name)+'</b><p>'+E(rec.effect)+'</p><div class="majRecipeCosts">'+Object.entries(rec.cost).map(([k,n])=>{const have=Number(inv.ingredients[k]||0);return '<span class="'+(have>=n?'ready':'missing')+'">'+E(ingredientName(k))+' '+have+'/'+n+(have>=n?' ✓':' • need '+(n-have))+'</span>'}).join('')+'</div></div><aside><button onclick="majickCraftPotion(\''+E(rec.id)+'\')" '+(can?'':'disabled')+'>'+ (can?'Craft potion':'Gather ingredients')+'</button>'+(count?'<button class="use" onclick="majickUsePotion(\''+E(rec.id)+'\')">Use • '+count+' owned</button>':'')+'</aside></div>'}).join('')+'</div>'+'</section>'+
  panel('ingredients')+'<div class="majRecipeShelf"><h3>Ingredient Cabinet</h3><div class="majLootGrid">'+(ingredients.length?ingredients.map(([id,n])=>{const it=INGREDIENTS.find(x=>x.id===id)||{};return '<span class="'+E(it.rarity||'common')+'"><i aria-hidden="true">'+E(it.icon||'✦')+'</i><b>'+E(it.name||id)+'</b><small>'+E(rarityLabel(it.rarity||'common'))+' • '+Number(n)+' owned</small></span>'}).join(''):'<p class="majVaultEmpty">Your cabinet is waiting for its first discovery. Study treasure can reveal magical ingredients.</p>')+'</div></div>'+'</section>'+
  panel('eggs')+'<div class="majVaultEggProgress"><label for="majVaultEggMeter">Next egg • '+Math.min(10,inv.eggFragments)+'/10 fragments</label><progress id="majVaultEggMeter" value="'+Math.min(10,inv.eggFragments)+'" max="10"></progress><p>Earn fragments through mastery and learning milestones.</p></div>'+'</section>'+
  panel('recent')+'<div class="majRecipeShelf"><h3>Recent Discoveries</h3>'+(recent.length?recent.map(x=>'<div class="majVaultRecent"><b>'+E(x.drop?x.drop.name:'Celestial Egg Fragments')+'</b><span>'+E(x.label||x.type.replace(/-/g,' '))+(x.drop?' • '+E(rarityLabel(x.drop.rarity)):' • +'+x.eggFragments+' fragments')+'</span></div>').join(''):'<p class="majVaultEmpty">New treasures and egg fragments will appear here as you earn them.</p>')+'</div>'+ '</section>'+
@@ -376,12 +378,12 @@ function inventory(){
 function craft(id){
  const a=account(),r=a.rewardCore,rec=RECIPES.find(x=>x.id===id);if(!rec)return {ok:false,message:'Unknown recipe.'};
  for(const [k,n] of Object.entries(rec.cost))if(Number(r.ingredients[k]||0)<n)return {ok:false,message:'You still need '+n+' '+(INGREDIENTS.find(x=>x.id===k)?.name||k)+'.'};
- for(const [k,n] of Object.entries(rec.cost))r.ingredients[k]-=n;r.potions[id]=Number(r.potions[id]||0)+1;save();
+ for(const [k,n] of Object.entries(rec.cost))r.ingredients[k]-=n;r.potions[id]=Number(r.potions[id]||0)+1;save();scholarVisual('crafted',{item:rec.name});
  return {ok:true,recipe:rec,count:r.potions[id]};
 }
 function usePotion(id){
  const a=account(),r=a.rewardCore;if(Number(r.potions[id]||0)<1)return false;r.potions[id]--;const fx=updateEffects();
- if(id==='moonfocus-elixir')fx.moonfocus=5;if(id==='starlight-tonic')fx.starlightTonic=3;if(id==='clarity-potion')fx.clarity=1;if(id==='recall-draught')fx.recall=1;if(id==='crystal-sight-potion')fx.crystalSight=1;save();return true;
+ if(id==='moonfocus-elixir')fx.moonfocus=5;if(id==='starlight-tonic')fx.starlightTonic=3;if(id==='clarity-potion')fx.clarity=1;if(id==='recall-draught')fx.recall=1;if(id==='crystal-sight-potion')fx.crystalSight=1;save();scholarVisual('potion',{item:RECIPES.find(x=>x.id===id)?.name||''});return true;
 }
 function rewardPreview(type,ctx={}){const x=baseFor(type,ctx);return {...x,type};}
 function patchLegacyGameRewards(){
