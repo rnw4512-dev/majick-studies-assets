@@ -11,3 +11,11 @@ assert(room.indexOf('this.v3321CommitFurnitureState();')<room.indexOf("MajickAni
 assert(learn.includes('work.dataset.celebrated'),'Learn Lab event must remain one-shot');
 assert(!/S\.progress\s*=|S\.majickAccount\s*=/.test(owner),'Animation owner cannot mutate academic or Guardian saves');
 console.log('PASS Phase 6 ownership: existing visual effects, successful care and placement only, one-shot learning, no reward owner duplication');
+
+// Companion presentation ownership: tabs rearrange the existing cards, never clone economy/actions.
+const tabs=load('companion-tabs.js');new vm.Script(tabs,{filename:'companion-tabs.js'});
+for(const label of ['Your Guardians','Egg Incubator','Magical Habitat','Dress-Up Drawer','Sanctuary Decor'])assert(tabs.includes(label),'Missing existing Companion section '+label);
+assert(tabs.includes("role','tablist'")&&tabs.includes("role','tabpanel'")&&tabs.includes("aria-selected"),'Keyboard-accessible tabs and panels required');
+assert(!/crystals\s*[+\-]=|xp\s*[+\-]=|\.award\(/.test(tabs),'Tabs must not alter rewards or academic progress');
+assert(tabs.includes("new MutationObserver(queue)"),'Tabs must remount after Companion navigation/re-render');
+console.log('PASS Companion tabs: existing sections only, keyboard tabs, no new reward state owner');
