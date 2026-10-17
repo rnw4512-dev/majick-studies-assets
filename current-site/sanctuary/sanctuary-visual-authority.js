@@ -10,6 +10,7 @@ const CANON={luna:'velora',ember:'cascade',nova:'solstice',mallow:'aurelia'};
 const STAGES=['new-bond','apprentice','guardian','ascendant','celestial'];
 const HEIGHT={ 'new-bond':220, apprentice:238, guardian:252, ascendant:270, celestial:288 };
 const DEFAULT_MOVE={luna:'lunaWalk',ember:'emberWalk',nova:'novaRun',mallow:'mallowHop'};
+const PAINTED={luna:{walk:['walk-1','walk-2'],play:'paw',rest:'sleep'},ember:{walk:['walk-1','walk-2'],play:'wave',rest:'sleep'},nova:{walk:['walk-1','walk-2'],play:'pounce',rest:'sleep'},mallow:{walk:['hop-1','hop-2'],play:'paw',rest:'sleep'}};
 
 function roster(scene){return Array.isArray(scene?.v3317CareState?.roster)?scene.v3317CareState.roster:[]}
 function isOwned(scene,type){return roster(scene).some(g=>String(g?.type||'')===type)}
@@ -118,50 +119,39 @@ Game.prototype.v3325SyncOwnedVisuals=function(){
 };
 
 Game.prototype.v3317EnsureWalkSkin=function(type){
-  const pet=this[type];
-  if(!pet?.active||!isOwned(this,type)){
-    this.v3325SyncOwnedVisuals?.();
-    return;
-  }
-  const expected=expectedKey(this,type,'walk');
-  const current=this['v3317Walk_'+type];
-  if(current?.active&&current.texture?.key===expected){
-    prune(this,type,'walk',current);
-    try{pet.setAlpha(0).setVisible(true)}catch(_){}
-    return current;
-  }
-
-  if(this['__v3325WalkPending_'+type]===expected)return current||null;
-  const token=expected+'|'+Date.now()+'|'+Math.random();
-  this['__v3325WalkPending_'+type]=expected;
-  this['__v3325WalkToken_'+type]=token;
-
-  try{current?.destroy?.()}catch(_){}
-  this['v3317Walk_'+type]=null;
-
-  this.v3317LoadAction(type,'walk',k=>{
-    if(this['__v3325WalkToken_'+type]!==token)return;
-    this['__v3325WalkPending_'+type]=null;
-    if(!k||!pet?.active||!isOwned(this,type)){
-      if(isOwned(this,type))try{pet.setAlpha(1).setVisible(true)}catch(_){}
-      return;
-    }
-
-    prune(this,type,'walk');
-    const img=this.add.image(pet.x,pet.y,k).setOrigin(.5,1).setDepth((pet.depth||70)+2);
-    const base=visualHeight(this,type)/Math.max(1,img.height);
-    img.setScale(base);
-    img.setData('v3325GuardianType',type);
-    img.setData('v3325GuardianRole','walk');
-    img.setData('v3325BaseScale',base);
-    this['v3317Walk_'+type]=img;
-    try{pet.setAlpha(0).setVisible(true)}catch(_){}
-    prune(this,type,'walk',img);
-    return img;
-  });
-  return null;
+ const pet=this[type];if(!pet?.active||!isOwned(this,type)){this.v3325SyncOwnedVisuals?.();return;}
+ const pair=PAINTED[type]?.walk;
+ const expected=pair?'v3317-original-'+type+'-'+pair[0]:expectedKey(this,type,'walk');
+ const current=this['v3317Walk_'+type];
+ if(current?.active&&current.getData?.('v3325BaseTexture')===expected){
+   prune(this,type,'walk',current);try{pet.setAlpha(0).setVisible(true)}catch(_){};return current;
+ }
+ if(this['__v3325WalkPending_'+type]===expected)return current||null;
+ const token=expected+'|'+Date.now()+'|'+Math.random();
+ this['__v3325WalkPending_'+type]=expected;this['__v3325WalkToken_'+type]=token;
+ try{current?.destroy?.()}catch(_){};this['v3317Walk_'+type]=null;
+ const use=(callback)=>pair&&this.v3317LoadOriginalMotion
+   ?this.v3317LoadOriginalMotion(type,pair[0],key=>key?callback(key):this.v3317LoadAction(type,'walk',callback))
+   :this.v3317LoadAction(type,'walk',callback);
+ use(k=>{
+   if(this['__v3325WalkToken_'+type]!==token)return;
+   this['__v3325WalkPending_'+type]=null;
+   if(!k||!pet?.active||!isOwned(this,type)){try{pet.setAlpha(1).setVisible(true)}catch(_){};return}
+   prune(this,type,'walk');
+   const img=this.add.image(pet.x,pet.y,k).setOrigin(.5,1).setDepth((pet.depth||70)+2);
+   const base=visualHeight(this,type)/Math.max(1,img.height);
+   img.setScale(base);
+   img.setData('v3325GuardianType',type);img.setData('v3325GuardianRole','walk');
+   img.setData('v3325BaseScale',base);img.setData('v3325BaseTexture',expected);
+   img.setData('motionFrames',[k,k]);
+   this['v3317Walk_'+type]=img;try{pet.setAlpha(0).setVisible(true)}catch(_){};
+   prune(this,type,'walk',img);
+   if(pair&&k==='v3317-original-'+type+'-'+pair[0]){
+     this.v3317LoadOriginalMotion(type,pair[1],next=>{if(next&&img.active)img.setData('motionFrames',[k,next])});
+   }
+ });
+ return null;
 };
-
 Game.prototype.v3317ShowAction=function(type,action,duration){
   const pet=this[type];
   if(!pet?.active||!isOwned(this,type))return;
@@ -170,7 +160,11 @@ Game.prototype.v3317ShowAction=function(type,action,duration){
   this['__v3325ActionPending_'+type]=expected;
   this['__v3325ActionToken_'+type]=token;
 
-  this.v3317LoadAction(type,action,k=>{
+  const real=PAINTED[type]?.[action==='sleep'?'rest':action==='play'?'play':action];
+  const load=real&&this.v3317LoadOriginalMotion
+    ?done=>this.v3317LoadOriginalMotion(type,real,k=>k?done(k):this.v3317LoadAction(type,action,done))
+    :done=>this.v3317LoadAction(type,action,done);
+  load(k=>{
     if(this['__v3325ActionToken_'+type]!==token)return;
     this['__v3325ActionPending_'+type]=null;
     if(!k||!pet?.active||!isOwned(this,type))return;
@@ -224,9 +218,12 @@ Game.prototype.v3317UpdateGuardianVisuals=function(){
 
     if(walk?.active){
       const base=Number(walk.getData?.('v3325BaseScale'))||Math.abs(walk.scaleX)||1;
-      const bob=Math.sin(now/165)*(moving?1.6:.8);
+      const frames=walk.getData?.('motionFrames')||[];
+      const frame=moving?Math.floor(now/190)%2:0;
+      const next=frames[frame]||frames[0];
+      if(next&&this.textures.exists(next)&&walk.texture?.key!==next)walk.setTexture(next);
       walk.setVisible(!action?.active);
-      walk.setPosition(pet.x,pet.y+bob);
+      walk.setPosition(pet.x,pet.y);
       walk.setDepth((pet.depth||70)+2);
       if(dx<-.2)walk.setFlipX(true);else if(dx>.2)walk.setFlipX(false);
       // Fixed scale: never use the previous animated frame as the next base.

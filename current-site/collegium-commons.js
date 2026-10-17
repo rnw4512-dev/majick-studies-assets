@@ -30,6 +30,41 @@ function syncSanctuaryMotion(){
  document.querySelectorAll('#majCommonsHub .v3317SanctuaryFrame').forEach(frame=>{
   if(!frame.dataset.commonsLifecycle){frame.dataset.commonsLifecycle='true';frame.addEventListener('load',()=>{sanctuaryVisibility.delete(frame);syncSanctuaryMotion()})}
   const visible=selected==='sanctuary';
+  // The iframe used to auto-load on Home even when Sanctuary was hidden.
+  // Defer its very first load; after the student opens Sanctuary, retain
+  // the live frame and merely sleep/wake the existing Phaser loop.
+  if(!frame.dataset.commonsFirstVisit){
+    if(visible){frame.dataset.commonsFirstVisit='yes'}
+    else if(!frame.dataset.commonsDeferredSrc&&frame.hasAttribute('src')){
+      frame.dataset.commonsDeferredSrc=frame.getAttribute('src');
+      frame.removeAttribute('src');
+    }
+  }
+  if(visible&&frame.dataset.commonsDeferredSrc){
+    const src=frame.dataset.commonsDeferredSrc;
+    delete frame.dataset.commonsDeferredSrc;
+    frame.dataset.commonsFirstVisit='yes';
+    frame.setAttribute('src',src);
+  }
+  if(!frame.dataset.commonsFocusGuard){
+    frame.dataset.commonsFocusGuard='yes';
+    frame.addEventListener('focus',()=>{
+      if(selected!=='sanctuary'){
+        frame.blur();
+        document.querySelector('#majCommonsHub [data-commons-tab="'+selected+'"]')?.focus({preventScroll:true});
+      }
+    });
+  }
+  // Hidden Phaser frames must never take keyboard focus from the selected Commons tab.
+  // Keeping the frame mounted preserves in-session Sanctuary and Guardian state.
+  frame.tabIndex=visible?0:-1;
+  frame.inert=!visible;
+  frame.style.pointerEvents=visible?'auto':'none';
+  frame.setAttribute('aria-hidden',visible?'false':'true');
+  if(!visible&&document.activeElement===frame){
+    frame.blur();
+    document.querySelector('#majCommonsHub [data-commons-tab="'+selected+'"]')?.focus({preventScroll:true});
+  }
   try{const loop=frame.contentWindow?.majickPhaserGame?.loop;if(loop&&sanctuaryVisibility.get(frame)!==visible){if(visible)loop.wake();else loop.sleep();sanctuaryVisibility.set(frame,visible)}}catch(_){}
  });
 }
@@ -40,7 +75,7 @@ function navigateTab(next){
  try{sessionStorage.setItem('majick-commons-tab',next)}catch(_){}
  const hub=document.getElementById('majCommonsHub');if(!hub)return;
  hub.querySelectorAll('[data-commons-tab]').forEach(b=>{const active=b.dataset.commonsTab===selected;b.setAttribute('aria-selected',String(active));b.tabIndex=active?0:-1;b.setAttribute('aria-current',active?'page':'false')});
- hub.querySelectorAll('[data-commons-panel]').forEach(p=>{p.hidden=p.dataset.commonsPanel!==selected;p.setAttribute('tabindex','0')});
+ hub.querySelectorAll('[data-commons-panel]').forEach(p=>{const active=p.dataset.commonsPanel===selected;p.hidden=!active;p.inert=!active;p.setAttribute('tabindex',active?'0':'-1')});
  syncSanctuaryMotion();
  const title=hub.querySelector('[data-commons-current]');if(title)title.textContent=TABS.find(t=>t[0]===selected)?.[1]||'Overview';
 }
@@ -71,7 +106,7 @@ function attach(){
   });
   hub.querySelector('.majCommonsStepButtons').append(analyticsAccess);
   hub.querySelector('[data-commons-previous]').addEventListener('click',()=>delta(-1));hub.querySelector('[data-commons-next]').addEventListener('click',()=>delta(1));
-  list.addEventListener('keydown',e=>{if(['ArrowRight','ArrowLeft','Home','End'].includes(e.key)){e.preventDefault();if(e.key==='Home')navigateTab(TABS[0][0]);else if(e.key==='End')navigateTab(TABS[TABS.length-1][0]);else delta(e.key==='ArrowRight'?1:-1);list.querySelector('[aria-selected="true"]')?.focus()}});
+  // Keyboard handling is delegated once below, so rerendered tab buttons retain focus behavior.
   root.prepend(hub);
  }
  hub.querySelector('.majCommonsCourse').textContent='Currently studying · '+(document.querySelector('.top select')?.selectedOptions?.[0]?.textContent||window.S?.activeCourse||'Your course');
@@ -103,8 +138,52 @@ function attach(){
   if(destination!==tab)place(panels[destination],node,destination);
  }
  navigateTab(selected);
+ // The Commons can hydrate panels while a keyboard tab move is underway.
+ // Keep the focused tab attached after reclassification, not the detached old button.
+ if(window.S?.screen==='home'&&document.activeElement?.closest?.('#majCommonsHub [data-commons-tab]')){
+   const activeId=document.activeElement.dataset.commonsTab;
+   if(activeId!==selected)hub.querySelector('[data-commons-tab="'+selected+'"]')?.focus({preventScroll:true});
+ }
  }catch(e){console.warn('Commons layout preserved original content:',e)}finally{updating=false}
 }
+// The Home hub can rehydrate after the learner selects a tab. Delegate from the
+// document to survive button replacement and focus the currently mounted button.
+let pendingKeyboardFocus=false;
+let lastKeyboardTab=null,lastKeyboardFocusUntil=0;
+function restoreKeyboardTabFocus(){
+ if(!lastKeyboardTab||window.S?.screen!=='home'||performance.now()>lastKeyboardFocusUntil)return;
+ const tab=document.querySelector('#majCommonsHub [data-commons-tab="'+lastKeyboardTab+'"]');
+ if(!tab||selected!==lastKeyboardTab)return;
+ const active=document.activeElement;
+ if(active!==tab&&(!active||active===document.body||active===document.documentElement||active.matches?.('iframe,[data-commons-tab]')))tab.focus({preventScroll:true});
+}
+document.addEventListener('pointerdown',()=>{lastKeyboardFocusUntil=0},true);
+document.addEventListener('keydown',event=>{if(event.key==='Tab')lastKeyboardFocusUntil=0},true);
+document.addEventListener('focusin',()=>{if(lastKeyboardFocusUntil)queueMicrotask(restoreKeyboardTabFocus)},true);
+document.addEventListener('keydown',e=>{
+ if(!['ArrowRight','ArrowLeft','Home','End'].includes(e.key))return;
+ const target=e.target?.closest?.('#majCommonsHub [data-commons-tab]');
+ // A campus rehydrate may momentarily leave focus on the document body after
+ // a valid keyboard tab move; continue ONLY that recent tab navigation sequence.
+ const continuing=!target&&(e.target===document.body||e.target===document.documentElement)
+   &&performance.now()<lastKeyboardFocusUntil&&lastKeyboardTab===selected;
+ if((!target&&!continuing)||window.S?.screen!=='home')return;
+ e.preventDefault();pendingKeyboardFocus=true;
+ lastKeyboardFocusUntil=performance.now()+700;
+ const index=TABS.findIndex(t=>t[0]===selected),n=TABS.length;
+ const next=e.key==='Home'?TABS[0][0]:e.key==='End'?TABS[n-1][0]:TABS[(index+(e.key==='ArrowRight'?1:-1)+n)%n][0];
+ lastKeyboardTab=next;
+ navigateTab(next);
+ const focus=()=>document.querySelector('#majCommonsHub [data-commons-tab="'+next+'"]')?.focus({preventScroll:true});
+ focus();queueMicrotask(focus);
+},true);
+document.addEventListener('keyup',e=>{
+ if(!pendingKeyboardFocus||!['ArrowRight','ArrowLeft','Home','End'].includes(e.key))return;
+ pendingKeyboardFocus=false;
+ document.querySelector('#majCommonsHub [data-commons-tab="'+selected+'"]')?.focus({preventScroll:true});
+ restoreKeyboardTabFocus();
+ for(const delay of [0,50,160,320])setTimeout(restoreKeyboardTabFocus,delay);
+},true);
 function needsSync(){
  const root=document.querySelector('#content'),hub=root?.querySelector(':scope > #majCommonsHub');
  if(!root)return false;
