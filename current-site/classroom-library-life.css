@@ -45,3 +45,15 @@ body[data-majick-polish-room=livinggrimoire] .v3354Parchment:after{
 @media(prefers-reduced-motion:reduce){.v3354TeachingBoard:before,.v3354TeachingBoard:after,.v3362BoardRunes i,.v3354Parchment:after,.v3354Shelves span:after{animation:none!important}}
 html[data-majick-reduce-motion=true] :is(.v3354TeachingBoard:before,.v3354TeachingBoard:after,.v3362BoardRunes i,.v3354Parchment:after,.v3354Shelves span:after){animation:none!important}
 @media(max-width:700px){.v3362Bookmark{right:10px}.v3354LessonTabs button[aria-current]:after{display:none}}
+
+/* Phase 7 classroom objects: soft magic limited to decorative pseudoelements. */
+@media(prefers-reduced-motion:no-preference){
+ body[data-majick-polish-room=learninglab] .v3354TeachingBoard::after{
+  animation:maj7ChalkShimmer 11s ease-in-out infinite;pointer-events:none}
+ body[data-majick-polish-room=livinggrimoire] .v3354ArchiveDesk::after{
+  animation:maj7ChalkShimmer 13s ease-in-out infinite;pointer-events:none}
+}
+@keyframes maj7ChalkShimmer{0%,100%{opacity:.35}50%{opacity:.67}}
+@media(prefers-reduced-motion:reduce){
+ .v3354TeachingBoard::after,.v3354ArchiveDesk::after{animation:none!important}
+}
