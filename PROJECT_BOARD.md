@@ -140,6 +140,8 @@ Updated: 2026-10-17. Canonical source: `current-site/`. Live: https://rnw4512-de
 - **Workflow rules:** [PROJECT_SYNC.md](PROJECT_SYNC.md).
 - **Copy into ChatGPT Project Settings:** [CHATGPT_PROJECT_INSTRUCTIONS.txt](CHATGPT_PROJECT_INSTRUCTIONS.txt).
 - **Every development session:** fetch latest board/open PRs, perform verified work, append one record here, update item statuses and tests, and commit this board change (or create a board PR). Do not claim a session is complete without this step, unless GitHub write fails and the limitation is reported.
+- **Automated enforcement:** `.github/workflows/majick-board-gate.yml` rejects pull requests that change executable `current-site/` or `pages-release/current/` files without also changing `PROJECT_BOARD.md`. This takes effect once PR #141 merges; it is not a substitute for accurate log entries.
+- **Monitoring:** hourly Majick Studies PR Watch checks for new/updated PRs and board discrepancies and notifies on meaningful changes. This is a scheduled condition check, *not* a native GitHub event-triggered ChatGPT Project file sync.
 - **Current integration limit:** Projects do not auto-replace uploaded GitHub file snapshots. Connected GitHub provides live on-demand reads, not automatic project indexing. A Work PR-triggered task could supplement this if available/configured.
 - **Merge condition:** PR #141 must be merged for `main/PROJECT_BOARD.md` to become the default board; until then use the `master-project-board-20261017` branch.
 
@@ -149,4 +151,4 @@ Every change must append **date / area / commit or PR / what changed / how / act
 
 | Date | Scope | Changed | Tested | Outcome |
 |---|---|---|---|---|
-| 2026-10-17 | Board creation | Consolidated verified status, exact four sprint plan, transparent asset checklist and release gates | GitHub PR #137–140 and workflow result inspection | Planning artifact only; no live app deployment |\n| 2026-10-17 | Project synchronization | Added PROJECT_SYNC.md and CHATGPT_PROJECT_INSTRUCTIONS.txt, GitHub-first per-session board-update contract | Reviewed current OpenAI GitHub/Projects integration limits; source documents committed | No native GitHub→Project live file sync; Project Settings setup and optional Work trigger require user action; not deployed |
+| 2026-10-17 | Board creation | Consolidated verified status, exact four sprint plan, transparent asset checklist and release gates | GitHub PR #137–140 and workflow result inspection | Planning artifact only; no live app deployment |\n| 2026-10-17 | Project synchronization | Added PROJECT_SYNC.md and CHATGPT_PROJECT_INSTRUCTIONS.txt, same-board update contract, CI board gate and hourly PR discrepancy watch | Verified connected GitHub reads/writes; created scheduled condition watch; PR gate committed, not yet merged | Project Settings still requires user paste; CI gate activates after merging #141; no native Project-file auto-refresh and no app deployment |
