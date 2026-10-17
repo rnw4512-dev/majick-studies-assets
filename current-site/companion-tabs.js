@@ -29,6 +29,19 @@ function mount(){
   const panel=document.createElement('section');panel.id='majCompPanel-'+id;panel.className='majCompPanel';panel.setAttribute('role','tabpanel');panel.setAttribute('aria-labelledby',btn.id);
   for(const node of partitions.get(id))panel.append(node);panels.set(id,panel);
  }
+ // Keep original Guardian actions and state; only reshape their presentation.
+ const nameByType={luna:'velora',ember:'cascade',nova:'solstice',mallow:'aurelia',vesper:'vesper',briar:'briar',zephyr:'zephyr',prism:'prism',rook:'rook',solara:'solara'};
+ const cards=[...panels.get('guardians').querySelectorAll('.petCard')];
+ cards.forEach((card,i)=>{
+  const pet=window.S?.legacy?.pets?.[i];if(!pet)return;
+  const key=nameByType[String(pet.type||'').toLowerCase()];
+  const portrait=card.querySelector('.petAvatar');
+  if(portrait&&key){const original=portrait.textContent;const img=document.createElement('img');img.src='./assets/familiars/canon/'+key+'-guardian.webp';img.alt=String(pet.name||key)+' canonical portrait';img.loading='lazy';img.onerror=()=>{img.remove();portrait.textContent=original};portrait.textContent='';portrait.append(img)}
+  const species=card.querySelector('h3 + p');if(species){const text=species.textContent.split(' • ');species.textContent=text[0]||''}
+  const tip=card.querySelector('.tiny');if(tip){const detail=document.createElement('details');detail.className='majCompDetail';const summary=document.createElement('summary');summary.textContent='Ability & personality';detail.append(summary,tip);card.append(detail)}
+  const bond=card.querySelector('.petProgress');if(bond){bond.setAttribute('role','progressbar');bond.setAttribute('aria-label','Guardian bond progress');bond.setAttribute('aria-valuemin','0');bond.setAttribute('aria-valuemax','100');const w=parseFloat(bond.querySelector('i')?.style.width||'0');bond.setAttribute('aria-valuenow',String(Math.min(100,Math.max(0,Math.round(w)))))}
+  card.classList.add('majCompPortraitCard');
+ });
  const insert=head?.nextSibling||root.firstChild;root.insertBefore(nav,insert);
  for(const panel of panels.values())nav.after(panel);
  // Re-establish stable tab order, since after() always inserts immediately after the nav.
@@ -39,7 +52,7 @@ function mount(){
  show(selected);
 }
 function queue(){if(pending)return;pending=true;queueMicrotask(()=>{pending=false;mount()})}
-const css=document.createElement('style');css.textContent='.majCompTabs{display:flex;gap:8px;flex-wrap:wrap;align-items:center;padding:12px;margin:14px 0 20px;background:#251d33;border:1px solid #c6a676;border-radius:15px}.majCompTabs button{font:700 14px/1.4 system-ui;color:#f7e8cc;background:#43304f;border:1px solid #a68b9d;border-radius:10px;padding:11px 15px;cursor:pointer}.majCompTabs button[aria-selected="true"]{color:#21172c;background:#f1d49e;border-color:#f1d49e}.majCompTabs button:focus-visible{outline:3px solid #ffdf83;outline-offset:3px}.majCompPanel[hidden]{display:none!important}.majCompPanel{min-height:160px}.majCompPanel>.sectionTitle:first-child{margin-top:0}@media(max-width:520px){.majCompTabs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.majCompTabs button{padding:10px 7px}}';document.head.append(css);
+const css=document.createElement('style');css.textContent='.majCompTabs{display:flex;gap:8px;flex-wrap:wrap;align-items:center;padding:12px;margin:14px 0 20px;background:#251d33;border:1px solid #c6a676;border-radius:15px}.majCompTabs button{font:700 14px/1.4 system-ui;color:#f7e8cc;background:#43304f;border:1px solid #a68b9d;border-radius:10px;padding:11px 15px;cursor:pointer}.majCompTabs button[aria-selected="true"]{color:#21172c;background:#f1d49e;border-color:#f1d49e}.majCompTabs button:focus-visible{outline:3px solid #ffdf83;outline-offset:3px}.majCompPortraitCard{display:flex;flex-direction:column;align-items:center;text-align:center;gap:6px;min-width:0}.majCompPortraitCard .petAvatar{width:min(100%,190px);height:190px;display:grid;place-items:center;overflow:hidden;border-radius:18px;background:radial-gradient(ellipse at 50% 30%,#6e4d74,#24172e 75%);border:1px solid #c4a474}.majCompPortraitCard .petAvatar img{width:100%;height:100%;object-fit:contain}.majCompPortraitCard .petProgress{width:100%;max-width:220px}.majCompPortraitCard .majCompDetail{width:100%;margin-top:7px;text-align:left;border-top:1px solid #816f82;padding:9px 0;color:#f8e4c6}.majCompPortraitCard .majCompDetail summary{cursor:pointer;font-weight:700}.majCompPortraitCard .majCompDetail p{line-height:1.5;margin:8px 0 0}.majCompPortraitCard button{min-height:38px}.majCompPanel[hidden]{display:none!important}.majCompPanel{min-height:160px}.majCompPanel>.sectionTitle:first-child{margin-top:0}@media(max-width:520px){.majCompTabs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.majCompTabs button{padding:10px 7px}}';document.head.append(css);
 const content=document.getElementById('content');if(content)new MutationObserver(queue).observe(content,{childList:true});
 document.addEventListener('click',e=>{if(e.target.closest('[data-nav]'))queueMicrotask(queue)},true);
 window.MajickCompanionTabs={refresh:queue,version:'3.4.2-companion-tabs-1'};
