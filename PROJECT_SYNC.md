@@ -26,3 +26,9 @@ An automated GitHub-triggered Work task may be available depending on the accoun
 ## Ownership and safety
 
 Only GitHub is authoritative for code and current board revision. The ChatGPT Project stores instructions, discussions and optional historical snapshots. Do not overwrite source code to resolve document-only conflicts. Never duplicate XP/mastery engines, Guardian renderers, Scholar identity or rewards owners.
+
+## Enforcement now configured
+
+- GitHub Actions workflow `.github/workflows/majick-board-gate.yml` requires `PROJECT_BOARD.md` to change in every pull request that modifies executable files in `current-site/` or `pages-release/current/`. It is pending merge of board PR #141.
+- The hourly Majick Studies PR Watch condition-check task checks for new or materially updated PRs and board discrepancies, and notifies only on meaningful changes. It monitors; it does not silently write GitHub or ChatGPT Project files.
+- There is **no native GitHub event-triggered Project-file auto-refresh** in the connected tools. In the Project, use these instructions to fetch latest GitHub directly at the beginning of each development session.
