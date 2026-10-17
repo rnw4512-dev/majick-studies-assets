@@ -132,7 +132,13 @@ async function solveMean(values,sum,count,mean){
  // Verify the six-stage WGU sequence workshop, including the final guided reconstruction.
  await action('switchCourse("D772");navigate("mission")');
  await waitFor('!!document.querySelector("#mjStudyReasoning .mjSolutionEngine")');
- await action('const picker=document.querySelector(".mjSeTaskSelect");picker.value="d772-data";picker.dispatchEvent(new Event("change",{bubbles:true}))');
+ await action('document.querySelector("[data-study-view=reasoning]")?.click()');
+ let sequenceFound=false;
+ for(let i=0;i<35;i++){
+   if(await evalPage('document.querySelector("#mjStudyReasoning .mjSolutionEngine")?.dataset.selectedTask==="d772-data"')){sequenceFound=true;break}
+   await action('const next=document.querySelector(".mjSeMixNext");if(!next)throw Error("Mixed OA next control missing");next.click()');
+ }
+ assert(sequenceFound,'D772 Section 1 evidence sequence should remain in the mixed OA bank');
  await waitFor('!!document.querySelector("[data-focus]")');
  const caseData=await evalPage('(()=>{const task=MajickLessonActivities.tasks.find(x=>x.id==="d772-data");return task.cases.find(c=>document.querySelector(".mjSeStage")?.textContent.includes(c.prompt))||task.cases[0]})()');
  const focus=/surveys only|only reaches|only staff|only families|one school|evening event|downtown station|gym website|volunteer/i.test(caseData.prompt)?'Selection bias':'Association is not causation';
@@ -141,7 +147,7 @@ async function solveMean(values,sum,count,mean){
  await action('document.querySelectorAll("[data-add]")['+caseData.correct[0]+'].click();document.querySelector("[data-check]").click()');
  for(const part of caseData.correct)await action('document.querySelectorAll("[data-add]")['+part+'].click()');
  await action('document.querySelector("[data-check]").click()');
- const stageDiagnostic=await evalPage('({title:document.querySelector(".mjSeStage h3")?.textContent,feedback:document.querySelector(".mjSeFeedback")?.textContent,scenario:document.querySelector(".mjSeStage")?.textContent?.slice(0,600),selectedTask:document.querySelector(".mjSeTaskSelect")?.value})');
+ const stageDiagnostic=await evalPage('({title:document.querySelector(".mjSeStage h3")?.textContent,feedback:document.querySelector(".mjSeFeedback")?.textContent,scenario:document.querySelector(".mjSeStage")?.textContent?.slice(0,600),selectedTask:document.querySelector(".mjSolutionEngine")?.dataset.selectedTask})');
  console.log('SEQUENCE STAGE AFTER THIRD CHECK',JSON.stringify({caseData,stageDiagnostic}));
  await waitFor('!!document.querySelector("[data-meaning]")');
  const meaning=/observational|caused|causation|correlation|association/i.test(caseData.prompt)?'An observational study can show association':'The target population and sampled group differ';
