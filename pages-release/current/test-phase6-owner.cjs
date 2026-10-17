@@ -54,6 +54,7 @@ const rosterCode=load('sanctuary/sanctuary-roster.js');new vm.Script(rosterCode,
 assert(rosterCode.includes("evolution_stages/'+canon(g)+'-'+stage(g,scene)+'.webp"),'Six Guardians must render the actual level-specific portraits');
 assert(rosterCode.includes("portraitURL(g)"),'If a stage file fails, show the exact canonical portrait');
 assert(rosterCode.includes("paintedMotion"),'Diagnostics must distinguish real frame movement from tween movement');
+assert(rosterCode.includes("Number(g.level||state.level||1)")&&rosterCode.includes("slug=g.stageSlug||g.stage||state.stageSlug"),'Current saved Guardian stage must outrank legacy Phaser caches');
 for(const kind of ['vesper','briar','zephyr','prism','rook','solara'])for(const step of ['new-bond','apprentice','guardian','ascendant','celestial'])assert(fs.existsSync(path.join(root,'assets/familiars/evolution_stages',kind+'-'+step+'.webp')),'Missing six-Guardian stage image '+kind+' '+step);
 for(const kind of ['luna','ember','nova','mallow'])for(const frame of kind==='mallow'?['hop-1','hop-2']:['walk-1','walk-2'])assert(fs.existsSync(path.join(root,'sanctuary/assets/motion',kind+'-'+frame+'.png')),'Original protected animation frame missing '+kind+' '+frame);
 assert(fs.existsSync(path.join(root,'sanctuary/assets/motion/ember-fly.png')),'Existing Cascade flight PNG must be at runtime load path');
