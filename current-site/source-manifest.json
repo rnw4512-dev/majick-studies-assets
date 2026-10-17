@@ -820,10 +820,11 @@
     "assets/effects/celebrations/celebration-constellation-ring.svg": "ae1302a0bd672e6df21f9827957262982db2ba6add4665df2f6b70033b45f6e3",
     "assets/effects/guardians/guardian-heart-sigil.svg": "aef9ed713e6a52b117c1de6d60f8fcbf1a7da9d8e9014932cfc44d58c351213f",
     "animation-effects.css": "0377f51b1f3b9fe673014e97c29450440dafb7232a2daabc8d6c309144b69249",
-    "animation-effects.js": "85888321972ffa77c0809f3fba72e78fa1845c1d45a642796399e5e0a61d0505",
+    "animation-effects.js": "203702fd4f13c9fd5a8d4d7bc4fe61352d008bbe04c0a44cfc44bfd5d1938049",
     "assets/effects/celebrations/lesson-complete-seal.svg": "66d0d723db2bda1149c79bd1aa03e2c9be22df891ed9a5f842bf44cecf922ddf",
     "assets/effects/celebrations/course-complete-sigil.svg": "5bb72f7c3da585d477527f057c9c42930abd859db8681edaac3616ed130ca1a6",
     "room-section-nav.js": "bd9124934b4690f1ab043a59e0dc5b612de955d3db1e0ccf7528f80bf765eef5",
-    "room-section-nav.css": "13e365268595d22c6957fce8937757ee84b0f88145e62846a9f211e3b27c6915"
+    "room-section-nav.css": "13e365268595d22c6957fce8937757ee84b0f88145e62846a9f211e3b27c6915",
+    "assets/effects/guardians/guardian-constellation-bond.svg": "47bf8eea10b4126dd8692c264d007614ba949ac03097e1af47e5001deb4baae2"
   }
 }
