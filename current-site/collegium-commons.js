@@ -71,7 +71,7 @@ function attach(){
   });
   hub.querySelector('.majCommonsStepButtons').append(analyticsAccess);
   hub.querySelector('[data-commons-previous]').addEventListener('click',()=>delta(-1));hub.querySelector('[data-commons-next]').addEventListener('click',()=>delta(1));
-  list.addEventListener('keydown',e=>{if(['ArrowRight','ArrowLeft','Home','End'].includes(e.key)){e.preventDefault();if(e.key==='Home')navigateTab(TABS[0][0]);else if(e.key==='End')navigateTab(TABS[TABS.length-1][0]);else delta(e.key==='ArrowRight'?1:-1);list.querySelector('[aria-selected="true"]')?.focus()}});
+  // Keyboard handling is delegated once below, so rerendered tab buttons retain focus behavior.
   root.prepend(hub);
  }
  hub.querySelector('.majCommonsCourse').textContent='Currently studying · '+(document.querySelector('.top select')?.selectedOptions?.[0]?.textContent||window.S?.activeCourse||'Your course');
@@ -105,6 +105,19 @@ function attach(){
  navigateTab(selected);
  }catch(e){console.warn('Commons layout preserved original content:',e)}finally{updating=false}
 }
+// The Home hub can rehydrate after the learner selects a tab. Delegate from the
+// document to survive button replacement and focus the currently mounted button.
+document.addEventListener('keydown',e=>{
+ if(!['ArrowRight','ArrowLeft','Home','End'].includes(e.key))return;
+ const target=e.target?.closest?.('#majCommonsHub [data-commons-tab]');
+ if(!target||window.S?.screen!=='home')return;
+ e.preventDefault();
+ const index=TABS.findIndex(t=>t[0]===selected),n=TABS.length;
+ const next=e.key==='Home'?TABS[0][0]:e.key==='End'?TABS[n-1][0]:TABS[(index+(e.key==='ArrowRight'?1:-1)+n)%n][0];
+ navigateTab(next);
+ const focus=()=>document.querySelector('#majCommonsHub [data-commons-tab="'+next+'"]')?.focus({preventScroll:true});
+ focus();queueMicrotask(focus);
+},true);
 function needsSync(){
  const root=document.querySelector('#content'),hub=root?.querySelector(':scope > #majCommonsHub');
  if(!root)return false;
