@@ -23,6 +23,7 @@ assert set(additional).issubset(approved_extra_git_blobs), "Unapproved Guardian 
 for name,file in additional.items():
  raw=file.read_bytes(); git_sha=hashlib.sha1(b"blob "+str(len(raw)).encode()+b"\0"+raw).hexdigest()
  assert git_sha==approved_extra_git_blobs[name], "Unexpected Guardian motion binary: "+name
+ print("APPROVED_GUARDIAN_SHA256",name,hashlib.sha256(raw).hexdigest())
 if output.exists(): shutil.rmtree(output)
 shutil.copytree(source,output)
 release=hashlib.sha256((source/"source-manifest.json").read_bytes()+Path(__file__).read_bytes()).hexdigest()[:16]
