@@ -30,6 +30,31 @@ function syncSanctuaryMotion(){
  document.querySelectorAll('#majCommonsHub .v3317SanctuaryFrame').forEach(frame=>{
   if(!frame.dataset.commonsLifecycle){frame.dataset.commonsLifecycle='true';frame.addEventListener('load',()=>{sanctuaryVisibility.delete(frame);syncSanctuaryMotion()})}
   const visible=selected==='sanctuary';
+  // The iframe used to auto-load on Home even when Sanctuary was hidden.
+  // Defer its very first load; after the student opens Sanctuary, retain
+  // the live frame and merely sleep/wake the existing Phaser loop.
+  if(!frame.dataset.commonsFirstVisit){
+    if(visible){frame.dataset.commonsFirstVisit='yes'}
+    else if(!frame.dataset.commonsDeferredSrc&&frame.hasAttribute('src')){
+      frame.dataset.commonsDeferredSrc=frame.getAttribute('src');
+      frame.removeAttribute('src');
+    }
+  }
+  if(visible&&frame.dataset.commonsDeferredSrc){
+    const src=frame.dataset.commonsDeferredSrc;
+    delete frame.dataset.commonsDeferredSrc;
+    frame.dataset.commonsFirstVisit='yes';
+    frame.setAttribute('src',src);
+  }
+  if(!frame.dataset.commonsFocusGuard){
+    frame.dataset.commonsFocusGuard='yes';
+    frame.addEventListener('focus',()=>{
+      if(selected!=='sanctuary'){
+        frame.blur();
+        document.querySelector('#majCommonsHub [data-commons-tab="'+selected+'"]')?.focus({preventScroll:true});
+      }
+    });
+  }
   // Hidden Phaser frames must never take keyboard focus from the selected Commons tab.
   // Keeping the frame mounted preserves in-session Sanctuary and Guardian state.
   frame.tabIndex=visible?0:-1;
