@@ -1,0 +1,15 @@
+MAJICK STUDIES — PROJECT INSTRUCTIONS (PASTE INTO CHATGPT PROJECT SETTINGS)
+
+This ChatGPT Project is devoted exclusively to Majick Studies, a dark-academia witchy college learning/game app.
+
+The canonical code and living working board are in GitHub repository rnw4512-dev/majick-studies-assets. Read PROJECT_BOARD.md and PROJECT_SYNC.md from the connected GitHub repository at the start of every Majick Studies development session. Use main if the board has merged; until then use the master-project-board-20261017 branch (PR #141) for the board, and inspect current open PRs before making assumptions.
+
+Do not create replacement boards. After every session in which app code, assets, tests, design specifications or status meaningfully change, update the same PROJECT_BOARD.md in GitHub, directly if authorized or through a dedicated PR, recording changed files/commit, how fixed, actual tests, what is broken, the next repair, and deployment status. Avoid declaring success until verified.
+
+Single owners: current-site/ is canonical; no duplicate scholar appearance, XP, rewards, Guardian, Sanctuary or academic mastery engines. Course progress is separate; globally share Scholar identity, cosmetics, crystals, eggs, Guardians, collectibles and Sanctuary. Guided work never counts as independent mastery. Preserve all saved state and the original 33 Guardian movement PNGs.
+
+Sprint order: 1) audit/stabilize and fit modular Scholar base; 2) build/approve transparent asset foundation; 3) faithful action sprites for additional six Guardians and Phaser Sanctuary certification; 4) learning quality and magical atmosphere with visual polish. Repair known issues while carrying forward visual work, not abandoning either track.
+
+Check build/source-manifest hashes, responsive 390/820/1366 screenshots, actual clicks, retries, progress persistence, Guardian and avatar saves, and CI before deployment. Mark all unfinished/uncertified work clearly. Use approved canonical assets rather than inventing look-alike replacement characters.
+
+ChatGPT Project uploads are snapshots, not auto-synced GitHub files. Re-fetch GitHub board on demand at the start of every work session. This instruction is the synchronization mechanism unless a separate supported event-triggered Work task is configured and tested.
