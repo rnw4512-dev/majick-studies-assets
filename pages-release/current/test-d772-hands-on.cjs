@@ -19,3 +19,18 @@ const ctx={window:{},Math,Date,Array,Object,Number,String,JSON,Set};
 vm.runInNewContext(src,ctx,{filename:'generated-question-engine.js'});
 for(const skill of ['boxplot','median'])for(let i=0;i<75;i++){const q=ctx.window.MajickGeneratedPractice.generate(skill,3);assert(q&&ctx.window.MajickGeneratedPractice.validate(q),'Invalid '+skill+' answer/plot');}
 console.log('PASS hands-on D772: selectable observation identity, same-dataset clear, guided repair, formative mastery safety, 150 computed cases');
+
+
+const solution=fs.readFileSync(path.join(path.resolve(process.argv[2]||'current-site'),'solution-engine.js'),'utf8');
+new vm.Script(solution,{filename:'solution-engine.js'});
+assert(solution.includes("function graphScenario(ex,step)"),'Histogram must render scenario on every step');
+assert(solution.includes("body=graphScenario(ex,step)+body"),'Graph question must precede bar inputs');
+assert(solution.includes('Class intervals:'),'All datasets require explicit interval labels');
+assert(solution.includes('Recorded observations'),'Students must see actual values before counting bars');
+assert(solution.includes('Horizontal axis:')&&solution.includes('Vertical axis:'),'Axes must be explained');
+assert(solution.includes('Check the interval'),'Wrong bin must get actionable feedback');
+const cases=[...solution.matchAll(/rawData:\[([\d,]+)\]/g)].map(m=>m[1].split(',').map(Number));
+assert(cases.length>=3,'Need raw observations for all three histogram cases');
+const expected=[[2,5,3],[4,3,6],[2,6,4,3]];
+for(let n=0;n<3;n++){const actual=Array(expected[n].length).fill(0);for(const observation of cases[n]){const index=Math.floor(observation/10);assert(index>=0&&index<actual.length,'Observation outside rendered intervals');actual[index]++}assert.deepEqual(actual,expected[n],'Dataset disagrees with frequency answer key in case '+n)}
+console.log('PASS histogram scenarios: 3 correct datasets, clear instructions and targeted retry feedback');
