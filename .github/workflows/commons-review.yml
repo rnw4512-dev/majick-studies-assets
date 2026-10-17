@@ -44,6 +44,10 @@ jobs:
         run: node pages-release/current/test-phase6-owner.cjs current-site
       - name: Canonical build
         run: python pages-release/current/build.py current-site _site
+      - name: Real ten-Guardian Phaser movement and interaction certification
+        env:
+          COMMONS_WIDTH: ${{ matrix.width }}
+        run: timeout 140s node pages-release/current/browser-sanctuary.cjs _site
       - name: Commons rendered audit and screenshots
         env:
           COMMONS_WIDTH: ${{ matrix.width }}
