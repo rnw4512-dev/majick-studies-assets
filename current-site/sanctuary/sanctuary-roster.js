@@ -10,7 +10,8 @@
  function roster(scene){return Array.isArray(scene?.v3317CareState?.roster)?scene.v3317CareState.roster:[]}
  function stage(g,scene){
    const state=scene?.v3317GuardianStates?.[g.type]||{};
-   const level=Number(state.level||g.level||1),slug=state.stageSlug||g.stageSlug;
+   // The current owned-roster record wins over stale legacy Phaser level caches.
+   const level=Number(g.level||state.level||1),slug=g.stageSlug||g.stage||state.stageSlug||state.stage;
    return STAGES.includes(slug)?slug:level>=12?'celestial':level>=8?'ascendant':level>=5?'guardian':level>=3?'apprentice':'new-bond';
  }
  function identity(g){return window.MajickGuardianRegistry?.getFor?.(g)||window.MajickGuardianRegistry?.get?.(g.type)||null}
