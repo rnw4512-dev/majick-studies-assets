@@ -17,7 +17,7 @@ function art(p,pose=''){return window.MajickAtelier?.renderAvatar?.(p,true,pose)
 function ensure(){
  if(!document.body||dock)return;
  dock=document.createElement('aside');dock.id='majickScholarCompanion';dock.setAttribute('aria-label','Your scholar companion');
- dock.innerHTML='<button type="button" class="mscToggle" aria-expanded="false"><span class="mscSmall"></span><span class="mscLabel"></span><span aria-hidden="true">⌃</span></button><div class="mscPanel" hidden><div class="mscStage"><small>✦ THE MOONLIT COLLEGIUM ✦</small><div class="mscLarge"></div><div class="mscEffect"></div></div><div class="mscPanelInfo"><strong class="mscScene"></strong><p class="mscLine"></p><div class="mscButtons"><button type="button" data-scholar="atelier">Customize</button><button type="button" data-scholar="study">Study together</button></div></div></div>';
+ dock.innerHTML='<button type="button" class="mscToggle" aria-expanded="false"><span class="mscSmall"></span><span class="mscLabel"></span><span aria-hidden="true">⌃</span></button><div class="mscPanel" hidden><div class="mscStage"><small>✦ THE MOONLIT COLLEGIUM ✦</small><div class="mscLarge"></div><div class="mscEffect"></div></div><div class="mscPanelInfo"><strong class="mscScene"></strong><p class="mscLine"></p><p class="mscSharedJourney" aria-label="Scholar progress and Guardian bond"></p><div class="mscButtons"><button type="button" data-scholar="atelier">Customize</button><button type="button" data-scholar="study">Study together</button></div></div></div>';
  document.body.append(dock);
  dock.querySelector('.mscToggle').addEventListener('click',()=>{opened=!opened;dock.querySelector('.mscPanel').hidden=!opened;dock.querySelector('.mscToggle').setAttribute('aria-expanded',String(opened));refresh(true)});
  dock.querySelector('[data-scholar="atelier"]').addEventListener('click',()=>window.MajickAtelier?.open?.());
@@ -26,13 +26,15 @@ function ensure(){
 function refresh(force=false){
  ensure();if(!dock)return;
  const p=state(),s=scene(),info=SCENES[s]||SCENES.home,pose=Date.now()<poseUntil?specialPose:info[1];
- const key=[s,pose,p.name,p.skin,p.hair,p.robe,p.color,p.equipped,p.accessory,p.hairFit?.x||0,p.hairFit?.y||0,p.hairFit?.size||0,opened].join('|');
+ const rewards=window.MajickRewardCore?.inspect?.()||{},guardian=window.MajickGuardianCore?.activePet?.(),guardianName=guardian?.name||'';
+ const key=[s,pose,p.name,p.skin,p.hair,p.robe,p.color,p.equipped,p.accessory,p.hairFit?.x||0,p.hairFit?.y||0,p.hairFit?.size||0,rewards.xp||0,rewards.crystals||0,guardianName,opened].join('|');
  if(!force&&key===current)return;current=key;
  dock.dataset.scene=s;dock.dataset.pose=pose;
  const markup=art(p);
  dock.querySelector('.mscSmall').innerHTML=markup;
  dock.querySelector('.mscLarge').innerHTML=art(p,pose);
  dock.querySelector('.mscLabel').innerHTML='<b>'+esc(p.name||'Scholar')+'</b><small>'+esc(info[0])+'</small>';
+ dock.querySelector('.mscSharedJourney').textContent='✦ '+Number(rewards.xp||0)+' XP · ◇ '+Number(rewards.crystals||0)+' crystals'+(guardianName?' · ♡ '+guardianName:'');
  dock.querySelector('.mscScene').textContent=info[0]+' · '+pose.replaceAll('-',' ');
  dock.querySelector('.mscEffect').textContent=pose==='celebrating'?'✦ ✨ ✦':pose==='guardian-bonding'?'♡ ✧ ♡':pose==='crafting'?'⚗ ✦ ⚗':info[2];
  dock.querySelector('.mscLine').textContent=recentVisual&&Date.now()<poseUntil?recentVisual:s==='sanctuary'?'Together with your Guardians in the Sanctuary.':pose==='celebrating'?'Excellent work! Your scholar celebrates with you.':pose==='thinking'?'Working through the question with you.':s==='journal'?'Keeping notes beside you.':s==='games'?'Ready for the next challenge.':'Your scholar is here while you learn.';
@@ -48,6 +50,7 @@ style.textContent=`
 .mscLabel{display:flex;flex-direction:column;text-align:left;gap:3px;min-width:85px}.mscLabel b{font-size:13px}.mscLabel small{font:10px system-ui;color:#dbc3d1}
 .mscPanel{pointer-events:auto;position:absolute;bottom:68px;left:0;width:min(310px,calc(100vw - 24px));border:1px solid #c3a16d;border-radius:17px;overflow:hidden;background:#251b2d;box-shadow:0 16px 55px #080510b9}
 .mscPanel[hidden]{display:none}
+.mscSharedJourney{padding:8px 10px;margin:8px 0;background:#342540;border:1px solid #8d729c;border-radius:9px;color:#f4e3c6;font:12px/1.5 system-ui;overflow-wrap:anywhere}
 .mscStage{height:245px;background:radial-gradient(ellipse at 50% 32%,#74516c,#33283c 60%,#181423);position:relative;text-align:center;overflow:hidden}
 .mscStage>small{position:absolute;top:12px;left:0;right:0;z-index:1;color:#e9c994;letter-spacing:.14em;font-size:9px}
 .mscLarge{height:230px;width:174px;position:absolute;bottom:0;left:calc(50% - 87px)}
@@ -77,7 +80,7 @@ function start(){
  if(root)new MutationObserver(()=>{if(!document.getElementById('atelierOverlay')?.hidden)return;refresh()}).observe(root,{childList:true,subtree:false});
  document.addEventListener('majick-scholar-react',e=>react(e.detail?.pose||'celebrating'));
  // Celebrate only academic milestones that the learning owner has already verified.
- document.addEventListener('majick:verified-academic-milestone',()=>react('celebrating'));
+ document.addEventListener('majick:verified-academic-milestone',e=>{const d=e.detail||{};if(d.kind==='lesson'&&d.independent===true&&d.key)react('celebrating')});
  document.addEventListener('majick:verified-study-answer',e=>{const d=e.detail||{};if(d.historical)return;if(d.correct===true&&d.independent===true)react('celebrating');else if(d.correct===false)react('thinking');});
 
  window.addEventListener('majick-save-status',()=>refresh());
