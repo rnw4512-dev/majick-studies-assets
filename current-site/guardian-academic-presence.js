@@ -44,6 +44,9 @@ function mount(){
    card=document.createElement('aside');card.id='v3366AcademicGuardian';card.className='v3366AcademicGuardian';
  }
  card.className='v3366AcademicGuardian '+cardClass();
+ // Phase 7 CSS chooses an idle personality without timers or modifying Guardian state.
+ const species=String(window.MajickGuardianCore?.activePet?.()?.type||'').toLowerCase().replace(/[^a-z0-9-]/g,'');
+ card.dataset.guardianIdle=species;
  card.innerHTML=(g.image?'<img src="'+String(g.image).replace(/"/g,'&quot;')+'" alt="">':'<span>'+String(g.icon||'✦')+'</span>')+
   '<div><small>STUDY GUARDIAN • '+String(g.stage||'Bonded')+'</small><b>'+String(g.name||'Guardian')+'</b><p>'+contextLine()+'</p></div>';
  if(anchor.previousElementSibling!==card)anchor.insertAdjacentElement('beforebegin',card);
