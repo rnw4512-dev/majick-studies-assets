@@ -48,6 +48,17 @@ async function until(expr,limit=110){for(let i=0;i<limit;i++){try{if(await ev(ex
  console.log('PHASER ORIGINAL FRAME DIAGNOSTICS',JSON.stringify(frame));
  assert(frame.every(x=>x.visible),'One of the protected four original Phaser bodies is missing');
  assert(frame.every(x=>x.frames.length===2&&x.frames[0]!==x.frames[1]),'Original four must have distinct painted walk frames, not one squashed image');
+ // Exercise all five genuine stage portraits in the running Phaser scene.
+ const stageResults=[];
+ for(const [slug,level] of [['new-bond',1],['apprentice',3],['guardian',6],['ascendant',8],['celestial',12]]){
+  await ev('(()=>{const s=majickPhaserGame.scene.getScene("Game");for(const g of s.v3317CareState.roster){if(!["luna","ember","nova","mallow"].includes(g.type)){g.stageSlug='+JSON.stringify('PLACEHOLDER')+';g.level='+String(0)+'}}s.v3348SyncRoster();return true})()'.replace('"PLACEHOLDER"',JSON.stringify(slug)).replace('g.level=0','g.level='+level));
+  await until('(()=>{const s=majickPhaserGame.scene.getScene("Game");return ["vesper","briar","zephyr","prism","rook","solara"].every(t=>s.v3348Sprites?.["qa-"+t]?.active&&s.v3348Sprites["qa-"+t].texture.key==="v3348-"+t+"-'+slug+'-room")})()',90);
+  stageResults.push({slug,pass:true});
+ }
+ // Restore the active Guardian-stage presentation for the interaction check.
+ await ev('(()=>{const s=majickPhaserGame.scene.getScene("Game");for(const g of s.v3317CareState.roster){if(!["luna","ember","nova","mallow"].includes(g.type)){g.stageSlug="guardian";g.level=6}}s.v3348SyncRoster();return true})()');
+ await until('(()=>{const s=majickPhaserGame.scene.getScene("Game");return ["vesper","briar","zephyr","prism","rook","solara"].every(t=>s.v3348Sprites?.["qa-"+t]?.texture?.key==="v3348-"+t+"-guardian-room")})()',90);
+ console.log('PASS PHASER SIX-GUARDIAN STAGE CYCLING',JSON.stringify(stageResults));
  const played=await ev('(()=>{const s=majickPhaserGame.scene.getScene("Game");for(const t of ["vesper","briar","zephyr","prism","rook","solara"]){s.v3317CareReaction?.({ok:true,guardianId:"qa-"+t,guardianType:t,action:"play",visualAction:"play"})}return ["vesper","briar","zephyr","prism","rook","solara"].map(t=>({type:t,state:s.v3348Sprites?.["qa-"+t]?.getData?.("v3351MotionState")}))})()');
  assert(played.some(x=>String(x.state).includes('play')),'Care interaction did not produce Guardian play motion');
  console.log('PASS REAL PHASER',JSON.stringify({width,guardianCount:initial.length,originalFramePairs:frame,stageImages:second.slice(4).map(x=>({type:x.type,key:x.key})),interaction:played}));
