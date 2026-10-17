@@ -36,3 +36,12 @@ assert(workshop.includes("data-study-view=\"practice\"")&&workshop.includes("dat
 assert(workshop.includes("const MIX_ORDER=['d772-data','mean','probability'"),'Mixed OA order must interleave all three D772 sections');
 assert(workshop.includes("id:'d772-s1")===false || workshop.includes("mixTasks"),'Mixed course task owner must exist');
 console.log('PASS Study Realm workshop: one panel, mixed Section 1/2/3 OA practice, no Guide stack');
+
+const rosterCode=load('sanctuary/sanctuary-roster.js');new vm.Script(rosterCode,{filename:'sanctuary-roster.js'});
+assert(rosterCode.includes("evolution_stages/'+canon(g)+'-'+stage(g,scene)+'.webp"),'Six Guardians must render the actual level-specific portraits');
+assert(rosterCode.includes("portraitURL(g)"),'If a stage file fails, show the exact canonical portrait');
+assert(rosterCode.includes("paintedMotion"),'Diagnostics must distinguish real frame movement from tween movement');
+for(const kind of ['vesper','briar','zephyr','prism','rook','solara'])for(const step of ['new-bond','apprentice','guardian','ascendant','celestial'])assert(fs.existsSync(path.join(root,'assets/familiars/evolution_stages',kind+'-'+step+'.webp')),'Missing six-Guardian stage image '+kind+' '+step);
+for(const kind of ['luna','ember','nova','mallow'])for(const frame of kind==='mallow'?['hop-1','hop-2']:['walk-1','walk-2'])assert(fs.existsSync(path.join(root,'sanctuary/assets/motion',kind+'-'+frame+'.png')),'Original protected animation frame missing '+kind+' '+frame);
+assert(fs.existsSync(path.join(root,'sanctuary/assets/motion/ember-fly.png')),'Existing Cascade flight PNG must be at runtime load path');
+console.log('PASS Sanctuary stage portraits (30), originals retained, real walk frame references, existing flight artwork');
