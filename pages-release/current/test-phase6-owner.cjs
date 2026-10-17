@@ -20,14 +20,20 @@ assert(!/crystals\s*[+\-]=|xp\s*[+\-]=|\.award\(/.test(tabs),'Tabs must not alte
 assert(tabs.includes("new MutationObserver(queue)"),'Tabs must remount after Companion navigation/re-render');
 console.log('PASS Companion tabs: existing sections only, keyboard tabs, no new reward state owner');
 
-// Original motion certification: actual alternating pictures rather than image squashing.
-const sanctuaryRuntime=load('sanctuary/sanctuary-runtime.js');new vm.Script(sanctuaryRuntime,{filename:'sanctuary-runtime.js'});
-assert(sanctuaryRuntime.includes("ORIGINAL_MOTION")&&sanctuaryRuntime.includes("walk:['walk-1','walk-2']"),'Original Guardian walk animation must use two painted frames');
-assert(sanctuaryRuntime.includes("walk.setTexture(next)"),'Moving Guardians must switch picture frames');
-assert(!sanctuaryRuntime.includes("walk.setRotation(moving?step"),'Moving Guardians must not fake walking through rotation');
-assert(sanctuaryRuntime.includes("this.v3317LoadAction(type,action,done)"),'Unavailable original care pose must fall back to known evolution art');
-assert(sanctuaryRuntime.includes("const pet=this[type]"),'Original Guardian motion owner must retain the existing Phaser controller');
-console.log('PASS Guardian motion static gate: real two-frame artwork, no rotation counterfeit, safe care fallback');
+// Original four: one final visual owner, actual two-frame textures, no duplicate engines.
+const sanctuaryRuntime=load('sanctuary/sanctuary-runtime.js');
+const visualAuthority=load('sanctuary/sanctuary-visual-authority.js');
+new vm.Script(sanctuaryRuntime,{filename:'sanctuary-runtime.js'});
+new vm.Script(visualAuthority,{filename:'sanctuary-visual-authority.js'});
+assert(sanctuaryRuntime.includes('Game.prototype.v3317LoadOriginalMotion='),'Shared original PNG texture loader must remain');
+for(const name of ['v3317EnsureWalkSkin','v3317ShowAction','v3317UpdateGuardianVisuals']){
+ assert(!sanctuaryRuntime.includes('Game.prototype.'+name+'='),'Runtime must not shadow final Guardian visual owner '+name);
+ assert(visualAuthority.includes('Game.prototype.'+name+'='),'Final authority missing Guardian rendering method '+name);
+}
+assert(visualAuthority.includes('walk.setTexture(next)'),'Painted walk animation must actually change textures');
+assert(visualAuthority.includes("walk:['walk-1','walk-2']")&&visualAuthority.includes("walk:['hop-1','hop-2']"),'Original sprites require genuine paired frames');
+assert(visualAuthority.includes("this.v3317LoadAction(type,action,done)"),'Unavailable optional PNG action must fall back to canonical evolution action');
+console.log('PASS Guardian single visual owner, two painted walk frames, real action textures and safe fallback');
 
 // Study Now integrates the workshop in one panel; OA mixed queue crosses D772 sections.
 const workshop=load('solution-engine.js');new vm.Script(workshop,{filename:'solution-engine.js'});
