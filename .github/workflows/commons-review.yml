@@ -48,6 +48,10 @@ jobs:
         env:
           COMMONS_WIDTH: ${{ matrix.width }}
         run: timeout 140s node pages-release/current/browser-sanctuary.cjs _site
+      - name: Real Scholar hair, outfit, room continuity and saved-reload browser certification
+        env:
+          COMMONS_WIDTH: ${{ matrix.width }}
+        run: timeout 140s node pages-release/current/browser-scholar-continuity.cjs _site
       - name: Commons rendered audit and screenshots
         env:
           COMMONS_WIDTH: ${{ matrix.width }}
