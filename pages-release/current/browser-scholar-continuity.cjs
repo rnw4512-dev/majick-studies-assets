@@ -47,6 +47,7 @@ async function until(expr,limit=110){for(let i=0;i<limit;i++){try{if(await ev(ex
  }
  await call('Page.reload',{ignoreCache:true});
  await until('!!window.MajickAtelier?.player&&!!window.MajickScholarCompanion?.refresh&&!!window.S',180);
+ await until('window.MajickAtelier.renderAvatar(window.MajickAtelier.player(),true).includes("data-avatar-layer")',180);
  const restored=await ev('(()=>{const p=MajickAtelier.player();MajickScholarCompanion.refresh(true);return {skin:p.skin,hair:p.hair,robe:p.robe,fit:p.hairFit,markup:document.querySelector("#majickScholarCompanion .mscSmall")?.innerHTML||""}})()');
  assert.equal(restored.skin,5);assert.equal(restored.hair,1);assert.equal(restored.robe,1);
  assert.deepEqual(restored.fit,{x:7,y:-6,size:12},'Saved Scholar hair alignment did not survive browser reload');
