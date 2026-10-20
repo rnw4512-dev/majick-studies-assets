@@ -38,7 +38,7 @@ const workshop=fs.readFileSync(path.join(root,'solution-engine.js'),'utf8');
 if(!atlas.includes('function hairFit(p)'))problems.push('Scholar saved hairstyle fitting owner not integrated into current release branch');
 if(!scholar.includes('p.hairFit?.x')||!scholar.includes('p.hairFit?.size'))problems.push('Scholar cross-room companion does not retain hairstyle fitting');
 if(!exists('assets/atelier/avatars/scholar-layer-contract.json'))problems.push('Scholar layer/attachment and pose contract not integrated');
-if(!workshop.includes('MIX_ORDER')||!workshop.includes('mjStudyReasoningTab'))problems.push('Mixed-section Study Realm Reasoning Workshop not integrated');
+if(!workshop.includes('function mixTasks(cid)')||!workshop.includes('for(const section of [1,2,3])')||!workshop.includes('mjStudyReasoningTab'))problems.push('Mixed-section Study Realm Reasoning Workshop not integrated');
 const summary={auditedAt:new Date().toISOString(),checkedFiles:passes.length,failures:problems.length,missingOriginalActions:problems.filter(x=>x.includes('original painted pose')),missingAdditionalGuardianActions:problems.filter(x=>x.includes('Missing approved Guardian action pose')).length,details:problems};
 console.log('MAJICK STRICT RELEASE CERTIFICATION',JSON.stringify(summary,null,2));
 if(problems.length){console.error('BLOCKED: full visual / action asset release certification remains incomplete');process.exitCode=1;}
