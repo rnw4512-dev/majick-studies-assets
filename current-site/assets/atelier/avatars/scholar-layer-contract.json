@@ -1,0 +1,136 @@
+{
+  "schemaVersion": 1,
+  "version": "3.4.2",
+  "authority": "enchanted-atelier.js (existing scholar identity/render owner)",
+  "status": "asset-registry-only; no unapproved pose render",
+  "layerOrder": [
+    "body",
+    "face",
+    "outfit",
+    "footwear",
+    "hair",
+    "accessories"
+  ],
+  "canvas": {
+    "mode": "same-size transparent canvas per avatar family",
+    "approvedPixelAnchors": "assets/atelier/v2/fitted/walk-alignment.json",
+    "note": "Never stretch a full costume or hairstyle to fake per-frame fit"
+  },
+  "slots": {
+    "body": {
+      "multiplicity": 1
+    },
+    "face": {
+      "multiplicity": 1,
+      "optional": true
+    },
+    "outfit": {
+      "multiplicity": 1
+    },
+    "footwear": {
+      "multiplicity": 1,
+      "optional": true
+    },
+    "hair": {
+      "multiplicity": 1
+    },
+    "headwear": {
+      "multiplicity": 1,
+      "optional": true,
+      "anchor": "head"
+    },
+    "earrings": {
+      "multiplicity": 2,
+      "optional": true,
+      "anchor": "head"
+    },
+    "neckwear": {
+      "multiplicity": 1,
+      "optional": true,
+      "anchor": "neck"
+    },
+    "wristwear": {
+      "multiplicity": 2,
+      "optional": true,
+      "anchor": "wrist"
+    },
+    "back": {
+      "multiplicity": 1,
+      "optional": true,
+      "anchor": "shoulder"
+    },
+    "handheld": {
+      "multiplicity": 1,
+      "optional": true,
+      "anchor": "hand"
+    }
+  },
+  "assets": {
+    "body": {
+      "warm": "layer-body-warm-v2.webp",
+      "deep": "layer-body-deep-v2.webp"
+    },
+    "face": {
+      "glam": "layer-face-glam.webp"
+    },
+    "hair": {
+      "locs": "layer-hair-locs-v2.webp",
+      "braids": "layer-hair-braids-v2.webp",
+      "curls": "layer-hair-curls-v1.webp",
+      "afro": "layer-hair-afro-v2.webp",
+      "twists": "layer-hair-twists-v2.webp",
+      "waves": "layer-hair-waves-v1.webp"
+    },
+    "outfit": {
+      "plum": "layer-dress-plum.webp",
+      "midnight": "layer-dress-midnight.webp",
+      "emerald": "layer-dress-emerald-v1.webp",
+      "silver": "layer-dress-silver-v1.webp"
+    },
+    "footwear": {
+      "plum": "layer-boots-plum.webp"
+    }
+  },
+  "poseRequirements": {
+    "idle": {
+      "assetStatus": "existing_illustrated_base",
+      "renderStatus": "active"
+    },
+    "study": {
+      "assetStatus": "existing_fixed_look_portrait",
+      "renderStatus": "fixed_look_only"
+    },
+    "celebrate": {
+      "assetStatus": "pending",
+      "renderStatus": "fallback_shared_base"
+    },
+    "walk": {
+      "assetStatus": "existing_fixed_look_portrait",
+      "renderStatus": "fixed_look_only"
+    },
+    "sitDesk": {
+      "assetStatus": "pending",
+      "renderStatus": "fallback_shared_base"
+    },
+    "sanctuaryVisit": {
+      "assetStatus": "existing_fixed_look_portrait",
+      "renderStatus": "fixed_look_only"
+    },
+    "rewardCrafting": {
+      "assetStatus": "pending",
+      "renderStatus": "fallback_shared_base"
+    },
+    "companionInteraction": {
+      "assetStatus": "existing_fixed_look_portrait",
+      "renderStatus": "fixed_look_only"
+    }
+  },
+  "poseArtRoot": "assets/atelier/avatars/",
+  "approvalRules": [
+    "No slot is visually certified solely by filename presence.",
+    "Do not substitute a fixed-appearance portrait when current saved hair fit or wardrobe differs.",
+    "Never treat unreviewed V2 fitted frames as approved.",
+    "Any new image must have standalone alpha transparency and matching anchor/template metadata.",
+    "Do not duplicate avatar ownership, progress or XP."
+  ]
+}
