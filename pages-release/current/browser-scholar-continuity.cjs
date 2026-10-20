@@ -22,7 +22,7 @@ async function until(expr,limit=110){for(let i=0;i<limit;i++){try{if(await ev(ex
 (async()=>{
  await new Promise(r=>server.listen(0,'127.0.0.1',r));
  child=spawn(chrome,['--headless=new','--no-sandbox','--disable-dev-shm-usage','--disable-gpu','--remote-allow-origins=*','--remote-debugging-port=0','--user-data-dir='+profile,'about:blank'],{stdio:['ignore','ignore','pipe']});
- let port;for(let i=0;i<110;i++){const f=path.join(profile,'DevToolsActivePort');if(fs.existsSync(f)){port=+fs.readFileSync(f,'utf8').split('\\n')[0];break}await sleep(150)}
+ let port;for(let i=0;i<110;i++){const f=path.join(profile,'DevToolsActivePort');if(fs.existsSync(f)){port=+fs.readFileSync(f,'utf8').split('\n')[0];break}await sleep(150)}
  assert(port,'Chrome debugging unavailable');
  const tabs=await(await fetch('http://127.0.0.1:'+port+'/json/list')).json();
  ws=new WebSocket(tabs.find(t=>t.type==='page').webSocketDebuggerUrl);
