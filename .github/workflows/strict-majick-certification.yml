@@ -1,0 +1,21 @@
+name: Strict Majick release completeness
+on:
+  pull_request:
+    paths:
+      - 'current-site/**'
+      - 'pages-release/current/**'
+      - '.github/workflows/strict-majick-certification.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  release-asset-gate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Require all character assets and integrated Scholar before certification
+        run: node pages-release/current/test-strict-release-completeness.cjs current-site

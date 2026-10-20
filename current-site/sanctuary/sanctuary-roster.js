@@ -10,14 +10,22 @@
  function roster(scene){return Array.isArray(scene?.v3317CareState?.roster)?scene.v3317CareState.roster:[]}
  function stage(g,scene){
    const state=scene?.v3317GuardianStates?.[g.type]||{};
-   const level=Number(state.level||g.level||1),slug=state.stageSlug||g.stageSlug;
+   // The current owned-roster record wins over stale legacy Phaser level caches.
+   const level=Number(g.level||state.level||1),slug=g.stageSlug||g.stage||state.stageSlug||state.stage;
    return STAGES.includes(slug)?slug:level>=12?'celestial':level>=8?'ascendant':level>=5?'guardian':level>=3?'apprentice':'new-bond';
  }
  function identity(g){return window.MajickGuardianRegistry?.getFor?.(g)||window.MajickGuardianRegistry?.get?.(g.type)||null}
  function resolvedType(g){return identity(g)?.type||String(g.type||'')}
  function canon(g){return identity(g)?.canon||String(g.type).replace(/[^a-z0-9-]/gi,'').toLowerCase()}
- function imageKey(g){return 'v3348-'+canon(g)+'-room'}
- function imageURL(g){return '../assets/familiars/canon/'+canon(g)+'-guardian.webp?v=3348'}
+ function imageKey(g,scene){
+   const stageId=stage(g,scene);
+   return 'v3348-'+canon(g)+'-'+stageId+'-room';
+ }
+ function imageURL(g,scene){
+   return '../assets/familiars/evolution_stages/'+canon(g)+'-'+stage(g,scene)+'.webp?v=342-stage';
+ }
+ function portraitURL(g){return '../assets/familiars/canon/'+canon(g)+'-guardian.webp?v=342-canon'}
+
  function tintValue(meta){
    const hex=String(meta?.accent||'').replace('#','');
    const n=parseInt(hex,16);
@@ -248,7 +256,8 @@
      const type=resolvedType(g),meta=identity(g)||{};
      const pet=scene.v3348PetById?.[g.petId],walk=scene['v3317Walk_'+type],action=scene['v3317Action_'+type];
      const visible=pet?.active&&((pet.visible!==false&&Number(pet.alpha??1)>.05)||(ORIGINAL.has(type)&&String(g.type||'')===type&&((walk?.active&&walk.visible!==false)||(action?.active&&action.visible!==false))));
-     return {petId:g.petId,name:meta.name||g.name,type,canon:meta.canon||canon(g),species:meta.species||g.species,accent:meta.accent||g.accent,personality:meta.personality||g.personality,variantIndex:meta.variantIndex||0,present:!!visible};
+     const source=pet?.texture?.key||'',paintedMotion=ORIGINAL.has(type)&&!!walk?.getData?.('motionFrames')?.[1]&&walk.getData('motionFrames')[0]!==walk.getData('motionFrames')[1];
+     return {petId:g.petId,name:meta.name||g.name,type,canon:meta.canon||canon(g),stage:stage(g,scene),source,paintedMotion,present:!!visible};
    });
    try{window.parent?.postMessage({type:'MAJICK_SANCTUARY_ROSTER_V3350',rows},location.origin)}catch(_){}
    return rows;
@@ -303,12 +312,12 @@
      this.load.once('loaderror',file=>{
        if(file?.key!==key)return;
        delete this.v3348Loading[key];
-       const fallback='v3350-icon-'+canon(g);
+       const fallback='v3350-canon-'+canon(g);
        this.v3348Fallback[primary]=fallback;
        if(this.textures.exists(fallback)){this.v3348SyncRoster();return}
        this.load.once('filecomplete-image-'+fallback,()=>this.v3348SyncRoster());
        this.load.once('loaderror',f=>{if(f?.key===fallback){this.v3348Fallback[primary]='v3350-placeholder';this.v3348SyncRoster()}});
-       this.load.image(fallback,'../assets/familiars/icons/'+canon(g)+'-icon.webp?v=3350');this.load.start();
+       this.load.image(fallback,portraitURL(g));this.load.start();
      });
      this.load.image(key,imageURL(g,this));this.load.start();
    });

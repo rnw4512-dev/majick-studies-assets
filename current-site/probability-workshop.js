@@ -16,6 +16,31 @@ function open(kind){
   panel.scrollIntoView({block:'start',behavior:'instant'});
  },0);
 }
+// Back must survive workshop DOM replacement during real mouse/touch release.
+// Delegate capture to the document; do not depend on a soon-to-be detached button.
+function leaveProbabilityRoom(event){
+ const button=event.target?.closest?.('#connectedProbability [data-connected-back]');
+ if(!button||!['games','learninglab','mission'].includes(window.S?.screen))return;
+ event.preventDefault();event.stopImmediatePropagation();
+ const before=window.S.screen;
+ try{window.majickBack?.()}catch(_){}
+ if(window.S?.screen===before)window.navigate?.('home');
+}
+document.addEventListener('pointerdown',leaveProbabilityRoom,true);
+document.addEventListener('click',leaveProbabilityRoom,true);
+// The Next button is often replaced during a render between mouse down and release.
+// Handle the earliest real pointer event at the stable document level; keyboard click
+// works too. The learning owner validates the expected completed task ID atomically.
+function advanceProbabilityOnPress(event){
+ const button=event.target?.closest?.('#connectedProbability [data-prob-next]');
+ if(!button||window.S?.activeCourse!=='D772')return;
+ event.preventDefault();event.stopImmediatePropagation();
+ const task=C()?.probabilityState(false)?.tasks?.reasoning;
+ if(!task?.completed)return;
+ if(C().probabilityAdvanceReasoning?.(task.id))mount();
+}
+document.addEventListener('pointerdown',advanceProbabilityOnPress,true);
+document.addEventListener('click',advanceProbabilityOnPress,true);
 let heldPointer=null;
 document.addEventListener('pointerdown',event=>{
  const box=event.target.closest?.('#connectedProbability');
@@ -84,20 +109,7 @@ function mount(){
   const result=C().probabilityCheck(kind,values);t.feedback=result.message;window.save?.();mount();if(result.ok)window.MajickAnimationEffects?.play(kind==='teaching'?'mastery':kind==='repair'?'success':kind==='transfer'?'lesson':'success');
  };
  host.querySelector('[data-prob-fresh]')?.addEventListener('click',()=>{const next=C().probabilityFresh(kind);if(next)mount();else open('repair');});
- // Both pointer activation and keyboard click must advance exactly once, even if
- // the campus render queue detaches the original button during pointer release.
- const next=host.querySelector('[data-prob-next]');
- if(next){
-  const fromId=t.id;
-  const advance=()=>{
-   const current=C().probabilityState(false)?.tasks.reasoning;
-   if(current?.id!==fromId||!current.completed)return;
-   const fresh=C().probabilityAdvanceReasoning?.(fromId);
-   if(fresh)mount();
-  };
-  next.addEventListener('pointerup',advance);
-  next.addEventListener('click',advance);
- }
+ // Next-question navigation is delegated once above; no re-render-sensitive button listeners.
 }
 window.MajickProbabilityWorkshop={mount,open};
 setTimeout(mount,0);

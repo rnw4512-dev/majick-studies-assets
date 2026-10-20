@@ -43,7 +43,7 @@ async function solveMean(values,sum,count,mean){
 
 
  await action('if(!S.courses.D772)throw Error("D772 course unavailable");switchCourse("D772");navigate("mission")');
- await waitFor('!!document.querySelector(".mjSeTaskSelect")');
+ await waitFor('!!document.querySelector("#mjStudyReasoning .mjSolutionEngine")');
 
  // Visual regression: a graphical-displays lesson must display actual SVG charts,
  // not only the text-only thinking path shown in the reported screenshot.
@@ -79,7 +79,7 @@ async function solveMean(values,sum,count,mean){
  console.log('PASS browser: repair parchment text and disabled action pass 4.5:1 contrast',JSON.stringify(contrastQA));
  console.log('PASS browser: Graphical Displays lesson mounts visible histogram/scatterplot SVGs.');
  await action('navigate("mission")');
- await waitFor('!!document.querySelector(".mjSeTaskSelect")');
+ await waitFor('!!document.querySelector("#mjStudyReasoning .mjSolutionEngine")');
 
  // D772 all-section intake and original-source bridge integrity (no replacement bank).
  await waitFor('!!window.MajickCourseTutor&&!!window.MajickWGUPractice&&!!window.MajickGameRealm&&!!window.MajickD772VerifiedSource');
@@ -98,14 +98,20 @@ async function solveMean(values,sum,count,mean){
  for(const n of [1,2,3])assert(sourceResults.realmSections.some(label=>label.startsWith('Section '+n+' ')),'Game Realm missing Section '+n);
  console.log('PASS browser: verified source questions reachable in tutor, Study Now, and Game Realm; three section scopes present; 2C alias preserved');
 
- assert((await evalPage('document.querySelectorAll(".mjSeTaskSelect option").length'))>=12);
- await action('const s=document.querySelector(".mjSeTaskSelect");s.value="mean";s.dispatchEvent(new Event("change",{bubbles:true}))');
- await waitFor('!!document.querySelector("[data-field=known]")');
+ assert((await evalPage('!!document.querySelector("[data-study-view=reasoning]")')), 'Reasoning Workshop must share a tabbed Study Realm panel');
+ await action('document.querySelector("[data-study-view=reasoning]").click()');
+ let meanFound=false;
+ for(let i=0;i<35;i++){
+  if(await evalPage('document.querySelector("#mjStudyReasoning .mjSolutionEngine")?.dataset.selectedTask==="mean"')){meanFound=true;break}
+  await action('const b=document.querySelector(".mjSeMixNext");if(!b)throw Error("Missing next mixed OA skill");b.click()');
+ }
+ assert(meanFound,'Mixed section OA queue must include existing mean reasoning task');
+ await waitFor('!!document.querySelector("#mjStudyReasoning [data-field=known]")');
  await solveMean('8, 12, 16, 20',56,4,14);
  await solveMean('11, 17, 23, 29, 35',115,5,23);
  await solveMean('9, 13, 17, 21, 25',85,5,17);
  await enterAndCheck({transfer:17});
- const masteryEvidence=await evalPage('({mastery:S.progress.D772.interactiveMastery||{},lastAnswer:S.progress.D772.answers?.slice(-2),feedback:document.querySelector(".mjSeFeedback")?.textContent,phase:document.querySelector(".mjSolutionEngine h3")?.textContent,fields:[...document.querySelectorAll(".mjSolutionEngine [data-field]")].map(x=>x.dataset.field),lesson:document.querySelector(".mjSeTaskSelect")?.value,bridge:!!window.MajickInteractiveMastery})');
+ const masteryEvidence=await evalPage('({mastery:S.progress.D772.interactiveMastery||{},lastAnswer:S.progress.D772.answers?.slice(-2),feedback:document.querySelector(".mjSeFeedback")?.textContent,phase:document.querySelector(".mjSolutionEngine h3")?.textContent,fields:[...document.querySelectorAll(".mjSolutionEngine [data-field]")].map(x=>x.dataset.field),lesson:document.querySelector(".mjSolutionEngine")?.dataset.selectedTask,bridge:!!window.MajickInteractiveMastery})');
  console.log('Browser full-transfer diagnostic:',JSON.stringify(masteryEvidence));
  const mastered=await evalPage('!!S.progress.D772.interactiveMastery?.["interactive-independent:D772:mean"]');
  if(!mastered)console.error('Mastery flow diagnostic',JSON.stringify(await evalPage('({step:document.querySelector(".mjSeStage h3")?.textContent,feedback:document.querySelector(".mjSeFeedback")?.textContent,header:document.querySelector(".mjSeDifficulty")?.textContent,fields:[...document.querySelectorAll("[data-field]")].map(x=>({id:x.dataset.field,value:x.value})),mastery:S.progress.D772.interactiveMastery||{}})')));
@@ -120,13 +126,19 @@ async function solveMean(values,sum,count,mean){
  assert.equal(await evalPage('S.progress.D772.xp'),increased,'XP should persist after actual Chrome reload');
  assert.equal(await evalPage('window.MajickInteractiveRewards.award("browser-qa","participation").awarded'),false,'Reload must not permit duplicate reward');
  await action('startD756Course();navigate("mission")');
- await waitFor('!!document.querySelector(".mjSeTaskSelect")');
+ await waitFor('!!document.querySelector("#mjStudyReasoning .mjSolutionEngine")');
  assert.equal(await evalPage('S.activeCourse'),'D756');
  assert.equal(await evalPage('S.progress.D772.xp'),increased);
  // Verify the six-stage WGU sequence workshop, including the final guided reconstruction.
  await action('switchCourse("D772");navigate("mission")');
- await waitFor('!!document.querySelector(".mjSeTaskSelect")');
- await action('const picker=document.querySelector(".mjSeTaskSelect");picker.value="d772-data";picker.dispatchEvent(new Event("change",{bubbles:true}))');
+ await waitFor('!!document.querySelector("#mjStudyReasoning .mjSolutionEngine")');
+ await action('document.querySelector("[data-study-view=reasoning]")?.click()');
+ let sequenceFound=false;
+ for(let i=0;i<35;i++){
+   if(await evalPage('document.querySelector("#mjStudyReasoning .mjSolutionEngine")?.dataset.selectedTask==="d772-data"')){sequenceFound=true;break}
+   await action('const next=document.querySelector(".mjSeMixNext");if(!next)throw Error("Mixed OA next control missing");next.click()');
+ }
+ assert(sequenceFound,'D772 Section 1 evidence sequence should remain in the mixed OA bank');
  await waitFor('!!document.querySelector("[data-focus]")');
  const caseData=await evalPage('(()=>{const task=MajickLessonActivities.tasks.find(x=>x.id==="d772-data");return task.cases.find(c=>document.querySelector(".mjSeStage")?.textContent.includes(c.prompt))||task.cases[0]})()');
  const focus=/surveys only|only reaches|only staff|only families|one school|evening event|downtown station|gym website|volunteer/i.test(caseData.prompt)?'Selection bias':'Association is not causation';
@@ -135,7 +147,7 @@ async function solveMean(values,sum,count,mean){
  await action('document.querySelectorAll("[data-add]")['+caseData.correct[0]+'].click();document.querySelector("[data-check]").click()');
  for(const part of caseData.correct)await action('document.querySelectorAll("[data-add]")['+part+'].click()');
  await action('document.querySelector("[data-check]").click()');
- const stageDiagnostic=await evalPage('({title:document.querySelector(".mjSeStage h3")?.textContent,feedback:document.querySelector(".mjSeFeedback")?.textContent,scenario:document.querySelector(".mjSeStage")?.textContent?.slice(0,600),selectedTask:document.querySelector(".mjSeTaskSelect")?.value})');
+ const stageDiagnostic=await evalPage('({title:document.querySelector(".mjSeStage h3")?.textContent,feedback:document.querySelector(".mjSeFeedback")?.textContent,scenario:document.querySelector(".mjSeStage")?.textContent?.slice(0,600),selectedTask:document.querySelector(".mjSolutionEngine")?.dataset.selectedTask})');
  console.log('SEQUENCE STAGE AFTER THIRD CHECK',JSON.stringify({caseData,stageDiagnostic}));
  await waitFor('!!document.querySelector("[data-meaning]")');
  const meaning=/observational|caused|causation|correlation|association/i.test(caseData.prompt)?'An observational study can show association':'The target population and sampled group differ';

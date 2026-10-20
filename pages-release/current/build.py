@@ -8,7 +8,24 @@ assert manifest["version"]=="3.4.2"
 for name,digest in manifest["files"].items():
  p=source/name
  assert p.is_file() and hashlib.sha256(p.read_bytes()).hexdigest()==digest, "Unreviewed source change: "+name
-assert len(list((source/"sanctuary/assets/motion").glob("*.png")))==33
+# Lock the 33 original PNGs by their existing SHA-256 manifest entries; allow individually
+# approved additions without weakening the protected-image invariant.
+motion_dir=source/"sanctuary/assets/motion"
+approved_extra_paths={"sanctuary/assets/motion/ember-fly.png"}
+protected={name:digest for name,digest in manifest["files"].items() if name.startswith("sanctuary/assets/motion/") and name.endswith(".png") and name not in approved_extra_paths}
+assert len(protected)==33, "The original 33 protected motion files must remain in the manifest"
+for name,digest in protected.items():
+ assert hashlib.sha256((source/name).read_bytes()).hexdigest()==digest, "Protected Guardian motion changed: "+name
+additional={p.name:p for p in motion_dir.glob("*.png") if "sanctuary/assets/motion/"+p.name not in protected}
+# Only accept a previously inspected binary already in this repository. New files must
+# be explicitly reviewed and checksummed before being added to this allowlist.
+approved_extra_git_blobs={"ember-fly.png":"e7997580fdf1582bf12d30fc03fb6f04ac725b83"}
+assert set(additional).issubset(approved_extra_git_blobs), "Unapproved Guardian motion addition: "+str(sorted(additional))
+assert all("sanctuary/assets/motion/"+name in manifest["files"] for name in additional), "Guardian motion additions must each have a canonical SHA256 manifest entry"
+for name,file in additional.items():
+ raw=file.read_bytes(); git_sha=hashlib.sha1(b"blob "+str(len(raw)).encode()+b"\0"+raw).hexdigest()
+ assert git_sha==approved_extra_git_blobs[name], "Unexpected Guardian motion binary: "+name
+ print("APPROVED_GUARDIAN_SHA256",name,hashlib.sha256(raw).hexdigest())
 if output.exists(): shutil.rmtree(output)
 shutil.copytree(source,output)
 release=hashlib.sha256((source/"source-manifest.json").read_bytes()+Path(__file__).read_bytes()).hexdigest()[:16]

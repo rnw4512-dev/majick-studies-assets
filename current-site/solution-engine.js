@@ -183,25 +183,64 @@ function rubric(task,ex,answer,stage){
  if(missing.length)return {ok:false,feedback:'Your explanation needs stronger evidence: '+missing.join(' ')};
  return {ok:true,feedback:'Your explanation addresses the key ideas. This is rule-based guidance, not a teacher-graded semantic assessment; compare your explanation with the model reasoning: '+String(ex.interpret||ex.why||ex.reason||'')};
 }
-function mount(){const root=document.getElementById('content');if(!root)return;const screen=window.S?.screen,cid=window.S?.activeCourse;if(!['guide','mission','games'].includes(screen))return;
- const all=BANK[cid]||[];
- let cards=screen==='guide'?[...root.querySelectorAll('.studyCard')]:[root];
- for(const card of cards){
-  let host=card.querySelector(':scope > .mjSolutionEngine');
-  if(!host){host=document.createElement('section');host.className='mjSolutionEngine';if(screen==='guide')card.append(host);else (root.querySelector('.sectionTitle')||root).after(host)}
-  if(screen!=='guide'){
-   let picker=host.querySelector('.mjSeTaskSelect'),picked=picker?.value||'';
-   if(!picker){picker=document.createElement('select');picker.className='mjSeTaskSelect';picker.setAttribute('aria-label','Choose course lesson activity')}
-   picker.innerHTML='<option value="">Choose lesson activity</option>'+all.filter(x=>x.lessonId||x.lesson).map(x=>'<option value="'+esc(x.id)+'">'+esc((x.lessonId||x.lesson)+' — '+x.title)+'</option>').join('');
-   const need=window.MajickLearningContinuity?.recommend?.(cid);const target=need&&all.find(x=>x.lessonId===need.lessonId||x.lesson===need.lessonId);if(picked&&all.some(x=>x.id===picked))picker.value=picked;else if(target)picker.value=target.id;else if(all.length)picker.value=all.find(x=>x.lessonId)?.id||all[0].id;
-   host.dataset.selectedTask=picker.value;
-   const task=choose(host);
-   if(task)render(host,task);else host.textContent='No curriculum activities available for this course.';
-   host.prepend(picker);picker.onchange=()=>{host.dataset.selectedTask=picker.value;const choice=choose(host);if(choice)render(host,choice);else host.textContent='No mapped activity available.';host.prepend(picker)};
-  }else{
-   const task=choose(host);if(task)render(host,task);else host.remove();
-  }
+// The Study Realm and Reasoning Workshop occupy one compact Study Now panel.
+// Every active D772 course gets a mixed sequence drawn from ALL three sections,
+// never a block of Section 1 followed by Section 2 followed by Section 3.
+let mixIndex=0,studyView='practice';
+function mixTasks(cid){
+ const list=BANK[cid]||[];
+ if(cid!=='D772')return list;
+ // Interleave source sections by explicit content metadata, NOT guesses about IDs.
+ const buckets={1:[],2:[],3:[]},other=[];
+ for(const task of list){
+  const section=Number(task.section);
+  if(buckets[section])buckets[section].push(task);
+  else other.push(task);
  }
+ const mixed=[];
+ while(buckets[1].length||buckets[2].length||buckets[3].length){
+  for(const section of [1,2,3])if(buckets[section].length)mixed.push(buckets[section].shift());
+ }
+ return [...mixed,...other];
+}
+function mount(){
+ const root=document.getElementById('content');if(!root)return;
+ const screen=window.S?.screen,cid=window.S?.activeCourse;
+ // Lesson-level workshop entry remains supported when explicitly requested
+ // through mountLesson, but the automatic long Study Guide stack is removed.
+ if(screen!=='mission')return;
+ let shell=root.querySelector(':scope > .mjStudyRealmShell');
+ if(!shell){
+   shell=document.createElement('section');shell.className='mjStudyRealmShell';
+   shell.innerHTML='<nav role="tablist" aria-label="Study Now tools"><button type="button" role="tab" data-study-view="practice" id="mjStudyPracticeTab" aria-controls="mjStudyPractice">Study Realm</button><button type="button" role="tab" data-study-view="reasoning" id="mjStudyReasoningTab" aria-controls="mjStudyReasoning">Reasoning Workshop</button></nav><div role="tabpanel" id="mjStudyPractice" aria-labelledby="mjStudyPracticeTab"></div><div role="tabpanel" id="mjStudyReasoning" aria-labelledby="mjStudyReasoningTab"></div>';
+   const study=root.querySelector('.sectionTitle');
+   if(study)study.after(shell);else root.prepend(shell);
+   const practice=shell.querySelector('#mjStudyPractice');
+   // Move the existing Study Now nodes, preserving handlers and saved state.
+   [...root.children].filter(el=>el!==shell&&el!==study).forEach(el=>practice.append(el));
+ }
+ const tools=shell.querySelector('#mjStudyReasoning');
+ let host=tools.querySelector('.mjSolutionEngine');
+ if(!host){host=document.createElement('section');host.className='mjSolutionEngine';tools.append(host)}
+ const all=mixTasks(cid);
+ if(!all.length){host.textContent='Add a course with mapped Reasoning Workshop activities.';return}
+ const chosen=all[mixIndex%all.length];
+ host.dataset.selectedTask=chosen.id;
+ render(host,chosen);
+ let jump=tools.querySelector('.mjSeMixNext');
+ if(!jump){jump=document.createElement('button');jump.type='button';jump.className='mjSeMixNext';jump.textContent='Next mixed OA skill →';tools.append(jump)}
+ jump.onclick=()=>{mixIndex++;host.dataset.selectedTask='';host.removeAttribute('data-engine-task');studyView='reasoning';mount()};
+ let head=tools.querySelector('.mjSeMixSummary');
+ if(!head){head=document.createElement('p');head.className='mjSeMixSummary';tools.prepend(head)}
+ head.textContent='Mixed OA preparation · '+(chosen.section?'Section '+chosen.section+' · ':'')+chosen.title+' · '+(mixIndex+1)+' / '+all.length+' topics';
+ const show=view=>{
+   studyView=view==='reasoning'?'reasoning':'practice';
+   shell.querySelectorAll('[data-study-view]').forEach(btn=>{const on=btn.dataset.studyView===studyView;btn.setAttribute('aria-selected',String(on));btn.tabIndex=on?0:-1});
+   shell.querySelector('#mjStudyPractice').hidden=studyView!=='practice';
+   shell.querySelector('#mjStudyReasoning').hidden=studyView!=='reasoning';
+ };
+ shell.querySelectorAll('[data-study-view]').forEach(btn=>btn.onclick=()=>show(btn.dataset.studyView));
+ show(studyView);
 }
 
 function mountLesson(host,lessonId){
@@ -211,5 +250,6 @@ function mountLesson(host,lessonId){
  host.classList.add('mjSolutionEngine');render(host,task);return true;
 }
 let style=document.createElement('style');style.textContent='.mjSeStage{min-height:170px;color:#fff4e5!important}.mjSeStage p,.mjSeStage h3,.mjSeStage label,.mjSeStage strong{color:#fff4e5!important;opacity:1!important}.mjSeBank{display:flex;gap:8px;flex-wrap:wrap}.mjSeBank button{max-width:100%;text-align:left;line-height:1.4}.mjSeStage input{font-size:16px}.mjSeOption.chosen,.mjSolutionEngine button[aria-pressed="true"]{background:#a7789e!important;border:2px solid #f4d494!important;box-shadow:0 0 0 2px #3b2843 inset}.mjSeSelection{color:#f6dbab;font-weight:700}.mjSeSteps button{min-width:36px;margin:2px}.mjSeSteps button[disabled]{opacity:.4;cursor:default}.mjSolutionEngine{background:#2b2139;border:1px solid #c4a673;color:#fff0eb;margin:16px 0;padding:16px;border-radius:16px}.mjSolutionEngine h3{color:#f0cf98}.mjSeHead{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}.mjSeHead strong{color:#f2d095}.mjSeSteps{display:flex;gap:6px;margin:12px 0}.mjSeSteps span{padding:5px 10px;border:1px solid #947e95;border-radius:50%}.mjSeSteps .active{background:#9972aa}.mjSeLabel{display:flex;flex-direction:column;gap:5px;margin:9px 0}.mjSeLabel input,.mjSeBar input{background:#fff8ed;color:#1f1829;border-radius:7px;padding:10px;max-width:100%}.mjSeActions{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0}.mjSolutionEngine button{background:#695277;color:#fff0da;border:1px solid #bfa17b;border-radius:8px;padding:9px;margin:4px;cursor:pointer}.mjSolutionEngine button:focus-visible,.mjSolutionEngine input:focus-visible{outline:3px solid #f7cf7d}.mjSeGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:9px}.mjSeGraph{display:flex;align-items:end;gap:10px;min-height:210px;overflow-x:auto}.mjSeBar{display:flex;flex-direction:column;align-items:center;min-width:85px}.mjSeTower{width:42px;background:linear-gradient(#f0cd84,#aa7dbe);min-height:3px}.mjSeBar input{width:72px}.mjSeFoot{font-size:12px;opacity:.8}.mjSeFeedback,.mjSeHelp{background:#493851;border-left:3px solid #f2cc88;padding:11px}';document.head.append(style);
+const realmCss=document.createElement('style');realmCss.textContent='.mjStudyRealmShell{margin:12px 0;border:1px solid #b89c73;border-radius:16px;padding:12px;background:#281d35;color:#f7ebd9}.mjStudyRealmShell>nav{display:flex;gap:8px;flex-wrap:wrap}.mjStudyRealmShell>nav button,.mjSeMixNext{background:#554164;border:1px solid #c8a773;border-radius:10px;color:#fff2df;padding:11px 15px;cursor:pointer;font-weight:700}.mjStudyRealmShell>nav button[aria-selected="true"]{background:#efd19a;color:#231629}.mjStudyRealmShell button:focus-visible{outline:3px solid #ffde97;outline-offset:3px}.mjStudyRealmShell [hidden]{display:none!important}.mjSeMixSummary{color:#ffdb98;font-weight:700;line-height:1.5}.mjSeMixNext{margin:7px 0 12px}';document.head.append(realmCss);
 const old=window.render;if(typeof old==='function')window.render=function(){let value=old.apply(this,arguments);setTimeout(mount,50);return value};setTimeout(mount,500);window.MajickSolutionEngine={version:'1.0',refresh:mount,mountLesson,activities:Object.values(BANK).flat().length};
 })();

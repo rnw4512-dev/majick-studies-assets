@@ -1,6 +1,6 @@
 # Majick Studies — Master Working Project Board
 
-Updated: 2026-10-17. Canonical source: `current-site/`. Live: https://rnw4512-dev.github.io/majick-studies-assets/
+Updated: 2026-10-20. Canonical source: `current-site/`. Live: https://rnw4512-dev.github.io/majick-studies-assets/
 
 **Vision:** An adult dark-academia witchy college where the learner adds real courses and studies through an integrated game world. Academic mastery remains course-specific; Scholar identity, avatar, Guardians, crystals, rewards, eggs and Sanctuary persist globally.
 
@@ -78,6 +78,9 @@ Updated: 2026-10-17. Canonical source: `current-site/`. Live: https://rnw4512-de
 - Preserve independently validated academic records, cosmetics, room placements and Guardians across reload and course changes.
 
 ## Needs Browser Certification
+
+- **2026-10-17 release gate:** board-contract passing; canonical build verified after replacing obsolete exact-33 assertion with 33 protected SHA256 hashes plus approved Cascade fly Git-object SHA1. Actual Sanctuary Phaser browser test at all three widths is now in CI; initial run exposed duplicate renderer in `sanctuary-visual-authority.js`. Removed three shadowed render overrides from `sanctuary-runtime.js` and made `sanctuary-visual-authority.js` the sole original-four walk/play/sleep visual owner with real two-frame texture switching. Re-run pending, so **not certified/not deployed**. Mixed D772 workshop now round-robins actual source Sections 1, 2 and 3; browser interaction test updated to check the new tabbed Study Realm.
+
 
 - [ ] 390px / 820px / 1366px: Home tabs, keyboard focus, text contrast, reduced motion and no scroll jump
 - [ ] All six hairstyles on each supported skin/outfit: head fit, collision and clipping; screenshots required
@@ -163,3 +166,60 @@ Every change must append **date / area / commit or PR / what changed / how / act
 | 2026-10-17 | Additional Guardian motion intake | Staged 19 unique RGBA 1254×1254 PNGs for Aurelia (legacy Mallow, 10 actions) and Solstice (legacy Nova, 9 actions) in a downloadable checksum manifest ZIP; skipped duplicate filename variants | Local alpha, dimensions and SHA-256 inspection passed; GitHub comparison and live Phaser/browser movement not completed | Protected 33 motion originals unchanged; staged only, not deployed; next reconcile checksum/path ownership then implement and certify |
 
 | 2026-10-17 | Protected motion reconciliation | Compared all 33 named protected Sanctuary PNG paths against the original transparent motion uploads; identified 5 missing actions (ember-fly, ember-wave, luna-paw, luna-sit, luna-sleep), built a verified 12 MB ZIP with correct canonical repository destinations and SHA256 manifest | Local 1254×1254 RGBA/alpha and checksums verified for all five; existing originals excluded; browser Phaser tests not run | Binary PNGs in downloadable staging patch, not GitHub or live app; require binary ingestion + existing renderer hookup + certification |
+
+| 2026-10-17 | Real Guardian movement + mixed Study Realm | Reused protected alternate walk frames (luna, ember, nova and mallow) in current Phaser runtime; copied existing Cascade flight image blob into correct folder; Study Now now houses Reasoning Workshop as adjacent panel tab and mixes D772 Sections 1/2/3 | Module syntax and static regression assertions prepared; responsive/full Phaser interaction certification not yet verified | 4 genuine uploaded pose PNGs still staged outside GitHub (legacy root files are 2-byte placeholders, not actual art); preserve originals; do not deploy pending missing images and real browser gates |
+
+| 2026-10-17 | All ten Guardians Phaser integration | Extended current single Phaser roster to bind all six additional Guardians' 30 existing stage portraits with canonical fallback; diagnostics distinguish painted two-frame motion from portrait movement; retained original four protected controllers; real two-frame walking code staged | GitHub asset path inventory confirms all 30 stage portraits and 33 protected motion files; JS static checks completed; Phaser browser E2E and stage transitions pending | Not deployed. Six portrait actors use existing movement but do not have verified genuine action frame cycles. Additional four pose PNGs in local ZIP not yet committed to GitHub |
+
+| 2026-10-17 | Release certification | Replaced obsolete exactly-33 PNG build limit with 33 original SHA256 protections plus exact SHA1 approval for restored Cascade fly; repaired re-rendered Commons tab keyboard focus; added browser-sanctuary.cjs and wired actual Phaser tests on 390/820/1366 for ten Guardian sprites, movement, real dual-frame originals and care reactions | Source/static checks and workflow launches confirmed; new dedicated browser run not yet finished | PR #144 draft, production blocked; six original new Guardian action frames and four local-only action PNGs not yet committed; Scholar visual fitting and mixed OA freshness remain unverified |
+
+| 2026-10-17 | Real browser defect repair | Actual Phaser at 390/820 exposed stage skin override from `sanctuary-visual-authority.js` defeating painted-frame loader; removed duplicate owner and rewired active authority; fixed old Study Now interaction test selectors, enforced true 1/2/3 source task alternation | Canonical build and board contract passes on latest SHA; 390/820/1366 real browser QA currently rerunning | Real Phaser and end-to-end release gate awaiting results; 6 new Guardians still need independently painted action frames; Scholar cross-room visual QA pending; production not deployed |
+
+## Scholar unification and active tests — 2026-10-20
+
+- **Integrated, not recreated:** moved the exact pre-existing V3.4.2 Scholar hair fitting and `scholar-companion.js` cross-room renderer from PR #139 into PR #144, along with `reward-core.js`, 6 original SVG magical reward icons, and the V2 layer/pose anchor contract from PR #142 (10 files total). Integrated SHA256 hashes into `current-site/source-manifest.json`; original inventory owner preserved.
+- **Browser evidence pending fresh run:** `pages-release/current/browser-scholar-continuity.cjs` now tests real 4-layer artwork loads, nondefault skin/hair/robe, fitted size/offset, Study Now → Companions → Home continuity and persistence after reload, in Chromium at 390/820/1366. The first version revealed a test-harness newline parsing defect; fixed in commit `73106a8`; retest in progress.
+- **Hard release guard active on development branch:** [Strict action #39418920152](https://github.com/rnw4512-dev/majick-studies-assets/actions/runs/39418920152) correctly failed until Scholar integration (then 97 issues); the most recent strict audit reports **94 genuine asset blockers**: 90 missing per-stage action frames for the newer six, and 4 missing PNGs for original four. Strict failure is expected and release-blocking. Existing 33 motion files are protected.
+- **Visual acceptance still required:** browser structural hair fit is not human-confirmed alignment; verify large hair, locs, braids and other fitted looks visually on real 390/820/1366 screenshots. Do not conflate outfit data preservation with visually fitting every hairstyle.
+
+## Strict release certification — 2026-10-20
+
+**Evidence:** The Oct 17 latest PR #144 SHA `cee7d6e7b5825223d6fca78c93cd84090993b2c7` completed [Commons browser review run 39053165381](https://github.com/rnw4512-dev/majick-studies-assets/actions/runs/39053165381) successfully in all three viewports (1366, 820, 390); [board contract run 39053165358](https://github.com/rnw4512-dev/majick-studies-assets/actions/runs/39053165358) passed. Real Chromium/Phaser test passed 10 actor fixtures, interaction/play, 5 stages for all six newer Guardians, and distinct frame pairs for four originals. Browser interaction/probability suite verified retry, fresh questions, save/reload and course isolation.
+
+| Requested release gate | Grounded result | Certification |
+|---|---|---|
+| Source hashes / build | Source-only V3.4.2 canonical build and tested hashes passed | PASS on previous SHA; rerun after changes |
+| No duplicated render ownership | Static test reports single visual owner; code review required for final assurance | PARTIAL |
+| 1366 / 820 / 390 | Existing real Chromium browser reviews passed each width | PASS on previous SHA; rerun |
+| Ten Phaser Guardians | Real Chromium: 10 sprites, interaction event responses and world movement; 30/30 evolution stage portrait files and all 5 stage changes observed | PASS for presence/movement/stage, NOT painted action completeness |
+| Original four | 33 protected PNG blobs confirmed byte-identical; two distinct painted walk frames each; actual motion tested | PASS for walk; BLOCKED for additional original actions |
+| Original missing actions | Genuine `luna-paw.png`, `luna-sit.png`, `luna-sleep.png`, `ember-wave.png` missing; `ember-fly.png` correctly restored from pre-existing Git blob | BLOCKED (4 PNGs in staged user ZIP, NOT yet committed) |
+| New six pose frames | **0/90** bespoke new-six walk/play/sleep files committed (six Guardians × five stages × three actions) | BLOCKED: portraits and tween motion are not painted poses |
+| Scholar hair and attire | PR #139 fitting and PR #142 layer registry exist as separate drafts; neither integrated/certified with this PR's actual browser screenshots | BLOCKED |
+| Study Realm OA mixing | Three-section workshop static gate and real D772 browser mastery/fresh question/course reload tests passed | PARTIAL: complete mixed-workshop walkthrough still needs explicit evidence |
+| XP / crystals / Guardian / mastery / course persistence | Browser interaction includes full-state JSON equivalence after reload, Guardian care and room placement persistence, independent-mastery separation, fresh probability & course switching | PASS for tested transitions; cross-room outfit persistence pending |
+
+**New hard enforcement:** `pages-release/current/test-strict-release-completeness.cjs` tests required real PNG signatures, all 90 new pose paths, canonical stage portraits and integrated Scholar fitting. `.github/workflows/strict-majick-certification.yml` runs it separately from ordinary green browser CI, and `.github/workflows/deploy-majick-pages.yml` now fails closed on missing required art and runs the actual Phaser certification at 1366/820/390 before deploying. A green browser suite by itself is no longer a valid release sign-off.
+
+**Verdict:** BLOCKED until four supplied uploaded PNGs are committed, six bespoke action families exist and are visually approved, Scholar branch changes are integrated/certified and strict gate plus all actual browser checks pass. Do not merge/deploy as complete.
+
+## Certification checkpoint — 2026-10-17, latest draft PR #144
+
+| Gate | Evidence | Status / required action |
+|---|---|---|
+| Canonical source hashes | Rehashed `collegium-commons.js` and `probability-workshop.js` after correcting CI "Unreviewed source change" error | Retest on latest SHA required |
+| Render ownership | Existing Phaser Game/roster, Reward Core and scholar identity retained | Static ownership checks passed previously; end-to-end audit open |
+| 1366px | Previous full run failed Commons ArrowRight keyboard focus and probability in-card Back | Fixes committed; browser rerun pending |
+| 820px | Previous full browser run passed | Latest SHA rerun pending |
+| 390px | Previous full browser run passed | Latest SHA rerun pending |
+| Original four motion | Git original 33 motion PNG SHAs identical to main; four pairs of distinct painted walk frames referenced | Actual Phaser frame switching requires latest browser confirmation; sleep/play from original optional PNGs still incomplete |
+| New six Phaser | All six registered with stage-aware textures; 30 of 30 requested evolution-stage portraits present; browser-sanctuary.cjs exercises 10 actor fixture | Dedicated walking/play/sleep frames absent: zero of 90 stage-action assets; **do not certify full motion** |
+| Scholar avatar | Existing identity, layers and hair fitting work in PRs #139/#142 | Actual style × skin × outfit screenshots and reload/cross-room persistence not certified |
+| Study Realm | Workshop moved into Study Now and queued across D772 Sections 1–3 | Verify real item availability, correctness, next question and mastery separation in browser |
+| Persistence | Existing saved XP/crystals/Guardians/inventory/academic records protected from refactor | Real save/reload + course switching E2E not certified |
+
+**Release verdict:** BLOCKED. Do not merge to main or deploy until 1366/820/390 on latest SHA all pass, Sanctuary real-frame checks pass, new six approved action artwork exists, and saved-progress/Scholar/Study Realm E2E tests are green. A ten-Guardian moving-portrait test does not establish six correct painted walk cycles.
+
+| 2026-10-20 | Strict release certification | Verified previous latest PR #144 three-width Chromium and real Phaser results; created strict completeness auditor; wired deploy workflow to fail closed and rerun ten-Guardian Phaser test at all three widths | Browser run 39053165381 passed; 33 protected motion identical; six-new action assets 0/90; originals missing four; refreshed strict audit pending | Blocked: genuine images and cross-room Scholar validation; no live deployment |
+
+| 2026-10-20 | Scholar unified QA integration | Grafted PR #139 production hair fit/Scholar cross-room presence/reward SVGs and PR #142 layer contract into PR #144 without duplicate render or inventory owner; synced 10 SHA256 manifest entries; created real 390/820/1366 hair/robe/skin save-reload browser test | Initial new test harness had DevToolsActivePort split error; corrected in commit 73106a8, rerun pending; strict action fails only approved action-art omissions (90+4) | Visual review and genuine missing action artwork required; no live deploy |
