@@ -35,6 +35,11 @@ jobs:
           for width in 1366 820 390; do
             COMMONS_WIDTH=$width timeout 140s node pages-release/current/browser-sanctuary.cjs _site
           done
+      - name: Certify saved Scholar hair, clothing and cross-room presence on desktop, tablet and mobile
+        run: |
+          for width in 1366 820 390; do
+            COMMONS_WIDTH=$width timeout 140s node pages-release/current/browser-scholar-continuity.cjs _site
+          done
       - name: Check lessons, games, rewards, eggs and saved reload
         run: node pages-release/current/release-checks.cjs current-site
       - name: Validate imported D772 preassessment and targeted practice
