@@ -1,0 +1,93 @@
+{
+  "version": 1,
+  "artPolicy": "APPROVED_USER_EVOLUTION_CARDS",
+  "note": "Stage portrait crops; do not use as transparent Phaser walking/play/sleep action frames. Prism source card pending.",
+  "basePath": "../assets/familiars/evolution_portraits/",
+  "stageLevels": {
+    "new-bond": [
+      1,
+      2
+    ],
+    "apprentice": [
+      3,
+      4
+    ],
+    "guardian": [
+      5,
+      7
+    ],
+    "ascendant": [
+      8,
+      11
+    ],
+    "celestial": [
+      12,
+      null
+    ]
+  },
+  "guardians": {
+    "aurelia": {
+      "new-bond": "aurelia-new-bond.webp",
+      "apprentice": "aurelia-apprentice.webp",
+      "guardian": "aurelia-guardian.webp",
+      "ascendant": "aurelia-ascendant.webp",
+      "celestial": "aurelia-celestial.webp"
+    },
+    "vesper": {
+      "new-bond": "vesper-new-bond.webp",
+      "apprentice": "vesper-apprentice.webp",
+      "guardian": "vesper-guardian.webp",
+      "ascendant": "vesper-ascendant.webp",
+      "celestial": "vesper-celestial.webp"
+    },
+    "solara": {
+      "new-bond": "solara-new-bond.webp",
+      "apprentice": "solara-apprentice.webp",
+      "guardian": "solara-guardian.webp",
+      "ascendant": "solara-ascendant.webp",
+      "celestial": "solara-celestial.webp"
+    },
+    "zephyr": {
+      "new-bond": "zephyr-new-bond.webp",
+      "apprentice": "zephyr-apprentice.webp",
+      "guardian": "zephyr-guardian.webp",
+      "ascendant": "zephyr-ascendant.webp",
+      "celestial": "zephyr-celestial.webp"
+    },
+    "solstice": {
+      "new-bond": "solstice-new-bond.webp",
+      "apprentice": "solstice-apprentice.webp",
+      "guardian": "solstice-guardian.webp",
+      "ascendant": "solstice-ascendant.webp",
+      "celestial": "solstice-celestial.webp"
+    },
+    "rook": {
+      "new-bond": "rook-new-bond.webp",
+      "apprentice": "rook-apprentice.webp",
+      "guardian": "rook-guardian.webp",
+      "ascendant": "rook-ascendant.webp",
+      "celestial": "rook-celestial.webp"
+    },
+    "velora": {
+      "new-bond": "velora-new-bond.webp",
+      "apprentice": "velora-apprentice.webp",
+      "guardian": "velora-guardian.webp",
+      "ascendant": "velora-ascendant.webp",
+      "celestial": "velora-celestial.webp"
+    },
+    "cascade": {
+      "new-bond": "cascade-new-bond.webp",
+      "apprentice": "cascade-apprentice.webp",
+      "guardian": "cascade-guardian.webp",
+      "ascendant": "cascade-ascendant.webp",
+      "celestial": "cascade-celestial.webp"
+    },
+    "briar": {
+      "new-bond": "briar-new-bond.webp",
+      "apprentice": "briar-apprentice.webp",
+      "guardian": "briar-guardian.webp",
+      "ascendant": "briar-ascendant.webp",
+      "celestial": "briar-celestial.webp"
+    }
+  }
+}
