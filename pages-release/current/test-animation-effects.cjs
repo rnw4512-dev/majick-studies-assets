@@ -6,7 +6,7 @@ const css=fs.readFileSync(path.join(root,'animation-effects.css'),'utf8');
 new vm.Script(src,{filename:'animation-effects.js'});
 assert(/pointer-events:none!\s*important/.test(css),'Effect layer must never capture clicks');
 assert(/prefers-reduced-motion:reduce/.test(css),'Reduced-motion styling required');
-for(const asset of ['celebrations/lesson-complete-seal.svg','celebrations/course-complete-sigil.svg','guardians/guardian-heart-sigil.svg']){
+for(const asset of ['celebrations/lesson-complete-seal.svg','celebrations/course-complete-sigil.svg','guardians/guardian-constellation-bond.svg']){
  const file=path.join(root,'assets/effects',asset),svg=fs.readFileSync(file,'utf8');
  assert(svg.includes('<svg')&&svg.includes('</svg>'),'Missing standalone SVG '+asset);
 }
@@ -32,7 +32,7 @@ for(const width of [1366,820,390]){
   assert.equal(body.children[0].children.length,1,'Exactly one active celebration');
   const effect=body.children[0].children[0];
   assert.equal(effect.dataset.fxType,type);
-  assert(effect.children[0].src.includes(type==='course'?'course-complete-sigil':type==='lesson'?'lesson-complete-seal':'guardian-heart-sigil'));
+  assert(effect.children[0].src.includes(type==='course'?'course-complete-sigil':type==='lesson'?'lesson-complete-seal':'guardian-constellation-bond'));
   const particles=effect.children.filter(x=>x.className==='majickFxParticle');
   assert.equal(particles.length,motion?0:type==='course'?22:type==='lesson'?13:9,'Motion density '+type);
   timers.splice(0).forEach(fn=>fn());

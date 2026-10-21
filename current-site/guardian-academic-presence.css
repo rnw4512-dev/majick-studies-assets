@@ -8,3 +8,16 @@
 .v3366AcademicGuardian.realm{border-left:3px solid rgba(133,109,192,.6)}
 .v3366AcademicGuardian.home{border-left:3px solid rgba(226,185,105,.5)}
 @media(max-width:640px){.v3366AcademicGuardian{padding:8px 10px;gap:8px}.v3366AcademicGuardian img,.v3366AcademicGuardian>span{flex-basis:36px;width:36px;height:36px}.v3366AcademicGuardian p{font-size:9px}.v3366AcademicGuardian small{font-size:7px}}
+
+/* Phase 7 Guardian-specific idle personalities. Movement is visual-only and local to portrait. */
+@media(prefers-reduced-motion:no-preference){
+ .v3366AcademicGuardian:is([data-guardian-idle="velora"],[data-guardian-idle="vesper"],[data-guardian-idle="rook"])>:is(img,span){animation:maj7GuardianConsider 8s ease-in-out infinite}
+ .v3366AcademicGuardian:is([data-guardian-idle="cascade"],[data-guardian-idle="zephyr"],[data-guardian-idle="prism"])>:is(img,span){animation:maj7GuardianSkip 5.5s ease-in-out infinite}
+ .v3366AcademicGuardian:is([data-guardian-idle="solstice"],[data-guardian-idle="solara"],[data-guardian-idle="aurelia"])>:is(img,span){animation:maj7GuardianShine 9s ease-in-out infinite}
+ .v3366AcademicGuardian:is([data-guardian-idle="briar"],[data-guardian-idle="solstice"])>:is(img,span){animation:maj7GuardianBreathe 7s ease-in-out infinite}
+}
+@keyframes maj7GuardianConsider{0%,80%,100%{transform:rotate(0)}85%{transform:rotate(-5deg)}92%{transform:rotate(3deg)}}
+@keyframes maj7GuardianSkip{0%,82%,100%{transform:translateY(0)}87%{transform:translateY(-4px)}94%{transform:translateY(0)}}
+@keyframes maj7GuardianShine{0%,82%,100%{filter:drop-shadow(0 0 0 transparent)}90%{filter:drop-shadow(0 0 8px #e6c478)}}
+@keyframes maj7GuardianBreathe{0%,100%{transform:scale(1)}50%{transform:scale(1.035)}}
+@media(prefers-reduced-motion:reduce){.v3366AcademicGuardian>:is(img,span){animation:none!important;transform:none!important}}

@@ -236,3 +236,20 @@ body[data-majick-room=home] .top .courseSelect{min-width:0!important;max-width:1
 
 /* Production mobile certification: solid plaque behind the small Commons eyebrow. */
 #majCommonsHub .majCommonsEyebrow{display:inline-block!important;background:#100b16!important;color:#fff8ed!important;padding:5px 8px!important;border-radius:6px;text-shadow:none!important;box-shadow:0 0 0 2px #100b16!important;max-width:100%;}
+
+/* Phase 7 — lived-in Commons ambience. No extra renderers, timers or data writes. */
+@media (prefers-reduced-motion:no-preference){
+ #majCommonsHub .majCommonsWelcome:after{animation:majick7MoonDrift 15s ease-in-out infinite;transform-origin:center;will-change:transform}
+ #majCommonsHub .majCommonsWelcome{background-size:100% 100%,100% 100%;animation:majick7ThresholdGlow 17s ease-in-out infinite}
+ #majCommonsHub .majCommonsTabs button[aria-selected="true"]{animation:majick7TabAwaken 500ms ease-out both}
+ #majCommonsHub .majCommonsStep button:active{transform:translateY(1px);transition:transform 110ms ease-out}
+ #majCommonsHub [data-commons-panel]:not([hidden]){animation:majick7PageReveal 330ms ease-out both}
+}
+@keyframes majick7MoonDrift{0%,100%{transform:translateY(0) rotate(-3deg);opacity:.75}50%{transform:translateY(-5px) rotate(3deg);opacity:1}}
+@keyframes majick7ThresholdGlow{0%,100%{box-shadow:0 10px 24px #140d1b44}50%{box-shadow:0 10px 27px #140d1b66,0 0 16px #d9aa6940}}
+@keyframes majick7TabAwaken{from{box-shadow:inset 0 -3px #b48a47,0 0 0 #d6ab6900}to{box-shadow:inset 0 -3px #b48a47,0 0 0 2px #d6ab6980}}
+@keyframes majick7PageReveal{from{opacity:.86;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+@media(prefers-reduced-motion:reduce){
+ #majCommonsHub .majCommonsWelcome,#majCommonsHub .majCommonsWelcome:after,
+ #majCommonsHub .majCommonsTabs button,#majCommonsHub [data-commons-panel]{animation:none!important;transition:none!important;transform:none!important}
+}
