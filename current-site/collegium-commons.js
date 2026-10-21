@@ -72,7 +72,10 @@ function attach(){
   hub.querySelector('.majCommonsStepButtons').append(analyticsAccess);
   hub.querySelector('[data-commons-previous]').addEventListener('click',()=>delta(-1));hub.querySelector('[data-commons-next]').addEventListener('click',()=>delta(1));
   const handleTabKeys=e=>{if(!['ArrowRight','ArrowLeft','Home','End'].includes(e.key)||!e.target.closest?.('[data-commons-tab]'))return;e.preventDefault();if(e.key==='Home')navigateTab(TABS[0][0]);else if(e.key==='End')navigateTab(TABS[TABS.length-1][0]);else delta(e.key==='ArrowRight'?1:-1);list.querySelector('[aria-selected="true"]')?.focus()};
-  list.addEventListener('keydown',handleTabKeys);
+  // A delayed Commons hydration may replace the tablist while the keyboard
+  // still targets a retained tab. Bind each tab directly, not only its parent.
+  list.querySelectorAll('[data-commons-tab]').forEach(tab=>tab.addEventListener('keydown',handleTabKeys));
+  // Direct tab handlers above are the sole keyboard owner (avoid double advance).
   root.prepend(hub);
  }
  hub.querySelector('.majCommonsCourse').textContent='Currently studying · '+(document.querySelector('.top select')?.selectedOptions?.[0]?.textContent||window.S?.activeCourse||'Your course');
