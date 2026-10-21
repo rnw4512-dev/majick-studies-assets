@@ -17,7 +17,7 @@ const GUARDIANS={
 
 const VARIANTS={
   luna:{
-    names:['Velora','Nyelle','Selene','Elowen','Mira'],
+    names:['Velora','Luna','Selene','Elowen','Mira'],
     accents:['#b79ad9','#8eb7e8','#d59ed8','#9fcbb8','#cab0ef'],
     personalities:['calm, observant, affectionate','mischievous, curious, cuddly','quiet, dreamy, deeply loyal','gentle, clever, routine-loving','boldly affectionate, playful, moon-chasing']
   },
@@ -116,13 +116,18 @@ function individualFor(raw){
   const existingName=String(raw.individualName||raw.customName||raw.name||'').trim();
   const duplicateName=(Array.isArray(window.S?.legacy?.pets)?window.S.legacy.pets:[]).filter(p=>resolveType(p)===type&&String(p.name||'').trim()===existingName).length>1;
   const generatedName=names[idx%names.length]||base.name;
-  const name=existingName&&(!duplicateName||idx===0)?existingName:generatedName;
+  // Legacy default 'Luna' belongs to the original Moon Cat's internal species key, not her approved display name.
+  // Preserve Luna when explicitly assigned to a distinct variant; never overwrite custom names.
+  const legacyDefault=type==='luna'&&idx===0&&existingName.toLowerCase()==='luna'&&!raw.individualName&&!raw.customName;
+  const name=legacyDefault?base.name:(existingName&&(!duplicateName||idx===0)?existingName:generatedName);
   const accent=raw.accent||raw.color||accents[idx%accents.length]||base.accent||'#b79ad9';
   const personality=raw.personality||personalities[idx%personalities.length]||base.personality;
   const hue=idx===0?0:((hash(raw.id||raw.petId||name)%5)+1)*24;
   return {...base,type,name,accent,personality,variantIndex:idx,hue,individualId:String(raw.id||raw.petId||''),isDuplicate:idx>0};
 }
 function getFor(raw){return individualFor(raw)}
+// Internal type IDs remain stable for saved progress and protected Phaser frames.
+// Display names and artwork paths always use the approved canonical identity.
 function normalizeExtra(type,raw={}){
   const key=String(type||raw.type||'').toLowerCase();
   if(!key)return null;
