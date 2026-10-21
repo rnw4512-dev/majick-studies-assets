@@ -18,15 +18,17 @@ Source of truth: this board is proposed on a development branch and is **not** o
 
 ## Broken
 - Previous desktop probability advancement failure reported in PR #144; current branch patch requires real-browser verification.
+- PR #145 first browser run: 390px Commons keyboard focus FAILED; 1366px Sanctuary Commons button contrast FAILED (measured ~1.26–1.27:1); 820px browser review PASSED.
 
 ## Needs Assets
 - Previous audit reported 94 Guardian action assets missing (90 for six newer Guardians and four for originals). Re-run strict asset audit; do not assume this historical count is current.
 
 ## Needs Code Repair
+- Keyboard focus and Sanctuary button contrast repairs committed on PR #145; rerun rendered audits before closing these defects.
 - Investigate any failures found in browser regression, persistence and course switching. Avoid duplicate learning or progress engines.
 
 ## Needs Browser Certification
-- 390px mobile, 820px tablet and 1366px desktop.
+- Initial run #39594925645: 390px FAIL, 820px PASS, 1366px FAIL; 390px and 820px connected probability browser steps SKIPPED, 1366px probability browser step PASSED. All widths require a clean full rerun after repair.
 - Wrong answer → guided repair → fresh independent reasoning → transfer → teaching.
 - Fast pointer and keyboard interactions, typing, clear/retry, scroll/focus stability, reload and course switch.
 - Guardian movement/interaction for all ten, Scholar wardrobe/hair continuity, XP and rewards persistence, accessibility and contrast.
@@ -42,6 +44,7 @@ Source of truth: this board is proposed on a development branch and is **not** o
 ### 2026-10-21 — Probability progression release-gate repair
 - Changed: `current-site/probability-workshop.js` (explicit transfer handoff, render invalidation, exhausted-dataset feedback).
 - How: reused `MajickLearningContinuity` and existing task/progress ownership; no new engine.
-- Tests: static assertions during source edit passed; full browser and Actions checks not yet run.
-- Remaining: manifest hash synchronization; fresh CI and 390/820/1366 browser evidence; board reconciliation; strict assets and persistence certification.
+- Tests: initial GitHub Actions run #39594925645 completed with 390px and 1366px rendered Commons failures, 820px pass; desktop connected probability passed, other widths skipped. Fresh rerun pending.
+- Additional repairs: Commons keyboard focus guard and Sanctuary Commons button ink opacity/contrast; source manifest updated.
+- Remaining: fresh CI and all-width browser evidence; board reconciliation; strict assets and persistence certification.
 - Deployment: **blocked; not deployed**.
