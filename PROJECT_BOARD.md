@@ -25,13 +25,13 @@ Source of truth: this board is proposed on a development branch and is **not** o
 - Previous audit reported 94 Guardian action assets missing (90 for six newer Guardians and four for originals). Re-run strict asset audit; do not assume this historical count is current.
 
 ## Needs Code Repair
-- Desktop keyboard repair committed on PR #145: bind ArrowRight/ArrowLeft/Home/End handling directly to each Commons tab and remove duplicate parent handler; rerun rendered audits before closing this defect.
+- Desktop Commons keyboard navigation and Sanctuary button contrast repairs passed rendered audit in run #39667511859; no longer open defects.
 - Sanctuary button contrast repair remains subject to clean browser certification.
 - Investigate any failures found in browser regression, persistence and course switching. Avoid duplicate learning or progress engines.
 
 ## Needs Browser Certification
 - Initial run #39594925645: 390px FAIL, 820px PASS, 1366px FAIL; 390px and 820px connected probability browser steps SKIPPED, 1366px probability browser step PASSED.
-- Second run #39596930313: 390px PASS, 820px PASS, 1366px FAIL (Commons ArrowRight focus). Require clean three-width rerun after latest keyboard repair, including probability and persistence gates.
+- Final rerun #39667511859: 390px PASS, 820px PASS, 1366px PASS. Desktop full interaction and connected probability browser regression passed; mobile/tablet connected probability steps were skipped in workflow configuration and remain separate coverage gaps.
 - Wrong answer → guided repair → fresh independent reasoning → transfer → teaching.
 - Fast pointer and keyboard interactions, typing, clear/retry, scroll/focus stability, reload and course switch.
 - Guardian movement/interaction for all ten, Scholar wardrobe/hair continuity, XP and rewards persistence, accessibility and contrast.
@@ -41,7 +41,7 @@ Source of truth: this board is proposed on a development branch and is **not** o
 
 ## Blocked / Needs Your Review
 - **Do not merge PR #145** until PR #141 board reconciliation, strict Guardian certification, progress/XP/Scholar persistence tests, and every release gate pass. This board is not yet on `main`.
-- GitHub Actions browser certification, strict assets, manifest integrity and deployment gates remain unverified.
+- GitHub Actions three-width Commons review #39667511859 passed. Strict Guardian assets/movement, Scholar appearance and full progress/XP/Guardian persistence, PR #141 reconciliation, and deployment gate remain unverified.
 
 ## Session Log
 ### 2026-10-21 — Probability progression release-gate repair
@@ -57,3 +57,8 @@ Source of truth: this board is proposed on a development branch and is **not** o
 - Evidence: run #39596930313 390px PASS, 820px PASS, 1366px FAIL ArrowRight focus.
 - Tests: new patch not yet browser-certified; full three-width rerun required.
 - Deployment: blocked; PR #145 remains draft and unmerged.
+
+### 2026-10-21 — Three-width browser certification completed
+- Evidence: [Collegium Commons review #39667511859](https://github.com/rnw4512-dev/majick-studies-assets/actions/runs/39667511859), 390px PASS, 820px PASS, 1366px PASS; screenshot artifacts available for all widths.
+- Desktop full interaction and connected probability browser regressions passed; mobile/tablet probability steps were skipped.
+- Release: **still blocked** pending strict Guardian asset/movement and cross-course Scholar/XP/progress persistence checks, PR #141 board reconciliation, and deployment workflow.
