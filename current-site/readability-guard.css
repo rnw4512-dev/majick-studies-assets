@@ -205,3 +205,7 @@ body.majickCampus .titleline .pill.v4Badge{
 #mjPreassessmentReview input[type="radio"],
 #mjAdaptiveMastery input[type="radio"]{accent-color:#563268!important;opacity:1!important}
 #mjPreassessmentReview a{color:#39216f!important;text-decoration:underline!important}
+
+/* Commons Sanctuary controls: override translucent inherited button ink. */
+#majCommonsHub [data-commons-panel="sanctuary"] :is(button.btn.ghost,button.btn.primary){color:#fff8ed!important;opacity:1!important;text-shadow:none!important;background-color:#382644!important;border:2px solid #c5a5ce!important}
+#majCommonsHub [data-commons-panel="sanctuary"] :is(button.btn.ghost,button.btn.primary):disabled{color:#fff1de!important;opacity:1!important;background-color:#44364c!important}
