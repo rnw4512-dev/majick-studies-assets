@@ -175,3 +175,10 @@ Every change must append **date / area / commit or PR / what changed / how / act
 - **Original movement:** preserve all 33 protected original motion PNGs and verify frame integrity and actual Phaser movement without rewriting the images.
 - **Persistence:** require real browser reload/course-switch/room-switch certification for Scholar fitted hair/wardrobe, all Guardian identities and care, XP/crystals/inventory and independent academic progress. No assisted-to-independent mastery leakage.
 - **Merge/deployment:** PR #145 remains blocked pending these gates, board history is reconciled here; `main` board establishment does not authorize app deployment.
+
+### 2026-10-21 — Main board establishment and Guardian asset verification
+- Main board created at commit `b19076b204d19ec0c3a30bf0a2ec73abcae7f0dd` from reconciled PR #141/#145 history.
+- Checked PR #144 Sanctuary roster: additional Guardians load evolution-stage portraits and animate with procedural movement, not approved distinct action frames. The requested `sanctuary/assets/evolutions/vesper/new-bond/walk.webp` was not found on either PR #144 or main via GitHub contents lookup. This is a **missing-asset blocker**, not a certification pass.
+- Checked protected original `sanctuary/assets/motion/luna-walk-1.png`: same Git blob SHA (`e96b4dc4c42457a33e0bbe700ef5dac90eb5321a`) on main and PR #144. Full 33-image integrity audit still required.
+- Next repair: locate or provide approved six-Guardian stage/action art, install exact per-stage files, map runtime animation to those frames, then run strict completeness and actual Phaser browser movement tests. Do not fabricate approvals or replace portraits with fake walking frames.
+- Deployment: blocked. No production app changes made in this board-only commit.
