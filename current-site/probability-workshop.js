@@ -45,11 +45,15 @@ function mount(){
  box.innerHTML='<button type="button" class="connectedBack" data-connected-back aria-label="Back to previous campus room">← Back</button><h2>Connected Learning · Probability</h2><p>Original simulated OA-style practice · D772 · Dependent events without replacement</p>'+(st?.need?'<p role="status">Practice recommendation from '+E(st.need.origin)+': recount the remaining favorable outcomes and sample space. This need follows you into Learn Lab, Study Now and Game Realm.</p>':'')+'<p data-connected-evidence>Repair: '+(m.repairVerified?'verified':'needed')+' · Independent reasoning: '+m.independentCorrect+'/2 · Transfer: '+(m.transferVerified?'verified':'needed')+' · Structured teach-back: '+(m.teachBackVerified?'verified':'needed')+' · '+(m.certified?'Probability skill certified':'Not yet certified')+'</p><nav aria-label="Probability learning flow">'+nav+'</nav><div data-connected-task></div><p>Guided work never counts as independent mastery. Written whiteboard and teaching explanations are saved for review; only the structured checks are automatically evaluated.</p>';
  const back=box.querySelector('[data-connected-back]');
  const backScreen=S.screen;
- const leaveRoom=()=>{
-  if(S.screen!==backScreen)return;
-  window.majickBack?.();
-  // Reloads and direct links may have no history entry; never strand Back.
-  if(S.screen===backScreen)window.navigate?.('home');
+ let backHandled=false;
+ const leaveRoom=event=>{
+  if(event?.type==='pointerdown'&&event.button!==0)return;
+  if(backHandled||S.screen!==backScreen)return;
+  backHandled=true;
+  window.navigate?.('home');
+  if(S.screen===backScreen){
+   setTimeout(()=>{if(S.screen===backScreen)window.navigate?.('home');backHandled=false},80);
+  }
  };
  // A real pointer release must work even when a render pass interrupts click.
  // Capture the press before any queued renderer can detach the button.
