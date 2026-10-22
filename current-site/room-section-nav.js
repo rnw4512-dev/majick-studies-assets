@@ -55,7 +55,7 @@ function installReasoningEntry(){
    window.setTimeout(()=>{
      const root=document.getElementById('content');
      const workshop=[...root?.querySelectorAll('.mjSolutionEngine')||[]].find(n=>!n.closest('.classroomStage'));
-     if(!workshop){window.MajickSolutionEngine?.mount?.();return}
+     if(!workshop){window.MajickSolutionEngine?.refresh?.();window.setTimeout(()=>document.querySelector('#content > .mjSolutionEngine')?.scrollIntoView({block:'start',behavior:'instant'}),100);return}
      if(workshop.parentElement===root)root.prepend(workshop);
      workshop.scrollIntoView({block:'start',behavior:'instant'});
      workshop.setAttribute('tabindex','-1');workshop.focus({preventScroll:true});
