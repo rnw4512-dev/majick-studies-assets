@@ -189,8 +189,8 @@ function mount(){const root=document.getElementById('content');if(!root)return;c
  const all=BANK[cid]||[];
  let cards=screen==='guide'?[...root.querySelectorAll('.studyCard')]:screen==='reasoning'?[...root.querySelectorAll('.mjReasoningPage')]:[root];
  for(const card of cards){
-  let host=card.querySelector(':scope > .mjSolutionEngine');
-  if(!host){host=document.createElement('section');host.className='mjSolutionEngine';if(screen==='guide')card.append(host);else if(screen==='reasoning')card.append(host);else (root.querySelector('.sectionTitle')||root).after(host)}
+  let host=screen==='reasoning'?card.querySelector('.mjReasoningActivity > .mjSolutionEngine'):card.querySelector(':scope > .mjSolutionEngine');
+  if(!host){host=document.createElement('section');host.className='mjSolutionEngine';if(screen==='guide')card.append(host);else if(screen==='reasoning')(card.querySelector('.mjReasoningActivity')||card).append(host);else (root.querySelector('.sectionTitle')||root).after(host)}
   if(screen!=='guide'){
    let picker=host.querySelector('.mjSeTaskSelect'),picked=picker?.value||SELECTED_TASK.get(cid)||'';
    if(!picker){picker=document.createElement('select');picker.className='mjSeTaskSelect';picker.setAttribute('aria-label','Choose course lesson activity')}
