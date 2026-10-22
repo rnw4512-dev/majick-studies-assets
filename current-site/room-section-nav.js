@@ -74,17 +74,40 @@ document.addEventListener('DOMContentLoaded',()=>{schedule()});
 let workshopOpen=false;
 function showReasoningWorkshop(){
  const root=document.getElementById('content');
- if(window.S?.screen!=='mission'||!root)return;
+ if(!root)return;
+ const inStudy=window.S?.screen==='mission';
+ root.classList.toggle('majReasoningFocus',inStudy&&workshopOpen);
+ if(!inStudy)return;
  let host=root.querySelector(':scope > .mjSolutionEngine');
  if(!host){window.MajickSolutionEngine?.refresh?.();host=root.querySelector(':scope > .mjSolutionEngine')}
  if(!host)return;
- // Preserve all existing academic controls. The workshop is a sidebar
- // destination and focus target, not a second renderer or DOM owner.
+ // One existing Solution Engine remains the only academic renderer and owner.
  host.classList.toggle('majReasoningDedicated',workshopOpen);
+ let toolbar=root.querySelector(':scope > #majReasoningToolbar');
  if(workshopOpen){
+  if(!toolbar){
+   toolbar=document.createElement('div');
+   toolbar.id='majReasoningToolbar';
+   toolbar.className='majReasoningToolbar';
+   const heading=document.createElement('strong');
+   heading.textContent='Reasoning Workshop · Study Realm';
+   const back=document.createElement('button');
+   back.type='button';
+   back.textContent='← Back to Study Hall';
+   back.addEventListener('click',()=>{
+    workshopOpen=false;
+    showReasoningWorkshop();
+    root.querySelector('.sectionTitle')?.scrollIntoView({block:'start',behavior:'instant'});
+   });
+   toolbar.append(heading,back);
+   root.prepend(toolbar);
+  }
   host.setAttribute('tabindex','-1');
-  host.scrollIntoView({block:'start',behavior:'instant'});
-  host.focus({preventScroll:true});
+  // The surrounding Study Hall is visually hidden, never deleted or rebuilt.
+  // Re-entering the workshop preserves the same inputs and course state.
+ }else{
+  toolbar?.remove();
+  host.classList.remove('majReasoningDedicated');
  }
 }
 
@@ -103,6 +126,7 @@ function installReasoningEntry(){
    workshopOpen=true;
    window.navigate?.('mission');
    showReasoningWorkshop();
+   requestAnimationFrame(()=>document.querySelector('#content > .mjSolutionEngine')?.focus({preventScroll:true}));
   });
   study.after(button);
  }
