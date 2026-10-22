@@ -79,19 +79,16 @@ function attach(){
   list.addEventListener('keydown',e=>{
    if(!['ArrowRight','ArrowLeft','Home','End'].includes(e.key))return;
    e.preventDefault();
-   if(e.key==='Home')navigateTab(TABS[0][0]);
-   else if(e.key==='End')navigateTab(TABS[TABS.length-1][0]);
-   else delta(e.key==='ArrowRight'?1:-1);
-   const target=selected;
-   const focus=()=>{
-    if(window.S?.screen!=='home')return;
-    const active=document.querySelector('#majCommonsHub [data-commons-tab="'+target+'"]');
-    active?.focus({preventScroll:true});
-   };
-   focus();
-   queueMicrotask(focus);
-   requestAnimationFrame(focus);
-   setTimeout(focus,0);
+   const currentIndex=TABS.findIndex(([id])=>id===e.target?.dataset?.commonsTab);
+   const index=currentIndex>=0?currentIndex:TABS.findIndex(([id])=>id===selected);
+   const next=e.key==='Home'?0:e.key==='End'?TABS.length-1:
+    (index+(e.key==='ArrowRight'?1:-1)+TABS.length)%TABS.length;
+   const id=TABS[next][0];
+   navigateTab(id);
+   // Focus the actual selected tab immediately. Do not rely on a stale node
+   // captured before Home's async render or a delayed timer to fix focus.
+   const target=document.querySelector('#majCommonsHub [data-commons-tab="'+id+'"]');
+   target?.focus({preventScroll:true});
   });
   root.prepend(hub);
  }
