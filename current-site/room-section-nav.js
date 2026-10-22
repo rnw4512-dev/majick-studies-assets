@@ -39,5 +39,32 @@ function refresh(){
 function schedule(){if(pending)return;pending=true;setTimeout(()=>{pending=false;refresh()},85)}
 if(window.MajickRenderQueue?.register)window.MajickRenderQueue.register('room-section-shortcuts',schedule,97);
 document.addEventListener('DOMContentLoaded',()=>{schedule()});
+// Dedicated sidebar entry for the existing Study Now Reasoning Workshop.
+// Reuse its live renderer and saved state; never clone academic content.
+function installReasoningEntry(){
+ const nav=document.querySelector('.nav');
+ if(!nav||nav.querySelector('[data-maj-reasoning]'))return;
+ const study=nav.querySelector('[data-nav="mission"]');
+ if(!study)return;
+ const button=document.createElement('button');
+ button.type='button';button.dataset.majReasoning='true';
+ button.innerHTML='<span aria-hidden="true">✦</span> <span class="label">Reasoning Workshop</span>';
+ button.setAttribute('aria-label','Open Reasoning Workshop');
+ button.addEventListener('click',()=>{
+   if(typeof window.navigate==='function')window.navigate('mission');
+   window.setTimeout(()=>{
+     const root=document.getElementById('content');
+     const workshop=[...root?.querySelectorAll('.mjSolutionEngine')||[]].find(n=>!n.closest('.classroomStage'));
+     if(!workshop){window.MajickSolutionEngine?.mount?.();return}
+     if(workshop.parentElement===root)root.prepend(workshop);
+     workshop.scrollIntoView({block:'start',behavior:'instant'});
+     workshop.setAttribute('tabindex','-1');workshop.focus({preventScroll:true});
+   },180);
+ });
+ study.after(button);
+}
+if(window.MajickRenderQueue?.register)window.MajickRenderQueue.register('reasoning-sidebar-entry',installReasoningEntry,98);
+document.addEventListener('DOMContentLoaded',()=>{installReasoningEntry()});
+
 window.MajickRoomSections=Object.freeze({refresh,schedule});
 })();
