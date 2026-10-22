@@ -184,6 +184,7 @@ function rubric(task,ex,answer,stage){
  if(missing.length)return {ok:false,feedback:'Your explanation needs stronger evidence: '+missing.join(' ')};
  return {ok:true,feedback:'Your explanation addresses the key ideas. This is rule-based guidance, not a teacher-graded semantic assessment; compare your explanation with the model reasoning: '+String(ex.interpret||ex.why||ex.reason||'')};
 }
+const SELECTED_TASK=new Map();
 function mount(){const root=document.getElementById('content');if(!root)return;const screen=window.S?.screen,cid=window.S?.activeCourse;if(!['guide','mission','games'].includes(screen))return;
  const all=BANK[cid]||[];
  let cards=screen==='guide'?[...root.querySelectorAll('.studyCard')]:[root];
@@ -191,14 +192,15 @@ function mount(){const root=document.getElementById('content');if(!root)return;c
   let host=card.querySelector(':scope > .mjSolutionEngine');
   if(!host){host=document.createElement('section');host.className='mjSolutionEngine';if(screen==='guide')card.append(host);else (root.querySelector('.sectionTitle')||root).after(host)}
   if(screen!=='guide'){
-   let picker=host.querySelector('.mjSeTaskSelect'),picked=picker?.value||'';
+   let picker=host.querySelector('.mjSeTaskSelect'),picked=picker?.value||SELECTED_TASK.get(cid)||'';
    if(!picker){picker=document.createElement('select');picker.className='mjSeTaskSelect';picker.setAttribute('aria-label','Choose course lesson activity')}
    picker.innerHTML='<option value="">Choose lesson activity</option>'+all.filter(x=>x.lessonId||x.lesson).map(x=>'<option value="'+esc(x.id)+'">'+esc((x.lessonId||x.lesson)+' — '+x.title)+'</option>').join('');
    const need=window.MajickLearningContinuity?.recommend?.(cid);const target=need&&all.find(x=>x.lessonId===need.lessonId||x.lesson===need.lessonId);if(picked&&all.some(x=>x.id===picked))picker.value=picked;else if(target)picker.value=target.id;else if(all.length)picker.value=all.find(x=>x.lessonId)?.id||all[0].id;
    host.dataset.selectedTask=picker.value;
+   if(picker.value)SELECTED_TASK.set(cid,picker.value);
    const task=choose(host);
    if(task)render(host,task);else host.textContent='No curriculum activities available for this course.';
-   host.prepend(picker);picker.onchange=()=>{host.dataset.selectedTask=picker.value;const choice=choose(host);if(choice)render(host,choice);else host.textContent='No mapped activity available.';host.prepend(picker)};
+   host.prepend(picker);picker.onchange=()=>{host.dataset.selectedTask=picker.value;if(picker.value)SELECTED_TASK.set(cid,picker.value);const choice=choose(host);if(choice)render(host,choice);else host.textContent='No mapped activity available.';host.prepend(picker)};
   }else{
    const task=choose(host);if(task)render(host,task);else host.remove();
   }
