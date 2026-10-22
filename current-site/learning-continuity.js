@@ -66,17 +66,17 @@ function skillResult(q,correct,assisted=false,origin='practice'){
  // Durable misconception history is separate from the rolling five-attempt diagnostic.
  row.misconceptionHistory=row.misconceptionHistory||{incorrect:0,assisted:0,independentCorrect:0,recoveryRequired:false,recoveryCompleted:false};
  const history=row.misconceptionHistory;
- if(!correct){history.incorrect++;if(history.incorrect>=2&&!history.recoveryCompleted)history.recoveryRequired=true;}
+ if(!correct&&origin!=='guided-reconstruction'){history.incorrect++;if(history.incorrect>=2)history.recoveryRequired=true;}
  else if(assisted)history.assisted++;
  else history.independentCorrect++;
- if(origin==='guided-reconstruction'&&correct){history.recoveryCompleted=true;history.recoveryRequired=false;history.awaitingIndependentTransfer=true;}
+ if(origin==='guided-reconstruction'&&correct&&q?.reconstructionVerified===true){history.recoveryCompleted=true;history.recoveryRequired=false;history.awaitingIndependentTransfer=true;}
  if(origin==='independent-transfer'&&correct&&!assisted&&history.awaitingIndependentTransfer){history.awaitingIndependentTransfer=false;history.incorrect=0;history.recoveryCompleted=false;}
 
  if(!correct)row.errors.push({prompt:String(q?.prompt||'').slice(0,240),answer:String(q?.answer||''),kind:/mean|median|probability|calculate/i.test(q?.prompt||'')?'calculation-or-formula':/graph|histogram|plot|chart/i.test(q?.prompt||'')?'visual-interpretation':'concept-or-misconception'});
  row.errors=row.errors.slice(-8);
  const count=row.attempts.length,wrong=row.attempts.filter(x=>!x.correct).length,independent=row.attempts.filter(x=>x.correct&&!x.assisted).length;
  if(history.recoveryRequired||(count>=3&&wrong>=2)||(count===5&&independent<4))row.status='review-needed';
- if(count===5&&independent>=4)row.status='ready-for-teachback';
+ if(count===5&&independent>=4&&!history.recoveryRequired&&!history.awaitingIndependentTransfer)row.status='ready-for-teachback';
  // Readiness for a teaching check is not certification. Require separate independent
  // transfer evidence and an evaluated teach-back before the mastery flag can be true.
  row.masteryCertified=false;
@@ -93,8 +93,9 @@ function masteryStatus(id){
  const independent=(row.attempts||[]).filter(x=>x.correct&&!x.assisted);
  const transfer=independent.some(x=>x.origin==='independent-transfer'&&x.verified===true);
  const teaching=row.teachBackAssessment?.evaluated===true&&row.teachBackAssessment?.passed===true;
- const certified=independent.length>=4&&transfer&&teaching;
- return {certified,independentCorrect:independent.length,transferVerified:transfer,teachBackVerified:teaching,status:row.status};
+ const recovery=row.misconceptionHistory||{};
+ const certified=independent.length>=4&&transfer&&teaching&&!recovery.recoveryRequired&&!recovery.awaitingIndependentTransfer;
+ return {certified,independentCorrect:independent.length,transferVerified:transfer,teachBackVerified:teaching,recoveryRequired:!!recovery.recoveryRequired,awaitingIndependentTransfer:!!recovery.awaitingIndependentTransfer,status:row.status};
 }
 function skillNeeds(){return Object.values(window.S?.progress?.[course()]?.adaptiveSkills||{}).filter(x=>x.status==='review-needed')}
 function skillReview(id){
