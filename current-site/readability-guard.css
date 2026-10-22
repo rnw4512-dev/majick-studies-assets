@@ -205,3 +205,35 @@ body.majickCampus .titleline .pill.v4Badge{
 #mjPreassessmentReview input[type="radio"],
 #mjAdaptiveMastery input[type="radio"]{accent-color:#563268!important;opacity:1!important}
 #mjPreassessmentReview a{color:#39216f!important;text-decoration:underline!important}
+
+
+/* 2026-10-21 screenshot repair: instructional ink on dark charts and explanations.
+   Avoid styling SVG marks/axes or light parchment globally. */
+.classroomStage :is(.v3338Stage,.v3338Diagram,.v3338Anchor,.v3338Tutor,.v3338ConceptHead),
+.v3338Classroom :is(.v3338Stage,.v3338Diagram,.v3338Anchor,.v3338Tutor) {
+  color:#fff5e8!important;
+}
+.classroomStage :is(.v3338Stage,.v3338Diagram,.v3338Anchor,.v3338Tutor) :is(p,li,small,span,strong,b,em,h2,h3,h4),
+.v3338Classroom :is(.v3338Stage,.v3338Diagram,.v3338Anchor,.v3338Tutor) :is(p,li,small,span,strong,b,em,h2,h3,h4) {
+  color:#fff5e8!important;opacity:1!important;text-shadow:none!important;
+}
+.classroomStage :is(.v3338Stage,.v3338Diagram,.v3338Anchor,.v3338Tutor) :is(button,input,select,textarea),
+.v3338Classroom :is(.v3338Stage,.v3338Diagram,.v3338Anchor,.v3338Tutor) :is(button,input,select,textarea) {
+  opacity:1!important;
+}
+.classroomStage :is(.v3338Stage,.v3338Diagram,.v3338Anchor,.v3338Tutor) :is(input,select,textarea),
+.v3338Classroom :is(.v3338Stage,.v3338Diagram,.v3338Anchor,.v3338Tutor) :is(input,select,textarea) {
+  color:#241827!important;background:#fff9ef!important;
+}
+/* Avoid fixed controls obscuring lesson content at laptop/mobile widths. */
+@media(max-width:1050px){
+  .classroomStage,.learnLab,#majCommonsHub{min-width:0!important}
+  .v3338Classroom{max-width:100%!important}
+  .v3338ClassGrid{min-width:0!important}
+}
+@media(max-width:650px){
+  .v3338ClassHeader{padding:14px!important}
+  .v3338Classroom{padding-bottom:100px!important}
+  .v3338PhaseBar{overflow-x:auto;flex-wrap:nowrap!important}
+  .v3338PhaseBar button{flex:0 0 auto}
+}
