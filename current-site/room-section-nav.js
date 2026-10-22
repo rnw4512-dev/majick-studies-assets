@@ -48,25 +48,16 @@ function showReasoningWorkshop(){
  let host=root.querySelector(':scope > .mjSolutionEngine');
  if(!host){window.MajickSolutionEngine?.refresh?.();host=root.querySelector(':scope > .mjSolutionEngine')}
  if(!host)return;
- root.querySelectorAll(':scope > *').forEach(el=>{
-  if(el===host)return;
-  if(workshopOpen){
-   if(!el.hasAttribute('data-maj-reasoning-hidden'))el.dataset.majReasoningHidden=el.hidden?'already':'shown';
-   el.hidden=true;
-  }else if(el.hasAttribute('data-maj-reasoning-hidden')){
-   el.hidden=el.dataset.majReasoningHidden==='already';
-   delete el.dataset.majReasoningHidden;
-  }
- });
- host.hidden=false;
+ // Preserve all existing academic controls. The workshop is a sidebar
+ // destination and focus target, not a second renderer or DOM owner.
  host.classList.toggle('majReasoningDedicated',workshopOpen);
- let heading=host.querySelector(':scope > [data-maj-reasoning-heading]');
- if(workshopOpen&&!heading){
-  heading=document.createElement('h2');heading.dataset.majReasoningHeading='true';
-  heading.textContent='Reasoning Workshop · Independent Practice';
-  host.prepend(heading);
- }else if(!workshopOpen)heading?.remove();
+ if(workshopOpen){
+  host.setAttribute('tabindex','-1');
+  host.scrollIntoView({block:'start',behavior:'instant'});
+  host.focus({preventScroll:true});
+ }
 }
+
 function installReasoningEntry(){
  const nav=document.querySelector('.nav');
  if(!nav)return;
