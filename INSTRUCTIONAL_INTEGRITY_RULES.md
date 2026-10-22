@@ -29,3 +29,13 @@ Status: required acceptance criteria for all course content, new or existing. Th
 - Verify navigation and real interactions at 390px, 820px, and 1366px; test rapid clicks, typing, retry, back, reload, course switching, and saved progress.
 - Regression-test existing WGU content and Guardian/Sanctuary continuity. Update source-manifest SHA256 for every modified file in current-site/.
 - Report code changes, root cause, tests, known gaps, and deployment status. Do not merge/deploy with failed or incomplete certification.
+
+## Two-level release policy (approved 2026-10-22)
+
+**Development update:** May be published quickly for real-time learner testing without the full stable-release browser certification. Mandatory gates: JavaScript syntax, referenced file presence, canonical source-manifest SHA256 integrity, and targeted checks that academic records, XP, crystals, Guardian identity, and Sanctuary state are not reset or overwritten. Failed mandatory gates block even a development update. Clearly label the version as development and disclose unverified features. Do not claim stable certification.
+
+**Stable release:** Requires full desktop/tablet/mobile browser certification, visual and academic accuracy, navigation, retries, course isolation, independent mastery integrity, save/reload, Guardian/Sanctuary persistence, and deployment verification.
+
+**Priority rollout:** (1) missing diagram and no-penalty replacement; (2) Reasoning Workshop sidebar destination with preserved controls; (3) automatic two-error recovery with required guided reconstruction, verified fresh independent transfer, and no guided mastery credit.
+
+Keep a rollback path and report the exact production URL, commit, checks passed, and any known limitations after each publish.
