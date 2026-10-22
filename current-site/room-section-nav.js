@@ -1,7 +1,11 @@
 /* Compact navigation for rooms other than Home. No academic DOM is moved or hidden. */
 (()=>{'use strict';if(window.MajickRoomSections)return;
 const MAX=8;
-const ROOM_NAMES={mission:'Study Now',learninglab:'Learn Lab',games:'Game Realm',journal:'My Journal',grimoire:'Grimoire'};
+const ROOM_NAMES={mission:'Study Now',learninglab:'Learn Lab',games:'Game Realm',journal:'My Journal',grimoire:'Grimoire',companions:'Companions',livinggrimoire:'Grimoire',guide:'Study Guide',vault:'Magic Vault',analytics:'Analytics',addmaterial:'Notes Forge'};
+// Preserve every academic renderer and form. The nonacademic rooms use one
+// visible section at a time; academic rooms keep their non-destructive jumps.
+const TABBED_ROOMS=new Set(['journal','grimoire','livinggrimoire','companions','guide','vault','analytics','addmaterial']);
+const selections=new Map();
 let pending=false,updating=false;
 function refresh(){
  if(updating)return;updating=true;
@@ -20,18 +24,41 @@ function refresh(){
    const text=h?.textContent?.replace(/\s+/g,' ').trim();
    return text&&text.length>=3?{el,label:text.slice(0,46),i}:null
   }).filter(Boolean).slice(0,MAX);
-  if(rows.length<3){old?.remove();return}
+  if(rows.length<2){old?.remove();return}
   let nav=old;
   if(!nav){nav=document.createElement('nav');nav.id='majickRoomSections';nav.className='majickRoomSections';nav.setAttribute('aria-label','Jump to page section');root.prepend(nav)}
-  const signature=room+':'+rows.map(x=>x.label).join('|');
+  const tabbed=TABBED_ROOMS.has(room);
+  const key=room+':'+(window.S?.activeCourse||'');
+  const current=selections.get(key)||0;
+  const active=Math.min(current,rows.length-1);
+  if(tabbed){
+   rows.forEach(({el},i)=>{
+    el.classList.toggle('majRoomInactive',i!==active);
+    el.classList.toggle('majRoomActive',i===active);
+    el.dataset.majRoomPanel=String(i);
+   });
+  }else{
+   nodes.forEach(el=>{el.classList.remove('majRoomInactive','majRoomActive');delete el.dataset.majRoomPanel});
+  }
+  const signature=room+':'+rows.map(x=>x.label).join('|')+':'+tabbed;
   if(nav.dataset.signature===signature)return;
   nav.dataset.signature=signature;
+  nav.setAttribute('aria-label',tabbed?'Page sections (one at a time)':'Jump to page section');
   nav.replaceChildren();
-  const title=document.createElement('strong');title.textContent='On this page';nav.append(title);
+  const title=document.createElement('strong');title.textContent=tabbed?'Explore this room':'On this page';nav.append(title);
   rows.forEach(({el,label},i)=>{
    const button=document.createElement('button');button.type='button';button.textContent=label;
-   button.setAttribute('aria-label','Jump to '+label);
-   button.onclick=()=>el.scrollIntoView({block:'start',behavior:'instant'});
+   button.setAttribute('aria-label',(tabbed?'Show ':'Jump to ')+label);
+   if(tabbed){
+    button.setAttribute('aria-pressed',String(i===active));
+    button.classList.toggle('majRoomSelected',i===active);
+    button.onclick=()=>{
+     selections.set(key,i);
+     rows.forEach(({el:panel},j)=>{panel.classList.toggle('majRoomInactive',j!==i);panel.classList.toggle('majRoomActive',j===i)});
+     nav.querySelectorAll('button').forEach((b,j)=>{b.setAttribute('aria-pressed',String(j===i));b.classList.toggle('majRoomSelected',j===i)});
+     el.scrollIntoView({block:'start',behavior:'instant'});
+    };
+   }else button.onclick=()=>el.scrollIntoView({block:'start',behavior:'instant'});
    nav.append(button);
   });
  }finally{updating=false}
