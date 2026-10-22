@@ -11,7 +11,7 @@ async function evalPage(expression){const x=await call('Runtime.evaluate',{expre
 async function waitFor(expression){for(let n=0;n<100;n++){try{if(await evalPage(expression))return}catch{}await sleep(250)}throw Error('Page condition failed '+expression)}
 async function action(statement){return evalPage('(()=>{'+statement+';return true})()')}
 async function enterAndCheck(fields){
- const statement='const values='+JSON.stringify(fields)+';for(const [id,value] of Object.entries(values)){const field=document.querySelector(\'[data-field="\'+id+\'"]\');if(!field)throw Error("Missing interactive field "+id);field.value=String(value);field.dispatchEvent(new Event("input",{bubbles:true}))}document.querySelector("[data-check]").click()';
+ const statement='const values='+JSON.stringify(fields)+';for(const [id,value] of Object.entries(values)){const field=document.querySelector(\'[data-field="\'+id+\'"]\');if(!field)throw Error("Missing interactive field "+id+"; stage="+document.querySelector(".mjSeStage h3")?.textContent+"; fields="+[...document.querySelectorAll(".mjSolutionEngine [data-field]")].map(x=>x.dataset.field).join(",")+"; task="+document.querySelector(".mjSeTaskSelect")?.value);field.value=String(value);field.dispatchEvent(new Event("input",{bubbles:true}))}document.querySelector("[data-check]").click()';
  await action(statement);
 }
 async function solveMean(values,sum,count,mean){
