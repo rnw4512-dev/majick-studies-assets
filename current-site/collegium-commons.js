@@ -91,6 +91,7 @@ function attach(){
    focus();
    queueMicrotask(focus);
    requestAnimationFrame(focus);
+   setTimeout(focus,0);
   });
   root.prepend(hub);
  }
