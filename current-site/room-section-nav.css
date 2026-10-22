@@ -20,3 +20,15 @@
 .mjReasoningPage .majReasoningToolbar h2,.mjReasoningPage .majReasoningToolbar p{color:#fff4e5;margin:4px 0}
 .mjReasoningPage .majReasoningToolbar button{border:1px solid #e9ca91;background:#f3dfbd;color:#281b35;border-radius:8px;padding:10px 14px;font-weight:700;cursor:pointer}
 .mjReasoningPage .majReasoningToolbar button:focus-visible{outline:3px solid #e9ca91;outline-offset:2px}
+
+/* Compact, enchanted tabs: keep every activity mounted and course state intact. */
+.majickRoomSections{box-shadow:0 4px 20px rgba(10,4,18,.28);border-color:#d5ad73}
+.majickRoomSections button.majRoomSelected{background:linear-gradient(135deg,#fff0ca,#dcb9e6);color:#211529;border:1px solid #eacb91;box-shadow:inset 0 -3px 0 #9a6d38}
+.mjReasoningTabs{display:flex;gap:8px;flex-wrap:wrap;padding:12px 0;margin-bottom:8px}
+.mjReasoningTabs button{border:1px solid #b69b75;border-radius:11px;background:#48334f;color:#fff2df;min-height:44px;padding:9px 17px;font-weight:700;cursor:pointer}
+.mjReasoningTabs button[aria-pressed="true"]{background:linear-gradient(135deg,#f7dfaa,#e5c4e8);color:#24172c;border-color:#f4d9a6}
+.mjReasoningTabs button:focus-visible{outline:3px solid #f9db9c;outline-offset:2px}
+.mjReasoningAbout{background:#2c2039;color:#fff0df;border:1px solid #c3a274;border-radius:14px;padding:18px;line-height:1.6}
+.mjReasoningAbout h3,.mjReasoningAbout p{color:#fff0df}
+.mjReasoningPage [hidden]{display:none!important}
+@media(max-width:650px){.mjReasoningPage{padding:5px}.mjReasoningTabs button{flex:1 1 auto}.majickRoomSections{top:0}}
