@@ -185,12 +185,12 @@ function rubric(task,ex,answer,stage){
  return {ok:true,feedback:'Your explanation addresses the key ideas. This is rule-based guidance, not a teacher-graded semantic assessment; compare your explanation with the model reasoning: '+String(ex.interpret||ex.why||ex.reason||'')};
 }
 const SELECTED_TASK=new Map();
-function mount(){const root=document.getElementById('content');if(!root)return;const screen=window.S?.screen,cid=window.S?.activeCourse;if(!['guide','mission','games'].includes(screen))return;
+function mount(){const root=document.getElementById('content');if(!root)return;const screen=window.S?.screen,cid=window.S?.activeCourse;if(!['guide','mission','games','reasoning'].includes(screen))return;
  const all=BANK[cid]||[];
- let cards=screen==='guide'?[...root.querySelectorAll('.studyCard')]:[root];
+ let cards=screen==='guide'?[...root.querySelectorAll('.studyCard')]:screen==='reasoning'?[...root.querySelectorAll('.mjReasoningPage')]:[root];
  for(const card of cards){
   let host=card.querySelector(':scope > .mjSolutionEngine');
-  if(!host){host=document.createElement('section');host.className='mjSolutionEngine';if(screen==='guide')card.append(host);else (root.querySelector('.sectionTitle')||root).after(host)}
+  if(!host){host=document.createElement('section');host.className='mjSolutionEngine';if(screen==='guide')card.append(host);else if(screen==='reasoning')card.append(host);else (root.querySelector('.sectionTitle')||root).after(host)}
   if(screen!=='guide'){
    let picker=host.querySelector('.mjSeTaskSelect'),picked=picker?.value||SELECTED_TASK.get(cid)||'';
    if(!picker){picker=document.createElement('select');picker.className='mjSeTaskSelect';picker.setAttribute('aria-label','Choose course lesson activity')}
