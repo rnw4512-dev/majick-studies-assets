@@ -39,32 +39,66 @@ function refresh(){
 function schedule(){if(pending)return;pending=true;setTimeout(()=>{pending=false;refresh()},85)}
 if(window.MajickRenderQueue?.register)window.MajickRenderQueue.register('room-section-shortcuts',schedule,97);
 document.addEventListener('DOMContentLoaded',()=>{schedule()});
-// Dedicated sidebar entry for the existing Study Now Reasoning Workshop.
-// Reuse its live renderer and saved state; never clone academic content.
+// A dedicated workshop view within Study Now. The existing Solution Engine
+// remains the sole owner of questions, progress, and mastery.
+let workshopOpen=false;
+function showReasoningWorkshop(){
+ const root=document.getElementById('content');
+ if(window.S?.screen!=='mission'||!root)return;
+ let host=root.querySelector(':scope > .mjSolutionEngine');
+ if(!host){window.MajickSolutionEngine?.refresh?.();host=root.querySelector(':scope > .mjSolutionEngine')}
+ if(!host)return;
+ root.querySelectorAll(':scope > *').forEach(el=>{
+  if(el===host)return;
+  if(workshopOpen){
+   if(!el.hasAttribute('data-maj-reasoning-hidden'))el.dataset.majReasoningHidden=el.hidden?'already':'shown';
+   el.hidden=true;
+  }else if(el.hasAttribute('data-maj-reasoning-hidden')){
+   el.hidden=el.dataset.majReasoningHidden==='already';
+   delete el.dataset.majReasoningHidden;
+  }
+ });
+ host.hidden=false;
+ host.classList.toggle('majReasoningDedicated',workshopOpen);
+ let heading=host.querySelector(':scope > [data-maj-reasoning-heading]');
+ if(workshopOpen&&!heading){
+  heading=document.createElement('h2');heading.dataset.majReasoningHeading='true';
+  heading.textContent='Reasoning Workshop · Independent Practice';
+  host.prepend(heading);
+ }else if(!workshopOpen)heading?.remove();
+}
 function installReasoningEntry(){
  const nav=document.querySelector('.nav');
- if(!nav||nav.querySelector('[data-maj-reasoning]'))return;
+ if(!nav)return;
  const study=nav.querySelector('[data-nav="mission"]');
  if(!study)return;
- const button=document.createElement('button');
- button.type='button';button.dataset.majReasoning='true';
- button.innerHTML='<span aria-hidden="true">✦</span> <span class="label">Reasoning Workshop</span>';
- button.setAttribute('aria-label','Open Reasoning Workshop');
- button.addEventListener('click',()=>{
-   if(typeof window.navigate==='function')window.navigate('mission');
-   window.setTimeout(()=>{
-     const root=document.getElementById('content');
-     const workshop=[...root?.querySelectorAll('.mjSolutionEngine')||[]].find(n=>!n.closest('.classroomStage'));
-     if(!workshop){window.MajickSolutionEngine?.refresh?.();window.setTimeout(()=>document.querySelector('#content > .mjSolutionEngine')?.scrollIntoView({block:'start',behavior:'instant'}),100);return}
-     if(workshop.parentElement===root)root.prepend(workshop);
-     workshop.scrollIntoView({block:'start',behavior:'instant'});
-     workshop.setAttribute('tabindex','-1');workshop.focus({preventScroll:true});
-   },180);
- });
- study.after(button);
+ let button=nav.querySelector('[data-maj-reasoning]');
+ if(!button){
+  button=document.createElement('button');button.type='button';
+  button.dataset.majReasoning='true';
+  button.innerHTML='<span aria-hidden="true">✦</span> <span class="label">Reasoning Workshop</span>';
+  button.setAttribute('aria-label','Open Reasoning Workshop');
+  button.addEventListener('click',()=>{
+   workshopOpen=true;
+   window.navigate?.('mission');
+   showReasoningWorkshop();
+  });
+  study.after(button);
+ }
+ if(!study.dataset.majReasoningExit){
+  study.dataset.majReasoningExit='true';
+  study.addEventListener('click',()=>{workshopOpen=false;showReasoningWorkshop()});
+ }
+ for(const other of nav.querySelectorAll('button:not([data-maj-reasoning]):not([data-nav="mission"])')){
+  if(other.dataset.majReasoningExit)return;
+  other.dataset.majReasoningExit='true';
+  other.addEventListener('click',()=>{workshopOpen=false});
+ }
+ if(window.S?.screen==='mission')showReasoningWorkshop();
+ else workshopOpen=false;
 }
 if(window.MajickRenderQueue?.register)window.MajickRenderQueue.register('reasoning-sidebar-entry',installReasoningEntry,98);
-document.addEventListener('DOMContentLoaded',()=>{installReasoningEntry()});
+document.addEventListener('DOMContentLoaded',installReasoningEntry);
 
 window.MajickRoomSections=Object.freeze({refresh,schedule});
 })();
