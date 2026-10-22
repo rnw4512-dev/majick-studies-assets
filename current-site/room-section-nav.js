@@ -1,10 +1,10 @@
 /* Compact navigation for rooms other than Home. No academic DOM is moved or hidden. */
 (()=>{'use strict';if(window.MajickRoomSections)return;
-const MAX=8;
-const ROOM_NAMES={mission:'Study Now',learninglab:'Learn Lab',games:'Game Realm',journal:'My Journal',grimoire:'Grimoire',companions:'Companions',livinggrimoire:'Grimoire',guide:'Study Guide',vault:'Magic Vault',analytics:'Analytics',addmaterial:'Notes Forge'};
+// No arbitrary section cap: every substantial room panel remains reachable.
+const ROOM_NAMES={reasoning:'Reasoning Workshop',mission:'Study Now',learninglab:'Learn Lab',games:'Game Realm',journal:'My Journal',grimoire:'Grimoire',companions:'Companions',livinggrimoire:'Grimoire',guide:'Study Guide',vault:'Magic Vault',analytics:'Analytics',addmaterial:'Notes Forge'};
 // Preserve every academic renderer and form. The nonacademic rooms use one
 // visible section at a time; academic rooms keep their non-destructive jumps.
-const TABBED_ROOMS=new Set(['mission','learninglab','games','journal','grimoire','livinggrimoire','companions','guide','vault','analytics','addmaterial']);
+const TABBED_ROOMS=new Set(['reasoning','mission','learninglab','games','journal','grimoire','livinggrimoire','companions','guide','vault','analytics','addmaterial']);
 const selections=new Map();
 let pending=false,updating=false;
 function refresh(){
@@ -16,15 +16,21 @@ function refresh(){
   if(!root||!room||room==='home'||!ROOM_NAMES[room]){old?.remove();return}
   // Tabs only change visibility: activity nodes, answers, and academic renderers
   // stay mounted in their original positions.
-  const nodes=[...root.querySelectorAll(':scope > section,:scope > article,:scope > div')].filter(el=>
-   el.id!=='majickRoomSections'&&(el.getClientRects().length||el.classList.contains('majRoomInactive'))&&!el.hidden&&
-   !el.closest('[hidden]')&&(el.scrollHeight>220||el.classList.contains('majRoomInactive')));
+  // A panel is eligible when it has meaningful content. Do not turn tiny
+  // toolbars, Back buttons, or floating rewards into empty tabs.
+  const nodes=[...root.children].filter(el=>
+   el!==old&&!el.hidden&&!el.matches('nav,#majReasoningToolbar,.majReasoningToolbar,.mjReasoningPage')&&
+   el.matches('section,article,div,main')&&
+   (el.classList.contains('majRoomInactive')||el.scrollHeight>180)&&
+   (el.querySelector('h2,h3,[role="heading"],[aria-label],input,button,select,textarea')||el.textContent.trim().length>140));
   const rows=nodes.map((el,i)=>{
    const h=el.querySelector('h2,h3,[role="heading"]');
-   const text=h?.textContent?.replace(/\s+/g,' ').trim();
-   return text&&text.length>=3?{el,label:text.slice(0,46),i}:null
-  }).filter(Boolean).slice(0,MAX);
-  if(rows.length<2){old?.remove();nodes.forEach(el=>el.classList.remove('majRoomInactive','majRoomActive'));return}
+   const heading=h?.textContent?.replace(/\\s+/g,' ').trim();
+   const label=(heading||el.getAttribute('aria-label')||el.dataset.tabLabel||
+     (el.classList.contains('mjSolutionEngine')?'Reasoning practice':'Activity '+(i+1))).slice(0,52);
+   return {el,label,i};
+  });
+  if(rows.length<2){old?.remove();nodes.forEach(el=>{el.classList.remove('majRoomInactive','majRoomActive');el.removeAttribute('inert')});return}
   let nav=old;
   if(!nav){nav=document.createElement('nav');nav.id='majickRoomSections';nav.className='majickRoomSections';nav.setAttribute('aria-label','Jump to page section');root.prepend(nav)}
   const tabbed=TABBED_ROOMS.has(room);
@@ -37,11 +43,12 @@ function refresh(){
     el.classList.toggle('majRoomInactive',i!==active);
     el.classList.toggle('majRoomActive',i===active);
     el.dataset.majRoomPanel=String(i);
+    if(i!==active)el.setAttribute('inert','');else el.removeAttribute('inert');
    });
   }else{
-   nodes.forEach(el=>{el.classList.remove('majRoomInactive','majRoomActive');delete el.dataset.majRoomPanel});
+   nodes.forEach(el=>{el.classList.remove('majRoomInactive','majRoomActive');el.removeAttribute('inert');delete el.dataset.majRoomPanel});
   }
-  const signature=room+':'+rows.map(x=>x.label).join('|')+':'+tabbed;
+  const signature=room+':'+(window.S?.activeCourse||'')+':'+rows.map(x=>x.label).join('|')+':'+tabbed;
   if(nav.dataset.signature===signature){
    if(tabbed)nav.querySelectorAll('button').forEach((b,i)=>{b.setAttribute('aria-pressed',String(i===active));b.classList.toggle('majRoomSelected',i===active)});
    return;
@@ -54,12 +61,13 @@ function refresh(){
    const button=document.createElement('button');button.type='button';button.textContent=label;
    button.setAttribute('aria-label',(tabbed?'Show ':'Jump to ')+label);
    if(tabbed){
-    button.setAttribute('aria-controls',el.id||(el.id='majRoomPanel'+room+i));
+    button.setAttribute('aria-controls',el.id||(el.id='majRoomPanel-'+room+'-'+i));
+    el.setAttribute('role','tabpanel');
     button.setAttribute('aria-pressed',String(i===active));
     button.classList.toggle('majRoomSelected',i===active);
     button.onclick=()=>{
      selections.set(key,i);
-     rows.forEach(({el:panel},j)=>{panel.classList.toggle('majRoomInactive',j!==i);panel.classList.toggle('majRoomActive',j===i)});
+     rows.forEach(({el:panel},j)=>{panel.classList.toggle('majRoomInactive',j!==i);panel.classList.toggle('majRoomActive',j===i);if(j!==i)panel.setAttribute('inert','');else panel.removeAttribute('inert')});
      nav.querySelectorAll('button').forEach((b,j)=>{b.setAttribute('aria-pressed',String(j===i));b.classList.toggle('majRoomSelected',j===i)});
      nav.scrollIntoView({block:'start',behavior:'instant'});
     };
