@@ -76,7 +76,22 @@ function attach(){
   });
   hub.querySelector('.majCommonsStepButtons').append(analyticsAccess);
   hub.querySelector('[data-commons-previous]').addEventListener('click',()=>delta(-1));hub.querySelector('[data-commons-next]').addEventListener('click',()=>delta(1));
-  list.addEventListener('keydown',e=>{if(['ArrowRight','ArrowLeft','Home','End'].includes(e.key)){e.preventDefault();if(e.key==='Home')navigateTab(TABS[0][0]);else if(e.key==='End')navigateTab(TABS[TABS.length-1][0]);else delta(e.key==='ArrowRight'?1:-1);{const current=document.querySelector('#majCommonsHub [data-commons-tab][aria-selected="true"]');current?.focus({preventScroll:true});requestAnimationFrame(()=>{const fresh=document.querySelector('#majCommonsHub [data-commons-tab][aria-selected="true"]');if(fresh&&document.activeElement!==fresh)fresh.focus({preventScroll:true})})}}});
+  list.addEventListener('keydown',e=>{
+   if(!['ArrowRight','ArrowLeft','Home','End'].includes(e.key))return;
+   e.preventDefault();
+   if(e.key==='Home')navigateTab(TABS[0][0]);
+   else if(e.key==='End')navigateTab(TABS[TABS.length-1][0]);
+   else delta(e.key==='ArrowRight'?1:-1);
+   const target=selected;
+   const focus=()=>{
+    if(window.S?.screen!=='home')return;
+    const active=document.querySelector('#majCommonsHub [data-commons-tab="'+target+'"]');
+    active?.focus({preventScroll:true});
+   };
+   focus();
+   queueMicrotask(focus);
+   requestAnimationFrame(focus);
+  });
   root.prepend(hub);
  }
  hub.querySelector('.majCommonsCourse').textContent='Currently studying · '+(document.querySelector('.top select')?.selectedOptions?.[0]?.textContent||window.S?.activeCourse||'Your course');
