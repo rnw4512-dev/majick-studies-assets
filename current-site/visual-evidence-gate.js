@@ -66,7 +66,10 @@ function evidence(q,extraRenderer){
  const prompt=String(q?.prompt||'');
  if(knownSalary(q))return {required:true,ok:true,prompt:'Examine the salary histogram. What is its modality?',html:salaryHistogram(),source:'verified-example'};
  const explicit=Boolean(q?.visual||q?.chart||q?.graph||q?.figure||q?.visualHtml);
- const required=explicit||reference.test(prompt);
+ // Referential prompts are incomplete without their referenced visual, even when
+ // the phrase is 'that same diagram' rather than 'diagram shown below'.
+ const refersToPriorDiagram=/\b(?:same|that|previous|earlier|above|below|pictured|shown)\s+(?:venn\s+)?(?:diagram|graph|chart|figure|plot)\b|\b(?:outside|inside|within)\s+(?:both|either|the)\s+circles?\b/i.test(prompt);
+ const required=explicit||reference.test(prompt)||refersToPriorDiagram;
  if(!required)return {required:false,ok:true,prompt,html:'',source:'not-required'};
  let html='';
  if(q?.visual){const check=validateVisual(q.visual);if(!check.ok)return {required:true,ok:false,prompt,html:'',source:'invalid-visual',reason:check.reason};}

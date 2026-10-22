@@ -39,5 +39,57 @@ function refresh(){
 function schedule(){if(pending)return;pending=true;setTimeout(()=>{pending=false;refresh()},85)}
 if(window.MajickRenderQueue?.register)window.MajickRenderQueue.register('room-section-shortcuts',schedule,97);
 document.addEventListener('DOMContentLoaded',()=>{schedule()});
+// A dedicated workshop view within Study Now. The existing Solution Engine
+// remains the sole owner of questions, progress, and mastery.
+let workshopOpen=false;
+function showReasoningWorkshop(){
+ const root=document.getElementById('content');
+ if(window.S?.screen!=='mission'||!root)return;
+ let host=root.querySelector(':scope > .mjSolutionEngine');
+ if(!host){window.MajickSolutionEngine?.refresh?.();host=root.querySelector(':scope > .mjSolutionEngine')}
+ if(!host)return;
+ // Preserve all existing academic controls. The workshop is a sidebar
+ // destination and focus target, not a second renderer or DOM owner.
+ host.classList.toggle('majReasoningDedicated',workshopOpen);
+ if(workshopOpen){
+  host.setAttribute('tabindex','-1');
+  host.scrollIntoView({block:'start',behavior:'instant'});
+  host.focus({preventScroll:true});
+ }
+}
+
+function installReasoningEntry(){
+ const nav=document.querySelector('.nav');
+ if(!nav)return;
+ const study=nav.querySelector('[data-nav="mission"]');
+ if(!study)return;
+ let button=nav.querySelector('[data-maj-reasoning]');
+ if(!button){
+  button=document.createElement('button');button.type='button';
+  button.dataset.majReasoning='true';
+  button.innerHTML='<span aria-hidden="true">✦</span> <span class="label">Reasoning Workshop</span>';
+  button.setAttribute('aria-label','Open Reasoning Workshop');
+  button.addEventListener('click',()=>{
+   workshopOpen=true;
+   window.navigate?.('mission');
+   showReasoningWorkshop();
+  });
+  study.after(button);
+ }
+ if(!study.dataset.majReasoningExit){
+  study.dataset.majReasoningExit='true';
+  study.addEventListener('click',()=>{workshopOpen=false;showReasoningWorkshop()});
+ }
+ for(const other of nav.querySelectorAll('button:not([data-maj-reasoning]):not([data-nav="mission"])')){
+  if(other.dataset.majReasoningExit)continue;
+  other.dataset.majReasoningExit='true';
+  other.addEventListener('click',()=>{workshopOpen=false});
+ }
+ if(window.S?.screen==='mission')showReasoningWorkshop();
+ else workshopOpen=false;
+}
+if(window.MajickRenderQueue?.register)window.MajickRenderQueue.register('reasoning-sidebar-entry',installReasoningEntry,98);
+document.addEventListener('DOMContentLoaded',installReasoningEntry);
+
 window.MajickRoomSections=Object.freeze({refresh,schedule});
 })();

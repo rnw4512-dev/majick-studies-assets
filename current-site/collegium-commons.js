@@ -42,6 +42,11 @@ function navigateTab(next){
  hub.querySelectorAll('[data-commons-tab]').forEach(b=>{const active=b.dataset.commonsTab===selected;b.setAttribute('aria-selected',String(active));b.tabIndex=active?0:-1;b.setAttribute('aria-current',active?'page':'false')});
  hub.querySelectorAll('[data-commons-panel]').forEach(p=>{p.hidden=p.dataset.commonsPanel!==selected;p.setAttribute('tabindex','0')});
  syncSanctuaryMotion();
+ // Keep keyboard focus on the active tab when Sanctuary activation updates its renderer.
+ if(hub.contains(document.activeElement)&&document.activeElement?.matches?.('[data-commons-tab]')){
+  const active=hub.querySelector('[data-commons-tab][aria-selected="true"]');
+  active?.focus({preventScroll:true});
+ }
  const title=hub.querySelector('[data-commons-current]');if(title)title.textContent=TABS.find(t=>t[0]===selected)?.[1]||'Overview';
 }
 function attach(){
@@ -71,7 +76,20 @@ function attach(){
   });
   hub.querySelector('.majCommonsStepButtons').append(analyticsAccess);
   hub.querySelector('[data-commons-previous]').addEventListener('click',()=>delta(-1));hub.querySelector('[data-commons-next]').addEventListener('click',()=>delta(1));
-  list.addEventListener('keydown',e=>{if(['ArrowRight','ArrowLeft','Home','End'].includes(e.key)){e.preventDefault();if(e.key==='Home')navigateTab(TABS[0][0]);else if(e.key==='End')navigateTab(TABS[TABS.length-1][0]);else delta(e.key==='ArrowRight'?1:-1);list.querySelector('[aria-selected="true"]')?.focus()}});
+  list.addEventListener('keydown',e=>{
+   if(!['ArrowRight','ArrowLeft','Home','End'].includes(e.key))return;
+   e.preventDefault();
+   const currentIndex=TABS.findIndex(([id])=>id===e.target?.dataset?.commonsTab);
+   const index=currentIndex>=0?currentIndex:TABS.findIndex(([id])=>id===selected);
+   const next=e.key==='Home'?0:e.key==='End'?TABS.length-1:
+    (index+(e.key==='ArrowRight'?1:-1)+TABS.length)%TABS.length;
+   const id=TABS[next][0];
+   navigateTab(id);
+   // Focus the actual selected tab immediately. Do not rely on a stale node
+   // captured before Home's async render or a delayed timer to fix focus.
+   const target=document.querySelector('#majCommonsHub [data-commons-tab="'+id+'"]');
+   target?.focus({preventScroll:true});
+  });
   root.prepend(hub);
  }
  hub.querySelector('.majCommonsCourse').textContent='Currently studying · '+(document.querySelector('.top select')?.selectedOptions?.[0]?.textContent||window.S?.activeCourse||'Your course');
