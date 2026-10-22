@@ -5,3 +5,10 @@
 .majickRoomSections button:focus-visible{outline:3px solid #f5d595;outline-offset:2px}
 #content>section,#content>article{scroll-margin-top:78px}
 @media(max-width:650px){.majickRoomSections{padding:7px;gap:5px}.majickRoomSections button{max-width:150px;min-height:44px}}
+
+/* Compact section tabs never remove, clone, or reset existing room controls. */
+#content > .majRoomInactive{display:none!important}
+#content > .majRoomActive{display:block}
+.majickRoomSections button.majRoomSelected{background:#f3dfbd;color:#281b35;border-color:#f9d790;font-weight:700}
+.majickRoomSections button[aria-pressed="true"]{box-shadow:inset 0 -3px 0 #9d7040}
+@media(max-width:650px){.majickRoomSections{position:sticky;top:0}.majickRoomSections button{font-size:14px}}
