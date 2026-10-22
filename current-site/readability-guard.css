@@ -265,3 +265,46 @@ body.majickCampus .content,body.majickCampus #content{padding-bottom:max(96px,en
 /* Sanctuary shortcuts: override inherited translucent button text at desktop widths. */
 body.majickCampus #majCommonsHub [data-commons-panel="sanctuary"] .btn:is(.ghost,.primary){color:#fff6e8!important;-webkit-text-fill-color:#fff6e8!important;opacity:1!important;text-shadow:none!important}
 body.majickCampus #majCommonsHub [data-commons-panel="sanctuary"] .btn:is(.ghost,.primary) :is(span,strong){color:#fff6e8!important;-webkit-text-fill-color:#fff6e8!important;opacity:1!important}
+
+/* Professor's Repair: enforce ink on parchment even when theme styles set
+   -webkit-text-fill-color or inherited white text on nested elements. */
+body.majickCampus #content .v342Repair,
+body.majickCampus #content .v342Repair :is(h1,h2,h3,h4,h5,h6,p,div,span,small,b,strong,em,i,li,label,summary,blockquote),
+#content .v342Repair,
+#content .v342Repair :is(h1,h2,h3,h4,h5,h6,p,div,span,small,b,strong,em,i,li,label,summary,blockquote){
+ color:#261b2e!important;
+ -webkit-text-fill-color:#261b2e!important;
+ opacity:1!important;
+ text-shadow:none!important;
+}
+body.majickCampus #content .v342Repair,
+#content .v342Repair{
+ background:#f6ebd9!important;
+ border:2px solid #aa8454!important;
+}
+body.majickCampus #content .v342Repair h3,
+#content .v342Repair h3{color:#40234e!important;-webkit-text-fill-color:#40234e!important}
+body.majickCampus #content .v342Repair :is(button,.btn,[role="button"]),
+#content .v342Repair :is(button,.btn,[role="button"]){
+ background:#49325b!important;color:#fff8ef!important;
+ -webkit-text-fill-color:#fff8ef!important;
+ border:2px solid #b99ac6!important;opacity:1!important;
+}
+body.majickCampus #content .v342Repair :is(button,.btn,[role="button"]):disabled,
+#content .v342Repair :is(button,.btn,[role="button"]):disabled{
+ background:#e4d5e7!important;color:#392945!important;
+ -webkit-text-fill-color:#392945!important;opacity:1!important;
+}
+body.majickCampus #content .v342Repair :is(textarea,input,select),
+#content .v342Repair :is(textarea,input,select){
+ background:#fffaf1!important;color:#241b2d!important;
+ -webkit-text-fill-color:#241b2d!important;border:2px solid #83678b!important;opacity:1!important;
+}
+body.majickCampus #content .v342Repair :is(textarea,input)::placeholder,
+#content .v342Repair :is(textarea,input)::placeholder{
+ color:#62566b!important;-webkit-text-fill-color:#62566b!important;opacity:1!important;
+}
+body.majickCampus #content .v342Repair [data-repair-feedback],
+#content .v342Repair [data-repair-feedback]{
+ color:#253b2f!important;-webkit-text-fill-color:#253b2f!important;
+}
