@@ -367,11 +367,12 @@ function skillGrowthDashboard(){
  const rows=Object.values(window.S?.progress?.[window.S.activeCourse]?.adaptiveSkills||{});
  if(!rows.length)return '<section class="v3333Scope"><h3>Skill growth</h3><p>Your concept-by-concept growth and review recommendations will appear as you practice.</p></section>';
  const e=x=>E(String(x||''));
- return '<section class="v3333Scope"><h3>Skill growth and review</h3><p>Assisted practice builds understanding; only independent practice counts toward readiness.</p>'+rows.map(x=>{
+ const reviewCount=rows.filter(x=>x.status==='review-needed').length;
+ return '<details class="v3333Scope mjSkillGrowthDrawer"><summary><strong>Skill growth and review</strong><span>'+rows.length+' skills tracked · '+reviewCount+' need review · Expand</span></summary><div class="mjSkillGrowthBody"><p>Assisted practice builds understanding; only independent practice counts toward readiness.</p>'+rows.map(x=>{
  const n=x.attempts.length,correct=x.attempts.filter(a=>a.correct&&!a.assisted).length,percent=n?Math.round(100*correct/n):0;
  const label=x.status==='review-needed'?'Review recommended':x.status==='ready-for-teachback'?'Teaching check next':x.status==='reviewing'?'Review underway':x.status==='retry'?'Retry practice':'Developing';
  return '<details class="mjCompactSkill"><summary><strong>'+e(x.lessonId)+'</strong><span>'+e(label)+' · '+correct+'/'+n+' correct · '+percent+'%</span></summary><div class="mjCompactSkillDetails"><p>'+correct+'/'+n+' independent correct · '+(x.cycles||0)+' reteaching cycles. Guided work does not establish mastery.</p><button type="button" onclick="MajickWGUPractice.startSkillRetry('+E(JSON.stringify(x.lessonId))+')">Practice this skill</button>'+(x.status==='review-needed'?'<button type="button" onclick="MajickLearningContinuity.skillReview('+E(JSON.stringify(x.lessonId))+')">Review lesson</button>':'')+'</div></details>';
- }).join('')+'</section>';
+ }).join('')+'</div></details>';
 }
 function startSkillRetry(id){
  if(!activeD772())return;
