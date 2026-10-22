@@ -42,6 +42,11 @@ function navigateTab(next){
  hub.querySelectorAll('[data-commons-tab]').forEach(b=>{const active=b.dataset.commonsTab===selected;b.setAttribute('aria-selected',String(active));b.tabIndex=active?0:-1;b.setAttribute('aria-current',active?'page':'false')});
  hub.querySelectorAll('[data-commons-panel]').forEach(p=>{p.hidden=p.dataset.commonsPanel!==selected;p.setAttribute('tabindex','0')});
  syncSanctuaryMotion();
+ // Keep keyboard focus on the active tab when Sanctuary activation updates its renderer.
+ if(hub.contains(document.activeElement)&&document.activeElement?.matches?.('[data-commons-tab]')){
+  const active=hub.querySelector('[data-commons-tab][aria-selected="true"]');
+  active?.focus({preventScroll:true});
+ }
  const title=hub.querySelector('[data-commons-current]');if(title)title.textContent=TABS.find(t=>t[0]===selected)?.[1]||'Overview';
 }
 function attach(){
