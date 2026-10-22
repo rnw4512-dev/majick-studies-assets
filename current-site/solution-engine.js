@@ -6,7 +6,8 @@ const BANK={
  D772:[
  {id:'mean',section:2,lesson:'d772-s2-l4',title:'Mean: rebuild the calculation',kind:'math',formula:'sum / count',alternatives:['sum / count','sum × count','count / sum'],cases:[
  {numbers:[8,12,16,20],known:'8, 12, 16, 20',unknown:'mean',slots:[56,4],answer:14,interpret:'The mean is 14, the equal-share value for these four observations.',why:'Add all values (56) and divide by four.'},
- {numbers:[11,17,23,29,35],known:'11, 17, 23, 29, 35',unknown:'mean',slots:[115,5],answer:23,interpret:'The five measurements have a mean of 23.',why:'The sum is 115 and there are five observations.'}
+ {numbers:[11,17,23,29,35],known:'11, 17, 23, 29, 35',unknown:'mean',slots:[115,5],answer:23,interpret:'The five measurements have a mean of 23.',why:'The sum is 115 and there are five observations.'},
+ {numbers:[9,13,17,21,25],known:'9, 13, 17, 21, 25',unknown:'mean',slots:[85,5],answer:17,interpret:'The mean is 17, representing the equal-share value of the five observations.',why:'The sum is 85 and there are five observations.'}
  ]},
  {id:'median',section:2,lesson:'d772-s2-l4',title:'Median: solve the center',kind:'math',formula:'(middle A + middle B) / 2',alternatives:['(middle A + middle B) / 2','sum / count','largest − smallest'],cases:[
  {numbers:[3,7,11,19],known:'sorted values: 3, 7, 11, 19',unknown:'median',slots:[7,11],answer:9,interpret:'Half the ordered observations are at or below the median of 9.',why:'For four numbers average the two middle values.'},
