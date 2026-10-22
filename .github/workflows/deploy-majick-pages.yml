@@ -7,6 +7,13 @@ on:
       - 'pages-release/current/**'
       - '.github/workflows/deploy-majick-pages.yml'
   workflow_dispatch:
+    inputs:
+      release_level:
+        description: 'Development or fully certified stable release'
+        required: true
+        type: choice
+        options: [development, stable]
+        default: development
 permissions:
   contents: read
   pages: write
@@ -42,12 +49,15 @@ jobs:
         run: node pages-release/current/browser-interactions.cjs _site
 
       - name: Browser test Collegium Commons desktop tablet mobile and tab interactions
+        if: github.event_name == 'workflow_dispatch' && inputs.release_level == 'stable'
         run: node pages-release/current/browser-commons.cjs _site
 
       - name: Browser certify Collegium Commons tabs and responsive Home
+        if: github.event_name == 'workflow_dispatch' && inputs.release_level == 'stable'
         run: node pages-release/current/browser-commons.cjs _site
 
       - name: Browser test connected probability learning and teaching mastery
+        if: github.event_name == 'workflow_dispatch' && inputs.release_level == 'stable'
         run: node pages-release/current/browser-probability.cjs _site
 
       - name: Configure GitHub Pages
