@@ -32,3 +32,12 @@
 .mjReasoningAbout h3,.mjReasoningAbout p{color:#fff0df}
 .mjReasoningPage [hidden]{display:none!important}
 @media(max-width:650px){.mjReasoningPage{padding:5px}.mjReasoningTabs button{flex:1 1 auto}.majickRoomSections{top:0}}
+
+/* Mixed OA room: one focused question, not a topic-by-topic lesson catalog. */
+.mjReasoningPage .mjReasoningActivity{max-width:100%}
+.mjReasoningPage .mjSolutionEngine{margin-top:4px}
+.mjReasoningPage .mjSeHead strong{font-size:14px}
+.mjReasoningPage .mjSeFoot{max-width:68ch;line-height:1.4}
+.mjReasoningPage .mjSeActions{margin:9px 0}
+.mjReasoningPage .mjSeSteps{margin:8px 0}
+.mjReasoningPage [data-mixed-next]{background:#f1d7a5;color:#261831;border-color:#e5bf80;font-weight:700}

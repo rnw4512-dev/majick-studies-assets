@@ -92,8 +92,10 @@ if(task.kind==='sequence'){
  else{const bank=window.S.activeCourse==='D772'?['The target population and sampled group differ, so representativeness must be evaluated.','An observational study can show association, but cannot by itself establish causation.','Convenience or voluntary sampling can introduce selection bias and limit generalizability.','The evidence supports a cautious conclusion, not a universal causal claim.']:['Use family and student input to select measurable, individualized supports.','Document team decisions and identify a measurable follow-up.'];body+='<p>Select the best WGU-aligned justification. The choice must match the scenario, not just sound academic.</p><div class="mjSeBank">'+bank.map((line,i)=>'<button type="button" data-meaning="'+i+'" aria-pressed="'+(a.meaning===line)+'">'+esc(line)+'</button>').join('')+'</div><p class="mjSeSelection">'+esc(a.meaning||'Choose a supported explanation')+'</p>'}
 }
 const canHint=!independent;const taskPicker=host.querySelector('.mjSeTaskSelect');
-host.innerHTML='<div class="mjSeHead"><strong>✦ Reasoning Workshop · Optional Parchment Practice</strong><small>'+esc(window.S.activeCourse)+' · '+esc(task.title)+'</small></div><nav class="mjSeSteps" aria-label="Solution steps">'+Array.from({length:6},(_,i)=>'<button type="button" data-stage="'+i+'" '+(i===step?'aria-current="step"':'')+' '+(i>step||!(st.verified?.[st.caseIndex]||[]).includes(i)?'disabled':'')+' class="'+(i===step?'active':'')+'" title="'+esc(stageTitle(task,i))+'">'+(i+1)+'</button>').join('')+'</nav><div class="mjSeStage"><h3>'+esc(stageTitle(task,step))+'</h3>'+body+'</div><div class="mjSeActions"><button type="button" data-check>'+(st.error?'Resubmit answer':'Check step')+'</button><button type="button" data-clear>Clear answer</button>'+(canHint?'<button data-hint>Hint</button>':'')+'<button data-reset>Restart scenario</button></div>'+(st.hint?'<p class="mjSeHelp">Think about what information the situation provides and what you must determine before computing or acting.</p>':'')+(st.feedback?'<p class="mjSeFeedback" role="status">'+esc(st.feedback)+'</p>':'')+'<p class="mjSeFoot">Objective: '+esc(task.objective||'Apply this lesson concept')+'. Hands-on participation can earn XP. Completing an unassisted transfer can earn a one-time XP/crystal bonus. Neither replaces validated course mastery.</p>';
-if(taskPicker)host.prepend(taskPicker);
+const mixed=window.S?.screen==='reasoning';
+host.innerHTML='<div class="mjSeHead"><strong>✦ Reasoning Workshop · Optional Parchment Practice</strong><small>'+esc(window.S.activeCourse)+' · '+esc(task.title)+'</small></div><nav class="mjSeSteps" aria-label="Solution steps">'+Array.from({length:6},(_,i)=>'<button type="button" data-stage="'+i+'" '+(i===step?'aria-current="step"':'')+' '+(i>step||!(st.verified?.[st.caseIndex]||[]).includes(i)?'disabled':'')+' class="'+(i===step?'active':'')+'" title="'+esc(stageTitle(task,i))+'">'+(i+1)+'</button>').join('')+'</nav><div class="mjSeStage"><h3>'+esc(stageTitle(task,step))+'</h3>'+body+'</div><div class="mjSeActions"><button type="button" data-check>'+(st.error?'Resubmit answer':'Check step')+'</button><button type="button" data-clear>Clear answer</button>'+(canHint?'<button data-hint>Hint</button>':'')+'<button data-reset>Restart scenario</button>'+(mixed?'<button type="button" data-mixed-next>Next mixed skill →</button>':'')+'</div>'+(st.hint?'<p class="mjSeHelp">Think about what information the situation provides and what you must determine before computing or acting.</p>':'')+(st.feedback?'<p class="mjSeFeedback" role="status">'+esc(st.feedback)+'</p>':'')+'<p class="mjSeFoot">Objective: '+esc(task.objective||'Apply this lesson concept')+'. Hands-on participation can earn XP. Completing an unassisted transfer can earn a one-time XP/crystal bonus. Neither replaces validated course mastery.</p>';
+if(taskPicker&&!mixed)host.prepend(taskPicker);
+if(mixed){const next=host.querySelector('[data-mixed-next]');if(next)next.onclick=()=>{const upcoming=nextMixed(host,true);if(upcoming)render(host,upcoming)}}
 if(topBefore!==null&&host.isConnected){const delta=host.getBoundingClientRect().top-topBefore;if(Math.abs(delta)>2)window.scrollBy(0,delta)}
 host.querySelectorAll('[data-stage]').forEach(button=>button.onclick=()=>{const dest=Number(button.dataset.stage);if(dest<st.stage&&(st.verified?.[st.caseIndex]||[]).includes(dest)){st.verified[st.caseIndex]=st.verified[st.caseIndex].filter(n=>n<dest);st.stage=dest;st.finished=false;st.feedback='Review this step, then check it again to continue.';render(host,task)}});
 host.querySelectorAll('[data-field]').forEach(el=>el.oninput=()=>{a[el.dataset.field]=el.value;st.feedback=''});
@@ -185,6 +187,24 @@ function rubric(task,ex,answer,stage){
  return {ok:true,feedback:'Your explanation addresses the key ideas. This is rule-based guidance, not a teacher-graded semantic assessment; compare your explanation with the model reasoning: '+String(ex.interpret||ex.why||ex.reason||'')};
 }
 const SELECTED_TASK=new Map();
+const MIXED_QUEUES=new Map();
+function mixedQueue(cid){
+ const tasks=(BANK[cid]||[]).filter(t=>t.cases?.length&&t.section);
+ const groups=[...new Set(tasks.map(t=>t.section))].sort().map(section=>tasks.filter(t=>t.section===section));
+ const deck=[];while(groups.some(g=>g.length))for(const group of groups)if(group.length)deck.push(group.shift().id);
+ return deck;
+}
+function nextMixed(host,advance=false){
+ const cid=window.S?.activeCourse||'D772',deck=mixedQueue(cid);
+ if(!deck.length)return null;
+ let state=MIXED_QUEUES.get(cid);
+ if(!state||state.deck.join('|')!==deck.join('|'))state={deck,index:0};
+ else if(advance)state.index=(state.index+1)%deck.length;
+ MIXED_QUEUES.set(cid,state);
+ const id=deck[state.index];host.dataset.selectedTask=id;SELECTED_TASK.set(cid,id);
+ return (BANK[cid]||[]).find(t=>t.id===id)||null;
+}
+
 function mount(){const root=document.getElementById('content');if(!root)return;const screen=window.S?.screen,cid=window.S?.activeCourse;if(!['guide','mission','games','reasoning'].includes(screen))return;
  const all=BANK[cid]||[];
  let cards=screen==='guide'?[...root.querySelectorAll('.studyCard')]:screen==='reasoning'?[...root.querySelectorAll('.mjReasoningPage')]:[root];
@@ -192,7 +212,9 @@ function mount(){const root=document.getElementById('content');if(!root)return;c
   let host=screen==='reasoning'?card.querySelector('.mjReasoningActivity > .mjSolutionEngine'):card.querySelector(':scope > .mjSolutionEngine');
   if(!host){host=document.createElement('section');host.className='mjSolutionEngine';if(screen==='guide')card.append(host);else if(screen==='reasoning')(card.querySelector('.mjReasoningActivity')||card).append(host);else (root.querySelector('.sectionTitle')||root).after(host)}
   if(screen!=='guide'){
+   const mixed=screen==='reasoning';
    let picker=host.querySelector('.mjSeTaskSelect'),picked=picker?.value||SELECTED_TASK.get(cid)||'';
+   if(mixed){const task=nextMixed(host);if(task)render(host,task);else host.textContent='No mapped reasoning activities are available for this course.';continue}
    if(!picker){picker=document.createElement('select');picker.className='mjSeTaskSelect';picker.setAttribute('aria-label','Choose course lesson activity')}
    picker.innerHTML='<option value="">Choose lesson activity</option>'+all.filter(x=>x.lessonId||x.lesson).map(x=>'<option value="'+esc(x.id)+'">'+esc((x.lessonId||x.lesson)+' — '+x.title)+'</option>').join('');
    const need=window.MajickLearningContinuity?.recommend?.(cid);const target=need&&all.find(x=>x.lessonId===need.lessonId||x.lesson===need.lessonId);if(picked&&all.some(x=>x.id===picked))picker.value=picked;else if(target)picker.value=target.id;else if(all.length)picker.value=all.find(x=>x.lessonId)?.id||all[0].id;

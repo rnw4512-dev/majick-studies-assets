@@ -85,7 +85,7 @@ function renderReasoning(){
   header.className='majReasoningToolbar';
   const title=document.createElement('div');
   const h=document.createElement('h2');h.textContent='✦ Reasoning Workshop';
-  const desc=document.createElement('p');desc.textContent='Focus on explaining, interpreting, and independently transferring your course skills.';
+  const desc=document.createElement('p');desc.textContent='Mixed-section reasoning for OA preparation. One question at a time.';
   title.append(h,desc);
   const back=document.createElement('button');back.type='button';back.textContent='← Study Realm';back.onclick=()=>window.navigate?.('mission');
   header.append(title,back);
@@ -94,9 +94,10 @@ function renderReasoning(){
   const host=document.createElement('section');host.className='mjSolutionEngine';host.setAttribute('aria-label','Reasoning Workshop activities');activity.append(host);
   const about=document.createElement('section');about.className='mjReasoningAbout';about.hidden=true;
   about.innerHTML='<h3>Your reasoning practice</h3><p>Work through a scenario, identify what is known, choose a strategy, calculate or interpret, and explain your reasoning. The final transfer task checks independent understanding.</p><p>Guided steps support learning; they do not independently certify mastery.</p>';
-  const views=[{label:'✦ Practice',panel:activity},{label:'How it works',panel:about}];
+  const views=[{label:'✦ Mixed OA Practice',panel:activity},{label:'How it works',panel:about}];
   views.forEach(({label,panel},i)=>{const btn=document.createElement('button');btn.type='button';btn.textContent=label;btn.setAttribute('aria-pressed',String(i===0));btn.onclick=()=>{views.forEach((v,j)=>{v.panel.hidden=j!==i;tabs.children[j].setAttribute('aria-pressed',String(j===i))})};tabs.append(btn)});
   page.append(header,tabs,activity,about);root.append(page);
+  page.dataset.practiceMode='mixed';
   root.dataset.majReasoningCourse=cid;
  }
  const host=root.querySelector('.mjReasoningActivity > .mjSolutionEngine');
