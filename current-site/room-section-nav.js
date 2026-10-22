@@ -92,7 +92,8 @@ function renderReasoning(){
   page.append(header,host);root.append(page);
   root.dataset.majReasoningCourse=cid;
  }
- window.MajickSolutionEngine?.refresh?.();
+ const host=root.querySelector('.mjReasoningPage > .mjSolutionEngine');
+ if(host&&!host.querySelector('.mjSeTaskSelect'))window.MajickSolutionEngine?.refresh?.();
  const nav=document.querySelector('.nav');
  nav?.querySelectorAll('[data-nav]').forEach(b=>b.classList.toggle('active',b.dataset.nav==='reasoning'));
 }
