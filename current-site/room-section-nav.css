@@ -41,3 +41,29 @@
 .mjReasoningPage .mjSeActions{margin:9px 0}
 .mjReasoningPage .mjSeSteps{margin:8px 0}
 .mjReasoningPage [data-mixed-next]{background:#f1d7a5;color:#261831;border-color:#e5bf80;font-weight:700}
+
+/* Complete room organization: tabs wrap neatly instead of overflowing or
+   compressing labels, and only the selected substantial panel is visible. */
+#content > .majickRoomSections{
+ display:flex;flex-wrap:wrap;align-items:center;column-gap:9px;row-gap:8px;
+ overflow:visible;white-space:normal;position:relative;top:auto;
+ padding:12px 14px;margin:8px 0 18px;border-radius:16px;
+ background:linear-gradient(145deg,#24182f,#352341);
+ box-shadow:0 6px 18px rgba(15,8,25,.20);
+}
+#content > .majickRoomSections strong{flex:0 0 100%;margin:0 0 2px;color:#f5dcae;font-size:14px}
+#content > .majickRoomSections button{
+ flex:0 1 auto;max-width:none;min-height:44px;white-space:normal;
+ overflow-wrap:anywhere;text-overflow:clip;line-height:1.25;
+ padding:10px 14px;border-radius:11px;text-align:center;
+}
+#content > .majRoomActive{display:block;min-width:0;margin-top:8px}
+#content > .majRoomInactive{display:none!important}
+#content > .majRoomActive > :first-child{margin-top:0}
+#content > .majRoomActive .mjSeActions,
+#content > .majRoomActive .mjSeGrid{gap:10px;flex-wrap:wrap}
+@media(max-width:700px){
+ #content > .majickRoomSections{gap:7px;padding:10px;margin-bottom:12px}
+ #content > .majickRoomSections button{flex:1 1 130px;max-width:100%;font-size:14px}
+ #content > .majRoomActive{padding-inline:0;max-width:100%}
+}
