@@ -87,8 +87,16 @@ function attach(){
    navigateTab(id);
    // Focus the actual selected tab immediately. Do not rely on a stale node
    // captured before Home's async render or a delayed timer to fix focus.
-   const target=document.querySelector('#majCommonsHub [data-commons-tab="'+id+'"]');
-   target?.focus({preventScroll:true});
+   const focusSelected=()=>{
+    if(window.S?.screen!=='home')return;
+    const target=document.querySelector('#majCommonsHub [data-commons-tab="'+id+'"]');
+    if(target&&document.activeElement!==target)target.focus({preventScroll:true});
+   };
+   focusSelected();
+   // Delayed room hydration can replace a focused tab between the keydown
+   // and the next frame. Reattach focus to the current tab, not a stale node.
+   queueMicrotask(focusSelected);
+   requestAnimationFrame(focusSelected);
   });
   root.prepend(hub);
  }
