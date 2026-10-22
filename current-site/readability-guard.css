@@ -237,3 +237,17 @@ body.majickCampus .titleline .pill.v4Badge{
   .v3338PhaseBar{overflow-x:auto;flex-wrap:nowrap!important}
   .v3338PhaseBar button{flex:0 0 auto}
 }
+
+/* Release repair: the floating Atelier must not cover lesson reading or controls. */
+body.majickCampus .atelierLaunch{right:16px!important;bottom:16px!important;max-width:min(210px,45vw);font-size:14px!important;padding:8px 12px!important}
+body.majickCampus .content,body.majickCampus #content{padding-bottom:max(96px,env(safe-area-inset-bottom))!important}
+.d772WorkedExample{background:#fff8eb!important;color:#241827!important;border:2px solid #b99358;border-radius:12px;padding:20px;line-height:1.65}
+.d772WorkedExample :is(h3,p,li,strong){color:#241827!important;opacity:1!important;text-shadow:none!important}
+.d772WorkedExample ol{padding-left:25px}
+.masteryBadge{min-width:200px}
+.masteryBadge span{font-size:12px!important;line-height:1.5!important;color:#f5e8d8!important}
+@media(max-width:850px){
+ body.majickCampus .atelierLaunch{position:static!important;display:block!important;width:max-content;max-width:100%;margin:12px 12px 12px auto!important}
+ .tutorLessonHead{flex-wrap:wrap!important}
+ .masteryBadge{min-width:0!important;width:100%!important}
+}
