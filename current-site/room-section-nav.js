@@ -17,8 +17,8 @@ function refresh(){
   // Only substantial, *visible* sections with headings qualify. Never move,
   // clone or hide academic widgets: existing render ownership is preserved.
   const nodes=[...root.querySelectorAll(':scope > section,:scope > article,:scope > div')].filter(el=>
-   el.id!=='majickRoomSections'&&el.getClientRects().length&&!el.hidden&&
-   !el.closest('[hidden]')&&el.scrollHeight>220);
+   el.id!=='majickRoomSections'&&(el.getClientRects().length||el.classList.contains('majRoomInactive'))&&!el.hidden&&
+   !el.closest('[hidden]')&&(el.scrollHeight>220||el.classList.contains('majRoomInactive')));
   const rows=nodes.map((el,i)=>{
    const h=el.querySelector('h2,h3,[role="heading"]');
    const text=h?.textContent?.replace(/\s+/g,' ').trim();
@@ -41,7 +41,10 @@ function refresh(){
    nodes.forEach(el=>{el.classList.remove('majRoomInactive','majRoomActive');delete el.dataset.majRoomPanel});
   }
   const signature=room+':'+rows.map(x=>x.label).join('|')+':'+tabbed;
-  if(nav.dataset.signature===signature)return;
+  if(nav.dataset.signature===signature){
+   if(tabbed)nav.querySelectorAll('button').forEach((b,i)=>{b.setAttribute('aria-pressed',String(i===active));b.classList.toggle('majRoomSelected',i===active)});
+   return;
+  }
   nav.dataset.signature=signature;
   nav.setAttribute('aria-label',tabbed?'Page sections (one at a time)':'Jump to page section');
   nav.replaceChildren();
