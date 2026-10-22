@@ -251,3 +251,13 @@ body.majickCampus .content,body.majickCampus #content{padding-bottom:max(96px,en
  .tutorLessonHead{flex-wrap:wrap!important}
  .masteryBadge{min-width:0!important;width:100%!important}
 }
+
+/* Compact academic records: details remain keyboard operable and expandable. */
+.mjCompactSkill{border:1px solid #806b8c;border-radius:9px;margin:5px 0;background:#261a30;color:#fff5e8}
+.mjCompactSkill summary{cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;padding:10px 14px;min-height:44px;list-style-position:inside}
+.mjCompactSkill summary span{font-size:13px;color:#f0e3f4}
+.mjCompactSkillDetails{padding:0 14px 12px;color:#fff5e8}
+.mjCompactSkillDetails p{margin:4px 0 10px;color:#fff5e8!important}
+.mjCompactSkillDetails button{margin:3px 8px 3px 0;min-height:40px}
+.nav [data-maj-reasoning]{display:flex;gap:8px;align-items:center;width:100%;text-align:left}
+.mjSeFeedback{color:#fff4e8!important;line-height:1.5!important}
