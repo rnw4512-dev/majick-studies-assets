@@ -98,6 +98,14 @@ function attach(){
    queueMicrotask(focusSelected);
    requestAnimationFrame(focusSelected);
   });
+  // Keep focus on the selected tab even if the Sanctuary canvas or a
+  // delayed room renderer steals it between keydown and keyup.
+  list.addEventListener('keyup',e=>{
+   if(!['ArrowRight','ArrowLeft','Home','End'].includes(e.key))return;
+   e.preventDefault();
+   const target=hub.querySelector('[data-commons-tab][aria-selected="true"]');
+   target?.focus({preventScroll:true});
+  });
   root.prepend(hub);
  }
  hub.querySelector('.majCommonsCourse').textContent='Currently studying · '+(document.querySelector('.top select')?.selectedOptions?.[0]?.textContent||window.S?.activeCourse||'Your course');
