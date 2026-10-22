@@ -104,6 +104,7 @@ async function solveMean(values,sum,count,mean){
  await solveMean('8, 12, 16, 20',56,4,14);
  await solveMean('11, 17, 23, 29, 35',115,5,23);
  await solveMean('9, 13, 17, 21, 25',85,5,17);
+ console.log('MEAN STAGE AFTER THREE CASES',JSON.stringify(await evalPage('({heading:document.querySelector(".mjSeStage h3")?.textContent,fields:[...document.querySelectorAll(".mjSolutionEngine [data-field]")].map(x=>x.dataset.field),scenario:document.querySelector(".mjSeStage")?.textContent?.slice(0,160)})')));
  await enterAndCheck({transfer:17});
  const masteryEvidence=await evalPage('({mastery:S.progress.D772.interactiveMastery||{},lastAnswer:S.progress.D772.answers?.slice(-2),feedback:document.querySelector(".mjSeFeedback")?.textContent,phase:document.querySelector(".mjSolutionEngine h3")?.textContent,fields:[...document.querySelectorAll(".mjSolutionEngine [data-field]")].map(x=>x.dataset.field),lesson:document.querySelector(".mjSeTaskSelect")?.value,bridge:!!window.MajickInteractiveMastery})');
  console.log('Browser full-transfer diagnostic:',JSON.stringify(masteryEvidence));
