@@ -90,7 +90,7 @@ function installReasoningEntry(){
   study.addEventListener('click',()=>{workshopOpen=false;showReasoningWorkshop()});
  }
  for(const other of nav.querySelectorAll('button:not([data-maj-reasoning]):not([data-nav="mission"])')){
-  if(other.dataset.majReasoningExit)return;
+  if(other.dataset.majReasoningExit)continue;
   other.dataset.majReasoningExit='true';
   other.addEventListener('click',()=>{workshopOpen=false});
  }
