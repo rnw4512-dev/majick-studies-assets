@@ -61,21 +61,29 @@ function skillResult(q,correct,assisted=false,origin='practice'){
  const p=window.S?.progress?.[course()];if(!p||!id||((q?.course||q?.courseId)&&String(q.course||q.courseId)!==course()))return null;
  const book=p.adaptiveSkills||(p.adaptiveSkills={});
  const row=book[id]||(book[id]={lessonId:id,attempts:[],cycles:0,status:'practice',errors:[]});
- row.attempts.push({correct:!!correct,assisted:!!assisted,origin,verified:origin==='independent-transfer'&&!!correct&&!assisted,time:Date.now()});
+ // Technical failures and incomplete visual evidence are not learner attempts.
+ if(q?.technicalFailure||q?.invalidVisual||q?.unscorable||q?.visualEvidenceOk===false)return row;
+ const guided=!!assisted||origin==='guided-reconstruction'||origin==='guided-repair';
+ row.attempts.push({correct:!!correct,assisted:guided,origin,verified:origin==='independent-transfer'&&!!correct&&!guided,time:Date.now()});
  row.attempts=row.attempts.slice(-5);
  // Durable misconception history is separate from the rolling five-attempt diagnostic.
  row.misconceptionHistory=row.misconceptionHistory||{incorrect:0,assisted:0,independentCorrect:0,recoveryRequired:false,recoveryCompleted:false};
  const history=row.misconceptionHistory;
- if(!correct&&origin!=='guided-reconstruction'){history.incorrect++;if(history.incorrect>=2)history.recoveryRequired=true;}
- else if(assisted)history.assisted++;
- else history.independentCorrect++;
+ if(!correct&&!guided){history.incorrect++;if(history.incorrect>=2)history.recoveryRequired=true;}
+ else if(guided)history.assisted++;
+ else if(correct)history.independentCorrect++;
+ // A completed guided reconstruction unlocks transfer but cannot erase the need
+ // for independent demonstration. An unsuccessful transfer restores recovery.
  if(origin==='guided-reconstruction'&&correct&&q?.reconstructionVerified===true){history.recoveryCompleted=true;history.recoveryRequired=false;history.awaitingIndependentTransfer=true;}
- if(origin==='independent-transfer'&&correct&&!assisted&&history.awaitingIndependentTransfer){history.awaitingIndependentTransfer=false;history.incorrect=0;history.recoveryCompleted=false;}
+ if(origin==='independent-transfer'&&!guided&&history.awaitingIndependentTransfer){
+  if(correct){history.awaitingIndependentTransfer=false;history.incorrect=0;history.recoveryCompleted=false;}
+  else {history.recoveryRequired=true;history.recoveryCompleted=false;history.awaitingIndependentTransfer=false;}
+ }
 
  if(!correct)row.errors.push({prompt:String(q?.prompt||'').slice(0,240),answer:String(q?.answer||''),kind:/mean|median|probability|calculate/i.test(q?.prompt||'')?'calculation-or-formula':/graph|histogram|plot|chart/i.test(q?.prompt||'')?'visual-interpretation':'concept-or-misconception'});
  row.errors=row.errors.slice(-8);
- const count=row.attempts.length,wrong=row.attempts.filter(x=>!x.correct).length,independent=row.attempts.filter(x=>x.correct&&!x.assisted).length;
- if(history.recoveryRequired||(count>=3&&wrong>=2)||(count===5&&independent<4))row.status='review-needed';
+ const count=row.attempts.length,wrong=row.attempts.filter(x=>!x.correct&&!x.assisted).length,independent=row.attempts.filter(x=>x.correct&&!x.assisted).length;
+ if(history.recoveryRequired||history.awaitingIndependentTransfer||(count>=3&&wrong>=2)||(count===5&&independent<4))row.status='review-needed';
  if(count===5&&independent>=4&&!history.recoveryRequired&&!history.awaitingIndependentTransfer)row.status='ready-for-teachback';
  // Readiness for a teaching check is not certification. Require separate independent
  // transfer evidence and an evaluated teach-back before the mastery flag can be true.
