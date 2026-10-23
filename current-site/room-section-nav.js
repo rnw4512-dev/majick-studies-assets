@@ -93,6 +93,17 @@ function examQuestions(){
   ids.add(q.id);return true;
  }).map(q=>({...q,examSection:Number(String(q.section||'').match(/Section\\s*([123])/i)?.[1]||String(q.lessonId).match(/d772-s([123])-/)?.[1])}));
 }
+// Schedule only unseen evidence for the missed skill; never recycle a failed item.
+function queueExamFollowup(state,question){
+ const remaining=state.deck.slice(state.index+1);
+ const matches=q=>q.id!==question.id&&(question.skill?q.skill===question.skill:q.lessonId===question.lessonId);
+ const offset=remaining.findIndex(matches);
+ if(offset<0)return false;
+ const [fresh]=state.deck.splice(state.index+1+offset,1);
+ state.deck.splice(state.index+1,0,fresh);
+ state.followupId=fresh.id;
+ return true;
+}
 function examDeck(){
  const by=[1,2,3].map(n=>examQuestions().filter(q=>q.examSection===n));
  by.forEach(group=>{for(let i=group.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[group[i],group[j]]=[group[j],group[i]]}});
@@ -110,6 +121,7 @@ function renderMixedExam(panel){
  const count=document.createElement('strong');count.textContent='Question '+(state.index+1)+' of '+state.deck.length;
  const score=document.createElement('span');score.textContent=state.attempted+' answered · '+state.correct+' correct';
  heading.append(count,score);panel.append(heading);
+ if(state.followupId===q.id){const note=document.createElement('p');note.textContent='Fresh follow-up · apply the skill you just reviewed to new evidence.';panel.append(note)}
  const prompt=document.createElement('h3');prompt.className='majExamPrompt';prompt.textContent=q.prompt;panel.append(prompt);
  const form=document.createElement('div');form.className='majExamChoices';form.setAttribute('role','radiogroup');form.setAttribute('aria-label','Choose the best answer');
  (q.options||q.choices).forEach((choice,i)=>{
@@ -123,13 +135,14 @@ function renderMixedExam(panel){
   const submit=document.createElement('button');submit.type='button';submit.textContent='Check answer';submit.disabled=!state.selected;
   submit.onclick=()=>{
    if(!state.selected)return;
-   state.submitted=true;state.attempted++;if(state.selected===q.answer)state.correct++;
+   if(state.submitted)return;
+   state.submitted=true;if(state.selected!==q.answer)queueExamFollowup(state,q);state.attempted++;if(state.selected===q.answer)state.correct++;
    // Do not award mastery for a single exam-style response. Keep a separate
    // course-scoped review log for missed skills and instructor feedback.
    try{
     const key='majick-d772-mixed-exam-review-v1';
     const rows=JSON.parse(localStorage.getItem(key)||'[]');
-    rows.push({id:q.id,lessonId:q.lessonId,correct:state.selected===q.answer,at:Date.now()});
+    rows.push({id:q.id,lessonId:q.lessonId,skill:q.skill||q.lessonId,revision:q.revision||'original',correct:state.selected===q.answer,at:Date.now()});
     localStorage.setItem(key,JSON.stringify(rows.slice(-300)));
    }catch(_){}
    renderMixedExam(panel);
@@ -139,6 +152,7 @@ function renderMixedExam(panel){
   const verdict=document.createElement('h4');verdict.textContent=state.selected===q.answer?'Correct · Well reasoned':'Review this reasoning';
   const answer=document.createElement('p');answer.textContent='Correct answer: '+q.answer;
   const why=document.createElement('p');why.textContent=q.why;
+  if(state.selected!==q.answer&&q.distractorRationales?.[state.selected])why.textContent+=' '+q.distractorRationales[state.selected];
   feedback.append(verdict,answer,why);
   if(state.selected!==q.answer){const selected=document.createElement('p');selected.textContent='You chose: '+state.selected+'. Compare that choice with the deciding evidence in the explanation.';feedback.append(selected)}
   const source=document.createElement('small');source.textContent=q.sourceLabel||'MAJICK ORIGINAL · OA-STYLE PRACTICE — NOT OFFICIAL WGU ITEMS';feedback.append(source);

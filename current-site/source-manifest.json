@@ -788,7 +788,7 @@
     "assets/atelier/v2/fitted/contact-sheets/locs.png": "a301d18e4fa56d109321527c3cb5c7ad4aa63e104d8070fdd6778370fa40e3c4",
     "assets/atelier/v2/fitted/contact-sheets/afro_full.png": "65294ef9c97b537d5169e2ee84c9781efc91d39728bd9affc45b275cb87739ee",
     "assets/atelier/v3/sprite-registry.json": "ae716a28e90d2699cfdd3cad01fea009d361ecf86b074493c0ffc808a4b7278f",
-    "d772-shared-oa-questions.js": "a53a01e3800a7674f3b3344a56da23195b286eeadef84f993208f55d393fa500",
+    "d772-shared-oa-questions.js": "376ad1be155c6c42f3b42094d2949e832a4c8711b012fdb72b5ded8606370640",
     "d756-hands-on.js": "69761b019d90a0b559ae20aa6b5183429483ea846b2b51d5d967d2b0b42713d6",
     "interactive-formula-lab.js": "0ad379b7f1e43cf051b119177584d538cff786cda9ec8a921562b7c500534cba",
     "embedded-practice.js": "bfd40ca11870ab6e6041495e4b9a7e20d2f544d54b044ccaee9d402283aba893",
@@ -823,7 +823,7 @@
     "animation-effects.js": "85888321972ffa77c0809f3fba72e78fa1845c1d45a642796399e5e0a61d0505",
     "assets/effects/celebrations/lesson-complete-seal.svg": "66d0d723db2bda1149c79bd1aa03e2c9be22df891ed9a5f842bf44cecf922ddf",
     "assets/effects/celebrations/course-complete-sigil.svg": "5bb72f7c3da585d477527f057c9c42930abd859db8681edaac3616ed130ca1a6",
-    "room-section-nav.js": "284552f1ad36ddc16b714d18bd8241b33463f45fd9ec87e196c30e14c5b3c3ff",
+    "room-section-nav.js": "f8969faa7cce6a3fcc64ed9b709924e1d9d45c532397dd840dfb37abb025db64",
     "room-section-nav.css": "291d80f12c095d6497efb7c80fb4a0cd5552cba0bbc422adb3f026972f8ad344"
   }
 }
