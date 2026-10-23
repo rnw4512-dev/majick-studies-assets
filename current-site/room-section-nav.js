@@ -81,7 +81,28 @@ if(window.MajickRenderQueue?.register)window.MajickRenderQueue.register('room-se
 document.addEventListener('DOMContentLoaded',()=>{schedule()});
 // Reasoning Workshop is its own Study Realm destination. It shares the
 // Solution Engine and course data, but never mounts Study Hall content.
-const examState=new Map();
+// Keep the round with the existing course save owner, including full question
+// snapshots so later bank edits cannot change an answer already in progress.
+function examProgress(){return window.S?.activeCourse==='D772'?window.S?.progress?.D772:null}
+function validExamRound(state){
+ if(!state||state.version!==1||!Array.isArray(state.deck)||!state.deck.length||state.deck.length>500)return false;
+ if(!Number.isInteger(state.index)||state.index<0||state.index>=state.deck.length)return false;
+ if(!Number.isInteger(state.attempted)||!Number.isInteger(state.correct)||state.correct<0||state.correct>state.attempted)return false;
+ if(state.attempted!==state.index+(state.submitted?1:0))return false;
+ const ids=new Set();
+ for(const q of state.deck){const options=q.options||q.choices;if(!q.id||ids.has(q.id)||!q.prompt||!q.why||!Array.isArray(options)||options.length!==4||new Set(options).size!==4||!options.includes(q.answer))return false;ids.add(q.id)}
+ return state.selected===''||((state.deck[state.index].options||state.deck[state.index].choices).includes(state.selected));
+}
+function newExamRound(){return {version:1,deck:examDeck(),index:0,selected:'',submitted:false,correct:0,attempted:0,skillResults:{}}}
+function examRound(){
+ const p=examProgress();if(!p)return null;
+ if(!validExamRound(p.mixedExamRound))p.mixedExamRound=newExamRound();
+ return p.mixedExamRound;
+}
+function saveExamRound(state){
+ if(examProgress()?.mixedExamRound!==state)return false;
+ try{if(typeof save!=='function')return false;save();state.saveFailed=false;return true}catch(_){state.saveFailed=true;return false}
+}
 function examQuestions(){
  const banks=[window.MajickD772SharedQuestions?.questions||[],window.MajickD772PreassessmentDeepPractice?.questions||[]];
  const ids=new Set();
@@ -112,8 +133,8 @@ function examDeck(){
 }
 function renderMixedExam(panel){
  if(!panel)return;
- let state=examState.get('D772');
- if(!state){state={deck:examDeck(),index:0,selected:'',submitted:false,correct:0,attempted:0};examState.set('D772',state)}
+ const state=examRound();if(!state)return;
+ saveExamRound(state);
  const q=state.deck[state.index];
  panel.replaceChildren();
  if(!q){panel.textContent='No valid mixed-section questions are currently available.';return}
@@ -121,21 +142,25 @@ function renderMixedExam(panel){
  const count=document.createElement('strong');count.textContent='Question '+(state.index+1)+' of '+state.deck.length;
  const score=document.createElement('span');score.textContent=state.attempted+' answered · '+state.correct+' correct';
  heading.append(count,score);panel.append(heading);
+ const saved=document.createElement('small');saved.textContent=state.saveFailed?'Saving is unavailable. Keep this page open; your current work remains here.':'Your place and answers are saved with D772. Practice does not award independent mastery.';saved.setAttribute('role','status');panel.append(saved);
+ const results=Object.entries(state.skillResults||{}).filter(([,r])=>r.missed>0);
+ if(results.length){const details=document.createElement('details');const summary=document.createElement('summary');summary.textContent='Skills to revisit · '+results.length;details.append(summary);for(const [skill,r] of results){const row=document.createElement('p');row.textContent=skill.replace(/-/g,' ')+' · '+r.missed+' missed · '+r.correct+' correct';details.append(row)}panel.append(details)}
  if(state.followupId===q.id){const note=document.createElement('p');note.textContent='Fresh follow-up · apply the skill you just reviewed to new evidence.';panel.append(note)}
  const prompt=document.createElement('h3');prompt.className='majExamPrompt';prompt.textContent=q.prompt;panel.append(prompt);
  const form=document.createElement('div');form.className='majExamChoices';form.setAttribute('role','radiogroup');form.setAttribute('aria-label','Choose the best answer');
  (q.options||q.choices).forEach((choice,i)=>{
   const label=document.createElement('label');label.className='majExamChoice';
   const radio=document.createElement('input');radio.type='radio';radio.name='majMixedExamAnswer';radio.value=choice;radio.checked=state.selected===choice;radio.disabled=state.submitted;
-  radio.onchange=()=>{state.selected=choice;renderMixedExam(panel)};
+  radio.onchange=()=>{if(state.submitted)return;state.selected=choice;saveExamRound(state);const submit=panel.querySelector('[data-exam-submit]');if(submit)submit.disabled=false};
   const span=document.createElement('span');span.textContent=String.fromCharCode(65+i)+'. '+choice;label.append(radio,span);form.append(label);
  });panel.append(form);
  const actions=document.createElement('div');actions.className='majExamActions';
  if(!state.submitted){
-  const submit=document.createElement('button');submit.type='button';submit.textContent='Check answer';submit.disabled=!state.selected;
+  const submit=document.createElement('button');submit.type='button';submit.dataset.examSubmit='true';submit.textContent='Check answer';submit.disabled=!state.selected;
   submit.onclick=()=>{
    if(!state.selected)return;
    if(state.submitted)return;
+   const skill=q.skill||q.lessonId;state.skillResults=state.skillResults||{};const record=state.skillResults[skill]||(state.skillResults[skill]={missed:0,correct:0});record[state.selected===q.answer?'correct':'missed']++;
    state.submitted=true;if(state.selected!==q.answer)queueExamFollowup(state,q);state.attempted++;if(state.selected===q.answer)state.correct++;
    // Do not award mastery for a single exam-style response. Keep a separate
    // course-scoped review log for missed skills and instructor feedback.
@@ -147,6 +172,7 @@ function renderMixedExam(panel){
    }catch(_){}
    renderMixedExam(panel);
   };actions.append(submit);
+  const clear=document.createElement('button');clear.type='button';clear.textContent='Clear selection';clear.onclick=()=>{if(state.submitted)return;state.selected='';saveExamRound(state);renderMixedExam(panel)};actions.append(clear);
  }else{
   const feedback=document.createElement('section');feedback.className='majExamFeedback';
   const verdict=document.createElement('h4');verdict.textContent=state.selected===q.answer?'Correct · Well reasoned':'Review this reasoning';
@@ -158,7 +184,7 @@ function renderMixedExam(panel){
   const source=document.createElement('small');source.textContent=q.sourceLabel||'MAJICK ORIGINAL · OA-STYLE PRACTICE — NOT OFFICIAL WGU ITEMS';feedback.append(source);
   panel.append(feedback);
   const next=document.createElement('button');next.type='button';next.textContent=state.index===state.deck.length-1?'Start a fresh mixed round':'Next question →';
-  next.onclick=()=>{if(state.index===state.deck.length-1){state.deck=examDeck();state.index=0;state.attempted=0;state.correct=0}else state.index++;state.selected='';state.submitted=false;renderMixedExam(panel)};
+  next.onclick=()=>{if(!state.submitted)return;if(state.index===state.deck.length-1){examProgress().mixedExamRound=newExamRound()}else{state.index++;state.selected='';state.submitted=false}renderMixedExam(panel)};
   actions.append(next);
  }
  panel.append(actions);

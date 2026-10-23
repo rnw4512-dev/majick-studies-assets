@@ -1,0 +1,13 @@
+const fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/strict');
+const ctx={window:{S:{activeCourse:'D772',progress:{D772:{},D756:{marker:'preserve'}}}}};ctx.save=()=>{};vm.createContext(ctx);
+vm.runInContext(fs.readFileSync('current-site/d772-shared-oa-questions.js','utf8'),ctx);
+const src=fs.readFileSync('current-site/room-section-nav.js','utf8');vm.runInContext(src.slice(src.indexOf('function examProgress'),src.indexOf('function renderMixedExam')),ctx);
+let run=ctx.examRound();assert(ctx.validExamRound(run));assert.equal(run.deck.length,40);
+const id=run.deck[0].id;run.selected=run.deck[0].answer;ctx.saveExamRound(run);
+ctx.window.S=JSON.parse(JSON.stringify(ctx.window.S));run=ctx.examRound();assert.equal(run.deck[0].id,id);assert.equal(run.selected,run.deck[0].answer);
+run.submitted=true;run.attempted=1;run.correct=1;assert(ctx.validExamRound(run));ctx.window.S=JSON.parse(JSON.stringify(ctx.window.S));assert(ctx.examRound().submitted);
+ctx.window.S.activeCourse='D756';assert.equal(ctx.examRound(),null);assert.equal(ctx.window.S.progress.D756.marker,'preserve');ctx.window.S.activeCourse='D772';assert.equal(ctx.examRound().attempted,1);
+const q=run.deck[0];const original=q.answer;ctx.window.MajickD772SharedQuestions.questions[0].answer='changed-bank-key';assert.equal(ctx.examRound().deck[0].answer,original);
+run=ctx.examRound();run.index=10000;assert(ctx.validExamRound(ctx.examRound()));
+run=ctx.examRound();ctx.save=()=>{throw Error('quota')};assert.equal(ctx.saveExamRound(run),false);assert(run.saveFailed);assert.equal(ctx.examRound(),run);
+console.log('PASS mixed exam: selected/submitted reload, course isolation, question snapshots, corrupted round recovery and save failure');

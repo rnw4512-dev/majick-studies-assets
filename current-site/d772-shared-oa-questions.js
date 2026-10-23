@@ -549,7 +549,12 @@
     "difficulty": 3,
     "rigorLevel": 3,
     "revision": "2026-10-22",
-    "sourceLabel": "MAJICK ORIGINAL · OA-STYLE PRACTICE — NOT OFFICIAL WGU ITEMS"
+    "sourceLabel": "MAJICK ORIGINAL · OA-STYLE PRACTICE — NOT OFFICIAL WGU ITEMS",
+    "distractorRationales": {
+      "70.0 minutes": "For your selected response: Weight each group mean by its number of trips before dividing by the combined count.",
+      "60.0 minutes": "For your selected response: Weight each group mean by its number of trips before dividing by the combined count.",
+      "80.0 minutes": "For your selected response: Weight each group mean by its number of trips before dividing by the combined count."
+    }
   },
   {
     "id": "d772-oa-expansion-iqr-outlier-1",
@@ -592,7 +597,12 @@
     "difficulty": 3,
     "rigorLevel": 3,
     "revision": "2026-10-22",
-    "sourceLabel": "MAJICK ORIGINAL · OA-STYLE PRACTICE — NOT OFFICIAL WGU ITEMS"
+    "sourceLabel": "MAJICK ORIGINAL · OA-STYLE PRACTICE — NOT OFFICIAL WGU ITEMS",
+    "distractorRationales": {
+      "IQR = 14; the new time exceeds the upper fence": "For your selected response: Use Q3 − Q1 for the IQR, then compare the new observation with Q3 + 1.5 × IQR.",
+      "IQR = 8; the new time is within the upper fence": "For your selected response: Use Q3 − Q1 for the IQR, then compare the new observation with Q3 + 1.5 × IQR.",
+      "IQR = 4; the new time is within the upper fence": "For your selected response: Use Q3 − Q1 for the IQR, then compare the new observation with Q3 + 1.5 × IQR."
+    }
   },
   {
     "id": "d772-oa-expansion-exactly-one-without-replacement-2",
@@ -626,7 +636,12 @@
     "difficulty": 3,
     "rigorLevel": 3,
     "revision": "2026-10-22",
-    "sourceLabel": "MAJICK ORIGINAL · OA-STYLE PRACTICE — NOT OFFICIAL WGU ITEMS"
+    "sourceLabel": "MAJICK ORIGINAL · OA-STYLE PRACTICE — NOT OFFICIAL WGU ITEMS",
+    "distractorRationales": {
+      "0.480": "For your selected response: Include both orders and reduce the second denominator because the first part is not replaced.",
+      "0.133": "For your selected response: Include both orders and reduce the second denominator because the first part is not replaced.",
+      "0.267": "For your selected response: Include both orders and reduce the second denominator because the first part is not replaced."
+    }
   },
   {
     "id": "d772-oa-expansion-complement-multistage-3",
@@ -660,7 +675,12 @@
     "difficulty": 3,
     "rigorLevel": 3,
     "revision": "2026-10-22",
-    "sourceLabel": "MAJICK ORIGINAL · OA-STYLE PRACTICE — NOT OFFICIAL WGU ITEMS"
+    "sourceLabel": "MAJICK ORIGINAL · OA-STYLE PRACTICE — NOT OFFICIAL WGU ITEMS",
+    "distractorRationales": {
+      "0.512": "For your selected response: Calculate the probability of no detection first, then subtract from one. Overlapping successes cannot simply be added.",
+      "0.008": "For your selected response: Calculate the probability of no detection first, then subtract from one. Overlapping successes cannot simply be added.",
+      "0.600": "For your selected response: Calculate the probability of no detection first, then subtract from one. Overlapping successes cannot simply be added."
+    }
   },
   {
     "id": "d772-oa-expansion-conditional-denominator-4",
@@ -696,7 +716,12 @@
     "difficulty": 3,
     "rigorLevel": 3,
     "revision": "2026-10-22",
-    "sourceLabel": "MAJICK ORIGINAL · OA-STYLE PRACTICE — NOT OFFICIAL WGU ITEMS"
+    "sourceLabel": "MAJICK ORIGINAL · OA-STYLE PRACTICE — NOT OFFICIAL WGU ITEMS",
+    "distractorRationales": {
+      "12/100": "For your selected response: The word “given” restricts the denominator to delivery users, including those who use both services.",
+      "12/32": "For your selected response: The word “given” restricts the denominator to delivery users, including those who use both services.",
+      "30/100": "For your selected response: The word “given” restricts the denominator to delivery users, including those who use both services."
+    }
   },
   {
     "id": "d772-oa-expansion-expected-net-value-5",
@@ -731,7 +756,12 @@
     "difficulty": 3,
     "rigorLevel": 3,
     "revision": "2026-10-22",
-    "sourceLabel": "MAJICK ORIGINAL · OA-STYLE PRACTICE — NOT OFFICIAL WGU ITEMS"
+    "sourceLabel": "MAJICK ORIGINAL · OA-STYLE PRACTICE — NOT OFFICIAL WGU ITEMS",
+    "distractorRationales": {
+      "$1.50; average net gain over many plays": "For your selected response: Subtract the entry cost from the probability-weighted payout. A long-run average is not a guaranteed single-play result.",
+      "$9.00; guaranteed gain each play": "For your selected response: Subtract the entry cost from the probability-weighted payout. A long-run average is not a guaranteed single-play result.",
+      "−$3.00; average loss over many plays": "For your selected response: Subtract the entry cost from the probability-weighted payout. A long-run average is not a guaranteed single-play result."
+    }
   },
   {
     "id": "d772-oa-expansion-sampling-generalization-6",
@@ -765,7 +795,12 @@
     "difficulty": 3,
     "rigorLevel": 3,
     "revision": "2026-10-22",
-    "sourceLabel": "MAJICK ORIGINAL · OA-STYLE PRACTICE — NOT OFFICIAL WGU ITEMS"
+    "sourceLabel": "MAJICK ORIGINAL · OA-STYLE PRACTICE — NOT OFFICIAL WGU ITEMS",
+    "distractorRationales": {
+      "Voluntary response sampling; increase advertisements for the survey": "For your selected response: Distinguish random selection of invitees from who actually responds; evaluate the final responding sample.",
+      "Random assignment bias; assign riders to transit routes": "For your selected response: Distinguish random selection of invitees from who actually responds; evaluate the final responding sample.",
+      "Undercoverage; survey only frequent riders": "For your selected response: Distinguish random selection of invitees from who actually responds; evaluate the final responding sample."
+    }
   },
   {
     "id": "d772-oa-expansion-association-causation-7",
@@ -803,7 +838,12 @@
     "difficulty": 3,
     "rigorLevel": 3,
     "revision": "2026-10-22",
-    "sourceLabel": "MAJICK ORIGINAL · OA-STYLE PRACTICE — NOT OFFICIAL WGU ITEMS"
+    "sourceLabel": "MAJICK ORIGINAL · OA-STYLE PRACTICE — NOT OFFICIAL WGU ITEMS",
+    "distractorRationales": {
+      "The age difference proves that the app has no effect": "For your selected response: First determine whether researchers assigned a treatment. Then consider confounding and how participants were selected.",
+      "The app causes 3 additional exercise hours because the averages differ": "For your selected response: First determine whether researchers assigned a treatment. Then consider confounding and how participants were selected.",
+      "Random sampling eliminates age as a possible confounder": "For your selected response: First determine whether researchers assigned a treatment. Then consider confounding and how participants were selected."
+    }
   },
   {
     "id": "d772-oa-expansion-weighted-mean-8",
@@ -843,7 +883,12 @@
     "difficulty": 3,
     "rigorLevel": 3,
     "revision": "2026-10-22",
-    "sourceLabel": "MAJICK ORIGINAL · OA-STYLE PRACTICE — NOT OFFICIAL WGU ITEMS"
+    "sourceLabel": "MAJICK ORIGINAL · OA-STYLE PRACTICE — NOT OFFICIAL WGU ITEMS",
+    "distractorRationales": {
+      "75.0 minutes": "For your selected response: Weight each group mean by its number of trips before dividing by the combined count.",
+      "65.0 minutes": "For your selected response: Weight each group mean by its number of trips before dividing by the combined count.",
+      "85.0 minutes": "For your selected response: Weight each group mean by its number of trips before dividing by the combined count."
+    }
   },
   {
     "id": "d772-oa-expansion-iqr-outlier-9",
@@ -886,7 +931,12 @@
     "difficulty": 3,
     "rigorLevel": 3,
     "revision": "2026-10-22",
-    "sourceLabel": "MAJICK ORIGINAL · OA-STYLE PRACTICE — NOT OFFICIAL WGU ITEMS"
+    "sourceLabel": "MAJICK ORIGINAL · OA-STYLE PRACTICE — NOT OFFICIAL WGU ITEMS",
+    "distractorRationales": {
+      "IQR = 14; the new time exceeds the upper fence": "For your selected response: Use Q3 − Q1 for the IQR, then compare the new observation with Q3 + 1.5 × IQR.",
+      "IQR = 8; the new time is within the upper fence": "For your selected response: Use Q3 − Q1 for the IQR, then compare the new observation with Q3 + 1.5 × IQR.",
+      "IQR = 4; the new time is within the upper fence": "For your selected response: Use Q3 − Q1 for the IQR, then compare the new observation with Q3 + 1.5 × IQR."
+    }
   },
   {
     "id": "d772-oa-expansion-exactly-one-without-replacement-10",
@@ -920,7 +970,12 @@
     "difficulty": 3,
     "rigorLevel": 3,
     "revision": "2026-10-22",
-    "sourceLabel": "MAJICK ORIGINAL · OA-STYLE PRACTICE — NOT OFFICIAL WGU ITEMS"
+    "sourceLabel": "MAJICK ORIGINAL · OA-STYLE PRACTICE — NOT OFFICIAL WGU ITEMS",
+    "distractorRationales": {
+      "0.486": "For your selected response: Include both orders and reduce the second denominator because the first part is not replaced.",
+      "0.152": "For your selected response: Include both orders and reduce the second denominator because the first part is not replaced.",
+      "0.265": "For your selected response: Include both orders and reduce the second denominator because the first part is not replaced."
+    }
   },
   {
     "id": "d772-oa-expansion-complement-multistage-11",
@@ -954,7 +1009,12 @@
     "difficulty": 3,
     "rigorLevel": 3,
     "revision": "2026-10-22",
-    "sourceLabel": "MAJICK ORIGINAL · OA-STYLE PRACTICE — NOT OFFICIAL WGU ITEMS"
+    "sourceLabel": "MAJICK ORIGINAL · OA-STYLE PRACTICE — NOT OFFICIAL WGU ITEMS",
+    "distractorRationales": {
+      "0.343": "For your selected response: Calculate the probability of no detection first, then subtract from one. Overlapping successes cannot simply be added.",
+      "0.027": "For your selected response: Calculate the probability of no detection first, then subtract from one. Overlapping successes cannot simply be added.",
+      "0.900": "For your selected response: Calculate the probability of no detection first, then subtract from one. Overlapping successes cannot simply be added."
+    }
   },
   {
     "id": "d772-oa-expansion-conditional-denominator-12",
@@ -990,7 +1050,12 @@
     "difficulty": 3,
     "rigorLevel": 3,
     "revision": "2026-10-22",
-    "sourceLabel": "MAJICK ORIGINAL · OA-STYLE PRACTICE — NOT OFFICIAL WGU ITEMS"
+    "sourceLabel": "MAJICK ORIGINAL · OA-STYLE PRACTICE — NOT OFFICIAL WGU ITEMS",
+    "distractorRationales": {
+      "15/100": "For your selected response: The word “given” restricts the denominator to delivery users, including those who use both services.",
+      "15/35": "For your selected response: The word “given” restricts the denominator to delivery users, including those who use both services.",
+      "36/100": "For your selected response: The word “given” restricts the denominator to delivery users, including those who use both services."
+    }
   },
   {
     "id": "d772-oa-expansion-expected-net-value-13",
@@ -1025,7 +1090,12 @@
     "difficulty": 3,
     "rigorLevel": 3,
     "revision": "2026-10-22",
-    "sourceLabel": "MAJICK ORIGINAL · OA-STYLE PRACTICE — NOT OFFICIAL WGU ITEMS"
+    "sourceLabel": "MAJICK ORIGINAL · OA-STYLE PRACTICE — NOT OFFICIAL WGU ITEMS",
+    "distractorRationales": {
+      "$2.00; average net gain over many plays": "For your selected response: Subtract the entry cost from the probability-weighted payout. A long-run average is not a guaranteed single-play result.",
+      "$12.00; guaranteed gain each play": "For your selected response: Subtract the entry cost from the probability-weighted payout. A long-run average is not a guaranteed single-play result.",
+      "−$4.00; average loss over many plays": "For your selected response: Subtract the entry cost from the probability-weighted payout. A long-run average is not a guaranteed single-play result."
+    }
   },
   {
     "id": "d772-oa-expansion-sampling-generalization-14",
@@ -1035,31 +1105,35 @@
     "topicId": "d772-s1-l1",
     "section": "Section 1",
     "skill": "sampling-generalization",
-    "prompt": "A transit agency wants to estimate satisfaction among all 1000 riders. It randomly selects 100 riders from the complete rider roster, but only riders with strong complaints respond.\n\nWhich identifies the remaining threat and the most appropriate improvement?",
+    "prompt": "A city wants to estimate internet access among all households. It randomly selects addresses from a complete residential list, but households without internet are less likely to return the online questionnaire.\n\nWhich change most directly addresses the remaining threat to representativeness?",
     "options": [
-      "Voluntary response sampling; increase advertisements for the survey",
-      "Random assignment bias; assign riders to transit routes",
-      "Nonresponse bias; follow up with selected nonrespondents",
-      "Undercoverage; survey only frequent riders"
+      "Increase the number selected while using only the same online response method",
+      "Limit the population to households that already answered",
+      "Offer selected households a telephone or paper response option",
+      "Advertise the online questionnaire to anyone who wishes to respond"
     ],
     "choices": [
-      "Voluntary response sampling; increase advertisements for the survey",
-      "Random assignment bias; assign riders to transit routes",
-      "Nonresponse bias; follow up with selected nonrespondents",
-      "Undercoverage; survey only frequent riders"
+      "Increase the number selected while using only the same online response method",
+      "Limit the population to households that already answered",
+      "Offer selected households a telephone or paper response option",
+      "Advertise the online questionnaire to anyone who wishes to respond"
     ],
-    "answer": "Nonresponse bias; follow up with selected nonrespondents",
-    "why": "Random selection is a useful starting point, but selective response can make the final sample unrepresentative. Follow up with the selected nonrespondents to improve participation across satisfaction levels. Random sampling does not guarantee unbiased responses.",
-    "rationale": "Random selection is a useful starting point, but selective response can make the final sample unrepresentative. Follow up with the selected nonrespondents to improve participation across satisfaction levels. Random sampling does not guarantee unbiased responses.",
-    "workedSteps": "Random selection is a useful starting point, but selective response can make the final sample unrepresentative. Follow up with the selected nonrespondents to improve participation across satisfaction levels. Random sampling does not guarantee unbiased responses.",
+    "answer": "Offer selected households a telephone or paper response option",
+    "why": "The selected sample covers the residential addresses, but the response method discourages the very households being measured. Offering alternative response modes to selected households reduces nonresponse bias; a larger sample alone does not fix systematic missing responses.",
+    "rationale": "The selected sample covers the residential addresses, but the response method discourages the very households being measured. Offering alternative response modes to selected households reduces nonresponse bias; a larger sample alone does not fix systematic missing responses.",
+    "workedSteps": "The selected sample covers the residential addresses, but the response method discourages the very households being measured. Offering alternative response modes to selected households reduces nonresponse bias; a larger sample alone does not fix systematic missing responses.",
     "data": {
-      "population": 1000,
-      "selected": 100
+      "scenario": "qualitative-transfer"
     },
     "difficulty": 3,
     "rigorLevel": 3,
-    "revision": "2026-10-22",
-    "sourceLabel": "MAJICK ORIGINAL · OA-STYLE PRACTICE — NOT OFFICIAL WGU ITEMS"
+    "revision": "2026-10-22-r2",
+    "sourceLabel": "MAJICK ORIGINAL · OA-STYLE PRACTICE — NOT OFFICIAL WGU ITEMS",
+    "distractorRationales": {
+      "Increase the number selected while using only the same online response method": "For your selected response: Distinguish random selection of invitees from who actually responds; evaluate the final responding sample.",
+      "Limit the population to households that already answered": "For your selected response: Distinguish random selection of invitees from who actually responds; evaluate the final responding sample.",
+      "Advertise the online questionnaire to anyone who wishes to respond": "For your selected response: Distinguish random selection of invitees from who actually responds; evaluate the final responding sample."
+    }
   },
   {
     "id": "d772-oa-expansion-association-causation-15",
@@ -1069,35 +1143,35 @@
     "topicId": "d772-s1-l2",
     "section": "Section 1",
     "skill": "association-causation",
-    "prompt": "A researcher observes 140 adults. The 70 adults who choose a fitness app average 7 hours of weekly exercise; the other adults average 4 hours. No treatment is assigned, and app users are younger on average.\n\nWhich conclusion and explanation are justified?",
+    "prompt": "A clinic randomly assigns volunteers to a reminder app or usual care. Both groups receive the same treatment otherwise. After eight weeks, the app group averages two fewer missed appointments.\n\nWhat is a valid conclusion, based on the study?",
     "options": [
-      "The age difference proves that the app has no effect",
-      "App use is associated with more exercise; age may confound the relationship",
-      "The app causes 3 additional exercise hours because the averages differ",
-      "Random sampling eliminates age as a possible confounder"
+      "Any difference in group averages must be caused by chance",
+      "Random assignment supports a causal effect of reminders for participants; generalization beyond volunteers needs caution",
+      "Volunteering makes random assignment impossible",
+      "The app is proven effective for every patient in the country"
     ],
     "choices": [
-      "The age difference proves that the app has no effect",
-      "App use is associated with more exercise; age may confound the relationship",
-      "The app causes 3 additional exercise hours because the averages differ",
-      "Random sampling eliminates age as a possible confounder"
+      "Any difference in group averages must be caused by chance",
+      "Random assignment supports a causal effect of reminders for participants; generalization beyond volunteers needs caution",
+      "Volunteering makes random assignment impossible",
+      "The app is proven effective for every patient in the country"
     ],
-    "answer": "App use is associated with more exercise; age may confound the relationship",
-    "why": "Compute the observed difference: 7 − 4 = 3 hours. This is an observational comparison because adults chose their app use. Age could affect both app use and exercise, so the difference alone cannot establish causation.",
-    "rationale": "Compute the observed difference: 7 − 4 = 3 hours. This is an observational comparison because adults chose their app use. Age could affect both app use and exercise, so the difference alone cannot establish causation.",
-    "workedSteps": "Compute the observed difference: 7 − 4 = 3 hours. This is an observational comparison because adults chose their app use. Age could affect both app use and exercise, so the difference alone cannot establish causation.",
+    "answer": "Random assignment supports a causal effect of reminders for participants; generalization beyond volunteers needs caution",
+    "why": "Researchers assigned the intervention randomly, which helps balance confounders and supports causal interpretation for study participants. Volunteer recruitment limits automatic generalization to a broader population. Random assignment and random sampling serve different purposes.",
+    "rationale": "Researchers assigned the intervention randomly, which helps balance confounders and supports causal interpretation for study participants. Volunteer recruitment limits automatic generalization to a broader population. Random assignment and random sampling serve different purposes.",
+    "workedSteps": "Researchers assigned the intervention randomly, which helps balance confounders and supports causal interpretation for study participants. Volunteer recruitment limits automatic generalization to a broader population. Random assignment and random sampling serve different purposes.",
     "data": {
-      "adults": 140,
-      "appUsers": 70,
-      "means": [
-        7,
-        4
-      ]
+      "scenario": "qualitative-transfer"
     },
     "difficulty": 3,
     "rigorLevel": 3,
-    "revision": "2026-10-22",
-    "sourceLabel": "MAJICK ORIGINAL · OA-STYLE PRACTICE — NOT OFFICIAL WGU ITEMS"
+    "revision": "2026-10-22-r2",
+    "sourceLabel": "MAJICK ORIGINAL · OA-STYLE PRACTICE — NOT OFFICIAL WGU ITEMS",
+    "distractorRationales": {
+      "Any difference in group averages must be caused by chance": "For your selected response: First determine whether researchers assigned a treatment. Then consider confounding and how participants were selected.",
+      "Volunteering makes random assignment impossible": "For your selected response: First determine whether researchers assigned a treatment. Then consider confounding and how participants were selected.",
+      "The app is proven effective for every patient in the country": "For your selected response: First determine whether researchers assigned a treatment. Then consider confounding and how participants were selected."
+    }
   },
   {
     "id": "d772-oa-expansion-weighted-mean-16",
@@ -1137,7 +1211,12 @@
     "difficulty": 3,
     "rigorLevel": 3,
     "revision": "2026-10-22",
-    "sourceLabel": "MAJICK ORIGINAL · OA-STYLE PRACTICE — NOT OFFICIAL WGU ITEMS"
+    "sourceLabel": "MAJICK ORIGINAL · OA-STYLE PRACTICE — NOT OFFICIAL WGU ITEMS",
+    "distractorRationales": {
+      "80.0 minutes": "For your selected response: Weight each group mean by its number of trips before dividing by the combined count.",
+      "70.0 minutes": "For your selected response: Weight each group mean by its number of trips before dividing by the combined count.",
+      "90.0 minutes": "For your selected response: Weight each group mean by its number of trips before dividing by the combined count."
+    }
   },
   {
     "id": "d772-oa-expansion-iqr-outlier-17",
@@ -1180,7 +1259,12 @@
     "difficulty": 3,
     "rigorLevel": 3,
     "revision": "2026-10-22",
-    "sourceLabel": "MAJICK ORIGINAL · OA-STYLE PRACTICE — NOT OFFICIAL WGU ITEMS"
+    "sourceLabel": "MAJICK ORIGINAL · OA-STYLE PRACTICE — NOT OFFICIAL WGU ITEMS",
+    "distractorRationales": {
+      "IQR = 14; the new time exceeds the upper fence": "For your selected response: Use Q3 − Q1 for the IQR, then compare the new observation with Q3 + 1.5 × IQR.",
+      "IQR = 8; the new time is within the upper fence": "For your selected response: Use Q3 − Q1 for the IQR, then compare the new observation with Q3 + 1.5 × IQR.",
+      "IQR = 4; the new time is within the upper fence": "For your selected response: Use Q3 − Q1 for the IQR, then compare the new observation with Q3 + 1.5 × IQR."
+    }
   },
   {
     "id": "d772-oa-expansion-exactly-one-without-replacement-18",
@@ -1214,7 +1298,12 @@
     "difficulty": 3,
     "rigorLevel": 3,
     "revision": "2026-10-22",
-    "sourceLabel": "MAJICK ORIGINAL · OA-STYLE PRACTICE — NOT OFFICIAL WGU ITEMS"
+    "sourceLabel": "MAJICK ORIGINAL · OA-STYLE PRACTICE — NOT OFFICIAL WGU ITEMS",
+    "distractorRationales": {
+      "0.490": "For your selected response: Include both orders and reduce the second denominator because the first part is not replaced.",
+      "0.165": "For your selected response: Include both orders and reduce the second denominator because the first part is not replaced.",
+      "0.264": "For your selected response: Include both orders and reduce the second denominator because the first part is not replaced."
+    }
   },
   {
     "id": "d772-oa-expansion-complement-multistage-19",
@@ -1248,7 +1337,12 @@
     "difficulty": 3,
     "rigorLevel": 3,
     "revision": "2026-10-22",
-    "sourceLabel": "MAJICK ORIGINAL · OA-STYLE PRACTICE — NOT OFFICIAL WGU ITEMS"
+    "sourceLabel": "MAJICK ORIGINAL · OA-STYLE PRACTICE — NOT OFFICIAL WGU ITEMS",
+    "distractorRationales": {
+      "0.216": "For your selected response: Calculate the probability of no detection first, then subtract from one. Overlapping successes cannot simply be added.",
+      "0.064": "For your selected response: Calculate the probability of no detection first, then subtract from one. Overlapping successes cannot simply be added.",
+      "1.200": "For your selected response: Calculate the probability of no detection first, then subtract from one. Overlapping successes cannot simply be added."
+    }
   },
   {
     "id": "d772-oa-expansion-conditional-denominator-20",
@@ -1284,7 +1378,12 @@
     "difficulty": 3,
     "rigorLevel": 3,
     "revision": "2026-10-22",
-    "sourceLabel": "MAJICK ORIGINAL · OA-STYLE PRACTICE — NOT OFFICIAL WGU ITEMS"
+    "sourceLabel": "MAJICK ORIGINAL · OA-STYLE PRACTICE — NOT OFFICIAL WGU ITEMS",
+    "distractorRationales": {
+      "18/100": "For your selected response: The word “given” restricts the denominator to delivery users, including those who use both services.",
+      "18/38": "For your selected response: The word “given” restricts the denominator to delivery users, including those who use both services.",
+      "42/100": "For your selected response: The word “given” restricts the denominator to delivery users, including those who use both services."
+    }
   },
   {
     "id": "d772-oa-expansion-expected-net-value-21",
@@ -1319,7 +1418,12 @@
     "difficulty": 3,
     "rigorLevel": 3,
     "revision": "2026-10-22",
-    "sourceLabel": "MAJICK ORIGINAL · OA-STYLE PRACTICE — NOT OFFICIAL WGU ITEMS"
+    "sourceLabel": "MAJICK ORIGINAL · OA-STYLE PRACTICE — NOT OFFICIAL WGU ITEMS",
+    "distractorRationales": {
+      "$2.50; average net gain over many plays": "For your selected response: Subtract the entry cost from the probability-weighted payout. A long-run average is not a guaranteed single-play result.",
+      "$15.00; guaranteed gain each play": "For your selected response: Subtract the entry cost from the probability-weighted payout. A long-run average is not a guaranteed single-play result.",
+      "−$5.00; average loss over many plays": "For your selected response: Subtract the entry cost from the probability-weighted payout. A long-run average is not a guaranteed single-play result."
+    }
   },
   {
     "id": "d772-oa-expansion-sampling-generalization-22",
@@ -1329,31 +1433,35 @@
     "topicId": "d772-s1-l1",
     "section": "Section 1",
     "skill": "sampling-generalization",
-    "prompt": "A transit agency wants to estimate satisfaction among all 1200 riders. It randomly selects 120 riders from the complete rider roster, but only riders with strong complaints respond.\n\nWhich identifies the remaining threat and the most appropriate improvement?",
+    "prompt": "A retailer estimates satisfaction among all customers by randomly selecting receipts. Most selected customers do not respond, and the respondents are mainly customers who returned a defective product.\n\nWhich conclusion is most defensible?",
     "options": [
-      "Voluntary response sampling; increase advertisements for the survey",
-      "Random assignment bias; assign riders to transit routes",
-      "Nonresponse bias; follow up with selected nonrespondents",
-      "Undercoverage; survey only frequent riders"
+      "The survey proves most customers received a defective product",
+      "The response count is a population parameter",
+      "The final responses may overrepresent dissatisfied customers despite random initial selection",
+      "Random selection guarantees that the final responses represent all customers"
     ],
     "choices": [
-      "Voluntary response sampling; increase advertisements for the survey",
-      "Random assignment bias; assign riders to transit routes",
-      "Nonresponse bias; follow up with selected nonrespondents",
-      "Undercoverage; survey only frequent riders"
+      "The survey proves most customers received a defective product",
+      "The response count is a population parameter",
+      "The final responses may overrepresent dissatisfied customers despite random initial selection",
+      "Random selection guarantees that the final responses represent all customers"
     ],
-    "answer": "Nonresponse bias; follow up with selected nonrespondents",
-    "why": "Random selection is a useful starting point, but selective response can make the final sample unrepresentative. Follow up with the selected nonrespondents to improve participation across satisfaction levels. Random sampling does not guarantee unbiased responses.",
-    "rationale": "Random selection is a useful starting point, but selective response can make the final sample unrepresentative. Follow up with the selected nonrespondents to improve participation across satisfaction levels. Random sampling does not guarantee unbiased responses.",
-    "workedSteps": "Random selection is a useful starting point, but selective response can make the final sample unrepresentative. Follow up with the selected nonrespondents to improve participation across satisfaction levels. Random sampling does not guarantee unbiased responses.",
+    "answer": "The final responses may overrepresent dissatisfied customers despite random initial selection",
+    "why": "Random selection applies to the invitations. Selective nonresponse can still distort the final responding group. The responses do not establish the experience of all customers or a causal effect.",
+    "rationale": "Random selection applies to the invitations. Selective nonresponse can still distort the final responding group. The responses do not establish the experience of all customers or a causal effect.",
+    "workedSteps": "Random selection applies to the invitations. Selective nonresponse can still distort the final responding group. The responses do not establish the experience of all customers or a causal effect.",
     "data": {
-      "population": 1200,
-      "selected": 120
+      "scenario": "qualitative-transfer"
     },
     "difficulty": 3,
     "rigorLevel": 3,
-    "revision": "2026-10-22",
-    "sourceLabel": "MAJICK ORIGINAL · OA-STYLE PRACTICE — NOT OFFICIAL WGU ITEMS"
+    "revision": "2026-10-22-r2",
+    "sourceLabel": "MAJICK ORIGINAL · OA-STYLE PRACTICE — NOT OFFICIAL WGU ITEMS",
+    "distractorRationales": {
+      "The survey proves most customers received a defective product": "For your selected response: Distinguish random selection of invitees from who actually responds; evaluate the final responding sample.",
+      "The response count is a population parameter": "For your selected response: Distinguish random selection of invitees from who actually responds; evaluate the final responding sample.",
+      "Random selection guarantees that the final responses represent all customers": "For your selected response: Distinguish random selection of invitees from who actually responds; evaluate the final responding sample."
+    }
   },
   {
     "id": "d772-oa-expansion-association-causation-23",
@@ -1363,34 +1471,34 @@
     "topicId": "d772-s1-l2",
     "section": "Section 1",
     "skill": "association-causation",
-    "prompt": "A researcher observes 160 adults. The 80 adults who choose a fitness app average 7 hours of weekly exercise; the other adults average 4 hours. No treatment is assigned, and app users are younger on average.\n\nWhich conclusion and explanation are justified?",
+    "prompt": "A city observes that neighborhoods with more firefighters have more fire damage. Larger fires attract more firefighters. No staffing levels are assigned by researchers.\n\nWhich interpretation is most appropriate?",
     "options": [
-      "The age difference proves that the app has no effect",
-      "App use is associated with more exercise; age may confound the relationship",
-      "The app causes 3 additional exercise hours because the averages differ",
-      "Random sampling eliminates age as a possible confounder"
+      "Controlling the graph scale would establish causation",
+      "Fire severity can explain both staffing and damage; the association does not show firefighters cause damage",
+      "More firefighters cause greater fire damage because the association is positive",
+      "The study is an experiment because staffing varies"
     ],
     "choices": [
-      "The age difference proves that the app has no effect",
-      "App use is associated with more exercise; age may confound the relationship",
-      "The app causes 3 additional exercise hours because the averages differ",
-      "Random sampling eliminates age as a possible confounder"
+      "Controlling the graph scale would establish causation",
+      "Fire severity can explain both staffing and damage; the association does not show firefighters cause damage",
+      "More firefighters cause greater fire damage because the association is positive",
+      "The study is an experiment because staffing varies"
     ],
-    "answer": "App use is associated with more exercise; age may confound the relationship",
-    "why": "Compute the observed difference: 7 − 4 = 3 hours. This is an observational comparison because adults chose their app use. Age could affect both app use and exercise, so the difference alone cannot establish causation.",
-    "rationale": "Compute the observed difference: 7 − 4 = 3 hours. This is an observational comparison because adults chose their app use. Age could affect both app use and exercise, so the difference alone cannot establish causation.",
-    "workedSteps": "Compute the observed difference: 7 − 4 = 3 hours. This is an observational comparison because adults chose their app use. Age could affect both app use and exercise, so the difference alone cannot establish causation.",
+    "answer": "Fire severity can explain both staffing and damage; the association does not show firefighters cause damage",
+    "why": "This is observational evidence. Fire severity influences both the number of firefighters and damage, providing a confounding explanation. Association alone cannot establish a harmful causal effect of firefighters.",
+    "rationale": "This is observational evidence. Fire severity influences both the number of firefighters and damage, providing a confounding explanation. Association alone cannot establish a harmful causal effect of firefighters.",
+    "workedSteps": "This is observational evidence. Fire severity influences both the number of firefighters and damage, providing a confounding explanation. Association alone cannot establish a harmful causal effect of firefighters.",
     "data": {
-      "adults": 160,
-      "appUsers": 80,
-      "means": [
-        7,
-        4
-      ]
+      "scenario": "qualitative-transfer"
     },
     "difficulty": 3,
     "rigorLevel": 3,
-    "revision": "2026-10-22",
-    "sourceLabel": "MAJICK ORIGINAL · OA-STYLE PRACTICE — NOT OFFICIAL WGU ITEMS"
+    "revision": "2026-10-22-r2",
+    "sourceLabel": "MAJICK ORIGINAL · OA-STYLE PRACTICE — NOT OFFICIAL WGU ITEMS",
+    "distractorRationales": {
+      "Controlling the graph scale would establish causation": "For your selected response: First determine whether researchers assigned a treatment. Then consider confounding and how participants were selected.",
+      "More firefighters cause greater fire damage because the association is positive": "For your selected response: First determine whether researchers assigned a treatment. Then consider confounding and how participants were selected.",
+      "The study is an experiment because staffing varies": "For your selected response: First determine whether researchers assigned a treatment. Then consider confounding and how participants were selected."
+    }
   }
 ];window.MajickD772SharedQuestions=Object.freeze({version:'3.4.2',questions:Object.freeze(questions),forLesson(id){return questions.filter(q=>q.lessonId===id)},forSection(n){return questions.filter(q=>q.section.startsWith('Section '+n))}});})();
