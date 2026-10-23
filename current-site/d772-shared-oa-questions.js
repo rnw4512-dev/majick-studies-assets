@@ -189,7 +189,45 @@
     "rigorLevel": 3,
     "assistedPractice": true,
     "independentMastery": true,
-    "sourceLabel": "MAJICK ORIGINAL · OA-STYLE PRACTICE — NOT OFFICIAL WGU ITEMS"
+    "sourceLabel": "MAJICK ORIGINAL · OA-STYLE PRACTICE — NOT OFFICIAL WGU ITEMS",
+    "visual": {
+      "type": "scatterplot",
+      "points": [
+        [
+          1,
+          2
+        ],
+        [
+          2,
+          4
+        ],
+        [
+          3,
+          6
+        ],
+        [
+          4,
+          8
+        ],
+        [
+          5,
+          10
+        ],
+        [
+          6,
+          12
+        ],
+        [
+          5,
+          1
+        ]
+      ],
+      "xLabel": "Study hours",
+      "yLabel": "Practice score",
+      "alt": "Six points increase from (1,2) to (6,12). A seventh point is at (5,1).",
+      "caption": "Illustrative supplemental practice data: x = study hours; y = practice score."
+    },
+    "revision": "2026-10-23-visuals"
   },
   {
     "id": "d772-oa-342-histogram-interpret",
@@ -198,7 +236,7 @@
     "learningPathLessonId": "d772-s2-l3-1",
     "topicId": "d772-s2-l3-1",
     "section": "Section 2 · Distributions",
-    "prompt": "A histogram has frequencies 2, 5, 9, 4 for four increasing value intervals. Which statement is best supported?",
+    "prompt": "A histogram groups delivery times (minutes) into intervals 0–9, 10–19, 20–29, and 30–39, with frequencies 2, 5, 9, and 4.\n\nWhich statement is best supported?",
     "options": [
       "The third interval has the highest frequency",
       "The first interval has the highest frequency",
@@ -221,7 +259,9 @@
     "rigorLevel": 3,
     "assistedPractice": true,
     "independentMastery": true,
-    "sourceLabel": "MAJICK ORIGINAL · OA-STYLE PRACTICE — NOT OFFICIAL WGU ITEMS"
+    "sourceLabel": "MAJICK ORIGINAL · OA-STYLE PRACTICE — NOT OFFICIAL WGU ITEMS",
+    "visualHtml": "<figure class=\"majickEvidenceChart\"><figcaption>Delivery times · frequency histogram</figcaption><svg viewBox=\"0 0 400 265\" role=\"img\" aria-label=\"Delivery time in minutes: 0–9 frequency 2; 10–19 frequency 5; 20–29 frequency 9; 30–39 frequency 4.\"><line x1=\"50\" y1=\"200\" x2=\"370\" y2=\"200\" stroke=\"#fff1dd\"/><rect x=\"50\" y=\"168\" width=\"80\" height=\"32\" fill=\"#ac81cc\" stroke=\"#fff1dd\"/><text x=\"90\" y=\"162\" text-anchor=\"middle\" fill=\"#fff1dd\">2</text><text x=\"90\" y=\"222\" text-anchor=\"middle\" fill=\"#fff1dd\">0–9</text><rect x=\"130\" y=\"120\" width=\"80\" height=\"80\" fill=\"#ac81cc\" stroke=\"#fff1dd\"/><text x=\"170\" y=\"114\" text-anchor=\"middle\" fill=\"#fff1dd\">5</text><text x=\"170\" y=\"222\" text-anchor=\"middle\" fill=\"#fff1dd\">10–19</text><rect x=\"210\" y=\"56\" width=\"80\" height=\"144\" fill=\"#ac81cc\" stroke=\"#fff1dd\"/><text x=\"250\" y=\"50\" text-anchor=\"middle\" fill=\"#fff1dd\">9</text><text x=\"250\" y=\"222\" text-anchor=\"middle\" fill=\"#fff1dd\">20–29</text><rect x=\"290\" y=\"136\" width=\"80\" height=\"64\" fill=\"#ac81cc\" stroke=\"#fff1dd\"/><text x=\"330\" y=\"130\" text-anchor=\"middle\" fill=\"#fff1dd\">4</text><text x=\"330\" y=\"222\" text-anchor=\"middle\" fill=\"#fff1dd\">30–39</text><text x=\"210\" y=\"252\" text-anchor=\"middle\" fill=\"#fff1dd\">Delivery time (minutes)</text><text x=\"15\" y=\"115\" transform=\"rotate(-90 15 115)\" text-anchor=\"middle\" fill=\"#fff1dd\">Frequency</text></svg><figcaption>Bar labels give counts, totaling 20 deliveries.</figcaption></figure>",
+    "revision": "2026-10-23-visuals"
   },
   {
     "id": "d772-oa-342-box-interpret",
@@ -253,7 +293,20 @@
     "rigorLevel": 3,
     "assistedPractice": true,
     "independentMastery": true,
-    "sourceLabel": "MAJICK ORIGINAL · OA-STYLE PRACTICE — NOT OFFICIAL WGU ITEMS"
+    "sourceLabel": "MAJICK ORIGINAL · OA-STYLE PRACTICE — NOT OFFICIAL WGU ITEMS",
+    "visual": {
+      "type": "boxplot",
+      "fiveNumber": [
+        2,
+        5,
+        8,
+        14,
+        20
+      ],
+      "alt": "Box plot: minimum 2, first quartile 5, median 8, third quartile 14, maximum 20.",
+      "caption": "The plot displays the five-number summary given in the question."
+    },
+    "revision": "2026-10-23-visuals"
   },
   {
     "id": "d772-oa-342-prob-conditional",

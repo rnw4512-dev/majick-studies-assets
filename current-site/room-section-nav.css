@@ -100,3 +100,9 @@
 .majExamActions button:disabled{opacity:1;background:#5c4b62;color:#eee1d1;border-color:#a58b9e}
 .majExamFeedback h4:focus,.majExamPrompt:focus{outline:2px solid currentColor;outline-offset:5px;border-radius:3px}
 @media(max-width:650px){.majExamActions{flex-direction:column;gap:9px}.majExamActions button{width:100%}.majExamTop{margin-bottom:10px}}
+
+.majExamEvidence{margin:14px 0;color:#fff1dd;background:#24142f;border:1px solid #cfae8a;border-radius:12px;padding:12px}
+.majExamEvidence svg{display:block;width:100%;max-width:620px;margin:auto}
+.majExamEvidence figcaption{line-height:1.45;color:#fff1dd}
+.majExamEvidence figure{margin:0}
+.majExamFeedback button{min-height:44px;margin:6px 8px 0 0;padding:9px 13px;background:#3d294c;color:#fff4e4;border:1px solid #6e527c;border-radius:8px;cursor:pointer}

@@ -611,3 +611,15 @@ Additional live checking found Learn Mode also reopening its default classroom a
 - Tightened invalid submitted-round recovery and save-unavailable reporting; null review rows no longer break rendering. Existing D772 save/review owners and source questions remain intact.
 - Files: room-section-nav.js/.css and source-manifest.json. Existing resume/bank checks passed; canonical build and release checks run before publishing. Full three-width stable certification remains pending.
 - Guardian/Sanctuary/XP/crystals unchanged. Rollback is a scoped revert and rebuild; never clear learner storage.
+
+### Comfort pass live verification — PR #160
+- Merged 853bf637bc9e7321b7f18afefed6e8364a6ed1f1; Pages run 39881912498 completed successfully including live release verification. Build 1df5b15255b4b416.
+- Actual live browser confirmed accessible progress changed from 1/60 to 2/60; Clear selection focused the first radio with no selected choice; submission focused the feedback heading; Next focused the new Question 3 prompt. Saved round remained intact. Full three-width certification remains pending; development update.
+
+## 2026-10-23 — Mixed-practice visual evidence and no-penalty recovery
+- Found the mixed workshop bypassed the existing shared visual gate; the 60-item audit flagged one scatterplot item without its required plot. Connected the existing gate instead of adding a second rendering/state owner.
+- Added matching accessible visuals to three Majick-authored supplemental scatterplot, box-plot and histogram items. Histogram intervals now explicitly describe its dataset. Original WGU source records are unchanged. Saved question text/keys are preserved; visual metadata can enrich a snapshot only when prompt/options/answer exactly match.
+- Missing evidence blocks selection/grading and offers an unused verified replacement without changing answered count, correct count, prior answers, XP or mastery. A zero-size or unloaded rendered visual also cannot be scored. No unused valid item produces an explicit preserved-progress message.
+- New test-d772-exam-visuals.cjs audits all 60 items, numerical plot agreement, blocked scoring, zero-size diagram handling, replacement/no-replacement and unrelated account/course preservation; added as a mandatory deployment workflow gate. Existing save/resume and bank tests pass.
+- Changed shared bank, room-section-nav.js/.css, source manifest, deployment workflow and visual regression test. Development update only; full three-width stable certification remains pending.
+- Protected Guardian/Sanctuary/motion assets, source questions and all existing mastery/reward/save owners. Rollback: scoped revert/rebuild; never clear saves.

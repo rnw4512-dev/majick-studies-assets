@@ -132,11 +132,30 @@ function examDeck(){
  const deck=[];while(by.some(g=>g.length))for(const group of by)if(group.length)deck.push(group.shift());
  return deck;
 }
+// Use the shared evidence owner; a text-only snapshot may receive a visual
+// only when its prompt, options and answer still exactly match the bank.
+function examEvidence(q){
+ const api=window.MajickVisualEvidence;
+ if(!api)return {ok:false,required:true,html:'',reason:'Visual checks are still loading.'};
+ const match=examQuestions().find(x=>x.id===q.id&&x.prompt===q.prompt&&x.answer===q.answer&&JSON.stringify(x.options||x.choices)===JSON.stringify(q.options||q.choices));
+ return api.evidence(match?{...match,...q,visual:q.visual||match.visual,visualHtml:q.visualHtml||match.visualHtml}:q);
+}
+function replaceBlockedExamItem(state){
+ const index=state.deck.findIndex((q,i)=>i>state.index&&examEvidence(q).ok);
+ if(index<0)return false;
+ const blocked=state.deck[state.index];
+ state.technicalSkips=state.technicalSkips||[];state.technicalSkips.push({id:blocked.id,reason:'missing-visual',at:Date.now()});
+ const [next]=state.deck.splice(index,1);state.deck.splice(state.index,1,next);state.selected='';state.followupId='';
+ // The replacement moved from the unused deck; drop the blocked item, and
+ // retain the exact answered count, score and all previous questions.
+ return true;
+}
 function renderMixedExam(panel,focusTarget){
  if(!panel)return;
  const state=examRound();if(!state)return;
  saveExamRound(state);
  const q=state.deck[state.index];
+ const evidence=q?examEvidence(q):null;
  panel.replaceChildren();
  if(!q){panel.textContent='No valid mixed-section questions are currently available.';return}
  const heading=document.createElement('div');heading.className='majExamTop';
@@ -148,7 +167,18 @@ function renderMixedExam(panel,focusTarget){
  const results=Object.entries(state.skillResults||{}).filter(([,r])=>r&&Number.isInteger(r.missed)&&r.missed>0);
  if(results.length){const details=document.createElement('details');details.className='majExamReview';const summary=document.createElement('summary');summary.textContent='Skills to revisit · '+results.length;details.append(summary);for(const [skill,r] of results){const row=document.createElement('p');row.textContent=skill.replace(/-/g,' ')+' · '+r.missed+' missed · '+r.correct+' correct';details.append(row)}panel.append(details)}
  if(state.followupId===q.id){const note=document.createElement('p');note.textContent='Fresh follow-up · apply the skill you just reviewed to new evidence.';panel.append(note)}
- const prompt=document.createElement('h3');prompt.className='majExamPrompt';prompt.tabIndex=-1;prompt.textContent=q.prompt;panel.append(prompt);
+ const prompt=document.createElement('h3');prompt.className='majExamPrompt';prompt.tabIndex=-1;prompt.textContent=evidence.prompt||q.prompt;panel.append(prompt);
+ let evidenceHost=null;
+ if(evidence.ok&&evidence.html){evidenceHost=document.createElement('div');evidenceHost.className='majExamEvidence';evidenceHost.innerHTML=evidence.html;panel.append(evidenceHost)}
+ if(!state.submitted&&!evidence.ok){
+  const warning=document.createElement('section');warning.className='majExamFeedback';warning.setAttribute('role','alert');
+  const title=document.createElement('h4');title.textContent='Diagram unavailable · no penalty';
+  const message=document.createElement('p');message.textContent='This item cannot be graded until its required evidence is available. Your score and recorded answers are preserved.';
+  const replace=document.createElement('button');replace.type='button';replace.textContent='Replace question · no penalty';
+  replace.onclick=()=>{if(replaceBlockedExamItem(state)){renderMixedExam(panel,'prompt')}else{message.textContent='No verified unused replacement is available in this round. Your progress is preserved. Try checking the diagram again.'}};
+  const retry=document.createElement('button');retry.type='button';retry.textContent='Check diagram again';retry.onclick=()=>renderMixedExam(panel,'prompt');
+  warning.append(title,message,replace,retry);panel.append(warning);return;
+ }
  const form=document.createElement('div');form.className='majExamChoices';form.setAttribute('role','radiogroup');form.setAttribute('aria-label','Choose the best answer');
  (q.options||q.choices).forEach((choice,i)=>{
   const label=document.createElement('label');label.className='majExamChoice';
@@ -162,6 +192,8 @@ function renderMixedExam(panel,focusTarget){
   submit.onclick=()=>{
    if(!state.selected)return;
    if(state.submitted)return;
+   if(!examEvidence(q).ok){renderMixedExam(panel);return}
+   if(evidence.required){const visual=evidenceHost?.querySelector('svg,img,canvas,table');const rect=visual?.getBoundingClientRect();if(!rect||rect.width<=0||rect.height<=0||(visual.tagName==='IMG'&&(!visual.complete||!visual.naturalWidth))){const notice=document.createElement('p');notice.setAttribute('role','alert');notice.textContent='The diagram has not rendered. Nothing was scored. Check the diagram again before submitting.';panel.append(notice);return}}
    const skill=q.skill||q.lessonId;state.skillResults=state.skillResults||{};const record=state.skillResults[skill]||(state.skillResults[skill]={missed:0,correct:0});record[state.selected===q.answer?'correct':'missed']++;
    state.submitted=true;if(state.selected!==q.answer)queueExamFollowup(state,q);state.attempted++;if(state.selected===q.answer)state.correct++;
    // Do not award mastery for a single exam-style response. Keep a separate
