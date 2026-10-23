@@ -81,6 +81,74 @@ if(window.MajickRenderQueue?.register)window.MajickRenderQueue.register('room-se
 document.addEventListener('DOMContentLoaded',()=>{schedule()});
 // Reasoning Workshop is its own Study Realm destination. It shares the
 // Solution Engine and course data, but never mounts Study Hall content.
+const examState=new Map();
+function examQuestions(){
+ const banks=[window.MajickD772SharedQuestions?.questions||[],window.MajickD772PreassessmentDeepPractice?.questions||[]];
+ const ids=new Set();
+ return banks.flat().filter(q=>{
+  const choices=q.options||q.choices||[];
+  const lesson=String(q.lessonId||'');
+  const section=Number(String(q.section||'').match(/Section\\s*([123])/i)?.[1]||lesson.match(/d772-s([123])-/)?.[1]);
+  if(!section||choices.length!==4||!choices.includes(q.answer)||ids.has(q.id)||!q.why||!q.prompt)return false;
+  ids.add(q.id);return true;
+ }).map(q=>({...q,examSection:Number(String(q.section||'').match(/Section\\s*([123])/i)?.[1]||String(q.lessonId).match(/d772-s([123])-/)?.[1])}));
+}
+function examDeck(){
+ const by=[1,2,3].map(n=>examQuestions().filter(q=>q.examSection===n));
+ by.forEach(group=>{for(let i=group.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[group[i],group[j]]=[group[j],group[i]]}});
+ const deck=[];while(by.some(g=>g.length))for(const group of by)if(group.length)deck.push(group.shift());
+ return deck;
+}
+function renderMixedExam(panel){
+ if(!panel)return;
+ let state=examState.get('D772');
+ if(!state){state={deck:examDeck(),index:0,selected:'',submitted:false,correct:0,attempted:0};examState.set('D772',state)}
+ const q=state.deck[state.index];
+ panel.replaceChildren();
+ if(!q){panel.textContent='No valid mixed-section questions are currently available.';return}
+ const heading=document.createElement('div');heading.className='majExamTop';
+ const count=document.createElement('strong');count.textContent='Question '+(state.index+1)+' of '+state.deck.length;
+ const score=document.createElement('span');score.textContent=state.attempted+' answered · '+state.correct+' correct';
+ heading.append(count,score);panel.append(heading);
+ const prompt=document.createElement('h3');prompt.className='majExamPrompt';prompt.textContent=q.prompt;panel.append(prompt);
+ const form=document.createElement('div');form.className='majExamChoices';form.setAttribute('role','radiogroup');form.setAttribute('aria-label','Choose the best answer');
+ (q.options||q.choices).forEach((choice,i)=>{
+  const label=document.createElement('label');label.className='majExamChoice';
+  const radio=document.createElement('input');radio.type='radio';radio.name='majMixedExamAnswer';radio.value=choice;radio.checked=state.selected===choice;radio.disabled=state.submitted;
+  radio.onchange=()=>{state.selected=choice;renderMixedExam(panel)};
+  const span=document.createElement('span');span.textContent=String.fromCharCode(65+i)+'. '+choice;label.append(radio,span);form.append(label);
+ });panel.append(form);
+ const actions=document.createElement('div');actions.className='majExamActions';
+ if(!state.submitted){
+  const submit=document.createElement('button');submit.type='button';submit.textContent='Check answer';submit.disabled=!state.selected;
+  submit.onclick=()=>{
+   if(!state.selected)return;
+   state.submitted=true;state.attempted++;if(state.selected===q.answer)state.correct++;
+   // Do not award mastery for a single exam-style response. Keep a separate
+   // course-scoped review log for missed skills and instructor feedback.
+   try{
+    const key='majick-d772-mixed-exam-review-v1';
+    const rows=JSON.parse(localStorage.getItem(key)||'[]');
+    rows.push({id:q.id,lessonId:q.lessonId,correct:state.selected===q.answer,at:Date.now()});
+    localStorage.setItem(key,JSON.stringify(rows.slice(-300)));
+   }catch(_){}
+   renderMixedExam(panel);
+  };actions.append(submit);
+ }else{
+  const feedback=document.createElement('section');feedback.className='majExamFeedback';
+  const verdict=document.createElement('h4');verdict.textContent=state.selected===q.answer?'Correct · Well reasoned':'Review this reasoning';
+  const answer=document.createElement('p');answer.textContent='Correct answer: '+q.answer;
+  const why=document.createElement('p');why.textContent=q.why;
+  feedback.append(verdict,answer,why);
+  if(state.selected!==q.answer){const selected=document.createElement('p');selected.textContent='You chose: '+state.selected+'. Compare that choice with the deciding evidence in the explanation.';feedback.append(selected)}
+  const source=document.createElement('small');source.textContent=q.sourceLabel||'MAJICK ORIGINAL · OA-STYLE PRACTICE — NOT OFFICIAL WGU ITEMS';feedback.append(source);
+  panel.append(feedback);
+  const next=document.createElement('button');next.type='button';next.textContent=state.index===state.deck.length-1?'Start a fresh mixed round':'Next question →';
+  next.onclick=()=>{if(state.index===state.deck.length-1){state.deck=examDeck();state.index=0;state.attempted=0;state.correct=0}else state.index++;state.selected='';state.submitted=false;renderMixedExam(panel)};
+  actions.append(next);
+ }
+ panel.append(actions);
+}
 function renderReasoning(){
  if(window.S?.screen!=='reasoning')return;
  const root=document.getElementById('content');if(!root)return;
@@ -102,9 +170,12 @@ function renderReasoning(){
   const host=document.createElement('section');host.className='mjSolutionEngine';host.setAttribute('aria-label','Reasoning Workshop activities');activity.append(host);
   const about=document.createElement('section');about.className='mjReasoningAbout';about.hidden=true;
   about.innerHTML='<h3>Your reasoning practice</h3><p>Work through a scenario, identify what is known, choose a strategy, calculate or interpret, and explain your reasoning. The final transfer task checks independent understanding.</p><p>Guided steps support learning; they do not independently certify mastery.</p>';
-  const views=[{label:'✦ Mixed OA Practice',panel:activity},{label:'How it works',panel:about}];
+  const exam=document.createElement('section');exam.className='majMixedExam';exam.setAttribute('aria-label','Mixed D772 multiple-choice exam practice');
+  const views=[{label:'✦ Mixed OA Questions',panel:exam},{label:'Reasoning Steps',panel:activity},{label:'How it works',panel:about}];
+  activity.hidden=true;about.hidden=true;
   views.forEach(({label,panel},i)=>{const btn=document.createElement('button');btn.type='button';btn.textContent=label;btn.setAttribute('aria-pressed',String(i===0));btn.onclick=()=>{views.forEach((v,j)=>{v.panel.hidden=j!==i;tabs.children[j].setAttribute('aria-pressed',String(j===i))})};tabs.append(btn)});
-  page.append(header,tabs,activity,about);root.append(page);
+  page.append(header,tabs,exam,activity,about);root.append(page);
+  if(cid==='D772')renderMixedExam(exam);else exam.textContent='Mixed OA questions are currently available for D772 only.';
   page.dataset.practiceMode='mixed';
   root.dataset.majReasoningCourse=cid;
  }
