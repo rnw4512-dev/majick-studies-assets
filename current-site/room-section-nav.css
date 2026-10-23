@@ -67,3 +67,21 @@
  #content > .majickRoomSections button{flex:1 1 130px;max-width:100%;font-size:14px}
  #content > .majRoomActive{padding-inline:0;max-width:100%}
 }
+
+
+/* Focused mixed OA exam: one question per card, no topic labels until feedback. */
+.majMixedExam{padding:clamp(14px,3vw,28px);background:#2b1e36;border:1px solid #a88b65;border-radius:16px;color:#fff4e4;max-width:100%;margin-top:10px}
+.majExamTop{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;color:#eacb97;margin-bottom:20px}
+.majExamPrompt{font-size:clamp(19px,2vw,24px);line-height:1.5;white-space:pre-line;color:#fff4e4;margin:0 0 20px}
+.majExamChoices{display:grid;grid-template-columns:1fr;gap:10px}
+.majExamChoice{display:flex;align-items:flex-start;gap:14px;padding:14px 16px;background:#40304c;color:#fff4e4;border:1px solid #9e829f;border-radius:12px;cursor:pointer;line-height:1.4}
+.majExamChoice:has(input:checked){border:2px solid #f4d99e;background:#50345a}
+.majExamChoice input{flex:0 0 auto;margin-top:5px;accent-color:#e8c68b}
+.majExamActions{display:flex;justify-content:flex-end;gap:12px;margin-top:18px}
+.majExamActions button{min-height:46px;padding:10px 20px;border-radius:10px;border:1px solid #e3c68c;background:#e9d1a2;color:#291c35;font-weight:700;cursor:pointer}
+.majExamActions button:disabled{opacity:.6;cursor:not-allowed}
+.majExamFeedback{margin-top:20px;padding:18px;background:#f6ecdb;color:#291d34;border-radius:12px;line-height:1.55}
+.majExamFeedback :is(h4,p,small){color:#291d34!important;-webkit-text-fill-color:#291d34!important}
+.majExamFeedback h4{margin:0 0 10px}
+.majExamFeedback p{margin:8px 0}
+@media(max-width:650px){.majMixedExam{padding:14px}.majExamChoice{padding:12px}.majExamActions button{width:100%}}
