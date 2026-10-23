@@ -182,3 +182,12 @@ Every change must append **date / area / commit or PR / what changed / how / act
 - Checked protected original `sanctuary/assets/motion/luna-walk-1.png`: same Git blob SHA (`e96b4dc4c42457a33e0bbe700ef5dac90eb5321a`) on main and PR #144. Full 33-image integrity audit still required.
 - Next repair: locate or provide approved six-Guardian stage/action art, install exact per-stage files, map runtime animation to those frames, then run strict completeness and actual Phaser browser movement tests. Do not fabricate approvals or replace portraits with fake walking frames.
 - Deployment: blocked. No production app changes made in this board-only commit.
+
+## 2026-10-22 — Expanded mixed D772 bank
+- Added 24 supplemental four-option questions (three cases for each of eight skills) in the existing shared bank. Fresh datasets cover weighted means, IQR/outliers, two-order draws, complements, conditional denominators, expected net value, nonresponse bias and confounding. Original WGU source records are unchanged.
+- Reasoning Workshop now promotes an unseen remaining same-skill item after a miss (lesson fallback for legacy items), preserving the mixed deck and recording skill/revision in the existing review log. It never reuses an already attempted item within the round or grants mastery.
+- Changed: current-site/d772-shared-oa-questions.js, room-section-nav.js, source-manifest.json; pages-release/current/test-d772-bank-expansion.cjs.
+- Verified: new bank/routing checks, preassessment preservation and cross-room continuity. Canonical build and release checks recorded in the session result. Full rendered browser certification remains pending.
+- Protected: academic save owners, XP/crystals, Guardian identities and Sanctuary/motion assets untouched. No save migration/reset.
+- Deployment: review branch only; not a certified stable release. Next: rendered wrong-answer → fresh follow-up checks at 390/820/1366 and publish through the existing workflow after release gates.
+- Recovery: revert this scoped commit and rebuild; do not clear learner storage. No manual user steps.
