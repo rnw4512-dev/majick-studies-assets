@@ -109,7 +109,16 @@ if(st.exhausted||!ex){const picker=host.querySelector('.mjSeTaskSelect');host.in
 const input=(id,label,placeholder='Your answer')=>'<label class="mjSeLabel">'+esc(label)+'<input data-field="'+id+'" value="'+esc(a[id]||'')+'" placeholder="'+esc(placeholder)+'" autocomplete="off"></label>';
 if(task.kind==='math'){
  const known=ex.known||ex.numbers?.join(', ')||'';
- if(step===0)body='<p><b>Scenario:</b> '+esc(known)+'</p>'+input('known','Copy the known values or counts')+input('unknown','What are you finding?');
+ if(step===0){
+  if(task.id==='mean'){
+   const sum=ex.numbers.reduce((total,n)=>total+n,0),count=ex.numbers.length;
+   const options=(id,values)=>'<select data-field="'+id+'"><option value="">Choose a value</option>'+[...new Set(values)].map(v=>'<option value="'+esc(v)+'" '+(String(a[id]??'')===String(v)?'selected':'')+'>'+esc(v)+'</option>').join('')+'</select>';
+   body='<p><b>Scenario:</b> '+esc(known)+'</p><p>Identify the total and number of observations before choosing the statistic. You will calculate its value in a later step.</p>'+
+    '<label class="mjSeLabel">Sum of observations'+options('sum',[sum,count,ex.answer,Math.max(...ex.numbers)])+'</label>'+
+    '<label class="mjSeLabel">Number of observations'+options('count',[count,sum,ex.answer])+'</label>'+
+    '<label class="mjSeLabel">Which statistic are you finding?'+options('statistic',['mean','median','mode','range'])+'</label>';
+  }else body='<p><b>Scenario:</b> '+esc(known)+'</p>'+input('known','Copy the known values or counts')+input('unknown','What are you finding?');
+ }
  if(step===1)body='<p>Choose the formula before substituting values.</p>'+task.alternatives.map((v,i)=>'<button data-choice="'+i+'" aria-pressed="'+(a.formula===v)+'">'+esc(v)+'</button>').join('');
  if(step===2)body='<p>Fill every formula slot. Select the correct numerators, denominators, or totals.</p><div class="mjSeGrid">'+ex.slots.map((v,i)=>'<label class="mjSeLabel">'+esc(task.slotLabels?.[i]||(task.id==='probability'?['First favorable','First total','Second favorable','Second total'][i]:'Formula slot '+(i+1)))+'<select data-field="slot'+i+'"><option value="">Choose a value</option>'+[...new Set([...ex.slots,0,1,...(ex.numbers||[])])].sort((a,b)=>a-b).map(n=>'<option value="'+n+'" '+(String(a['slot'+i])===String(n)?'selected':'')+'>'+n+'</option>').join('')+'</select></label>').join('')+'</div>';
  if(step===3)body='<p>Calculate the result using your completed formula. Enter a number or decimal.</p>'+input('result','Calculated value');
@@ -162,7 +171,7 @@ host.querySelector('[data-clear]').onclick=()=>{
   else if(step===3)delete a.total;
   else delete a.meaning;
  }else{
-  const fields={0:['known','unknown'],1:['formula'],2:ex.slots.map((_,i)=>'slot'+i),3:['result'],4:['meaning'],5:['transfer']};
+  const fields={0:task.id==='mean'?['sum','count','statistic','known','unknown']:['known','unknown'],1:['formula'],2:ex.slots.map((_,i)=>'slot'+i),3:['result'],4:['meaning'],5:['transfer']};
   for(const key of fields[step]||[])delete a[key];
  }
  st.feedback='Answer cleared. Choose a new response, then check again.';
@@ -171,7 +180,7 @@ host.querySelector('[data-clear]').onclick=()=>{
 host.querySelector('[data-reset]').onclick=()=>{STATES.set(host,newWorkshopState(task,st));saveWorkshopState(task,STATES.get(host));ACTIVE_STATES.set(window.S.activeCourse+':'+task.id,STATES.get(host));render(host,task)};
 host.querySelector('[data-hint]')?.addEventListener('click',()=>{st.hint=true;render(host,task)});
 host.querySelector('[data-check]').onclick=()=>{let good=false,reason='';
- if(task.kind==='math'){if(step===0)good=knownsValid(task,ex,a.known,a.unknown);else if(step===1)good=a.formula===task.formula;else if(step===2)good=ex.slots.every((v,i)=>numeric(a['slot'+i],v));else if(step===3||step===5)good=numeric(a[step===5?'transfer':'result'],ex.answer);else {const review=reasoningCheck(task,ex,a.meaning);good=review.ok;reason=review.feedback}if(step!==4)reason=step===1&&!good?workshopMethodFeedback(task,a.formula):ex.why}
+ if(task.kind==='math'){if(step===0)good=task.id==='mean'?(numeric(a.sum,ex.numbers.reduce((total,n)=>total+n,0))&&numeric(a.count,ex.numbers.length)&&String(a.statistic||'').toLowerCase()==='mean'):knownsValid(task,ex,a.known,a.unknown);else if(step===1)good=a.formula===task.formula;else if(step===2)good=ex.slots.every((v,i)=>numeric(a['slot'+i],v));else if(step===3||step===5)good=numeric(a[step===5?'transfer':'result'],ex.answer);else {const review=reasoningCheck(task,ex,a.meaning);good=review.ok;reason=review.feedback}if(step!==4)reason=step===1&&!good?workshopMethodFeedback(task,a.formula):ex.why}
  else if(task.kind==='graph'){if(step===0)good=numeric(a.identified,ex.freq.length);else if(step===1||step===5)good=ex.freq.every((v,i)=>numeric(a['bar'+i],v));else if(step===2)good=String(a.mode||'').trim()===ex.mode;else if(step===3)good=numeric(a.total,ex.total);else {const review=reasoningCheck(task,ex,a.meaning);good=review.ok;reason=review.feedback}if(step!==4)reason=ex.interpret}
  else{if(step===0){good=window.S.activeCourse==='D772'?String(a.focus||'')===(/surveys only|only reaches|only staff|only families|one school|evening event|downtown station|gym website|volunteer/i.test(ex.prompt||'')?'Selection bias':'Association is not causation'):!!a.focus}else if(step===3||step===4){const text=String(a.meaning||'');const scenario=String(ex.prompt||'');const causal=/observational|caused|causation|correlation|association/i.test(scenario),sampling=/surveys only|samples only|sample|population|one school|one homeroom|only staff|only families|only reaches|evening event|downtown station|gym website|volunteer|commuters at one/i.test(scenario);good=!!text&&(causal?/observational study can show association|evidence supports a cautious conclusion/i.test(text):sampling?/sampled group differ|selection bias and limit generalizability/i.test(text):window.S.activeCourse==='D756'&&/family and student input|document team decisions/i.test(text));reason=good?'The selected justification matches the evidence and the WGU concept.': 'Choose a justification that matches this specific study design or sampling limitation. Association alone does not establish causation.'}else if(step===1)good=a.order?.[0]===ex.correct[0];else good=JSON.stringify(a.order)===JSON.stringify(ex.correct);if(step!==3&&step!==4)reason=ex.reason}
  if(!good){st.error=true;if(independent)st.transferHintUsed=true;st.feedback=task.kind==='sequence'&&step===0&&window.S.activeCourse==='D772'?'Not yet. This scenario calls for recognizing selection bias or limits of observational inference. Identify the specific source of the problem before moving on.':((step===4|| (task.kind==='sequence'&&step===3))?reason:'Incorrect at step '+(step+1)+'. '+(reason||ex.why||ex.interpret||ex.reason||'Review the scenario and identify which evidence supports the answer.')+' Clear or revise your answer, then select Resubmit answer.');render(host,task);return}
