@@ -191,3 +191,17 @@ Every change must append **date / area / commit or PR / what changed / how / act
 - Protected: academic save owners, XP/crystals, Guardian identities and Sanctuary/motion assets untouched. No save migration/reset.
 - Deployment: review branch only; not a certified stable release. Next: rendered wrong-answer → fresh follow-up checks at 390/820/1366 and publish through the existing workflow after release gates.
 - Recovery: revert this scoped commit and rebuild; do not clear learner storage. No manual user steps.
+
+### Publication verified — PR #158
+- Merged as 5f76056eb59b739879b5764f6b58df868d2bff6a. Published development build aa36e558a5a47c04 at https://rnw4512-dev.github.io/majick-studies-assets/.
+- Live release.json and both changed JavaScript SHA256 values match the tested artifact. Actions run 39879455700 completed its live-verification step successfully (overall run later marked cancelled).
+- Actual live browser: D772 selected and retained after reload; Reasoning Workshop displays 60 mixed items. Wrong answer shows worked feedback; Next opens a distinct 160-adult case after a 140-adult case, marked Fresh follow-up, with 1 answered retained.
+- Development update only: full three-width stable certification remains pending.
+
+## 2026-10-22 — Saved mixed practice and reasoning transfer
+- Mixed exam round now lives in the existing D772 progress owner: question order/snapshots, selection, submitted feedback, score and queued follow-up survive save/reload and course switching. Validate round shape before resuming; corrupted rounds restart without altering other academic records. Storage failures show a keep-page-open message.
+- Added Clear selection, preserved radio focus by avoiding full rerender on selection, blocked duplicate submissions, and a collapsed missed-skills summary. Formative work still cannot award mastery or XP.
+- Diversified research follow-ups into online nonresponse, selective customer response, randomized volunteer treatment and fire-severity confounding; added reasoning guidance for every distractor in the 24-item expansion.
+- Changed existing room-section-nav.js/shared question bank plus manifest. Added test-d772-exam-resume.cjs; existing bank, source, cross-room and adaptive checks rerun.
+- Save tests cover selection/submission reload, course isolation, immutable in-progress answer snapshots, invalid round recovery and storage failure. Full responsive browser certification pending; development release only.
+- Recovery: revert this scoped change and rebuild without clearing learner saves. Existing WGU records, Guardian/Sanctuary/motion assets, XP/crystals and mastery owners untouched.
