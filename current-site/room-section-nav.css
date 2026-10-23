@@ -85,3 +85,18 @@
 .majExamFeedback h4{margin:0 0 10px}
 .majExamFeedback p{margin:8px 0}
 @media(max-width:650px){.majMixedExam{padding:14px}.majExamChoice{padding:12px}.majExamActions button{width:100%}}
+
+/* Small study-comfort pass: compact progress, stable choice sizing, clear focus. */
+.majExamProgress{display:block;width:100%;height:7px;margin:0 0 10px;accent-color:#ebcc94}
+.majExamSaveStatus{display:block;line-height:1.45;color:#f4e4d0;margin-bottom:14px}
+.majExamReview{margin:10px 0 14px;border:1px solid #a88b65;border-radius:9px;padding:9px 12px;color:#fff4e4}
+.majExamReview summary{cursor:pointer;font-weight:700;min-height:28px;line-height:1.7}
+.majExamReview p{margin:7px 0;line-height:1.4;color:#fff4e4}
+.majExamChoice{border-width:2px;min-width:0}
+.majExamChoice span{min-width:0;overflow-wrap:anywhere}
+.majExamChoice:focus-within{outline:3px solid #ffe3a6;outline-offset:3px}
+.majExamActions{flex-wrap:wrap}
+.majExamActions button:focus-visible,.majExamReview summary:focus-visible{outline:3px solid #ffe3a6;outline-offset:3px}
+.majExamActions button:disabled{opacity:1;background:#5c4b62;color:#eee1d1;border-color:#a58b9e}
+.majExamFeedback h4:focus,.majExamPrompt:focus{outline:2px solid currentColor;outline-offset:5px;border-radius:3px}
+@media(max-width:650px){.majExamActions{flex-direction:column;gap:9px}.majExamActions button{width:100%}.majExamTop{margin-bottom:10px}}

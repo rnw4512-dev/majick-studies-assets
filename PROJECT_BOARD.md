@@ -205,3 +205,15 @@ Every change must append **date / area / commit or PR / what changed / how / act
 - Changed existing room-section-nav.js/shared question bank plus manifest. Added test-d772-exam-resume.cjs; existing bank, source, cross-room and adaptive checks rerun.
 - Save tests cover selection/submission reload, course isolation, immutable in-progress answer snapshots, invalid round recovery and storage failure. Full responsive browser certification pending; development release only.
 - Recovery: revert this scoped change and rebuild without clearing learner saves. Existing WGU records, Guardian/Sanctuary/motion assets, XP/crystals and mastery owners untouched.
+
+### Live verification — PR #159
+- Merged 275e80d58960d9612824bc70df632e5ec1810a3f; Pages run 39881423375 succeeded, including live release verification.
+- Live browser confirmed selection survives reload, submitted feedback/score survives reload, fresh same-skill follow-up uses a different scenario, Clear selection removes the choice, and D755 → D772 restores Question 2 of 60 with 1 answered and no selection.
+- Build 846768f733883d4c; published development update. Three-width stable certification and broader Guardian/learning enhancement backlog remain open.
+
+## 2026-10-22 — Small Reasoning Workshop comfort improvements
+- Added a compact accessible answered-question progress bar. Clear selection returns keyboard focus to choices; submitting focuses the feedback heading; advancing focuses the new prompt without forced scrolling.
+- Answer selection no longer changes border thickness/layout. Added visible focus outlines, readable disabled buttons, neatly stacked mobile actions, and compact styling for save status/missed-skills details.
+- Tightened invalid submitted-round recovery and save-unavailable reporting; null review rows no longer break rendering. Existing D772 save/review owners and source questions remain intact.
+- Files: room-section-nav.js/.css and source-manifest.json. Existing resume/bank checks passed; canonical build and release checks run before publishing. Full three-width stable certification remains pending.
+- Guardian/Sanctuary/XP/crystals unchanged. Rollback is a scoped revert and rebuild; never clear learner storage.

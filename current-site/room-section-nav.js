@@ -86,6 +86,7 @@ document.addEventListener('DOMContentLoaded',()=>{schedule()});
 function examProgress(){return window.S?.activeCourse==='D772'?window.S?.progress?.D772:null}
 function validExamRound(state){
  if(!state||state.version!==1||!Array.isArray(state.deck)||!state.deck.length||state.deck.length>500)return false;
+ if(typeof state.submitted!=='boolean'||(state.submitted&&!state.selected))return false;
  if(!Number.isInteger(state.index)||state.index<0||state.index>=state.deck.length)return false;
  if(!Number.isInteger(state.attempted)||!Number.isInteger(state.correct)||state.correct<0||state.correct>state.attempted)return false;
  if(state.attempted!==state.index+(state.submitted?1:0))return false;
@@ -101,7 +102,7 @@ function examRound(){
 }
 function saveExamRound(state){
  if(examProgress()?.mixedExamRound!==state)return false;
- try{if(typeof save!=='function')return false;save();state.saveFailed=false;return true}catch(_){state.saveFailed=true;return false}
+ try{if(typeof save!=='function')throw Error('Save unavailable');state.saveFailed=false;save();return true}catch(_){state.saveFailed=true;return false}
 }
 function examQuestions(){
  const banks=[window.MajickD772SharedQuestions?.questions||[],window.MajickD772PreassessmentDeepPractice?.questions||[]];
@@ -131,7 +132,7 @@ function examDeck(){
  const deck=[];while(by.some(g=>g.length))for(const group of by)if(group.length)deck.push(group.shift());
  return deck;
 }
-function renderMixedExam(panel){
+function renderMixedExam(panel,focusTarget){
  if(!panel)return;
  const state=examRound();if(!state)return;
  saveExamRound(state);
@@ -142,11 +143,12 @@ function renderMixedExam(panel){
  const count=document.createElement('strong');count.textContent='Question '+(state.index+1)+' of '+state.deck.length;
  const score=document.createElement('span');score.textContent=state.attempted+' answered · '+state.correct+' correct';
  heading.append(count,score);panel.append(heading);
- const saved=document.createElement('small');saved.textContent=state.saveFailed?'Saving is unavailable. Keep this page open; your current work remains here.':'Your place and answers are saved with D772. Practice does not award independent mastery.';saved.setAttribute('role','status');panel.append(saved);
- const results=Object.entries(state.skillResults||{}).filter(([,r])=>r.missed>0);
- if(results.length){const details=document.createElement('details');const summary=document.createElement('summary');summary.textContent='Skills to revisit · '+results.length;details.append(summary);for(const [skill,r] of results){const row=document.createElement('p');row.textContent=skill.replace(/-/g,' ')+' · '+r.missed+' missed · '+r.correct+' correct';details.append(row)}panel.append(details)}
+ const progress=document.createElement('progress');progress.className='majExamProgress';progress.max=state.deck.length;progress.value=state.attempted;progress.setAttribute('aria-label',state.attempted+' of '+state.deck.length+' questions answered');panel.append(progress);
+ const saved=document.createElement('small');saved.className='majExamSaveStatus';saved.textContent=state.saveFailed?'Saving is unavailable. Keep this page open; your current work remains here.':'Your place and answers are saved with D772. Practice does not award independent mastery.';saved.setAttribute('role','status');panel.append(saved);
+ const results=Object.entries(state.skillResults||{}).filter(([,r])=>r&&Number.isInteger(r.missed)&&r.missed>0);
+ if(results.length){const details=document.createElement('details');details.className='majExamReview';const summary=document.createElement('summary');summary.textContent='Skills to revisit · '+results.length;details.append(summary);for(const [skill,r] of results){const row=document.createElement('p');row.textContent=skill.replace(/-/g,' ')+' · '+r.missed+' missed · '+r.correct+' correct';details.append(row)}panel.append(details)}
  if(state.followupId===q.id){const note=document.createElement('p');note.textContent='Fresh follow-up · apply the skill you just reviewed to new evidence.';panel.append(note)}
- const prompt=document.createElement('h3');prompt.className='majExamPrompt';prompt.textContent=q.prompt;panel.append(prompt);
+ const prompt=document.createElement('h3');prompt.className='majExamPrompt';prompt.tabIndex=-1;prompt.textContent=q.prompt;panel.append(prompt);
  const form=document.createElement('div');form.className='majExamChoices';form.setAttribute('role','radiogroup');form.setAttribute('aria-label','Choose the best answer');
  (q.options||q.choices).forEach((choice,i)=>{
   const label=document.createElement('label');label.className='majExamChoice';
@@ -170,12 +172,12 @@ function renderMixedExam(panel){
     rows.push({id:q.id,lessonId:q.lessonId,skill:q.skill||q.lessonId,revision:q.revision||'original',correct:state.selected===q.answer,at:Date.now()});
     localStorage.setItem(key,JSON.stringify(rows.slice(-300)));
    }catch(_){}
-   renderMixedExam(panel);
+   renderMixedExam(panel,'feedback');
   };actions.append(submit);
-  const clear=document.createElement('button');clear.type='button';clear.textContent='Clear selection';clear.onclick=()=>{if(state.submitted)return;state.selected='';saveExamRound(state);renderMixedExam(panel)};actions.append(clear);
+  const clear=document.createElement('button');clear.type='button';clear.textContent='Clear selection';clear.onclick=()=>{if(state.submitted)return;state.selected='';saveExamRound(state);renderMixedExam(panel,'choice')};actions.append(clear);
  }else{
   const feedback=document.createElement('section');feedback.className='majExamFeedback';
-  const verdict=document.createElement('h4');verdict.textContent=state.selected===q.answer?'Correct · Well reasoned':'Review this reasoning';
+  const verdict=document.createElement('h4');verdict.tabIndex=-1;verdict.textContent=state.selected===q.answer?'Correct · Well reasoned':'Review this reasoning';
   const answer=document.createElement('p');answer.textContent='Correct answer: '+q.answer;
   const why=document.createElement('p');why.textContent=q.why;
   if(state.selected!==q.answer&&q.distractorRationales?.[state.selected])why.textContent+=' '+q.distractorRationales[state.selected];
@@ -184,10 +186,11 @@ function renderMixedExam(panel){
   const source=document.createElement('small');source.textContent=q.sourceLabel||'MAJICK ORIGINAL · OA-STYLE PRACTICE — NOT OFFICIAL WGU ITEMS';feedback.append(source);
   panel.append(feedback);
   const next=document.createElement('button');next.type='button';next.textContent=state.index===state.deck.length-1?'Start a fresh mixed round':'Next question →';
-  next.onclick=()=>{if(!state.submitted)return;if(state.index===state.deck.length-1){examProgress().mixedExamRound=newExamRound()}else{state.index++;state.selected='';state.submitted=false}renderMixedExam(panel)};
+  next.onclick=()=>{if(!state.submitted)return;if(state.index===state.deck.length-1){examProgress().mixedExamRound=newExamRound()}else{state.index++;state.selected='';state.submitted=false}renderMixedExam(panel,'prompt')};
   actions.append(next);
  }
  panel.append(actions);
+ if(focusTarget){const target=focusTarget==='feedback'?panel.querySelector('.majExamFeedback h4'):focusTarget==='choice'?panel.querySelector('input[type=radio]'):prompt;target?.focus({preventScroll:true})}
 }
 function renderReasoning(){
  if(window.S?.screen!=='reasoning')return;
