@@ -26,7 +26,12 @@ function refresh(){
   const rows=nodes.map((el,i)=>{
    const h=el.querySelector('h2,h3,[role="heading"]');
    const heading=h?.textContent?.replace(/\\s+/g,' ').trim();
-   const label=(heading||el.getAttribute('aria-label')||el.dataset.tabLabel||
+   let roomLabel='';
+   if(room==='companions'){
+    roomLabel=el.matches('.phase4Wrap')?'Sanctuary':el.matches('.lfRoster')?'Your Guardians':el.matches('.majEggIncubator')?'Egg Incubator':'';
+    if(!roomLabel&&el.matches('.companionGrid')){let before=el.previousElementSibling;while(before&&!before.matches('h2,h3'))before=before.previousElementSibling;roomLabel=before?.textContent?.trim()||''}
+   }
+   const label=(roomLabel||heading||el.getAttribute('aria-label')||el.dataset.tabLabel||
      (el.classList.contains('mjSolutionEngine')?'Reasoning practice':'Activity '+(i+1))).slice(0,52);
    return {el,label,i};
   });
