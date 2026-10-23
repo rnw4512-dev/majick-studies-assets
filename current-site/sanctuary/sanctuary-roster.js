@@ -6,6 +6,64 @@
  const ORIGINAL=new Set(['luna','ember','nova','mallow']);
  const STAGES=['new-bond','apprentice','guardian','ascendant','celestial'];
  const MOVES={luna:'lunaWalk',ember:'emberWalk',nova:'novaRun',mallow:'mallowHop'};
+
+ // Genuine action-frame support. Files are optional until approved PNGs are committed.
+ // Do not synthesize walking/sleeping by swapping portraits or overwrite protected originals.
+ const ACTION_FRAMES={
+   velora:{idle:['idle'],walk:['walk-1','walk-2'],play:['hop','paw'],sleep:['sleep']},
+   cascade:{idle:['idle'],walk:['walk-1','walk-2'],play:['hop','wave'],sleep:['sleep']},
+   solstice:{idle:['idle'],walk:['walk-1','walk-2'],play:['pounce','pounce2','pounce3'],sleep:['sleep']},
+   aurelia:{idle:['idle'],walk:['hop-1','hop-2'],play:['fly-1','fly-2'],sleep:['sleep']}
+ };
+ const FRAME_ROOT='../assets/familiars/action_frames/';
+ function frameKey(g,action,index){return 'majick-action-'+canon(g)+'-'+action+'-'+index}
+ function framePaths(g,action){return (ACTION_FRAMES[canon(g)]?.[action]||[]).map(name=>FRAME_ROOT+canon(g)+'-'+name+'.png')}
+ function frameAvailable(scene,g,action){return framePaths(g,action).every((_,i)=>scene.textures.exists(frameKey(g,action,i)))}
+ function showPaintedFrame(scene,g,pet,action,index=0){
+   if(!pet?.active||!frameAvailable(scene,g,action))return false;
+   const key=frameKey(g,action,index%framePaths(g,action).length);
+   if(!scene.textures.exists(key))return false;
+   const previousHeight=Math.max(1,pet.displayHeight||pet.height||1);
+   pet.setTexture(key);
+   pet.setScale(Math.min(.7,Math.max(.15,previousHeight/Math.max(1,pet.height))));
+   pet.setData('v3351BaseScaleX',Math.abs(pet.scaleX));
+   pet.setData('v3351BaseScaleY',Math.abs(pet.scaleY));
+   pet.setData('majickPaintedAction',action);
+   return true;
+ }
+ function stopPaintedFrames(scene,pet){
+   const timer=pet?.getData?.('majickFrameTimer');
+   if(timer){timer.remove(false);pet.setData('majickFrameTimer',null)}
+ }
+ function paintedAction(scene,g,pet,action){
+   stopPaintedFrames(scene,pet);
+   if(!frameAvailable(scene,g,action))return false;
+   let index=0;
+   showPaintedFrame(scene,g,pet,action,index);
+   const count=framePaths(g,action).length;
+   if(count>1){
+     const timer=scene.time.addEvent({delay:action==='walk'?175:260,loop:true,callback:()=>{
+       if(!pet.active){timer.remove(false);return}
+       showPaintedFrame(scene,g,pet,action,++index%count);
+     }});
+     pet.setData('majickFrameTimer',timer);
+   }
+   return true;
+ }
+ function prepareActionFrames(scene,g){
+   if(!ACTION_FRAMES[canon(g)])return;
+   scene.vMajickActionLoading=scene.vMajickActionLoading||new Set();
+   for(const action of Object.keys(ACTION_FRAMES[canon(g)])){
+     framePaths(g,action).forEach((url,i)=>{
+       const key=frameKey(g,action,i);
+       if(scene.textures.exists(key)||scene.vMajickActionLoading.has(key))return;
+       scene.vMajickActionLoading.add(key);
+       scene.load.image(key,url);
+     });
+   }
+   if(scene.load.isLoading())return;
+   scene.load.start();
+ }
  const TOYS={'starter-ribbon-toy':'🎐','comet-ball':'◉','celestial-feather-wand':'✧','moonflower-plush':'❀','rune-puzzle':'◇','moonvine-plush':'❀','ribbon-comet':'🎐','crystal-bubble-orb':'◌','strategy-rune-tokens':'♟','sunburst-ball':'☀','velvet-moon-cushion':'☾'};
  function roster(scene){return Array.isArray(scene?.v3317CareState?.roster)?scene.v3317CareState.roster:[]}
  function stage(g,scene){
@@ -80,6 +138,7 @@
  function stopDynamicMotion(scene,pet){
    if(!pet)return;
    try{scene.tweens.killTweensOf(pet)}catch(_){}
+   stopPaintedFrames(scene,pet);
    resetDynamicPose(pet);
  }
  function idleStyle(g){
@@ -97,6 +156,7 @@
    const pet=scene.v3348Sprites?.[g.petId];
    if(!pet?.active||scene.editMode)return false;
    const profile=motionProfile(g),behavior=individualBehavior(g),b=baseScale(pet);
+   if(paintedAction(scene,g,pet,'idle'))return true;
    let style=idleStyle(g);
    if(style==='breathing'){
      style=behavior.idleBias===0?'watchful-tilt':behavior.idleBias===1?'soft-bob':'cozy-sway';
@@ -201,6 +261,7 @@
    const b=baseScale(pet);
    stopDynamicMotion(scene,pet);
    pet.setData?.('v3351MotionState',action);
+   if((action==='sleep'||action==='play')&&paintedAction(scene,g,pet,action))return true;
    if(action==='sleep'){
      pet.setData?.('v3353SleepState','sleeping');
      scene.tweens.add({targets:pet,angle:-5,scaleY:b.sy*.9,scaleX:b.sx*1.05,alpha:.88,duration:850,yoyo:true,repeat:1,ease:'Sine.inOut',onComplete:()=>{
@@ -267,6 +328,7 @@
    pet.setInteractive({useHandCursor:true});pet.on('pointerup',()=>{if(!scene.editMode)scene.openGuardianCarePanel?.(g.petId)});
    pet.setData('guardianId',g.petId);pet.setData('guardianName',meta.name||g.name);pet.setData('guardianType',type);pet.v3350Texture=key;
    rememberBaseMotion(pet);
+   prepareActionFrames(scene,g);
    scene.v3348Sprites[g.petId]=pet;scene.v3348PetById[g.petId]=pet;
    if(!scene[type]||!scene[type].active)scene[type]=pet;
    scene.v3320RefreshGuardianLabels?.(scene.v3317CareState);
@@ -323,7 +385,8 @@
    const ty=Math.max(430,Math.min(h-135,pet.y+(Math.random()-.5)*230*behavior.roamScale));
    const duration=(2000+Math.random()*1700)/(profile.pace*behavior.paceScale);
    pet.setFlipX(tx<pet.x);pet.setData?.('v3351MotionState','walking');
-   const pulse=this.tweens.add({
+   const painted=paintedAction(this,g,pet,'walk');
+   const pulse=painted?null:this.tweens.add({
      targets:pet,
      scaleX:b.sx*(1+profile.squash),
      scaleY:b.sy*(1-profile.squash),
@@ -335,6 +398,7 @@
    });
    this.tweens.add({targets:pet,x:tx,y:ty,duration,ease:'Sine.inOut',onComplete:()=>{
      try{pulse?.stop?.()}catch(_){}
+     stopPaintedFrames(this,pet);
      if(!pet.active)return;
      resetDynamicPose(pet);
      idleDynamicGuardian(this,g);
@@ -384,9 +448,11 @@
    stopDynamicMotion(this,pet);pet.setFlipX(Number(p.x)<pet.x);
    const profile=motionProfile(g),b=baseScale(pet);
    pet.setData?.('v3351MotionState','walking-to-care');
-   const pulse=this.tweens.add({targets:pet,scaleX:b.sx*(1+profile.squash),scaleY:b.sy*(1-profile.squash),angle:pet.flipX?-profile.tilt:profile.tilt,duration:230,yoyo:true,repeat:-1,ease:'Sine.inOut'});
+   const painted=paintedAction(this,g,pet,'walk');
+   const pulse=painted?null:this.tweens.add({targets:pet,scaleX:b.sx*(1+profile.squash),scaleY:b.sy*(1-profile.squash),angle:pet.flipX?-profile.tilt:profile.tilt,duration:230,yoyo:true,repeat:-1,ease:'Sine.inOut'});
    this.tweens.add({targets:pet,x:Number(p.x)+50,y:Number(p.y)-25,duration:2200/profile.pace,ease:'Sine.inOut',onComplete:()=>{
      try{pulse?.stop?.()}catch(_){}
+     stopPaintedFrames(this,pet);
      resetDynamicPose(pet);
      if(bubble)this.showPetMessage?.(pet,bubble,'#e7d2f5');
      this.v3342RecordUse?.(g.type,typeof target==='string'?target:'personal-nook');
