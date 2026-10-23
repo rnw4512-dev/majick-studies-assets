@@ -652,3 +652,11 @@ Additional live checking found Learn Mode also reopening its default classroom a
 - Versioned plans preserve already-paused five-stage repairs. Source records, saved round order, account balances, Guardians, Sanctuary and protected assets are unchanged. Blank/missing inputs cannot be treated as zero.
 - Verification: all 60 eligible items exercise first-miss routing and complete both examples; finite formula values, blank rejection, save/reload, legacy-plan retention, independent transfer isolation and existing regression/release gates checked. Full responsive browser certification pending; development update only.
 - Claude handoff: review current-site/solution-engine.js reconstructionPlan and learning-continuity.js practiceAnswer/reconstructionCheck first. Verify the first-miss → similar guided example → second hands-on scenario → fresh independent route at all three widths; do not clear learner storage or add a second academic owner. Rollback by scoped revert/rebuild.
+
+### Live confirmation — PR #164
+- Merged 09b6a204f2627840924e6effbcf616c115c8dc94; development build 07c8f515ba83a5aa. Pages run 40024203722 passed all mandatory gates and live verification.
+- Live browser verified: one complement mistake → similar 0.2 / 3-sensor guided case → field-specific correction → saved step and numeric drafts after reload → second 0.3 / 2-sensor hands-on case → all eight verified stages → fresh independent 0.4 / 3-sensor case. Mixed score remained 4 answered / 1 correct throughout guided work. Full three-width stable certification remains pending.
+
+## 2026-10-23 — Guided formula number dropdowns (development)
+- Replaced guided reconstruction numeric typing with labeled dropdowns populated with scenario numbers, earlier verified quantities and all values needed for the current formula/calculation step. Blank prompt requires a deliberate selection; existing saved numeric drafts are retained, including previously typed values. Both similar and second hands-on examples use the same existing renderer/state owner.
+- Extended existing all-60-item regression to assert every expected field value appears in its dropdown. Preserved guided/independent separation, course/account/Guardian state and paused repairs. Updated source hash. Targeted checks and canonical build run; full three-width stable certification remains pending.
