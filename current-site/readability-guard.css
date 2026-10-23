@@ -308,3 +308,16 @@ body.majickCampus #content .v342Repair [data-repair-feedback],
 #content .v342Repair [data-repair-feedback]{
  color:#253b2f!important;-webkit-text-fill-color:#253b2f!important;
 }
+
+/* Connected probability: concise WGU-style selection instead of a long
+   free-entry worksheet. The model and independent grading remain intact. */
+#connectedProbability .connectedFields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 16px;margin:14px 0}
+#connectedProbability .connectedFields label{display:flex;flex-direction:column;gap:7px;min-width:0;line-height:1.35}
+#connectedProbability .connectedFields select{width:100%;min-height:46px;padding:10px 12px;border:1px solid #a88cba;border-radius:9px;background:#24152e;color:#fff5e8;-webkit-text-fill-color:#fff5e8;opacity:1}
+#connectedProbability .connectedOptionalWork,#connectedProbability .connectedPathMenu{border:1px solid #9b7b9f;border-radius:12px;padding:10px 14px;margin:12px 0;background:#302039;color:#fff2df}
+#connectedProbability .connectedOptionalWork summary,#connectedProbability .connectedPathMenu summary{cursor:pointer;min-height:30px;color:#f6dfb0;-webkit-text-fill-color:#f6dfb0;font-weight:700}
+#connectedProbability .connectedOptionalWork label{display:block;margin-top:12px}
+#connectedProbability .connectedOptionalWork textarea{display:block;width:100%;margin-top:8px}
+#connectedProbability .connectedPathMenu nav{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+#connectedProbability .connectedPathMenu nav button{min-height:44px;white-space:normal}
+@media(max-width:700px){#connectedProbability .connectedFields{grid-template-columns:minmax(0,1fr)}}
