@@ -40,6 +40,8 @@ jobs:
         run: node pages-release/current/test-d772-preassessment.cjs current-site
       - name: Test D772 adaptive mastery lifecycle
         run: node pages-release/current/test-d772-adaptive.cjs current-site
+      - name: Check D772 diagrams and no-penalty question replacement
+        run: node pages-release/current/test-d772-exam-visuals.cjs
       - name: Validate Collegium Commons navigation and readability contract
         run: node pages-release/current/test-collegium-commons.cjs current-site
       - name: Verify and publish current source only
