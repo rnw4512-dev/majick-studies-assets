@@ -794,7 +794,7 @@
     "embedded-practice.js": "350c16f196b7ca9cc99dc5aab1a5a962a8c1cdbc9148e71ea5bd7cf07a1fbdd0",
     "manipulatives.js": "549df6d1a0a33a538ed0c1469ec4b2284c76720d1bda69cedeca49c9dfd29b06",
     "curriculum-lab.js": "29edc47d8c36b88deaaef0116cffbe22297a081fed8874353cdadbc1e259c7d5",
-    "solution-engine.js": "1233f017947530fd27b82f66b8db65f6cb0eaad02159cdbfda6b138bb8cc58ee",
+    "solution-engine.js": "fefb5a79950bedc9aeaf2ea91568671eab17b645918417366f4e1012a0f29056",
     "lesson-activity-bank.js": "f05001ede3815ff29491824d88cca6da6852f7b8fb3a070cdd5c2ef2154026ce",
     "inline-lesson-practice.js": "6545c1bc6b38a560bc2d861020081647aa9bdeef481cba5af16a8f14e2ce3c8e",
     "learning-continuity.js": "b60e04248f70efd951cdeb5a23d19b9327882d3c7999e5263ac08a7c0ae22235",
@@ -823,7 +823,7 @@
     "animation-effects.js": "85888321972ffa77c0809f3fba72e78fa1845c1d45a642796399e5e0a61d0505",
     "assets/effects/celebrations/lesson-complete-seal.svg": "66d0d723db2bda1149c79bd1aa03e2c9be22df891ed9a5f842bf44cecf922ddf",
     "assets/effects/celebrations/course-complete-sigil.svg": "5bb72f7c3da585d477527f057c9c42930abd859db8681edaac3616ed130ca1a6",
-    "room-section-nav.js": "73a380e43f111b01d0a58e1ee8eb9a0d02312533bee7006db32e06a4ce979d9c",
+    "room-section-nav.js": "7057fab6a1837c7cac47b923ab62e7d312d632f495419694e97f9287fe9713d9",
     "room-section-nav.css": "3260dbb0044a5ce0bf7b61e0c03e78293a9a4d65c69ad687d8ac455440f0ba97"
   }
 }
