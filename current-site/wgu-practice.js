@@ -134,6 +134,7 @@ function trackSkillAnswer(q){
  if(!session?.answered||session.current!==q||session.adaptiveTracked)return;
  session.adaptiveTracked=true;
  const assisted=session.type!=='test'||!!(session.mathCoachAssisted||session.chartUsed||session.revealedClue||session.usedPetAbility);
+ if(assisted)window.MajickLearningContinuity?.rememberGuidedQuestion?.(q);
  try{window.MajickLearningContinuity?.skillResult(q,session.chosen===q.answer,assisted,session.opts?.label==='Independent Transfer Check'?'independent-transfer':'study-now')}catch(_){}
 }
 function practiceFeedback(q){
@@ -170,7 +171,7 @@ function finishRequiredRecovery(source){
 }
 function questionHtml(q){
  const recovery=window.MajickLearningContinuity?.practiceRecovery?.(q,false);
- if(session?.type==='test'&&!session.answered&&recovery&&(recovery.required||recovery.awaitingTransfer&&recovery.failedIds.includes(q.id)))return '<section class="majExamFeedback"><h3>Guided reconstruction required</h3><p>Two independent misses need a complete repair before another independent response for this skill. Your exam score and previous answers are preserved.</p><button onclick="MajickWGUPractice.openRequiredRecovery()">Complete guided reconstruction</button></section>';
+ if(session?.type==='test'&&!session.answered&&recovery&&(recovery.required||recovery.awaitingTransfer&&recovery.failedIds.includes(q.id)))return '<section class="majExamFeedback"><h3>Guided reconstruction required</h3><p>A missed independent question needs guided repair before another independent response for this skill. Your exam score and previous answers are preserved.</p><button onclick="MajickWGUPractice.openRequiredRecovery()">Complete guided reconstruction</button></section>';
   const oa=session?.type==='test';
   const clue=session?.type==='clue'&&!oa&&!session.answered;
   const selected=session?.pendingChoice;
@@ -436,7 +437,7 @@ function selectVariedQuestions(rows,limit){
 function startSection(scope,independent=false){
  if(!activeD772())return;
  const generated=(scope==='2'||scope==='2c'||scope==='3'||scope==='mixed')?(window.MajickGeneratedPractice?.batch?.(24,independent?3:2)||[]):[];
- const pool=practicePool(scope).concat(generated.filter(q=>scope==='mixed'||scope==='2'&&sectionNumber(q)===2||scope==='2c'&&sectionNumber(q)===2||scope==='3'&&sectionNumber(q)===3)),groups=[1,2,3].map(n=>selectVariedQuestions(shuffleCopy(pool.filter(q=>sectionNumber(q)===n)),15));
+ const pool=practicePool(scope).concat(generated.filter(q=>scope==='mixed'||scope==='2'&&sectionNumber(q)===2||scope==='2c'&&sectionNumber(q)===2||scope==='3'&&sectionNumber(q)===3)),groups=[1,2,3].map(n=>selectVariedQuestions(shuffleCopy(pool.filter(q=>sectionNumber(q)===n&&(independent||!window.MajickLearningContinuity?.guidedQuestionAvailable||window.MajickLearningContinuity.guidedQuestionAvailable(q)))),15));
  const questions=[];
  // Round-robin section quotas guarantee that mixed practice reaches every available section.
  while(questions.length<15&&groups.some(g=>g.length))for(const group of groups)if(group.length&&questions.length<15)questions.push(group.pop());
@@ -481,7 +482,7 @@ function launchAssessmentClock(){
  tickAssessmentClock();
 }
 function balancedMixedAssessment(limit=30){
- const pool=practicePool('mixed'),sets=[1,2,3].map(n=>selectVariedQuestions(shuffleCopy(pool.filter(q=>sectionNumber(q)===n)),limit)),chosen=[],used=new Set();
+ const pool=practicePool('mixed'),sets=[1,2,3].map(n=>selectVariedQuestions(shuffleCopy(pool.filter(q=>sectionNumber(q)===n&&(independent||!window.MajickLearningContinuity?.guidedQuestionAvailable||window.MajickLearningContinuity.guidedQuestionAvailable(q)))),limit)),chosen=[],used=new Set();
  for(let i=0;i<limit&&sets.some(a=>a.length);){
   for(const group of sets){if(i>=limit)break;while(group.length){const q=group.pop(),key=String(q.id||q.qid||q.prompt);if(used.has(key))continue;used.add(key);chosen.push(q);i++;break}}
  }
