@@ -242,7 +242,7 @@ function mount(){const root=document.getElementById('content');if(!root)return;c
  }
 }
 
-function reconstructionPlan(q){
+function legacyReconstructionPlan(q){
  const skill=window.MajickLearningContinuity?.practiceSkill?.(q)||q.skill||'',d=q.data||{};
  const rules={
  'probability':'Update the favorable and total counts after removal, then multiply the first and second branch probabilities.',
@@ -292,6 +292,76 @@ function reconstructionPlan(q){
  {title:'5 · Interpret and verify',text:'Which explanation ties the result back to the scenario?',answer:q.why,choices:options(q.why,['The result guarantees the same outcome for each individual trial or person.','A larger number always establishes a causal relationship.','The calculation is valid even if the sample space or denominator is changed.'])}
  ];
 }
+// Versioned plans preserve paused legacy repairs; new repairs use two original scenarios.
+function reconstructionPlan(q){
+ const recovery=window.MajickLearningContinuity?.practiceRecovery?.(q,false);
+ if(recovery?.planVersion!==2)return legacyReconstructionPlan(q);
+ let skill=String(window.MajickLearningContinuity?.practiceSkill?.(q)||q.skill||'').toLowerCase();
+ const original=String(q.prompt||'').toLowerCase();
+ if(/exactly one/.test(original)&&/independent/.test(original))skill='exactly-one-independent';
+ else if(/at least one/.test(original)&&!/without replacement/.test(original))skill='complement-multistage';
+ else if(/vertical axis|misleading/.test(original))skill='misleading-axis';
+ const field=(label,value)=>({label,value});
+ function example(second){
+  const a=second?6:4,b=second?9:7,n=a+b;
+  let prompt,formula,givens,work,result,interpret;
+  if(skill==='exactly-one-independent'){
+   const prob=second?.4:.2;prompt=`An independent spinner lands gold with probability ${prob}. Find the probability of exactly one gold in two spins.`;formula='P(exactly one gold) = p × (1−p) + (1−p) × p';givens=[field('p: gold probability',prob),field('1 − p: other probability',1-prob)];work=[field('P(gold then other)',prob*(1-prob)),field('P(other then gold)',(1-prob)*prob)];result=2*prob*(1-prob);interpret='Add the two qualifying orders; independence keeps each spin’s probability unchanged.';
+  }else if(/weighted[- ]mean/.test(skill)){
+   const c=second?8:5,d=second?12:15,x=second?30:20,y=second?50:40;
+   prompt=`A workshop has ${c} learners averaging ${x} minutes of practice and ${d} learners averaging ${y} minutes. Find the combined mean practice time.`;
+   formula='Combined mean = (n₁ × mean₁ + n₂ × mean₂) ÷ (n₁ + n₂)';givens=[field('n₁: first group count',c),field('mean₁: first group mean',x),field('n₂: second group count',d),field('mean₂: second group mean',y)];work=[field('n₁ × mean₁',c*x),field('n₂ × mean₂',d*y),field('n₁ + n₂',c+d)];result=(c*x+d*y)/(c+d);interpret='The combined mean weights each group by its number of learners.';
+  }else if(/iqr|boxplot/.test(skill)){
+   const lo=second?12:10,hi=second?20:16;
+   prompt=`A practice-time distribution has Q1 = ${lo} minutes and Q3 = ${hi} minutes. Find the upper outlier fence.`;formula='IQR = Q3 − Q1; upper fence = Q3 + 1.5 × IQR';givens=[field('Q1',lo),field('Q3',hi),field('Fence multiplier',1.5)];work=[field('IQR = Q3 − Q1',hi-lo),field('1.5 × IQR',1.5*(hi-lo))];result=hi+1.5*(hi-lo);interpret='Only values strictly above this upper fence are high outliers under the 1.5 × IQR rule.';
+  }else if(/exactly-one/.test(skill)){
+   prompt=`A bag holds ${a} red and ${b} blue counters. Draw two without replacement. What is the probability of exactly one red?`;formula='P(exactly one red) = (R/N) × (B/(N−1)) + (B/N) × (R/(N−1))';givens=[field('R: red count',a),field('B: blue count',b),field('N: starting total',n),field('N − 1: second-draw total',n-1)];work=[field('P(red then blue)',a/n*b/(n-1)),field('P(blue then red)',b/n*a/(n-1))];result=2*a*b/(n*(n-1));interpret='The two qualifying orders are mutually exclusive, so add their branch probabilities.';
+  }else if(/venn|intersection|union|not \/|complement and remainder/.test(skill)){
+   const both=second?5:4,left=second?7:6,right=second?8:10,neither=second?10:5,total=both+left+right+neither;
+   const intersection=/intersection|and \/|venn/.test(skill),outside=/not \/|remainder/.test(skill);
+   prompt=`Of ${total} learners, ${left} attend art only, ${right} attend music only, ${both} attend both and ${neither} attend neither. Find the probability a learner ${intersection?'attends both':outside?'attends neither':'attends art or music (including both)'}.`;
+   formula=intersection?'P(art AND music) = overlap ÷ total':outside?'P(neither) = neither count ÷ total':'P(art OR music) = (art only + music only + both) ÷ total';
+   givens=[field('Art only',left),field('Music only',right),field('Both',both),field('Neither',neither)];work=[field('Total learners',total),field('Qualifying learners',intersection?both:outside?neither:left+right+both)];result=(intersection?both:outside?neither:left+right+both)/total;interpret='Count each learner in the requested event once, then divide by all learners.';
+  }else if(/independence/.test(skill)){
+   prompt=`Two independent spinners land green with probabilities ${second?'0.4 and 0.5':'0.2 and 0.6'}. Find the probability both land green.`;const x=second?.4:.2,y=second?.5:.6;formula='For independent events: P(A AND B) = P(A) × P(B)';givens=[field('P(A): first spinner',x),field('P(B): second spinner',y)];work=[field('P(B | A), unchanged because independent',y)];result=x*y;interpret='Independence means the first result does not change the probability of the second result.';
+  }else if(/complement/.test(skill)){
+   const rate=second?.3:.2,trials=second?2:3;
+   prompt=`Each independent sensor detects a fault with probability ${rate}. With ${trials} sensors, find the probability at least one detects it.`;formula='P(at least one) = 1 − (1 − p)ⁿ';givens=[field('p: detection probability',rate),field('n: independent sensors',trials)];work=[field('1 − p: one sensor misses',1-rate),field('(1 − p)ⁿ: all sensors miss',(1-rate)**trials)];result=1-(1-rate)**trials;interpret='Subtracting the probability of no detections includes every outcome with one or more detections.';
+  }else if(/conditional/.test(skill)){
+   const both=second?18:12,only=second?12:28,total=second?90:100;
+   prompt=`Of ${total} customers, ${both} use both pickup and delivery, and ${only} use delivery only. Given that a customer uses delivery, find the probability they also use pickup.`;formula='P(pickup | delivery) = count(both) ÷ count(delivery)';givens=[field('Count using both',both),field('Count using delivery only',only)];work=[field('Conditional denominator: both + delivery only',both+only)];result=both/(both+only);interpret='The denominator includes delivery users only; the full customer count is irrelevant to this condition.';
+  }else if(/expected|interpret ev|compare decisions/.test(skill)){
+   const sectors=second?8:10,prize=second?24:30,cost=second?4:5;
+   prompt=`A fair spinner has ${sectors} equal sectors. One pays $${prize}; the others pay $0. A spin costs $${cost}. Find the expected net gain.`;formula='Expected net gain = Σ(probability × payout) − cost';givens=[field('Winning sectors',1),field('Total sectors',sectors),field('Winning payout ($)',prize),field('Cost ($)',cost)];work=[field('Probability of winning',1/sectors),field('Expected gross payout ($)',prize/sectors)];result=prize/sectors-cost;interpret='A negative expected net gain is a long-run average loss per play, not a guaranteed loss on every spin.';
+  }else if(/probability/.test(skill)){
+   prompt=`A bag contains ${a} green and ${b} purple counters. Draw two without replacement. Find the probability both are green.`;formula='P(two green) = (G/N) × ((G−1)/(N−1))';givens=[field('G: initial green count',a),field('N: initial total',n),field('G − 1: green after a green draw',a-1),field('N − 1: remaining total',n-1)];work=[field('First green probability',a/n),field('Second green probability given first green',(a-1)/(n-1))];result=a/n*(a-1)/(n-1);interpret='The first green draw removes a green counter and reduces the total before the second draw.';
+  }else if(/median/.test(skill)){
+   const v=second?[18,8,14,10,16,12]:[11,3,9,5,13,7],sorted=[...v].sort((x,y)=>x-y);
+   prompt=`Practice times are ${v.join(', ')} minutes. Find the median.`;formula='For an even count: median = (left middle + right middle) ÷ 2';givens=sorted.map((x,i)=>field('Ordered value '+(i+1),x));work=[field('Left middle',sorted[2]),field('Right middle',sorted[3]),field('Sum of middle values',sorted[2]+sorted[3])];result=(sorted[2]+sorted[3])/2;interpret='Ordering the data locates the two central observations; averaging those gives the median.';
+  }else if(/mean/.test(skill)){
+   const v=second?[8,12,16,20]:[6,10,14,18];prompt=`Four students practiced for ${v.join(', ')} minutes. Find the mean practice time.`;formula='Mean = sum of observation values ÷ observation count';givens=v.map((x,i)=>field('Observation '+(i+1),x));work=[field('Sum of practice times',v.reduce((x,y)=>x+y,0)),field('Observation count',v.length)];result=v.reduce((x,y)=>x+y,0)/v.length;interpret='The mean redistributes the total practice time equally among the four students.';
+  }else if(/histogram/.test(skill)){
+   const v=second?[2,4,6]:[3,5,2];prompt=`A histogram of practice minutes has intervals 0–9, 10–19 and 20–29, with frequencies ${v.join(', ')}. What fraction of learners practiced at least 10 minutes?`;formula='Relative frequency = qualifying frequency ÷ total frequency';givens=v.map((x,i)=>field(['0–9 frequency','10–19 frequency','20–29 frequency'][i],x));work=[field('Qualifying frequency (last two bins)',v[1]+v[2]),field('Total frequency',v.reduce((x,y)=>x+y,0))];result=(v[1]+v[2])/v.reduce((x,y)=>x+y,0);interpret='Add the frequencies of qualifying bins and divide by all observations, rather than by the number of bins.';
+  }else{
+   if(/mutually exclusive|misleading-axis/.test(skill)){
+    const exclusive=/mutually/.test(skill),answer=exclusive?(second?'These events are mutually exclusive: one roll cannot be both 2 and 5.':'These events overlap at 6, so they are not mutually exclusive.'):'The truncated axis exaggerates the visual difference; compare the actual values and the axis baseline.';
+    const scenario=exclusive?(second?'Roll one six-sided die. Compare “roll 2” with “roll 5.”':'Roll one six-sided die. Compare “roll even” with “roll greater than 4.”'):(second?'A bar chart compares 72% and 76% with an axis starting at 71%.':'A bar chart compares 32% and 36% with an axis starting at 31%.');
+    return [{title:'Read the similar scenario',text:scenario+' Strategy: '+(exclusive?'list outcomes and check for overlap.':'read the baseline before comparing heights.'),answer:answer,choices:[answer,'A larger-looking bar or event label proves the conclusion.']},{title:'Construct the evidence',text:scenario,fields:[field(exclusive?'Number of outcomes shared by the two events':'Actual difference in percentage points',exclusive?(second?0:1):4)]},{title:'Explain the check',text:scenario,answer:answer,choices:['Ignore overlap and axis labels.',answer]}];
+   }
+   const causal=/caus|scatter/.test(skill),random=second;
+   prompt=causal?(random?'Researchers randomly assign 80 volunteers to two reading strategies and compare comprehension scores.':'A survey finds that students who choose extra reading practice have higher scores. Motivation was not controlled.'):(random?'A school randomly samples learners from every grade to estimate schoolwide study time.':'A school surveys only volunteers from its after-school math club to estimate study time for every learner.');
+   const answer=causal?(random?'Random assignment supports a causal comparison for these volunteers; broader generalization needs sampling evidence.':'The study shows association; self-selection and motivation can confound a causal claim.'):(random?'Including every grade through random sampling supports a schoolwide estimate.':'Club volunteers may differ from other learners, so schoolwide generalization is limited.');
+   return [{title:'Read the similar scenario',text:prompt,answer:causal?'Check assignment, confounding and sampling.':'Check the target population, sampling frame and selection.',choices:causal?['Check assignment, confounding and sampling.','Use a larger sample to prove causation.']:['Check the target population, sampling frame and selection.','Assume volunteers represent everyone.']},{title:'Build the evidence checklist',text:prompt+' Strategy: separate what was observed from what the design can support.',answer:answer,choices:[answer,'A large group guarantees an unbiased sample and proves causation.']},{title:'Hands-on strategy check',text:'Apply the design checklist to the scenario. '+prompt,answer:random?'The design includes random selection or assignment.':'Selection was voluntary; important differences can remain.',choices:['The design includes random selection or assignment.','Selection was voluntary; important differences can remain.']}];
+  }
+  return [
+   {title:'Identify and place the numbers',text:prompt+'\nFormula: '+formula,fields:givens,hint:'Match each symbol or slot to the quantity it represents in the scenario. '+givens.map(f=>f.label+' = '+f.value).join('; ')},
+   {title:'Work through the intermediate steps',text:prompt+'\nFormula: '+formula,fields:work,hint:work.map(f=>f.label+' = '+Number(f.value.toFixed(6))).join('; ')},
+   {title:'Calculate the result',text:prompt+'\nFormula: '+formula+'\nUse your verified intermediate values. Enter a decimal (round to four decimal places if needed).',fields:[field('Final result',result)],hint:'Use '+work.map(f=>f.label+' = '+Number(f.value.toFixed(6))).join('; ')+' in the formula. Final result: '+Number(result.toFixed(6))},
+   {title:'Explain and check',text:prompt,answer:interpret,choices:[interpret,'Changing the denominator or ignoring the study conditions does not change the meaning.']}
+  ];
+ }
+ return [false,true].flatMap(second=>example(second).map((step,i)=>({...step,title:(second?'Hands-on practice':'Guided example')+' · '+(i+1)+' · '+step.title})));
+}
 function mountReconstruction(host,q,onComplete){
  const api=window.MajickLearningContinuity,r=api?.practiceRecovery?.(q,false);if(!host||!r)return false;
  const plan=reconstructionPlan(q);
@@ -299,6 +369,7 @@ function mountReconstruction(host,q,onComplete){
  const step=plan[r.stage];if(!step){host.textContent='This reconstruction cannot load. Your saved work is preserved.';return false}
  host.innerHTML='<h3>'+esc(step.title)+'</h3><p>Guided repair · '+r.stage+' of '+plan.length+' stages verified · no independent mastery credit</p><p>'+esc(step.text)+'</p><div data-reconstruction-fields></div><p role="status" data-reconstruction-status></p>';
  const form=host.querySelector('[data-reconstruction-fields]'),values=r.draft.values||[];
+ if(step.hint){const help=document.createElement('details'),summary=document.createElement('summary'),body=document.createElement('p');summary.textContent='Show this step’s breakdown';body.textContent=step.hint;help.append(summary,body);form.before(help)}
  const persist=()=>{r.draft={values};try{window.save?.()}catch(_){}};
  if(step.fields)step.fields.forEach((f,i)=>{const label=document.createElement('label');label.className='mjSeLabel';label.textContent=f.label;const input=document.createElement('input');input.type='number';input.step='any';input.value=values[i]??'';input.oninput=()=>{values[i]=input.value;persist()};label.append(input);form.append(label)});
  else step.choices.forEach(choice=>{const label=document.createElement('label');label.className='majExamChoice';const input=document.createElement('input');input.type='radio';input.name='reconstruction-'+r.stage;input.checked=values[0]===choice;input.onchange=()=>{values[0]=choice;persist()};label.append(input,document.createTextNode(choice));form.append(label)});

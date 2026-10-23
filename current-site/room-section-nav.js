@@ -245,7 +245,7 @@ function renderMixedExam(panel,focusTarget){
   if(state.selected!==q.answer){const selected=document.createElement('p');selected.textContent='You chose: '+state.selected+'. Compare that choice with the deciding evidence in the explanation.';feedback.append(selected)}
   const source=document.createElement('small');source.textContent=q.sourceLabel||'MAJICK ORIGINAL · OA-STYLE PRACTICE — NOT OFFICIAL WGU ITEMS';feedback.append(source);
   panel.append(feedback);
-  const next=document.createElement('button');next.type='button';const repair=window.MajickLearningContinuity?.practiceRecovery?.(q,false);next.textContent=repair?.required?'Guided repair →':state.index===state.deck.length-1?'Start a fresh mixed round':'Next question →';
+  const next=document.createElement('button');next.type='button';const repair=window.MajickLearningContinuity?.practiceRecovery?.(q,false);next.textContent=repair?.required?'Similar guided example + hands-on practice →':state.index===state.deck.length-1?'Start a fresh mixed round':'Next question →';
   next.onclick=()=>{if(!state.submitted)return;if(window.MajickLearningContinuity?.practiceRecovery?.(q,false)?.required){state.repairOpen=true;renderMixedExam(panel);return}advanceExamRound(state);renderMixedExam(panel,'prompt')};
   actions.append(next);
  }
