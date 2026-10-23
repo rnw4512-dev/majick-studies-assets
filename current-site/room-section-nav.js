@@ -105,7 +105,7 @@ function saveExamRound(state){
  try{if(typeof save!=='function')throw Error('Save unavailable');state.saveFailed=false;save();return true}catch(_){state.saveFailed=true;return false}
 }
 function examQuestions(){
- const banks=[window.MajickD772SharedQuestions?.questions||[],window.MajickD772PreassessmentDeepPractice?.questions||[]];
+ const banks=[window.MajickD772SharedQuestions?.practiceQuestions?.()||window.MajickD772SharedQuestions?.questions||[],window.MajickD772PreassessmentDeepPractice?.questions||[]];
  const ids=new Set();
  return banks.flat().filter(q=>{
   const choices=q.options||q.choices||[];
@@ -118,7 +118,8 @@ function examQuestions(){
 // Schedule only unseen evidence for the missed skill; never recycle a failed item.
 function queueExamFollowup(state,question){
  const remaining=state.deck.slice(state.index+1);
- const matches=q=>q.id!==question.id&&(question.skill?q.skill===question.skill:q.lessonId===question.lessonId);
+ const skill=q=>window.MajickLearningContinuity?.practiceSkill?.(q)||q.skill||q.lessonId;
+ const matches=q=>q.id!==question.id&&skill(q)===skill(question);
  const offset=remaining.findIndex(matches);
  if(offset<0)return false;
  const [fresh]=state.deck.splice(state.index+1+offset,1);
@@ -127,10 +128,15 @@ function queueExamFollowup(state,question){
  return true;
 }
 function examDeck(){
- const by=[1,2,3].map(n=>examQuestions().filter(q=>q.examSection===n));
- by.forEach(group=>{for(let i=group.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[group[i],group[j]]=[group[j],group[i]]}});
- const deck=[];while(by.some(g=>g.length))for(const group of by)if(group.length)deck.push(group.shift());
+ // Shuffle the whole eligible pool; section membership remains metadata, not
+ // a predictable 1→2→3 cue. Saved rounds retain their existing order.
+ const deck=examQuestions();
+ for(let i=deck.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[deck[i],deck[j]]=[deck[j],deck[i]]}
  return deck;
+}
+function advanceExamRound(state){
+ if(state.index===state.deck.length-1)examProgress().mixedExamRound=newExamRound();
+ else{state.index++;state.selected='';state.submitted=false;state.repairOpen=false}
 }
 // Use the shared evidence owner; a text-only snapshot may receive a visual
 // only when its prompt, options and answer still exactly match the bank.
@@ -157,11 +163,27 @@ function renderMixedExam(panel,focusTarget){
  const q=state.deck[state.index];
  const evidence=q?examEvidence(q):null;
  panel.replaceChildren();
+ const requested=examProgress()?.requiredReconstructionQuestion;
+ const waiting=q&&!state.submitted?window.MajickLearningContinuity?.practiceRecovery?.(q,false):null;
+ const automatic=waiting?.required?waiting.source:null;
+ const forced=requested||automatic;
+ if(forced||state.repairOpen&&state.submitted){
+  const host=document.createElement('section');host.className='mjSolutionEngine';panel.append(host);
+  const mounted=window.MajickSolutionEngine?.mountReconstruction?.(host,forced||q,()=>{
+   if(requested){delete examProgress().requiredReconstructionQuestion;saveExamRound(state);window.MajickWGUPractice?.finishRequiredRecovery?.(requested);return}
+   if(automatic){saveExamRound(state);renderMixedExam(panel,'prompt');return}
+   const fresh=queueExamFollowup(state,q);state.recoveryNotice=fresh?'Guided repair completed. Apply the method to this fresh independent case.':'Guided repair is saved. No unused same-skill case remains in this round; continue mixed practice. Independent recovery remains pending.';
+   state.repairOpen=false;advanceExamRound(state);renderMixedExam(panel,'prompt');
+  });
+  if(!mounted)host.textContent='Guided repair is loading. Your progress is preserved; reopen this workshop when its controls have loaded.';
+  return;
+ }
  if(!q){panel.textContent='No valid mixed-section questions are currently available.';return}
  const heading=document.createElement('div');heading.className='majExamTop';
  const count=document.createElement('strong');count.textContent='Question '+(state.index+1)+' of '+state.deck.length;
  const score=document.createElement('span');score.textContent=state.attempted+' answered · '+state.correct+' correct';
  heading.append(count,score);panel.append(heading);
+ if(state.recoveryNotice){const note=document.createElement('p');note.textContent=state.recoveryNotice;panel.append(note)}
  const progress=document.createElement('progress');progress.className='majExamProgress';progress.max=state.deck.length;progress.value=state.attempted;progress.setAttribute('aria-label',state.attempted+' of '+state.deck.length+' questions answered');panel.append(progress);
  const saved=document.createElement('small');saved.className='majExamSaveStatus';saved.textContent=state.saveFailed?'Saving is unavailable. Keep this page open; your current work remains here.':'Your place and answers are saved with D772. Practice does not award independent mastery.';saved.setAttribute('role','status');panel.append(saved);
  const results=Object.entries(state.skillResults||{}).filter(([,r])=>r&&Number.isInteger(r.missed)&&r.missed>0);
@@ -194,7 +216,8 @@ function renderMixedExam(panel,focusTarget){
    if(state.submitted)return;
    if(!examEvidence(q).ok){renderMixedExam(panel);return}
    if(evidence.required){const visual=evidenceHost?.querySelector('svg,img,canvas,table');const rect=visual?.getBoundingClientRect();if(!rect||rect.width<=0||rect.height<=0||(visual.tagName==='IMG'&&(!visual.complete||!visual.naturalWidth))){const notice=document.createElement('p');notice.setAttribute('role','alert');notice.textContent='The diagram has not rendered. Nothing was scored. Check the diagram again before submitting.';panel.append(notice);return}}
-   const skill=q.skill||q.lessonId;state.skillResults=state.skillResults||{};const record=state.skillResults[skill]||(state.skillResults[skill]={missed:0,correct:0});record[state.selected===q.answer?'correct':'missed']++;
+   window.MajickLearningContinuity?.practiceAnswer?.(q,state.selected===q.answer);
+   const skill=window.MajickLearningContinuity?.practiceSkill?.(q)||q.skill||q.lessonId;state.skillResults=state.skillResults||{};const record=state.skillResults[skill]||(state.skillResults[skill]={missed:0,correct:0});record[state.selected===q.answer?'correct':'missed']++;
    state.submitted=true;if(state.selected!==q.answer)queueExamFollowup(state,q);state.attempted++;if(state.selected===q.answer)state.correct++;
    // Do not award mastery for a single exam-style response. Keep a separate
    // course-scoped review log for missed skills and instructor feedback.
@@ -217,8 +240,8 @@ function renderMixedExam(panel,focusTarget){
   if(state.selected!==q.answer){const selected=document.createElement('p');selected.textContent='You chose: '+state.selected+'. Compare that choice with the deciding evidence in the explanation.';feedback.append(selected)}
   const source=document.createElement('small');source.textContent=q.sourceLabel||'MAJICK ORIGINAL · OA-STYLE PRACTICE — NOT OFFICIAL WGU ITEMS';feedback.append(source);
   panel.append(feedback);
-  const next=document.createElement('button');next.type='button';next.textContent=state.index===state.deck.length-1?'Start a fresh mixed round':'Next question →';
-  next.onclick=()=>{if(!state.submitted)return;if(state.index===state.deck.length-1){examProgress().mixedExamRound=newExamRound()}else{state.index++;state.selected='';state.submitted=false}renderMixedExam(panel,'prompt')};
+  const next=document.createElement('button');next.type='button';const repair=window.MajickLearningContinuity?.practiceRecovery?.(q,false);next.textContent=repair?.required?'Guided repair →':state.index===state.deck.length-1?'Start a fresh mixed round':'Next question →';
+  next.onclick=()=>{if(!state.submitted)return;if(window.MajickLearningContinuity?.practiceRecovery?.(q,false)?.required){state.repairOpen=true;renderMixedExam(panel);return}advanceExamRound(state);renderMixedExam(panel,'prompt')};
   actions.append(next);
  }
  panel.append(actions);

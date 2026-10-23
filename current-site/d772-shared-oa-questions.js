@@ -1554,4 +1554,4 @@
       "The study is an experiment because staffing varies": "For your selected response: First determine whether researchers assigned a treatment. Then consider confounding and how participants were selected."
     }
   }
-];window.MajickD772SharedQuestions=Object.freeze({version:'3.4.2',questions:Object.freeze(questions),forLesson(id){return questions.filter(q=>q.lessonId===id)},forSection(n){return questions.filter(q=>q.section.startsWith('Section '+n))}});})();
+];function practiceQuestions(){const seen=new Set();return [...questions,...(window.MajickD772PreassessmentDeepPractice?.questions||[])].filter(q=>{if(seen.has(q.id))return false;seen.add(q.id);return true})}window.MajickD772SharedQuestions=Object.freeze({version:'3.4.2',questions:Object.freeze(questions),practiceQuestions,forLesson(id){return practiceQuestions().filter(q=>q.lessonId===id)},forSection(n){return practiceQuestions().filter(q=>String(q.section||'').startsWith('Section '+n)||String(q.lessonId||q.learningPathLessonId||'').startsWith('d772-s'+n+'-'))}});})();

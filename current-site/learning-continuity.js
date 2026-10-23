@@ -83,8 +83,49 @@ function skillResult(q,correct,assisted=false,origin='practice'){
  row.masteryEvidence={independentCorrect:independent,attempts:count,transferVerified:false,teachBackVerified:false};
  if(course()==='D772'&&!correct&&(q?.skill==='probability'||/^d772-s3-/.test(id)&&/without replacement/i.test(q?.prompt||'')))probabilityNeed(origin,q);
  if(course()==='D772'&&id===PROBABILITY_ID&&row.connectedProbability){probabilitySeen(q);syncProbabilityEvidence();}
+ if(course()==='D772'&&!assisted&&origin!=='mixed-exam-independent'&&origin!=='guided-reconstruction')practiceAnswer(q,correct,true);
  row.updated=Date.now();try{window.save?.()}catch(_){}
  return row;
+}
+// Mixed formative practice shares this academic owner; reconstruction is
+// assisted evidence and cannot certify mastery or emit a reward.
+function practiceSkill(q){
+ if(q?.skill)return String(q.skill);
+ const text=String(q?.id||'')+' '+String(q?.prompt||'');
+ const match=[['median',/median/i],['mean',/mean|average/i],['expected-value',/expected|ev-/i],['dependent-probability',/dependent|without replacement/i],['venn-sets',/venn|union|intersection|complement|exclusive|disjoint|not-/i],['sampling',/rep-|sample|population|nonresponse/i],['causation',/causation|observational|causal/i],['histogram',/histogram/i],['boxplot',/box.plot|quartile/i],['scatterplot',/scatterplot/i]].find(([,r])=>r.test(text));
+ return match?.[0]||String(q?.lessonId||'reasoning');
+}
+function practiceRecovery(q,create=true){
+ if(course()!=='D772'||q?.courseId&&q.courseId!=='D772')return null;
+ const p=window.S?.progress?.D772,id=q?.learningPathLessonId||q?.lessonId;
+ if(!p||!id)return null;
+ const book=p.adaptiveSkills||(create?(p.adaptiveSkills={}):{});
+ const row=book[id]||(create?(book[id]={lessonId:id,attempts:[],cycles:0,status:'practice',errors:[]}):null);
+ if(!row)return null;
+ const map=row.reconstructionBySkill||(create?(row.reconstructionBySkill={}):{}),key=practiceSkill(q);
+ return map[key]||(create?(map[key]={misses:0,required:false,awaitingTransfer:false,stage:0,verified:[],draft:{},failedIds:[],seenIds:[],source:null}):null);
+}
+function practiceAnswer(q,correct,alreadyRecorded=false){
+ const r=practiceRecovery(q);if(!r)return null;
+ // Retries/replayed submissions of the same item cannot manufacture evidence.
+ const evidenceKey=q.generated?practiceSkill(q)+'|'+JSON.stringify(q.data):String(q.id);
+ r.seenKeys=r.seenKeys||r.seenIds.slice();if(r.seenKeys.includes(evidenceKey))return r;r.seenKeys.push(evidenceKey);r.seenKeys=r.seenKeys.slice(-300);
+ r.seenIds.push(q.id);r.seenIds=r.seenIds.slice(-300);
+ if(!alreadyRecorded)skillResult(q,correct,false,'mixed-exam-independent');
+ if(!correct){r.failedData=r.failedData||[];if(q.generated)r.failedData.push(JSON.stringify(q.data));r.misses++;if(!r.failedIds.includes(q.id))r.failedIds.push(q.id);if(r.misses>=2){r.required=true;r.awaitingTransfer=false;r.stage=0;r.verified=[];r.draft={};r.source=JSON.parse(JSON.stringify(q))}}
+ else if(r.awaitingTransfer&&!(q.generated?(r.failedData||[]).includes(JSON.stringify(q.data)):r.failedIds.includes(q.id))){r.awaitingTransfer=false;r.misses=0;r.transferId=q.id;r.stage=0;r.verified=[];r.draft={}}
+ try{window.save?.()}catch(_){}return r;
+}
+function reconstructionCheck(q,values){
+ const r=practiceRecovery(q,false),plan=window.MajickSolutionEngine?.reconstructionPlan?.(q);
+ if(!r?.required||!plan||r.stage<0||r.stage>=plan.length)return {ok:false,message:'No active guided reconstruction.'};
+ const step=plan[r.stage];let ok=false;
+ if(step.fields)ok=step.fields.every((f,i)=>values[i]!==''&&Number.isFinite(Number(values[i]))&&Math.abs(Number(values[i])-f.value)<=Math.max(.0002,Math.abs(f.value)*.0001));
+ else ok=String(values[0])===String(step.answer);
+ if(!ok)return {ok:false,message:'Review the worked evidence and rebuild this step. Guided corrections do not count as independent errors.'};
+ r.verified.push(r.stage);r.stage++;r.draft={};
+ if(r.stage===plan.length){if(r.verified.length!==plan.length)return {ok:false,message:'Complete every reconstruction step.'};r.required=false;r.awaitingTransfer=true;skillResult({...q,reconstructionVerified:true},true,true,'guided-reconstruction')}
+ try{window.save?.()}catch(_){}return {ok:true,complete:!r.required,message:r.required?'Step verified. Continue reconstructing.':'Guided reconstruction saved. A fresh unassisted question is next; this did not award mastery.'};
 }
 function masteryStatus(id){
  if(course()==='D772'&&id===PROBABILITY_ID&&probabilityState(false))return probabilityMastery();
@@ -94,8 +135,10 @@ function masteryStatus(id){
  const transfer=independent.some(x=>x.origin==='independent-transfer'&&x.verified===true);
  const teaching=row.teachBackAssessment?.evaluated===true&&row.teachBackAssessment?.passed===true;
  const recovery=row.misconceptionHistory||{};
- const certified=independent.length>=4&&transfer&&teaching&&!recovery.recoveryRequired&&!recovery.awaitingIndependentTransfer;
- return {certified,independentCorrect:independent.length,transferVerified:transfer,teachBackVerified:teaching,recoveryRequired:!!recovery.recoveryRequired,awaitingIndependentTransfer:!!recovery.awaitingIndependentTransfer,status:row.status};
+ const repairs=Object.values(row.reconstructionBySkill||{});
+ const blockedRepair=repairs.some(r=>r.required||r.awaitingTransfer);
+ const certified=independent.length>=4&&transfer&&teaching&&!recovery.recoveryRequired&&!recovery.awaitingIndependentTransfer&&!blockedRepair;
+ return {certified,independentCorrect:independent.length,transferVerified:transfer,teachBackVerified:teaching,recoveryRequired:!!recovery.recoveryRequired||repairs.some(r=>r.required),awaitingIndependentTransfer:!!recovery.awaitingIndependentTransfer||repairs.some(r=>r.awaitingTransfer),status:row.status};
 }
 function skillNeeds(){return Object.values(window.S?.progress?.[course()]?.adaptiveSkills||{}).filter(x=>x.status==='review-needed')}
 function skillReview(id){
@@ -212,5 +255,5 @@ function probabilityFresh(kind){
  const st=probabilityState(false),t=st?.tasks[kind];if(!t||!t.submitted||t.completed)return null;
  delete st.tasks[kind];delete st.drafts[kind];return probabilityTask(kind);
 }
-window.MajickLearningContinuity={version:'2.0-probability',identify,record,needs,recommend,learned,skillResult,masteryStatus,skillNeeds,skillReview,skillRetry,probabilityState,probabilityNeed,probabilityTask,probabilityMastery,probabilityDraft,probabilityRemove,probabilityCheck,probabilityFresh,probabilityAdvanceReasoning};
+window.MajickLearningContinuity={version:'2.0-probability',identify,record,needs,recommend,learned,skillResult,masteryStatus,skillNeeds,skillReview,skillRetry,practiceSkill,practiceRecovery,practiceAnswer,reconstructionCheck,probabilityState,probabilityNeed,probabilityTask,probabilityMastery,probabilityDraft,probabilityRemove,probabilityCheck,probabilityFresh,probabilityAdvanceReasoning};
 })();
