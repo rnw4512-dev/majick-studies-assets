@@ -3623,17 +3623,25 @@ function adaptiveCheck(lesson,id=cid()){
   const built=helpFor(lesson)?.quickCheck;
   return built?{check:built,adaptive:false,repair:null}:null;
 }
+function tutorGuidedQuestion(lesson,id=cid()){
+ if(id!==cid())return null;
+ const p=prog(id),book=p.tutorGuidedQuestions||(p.tutorGuidedQuestions={});
+ if(book[lesson.id]&&!book[lesson.id].answered)return book[lesson.id].question;
+ const help=helpFor(lesson),adaptive=adaptiveCheck(lesson,id),candidates=[adaptive?.check,help?.quickCheck,...(help?.repairs||[]).flatMap(r=>(r.variants||[]).map(v=>v.check)),...questionsForLesson(lesson,id)].filter(Boolean);
+ const normalize=q=>{const options=q.choices||q.options||[],answer=typeof q.answer==='number'?options[q.answer]:q.answer;return {...q,options,choices:options,answer,why:q.why||q.rationale||''}};
+ let question=candidates.map(normalize).find(q=>q.prompt&&q.options.includes(q.answer)&&(!window.MajickLearningContinuity?.guidedQuestionAvailable||window.MajickLearningContinuity.guidedQuestionAvailable(q)));
+ if(!question&&id==='D772'){
+  const skills=({'d772-s2-l4':['mean','median','boxplot'],'d772-s2-l4-1':['mean','median'],'d772-s2-l4-3':['boxplot'],'d772-s2-l3':['histogram'],'d772-s2-l3-1':['histogram'],'d772-s2-l2-3':['scatterplot'],'d772-s3-l2':['probability'],'d772-s3-l2-1':['probability']})[lesson.id]||[];
+  if(skills.length){const sequence=window.MajickLearningContinuity?.nextGuidedSequence?.('tutor:'+lesson.id)||1;question=window.MajickGeneratedPractice?.generate?.(skills[(sequence-1)%skills.length],2);if(question)question=normalize(question)}
+ }
+ if(!question)return null;
+ book[lesson.id]={question:JSON.parse(JSON.stringify(question)),answered:false};try{save()}catch(_){}return book[lesson.id].question;
+}
 function quickQuizHtml(lesson,id=cid()){
-  const adaptive=adaptiveCheck(lesson,id);
-  if(adaptive?.check){
-    const built=adaptive.check;
-    return '<div class="tutorQuickQuiz">'+(adaptive.adaptive?'<p class="tutorRepairBadge">New transfer scenario based on your latest miss</p>':'')+'<p class="tutorQuickPrompt">'+E(built.prompt)+'</p><div class="tutorQuickChoices">'+built.choices.map((x,i)=>'<button type="button" data-tutor-quick-choice="'+i+'">'+String.fromCharCode(65+i)+'. '+E(x)+'</button>').join('')+'</div><div class="tutorQuickFeedback" aria-live="polite"></div></div>';
-  }
-  const q=questionsForLesson(lesson,id)[0];
-  if(q&&Array.isArray(q.choices)&&q.choices.length){
-    return '<div class="tutorQuickQuiz"><p class="tutorQuickPrompt">'+E(q.prompt||'Quick check')+'</p><div class="tutorQuickChoices">'+q.choices.map((x,i)=>'<button type="button" data-tutor-bank-choice="'+i+'">'+String.fromCharCode(65+i)+'. '+E(x)+'</button>').join('')+'</div><div class="tutorQuickFeedback" aria-live="polite"></div></div>';
-  }
-  return '<p>Lesson-specific adaptive questions will appear here after your question bank is available.</p>';
+ const q=tutorGuidedQuestion(lesson,id);if(!q)return '<p>No unused verified guided question remains for this lesson. Your progress is saved. Try the Reasoning Workshop or another skill; completed questions will not silently repeat.</p>';
+ const visual=window.MajickVisualEvidence?.evidence?.(q,x=>window.MajickCourseTutor?.questionVisualHtml?.(x)||'');
+ if(visual&&!visual.ok)return '<p>This question needs a diagram before it can be checked. Nothing was scored; your work is preserved.</p>';
+ return '<div class="tutorQuickQuiz"><p class="tutorQuickPrompt">'+E(q.prompt)+'</p>'+(visual?.html||q.visualHtml||'')+'<div class="tutorQuickChoices">'+q.options.map((x,i)=>'<button type="button" data-tutor-guided-choice="'+i+'">'+String.fromCharCode(65+i)+'. '+E(x)+'</button>').join('')+'</div><div class="tutorQuickFeedback" aria-live="polite"></div></div>';
 }
 function renderTutorAssist(kind,lesson,ch,id=cid()){
   const panel=document.getElementById('tutorAssistPanel');if(!panel)return;
@@ -3662,29 +3670,15 @@ function renderTutorAssist(kind,lesson,ch,id=cid()){
   panel.append(advance);
 
   if(kind==='quiz'){
-    const adaptive=adaptiveCheck(lesson,id);
-    if(adaptive?.check){
-      const built=adaptive.check;
-      panel.querySelectorAll('[data-tutor-quick-choice]').forEach(btn=>btn.addEventListener('click',()=>{
-        const picked=Number(btn.dataset.tutorQuickChoice),correct=picked===built.answer;
-        panel.querySelectorAll('[data-tutor-quick-choice]').forEach(x=>x.disabled=true);
-        const feedback=panel.querySelector('.tutorQuickFeedback');
-        if(feedback)feedback.innerHTML='<b>'+(correct?'✓ Correct':'Not yet')+'</b><p>'+E(built.rationale)+'</p>';
-        btn.classList.add(correct?'correct':'incorrect');
-      }));
-    }else{
-      const q=questionsForLesson(lesson,id)[0];
-      if(q&&Array.isArray(q.choices)){
-        const correctIndex=q.choices.findIndex(x=>String(x)===String(q.answer));
-        panel.querySelectorAll('[data-tutor-bank-choice]').forEach(btn=>btn.addEventListener('click',()=>{
-          const picked=Number(btn.dataset.tutorBankChoice),correct=picked===correctIndex;
-          panel.querySelectorAll('[data-tutor-bank-choice]').forEach(x=>x.disabled=true);
-          const feedback=panel.querySelector('.tutorQuickFeedback');
-          if(feedback)feedback.innerHTML='<b>'+(correct?'✓ Correct':'Not yet')+'</b>'+(q.why?'<p>'+E(q.why)+'</p>':'');
-          btn.classList.add(correct?'correct':'incorrect');
-        }));
-      }
-    }
+    const snapshot=prog(id).tutorGuidedQuestions?.[lesson.id],q=snapshot?.question;
+    if(q)panel.querySelectorAll('[data-tutor-guided-choice]').forEach(btn=>btn.addEventListener('click',()=>{
+      if(snapshot.answered||id!==cid())return;
+      const picked=q.options[Number(btn.dataset.tutorGuidedChoice)],correct=String(picked)===String(q.answer);
+      snapshot.answered=true;window.MajickLearningContinuity?.rememberGuidedQuestion?.(q);try{save()}catch(_){}
+      panel.querySelectorAll('[data-tutor-guided-choice]').forEach(x=>x.disabled=true);
+      const feedback=panel.querySelector('.tutorQuickFeedback');if(feedback)feedback.innerHTML='<b>'+(correct?'✓ Correct':'Not yet')+'</b><p>'+E(q.why)+'</p><p>Guided practice only. Open Quiz Me again for a different question.</p>';
+      btn.classList.add(correct?'correct':'incorrect');
+    }));
   }
 }
 function officialTeachingHtml(official){

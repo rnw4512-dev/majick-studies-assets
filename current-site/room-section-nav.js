@@ -191,6 +191,8 @@ function renderMixedExam(panel,focusTarget){
  if(state.recoveryNotice){const note=document.createElement('p');note.textContent=state.recoveryNotice;panel.append(note)}
  const progress=document.createElement('progress');progress.className='majExamProgress';progress.max=state.deck.length;progress.value=state.attempted;progress.setAttribute('aria-label',state.attempted+' of '+state.deck.length+' questions answered');panel.append(progress);
  const saved=document.createElement('small');saved.className='majExamSaveStatus';saved.textContent=state.saveFailed?'Saving is unavailable. Keep this page open; your current work remains here.':'Your place and answers are saved with D772. Practice does not award independent mastery.';saved.setAttribute('role','status');panel.append(saved);
+ const readiness=window.MajickLearningContinuity?.practiceReadinessList?.()||[];
+ if(readiness.length){const details=document.createElement('details'),summary=document.createElement('summary');summary.textContent='Readiness by skill · '+readiness.length;details.append(summary);const note=document.createElement('p');note.textContent='Demonstrated independently means two different recent unassisted questions answered correctly. These practice labels do not certify course mastery.';details.append(note);for(const item of readiness){const row=document.createElement('p');row.textContent=item.skill.replace(/-/g,' ')+' · '+item.label+' · '+item.independentCount+' recent independent correct';details.append(row)}panel.append(details)}
  const results=Object.entries(state.skillResults||{}).filter(([,r])=>r&&Number.isInteger(r.missed)&&r.missed>0);
  if(results.length){const details=document.createElement('details');details.className='majExamReview';const summary=document.createElement('summary');summary.textContent='Skills to revisit · '+results.length;details.append(summary);for(const [skill,r] of results){const row=document.createElement('p');row.textContent=skill.replace(/-/g,' ')+' · '+r.missed+' missed · '+r.correct+' correct';details.append(row)}panel.append(details)}
  if(state.followupId===q.id){const note=document.createElement('p');note.textContent='Fresh follow-up · apply the skill you just reviewed to new evidence.';panel.append(note)}
@@ -221,7 +223,7 @@ function renderMixedExam(panel,focusTarget){
    if(state.submitted)return;
    if(!examEvidence(q).ok){renderMixedExam(panel);return}
    if(evidence.required){const visual=evidenceHost?.querySelector('svg,img,canvas,table');const rect=visual?.getBoundingClientRect();if(!rect||rect.width<=0||rect.height<=0||(visual.tagName==='IMG'&&(!visual.complete||!visual.naturalWidth))){const notice=document.createElement('p');notice.setAttribute('role','alert');notice.textContent='The diagram has not rendered. Nothing was scored. Check the diagram again before submitting.';panel.append(notice);return}}
-   window.MajickLearningContinuity?.practiceAnswer?.(q,state.selected===q.answer);
+   window.MajickLearningContinuity?.practiceAnswer?.(q,state.selected===q.answer,false,state.selected);
    const skill=window.MajickLearningContinuity?.practiceSkill?.(q)||q.skill||q.lessonId;state.skillResults=state.skillResults||{};const record=state.skillResults[skill]||(state.skillResults[skill]={missed:0,correct:0});record[state.selected===q.answer?'correct':'missed']++;
    state.submitted=true;if(state.selected!==q.answer)queueExamFollowup(state,q);state.attempted++;if(state.selected===q.answer)state.correct++;
    // Do not award mastery for a single exam-style response. Keep a separate

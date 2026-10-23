@@ -12,7 +12,7 @@ function dots(vals){const lo=Math.min(...vals),hi=Math.max(...vals),span=hi-lo||
 function box(vals){const five=quartiles(vals),lo=five[0],span=five[4]-lo||1,x=v=>65+(v-lo)/span*390;let plot=axis+'<path d="M'+x(five[0])+' 130H'+x(five[4])+'" stroke="#caa7f2" stroke-width="4"/><rect x="'+x(five[1])+'" y="94" width="'+Math.max(1,x(five[3])-x(five[1]))+'" height="72" fill="#784b9d" stroke="#f5dfa9" stroke-width="2"/><path d="M'+x(five[2])+' 94V166 M'+x(five[0])+' 112V148 M'+x(five[4])+' 112V148" stroke="#fff1d6" stroke-width="3"/>';five.forEach((v,i)=>plot+=tx(x(v),i%2?194:212,v));return frame('Box plot',plot,'Five-number summary minimum '+five.join(', Q1 median Q3 maximum in order: '))}
 function histogram(counts){const max=Math.max(...counts,1),w=370/counts.length;let plot=axis+tx(29,14,'Frequency')+tx(267,268,'Quiz score intervals');counts.forEach((n,i)=>{const height=n/max*168,x=67+i*w;plot+='<rect x="'+x+'" y="'+(225-height)+'" width="'+w+'" height="'+height+'" stroke="#d9bf9a" fill="#8553ab"/>'+tx(x+w/2,243,(i*10)+'–'+(i*10+9))+tx(x+w/2,Math.max(18,216-height),n)});return frame('Histogram · equal-width intervals',plot,'Frequencies in successive equal-width groups: '+counts.join(', '))}
 function scatter(points){let plot=axis;for(let n=0;n<=10;n+=2){plot+=tx(62+n*36,245,n)+tx(39,224-n*17,n)}points.forEach(([x,y])=>plot+='<circle cx="'+(62+x*36)+'" cy="'+(220-y*17)+'" r="6" fill="#e5b9e9"/>');plot+=tx(260,270,'Weekly practice hours (x)')+tx(250,15,'Performance score (y)');return frame('Scatterplot · association, not causation',plot,'Practice hours on x-axis and performance score on y-axis. Ordered pairs: '+points.map(p=>p.join(' comma ')).join('; '))}
-function probability(green,purple){const circles=(count,y,color)=>Array.from({length:count},(_,i)=>'<circle cx="'+(90+i*52)+'" cy="'+y+'" r="18" fill="'+color+'" stroke="#fff1d6"/>').join('');const plot=tx(250,35,'Counters in a bag · without replacement')+circles(green,85,'#74bf8c')+circles(purple,155,'#b490d1')+tx(250,219,green+' green + '+purple+' purple = '+(green+purple)+' total')+tx(250,244,'Second draw: one fewer counter remains');return frame('Probability counters',plot,green+' green counters and '+purple+' purple counters. The first draw is not replaced before the second.')}
+function probability(green,purple){const circles=(count,y,color)=>Array.from({length:Math.min(count,12)},(_,i)=>'<circle cx="'+(50+i*35)+'" cy="'+y+'" r="18" fill="'+color+'" stroke="#fff1d6"/>').join('');const plot=tx(250,35,'Counters in a bag · without replacement')+circles(green,85,'#74bf8c')+circles(purple,155,'#b490d1')+tx(250,219,green+' green + '+purple+' purple = '+(green+purple)+' total')+tx(250,244,'Counts above are exact; dots show up to 12 counters per color');return frame('Probability counters',plot,green+' green counters and '+purple+' purple counters. The first draw is not replaced before the second.')}
 function item(skill,values,difficulty){
  const id='gen-d772-'+skill+'-'+Date.now().toString(36)+'-'+(++serial),options=[],add=x=>{const t=String(x);if(!options.includes(t))options.push(t)};
  let prompt,answer,visualHtml,why,lessonId='d772-s2-l4-1',mistake;
@@ -47,11 +47,15 @@ function validate(q){
  }
  return expected===String(q.answer);
 }
-function generate(skill='boxplot',difficulty=2){const n=difficulty>=3?9:7,base=randint(3,9),step=randint(2,4);let vals=Array.from({length:n},(_,i)=>base+i*step);if(skill==='mean'){const m=randint(8,16);vals=[m-6,m-3,m,m+3,m+6]}if(skill==='median'){for(let i=vals.length-1;i>0;i--){const j=randint(0,i);[vals[i],vals[j]]=[vals[j],vals[i]];}}
- if(skill==='histogram')vals=[randint(8,13),randint(5,7),randint(3,4),2,1];
- if(skill==='scatterplot')vals=Array.from({length:9},(_,i)=>[i+1,Math.min(10,i+1+randint(-1,1))]);
- if(skill==='probability')vals=[randint(3,5),randint(2,4)];
- return item(skill,vals,difficulty)
+function generate(skill='boxplot',difficulty=2){
+ const ordinal=window.MajickLearningContinuity?.nextGuidedSequence?.('generated:'+skill)||serial+1,k=ordinal+30,n=difficulty>=3?9:7,step=2+ordinal%3;
+ let vals=Array.from({length:n},(_,i)=>k+i*step);
+ if(skill==='mean')vals=[k-6,k-3,k,k+3,k+6];
+ if(skill==='median')vals=[...vals.slice(1),vals[0]];
+ if(skill==='histogram')vals=[8+k,5+(k%3),3+(k%2),2,1];
+ if(skill==='scatterplot')vals=Array.from({length:9},(_,i)=>[i+1,(i+1)*(.6+.2*k/(k+20))]);
+ if(skill==='probability')vals=[13+ordinal,12+2*ordinal];
+ return item(skill,vals,difficulty);
 }
 // Persisted ordinal selects a new dataset; IDs alone do not establish freshness.
 function probabilityCase(ordinal=0,transfer=false){
