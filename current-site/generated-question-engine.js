@@ -152,6 +152,12 @@ function mountLab(root,lessonText){
   let q=null;for(let n=0;n<35;n++){const candidate=generate(skill,3);if(candidate&&JSON.stringify(candidate.data)!==JSON.stringify(guided.data)&&JSON.stringify(candidate.data)!==previous){q=candidate;break}}
   independent=q;completed=false;
   if(!q){host.textContent='A different dataset could not be produced. Previous evidence is retained; try again later.';return}
+  const recovery=window.MajickLearningContinuity?.practiceRecovery?.(q,false);
+  if(recovery?.required&&recovery.source){
+   if(!window.MajickSolutionEngine?.mountReconstruction?.(host,recovery.source,fresh))host.textContent='Guided reconstruction is loading. Your attempts are preserved.';
+   return;
+  }
+  if(q.generated&&(recovery?.failedData||[]).includes(JSON.stringify(q.data))){host.textContent='A fresh dataset is required after guided repair. Select a new independent problem; your evidence is preserved.';return}
   host.innerHTML='<p>'+E(q.prompt)+'</p>'+q.visualHtml+field('independent','Your independent answer')+field('independent-why','Show your whiteboard reasoning and interpretation',3)+'<button type="button" data-lab-submit>Submit independent response</button><p data-lab-independent-feedback role="status"></p>';
   host.querySelector('[data-lab-submit]').onclick=()=>{
    if(completed)return;completed=true;

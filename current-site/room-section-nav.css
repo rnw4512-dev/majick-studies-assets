@@ -106,3 +106,13 @@
 .majExamEvidence figcaption{line-height:1.45;color:#fff1dd}
 .majExamEvidence figure{margin:0}
 .majExamFeedback button{min-height:44px;margin:6px 8px 0 0;padding:9px 13px;background:#3d294c;color:#fff4e4;border:1px solid #6e527c;border-radius:8px;cursor:pointer}
+
+/* Compact existing Guardian cards; no new roster, pet identity or renderer. */
+.majGuardianDetails{margin:10px 0;padding:10px 12px;border:1px solid #aa8a69;border-radius:10px;background:#2b2038;color:#fff1dc}
+.majGuardianDetails summary{cursor:pointer;font-weight:700;min-height:32px;line-height:1.5}
+.majGuardianDetails summary:focus-visible{outline:3px solid #ffe2a5;outline-offset:3px}
+.majGuardianDetails :is(p,span,h3,h4,b,small){color:inherit}
+.lfPetCard .lfCardPet{max-height:190px;overflow:hidden}.lfPetCard .lfCardActions{display:flex;gap:7px;flex-wrap:wrap}
+.v336EvolutionGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(260px,100%),1fr));gap:14px}
+.v336EvolutionCard .v336EvolutionHead img{width:90px;height:120px;object-fit:contain}
+.mjSolutionEngine select{background:#fff4df;color:#24152b;padding:10px;border-radius:8px;font-size:16px;max-width:100%}

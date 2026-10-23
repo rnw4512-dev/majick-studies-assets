@@ -38,6 +38,18 @@ BANK.D772.find(x=>x.id==='mean').cases.push({numbers:[9,13,17,21,25],known:'9, 1
 BANK.D772.find(x=>x.id==='median').cases.push({numbers:[2,6,8,12,14,18],known:'sorted values: 2, 6, 8, 12, 14, 18',unknown:'median',slots:[8,12],answer:10,interpret:'The median is 10, between 8 and 12.',why:'Average the third and fourth values.'});
 BANK.D772.find(x=>x.id==='probability').cases.push({known:'6 green and 4 purple counters; draw two greens without replacement',unknown:'P(two greens)',slots:[6,10,5,9],answer:1/3,interpret:'The probability of two greens is one-third.',why:'6/10 multiplied by 5/9 = 1/3.'});
 BANK.D772.find(x=>x.id==='histogram').cases.push({labels:['0–9','10–19','20–29','30–39'],freq:[2,6,4,3],mode:'10–19',total:15,rawData:[2,8,10,11,12,15,16,19,20,22,25,29,30,34,38],interpret:'The modal interval is 10–19 (6 of 15 observations).'});
+// Extend the existing task/case owner with new datasets and formula placement.
+BANK.D772.push({id:'weighted-mean',section:2,lesson:'d772-s2-l4-1',title:'Weighted mean: combine unequal groups',kind:'math',formula:'(group total 1 + group total 2) / combined count',alternatives:['(group total 1 + group total 2) / combined count','(mean 1 + mean 2) / 2','group count / combined total'],slotLabels:['First group total','Second group total','Combined count'],cases:[
+ {known:'20 trips average 60 minutes; 80 trips average 80 minutes',unknown:'combined mean',slots:[1200,6400,100],answer:76,interpret:'The combined mean trip time is 76 minutes.',why:'20 × 60 + 80 × 80 = 7600 total minutes; divide by 100 trips.'},
+ {known:'30 orders average 12 dollars; 70 orders average 22 dollars',unknown:'combined mean',slots:[360,1540,100],answer:19,interpret:'The combined mean order value is 19 dollars.',why:'30 × 12 + 70 × 22 = 1900 dollars; divide by 100 orders.'},
+ {known:'40 packages average 5 kilograms; 60 packages average 10 kilograms',unknown:'combined mean',slots:[200,600,100],answer:8,interpret:'The combined mean package mass is 8 kilograms.',why:'40 × 5 + 60 × 10 = 800 kilograms; divide by 100 packages.'}
+]});
+BANK.D772.find(t=>t.id==='histogram').cases.push({labels:['0–9','10–19','20–29','30–39'],freq:[3,4,5,2],mode:'20–29',total:14,rawData:[1,4,8,10,12,15,19,20,21,24,26,29,32,38],interpret:'The modal interval is 20–29 with 5 of 14 observations.'});
+function probabilityTree(ex){
+ const [g,n,,remaining]=ex.slots,other=n-g;
+ const branch=(x1,y1,x2,y2,label)=>'<line x1="'+x1+'" y1="'+y1+'" x2="'+x2+'" y2="'+y2+'" stroke="#efd5ad"/><text x="'+((x1+x2)/2)+'" y="'+((y1+y2)/2-6)+'" fill="#fff3dd" font-size="12">'+label+'</text>';
+ return '<figure class="majExamEvidence"><figcaption>Build a two-draw tree · without replacement. Follow the green → green path.</figcaption><svg viewBox="0 0 560 220" role="img" aria-label="First draw green '+g+'/'+n+' or other '+other+'/'+n+'. After green: green '+(g-1)+'/'+remaining+' or other '+other+'/'+remaining+'. After other: green '+g+'/'+remaining+' or other '+(other-1)+'/'+remaining+'.">'+branch(25,110,235,55,'G: '+g+'/'+n)+branch(25,110,235,170,'Other: '+other+'/'+n)+branch(235,55,525,22,'G: '+(g-1)+'/'+remaining)+branch(235,55,525,92,'Other: '+other+'/'+remaining)+branch(235,170,525,140,'G: '+g+'/'+remaining)+branch(235,170,525,210,'Other: '+(other-1)+'/'+remaining)+'</svg></figure>';
+}
 const STATES=new WeakMap();
 // Preserve an in-progress six-stage response when the campus replaces its host.
 // Keep separate records for each course/task; never touch saved course progress.
@@ -46,7 +58,7 @@ function stageTitle(t,s){return t.kind==='math'?['Identify the knowns and unknow
 const numeric=(a,b)=>a!==''&&a!=null&&Number.isFinite(Number(a))&&Math.abs(Number(a)-Number(b))<=Math.max(.0002,Math.abs(b)*.00005);
 function knownsValid(task,ex,known,unknown){
  const text=String(known||'').toLowerCase(),need=String(unknown||'').toLowerCase();
- const expected=task.id==='mean'?/mean|average/:task.id==='median'?/median|middle/:/probab|chance|likelihood|p\(/;
+ const expected=task.id.includes('mean')?/mean|average/:task.id==='median'?/median|middle/:/probab|chance|likelihood|p\(/;
  if(!expected.test(need))return false;
  const source=(ex.known||ex.numbers?.join(', ')||'').match(/\d+(?:\.\d+)?/g)||[];
  return source.length>0&&source.every(n=>new RegExp('(^|\\D)'+n.replace('.','\\.')+'(\\D|$)').test(text));
@@ -72,7 +84,7 @@ if(task.kind==='math'){
  const known=ex.known||ex.numbers?.join(', ')||'';
  if(step===0)body='<p><b>Scenario:</b> '+esc(known)+'</p>'+input('known','Copy the known values or counts')+input('unknown','What are you finding?');
  if(step===1)body='<p>Choose the formula before substituting values.</p>'+task.alternatives.map((v,i)=>'<button data-choice="'+i+'" aria-pressed="'+(a.formula===v)+'">'+esc(v)+'</button>').join('');
- if(step===2)body='<p>Fill every formula slot. Select the correct numerators, denominators, or totals.</p><div class="mjSeGrid">'+ex.slots.map((v,i)=>input('slot'+i,'Formula slot '+(i+1))).join('')+'</div>';
+ if(step===2)body='<p>Fill every formula slot. Select the correct numerators, denominators, or totals.</p><div class="mjSeGrid">'+ex.slots.map((v,i)=>'<label class="mjSeLabel">'+esc(task.slotLabels?.[i]||(task.id==='probability'?['First favorable','First total','Second favorable','Second total'][i]:'Formula slot '+(i+1)))+'<select data-field="slot'+i+'"><option value="">Choose a value</option>'+[...new Set([...ex.slots,0,1,...(ex.numbers||[])])].sort((a,b)=>a-b).map(n=>'<option value="'+n+'" '+(String(a['slot'+i])===String(n)?'selected':'')+'>'+n+'</option>').join('')+'</select></label>').join('')+'</div>';
  if(step===3)body='<p>Calculate the result using your completed formula. Enter a number or decimal.</p>'+input('result','Calculated value');
  if(step===4)body='<p>Interpret the answer in the context of the original scenario.</p>'+input('meaning','What does your answer mean?','Write a sentence');
  if(step===5)body='<p>Now use different numbers with <b>no hints</b>. Start by identifying the values, then solve the new problem independently.</p><p>'+esc(known)+'</p>'+input('transfer','Final solution');
@@ -91,6 +103,7 @@ if(task.kind==='sequence'){
  else if(step===2||step===5)body+='<p>'+(step===5?'Independent transfer: rebuild the reasoning sequence without hints. ':'')+'Tap each piece in the order you would use it.</p>'+ex.parts.map((p,i)=>'<button type="button" data-add="'+i+'" class="mjSeOption '+(order.includes(i)?'chosen':'')+'" aria-pressed="'+order.includes(i)+'" '+(order.includes(i)?'disabled':'')+'>'+esc(p)+'</button>').join('')+'<p>Built sequence: '+order.map(i=>esc(ex.parts[i])).join(' → ')+'</p><button data-undo>Undo</button>';
  else{const bank=window.S.activeCourse==='D772'?['The target population and sampled group differ, so representativeness must be evaluated.','An observational study can show association, but cannot by itself establish causation.','Convenience or voluntary sampling can introduce selection bias and limit generalizability.','The evidence supports a cautious conclusion, not a universal causal claim.']:['Use family and student input to select measurable, individualized supports.','Document team decisions and identify a measurable follow-up.'];body+='<p>Select the best WGU-aligned justification. The choice must match the scenario, not just sound academic.</p><div class="mjSeBank">'+bank.map((line,i)=>'<button type="button" data-meaning="'+i+'" aria-pressed="'+(a.meaning===line)+'">'+esc(line)+'</button>').join('')+'</div><p class="mjSeSelection">'+esc(a.meaning||'Choose a supported explanation')+'</p>'}
 }
+if(task.id==='probability')body=probabilityTree(ex)+body;
 const canHint=!independent;const taskPicker=host.querySelector('.mjSeTaskSelect');
 const mixed=window.S?.screen==='reasoning';
 host.innerHTML='<div class="mjSeHead"><strong>✦ Reasoning Workshop · Optional Parchment Practice</strong><small>'+esc(window.S.activeCourse)+' · '+esc(task.title)+'</small></div><nav class="mjSeSteps" aria-label="Solution steps">'+Array.from({length:6},(_,i)=>'<button type="button" data-stage="'+i+'" '+(i===step?'aria-current="step"':'')+' '+(i>step||!(st.verified?.[st.caseIndex]||[]).includes(i)?'disabled':'')+' class="'+(i===step?'active':'')+'" title="'+esc(stageTitle(task,i))+'">'+(i+1)+'</button>').join('')+'</nav><div class="mjSeStage"><h3>'+esc(stageTitle(task,step))+'</h3>'+body+'</div><div class="mjSeActions"><button type="button" data-check>'+(st.error?'Resubmit answer':'Check step')+'</button><button type="button" data-clear>Clear answer</button>'+(canHint?'<button data-hint>Hint</button>':'')+'<button data-reset>Restart scenario</button>'+(mixed?'<button type="button" data-mixed-next>Next mixed skill →</button>':'')+'</div>'+(st.hint?'<p class="mjSeHelp">Think about what information the situation provides and what you must determine before computing or acting.</p>':'')+(st.feedback?'<p class="mjSeFeedback" role="status">'+esc(st.feedback)+'</p>':'')+'<p class="mjSeFoot">Objective: '+esc(task.objective||'Apply this lesson concept')+'. Hands-on participation can earn XP. Completing an unassisted transfer can earn a one-time XP/crystal bonus. Neither replaces validated course mastery.</p>';
@@ -98,7 +111,7 @@ if(taskPicker&&!mixed)host.prepend(taskPicker);
 if(mixed){const next=host.querySelector('[data-mixed-next]');if(next)next.onclick=()=>{const upcoming=nextMixed(host,true);if(upcoming)render(host,upcoming)}}
 if(topBefore!==null&&host.isConnected){const delta=host.getBoundingClientRect().top-topBefore;if(Math.abs(delta)>2)window.scrollBy(0,delta)}
 host.querySelectorAll('[data-stage]').forEach(button=>button.onclick=()=>{const dest=Number(button.dataset.stage);if(dest<st.stage&&(st.verified?.[st.caseIndex]||[]).includes(dest)){st.verified[st.caseIndex]=st.verified[st.caseIndex].filter(n=>n<dest);st.stage=dest;st.finished=false;st.feedback='Review this step, then check it again to continue.';render(host,task)}});
-host.querySelectorAll('[data-field]').forEach(el=>el.oninput=()=>{a[el.dataset.field]=el.value;st.feedback=''});
+host.querySelectorAll('[data-field]').forEach(el=>{const capture=()=>{a[el.dataset.field]=el.value;st.feedback=''};el.oninput=capture;el.onchange=capture});
 host.querySelectorAll('[data-bar]').forEach(el=>el.oninput=()=>{a['bar'+el.dataset.bar]=Math.max(0,Math.min(10,Number(el.value)));render(host,task)});
 host.querySelectorAll('[data-delta]').forEach(el=>el.onclick=()=>{let i=el.dataset.i;a['bar'+i]=Math.max(0,Math.min(10,Number(a['bar'+i]||0)+Number(el.dataset.delta)));render(host,task)});
 host.querySelectorAll('[data-focus]').forEach(el=>el.onclick=()=>{a.focus=el.textContent;render(host,task)});
@@ -229,6 +242,68 @@ function mount(){const root=document.getElementById('content');if(!root)return;c
  }
 }
 
+function reconstructionPlan(q){
+ const skill=window.MajickLearningContinuity?.practiceSkill?.(q)||q.skill||'',d=q.data||{};
+ const rules={
+ 'probability':'Update the favorable and total counts after removal, then multiply the first and second branch probabilities.',
+ 'weighted-mean':'Multiply each mean by its group count; divide the combined total by the combined count.',
+ 'mean':'Recover the total and divide by the observation count; use a target total for a missing value.',
+ 'median':'Order the observations and locate the middle; average the two middle values when needed.',
+ 'iqr-outlier':'Subtract Q1 from Q3, then compare the new value with Q3 + 1.5 × IQR.',
+ 'exactly-one-without-replacement':'Multiply conditional branch probabilities for each qualifying order, then add the orders.',
+ 'dependent-probability':'Update the favorable and total counts after removal, then multiply conditional probabilities.',
+ 'complement-multistage':'Find the probability of no successes across independent trials and subtract from one.',
+ 'conditional-denominator':'Restrict the denominator to the given group and count the qualifying overlap.',
+ 'expected-net-value':'Weight payouts by their probabilities, add them, then subtract the entry cost.',
+ 'expected-value':'Multiply each outcome value by its probability and add the weighted outcomes.',
+ 'sampling-generalization':'Compare the target population, sampling frame and actual respondents before generalizing.',
+ 'sampling':'Check how the sample was selected and who responded or was excluded.',
+ 'association-causation':'Distinguish assigned treatments from observations, then consider confounding and generalization.',
+ 'causation':'Check random assignment and confounding before making a causal claim.',
+ 'venn-sets':'Identify AND, OR or NOT and count only the corresponding outcomes.',
+ 'histogram':'Read interval boundaries and frequencies; compare heights and sum counts.',
+ 'boxplot':'Use the ordered five-number summary; IQR is Q3 minus Q1.',
+ 'scatterplot':'Describe the overall association and unusual points; a plot alone cannot establish causation.'
+ };
+ const rule=rules[skill]||'Use the stated statistical evidence and the requested event or quantity; avoid unsupported assumptions.';
+ let fields=null;
+ if(Array.isArray(d)&&d.length&&d.every(Number.isFinite)){
+  const sorted=[...d].sort((a,b)=>a-b),mid=sorted.length/2;
+  if(skill==='mean')fields=[{label:'Sum of observations',value:d.reduce((a,b)=>a+b,0)},{label:'Observation count',value:d.length}];
+  if(skill==='median')fields=[{label:'Middle value (or left middle)',value:sorted[Math.floor((d.length-1)/2)]},{label:'Middle value (or right middle)',value:sorted[Math.floor(d.length/2)]}];
+  if(skill==='probability')fields=[{label:'Initial total',value:d[0]+d[1]},{label:'Total after removal',value:d[0]+d[1]-1},{label:'Green remaining after green removed',value:d[0]-1}];
+  if(skill==='histogram')fields=[{label:'Total frequency',value:d.reduce((a,b)=>a+b,0)},{label:'Highest frequency',value:Math.max(...d)}];
+ }
+
+ if(d.counts&&d.means)fields=[{label:'First group total',value:d.counts[0]*d.means[0]},{label:'Second group total',value:d.counts[1]*d.means[1]},{label:'Combined observation count',value:d.counts[0]+d.counts[1]}];
+ if(skill==='iqr-outlier'&&d.values){const v=d.values;fields=[{label:'Q1 (median of lower half)',value:(v[1]+v[2])/2},{label:'Q3 (median of upper half)',value:(v[5]+v[6])/2},{label:'IQR',value:8}]}
+ if(d.red&&d.blue)fields=[{label:'Initial total',value:d.red+d.blue},{label:'Total after first removal',value:d.red+d.blue-1},{label:'Number of orders giving exactly one red',value:2}];
+ if(d.rate!=null)fields=[{label:'Probability of no detection in one trial',value:1-d.rate},{label:'Probability of no detection in all trials',value:(1-d.rate)**d.trials}];
+ if(d.deliveryOnly!=null)fields=[{label:'Qualifying overlap (numerator)',value:d.both},{label:'Delivery users (conditional denominator)',value:d.both+d.deliveryOnly}];
+ if(d.prize!=null)fields=[{label:'Probability of winning',value:1/d.sectors},{label:'Expected gross payout',value:d.prize/d.sectors},{label:'Cost to subtract',value:d.cost}];
+ const options=(answer,wrong)=>[answer,...wrong].map((text,i)=>({text,order:(i+(String(q.id).length%4))%4})).sort((a,b)=>a.order-b.order).map(x=>x.text);
+ const evidence='Use the observations, counts and study design stated in this scenario.';
+ const setup='Apply the selected rule only to the stated evidence; distinguish the requested group or event from the whole population.';
+ return [
+ {title:'1 · Identify the evidence',text:q.prompt,answer:evidence,choices:options(evidence,['Treat the sample result as the exact population value.','Use the largest number and ignore the study design.','Assume missing observations are identical to the observed group.'])},
+ {title:'2 · Choose the method',text:'Which method fits the requested statistical task?',answer:rule,choices:options(rule,['Always divide the smaller number by the larger, regardless of the event.','Add all probabilities even when the outcomes overlap.','Use the observed association as proof of a causal effect.'])},
+ fields?{title:'3 · Place the values',text:'Rebuild each quantity from the original data. Decimal answers are accepted.',fields}:{title:'3 · Connect evidence to the rule',text:'Which setup avoids an unsupported assumption?',answer:setup,choices:options(setup,['Use a convenient denominator even if the question specifies a conditional group.','Ignore overlapping outcomes or excluded respondents.','Replace the reported observations with an assumed population result.'])},
+ {title:'4 · Reconstruct the result',text:'Use the worked reasoning to check your result. '+q.why,answer:q.answer,choices:q.options||q.choices},
+ {title:'5 · Interpret and verify',text:'Which explanation ties the result back to the scenario?',answer:q.why,choices:options(q.why,['The result guarantees the same outcome for each individual trial or person.','A larger number always establishes a causal relationship.','The calculation is valid even if the sample space or denominator is changed.'])}
+ ];
+}
+function mountReconstruction(host,q,onComplete){
+ const api=window.MajickLearningContinuity,r=api?.practiceRecovery?.(q,false);if(!host||!r)return false;
+ const plan=reconstructionPlan(q);
+ if(!r.required){host.innerHTML='<p>Guided reconstruction saved. Independent mastery has not been awarded.</p>';const b=document.createElement('button');b.type='button';b.textContent='Continue to fresh independent practice';let continued=false;b.onclick=()=>{if(continued)return;continued=true;onComplete?.()};host.append(b);return true}
+ const step=plan[r.stage];if(!step){host.textContent='This reconstruction cannot load. Your saved work is preserved.';return false}
+ host.innerHTML='<h3>'+esc(step.title)+'</h3><p>Guided repair · '+r.stage+' of '+plan.length+' stages verified · no independent mastery credit</p><p>'+esc(step.text)+'</p><div data-reconstruction-fields></div><p role="status" data-reconstruction-status></p>';
+ const form=host.querySelector('[data-reconstruction-fields]'),values=r.draft.values||[];
+ const persist=()=>{r.draft={values};try{window.save?.()}catch(_){}};
+ if(step.fields)step.fields.forEach((f,i)=>{const label=document.createElement('label');label.className='mjSeLabel';label.textContent=f.label;const input=document.createElement('input');input.type='number';input.step='any';input.value=values[i]??'';input.oninput=()=>{values[i]=input.value;persist()};label.append(input);form.append(label)});
+ else step.choices.forEach(choice=>{const label=document.createElement('label');label.className='majExamChoice';const input=document.createElement('input');input.type='radio';input.name='reconstruction-'+r.stage;input.checked=values[0]===choice;input.onchange=()=>{values[0]=choice;persist()};label.append(input,document.createTextNode(choice));form.append(label)});
+ const check=document.createElement('button');check.type='button';check.textContent='Verify reconstruction step';const expectedStage=r.stage;check.onclick=()=>{if(r.stage!==expectedStage)return;const result=api.reconstructionCheck(q,values);if(result.ok)mountReconstruction(host,q,onComplete);else host.querySelector('[data-reconstruction-status]').textContent=result.message};host.append(check);return true;
+}
 function mountLesson(host,lessonId){
  if(!host||!lessonId)return false;
  const cid=window.S?.activeCourse||'D772',task=(BANK[cid]||[]).find(x=>(x.lessonId||x.lesson)===lessonId);
@@ -236,5 +311,5 @@ function mountLesson(host,lessonId){
  host.classList.add('mjSolutionEngine');render(host,task);return true;
 }
 let style=document.createElement('style');style.textContent='.mjSeStage{min-height:170px;color:#fff4e5!important}.mjSeStage p,.mjSeStage h3,.mjSeStage label,.mjSeStage strong{color:#fff4e5!important;opacity:1!important}.mjSeBank{display:flex;gap:8px;flex-wrap:wrap}.mjSeBank button{max-width:100%;text-align:left;line-height:1.4}.mjSeStage input{font-size:16px}.mjSeOption.chosen,.mjSolutionEngine button[aria-pressed="true"]{background:#a7789e!important;border:2px solid #f4d494!important;box-shadow:0 0 0 2px #3b2843 inset}.mjSeSelection{color:#f6dbab;font-weight:700}.mjSeSteps button{min-width:36px;margin:2px}.mjSeSteps button[disabled]{opacity:.4;cursor:default}.mjSolutionEngine{background:#2b2139;border:1px solid #c4a673;color:#fff0eb;margin:16px 0;padding:16px;border-radius:16px}.mjSolutionEngine h3{color:#f0cf98}.mjSeHead{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}.mjSeHead strong{color:#f2d095}.mjSeSteps{display:flex;gap:6px;margin:12px 0}.mjSeSteps span{padding:5px 10px;border:1px solid #947e95;border-radius:50%}.mjSeSteps .active{background:#9972aa}.mjSeLabel{display:flex;flex-direction:column;gap:5px;margin:9px 0}.mjSeLabel input,.mjSeBar input{background:#fff8ed;color:#1f1829;border-radius:7px;padding:10px;max-width:100%}.mjSeActions{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0}.mjSolutionEngine button{background:#695277;color:#fff0da;border:1px solid #bfa17b;border-radius:8px;padding:9px;margin:4px;cursor:pointer}.mjSolutionEngine button:focus-visible,.mjSolutionEngine input:focus-visible{outline:3px solid #f7cf7d}.mjSeGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:9px}.mjSeGraph{display:flex;align-items:end;gap:10px;min-height:210px;overflow-x:auto}.mjSeBar{display:flex;flex-direction:column;align-items:center;min-width:85px}.mjSeTower{width:42px;background:linear-gradient(#f0cd84,#aa7dbe);min-height:3px}.mjSeBar input{width:72px}.mjSeFoot{font-size:12px;opacity:.8}.mjSeFeedback,.mjSeHelp{background:#493851;border-left:3px solid #f2cc88;padding:11px}';document.head.append(style);
-const old=window.render;if(typeof old==='function')window.render=function(){let value=old.apply(this,arguments);setTimeout(mount,50);return value};setTimeout(mount,500);window.MajickSolutionEngine={version:'1.0',refresh:mount,mountLesson,activities:Object.values(BANK).flat().length};
+const old=window.render;if(typeof old==='function')window.render=function(){let value=old.apply(this,arguments);setTimeout(mount,50);return value};setTimeout(mount,500);window.MajickSolutionEngine={version:'1.0',refresh:mount,mountLesson,mountReconstruction,reconstructionPlan,activities:Object.values(BANK).flat().length};
 })();

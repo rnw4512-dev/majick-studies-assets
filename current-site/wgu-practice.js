@@ -156,7 +156,21 @@ function confidenceHtml(){
   const items=[['guess','Guess'],['50','50/50'],['sure','Sure'],['certain','Certain']];
   return '<div class="v3333Confidence"><span>How sure are you?</span>'+items.map(([v,l])=>'<button type="button" class="'+(session.confidence===v?'sel':'')+'" onclick="setConfidence(\''+v+'\')">'+l+'</button>').join('')+'</div>';
 }
+function openRequiredRecovery(){
+ const q=session?.current,r=window.MajickLearningContinuity?.practiceRecovery?.(q,false);
+ if(!q||!r)return;
+ S.progress.D772.requiredReconstructionQuestion=JSON.parse(JSON.stringify(r.source||q));window.save?.();window.navigate?.('reasoning');
+}
+function finishRequiredRecovery(source){
+ const api=window.MajickLearningContinuity,r=api?.practiceRecovery?.(source,false);if(!r||r.required)return;
+ const fresh=practicePool('mixed').find(q=>api.practiceSkill(q)===api.practiceSkill(source)&&!r.seenIds.includes(q.id)&&window.MajickVisualEvidence?.evidence(q).ok);
+ if(!fresh){window.rewardToast?.('Repair saved','No unused same-skill case remains. Independent recovery is still pending.');window.navigate?.('mission');return}
+ if(session){const old=session.current;const i=session.questions?.findIndex(q=>q.id===old?.id);if(i>=0)session.questions[i]=fresh;session.current=fresh;session.answered=false;session.pendingChoice=null;session.adaptiveTracked=false;session.mathCoachAssisted=false;session.chartUsed=false;session.revealedClue=false;session.usedPetAbility=false}
+ window.navigate?.('mission');
+}
 function questionHtml(q){
+ const recovery=window.MajickLearningContinuity?.practiceRecovery?.(q,false);
+ if(session?.type==='test'&&!session.answered&&recovery&&(recovery.required||recovery.awaitingTransfer&&recovery.failedIds.includes(q.id)))return '<section class="majExamFeedback"><h3>Guided reconstruction required</h3><p>Two independent misses need a complete repair before another independent response for this skill. Your exam score and previous answers are preserved.</p><button onclick="MajickWGUPractice.openRequiredRecovery()">Complete guided reconstruction</button></section>';
   const oa=session?.type==='test';
   const clue=session?.type==='clue'&&!oa&&!session.answered;
   const selected=session?.pendingChoice;
@@ -511,7 +525,7 @@ sessionHTML=function(){
   if(session.finished&&['d772-diagnostic','d772-mixed-oa'].includes(session.opts?.kind))return assessmentReport();
   if(session.finished&&fixedPractice())return fixedResult();
   if(session.finished&&session.opts?.kind==='d772-section1-oa')return oaResult();
-  if(session.opts?.kind==='d772-section-practice'||isD772Question(session.current))return questionHtml(session.current);
+  if(session.opts?.kind==='d772-section-practice'||isD772Question(session.current)||activeD772()&&/^d772-(oa-|pa-deep)/.test(session.current?.id||''))return questionHtml(session.current);
   return originalSessionHTML();
 };
 resultHTML=function(){
@@ -557,7 +571,7 @@ function bootD772Practice(){
     }
   }catch(e){console.warn('D772 Practice Lab boot',e)}
 }
-window.MajickWGUPractice={VERSION,select,submit,skipBrokenVisual,startSection,startSkillRetry,startDiagnostic,startMixedOA,startRepairTransfer,balancedMixedAssessment,practicePool,sectionNumber,startOA,startFocusedReview,startSampling,startStudyDesign,startLabelStudy,startExperiments,visualHtml,whyList,balancedOA,isD772Question,ensureD772Bank,bootD772Practice};
+window.MajickWGUPractice={VERSION,select,submit,openRequiredRecovery,finishRequiredRecovery,skipBrokenVisual,startSection,startSkillRetry,startDiagnostic,startMixedOA,startRepairTransfer,balancedMixedAssessment,practicePool,sectionNumber,startOA,startFocusedReview,startSampling,startStudyDesign,startLabelStudy,startExperiments,visualHtml,whyList,balancedOA,isD772Question,ensureD772Bank,bootD772Practice};
 document.documentElement.dataset.majickWguPractice='3.3.36';
 bootD772Practice();
 })();

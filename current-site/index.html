@@ -1299,7 +1299,7 @@ function switchCourse(id){if(S.courses[id]){S.activeCourse=id;session=null;S.scr
 function resetUI(){session=null;S.screen='home';save();render()}
 function d772StudyNowBank(){
  const base=[...(course().questionBank||[])],t=window.MajickCourseTutor;
- if(S.activeCourse!=='D772'||!t)return base;
+ if(S.activeCourse!=='D772')return base;
  const out=[],seen=new Set();
  const add=(q,section,lesson)=>{
   if(!q||!q.prompt)return;
@@ -1313,12 +1313,13 @@ function d772StudyNowBank(){
   const name={1:'Section 1 · Credibility',2:'Section 2 · Data and Graphs',3:'Section 3 · Probability'}[num];
   out.push({...q,id:key,options,answer,section:name,learningPathLessonId:q.learningPathLessonId||lesson?.id,topicId:q.topicId||lesson?.id||'d772-s'+num,why:q.why||q.rationale||''});
  };
- for(const sec of t.sections('D772')||[]){
+ for(const sec of t?.sections?.('D772')||[]){
   for(const lesson of t.sectionUnits(sec)||[]){
    if(lesson.review)continue;
    try{for(const q of t.questionsForLesson(lesson,'D772')||[])add(q,sec.title,lesson)}catch(e){console.warn('D772 lesson practice',lesson.id,e)}
   }
  }
+ for(const q of window.MajickD772SharedQuestions?.practiceQuestions?.()||[])add(q,q.section,null);
  for(const q of base)add(q,q.section,null);
  return out;
 }
@@ -3675,7 +3676,7 @@ function lfSetOutfit(id,key){let p=(S.legacy.pets||[]).find(x=>x.id===id);if(!p|
 function lfPetNeedCard(p){let m=lfMood(p),r=lfRoutine(p),fav=LF_FAVORITES[p.type]||LF_FAVORITES.luna;return `<div class="lfMoodCard"><b>${m.icon} ${esc(m.label)}</b><span>${esc(m.desc)}</span><span>Routine: ${esc(r.text)} • Favorite: ${fav.emoji} ${esc(fav.name)}</span></div>`}
 function lfDetailedRoster(){
  lfEnsure();return (S.legacy?.pets||[]).map(p=>{let d=petDef(p),active=p.id===S.legacy.activePetId,lv=masPetLevel(p),pctv=masPetLevelPct(p),m=lfMood(p),pers=lfPersonality(p),fav=LF_FAVORITES[p.type]||LF_FAVORITES.luna;
- return `<article class="lfPetCard ${active?'active':''}"><div class="lfCardPet">${lfPetFigure(p)}</div><h4>${esc(p.name)} ${active?'✦':''}</h4><p>${esc(d.species)} • ${esc(masPetStage(p))} • Level ${lv}</p><div class="lfPetMeta"><span class="lfChip">${m.icon} ${esc(m.label)}</span><span class="lfChip">${esc(pers.base)}</span><span class="lfChip">${fav.emoji} ${esc(fav.name)}</span></div><div class="lfXP"><i style="width:${pctv}%"></i></div><p>${p.studyXP||0} study XP • ${Math.round(pctv)}% to next level</p><p><b>${esc(pers.traits.join(' • '))}</b></p><div class="lfOutfitRow">${Object.entries(LF_OUTFITS).map(([k,o])=>`<button class="lfOutfitBtn ${p.familiar.outfit===k?'active':''}" onclick="lfSetOutfit('${p.id}','${k}')">${o.icon} ${esc(o.name)}</button>`).join('')}</div><div class="lfCardActions"><button class="btn ${active?'good':'violet'}" onclick="choosePet('${p.id}')">${active?'Traveling With You':'Travel with me'}</button><button class="btn ghost" onclick="lfPetClick('${p.id}',event)">Pet</button><button class="btn ghost" onclick="renamePet('${p.id}')">Rename</button>${masPetStage(p)!=='Baby'?`<button class="btn ghost" onclick="lfReplayEvolution('${p.id}')">Evolution</button>`:''}${masPetStage(p)==='Celestial'&&!p.familiar.evolutionPath?`<button class="btn ghost" onclick="lfOpenPath('${p.id}')">Choose Path</button>`:''}</div></article>`}).join('');
+ return `<article class="lfPetCard ${active?'active':''}"><div class="lfCardPet">${lfPetFigure(p)}</div><h4>${esc(p.name)} ${active?'✦':''}</h4><p>${esc(d.species)} • ${esc(masPetStage(p))} • Level ${lv}</p><details class="majGuardianDetails"><summary>Personality, progress and wardrobe</summary><div class="lfPetMeta"><span class="lfChip">${m.icon} ${esc(m.label)}</span><span class="lfChip">${esc(pers.base)}</span><span class="lfChip">${fav.emoji} ${esc(fav.name)}</span></div><div class="lfXP"><i style="width:${pctv}%"></i></div><p>${p.studyXP||0} study XP • ${Math.round(pctv)}% to next level</p><p><b>${esc(pers.traits.join(' • '))}</b></p><div class="lfOutfitRow">${Object.entries(LF_OUTFITS).map(([k,o])=>`<button class="lfOutfitBtn ${p.familiar.outfit===k?'active':''}" onclick="lfSetOutfit('${p.id}','${k}')">${o.icon} ${esc(o.name)}</button>`).join('')}</div></details><div class="lfCardActions"><button class="btn ${active?'good':'violet'}" onclick="choosePet('${p.id}')">${active?'Traveling With You':'Travel with me'}</button><button class="btn ghost" onclick="lfPetClick('${p.id}',event)">Pet</button><button class="btn ghost" onclick="renamePet('${p.id}')">Rename</button>${masPetStage(p)!=='Baby'?`<button class="btn ghost" onclick="lfReplayEvolution('${p.id}')">Evolution</button>`:''}${masPetStage(p)==='Celestial'&&!p.familiar.evolutionPath?`<button class="btn ghost" onclick="lfOpenPath('${p.id}')">Choose Path</button>`:''}</div></article>`}).join('');
 }
 masDetailedRoster=lfDetailedRoster;
 
@@ -3718,12 +3719,12 @@ function lfCompanionHTML(){
  lfEnsure();const L=S.legacy||{},active=activePet(),eggs=(L.eggs||[]).map(e=>{let d=V4_PETS[e.type]||window.MajickGuardianRegistry?.get?.(e.type)||{species:e.name||'Mystery Guardian'},pc=Math.min(100,e.progress/e.goal*100);return `<div class="eggCard"><div class="eggShell">🥚</div><h3>${esc(d.species)} Egg</h3><p>Correct answers add moonlight. Hard correct answers grow it faster.</p><div class="petProgress"><i style="width:${pc}%"></i></div><b>${e.progress}/${e.goal} moonlight</b></div>`}).join('')||'<div class="eggCard"><div class="eggShell">✨</div><h3>No eggs incubating</h3><p>Earn eggs from weekly quests and Crystal Chests.</p></div>';
  return `<div class="sectionTitle"><div><h2>Living Familiar Conservatory</h2><p>Your guardians have routines, moods, memories, friendships, favorite objects, outfits, and lives in the sanctuary—but they never punish you for being away.</p></div><span class="rankBadge">Traveling: ${esc(active.name)}</span></div>
  <div class="masActiveRule"><b>Companion care rule:</b> there is no hunger meter, sickness, or guilt mechanic. Studying and interacting create positive moments; taking time away simply leaves them cozy at home.</div>
- <div class="lfMoodPanel">${(L.pets||[]).map(lfPetNeedCard).join('')}</div>
+ <details class="majGuardianDetails"><summary>Guardian moods and routines</summary><div class="lfMoodPanel">${(L.pets||[]).map(lfPetNeedCard).join('')}</div></details>
  <div class="mcRoomEditBar"><span class="hint">${esc(lfTimeClass())} sanctuary • ${esc(lfWeatherForDay())} ambience • Phase 4 movement is isolated from the Study Now engine.</span></div>
  ${phase4SanctuaryHTML()}
  <h3 class="lfSubhead">Your Guardians</h3><p class="lfNote">Everyone gains study XP. The familiar traveling with you receives the larger bonus and reacts directly to your study session.</p><div class="lfRoster">${lfDetailedRoster()}</div>
- <h3 class="lfSubhead">Sanctuary Friendships</h3><p class="lfNote">Friendships grow from shared study days and group moments—not from idle grinding.</p><div class="lfFriendGrid">${lfFriendHTML()}</div>
- <h3 class="lfSubhead">Memory Album</h3><p class="lfNote">Milestones, repaired concepts, friendships, evolution, and earned room pieces become memories.</p><div class="lfMemoryGrid">${lfMemoryHTML()}</div>
+ <details class="majGuardianDetails"><summary>Sanctuary friendships</summary><h3 class="lfSubhead">Sanctuary Friendships</h3><p class="lfNote">Friendships grow from shared study days and group moments—not from idle grinding.</p><div class="lfFriendGrid">${lfFriendHTML()}</div></details>
+ <details class="majGuardianDetails"><summary>Memory album</summary><h3 class="lfSubhead">Memory Album</h3><p class="lfNote">Milestones, repaired concepts, friendships, evolution, and earned room pieces become memories.</p><div class="lfMemoryGrid">${lfMemoryHTML()}</div></details>
  <h3 class="lfSubhead">Egg Incubator</h3><div class="companionGrid">${eggs}</div>
  <h3 class="lfSubhead">Dress-Up Drawer</h3><div class="companionGrid">${V4_ACCESSORIES.map((a,i)=>{let owned=L.accessories.includes(a),equipped=activePet().accessory===a;return `<div class="petCard ${equipped?'active':''}"><div style="font-size:36px">${a.split(' ')[0]}</div><b>${esc(a)}</b><p class="tiny">${owned?'Owned':'Unlock with Moon Crystals'}</p><button class="btn ${equipped?'good':'violet'}" onclick="accessoryAction(${i})">${equipped?'Equipped':owned?'Equip':'◆ '+(10+i*2)}</button></div>`}).join('')}</div>
  <h3 class="lfSubhead">Pet-Earned Decor</h3><p class="lfNote">These pieces unlock from companion levels. They cost no crystals.</p><div class="companionGrid">${(mcEnsureRoom().items||[]).filter(x=>x.petEarned).map(x=>`<div class="petCard active"><div style="font-size:40px">${x.emoji}</div><b>${esc(x.name)}</b><p class="tiny">Earned by a familiar</p></div>`).join('')||'<div class="petCard"><b>Your familiars are working toward their first room keepsakes.</b></div>'}</div>
@@ -3862,11 +3863,7 @@ function v335ApprovedRegistryHTML(){
  return `<div class="approvedRegistryIntro"><b>✦ Academy Familiar Registry</b><p>These are approved future familiars. Their exact portraits are stored inside Majick Studies now, so the artwork you approved is the artwork the app uses. They are not active Phaser pets yet, which keeps Study Now and the current four moving familiars stable while you focus on studying.</p><span class="lockNote">🔒 APPROVED ART LOCKED • future animation must preserve these designs</span></div><div class="approvedFamiliarGrid">${V335_APPROVED_FAMILIARS.map(f=>`<article class="approvedFamiliarCard" style="--reg-accent:${f.accent}"><div class="approvedFamiliarPortrait"><img src="${f.portrait}" alt="${f.name}, ${f.species}"></div><div class="approvedFamiliarEyebrow">${f.role}</div><h4>${f.name}</h4><p class="approvedFamiliarSpecies">${f.species}</p><p class="approvedFamiliarGift">${f.gift}</p><div class="approvedFamiliarFooter"><span class="approvedFamiliarStatus">Approved portrait</span><span class="approvedFamiliarFuture">Phaser movement later</span></div></article>`).join('')}</div>`;
 }
 const _v335CompanionBase=companionHTML;
-companionHTML=function(){
- const html=_v335CompanionBase();
- const marker='<h3 class="lfSubhead">Sanctuary Friendships</h3>';
- return html.includes(marker)?html.replace(marker,`<h3 class="lfSubhead">Future Academy Familiars</h3><p class="lfNote">Six unique companions are already approved visually. They stay portrait-only for now so your study app remains stable.</p>${v335ApprovedRegistryHTML()}${marker}`):html+v335ApprovedRegistryHTML();
-};
+companionHTML=function(){return _v335CompanionBase()};
 const _v335RenderBase=render;
 render=function(){
  _v335RenderBase();
@@ -4107,12 +4104,12 @@ function v338ProfileHTML(c){
 }
 v336EvolutionCodexHTML=function(){
  const legend=`<div class="v336PhaseLegend">${V336_PHASES.map(p=>`<div class="v336Phase"><b>${p.name}</b><span>${p.levels}</span></div>`).join('')}</div>`;
- const cards=V336_EVOLUTION_FAMILIARS.map(f=>{
+ const cards=V336_EVOLUTION_FAMILIARS.filter(f=>!v336PetForType(f.id)).map(f=>{
    const c=v338Canon(f.id),pet=v336PetForType(f.id),level=pet?masPetLevel(pet):null,phase=pet?v336PhaseIndex(level):2;
    const chip=pet?`${V336_PHASES[phase].name} • Level ${level}`:`Guardian portrait ready • bond through gameplay`;
-   return `<article class="v336EvolutionCard" style="--ev:${c.accent}"><div class="v336EvolutionHead"><img src="${c.icon}" alt="${c.display} ${c.species}"><div><h4>${c.display}</h4><p>${c.species} • ${c.title}${c.phaser?'':' <span class="v338PortraitOnly">portrait-ready • movement later</span>'}</p><span class="v336PhaseChip">${chip}</span></div></div><div class="v338Banner"><img src="${c.banner}" alt="${c.display} evolution: New Bond through Celestial"></div>${v338ProfileHTML(c)}<div class="v336Forms">${f.forms.map((d,i)=>`<div class="v336Form ${i===phase?'current':''}"><b>${V336_PHASES[i].name}</b><small>${d}</small></div>`).join('')}</div></article>`;
+   return `<article class="v336EvolutionCard" style="--ev:${c.accent}"><div class="v336EvolutionHead"><img src="${c.icon}" alt="${c.display} ${c.species}"><div><h4>${c.display}</h4><p>${c.species} • ${c.title}${c.phaser?'':' <span class="v338PortraitOnly">portrait-ready • movement later</span>'}</p><span class="v336PhaseChip">${chip}</span></div></div><details class="majGuardianDetails"><summary>Personality and five-stage evolution</summary><div class="v338Banner"><img src="${c.banner}" alt="${c.display} evolution: New Bond through Celestial"></div>${v338ProfileHTML(c)}<div class="v336Forms">${f.forms.map((d,i)=>`<div class="v336Form ${i===phase?'current':''}"><b>${V336_PHASES[i].name}</b><small>${d}</small></div>`).join('')}</div></details></article>`;
  }).join('');
- return `<section class="v336EvolutionPanel"><h3>✦ Guardian Evolution Codex</h3><p class="intro">Ten unique guardians now share one five-phase evolution architecture. The exact approved portrait art is canon for the app UI. Velora, Cascade, Solstice and Aurelia keep their existing Phaser motion art untouched. Vesper, Briar, Zephyr, Prism, Rook and Solara are now included in the game roster and egg pool with portrait-based UI while their movement sets are created later.</p>${legend}<div class="v336EvolutionGrid">${cards}</div></section>`;
+ return `<section class="v336EvolutionPanel"><h3>✦ Discover More Guardians</h3><p class="intro">Ten unique guardians now share one five-phase evolution architecture. The exact approved portrait art is canon for the app UI. Velora, Cascade, Solstice and Aurelia keep their existing Phaser motion art untouched. Vesper, Briar, Zephyr, Prism, Rook and Solara are now included in the game roster and egg pool with portrait-based UI while their movement sets are created later.</p><details class="majGuardianDetails"><summary>Evolution stage guide</summary>${legend}</details><div class="v336EvolutionGrid">${cards}</div></section>`;
 };
 
 /* Registry wording: these are part of the game now, not duplicate placeholders. */

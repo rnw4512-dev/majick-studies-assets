@@ -688,7 +688,7 @@
     if(globalThis.S?.activeCourse!== 'D772')return base;
     const seen=new Set(),out=[];
     const generated=(globalThis.MajickGeneratedPractice?.batch?.(18,2)||[]).map(q=>({...q,section:q.learningPathLessonId?.startsWith('d772-s3')?'Section 3 · Probability':'Section 2 · Graphs and statistics'}));
-    for(const q of [...base,...D772_REALM_SUPPLEMENT,...D772_ALL_SECTION_SUPPLEMENT,...(globalThis.MajickD772SharedQuestions?.questions||[]),...(globalThis.MajickD772PreassessmentReview?.practiceQuestions?.()||[]),...(globalThis.MajickD772VerifiedSource?.questions?.()||[]),...generated]){
+    for(const q of [...base,...D772_REALM_SUPPLEMENT,...D772_ALL_SECTION_SUPPLEMENT,...(globalThis.MajickD772SharedQuestions?.practiceQuestions?.()||globalThis.MajickD772SharedQuestions?.questions||[]),...(globalThis.MajickD772PreassessmentReview?.practiceQuestions?.()||[]),...(globalThis.MajickD772VerifiedSource?.questions?.()||[]),...generated]){
       if(!q?.prompt||!q?.answer)continue;
       const evidence=globalThis.MajickVisualEvidence?.evidence(q);
       if(evidence&&!evidence.ok)continue; // Shared gate serves every Game Realm mode.

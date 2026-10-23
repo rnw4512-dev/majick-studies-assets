@@ -212,6 +212,10 @@ function award(type,ctx={}){
  };
  r.ledger[key]={type,at:receipt.at,receipt};r.lastReceipt=receipt;
  save();pushRewardState();showReceipt(receipt);
+ // Emit visual-only feedback only after the authoritative one-time ledger write.
+ const milestone={'micro-skill-mastered':'success','concept-mastered':'mastery','lesson-mastered':'lesson','competency-mastered':'mastery','oa-competency-ready':'mastery','course-passed':'course','misconception-repaired':'guardian'}[type];
+ if(milestone)try{window.MajickAnimationEffects?.play?.(milestone,{label:type==='course-passed'?'Course completed':type==='lesson-mastered'?'Lesson mastered':type==='misconception-repaired'?'Reasoning repaired':receipt.label})}catch(_){}
+
  try{window.MajickProductCore?.record?.('reward-earned',{type,xp,crystals,eggFragments:receipt.eggFragments,item:drop?.id||null})}catch(_){}
  return receipt;
 }
