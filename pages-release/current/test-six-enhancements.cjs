@@ -5,9 +5,9 @@ const ctx={console,setTimeout:()=>0,clearTimeout(){},document:{createElement:()=
 for(const f of ['learning-continuity.js','solution-engine.js','visual-evidence-gate.js','d772-shared-oa-questions.js','d772-preassessment-deep-practice.js'])vm.runInContext(read(f),ctx);
 const C=ctx.MajickLearningContinuity,bank=ctx.MajickD772SharedQuestions.practiceQuestions();assert.equal(bank.length,60);assert.equal([1,2,3].reduce((n,s)=>n+ctx.MajickD772SharedQuestions.forSection(s).length,0),60);
 const trio=bank.filter(q=>q.skill==='weighted-mean');const unrelated=JSON.stringify({account:ctx.S.majickAccount,legacy:ctx.S.legacy,other:ctx.S.progress.D756});
-let r=C.practiceAnswer(trio[0],false);assert.equal(r.required,false);r=C.practiceAnswer(trio[1],false);assert(r.required);C.practiceAnswer(trio[1],false);assert.equal(r.misses,2,'replayed miss is not new evidence');
+let r=C.practiceAnswer(trio[0],false);assert.equal(r.required,true);r=C.practiceAnswer(trio[1],false);assert(r.required);C.practiceAnswer(trio[1],false);assert.equal(r.misses,2,'replayed miss is not new evidence');
 assert(!C.reconstructionCheck(trio[1],['wrong']).ok);assert.equal(r.stage,0);
-for(let i=0;i<5;i++){
+for(let i=0;i<ctx.MajickSolutionEngine.reconstructionPlan(trio[1]).length;i++){
  const step=ctx.MajickSolutionEngine.reconstructionPlan(trio[1])[i];const result=C.reconstructionCheck(trio[1],step.fields?step.fields.map(f=>String(f.value)):[step.answer]);assert(result.ok);if(i===1){ctx.S=JSON.parse(JSON.stringify(ctx.S));r=C.practiceRecovery(trio[1]);assert.equal(r.stage,2,'reconstruction survives reload')}
 }
 r=C.practiceRecovery(trio[1]);assert(!r.required&&r.awaitingTransfer);assert.equal(ctx.S.progress.D772.adaptiveSkills[trio[1].lessonId].masteryCertified,false);C.practiceAnswer(trio[0],true);assert(r.awaitingTransfer,'old failed question cannot clear transfer');C.practiceAnswer(trio[2],true);assert(!r.awaitingTransfer);assert.equal(r.transferId,trio[2].id);
@@ -22,4 +22,14 @@ assert(ctx.probabilityTree({slots:[5,8,4,7]}).includes('After green: green 4/7 o
 const rewards=read('reward-core.js');let effects=0;const account={xp:100,crystals:5,chests:0,rewardCore:{ledger:{},stats:{},masteryXp:0,eggFragments:0}};
 const rewardCtx={account:()=>account,rewardKey:(_t,c)=>c.key,baseFor:()=>({xp:45,crystals:6}),treasureDrop:()=>null,save(){},pushRewardState(){},showReceipt(){},window:{MajickAnimationEffects:{play:()=>effects++}}};vm.createContext(rewardCtx);vm.runInContext(rewards.slice(rewards.indexOf('function award('),rewards.indexOf('function receiptLines')),rewardCtx);rewardCtx.award('lesson-mastered',{key:'D772:lesson:1'});const saved=JSON.stringify(account);rewardCtx.award('lesson-mastered',{key:'D772:lesson:1'});assert.equal(effects,1);assert.equal(JSON.stringify(account),saved);
 const html=read('index.html');const activeRoster=html.slice(html.indexOf('lfDetailedRoster=function(){'),html.indexOf('masDetailedRoster=lfDetailedRoster;',html.indexOf('lfDetailedRoster=function(){')));assert(activeRoster.includes('<details class="majGuardianDetails">'));const compat=read('study-ui-compat.js');assert(compat.includes('filter(type=>!pets.some(p=>p.type===type))'));assert(compat.includes('Personality and evolution'));assert(html.includes('<details class="majGuardianDetails"><summary>Personality, progress and wardrobe</summary>'));assert(html.includes('V336_EVOLUTION_FAMILIARS.filter(f=>!v336PetForType(f.id))'));assert(!html.includes('html.replace(marker,`<h3 class="lfSubhead">Future Academy Familiars'));
-console.log('PASS two-miss five-stage recovery, save/reload, fresh-only transfer, no mastery/XP leakage, shared visual revisions, full-pool mixing, hands-on math/data, compact existing cards and ledger replay-safe celebrations');
+console.log('PASS first-miss two-example recovery, save/reload, fresh-only transfer, no mastery/XP leakage, shared visual revisions, full-pool mixing, hands-on math/data, compact existing cards and ledger replay-safe celebrations');
+// New plans cover every eligible skill, use separate example evidence, and require typed values.
+for(const q of bank){
+ ctx.S.progress.D772.adaptiveSkills={};const repair=C.practiceAnswer(q,false);assert(repair.required,'first miss must open practice');
+ const plan=ctx.MajickSolutionEngine.reconstructionPlan(q);assert(plan.length>=6);assert(plan[0].text!==q.prompt);assert(plan.some(s=>s.title.startsWith('Hands-on practice')));
+ assert(!C.reconstructionCheck(q,[]).ok,'missing values cannot become zero');
+ for(const step of plan){if(step.fields)for(const f of step.fields)assert(Number.isFinite(f.value));const result=C.reconstructionCheck(q,step.fields?step.fields.map(f=>String(f.value)):[step.answer]);assert(result.ok,q.id+' '+step.title)}
+ assert(repair.awaitingTransfer&&!repair.required);assert.equal(repair.misses,1,'guided corrections cannot add independent misses');
+}
+ctx.S.progress.D772.adaptiveSkills={};const legacy=C.practiceRecovery(trio[0]);Object.assign(legacy,{required:true,stage:2,verified:[0,1]});assert.equal(ctx.MajickSolutionEngine.reconstructionPlan(trio[0]).length,5,'paused legacy plan retains its stages');
+console.log('PASS all 60 first-miss plans, separate hands-on evidence, finite formula values, blank rejection and legacy recovery migration');

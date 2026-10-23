@@ -112,7 +112,7 @@ function practiceAnswer(q,correct,alreadyRecorded=false){
  r.seenKeys=r.seenKeys||r.seenIds.slice();if(r.seenKeys.includes(evidenceKey))return r;r.seenKeys.push(evidenceKey);r.seenKeys=r.seenKeys.slice(-300);
  r.seenIds.push(q.id);r.seenIds=r.seenIds.slice(-300);
  if(!alreadyRecorded)skillResult(q,correct,false,'mixed-exam-independent');
- if(!correct){r.failedData=r.failedData||[];if(q.generated)r.failedData.push(JSON.stringify(q.data));r.misses++;if(!r.failedIds.includes(q.id))r.failedIds.push(q.id);if(r.misses>=2){r.required=true;r.awaitingTransfer=false;r.stage=0;r.verified=[];r.draft={};r.source=JSON.parse(JSON.stringify(q))}}
+ if(!correct){r.failedData=r.failedData||[];if(q.generated)r.failedData.push(JSON.stringify(q.data));r.misses++;if(!r.failedIds.includes(q.id))r.failedIds.push(q.id);if(r.misses>=1){r.required=true;r.awaitingTransfer=false;r.stage=0;r.verified=[];r.draft={};r.planVersion=2;r.source=JSON.parse(JSON.stringify(q))}}
  else if(r.awaitingTransfer&&!(q.generated?(r.failedData||[]).includes(JSON.stringify(q.data)):r.failedIds.includes(q.id))){r.awaitingTransfer=false;r.misses=0;r.transferId=q.id;r.stage=0;r.verified=[];r.draft={}}
  try{window.save?.()}catch(_){}return r;
 }
@@ -120,9 +120,9 @@ function reconstructionCheck(q,values){
  const r=practiceRecovery(q,false),plan=window.MajickSolutionEngine?.reconstructionPlan?.(q);
  if(!r?.required||!plan||r.stage<0||r.stage>=plan.length)return {ok:false,message:'No active guided reconstruction.'};
  const step=plan[r.stage];let ok=false;
- if(step.fields)ok=step.fields.every((f,i)=>values[i]!==''&&Number.isFinite(Number(values[i]))&&Math.abs(Number(values[i])-f.value)<=Math.max(.0002,Math.abs(f.value)*.0001));
+ if(step.fields)ok=step.fields.every((f,i)=>values[i]!=null&&String(values[i]).trim()!==''&&Number.isFinite(Number(values[i]))&&Math.abs(Number(values[i])-f.value)<=Math.max(.0002,Math.abs(f.value)*.0001));
  else ok=String(values[0])===String(step.answer);
- if(!ok)return {ok:false,message:'Review the worked evidence and rebuild this step. Guided corrections do not count as independent errors.'};
+ if(!ok){const missing=step.fields?.filter((f,i)=>values[i]==null||String(values[i]).trim()===''||!Number.isFinite(Number(values[i]))||Math.abs(Number(values[i])-f.value)>Math.max(.0002,Math.abs(f.value)*.0001)).map(f=>f.label);return {ok:false,message:(missing?.length?'Recheck '+missing.join(', ')+'. Match the scenario to the formula; open this step’s breakdown for help.':'Recheck the study conditions and what the evidence supports.')+' Guided corrections do not count as independent errors.'}}
  r.verified.push(r.stage);r.stage++;r.draft={};
  if(r.stage===plan.length){if(r.verified.length!==plan.length)return {ok:false,message:'Complete every reconstruction step.'};r.required=false;r.awaitingTransfer=true;skillResult({...q,reconstructionVerified:true},true,true,'guided-reconstruction')}
  try{window.save?.()}catch(_){}return {ok:true,complete:!r.required,message:r.required?'Step verified. Continue reconstructing.':'Guided reconstruction saved. A fresh unassisted question is next; this did not award mastery.'};
