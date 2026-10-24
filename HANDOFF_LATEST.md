@@ -1,5 +1,13 @@
 # Majick Studies — Current V3.4.2
 
+## Potion animation and depth — 2026-10-24
+
+- Brewing now preserves its Pixi canvas and animation clock across Stir, sound, and playback controls. Explicit Play/Pause follows reduced-motion by default; hidden pages pause GPU rendering.
+- Shared shaded SVG artwork supplies rounded metal cauldrons, gold rims, luminous liquid and glass bottle silhouettes. Pixi particles and an animated CSS fallback provide bubbles, steam and ingredient movement.
+- Existing craft() remains the sole inventory/resource owner; no save, mastery, reward, Guardian or protected motion assets changed.
+- Local canonical release checks and browser Add → three Stirs → Bottle flow passed, including Pause/Play. GPU/full responsive visual certification remains pending; this is a user-authorized development deployment.
+
+
 Updated: 2026-10-04
 
 - Canonical runnable source: `current-site/`. Edit this source for future app changes.
