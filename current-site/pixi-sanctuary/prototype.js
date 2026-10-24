@@ -25,11 +25,11 @@ for(let i=0;i<42;i++){const star=new PIXI.Graphics();star.circle(0,0,1+rand()*2)
 function resize(){const b=room.getBoundingClientRect();const width=Math.max(240,b.width),height=Math.max(240,b.height);app.renderer.resize(Math.round(width),Math.round(height));const k=Math.min(width/1200,height/700);world.scale.set(k);world.position.set((width-1200*k)/2,(height-700*k)/2);$('viewport').textContent=Math.round(width)+' × '+Math.round(height)}
 new ResizeObserver(resize).observe(room);resize();
 function newTarget(e){
- const homeX=125+(e.slot%5)*230,homeY=330+Math.floor(e.slot/5)*210;
+ const homeX=145+(e.slot%5)*225,homeY=245+Math.floor(e.slot/5)*300;
  for(let tries=0;tries<24;tries++){
-  const x=Math.max(100,Math.min(1100,homeX+(rand()-.5)*250));
-  const y=Math.max(270,Math.min(580,homeY+(rand()-.5)*130));
-  if(entities.every(other=>other===e||Math.hypot(x-other.tx,y-other.ty)>150)){
+  const x=Math.max(100,Math.min(1100,homeX+(rand()-.5)*115));
+  const y=Math.max(210,Math.min(560,homeY+(rand()-.5)*65));
+  if(entities.every(other=>other===e||Math.hypot(x-other.tx,y-other.ty)>170)){
    e.tx=x;e.ty=y;e.pause=.6+rand()*2.3;return;
   }
  }
@@ -96,10 +96,10 @@ async function makeCleanWalkFrames(name){
 await Promise.all(names.map(async(name,i)=>{
  try{
   const texture=await PIXI.Assets.load('../assets/familiars/canon/'+name+'-guardian.webp');
-  const root=new PIXI.Container();root.x=125+(i%5)*230;root.y=330+Math.floor(i/5)*210;
+  const root=new PIXI.Container();root.x=145+(i%5)*225;root.y=245+Math.floor(i/5)*300;
   const shadow=new PIXI.Graphics();shadow.ellipse(0,0,65,12).fill({color:0x000000,alpha:.26});root.addChild(shadow);
   const sprite=new PIXI.Sprite(texture);sprite.anchor.set(.5,1);const scale=Math.min(170/Math.max(1,texture.width),165/Math.max(1,texture.height));sprite.scale.set(scale);sprite.y=-10;root.addChild(sprite);
-  const text=label(name.charAt(0).toUpperCase()+name.slice(1));text.anchor.set(.5,0);text.y=7;root.addChild(text);
+  const text=label(name.charAt(0).toUpperCase()+name.slice(1));text.anchor.set(.5,0);text.y=20;root.addChild(text);
   const e={root,sprite,shadow,name,slot:i,tx:root.x,ty:root.y,pause:rand()*2,playing:0,phase:rand()*6.28,speed:42+rand()*23,baseScale:scale,walkTexture:null,walkFrames:[],walkClock:0,baseTexture:texture};
   // Keep the approved two-frame assets for the original four.
   // For the six missing sets, build complete clean frames directly from their
@@ -170,11 +170,11 @@ if(velora&&stagePicker){
  stagePicker.onchange(); // Load uploaded New Bond pair on initial render.
 }
 if(!entities.length){status.textContent='Guardian images could not load. Please check network access.';return}
-status.textContent='PixiJS running · approved art and clean walking poses · tap to play';
+status.textContent='PixiJS running · select a stage to test Velora’s two walking poses';
 $('toggle').textContent=paused?'Resume movement':'Pause movement';
 $('motion').setAttribute('aria-pressed',String(ambient));$('motion').textContent='Ambient effects: '+(ambient?'on':'off');
 $('toggle').onclick=()=>{paused=!paused;$('toggle').textContent=paused?'Resume movement':'Pause movement'};
-$('reset').onclick=()=>entities.forEach((e,i)=>{e.root.position.set(125+(i%5)*230,330+Math.floor(i/5)*210);e.tx=e.root.x;e.ty=e.root.y;e.pause=1;e.sprite.texture=e.baseTexture;e.walkClock=0;e.sprite.scale.set(e.baseScale);e.sprite.y=-10});
+$('reset').onclick=()=>entities.forEach((e,i)=>{e.root.position.set(145+(i%5)*225,245+Math.floor(i/5)*300);e.tx=e.root.x;e.ty=e.root.y;e.pause=1;e.sprite.texture=e.baseTexture;e.walkClock=0;e.sprite.scale.set(e.baseScale);e.sprite.y=-10});
 $('stress').onclick=()=>{stress=!stress;$('stress').setAttribute('aria-pressed',String(stress));$('stress').textContent='Stress test: '+(stress?'on':'off')};
 $('motion').onclick=()=>{ambient=!ambient;$('motion').setAttribute('aria-pressed',String(ambient));$('motion').textContent='Ambient effects: '+(ambient?'on':'off')};
 let last=performance.now(),frames=0,total=0,moving=0,elapsed=0;
@@ -190,7 +190,7 @@ app.ticker.add(()=>{
   if(dist<7){newTarget(e);continue}
   const ux=dx/dist,uy=dy/dist,step=Math.min(dist,e.speed*dt);
   const nextX=e.root.x+ux*step,nextY=e.root.y+uy*step;
-  const blocked=entities.some(other=>other!==e&&Math.hypot(nextX-other.root.x,nextY-other.root.y)<142);
+  const blocked=entities.some(other=>other!==e&&Math.hypot(nextX-other.root.x,nextY-other.root.y)<168);
   if(blocked){newTarget(e);continue}
   moving++;
   e.root.x=nextX;e.root.y=nextY;
