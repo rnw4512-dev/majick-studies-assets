@@ -44,6 +44,7 @@ function render(){
  root.querySelector('[data-undo]').onclick=()=>{if(snapshot){Object.assign(p,snapshot);save();render()}};
  root.querySelector('[data-save]').onclick=()=>{snapshot={...p};save();root.querySelector('.wsMessage').textContent='✦ Look saved to your scholar.'};
  root.querySelector('[data-close]').onclick=close;
+ root.querySelector('.wsStage')?.addEventListener('error',event=>{if(event.target?.tagName==='IMG'){event.target.style.visibility='hidden';root.querySelector('.wsMessage').textContent='A fitted garment asset is unavailable; your saved selection is preserved.'}},true);
 }
 function open(){
  if(!get())return;
