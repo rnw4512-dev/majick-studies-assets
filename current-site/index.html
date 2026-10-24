@@ -1499,6 +1499,7 @@ function openChest(tier='common'){
    }
   }
   ledger.receipts.push({id,rarity,course:S.activeCourse,reward:reward.t,eggId:egg?.id||null,at:Date.now()});
+  ledger.opening=false;
   save();
   transformationBurst();
   rewardToast('🎁 '+reward.t+(egg?' • 🥚 Guardian Egg!':''),egg?'Egg added to your Sanctuary incubator.':'Crystal Chest opened!');
