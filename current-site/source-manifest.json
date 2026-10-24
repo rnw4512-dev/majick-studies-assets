@@ -144,7 +144,7 @@
     "guardian-registry.js": "b20170b996ddf065f33bb37332c8a9fce68ae104914e3e94ffe9aa44b7b612f3",
     "home-focus.css": "cbb719eb8e78701717b4016388d511553f2785212d839815ed006651ae738b2b",
     "home-focus.js": "f421d4c5e5b4193d1005e5ce5cdbeb0e969a0cffb8ece49b9dd7c255a16ca794",
-    "index.html": "13d1c72bef5af4e92b3c6d872d4a54120be3db5ef4d5d2cb86c894d8654119a6",
+    "index.html": "81670fe024568ef1c8783f9b4c4f3484346cf57444717137234acdb1d39a7b62",
     "learn-mode.css": "30181250c67efe7bd97c9276706a804a551e7904a2bb28160eeb0c193f35c002",
     "learn-mode.js": "49e424f3e40456772e4cb8adc550078c26ed793a5f83f9c216450609865ffa3c",
     "learning-lab.css": "b9c2c4f2ae393b3d291155a258cd01388bb71cd49a46d0187f224b03222ac2df",
@@ -503,7 +503,7 @@
     "assets/rewards/aurelia/items/treat-puzzle-carousel.webp": "e3f9675b47ac0ad0ae75667f3e6f565bd91cf5e92cf6a640c5248a8d549f1f4d",
     "assets/rewards/aurelia/items/flowering-sage-planter.webp": "34c168e82b480b132b8531d07006e4355bf5e802a647109128261d9556a26e3d",
     "assets/rewards/aurelia/items/feather-play-wand.webp": "ddef86bed10da763f1749c3e5b93ebb69098ef1eb0b1ccab8a759285895bf86e",
-    "enchanted-atelier.js": "ce5c1ca956237374f52e724b1771becccb4602de09a5817a14a054e66020516b",
+    "enchanted-atelier.js": "5d11f697d6e09a5d4abe3bc33592479a6001bf940b6ff20c608a009225e0646f",
     "scholar-companion.js": "6af37282a99d75b3d01f5cee93625213757d41da068329efc1c8f25adc180337",
     "scholar-progression.js": "c7be90447c9015186e438d44034fe90fecd15e9926203f55ab89cd062ec9090c",
     "study-visual-anchors.js": "253ac1cf76f1e0e2fd73fa3cb72849a3592e838e2a46914f405f83043b3f5fce",
@@ -824,6 +824,7 @@
     "assets/effects/celebrations/lesson-complete-seal.svg": "66d0d723db2bda1149c79bd1aa03e2c9be22df891ed9a5f842bf44cecf922ddf",
     "assets/effects/celebrations/course-complete-sigil.svg": "5bb72f7c3da585d477527f057c9c42930abd859db8681edaac3616ed130ca1a6",
     "room-section-nav.js": "b422df77f3e1a9ec9c87a3520d9861caab4e8617fe019eb30293fb03030e29fb",
-    "room-section-nav.css": "3260dbb0044a5ce0bf7b61e0c03e78293a9a4d65c69ad687d8ac455440f0ba97"
+    "room-section-nav.css": "3260dbb0044a5ce0bf7b61e0c03e78293a9a4d65c69ad687d8ac455440f0ba97",
+    "scholar-wardrobe-studio.js": "794ed4549bbc93fc86422ef9c7ffa45a3c31ce894a590b468a5ee8f5ed46241d"
   }
 }
