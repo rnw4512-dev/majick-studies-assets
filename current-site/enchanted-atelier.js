@@ -74,6 +74,14 @@ function checkAvatarArt(){
  img.onerror=()=>{artReady=false};
  img.src=AVATAR_ASSET_ROOT+'layer-body-warm-v2.webp';
 }
+function avatarPreviewNotes(p){
+ const notes=[];
+ if(!Object.prototype.hasOwnProperty.call(AVATAR_HAIR,p.hair))notes.push('Your selected hairstyle needs fitted artwork; displaying Locs preview.');
+ if(!Object.prototype.hasOwnProperty.call(AVATAR_ROBES,p.robe))notes.push('Your selected robe needs fitted artwork; displaying Plum Scholar preview.');
+ if(Number(p.color)!==0)notes.push('Robe tint is a visual preview. Fitted recolored artwork is not yet available.');
+ if(p.accessory||p.equipped!=null)notes.push('Your accessory or crafted item is saved; fitted art is pending.');
+ return notes;
+}
 function illustratedAvatar(p,compact=false,activity=''){
  if(!artChecked)checkAvatarArt();
  if(!artReady)return '<div class="atelierArtLoading">Preparing your illustrated scholar…</div>';
@@ -85,11 +93,7 @@ function illustratedAvatar(p,compact=false,activity=''){
  (Number(p.skin)===0||Number(p.skin)===5?'layer-body-deep-v2.webp':'layer-body-warm-v2.webp'),
  robe,'layer-boots-plum.webp',hair
  ];
- const notes=[];
- if(!Object.prototype.hasOwnProperty.call(AVATAR_HAIR,p.hair))notes.push('Your selected hairstyle needs fitted artwork; displaying Locs preview.');
- if(!Object.prototype.hasOwnProperty.call(AVATAR_ROBES,p.robe))notes.push('Your selected robe needs fitted artwork; displaying Plum Scholar preview.');
- if(Number(p.color)!==0)notes.push('Robe tint is a visual preview. Fitted recolored artwork is not yet available.');
- if(p.accessory||p.equipped!=null)notes.push('Your accessory or crafted item is saved; fitted art is pending.');
+ const notes=avatarPreviewNotes(p);
  return '<div class="atelierIllustrated" data-footwear="boots" data-wand-palette="'+Math.max(0,Math.min(COLORS.length-1,Number(p.color)||0))+'" aria-label="Illustrated scholar outfit preview">'+layers.map((src,i)=> '<img alt="" draggable="false" class="atelierArtLayer atelierArtLayer'+i+'" data-avatar-layer="'+src+'" src="'+AVATAR_ASSET_ROOT+src+'" onerror="this.style.visibility=\'hidden\'">').join('')+'</div>'+(!compact&&notes.length?'<p class="atelierPreviewNotice">'+notes.join(' ')+'</p>':'');
 }
 let atelierZoom=1,atelierFocus='full';
@@ -104,11 +108,11 @@ function mirrorControl(action){
 function mirrorTools(){return '<div class="atelierV2Tools"><button data-mirror="in">＋ Zoom</button><button data-mirror="out">− Zoom</button><button data-mirror="reset">↺ Reset</button></div><div class="atelierV2Focus">'+Object.entries({full:'Full body',hair:'Hair',jewelry:'Jewelry',fabric:'Fabric',boots:'Boots'}).map(([k,v])=>'<button data-mirror="'+k+'" aria-pressed="'+(atelierFocus===k)+'">'+v+'</button>').join('')+'</div>'}
 function avatarPicker(kind,arr,selected){return '<div class="atelierV2Picker">'+arr.map(({id,label,img,tone})=>'<button data-avatar-choice="'+kind+'" data-choice="'+id+'" aria-pressed="'+(Number(selected)===id)+'" aria-label="'+E(label)+'">'+(img?'<img src="'+AVATAR_ASSET_ROOT+img+'" alt="" loading="lazy">':'<i style="background:'+tone+'"></i>')+'<small>'+E(label)+'</small></button>').join('')+'</div>'}
 function avatar(p){
- const vault=sharedVault(p),view=atelierViews[atelierFocus]||atelierViews.full;
+ const vault=sharedVault(p),view=atelierViews[atelierFocus]||atelierViews.full,previewNotes=avatarPreviewNotes(p);
  const hairs=HAIR.map((label,id)=>({id,label,img:AVATAR_HAIR[id]})).filter(x=>x.img);
  const robes=ROBES.map((label,id)=>({id,label,img:AVATAR_ROBES[id]})).filter(x=>x.img);
  const skins=[{id:0,label:'Deep brown',tone:SKIN[0]},{id:2,label:'Warm brown',tone:SKIN[2]}];
- return '<div class="atelierSplit atelierV2"><div class="atelierPreview atelierV2Mirror"><div class="atelierV2Crest">☾ ✦ THE WANDROBE MIRROR ✦ ☽</div><div class="atelierV2Stage"><div class="atelierV2Figure" style="transform:translateY('+view[1]+'%) scale('+(view[0]*atelierZoom).toFixed(2)+')">'+illustratedAvatar(p)+'</div></div>'+mirrorTools()+'<strong>'+E(p.name||'Scholar')+'</strong><small>'+E(ROBES[p.robe])+'</small></div>'+
+ return '<div class="atelierSplit atelierV2"><div class="atelierPreview atelierV2Mirror"><div class="atelierV2Crest">☾ ✦ THE WARDROBE MIRROR ✦ ☽</div><div class="atelierV2Stage"><div class="atelierV2Figure" style="transform:translateY('+view[1]+'%) scale('+(view[0]*atelierZoom).toFixed(2)+')">'+illustratedAvatar(p,true)+'</div></div>'+mirrorTools()+(previewNotes.length?'<details class="atelierPreviewDetails"><summary>Preview details</summary><p class="atelierPreviewNotice">'+E(previewNotes.join(' '))+'</p></details>':'')+'<strong>'+E(p.name||'Scholar')+'</strong><small>'+E(ROBES[p.robe])+'</small></div>'+
  '<div class="atelierFields atelierV2Controls"><label>Scholar name<input data-atelier-name maxlength="26" value="'+E(p.name)+'"></label>'+
  '<h3>Skin tone</h3>'+avatarPicker('skin',skins,[0,5].includes(Number(p.skin))?0:2)+
  '<h3>Hair</h3>'+avatarPicker('hair',hairs,p.hair)+
@@ -249,4 +253,17 @@ const fittingStyle=document.createElement('style');fittingStyle.textContent=`
 .atelierWindow .atelierPreview:has(.atelierIllustrated){min-height:0!important;align-self:start;position:sticky;top:0}
 .atelierWindow .atelierPreviewNotice{color:#f5dfc1!important;background:#291a35;padding:10px;border-radius:10px;line-height:1.5}
 @media(max-width:760px){.atelierWindow .atelierPreview:has(.atelierIllustrated){position:relative}}
+
+/* The figure owns the stage; notices must not participate in its horizontal flex layout. */
+.atelierWindow .atelierV2Mirror{display:flex!important;flex-direction:column!important;gap:10px;min-width:0}
+.atelierWindow .atelierV2Mirror::before{display:none!important;content:none!important}
+.atelierWindow .atelierV2Crest{position:relative;flex:0 0 auto;line-height:1.5;padding:0 8px;font-size:12px;letter-spacing:1px}
+.atelierWindow .atelierV2Stage{flex:1 1 0;min-height:220px;width:100%;isolation:isolate}
+.atelierWindow .atelierV2Figure{min-width:0;width:100%;height:100%;flex:none}
+.atelierWindow .atelierV2Figure .atelierIllustrated{flex:0 0 auto;max-width:100%;max-height:100%!important;height:100%!important;aspect-ratio:512/682}
+.atelierWindow .atelierPreviewDetails{flex:0 0 auto;width:100%;text-align:left;font:13px/1.4 system-ui}
+.atelierWindow .atelierPreviewDetails summary{cursor:pointer;color:#f5dfc1;min-height:30px}
+.atelierWindow .atelierPreviewDetails .atelierPreviewNotice{margin:4px 0 0;padding:8px;max-height:90px;overflow:auto}
+.atelierWindow .atelierV2Tools,.atelierWindow .atelierV2Focus{flex:0 0 auto}
+@media(max-width:800px){.atelierWindow .atelierV2Mirror{height:62dvh;min-height:430px!important}.atelierWindow .atelierV2Stage{min-height:210px}}
 `;document.head.append(fittingStyle);
