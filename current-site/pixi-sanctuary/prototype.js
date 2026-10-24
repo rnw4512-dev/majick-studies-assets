@@ -169,6 +169,30 @@ if(velora&&stagePicker){
  };
  stagePicker.onchange(); // Load uploaded New Bond pair on initial render.
 }
+// Read-only live account bridge. Parent remains the only owner of progress and room persistence.
+let liveRoster=null,liveRoom=null;
+function applyLiveState(payload){
+ if(!payload||!Array.isArray(payload.pets))return;
+ liveRoster=payload.pets;liveRoom=payload.room||null;
+ const owned=new Map(payload.pets.map(p=>[String(p.type||'').toLowerCase(),p]));
+ for(const e of entities){
+  if(!e.root.visible)continue;
+  const p=owned.get(e.name);
+  e.root.visible=!!p;
+  if(p){
+   const labelNode=e.root.children.find(x=>x instanceof PIXI.Text);
+   if(labelNode)labelNode.text=String(p.name||e.name)+' · Lv '+(Number(p.level)||1);
+   e.savedStage=String(p.stage||'new-bond');
+  }
+ }
+ const count=entities.filter(e=>e.root.visible).length;
+ status.textContent=count+' saved Guardians connected · room state '+(liveRoom?'received':'unavailable');
+}
+window.addEventListener('message',event=>{
+ if(event.origin!==location.origin||event.source!==window.parent)return;
+ if(event.data?.type==='MAJICK_STATE')applyLiveState(event.data.payload);
+});
+if(window.parent!==window)window.parent.postMessage({type:'MAJICK_PIXI_SANCTUARY_READY'},location.origin);
 if(!entities.length){status.textContent='Guardian images could not load. Please check network access.';return}
 status.textContent='PixiJS running · select a stage to test Velora’s two walking poses';
 $('toggle').textContent=paused?'Resume movement':'Pause movement';
@@ -190,7 +214,7 @@ app.ticker.add(()=>{
   if(dist<7){newTarget(e);continue}
   const ux=dx/dist,uy=dy/dist,step=Math.min(dist,e.speed*dt);
   const nextX=e.root.x+ux*step,nextY=e.root.y+uy*step;
-  const blocked=entities.some(other=>other!==e&&Math.hypot(nextX-other.root.x,nextY-other.root.y)<168);
+  const blocked=entities.some(other=>other!==e&&other.root.visible&&Math.hypot(nextX-other.root.x,nextY-other.root.y)<168);
   if(blocked){newTarget(e);continue}
   moving++;
   e.root.x=nextX;e.root.y=nextY;
