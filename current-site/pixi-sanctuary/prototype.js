@@ -36,6 +36,36 @@ function newTarget(e){
  e.tx=homeX;e.ty=homeY;e.pause=1.5;
 }
 function label(text){return new PIXI.Text({text,style:{fontFamily:'Georgia,serif',fontSize:21,fill:0xffe4ae,stroke:{color:0x1b1022,width:4},align:'center'}})}
+async function makeStageWalkFrames(texture){
+ // Temporary pose pair derived from the CURRENT evolution texture. Unlike
+ // static-image sliding, the silhouette changes across the walking cycle.
+ const source=texture.source?.resource;
+ let img=source;
+ if(!img||!(img.width||img.videoWidth)){
+  const canvas=document.createElement('canvas');
+  canvas.width=texture.width;canvas.height=texture.height;
+  const rendererCanvas=canvas.getContext('2d');
+  if(!texture.source?.resource)throw Error('Evolution texture has no image resource');
+  img=texture.source.resource;
+ }
+ const w=texture.width,h=texture.height;
+ if(!w||!h)throw Error('Invalid evolution texture');
+ return [-1,1].map(direction=>{
+  const canvas=document.createElement('canvas');
+  const pad=Math.max(8,Math.ceil(w*.08));
+  canvas.width=w+pad*2;canvas.height=h+Math.ceil(h*.05);
+  const ctx=canvas.getContext('2d',{alpha:true});
+  const band=Math.max(1,Math.ceil(h/110));
+  for(let y=0;y<h;y+=band){
+   const bh=Math.min(band,h-y),ratio=y/h;
+   // Preserve the complete image while alternating lower-body stride.
+   const offset=Math.sin(ratio*Math.PI*2)*w*.012*direction+
+     (ratio>.68?Math.sin((ratio-.68)/.32*Math.PI)*w*.035*direction:0);
+   ctx.drawImage(img,0,y,w,bh,pad+offset,y,w,bh+0.3);
+  }
+  return PIXI.Texture.from(canvas);
+ });
+}
 async function makeCleanWalkFrames(name){
  // Derive two genuinely distinct raster frames from the approved portrait pixels.
  // Do not crop crowded atlas cells: those contain other Guardians and cut-off tails.
@@ -120,15 +150,15 @@ if(velora&&stagePicker){
    }
    const base=await PIXI.Assets.load('../sanctuary/assets/evolutions/velora/'+stage+'/walk.webp');
    if(id!==requestId)return;
-   let frames=[],source='existing evolution pose (walking frames not yet uploaded)';
+   let frames=[],source='temporary articulated stage walking';
    try{
     const urls=[1,2].map(n=>'./frames/velora/'+stage+'/walk-'+n+'.png');
     frames=await Promise.all(urls.map(url=>PIXI.Assets.load(url)));
     if(frames.some(t=>!t||!t.width||!t.height))throw Error('Empty walking frame');
     source='two transparent walking frames';
    }catch(error){
-    frames=[];
-    console.info('Velora stage frames pending:',stage,error);
+    frames=await makeStageWalkFrames(base);
+    console.info('Using temporary stage walking until approved PNG pairs are uploaded:',stage,error);
    }
    if(id!==requestId)return;
    stageCache.set(stage,{base,frames,source});
