@@ -832,6 +832,11 @@
     "pixi-sanctuary/prototype.js": "8be8eaf136fa7d38a70ff2a4f31ac27a83ad5d2d13127e4ab38d7f7d9399d872",
     "atelier-pixi-scene.js": "8d59a87780d6862ef01cd3753b2779d5dfbab0bb516004c14450e903c51c1418",
     "vendor/pixi-8.6.6.min.js": "e5c38cccee4f99263df5f0b10dfd4d2484db5fdb730af3953cb6f1c07b3d85b2",
-    "vendor/PIXI-LICENSE.txt": "5ce7447bc57f7349ffc48338782fbcabe613696e00712b20d66bc58e780f9473"
+    "vendor/PIXI-LICENSE.txt": "5ce7447bc57f7349ffc48338782fbcabe613696e00712b20d66bc58e780f9473",
+    "pixi-sanctuary/frames/velora/new-bond/README.md": "dfb12446e6f4d737e2b105c3fce88d5e73787563d85d55d8f71d5423c752d5e5",
+    "pixi-sanctuary/frames/velora/apprentice/README.md": "cd5a5b4cec2a9f074cfb82186154500988d6466742f1505766c8e551166deaf4",
+    "pixi-sanctuary/frames/velora/guardian/README.md": "9da4a3bfc553447522f1ce8dfd56b5fc9cad21dc69e826416e242e330340310b",
+    "pixi-sanctuary/frames/velora/ascendant/README.md": "91c6fcce5e62c6b96b164ec2c226a95b0d9ff6045e76ee5dc75a494028b0527c",
+    "pixi-sanctuary/frames/velora/celestial/README.md": "45dfda12e8089dfe321f03c8d2649168ac5f3d6b4bda38101dc39dc6e21c54a4"
   }
 }
