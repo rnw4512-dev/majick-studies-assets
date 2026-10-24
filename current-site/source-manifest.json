@@ -114,7 +114,7 @@
     "collegium-atmosphere.js": "dbb7419f838e747258649238666935d2fc348443a824c9f9e0b159eb7b27dd02",
     "course-tutor.css": "4e06f2f19d54129c4010a6e121c62fa3c41ceba1ef570ae2cc0736a15b8c3ec2",
     "course-tutor.js": "69f1851efbc6714ff67c09a508363ee410f52e45cda646375b1e29c40da8cac1",
-    "courseManager.js": "5a3bed03fc53028587e4a14d19056489b83e411ea1ecff5a4afbf196c5196681",
+    "courseManager.js": "46db0cc0fddf240c47ef90ff8342c316ac8ed6d1b14722efdf20434424a7754f",
     "d755-retake.css": "e487a5e8ca4c069b7b9e9dabb603c8462ddcf81cb432b33b2e3395cce3a721d3",
     "d755-retake.js": "504ece754402f90278b7af02d6fd01c9183639c6777c43c75db06e44815b1935",
     "d772-collegium.css": "2ec7a9bf2df45341d0b242e72d3445b9b5692c699390359b3305ce59ac375424",
@@ -407,7 +407,7 @@
     "adaptive-learning-core.css": "f984e356b6efa4d7608e1226aec5df13f024f702ea3a51b56d8c75a589a44646",
     "course-learning-profiles.js": "60d25988b6ae0ed1cab981ce99d2d8ed49fe9c8553b189df3d83103797bfe925",
     "course-learning-profiles.css": "f0f4f53b2c9422f0ed884d4688af1d8367e63851b367331f78b994b6548b5caa",
-    "reward-core.js": "d51314c390c7dd30bbfbfbc8acd4aa1898f09cda00f38fdae9b1ff249ecb9efd",
+    "reward-core.js": "b5ec4a7f15a91a12b39a42dfcd5a1a8720836acfc22cc2737d8b20d05552e788",
     "reward-core.css": "21e9a4623f58b5a8a4cc4a720d4dc12adf9781928b801c328aceb9e24d8f6922",
     "assets/rewards/reference-boards/cascade/cascade-collection-reference-board.webp": "1b4d05d2b5303afeec9d2b51713d3a1aef76754ff6c0e242724a165218f79b68",
     "assets/rewards/reference-boards/cascade/cascade-collection-reference-board-runtime.webp": "19a8202353e552f20173d109a6c7b61fcfe91420e5efa59de56bea771e745b1b",
@@ -826,6 +826,6 @@
     "room-section-nav.js": "b422df77f3e1a9ec9c87a3520d9861caab4e8617fe019eb30293fb03030e29fb",
     "room-section-nav.css": "3260dbb0044a5ce0bf7b61e0c03e78293a9a4d65c69ad687d8ac455440f0ba97",
     "scholar-wardrobe-studio.js": "0a3d5372031cfc956e0d2a446fb6329c70fba2d0f15d218c36572e2d3427d476",
-    "milestone-particles.js": "27d82d0393a60d7edf57c18137525a52e389e561f315e0525c311984e2304031"
+    "milestone-particles.js": "bf7a4696b2bd3fe0e554cda6dee63689f94468f4c3ad66ad726625c8b148f658"
   }
 }
