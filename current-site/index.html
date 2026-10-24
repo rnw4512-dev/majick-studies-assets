@@ -3765,19 +3765,32 @@ function phase4SanctuaryHTML(){
  if(directFile){
    return `<section class="phase4Wrap" aria-label="Phase 4 Living Sanctuary"><div class="phase4Top"><div><b>✦ Phase 4 Living Sanctuary</b><br><span>Your Study Now engine is safe. Phaser just needs the app's local web launcher.</span></div><div class="phase4Actions"><button class="btn primary" onclick="navigate('mission')">Continue Studying</button></div></div><div style="min-height:420px;display:grid;place-items:center;padding:36px;text-align:center;background:linear-gradient(180deg,#1a0c24,#2b1236);color:#f7e9f1"><div style="max-width:720px"><div style="font-size:54px;margin-bottom:12px">✦</div><h2 style="color:#f4d19a;margin:0 0 12px">The moving sanctuary needs the Majick launcher</h2><p style="font-size:18px;line-height:1.55">You opened Majick Studies as a local file. Close this tab, go back to the extracted Majick Studies folder, and double-click <b>1 - START MAJICK STUDIES.bat</b>. It will reopen the same app through localhost so Phaser can load Luna, Ember, Nova, and Mallow correctly.</p><p style="opacity:.8">Your study progress is not damaged.</p></div></div></section>`;
  }
- return `<section class="phase4Wrap" aria-label="Phase 4 Living Sanctuary"><div class="phase4Top"><div><b>✦ Phase 4 Living Sanctuary</b><br><span>The actual Phaser familiars are running inside Majick Studies.</span></div><div class="phase4Actions"><button class="btn ghost" type="button" onclick="majickTogglePixiSanctuary(this)" aria-pressed="false" title="Compare the PixiJS renderer without changing saved Sanctuary data">Try PixiJS Sanctuary</button><button class="btn ghost" onclick="phase4OpenFullscreen()">Full Sanctuary</button><button class="btn primary" onclick="navigate('mission')">Continue Studying</button></div></div><iframe id="phase4SanctuaryFrame" class="phase4Frame" src="sanctuary/index.html" title="Majick Studies Living Sanctuary" loading="eager" allow="fullscreen"></iframe><div class="phase4Help">Tap glowing areas and furniture to explore the magical college • tap familiars for reactions • use Edit Room to move decor • the Magic Mirror reads your real study progress.</div></section>`
+ return `<section class="phase4Wrap" aria-label="Phase 4 Living Sanctuary"><div class="phase4Top"><div><b>✦ Phase 4 Living Sanctuary</b><br><span>PixiJS 8 is the default renderer. The original Sanctuary remains available as a fallback.</span></div><div class="phase4Actions"><button class="btn ghost" type="button" onclick="majickTogglePixiSanctuary(this)" aria-pressed="false" title="Compare the PixiJS renderer without changing saved Sanctuary data">Use original Sanctuary (Phaser)</button><button class="btn ghost" onclick="phase4OpenFullscreen()">Full Sanctuary</button><button class="btn primary" onclick="navigate('mission')">Continue Studying</button></div></div><iframe id="phase4SanctuaryFrame" class="phase4Frame" src="pixi-sanctuary/index.html" title="Majick Studies PixiJS Sanctuary" loading="eager" allow="fullscreen"></iframe><div class="phase4Help">Tap glowing areas and furniture to explore the magical college • tap familiars for reactions • use Edit Room to move decor • the Magic Mirror reads your real study progress.</div></section>`
 }
-if(!window.__phase4BridgeBound){window.__phase4BridgeBound=true;window.addEventListener('message',ev=>{const d=ev.data||{};if(d.type==='MAJICK_SANCTUARY_READY'||d.type==='MAJICK_PIXI_SANCTUARY_READY')setTimeout(phase4PushState,80);if(d.type==='MAJICK_CONTINUE_STUDYING')navigate('mission');if(d.type==='MAJICK_OPEN_ROUTE'){const ok=['guide','grimoire','journal','constellation','finalreview','focus','planner','mission'];if(ok.includes(d.route))navigate(d.route)}})}
+if(!window.__phase4BridgeBound){window.__phase4BridgeBound=true;window.addEventListener('message',ev=>{const d=ev.data||{};if(d.type==='MAJICK_SANCTUARY_READY'||d.type==='MAJICK_PIXI_SANCTUARY_READY'){majickSanctuaryReady();setTimeout(phase4PushState,80);}if(d.type==='MAJICK_CONTINUE_STUDYING')navigate('mission');if(d.type==='MAJICK_OPEN_ROUTE'){const ok=['guide','grimoire','journal','constellation','finalreview','focus','planner','mission'];if(ok.includes(d.route))navigate(d.route)}})}
 
 function majickTogglePixiSanctuary(button){
  const frame=document.getElementById('phase4SanctuaryFrame');if(!frame)return;
  const pixi=frame.getAttribute('src')?.startsWith('pixi-sanctuary/');
  frame.src=pixi?'sanctuary/index.html':'pixi-sanctuary/index.html';
- button.textContent=pixi?'Try PixiJS Sanctuary':'Return to Living Sanctuary';
- button.setAttribute('aria-pressed',String(!pixi));
- frame.title=pixi?'Majick Studies Living Sanctuary':'Majick Studies PixiJS Sanctuary comparison';
- if(!pixi)frame.addEventListener('load',()=>phase4PushState(),{once:true});
+ button.textContent=pixi?'Return to PixiJS Sanctuary':'Use original Sanctuary (Phaser)';
+ button.setAttribute('aria-pressed',String(pixi));
+ frame.title=pixi?'Majick Studies original Phaser Sanctuary':'Majick Studies PixiJS Sanctuary';
+ majickSanctuaryLoading();
+ frame.addEventListener('load',()=>phase4PushState(),{once:true});
 }
+let majickSanctuaryWatchdog=null;
+function majickSanctuaryLoading(){
+ const frame=document.getElementById('phase4SanctuaryFrame');if(!frame)return;
+ clearTimeout(majickSanctuaryWatchdog);
+ let note=document.getElementById('majickSanctuaryLoadStatus');
+ if(!note){note=document.createElement('div');note.id='majickSanctuaryLoadStatus';note.setAttribute('role','status');note.style.cssText='padding:12px 18px;color:#ffe4b0;background:#24152d;border:1px solid #a78bb7';frame.before(note)}
+ note.textContent='Loading Sanctuary…';
+ majickSanctuaryWatchdog=setTimeout(()=>{if(!note.isConnected)return;note.innerHTML='Sanctuary is taking longer than expected. <button type="button" onclick="majickSanctuaryRetry()">Retry</button> <button type="button" onclick="majickSanctuaryFallback()">Use original Sanctuary</button>';},18000);
+}
+function majickSanctuaryRetry(){const frame=document.getElementById('phase4SanctuaryFrame');if(!frame)return;majickSanctuaryLoading();frame.src=frame.src}
+function majickSanctuaryFallback(){const frame=document.getElementById('phase4SanctuaryFrame');if(!frame)return;const button=frame.closest('.phase4Wrap')?.querySelector('[onclick^="majickTogglePixiSanctuary"]');if(frame.getAttribute('src')?.startsWith('pixi-sanctuary/')){if(button)majickTogglePixiSanctuary(button);else frame.src='sanctuary/index.html'}}
+function majickSanctuaryReady(){clearTimeout(majickSanctuaryWatchdog);const note=document.getElementById('majickSanctuaryLoadStatus');if(note)note.textContent='Sanctuary renderer connected.'}
 function lfCompanionHTML(){
  lfEnsure();const L=S.legacy||{},active=activePet(),eggs=(L.eggs||[]).map(e=>{let d=V4_PETS[e.type]||window.MajickGuardianRegistry?.get?.(e.type)||{species:e.name||'Mystery Guardian'},pc=Math.min(100,e.progress/e.goal*100);return `<div class="eggCard"><div class="eggShell">🥚</div><h3>${esc(d.species)} Egg</h3><p>Correct answers add moonlight. Hard correct answers grow it faster.</p><div class="petProgress"><i style="width:${pc}%"></i></div><b>${e.progress}/${e.goal} moonlight</b></div>`}).join('')||'<div class="eggCard"><div class="eggShell">✨</div><h3>No eggs incubating</h3><p>Earn eggs from weekly quests and Crystal Chests.</p></div>';
  return `<div class="sectionTitle"><div><h2>Living Familiar Conservatory</h2><p>Your guardians have routines, moods, memories, friendships, favorite objects, outfits, and lives in the sanctuary—but they never punish you for being away.</p></div><span class="rankBadge">Traveling: ${esc(active.name)}</span></div>
