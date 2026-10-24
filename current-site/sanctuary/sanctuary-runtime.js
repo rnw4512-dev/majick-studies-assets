@@ -349,10 +349,14 @@ Game.prototype.v3317EnsureWalkSkin=function(type){
   const expected=evoKey(this,type,'walk');
   const old=this['v3317Walk_'+type];
   if(old?.active&&old.texture?.key===expected)return;
+  if(this['__v3317WalkPending_'+type]===expected)return;
   try{old?.destroy()}catch(_){}
   this['v3317Walk_'+type]=null;
 
+  this['__v3317WalkPending_'+type]=expected;
   this.v3317LoadAction(type,'walk',k=>{
+    if(this['__v3317WalkPending_'+type]!==expected)return;
+    this['__v3317WalkPending_'+type]=null;
     if(!k||!pet?.active)return;
     const img=this.add.image(pet.x,pet.y,k).setOrigin(.5,1).setDepth((pet.depth||70)+2);
     const targetH=Math.max(285,Math.min(380,(pet.displayHeight||165)*2));
@@ -401,7 +405,7 @@ Game.prototype.v3317UpdateGuardianVisuals=function(){
 
     if(walk?.active){
       const base=walk.scaleX||1,step=Math.sin(now/92),breath=Math.sin(now/620);
-      walk.setVisible(!action?.active);
+      walk.setVisible(moving&&!action?.active);
       walk.setPosition(pet.x,pet.y+(moving?step*4:breath*2));
       walk.setDepth((pet.depth||70)+2);
       if(dx<-.2)walk.setFlipX(true);else if(dx>.2)walk.setFlipX(false);
@@ -410,9 +414,9 @@ Game.prototype.v3317UpdateGuardianVisuals=function(){
       walk.setRotation(moving?step*.009:0);
 
       // The original sprite stays alive and moving underneath as the controller.
-      pet.setAlpha(.01).setVisible(true);
+      pet.setAlpha(moving||action?.active?.01:1).setVisible(true);
     }else{
-      pet.setAlpha(1).setVisible(true);
+      pet.setAlpha(action?.active?.01:1).setVisible(true);
     }
 
     if(action?.active)walk?.setVisible(false);
