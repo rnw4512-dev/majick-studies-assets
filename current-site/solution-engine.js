@@ -340,6 +340,7 @@ function twoExamplePlan(q){
  if(/exactly one/.test(original)&&/independent/.test(original))skill='exactly-one-independent';
  else if(/at least one/.test(original)&&!/without replacement/.test(original))skill='complement-multistage';
  else if(/vertical axis|misleading/.test(original))skill='misleading-axis';
+ else if(/without replacement/.test(original)&&!/exactly one/.test(original))skill='dependent-probability';
  else if(skill==='venn-sets')skill=/\bor\b|union/.test(original)?'union':/\bnot\b|neither|complement/.test(original)?'not /':'intersection';
  const field=(label,value)=>({label,value});
  function example(second){
@@ -488,7 +489,7 @@ function mountReconstruction(host,q,onComplete){
  const step=plan[r.stage];if(!step){host.textContent='This reconstruction cannot load. Your saved work is preserved.';return false}
  host.innerHTML='<h3>'+esc(step.title)+'</h3><p>Guided repair · '+r.stage+' of '+plan.length+' stages verified · no independent mastery credit</p><p>'+esc(step.text)+'</p><div data-reconstruction-fields></div><p role="status" data-reconstruction-status></p>';
  const form=host.querySelector('[data-reconstruction-fields]'),values=r.draft.values||[];
- if(r.coaching){const coaching=document.createElement('p');coaching.className='mjSeHelp';coaching.textContent='Strategy focus: '+r.coaching.message;form.before(coaching)}
+ if(r.coaching){const coaching=document.createElement('p');coaching.className='mjSeHelp';coaching.textContent='Strategy focus: '+(/independent (?:fair )?spinners|For independent events/.test(step.text)?'These spinners are independent: the first outcome does not change the second probability.':r.coaching.message);form.before(coaching)}
  const trail=(r.solvedSteps||[]).filter(item=>item.title.split(' · ')[0]===step.title.split(' · ')[0]);
  if(trail.length){const details=document.createElement('details'),summary=document.createElement('summary'),list=document.createElement('ol');details.open=true;summary.textContent='Your verified calculation trail';details.append(summary);for(const item of trail){const row=document.createElement('li');row.textContent=item.title.split(' · ').slice(1).join(' · ')+': '+item.entries.join('; ');list.append(row)}details.append(list);form.before(details)}
  const model=document.createElement('div');if(step.model){form.before(model);model.innerHTML=reconstructionVisual(step,values)}
