@@ -3755,7 +3755,7 @@ choosePet=function(id){
 function phase4StudyState(){
   try{
     lfEnsure(); const L=S.legacy||{}, st=stats(), answers=prog().answers||[];
-    return {version:'V3.3.4 Unified Familiars',courseId:course()?.id||'',activePetId:L.activePetId||'',readiness:st?.readiness||0,accuracy:Math.round((st?.acc||0)*100),streak:dayStreak(),crystals:prog().crystals||0,answers:answers.length,xp:prog().xp||0,pets:(L.pets||[]).map(p=>({id:p.id,type:p.type,name:p.name,species:(petDef(p)?.species)||p.type,level:masPetLevel(p),stage:masPetStage(p),studyXP:p.studyXP||0,active:p.id===L.activePetId})),room:window.MajickStateCore?.ensureAccount?.()?.rewardCore?.sanctuary||null};
+    return {version:'V3.3.4 Unified Familiars',courseId:course()?.id||'',activePetId:L.activePetId||'',readiness:st?.readiness||0,accuracy:Math.round((st?.acc||0)*100),streak:dayStreak(),crystals:prog().crystals||0,answers:answers.length,xp:prog().xp||0,pets:(L.pets||[]).map(p=>({id:p.id,type:p.type,name:p.name,species:(petDef(p)?.species)||p.type,level:masPetLevel(p),stage:masPetStage(p),studyXP:p.studyXP||0,active:p.id===L.activePetId})),room:{...(window.MajickStateCore?.ensureAccount?.()?.rewardCore?.sanctuary||{}),positions:{...(window.MajickStateCore?.ensureAccount?.()?.rewardCore?.sanctuary?.positions||{}),...(S.legacy?.pixiSanctuaryPositions||{})},stored:S.legacy?.pixiSanctuaryStored||window.MajickStateCore?.ensureAccount?.()?.rewardCore?.sanctuary?.stored||[]}};
   }catch(e){console.warn('Phase 4 state bridge',e);return null}
 }
 function phase4PushState(){const frame=document.getElementById('phase4SanctuaryFrame');if(!frame||!frame.contentWindow)return;const payload=phase4StudyState();if(payload)frame.contentWindow.postMessage({type:'MAJICK_STATE',payload},'*')}
@@ -3767,7 +3767,37 @@ function phase4SanctuaryHTML(){
  }
  return `<section class="phase4Wrap" aria-label="Phase 4 Living Sanctuary"><div class="phase4Top"><div><b>✦ Phase 4 Living Sanctuary</b><br><span>PixiJS 8 is the default renderer. The original Sanctuary remains available as a fallback.</span></div><div class="phase4Actions"><button class="btn ghost" type="button" onclick="majickTogglePixiSanctuary(this)" aria-pressed="false" title="Compare the PixiJS renderer without changing saved Sanctuary data">Use original Sanctuary (Phaser)</button><button class="btn ghost" onclick="phase4OpenFullscreen()">Full Sanctuary</button><button class="btn primary" onclick="navigate('mission')">Continue Studying</button></div></div><iframe id="phase4SanctuaryFrame" class="phase4Frame" src="pixi-sanctuary/index.html" title="Majick Studies PixiJS Sanctuary" loading="eager" allow="fullscreen"></iframe><div class="phase4Help">Tap glowing areas and furniture to explore the magical college • tap familiars for reactions • use Edit Room to move decor • the Magic Mirror reads your real study progress.</div></section>`
 }
-if(!window.__phase4BridgeBound){window.__phase4BridgeBound=true;new MutationObserver(()=>{const f=document.getElementById('phase4SanctuaryFrame');if(f&&!f.dataset.majickWatchBound){f.dataset.majickWatchBound='1';majickSanctuaryLoading()}}).observe(document.body,{childList:true,subtree:true});window.addEventListener('message',ev=>{const d=ev.data||{};if(d.type==='MAJICK_SANCTUARY_READY'||d.type==='MAJICK_PIXI_SANCTUARY_READY'){majickSanctuaryReady();setTimeout(phase4PushState,80);}if(d.type==='MAJICK_CONTINUE_STUDYING')navigate('mission');if(d.type==='MAJICK_OPEN_ROUTE'){const ok=['guide','grimoire','journal','constellation','finalreview','focus','planner','mission'];if(ok.includes(d.route))navigate(d.route)}})}
+if(!window.__phase4BridgeBound){window.__phase4BridgeBound=true;new MutationObserver(()=>{const f=document.getElementById('phase4SanctuaryFrame');if(f&&!f.dataset.majickWatchBound){f.dataset.majickWatchBound='1';majickSanctuaryLoading()}}).observe(document.body,{childList:true,subtree:true});window.addEventListener('message',ev=>{const d=ev.data||{};if(d.type==='MAJICK_SANCTUARY_READY'||d.type==='MAJICK_PIXI_SANCTUARY_READY'){majickSanctuaryReady();setTimeout(phase4PushState,80);}if(ev.origin===location.origin&&ev.source===document.getElementById('phase4SanctuaryFrame')?.contentWindow&&d.type==='MAJICK_PIXI_ACTION'){
+ const reply=(ok,message)=>ev.source?.postMessage({type:'MAJICK_PIXI_ACTION_RESULT',ok,message,requestId:d.requestId},ev.origin);
+ try{
+  const pets=S.legacy?.pets||[];
+  if(d.action==='furniture-position'){
+   const id=String(d.id||'');
+   const x=Number(d.x),y=Number(d.y);
+   if(!/^[a-z0-9-]{1,80}$/.test(id)||!Number.isFinite(x)||!Number.isFinite(y)||x<0||x>1600||y<0||y>1200)throw Error('Invalid furniture position');
+   S.legacy.pixiSanctuaryPositions=S.legacy.pixiSanctuaryPositions||{};
+   S.legacy.pixiSanctuaryPositions[id]={x,y};
+   save();reply(true,'Furniture placement saved');
+  }else if(d.action==='furniture-store'){
+   const id=String(d.id||'');
+   if(!/^[a-z0-9-]{1,80}$/.test(id))throw Error('Invalid furniture');
+   const stored=new Set(S.legacy.pixiSanctuaryStored||[]);
+   if(d.stored)stored.add(id);else stored.delete(id);
+   S.legacy.pixiSanctuaryStored=[...stored];save();reply(true,'Furniture storage saved');
+  }else if(['pet','play','feed'].includes(d.action)){
+   const pet=pets.find(p=>String(p.id)===String(d.petId));
+   if(!pet)throw Error('Guardian not in your saved roster');
+   lfPetClick(pet.id);
+   if(d.action==='feed'){
+    pet.familiar=pet.familiar||{};
+    pet.familiar.lastFedAt=Date.now();save();
+   }
+   reply(true,d.action==='feed'?pet.name+' enjoyed a snack':pet.name+' enjoyed your attention');
+  }else throw Error('Unsupported Sanctuary action');
+  phase4PushState();
+ }catch(error){reply(false,String(error.message||error))}
+}
+if(d.type==='MAJICK_CONTINUE_STUDYING')navigate('mission');if(d.type==='MAJICK_OPEN_ROUTE'){const ok=['guide','grimoire','journal','constellation','finalreview','focus','planner','mission'];if(ok.includes(d.route))navigate(d.route)}})}
 
 function majickTogglePixiSanctuary(button){
  const frame=document.getElementById('phase4SanctuaryFrame');if(!frame)return;
