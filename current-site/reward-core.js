@@ -452,12 +452,25 @@ async function cozyMountPixi(){
   if(token!==cozyPixiToken||!host.isConnected){app.destroy(true,{children:true});return}
   const layer=document.createElement('div');layer.className='majCozyPixiLayer';layer.setAttribute('aria-hidden','true');layer.appendChild(app.canvas);host.appendChild(layer);
   const look=cozyLooks[cozyRecipe]||cozyLooks['clarity-potion'],color=Number.parseInt(look[0].slice(1),16);
-  const cauldron=new P.Container(),smoke=new P.Container(),sparks=new P.Container();
-  app.stage.addChild(smoke,cauldron,sparks);
-  const g=new P.Graphics();g.ellipse(0,0,105,22).fill({color:0xd4b4ed});g.roundRect(-102,0,204,100,30).fill({color:0x342044}).stroke({color:0xc5a0e0,width:7});g.ellipse(0,4,94,18).fill({color});g.x=app.screen.width/2;g.y=94;cauldron.addChild(g);
-  const particles=[];for(let i=0;i<22;i++){const p=new P.Graphics();p.circle(0,0,2+i%4).fill({color:i%3?color:0xffe9bc,alpha:.7});smoke.addChild(p);particles.push({p,seed:i*17})}
-  const stars=[];for(let i=0;i<12;i++){const p=new P.Graphics();p.star(0,0,4,5,2).fill({color:0xffe5a8,alpha:.7});sparks.addChild(p);stars.push(p)}
-  let tick=0;const animate=(time)=>{tick+=time.deltaTime;const bottled=cozyStage===3;cauldron.visible=!bottled;for(const {p,seed} of particles){p.visible=!bottled;p.x=app.screen.width/2+Math.sin(tick*.025+seed)*62;p.y=92-((tick*.6+seed*3)%115);p.alpha=.55*(1-(92-p.y)/115)}for(let i=0;i<stars.length;i++){const a=tick*.012+i*Math.PI/6;stars[i].x=app.screen.width/2+Math.cos(a)*75;stars[i].y=105+Math.sin(a)*64}if(bottled){cauldron.visible=false}};
+  const cauldron=new P.Container(),smoke=new P.Container(),sparks=new P.Container(),ingredients=new P.Container(),bottle=new P.Container();
+  app.stage.addChild(smoke,cauldron,ingredients,bottle,sparks);
+  const cx=app.screen.width/2, reduced=window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches;
+  const pot=new P.Graphics();pot.ellipse(0,0,105,22).fill({color:0xd4b4ed});pot.roundRect(-102,0,204,100,30).fill({color:0x342044}).stroke({color:0xc5a0e0,width:7});pot.x=cx;pot.y=94;cauldron.addChild(pot);
+  const liquid=new P.Graphics();liquid.ellipse(0,0,92,16).fill({color});liquid.x=cx;liquid.y=98;cauldron.addChild(liquid);
+  const wisps=[];for(let i=0;i<22;i++){const p=new P.Graphics();p.circle(0,0,3+i%5).fill({color:i%3?color:0xffe9bc,alpha:.45});smoke.addChild(p);wisps.push({p,seed:i*17})}
+  const bubbles=[];for(let i=0;i<15;i++){const p=new P.Graphics();p.circle(0,0,2+i%4).stroke({color:0xffffff,width:1,alpha:.75});cauldron.addChild(p);bubbles.push({p,seed:i*23})}
+  const herbs=[];for(let i=0;i<12;i++){const p=new P.Graphics();if(i%2)p.poly([0,-7,6,0,0,7,-6,0]).fill({color:0x91d69b});else p.star(0,0,5,6,3).fill({color:0xb3e3ff});ingredients.addChild(p);herbs.push({p,seed:i})}
+  const stars=[];for(let i=0;i<14;i++){const p=new P.Graphics();p.star(0,0,4,5,2).fill({color:0xffe5a8,alpha:.85});sparks.addChild(p);stars.push(p)}
+  const glass=new P.Graphics();glass.roundRect(-24,-48,48,85,14).fill({color,alpha:.85}).stroke({color:0xffe9cf,width:4});glass.roundRect(-12,-62,24,17,4).fill({color:0xb18c6c});glass.star(0,-10,5,12,5).fill({color:0xffffff});bottle.addChild(glass);bottle.x=cx;bottle.y=125;
+  let tick=0;const animate=(time)=>{tick+=reduced?0:time.deltaTime;const bottled=cozyStage===3,mixing=cozyStage===0||cozyStage===1;
+   cauldron.visible=!bottled;ingredients.visible=mixing;bottle.visible=bottled;
+   if(!reduced){liquid.tint=cozyStage===0?0xb3a2ff:cozyStage===1?0xf3bbff:0xffffff;liquid.scale.x=1+Math.sin(tick*.065)*.035}
+   for(const {p,seed} of wisps){p.visible=!bottled;const progress=(tick*.35+seed*3)%125;p.x=cx+Math.sin(tick*.025+seed)*48;p.y=94-progress;p.alpha=.5*(1-progress/125)}
+   for(const {p,seed} of bubbles){p.visible=!bottled;p.x=cx+Math.sin(seed*1.7)*68;p.y=105-((tick*.55+seed)%35)}
+   for(const {p,seed} of herbs){const angle=tick*.045+seed*2.4,progress=((tick*.35+seed*11)%95)/95;p.x=cx+Math.cos(angle)*(115-progress*110);p.y=45+Math.sin(angle)*38+progress*55;p.alpha=1-progress*.7}
+   for(let i=0;i<stars.length;i++){const a=tick*.018+i*Math.PI*2/stars.length;stars[i].x=cx+Math.cos(a)*(bottled?66:110);stars[i].y=(bottled?95:110)+Math.sin(a)*(bottled?65:48)}
+   bottle.y=reduced?125:125+Math.sin(tick*.045)*8;
+  };
   app.ticker.add(animate);cozyPixi={app,layer};
  }catch(_){host.classList.add('majCozyFallback')}
 }
