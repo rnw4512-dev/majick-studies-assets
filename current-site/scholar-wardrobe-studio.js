@@ -80,7 +80,13 @@ const style=document.createElement('style');style.textContent=`
 .wsStage{height:min(65dvh,680px);min-height:340px;width:100%;display:grid;place-items:center;overflow:hidden}
 .wsFigure{position:relative;height:100%;aspect-ratio:512/682;max-width:100%}
 .wsLayer{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;pointer-events:none}
+.wsLayer1{transform:translateY(-5.57%);transform-origin:50% 50%}
+.wsLayer1[src*="layer-dress-midnight"]{transform:translateY(-5.57%) scaleX(1.18)}
+.wsLayer1[src*="layer-dress-emerald"],.wsLayer1[src*="layer-dress-silver"]{inset:auto;left:7.7%;top:11.5%;width:84.4%;height:84.4%;object-fit:fill;transform:none}
+.wsLayer2{transform:scaleX(1.25)}
 .wsLayer3{transform:translateY(1%) scale(.77,.69);transform-origin:50% 10%}
+.wsLayer3[src*="layer-hair-afro"]{transform:translateY(.2%) scale(.74,.66)}
+.wsLayer3[src*="layer-hair-braids"]{transform:translateY(2.05%) scale(.77,.69)}
 .wsPoseStrip,.wsActions{display:flex;flex-wrap:wrap;justify-content:center;gap:9px;padding:12px}
 .wsActions .wsSave{background:#65346d;border-color:#e5bc77;font-weight:700}
 .wsMessage{min-height:22px;color:#e9c892;text-align:center}
