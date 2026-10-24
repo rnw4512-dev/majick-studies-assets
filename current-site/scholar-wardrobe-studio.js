@@ -8,7 +8,7 @@ const robeNames=['Plum Scholar','Midnight Velvet','Emerald Witch','Moonlit Silve
 const hairNames=['Locs','Braids','Curls','Afro','Twists','Waves'];
 const skinColors=['#70412f','#9d6345','#bf8766','#deb192','#f0cdb4','#513024'];
 const e=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-let section='Appearance',category='Robes',pose='Idle',snapshot=null,poseRevision=0,walkTimer=null,previewFacing='right';
+let section='Appearance',category='Robes',pose='Idle',snapshot=null,poseRevision=0,walkTimer=null,previewFacing='right',simpleMirror=false;
 function stopWalk(){if(walkTimer!==null){clearInterval(walkTimer);walkTimer=null;}}
 const OUTFIT_LIMIT=8;
 function looks(p){if(!Array.isArray(p.savedScholarLooks))p.savedScholarLooks=[];return p.savedScholarLooks;}
@@ -44,13 +44,19 @@ function controls(p){
  if(section==='Accessories')return '<h3>Accessories</h3><p>Equipped accessories remain saved. Fitted accessory artwork is being prepared.</p>';
  return '<h3>Mirror preview</h3><p>Choose a robe or hairstyle, then save your look.</p>'+savedLooks(p);
 }
+function watchArtwork(root){
+ const status=root.querySelector('.wsAssetStatus');
+ const images=[...root.querySelectorAll('img')];
+ function update(){if(!root.isConnected||!status?.isConnected)return;const missing=images.filter(img=>img.complete&&!img.naturalWidth);const pending=images.filter(img=>!img.complete);status.textContent=missing.length?'Some artwork could not load. Retry artwork to restore your preview.':pending.length?'Loading your look…':'';status.hidden=!status.textContent;root.querySelector('[data-retry-art]').hidden=!(missing.length||pending.length);}
+ images.forEach(img=>{img.addEventListener('load',()=>{img.style.visibility='';const message=root.querySelector('.wsMessage');if(message?.textContent.startsWith('A fitted garment asset'))message.textContent='';update();});img.addEventListener('error',()=>{if(img.dataset.retried)return update();img.dataset.retried='1';const u=new URL(img.src,location.href);u.searchParams.set('artRetry',String(Date.now()));img.src=u.href;update();});});update();
+}
 async function renderApprovedPose(p){
  const frame={Idle:'front_idle',Walk:'front_step_left',Study:'front_idle',Celebrate:'front_idle',Sit:'front_idle',Sanctuary:'front_idle'}[pose];
  const stage=document.querySelector('#wsOverlay:not([hidden]) .wsStage');
  if(!stage||!frame)return;
  const token=++poseRevision;
  if(pose==='Idle')return;
- if(pose==='Walk'){verifyApprovedWalk(p);return;}
+ if(pose==='Walk'){verifyApprovedWalk(p,stage,token);return;}
  const gate=window.MajickV2ApprovalGate;
  if(!gate){stage.closest('.wsMirror')?.querySelector('.wsMessage')?.replaceChildren(document.createTextNode('Pose layers are not ready. Your selected look is unchanged.'));return}
  const result=await gate.compose(p,frame,'locs');
@@ -59,20 +65,23 @@ async function renderApprovedPose(p){
  if(!result.ok){if(msg)msg.textContent='This outfit and hairstyle do not yet have approved '+pose.toLowerCase()+' frames. Your appearance stays unchanged.';return}
  const image=document.createElement('img');image.className='wsApprovedPose';image.alt='Approved aligned '+pose+' pose for the current outfit';image.src=result.canvas.toDataURL('image/png');
  image.style.transform=previewFacing==='left'?'scaleX(-1)':'none';
- stage.replaceChildren(image);
- if(msg)msg.textContent='Approved fitted '+pose.toLowerCase()+' frame';
+ try{await image.decode()}catch(_){if(token===poseRevision&&msg)msg.textContent='Pose preview could not load. Your fitted look is still shown.';return;}
+ if(token!==poseRevision||!stage.isConnected)return;
+ window.MajickAtelierScene?.dispose();stage.replaceChildren(image);
+ if(msg)msg.textContent='Fitted look shown. Dedicated '+pose.toLowerCase()+' action frames are still being tailored.';
 }
-async function verifyApprovedWalk(p){
+async function verifyApprovedWalk(p,originalStage,requestToken){
  const gate=window.MajickV2ApprovalGate;
  const message=document.querySelector('#wsOverlay:not([hidden]) .wsMessage');
  if(!gate||!message)return;
  // These are the approved V2 registry frame IDs, not an external demo atlas.
  const frames=['front_idle','front_step_left','front_idle','front_step_right'];
  const results=[];
- for(const frame of frames){const r=await gate.compose(p,frame,'locs');results.push({frame,ok:!!r.ok,reason:r.reason||null,canvas:r.canvas||null})}
+ for(const frame of frames){const r=await gate.compose(p,frame,'locs');if(requestToken!==poseRevision||!originalStage.isConnected)return;results.push({frame,ok:!!r.ok,reason:r.reason||null,canvas:r.canvas||null})}
  if(results.some(r=>!r.ok)){message.textContent='Movement not approved for this hairstyle and outfit: '+results.filter(r=>!r.ok).map(r=>r.frame+' ('+r.reason+')').join(', ');return}
  const stage=document.querySelector('#wsOverlay:not([hidden]) .wsStage');
- if(!stage)return;
+ if(!stage||stage!==originalStage||requestToken!==poseRevision)return;
+ window.MajickAtelierScene?.dispose();
  let index=0;const img=document.createElement('img');img.className='wsApprovedPose';img.alt='Approved four-frame walk cycle';img.style.transform=previewFacing==='left'?'scaleX(-1)':'none';stage.replaceChildren(img);
  const urls=results.map(r=>r.canvas.toDataURL('image/png'));
  const token=++poseRevision;
@@ -82,9 +91,10 @@ async function verifyApprovedWalk(p){
 }
 function render(){
  window.MajickAtelierScene?.dispose();
+ poseRevision++;
  stopWalk();
  const p=get();if(!p)return;const root=document.getElementById('wsOverlay');if(!root)return;
- root.innerHTML='<div class="wsWindow" role="dialog" aria-modal="true" aria-label="Scholar Atelier"><aside class="wsSidebar"><button class="wsBack" data-close>← Back</button><div class="wsBrand">☾<h1>Scholar<br>Atelier</h1></div><p class="wsMotto">Your look. Your story.</p><nav aria-label="Atelier rooms">'+['Appearance','Wardrobe','Accessories','Poses','Preview'].map(x=>button('✦ '+x,'data-section="'+x+'"',section===x)).join('')+'</nav><div class="wsSigil">✧ THE MOONLIT COLLEGIUM ✧</div></aside><main class="wsMain"><div class="wsControls"><h2>'+e(section)+'</h2>'+controls(p)+'</div><div class="wsMirror"><div class="wsMirrorTitle">✦ THE WARDROBE MIRROR ✦</div><div class="wsStage" data-facing="'+previewFacing+'" style="--ws-facing:'+(previewFacing==='left'?-1:1)+'">'+art(p)+'</div><div class="wsViewTools" role="group" aria-label="Mirror zoom"><button type="button" data-view="1" aria-pressed="true">Full look</button><button type="button" data-view="1.45" aria-pressed="false">Closer look</button></div><div class="wsPoseStrip">'+['Idle','Study','Celebrate','Walk','Sit','Sanctuary'].map(x=>button(x,'data-pose="'+x+'"',pose===x)).join('')+'</div><div class="wsFacing" role="group" aria-label="Preview direction">'+['left','right'].map(x=>button('Face '+x,'data-facing="'+x+'"',previewFacing===x)).join('')+'</div><div class="wsActions"><button data-undo>↶ Revert</button><button class="wsSave" data-save>✦ Save Look</button></div><div class="wsMessage" role="status"></div></div></main></div>';
+ root.innerHTML='<div class="wsWindow" role="dialog" aria-modal="true" aria-label="Scholar Atelier"><aside class="wsSidebar"><button class="wsBack" data-close>← Back</button><div class="wsBrand">☾<h1>Scholar<br>Atelier</h1></div><p class="wsMotto">Your look. Your story.</p><nav aria-label="Atelier rooms">'+['Appearance','Wardrobe','Accessories','Poses','Preview'].map(x=>button('✦ '+x,'data-section="'+x+'"',section===x)).join('')+'</nav><div class="wsSigil">✧ THE MOONLIT COLLEGIUM ✧</div></aside><main class="wsMain"><div class="wsControls"><h2>'+e(section)+'</h2>'+controls(p)+'</div><div class="wsMirror"><div class="wsMirrorTitle">✦ THE WARDROBE MIRROR ✦</div><div class="wsLookCaption"><strong>'+e(robeNames[Number(p.robe)]||robeNames[0])+'</strong><span>'+e(hairNames[Number(p.hair)]||hairNames[0])+' · Your fitted look</span></div><div class="wsStage" data-facing="'+previewFacing+'" style="--ws-facing:'+(previewFacing==='left'?-1:1)+'">'+art(p)+'</div><div class="wsViewTools" role="group" aria-label="Mirror zoom"><button type="button" data-view="1" aria-pressed="true">Full look</button><button type="button" data-view="1.45" aria-pressed="false">Closer look</button></div><div class="wsPoseStrip">'+['Idle','Study','Celebrate','Walk','Sit','Sanctuary'].map(x=>button(x,'data-pose="'+x+'"',pose===x)).join('')+'</div><div class="wsFacing" role="group" aria-label="Preview direction">'+['left','right'].map(x=>button('Face '+x,'data-facing="'+x+'"',previewFacing===x)).join('')+'</div><div class="wsActions"><button data-undo>↶ Revert</button><button class="wsSave" data-save>✦ Save Look</button></div><div class="wsMessage" role="status"></div><div class="wsAssetStatus" role="status" hidden></div><div class="wsRecovery"><button type="button" data-retry-art hidden>↻ Retry artwork</button><button type="button" data-simple-mirror aria-pressed="'+simpleMirror+'">'+(simpleMirror?'Enable enchanted mirror':'Use simple mirror')+'</button></div></div></main></div>';
  root.querySelectorAll('[data-section]').forEach(b=>b.onclick=()=>{section=b.dataset.section;render()});
  root.querySelectorAll('[data-occasion]').forEach(b=>b.onclick=()=>{p.wardrobeOccasion=b.dataset.occasion;save();render()});
  root.querySelectorAll('[data-category]').forEach(b=>b.onclick=()=>{category=b.dataset.category;render()});
@@ -92,14 +102,17 @@ function render(){
  root.querySelectorAll('[data-hair]').forEach(b=>b.onclick=()=>{p.hair=Number(b.dataset.hair);save();render()});
  root.querySelectorAll('[data-robe]').forEach(b=>b.onclick=()=>{p.robe=Number(b.dataset.robe);save();render()});
  root.querySelectorAll('[data-pose]').forEach(b=>b.onclick=()=>{pose=b.dataset.pose;render()});
- root.querySelectorAll('[data-facing]').forEach(b=>b.onclick=()=>{previewFacing=b.dataset.facing;render()});
+ root.querySelectorAll('button[data-facing]').forEach(b=>b.onclick=()=>{previewFacing=b.dataset.facing;render()});
  root.querySelectorAll('[data-load-look]').forEach(b=>b.onclick=()=>{const look=looks(p)[Number(b.dataset.loadLook)];if(!look)return;applyLook(p,look);save();render();const msg=root.querySelector('.wsMessage');if(msg)msg.textContent='✦ '+(look.name||'Outfit')+' equipped and saved.';});
  root.querySelectorAll('[data-delete-look]').forEach(b=>b.onclick=()=>{const i=Number(b.dataset.deleteLook);if(i<0||i>=looks(p).length)return;looks(p).splice(i,1);save();render();});
  root.querySelector('[data-save-slot]')?.addEventListener('click',()=>{const entries=looks(p);if(entries.length>=OUTFIT_LIMIT)return;const name=root.querySelector('#wsLookName')?.value?.trim()||'Scholar Look '+(entries.length+1);entries.push({...equipped(p),name,createdAt:new Date().toISOString()});save();render();root.querySelector('.wsMessage').textContent='✦ '+name+' added to your saved outfits.';celebrateSavedLook(root);});
  root.querySelector('[data-undo]').onclick=()=>{if(snapshot){Object.assign(p,snapshot);save();render()}};
  root.querySelector('[data-save]').onclick=()=>{snapshot={...p};save();root.querySelector('.wsMessage').textContent='✦ Look saved to your scholar.';celebrateSavedLook(root)};
  root.querySelector('[data-close]').onclick=close;
- window.MajickAtelierScene?.mount(root.querySelector('.wsStage'));
+ if(!simpleMirror)window.MajickAtelierScene?.mount(root.querySelector('.wsStage'));
+ root.querySelector('[data-simple-mirror]').onclick=()=>{simpleMirror=!simpleMirror;render()};
+ root.querySelector('[data-retry-art]').onclick=()=>{root.querySelectorAll('img').forEach(img=>{const u=new URL(img.src,location.href);u.searchParams.set('artRetry',String(Date.now()));img.src=u.href});};
+ watchArtwork(root);
  root.querySelectorAll('[data-view]').forEach(b=>b.onclick=()=>{const z=Number(b.dataset.view);window.MajickAtelierScene?.zoom(z);root.querySelector('.wsStage').style.setProperty('--ws-zoom',z);root.querySelectorAll('[data-view]').forEach(x=>x.setAttribute('aria-pressed',String(x===b)))});
  renderApprovedPose(p);
  root.querySelector('.wsStage')?.addEventListener('error',event=>{if(event.target?.tagName==='IMG'){event.target.style.visibility='hidden';root.querySelector('.wsMessage').textContent='A fitted garment asset is unavailable; your saved selection is preserved.'}},true);
@@ -134,7 +147,7 @@ const style=document.createElement('style');style.textContent=`
 .wsItem{width:130px}.wsItem img{width:115px;height:130px;object-fit:contain}
 .wsSavedLooks{display:grid;gap:8px}.wsSavedLook{padding:10px;border:1px solid #886a65;border-radius:10px;display:grid;gap:5px;background:#26192f}.wsSavedLook span,.wsHint{color:#dbc8d8;font-size:12px}.wsSavedLook div{display:flex;gap:7px}.wsSavedLook button,.wsSaveSlot{padding:8px;background:#4b3057;color:#fff2dc;border:1px solid #d4b17d;border-radius:8px;cursor:pointer}.wsSaveSlot:disabled{opacity:.5;cursor:not-allowed}.wsNameLabel{display:block;margin:15px 0 6px}#wsLookName{width:100%;padding:10px;border:1px solid #d4b17d;border-radius:8px;background:#25172d;color:#fff2dc;margin-bottom:8px}.wsEmpty{padding:22px;border:1px dashed #8b6b62;border-radius:12px;color:#d8c2cf}
 .wsMirror{min-width:0;border:3px double #c8a064;border-radius:36px 36px 18px 18px;background:radial-gradient(ellipse at 50% 32%,#65436a,#25152d 65%,#130e1c);padding:16px;display:flex;flex-direction:column;align-items:center}
-.wsMirror{position:relative}.wsMagicBurst{position:absolute;inset:0;pointer-events:none;overflow:hidden}.wsMagicBurst span{position:absolute;left:50%;top:48%;font-size:25px;color:#f4d38a;text-shadow:0 0 9px #dcb6ff;animation:wsStarBurst .75s ease-out var(--delay) both}@keyframes wsStarBurst{0%{opacity:0;transform:translate(-50%,-50%) scale(.3)}20%{opacity:1}100%{opacity:0;transform:translate(calc(-50% + var(--dx)),calc(-50% + var(--dy))) scale(1.3)}}.wsMirrorTitle{padding:8px 0 14px;text-align:center;color:#f3d39e;letter-spacing:3px;font:14px Georgia,serif}
+.wsMirror{position:relative}.wsMagicBurst{position:absolute;inset:0;pointer-events:none;overflow:hidden}.wsMagicBurst span{position:absolute;left:50%;top:48%;font-size:25px;color:#f4d38a;text-shadow:0 0 9px #dcb6ff;animation:wsStarBurst .75s ease-out var(--delay) both}@keyframes wsStarBurst{0%{opacity:0;transform:translate(-50%,-50%) scale(.3)}20%{opacity:1}100%{opacity:0;transform:translate(calc(-50% + var(--dx)),calc(-50% + var(--dy))) scale(1.3)}}.wsMirrorTitle{padding:5px 0 8px;text-align:center;color:#f3d39e;letter-spacing:3px;font:14px Georgia,serif}
 .wsStage{position:relative;isolation:isolate;background:radial-gradient(ellipse at 50% 42%,#ad88ba30,transparent 62%);border-radius:48% 48% 10px 10px;height:min(65dvh,680px);min-height:340px;width:100%;display:grid;place-items:center;overflow:hidden}
 .wsFigure{z-index:1;transform:scale(calc(var(--ws-zoom,1)*var(--ws-facing,1)),var(--ws-zoom,1));position:relative;height:100%;aspect-ratio:512/682;max-width:100%}
 .wsLayer{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;pointer-events:none}
@@ -159,6 +172,10 @@ const style=document.createElement('style');style.textContent=`
 #wsOverlay button:focus-visible{outline:3px solid #ffe0a0;outline-offset:3px}.wsStage .wsFigure{max-width:90%}
 @media(min-width:901px){.wsMirror{position:sticky;top:20px;align-self:start}.wsStage{height:clamp(390px,62dvh,700px)}}
 @media(max-width:900px){.wsMain{display:flex;flex-direction:column;padding:14px;gap:14px}.wsMirror{order:-1}.wsStage{height:47dvh;min-height:280px}.wsSidebar nav{gap:6px}.wsSidebar nav button{font-size:13px;padding:9px}.wsBrand h1{font-size:25px}.wsBrand br{display:none}.wsPoseStrip{gap:6px;padding:10px 0}.wsMirrorTitle{font-size:11px;letter-spacing:2px}}
+
+#wsOverlay *{box-sizing:border-box}.wsLookCaption{display:grid;gap:4px;text-align:center;padding:0 0 8px}.wsLookCaption strong{font:21px Georgia,serif;color:#ffe3af}.wsLookCaption span{font-size:12px;color:#dbc6d9}.wsRecovery{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin-top:7px}.wsRecovery button{font:12px system-ui;color:#ead7c6;background:#211729;border:1px solid #866c70;border-radius:8px;padding:7px 11px;cursor:pointer}.wsRecovery [hidden],.wsAssetStatus[hidden]{display:none!important}.wsAssetStatus{padding:8px;border:1px solid #d1ae72;border-radius:8px;color:#ffe4b1;background:#2f2237;font-size:12px;text-align:center;max-width:100%}.wsInventory{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.wsItem{width:100%;min-width:0}.wsItem img{width:100%;height:118px;background:radial-gradient(ellipse,#71536a44,transparent 70%)}.wsItem span{font-size:12px}.wsControls h2{margin-top:0}.wsMessage{font-size:12px;line-height:1.4;max-width:95%}.wsPoseStrip{padding:8px 0;gap:6px}.wsPoseStrip button{font-size:12px;padding:8px}.wsActions{padding:8px 0}.wsHair img{background:radial-gradient(ellipse,#886b7b33,transparent 70%)}
+@media(min-width:901px){.wsWindow{height:100dvh;min-height:0;overflow:hidden;grid-template-columns:190px minmax(0,1fr)}.wsMain{height:100dvh;grid-template-columns:minmax(250px,300px) minmax(0,1fr);padding:18px;gap:18px}.wsControls{max-height:calc(100dvh - 36px);overflow:auto;scrollbar-gutter:stable}.wsMirror{height:calc(100dvh - 36px);top:0;padding:14px}.wsStage{flex:1 1 auto;min-height:160px;height:auto}.wsMirror>*:not(.wsStage){flex-shrink:0}.wsBrand h1{font-size:29px}.wsSidebar nav button{font-size:14px;padding:10px}.wsSidebar{padding:18px 14px}}
+@media(max-width:900px){.wsLookCaption strong{font-size:18px}.wsMirror{padding:12px}.wsStage{height:40dvh;min-height:240px}.wsControls{width:100%}.wsSidebar{gap:8px}.wsBrand{gap:8px}.wsBrand h1{margin:0}.wsBack{align-self:start}.wsActions button{min-height:40px}}
 `;document.head.append(style);
 window.MajickWardrobeStudio={open,close,render};
 })();
