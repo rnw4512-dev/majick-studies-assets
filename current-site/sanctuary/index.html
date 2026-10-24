@@ -34,5 +34,17 @@
 <script src="./reward-sanctuary.js?v=342-aurelia-live"></script>
 <script src="./bridge.js"></script>
 <script src="./sanctuary-dorm.js?v=3357"></script>
+<script>
+// Instantiate the retained renderer only after all existing scene extensions
+// have registered. The prior page loaded scene classes without starting a game.
+window.majickPhaserGame = new Phaser.Game({
+    type: Phaser.AUTO,
+    parent: 'game-container',
+    backgroundColor: '#120817',
+    scale: { mode: Phaser.Scale.RESIZE, width: window.innerWidth, height: window.innerHeight },
+    render: { antialias: true },
+    scene: [Boot, Preloader, Game]
+});
+</script>
 </body>
 </html>

@@ -24,7 +24,10 @@ function onProbabilityBack(event){
  if(event.type==='click'&&event.detail!==0)return; // pointer activation already navigated
  event.preventDefault();
  event.stopPropagation();
- if(window.S?.screen!=='home')window.navigate?.('home');
+ if(window.S?.screen!=='home'){
+  if(typeof window.majickBack==='function')window.majickBack();
+  else window.navigate?.('home');
+ }
 }
 document.addEventListener('pointerdown',onProbabilityBack,true);
 document.addEventListener('click',onProbabilityBack,true);

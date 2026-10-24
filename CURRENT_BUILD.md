@@ -1,5 +1,16 @@
 # Majick Studies — Current V3.4.2
 
+## Sanctuary identity, shared furniture and learning repair — 2026-10-24
+
+- PR: https://github.com/rnw4512-dev/majick-studies-assets/pull/195 . Source repair commit `7a9f628`; current branch includes #194 through merge `3b91d18`. The PR records the final commit and publication result.
+- The Sanctuary payload now retains every saved ID and duplicate Briars, resolves species through the shared registry and preserves custom names. Pixi uses saved evolution levels, bounded floor movement and existing artwork. Nonacademic room selection stays on the same panel after delayed insertions.
+- Both renderers share the existing account furniture record. Legacy layouts migrate once, unknown inventory is retained, initial sync waits for the actual Phaser scene, and stale snapshots cannot undo current edits. Care uses the existing exact-ID API and inventory; Phaser's missing bootstrap is restored and remains available as fallback.
+- Lesson charts remain visible in academic rooms. Probability Back uses shared history, and Back invokes the current route chain for cleanup. Browser tests use current generated cases/controls and do not award false independent mastery for guided work.
+- Local build `798095a4810566cc`, all 18 Node runners, learning/probability browser flows, and the expanded fresh-account/11-Guardian Sanctuary gate passed. Full Commons runs exposed the furniture startup races; their specific regression now passes. The complete stable Pages workflow will certify the final merged tree; local results alone do not establish publication.
+- All existing Guardian art and the 33 protected movement assets are unchanged. Six species lack transparent stage walking pairs, and three original species lack higher-stage pairs. They retain safe existing artwork, with evolution cards shown separately; full Pixi artwork parity is not claimed.
+- Exact changed files, validation commands/limits and recovery guidance: `REPAIR_REPORT_2026-10-24.md`. Never clear learner storage, reset currency/progress or deduplicate pets by species. If the renderer fails, use the original Phaser button. Future asset work must supply reviewed stage-correct transparent walking pairs while retaining this fallback.
+
+
 Updated: 2026-10-04
 
 - Canonical runnable source: `current-site/`. Edit this source for future app changes.

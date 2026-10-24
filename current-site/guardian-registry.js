@@ -80,7 +80,7 @@ function cleanIdentity(v){return String(v||'').trim().toLowerCase().replace(/[^a
 function canonIndex(){
   const out={};
   for(const [type,g] of Object.entries(GUARDIANS)){
-    [type,g.type,g.canon].forEach(v=>{const k=cleanIdentity(v);if(k)out[k]=type});
+    [type,g.type,g.canon,g.species].forEach(v=>{const k=cleanIdentity(v);if(k)out[k]=type});
   }
   return out;
 }
@@ -89,9 +89,12 @@ function resolveType(raw){
   const idx=canonIndex();
   if(typeof raw==='string')return idx[cleanIdentity(raw)]||String(raw).toLowerCase();
   // Species/type identity is separate from an individual Guardian's custom name.
-  for(const value of [raw.guardianType,raw.speciesType,raw.canon,raw.slug,raw.type]){
+  for(const value of [raw.guardianType,raw.speciesType,raw.canon,raw.slug,raw.type,raw.species]){
     const hit=idx[cleanIdentity(value)];if(hit)return hit;
   }
+  // Older saves sometimes contain only a canonical name. Never use substring
+  // matches against random individual IDs or override a recognized species.
+  const named=idx[cleanIdentity(raw.name)];if(named)return named;
   return String(raw.type||raw.guardianType||'').toLowerCase();
 }
 function hash(v){
@@ -114,9 +117,8 @@ function individualFor(raw){
   const idx=Math.max(0,duplicateIndex(raw,type));
   const names=variants.names||[base.name],accents=variants.accents||[base.accent||'#b79ad9'],personalities=variants.personalities||[base.personality||'curious and bonded'];
   const existingName=String(raw.individualName||raw.customName||raw.name||'').trim();
-  const duplicateName=(Array.isArray(window.S?.legacy?.pets)?window.S.legacy.pets:[]).filter(p=>resolveType(p)===type&&String(p.name||'').trim()===existingName).length>1;
   const generatedName=names[idx%names.length]||base.name;
-  const name=existingName&&(!duplicateName||idx===0)?existingName:generatedName;
+  const name=existingName||generatedName;
   const accent=raw.accent||raw.color||accents[idx%accents.length]||base.accent||'#b79ad9';
   const personality=raw.personality||personalities[idx%personalities.length]||base.personality;
   const hue=idx===0?0:((hash(raw.id||raw.petId||name)%5)+1)*24;
@@ -145,11 +147,11 @@ function dynamicSources(){
   const canon=window.V338_CANON||{};
   for(const [type,raw] of Object.entries(canon))if(!GUARDIANS[type])out[type]=normalizeExtra(type,raw);
   for(const pet of (window.S?.legacy?.pets||[])){
-    const type=String(pet?.type||'').toLowerCase();
+    const type=resolveType(pet);
     if(type&&!GUARDIANS[type]&&!out[type])out[type]=normalizeExtra(type,pet);
   }
   for(const egg of (window.S?.legacy?.eggs||[])){
-    const type=String(egg?.type||'').toLowerCase();
+    const type=resolveType(egg);
     if(type&&!GUARDIANS[type]&&!out[type])out[type]=normalizeExtra(type,egg);
   }
   return out;
