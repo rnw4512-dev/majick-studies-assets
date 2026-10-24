@@ -140,11 +140,11 @@
     "guardian-core.css": "3a1d473dcefc038e7330c3824473c593c62c13b90a2e3fecff6e15d231decde6",
     "guardian-core.js": "7bc1daa446cbf1abb2853ba2ec9cebcdfa446ec94c06619526e25d9e9a140fce",
     "guardian-life-main.css": "96ab4cf8b050b6f09b692b93c485a602ed2acfa75f716cfdffd38fe6a109e97c",
-    "guardian-life-main.js": "d6900cb82b2a661e180d6ac8e7572cf1a31bfbf90580c06efe0b09ca923d0559",
+    "guardian-life-main.js": "68e81b53ceb98fd6df1a4c608cb547cd264e8fd3c0216dcbf924c9d32e37b27d",
     "guardian-registry.js": "b20170b996ddf065f33bb37332c8a9fce68ae104914e3e94ffe9aa44b7b612f3",
     "home-focus.css": "cbb719eb8e78701717b4016388d511553f2785212d839815ed006651ae738b2b",
     "home-focus.js": "f421d4c5e5b4193d1005e5ce5cdbeb0e969a0cffb8ece49b9dd7c255a16ca794",
-    "index.html": "81670fe024568ef1c8783f9b4c4f3484346cf57444717137234acdb1d39a7b62",
+    "index.html": "3e536e49505e8c947521b6de90a413d7ddcc5ba4c0a99097799c99cf9d3e04ab",
     "learn-mode.css": "30181250c67efe7bd97c9276706a804a551e7904a2bb28160eeb0c193f35c002",
     "learn-mode.js": "49e424f3e40456772e4cb8adc550078c26ed793a5f83f9c216450609865ffa3c",
     "learning-lab.css": "b9c2c4f2ae393b3d291155a258cd01388bb71cd49a46d0187f224b03222ac2df",
@@ -825,6 +825,7 @@
     "assets/effects/celebrations/course-complete-sigil.svg": "5bb72f7c3da585d477527f057c9c42930abd859db8681edaac3616ed130ca1a6",
     "room-section-nav.js": "b422df77f3e1a9ec9c87a3520d9861caab4e8617fe019eb30293fb03030e29fb",
     "room-section-nav.css": "3260dbb0044a5ce0bf7b61e0c03e78293a9a4d65c69ad687d8ac455440f0ba97",
-    "scholar-wardrobe-studio.js": "0a3d5372031cfc956e0d2a446fb6329c70fba2d0f15d218c36572e2d3427d476"
+    "scholar-wardrobe-studio.js": "0a3d5372031cfc956e0d2a446fb6329c70fba2d0f15d218c36572e2d3427d476",
+    "milestone-particles.js": "1846e8445e39cb2331bea02dd760f6d3dbb3bf8d83a08ae391762174c822e583"
   }
 }
