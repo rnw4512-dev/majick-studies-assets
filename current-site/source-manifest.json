@@ -361,7 +361,7 @@
     "study-material/materialParser.js": "066d34acc159d5b8b1bc22b4248e6ca4bc178063ef5849b23bc38c5017d140c0",
     "study-material/materialStoreModel.js": "9ab5a2da2b179a001653f88dfaf840f7bc2a053afa3038407d41042d6552ecad",
     "study-material/questionBuilder.js": "6f00659e4091e594a5924aa664c38d52f53dc3b5c69eb862934a70cd55b47c64",
-    "study-progress-bridge.js": "d68df838becd5268c449e51f6dd43c6108251e58571d27b24ea13f54d9c184b1",
+    "study-progress-bridge.js": "c9cedfd4a45848ac7d08fddf12464aea9511d57abb73efc446efd73dc1d2ce17",
     "study-ui-compat.js": "9e746bf759a179818e750ca2ffbd13d541b31abae3c2b57400085bb7191fe82c",
     "ui-compat.js": "619bae70177344b2311b7d63075658b9fc9c452c9447ab03bf76a2176a9f3c34",
     "v3310-main.css": "504ec87be04c7c4f18531d56ed31d83b04f486b8e8725b08b65fab610f4715ec",
@@ -826,6 +826,6 @@
     "room-section-nav.js": "b422df77f3e1a9ec9c87a3520d9861caab4e8617fe019eb30293fb03030e29fb",
     "room-section-nav.css": "3260dbb0044a5ce0bf7b61e0c03e78293a9a4d65c69ad687d8ac455440f0ba97",
     "scholar-wardrobe-studio.js": "0a3d5372031cfc956e0d2a446fb6329c70fba2d0f15d218c36572e2d3427d476",
-    "milestone-particles.js": "1846e8445e39cb2331bea02dd760f6d3dbb3bf8d83a08ae391762174c822e583"
+    "milestone-particles.js": "27d82d0393a60d7edf57c18137525a52e389e561f315e0525c311984e2304031"
   }
 }
