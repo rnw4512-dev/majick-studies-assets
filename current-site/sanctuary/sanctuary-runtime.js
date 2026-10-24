@@ -302,7 +302,7 @@ Game.prototype.createDecor=function(){
     }
 
     // Base createMovableDecor supplies edit-mode drag + saved positions.
-    const syncDepth=()=>item.setDepth(30+Math.round(item.y/30));
+    const syncDepth=()=>item.setDepth(Math.max(40,Math.min(940,Math.round(item.y+(item.displayHeight||0)*.12))));
     syncDepth();
     item.on('drag',syncDepth);
     item.on('dragend',syncDepth);
@@ -464,6 +464,22 @@ Game.prototype.create=function(){
   this.v3317CareState={roster:[],guardians:{},byType:{},eggs:[],inventory:{},owned:[]};
   baseCreate.call(this);
   hideLegacyLabels(this);
+
+  // Low-cost stationary glows. No new Phaser scene, lights pipeline, or saved state.
+  // Keep glows behind interactive furniture and Guardians, and out of pointer handling.
+  if(!this.__majickAmbientGlows){
+    this.__majickAmbientGlows=[];
+    const lowPower=window.matchMedia?.('(prefers-reduced-motion: reduce), (max-width: 600px)')?.matches;
+    const sources=[
+      {x:340,y:230,color:0xffd8a0,r:125,alpha:.13},
+      {x:1660,y:230,color:0xbaa0ff,r:160,alpha:.11}
+    ];
+    for(const src of sources.slice(0,lowPower?1:2)){
+      const glow=this.add.circle(src.x,src.y,src.r,src.color,src.alpha);
+      glow.setDepth(-9).setScrollFactor(1).disableInteractive();
+      this.__majickAmbientGlows.push(glow);
+    }
+  }
 
   // Preserve base edit mode; only improve its visible label.
   if(this.editModeText)this.editModeText.setText('✦ EDIT SANCTUARY');
