@@ -4,7 +4,8 @@
 const names=['velora','cascade','solstice','aurelia','vesper','briar','zephyr','prism','rook','solara'];
 const room=document.getElementById('room'),status=document.getElementById('status');
 const $=id=>document.getElementById(id);
-if(!window.PIXI){status.textContent='PixiJS could not load. Check your connection and retry.';return}
+function reportFailure(message){status.textContent=message;if(window.parent!==window)window.parent.postMessage({type:'MAJICK_PIXI_SANCTUARY_ERROR'},location.origin);}
+if(!window.PIXI){reportFailure('PixiJS could not load. Check your connection and retry.');return}
 const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
 // This is an explicitly requested movement test: start wandering even if the OS
 // requests reduced decorative motion; keep ambient effects disabled in that case.
@@ -12,7 +13,7 @@ let paused=false,stress=false,ambient=!reduced,loaded=0;
 const app=new PIXI.Application();
 try {
  await app.init({width:1200,height:700,backgroundAlpha:0,antialias:false,autoDensity:true,resolution:Math.min(devicePixelRatio||1,2),preference:'webgl',powerPreference:'low-power'});
-} catch(error) { console.error('PixiJS v8 initialization failed',error); status.textContent='PixiJS could not initialize graphics on this device.'; return; }
+} catch(error) { console.error('PixiJS v8 initialization failed',error); reportFailure('PixiJS could not initialize graphics on this device. Use the original Sanctuary button above.'); return; }
 room.appendChild(app.canvas);
 const world=new PIXI.Container();app.stage.addChild(world);
 const ground=new PIXI.Graphics();ground.ellipse(600,625,570,150).fill({color:0x36243f,alpha:.85});world.addChild(ground);
@@ -199,6 +200,7 @@ if(velora&&stagePicker){
 }
 // Read-only live account bridge. Parent remains the only owner of progress and room persistence.
 let liveRoster=null,liveRoom=null;
+function publishRoster(){if(window.parent===window||!liveRoster)return;window.parent.postMessage({type:'MAJICK_SANCTUARY_ROSTER_V3350',rows:entities.filter(e=>e.root.visible&&e.savedPetId).map(e=>({petId:e.savedPetId,name:e.name,present:true}))},location.origin);}
 function applyLiveState(payload){
  if(!payload||!Array.isArray(payload.pets))return;
  liveRoster=payload.pets;liveRoom=payload.room||null;
@@ -208,6 +210,7 @@ function applyLiveState(payload){
   const p=owned.get(e.name);
   e.root.visible=!!p;
   if(p){
+   e.savedPetId=String(p.id||'');
    const labelNode=e.root.children.find(x=>x instanceof PIXI.Text);
    if(labelNode)labelNode.text=String(p.name||e.name)+' · Lv '+(Number(p.level)||1);
    e.savedStage=String(p.stage||'new-bond');
@@ -223,10 +226,12 @@ function applyLiveState(payload){
  }
  const count=entities.filter(e=>e.root.visible).length;
  status.textContent=count+' saved Guardians connected · room state '+(liveRoom?'received':'unavailable');
+ publishRoster();
 }
 window.addEventListener('message',event=>{
  if(event.origin!==location.origin||event.source!==window.parent)return;
  if(event.data?.type==='MAJICK_STATE')applyLiveState(event.data.payload);
+ if(event.data?.type==='MAJICK_SANCTUARY_ROSTER_REQUEST_V3350')publishRoster();
 });
 if(window.parent!==window)window.parent.postMessage({type:'MAJICK_PIXI_SANCTUARY_READY'},location.origin);
 if(!entities.length){status.textContent='Guardian images could not load. Please check network access.';return}
