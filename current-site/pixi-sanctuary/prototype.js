@@ -23,7 +23,7 @@ for(let i=0;i<42;i++){const star=new PIXI.Graphics();star.circle(0,0,1+rand()*2)
 function resize(){const b=room.getBoundingClientRect();const width=Math.max(240,b.width),height=Math.max(240,b.height);app.renderer.resize(Math.round(width),Math.round(height));const k=Math.min(width/1200,height/700);world.scale.set(k);world.position.set((width-1200*k)/2,(height-700*k)/2);$('viewport').textContent=Math.round(width)+' × '+Math.round(height)}
 new ResizeObserver(resize).observe(room);resize();
 function newTarget(e){e.tx=110+rand()*980;e.ty=355+rand()*235;e.pause=0.5+rand()*1.8}
-function label(text){return new PIXI.Text(text,{fontFamily:'Georgia,serif',fontSize:21,fill:0xffe4ae,stroke:0x1b1022,strokeThickness:4,align:'center'})}
+function label(text){return new PIXI.Text({text,style:{fontFamily:'Georgia,serif',fontSize:21,fill:0xffe4ae,stroke:{color:0x1b1022,width:4},align:'center'}})}
 await Promise.all(names.map(async(name,i)=>{
  try{
   const texture=await PIXI.Assets.load('../assets/familiars/canon/'+name+'-guardian.webp');
