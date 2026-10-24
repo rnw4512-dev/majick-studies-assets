@@ -86,7 +86,7 @@ check('Mistake, guided retry, Guardian and Sanctuary persistence across course s
 check('Academic mastery requires independently verified transfer and teaching',()=>{
  const c=context({activeCourse:'D772',progress:{D772:{}}});load(c,'learning-continuity.js');
  const x=c.MajickLearningContinuity,q={id:'qa',learningPathLessonId:'d772-s2-l4-1',prompt:'Calculate the median',answer:'5'};
- for(let i=0;i<5;i++)x.skillResult(q,true,false,'study-now');
+ for(let i=0;i<5;i++){const data=[i,5,10-i];x.skillResult({...q,id:'qa-'+i,data,prompt:'Calculate the median of '+data.join(', ')},true,false,'study-now')}
  let m=x.masteryStatus('d772-s2-l4-1');
  assert.equal(m.certified,false,'Correct recall cannot certify mastery');
  assert.equal(m.independentCorrect,5);
@@ -95,6 +95,7 @@ check('Academic mastery requires independently verified transfer and teaching',(
  assert.equal(x.masteryStatus('d772-s2-l4-1').certified,false,'Transfer alone cannot certify teaching');
  row.teachBackAssessment={evaluated:true,passed:true};
  assert.equal(x.masteryStatus('d772-s2-l4-1').certified,true,'Verified transfer and teaching should certify when independent threshold met');
+ const duplicate=context({activeCourse:'D772',progress:{D772:{}}});load(duplicate,'learning-continuity.js');for(let i=0;i<5;i++)duplicate.MajickLearningContinuity.skillResult(q,true,false,'independent-transfer');duplicate.S.progress.D772.adaptiveSkills[q.learningPathLessonId].teachBackAssessment={evaluated:true,passed:true};const repeated=duplicate.MajickLearningContinuity.masteryStatus(q.learningPathLessonId);assert.equal(repeated.independentCorrect,1,'Replayed question is one independent evidence item');assert.equal(repeated.certified,false,'Repeats cannot satisfy independent mastery threshold');
 });
 check('D772 generated Section 2 math, charts and visual evidence across fresh datasets',()=>{
  const c=context({activeCourse:'D772',progress:{D772:{}}});load(c,'generated-question-engine.js');load(c,'visual-evidence-gate.js');
