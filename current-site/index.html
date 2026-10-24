@@ -1234,7 +1234,7 @@ function save(){if(window.majickSaveLoadBlocked)throw Error('Saved data needs re
 function course(){return S.courses[S.activeCourse]||BUILTIN} function prog(){return S.progress[S.activeCourse]}
 function esc(s=''){return String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
 function pct(n){return Math.round((n||0)*100)}
-function navigate(screen){clearTimer();S.screen=screen;save();render()}
+function navigate(screen){const previous=S.screen;clearTimer();S.screen=screen;save();render();if(previous!==screen)window.MajickRoomTransition?.play?.()}
 function clearTimer(){if(timerHandle){clearInterval(timerHandle);timerHandle=null}}
 function render(){try{const c=course();document.getElementById('app').innerHTML=`<aside class="side">${sideHTML()}</aside><main class="main"><header class="top"><div class="titleline"><span style="font-size:25px">☾</span><div><h1>Moonlit Learning Expedition</h1><span class="pill">Eternal Study Realm • V3.0</span></div></div><select class="courseSelect" onchange="switchCourse(this.value)">${Object.values(S.courses).map(x=>`<option value="${esc(x.id)}" ${x.id===S.activeCourse?'selected':''}>${esc(x.id)} • ${esc(x.title)}</option>`).join('')}</select></header><div class="content" id="content">${screenHTML()}</div></main>`;bind();}catch(e){console.error(e);document.getElementById('app').innerHTML=`<main class="main"><div class="content"><div class="error"><h2>The app caught an error instead of going blank.</h2><p>${esc(e.message)}</p><button class="btn dark" onclick="resetUI()">Return Home</button></div></div></main>`}}
 function sideHTML(){const nav=[['home','🏰','Home'],['mission','🎯','Study Now'],['guide','📖','Study Guide'],['games','🎮','Game Realm'],['test','📝','OA Practice'],['analytics','📊','Analytics'],['sources','📚','Sources'],['add','➕','Add Class']];return `<div class="brand"><div class="brandmark">☾</div><div class="txt"><b>Moonlit<br>Learning</b><small>Magical Study Expedition</small></div></div><nav class="nav">${nav.map(([id,ic,l])=>`<button data-nav="${id}" class="${S.screen===id?'active':''}" onclick="navigate('${id}')"><span>${ic}</span> <span class="label">${l}</span></button>`).join('')}</nav><div class="sidefoot"><span class="moon">🌙</span><div class="copy"><b>${dayStreak()} day study streak</b><small>Small wins become mastery.</small><div class="rewardStrip" style="margin-top:9px"><span class="rewardChip">✨ ${prog().xp||0} XP</span><span class="rewardChip">💎 ${prog().crystals||0}</span></div></div></div>`}
@@ -4216,6 +4216,7 @@ try{render()}catch(e){console.error('V3.3.8 canon guardian boot',e)}
 <script src="./guardian-core.js?v=3400"></script>
 <script src="./study-progress-bridge.js?v=342-scholar-answers"></script>
 <script src="./milestone-particles.js?v=1"></script>
+<script src="./room-transition.js?v=1"></script>
 <script src="./guardian-life-main.js?v=3342"></script>
 <script src="./campus-runtime.js?v=3361"></script>
 <script src="./visual-evidence-gate.js?v=342-graph-evidence-1"></script>
