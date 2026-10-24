@@ -62,11 +62,13 @@ function workshopCases(task,serial){
  });
 }
 function newWorkshopState(task,previous={}){
- const serial=window.MajickLearningContinuity?.nextGuidedSequence?.('workshop:'+task.id);
- const generated=serial?workshopCases(task,serial):null;
+ const sequenceKey='majick:workshop-sequence:'+String(window.S?.activeCourse||task.course||'D772')+':'+task.id;
+ let serial=window.MajickLearningContinuity?.nextGuidedSequence?.('workshop:'+task.id);
+ if(!Number.isFinite(Number(serial))||Number(serial)<=0){try{serial=Number(window.localStorage.getItem(sequenceKey)||0)+1;window.localStorage.setItem(sequenceKey,String(serial))}catch(_){serial=(previous.sequenceSerial||0)+1}}
+ const generated=workshopCases(task,Number(serial));
  const used=previous.usedCases||[],cases=generated||task.cases.filter(c=>!used.includes(JSON.stringify(c)));
  if(!cases.length)return {...previous,exhausted:true};
- return {stage:0,answers:{},caseIndex:0,feedback:'Fresh scenario selected. Your earlier evidence is preserved.',error:false,hint:false,finished:false,verified:{},sessionCases:cases,usedCases:generated?used:[...used,...cases.map(c=>JSON.stringify(c))]};
+ return {stage:0,answers:{},caseIndex:0,feedback:'Fresh scenario selected. Your earlier evidence is preserved.',error:false,hint:false,finished:false,verified:{},sessionCases:cases,sequenceSerial:Number(serial),usedCases:generated?used:[...used,...cases.map(c=>JSON.stringify(c))]};
 }
 function saveWorkshopState(task,st){const p=window.S?.progress?.[window.S.activeCourse];if(p){(p.solutionWorkshop||(p.solutionWorkshop={}))[task.id]=st;try{window.save?.()}catch(_){}}}
 const STATES=new WeakMap();
@@ -190,9 +192,7 @@ host.querySelector('[data-check]').onclick=()=>{let good=false,reason='';
   if(!full){st.feedback='Complete stages 1–5 on this scenario before stage 6.';render(host,task);return}
   if(!independent){st.caseIndex++;st.stage=0;st.answers={};st.hint=false;st.transferHintUsed=false;st.feedback='Challenge complete. A fresh case awaits.';render(host,task);return}
   st.finished=true;
-  const mastered=window.MajickInteractiveMastery?.record?.({taskId:task.id,lessonId:task.lesson,kind:task.kind,allStagesVerified:full,hintFreeTransfer:!st.transferHintUsed&&task.kind!=='sequence'});
-  const reward=!st.transferHintUsed?window.MajickInteractiveRewards?.award?.(task.id,'transfer'):null;
-  st.feedback='Transfer complete. '+(mastered?.recorded?'Independently verified calculation recorded. ':'Practice completed; mastery is not asserted. ')+reason+(st.transferHintUsed?' This was a corrected attempt; retry on a fresh independent case to earn unassisted transfer credit.':reward?.awarded?' Reward: +'+reward.xp+' XP and +'+reward.crystals+' crystal.':' Reward already earned.');
+  st.feedback='✦ Practice complete. This guided sequence does not count as independent mastery. Prove the skill with fresh, unseen OA questions.';
   render(host,task);return
 }
  st.error=false;(st.verified[st.caseIndex]||(st.verified[st.caseIndex]=[])).push(step);
