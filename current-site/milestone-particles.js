@@ -21,7 +21,7 @@ function play(type,anchor){
 }
 const style=document.createElement('style');style.textContent=`
 .majMilestoneParticles{position:fixed;inset:0;z-index:1900;pointer-events:none;overflow:hidden}
-.majMilestoneParticles span{position:absolute;left:var(--burst-x);top:var(--burst-y);color:#f7d58e;text-shadow:0 0 12px #b77cff;font-size:clamp(13px,2vw,24px);animation:majMilestoneFly var(--dur) ease-out var(--delay) both}
+.majMilestoneParticles span{mix-blend-mode:screen;position:absolute;left:var(--burst-x);top:var(--burst-y);color:#f7d58e;text-shadow:0 0 12px #b77cff;font-size:clamp(13px,2vw,24px);animation:majMilestoneFly var(--dur) ease-out var(--delay) both}
 @keyframes majMilestoneFly{0%{opacity:0;transform:translate(-50%,-50%) scale(.25)}15%{opacity:1}70%{opacity:1}100%{opacity:0;transform:translate(calc(-50% + var(--dx)),calc(-50% + var(--dy))) scale(.8)}}
 @media(prefers-reduced-motion:reduce){.majMilestoneParticles{display:none}}
 `;document.head.append(style);
