@@ -266,20 +266,20 @@ function renderReasoning(){
   header.className='majReasoningToolbar';
   const title=document.createElement('div');
   const h=document.createElement('h2');h.textContent='✦ Reasoning Workshop';
-  const desc=document.createElement('p');desc.textContent='Mixed-section reasoning for OA preparation. One question at a time.';
-  title.append(h,desc);
+  
+  title.append(h);
   const back=document.createElement('button');back.type='button';back.textContent='← Study Realm';back.onclick=()=>window.navigate?.('mission');
   header.append(title,back);
   const tabs=document.createElement('nav');tabs.className='mjReasoningTabs';tabs.setAttribute('aria-label','Reasoning Workshop sections');
   const activity=document.createElement('section');activity.className='mjReasoningActivity';
   const host=document.createElement('section');host.className='mjSolutionEngine';host.setAttribute('aria-label','Reasoning Workshop activities');activity.append(host);
   const about=document.createElement('section');about.className='mjReasoningAbout';about.setAttribute('aria-hidden','true');
-  about.innerHTML='<h3>Your reasoning practice</h3><p>Work through a scenario, identify what is known, choose a strategy, calculate or interpret, and explain your reasoning. The final transfer task checks independent understanding.</p><p>Guided steps support learning; they do not independently certify mastery.</p>';
+  about.innerHTML='';
   const exam=document.createElement('section');exam.className='majMixedExam';exam.setAttribute('aria-label','Mixed D772 multiple-choice exam practice');
-  const views=[{label:'✦ Mixed OA Questions',panel:exam},{label:'Reasoning Steps',panel:activity},{label:'How it works',panel:about}];
-  activity.setAttribute('aria-hidden','true');about.setAttribute('aria-hidden','true');
+  const views=[{label:'✦ OA Trials',panel:exam},{label:'✧ Guided Reasoning',panel:activity}];
+  activity.toggleAttribute('hidden',true);activity.setAttribute('aria-hidden','true');
   views.forEach(({label,panel},i)=>{const btn=document.createElement('button');btn.type='button';btn.textContent=label;btn.setAttribute('aria-pressed',String(i===0));btn.onclick=()=>{views.forEach((v,j)=>{v.panel.toggleAttribute('hidden',j!==i);v.panel.setAttribute('aria-hidden',String(j!==i));tabs.children[j].setAttribute('aria-pressed',String(j===i))})};tabs.append(btn)});
-  page.append(header,tabs,exam,activity,about);root.append(page);
+  page.append(header,tabs,exam,activity);root.append(page);
   if(cid==='D772')renderMixedExam(exam);else exam.textContent='Mixed OA questions are currently available for D772 only.';
   page.dataset.practiceMode='mixed';
   root.dataset.majReasoningCourse=cid;
