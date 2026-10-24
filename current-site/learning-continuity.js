@@ -61,7 +61,7 @@ function skillResult(q,correct,assisted=false,origin='practice'){
  const p=window.S?.progress?.[course()];if(!p||!id||((q?.course||q?.courseId)&&String(q.course||q.courseId)!==course()))return null;
  const book=p.adaptiveSkills||(p.adaptiveSkills={});
  const row=book[id]||(book[id]={lessonId:id,attempts:[],cycles:0,status:'practice',errors:[]});
- row.attempts.push({correct:!!correct,assisted:!!assisted,origin,verified:origin==='independent-transfer'&&!!correct&&!assisted,time:Date.now()});
+ row.attempts.push({correct:!!correct,assisted:!!assisted,origin,questionKey:String(q?.id||'')+'|'+JSON.stringify(q?.data||q?.prompt||''),verified:origin==='independent-transfer'&&!!correct&&!assisted,time:Date.now()});
  row.attempts=row.attempts.slice(-5);
  // Durable misconception history is separate from the rolling five-attempt diagnostic.
  row.misconceptionHistory=row.misconceptionHistory||{incorrect:0,assisted:0,independentCorrect:0,recoveryRequired:false,recoveryCompleted:false};
@@ -142,7 +142,7 @@ function practiceAnswer(q,correct,alreadyRecorded=false,selected=null){
  r.seenIds.push(q.id);r.seenIds=r.seenIds.slice(-300);
  if(!alreadyRecorded)skillResult(q,correct,false,'mixed-exam-independent');
  if(!correct){r.failedData=r.failedData||[];if(q.generated)r.failedData.push(JSON.stringify(q.data));r.misses++;if(!r.failedIds.includes(q.id))r.failedIds.push(q.id);if(r.misses>=1){r.required=true;r.awaitingTransfer=false;r.stage=0;r.verified=[];r.draft={};r.planVersion=4;r.exampleSequence=nextGuidedSequence('repair');r.planSnapshot=null;r.solvedSteps=[];r.recentIndependentIds=[];r.coaching=diagnosePracticeMistake(q,selected);r.source=JSON.parse(JSON.stringify(q))}}
- else {r.recentIndependentIds=r.recentIndependentIds||[];if(!r.required&&!(q.generated?(r.failedData||[]).includes(JSON.stringify(q.data)):r.failedIds.includes(q.id)))r.recentIndependentIds.push(String(q.id));
+ else {r.recentIndependentIds=r.recentIndependentIds||[];if(!r.required&&!(q.generated?(r.failedData||[]).includes(JSON.stringify(q.data)):r.failedIds.includes(q.id)))r.recentIndependentIds.push(evidenceKey);
  if(r.awaitingTransfer&&!(q.generated?(r.failedData||[]).includes(JSON.stringify(q.data)):r.failedIds.includes(q.id))){r.awaitingTransfer=false;r.misses=0;r.transferId=q.id;r.stage=0;r.verified=[];r.draft={}}}
  try{window.save?.()}catch(_){}return r;
 }
@@ -164,7 +164,7 @@ function masteryStatus(id){
  if(course()==='D772'&&id===PROBABILITY_ID&&probabilityState(false))return probabilityMastery();
  const row=window.S?.progress?.[course()]?.adaptiveSkills?.[id];
  if(!row)return {certified:false,reason:'No independently demonstrated skill evidence'};
- const independent=(row.attempts||[]).filter(x=>x.correct&&!x.assisted);
+ const independent=[...new Map((row.attempts||[]).filter(x=>x.correct&&!x.assisted).map((x,i)=>[x.questionKey||('legacy-'+i),x])).values()];
  const transfer=independent.some(x=>x.origin==='independent-transfer'&&x.verified===true);
  const teaching=row.teachBackAssessment?.evaluated===true&&row.teachBackAssessment?.passed===true;
  const recovery=row.misconceptionHistory||{};
