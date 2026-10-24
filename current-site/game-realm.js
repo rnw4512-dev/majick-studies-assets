@@ -108,6 +108,7 @@
     const played=new Set((session?.questions||[]).map(q=>typeof q==='string'?q:q?.id));
     const fresh=pool.filter(q=>!played.has(q.id));
     if(fresh.length)pool=fresh;
+    else return null; // End this round instead of recycling an already-played question.
     const recent=new Set((prog().answers||[]).slice(-20).map(a=>a.qid));
     const lessRecent=pool.filter(q=>!recent.has(q.id));
     return originalPick(lessRecent.length?lessRecent:pool);
