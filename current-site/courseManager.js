@@ -307,6 +307,7 @@ function passCourse(){
   mirrorAccount();
   window.save();
   celebratePass(c,r,true);
+  document.dispatchEvent(new CustomEvent('majick:celebrate',{detail:{type:'course',course:cid,key:'course-pass:'+cid,verified:true}}));
   window.render();
 }
 function celebratePass(c,r,newAward){
