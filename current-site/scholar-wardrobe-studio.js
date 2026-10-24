@@ -8,7 +8,8 @@ const robeNames=['Plum Scholar','Midnight Velvet','Emerald Witch','Moonlit Silve
 const hairNames=['Locs','Braids','Curls','Afro','Twists','Waves'];
 const skinColors=['#70412f','#9d6345','#bf8766','#deb192','#f0cdb4','#513024'];
 const e=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-let section='Appearance',category='Robes',pose='Idle',snapshot=null,poseRevision=0;
+let section='Appearance',category='Robes',pose='Idle',snapshot=null,poseRevision=0,walkTimer=null;
+function stopWalk(){if(walkTimer!==null){clearInterval(walkTimer);walkTimer=null;}}
 const OUTFIT_LIMIT=8;
 function looks(p){if(!Array.isArray(p.savedScholarLooks))p.savedScholarLooks=[];return p.savedScholarLooks;}
 function equipped(p){return {skin:Number(p.skin)||0,hair:Number(p.hair)||0,robe:Number(p.robe)||0,wardrobeOccasion:p.wardrobeOccasion||'Class'};}
@@ -66,10 +67,12 @@ async function verifyApprovedWalk(p){
  let index=0;const img=document.createElement('img');img.className='wsApprovedPose';img.alt='Approved four-frame walk cycle';stage.replaceChildren(img);
  const urls=results.map(r=>r.canvas.toDataURL('image/png'));
  const token=++poseRevision;
- function advance(){if(token!==poseRevision||!stage.isConnected||pose!=='Walk')return;img.src=urls[index++%urls.length];window.setTimeout(advance,190)}
- advance();message.textContent='Movement verified: all four walk-cycle frames passed approved layered composition.';
+ stopWalk();
+ function advance(){if(token!==poseRevision||!stage.isConnected||pose!=='Walk'){stopWalk();return;}img.src=urls[index++%urls.length];}
+ advance();walkTimer=window.setInterval(advance,190);message.textContent='Movement verified: all four walk-cycle frames passed approved layered composition.';
 }
 function render(){
+ stopWalk();
  const p=get();if(!p)return;const root=document.getElementById('wsOverlay');if(!root)return;
  root.innerHTML='<div class="wsWindow" role="dialog" aria-modal="true" aria-label="Scholar Atelier"><aside class="wsSidebar"><button class="wsBack" data-close>← Back</button><div class="wsBrand">☾<h1>Scholar<br>Atelier</h1></div><p class="wsMotto">Your look. Your story.</p><nav aria-label="Atelier rooms">'+['Appearance','Wardrobe','Accessories','Poses','Preview'].map(x=>button('✦ '+x,'data-section="'+x+'"',section===x)).join('')+'</nav><div class="wsSigil">✧ THE MOONLIT COLLEGIUM ✧</div></aside><main class="wsMain"><div class="wsControls"><h2>'+e(section)+'</h2>'+controls(p)+'</div><div class="wsMirror"><div class="wsMirrorTitle">✦ THE WARDROBE MIRROR ✦</div><div class="wsStage">'+art(p)+'</div><div class="wsPoseStrip">'+['Idle','Study','Celebrate','Walk','Sit','Sanctuary'].map(x=>button(x,'data-pose="'+x+'"',pose===x)).join('')+'</div><div class="wsActions"><button data-undo>↶ Revert</button><button class="wsSave" data-save>✦ Save Look</button></div><div class="wsMessage" role="status"></div></div></main></div>';
  root.querySelectorAll('[data-section]').forEach(b=>b.onclick=()=>{section=b.dataset.section;render()});
@@ -95,7 +98,7 @@ function open(){
  if(!root){root=document.createElement('div');root.id='wsOverlay';document.body.append(root)}
  snapshot={...get()};root.hidden=false;render();root.querySelector('[data-close]')?.focus();
 }
-function close(){const r=document.getElementById('wsOverlay');if(r)r.hidden=true;window.MajickScholarCompanion?.refresh?.(true)}
+function close(){stopWalk();poseRevision++;const r=document.getElementById('wsOverlay');if(r)r.hidden=true;window.MajickScholarCompanion?.refresh?.(true)}
 document.addEventListener('keydown',ev=>{if(ev.key==='Escape'&&!document.getElementById('wsOverlay')?.hidden)close()});
 const style=document.createElement('style');style.textContent=`
 #wsOverlay{position:fixed;inset:0;z-index:1800;background:#0d0815ed;color:#f5e5d0;font:15px system-ui;overflow:auto}
