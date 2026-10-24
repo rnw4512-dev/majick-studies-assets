@@ -16,6 +16,34 @@ try {
 room.appendChild(app.canvas);
 const world=new PIXI.Container();app.stage.addChild(world);
 const ground=new PIXI.Graphics();ground.ellipse(600,625,570,150).fill({color:0x36243f,alpha:.85});world.addChild(ground);
+const backdrop=new PIXI.Container();world.addChildAt(backdrop,0);
+PIXI.Assets.load('../assets/approved_sanctuary_backdrop.jpg').then(texture=>{
+ const image=new PIXI.Sprite(texture);image.width=1200;image.height=700;backdrop.addChild(image);
+}).catch(error=>console.warn('Sanctuary background unavailable',error));
+const furnitureLayer=new PIXI.Container();world.addChild(furnitureLayer);
+const furnitureSprites=new Map();
+async function loadFurniture(){
+ try{
+  const response=await fetch('../sanctuary/assets/objects/objects-manifest.json');
+  if(!response.ok)throw Error('Furniture manifest unavailable');
+  const data=await response.json();
+  for(const obj of data.objects||[]){
+   if(!obj.enabled||!obj.preload||!obj.placement||!obj.filename)continue;
+   try{
+    const texture=await PIXI.Assets.load('../sanctuary/assets/objects/'+obj.filename);
+    const sprite=new PIXI.Sprite(texture);sprite.anchor.set(.5,1);
+    const width=Math.min(165,Number(obj.placement.width||180)*.48);
+    sprite.scale.set(width/Math.max(1,texture.width));
+    sprite.x=Math.max(60,Math.min(1140,Number(obj.placement.x||600)*.57));
+    sprite.y=Math.max(240,Math.min(665,Number(obj.placement.y||750)*.69));
+    sprite.eventMode='static';sprite.cursor='pointer';
+    sprite.on('pointertap',()=>{if(obj.destination&&window.parent!==window)window.parent.postMessage({type:'MAJICK_OPEN_ROUTE',route:obj.destination},location.origin);else status.textContent=obj.displayName+' · '+(obj.interaction||'Sanctuary furnishing')});
+    furnitureLayer.addChild(sprite);furnitureSprites.set(obj.id,{sprite,obj});
+   }catch(error){console.warn('Furniture art missing:',obj.id,error)}
+  }
+ }catch(error){console.warn('Furniture manifest could not load',error)}
+}
+loadFurniture();
 const dots=new PIXI.Container();world.addChild(dots);
 const guardianLayer=new PIXI.Container();world.addChild(guardianLayer);
 const entities=[];
@@ -174,15 +202,23 @@ let liveRoster=null,liveRoom=null;
 function applyLiveState(payload){
  if(!payload||!Array.isArray(payload.pets))return;
  liveRoster=payload.pets;liveRoom=payload.room||null;
+ for(const [id,entry] of furnitureSprites){const pos=liveRoom?.positions?.[id];if(pos&&Number.isFinite(Number(pos.x))&&Number.isFinite(Number(pos.y))){entry.sprite.x=Math.max(35,Math.min(1165,Number(pos.x)*.57));entry.sprite.y=Math.max(200,Math.min(685,Number(pos.y)*.69))}entry.sprite.visible=!liveRoom?.stored?.includes(id)}
  const owned=new Map(payload.pets.map(p=>[String(p.type||'').toLowerCase(),p]));
  for(const e of entities){
-  if(!e.root.visible)continue;
   const p=owned.get(e.name);
   e.root.visible=!!p;
   if(p){
    const labelNode=e.root.children.find(x=>x instanceof PIXI.Text);
    if(labelNode)labelNode.text=String(p.name||e.name)+' · Lv '+(Number(p.level)||1);
    e.savedStage=String(p.stage||'new-bond');
+   const requested=e.savedStage,token=e.stageRequest=(e.stageRequest||0)+1;
+   if(e.name==='velora'&&stagePicker){stagePicker.value=requested;stagePicker.onchange?.()}
+   else PIXI.Assets.load('../sanctuary/assets/evolutions/'+e.name+'/'+requested+'/walk.webp').then(texture=>{
+    if(e.stageRequest!==token||!e.root.visible)return;
+    e.baseTexture=texture;e.sprite.texture=texture;e.walkFrames=[];
+    e.sprite.scale.set(Math.min(170/Math.max(1,texture.width),165/Math.max(1,texture.height)));
+   }).catch(()=>{});
+
   }
  }
  const count=entities.filter(e=>e.root.visible).length;
