@@ -405,7 +405,53 @@ function patchLegacyGameRewards(){
 function inspect(){const a=account(),r=a?.rewardCore;return {version:VERSION,xp:a?.xp||0,crystals:a?.crystals||0,chests:a?.chests||0,eggFragments:r?.eggFragments||0,ingredients:{...(r?.ingredients||{})},collectibles:[...(r?.collectibles||[])],blueprints:[...(r?.blueprints||[])],stats:{...(r?.stats||{})},lastReceipt:r?.lastReceipt||null}}
 window.MajickRewardCore={VERSION,RARITIES,INGREDIENTS,TREASURES,RECIPES,award,rewardPreview,inventory,craft,usePotion,showConjuring,conjureEgg,vaultPanelHTML,patchVault,inspect,patchLegacyGameRewards,placeReward,equipReward,pushRewardState,ITEM_ART};
 window.majickConjureEgg=()=>showConjuring();
-window.majickCraftPotion=id=>{const r=craft(id);try{window.rewardToast?.(r.ok?'⚗ Potion crafted':'Missing ingredients',r.ok?r.recipe.name:r.message)}catch(_){if(!r.ok)alert(r.message)};try{window.render?.()}catch(_){};return r};
+
+// Cozy Alchemy is a presentation layer. Inventory is changed only by craft(), never by animation.
+let cozyRecipe=null,cozyStage=0,cozyStirs=0;
+const cozyStyle=document.createElement('style');
+cozyStyle.textContent=`
+.majCozyShade{position:fixed;inset:0;z-index:99990;background:#0c0719cf;display:grid;place-items:center;padding:18px;overflow:auto}
+.majCozyModal{width:min(520px,100%);max-height:95vh;overflow:auto;position:relative;padding:24px;border:2px solid #c8a36c;border-radius:22px;color:#fff2df;background:radial-gradient(ellipse at 50% 35%,#55346d,#1a1029 72%);box-shadow:0 20px 70px #080411}
+.majCozyModal h2{font-family:Georgia,serif;color:#ffe0a4;margin:4px 0 8px}.majCozyModal p{color:#f7e8ff;line-height:1.5}
+.majCozyScene{height:210px;display:grid;place-items:center;position:relative;overflow:hidden}
+.majCozyCauldron{position:relative;width:210px;height:116px;margin-top:60px;border-radius:22px 22px 95px 95px;border:7px solid #c9a7df;background:linear-gradient(130deg,#735388,#241733 55%,#0e0a19);box-shadow:inset 0 -16px #120d1d,0 22px 35px #10071b}
+.majCozyCauldron:before{content:'';position:absolute;left:-9px;right:-9px;top:-22px;height:49px;border:6px solid #d6b1ec;border-radius:50%;background:radial-gradient(ellipse,#e8a2fa,#8037a0);box-shadow:0 0 28px #d67fffaa;animation:cozyPulse 1.8s ease-in-out infinite}
+.majCozyCauldron:after{content:'✦  ☾  ✦';position:absolute;top:56px;left:0;right:0;text-align:center;font-size:24px;color:#f9d99c}
+.majCozyParticles{position:absolute;inset:0;pointer-events:none;color:#ffe1ac;font-size:24px;text-align:center;letter-spacing:20px;animation:cozyRise 2.1s ease-in-out infinite}
+.majCozyActions{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}.majCozyActions button{border:1px solid #e3bc86;border-radius:13px;background:#65417e;color:white;padding:11px 17px;cursor:pointer;font-weight:700}.majCozyActions button:first-child{background:#a467ac}
+.majCozyClose{position:absolute;right:13px;top:10px;border:0;background:transparent;color:white;font-size:25px;cursor:pointer}
+@keyframes cozyPulse{50%{filter:brightness(1.4);transform:scale(1.04)}}@keyframes cozyRise{50%{opacity:.35;transform:translateY(-19px)}}
+@media(prefers-reduced-motion:reduce){.majCozyModal *{animation:none!important}}
+`;
+document.head.appendChild(cozyStyle);
+function cozyClose(){document.getElementById('majCozyBrewing')?.remove();cozyRecipe=null}
+function cozyDraw(){
+ const rec=RECIPES.find(x=>x.id===cozyRecipe);if(!rec)return cozyClose();
+ const box=document.getElementById('majCozyBrewing');if(!box)return;
+ const labels=['Add ingredients','Stir the potion','Bottle your potion','Potion crafted!'];
+ const actions=cozyStage===0?'<button onclick="majCozyNext()">Add all ingredients ✦</button>':cozyStage===1?'<button onclick="majCozyNext()">Stir ✨ '+cozyStirs+'/3</button><button onclick="majCozyQuick()">Quick mix</button>':cozyStage===2?'<button onclick="majCozyNext()">Bottle potion ⚗</button>':'<button onclick="majCozyClose()">Return to workshop</button>';
+ box.innerHTML='<div class="majCozyModal" role="dialog" aria-modal="true" aria-labelledby="majCozyTitle"><button class="majCozyClose" aria-label="Close brewing workshop" onclick="majCozyClose()">×</button><small>THE MOONLIT CAULDRON • '+E(labels[cozyStage])+'</small><h2 id="majCozyTitle">'+E(rec.name)+'</h2><p>'+E(rec.effect)+'</p><div class="majCozyScene"><div class="majCozyParticles" aria-hidden="true">✦ ✧ ✦ ✧ ✦</div><div class="majCozyCauldron" aria-hidden="true"></div></div><p style="text-align:center">'+(cozyStage===3?'Your potion has been saved to inventory.':cozyStage===1?'Stir three times, or use Quick mix.':cozyStage===2?'The mixture is glowing. Ready to bottle!':'Ingredients are ready. Brew without any extra resource cost.')+'</p><div class="majCozyActions">'+actions+'</div></div>';
+ box.querySelector('.majCozyClose')?.focus({preventScroll:true});
+}
+window.majCozyClose=cozyClose;
+window.majCozyQuick=()=>{if(cozyStage===1){cozyStirs=3;cozyStage=2;cozyDraw()}};
+window.majCozyNext=()=>{
+ if(!cozyRecipe)return;
+ if(cozyStage===0)cozyStage=1;
+ else if(cozyStage===1){cozyStirs++;if(cozyStirs>=3)cozyStage=2}
+ else if(cozyStage===2){const result=craft(cozyRecipe);if(!result.ok){window.rewardToast?.('Missing ingredients',result.message);cozyClose();return}cozyStage=3;window.rewardToast?.('⚗ Potion crafted',result.recipe.name)}
+ cozyDraw();
+};
+window.majickCraftPotion=id=>{
+ const rec=RECIPES.find(x=>x.id===id),inv=inventory();
+ if(!rec)return {ok:false,message:'Unknown recipe'};
+ const missing=Object.entries(rec.cost).filter(([k,n])=>Number(inv.ingredients[k]||0)<n);
+ if(missing.length){window.rewardToast?.('Missing ingredients','Earn more ingredients by studying.');return {ok:false,message:'Missing ingredients'}}
+ if(document.getElementById('majCozyBrewing'))return {ok:false,message:'Brewing already open'};
+ cozyRecipe=id;cozyStage=0;cozyStirs=0;
+ const overlay=document.createElement('div');overlay.id='majCozyBrewing';overlay.className='majCozyShade';document.body.appendChild(overlay);cozyDraw();return {ok:true,pending:true};
+};
+
 window.majickUsePotion=id=>{const ok=usePotion(id);try{window.rewardToast?.(ok?'✦ Potion activated':'No potion available',ok?(RECIPES.find(x=>x.id===id)?.effect||'Magic stirred.'):'Craft one first.')}catch(_){};try{window.render?.()}catch(_){};return ok};
 document.documentElement.dataset.majickRewardCore=VERSION;
 setTimeout(()=>{patchLegacyGameRewards();patchVault()},0);
