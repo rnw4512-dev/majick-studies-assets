@@ -246,7 +246,16 @@ function applyLiveState(payload){
  if(!payload||!Array.isArray(payload.pets))return;
  liveRoster=payload.pets;liveRoom=payload.room||null;
  applyRoomFurniture();updateCareOptions();
- const owned=new Map(payload.pets.map(p=>[String(p.type||'').toLowerCase(),p]));
+ // Guardian type is often a species (e.g. crystal-axolotl), not the portrait identity.
+ // Match canonical identity by stable ID or display name first, then type as fallback.
+ const norm=value=>String(value||'').toLowerCase().normalize('NFKD').replace(/[^a-z0-9]/g,'');
+ const owned=new Map();
+ for(const pet of payload.pets){
+  const keys=[pet.name,pet.id,pet.guardianId,pet.key,pet.type].map(norm).filter(Boolean);
+  const match=entities.find(e=>keys.includes(norm(e.name))||keys.some(k=>k.startsWith(norm(e.name))||k.endsWith(norm(e.name))));
+  if(match&&!owned.has(match.name))owned.set(match.name,pet);
+ }
+
  for(const e of entities){
   const p=owned.get(e.name);
   e.root.visible=!!p;
@@ -269,7 +278,7 @@ function applyLiveState(payload){
   }
  }
  const count=entities.filter(e=>e.root.visible).length;
- status.textContent=count+' saved Guardians connected · room state '+(liveRoom?'received':'unavailable');
+ status.textContent=count+' of '+payload.pets.length+' saved Guardians matched · room state '+(liveRoom?'received':'unavailable')+(count===0?' · Guardian identity mismatch; check saved roster':'');
  publishRoster();
 }
 window.addEventListener('message',event=>{
