@@ -46,6 +46,8 @@ jobs:
         run: node pages-release/current/test-d772-exam-visuals.cjs
       - name: Validate Collegium Commons navigation and readability contract
         run: node pages-release/current/test-collegium-commons.cjs current-site
+      - name: Verify Atelier preview recovery and stale pose safety
+        run: node pages-release/current/test-atelier-preview-recovery.cjs
       - name: Verify and publish current source only
         run: python pages-release/current/build.py current-site _site
 

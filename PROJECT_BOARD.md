@@ -295,3 +295,11 @@ Every change must append **date / area / commit or PR / what changed / how / act
 - Development release only; full responsive stable certification pending. Verify live mirror rendering, appearance switches, approved pose fallback and reload before stable promotion. Rollback: revert this focused commit, leaving learner storage untouched.
 
 - QA: canonical release checks pass; browser confirmed fitted hair switching, numeric zoom state and all image loads. Test browser has no WebGL (Pixi reports CanvasRenderer not implemented); graceful image/CSS room fallback verified. GPU render path and full 390/820/1366 certification remain unverified.
+
+
+## 2026-10-24 — Atelier recovery and compact fitting room
+- Screenshot showed missing avatar/thumbnails; exact remote image failure was not reproduced. Added automatic single image retry, visible loading/failure status, manual Retry artwork and a session-only simple mirror switch. Restores image visibility after a successful retry; no save reset. Pixi now renders before hiding the image fallback and returns to it on context loss.
+- Fixed confirmed async races: stale pose/walk requests cannot overwrite a newer outfit; a composed still frame is decoded before replacing the current fitted preview. Static approved frames are labelled honestly, without implying dedicated Study/Sit/Celebrate animation. Removed stage-wide click binding accidentally inherited from the direction selector.
+- Desktop controls scroll independently while the mirror and save actions fit the viewport. Smaller robe cards in a two-column grid, reduced sidebar, current robe/hair caption. Mobile retains preview-first ordering.
+- Added mandatory test-atelier-preview-recovery.cjs for stale pose/walk, image decode failure and atomic replacement. Browser checked simple mirror, rapid Study→robe change, caption accuracy and all fitted image loads. Current browser has no WebGL; GPU path and full three-width stable certification pending.
+- No artwork, WGU content, academic/reward owner, XP/crystals, Guardian/Sanctuary or saved appearance schema changes. Development publication after mandatory checks. Rollback via scoped revert; never clear storage.

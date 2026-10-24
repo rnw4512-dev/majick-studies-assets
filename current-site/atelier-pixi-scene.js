@@ -7,7 +7,7 @@ function library(){
  return loading||(loading=new Promise((resolve,reject)=>{const s=document.createElement('script');s.src='./vendor/pixi-8.6.6.min.js';s.onload=()=>resolve(window.PIXI);s.onerror=()=>{loading=null;s.remove();reject(new Error('Scene unavailable'))};document.head.append(s)}));
 }
 let active=null;
-function dispose(){if(!active)return;const old=active;active=null;old.dead=true;old.resize?.disconnect();old.observe?.disconnect();document.removeEventListener('visibilitychange',old.visibility);old.motion?.removeEventListener('change',old.animate);old.figure?.classList.remove('wsPixiReplaced');old.host?.remove();if(old.ready)old.app.destroy(true,{children:true,texture:false,textureSource:false});}
+function dispose(){if(!active)return;const old=active;active=null;old.dead=true;old.resize?.disconnect();old.observe?.disconnect();document.removeEventListener('visibilitychange',old.visibility);old.motion?.removeEventListener('change',old.animate);old.figure?.classList.remove('wsPixiReplaced');old.host?.querySelector('canvas')?.removeEventListener('webglcontextlost',old.contextLost);old.host?.remove();if(old.ready)old.app.destroy(true,{children:true,texture:false,textureSource:false});}
 async function mount(stage){
  dispose();if(!stage)return;
  const state={dead:false,ready:false};active=state;
@@ -15,7 +15,7 @@ async function mount(stage){
   const P=await library();if(state.dead||!stage.isConnected)return;
   const app=state.app=new P.Application();await app.init({width:Math.max(1,stage.clientWidth),height:Math.max(1,stage.clientHeight),backgroundAlpha:0,antialias:true,resolution:Math.min(window.devicePixelRatio||1,2),autoDensity:true,preference:'webgl'});
   state.ready=true;if(state.dead||!stage.isConnected){app.destroy(true,{children:true});return;}
-  const host=state.host=document.createElement('div');host.className='wsPixiScene';host.setAttribute('aria-hidden','true');host.append(app.canvas);stage.prepend(host);
+  const host=state.host=document.createElement('div');host.className='wsPixiScene';host.setAttribute('aria-hidden','true');host.append(app.canvas);stage.prepend(host);state.contextLost=()=>{if(active===state)dispose()};app.canvas.addEventListener('webglcontextlost',state.contextLost);
   const room=new P.Container({isRenderGroup:true}),scholar=new P.Container({isRenderGroup:true}),magic=new P.Container({isRenderGroup:true});app.stage.addChild(room,scholar,magic);
   const platform=new P.Graphics();room.addChild(platform);
   const stars=[];for(let i=0;i<24;i++){const dot=new P.Graphics().circle(0,0,i%4===0?1.8:1).fill(i%3===0?0xf0cd85:0xc5b3ef);magic.addChild(dot);stars.push(dot);}
@@ -41,7 +41,7 @@ async function mount(stage){
     sprite.position.set(rect.left-origin.left+(rect.width-sprite.width)/2,rect.top-origin.top+(rect.height-sprite.height)/2);scholar.addChild(sprite);
    });
    figure.style.transform='';
-   scholar.pivot.set(w/2,h*.52);scholar.position.set(w/2,h*.52);scholar.scale.set(zoom*(stage.dataset.facing==='left'?-1:1),zoom);figure.classList.add('wsPixiReplaced');
+   scholar.pivot.set(w/2,h*.52);scholar.position.set(w/2,h*.52);scholar.scale.set(zoom*(stage.dataset.facing==='left'?-1:1),zoom);app.render();figure.classList.add('wsPixiReplaced');
   }
   state.zoom=value=>{zoom=value;scholar.scale.set(zoom*(stage.dataset.facing==='left'?-1:1),zoom)};
   state.resize=new ResizeObserver(()=>{fit().catch(()=>{state.figure?.classList.remove('wsPixiReplaced')})});state.resize.observe(stage);

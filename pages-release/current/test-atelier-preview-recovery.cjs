@@ -1,0 +1,21 @@
+const assert=require('node:assert/strict');
+const fs=require('node:fs'),vm=require('node:vm');
+let source=fs.readFileSync('current-site/scholar-wardrobe-studio.js','utf8');
+source=source.replace('window.MajickWardrobeStudio={open,close,render};',`window.testHooks={preview:renderApprovedPose,walk:verifyApprovedWalk,invalidate(){poseRevision++},pose(value){pose=value}};window.MajickWardrobeStudio={open,close,render};`);
+let replaceCount=0,disposeCount=0,decode=()=>Promise.resolve();
+const message={textContent:'',replaceChildren(){}};
+const stage={isConnected:true,closest:()=>({querySelector:()=>message}),replaceChildren(){replaceCount++}};
+const window={MajickAtelierScene:{dispose(){disposeCount++}},MajickV2ApprovalGate:null};
+const document={head:{append(){}},addEventListener(){},querySelector(sel){return sel.includes('wsStage')?stage:message},createElement(){return {style:{},decode:()=>decode()}}};
+vm.runInNewContext(source,{window,document,console,URL,location:{href:'https://example.test/'},clearInterval,setInterval,Date});
+const hooks=window.testHooks,p={skin:2,hair:0,robe:1};
+const result={ok:true,canvas:{toDataURL(){return 'data:image/png;base64,example'}}};
+(async()=>{
+ hooks.pose('Study');let finish;window.MajickV2ApprovalGate={compose:()=>new Promise(r=>finish=r)};
+ const stale=hooks.preview(p);hooks.invalidate();finish(result);await stale;assert.equal(replaceCount,0,'stale pose cannot replace current outfit');
+ window.MajickV2ApprovalGate={compose:async()=>result};decode=()=>Promise.reject(Error('image failed'));
+ await hooks.preview(p);assert.equal(replaceCount,0,'failed decode retains fitted image');assert.match(message.textContent,/still shown/);
+ let decoded;decode=()=>new Promise(r=>decoded=r);const waiting=hooks.preview(p);await new Promise(setImmediate);assert.equal(replaceCount,0,'pose waits for decode');decoded();await waiting;assert.equal(replaceCount,1);assert.equal(disposeCount,1);assert.match(message.textContent,/Dedicated study action frames/);
+ replaceCount=0;hooks.pose('Walk');window.MajickV2ApprovalGate={compose:()=>new Promise(r=>finish=r)};const walk=hooks.preview(p);hooks.invalidate();finish(result);await walk;assert.equal(replaceCount,0,'stale walk cannot replace newer outfit');
+ console.log('PASS Atelier stale pose/walk, decode failure and atomic preview replacement');
+})().catch(error=>{console.error(error);process.exitCode=1});
