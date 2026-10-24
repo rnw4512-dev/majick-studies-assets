@@ -40,9 +40,12 @@ function refresh(){
   if(!nav){nav=document.createElement('nav');nav.id='majickRoomSections';nav.className='majickRoomSections';nav.setAttribute('aria-label','Jump to page section');root.prepend(nav)}
   const tabbed=TABBED_ROOMS.has(room);
   const key=room+':'+(window.S?.activeCourse||'');
-  const current=selections.get(key)||0;
-  const active=Math.min(current,rows.length-1);
-  selections.set(key,active);
+  const current=selections.get(key);
+  // Care docks and other delayed panels can appear before the selected room.
+  // Preserve its identity instead of moving the selection with an array index.
+  let active=rows.findIndex(row=>row.label===current);
+  if(active<0)active=room==='companions'?Math.max(0,rows.findIndex(row=>row.label==='Sanctuary')):0;
+  selections.set(key,rows[active].label);
   if(tabbed){
    rows.forEach(({el},i)=>{
     el.classList.toggle('majRoomInactive',i!==active);
@@ -71,7 +74,7 @@ function refresh(){
     button.setAttribute('aria-pressed',String(i===active));
     button.classList.toggle('majRoomSelected',i===active);
     button.onclick=()=>{
-     selections.set(key,i);
+     selections.set(key,label);
      rows.forEach(({el:panel},j)=>{panel.classList.toggle('majRoomInactive',j!==i);panel.classList.toggle('majRoomActive',j===i);if(j!==i)panel.setAttribute('inert','');else panel.removeAttribute('inert')});
      nav.querySelectorAll('button').forEach((b,j)=>{b.setAttribute('aria-pressed',String(j===i));b.classList.toggle('majRoomSelected',j===i)});
      nav.scrollIntoView({block:'start',behavior:'instant'});

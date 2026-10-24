@@ -17,6 +17,21 @@ async function run(){
 
  await waitFor('!!window.MajickSanctuaryState&&!!window.MajickGuardianCare&&!!window.MajickGuardianRegistry');
  await ev('MajickSanctuaryState.initialize()');
+ // Fresh-account Home exercises the initial sync before furniture has timestamps.
+ await ev('navigate("home")');await waitFor('!!document.querySelector("#majCommonsHub")');
+ await ev('MajickCollegiumCommons.select("sanctuary")');
+ await waitFor('!!document.querySelector(".v3317SanctuaryFrame")');
+ await ev('document.querySelector("[onclick^=majickTogglePixiSanctuary]").click()');
+ await waitFor('!!document.querySelector(".v3317SanctuaryFrame").contentWindow.majickPhaserGame?.scene?.getScene("Game")');
+ await ev('v3321PushFurnitureState()');
+ await waitFor('!!document.querySelector(".v3317SanctuaryFrame").contentWindow.majickPhaserGame.scene.getScene("Game").v3321FurnitureButton?.active');
+ const bootstrapId=await ev('(()=>{const s=document.querySelector(".v3317SanctuaryFrame").contentWindow.majickPhaserGame.scene.getScene("Game");s.v3321FurnitureButton.emit("pointerup");s.v3321FurnitureManager.list.find(n=>n.text==="STORE").emit("pointerup");return s.v3321FurnitureState.stored[0]})()');
+ assert(bootstrapId);await waitFor('S.majickAccount.sanctuaryFurniture.stored.includes('+JSON.stringify(bootstrapId)+')');
+ await ev('document.querySelector(".v3317SanctuaryFrame").contentWindow.majickPhaserGame.scene.getScene("Game").v3321SetPlaced('+JSON.stringify(bootstrapId)+',true)');
+ await waitFor('!S.majickAccount.sanctuaryFurniture.stored.includes('+JSON.stringify(bootstrapId)+')');
+ await ev('document.querySelector("[onclick^=majickTogglePixiSanctuary]").click()');
+ console.log('PASS fresh-account Phaser bootstrap, early account sync and real furniture STORE');
+
  const fixture=await ev(`(()=>{
   const species=['Moon Cat','Pocket Dragon','Star Fox','Winged Bunny','Starlight Owl','Moonlit Fawn','Cloud Ferret','Crystal Axolotl','Twilight Raven','Sunrise Hedgehog','Moonlit Fawn'];
   const levels=[1,3,5,8,12,3,5,8,12,1,8];
@@ -37,11 +52,25 @@ async function run(){
  assert.deepEqual(snapshot.roster.map(p=>p.canon),expected);
  for(const p of fixture)assert.equal(snapshot.roster.find(e=>e.petId===p.id).stage,p.stage);
  assert.equal(snapshot.guardians.find(e=>e.canon==='velora').frames,2);
+ for(const [xp,stage] of [[80,'apprentice'],[160,'guardian'],[280,'ascendant'],[440,'celestial'],[0,'new-bond']]){
+  await ev('S.legacy.pets[0].studyXP='+xp+';phase4PushState()');
+  await waitFor(inspect+'.roster.find(p=>p.petId==="saved-guardian-0").stage==='+JSON.stringify(stage)+'&&'+inspect+'.roster.find(p=>p.petId==="saved-guardian-0").present');
+  assert.equal((await ev(inspect)).guardians.find(g=>g.id==='saved-guardian-0').frames,2,'Velora stage pair: '+stage);
+ }
+ await ev(inside('document.querySelector("#care-guardian").value="saved-guardian-10";document.querySelector("#care-guardian").dispatchEvent(new Event("change"))'));
+ assert((await ev(inside('document.querySelector("#evolution-image").src'))).endsWith('/briar-ascendant.webp'));
+ await waitFor(inside('document.querySelector("#evolution-image").naturalWidth>0'));
+ console.log('PASS all five Velora stage walking pairs and selected duplicate Briar evolution artwork');
+
  await ev('MajickRoomSections.refresh();(()=>{const f=document.querySelector(".v3317SanctuaryFrame"),p=f.closest(".phase4Wrap");[...document.querySelectorAll("#majickRoomSections button")].find(b=>b.getAttribute("aria-controls")===p.id)?.click()})()');
+ await ev('(()=>{const p=document.createElement("section");p.id="delayedRoomProbe";p.style.minHeight="240px";p.innerHTML="<h2>Delayed panel</h2><button>Probe</button>";document.querySelector("#content").prepend(p);MajickRoomSections.refresh()})()');
+ assert.equal(await ev('document.querySelector("#majickRoomSections button[aria-pressed=true]")?.textContent'),'Sanctuary','Delayed panels must not switch the selected Sanctuary');
+ await ev('document.querySelector("#delayedRoomProbe").remove();MajickRoomSections.refresh()');
  await call('Emulation.setDeviceMetricsOverride',{width:1400,height:1200,deviceScaleFactor:1,mobile:false});
  await ev('document.querySelector(".v3317SanctuaryFrame").scrollIntoView({block:"start"})');
  await ev(inside('document.querySelector("#room").scrollIntoView({block:"center"})'));
  await sleep(300);
+ await waitFor('document.querySelector(".v3317SanctuaryFrame").getBoundingClientRect().width>100&&!document.querySelector(".v3317SanctuaryFrame").closest(".majRoomInactive")');
  const screenshot=await call('Page.captureScreenshot',{format:'png',captureBeyondViewport:true});const output=process.env.SANCTUARY_QA_DIR||path.join(os.tmpdir(),'majick-sanctuary-qa');fs.mkdirSync(output,{recursive:true});fs.writeFileSync(path.join(output,'sanctuary-eleven.png'),Buffer.from(screenshot.result.data,'base64'));
 
  const protectedState=await ev('JSON.stringify({pets:S.legacy.pets.map(p=>({id:p.id,type:p.type,name:p.name,studyXP:p.studyXP})),progress:S.progress,xp:S.majickAccount.xp,crystals:S.majickAccount.crystals,inventory:S.majickAccount.inventory})');
@@ -86,5 +115,25 @@ async function run(){
  await waitFor('JSON.stringify(document.querySelector(".v3317SanctuaryFrame").contentWindow.majickPhaserGame.scene.getScene("Game").v3321FurnitureState.positions)===JSON.stringify(S.majickAccount.sanctuaryFurniture.positions)');
  assert.equal(await ev('JSON.stringify({pets:S.legacy.pets.map(p=>({id:p.id,type:p.type,name:p.name,studyXP:p.studyXP})),progress:S.progress,xp:S.majickAccount.xp,crystals:S.majickAccount.crystals,inventory:S.majickAccount.inventory})'),protectedState);
  console.log('PASS Phaser fallback shares room positions without resetting eleven Guardians or learner state');
+ const frame='document.querySelector(".v3317SanctuaryFrame").contentWindow';
+ const storedItem=await ev('(()=>{const w='+frame+',s=w.majickPhaserGame.scene.getScene("Game");window.__staleRoom=JSON.parse(JSON.stringify(s.v3321FurnitureState));s.v3321FurnitureButton.emit("pointerup");const b=s.v3321FurnitureManager.list.find(n=>n.text==="STORE");b.emit("pointerup");return s.v3321FurnitureState.stored.find(id=>!window.__staleRoom.stored.includes(id))})()');
+ assert(storedItem,'Real STORE handler must add one furniture ID');
+ await waitFor('S.majickAccount.sanctuaryFurniture.stored.includes('+JSON.stringify(storedItem)+')');
+ await ev(frame+'.postMessage({type:"MAJICK_SANCTUARY_FURNITURE_SYNC_V3321",state:window.__staleRoom},location.origin)');
+ await sleep(100);
+ assert(await ev(frame+'.majickPhaserGame.scene.getScene("Game").v3321FurnitureState.stored.includes('+JSON.stringify(storedItem)+')'),'Stale sync must not undo STORE');
+ await ev(frame+'.majickPhaserGame.scene.getScene("Game").v3321SetPlaced('+JSON.stringify(storedItem)+',true)');
+ await waitFor('!S.majickAccount.sanctuaryFurniture.stored.includes('+JSON.stringify(storedItem)+')');
+ console.log('PASS Phaser STORE/PLACE acknowledgement and rejection of stale room snapshots');
+ // Review the same saved roster in the renderer without nested iframe clipping.
+ const payload=await ev('phase4StudyState()');
+ await call('Page.navigate',{url:new URL('pixi-sanctuary/index.html',url).href});
+ await waitFor('!!window.MajickPixiSanctuary');
+ await ev('window.postMessage({type:"MAJICK_STATE",payload:'+JSON.stringify(payload)+'},location.origin)');
+ await waitFor('MajickPixiSanctuary.inspect().roster.length===11&&MajickPixiSanctuary.inspect().roster.every(p=>p.present)');
+ await ev('document.querySelector("#room").scrollIntoView({block:"center"})');await sleep(500);
+ const direct=await call('Page.captureScreenshot',{format:'png'});fs.writeFileSync(path.join(output,'sanctuary-eleven-direct.png'),Buffer.from(direct.result.data,'base64'));
+
+
 }
 run().catch(e=>{console.error('FAIL Sanctuary browser:',e.stack||e);process.exitCode=1}).finally(async()=>{clearTimeout(deadline);try{ws?.close()}catch{}try{proc?.kill()}catch{}server.closeAllConnections();await new Promise(r=>server.close(r));try{fs.rmSync(profile,{recursive:true,force:true})}catch{}});

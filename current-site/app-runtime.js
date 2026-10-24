@@ -230,7 +230,7 @@ function changeFurniture(id,change){
   if(typeof change.stored==='boolean'){
     const stored=new Set(room.stored||[]);if(change.stored)stored.add(id);else stored.delete(id);room.stored=[...stored];
   }
-  room.updatedAt=Date.now();save();window.v3321PushFurnitureState();return room;
+  room.updatedAt=Math.max(Date.now(),Number(room.updatedAt||0)+1);save();window.v3321PushFurnitureState();return room;
 }
 window.MajickSanctuaryState=Object.freeze({room:furnitureAccountState,initialize:initializeFurniture,change:changeFurniture});
 initializeFurniture().catch(error=>console.warn('Sanctuary furniture initialization',error));
@@ -310,13 +310,15 @@ if(!window.__v3317Bridge){
         // Accept the active same-origin renderer only; merge rather than erase
         // positions or inventory it did not understand.
         if(![...document.querySelectorAll('.v3317SanctuaryFrame')].some(f=>f.contentWindow===ev.source))return;
+        if(Number(d.state.updatedAt||0)<Number(room.updatedAt||0))return;
         const unknownStored=(room.stored||[]).filter(id=>!furnitureManifest?.some(o=>o.id===id));
         room.stored=[...new Set([...unknownStored,...(d.state.stored||[]).filter(id=>allowed.has(id))])];
         for(const [id,pos] of Object.entries(d.state.positions||{})){
           if(allowed.has(id)&&Number.isFinite(pos.x)&&Number.isFinite(pos.y)&&pos.x>=100&&pos.x<=2100&&pos.y>=620&&pos.y<=880)room.positions[id]={x:pos.x,y:pos.y};
         }
-        room.preset=d.state.preset||null;room.updatedAt=Date.now();
+        room.preset=d.state.preset||null;room.updatedAt=Math.max(Date.now(),Number(d.state.updatedAt||0));
         save();
+        window.v3321PushFurnitureState(ev.source);
         window.phase4PushState?.();
       }catch(e){console.warn('V3.3.21 furniture state bridge',e)}
     }

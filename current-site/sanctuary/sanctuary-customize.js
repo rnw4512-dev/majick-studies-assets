@@ -106,7 +106,7 @@ Game.prototype.v3321EnsureFurnitureState=function(incoming){
 
 Game.prototype.v3321CommitFurnitureState=function(){
   const s=this.v3321EnsureFurnitureState(this.v3321FurnitureState);
-  s.updatedAt=Date.now();
+  s.updatedAt=Math.max(Date.now(),Number(s.updatedAt||0)+1);
   saveLocal(s);
   sendState(s);
   return snapshotState(s);
@@ -340,10 +340,15 @@ Game.prototype.toggleEditMode=function(){
 
 const baseCreate=Game.prototype.create;
 Game.prototype.create=function(){
+  this.v3321ParentSynced=false;
   baseCreate.call(this);
   this.v3321EnsureFurnitureState();
   this.v3321ApplyFurnitureVisibility();
   this.v3321CreateFurnitureButton();
+  // Do not expose local cached furniture as ready before the account owner
+  // has sent its initial snapshot. Late initial syncs must not undo a STORE.
+  this.v3321FurnitureButton?.setActive(window.parent===window);
+  this.v3321FurnitureButton?.setVisible(window.parent===window);
   this.v3321BuildRoomZones();
 
   for(const item of (this.decorItems||[])){
@@ -366,10 +371,16 @@ window.addEventListener('message',ev=>{
   const d=ev.data||{};
   if(d.type!=='MAJICK_SANCTUARY_FURNITURE_SYNC_V3321')return;
   const scene=window.majickPhaserGame?.scene?.getScene?.('Game');
-  if(!scene||!d.state)return;
+  // The Game instance exists during Preloader, before its display/input
+  // systems are ready. Its ready handshake requests the snapshot again.
+  if(!scene||!d.state||!scene.v3321FurnitureButton)return;
+  if(scene.v3321ParentSynced&&Number(d.state.updatedAt||0)<Number(scene.v3321FurnitureState?.updatedAt||0))return;
+  scene.v3321ParentSynced=true;
   scene.v3321EnsureFurnitureState(d.state);
   scene.v3321ApplyFurnitureVisibility();
   scene.v3321BuildRoomZones();
+  scene.v3321FurnitureButton?.setActive(true);
+  scene.v3321FurnitureButton?.setVisible(true);
 });
 
 function inspect(scene){
