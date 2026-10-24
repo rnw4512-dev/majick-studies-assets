@@ -17,6 +17,13 @@ function applyLook(p,look){for(const key of ['skin','hair','robe','wardrobeOccas
 function savedLooks(p){const entries=looks(p);return '<h3>Saved outfits</h3><p class="wsHint">Save up to eight complete looks. Load any saved outfit before heading to class or the Sanctuary.</p><div class="wsSavedLooks">'+(entries.length?entries.map((look,i)=>'<div class="wsSavedLook"><strong>'+e(look.name||'Outfit '+(i+1))+'</strong><span>'+e(robeNames[Number(look.robe)]||'Scholar robe')+' · '+e(hairNames[Number(look.hair)]||'Hair')+'</span><div><button type="button" data-load-look="'+i+'">Wear</button><button type="button" data-delete-look="'+i+'" aria-label="Delete '+e(look.name||'outfit')+'">Remove</button></div></div>').join(''):'<p class="wsHint">No outfits saved yet.</p>')+'</div><label class="wsNameLabel" for="wsLookName">Name this outfit</label><input id="wsLookName" maxlength="48" placeholder="e.g. Moonlit Class"/><button type="button" class="wsSaveSlot" data-save-slot '+(entries.length>=OUTFIT_LIMIT?'disabled':'')+'>✦ Save as New Outfit</button>';}
 const get=()=>window.MajickAtelier?.player?.();
 function save(){try{window.save?.()}catch(_){}window.MajickScholarCompanion?.refresh?.(true)}
+function celebrateSavedLook(root){
+ if(window.matchMedia?.('(prefers-reduced-motion: reduce)').matches)return;
+ const stage=root.querySelector('.wsMirror');if(!stage)return;
+ const burst=document.createElement('div');burst.className='wsMagicBurst';burst.setAttribute('aria-hidden','true');
+ for(let i=0;i<9;i++){const star=document.createElement('span');star.textContent=i%3===0?'✦':'✧';star.style.setProperty('--dx',Math.round(Math.cos(i*Math.PI*2/9)*105)+'px');star.style.setProperty('--dy',Math.round(Math.sin(i*Math.PI*2/9)*95)+'px');star.style.setProperty('--delay',(i%3)*45+'ms');burst.append(star)}
+ stage.append(burst);burst.addEventListener('animationend',()=>burst.remove(),{once:true});
+}
 function art(p){
  const body=Number(p.skin)===0||Number(p.skin)===5?'layer-body-deep-v2.webp':'layer-body-warm-v2.webp';
  return '<div class="wsFigure" aria-label="Full-body scholar with fitted hair and outfit">'+[body,robes[p.robe]||robes[0],'layer-boots-plum.webp',hair[p.hair]||hair[0]].map((name,i)=>'<img class="wsLayer wsLayer'+i+'" alt="" src="'+ROOT+name+'" draggable="false">').join('')+'</div>';
@@ -87,9 +94,9 @@ function render(){
  root.querySelectorAll('[data-facing]').forEach(b=>b.onclick=()=>{previewFacing=b.dataset.facing;render()});
  root.querySelectorAll('[data-load-look]').forEach(b=>b.onclick=()=>{const look=looks(p)[Number(b.dataset.loadLook)];if(!look)return;applyLook(p,look);save();render();const msg=root.querySelector('.wsMessage');if(msg)msg.textContent='✦ '+(look.name||'Outfit')+' equipped and saved.';});
  root.querySelectorAll('[data-delete-look]').forEach(b=>b.onclick=()=>{const i=Number(b.dataset.deleteLook);if(i<0||i>=looks(p).length)return;looks(p).splice(i,1);save();render();});
- root.querySelector('[data-save-slot]')?.addEventListener('click',()=>{const entries=looks(p);if(entries.length>=OUTFIT_LIMIT)return;const name=root.querySelector('#wsLookName')?.value?.trim()||'Scholar Look '+(entries.length+1);entries.push({...equipped(p),name,createdAt:new Date().toISOString()});save();render();root.querySelector('.wsMessage').textContent='✦ '+name+' added to your saved outfits.';});
+ root.querySelector('[data-save-slot]')?.addEventListener('click',()=>{const entries=looks(p);if(entries.length>=OUTFIT_LIMIT)return;const name=root.querySelector('#wsLookName')?.value?.trim()||'Scholar Look '+(entries.length+1);entries.push({...equipped(p),name,createdAt:new Date().toISOString()});save();render();root.querySelector('.wsMessage').textContent='✦ '+name+' added to your saved outfits.';celebrateSavedLook(root);});
  root.querySelector('[data-undo]').onclick=()=>{if(snapshot){Object.assign(p,snapshot);save();render()}};
- root.querySelector('[data-save]').onclick=()=>{snapshot={...p};save();root.querySelector('.wsMessage').textContent='✦ Look saved to your scholar.'};
+ root.querySelector('[data-save]').onclick=()=>{snapshot={...p};save();root.querySelector('.wsMessage').textContent='✦ Look saved to your scholar.';celebrateSavedLook(root)};
  root.querySelector('[data-close]').onclick=close;
  renderApprovedPose(p);
  root.querySelector('.wsStage')?.addEventListener('error',event=>{if(event.target?.tagName==='IMG'){event.target.style.visibility='hidden';root.querySelector('.wsMessage').textContent='A fitted garment asset is unavailable; your saved selection is preserved.'}},true);
@@ -124,7 +131,7 @@ const style=document.createElement('style');style.textContent=`
 .wsItem{width:130px}.wsItem img{width:115px;height:130px;object-fit:contain}
 .wsSavedLooks{display:grid;gap:8px}.wsSavedLook{padding:10px;border:1px solid #886a65;border-radius:10px;display:grid;gap:5px;background:#26192f}.wsSavedLook span,.wsHint{color:#dbc8d8;font-size:12px}.wsSavedLook div{display:flex;gap:7px}.wsSavedLook button,.wsSaveSlot{padding:8px;background:#4b3057;color:#fff2dc;border:1px solid #d4b17d;border-radius:8px;cursor:pointer}.wsSaveSlot:disabled{opacity:.5;cursor:not-allowed}.wsNameLabel{display:block;margin:15px 0 6px}#wsLookName{width:100%;padding:10px;border:1px solid #d4b17d;border-radius:8px;background:#25172d;color:#fff2dc;margin-bottom:8px}.wsEmpty{padding:22px;border:1px dashed #8b6b62;border-radius:12px;color:#d8c2cf}
 .wsMirror{min-width:0;border:3px double #c8a064;border-radius:36px 36px 18px 18px;background:radial-gradient(ellipse at 50% 32%,#65436a,#25152d 65%,#130e1c);padding:16px;display:flex;flex-direction:column;align-items:center}
-.wsMirrorTitle{color:#f3d39e;letter-spacing:3px;font:14px Georgia,serif}
+.wsMirror{position:relative}.wsMagicBurst{position:absolute;inset:0;pointer-events:none;overflow:hidden}.wsMagicBurst span{position:absolute;left:50%;top:48%;font-size:25px;color:#f4d38a;text-shadow:0 0 9px #dcb6ff;animation:wsStarBurst .75s ease-out var(--delay) both}@keyframes wsStarBurst{0%{opacity:0;transform:translate(-50%,-50%) scale(.3)}20%{opacity:1}100%{opacity:0;transform:translate(calc(-50% + var(--dx)),calc(-50% + var(--dy))) scale(1.3)}}.wsMirrorTitle{color:#f3d39e;letter-spacing:3px;font:14px Georgia,serif}
 .wsStage{height:min(65dvh,680px);min-height:340px;width:100%;display:grid;place-items:center;overflow:hidden}
 .wsFigure{position:relative;height:100%;aspect-ratio:512/682;max-width:100%}
 .wsLayer{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;pointer-events:none}
@@ -140,7 +147,7 @@ const style=document.createElement('style');style.textContent=`
 .wsActions .wsSave{background:#65346d;border-color:#e5bc77;font-weight:700}
 .wsMessage{min-height:22px;color:#e9c892;text-align:center}
 @media(max-width:900px){.wsWindow{grid-template-columns:1fr}.wsSidebar{padding:12px}.wsSidebar nav{display:flex;overflow:auto}.wsSidebar nav button{white-space:nowrap}.wsMain{grid-template-columns:1fr}.wsStage{height:50dvh}.wsSigil,.wsMotto{display:none}}
-@media(prefers-reduced-motion:reduce){#wsOverlay *{scroll-behavior:auto}}
+@media(prefers-reduced-motion:reduce){#wsOverlay *{scroll-behavior:auto;animation:none!important}.wsMagicBurst{display:none}}
 `;document.head.append(style);
 window.MajickWardrobeStudio={open,close,render};
 })();
