@@ -407,7 +407,22 @@ window.MajickRewardCore={VERSION,RARITIES,INGREDIENTS,TREASURES,RECIPES,award,re
 window.majickConjureEgg=()=>showConjuring();
 
 // Cozy Alchemy is a presentation layer. Inventory is changed only by craft(), never by animation.
-let cozyRecipe=null,cozyStage=0,cozyStirs=0;
+let cozyRecipe=null,cozyStage=0,cozyStirs=0,cozyCommitted=false,cozySound=false,cozyAudio=null;
+const cozyLooks={
+ 'clarity-potion':['#9d62f1','#d4a7ff','38% 38% 25% 25%'],
+ 'recall-draught':['#4da5f2','#a5dfff','48% 48% 10% 10%'],
+ 'moonfocus-elixir':['#f18bb8','#ffd4e8','45% 45% 48% 48%'],
+ 'crystal-sight-potion':['#65d9b3','#c7ffeb','16% 16% 35% 35%'],
+ 'starlight-tonic':['#e8c45c','#fff2b1','24% 24% 12% 12%']
+};
+function cozyChime(){
+ if(!cozySound)return;
+ try{const C=window.AudioContext||window.webkitAudioContext;if(!C)return;cozyAudio=cozyAudio||new C();const o=cozyAudio.createOscillator(),g=cozyAudio.createGain();o.frequency.value=520;o.type='sine';g.gain.setValueAtTime(.025,cozyAudio.currentTime);g.gain.exponentialRampToValueAtTime(.001,cozyAudio.currentTime+.2);o.connect(g).connect(cozyAudio.destination);o.start();o.stop(cozyAudio.currentTime+.21)}catch(_){}
+}
+window.majCozySound=()=>{cozySound=!cozySound;cozyChime();cozyDraw()};
+function cozyDiscover(rec){const a=account();if(!a)return;const r=a.rewardCore;r.discoveredRecipes=r.discoveredRecipes||{};if(!r.discoveredRecipes[rec.id]){r.discoveredRecipes[rec.id]=Date.now();save();window.rewardToast?.('✦ Recipe discovered',rec.name)}}
+function cozyGuardian(){const pets=state()?.legacy?.pets;const pet=Array.isArray(pets)?pets.find(p=>p?.name):null;return pet&&Math.random()<.25?E(pet.name)+' admires the bubbling potion. ✨':'Your magical potion is ready.'}
+
 const cozyStyle=document.createElement('style');
 cozyStyle.textContent=`
 .majCozyShade{position:fixed;inset:0;z-index:99990;background:#0c0719cf;display:grid;place-items:center;padding:18px;overflow:auto}
