@@ -125,7 +125,9 @@ window.majickBack=function(){
   target=target||'home';
   try{
     suppressNavHistory=true;
-    if(previousNavigate)previousNavigate(target);
+    // Later route adapters own session cleanup too. Use the current route
+    // chain while suppressing history, rather than a stale captured navigator.
+    if(typeof window.navigate==='function')window.navigate(target);
     else if(window.S){S.screen=target;save?.();render?.()}
   }catch(e){console.warn('Majick back navigation',e)}
   finally{suppressNavHistory=false}
@@ -167,10 +169,11 @@ window.addEventListener('keydown',ev=>{
 function guardianPayload(){
   const out={};
   for(const p of (window.S?.legacy?.pets||[])){
-    const meta=registry()?.get?.(p.type);
+    const meta=registry()?.get?.(p);
     if(!meta)continue;
     const st=stageForPet(p);
-    out[p.type]={
+    const row={
+      petId:p.id,
       type:p.type,
       canon:meta.canon,
       level:st.level,
@@ -178,6 +181,8 @@ function guardianPayload(){
       stageSlug:st.slug,
       stageName:st.name
     };
+    out[p.id]=row;
+    if(!out[p.type])out[p.type]=row;
   }
   return {type:'MAJICK_GUARDIAN_LEVELS_V3317',guardians:out,resolverVersion:'3318-stability'};
 }
@@ -187,9 +192,48 @@ window.v3317PushGuardianLevels=function(){
     try{f.contentWindow?.postMessage(payload,location.origin)}catch(_){}
   });
 };
+// Both renderers use this account record. Legacy fields are read once, never
+// maintained as a second room save. Unknown owned items and positions survive.
+let furnitureManifest=null;
 function furnitureAccountState(){
-  try{return window.MajickStateCore?.ensureAccount?.()?.sanctuaryFurniture||window.S?.majickAccount?.sanctuaryFurniture||null}catch(_){return null}
+  const account=window.MajickStateCore?.ensureAccount?.();
+  if(!account)return null;
+  const room=account.sanctuaryFurniture||(account.sanctuaryFurniture={schemaVersion:1,owned:[],stored:[],positions:{}});
+  if(!room.sharedLayoutMigrated){
+    const legacy=window.S?.legacy||{},rewards=account.rewardCore?.sanctuary||{};
+    let local={};try{local=JSON.parse(localStorage.getItem('majick-sanctuary-layout-v2')||'{}')}catch(_){}
+    room.positions={...local,...rewards.positions,...legacy.pixiSanctuaryPositions,...room.positions};
+    room.stored=[...new Set([...(room.stored||[]),...(rewards.stored||[]),...(legacy.pixiSanctuaryStored||[])])];
+    room.sharedLayoutMigrated=true;
+  }
+  return room;
 }
+async function initializeFurniture(){
+  if(!furnitureManifest){
+    const response=await fetch('./sanctuary/assets/objects/objects-manifest.json');
+    if(!response.ok)throw Error('Sanctuary furniture manifest unavailable');
+    furnitureManifest=(await response.json()).objects.filter(o=>o.enabled&&o.preload&&o.placement);
+  }
+  const room=furnitureAccountState();if(!room)return;
+  const owned=[...new Set([...(room.owned||[]),...furnitureManifest.map(o=>o.id)])];
+  if(JSON.stringify(owned)!==JSON.stringify(room.owned)){room.owned=owned;save()}
+  window.v3321PushFurnitureState();window.phase4PushState?.();
+}
+function changeFurniture(id,change){
+  const room=furnitureAccountState();
+  if(!room||!room.owned?.includes(id)||!furnitureManifest?.some(o=>o.id===id))throw Error('Furniture is not in your room inventory');
+  if(change.position){
+    const {x,y}=change.position;
+    if(!Number.isFinite(x)||!Number.isFinite(y)||x<100||x>2100||y<620||y>880)throw Error('Invalid floor position');
+    room.positions=room.positions||{};room.positions[id]={x:Math.round(x),y:Math.round(y)};
+  }
+  if(typeof change.stored==='boolean'){
+    const stored=new Set(room.stored||[]);if(change.stored)stored.add(id);else stored.delete(id);room.stored=[...stored];
+  }
+  room.updatedAt=Date.now();save();window.v3321PushFurnitureState();return room;
+}
+window.MajickSanctuaryState=Object.freeze({room:furnitureAccountState,initialize:initializeFurniture,change:changeFurniture});
+initializeFurniture().catch(error=>console.warn('Sanctuary furniture initialization',error));
 window.v3321PushFurnitureState=function(target){
   const state=furnitureAccountState();
   if(!state)return;
@@ -207,11 +251,12 @@ function sanctuaryMarkup(context){
   if(location.protocol==='file:'){
     return '<section class="phase4Wrap"><div class="phase4Top"><b>✦ Phaser 4 Living Sanctuary</b><br><span>Open Majick Studies through GitHub Pages so Phaser can load.</span></div></section>';
   }
+  let phaser=false;try{phaser=localStorage.getItem('majick-sanctuary-renderer')==='phaser'}catch(_){}
   const q='?v=3.4.2&context='+encodeURIComponent(context||'app');
   return '<section class="phase4Wrap v3317Phase" aria-label="Living Sanctuary">'+
     '<div class="phase4Top"><div><b>✦ Living Sanctuary • V3.4.2</b><br><span>Protected Guardian movement • personalized nooks • furniture storage</span></div>'+
-    '<div class="phase4Actions"><button class="btn ghost" type="button" onclick="majickTogglePixiSanctuary(this)" aria-pressed="false">Use original Sanctuary (Phaser)</button><button class="btn ghost" onclick="phase4OpenFullscreen()">Full Sanctuary</button><button class="btn primary" onclick="navigate(\'addmaterial\')">Add Study Material</button></div></div>'+
-    '<iframe id="phase4SanctuaryFrame" class="phase4Frame v3317SanctuaryFrame" src="pixi-sanctuary/index.html'+q+'" title="Majick Studies Living Sanctuary" loading="eager" allow="fullscreen" onload="setTimeout(()=>{v3317PushGuardianLevels();v3321PushFurnitureState();window.phase4PushState?.();},120)"></iframe>'+
+    '<div class="phase4Actions"><button class="btn ghost" type="button" onclick="majickTogglePixiSanctuary(this)" aria-pressed="'+String(phaser)+'">'+(phaser?'Return to PixiJS Sanctuary':'Use original Sanctuary (Phaser)')+'</button><button class="btn ghost" onclick="phase4OpenFullscreen()">Full Sanctuary</button><button class="btn primary" onclick="navigate(\'addmaterial\')">Add Study Material</button></div></div>'+
+    '<iframe id="phase4SanctuaryFrame" class="phase4Frame v3317SanctuaryFrame" src="'+(phaser?'sanctuary/index.html':'pixi-sanctuary/index.html')+q+'" title="Majick Studies Living Sanctuary" loading="eager" allow="fullscreen" onload="setTimeout(()=>{v3317PushGuardianLevels();v3321PushFurnitureState();window.phase4PushState?.();},120)"></iframe>'+
     '<div class="phase4Help">Personal Guardian nooks • feeding + play zones • store/place owned furniture • Cozy Dorm layout preset.</div>'+
   '</section>';
 }
@@ -260,16 +305,19 @@ if(!window.__v3317Bridge){
     }
     if(d.type==='MAJICK_SANCTUARY_FURNITURE_STATE_V3321'&&d.state){
       try{
-        const account=window.MajickStateCore?.ensureAccount?.()||(S.majickAccount=S.majickAccount||{});
-        account.sanctuaryFurniture={
-          schemaVersion:1,
-          version:'3.3.21',
-          owned:[...new Set((d.state.owned||[]).filter(Boolean).map(String))],
-          stored:[...new Set((d.state.stored||[]).filter(Boolean).map(String))],
-          preset:d.state.preset||null,
-          updatedAt:Number(d.state.updatedAt||Date.now())
-        };
+        const room=furnitureAccountState();
+        const allowed=new Set(room.owned||[]);
+        // Accept the active same-origin renderer only; merge rather than erase
+        // positions or inventory it did not understand.
+        if(![...document.querySelectorAll('.v3317SanctuaryFrame')].some(f=>f.contentWindow===ev.source))return;
+        const unknownStored=(room.stored||[]).filter(id=>!furnitureManifest?.some(o=>o.id===id));
+        room.stored=[...new Set([...unknownStored,...(d.state.stored||[]).filter(id=>allowed.has(id))])];
+        for(const [id,pos] of Object.entries(d.state.positions||{})){
+          if(allowed.has(id)&&Number.isFinite(pos.x)&&Number.isFinite(pos.y)&&pos.x>=100&&pos.x<=2100&&pos.y>=620&&pos.y<=880)room.positions[id]={x:pos.x,y:pos.y};
+        }
+        room.preset=d.state.preset||null;room.updatedAt=Date.now();
         save();
+        window.phase4PushState?.();
       }catch(e){console.warn('V3.3.21 furniture state bridge',e)}
     }
   });

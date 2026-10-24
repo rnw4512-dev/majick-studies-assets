@@ -15,7 +15,7 @@ async function enterAndCheck(fields){
  await action(statement);
 }
 async function solveMean(values,sum,count,mean){
- await enterAndCheck({known:values,unknown:'mean'});
+ await enterAndCheck({sum,count,statistic:'mean'});
  await action('const first=document.querySelector("[data-choice=\\"0\\"]");if(!first)throw Error("Missing formula options");first.click();document.querySelector("[data-check]").click()');
  await enterAndCheck({slot0:sum,slot1:count});
  await enterAndCheck({result:mean});
@@ -100,24 +100,21 @@ async function solveMean(values,sum,count,mean){
 
  assert((await evalPage('document.querySelectorAll(".mjSeTaskSelect option").length'))>=12);
  await action('const s=document.querySelector(".mjSeTaskSelect");s.value="mean";s.dispatchEvent(new Event("change",{bubbles:true}))');
- await waitFor('!!document.querySelector("[data-field=known]")');
- await solveMean('8, 12, 16, 20',56,4,14);
- await solveMean('11, 17, 23, 29, 35',115,5,23);
- await solveMean('9, 13, 17, 21, 25',85,5,17);
- console.log('MEAN STAGE AFTER THREE CASES',JSON.stringify(await evalPage('({heading:document.querySelector(".mjSeStage h3")?.textContent,fields:[...document.querySelectorAll(".mjSolutionEngine [data-field]")].map(x=>x.dataset.field),scenario:document.querySelector(".mjSeStage")?.textContent?.slice(0,160)})')));
- if(await evalPage('!!document.querySelector("[data-field=known]")')){
-  const repeat=await evalPage('document.querySelector(".mjSeStage")?.textContent||""');
-  assert(repeat.includes('9, 13, 17, 21, 25'),'An unexpected scenario replaced the independent mean case');
-  await solveMean('9, 13, 17, 21, 25',85,5,17);
+ await waitFor('!!document.querySelector("[data-field=sum]")');
+ const cases=await evalPage('S.progress.D772.solutionWorkshop.mean.sessionCases');
+ assert(cases.length>=3,'Workshop must exercise fresh guided and final cases');
+ const datasets=new Set();
+ for(const ex of cases){
+  const values=ex.numbers,sum=values.reduce((a,b)=>a+b,0),mean=sum/values.length;
+  assert(!datasets.has(JSON.stringify(values)),'Workshop cases must differ');datasets.add(JSON.stringify(values));
+  await solveMean(values.join(', '),sum,values.length,mean);
+  await waitFor('!!document.querySelector("[data-field=transfer]")');
+  await enterAndCheck({transfer:mean});
  }
- await waitFor('!!document.querySelector("[data-field=transfer]")');
- await enterAndCheck({transfer:17});
- const masteryEvidence=await evalPage('({mastery:S.progress.D772.interactiveMastery||{},lastAnswer:S.progress.D772.answers?.slice(-2),feedback:document.querySelector(".mjSeFeedback")?.textContent,phase:document.querySelector(".mjSolutionEngine h3")?.textContent,fields:[...document.querySelectorAll(".mjSolutionEngine [data-field]")].map(x=>x.dataset.field),lesson:document.querySelector(".mjSeTaskSelect")?.value,bridge:!!window.MajickInteractiveMastery})');
- console.log('Browser full-transfer diagnostic:',JSON.stringify(masteryEvidence));
- const mastered=await evalPage('!!S.progress.D772.interactiveMastery?.["interactive-independent:D772:mean"]');
- if(!mastered)console.error('Mastery flow diagnostic',JSON.stringify(await evalPage('({step:document.querySelector(".mjSeStage h3")?.textContent,feedback:document.querySelector(".mjSeFeedback")?.textContent,header:document.querySelector(".mjSeDifficulty")?.textContent,fields:[...document.querySelectorAll("[data-field]")].map(x=>({id:x.dataset.field,value:x.value})),mastery:S.progress.D772.interactiveMastery||{}})')));
- assert.equal(mastered,true,'Unassisted transfer must be recorded as mastery');
- assert((await evalPage('S.progress.D772.crystals'))>=1,'Independent transfer should earn an existing crystal reward');
+ assert.equal(await evalPage('S.progress.D772.solutionWorkshop.mean.finished'),true,'Every step of every fresh case must complete');
+ assert.equal(await evalPage('!!S.progress.D772.interactiveMastery?.["interactive-independent:D772:mean"]'),false,'A guided workshop must not fabricate independent mastery');
+ assert((await evalPage('document.querySelector(".mjSeFeedback")?.textContent')).includes('does not count as independent mastery'));
+ console.log('PASS browser: six-stage mean reasoning, distinct datasets, final response and no false mastery credit');
  const before=await evalPage('S.progress.D772.xp');
  await action('window.MajickInteractiveRewards.award("browser-qa","participation")');
  const increased=await evalPage('S.progress.D772.xp');
@@ -254,6 +251,6 @@ async function solveMean(values,sum,count,mean){
  console.log('UNVERIFIED GRADIENT/IMAGE CONTRAST',JSON.stringify({count:ambiguousContrast.length,samples:ambiguousContrast.slice(0,20)}));
  console.log('PASS browser: sampled mobile/desktop accessibility contrast checks');
 
- console.log('PASS browser: three-level mean worked solutions, independent transfer mastery, course lesson selection, participation XP, save/reload, duplicate prevention and D756 isolation');
+ console.log('PASS browser: fresh six-stage mean solutions without false mastery credit, course lesson selection, participation XP, save/reload, duplicate prevention and D756 isolation');
  await require('./parchment-contrast.cjs')({call,evalPage,action,waitFor,sleep});
 })().catch(e=>{console.error('FAIL browser QA:',e.stack||e);process.exitCode=1}).finally(async()=>{try{ws?.close()}catch{}try{child?.kill()}catch{}await new Promise(r=>server.close(r));try{fs.rmSync(profile,{recursive:true,force:true})}catch{}});

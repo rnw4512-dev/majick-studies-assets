@@ -1649,7 +1649,7 @@ function ensureV4(){
 function makeEgg(source='chest'){let types=['nova','aurelia','mallow','lyra','ember'];let owned=new Set((S.legacy?.pets||[]).map(p=>p.type));let pool=types.filter(t=>!owned.has(t));if(!pool.length)pool=types;let type=rand(pool);return {id:'egg_'+Date.now()+'_'+Math.floor(Math.random()*9999),type,progress:0,goal:18+Math.floor(Math.random()*8),source,createdAt:Date.now()}}
 function petStage(p){let b=p?.bond||0;return b>=180?'Celestial':b>=60?'Guardian':'Baby'}
 function activePet(){let L=S.legacy||{};return (L.pets||[]).find(p=>p.id===L.activePetId)||(L.pets||[])[0]||{id:'luna',type:'luna',name:'Luna',bond:0}}
-function petDef(p=activePet()){return V4_PETS[p.type]||V4_PETS.luna}
+function petDef(p=activePet()){const meta=window.MajickGuardianRegistry?.getFor(p);return {...(V4_PETS[meta?.type||p.type]||V4_PETS.luna),...(meta?{species:meta.species}: {})}}
 function legacySync(){let L=S.legacy;if(!L||!prog())return;L.xp=prog().xp||0;L.crystals=prog().crystals||0}
 function legacyApply(){if(!S.legacy||!prog())return;prog().xp=S.legacy.xp||0;prog().crystals=S.legacy.crystals||0}
 ensureV4();legacySync();save();
@@ -3755,10 +3755,13 @@ choosePet=function(id){
 function phase4StudyState(){
   try{
     lfEnsure(); const L=S.legacy||{}, st=stats(), answers=prog().answers||[];
-    return {version:'V3.3.4 Unified Familiars',courseId:course()?.id||'',activePetId:L.activePetId||'',readiness:st?.readiness||0,accuracy:Math.round((st?.acc||0)*100),streak:dayStreak(),crystals:prog().crystals||0,answers:answers.length,xp:prog().xp||0,pets:(L.pets||[]).map(p=>({id:p.id,type:p.type,name:p.name,species:(petDef(p)?.species)||p.type,level:masPetLevel(p),stage:masPetStage(p),studyXP:p.studyXP||0,active:p.id===L.activePetId})),room:{...(window.MajickStateCore?.ensureAccount?.()?.rewardCore?.sanctuary||{}),positions:{...(window.MajickStateCore?.ensureAccount?.()?.rewardCore?.sanctuary?.positions||{}),...(S.legacy?.pixiSanctuaryPositions||{})},stored:S.legacy?.pixiSanctuaryStored||window.MajickStateCore?.ensureAccount?.()?.rewardCore?.sanctuary?.stored||[]}};
+    const registry=window.MajickGuardianRegistry;
+    return {version:'V3.4.2',courseId:course()?.id||'',activePetId:L.activePetId||'',readiness:st?.readiness||0,accuracy:Math.round((st?.acc||0)*100),streak:dayStreak(),crystals:prog().crystals||0,answers:answers.length,xp:prog().xp||0,
+      pets:(L.pets||[]).map(p=>{const meta=registry?.getFor(p),level=masPetLevel(p);return {id:p.id,type:meta?.type||p.type,canon:meta?.canon||'',name:p.individualName||p.customName||p.name||meta?.name,species:meta?.species||p.species||p.type,level,stage:registry?.stage(level).slug||'new-bond',studyXP:p.studyXP||0,active:p.id===L.activePetId}}),
+      room:window.MajickSanctuaryState?.room()||null};
   }catch(e){console.warn('Phase 4 state bridge',e);return null}
 }
-function phase4PushState(){const frame=document.getElementById('phase4SanctuaryFrame');if(!frame||!frame.contentWindow)return;const payload=phase4StudyState();if(payload)frame.contentWindow.postMessage({type:'MAJICK_STATE',payload},'*')}
+function phase4PushState(){const frame=document.getElementById('phase4SanctuaryFrame');if(!frame||!frame.contentWindow)return;const payload=phase4StudyState();if(payload)frame.contentWindow.postMessage({type:'MAJICK_STATE',payload},location.origin)}
 function phase4OpenFullscreen(){const frame=document.getElementById('phase4SanctuaryFrame');if(frame?.requestFullscreen)frame.requestFullscreen().catch(()=>{})}
 function phase4SanctuaryHTML(){
  const directFile=location.protocol==='file:';
@@ -3767,32 +3770,22 @@ function phase4SanctuaryHTML(){
  }
  return `<section class="phase4Wrap" aria-label="Phase 4 Living Sanctuary"><div class="phase4Top"><div><b>✦ Phase 4 Living Sanctuary</b><br><span>PixiJS 8 is the default renderer. The original Sanctuary remains available as a fallback.</span></div><div class="phase4Actions"><button class="btn ghost" type="button" onclick="majickTogglePixiSanctuary(this)" aria-pressed="false" title="Compare the PixiJS renderer without changing saved Sanctuary data">Use original Sanctuary (Phaser)</button><button class="btn ghost" onclick="phase4OpenFullscreen()">Full Sanctuary</button><button class="btn primary" onclick="navigate('mission')">Continue Studying</button></div></div><iframe id="phase4SanctuaryFrame" class="phase4Frame" src="pixi-sanctuary/index.html" title="Majick Studies PixiJS Sanctuary" loading="eager" allow="fullscreen"></iframe><div class="phase4Help">Tap glowing areas and furniture to explore the magical college • tap familiars for reactions • use Edit Room to move decor • the Magic Mirror reads your real study progress.</div></section>`
 }
-if(!window.__phase4BridgeBound){window.__phase4BridgeBound=true;new MutationObserver(()=>{const f=document.getElementById('phase4SanctuaryFrame');if(f&&!f.dataset.majickWatchBound){f.dataset.majickWatchBound='1';majickSanctuaryLoading()}}).observe(document.body,{childList:true,subtree:true});window.addEventListener('message',ev=>{const d=ev.data||{};if(d.type==='MAJICK_SANCTUARY_READY'||d.type==='MAJICK_PIXI_SANCTUARY_READY'){majickSanctuaryReady();setTimeout(phase4PushState,80);}if(ev.origin===location.origin&&ev.source===document.getElementById('phase4SanctuaryFrame')?.contentWindow&&d.type==='MAJICK_PIXI_ACTION'){
- const reply=(ok,message)=>ev.source?.postMessage({type:'MAJICK_PIXI_ACTION_RESULT',ok,message,requestId:d.requestId},ev.origin);
+if(!window.__phase4BridgeBound){window.__phase4BridgeBound=true;new MutationObserver(()=>{const f=document.getElementById('phase4SanctuaryFrame');if(f&&!f.dataset.majickWatchBound){f.dataset.majickWatchBound='1';majickSanctuaryLoading()}}).observe(document.body,{childList:true,subtree:true});window.addEventListener('message',ev=>{const d=ev.data||{};if(ev.origin===location.origin&&ev.source===document.getElementById('phase4SanctuaryFrame')?.contentWindow&&(d.type==='MAJICK_SANCTUARY_READY'||d.type==='MAJICK_PIXI_SANCTUARY_READY')){majickSanctuaryReady();setTimeout(phase4PushState,80);}if(ev.origin===location.origin&&ev.source===document.getElementById('phase4SanctuaryFrame')?.contentWindow&&d.type==='MAJICK_PIXI_ACTION'){
+ const reply=(ok,message,travelObject)=>ev.source?.postMessage({type:'MAJICK_PIXI_ACTION_RESULT',ok,message,travelObject,requestId:d.requestId},ev.origin);
  try{
   const pets=S.legacy?.pets||[];
   if(d.action==='furniture-position'){
-   const id=String(d.id||'');
-   const x=Number(d.x),y=Number(d.y);
-   if(!/^[a-z0-9-]{1,80}$/.test(id)||!Number.isFinite(x)||!Number.isFinite(y)||x<0||x>1600||y<0||y>1200)throw Error('Invalid furniture position');
-   S.legacy.pixiSanctuaryPositions=S.legacy.pixiSanctuaryPositions||{};
-   S.legacy.pixiSanctuaryPositions[id]={x,y};
-   save();reply(true,'Furniture placement saved');
+   window.MajickSanctuaryState.change(String(d.id||''),{position:{x:Number(d.x),y:Number(d.y)}});
+   reply(true,'Furniture placement saved');
   }else if(d.action==='furniture-store'){
-   const id=String(d.id||'');
-   if(!/^[a-z0-9-]{1,80}$/.test(id))throw Error('Invalid furniture');
-   const stored=new Set(S.legacy.pixiSanctuaryStored||[]);
-   if(d.stored)stored.add(id);else stored.delete(id);
-   S.legacy.pixiSanctuaryStored=[...stored];save();reply(true,'Furniture storage saved');
-  }else if(['pet','play','feed'].includes(d.action)){
+   if(typeof d.stored!=='boolean')throw Error('Invalid storage request');
+   window.MajickSanctuaryState.change(String(d.id||''),{stored:d.stored});
+   reply(true,'Furniture storage saved');
+  }else if(['pet','play','feed','water','groom','sleep','treat'].includes(d.action)){
    const pet=pets.find(p=>String(p.id)===String(d.petId));
    if(!pet)throw Error('Guardian not in your saved roster');
-   lfPetClick(pet.id);
-   if(d.action==='feed'){
-    pet.familiar=pet.familiar||{};
-    pet.familiar.lastFedAt=Date.now();save();
-   }
-   reply(true,d.action==='feed'?pet.name+' enjoyed a snack':pet.name+' enjoyed your attention');
+   const result=window.MajickGuardianCare.performAction(pet.id,d.action==='pet'?'affection':d.action,{objectId:String(d.objectId||'')});
+   reply(result.ok,result.message,result.travelObject);
   }else throw Error('Unsupported Sanctuary action');
   phase4PushState();
  }catch(error){reply(false,String(error.message||error))}
@@ -3802,6 +3795,7 @@ if(d.type==='MAJICK_CONTINUE_STUDYING')navigate('mission');if(d.type==='MAJICK_O
 function majickTogglePixiSanctuary(button){
  const frame=document.getElementById('phase4SanctuaryFrame');if(!frame)return;
  const pixi=frame.getAttribute('src')?.startsWith('pixi-sanctuary/');
+ try{localStorage.setItem('majick-sanctuary-renderer',pixi?'phaser':'pixi')}catch(_){}
  frame.src=pixi?'sanctuary/index.html':'pixi-sanctuary/index.html';
  button.textContent=pixi?'Return to PixiJS Sanctuary':'Use original Sanctuary (Phaser)';
  button.setAttribute('aria-pressed',String(pixi));
@@ -3894,7 +3888,7 @@ const V334_FAMILIAR_IDENTITY={
  aurelia:{portrait:'assets/pet_celestial.png',accent:'#d9c6ff',glow:'rgba(217,198,255,.3)',soft:'rgba(217,198,255,.1)',sigil:'◉',role:'Oracle',title:'Crystal Owl'},
  lyra:{portrait:'assets/pet_celestial.png',accent:'#ffd2dc',glow:'rgba(255,210,220,.3)',soft:'rgba(255,210,220,.1)',sigil:'✿',role:'Heartlight Guide',title:'Celestial Fawn'}
 };
-function v334Identity(p){return V334_FAMILIAR_IDENTITY[p?.type]||V334_FAMILIAR_IDENTITY.luna}
+function v334Identity(p){const type=window.MajickGuardianRegistry?.resolveType(p)||p?.type;return V334_FAMILIAR_IDENTITY[type]||V334_FAMILIAR_IDENTITY.luna}
 function v334Theme(p){const u=v334Identity(p);return `--pet-accent:${u.accent};--pet-glow:${u.glow};--pet-soft:${u.soft}`}
 function v334Portrait(p,variant='card'){
  const u=v334Identity(p),name=esc(p?.name||u.title);
@@ -4102,7 +4096,7 @@ const V338_CANON={
  solara:{display:'Solara',title:'Courage Keeper',species:'Sunrise Hedgehog',personality:'Sunny, brave, affectionate, uplifting',studyRole:'Confidence helper / comeback encourager',accent:'#ffc27b',sigil:'☀✦',favorite:'Warm Hearth Nook',portrait:'assets/familiars/canon/solara-guardian.webp',icon:'assets/familiars/icons/solara-icon.webp',banner:'assets/familiars/evolution_banners/solara-evolution.webp',phaser:false}
 };
 const V338_NAME_REPLACEMENTS={Luna:'Velora',Ember:'Cascade',Nova:'Solstice',Mallow:'Aurelia'};
-function v338Canon(type){return V338_CANON[type]||V338_CANON.luna}
+function v338Canon(type){return V338_CANON[window.MajickGuardianRegistry?.resolveType(type)||type]||V338_CANON.luna}
 function v338ReplaceLegacyNames(s){
  let out=String(s??'');
  for(const [a,b] of Object.entries(V338_NAME_REPLACEMENTS))out=out.replace(new RegExp('\\b'+a+'\\b','g'),b);
@@ -4115,7 +4109,7 @@ function v338MigrateCanonState(){
    (L.pets||[]).forEach(p=>{if(p.type==='aurelia')p.type='vesper';if(p.type==='lyra')p.type='briar'});
    (L.eggs||[]).forEach(e=>{if(e.type==='aurelia')e.type='vesper';if(e.type==='lyra')e.type='briar'});
    (L.pets||[]).forEach(p=>{
-      const c=V338_CANON[p.type];if(c)p.name=c.display;
+      const c=V338_CANON[p.type];if(c&&(!p.name||V338_NAME_REPLACEMENTS[p.name]===c.display))p.name=c.display;
       const memories=p?.familiar?.memories||[];
       memories.forEach(m=>{if(m.petName)m.petName=v338ReplaceLegacyNames(m.petName);if(m.text)m.text=v338ReplaceLegacyNames(m.text);if(m.key)m.key=v338ReplaceLegacyNames(m.key)});
    });
@@ -4223,11 +4217,11 @@ v335ApprovedRegistryHTML=function(){
  return `<div class="approvedRegistryIntro"><b>✦ Academy Guardian Registry</b><p>Six additional unique guardian species are now part of Majick Studies. Their exact approved portraits are used in the app immediately; Phaser movement can be added later without delaying the portrait experience.</p><span class="lockNote">🔒 CANON ART LOCKED • no duplicate species placeholders</span></div><div class="approvedFamiliarGrid">${['vesper','briar','zephyr','prism','rook','solara'].map(id=>{const c=V338_CANON[id],owned=!!v336PetForType(id);return `<article class="approvedFamiliarCard" style="--reg-accent:${c.accent}"><div class="approvedFamiliarPortrait"><img src="${c.portrait}" alt="${c.display}, ${c.species}"></div><div class="approvedFamiliarEyebrow">${c.title}</div><h4>${c.display}</h4><p class="approvedFamiliarSpecies">${c.species}</p><p class="approvedFamiliarGift">${c.studyRole}</p><div class="approvedFamiliarFooter"><span class="approvedFamiliarStatus">${owned?'Bonded':'Available through guardian eggs'}</span><span class="approvedFamiliarFuture">Exact portrait UI • movement later</span></div></article>`}).join('')}</div>`;
 };
 
-/* Keep Phaser art/motion untouched: only its four existing internal types are sent to the sanctuary. */
+/* Send every saved identity; each renderer chooses its supported art safely. */
 const _v338PhaseStateBase=phase4StudyState;
 phase4StudyState=function(){
  const st=_v338PhaseStateBase();if(!st)return st;st.version=V338_VERSION;
- const supported=new Set(['luna','ember','nova','mallow']);st.pets=(st.pets||[]).filter(p=>supported.has(p.type)).map(p=>{const c=V338_CANON[p.type];return {...p,name:c?.display||p.name,uiAccent:c?.accent||p.uiAccent,uiSigil:c?.sigil||p.uiSigil,uiRole:c?.title||p.uiRole,uiTitle:c?.species||p.uiTitle}});
+ st.pets=(st.pets||[]).map(p=>{const c=V338_CANON[p.type];return {...p,uiAccent:c?.accent||p.uiAccent,uiSigil:c?.sigil||p.uiSigil,uiRole:c?.title||p.uiRole,uiTitle:c?.species||p.uiTitle}});
  if(!st.pets.some(p=>p.id===st.activePetId))st.activePetId='';
  return st;
 };

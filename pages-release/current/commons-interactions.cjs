@@ -76,6 +76,8 @@ module.exports=async function({ev,waitFor,call,sleep}){
  console.log('PASS real Guardian water action and persisted care/world data without academic/currency changes');
  // Exercise the existing Phaser furniture controls and the parent persistence bridge.
  await home('sanctuary');
+ // Certify the retained Phaser fallback explicitly; Pixi has its own gate.
+ await ev('(()=>{const f=document.querySelector(".v3317SanctuaryFrame");if(f?.getAttribute("src")?.startsWith("pixi-sanctuary/"))f.closest(".phase4Wrap").querySelector("[onclick^=majickTogglePixiSanctuary]").click()})()');
  await waitFor('!!document.querySelector(".v3317SanctuaryFrame")?.contentWindow?.majickPhaserGame?.scene?.getScene("Game")?.v3321FurnitureButton?.active');
  const storedBefore=await ev('document.querySelector(".v3317SanctuaryFrame").contentWindow.majickPhaserGame.scene.getScene("Game").v3321FurnitureState.stored.slice()');
  await ev('(()=>{const s=document.querySelector(".v3317SanctuaryFrame").contentWindow.majickPhaserGame.scene.getScene("Game");s.v3321FurnitureButton.emit("pointerup");const b=s.v3321FurnitureManager.list.find(n=>n.text==="STORE");if(!b)throw Error("No placed furniture action");b.emit("pointerup")})()');

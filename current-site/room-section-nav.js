@@ -4,7 +4,7 @@
 const ROOM_NAMES={reasoning:'Reasoning Workshop',mission:'Study Now',learninglab:'Learn Lab',games:'Game Realm',journal:'My Journal',grimoire:'Grimoire',companions:'Companions',livinggrimoire:'Grimoire',guide:'Study Guide',vault:'Magic Vault',analytics:'Analytics',addmaterial:'Notes Forge'};
 // Preserve every academic renderer and form. The nonacademic rooms use one
 // visible section at a time; academic rooms keep their non-destructive jumps.
-const TABBED_ROOMS=new Set(['reasoning','mission','learninglab','games','journal','grimoire','livinggrimoire','companions','guide','vault','analytics','addmaterial']);
+const TABBED_ROOMS=new Set(['journal','grimoire','livinggrimoire','companions','guide','vault','analytics','addmaterial']);
 const selections=new Map();
 let pending=false,updating=false;
 function refresh(){

@@ -9,7 +9,7 @@
  const TOYS={'starter-ribbon-toy':'🎐','comet-ball':'◉','celestial-feather-wand':'✧','moonflower-plush':'❀','rune-puzzle':'◇','moonvine-plush':'❀','ribbon-comet':'🎐','crystal-bubble-orb':'◌','strategy-rune-tokens':'♟','sunburst-ball':'☀','velvet-moon-cushion':'☾'};
  function roster(scene){return Array.isArray(scene?.v3317CareState?.roster)?scene.v3317CareState.roster:[]}
  function stage(g,scene){
-   const state=scene?.v3317GuardianStates?.[g.type]||{};
+   const state=scene?.v3317GuardianStates?.[g.petId||g.id]||scene?.v3317GuardianStates?.[g.type]||{};
    const level=Number(state.level||g.level||1),slug=state.stageSlug||g.stageSlug;
    return STAGES.includes(slug)?slug:level>=12?'celestial':level>=8?'ascendant':level>=5?'guardian':level>=3?'apprentice':'new-bond';
  }

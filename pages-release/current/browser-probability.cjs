@@ -47,7 +47,9 @@ async function click(selector){
  await waitFor('!!document.querySelector("#connectedProbability")');
  await call('Page.reload',{ignoreCache:true});await waitFor('!!document.querySelector("#connectedProbability")');
  const backState=await evalPage('JSON.stringify(S.progress)');
+ console.log('BACK BEFORE',JSON.stringify(await evalPage('({screen:S.screen,stack:sessionStorage.getItem("majick_nav_stack_v3329")})')));
  await click('[data-connected-back]');
+ console.log('BACK AFTER',JSON.stringify(await evalPage('({screen:S.screen,stack:sessionStorage.getItem("majick_nav_stack_v3329")})')));
  await waitFor('S.screen!=="games"');
  assert.equal(await evalPage('JSON.stringify(S.progress)'),backState,'Local probability Back preserves academic progress');
  await action('navigate("games")');await waitFor('!!document.querySelector("[data-connected-back]")');
@@ -73,12 +75,14 @@ async function click(selector){
  }
  async function fillTask(task,teaching=false){
   const [g,p]=task.q.data,n=g+p,second=task.q.event==='green-purple'?p:g-1;
-  const fields={first:g,total:n,second,remaining:n-1,result:(g*second)+'/'+(n*(n-1)),rule:'multiply-conditional',whiteboard:'P(first and second) = '+g+'/'+n+' × '+second+'/'+(n-1)+'. The total falls by one; multiply conditional probabilities.',...(teaching?{diagnosis:'sample-space',model:'remove',probe:'new-draw',teaching:'Remove one green, ask the student to recount both colors and total, then use a fresh exit question.'}:{})};
+  const gcd=(a,b)=>b?gcd(b,a%b):a,divisor=gcd(g*second,n*(n-1));
+  const fields={first:g,total:n,second,remaining:n-1,result:(g*second/divisor)+'/'+(n*(n-1)/divisor),rule:'multiply-conditional',whiteboard:'P(first and second) = '+g+'/'+n+' × '+second+'/'+(n-1)+'. The total falls by one; multiply conditional probabilities.',...(teaching?{diagnosis:'sample-space',model:'remove',probe:'new-draw',teaching:'Remove one green, ask the student to recount both colors and total, then use a fresh exit question.'}:{})};
   await action('const fields='+JSON.stringify(fields)+';for(const [key,value] of Object.entries(fields)){const e=document.querySelector("[data-prob-field="+key+"]");if(!e)throw Error("Missing probability field "+key);e.value=String(value);e.dispatchEvent(new Event("input",{bubbles:true}))}');
  }
  let task=await openKind('repair');
  assert.equal(await evalPage('document.querySelector("[data-connected-open=transfer]").disabled'),true);
  // Real keyboard input and selection must survive unrelated render-queue passes.
+ await click('.connectedOptionalWork summary');
  await click('[data-prob-field=whiteboard]');
  await call('Input.insertText',{text:'Recount the remaining outcomes.'});
  await action('window.__probInput=document.querySelector("[data-prob-field=whiteboard]");window.__probForm=document.querySelector("[data-prob-form]");__probInput.setSelectionRange(8,11);for(let i=0;i<20;i++)MajickProbabilityWorkshop.mount()');

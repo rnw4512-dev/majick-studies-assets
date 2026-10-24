@@ -50,6 +50,8 @@ jobs:
         run: |
           node pages-release/current/test-atelier-preview-recovery.cjs
           node pages-release/current/test-atelier-scene-isolation.cjs
+      - name: Verify shared Sanctuary identity and furniture migration
+        run: node pages-release/current/test-sanctuary-state.cjs current-site
       - name: Verify and publish current source only
         run: python pages-release/current/build.py current-site _site
 
@@ -61,9 +63,9 @@ jobs:
         if: github.event_name == 'workflow_dispatch' && inputs.release_level == 'stable'
         run: node pages-release/current/browser-commons.cjs _site
 
-      - name: Browser certify Collegium Commons tabs and responsive Home
+      - name: Browser certify Pixi roster, care, furniture and Phaser fallback
         if: github.event_name == 'workflow_dispatch' && inputs.release_level == 'stable'
-        run: node pages-release/current/browser-commons.cjs _site
+        run: node pages-release/current/browser-sanctuary.cjs _site
 
       - name: Browser test connected probability learning and teaching mastery
         if: github.event_name == 'workflow_dispatch' && inputs.release_level == 'stable'

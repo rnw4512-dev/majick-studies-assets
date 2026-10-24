@@ -47,6 +47,7 @@ function snapshotState(state){
     version:VERSION,
     owned:unique(state?.owned),
     stored:unique(state?.stored),
+    positions:{...(state?.positions||{})},
     preset:state?.preset||null,
     updatedAt:Number(state?.updatedAt||Date.now())
   };
@@ -94,9 +95,9 @@ Game.prototype.v3321EnsureFurnitureState=function(incoming){
   const raw=(incoming&&typeof incoming==='object')?incoming:
     (this.v3321FurnitureState&&typeof this.v3321FurnitureState==='object'?this.v3321FurnitureState:local||{});
   const owned=unique([...(raw.owned||[]),...ids]);
-  const stored=unique(raw.stored||[]).filter(id=>owned.includes(id)&&ids.includes(id));
+  const stored=unique(raw.stored||[]).filter(id=>owned.includes(id));
   this.v3321FurnitureState={
-    schemaVersion:1,version:VERSION,owned,stored,
+    schemaVersion:1,version:VERSION,owned,stored,positions:{...(raw.positions||{})},
     preset:raw.preset||null,updatedAt:Number(raw.updatedAt||Date.now())
   };
   saveLocal(this.v3321FurnitureState);
@@ -117,6 +118,8 @@ Game.prototype.v3321ApplyFurnitureVisibility=function(){
   for(const item of (this.decorItems||[])){
     const id=objectId(item);
     if(!state.owned.includes(id))continue;
+    const pos=state.positions?.[id];
+    if(pos&&Number.isFinite(pos.x)&&Number.isFinite(pos.y)){item.x=pos.x;item.y=pos.y}
     const placed=!stored.has(id);
     item.setVisible?.(placed);
     item.setActive?.(true);
@@ -354,12 +357,12 @@ Game.prototype.create=function(){
   });
   this.time.delayedCall(300,()=>{
     try{window.parent?.postMessage({type:'MAJICK_SANCTUARY_FURNITURE_REQUEST_V3321'},location.origin)}catch(_){}
-    this.v3321CommitFurnitureState();
+    if(window.parent===window)this.v3321CommitFurnitureState();
   });
 };
 
 window.addEventListener('message',ev=>{
-  if(ev.origin!==location.origin)return;
+  if(ev.origin!==location.origin||ev.source!==window.parent)return;
   const d=ev.data||{};
   if(d.type!=='MAJICK_SANCTUARY_FURNITURE_SYNC_V3321')return;
   const scene=window.majickPhaserGame?.scene?.getScene?.('Game');

@@ -2711,6 +2711,12 @@ class Game extends Phaser.Scene
 
     saveDecorPosition(id, x, y)
     {
+        if(this.v3321FurnitureState){
+            this.v3321FurnitureState.positions=this.v3321FurnitureState.positions||{};
+            this.v3321FurnitureState.positions[id]={x:Math.round(x),y:Math.round(y)};
+            this.v3321CommitFurnitureState?.();
+            return;
+        }
         try
         {
             const all = JSON.parse(localStorage.getItem('majick-sanctuary-layout-v2') || '{}');
