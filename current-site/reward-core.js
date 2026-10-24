@@ -434,27 +434,29 @@ cozyStyle.textContent=`
 .majCozyCauldron:after{content:'✦  ☾  ✦';position:absolute;top:56px;left:0;right:0;text-align:center;font-size:24px;color:#f9d99c}
 .majCozyParticles{position:absolute;inset:0;pointer-events:none;color:#ffe1ac;font-size:24px;text-align:center;letter-spacing:20px;animation:cozyRise 2.1s ease-in-out infinite}
 .majCozyActions{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}.majCozyActions button{border:1px solid #e3bc86;border-radius:13px;background:#65417e;color:white;padding:11px 17px;cursor:pointer;font-weight:700}.majCozyActions button:first-child{background:#a467ac}
-.majCozyClose{position:absolute;right:13px;top:10px;border:0;background:transparent;color:white;font-size:25px;cursor:pointer}
+.majCozySmoke{position:absolute;top:4px;left:0;right:0;text-align:center;color:var(--potion-glow);font-size:40px;opacity:.6;animation:cozyRise 2.5s ease-in-out infinite;pointer-events:none}.majCozyBottle{width:74px;height:98px;margin:62px auto 0;border:5px solid #e9d3a1;border-radius:var(--bottle-shape);background:linear-gradient(120deg,#ffffff88,var(--potion-color) 55%,#26133e);box-shadow:0 0 30px var(--potion-glow),inset 7px 0 12px #fff7;position:relative}.majCozyBottle:before{content:'✦';position:absolute;inset:28px 0 auto;text-align:center;color:white;font-size:25px}.majCozyBottle:after{content:'';position:absolute;width:30px;height:12px;background:#b88a5e;top:-16px;left:calc(50% - 15px)}.majCozyClose{position:absolute;right:13px;top:10px;border:0;background:transparent;color:white;font-size:25px;cursor:pointer}
 @keyframes cozyPulse{50%{filter:brightness(1.4);transform:scale(1.04)}}@keyframes cozyRise{50%{opacity:.35;transform:translateY(-19px)}}
 @media(prefers-reduced-motion:reduce){.majCozyModal *{animation:none!important}}
 `;
 document.head.appendChild(cozyStyle);
-function cozyClose(){document.getElementById('majCozyBrewing')?.remove();cozyRecipe=null}
+function cozyClose(){document.getElementById('majCozyBrewing')?.remove();cozyRecipe=null;cozyCommitted=false}
 function cozyDraw(){
  const rec=RECIPES.find(x=>x.id===cozyRecipe);if(!rec)return cozyClose();
  const box=document.getElementById('majCozyBrewing');if(!box)return;
+ const look=cozyLooks[rec.id]||cozyLooks['clarity-potion'];
  const labels=['Add ingredients','Stir the potion','Bottle your potion','Potion crafted!'];
  const actions=cozyStage===0?'<button onclick="majCozyNext()">Add all ingredients ✦</button>':cozyStage===1?'<button onclick="majCozyNext()">Stir ✨ '+cozyStirs+'/3</button><button onclick="majCozyQuick()">Quick mix</button>':cozyStage===2?'<button onclick="majCozyNext()">Bottle potion ⚗</button>':'<button onclick="majCozyClose()">Return to workshop</button>';
- box.innerHTML='<div class="majCozyModal" role="dialog" aria-modal="true" aria-labelledby="majCozyTitle"><button class="majCozyClose" aria-label="Close brewing workshop" onclick="majCozyClose()">×</button><small>THE MOONLIT CAULDRON • '+E(labels[cozyStage])+'</small><h2 id="majCozyTitle">'+E(rec.name)+'</h2><p>'+E(rec.effect)+'</p><div class="majCozyScene"><div class="majCozyParticles" aria-hidden="true">✦ ✧ ✦ ✧ ✦</div><div class="majCozyCauldron" aria-hidden="true"></div></div><p style="text-align:center">'+(cozyStage===3?'Your potion has been saved to inventory.':cozyStage===1?'Stir three times, or use Quick mix.':cozyStage===2?'The mixture is glowing. Ready to bottle!':'Ingredients are ready. Brew without any extra resource cost.')+'</p><div class="majCozyActions">'+actions+'</div></div>';
+ box.innerHTML='<div class="majCozyModal" style="--potion-color:'+look[0]+';--potion-glow:'+look[1]+';--bottle-shape:'+look[2]+'" role="dialog" aria-modal="true" aria-labelledby="majCozyTitle"><button class="majCozyClose" aria-label="Close brewing workshop" onclick="majCozyClose()">×</button><small>THE MOONLIT CAULDRON • '+E(labels[cozyStage])+'</small><h2 id="majCozyTitle">'+E(rec.name)+'</h2><button type="button" onclick="majCozySound()" aria-pressed="'+cozySound+'">'+(cozySound?'♫ Cozy sound on':'♪ Cozy sound off')+'</button><p>'+E(rec.effect)+'</p><div class="majCozyScene"><div class="majCozyParticles" aria-hidden="true">✦ ✧ ✦ ✧ ✦</div>'+(cozyStage===3?'<div class="majCozyBottle" aria-label="Bottled potion"></div>':'<div class="majCozySmoke" aria-hidden="true">☁ ✧ ☁</div><div class="majCozyCauldron" aria-hidden="true"></div>')+'</div><p style="text-align:center">'+(cozyStage===3?'Your potion has been saved to inventory. '+cozyGuardian()+'':cozyStage===1?'Stir three times, or use Quick mix.':cozyStage===2?'The mixture is glowing. Ready to bottle!':'Ingredients are ready. Brew without any extra resource cost.')+'</p><div class="majCozyActions">'+actions+'</div></div>';
  box.querySelector('.majCozyClose')?.focus({preventScroll:true});
 }
 window.majCozyClose=cozyClose;
-window.majCozyQuick=()=>{if(cozyStage===1){cozyStirs=3;cozyStage=2;cozyDraw()}};
+window.majCozyQuick=()=>{if(cozyStage===1&&!cozyCommitted){cozyStirs=3;cozyStage=2;cozyChime();cozyDraw()}};
 window.majCozyNext=()=>{
- if(!cozyRecipe)return;
+ if(!cozyRecipe||cozyCommitted||cozyStage===3)return;
+ cozyChime();
  if(cozyStage===0)cozyStage=1;
  else if(cozyStage===1){cozyStirs++;if(cozyStirs>=3)cozyStage=2}
- else if(cozyStage===2){const result=craft(cozyRecipe);if(!result.ok){window.rewardToast?.('Missing ingredients',result.message);cozyClose();return}cozyStage=3;window.rewardToast?.('⚗ Potion crafted',result.recipe.name)}
+ else if(cozyStage===2){cozyCommitted=true;const result=craft(cozyRecipe);if(!result.ok){window.rewardToast?.('Missing ingredients',result.message);cozyClose();return}cozyDiscover(result.recipe);cozyStage=3;window.rewardToast?.('⚗ Potion crafted',result.recipe.name)}
  cozyDraw();
 };
 window.majickCraftPotion=id=>{
@@ -463,7 +465,7 @@ window.majickCraftPotion=id=>{
  const missing=Object.entries(rec.cost).filter(([k,n])=>Number(inv.ingredients[k]||0)<n);
  if(missing.length){window.rewardToast?.('Missing ingredients','Earn more ingredients by studying.');return {ok:false,message:'Missing ingredients'}}
  if(document.getElementById('majCozyBrewing'))return {ok:false,message:'Brewing already open'};
- cozyRecipe=id;cozyStage=0;cozyStirs=0;
+ cozyRecipe=id;cozyStage=0;cozyStirs=0;cozyCommitted=false;
  const overlay=document.createElement('div');overlay.id='majCozyBrewing';overlay.className='majCozyShade';document.body.appendChild(overlay);cozyDraw();return {ok:true,pending:true};
 };
 
