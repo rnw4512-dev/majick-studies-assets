@@ -7,16 +7,19 @@ const $=id=>document.getElementById(id);
 if(!window.PIXI){status.textContent='PixiJS could not load. Check your connection and retry.';return}
 const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
 let paused=reduced,stress=false,ambient=!reduced,loaded=0;
-const app=new PIXI.Application({width:1200,height:700,backgroundAlpha:0,antialias:false,autoDensity:true,resolution:Math.min(devicePixelRatio||1,2),powerPreference:'low-power'});
-room.appendChild(app.view);
+const app=new PIXI.Application();
+try {
+ await app.init({width:1200,height:700,backgroundAlpha:0,antialias:false,autoDensity:true,resolution:Math.min(devicePixelRatio||1,2),preference:'webgl',powerPreference:'low-power'});
+} catch(error) { console.error('PixiJS v8 initialization failed',error); status.textContent='PixiJS could not initialize graphics on this device.'; return; }
+room.appendChild(app.canvas);
 const world=new PIXI.Container();app.stage.addChild(world);
-const ground=new PIXI.Graphics();ground.beginFill(0x36243f,.85).drawEllipse(600,625,570,150).endFill();world.addChild(ground);
+const ground=new PIXI.Graphics();ground.ellipse(600,625,570,150).fill({color:0x36243f,alpha:.85});world.addChild(ground);
 const dots=new PIXI.Container();world.addChild(dots);
 const guardianLayer=new PIXI.Container();world.addChild(guardianLayer);
 const entities=[];
 let seed=12345;const rand=()=>((seed=(1664525*seed+1013904223)>>>0)/4294967296);
 const colors=[0xe3c38c,0xc6a1f6,0x9fd2e5];
-for(let i=0;i<42;i++){const star=new PIXI.Graphics();star.beginFill(colors[i%3],.22).drawCircle(0,0,1+rand()*2).endFill();star.x=30+rand()*1140;star.y=20+rand()*580;dots.addChild(star)}
+for(let i=0;i<42;i++){const star=new PIXI.Graphics();star.circle(0,0,1+rand()*2).fill({color:colors[i%3],alpha:.22});star.x=30+rand()*1140;star.y=20+rand()*580;dots.addChild(star)}
 function resize(){const b=room.getBoundingClientRect();const width=Math.max(240,b.width),height=Math.max(240,b.height);app.renderer.resize(Math.round(width),Math.round(height));const k=Math.min(width/1200,height/700);world.scale.set(k);world.position.set((width-1200*k)/2,(height-700*k)/2);$('viewport').textContent=Math.round(width)+' × '+Math.round(height)}
 new ResizeObserver(resize).observe(room);resize();
 function newTarget(e){e.tx=110+rand()*980;e.ty=355+rand()*235;e.pause=0.5+rand()*1.8}
@@ -25,7 +28,7 @@ await Promise.all(names.map(async(name,i)=>{
  try{
   const texture=await PIXI.Assets.load('../assets/familiars/canon/'+name+'-guardian.webp');
   const root=new PIXI.Container();root.x=125+(i%5)*230;root.y=330+Math.floor(i/5)*210;
-  const shadow=new PIXI.Graphics();shadow.beginFill(0x000000,.26).drawEllipse(0,0,65,12).endFill();root.addChild(shadow);
+  const shadow=new PIXI.Graphics();shadow.ellipse(0,0,65,12).fill({color:0x000000,alpha:.26});root.addChild(shadow);
   const sprite=new PIXI.Sprite(texture);sprite.anchor.set(.5,1);const scale=Math.min(170/Math.max(1,texture.width),165/Math.max(1,texture.height));sprite.scale.set(scale);sprite.y=-10;root.addChild(sprite);
   const text=label(name.charAt(0).toUpperCase()+name.slice(1));text.anchor.set(.5,0);text.y=7;root.addChild(text);
   const e={root,sprite,shadow,name,tx:root.x,ty:root.y,pause:rand()*2,playing:0,phase:rand()*6.28,speed:55+rand()*30};
