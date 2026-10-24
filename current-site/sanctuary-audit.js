@@ -52,7 +52,7 @@
  window.addEventListener('message',ev=>{
    if(ev.origin!==location.origin)return;
    const frame=frameFor(ev.source);if(!frame)return;
-   if(ev.data?.type==='MAJICK_SANCTUARY_READY'||ev.data?.type==='MAJICK_SANCTUARY_READY_V3317'){
+   if(ev.data?.type==='MAJICK_SANCTUARY_READY'||ev.data?.type==='MAJICK_SANCTUARY_READY_V3317'||ev.data?.type==='MAJICK_PIXI_SANCTUARY_READY'){
      if(states.get(frame)?.unverified)states.delete(frame);
      request(frame);
      return;

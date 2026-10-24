@@ -714,3 +714,10 @@ Additional live checking found Learn Mode also reopening its default classroom a
 - Added a dedicated Without replacement reference on the existing Professor’s Anchor Wall, plus automatic focused chart routing for without-replacement questions. Uses the learner’s 3-green/2-purple example: dropdown order 3,5,2,4; 3/5 × 2/4 = 3/10 = 30%. Explains conditional multiplication, both count changes, dependent draws and the with-replacement contrast.
 - Visual counters show before/after a green draw; collapsed calculator and whiteboard steps use the same scenario. No new renderer/state/progress owner, question record edits or independent mastery credit. Chart is reference/guided support.
 - Targeted math/routing/no-state-access checks passed. Canonical integrity and preservation checks required before publishing; development update authorized without full certificates. Rollback with scoped revert; never clear saves.
+
+
+## 2026-10-24 — Active Sanctuary entry and mirror sizing
+- Screenshots showed the old Phaser loader and a small vanity avatar. Found app-runtime.js sanctuaryMarkup overriding the index.html PixiJS default. Updated the active runtime markup to the existing PixiJS page, with the frame ID required by state/loading/retry/fallback controls and an initial real-state push. Existing Phaser remains available through the existing toggle.
+- Sanctuary audit now recognizes Pixi ready messages. Pixi replies to the existing read-only roster protocol with actually visible saved Guardian IDs; duplicate species are not fabricated as additional rendered entities. Parent remains the state owner.
+- Collapsed Pose & direction controls into an accessible details section, freeing mirror space; increased minimum desktop stage height while preserving full-body art, zoom, saved appearance, pose checks and lighting.
+- No protected motion or artwork changes, no room reset, no reward or academic state writes. Run canonical preservation/syntax/hash checks and focused pose regressions before development publishing. Full stable certification remains waived; Pixi migration interaction gaps remain outside this focused fix. Rollback with a scoped revert.
