@@ -29,7 +29,7 @@ window.MajickMilestoneParticles=Object.freeze({play,types:Object.keys(TYPES)});
 // Existing academic celebration dispatcher owns the proof of completion; effects remain presentation-only.
 document.addEventListener('majick:celebrate',event=>{
  const detail=event.detail||{};
- if(detail.type!=='mastery'&&detail.type!=='course')return;
+ if((detail.type!=='mastery'&&detail.type!=='course')||detail.verified!==true)return;
  const target=detail.target?.isConnected?detail.target:document.querySelector('.majickFxLayer,main');
  play('academic',target);
 });
