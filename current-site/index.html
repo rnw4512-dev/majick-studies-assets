@@ -1468,7 +1468,43 @@ const SHOP=[
 ];
 function vaultHTML(){let p=prog(),r=rankInfo();return `<div class="sectionTitle"><div><h2>Moon Crystal Boutique & Magic Vault</h2><p>Spend the crystals you earn from real studying.</p></div><span class="rankBadge">💎 ${p.crystals||0} crystals</span></div><div class="grid"><div class="card c7 glowCard"><h3>🌙 ${esc(p.companion?.name||'Luna')}, your Study Guardian</h3><div class="companion"><div class="companionOrb">🐈‍⬛</div><div><p>${esc(companionMessage())}</p><p><b>Accessory:</b> ${esc(p.companion?.accessory||'Moon Ribbon')} • <b>Bond:</b> ${p.companion?.bond||0}</p><div class="inventory">${Object.entries(p.inventory||{}).map(([k,v])=>`<span>${esc(k)} × ${v}</span>`).join('')}</div></div></div></div><div class="card c5"><h3>🎁 Crystal Chests</h3><p>Boss wins, mastery milestones, and long simulations can earn chests.</p><div class="chest" onclick="openChest()">🎁</div><p><b>${p.chests||0}</b> unopened</p><button class="btn violet" onclick="openChest()" ${p.chests?'':'disabled'}>Open one</button></div></div><div class="shopGrid" style="margin-top:18px">${SHOP.map(it=>{let owned=it.kind==='cosmetic'&&(p.cosmetics||[]).includes(it.id);return `<div class="shopItem ${owned?'owned':''}"><div style="font-size:30px">${it.icon}</div><h3>${it.name}</h3><p>${it.desc}</p><span class="price">💎 ${it.cost}</span><div style="margin-top:10px"><button class="btn ${owned?'good':'violet'}" onclick="buyShop('${it.id}')" ${owned?'disabled':''}>${owned?'Owned':'Unlock'}</button></div></div>`}).join('')}</div><div class="syncBox" style="margin-top:20px"><h3>💾 Progress Sync & Backup</h3><p>Carry your study history between versions or computers. Your answers, XP, crystals, charms, courses, grimoire, and rewards are included.</p><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn dark" onclick="exportSave()">⬇ Export Save</button><label class="btn ghost" style="cursor:pointer">⬆ Import Save<input id="saveImport" type="file" accept=".json" style="display:none" onchange="importSave(event)"></label></div></div>`}
 function buyShop(id){let it=SHOP.find(x=>x.id===id),p=prog();if(!it)return;if((p.crystals||0)<it.cost)return alert(`You need ${it.cost-(p.crystals||0)} more Moon Crystals.`);if(it.kind==='cosmetic'&&(p.cosmetics||[]).includes(id))return;p.crystals-=it.cost;if(it.kind==='item')p.inventory[id]=(p.inventory[id]||0)+1;else{p.cosmetics.push(id);if(id==='lunaTiara')p.companion.accessory='Crystal Tiara'}save();glitterBurst(45);rewardToast(`${it.icon} ${it.name} unlocked!`,`-${it.cost} 💎 • Your studying paid for this.`);render()}
-function openChest(){let p=prog();if(!(p.chests>0))return alert('Earn a Crystal Chest by defeating bosses, mastering concepts, or completing long simulations.');p.chests--;let rewards=[{t:'💎 +12 crystals',f:()=>p.crystals+=12},{t:'🛡️ +1 Streak Shield',f:()=>p.inventory.streakShield++},{t:'🔎 +1 Clue Charm',f:()=>p.inventory.clueCharm++},{t:'💗 +1 Guardian Shield',f:()=>p.inventory.bossShield++},{t:'✨ +35 XP',f:()=>p.xp+=35}];let r=rand(rewards);r.f();save();transformationBurst();rewardToast('🎁 '+r.t,'Crystal Chest opened!');render()}
+function openChest(tier='common'){
+ const p=prog();if(!(p.chests>0))return alert('Earn a Crystal Chest by defeating bosses, mastering concepts, or completing long simulations.');
+ const rates={common:.05,enchanted:.12,rare:.22,legendary:.35};
+ const rarity=Object.prototype.hasOwnProperty.call(rates,tier)?tier:'common';
+ S.legacy=S.legacy||{};S.legacy.eggs=Array.isArray(S.legacy.eggs)?S.legacy.eggs:[];
+ S.majickAccount=S.majickAccount||{};
+ const a=S.majickAccount;a.chestEggLedger=a.chestEggLedger||{next:0,receipts:[]};
+ const ledger=a.chestEggLedger;
+ // Lock synchronously before any UI work; each click consumes exactly one chest.
+ if(ledger.opening)return;
+ ledger.opening=true;
+ try{
+  const id='chest_'+(++ledger.next)+'_'+Date.now();
+  p.chests--;
+  p.inventory=p.inventory||{};
+  const rewards=[{t:'💎 +12 crystals',f:()=>p.crystals+=12},{t:'🛡️ +1 Streak Shield',f:()=>p.inventory.streakShield=(p.inventory.streakShield||0)+1},{t:'🔎 +1 Clue Charm',f:()=>p.inventory.clueCharm=(p.inventory.clueCharm||0)+1},{t:'💗 +1 Guardian Shield',f:()=>p.inventory.bossShield=(p.inventory.bossShield||0)+1},{t:'✨ +35 XP',f:()=>p.xp+=35}];
+  const reward=rand(rewards);reward.f();
+  let egg=null;
+  if(Math.random()<rates[rarity]){
+   const registry=window.MajickGuardianRegistry?.all?.()||[];
+   const types=registry.map(g=>g.type).filter(t=>V4_PETS[t]);
+   const pool=types.length?types:Object.keys(V4_PETS);
+   if(pool.length){
+    const type=rand(pool);
+    egg={id:'chest_egg_'+id,type,progress:0,goal:28,source:'reward-chest',chestId:id,chestRarity:rarity,createdAt:Date.now()};
+    S.legacy.eggs.push(egg);
+    a.guardianIncubator=a.guardianIncubator||{version:'3.4.10',focusEggId:null,lastFocusAt:0};
+    if(!a.guardianIncubator.focusEggId)a.guardianIncubator.focusEggId=egg.id;
+   }
+  }
+  ledger.receipts.push({id,rarity,course:S.activeCourse,reward:reward.t,eggId:egg?.id||null,at:Date.now()});
+  save();
+  transformationBurst();
+  rewardToast('🎁 '+reward.t+(egg?' • 🥚 Guardian Egg!':''),egg?'Egg added to your Sanctuary incubator.':'Crystal Chest opened!');
+  render();
+ }finally{ledger.opening=false}
+}
 function exportSave(){let payload={type:'MoonlitMasterySave',version:V3_VERSION,exportedAt:new Date().toISOString(),state:S};let b=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='Moonlit_Mastery_Save_'+new Date().toISOString().slice(0,10)+'.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}
 async function importSave(e){let f=e.target.files[0];if(!f)return;try{let x=JSON.parse(await f.text()),ns=x.state||x;if(!ns.progress||!ns.courses)throw Error('This is not a Moonlit progress file.');if(!confirm('Import this save and replace the progress currently open in this app?'))return;S=ns;if(!S.courses.PMFC)S.courses.PMFC=BUILTIN;else S.courses.PMFC=BUILTIN;ensureV3();save();session=null;S.screen='home';save();render();alert('Progress imported successfully. ✨')}catch(err){alert('Could not import save: '+err.message)}}
 const _gamesHTMLV2=gamesHTML;gamesHTML=function(){let base=_gamesHTMLV2();let extra=`<div class="sectionTitle"><div><h2>Advanced Guardian Trials</h2><p>These modes train the reasoning behind difficult multiple-choice decisions.</p></div></div><div class="grid">${gameMini('🗡️','Boss Rush','Fight three weak competencies without an easy round.',"startBossRush()")}${gameMini('🧹','Elimination Trainer','Eliminate two plausible answers before choosing the best one.',"startElimination()")}${gameMini('🌑','Hidden Concept','No topic labels. Identify what the stem is testing.',"startHidden()")}${gameMini('🧪','Transfer Challenge','Novel scenarios and difficulty-5 application.',"startTransfer()")}${gameMini('🐈‍⬛','Explain to Luna','Multiple choice first, then teach your guardian why it wins.',"startLunaExplain()")}${gameMini('🗣️','Professional Voice','Explain the same concept for a teacher, parent, or IEP team.',"startProfessional()")}</div>`;return base+extra}
