@@ -8,7 +8,7 @@ const robeNames=['Plum Scholar','Midnight Velvet','Emerald Witch','Moonlit Silve
 const hairNames=['Locs','Braids','Curls','Afro','Twists','Waves'];
 const skinColors=['#70412f','#9d6345','#bf8766','#deb192','#f0cdb4','#513024'];
 const e=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-let section='Appearance',category='Robes',pose='Idle',snapshot=null,poseRevision=0,walkTimer=null;
+let section='Appearance',category='Robes',pose='Idle',snapshot=null,poseRevision=0,walkTimer=null,previewFacing='right';
 function stopWalk(){if(walkTimer!==null){clearInterval(walkTimer);walkTimer=null;}}
 const OUTFIT_LIMIT=8;
 function looks(p){if(!Array.isArray(p.savedScholarLooks))p.savedScholarLooks=[];return p.savedScholarLooks;}
@@ -51,6 +51,7 @@ async function renderApprovedPose(p){
  const msg=stage.closest('.wsMirror')?.querySelector('.wsMessage');
  if(!result.ok){if(msg)msg.textContent='This outfit and hairstyle do not yet have approved '+pose.toLowerCase()+' frames. Your appearance stays unchanged.';return}
  const image=document.createElement('img');image.className='wsApprovedPose';image.alt='Approved aligned '+pose+' pose for the current outfit';image.src=result.canvas.toDataURL('image/png');
+ image.style.transform=previewFacing==='left'?'scaleX(-1)':'none';
  stage.replaceChildren(image);
  if(msg)msg.textContent='Approved fitted '+pose.toLowerCase()+' frame';
 }
@@ -65,7 +66,7 @@ async function verifyApprovedWalk(p){
  if(results.some(r=>!r.ok)){message.textContent='Movement not approved for this hairstyle and outfit: '+results.filter(r=>!r.ok).map(r=>r.frame+' ('+r.reason+')').join(', ');return}
  const stage=document.querySelector('#wsOverlay:not([hidden]) .wsStage');
  if(!stage)return;
- let index=0;const img=document.createElement('img');img.className='wsApprovedPose';img.alt='Approved four-frame walk cycle';stage.replaceChildren(img);
+ let index=0;const img=document.createElement('img');img.className='wsApprovedPose';img.alt='Approved four-frame walk cycle';img.style.transform=previewFacing==='left'?'scaleX(-1)':'none';stage.replaceChildren(img);
  const urls=results.map(r=>r.canvas.toDataURL('image/png'));
  const token=++poseRevision;
  stopWalk();
@@ -75,7 +76,7 @@ async function verifyApprovedWalk(p){
 function render(){
  stopWalk();
  const p=get();if(!p)return;const root=document.getElementById('wsOverlay');if(!root)return;
- root.innerHTML='<div class="wsWindow" role="dialog" aria-modal="true" aria-label="Scholar Atelier"><aside class="wsSidebar"><button class="wsBack" data-close>← Back</button><div class="wsBrand">☾<h1>Scholar<br>Atelier</h1></div><p class="wsMotto">Your look. Your story.</p><nav aria-label="Atelier rooms">'+['Appearance','Wardrobe','Accessories','Poses','Preview'].map(x=>button('✦ '+x,'data-section="'+x+'"',section===x)).join('')+'</nav><div class="wsSigil">✧ THE MOONLIT COLLEGIUM ✧</div></aside><main class="wsMain"><div class="wsControls"><h2>'+e(section)+'</h2>'+controls(p)+'</div><div class="wsMirror"><div class="wsMirrorTitle">✦ THE WARDROBE MIRROR ✦</div><div class="wsStage">'+art(p)+'</div><div class="wsPoseStrip">'+['Idle','Study','Celebrate','Walk','Sit','Sanctuary'].map(x=>button(x,'data-pose="'+x+'"',pose===x)).join('')+'</div><div class="wsActions"><button data-undo>↶ Revert</button><button class="wsSave" data-save>✦ Save Look</button></div><div class="wsMessage" role="status"></div></div></main></div>';
+ root.innerHTML='<div class="wsWindow" role="dialog" aria-modal="true" aria-label="Scholar Atelier"><aside class="wsSidebar"><button class="wsBack" data-close>← Back</button><div class="wsBrand">☾<h1>Scholar<br>Atelier</h1></div><p class="wsMotto">Your look. Your story.</p><nav aria-label="Atelier rooms">'+['Appearance','Wardrobe','Accessories','Poses','Preview'].map(x=>button('✦ '+x,'data-section="'+x+'"',section===x)).join('')+'</nav><div class="wsSigil">✧ THE MOONLIT COLLEGIUM ✧</div></aside><main class="wsMain"><div class="wsControls"><h2>'+e(section)+'</h2>'+controls(p)+'</div><div class="wsMirror"><div class="wsMirrorTitle">✦ THE WARDROBE MIRROR ✦</div><div class="wsStage">'+art(p)+'</div><div class="wsPoseStrip">'+['Idle','Study','Celebrate','Walk','Sit','Sanctuary'].map(x=>button(x,'data-pose="'+x+'"',pose===x)).join('')+'</div><div class="wsFacing" role="group" aria-label="Preview direction">'+['left','right'].map(x=>button('Face '+x,'data-facing="'+x+'"',previewFacing===x)).join('')+'</div><div class="wsActions"><button data-undo>↶ Revert</button><button class="wsSave" data-save>✦ Save Look</button></div><div class="wsMessage" role="status"></div></div></main></div>';
  root.querySelectorAll('[data-section]').forEach(b=>b.onclick=()=>{section=b.dataset.section;render()});
  root.querySelectorAll('[data-occasion]').forEach(b=>b.onclick=()=>{p.wardrobeOccasion=b.dataset.occasion;save();render()});
  root.querySelectorAll('[data-category]').forEach(b=>b.onclick=()=>{category=b.dataset.category;render()});
@@ -83,6 +84,7 @@ function render(){
  root.querySelectorAll('[data-hair]').forEach(b=>b.onclick=()=>{p.hair=Number(b.dataset.hair);save();render()});
  root.querySelectorAll('[data-robe]').forEach(b=>b.onclick=()=>{p.robe=Number(b.dataset.robe);save();render()});
  root.querySelectorAll('[data-pose]').forEach(b=>b.onclick=()=>{pose=b.dataset.pose;render()});
+ root.querySelectorAll('[data-facing]').forEach(b=>b.onclick=()=>{previewFacing=b.dataset.facing;render()});
  root.querySelectorAll('[data-load-look]').forEach(b=>b.onclick=()=>{const look=looks(p)[Number(b.dataset.loadLook)];if(!look)return;applyLook(p,look);save();render();const msg=root.querySelector('.wsMessage');if(msg)msg.textContent='✦ '+(look.name||'Outfit')+' equipped and saved.';});
  root.querySelectorAll('[data-delete-look]').forEach(b=>b.onclick=()=>{const i=Number(b.dataset.deleteLook);if(i<0||i>=looks(p).length)return;looks(p).splice(i,1);save();render();});
  root.querySelector('[data-save-slot]')?.addEventListener('click',()=>{const entries=looks(p);if(entries.length>=OUTFIT_LIMIT)return;const name=root.querySelector('#wsLookName')?.value?.trim()||'Scholar Look '+(entries.length+1);entries.push({...equipped(p),name,createdAt:new Date().toISOString()});save();render();root.querySelector('.wsMessage').textContent='✦ '+name+' added to your saved outfits.';});
@@ -133,7 +135,7 @@ const style=document.createElement('style');style.textContent=`
 .wsLayer3{transform:translateY(1%) scale(.77,.69);transform-origin:50% 10%}
 .wsLayer3[src*="layer-hair-afro"]{transform:translateY(.2%) scale(.74,.66)}
 .wsLayer3[src*="layer-hair-braids"]{transform:translateY(2.05%) scale(.77,.69)}
-.wsApprovedPose{height:100%;max-width:100%;object-fit:contain}
+.wsApprovedPose{height:100%;max-width:100%;object-fit:contain}.wsFacing{display:flex;gap:8px;justify-content:center}.wsFacing button{background:#30203c;border:1px solid #ad8d6d;color:#f8e6d5;border-radius:8px;padding:8px 12px;cursor:pointer}
 .wsPoseStrip,.wsActions{display:flex;flex-wrap:wrap;justify-content:center;gap:9px;padding:12px}
 .wsActions .wsSave{background:#65346d;border-color:#e5bc77;font-weight:700}
 .wsMessage{min-height:22px;color:#e9c892;text-align:center}
