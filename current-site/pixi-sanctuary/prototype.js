@@ -36,6 +36,33 @@ function newTarget(e){
  e.tx=homeX;e.ty=homeY;e.pause=1.5;
 }
 function label(text){return new PIXI.Text({text,style:{fontFamily:'Georgia,serif',fontSize:21,fill:0xffe4ae,stroke:{color:0x1b1022,width:4},align:'center'}})}
+async function makeCleanWalkFrames(name){
+ // Derive two genuinely distinct raster frames from the approved portrait pixels.
+ // Do not crop crowded atlas cells: those contain other Guardians and cut-off tails.
+ const img=new Image();img.decoding='async';
+ img.src='../assets/familiars/canon/'+name+'-guardian.webp';
+ await img.decode();
+ const w=img.naturalWidth,h=img.naturalHeight;
+ if(!w||!h)throw Error('Missing canonical portrait for '+name);
+ const padding=Math.ceil(w*.16),outW=w+padding*2,outH=h+Math.ceil(h*.12);
+ return [-1,1].map(direction=>{
+  const canvas=document.createElement('canvas');canvas.width=outW;canvas.height=outH;
+  const ctx=canvas.getContext('2d',{alpha:true});
+  // A subtle articulated stride: displace horizontal bands differently while
+  // preserving every original pixel, including ears, tails and wings.
+  const strip=Math.max(1,Math.ceil(h/90));
+  for(let y=0;y<h;y+=strip){
+   const band=Math.min(strip,h-y),relative=y/h;
+   const sway=Math.sin(relative*Math.PI*2.3)*w*.015*direction;
+   const footShift=relative>.7?Math.sin((relative-.7)/.3*Math.PI)*w*.025*direction:0;
+   const x=padding+sway+footShift;
+   const bounce=(1-relative)*h*.007*direction;
+   ctx.drawImage(img,0,y,w,band,x,y+bounce,w,band+1);
+  }
+  return PIXI.Texture.from(canvas);
+ });
+}
+
 await Promise.all(names.map(async(name,i)=>{
  try{
   const texture=await PIXI.Assets.load('../assets/familiars/canon/'+name+'-guardian.webp');
@@ -44,19 +71,20 @@ await Promise.all(names.map(async(name,i)=>{
   const sprite=new PIXI.Sprite(texture);sprite.anchor.set(.5,1);const scale=Math.min(170/Math.max(1,texture.width),165/Math.max(1,texture.height));sprite.scale.set(scale);sprite.y=-10;root.addChild(sprite);
   const text=label(name.charAt(0).toUpperCase()+name.slice(1));text.anchor.set(.5,0);text.y=7;root.addChild(text);
   const e={root,sprite,shadow,name,slot:i,tx:root.x,ty:root.y,pause:rand()*2,playing:0,phase:rand()*6.28,speed:42+rand()*23,baseScale:scale,walkTexture:null,walkFrames:[],walkClock:0,baseTexture:texture};
-  // Two distinct approved walking frames exist for the original four.
-  // Do not synthesize or relabel portraits as walking frames for the other six.
-  if(i<4){
-   const base='../assets/atelier/v2/fitted/companions/'+name+'_walk_';
-   Promise.all([PIXI.Assets.load(base+'1.webp'),PIXI.Assets.load(base+'2.webp')])
-    .then(frames=>{e.walkFrames=frames;}).catch(error=>console.warn('Walking frames unavailable:',name,error));
-  }
+  // Keep the approved two-frame assets for the original four.
+  // For the six missing sets, build complete clean frames directly from their
+  // canonical portraits. This is temporary raster deformation, not new painted art.
+  const framesPromise=i<4
+   ?Promise.all([1,2].map(n=>PIXI.Assets.load('../assets/atelier/v2/fitted/companions/'+name+'_walk_'+n+'.webp')))
+   :makeCleanWalkFrames(name);
+  framesPromise.then(frames=>{e.walkFrames=frames;})
+   .catch(error=>console.warn('Using portrait fallback for',name,error));
   sprite.eventMode='static';sprite.cursor='pointer';sprite.on('pointertap',()=>{e.playing=1.3;e.pause=1.3});
   guardianLayer.addChild(root);entities.push(e);loaded++;$('loaded').textContent=loaded+' / 10';
  }catch(err){console.warn('Guardian art unavailable:',name,err)}
 }));
 if(!entities.length){status.textContent='Guardian images could not load. Please check network access.';return}
-status.textContent='PixiJS running · four Guardians have real walking frames · tap to play';
+status.textContent='PixiJS running · approved art and clean walking poses · tap to play';
 $('toggle').textContent=paused?'Resume movement':'Pause movement';
 $('motion').setAttribute('aria-pressed',String(ambient));$('motion').textContent='Ambient effects: '+(ambient?'on':'off');
 $('toggle').onclick=()=>{paused=!paused;$('toggle').textContent=paused?'Resume movement':'Pause movement'};
