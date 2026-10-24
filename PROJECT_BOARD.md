@@ -310,3 +310,9 @@ Every change must append **date / area / commit or PR / what changed / how / act
 - Added warm vanity bulbs, session-only lights on/off, champagne/blush mirror and wardrobe surfaces, rose-velvet sidebar, darker readable typography and current-look caption. Preserved art, stored outfit, reward and academic owners, Guardian/Sanctuary and motion assets.
 - Mandatory tests include scenery isolation (no avatar/learner-state access), resize/context-loss cleanup and existing async pose regression. Browser reproduced screenshot choices (Waves/Sanctuary/Face left) with fitted avatar visible, plus light switch and image-load checks. GPU path/full stable responsive certification remain unverified; user explicitly authorizes development deployment without certificates.
 - Rollback: scoped revert of this change; never clear learner saves. Publish through the existing workflow after canonical mandatory checks.
+
+
+## 2026-10-24 — Readable probability table cells
+- User screenshot: cream SVG question table body cells were visible only when selected. The renderer uses XHTML table cells inside SVG foreignObject; dark-room ivory text/glyph fill leaked into the cells while headers kept dark ink.
+- Scoped readability-guard.css rule gives all shared question-table cells explicit dark ink (#253246), matching WebKit text fill, full opacity and cream surfaces (#fffdf7). No blanket changes to SVG data colors, answer keys, progress or room themes. Source hash updated.
+- Mandatory canonical build and preservation checks required before development deployment. Full stable certification remains waived by user for development updates. Rollback via scoped revert; never clear learner storage.

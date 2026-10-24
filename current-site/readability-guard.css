@@ -335,3 +335,18 @@ body.majickCampus #content .mjEmbeddedPractice select{
  color:#24182e!important;-webkit-text-fill-color:#24182e!important;
  background:#fff5e5!important;color-scheme:light;
 }
+
+/* Question tables are XHTML inside an SVG foreignObject. They must use the
+   parchment palette rather than inherit the dark-room ivory glyph fill. */
+html body .questionDataVisual svg foreignObject :is(table,thead,tbody,tr,th,td),
+html body.majickCampus #content .questionDataVisual svg foreignObject :is(table,thead,tbody,tr,th,td),
+html body .questionDataVisual svg foreignObject :is(th,td) * {
+ color:#253246!important;
+ -webkit-text-fill-color:#253246!important;
+ text-shadow:none!important;
+ opacity:1!important;
+}
+html body .questionDataVisual svg foreignObject table,
+html body .questionDataVisual svg foreignObject :is(th,td) {
+ background:#fffdf7!important;
+}
