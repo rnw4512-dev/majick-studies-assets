@@ -16,13 +16,17 @@ function art(p){
  return '<div class="wsFigure" aria-label="Full-body scholar with fitted hair and outfit">'+[body,robes[p.robe]||robes[0],'layer-boots-plum.webp',hair[p.hair]||hair[0]].map((name,i)=>'<img class="wsLayer wsLayer'+i+'" alt="" src="'+ROOT+name+'" draggable="false">').join('')+'</div>';
 }
 function button(label,attrs='',selected=false){return '<button type="button" '+attrs+' aria-pressed="'+selected+'">'+e(label)+'</button>'}
+function occasion(p){
+ const options=[['Class','Scholar ready for the Learn Lab'],['Evening','A little magic after dark'],['Sanctuary','Comfort with your Guardians']];
+ return '<h3>Get ready for…</h3><div class="wsOccasions">'+options.map(([name,description])=>'<button type="button" data-occasion="'+name+'" aria-pressed="'+(p.wardrobeOccasion===name)+'"><b>'+name+'</b><small>'+description+'</small></button>').join('')+'</div>';
+}
 function inventory(p){
  if(category==='Robes')return robes.map((src,i)=>'<button class="wsItem" type="button" data-robe="'+i+'" aria-pressed="'+(Number(p.robe)===i)+'"><img alt="" src="'+ROOT+src+'"><span>'+robeNames[i]+'</span></button>').join('');
  return '<div class="wsEmpty">✦ This collection is being tailored. Your current outfit stays equipped.</div>';
 }
 function controls(p){
  if(section==='Appearance')return '<h3>Skin tone</h3><div class="wsSwatches">'+skinColors.map((v,i)=>button('','data-skin="'+i+'" style="background:'+v+'" aria-label="Skin tone '+(i+1)+'"',Number(p.skin)===i)).join('')+'</div><h3>Hair</h3><div class="wsHair">'+hair.map((src,i)=>'<button type="button" data-hair="'+i+'" aria-pressed="'+(Number(p.hair)===i)+'"><img alt="" src="'+ROOT+src+'"><span>'+hairNames[i]+'</span></button>').join('')+'</div>';
- if(section==='Wardrobe')return '<div class="wsCategories">'+['Robes','Casual','Formal','Sleepwear'].map(x=>button(x,'data-category="'+x+'"',category===x)).join('')+'</div><div class="wsInventory">'+inventory(p)+'</div>';
+ if(section==='Wardrobe')return occasion(p)+'<div class="wsCategories">'+['Robes','Casual','Formal','Sleepwear'].map(x=>button(x,'data-category="'+x+'"',category===x)).join('')+'</div><div class="wsInventory">'+inventory(p)+'</div>';
  if(section==='Poses')return '<h3>Scholar poses</h3><p>Preview the same saved scholar throughout the Collegium.</p>';
  if(section==='Accessories')return '<h3>Accessories</h3><p>Equipped accessories remain saved. Fitted accessory artwork is being prepared.</p>';
  return '<h3>Mirror preview</h3><p>Choose a robe or hairstyle, then save your look.</p>';
@@ -31,6 +35,7 @@ function render(){
  const p=get();if(!p)return;const root=document.getElementById('wsOverlay');if(!root)return;
  root.innerHTML='<div class="wsWindow" role="dialog" aria-modal="true" aria-label="Scholar Atelier"><aside class="wsSidebar"><button class="wsBack" data-close>← Back</button><div class="wsBrand">☾<h1>Scholar<br>Atelier</h1></div><p class="wsMotto">Your look. Your story.</p><nav aria-label="Atelier rooms">'+['Appearance','Wardrobe','Accessories','Poses','Preview'].map(x=>button('✦ '+x,'data-section="'+x+'"',section===x)).join('')+'</nav><div class="wsSigil">✧ THE MOONLIT COLLEGIUM ✧</div></aside><main class="wsMain"><div class="wsControls"><h2>'+e(section)+'</h2>'+controls(p)+'</div><div class="wsMirror"><div class="wsMirrorTitle">✦ THE WARDROBE MIRROR ✦</div><div class="wsStage">'+art(p)+'</div><div class="wsPoseStrip">'+['Idle','Study','Celebrate','Walk','Sit','Sanctuary'].map(x=>button(x,'data-pose="'+x+'"',pose===x)).join('')+'</div><div class="wsActions"><button data-undo>↶ Revert</button><button class="wsSave" data-save>✦ Save Look</button></div><div class="wsMessage" role="status"></div></div></main></div>';
  root.querySelectorAll('[data-section]').forEach(b=>b.onclick=()=>{section=b.dataset.section;render()});
+ root.querySelectorAll('[data-occasion]').forEach(b=>b.onclick=()=>{p.wardrobeOccasion=b.dataset.occasion;save();render()});
  root.querySelectorAll('[data-category]').forEach(b=>b.onclick=()=>{category=b.dataset.category;render()});
  root.querySelectorAll('[data-skin]').forEach(b=>b.onclick=()=>{p.skin=Number(b.dataset.skin);save();render()});
  root.querySelectorAll('[data-hair]').forEach(b=>b.onclick=()=>{p.hair=Number(b.dataset.hair);save();render()});
@@ -63,7 +68,7 @@ const style=document.createElement('style');style.textContent=`
 .wsMain{display:grid;grid-template-columns:minmax(250px,320px) minmax(320px,1fr);gap:22px;padding:24px;min-width:0}
 .wsControls{background:#1a1122dc;border:1px solid #8e6a58;border-radius:18px;padding:18px;align-self:start}
 .wsControls h2,.wsControls h3{color:#f2c987;font-family:Georgia,serif}
-.wsSwatches,.wsHair,.wsInventory,.wsCategories{display:flex;flex-wrap:wrap;gap:9px;margin:12px 0 25px}
+.wsOccasions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;margin-bottom:15px}.wsOccasions button{background:#291b32;color:#f8e3d5;border:1px solid #a78662;border-radius:10px;padding:8px 4px;cursor:pointer}.wsOccasions small{display:block;font-size:10px;margin-top:5px}.wsSwatches,.wsHair,.wsInventory,.wsCategories{display:flex;flex-wrap:wrap;gap:9px;margin:12px 0 25px}
 .wsSwatches button{height:35px;width:35px;border:2px solid #e4bf8b;border-radius:50%;cursor:pointer}
 .wsHair button,.wsItem{background:#291b32;color:#f8e3d5;border:1px solid #a78662;border-radius:12px;cursor:pointer;display:flex;flex-direction:column;align-items:center;padding:8px;gap:5px}
 .wsHair button{width:83px}.wsHair img{width:66px;height:78px;object-fit:contain}
