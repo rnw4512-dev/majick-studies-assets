@@ -37,6 +37,7 @@ async function renderApprovedPose(p){
  if(!stage||!frame)return;
  const token=++poseRevision;
  if(pose==='Idle')return;
+ if(pose==='Walk'){verifyApprovedWalk(p);return;}
  const gate=window.MajickV2ApprovalGate;
  if(!gate){stage.closest('.wsMirror')?.querySelector('.wsMessage')?.replaceChildren(document.createTextNode('Pose layers are not ready. Your selected look is unchanged.'));return}
  const result=await gate.compose(p,frame,'locs');
@@ -46,6 +47,22 @@ async function renderApprovedPose(p){
  const image=document.createElement('img');image.className='wsApprovedPose';image.alt='Approved aligned '+pose+' pose for the current outfit';image.src=result.canvas.toDataURL('image/png');
  stage.replaceChildren(image);
  if(msg)msg.textContent='Approved fitted '+pose.toLowerCase()+' frame';
+}
+async function verifyApprovedWalk(p){
+ const gate=window.MajickV2ApprovalGate;
+ const message=document.querySelector('#wsOverlay:not([hidden]) .wsMessage');
+ if(!gate||!message)return;
+ const frames=['front_idle','front_step_left','front_idle','front_step_right'];
+ const results=[];
+ for(const frame of frames){const r=await gate.compose(p,frame,'locs');results.push({frame,ok:!!r.ok,reason:r.reason||null,canvas:r.canvas||null})}
+ if(results.some(r=>!r.ok)){message.textContent='Movement not approved for this hairstyle and outfit: '+results.filter(r=>!r.ok).map(r=>r.frame+' ('+r.reason+')').join(', ');return}
+ const stage=document.querySelector('#wsOverlay:not([hidden]) .wsStage');
+ if(!stage)return;
+ let index=0;const img=document.createElement('img');img.className='wsApprovedPose';img.alt='Approved four-frame walk cycle';stage.replaceChildren(img);
+ const urls=results.map(r=>r.canvas.toDataURL('image/png'));
+ const token=++poseRevision;
+ function advance(){if(token!==poseRevision||!stage.isConnected||pose!=='Walk')return;img.src=urls[index++%urls.length];window.setTimeout(advance,190)}
+ advance();message.textContent='Movement verified: all four walk-cycle frames passed approved layered composition.';
 }
 function render(){
  const p=get();if(!p)return;const root=document.getElementById('wsOverlay');if(!root)return;
