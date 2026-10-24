@@ -81,9 +81,10 @@ async function verifyApprovedWalk(p){
  advance();walkTimer=window.setInterval(advance,190);message.textContent='Movement verified: all four walk-cycle frames passed approved layered composition.';
 }
 function render(){
+ window.MajickAtelierScene?.dispose();
  stopWalk();
  const p=get();if(!p)return;const root=document.getElementById('wsOverlay');if(!root)return;
- root.innerHTML='<div class="wsWindow" role="dialog" aria-modal="true" aria-label="Scholar Atelier"><aside class="wsSidebar"><button class="wsBack" data-close>← Back</button><div class="wsBrand">☾<h1>Scholar<br>Atelier</h1></div><p class="wsMotto">Your look. Your story.</p><nav aria-label="Atelier rooms">'+['Appearance','Wardrobe','Accessories','Poses','Preview'].map(x=>button('✦ '+x,'data-section="'+x+'"',section===x)).join('')+'</nav><div class="wsSigil">✧ THE MOONLIT COLLEGIUM ✧</div></aside><main class="wsMain"><div class="wsControls"><h2>'+e(section)+'</h2>'+controls(p)+'</div><div class="wsMirror"><div class="wsMirrorTitle">✦ THE WARDROBE MIRROR ✦</div><div class="wsStage">'+art(p)+'</div><div class="wsPoseStrip">'+['Idle','Study','Celebrate','Walk','Sit','Sanctuary'].map(x=>button(x,'data-pose="'+x+'"',pose===x)).join('')+'</div><div class="wsFacing" role="group" aria-label="Preview direction">'+['left','right'].map(x=>button('Face '+x,'data-facing="'+x+'"',previewFacing===x)).join('')+'</div><div class="wsActions"><button data-undo>↶ Revert</button><button class="wsSave" data-save>✦ Save Look</button></div><div class="wsMessage" role="status"></div></div></main></div>';
+ root.innerHTML='<div class="wsWindow" role="dialog" aria-modal="true" aria-label="Scholar Atelier"><aside class="wsSidebar"><button class="wsBack" data-close>← Back</button><div class="wsBrand">☾<h1>Scholar<br>Atelier</h1></div><p class="wsMotto">Your look. Your story.</p><nav aria-label="Atelier rooms">'+['Appearance','Wardrobe','Accessories','Poses','Preview'].map(x=>button('✦ '+x,'data-section="'+x+'"',section===x)).join('')+'</nav><div class="wsSigil">✧ THE MOONLIT COLLEGIUM ✧</div></aside><main class="wsMain"><div class="wsControls"><h2>'+e(section)+'</h2>'+controls(p)+'</div><div class="wsMirror"><div class="wsMirrorTitle">✦ THE WARDROBE MIRROR ✦</div><div class="wsStage" data-facing="'+previewFacing+'" style="--ws-facing:'+(previewFacing==='left'?-1:1)+'">'+art(p)+'</div><div class="wsViewTools" role="group" aria-label="Mirror zoom"><button type="button" data-view="1" aria-pressed="true">Full look</button><button type="button" data-view="1.45" aria-pressed="false">Closer look</button></div><div class="wsPoseStrip">'+['Idle','Study','Celebrate','Walk','Sit','Sanctuary'].map(x=>button(x,'data-pose="'+x+'"',pose===x)).join('')+'</div><div class="wsFacing" role="group" aria-label="Preview direction">'+['left','right'].map(x=>button('Face '+x,'data-facing="'+x+'"',previewFacing===x)).join('')+'</div><div class="wsActions"><button data-undo>↶ Revert</button><button class="wsSave" data-save>✦ Save Look</button></div><div class="wsMessage" role="status"></div></div></main></div>';
  root.querySelectorAll('[data-section]').forEach(b=>b.onclick=()=>{section=b.dataset.section;render()});
  root.querySelectorAll('[data-occasion]').forEach(b=>b.onclick=()=>{p.wardrobeOccasion=b.dataset.occasion;save();render()});
  root.querySelectorAll('[data-category]').forEach(b=>b.onclick=()=>{category=b.dataset.category;render()});
@@ -98,6 +99,8 @@ function render(){
  root.querySelector('[data-undo]').onclick=()=>{if(snapshot){Object.assign(p,snapshot);save();render()}};
  root.querySelector('[data-save]').onclick=()=>{snapshot={...p};save();root.querySelector('.wsMessage').textContent='✦ Look saved to your scholar.';celebrateSavedLook(root)};
  root.querySelector('[data-close]').onclick=close;
+ window.MajickAtelierScene?.mount(root.querySelector('.wsStage'));
+ root.querySelectorAll('[data-view]').forEach(b=>b.onclick=()=>{const z=Number(b.dataset.view);window.MajickAtelierScene?.zoom(z);root.querySelector('.wsStage').style.setProperty('--ws-zoom',z);root.querySelectorAll('[data-view]').forEach(x=>x.setAttribute('aria-pressed',String(x===b)))});
  renderApprovedPose(p);
  root.querySelector('.wsStage')?.addEventListener('error',event=>{if(event.target?.tagName==='IMG'){event.target.style.visibility='hidden';root.querySelector('.wsMessage').textContent='A fitted garment asset is unavailable; your saved selection is preserved.'}},true);
 }
@@ -108,7 +111,7 @@ function open(){
  if(!root){root=document.createElement('div');root.id='wsOverlay';document.body.append(root)}
  snapshot={...get()};root.hidden=false;render();root.querySelector('[data-close]')?.focus();
 }
-function close(){stopWalk();poseRevision++;const r=document.getElementById('wsOverlay');if(r)r.hidden=true;window.MajickScholarCompanion?.refresh?.(true)}
+function close(){window.MajickAtelierScene?.dispose();stopWalk();poseRevision++;const r=document.getElementById('wsOverlay');if(r)r.hidden=true;window.MajickScholarCompanion?.refresh?.(true)}
 document.addEventListener('keydown',ev=>{if(ev.key==='Escape'&&!document.getElementById('wsOverlay')?.hidden)close()});
 const style=document.createElement('style');style.textContent=`
 #wsOverlay{position:fixed;inset:0;z-index:1800;background:#0d0815ed;color:#f5e5d0;font:15px system-ui;overflow:auto}
@@ -131,9 +134,9 @@ const style=document.createElement('style');style.textContent=`
 .wsItem{width:130px}.wsItem img{width:115px;height:130px;object-fit:contain}
 .wsSavedLooks{display:grid;gap:8px}.wsSavedLook{padding:10px;border:1px solid #886a65;border-radius:10px;display:grid;gap:5px;background:#26192f}.wsSavedLook span,.wsHint{color:#dbc8d8;font-size:12px}.wsSavedLook div{display:flex;gap:7px}.wsSavedLook button,.wsSaveSlot{padding:8px;background:#4b3057;color:#fff2dc;border:1px solid #d4b17d;border-radius:8px;cursor:pointer}.wsSaveSlot:disabled{opacity:.5;cursor:not-allowed}.wsNameLabel{display:block;margin:15px 0 6px}#wsLookName{width:100%;padding:10px;border:1px solid #d4b17d;border-radius:8px;background:#25172d;color:#fff2dc;margin-bottom:8px}.wsEmpty{padding:22px;border:1px dashed #8b6b62;border-radius:12px;color:#d8c2cf}
 .wsMirror{min-width:0;border:3px double #c8a064;border-radius:36px 36px 18px 18px;background:radial-gradient(ellipse at 50% 32%,#65436a,#25152d 65%,#130e1c);padding:16px;display:flex;flex-direction:column;align-items:center}
-.wsMirror{position:relative}.wsMagicBurst{position:absolute;inset:0;pointer-events:none;overflow:hidden}.wsMagicBurst span{position:absolute;left:50%;top:48%;font-size:25px;color:#f4d38a;text-shadow:0 0 9px #dcb6ff;animation:wsStarBurst .75s ease-out var(--delay) both}@keyframes wsStarBurst{0%{opacity:0;transform:translate(-50%,-50%) scale(.3)}20%{opacity:1}100%{opacity:0;transform:translate(calc(-50% + var(--dx)),calc(-50% + var(--dy))) scale(1.3)}}.wsMirrorTitle{color:#f3d39e;letter-spacing:3px;font:14px Georgia,serif}
-.wsStage{height:min(65dvh,680px);min-height:340px;width:100%;display:grid;place-items:center;overflow:hidden}
-.wsFigure{position:relative;height:100%;aspect-ratio:512/682;max-width:100%}
+.wsMirror{position:relative}.wsMagicBurst{position:absolute;inset:0;pointer-events:none;overflow:hidden}.wsMagicBurst span{position:absolute;left:50%;top:48%;font-size:25px;color:#f4d38a;text-shadow:0 0 9px #dcb6ff;animation:wsStarBurst .75s ease-out var(--delay) both}@keyframes wsStarBurst{0%{opacity:0;transform:translate(-50%,-50%) scale(.3)}20%{opacity:1}100%{opacity:0;transform:translate(calc(-50% + var(--dx)),calc(-50% + var(--dy))) scale(1.3)}}.wsMirrorTitle{padding:8px 0 14px;text-align:center;color:#f3d39e;letter-spacing:3px;font:14px Georgia,serif}
+.wsStage{position:relative;isolation:isolate;background:radial-gradient(ellipse at 50% 42%,#ad88ba30,transparent 62%);border-radius:48% 48% 10px 10px;height:min(65dvh,680px);min-height:340px;width:100%;display:grid;place-items:center;overflow:hidden}
+.wsFigure{z-index:1;transform:scale(calc(var(--ws-zoom,1)*var(--ws-facing,1)),var(--ws-zoom,1));position:relative;height:100%;aspect-ratio:512/682;max-width:100%}
 .wsLayer{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;pointer-events:none}
 .wsLayer1{transform:translateY(-5.57%);transform-origin:50% 50%}
 .wsLayer1[src*="layer-dress-midnight"]{transform:translateY(-5.57%) scaleX(1.18)}
@@ -146,8 +149,16 @@ const style=document.createElement('style');style.textContent=`
 .wsPoseStrip,.wsActions{display:flex;flex-wrap:wrap;justify-content:center;gap:9px;padding:12px}
 .wsActions .wsSave{background:#65346d;border-color:#e5bc77;font-weight:700}
 .wsMessage{min-height:22px;color:#e9c892;text-align:center}
-@media(max-width:900px){.wsWindow{grid-template-columns:1fr}.wsSidebar{padding:12px}.wsSidebar nav{display:flex;overflow:auto}.wsSidebar nav button{white-space:nowrap}.wsMain{grid-template-columns:1fr}.wsStage{height:50dvh}.wsSigil,.wsMotto{display:none}}
+@media(max-width:900px){.wsWindow{grid-template-columns:1fr}.wsSidebar{padding:12px}.wsSidebar nav{display:flex;overflow:auto}.wsSidebar nav button{white-space:nowrap}.wsMain{grid-template-columns:1fr}.wsStage{position:relative;isolation:isolate;background:radial-gradient(ellipse at 50% 42%,#ad88ba30,transparent 62%);border-radius:48% 48% 10px 10px;height:50dvh}.wsSigil,.wsMotto{display:none}}
 @media(prefers-reduced-motion:reduce){#wsOverlay *{scroll-behavior:auto;animation:none!important}.wsMagicBurst{display:none}}
+
+.wsStage:before{content:"";position:absolute;bottom:6%;left:17%;width:66%;height:7%;border:1px solid #d3b07488;border-radius:50%;box-shadow:0 0 28px #d1a5ef22,inset 0 0 22px #d1a5ef18;pointer-events:none}.wsStage:after{content:"✧                 ·                  ✦";white-space:pre;position:absolute;inset:14% 5% auto;text-align:center;color:#e2c49388;font-size:13px;letter-spacing:4px;pointer-events:none}.wsStage:has(.wsPixiScene):before,.wsStage:has(.wsPixiScene):after{display:none}
+.wsPixiScene{position:absolute;inset:0;pointer-events:none;z-index:2}.wsPixiScene canvas{display:block;width:100%;height:100%}.wsPixiReplaced{visibility:hidden}.wsViewTools{display:flex;gap:8px;margin-top:10px}.wsViewTools button{color:#f8e9d4;background:#30203c;border:1px solid #ad8d6d;border-radius:20px;padding:9px 18px;cursor:pointer}
+.wsMirror{box-shadow:inset 0 0 0 7px #0c081b66,0 18px 60px #08040c77;background:radial-gradient(ellipse at 50% 35%,#72536c,#30203e 58%,#140e20)}
+.wsControls{box-shadow:0 10px 35px #08040c44}.wsHair button,.wsItem{transition:border-color .18s,background .18s}.wsHair button:hover,.wsItem:hover{border-color:#f1d18c;background:#45304b}
+#wsOverlay button:focus-visible{outline:3px solid #ffe0a0;outline-offset:3px}.wsStage .wsFigure{max-width:90%}
+@media(min-width:901px){.wsMirror{position:sticky;top:20px;align-self:start}.wsStage{height:clamp(390px,62dvh,700px)}}
+@media(max-width:900px){.wsMain{display:flex;flex-direction:column;padding:14px;gap:14px}.wsMirror{order:-1}.wsStage{height:47dvh;min-height:280px}.wsSidebar nav{gap:6px}.wsSidebar nav button{font-size:13px;padding:9px}.wsBrand h1{font-size:25px}.wsBrand br{display:none}.wsPoseStrip{gap:6px;padding:10px 0}.wsMirrorTitle{font-size:11px;letter-spacing:2px}}
 `;document.head.append(style);
 window.MajickWardrobeStudio={open,close,render};
 })();

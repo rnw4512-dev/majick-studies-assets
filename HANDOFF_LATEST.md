@@ -676,3 +676,14 @@ Additional live checking found Learn Mode also reopening its default classroom a
 - Development update: canonical hashes/syntax and targeted preservation/academic checks required; full three-width stable certification pending. Work isolated from unrelated local image edits. Rollback by scoped revert/rebuild, never clear saves.
 
 - Release follow-up: the mandatory mastery fixture still submitted the same item five times, conflicting with the recently strengthened distinct-question requirement on main. Updated the fixture to five distinct, valid median datasets and added an explicit repeat-cannot-certify assertion; no runtime mastery protection was weakened.
+
+
+## 2026-10-24 — PixiJS Atelier development update
+
+- Active screen is scholar-wardrobe-studio.js, reached through the existing Atelier launcher. Added local pinned PixiJS 8.6.6 (MIT license included), loaded only on opening the mirror, with room/scholar/magic render groups inspired by the requested PixiJS rendering example.
+- Larger responsive mirror, lit ellipse platform, gentle ambient motes, full/closer view controls, mobile preview before selectors, improved selected/focus states. Existing fitted image geometry drives sprite placement, keeping the current approved art. DOM image fallback remains visible until all textures load; approved pose/walk composition remains with the existing approval owner.
+- No save schema, reward, XP, crystal, academic, Guardian or Sanctuary changes. GPU application, resize observer and listeners are disposed on close/rerender. Reduced motion and hidden-tab pausing are supported. No substitute walking frames or artwork were introduced.
+- Files: current-site/atelier-pixi-scene.js, scholar-wardrobe-studio.js, index.html, vendor/pixi-8.6.6.min.js, vendor/PIXI-LICENSE.txt, source-manifest.json.
+- Development release only; full responsive stable certification pending. Verify live mirror rendering, appearance switches, approved pose fallback and reload before stable promotion. Rollback: revert this focused commit, leaving learner storage untouched.
+
+- QA: canonical release checks pass; browser confirmed fitted hair switching, numeric zoom state and all image loads. Test browser has no WebGL (Pixi reports CanvasRenderer not implemented); graceful image/CSS room fallback verified. GPU render path and full 390/820/1366 certification remain unverified.
