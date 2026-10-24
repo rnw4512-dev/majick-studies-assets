@@ -71,6 +71,8 @@ Updated: 2026-10-21. Reconciled with PR #145 development board; preserve PR #141
 
 ## Needs Code Repair
 
+- **Reasoning Workshop mean-validation ([PR #167](https://github.com/rnw4512-dev/majick-studies-assets/pull/167)): repair deployed; browser behavior unverified.** PR merged into `main` (commit `eebd8c45`); publishing workflow [#40093212873](https://github.com/rnw4512-dev/majick-studies-assets/actions/runs/40093212873) succeeded. Prior responsive/interaction review failures remain unverified; do not mark browser-certified.
+
 - Audit obsolete copies, duplicate render/credit paths, and all current scripts' loading order.
 - Lock an actual layer registry: body/face/hair/outfit/shoes/accessory slots and anchors by pose; no filename-based loose layer overrides.
 - Ensure saved appearance immediately propagates to Companion, Commons, Learn Lab, Study Now, Game Realm, Grimoire, Sanctuary, Atelier and rewards.
