@@ -1,5 +1,13 @@
 # Majick Studies — Master Working Project Board
 
+## Potion animation and depth — 2026-10-24
+
+- Brewing now preserves its Pixi canvas and animation clock across Stir, sound, and playback controls. Explicit Play/Pause follows reduced-motion by default; hidden pages pause GPU rendering.
+- Shared shaded SVG artwork supplies rounded metal cauldrons, gold rims, luminous liquid and glass bottle silhouettes. Pixi particles and an animated CSS fallback provide bubbles, steam and ingredient movement.
+- Existing craft() remains the sole inventory/resource owner; no save, mastery, reward, Guardian or protected motion assets changed.
+- Local canonical release checks and browser Add → three Stirs → Bottle flow passed, including Pause/Play. GPU/full responsive visual certification remains pending; this is a user-authorized development deployment.
+
+
 Updated: 2026-10-21. Reconciled with PR #145 development board; preserve PR #141 historical details. Canonical source: `current-site/`. Live: https://rnw4512-dev.github.io/majick-studies-assets/
 
 **Vision:** An adult dark-academia witchy college where the learner adds real courses and studies through an integrated game world. Academic mastery remains course-specific; Scholar identity, avatar, Guardians, crystals, rewards, eggs and Sanctuary persist globally.

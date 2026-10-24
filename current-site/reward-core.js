@@ -415,7 +415,7 @@ window.MajickRewardCore={VERSION,RARITIES,INGREDIENTS,TREASURES,RECIPES,award,re
 window.majickConjureEgg=()=>showConjuring();
 
 // Cozy Alchemy is a presentation layer. Inventory is changed only by craft(), never by animation.
-let cozyRecipe=null,cozyStage=0,cozyStirs=0,cozyCommitted=false,cozySound=false,cozyAudio=null;
+let cozyRecipe=null,cozyStage=0,cozyStirs=0,cozyCommitted=false,cozySound=false,cozyAudio=null,cozyMotion=!window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches;
 const cozyLooks={
  'clarity-potion':['#9d62f1','#d4a7ff','38% 38% 25% 25%'],
  'recall-draught':['#4da5f2','#a5dfff','48% 48% 10% 10%'],
@@ -444,56 +444,72 @@ cozyStyle.textContent=`
 .majCozyActions{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}.majCozyActions button{border:1px solid #e3bc86;border-radius:13px;background:#65417e;color:white;padding:11px 17px;cursor:pointer;font-weight:700}.majCozyActions button:first-child{background:#a467ac}
 .majCozySmoke{position:absolute;top:4px;left:0;right:0;text-align:center;color:var(--potion-glow);font-size:40px;opacity:.6;animation:cozyRise 2.5s ease-in-out infinite;pointer-events:none}.majCozyBottle{width:74px;height:98px;margin:62px auto 0;border:5px solid #e9d3a1;border-radius:var(--bottle-shape);background:linear-gradient(120deg,#ffffff88,var(--potion-color) 55%,#26133e);box-shadow:0 0 30px var(--potion-glow),inset 7px 0 12px #fff7;position:relative}.majCozyBottle:before{content:'✦';position:absolute;inset:28px 0 auto;text-align:center;color:white;font-size:25px}.majCozyBottle:after{content:'';position:absolute;width:30px;height:12px;background:#b88a5e;top:-16px;left:calc(50% - 15px)}.majCozyClose{position:absolute;right:13px;top:10px;border:0;background:transparent;color:white;font-size:25px;cursor:pointer}
 @keyframes cozyPulse{50%{filter:brightness(1.4);transform:scale(1.04)}}@keyframes cozyRise{50%{opacity:.35;transform:translateY(-19px)}}
-@media(prefers-reduced-motion:reduce){.majCozyModal *{animation:none!important}}
+
+
+.majCozyModal{width:min(600px,100%);background:radial-gradient(ellipse at 50% 44%,#573f65,#21152e 64%,#140d20);box-shadow:0 32px 100px #05020ec9,inset 0 0 0 5px #b1905c12}.majCozyScene{height:auto;aspect-ratio:480/300;width:100%;min-height:220px;background:radial-gradient(ellipse at 50% 84%,#bd8fbd20,transparent 65%)}.majCozyFallbackArt{position:absolute;inset:0;display:grid;place-items:center;pointer-events:none}.majCozyScene:has(.majCozyPixiLayer) .majCozyFallbackArt{visibility:hidden}.cozyVessel{width:62%;height:88%;margin-top:8%;filter:drop-shadow(0 15px 12px #07030e88)}.cozyGlassVessel{width:36%;height:80%;margin-top:5%;animation:cozyBottleFloat 3s ease-in-out infinite}.cozyBubble{position:absolute;left:calc(36% + var(--i)*2.4%);top:43%;width:8px;height:8px;border:1px solid #fff5ddaa;border-radius:50%;box-shadow:0 0 8px var(--potion-glow);animation:cozyBubbleRise 1.7s linear infinite;animation-delay:calc(var(--i)*-.27s)}.cozyWisp{position:absolute;left:calc(37% + var(--i)*5%);top:38%;width:36px;height:48px;border-radius:50%;background:radial-gradient(ellipse,var(--potion-glow),transparent 70%);filter:blur(5px);animation:cozySmokeDrift 3s ease-out infinite;animation-delay:calc(var(--i)*-.7s);opacity:.4}.cozyIngredient{position:absolute;top:30%;left:50%;font-size:19px;color:#b5e1b2;text-shadow:0 0 10px var(--potion-glow);animation:cozyIngredientSpiral 3s linear infinite;animation-delay:calc(var(--i)*-.3s)}.cozyIngredient:nth-of-type(even){color:#d6d7ff}.majCozyScene[data-brew-stage="2"] .cozyIngredient{display:none}.majCozyScene[data-brew-stage="3"] .cozyBubble,.majCozyScene[data-brew-stage="3"] .cozyWisp{display:none}.majCozyScene[data-brew-stage="3"] .cozyIngredient{color:#ffe6b3;animation-name:cozyBottleRing}.majCozyScene[data-motion="off"] *{animation-play-state:paused!important}.majCozyMotion,.majCozyModal button[onclick="majCozySound()"]{border:1px solid #9d7e9d;border-radius:20px;color:#f7e5d4;background:#302039;padding:7px 12px;margin:3px 5px 3px 0;font:13px system-ui;cursor:pointer}.majCozyModal button:focus-visible{outline:3px solid #ffe0a2;outline-offset:3px}
+@keyframes cozyBubbleRise{from{transform:translateY(0) scale(.5);opacity:.9}to{transform:translateY(-55px) scale(1.35);opacity:0}}@keyframes cozySmokeDrift{from{transform:translate(0,0) scale(.5);opacity:.3}to{transform:translate(25px,-95px) scale(1.9);opacity:0}}@keyframes cozyIngredientSpiral{0%{transform:rotate(0deg) translateX(115px) rotate(0deg);opacity:0}15%{opacity:1}100%{transform:translateY(45px) rotate(360deg) translateX(4px);opacity:0}}@keyframes cozyBottleFloat{50%{transform:translateY(-10px) rotate(2deg)}}@keyframes cozyBottleRing{from{transform:rotate(0deg) translateX(100px) rotate(0deg)}to{transform:rotate(360deg) translateX(100px) rotate(-360deg)}}
 `;
 document.head.appendChild(cozyStyle);
 
-let cozyPixi=null,cozyPixiToken=0;
-async function cozyMountPixi(){
- const token=++cozyPixiToken;cozyDisposePixi();
- const host=document.querySelector('#majCozyBrewing .majCozyScene');if(!host)return;
- try{
-  if(!window.PIXI?.VERSION?.startsWith('8.')){await new Promise((resolve,reject)=>{const script=document.createElement('script');script.src='./vendor/pixi-8.6.6.min.js';script.onload=resolve;script.onerror=reject;document.head.appendChild(script)})}
-  if(token!==cozyPixiToken||!host.isConnected)return;
-  const P=window.PIXI,app=new P.Application();
-  await app.init({width:Math.max(200,host.clientWidth),height:210,backgroundAlpha:0,antialias:true,preference:'webgl'});
-  if(token!==cozyPixiToken||!host.isConnected){app.destroy(true,{children:true});return}
-  const layer=document.createElement('div');layer.className='majCozyPixiLayer';layer.setAttribute('aria-hidden','true');layer.appendChild(app.canvas);host.appendChild(layer);
-  const look=cozyLooks[cozyRecipe]||cozyLooks['clarity-potion'],color=Number.parseInt(look[0].slice(1),16);
-  const cauldron=new P.Container(),smoke=new P.Container(),sparks=new P.Container(),ingredients=new P.Container(),bottle=new P.Container();
-  app.stage.addChild(smoke,cauldron,ingredients,bottle,sparks);
-  const cx=app.screen.width/2, reduced=window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches;
-  const pot=new P.Graphics();pot.ellipse(0,0,105,22).fill({color:0xd4b4ed});pot.roundRect(-102,0,204,100,30).fill({color:0x342044}).stroke({color:0xc5a0e0,width:7});pot.x=cx;pot.y=94;cauldron.addChild(pot);
-  const liquid=new P.Graphics();liquid.ellipse(0,0,92,16).fill({color});liquid.x=cx;liquid.y=98;cauldron.addChild(liquid);
-  const wisps=[];for(let i=0;i<22;i++){const p=new P.Graphics();p.circle(0,0,3+i%5).fill({color:i%3?color:0xffe9bc,alpha:.45});smoke.addChild(p);wisps.push({p,seed:i*17})}
-  const bubbles=[];for(let i=0;i<15;i++){const p=new P.Graphics();p.circle(0,0,2+i%4).stroke({color:0xffffff,width:1,alpha:.75});cauldron.addChild(p);bubbles.push({p,seed:i*23})}
-  const herbs=[];for(let i=0;i<12;i++){const p=new P.Graphics();if(i%2)p.poly([0,-7,6,0,0,7,-6,0]).fill({color:0x91d69b});else p.star(0,0,5,6,3).fill({color:0xb3e3ff});ingredients.addChild(p);herbs.push({p,seed:i})}
-  const stars=[];for(let i=0;i<14;i++){const p=new P.Graphics();p.star(0,0,4,5,2).fill({color:0xffe5a8,alpha:.85});sparks.addChild(p);stars.push(p)}
-  const glass=new P.Graphics();glass.roundRect(-24,-48,48,85,14).fill({color,alpha:.85}).stroke({color:0xffe9cf,width:4});glass.roundRect(-12,-62,24,17,4).fill({color:0xb18c6c});glass.star(0,-10,5,12,5).fill({color:0xffffff});bottle.addChild(glass);bottle.x=cx;bottle.y=125;
-  let tick=0;const animate=(time)=>{tick+=reduced?0:time.deltaTime;const bottled=cozyStage===3,mixing=cozyStage===0||cozyStage===1;
-   cauldron.visible=!bottled;ingredients.visible=mixing;bottle.visible=bottled;
-   if(!reduced){liquid.tint=cozyStage===0?0xb3a2ff:cozyStage===1?0xf3bbff:0xffffff;liquid.scale.x=1+Math.sin(tick*.065)*.035}
-   for(const {p,seed} of wisps){p.visible=!bottled;const progress=(tick*.35+seed*3)%125;p.x=cx+Math.sin(tick*.025+seed)*48;p.y=94-progress;p.alpha=.5*(1-progress/125)}
-   for(const {p,seed} of bubbles){p.visible=!bottled;p.x=cx+Math.sin(seed*1.7)*68;p.y=105-((tick*.55+seed)%35)}
-   for(const {p,seed} of herbs){const angle=tick*.045+seed*2.4,progress=((tick*.35+seed*11)%95)/95;p.x=cx+Math.cos(angle)*(115-progress*110);p.y=45+Math.sin(angle)*38+progress*55;p.alpha=1-progress*.7}
-   for(let i=0;i<stars.length;i++){const a=tick*.018+i*Math.PI*2/stars.length;stars[i].x=cx+Math.cos(a)*(bottled?66:110);stars[i].y=(bottled?95:110)+Math.sin(a)*(bottled?65:48)}
-   bottle.y=reduced?125:125+Math.sin(tick*.045)*8;
-  };
-  app.ticker.add(animate);cozyPixi={app,layer};
- }catch(_){host.classList.add('majCozyFallback')}
+let cozyPixi=null,cozyPixiToken=0,cozyPixiHost=null,cozyPixiLoader=null;
+function cozyArtwork(kind,look){
+ const color=look[0],light=look[1];
+ const defs='<defs><linearGradient id="metal" x1="0" x2="1" y2=".7"><stop stop-color="#b48b9b"/><stop offset=".16" stop-color="#5b445f"/><stop offset=".5" stop-color="#251b36"/><stop offset=".85" stop-color="#110f20"/><stop offset="1" stop-color="#684562"/></linearGradient><linearGradient id="gold"><stop stop-color="#80613e"/><stop offset=".3" stop-color="#ffe4aa"/><stop offset=".65" stop-color="#a47b45"/><stop offset="1" stop-color="#f3d7a0"/></linearGradient><radialGradient id="potion" cx=".35" cy=".2" r=".9"><stop stop-color="'+light+'"/><stop offset=".4" stop-color="'+color+'"/><stop offset="1" stop-color="#25103c"/></radialGradient><linearGradient id="glass"><stop stop-color="#fff2db" stop-opacity=".8"/><stop offset=".23" stop-color="'+light+'" stop-opacity=".2"/><stop offset=".8" stop-color="#201336" stop-opacity=".6"/><stop offset="1" stop-color="#fff2db" stop-opacity=".7"/></linearGradient></defs>';
+ if(kind==='pot')return '<svg class="cozyVessel" viewBox="0 0 360 280" xmlns="http://www.w3.org/2000/svg">'+defs+'<ellipse cx="180" cy="255" rx="126" ry="15" fill="#090512" opacity=".6"/><path d="M105 222L97 253Q106 260 118 251L130 229M232 228L244 252Q259 258 263 250L255 222" fill="url(#metal)" stroke="#9c7c71" stroke-width="3"/><ellipse cx="66" cy="137" rx="22" ry="27" fill="none" stroke="url(#gold)" stroke-width="8"/><ellipse cx="294" cy="137" rx="22" ry="27" fill="none" stroke="url(#gold)" stroke-width="8"/><path d="M70 100C61 140 65 212 106 235Q180 262 254 235C295 212 299 140 290 100Z" fill="url(#metal)" stroke="#9a7892" stroke-width="3"/><path d="M91 123Q77 185 116 218" fill="none" stroke="#e7c9d8" stroke-width="8" opacity=".2"/><path d="M258 137Q274 184 248 215" fill="none" stroke="#fff0d0" stroke-width="2" opacity=".17"/><ellipse cx="180" cy="103" rx="115" ry="30" fill="#171121" stroke="url(#gold)" stroke-width="8"/><ellipse cx="180" cy="98" rx="103" ry="22" fill="url(#potion)"/><ellipse cx="158" cy="91" rx="61" ry="8" fill="'+light+'" opacity=".35"/><path d="M83 100Q180 132 278 100" fill="none" stroke="#ffe2bc" stroke-width="3" opacity=".65"/><path d="M179 154L185 171L203 176L185 182L179 201L173 182L155 176L173 171Z" fill="url(#gold)"/><path d="M121 164L125 174L136 178L125 182L121 193L117 182L107 178L117 174ZM239 164L243 174L253 178L243 182L239 193L235 182L224 178L235 174Z" fill="#c9a16f" opacity=".7"/></svg>';
+ const shape=cozyRecipe==='crystal-sight-potion'?'M78 78L42 122V213L78 250H122L158 213V122L122 78Z':cozyRecipe==='recall-draught'?'M78 78L59 105V235Q59 250 76 250H124Q141 250 141 235V105L122 78Z':'M78 78C75 104 35 101 35 163C35 224 48 250 100 250S165 224 165 163C165 101 125 104 122 78Z';
+ return '<svg class="cozyVessel cozyGlassVessel" viewBox="0 0 200 280" xmlns="http://www.w3.org/2000/svg">'+defs+'<defs><clipPath id="bodyClip"><path d="'+shape+'"/></clipPath></defs><ellipse cx="100" cy="263" rx="65" ry="10" fill="#090512" opacity=".5"/><path d="'+shape+'" fill="url(#glass)" stroke="#f8ddb0" stroke-width="3"/><g clip-path="url(#bodyClip)"><rect x="30" y="134" width="140" height="120" fill="url(#potion)"/><ellipse cx="100" cy="134" rx="64" ry="11" fill="'+light+'" opacity=".8"/><path d="M58 115V222" stroke="#fff9e5" stroke-width="8" opacity=".45" stroke-linecap="round"/><path d="M141 148V211" stroke="#fff9e5" stroke-width="3" opacity=".3"/></g><rect x="78" y="35" width="44" height="45" rx="6" fill="url(#glass)" stroke="#f8ddb0" stroke-width="3"/><rect x="75" y="24" width="50" height="19" rx="5" fill="url(#gold)"/><path d="M85 42V69" stroke="white" stroke-width="4" opacity=".5"/><circle cx="100" cy="184" r="24" fill="#261b35" stroke="url(#gold)" stroke-width="2"/><path d="M100 166L104 179L117 184L104 188L100 202L96 188L83 184L96 179Z" fill="url(#gold)"/></svg>';
 }
-function cozyDisposePixi(){if(cozyPixi){try{cozyPixi.app.destroy(true,{children:true})}catch(_){}cozyPixi.layer.remove();cozyPixi=null}}
+function cozyFallbackMarkup(look){return '<div class="majCozyFallbackArt" aria-hidden="true">'+cozyArtwork(cozyStage===3?'bottle':'pot',look)+Array.from({length:12},(_,i)=>'<i class="cozyBubble" style="--i:'+i+'"></i>').join('')+Array.from({length:5},(_,i)=>'<i class="cozyWisp" style="--i:'+i+'"></i>').join('')+Array.from({length:10},(_,i)=>'<span class="cozyIngredient" style="--i:'+i+'">'+(i%2?'✧':'◆')+'</span>').join('')+'</div>'}
+async function cozyTexture(P,kind,look){const image=new Image();image.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(cozyArtwork(kind,look));await image.decode();return P.Texture.from(image)}
+async function cozyMountPixi(){
+ const host=document.querySelector('#majCozyBrewing .majCozyScene');if(!host||cozyPixiHost===host)return;
+ const token=++cozyPixiToken;cozyDisposePixi();cozyPixiHost=host;
+ let app=null,layer=null,ready=false,textures=[];
+ try{
+  if(!window.PIXI?.VERSION?.startsWith('8.')){cozyPixiLoader=cozyPixiLoader||new Promise((resolve,reject)=>{const script=document.createElement('script');script.src='./vendor/pixi-8.6.6.min.js';script.onload=resolve;script.onerror=()=>{cozyPixiLoader=null;reject(Error('Pixi unavailable'))};document.head.appendChild(script)});await cozyPixiLoader}
+  if(token!==cozyPixiToken||!host.isConnected)return;
+  const P=window.PIXI,look=cozyLooks[cozyRecipe]||cozyLooks['clarity-potion'],color=Number.parseInt(look[0].slice(1),16);
+  app=new P.Application();await app.init({width:480,height:300,backgroundAlpha:0,antialias:true,autoDensity:true,resolution:Math.min(window.devicePixelRatio||1,2),preference:'webgl'});ready=true;
+  textures=await Promise.all([cozyTexture(P,'pot',look),cozyTexture(P,'bottle',look)]);
+  if(token!==cozyPixiToken||!host.isConnected){textures.forEach(t=>t.destroy(true));app.destroy(true,{children:true});return}
+  const smoke=new P.Container(),cauldron=new P.Container(),ingredients=new P.Container(),bottle=new P.Container(),sparks=new P.Container();app.stage.addChild(smoke,cauldron,ingredients,bottle,sparks);
+  const cx=240,pot=new P.Sprite(textures[0]);pot.width=280;pot.height=218;pot.position.set(cx-140,40);cauldron.addChild(pot);
+  const liquid=new P.Graphics().ellipse(0,0,74,9).fill({color,alpha:.3});liquid.position.set(cx,116);cauldron.addChild(liquid);
+  const wisps=Array.from({length:20},(_,i)=>{const p=new P.Graphics().circle(0,0,8+i%6).fill({color,alpha:.16});smoke.addChild(p);return {p,seed:i*17}});
+  const bubbles=Array.from({length:18},(_,i)=>{const p=new P.Graphics().circle(0,0,2+i%4).stroke({color:0xffffff,width:1.1,alpha:.7});cauldron.addChild(p);return {p,seed:i*23}});
+  const herbs=Array.from({length:12},(_,i)=>{const p=new P.Graphics();if(i%2)p.poly([0,-8,5,0,0,8,-5,0]).fill({color:0x91d69b});else p.star(0,0,5,6,3).fill({color:0xc5dfff});ingredients.addChild(p);return {p,seed:i}});
+  const stars=Array.from({length:18},()=>{const p=new P.Graphics().star(0,0,4,4,1.5).fill({color:0xffe3a6,alpha:.8});sparks.addChild(p);return p});
+  const glass=new P.Sprite(textures[1]);glass.width=150;glass.height=210;glass.position.set(-75,-105);bottle.addChild(glass);bottle.x=cx;
+  let tick=0;
+  function animate(time){tick+=cozyMotion?Math.min(3,time.deltaTime||0):0;const bottled=cozyStage===3,mixing=cozyStage<2;
+   cauldron.visible=!bottled;smoke.visible=!bottled;ingredients.visible=mixing;bottle.visible=bottled;
+   liquid.tint=cozyStage===0?0xb8a8d9:0xffffff;liquid.scale.set(1+Math.sin(tick*.06)*.04,1+Math.sin(tick*.045)*.12);
+   for(const {p,seed} of wisps){const progress=(tick*.35+seed*3)%120;p.x=cx+Math.sin(tick*.022+seed)*38;p.y=110-progress;p.alpha=.22*(1-progress/120);p.scale.set(.5+progress/60)}
+   for(const {p,seed} of bubbles){p.x=cx+Math.sin(seed*1.7)*65;p.y=119-((tick*.65+seed)%43);p.alpha=.8-((tick*.65+seed)%43)/60}
+   for(const {p,seed} of herbs){const angle=tick*.055+seed*2.4,progress=((tick*.4+seed*11)%100)/100;p.x=cx+Math.cos(angle)*(125-progress*115);p.y=35+Math.sin(angle)*35+progress*80;p.rotation=angle;p.alpha=1-progress*.8}
+   for(let i=0;i<stars.length;i++){const a=tick*.025+i*Math.PI*2/stars.length;stars[i].x=cx+Math.cos(a)*(bottled?87:116);stars[i].y=(bottled?139:165)+Math.sin(a)*(bottled?93:60);stars[i].alpha=.35+Math.sin(tick*.04+i)*.3}
+   bottle.y=145+Math.sin(tick*.04)*7;bottle.rotation=Math.sin(tick*.018)*.025;
+  }
+  layer=document.createElement('div');layer.className='majCozyPixiLayer';layer.setAttribute('aria-hidden','true');layer.appendChild(app.canvas);
+  const update=()=>{animate({deltaTime:0});app.render();if(cozyMotion&&!document.hidden)app.start();else app.stop()};
+  app.ticker.maxFPS=45;app.ticker.add(animate);cozyPixi={app,layer,update,textures};update();host.appendChild(layer);document.addEventListener('visibilitychange',update);
+ }catch(error){layer?.remove();if(cozyPixi?.app===app)cozyDisposePixi();else{if(ready)try{app.destroy(true,{children:true})}catch(_){}textures.forEach(t=>t.destroy(true));}host.classList.add('majCozyFallback');}
+}
+function cozyDisposePixi(){if(cozyPixi){const old=cozyPixi;cozyPixi=null;document.removeEventListener('visibilitychange',old.update);try{old.app.destroy(true,{children:true})}catch(_){}old.textures?.forEach(t=>t.destroy(true));old.layer.remove()}cozyPixiHost=null}
 
 function cozyClose(){cozyPixiToken++;cozyDisposePixi();document.getElementById('majCozyBrewing')?.remove();cozyRecipe=null;cozyCommitted=false}
 function cozyDraw(){
  const rec=RECIPES.find(x=>x.id===cozyRecipe);if(!rec)return cozyClose();
  const box=document.getElementById('majCozyBrewing');if(!box)return;
+ const previousScene=box.querySelector('.majCozyScene');
  const look=cozyLooks[rec.id]||cozyLooks['clarity-potion'];
  const labels=['Add ingredients','Stir the potion','Bottle your potion','Potion crafted!'];
  const actions=cozyStage===0?'<button onclick="majCozyNext()">Add all ingredients ✦</button>':cozyStage===1?'<button onclick="majCozyNext()">Stir ✨ '+cozyStirs+'/3</button><button onclick="majCozyQuick()">Quick mix</button>':cozyStage===2?'<button onclick="majCozyNext()">Bottle potion ⚗</button>':'<button onclick="majCozyClose()">Return to workshop</button>';
- box.innerHTML='<div class="majCozyModal" style="--potion-color:'+look[0]+';--potion-glow:'+look[1]+';--bottle-shape:'+look[2]+'" role="dialog" aria-modal="true" aria-labelledby="majCozyTitle"><button class="majCozyClose" aria-label="Close brewing workshop" onclick="majCozyClose()">×</button><small>THE MOONLIT CAULDRON • '+E(labels[cozyStage])+'</small><h2 id="majCozyTitle">'+E(rec.name)+'</h2><button type="button" onclick="majCozySound()" aria-pressed="'+cozySound+'">'+(cozySound?'♫ Cozy sound on':'♪ Cozy sound off')+'</button><p>'+E(rec.effect)+'</p><div class="majCozyScene"><div class="majCozyParticles" aria-hidden="true">✦ ✧ ✦ ✧ ✦</div>'+(cozyStage===3?'<div class="majCozyBottle" aria-label="Bottled potion"></div>':'<div class="majCozySmoke" aria-hidden="true">☁ ✧ ☁</div><div class="majCozyCauldron" aria-hidden="true"></div>')+'</div><p style="text-align:center">'+(cozyStage===3?'Your potion has been saved to inventory. '+cozyGuardian()+'':cozyStage===1?'Stir three times, or use Quick mix.':cozyStage===2?'The mixture is glowing. Ready to bottle!':'Ingredients are ready. Brew without any extra resource cost.')+'</p><div class="majCozyActions">'+actions+'</div></div>';
- cozyMountPixi();
+ box.innerHTML='<div class="majCozyModal" style="--potion-color:'+look[0]+';--potion-glow:'+look[1]+';--bottle-shape:'+look[2]+'" role="dialog" aria-modal="true" aria-labelledby="majCozyTitle"><button class="majCozyClose" aria-label="Close brewing workshop" onclick="majCozyClose()">×</button><small>THE MOONLIT CAULDRON • '+E(labels[cozyStage])+'</small><h2 id="majCozyTitle">'+E(rec.name)+'</h2><button type="button" onclick="majCozySound()" aria-pressed="'+cozySound+'">'+(cozySound?'♫ Cozy sound on':'♪ Cozy sound off')+'</button><button type="button" class="majCozyMotion" onclick="majCozyMotion()" aria-pressed="'+cozyMotion+'">'+(cozyMotion?'Pause animations':'Play animations')+'</button><p>'+E(rec.effect)+'</p><div class="majCozyScene" data-brew-stage="'+cozyStage+'" data-motion="'+(cozyMotion?'on':'off')+'">'+cozyFallbackMarkup(look)+'</div><p style="text-align:center">'+(cozyStage===3?'Your potion has been saved to inventory. '+cozyGuardian()+'':cozyStage===1?'Stir three times, or use Quick mix.':cozyStage===2?'The mixture is glowing. Ready to bottle!':'Ingredients are ready. Brew without any extra resource cost.')+'</p><div class="majCozyActions">'+actions+'</div></div>';
+ if(previousScene){box.querySelector('.majCozyScene').replaceWith(previousScene);previousScene.dataset.brewStage=String(cozyStage);previousScene.dataset.motion=cozyMotion?'on':'off';previousScene.querySelector('.majCozyFallbackArt')?.remove();previousScene.insertAdjacentHTML('afterbegin',cozyFallbackMarkup(look));}
+ cozyPixi?.update?.();cozyMountPixi();
 }
+window.majCozyMotion=()=>{cozyMotion=!cozyMotion;cozyDraw()};
 window.majCozyClose=cozyClose;
 window.majCozyQuick=()=>{if(cozyStage===1&&!cozyCommitted){cozyStirs=3;cozyStage=2;cozyChime();cozyDraw()}};
 window.majCozyNext=()=>{
