@@ -8,7 +8,7 @@ const robeNames=['Plum Scholar','Midnight Velvet','Emerald Witch','Moonlit Silve
 const hairNames=['Locs','Braids','Curls','Afro','Twists','Waves'];
 const skinColors=['#70412f','#9d6345','#bf8766','#deb192','#f0cdb4','#513024'];
 const e=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-let section='Appearance',category='Robes',pose='Idle',snapshot=null;
+let section='Appearance',category='Robes',pose='Idle',snapshot=null,poseRevision=0;
 const get=()=>window.MajickAtelier?.player?.();
 function save(){try{window.save?.()}catch(_){}window.MajickScholarCompanion?.refresh?.(true)}
 function art(p){
@@ -31,6 +31,22 @@ function controls(p){
  if(section==='Accessories')return '<h3>Accessories</h3><p>Equipped accessories remain saved. Fitted accessory artwork is being prepared.</p>';
  return '<h3>Mirror preview</h3><p>Choose a robe or hairstyle, then save your look.</p>';
 }
+async function renderApprovedPose(p){
+ const frame={Idle:'front_idle',Walk:'front_step_left',Study:'front_idle',Celebrate:'front_idle',Sit:'front_idle',Sanctuary:'front_idle'}[pose];
+ const stage=document.querySelector('#wsOverlay:not([hidden]) .wsStage');
+ if(!stage||!frame)return;
+ const token=++poseRevision;
+ if(pose==='Idle')return;
+ const gate=window.MajickV2ApprovalGate;
+ if(!gate){stage.closest('.wsMirror')?.querySelector('.wsMessage')?.replaceChildren(document.createTextNode('Pose layers are not ready. Your selected look is unchanged.'));return}
+ const result=await gate.compose(p,frame,'locs');
+ if(token!==poseRevision||!stage.isConnected)return;
+ const msg=stage.closest('.wsMirror')?.querySelector('.wsMessage');
+ if(!result.ok){if(msg)msg.textContent='This outfit and hairstyle do not yet have approved '+pose.toLowerCase()+' frames. Your appearance stays unchanged.';return}
+ const image=document.createElement('img');image.className='wsApprovedPose';image.alt='Approved aligned '+pose+' pose for the current outfit';image.src=result.canvas.toDataURL('image/png');
+ stage.replaceChildren(image);
+ if(msg)msg.textContent='Approved fitted '+pose.toLowerCase()+' frame';
+}
 function render(){
  const p=get();if(!p)return;const root=document.getElementById('wsOverlay');if(!root)return;
  root.innerHTML='<div class="wsWindow" role="dialog" aria-modal="true" aria-label="Scholar Atelier"><aside class="wsSidebar"><button class="wsBack" data-close>← Back</button><div class="wsBrand">☾<h1>Scholar<br>Atelier</h1></div><p class="wsMotto">Your look. Your story.</p><nav aria-label="Atelier rooms">'+['Appearance','Wardrobe','Accessories','Poses','Preview'].map(x=>button('✦ '+x,'data-section="'+x+'"',section===x)).join('')+'</nav><div class="wsSigil">✧ THE MOONLIT COLLEGIUM ✧</div></aside><main class="wsMain"><div class="wsControls"><h2>'+e(section)+'</h2>'+controls(p)+'</div><div class="wsMirror"><div class="wsMirrorTitle">✦ THE WARDROBE MIRROR ✦</div><div class="wsStage">'+art(p)+'</div><div class="wsPoseStrip">'+['Idle','Study','Celebrate','Walk','Sit','Sanctuary'].map(x=>button(x,'data-pose="'+x+'"',pose===x)).join('')+'</div><div class="wsActions"><button data-undo>↶ Revert</button><button class="wsSave" data-save>✦ Save Look</button></div><div class="wsMessage" role="status"></div></div></main></div>';
@@ -40,10 +56,11 @@ function render(){
  root.querySelectorAll('[data-skin]').forEach(b=>b.onclick=()=>{p.skin=Number(b.dataset.skin);save();render()});
  root.querySelectorAll('[data-hair]').forEach(b=>b.onclick=()=>{p.hair=Number(b.dataset.hair);save();render()});
  root.querySelectorAll('[data-robe]').forEach(b=>b.onclick=()=>{p.robe=Number(b.dataset.robe);save();render()});
- root.querySelectorAll('[data-pose]').forEach(b=>b.onclick=()=>{pose=b.dataset.pose;render();root.querySelector('.wsMessage').textContent=pose+' pose selected. Full pose artwork is not available for every outfit yet.'});
+ root.querySelectorAll('[data-pose]').forEach(b=>b.onclick=()=>{pose=b.dataset.pose;render()});
  root.querySelector('[data-undo]').onclick=()=>{if(snapshot){Object.assign(p,snapshot);save();render()}};
  root.querySelector('[data-save]').onclick=()=>{snapshot={...p};save();root.querySelector('.wsMessage').textContent='✦ Look saved to your scholar.'};
  root.querySelector('[data-close]').onclick=close;
+ renderApprovedPose(p);
  root.querySelector('.wsStage')?.addEventListener('error',event=>{if(event.target?.tagName==='IMG'){event.target.style.visibility='hidden';root.querySelector('.wsMessage').textContent='A fitted garment asset is unavailable; your saved selection is preserved.'}},true);
 }
 function open(){
@@ -87,6 +104,7 @@ const style=document.createElement('style');style.textContent=`
 .wsLayer3{transform:translateY(1%) scale(.77,.69);transform-origin:50% 10%}
 .wsLayer3[src*="layer-hair-afro"]{transform:translateY(.2%) scale(.74,.66)}
 .wsLayer3[src*="layer-hair-braids"]{transform:translateY(2.05%) scale(.77,.69)}
+.wsApprovedPose{height:100%;max-width:100%;object-fit:contain}
 .wsPoseStrip,.wsActions{display:flex;flex-wrap:wrap;justify-content:center;gap:9px;padding:12px}
 .wsActions .wsSave{background:#65346d;border-color:#e5bc77;font-weight:700}
 .wsMessage{min-height:22px;color:#e9c892;text-align:center}
