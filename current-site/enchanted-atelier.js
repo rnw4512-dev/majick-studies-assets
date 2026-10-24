@@ -21,7 +21,7 @@ function player(){
 }
 function save(){try{window.save?.()}catch(_){}}
 function iconButton(){if(document.getElementById('atelierLaunch'))return;const b=document.createElement('button');b.id='atelierLaunch';b.textContent='✦ Enchanted Atelier';b.className='atelierLaunch';b.type='button';b.addEventListener('click',open);document.body.append(b)}
-function open(){const p=player();if(!p)return;let el=document.getElementById('atelierOverlay');if(!el){el=document.createElement('div');el.id='atelierOverlay';el.className='atelierOverlay';el.setAttribute('role','dialog');el.setAttribute('aria-modal','true');el.setAttribute('aria-label','Enchanted Atelier');document.body.append(el)}render();el.hidden=false;el.querySelector('#atelierClose')?.focus()}
+function open(){if(window.MajickWardrobeStudio?.open)return window.MajickWardrobeStudio.open();const p=player();if(!p)return;let el=document.getElementById('atelierOverlay');if(!el){el=document.createElement('div');el.id='atelierOverlay';el.className='atelierOverlay';el.setAttribute('role','dialog');el.setAttribute('aria-modal','true');el.setAttribute('aria-label','Enchanted Atelier');document.body.append(el)}render();el.hidden=false;el.querySelector('#atelierClose')?.focus()}
 function close(){const el=document.getElementById('atelierOverlay');if(el)el.hidden=true}
 function select(label,kind,array,current){const art=kind==='hair'?AVATAR_HAIR:kind==='robe'?AVATAR_ROBES:null;return '<label>'+E(label)+'<select data-atelier="'+kind+'">'+array.map((v,i)=>{const pending=art&&!Object.prototype.hasOwnProperty.call(art,i);return '<option value="'+i+'" '+(i===current?'selected':'')+(pending?' disabled':'')+'>'+E(v)+(pending?' · artwork pending':'')+'</option>'}).join('')+'</select></label>'}
 function sharedVault(p){
