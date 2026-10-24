@@ -321,3 +321,17 @@ body.majickCampus #content .v342Repair [data-repair-feedback],
 #connectedProbability .connectedPathMenu nav{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
 #connectedProbability .connectedPathMenu nav button{min-height:44px;white-space:normal}
 @media(max-width:700px){#connectedProbability .connectedFields{grid-template-columns:minmax(0,1fr)}}
+
+/* Native option popups may use a light OS surface: never inherit ivory glyphs. */
+html body select option,html body select optgroup,
+body.majickCampus #content select option,body.majickCampus #content select optgroup,
+html body .atelierWindow select option,html body .atelierWindow select optgroup{
+ color:#24182e!important;-webkit-text-fill-color:#24182e!important;
+ background:#fff5e5!important;background-color:#fff5e5!important;
+ text-shadow:none!important;opacity:1!important;color-scheme:light;
+}
+body.majickCampus #content .mjSolutionEngine select,
+body.majickCampus #content .mjEmbeddedPractice select{
+ color:#24182e!important;-webkit-text-fill-color:#24182e!important;
+ background:#fff5e5!important;color-scheme:light;
+}
