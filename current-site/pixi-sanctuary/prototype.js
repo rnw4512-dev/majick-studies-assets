@@ -249,33 +249,50 @@ function applyLiveState(payload){
  // Guardian type is often a species (e.g. crystal-axolotl), not the portrait identity.
  // Match canonical identity by stable ID or display name first, then type as fallback.
  const norm=value=>String(value||'').toLowerCase().normalize('NFKD').replace(/[^a-z0-9]/g,'');
- const owned=new Map();
+ const owned=new Map(),used=new Set();
+ // Preserve multiple Guardians of the same species as separate saved identities.
+ // Each Guardian owns its own sprite, animation clock and evolution stage.
  for(const pet of payload.pets){
   const keys=[pet.name,pet.id,pet.guardianId,pet.key,pet.type].map(norm).filter(Boolean);
-  const match=entities.find(e=>keys.includes(norm(e.name))||keys.some(k=>k.startsWith(norm(e.name))||k.endsWith(norm(e.name))));
-  if(match&&!owned.has(match.name))owned.set(match.name,pet);
- }
-
- for(const e of entities){
-  const p=owned.get(e.name);
-  e.root.visible=!!p;
-  if(p){
-   e.savedPetId=String(p.id||'');
-   const labelNode=e.root.children.find(x=>x instanceof PIXI.Text);
-   if(labelNode)labelNode.text=String(p.name||e.name)+' · Lv '+(Number(p.level)||1);
-   e.savedStage=String(p.stage||'new-bond');
-   if(e.lastLoadedStage===e.savedStage)continue;
-   e.lastLoadedStage=e.savedStage;
-   const requested=e.savedStage,token=e.stageRequest=(e.stageRequest||0)+1;
-   if(e.name==='velora'&&stagePicker){stagePicker.value=requested;stagePicker.onchange?.()}
-   else PIXI.Assets.load('../sanctuary/assets/evolutions/'+e.name+'/'+requested+'/walk.webp').then(texture=>{
-    if(e.stageRequest!==token||!e.root.visible)return;
-    e.baseTexture=texture;e.sprite.texture=texture;e.walkFrames=[];
-    makeStageWalkFrames(texture).then(frames=>{if(e.stageRequest===token){e.walkFrames=frames;e.baseScale=Math.min(170/Math.max(1,texture.width),165/Math.max(1,texture.height))}}).catch(()=>{});
-    e.sprite.scale.set(Math.min(170/Math.max(1,texture.width),165/Math.max(1,texture.height)));e.baseScale=Math.min(170/Math.max(1,texture.width),165/Math.max(1,texture.height));
-   }).catch(()=>{});
-
+  const base=entities.find(e=>!e.isDuplicate&&(keys.includes(norm(e.name))||keys.some(k=>k.startsWith(norm(e.name))||k.endsWith(norm(e.name)))));
+  if(!base)continue;
+  let e=base;
+  if(used.has(base)){
+   const identity=String(pet.id||pet.name||'');
+   e=entities.find(item=>item.isDuplicate&&item.sourceName===base.name&&item.savedPetId===identity);
+   if(!e){
+    const root=new PIXI.Container();
+    const shadow=new PIXI.Graphics();shadow.ellipse(0,0,65,12).fill({color:0x000000,alpha:.26});root.addChild(shadow);
+    const sprite=new PIXI.Sprite(base.baseTexture);sprite.anchor.set(.5,1);sprite.scale.set(base.baseScale);sprite.y=-10;root.addChild(sprite);
+    const caption=label(String(pet.name||base.name));caption.anchor.set(.5,0);caption.y=20;root.addChild(caption);
+    const slot=entities.length;
+    root.position.set(145+(slot%5)*225,245+Math.floor(slot/5)*145);
+    e={...base,root,sprite,shadow,slot,tx:root.x,ty:root.y,walkFrames:base.walkFrames.slice(),walkClock:0,phase:rand()*6.28,isDuplicate:true,sourceName:base.name,lastLoadedStage:null,stageRequest:0};
+    sprite.eventMode='static';sprite.cursor='pointer';sprite.on('pointertap',()=>{e.playing=1.3;e.pause=1.3});
+    guardianLayer.addChild(root);entities.push(e);
+   }
   }
+  used.add(e);owned.set(e,pet);
+ }
+ for(const e of entities){
+  const p=owned.get(e);
+  e.root.visible=!!p;
+  if(!p)continue;
+  e.savedPetId=String(p.id||'');
+  const labelNode=e.root.children.find(x=>x instanceof PIXI.Text);
+  if(labelNode)labelNode.text=String(p.name||e.name)+' · Lv '+(Number(p.level)||1);
+  e.savedStage=String(p.stage||'new-bond');
+  if(e.lastLoadedStage===e.savedStage)continue;
+  e.lastLoadedStage=e.savedStage;
+  const requested=e.savedStage,token=e.stageRequest=(e.stageRequest||0)+1;
+  if(e.name==='velora'&&stagePicker&&!e.isDuplicate){stagePicker.value=requested;stagePicker.onchange?.()}
+  else PIXI.Assets.load('../sanctuary/assets/evolutions/'+e.name+'/'+requested+'/walk.webp').then(texture=>{
+   if(e.stageRequest!==token||!e.root.visible)return;
+   e.baseTexture=texture;e.sprite.texture=texture;e.walkFrames=[];
+   e.baseScale=Math.min(170/Math.max(1,texture.width),165/Math.max(1,texture.height));
+   e.sprite.scale.set(e.baseScale);
+   makeStageWalkFrames(texture).then(frames=>{if(e.stageRequest===token)e.walkFrames=frames}).catch(()=>{});
+  }).catch(()=>{});
  }
  const count=entities.filter(e=>e.root.visible).length;
  status.textContent=count+' of '+payload.pets.length+' saved Guardians matched · room state '+(liveRoom?'received':'unavailable')+(count===0?' · Guardian identity mismatch; check saved roster':'');
