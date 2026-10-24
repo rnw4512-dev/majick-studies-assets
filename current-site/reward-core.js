@@ -213,7 +213,7 @@ function award(type,ctx={}){
  r.ledger[key]={type,at:receipt.at,receipt};r.lastReceipt=receipt;
  save();pushRewardState();showReceipt(receipt);
  if(['concept-mastered','lesson-mastered','competency-mastered','oa-competency-ready','course-passed'].includes(type)){
-   document.dispatchEvent(new CustomEvent('majick:celebrate',{detail:{type:type==='course-passed'?'course':'mastery',key,course:ctx.course||window.S?.activeCourse||'',verified:true}}));
+   if(typeof document!=='undefined'&&typeof CustomEvent==='function')document.dispatchEvent(new CustomEvent('majick:celebrate',{detail:{type:type==='course-passed'?'course':'mastery',key,course:ctx.course||window.S?.activeCourse||'',verified:true}}));
  }
  // Emit visual-only feedback only after the authoritative one-time ledger write.
  const milestone={'micro-skill-mastered':'success','concept-mastered':'mastery','lesson-mastered':'lesson','competency-mastered':'mastery','oa-competency-ready':'mastery','course-passed':'course','misconception-repaired':'guardian'}[type];
