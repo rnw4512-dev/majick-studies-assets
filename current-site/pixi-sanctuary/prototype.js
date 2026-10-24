@@ -83,6 +83,38 @@ await Promise.all(names.map(async(name,i)=>{
   guardianLayer.addChild(root);entities.push(e);loaded++;$('loaded').textContent=loaded+' / 10';
  }catch(err){console.warn('Guardian art unavailable:',name,err)}
 }));
+
+// Isolated stage preview: existing evolution artwork is a single walk image,
+// not a certified two-frame cycle. Do not misrepresent it as a finished pack.
+const velora=entities.find(e=>e.name==='velora');
+const stagePicker=$('velora-stage');
+if(velora&&stagePicker){
+ stagePicker.onchange=async()=>{
+  const stage=stagePicker.value;
+  const previous=velora.walkFrames.slice(),previousBase=velora.baseTexture;
+  stagePicker.disabled=true;
+  try{
+   if(stage==='new-bond'){
+    velora.walkFrames=velora.originalWalkFrames||previous;
+    velora.baseTexture=velora.originalBaseTexture||previousBase;
+   }else{
+    const texture=await PIXI.Assets.load('../sanctuary/assets/evolutions/velora/'+stage+'/walk.webp');
+    if(!velora.originalWalkFrames)velora.originalWalkFrames=previous;
+    if(!velora.originalBaseTexture)velora.originalBaseTexture=previousBase;
+    velora.walkFrames=[]; // Single pose cannot masquerade as two walk frames.
+    velora.baseTexture=texture;
+   }
+   velora.sprite.texture=velora.baseTexture;
+   velora.sprite.scale.set(Math.min(170/velora.baseTexture.width,165/velora.baseTexture.height));
+   velora.walkClock=0;
+   status.textContent=stage==='new-bond'?'Velora: original two-frame walking restored':'Velora '+stage+': stage art preview only · walking pair pending';
+  }catch(err){
+   velora.walkFrames=previous;velora.baseTexture=previousBase;
+   stagePicker.value='new-bond';console.warn('Evolution preview unavailable',err);
+   status.textContent='Stage artwork unavailable; existing Velora artwork preserved';
+  }finally{stagePicker.disabled=false}
+ };
+}
 if(!entities.length){status.textContent='Guardian images could not load. Please check network access.';return}
 status.textContent='PixiJS running · approved art and clean walking poses · tap to play';
 $('toggle').textContent=paused?'Resume movement':'Pause movement';
