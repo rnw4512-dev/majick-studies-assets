@@ -16,9 +16,9 @@ try {
 } catch(error) { console.error('PixiJS v8 initialization failed',error); reportFailure('PixiJS could not initialize graphics on this device. Use the original Sanctuary button above.'); return; }
 room.appendChild(app.canvas);
 const world=new PIXI.Container();app.stage.addChild(world);
-const ground=new PIXI.Graphics();ground.ellipse(600,625,570,150).fill({color:0x36243f,alpha:.85});world.addChild(ground);
+const ground=new PIXI.Graphics();ground.ellipse(600,610,530,112).fill({color:0x36243f,alpha:.32});world.addChild(ground);
 const backdrop=new PIXI.Container();world.addChildAt(backdrop,0);
-PIXI.Assets.load('../assets/approved_sanctuary_backdrop.jpg').then(texture=>{
+PIXI.Assets.load('../assets/guardian-dorm-v1.png').then(texture=>{
  const image=new PIXI.Sprite(texture);image.width=1200;image.height=700;backdrop.addChild(image);
 }).catch(error=>console.warn('Sanctuary background unavailable',error));
 const furnitureLayer=new PIXI.Container();world.addChild(furnitureLayer);
@@ -33,10 +33,10 @@ async function loadFurniture(){
    try{
     const texture=await PIXI.Assets.load('../sanctuary/assets/objects/'+obj.filename);
     const sprite=new PIXI.Sprite(texture);sprite.anchor.set(.5,1);
-    const width=Math.min(165,Number(obj.placement.width||180)*.48);
+    const width=Math.min(215,Math.max(105,Number(obj.placement.width||180)*.7));
     sprite.scale.set(width/Math.max(1,texture.width));
-    sprite.x=Math.max(60,Math.min(1140,Number(obj.placement.x||600)*.57));
-    sprite.y=Math.max(240,Math.min(665,Number(obj.placement.y||750)*.69));
+    sprite.x=Math.max(60,Math.min(1140,Number(obj.placement.x||600)*.78));
+    sprite.y=Math.max(240,Math.min(665,Number(obj.placement.y||750)*.77));
     sprite.eventMode='static';sprite.cursor='pointer';
     sprite.on('pointertap',()=>{if(obj.destination&&window.parent!==window)window.parent.postMessage({type:'MAJICK_OPEN_ROUTE',route:obj.destination},location.origin);else status.textContent=obj.displayName+' · '+(obj.interaction||'Sanctuary furnishing')});
     furnitureLayer.addChild(sprite);furnitureSprites.set(obj.id,{sprite,obj});
@@ -204,7 +204,7 @@ function publishRoster(){if(window.parent===window||!liveRoster)return;window.pa
 function applyLiveState(payload){
  if(!payload||!Array.isArray(payload.pets))return;
  liveRoster=payload.pets;liveRoom=payload.room||null;
- for(const [id,entry] of furnitureSprites){const pos=liveRoom?.positions?.[id];if(pos&&Number.isFinite(Number(pos.x))&&Number.isFinite(Number(pos.y))){entry.sprite.x=Math.max(35,Math.min(1165,Number(pos.x)*.57));entry.sprite.y=Math.max(200,Math.min(685,Number(pos.y)*.69))}entry.sprite.visible=!liveRoom?.stored?.includes(id)}
+ for(const [id,entry] of furnitureSprites){const pos=liveRoom?.positions?.[id];if(pos&&Number.isFinite(Number(pos.x))&&Number.isFinite(Number(pos.y))){entry.sprite.x=Math.max(35,Math.min(1165,Number(pos.x)*.78));entry.sprite.y=Math.max(200,Math.min(685,Number(pos.y)*.77))}entry.sprite.visible=!liveRoom?.stored?.includes(id)}
  const owned=new Map(payload.pets.map(p=>[String(p.type||'').toLowerCase(),p]));
  for(const e of entities){
   const p=owned.get(e.name);
@@ -214,12 +214,15 @@ function applyLiveState(payload){
    const labelNode=e.root.children.find(x=>x instanceof PIXI.Text);
    if(labelNode)labelNode.text=String(p.name||e.name)+' · Lv '+(Number(p.level)||1);
    e.savedStage=String(p.stage||'new-bond');
+   if(e.lastLoadedStage===e.savedStage)continue;
+   e.lastLoadedStage=e.savedStage;
    const requested=e.savedStage,token=e.stageRequest=(e.stageRequest||0)+1;
    if(e.name==='velora'&&stagePicker){stagePicker.value=requested;stagePicker.onchange?.()}
    else PIXI.Assets.load('../sanctuary/assets/evolutions/'+e.name+'/'+requested+'/walk.webp').then(texture=>{
     if(e.stageRequest!==token||!e.root.visible)return;
     e.baseTexture=texture;e.sprite.texture=texture;e.walkFrames=[];
-    e.sprite.scale.set(Math.min(170/Math.max(1,texture.width),165/Math.max(1,texture.height)));
+    makeStageWalkFrames(texture).then(frames=>{if(e.stageRequest===token){e.walkFrames=frames;e.baseScale=Math.min(170/Math.max(1,texture.width),165/Math.max(1,texture.height))}}).catch(()=>{});
+    e.sprite.scale.set(Math.min(170/Math.max(1,texture.width),165/Math.max(1,texture.height)));e.baseScale=Math.min(170/Math.max(1,texture.width),165/Math.max(1,texture.height));
    }).catch(()=>{});
 
   }
@@ -247,6 +250,7 @@ app.ticker.add(()=>{
  const now=performance.now(),dt=Math.min((now-last)/1000,.06);last=now;frames++;total+=dt;elapsed+=dt;
  moving=0;
  if(!paused)for(const e of entities){
+  if(!e.root.visible)continue;
   e.phase+=dt*3;
   if(e.playing>0){e.playing-=dt;e.sprite.texture=e.baseTexture;e.sprite.rotation=Math.sin(e.phase*5)*.11;e.sprite.y=-10-Math.abs(Math.sin(e.phase*5))*13;continue}
   e.sprite.rotation=0;
@@ -281,6 +285,6 @@ app.ticker.add(()=>{
  dots.visible=ambient;
  if(ambient){for(let i=0;i<dots.children.length;i++){const p=dots.children[i];p.alpha=.35+Math.sin(elapsed*1.3+i)*.2;p.y+=dt*(stress?32:5);if(p.y>650)p.y=15}}
  if(stress){for(let i=0;i<dots.children.length;i++){const p=dots.children[i];p.scale.set(2)}}else for(const p of dots.children)p.scale.set(1);
- if(total>=1){status.textContent=paused?'Movement paused · press Resume movement':moving+' Guardians walking · tap one to play';$('fps').textContent=Math.round(frames/total);$('ms').textContent=(total/frames*1000).toFixed(1)+' ms';$('moving').textContent=moving+' / '+entities.length;frames=0;total=0}
+ if(total>=1){status.textContent=paused?'Movement paused · press Resume movement':moving+' Guardians walking · tap one to play';$('fps').textContent=Math.round(frames/total);$('ms').textContent=(total/frames*1000).toFixed(1)+' ms';$('moving').textContent=moving+' / '+entities.filter(e=>e.root.visible).length;frames=0;total=0}
 });
 })();
