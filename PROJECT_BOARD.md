@@ -303,3 +303,10 @@ Every change must append **date / area / commit or PR / what changed / how / act
 - Desktop controls scroll independently while the mirror and save actions fit the viewport. Smaller robe cards in a two-column grid, reduced sidebar, current robe/hair caption. Mobile retains preview-first ordering.
 - Added mandatory test-atelier-preview-recovery.cjs for stale pose/walk, image decode failure and atomic replacement. Browser checked simple mirror, rapid Study→robe change, caption accuracy and all fitted image loads. Current browser has no WebGL; GPU path and full three-width stable certification pending.
 - No artwork, WGU content, academic/reward owner, XP/crystals, Guardian/Sanctuary or saved appearance schema changes. Development publication after mandatory checks. Rollback via scoped revert; never clear storage.
+
+
+## 2026-10-24 — Persistent avatar and lighted boutique vanity
+- User reported the avatar disappearing while Pixi platform remained. Removed the character handoff entirely: existing fitted DOM/approved-pose renderer is the sole avatar owner; Pixi owns scenery/motes behind it and cannot hide/remove avatar images. Zoom/facing remain with the character owner, including approved frames.
+- Added warm vanity bulbs, session-only lights on/off, champagne/blush mirror and wardrobe surfaces, rose-velvet sidebar, darker readable typography and current-look caption. Preserved art, stored outfit, reward and academic owners, Guardian/Sanctuary and motion assets.
+- Mandatory tests include scenery isolation (no avatar/learner-state access), resize/context-loss cleanup and existing async pose regression. Browser reproduced screenshot choices (Waves/Sanctuary/Face left) with fitted avatar visible, plus light switch and image-load checks. GPU path/full stable responsive certification remain unverified; user explicitly authorizes development deployment without certificates.
+- Rollback: scoped revert of this change; never clear learner saves. Publish through the existing workflow after canonical mandatory checks.
