@@ -256,6 +256,7 @@ function completeHatch(id){
   window.S.legacy.eggs=eggs().filter(e=>e.id!==id);
   if(inc.focusEggId===id)inc.focusEggId=window.S.legacy.eggs[0]?.id||null;
   window.S.legacy.activePetId=pet.id;save();
+  window.MajickMilestoneParticles?.play?.('hatch',document.querySelector('#majCelestialHatch .majHatchDialog')||document.body);
   const dialog=document.querySelector('#majCelestialHatch .majHatchDialog');
   if(dialog)dialog.innerHTML='<div class="majHatchStars" aria-hidden="true">✦ · ⋆ · ✧ · ✦</div><div class="majHatchReveal" aria-hidden="true">'+String(meta.icon||'✦').replace(/[&<>]/g,'')+'</div><h2>'+String(pet.name).replace(/[&<>]/g,'')+' has hatched!</h2><p>A new Guardian has awakened in your Sanctuary.</p><button type="button" id="majHatchContinue">Welcome '+String(pet.name).replace(/[&<>]/g,'')+'</button>';
   document.getElementById('majHatchContinue').onclick=()=>{document.getElementById('majCelestialHatch')?.remove();try{window.render?.()}catch(_){};setTimeout(showHatch,250)};
