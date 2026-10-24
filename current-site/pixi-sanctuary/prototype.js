@@ -23,6 +23,43 @@ PIXI.Assets.load('../assets/guardian-dorm-v1.png').then(texture=>{
 }).catch(error=>console.warn('Sanctuary background unavailable',error));
 const furnitureLayer=new PIXI.Container();world.addChild(furnitureLayer);
 const furnitureSprites=new Map();
+let furnitureEdit=false,liveRoster=null,liveRoom=null,requestSequence=0;
+const pending=new Map();
+function action(type,fields={}){
+ const requestId=++requestSequence;
+ if(window.parent===window){$('care-result').textContent='Open Sanctuary inside Majick Studies to save changes.';return}
+ pending.set(requestId,Date.now());
+ window.parent.postMessage({type:'MAJICK_PIXI_ACTION',action:type,requestId,...fields},location.origin);
+ $('care-result').textContent='Saving…';
+}
+function updateFurnitureOptions(){
+ const select=$('furniture-select'),selected=select.value;
+ select.replaceChildren(new Option('Choose furniture',''));
+ for(const [id,{obj}] of furnitureSprites)select.add(new Option(obj.displayName||id,id));
+ select.value=furnitureSprites.has(selected)?selected:'';
+}
+function updateCareOptions(){
+ const select=$('care-guardian'),selected=select.value;
+ select.replaceChildren(new Option('Choose a saved Guardian',''));
+ for(const p of liveRoster||[])select.add(new Option((p.name||p.type)+' · Lv '+(p.level||1),String(p.id)));
+ select.value=(liveRoster||[]).some(p=>String(p.id)===selected)?selected:'';
+}
+function applyRoomFurniture(){
+ for(const [id,{sprite,obj}] of furnitureSprites){
+  const pos=liveRoom?.positions?.[id];
+  const base=obj.placement||{};
+  const x=pos&&Number.isFinite(Number(pos.x))?Number(pos.x):Number(base.x||600);
+  const y=pos&&Number.isFinite(Number(pos.y))?Number(pos.y):Number(base.y||750);
+  sprite.x=Math.max(35,Math.min(1165,x*.78));
+  sprite.y=Math.max(200,Math.min(685,y*.77));
+  sprite.visible=!(liveRoom?.stored||[]).includes(id);
+ }
+}
+$('edit-furniture').onclick=()=>{furnitureEdit=!furnitureEdit;$('edit-furniture').setAttribute('aria-pressed',String(furnitureEdit));$('edit-furniture').textContent='Arrange furniture: '+(furnitureEdit?'on':'off');$('care-result').textContent=furnitureEdit?'Drag an item to reposition it.':'Arrangement mode off.'};
+for(const kind of ['pet','play','feed'])$('care-'+kind).onclick=()=>{const petId=$('care-guardian').value;if(!petId){$('care-result').textContent='Choose a Guardian first.';return}action(kind,{petId})};
+$('furniture-store').onclick=()=>{const id=$('furniture-select').value;if(!id)return;action('furniture-store',{id,stored:true});const entry=furnitureSprites.get(id);if(entry)entry.sprite.visible=false};
+$('furniture-place').onclick=()=>{const id=$('furniture-select').value;if(!id)return;action('furniture-store',{id,stored:false});const entry=furnitureSprites.get(id);if(entry)entry.sprite.visible=true};
+
 async function loadFurniture(){
  try{
   const response=await fetch('../sanctuary/assets/objects/objects-manifest.json');
@@ -38,8 +75,13 @@ async function loadFurniture(){
     sprite.x=Math.max(60,Math.min(1140,Number(obj.placement.x||600)*.78));
     sprite.y=Math.max(240,Math.min(665,Number(obj.placement.y||750)*.77));
     sprite.eventMode='static';sprite.cursor='pointer';
-    sprite.on('pointertap',()=>{if(obj.destination&&window.parent!==window)window.parent.postMessage({type:'MAJICK_OPEN_ROUTE',route:obj.destination},location.origin);else status.textContent=obj.displayName+' · '+(obj.interaction||'Sanctuary furnishing')});
-    furnitureLayer.addChild(sprite);furnitureSprites.set(obj.id,{sprite,obj});
+    let dragging=false,moved=false;
+    sprite.on('pointerdown',event=>{if(!furnitureEdit)return;dragging=true;moved=false;sprite.alpha=.75;sprite.__start={x:event.global.x,y:event.global.y}});
+    sprite.on('globalpointermove',event=>{if(!dragging)return;const point=furnitureLayer.toLocal(event.global);sprite.x=Math.max(35,Math.min(1165,point.x));sprite.y=Math.max(200,Math.min(685,point.y));moved=true});
+    const finish=()=>{if(!dragging)return;dragging=false;sprite.alpha=1;if(moved)action('furniture-position',{id:obj.id,x:Math.round(sprite.x/.78),y:Math.round(sprite.y/.77)})};
+    sprite.on('pointerup',finish);sprite.on('pointerupoutside',finish);
+    sprite.on('pointertap',()=>{if(furnitureEdit){$('furniture-select').value=obj.id;return}if(obj.destination&&window.parent!==window)window.parent.postMessage({type:'MAJICK_OPEN_ROUTE',route:obj.destination},location.origin);else status.textContent=obj.displayName+' · '+(obj.interaction||'Sanctuary furnishing')});
+    furnitureLayer.addChild(sprite);furnitureSprites.set(obj.id,{sprite,obj});updateFurnitureOptions();applyRoomFurniture();
    }catch(error){console.warn('Furniture art missing:',obj.id,error)}
   }
  }catch(error){console.warn('Furniture manifest could not load',error)}
@@ -199,12 +241,11 @@ if(velora&&stagePicker){
  stagePicker.onchange(); // Load uploaded New Bond pair on initial render.
 }
 // Read-only live account bridge. Parent remains the only owner of progress and room persistence.
-let liveRoster=null,liveRoom=null;
 function publishRoster(){if(window.parent===window||!liveRoster)return;window.parent.postMessage({type:'MAJICK_SANCTUARY_ROSTER_V3350',rows:entities.filter(e=>e.root.visible&&e.savedPetId).map(e=>({petId:e.savedPetId,name:e.name,present:true}))},location.origin);}
 function applyLiveState(payload){
  if(!payload||!Array.isArray(payload.pets))return;
  liveRoster=payload.pets;liveRoom=payload.room||null;
- for(const [id,entry] of furnitureSprites){const pos=liveRoom?.positions?.[id];if(pos&&Number.isFinite(Number(pos.x))&&Number.isFinite(Number(pos.y))){entry.sprite.x=Math.max(35,Math.min(1165,Number(pos.x)*.78));entry.sprite.y=Math.max(200,Math.min(685,Number(pos.y)*.77))}entry.sprite.visible=!liveRoom?.stored?.includes(id)}
+ applyRoomFurniture();updateCareOptions();
  const owned=new Map(payload.pets.map(p=>[String(p.type||'').toLowerCase(),p]));
  for(const e of entities){
   const p=owned.get(e.name);
@@ -235,6 +276,7 @@ window.addEventListener('message',event=>{
  if(event.origin!==location.origin||event.source!==window.parent)return;
  if(event.data?.type==='MAJICK_STATE')applyLiveState(event.data.payload);
  if(event.data?.type==='MAJICK_SANCTUARY_ROSTER_REQUEST_V3350')publishRoster();
+ if(event.data?.type==='MAJICK_PIXI_ACTION_RESULT'&&pending.has(event.data.requestId)){pending.delete(event.data.requestId);$('care-result').textContent=event.data.message|| (event.data.ok?'Saved':'Could not save');if(!event.data.ok&&liveRoom)applyRoomFurniture()}
 });
 if(window.parent!==window)window.parent.postMessage({type:'MAJICK_PIXI_SANCTUARY_READY'},location.origin);
 if(!entities.length){status.textContent='Guardian images could not load. Please check network access.';return}
