@@ -708,3 +708,9 @@ Additional live checking found Learn Mode also reopening its default classroom a
 - User screenshot: cream SVG question table body cells were visible only when selected. The renderer uses XHTML table cells inside SVG foreignObject; dark-room ivory text/glyph fill leaked into the cells while headers kept dark ink.
 - Scoped readability-guard.css rule gives all shared question-table cells explicit dark ink (#253246), matching WebKit text fill, full opacity and cream surfaces (#fffdf7). No blanket changes to SVG data colors, answer keys, progress or room themes. Source hash updated.
 - Mandatory canonical build and preservation checks required before development deployment. Full stable certification remains waived by user for development updates. Rollback via scoped revert; never clear learner storage.
+
+
+## 2026-10-24 — Without-replacement anchor reminder
+- Added a dedicated Without replacement reference on the existing Professor’s Anchor Wall, plus automatic focused chart routing for without-replacement questions. Uses the learner’s 3-green/2-purple example: dropdown order 3,5,2,4; 3/5 × 2/4 = 3/10 = 30%. Explains conditional multiplication, both count changes, dependent draws and the with-replacement contrast.
+- Visual counters show before/after a green draw; collapsed calculator and whiteboard steps use the same scenario. No new renderer/state/progress owner, question record edits or independent mastery credit. Chart is reference/guided support.
+- Targeted math/routing/no-state-access checks passed. Canonical integrity and preservation checks required before publishing; development update authorized without full certificates. Rollback with scoped revert; never clear saves.
