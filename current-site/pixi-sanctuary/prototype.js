@@ -84,35 +84,62 @@ await Promise.all(names.map(async(name,i)=>{
  }catch(err){console.warn('Guardian art unavailable:',name,err)}
 }));
 
-// Isolated stage preview: existing evolution artwork is a single walk image,
-// not a certified two-frame cycle. Do not misrepresent it as a finished pack.
+// Stage-aware, isolated Velora loader. Upload the reviewed transparent PNGs to
+// pixi-sanctuary/frames/velora/<stage>/walk-1.png and walk-2.png.
+// Missing frames never replace the existing working animation.
 const velora=entities.find(e=>e.name==='velora');
 const stagePicker=$('velora-stage');
 if(velora&&stagePicker){
+ const defaultFrames=velora.walkFrames.slice();
+ const defaultBase=velora.baseTexture;
+ const stageCache=new Map();
+ let requestId=0;
+ const applyStage=(stage,base,frames,source)=>{
+  velora.baseTexture=base;
+  velora.walkFrames=frames;
+  velora.walkClock=0;
+  velora.sprite.texture=base;
+  velora.sprite.scale.set(Math.min(170/Math.max(1,base.width),165/Math.max(1,base.height)));
+  velora.sprite.y=-10;
+  velora.stage=stage;
+  velora.frameSource=source;
+  status.textContent='Velora '+stage+': '+source;
+ };
  stagePicker.onchange=async()=>{
-  const stage=stagePicker.value;
-  const previous=velora.walkFrames.slice(),previousBase=velora.baseTexture;
+  const stage=stagePicker.value,id=++requestId;
   stagePicker.disabled=true;
   try{
-   if(stage==='new-bond'){
-    velora.walkFrames=velora.originalWalkFrames||previous;
-    velora.baseTexture=velora.originalBaseTexture||previousBase;
-   }else{
-    const texture=await PIXI.Assets.load('../sanctuary/assets/evolutions/velora/'+stage+'/walk.webp');
-    if(!velora.originalWalkFrames)velora.originalWalkFrames=previous;
-    if(!velora.originalBaseTexture)velora.originalBaseTexture=previousBase;
-    velora.walkFrames=[]; // Single pose cannot masquerade as two walk frames.
-    velora.baseTexture=texture;
+   if(stage==='new-bond'&&defaultFrames.length===2){
+    applyStage(stage,defaultBase,defaultFrames,'original approved walking pair');
+    return;
    }
-   velora.sprite.texture=velora.baseTexture;
-   velora.sprite.scale.set(Math.min(170/velora.baseTexture.width,165/velora.baseTexture.height));
-   velora.walkClock=0;
-   status.textContent=stage==='new-bond'?'Velora: original two-frame walking restored':'Velora '+stage+': stage art preview only · walking pair pending';
-  }catch(err){
-   velora.walkFrames=previous;velora.baseTexture=previousBase;
-   stagePicker.value='new-bond';console.warn('Evolution preview unavailable',err);
-   status.textContent='Stage artwork unavailable; existing Velora artwork preserved';
-  }finally{stagePicker.disabled=false}
+   if(stageCache.has(stage)){
+    const saved=stageCache.get(stage);
+    applyStage(stage,saved.base,saved.frames,saved.source);
+    return;
+   }
+   const base=await PIXI.Assets.load('../sanctuary/assets/evolutions/velora/'+stage+'/walk.webp');
+   if(id!==requestId)return;
+   let frames=[],source='existing evolution pose (walking frames not yet uploaded)';
+   try{
+    const urls=[1,2].map(n=>'./frames/velora/'+stage+'/walk-'+n+'.png');
+    frames=await Promise.all(urls.map(url=>PIXI.Assets.load(url)));
+    if(frames.some(t=>!t||!t.width||!t.height))throw Error('Empty walking frame');
+    source='two transparent walking frames';
+   }catch(error){
+    frames=[];
+    console.info('Velora stage frames pending:',stage,error);
+   }
+   if(id!==requestId)return;
+   stageCache.set(stage,{base,frames,source});
+   applyStage(stage,base,frames,source);
+  }catch(error){
+   console.warn('Velora stage load failed; original art preserved',error);
+   stagePicker.value='new-bond';
+   applyStage('new-bond',defaultBase,defaultFrames,'fallback original approved art');
+  }finally{
+   if(id===requestId)stagePicker.disabled=false;
+  }
  };
 }
 if(!entities.length){status.textContent='Guardian images could not load. Please check network access.';return}
