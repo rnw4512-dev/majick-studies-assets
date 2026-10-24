@@ -90,7 +90,7 @@ await Promise.all(names.map(async(name,i)=>{
 const velora=entities.find(e=>e.name==='velora');
 const stagePicker=$('velora-stage');
 if(velora&&stagePicker){
- const defaultFrames=velora.walkFrames.slice();
+ const defaultFrames=await Promise.all([1,2].map(n=>PIXI.Assets.load('../assets/atelier/v2/fitted/companions/velora_walk_'+n+'.webp'))).catch(()=>velora.walkFrames.slice());
  const defaultBase=velora.baseTexture;
  const stageCache=new Map();
  let requestId=0;
@@ -109,7 +109,7 @@ if(velora&&stagePicker){
   const stage=stagePicker.value,id=++requestId;
   stagePicker.disabled=true;
   try{
-   if(stage==='new-bond'&&defaultFrames.length===2){
+   if(stage==='new-bond'){
     applyStage(stage,defaultBase,defaultFrames,'original approved walking pair');
     return;
    }
