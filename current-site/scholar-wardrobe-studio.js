@@ -9,6 +9,11 @@ const hairNames=['Locs','Braids','Curls','Afro','Twists','Waves'];
 const skinColors=['#70412f','#9d6345','#bf8766','#deb192','#f0cdb4','#513024'];
 const e=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 let section='Appearance',category='Robes',pose='Idle',snapshot=null,poseRevision=0;
+const OUTFIT_LIMIT=8;
+function looks(p){if(!Array.isArray(p.savedScholarLooks))p.savedScholarLooks=[];return p.savedScholarLooks;}
+function equipped(p){return {skin:Number(p.skin)||0,hair:Number(p.hair)||0,robe:Number(p.robe)||0,wardrobeOccasion:p.wardrobeOccasion||'Class'};}
+function applyLook(p,look){for(const key of ['skin','hair','robe','wardrobeOccasion'])if(Object.prototype.hasOwnProperty.call(look,key))p[key]=look[key];}
+function savedLooks(p){const entries=looks(p);return '<h3>Saved outfits</h3><p class="wsHint">Save up to eight complete looks. Load any saved outfit before heading to class or the Sanctuary.</p><div class="wsSavedLooks">'+(entries.length?entries.map((look,i)=>'<div class="wsSavedLook"><strong>'+e(look.name||'Outfit '+(i+1))+'</strong><span>'+e(robeNames[Number(look.robe)]||'Scholar robe')+' · '+e(hairNames[Number(look.hair)]||'Hair')+'</span><div><button type="button" data-load-look="'+i+'">Wear</button><button type="button" data-delete-look="'+i+'" aria-label="Delete '+e(look.name||'outfit')+'">Remove</button></div></div>').join(''):'<p class="wsHint">No outfits saved yet.</p>')+'</div><label class="wsNameLabel" for="wsLookName">Name this outfit</label><input id="wsLookName" maxlength="48" placeholder="e.g. Moonlit Class"/><button type="button" class="wsSaveSlot" data-save-slot '+(entries.length>=OUTFIT_LIMIT?'disabled':'')+'>✦ Save as New Outfit</button>';}
 const get=()=>window.MajickAtelier?.player?.();
 function save(){try{window.save?.()}catch(_){}window.MajickScholarCompanion?.refresh?.(true)}
 function art(p){
@@ -26,10 +31,10 @@ function inventory(p){
 }
 function controls(p){
  if(section==='Appearance')return '<h3>Skin tone</h3><div class="wsSwatches">'+skinColors.map((v,i)=>button('','data-skin="'+i+'" style="background:'+v+'" aria-label="Skin tone '+(i+1)+'"',Number(p.skin)===i)).join('')+'</div><h3>Hair</h3><div class="wsHair">'+hair.map((src,i)=>'<button type="button" data-hair="'+i+'" aria-pressed="'+(Number(p.hair)===i)+'"><img alt="" src="'+ROOT+src+'"><span>'+hairNames[i]+'</span></button>').join('')+'</div>';
- if(section==='Wardrobe')return occasion(p)+'<div class="wsCategories">'+['Robes','Casual','Formal','Sleepwear'].map(x=>button(x,'data-category="'+x+'"',category===x)).join('')+'</div><div class="wsInventory">'+inventory(p)+'</div>';
+ if(section==='Wardrobe')return occasion(p)+'<div class="wsCategories">'+['Robes','Casual','Formal','Sleepwear'].map(x=>button(x,'data-category="'+x+'"',category===x)).join('')+'</div><div class="wsInventory">'+inventory(p)+'</div>'+savedLooks(p);
  if(section==='Poses')return '<h3>Scholar poses</h3><p>Preview the same saved scholar throughout the Collegium.</p>';
  if(section==='Accessories')return '<h3>Accessories</h3><p>Equipped accessories remain saved. Fitted accessory artwork is being prepared.</p>';
- return '<h3>Mirror preview</h3><p>Choose a robe or hairstyle, then save your look.</p>';
+ return '<h3>Mirror preview</h3><p>Choose a robe or hairstyle, then save your look.</p>'+savedLooks(p);
 }
 async function renderApprovedPose(p){
  const frame={Idle:'front_idle',Walk:'front_step_left',Study:'front_idle',Celebrate:'front_idle',Sit:'front_idle',Sanctuary:'front_idle'}[pose];
@@ -74,6 +79,9 @@ function render(){
  root.querySelectorAll('[data-hair]').forEach(b=>b.onclick=()=>{p.hair=Number(b.dataset.hair);save();render()});
  root.querySelectorAll('[data-robe]').forEach(b=>b.onclick=()=>{p.robe=Number(b.dataset.robe);save();render()});
  root.querySelectorAll('[data-pose]').forEach(b=>b.onclick=()=>{pose=b.dataset.pose;render()});
+ root.querySelectorAll('[data-load-look]').forEach(b=>b.onclick=()=>{const look=looks(p)[Number(b.dataset.loadLook)];if(!look)return;applyLook(p,look);save();render();const msg=root.querySelector('.wsMessage');if(msg)msg.textContent='✦ '+(look.name||'Outfit')+' equipped and saved.';});
+ root.querySelectorAll('[data-delete-look]').forEach(b=>b.onclick=()=>{const i=Number(b.dataset.deleteLook);if(i<0||i>=looks(p).length)return;looks(p).splice(i,1);save();render();});
+ root.querySelector('[data-save-slot]')?.addEventListener('click',()=>{const entries=looks(p);if(entries.length>=OUTFIT_LIMIT)return;const name=root.querySelector('#wsLookName')?.value?.trim()||'Scholar Look '+(entries.length+1);entries.push({...equipped(p),name,createdAt:new Date().toISOString()});save();render();root.querySelector('.wsMessage').textContent='✦ '+name+' added to your saved outfits.';});
  root.querySelector('[data-undo]').onclick=()=>{if(snapshot){Object.assign(p,snapshot);save();render()}};
  root.querySelector('[data-save]').onclick=()=>{snapshot={...p};save();root.querySelector('.wsMessage').textContent='✦ Look saved to your scholar.'};
  root.querySelector('[data-close]').onclick=close;
@@ -108,7 +116,7 @@ const style=document.createElement('style');style.textContent=`
 .wsHair button,.wsItem{background:#291b32;color:#f8e3d5;border:1px solid #a78662;border-radius:12px;cursor:pointer;display:flex;flex-direction:column;align-items:center;padding:8px;gap:5px}
 .wsHair button{width:83px}.wsHair img{width:66px;height:78px;object-fit:contain}
 .wsItem{width:130px}.wsItem img{width:115px;height:130px;object-fit:contain}
-.wsEmpty{padding:22px;border:1px dashed #8b6b62;border-radius:12px;color:#d8c2cf}
+.wsSavedLooks{display:grid;gap:8px}.wsSavedLook{padding:10px;border:1px solid #886a65;border-radius:10px;display:grid;gap:5px;background:#26192f}.wsSavedLook span,.wsHint{color:#dbc8d8;font-size:12px}.wsSavedLook div{display:flex;gap:7px}.wsSavedLook button,.wsSaveSlot{padding:8px;background:#4b3057;color:#fff2dc;border:1px solid #d4b17d;border-radius:8px;cursor:pointer}.wsSaveSlot:disabled{opacity:.5;cursor:not-allowed}.wsNameLabel{display:block;margin:15px 0 6px}#wsLookName{width:100%;padding:10px;border:1px solid #d4b17d;border-radius:8px;background:#25172d;color:#fff2dc;margin-bottom:8px}.wsEmpty{padding:22px;border:1px dashed #8b6b62;border-radius:12px;color:#d8c2cf}
 .wsMirror{min-width:0;border:3px double #c8a064;border-radius:36px 36px 18px 18px;background:radial-gradient(ellipse at 50% 32%,#65436a,#25152d 65%,#130e1c);padding:16px;display:flex;flex-direction:column;align-items:center}
 .wsMirrorTitle{color:#f3d39e;letter-spacing:3px;font:14px Georgia,serif}
 .wsStage{height:min(65dvh,680px);min-height:340px;width:100%;display:grid;place-items:center;overflow:hidden}
