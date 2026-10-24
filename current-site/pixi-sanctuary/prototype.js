@@ -6,7 +6,9 @@ const room=document.getElementById('room'),status=document.getElementById('statu
 const $=id=>document.getElementById(id);
 if(!window.PIXI){status.textContent='PixiJS could not load. Check your connection and retry.';return}
 const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
-let paused=reduced,stress=false,ambient=!reduced,loaded=0;
+// This is an explicitly requested movement test: start wandering even if the OS
+// requests reduced decorative motion; keep ambient effects disabled in that case.
+let paused=false,stress=false,ambient=!reduced,loaded=0;
 const app=new PIXI.Application();
 try {
  await app.init({width:1200,height:700,backgroundAlpha:0,antialias:false,autoDensity:true,resolution:Math.min(devicePixelRatio||1,2),preference:'webgl',powerPreference:'low-power'});
@@ -37,7 +39,7 @@ await Promise.all(names.map(async(name,i)=>{
  }catch(err){console.warn('Guardian art unavailable:',name,err)}
 }));
 if(!entities.length){status.textContent='Guardian images could not load. Please check network access.';return}
-status.textContent='PixiJS running · tap a Guardian to play';
+status.textContent='PixiJS running · Guardians wandering · tap a Guardian to play';
 $('toggle').textContent=paused?'Resume movement':'Pause movement';
 $('motion').setAttribute('aria-pressed',String(ambient));$('motion').textContent='Ambient effects: '+(ambient?'on':'off');
 $('toggle').onclick=()=>{paused=!paused;$('toggle').textContent=paused?'Resume movement':'Pause movement'};
@@ -65,6 +67,6 @@ app.ticker.add(()=>{
  dots.visible=ambient;
  if(ambient){for(let i=0;i<dots.children.length;i++){const p=dots.children[i];p.alpha=.35+Math.sin(elapsed*1.3+i)*.2;p.y+=dt*(stress?32:5);if(p.y>650)p.y=15}}
  if(stress){for(let i=0;i<dots.children.length;i++){const p=dots.children[i];p.scale.set(2)}}else for(const p of dots.children)p.scale.set(1);
- if(total>=1){$('fps').textContent=Math.round(frames/total);$('ms').textContent=(total/frames*1000).toFixed(1)+' ms';$('moving').textContent=moving+' / '+entities.length;frames=0;total=0}
+ if(total>=1){status.textContent=paused?'Movement paused · press Resume movement':moving+' Guardians walking · tap one to play';$('fps').textContent=Math.round(frames/total);$('ms').textContent=(total/frames*1000).toFixed(1)+' ms';$('moving').textContent=moving+' / '+entities.length;frames=0;total=0}
 });
 })();
