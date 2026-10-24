@@ -414,9 +414,9 @@ Game.prototype.v3317UpdateGuardianVisuals=function(){
       walk.setRotation(moving?step*.009:0);
 
       // The original sprite stays alive and moving underneath as the controller.
-      pet.setAlpha(moving||action?.active?.01:1).setVisible(true);
+      pet.setAlpha((moving||Boolean(action?.active)) ? 0.01 : 1).setVisible(true);
     }else{
-      pet.setAlpha(action?.active?.01:1).setVisible(true);
+      pet.setAlpha(action?.active ? 0.01 : 1).setVisible(true);
     }
 
     if(action?.active)walk?.setVisible(false);
