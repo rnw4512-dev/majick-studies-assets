@@ -26,5 +26,12 @@ const style=document.createElement('style');style.textContent=`
 @media(prefers-reduced-motion:reduce){.majMilestoneParticles{display:none}}
 `;document.head.append(style);
 window.MajickMilestoneParticles=Object.freeze({play,types:Object.keys(TYPES)});
+// Existing academic celebration dispatcher owns the proof of completion; effects remain presentation-only.
+document.addEventListener('majick:celebrate',event=>{
+ const detail=event.detail||{};
+ if(detail.type!=='mastery'&&detail.type!=='course')return;
+ const target=detail.target?.isConnected?detail.target:document.querySelector('.majickFxLayer,main');
+ play('academic',target);
+});
 window.addEventListener('majick-milestone-celebration',ev=>{const d=ev.detail||{};if(!TYPES[d.type]||d.verified!==true)return;play(d.type,d.anchor||document.querySelector('#majEvolutionCelebration,.majEvoCard,.sanctuary-dorm,.v3341GuardianHeroPortrait,main'))});
 })();
