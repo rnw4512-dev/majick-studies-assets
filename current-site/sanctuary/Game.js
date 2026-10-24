@@ -3545,7 +3545,5 @@ const config =
 // START
 // =============================================================
 
-window.majickPhaserGame =
-    new Phaser.Game(
-        config
-    );
+// Phaser starts after all Sanctuary extensions have registered in index.html.
+// Do not construct the scene here: later scripts extend Game.prototype.
