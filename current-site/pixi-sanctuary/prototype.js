@@ -43,22 +43,24 @@ await Promise.all(names.map(async(name,i)=>{
   const shadow=new PIXI.Graphics();shadow.ellipse(0,0,65,12).fill({color:0x000000,alpha:.26});root.addChild(shadow);
   const sprite=new PIXI.Sprite(texture);sprite.anchor.set(.5,1);const scale=Math.min(170/Math.max(1,texture.width),165/Math.max(1,texture.height));sprite.scale.set(scale);sprite.y=-10;root.addChild(sprite);
   const text=label(name.charAt(0).toUpperCase()+name.slice(1));text.anchor.set(.5,0);text.y=7;root.addChild(text);
-  const e={root,sprite,shadow,name,slot:i,tx:root.x,ty:root.y,pause:rand()*2,playing:0,phase:rand()*6.28,speed:42+rand()*23,baseScale:scale,walkTexture:null,baseTexture:texture};
-  // Existing approved action art for the original four; other six keep canonical portraits.
+  const e={root,sprite,shadow,name,slot:i,tx:root.x,ty:root.y,pause:rand()*2,playing:0,phase:rand()*6.28,speed:42+rand()*23,baseScale:scale,walkTexture:null,walkFrames:[],walkClock:0,baseTexture:texture};
+  // Two distinct approved walking frames exist for the original four.
+  // Do not synthesize or relabel portraits as walking frames for the other six.
   if(i<4){
-   PIXI.Assets.load('../sanctuary/assets/evolutions/'+name+'/new-bond/walk.webp')
-    .then(walkTexture=>{e.walkTexture=walkTexture}).catch(()=>{});
+   const base='../assets/atelier/v2/fitted/companions/'+name+'_walk_';
+   Promise.all([PIXI.Assets.load(base+'1.webp'),PIXI.Assets.load(base+'2.webp')])
+    .then(frames=>{e.walkFrames=frames;}).catch(error=>console.warn('Walking frames unavailable:',name,error));
   }
   sprite.eventMode='static';sprite.cursor='pointer';sprite.on('pointertap',()=>{e.playing=1.3;e.pause=1.3});
   guardianLayer.addChild(root);entities.push(e);loaded++;$('loaded').textContent=loaded+' / 10';
  }catch(err){console.warn('Guardian art unavailable:',name,err)}
 }));
 if(!entities.length){status.textContent='Guardian images could not load. Please check network access.';return}
-status.textContent='PixiJS running · Guardians wandering · tap a Guardian to play';
+status.textContent='PixiJS running · four Guardians have real walking frames · tap to play';
 $('toggle').textContent=paused?'Resume movement':'Pause movement';
 $('motion').setAttribute('aria-pressed',String(ambient));$('motion').textContent='Ambient effects: '+(ambient?'on':'off');
 $('toggle').onclick=()=>{paused=!paused;$('toggle').textContent=paused?'Resume movement':'Pause movement'};
-$('reset').onclick=()=>entities.forEach((e,i)=>{e.root.position.set(125+(i%5)*230,330+Math.floor(i/5)*210);e.tx=e.root.x;e.ty=e.root.y;e.pause=1;e.sprite.texture=e.baseTexture;e.sprite.scale.set(e.baseScale);e.sprite.y=-10});
+$('reset').onclick=()=>entities.forEach((e,i)=>{e.root.position.set(125+(i%5)*230,330+Math.floor(i/5)*210);e.tx=e.root.x;e.ty=e.root.y;e.pause=1;e.sprite.texture=e.baseTexture;e.walkClock=0;e.sprite.scale.set(e.baseScale);e.sprite.y=-10});
 $('stress').onclick=()=>{stress=!stress;$('stress').setAttribute('aria-pressed',String(stress));$('stress').textContent='Stress test: '+(stress?'on':'off')};
 $('motion').onclick=()=>{ambient=!ambient;$('motion').setAttribute('aria-pressed',String(ambient));$('motion').textContent='Ambient effects: '+(ambient?'on':'off')};
 let last=performance.now(),frames=0,total=0,moving=0,elapsed=0;
@@ -78,7 +80,11 @@ app.ticker.add(()=>{
   if(blocked){newTarget(e);continue}
   moving++;
   e.root.x=nextX;e.root.y=nextY;
-  if(e.walkTexture&&e.sprite.texture!==e.walkTexture)e.sprite.texture=e.walkTexture;
+  if(e.walkFrames.length===2){
+   e.walkClock+=dt;
+   const frame=e.walkFrames[Math.floor(e.walkClock/.18)%2];
+   if(e.sprite.texture!==frame)e.sprite.texture=frame;
+  } else if(e.sprite.texture!==e.baseTexture)e.sprite.texture=e.baseTexture;
   const stride=Math.sin(e.phase*7);
   const scale=Math.min(170/Math.max(1,e.sprite.texture.width),165/Math.max(1,e.sprite.texture.height));
   e.sprite.scale.set(scale*(dx<0?-1:1)*(1+stride*.025),scale*(1-stride*.035));
