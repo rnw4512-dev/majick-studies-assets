@@ -386,6 +386,10 @@ Game.prototype.v3317UpdateGuardianVisuals=function(){
 
   PROTECTED_MOTION_TYPES().forEach(type=>{
     const pet=this[type];if(!pet?.active)return;
+    // Ground-plane sorting: moving Guardians pass naturally in front of one another.
+    // Keep UI overlays and protected action art at their existing higher depths.
+    const floorDepth=Math.max(60,Math.min(950,Math.round(pet.y+Math.abs(pet.displayHeight||0)*0.25)));
+    pet.setDepth(floorDepth);
     this.v3317EnsureWalkSkin(type);
 
     const walk=this['v3317Walk_'+type],action=this['v3317Action_'+type];
