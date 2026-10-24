@@ -159,6 +159,7 @@ function recordEvolution(d){
     save();
   }
   showEvolutionCeremony(d,p);
+  window.MajickMilestoneParticles?.play?.('guardian',document.getElementById('majEvolutionCelebration'));
   try{window.MajickGuardianCore?.sound?.('course-pass',p.type);window.MajickGuardianCore?.sparks?.(document.querySelector('.v3341GuardianHeroPortrait,.v3341StudyGuardianPortrait'),34)}catch(_){}
   try{window.render?.()}catch(_){}
   setTimeout(decorate,40);
