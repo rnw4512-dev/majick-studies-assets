@@ -28,6 +28,8 @@ function showController(obj){
 }
 
 Game.prototype.v3322SyncOwnedGuardians=function(){
+  // Do not mistake a not-yet-delivered ownership snapshot for zero Guardians.
+  if(!Array.isArray(this.v3317CareState?.roster))return [];
   const owned=ownedTypes(this);
   for(const type of PROTECTED){
     const isOwned=owned.has(type);
