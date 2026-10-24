@@ -144,7 +144,7 @@ if(task.kind==='math'&&!independent){const verified=st.verified?.[st.caseIndex]|
 
 const canHint=!independent;const taskPicker=host.querySelector('.mjSeTaskSelect');
 const mixed=window.S?.screen==='reasoning';
-host.innerHTML='<div class="mjSeHead"><strong>✦ Reasoning Workshop · Optional Parchment Practice</strong><small>'+esc(window.S.activeCourse)+' · '+esc(task.title)+'</small></div><nav class="mjSeSteps" aria-label="Solution steps">'+Array.from({length:6},(_,i)=>'<button type="button" data-stage="'+i+'" '+(i===step?'aria-current="step"':'')+' '+(i>step||!(st.verified?.[st.caseIndex]||[]).includes(i)?'disabled':'')+' class="'+(i===step?'active':'')+'" title="'+esc(stageTitle(task,i))+'">'+(i+1)+'</button>').join('')+'</nav><div class="mjSeStage"><h3>'+esc(stageTitle(task,step))+'</h3>'+body+'</div><div class="mjSeActions"><button type="button" data-check>'+(st.error?'Resubmit answer':'Check step')+'</button><button type="button" data-clear>Clear answer</button>'+(canHint?'<button data-hint>Hint</button>':'')+'<button data-reset>New scenario</button>'+(mixed?'<button type="button" data-mixed-next>Next mixed skill →</button>':'')+'</div>'+(st.hint?'<p class="mjSeHelp">Think about what information the situation provides and what you must determine before computing or acting.</p>':'')+(st.feedback?'<p class="mjSeFeedback" role="status">'+esc(st.feedback)+'</p>':'')+'<p class="mjSeFoot">Objective: '+esc(task.objective||'Apply this lesson concept')+'. Hands-on participation can earn XP. Completing an unassisted transfer can earn a one-time XP/crystal bonus. Neither replaces validated course mastery.</p>';
+host.innerHTML='<div class="mjSeHead"><strong>✦ Collegium Reasoning Chamber</strong><small>'+esc(window.S.activeCourse)+' · '+esc(task.title)+'</small></div><nav class="mjSeSteps" aria-label="Solution steps">'+Array.from({length:6},(_,i)=>'<button type="button" data-stage="'+i+'" '+(i===step?'aria-current="step"':'')+' '+(i>step||!(st.verified?.[st.caseIndex]||[]).includes(i)?'disabled':'')+' class="'+(i===step?'active':'')+'" title="'+esc(stageTitle(task,i))+'">'+(i+1)+'</button>').join('')+'</nav><div class="mjSeStage"><h3>'+esc(stageTitle(task,step))+'</h3>'+body+'</div><div class="mjSeActions"><button type="button" data-check>'+(st.error?'Resubmit answer':'Check step')+'</button><button type="button" data-clear>Clear answer</button>'+(canHint?'<button data-hint>Hint</button>':'')+'<button data-reset>New scenario</button>'+(mixed?'<button type="button" data-mixed-next>Next mixed skill →</button>':'')+'</div>'+(st.hint?'<p class="mjSeHelp">Think about what information the situation provides and what you must determine before computing or acting.</p>':'')+(st.feedback?'<p class="mjSeFeedback" role="status">'+esc(st.feedback)+'</p>':'')+'<p class="mjSeFoot">✦ '+esc(task.objective||'Apply this lesson concept')+'</p>';
 if(taskPicker&&!mixed)host.prepend(taskPicker);
 if(mixed){const next=host.querySelector('[data-mixed-next]');if(next)next.onclick=()=>{const upcoming=nextMixed(host,true);if(upcoming)render(host,upcoming)}}
 saveWorkshopState(task,st);
@@ -188,7 +188,7 @@ host.querySelector('[data-check]').onclick=()=>{let good=false,reason='';
   if(st.finished){st.feedback='This transfer has already been completed.';render(host,task);return}
   const full=[0,1,2,3,4].every(n=>(st.verified?.[st.caseIndex]||[]).includes(n));
   if(!full){st.feedback='Complete stages 1–5 on this scenario before stage 6.';render(host,task);return}
-  if(!independent){st.caseIndex++;st.stage=0;st.answers={};st.hint=false;st.transferHintUsed=false;st.feedback='Guided reconstruction completed. Now try a different case; previous progress remains intact.';render(host,task);return}
+  if(!independent){st.caseIndex++;st.stage=0;st.answers={};st.hint=false;st.transferHintUsed=false;st.feedback='Challenge complete. A fresh case awaits.';render(host,task);return}
   st.finished=true;
   const mastered=window.MajickInteractiveMastery?.record?.({taskId:task.id,lessonId:task.lesson,kind:task.kind,allStagesVerified:full,hintFreeTransfer:!st.transferHintUsed&&task.kind!=='sequence'});
   const reward=!st.transferHintUsed?window.MajickInteractiveRewards?.award?.(task.id,'transfer'):null;
@@ -196,8 +196,8 @@ host.querySelector('[data-check]').onclick=()=>{let good=false,reason='';
   render(host,task);return
 }
  st.error=false;(st.verified[st.caseIndex]||(st.verified[st.caseIndex]=[])).push(step);
- if(step===4){if(!independent&&task.kind!=='sequence'){st.caseIndex++;st.stage=0;st.answers={};st.hint=false;st.feedback='';render(host,task);return}st.stage=5;st.answers={};st.feedback='Stage 6 unlocked: rebuild the answer without copying the guided work. This is a practice check, not automatic mastery.';render(host,task);return}
- if(step===0&&!independent)window.MajickInteractiveRewards?.award?.(task.id,'participation');st.stage++;st.feedback='Step correct. '+(step===3?reason:'Continue to the next step.');render(host,task)
+ if(step===4){st.stage=5;st.answers={};st.feedback='Final challenge unlocked. Solve without hints.';render(host,task);return}
+ if(step===0&&!independent)window.MajickInteractiveRewards?.award?.(task.id,'participation');st.stage++;st.feedback='✦ Correct. '+(step===3?reason:'Continue.');render(host,task)
  };
 }
 const OBJECTIVES={
