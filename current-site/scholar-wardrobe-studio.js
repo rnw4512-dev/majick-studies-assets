@@ -58,6 +58,7 @@ async function verifyApprovedWalk(p){
  const gate=window.MajickV2ApprovalGate;
  const message=document.querySelector('#wsOverlay:not([hidden]) .wsMessage');
  if(!gate||!message)return;
+ // These are the approved V2 registry frame IDs, not an external demo atlas.
  const frames=['front_idle','front_step_left','front_idle','front_step_right'];
  const results=[];
  for(const frame of frames){const r=await gate.compose(p,frame,'locs');results.push({frame,ok:!!r.ok,reason:r.reason||null,canvas:r.canvas||null})}
