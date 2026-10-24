@@ -85,11 +85,18 @@ app.ticker.add(()=>{
    const frame=e.walkFrames[Math.floor(e.walkClock/.18)%2];
    if(e.sprite.texture!==frame)e.sprite.texture=frame;
   } else if(e.sprite.texture!==e.baseTexture)e.sprite.texture=e.baseTexture;
-  const stride=Math.sin(e.phase*7);
+  // The six additional Guardians lack approved frame images. Give them
+  // distinct species-specific movement until true character frames are supplied.
+  const gait={
+   vesper:{frequency:5,lift:4,tilt:.038},briar:{frequency:8,lift:9,tilt:.014},
+   zephyr:{frequency:10,lift:13,tilt:.045},prism:{frequency:7,lift:5,tilt:.025},
+   rook:{frequency:5.5,lift:3,tilt:.018},solara:{frequency:9,lift:8,tilt:.033}
+  }[e.name]||{frequency:7,lift:7,tilt:.012};
+  const stride=Math.sin(e.phase*gait.frequency);
   const scale=Math.min(170/Math.max(1,e.sprite.texture.width),165/Math.max(1,e.sprite.texture.height));
   e.sprite.scale.set(scale*(dx<0?-1:1)*(1+stride*.025),scale*(1-stride*.035));
-  e.sprite.y=-10-Math.abs(stride)*7;
-  e.sprite.rotation=stride*.012;
+  e.sprite.y=-10-Math.abs(stride)*gait.lift;
+  e.sprite.rotation=stride*gait.tilt;
  }
  guardianLayer.children.sort((a,b)=>a.y-b.y);
  dots.visible=ambient;
