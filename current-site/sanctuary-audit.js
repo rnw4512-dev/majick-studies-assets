@@ -50,8 +50,14 @@
  }
  function mount(){document.querySelectorAll('.v3317SanctuaryFrame').forEach(f=>{if(!f.dataset.v3350Audit){f.dataset.v3350Audit='1';request(f)}})}
  window.addEventListener('message',ev=>{
-   if(ev.origin!==location.origin||ev.data?.type!=='MAJICK_SANCTUARY_ROSTER_V3350')return;
-   const frame=frameFor(ev.source);if(frame)show(frame,ev.data.rows||[]);
+   if(ev.origin!==location.origin)return;
+   const frame=frameFor(ev.source);if(!frame)return;
+   if(ev.data?.type==='MAJICK_SANCTUARY_READY'||ev.data?.type==='MAJICK_SANCTUARY_READY_V3317'){
+     if(states.get(frame)?.unverified)states.delete(frame);
+     request(frame);
+     return;
+   }
+   if(ev.data?.type==='MAJICK_SANCTUARY_ROSTER_V3350')show(frame,ev.data.rows||[]);
  });
  const previous=window.render;
  if(typeof previous==='function')window.render=function(){const result=previous.apply(this,arguments);setTimeout(mount,0);return result};
