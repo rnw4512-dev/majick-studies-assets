@@ -304,7 +304,8 @@ Game.prototype.createDecor=function(){
     // Base createMovableDecor supplies edit-mode drag + saved positions.
     const syncDepth=()=>item.setDepth(Math.max(40,Math.min(940,Math.round(item.y+(item.displayHeight||0)*.12))));
     syncDepth();
-    item.on('drag',syncDepth);
+    item.on('drag',()=>{if(!this.editMode)syncDepth();});
+    item.on('dragstart',()=>{if(this.editMode)item.setDepth(980);});
     item.on('dragend',syncDepth);
   });
 };
@@ -480,6 +481,16 @@ Game.prototype.create=function(){
       this.__majickAmbientGlows.push(glow);
     }
   }
+
+  // One temporary drag-depth policy for all furniture, including base decor.
+  // Manifest furniture already registers these handlers above; skip duplicates.
+  (this.decorItems||[]).forEach(item=>{
+    if(!item?.active||item.getData?.('objectId'))return;
+    const restore=()=>item.setDepth(Math.max(40,Math.min(940,Math.round(item.y+(item.displayHeight||0)*.12))));
+    restore();
+    item.on('dragstart',()=>{if(this.editMode)item.setDepth(980)});
+    item.on('dragend',restore);
+  });
 
   // Preserve base edit mode; only improve its visible label.
   if(this.editModeText)this.editModeText.setText('✦ EDIT SANCTUARY');
