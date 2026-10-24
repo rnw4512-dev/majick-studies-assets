@@ -829,7 +829,7 @@
     "milestone-particles.js": "084d63ea0b43ac787d8b467b7c6e097253e7460c01a0707c89728a6e860d0d5a",
     "room-transition.js": "e050a9ea7b337ac67993264353c650f2c4708972bf59e45946ac999a77467d27",
     "pixi-sanctuary/index.html": "fa9851a33d6dd29778f68befc83606fbf8bc52d4b3f40cfbdd46ea5b6525a50b",
-    "pixi-sanctuary/prototype.js": "8be8eaf136fa7d38a70ff2a4f31ac27a83ad5d2d13127e4ab38d7f7d9399d872",
+    "pixi-sanctuary/prototype.js": "2e8f40b51cda9b10a31b7a4bddf84073d1dde8bd79a2ca688f8999afbda20b97",
     "atelier-pixi-scene.js": "8d59a87780d6862ef01cd3753b2779d5dfbab0bb516004c14450e903c51c1418",
     "vendor/pixi-8.6.6.min.js": "e5c38cccee4f99263df5f0b10dfd4d2484db5fdb730af3953cb6f1c07b3d85b2",
     "vendor/PIXI-LICENSE.txt": "5ce7447bc57f7349ffc48338782fbcabe613696e00712b20d66bc58e780f9473",
@@ -837,6 +837,16 @@
     "pixi-sanctuary/frames/velora/apprentice/README.md": "cd5a5b4cec2a9f074cfb82186154500988d6466742f1505766c8e551166deaf4",
     "pixi-sanctuary/frames/velora/guardian/README.md": "9da4a3bfc553447522f1ce8dfd56b5fc9cad21dc69e826416e242e330340310b",
     "pixi-sanctuary/frames/velora/ascendant/README.md": "91c6fcce5e62c6b96b164ec2c226a95b0d9ff6045e76ee5dc75a494028b0527c",
-    "pixi-sanctuary/frames/velora/celestial/README.md": "45dfda12e8089dfe321f03c8d2649168ac5f3d6b4bda38101dc39dc6e21c54a4"
+    "pixi-sanctuary/frames/velora/celestial/README.md": "45dfda12e8089dfe321f03c8d2649168ac5f3d6b4bda38101dc39dc6e21c54a4",
+    "pixi-sanctuary/frames/velora/new-bond/walk-1.png": "f51a22cb2edfe8feba85945d0757a25e86b1bd34a088304d05a253942bd06860",
+    "pixi-sanctuary/frames/velora/new-bond/walk-2.png": "c2568bd314418ddac7d8a851793d3f781389dbf426611a2feddb246a07d90dae",
+    "pixi-sanctuary/frames/velora/apprentice/walk-1.png": "e8a4246de489a77ea24e558599762702ee6d7b88ce01000f9ac76304b9084ca8",
+    "pixi-sanctuary/frames/velora/apprentice/walk-2.png": "5898ded71a78e8d1f800f1ac13d2e2ca3cfb98bb9a044e690a78ebd981658828",
+    "pixi-sanctuary/frames/velora/guardian/walk-1.png": "84cd26d3e94d063ab0a0830e32aaedc1bc16a659f3def650abb9d95eefed109c",
+    "pixi-sanctuary/frames/velora/guardian/walk-2.png": "5f3e556ca0c9a249effc07dce0c7e8222eacd8740e8cb744d8e26eebf4e34dd7",
+    "pixi-sanctuary/frames/velora/ascendant/walk-1.png": "8559a3386388a50108215dc381fea6cce938e60e0c35ded8e6c3bd946b08fd6c",
+    "pixi-sanctuary/frames/velora/ascendant/walk-2.png": "717ed6caea64d4d85e327152cae68bf487ab0d56969c718f1e76cb376685e293",
+    "pixi-sanctuary/frames/velora/celestial/walk-1.png": "1ce314e31cca9464755852a5bda17d44ad243509686417b1cd5cea6d970b0784",
+    "pixi-sanctuary/frames/velora/celestial/walk-2.png": "841d4d2fefa59f5b6242ba5c8cc95c505bd06db5eb80d9aa713fdc013107dfaf"
   }
 }
