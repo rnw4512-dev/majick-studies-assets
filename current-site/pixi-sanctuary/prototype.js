@@ -96,10 +96,10 @@ for(let i=0;i<42;i++){const star=new PIXI.Graphics();star.circle(0,0,1+rand()*2)
 function resize(){const b=room.getBoundingClientRect();const width=Math.max(240,b.width),height=Math.max(240,b.height);app.renderer.resize(Math.round(width),Math.round(height));const k=Math.min(width/1200,height/700);world.scale.set(k);world.position.set((width-1200*k)/2,(height-700*k)/2);$('viewport').textContent=Math.round(width)+' × '+Math.round(height)}
 new ResizeObserver(resize).observe(room);resize();
 function newTarget(e){
- const homeX=145+(e.slot%5)*225,homeY=245+Math.floor(e.slot/5)*300;
+ const homeX=145+(e.slot%5)*225,homeY=525+Math.floor(e.slot/5)*75;
  for(let tries=0;tries<24;tries++){
   const x=Math.max(100,Math.min(1100,homeX+(rand()-.5)*115));
-  const y=Math.max(210,Math.min(560,homeY+(rand()-.5)*65));
+  const y=Math.max(490,Math.min(640,homeY+(rand()-.5)*65));
   if(entities.every(other=>other===e||Math.hypot(x-other.tx,y-other.ty)>170)){
    e.tx=x;e.ty=y;e.pause=.6+rand()*2.3;return;
   }
@@ -167,7 +167,7 @@ async function makeCleanWalkFrames(name){
 await Promise.all(names.map(async(name,i)=>{
  try{
   const texture=await PIXI.Assets.load('../assets/familiars/canon/'+name+'-guardian.webp');
-  const root=new PIXI.Container();root.x=145+(i%5)*225;root.y=245+Math.floor(i/5)*300;
+  const root=new PIXI.Container();root.x=145+(i%5)*225;root.y=525+Math.floor(i/5)*75;
   const shadow=new PIXI.Graphics();shadow.ellipse(0,0,65,12).fill({color:0x000000,alpha:.26});root.addChild(shadow);
   const sprite=new PIXI.Sprite(texture);sprite.anchor.set(.5,1);const scale=Math.min(170/Math.max(1,texture.width),165/Math.max(1,texture.height));sprite.scale.set(scale);sprite.y=-10;root.addChild(sprite);
   const text=label(name.charAt(0).toUpperCase()+name.slice(1));text.anchor.set(.5,0);text.y=20;root.addChild(text);
@@ -266,7 +266,7 @@ function applyLiveState(payload){
     const sprite=new PIXI.Sprite(base.baseTexture);sprite.anchor.set(.5,1);sprite.scale.set(base.baseScale);sprite.y=-10;root.addChild(sprite);
     const caption=label(String(pet.name||base.name));caption.anchor.set(.5,0);caption.y=20;root.addChild(caption);
     const slot=entities.length;
-    root.position.set(145+(slot%5)*225,245+Math.floor(slot/5)*145);
+    root.position.set(145+(slot%5)*225,525+Math.floor(slot/5)*75);
     e={...base,root,sprite,shadow,slot,tx:root.x,ty:root.y,walkFrames:base.walkFrames.slice(),walkClock:0,phase:rand()*6.28,isDuplicate:true,sourceName:base.name,lastLoadedStage:null,stageRequest:0};
     sprite.eventMode='static';sprite.cursor='pointer';sprite.on('pointertap',()=>{e.playing=1.3;e.pause=1.3});
     guardianLayer.addChild(root);entities.push(e);
@@ -310,7 +310,7 @@ status.textContent='PixiJS running · select a stage to test Velora’s two walk
 $('toggle').textContent=paused?'Resume movement':'Pause movement';
 $('motion').setAttribute('aria-pressed',String(ambient));$('motion').textContent='Ambient effects: '+(ambient?'on':'off');
 $('toggle').onclick=()=>{paused=!paused;$('toggle').textContent=paused?'Resume movement':'Pause movement'};
-$('reset').onclick=()=>entities.forEach((e,i)=>{e.root.position.set(145+(i%5)*225,245+Math.floor(i/5)*300);e.tx=e.root.x;e.ty=e.root.y;e.pause=1;e.sprite.texture=e.baseTexture;e.walkClock=0;e.sprite.scale.set(e.baseScale);e.sprite.y=-10});
+$('reset').onclick=()=>entities.forEach((e,i)=>{e.root.position.set(145+(i%5)*225,525+Math.floor(i/5)*75);e.tx=e.root.x;e.ty=e.root.y;e.pause=1;e.sprite.texture=e.baseTexture;e.walkClock=0;e.sprite.scale.set(e.baseScale);e.sprite.y=-10});
 $('stress').onclick=()=>{stress=!stress;$('stress').setAttribute('aria-pressed',String(stress));$('stress').textContent='Stress test: '+(stress?'on':'off')};
 $('motion').onclick=()=>{ambient=!ambient;$('motion').setAttribute('aria-pressed',String(ambient));$('motion').textContent='Ambient effects: '+(ambient?'on':'off')};
 let last=performance.now(),frames=0,total=0,moving=0,elapsed=0;
