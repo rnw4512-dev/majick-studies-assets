@@ -139,16 +139,12 @@ if(velora&&stagePicker){
   const stage=stagePicker.value,id=++requestId;
   stagePicker.disabled=true;
   try{
-   if(stage==='new-bond'){
-    applyStage(stage,defaultBase,defaultFrames,'original approved walking pair');
-    return;
-   }
    if(stageCache.has(stage)){
     const saved=stageCache.get(stage);
     applyStage(stage,saved.base,saved.frames,saved.source);
     return;
    }
-   const base=await PIXI.Assets.load('../sanctuary/assets/evolutions/velora/'+stage+'/walk.webp');
+   const base=stage==='new-bond'?defaultBase:await PIXI.Assets.load('../sanctuary/assets/evolutions/velora/'+stage+'/walk.webp');
    if(id!==requestId)return;
    let frames=[],source='temporary articulated stage walking';
    try{
@@ -171,6 +167,7 @@ if(velora&&stagePicker){
    if(id===requestId)stagePicker.disabled=false;
   }
  };
+ stagePicker.onchange(); // Load uploaded New Bond pair on initial render.
 }
 if(!entities.length){status.textContent='Guardian images could not load. Please check network access.';return}
 status.textContent='PixiJS running · approved art and clean walking poses · tap to play';
