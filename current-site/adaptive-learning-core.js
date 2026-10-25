@@ -265,8 +265,8 @@ function conceptAnswers(){
 function mastery(){
  const rows=conceptAnswers().slice(-12),recent=rows.slice(-8);
  const acc=recent.length?recent.filter(x=>x.correct).length/recent.length:0;
- const independent=rows.filter(x=>x.correct&&!x.assisted&&/adaptive-(turn|retrieve|mastery)/.test(x.source||'')).length;
- const transfer=rows.filter(x=>x.correct&&x.source==='adaptive-mix').length;
+ const independent=rows.filter(x=>x.correct&&!x.assisted&&/adaptive-(turn|retrieve|mastery)/.test(x.source||x.mode||'')).length;
+ const transfer=rows.filter(x=>x.correct&&!x.assisted&&(x.transfer===true||x.source==='adaptive-mix')).length;
  const tags=progress().errorTags.filter(x=>x.conceptId===current().concept.id);
  const counts={};tags.forEach(x=>counts[x.tag]=(counts[x.tag]||0)+1);
  const recurring=Object.values(counts).some(n=>n>=2);
@@ -605,8 +605,8 @@ function skillLibraryHtml(){
  const selected=current().concept.id;
  const entries=rows.flatMap((lesson,li)=>(lesson.concepts?.length?lesson.concepts:[{id:lesson.id,title:lesson.title,teach:lesson.teach}]).map((concept,ci)=>{
   const evidence=p.answers.filter(a=>a.topicId==='adaptive:'+concept.id);
-  const independent=evidence.filter(a=>a.correct&&!a.assisted&&/adaptive-(turn|retrieve|mastery)/.test(a.source||'')).length;
-  const transfer=evidence.filter(a=>a.correct&&!a.assisted&&a.source==='adaptive-mix').length;
+  const independent=evidence.filter(a=>a.correct&&!a.assisted&&/adaptive-(turn|retrieve|mastery)/.test(a.source||a.mode||'')).length;
+  const transfer=evidence.filter(a=>a.correct&&!a.assisted&&(a.transfer===true||a.source==='adaptive-mix')).length;
   const accuracy=evidence.length?Math.round(100*evidence.slice(-8).filter(a=>a.correct).length/Math.min(8,evidence.length)):null;
   const status=independent>=2&&transfer>=1&&accuracy!==null&&accuracy>=80?'Independent evidence met':independent?'Developing':'Not yet assessed';
   const example=concept.examples?.[0];const exampleText=typeof example==='string'?example:(example?.prompt||example?.question||'');
