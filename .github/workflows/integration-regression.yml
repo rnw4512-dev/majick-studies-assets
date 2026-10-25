@@ -1,0 +1,39 @@
+name: Majick integration regression
+on:
+  push:
+    branches:
+      - integration/sanctuary-atelier-rewards-20261024
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  integration:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install Playwright
+        run: |
+          npm install --no-save @playwright/test
+          npx playwright install --with-deps chromium
+      - name: Check JavaScript syntax
+        run: |
+          node --check current-site/pixi-sanctuary/prototype.js
+          node --check current-site/verified-milestone-ceremony.js
+          node --check current-site/scholar-wardrobe-studio.js
+      - name: Run browser regression
+        run: |
+          python3 -m http.server 8765 --directory current-site >/tmp/majick-server.log 2>&1 &
+          npx playwright test tests/integration-regression.spec.cjs --browser chromium --workers 1 --reporter list
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: majick-integration-results
+          path: |
+            test-results/
+            /tmp/majick-server.log
+          if-no-files-found: ignore
