@@ -525,3 +525,7 @@ body[data-majick-room=games] .content:before{background:linear-gradient(180deg,t
 .majickRealmQuestionVisual figure{display:block;max-width:100%;margin:0;overflow:visible}
 .majickRealmQuestionVisual svg{display:block;max-width:100%;width:100%;height:auto;min-height:230px;overflow:visible}
 .majickRealmQuestionVisual figcaption{font-size:1rem;line-height:1.6;color:#fff1dd;margin:10px 0}
+
+/* Compact Game Realm navigation: preserve gameplay while reducing vertical card stacks. */
+@media(min-width:700px){.realmGamesGrid,.gameRealmGrid,.realmGameGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}.realmGamesGrid>*,.gameRealmGrid>*,.realmGameGrid>*{min-width:0}}
+.realmGameCard,.gameRealmCard{padding:12px!important;margin-block:8px!important}.realmGameCard p,.gameRealmCard p{line-height:1.4}.realmGameCard img,.gameRealmCard img{max-height:140px;object-fit:contain}
