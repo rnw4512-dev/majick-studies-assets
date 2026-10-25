@@ -649,7 +649,7 @@ function installStudySkillAccess(){
  bar.querySelector('button').addEventListener('click',()=>{
   const panel=bar.querySelector('#majStudySkillPanel'),open=panel.hidden;
   panel.hidden=!open;bar.querySelector('button').setAttribute('aria-expanded',String(open));
-  if(open){panel.innerHTML=skillLibraryHtml();panel.querySelectorAll('[data-maj-skill]').forEach(b=>b.addEventListener('click',()=>{const [li,ci]=b.dataset.majSkill.split(':').map(Number);state().lessonIndex=li;state().conceptIndex=ci;state().step=2;state().recoveryActive=null;save();showAdaptive()}));panel.querySelectorAll('[data-maj-recover]').forEach(b=>b.addEventListener('click',()=>openSkillRecovery(b.dataset.majRecover)))}
+  if(open){panel.innerHTML=skillLibraryHtml();panel.querySelectorAll('[data-maj-skill]').forEach(b=>b.addEventListener('click',()=>{const [li,ci]=b.dataset.majSkill.split(':').map(Number);state().lessonIndex=li;state().conceptIndex=ci;state().step=2;state().recoveryActive=null;save();window.navigate?.('learninglab');setTimeout(showAdaptive,100)}));panel.querySelectorAll('[data-maj-recover]').forEach(b=>b.addEventListener('click',()=>openSkillRecovery(b.dataset.majRecover)))}
  });
  host.prepend(bar);
 }
