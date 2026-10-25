@@ -59,6 +59,8 @@ function canonicalAnswer(evt){
     assisted:evt.assisted===true,
     confidence:evt.confidence||'sure',
     mode:evt.source||'study',
+    source:evt.source||'study',
+    transfer:evt.transfer===true,
     difficulty:Number(evt.difficulty||3),
     format:evt.format||'scenario',
     at:Number(evt.at||Date.now()),

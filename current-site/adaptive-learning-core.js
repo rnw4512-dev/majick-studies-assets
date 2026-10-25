@@ -247,7 +247,9 @@ function shuffled(a){return [...a].sort(()=>Math.random()-.5)}
 function qset(n=3,mixed=false){
  const b=bank();if(!b.length)return [];
  let pool=mixed?b:b.filter(matchesCurrent);if(pool.length<n)pool=b;
- return shuffled(pool).slice(0,n);
+ const seen=new Set((progress()?.answers||[]).map(a=>String(a.qid||'')));
+ const fresh=pool.filter(q=>!seen.has(String(q.id||q.qid||'')));
+ return shuffled(fresh.length?fresh:pool).slice(0,n);
 }
 function diagnostic(){
  const st=state(),key=current().concept.id;
@@ -265,8 +267,8 @@ function conceptAnswers(){
 function mastery(){
  const rows=conceptAnswers().slice(-12),recent=rows.slice(-8);
  const acc=recent.length?recent.filter(x=>x.correct).length/recent.length:0;
- const independent=rows.filter(x=>x.correct&&!x.assisted&&/adaptive-(turn|retrieve|mastery)/.test(x.source||'')).length;
- const transfer=rows.filter(x=>x.correct&&x.source==='adaptive-mix').length;
+ const independent=rows.filter(x=>x.correct&&!x.assisted&&/adaptive-(turn|retrieve|mastery)/.test(x.source||x.mode||'')).length;
+ const transfer=rows.filter(x=>x.correct&&!x.assisted&&(x.transfer===true||x.source==='adaptive-mix')).length;
  const tags=progress().errorTags.filter(x=>x.conceptId===current().concept.id);
  const counts={};tags.forEach(x=>counts[x.tag]=(counts[x.tag]||0)+1);
  const recurring=Object.values(counts).some(n=>n>=2);
@@ -555,19 +557,22 @@ function ensureQuestion(scope,mixed=false){
  st.currentQuestions=st.currentQuestions||{};
  let id=st.currentQuestions[key];
  let q=id&&byId(id);
- if(!q){q=qset(1,mixed)[0];if(q)st.currentQuestions[key]=q.id||q.qid}
+ if(!q){const recent=new Set((progress()?.answers||[]).filter(a=>a.topicId==='adaptive:'+current().concept.id).map(a=>String(a.qid||'')));
+ const candidates=(mixed?bank():bank().filter(matchesCurrent)).filter(x=>!recent.has(String(x.id||x.qid||'')));
+ q=shuffled(candidates)[0]||(!st.recoveryActive?qset(1,mixed)[0]:null);if(q)st.currentQuestions[key]=q.id||q.qid}
  return q;
 }
 function stepBody(){
  const st=state(),step=Number(st.step||0),{lesson,concept}=current(),m=mastery();
  const recovery=step===0?recoveryHtml():'';
+ const targeted=st.recoveryActive===concept.id?'<div class="v349Recovery"><b>Targeted recovery</b><p>Review the explanation and worked example. When ready, answer a new independent question; guided work will not award mastery.</p><button type="button" data-maj-reassess>Try a fresh independent question</button></div>':'';
  if(step===0)return recovery+'<small>① WHAT AM I LEARNING?</small><h2>'+E(concept.title||lesson.title)+'</h2><p class="lead">'+E(concept.teach||lesson.goal)+'</p>'+profileCard()+'<div class="v346GoalGrid"><span>Recognize it</span><span>Use it independently</span><span>Explain why</span><span>Avoid the trap</span><span>Retrieve it later</span></div><button class="btn primary" data-v346-next>Quick Check →</button>';
  if(step===1){
    const d=diagnostic(),qs=d.questions.map(byId).filter(Boolean);
    if(!qs.length)return '<small>② QUICK CHECK</small><h2>Diagnostic pending</h2><p>Add course questions and Majick will automatically create a 2–3 item diagnostic.</p><button class="btn primary" data-v346-next>Teach Me →</button>';
    return '<small>② QUICK CHECK • NOT GRADED</small><h2>What do you already know?</h2>'+prereqHtml()+qs.map((q,i)=>'<section class="v346Diag"><b>'+(i+1)+'. '+E(q.prompt)+'</b>'+q.options.map(o=>'<button data-v346-diag="'+i+'" data-choice="'+E(o)+'" '+(d.answers[i]?'disabled':'')+'>'+E(o)+'</button>').join('')+(d.answers[i]?'<p>'+E(q.why||'Use this feedback to decide what needs teaching.')+'</p>':'')+'</section>').join('')+(d.answers.filter(Boolean).length===qs.length?branchCardHtml()+'<button class="btn primary" data-v349-branch>Follow My Best Path →</button>':'');
  }
- if(step===2)return '<small>③ TEACH ME</small><h2>'+E(concept.title||lesson.title)+'</h2>'+prereqHtml()+'<p class="lead">'+E(concept.teach||lesson.goal)+'</p><div class="v347ProfileGuide"><b>Best learning strategy for this concept</b><p>'+E(profileGuide())+'</p></div>'+tutorButtons()+supportMeterHtml()+'<button class="btn primary" data-v346-next>Show Me →</button>';
+ if(step===2)return targeted+'<small>③ TEACH ME</small><h2>'+E(concept.title||lesson.title)+'</h2>'+prereqHtml()+'<p class="lead">'+E(concept.teach||lesson.goal)+'</p><div class="v347ProfileGuide"><b>Best learning strategy for this concept</b><p>'+E(profileGuide())+'</p></div>'+tutorButtons()+supportMeterHtml()+'<button class="btn primary" data-v346-next>Show Me →</button>';
  if(step===3){
    const ex=concept?.worked?.scenario||concept?.examples?.[0]||concept.teach||lesson.goal,steps=concept?.worked?.steps||['Identify what the scenario is asking.','Name the concept or strategy.','Apply the rule.','Check the answer against the scenario.'];
    return '<small>④ SHOW ME • WATCH FIRST</small><h2>Worked example</h2><div class="v346Worked"><p>'+E(ex)+'</p><ol>'+steps.map(x=>'<li>'+E(x)+'</li>').join('')+'</ol></div>'+workedComparisonHtml()+workedErrorHtml()+'<button class="btn primary" data-v346-next>Why does this work? →</button>';
@@ -598,11 +603,63 @@ function panelHtml(){
  const {lesson,concept}=current(),g=guardian(),m=mastery();try{window.MajickLearningProfiles?.saveProfile?.(concept,lesson,cid())}catch(_){};try{rewardMasteryMilestones()}catch(_){}
  return '<section class="v346SharedAdaptive"><header><div><small>SHARED LEARNING ENGINE • '+E(cid())+'</small><h1>'+E(concept.title||lesson.title)+'</h1><p>'+E(course().title||cid())+'</p>'+pathMeterHtml()+supportMeterHtml()+'</div><select id="v346Lesson">'+lessons().map((l,i)=>'<option value="'+i+'" '+(i===state().lessonIndex?'selected':'')+'>'+E(l.title)+'</option>').join('')+'</select></header><div class="v346Grid"><nav>'+STEPS.map((x,i)=>'<button data-v346-step="'+i+'" class="'+(i===state().step?'active':'')+'"><i>'+(i+1)+'</i><span>'+E(x)+'</span></button>').join('')+'</nav><main>'+stepBody()+'</main><aside><div class="v346Guardian"><span>'+g.emoji+'</span><b>'+E(g.name)+'</b><p>'+(m.recurring?'“I see a repeated trap. We are repairing that exact distinction.”':m.independent>=2?'“You are showing independence. I will give fewer cues unless you ask.”':'“Name the strategy before you answer. Recognition comes before recall.”')+'</p></div><div class="v346Evidence"><small>SKILL EVIDENCE</small><b>'+Math.round(m.acc*100)+'%</b><span>'+m.independent+' independent • '+m.transfer+' transfer</span></div></aside></div></section>';
 }
-function renderAdaptive(){const box=document.getElementById('adaptiveLearningCore');if(!box)return;box.innerHTML=panelHtml();bindAdaptive(box)}
+if(!document.getElementById('majSkillLibraryStyles')){const e=document.createElement('style');e.id='majSkillLibraryStyles';e.textContent="\n.majSkillLibrary{margin:12px 0;padding:12px;border:1px solid #a887b6;border-radius:14px;background:#251831;color:#f7ebff}.majSkillLibrary summary{cursor:pointer;font-weight:800}.majSkillLibrary p{line-height:1.4}.majSkillList{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:10px;max-height:460px;overflow:auto;margin-top:12px}.majSkillItem{padding:12px;border:1px solid #9b82a9;border-radius:10px;background:#392848;display:flex;flex-direction:column;justify-content:space-between;gap:10px}.majSkillItem small{display:block;color:#e8d4f3;margin-top:4px}.majSkillItem button{background:#f1d6a0;color:#2b1936;border-radius:8px;padding:10px;font-weight:800;cursor:pointer}.majSkillItem button:focus-visible{outline:3px solid #fff}\n";document.head.appendChild(e)}
+function resolveD772Skill(q){
+ if(cid()!=='D772'||!q)return null;
+ const rows=lessons(),concepts=rows.flatMap((l,li)=>(l.concepts||[]).map((c,ci)=>({c,l,li,ci})));
+ const ids=[q.conceptId,q.skillId,q.topicId,q.learningPathConceptId].filter(Boolean).map(v=>String(v).replace(/^adaptive:/,''));
+ const exact=concepts.find(x=>ids.includes(String(x.c.id)));
+ if(exact)return exact;
+ const lessonId=String(q.learningPathLessonId||q.lessonId||'');
+ const matching=concepts.filter(x=>String(x.l.id)===lessonId);
+ return matching.length===1?matching[0]:null; // Never infer mastery from vague section labels.
+}
+function observeGameSkill(q,correct,mode){
+ if(cid()!=='D772')return false;
+ const found=resolveD772Skill(q);if(!found)return false;
+ const p=progress(),key=String(q.id||q.qid||q.prompt||'').slice(0,180),stamp='game:'+String(mode||'practice')+':'+key;
+ p.gameSkillEvidence=p.gameSkillEvidence||{};
+ const rows=p.gameSkillEvidence[found.c.id]||[];
+ if(rows.some(x=>x.key===stamp))return false;
+ rows.push({key:stamp,correct:!!correct,mode:String(mode||'game'),at:Date.now(),assisted:true});
+ p.gameSkillEvidence[found.c.id]=rows.slice(-100);
+ if(!correct){
+  p.errorTags.push({conceptId:found.c.id,tag:'game-reinforcement',at:Date.now(),qid:key,source:'game-realm'});
+  p.adaptiveLearning.recoveryTargets=p.adaptiveLearning.recoveryTargets||{};
+  p.adaptiveLearning.recoveryTargets[found.c.id]={at:Date.now(),qid:key,reason:'Missed Game Realm practice'};
+ }
+ save();return true;
+}
+function openSkillRecovery(conceptId){
+ if(cid()!=='D772')return false;
+ const found=lessons().flatMap((l,li)=>(l.concepts||[]).map((c,ci)=>({c,li,ci}))).find(x=>String(x.c.id)===String(conceptId));
+ if(!found)return false;
+ const st=state();st.lessonIndex=found.li;st.conceptIndex=found.ci;st.step=2;st.currentQuestions={};st.recoveryActive=conceptId;save();
+ if(window.S?.screen!=='learninglab')window.navigate?.('learninglab');
+ setTimeout(()=>{showAdaptive();renderAdaptive()},0);return true;
+}
+function skillLibraryHtml(){
+ if(cid()!=='D772')return '';
+ const st=state(),rows=lessons(),p=progress();
+ const selected=current().concept.id;
+ const entries=rows.flatMap((lesson,li)=>(lesson.concepts?.length?lesson.concepts:[{id:lesson.id,title:lesson.title,teach:lesson.teach}]).map((concept,ci)=>{
+  const evidence=p.answers.filter(a=>a.topicId==='adaptive:'+concept.id);
+  const independent=evidence.filter(a=>a.correct&&!a.assisted&&/adaptive-(turn|retrieve|mastery)/.test(a.source||a.mode||'')).length;
+  const transfer=evidence.filter(a=>a.correct&&!a.assisted&&(a.transfer===true||a.source==='adaptive-mix')).length;
+  const accuracy=evidence.length?Math.round(100*evidence.slice(-8).filter(a=>a.correct).length/Math.min(8,evidence.length)):null;
+  const gameRows=p.gameSkillEvidence?.[concept.id]||[];
+  const recovery=p.adaptiveLearning?.recoveryTargets?.[concept.id];
+  const status=independent>=2&&transfer>=1&&accuracy!==null&&accuracy>=80?'Independent evidence met':independent?'Developing':'Not yet assessed';
+  const example=concept.examples?.[0];const exampleText=typeof example==='string'?example:(example?.prompt||example?.question||'');
+  return '<article class="majSkillItem"><div><strong>'+E(concept.title||lesson.title)+'</strong><small>'+E(lesson.title)+' · '+status+'</small><p>'+E(concept.teach||lesson.goal||'Explore this skill with worked examples and practice.')+'</p>'+(exampleText?'<p><b>Example:</b> '+E(exampleText)+'</p>':'')+'<small>Independent correct: '+independent+' · Transfer: '+transfer+' · Recent accuracy: '+(accuracy===null?'Not assessed':accuracy+'%')+' · Game reinforcement: '+gameRows.filter(x=>x.correct).length+'/'+gameRows.length+'</small>'+(recovery?'<small>Recommended: review this skill, then try a fresh independent question.</small><button type="button" data-maj-recover="'+E(concept.id)+'">Review &amp; recover</button>':'')</div><button type="button" data-maj-skill="'+li+':'+ci+'">'+(selected===concept.id?'Continue practice':'Practice skill')+'</button></article>';
+ })).join('');
+ return '<details class="majSkillLibrary"><summary>Skill Library · All D772 concepts</summary><p>Choose any skill to practice. Your personalized recommendations and existing evidence are preserved.</p><div class="majSkillList">'+entries+'</div></details>';
+}
+function renderAdaptive(){const box=document.getElementById('adaptiveLearningCore');if(!box)return;box.innerHTML=skillLibraryHtml()+panelHtml();bindAdaptive(box)}
 function showAdaptive(){
  // Later D772 sections use the existing verified lesson owner, not Section 1's adaptive bank.
  const tutor=window.MajickCourseTutor,selected=cid()==='D772'?tutor?.selectedLesson?.('D772'):null;
- if(cid()==='D772'&&selected&&typeof tutor?.show==='function'){
+ if(cid()==='D772'&&!state().recoveryActive&&selected&&typeof tutor?.show==='function'){
    const panel=document.querySelector('.learnPanel[data-panel="tutor"]');
    if(!panel||panel.hidden)tutor.show('tutor');
    return;
@@ -615,10 +672,12 @@ function showAdaptive(){
  renderAdaptive();
 }
 function next(){state().step=Math.min(11,Number(state().step||0)+1);state().currentQuestions={};save();renderAdaptive()}
+function assistedScope(scope){return scope==='help'}
 function handleAnswer(scope,choice){
  const q=ensureQuestion(scope,scope==='mix'||scope==='retrieve');if(!q)return;
  const result=record(q,choice,'adaptive-'+scope,{assisted:scope==='help',transfer:scope==='mix'}),ok=result.ok;
  state().pendingAnswer={qid:q.id||q.qid,scope,correct:ok,misconception:result.misconception||null};
+ if(ok&&state().recoveryActive===current().concept.id&&!assistedScope(scope)){delete state().recoveryTargets?.[current().concept.id];state().recoveryActive=null;}
  const fb=document.getElementById('v346Feedback');if(fb)fb.innerHTML='<div class="v346Feedback '+(ok?'ok':'repair')+'"><b>'+(ok?'✓ Correct':'Repair this reasoning')+'</b><p>'+E(q.why||'Compare the wording of the scenario to the definition or rule.')+'</p></div>'+confidenceHtml();
  if(scope==='mastery'){
    const ck=current().concept.id,c=state().checks[ck];c.answers.push(ok);if(c.index<2)c.index++;else c.done=true;save();return;
@@ -626,6 +685,9 @@ function handleAnswer(scope,choice){
  save();
 }
 function bindAdaptive(root){
+ root.querySelectorAll('[data-maj-recover]').forEach(b=>b.addEventListener('click',()=>openSkillRecovery(b.dataset.majRecover)));
+ root.querySelector('[data-maj-reassess]')?.addEventListener('click',()=>{const st=state(),key='turn:'+current().concept.id;delete st.currentQuestions[key];st.step=7;save();renderAdaptive()});
+ root.querySelectorAll('[data-maj-skill]').forEach(b=>b.addEventListener('click',()=>{const [li,ci]=b.dataset.majSkill.split(':').map(Number);state().lessonIndex=li;state().conceptIndex=ci;state().step=0;save();renderAdaptive()}));
  root.querySelector('#v346Lesson')?.addEventListener('change',e=>{state().lessonIndex=Number(e.target.value)||0;state().conceptIndex=0;state().step=0;state().currentQuestions={};save();renderAdaptive()});
  root.querySelectorAll('[data-v346-step]').forEach(b=>b.addEventListener('click',()=>{state().step=Number(b.dataset.v346Step);save();renderAdaptive()}));
  root.querySelector('[data-v346-next]')?.addEventListener('click',next);
@@ -673,7 +735,7 @@ function patch(){
  window.MajickLearningLab.__sharedAdaptive=true;
 }
 patch();
-window.MajickAdaptiveLearning={VERSION,STEPS,lessons,current,mastery,microDefs,microReceipt,learningPath,activeProfile,prereqStatus,misconceptionSummary,supportLevel,tomorrowQueue,memorySweep,guardianPersona,competencyGroups,show:showAdaptive,render:renderAdaptive,state,progress};
+window.MajickAdaptiveLearning={openSkillRecovery,resolveD772Skill,observeGameSkill,skillLibraryHtml,VERSION,STEPS,lessons,current,mastery,microDefs,microReceipt,learningPath,activeProfile,prereqStatus,misconceptionSummary,supportLevel,tomorrowQueue,memorySweep,guardianPersona,competencyGroups,show:showAdaptive,render:renderAdaptive,state,progress};
 document.documentElement.dataset.majickAdaptiveLearning=VERSION;
 })();
 
