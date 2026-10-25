@@ -8,7 +8,7 @@
 - Local canonical release checks and browser Add → three Stirs → Bottle flow passed, including Pause/Play. GPU/full responsive visual certification remains pending; this is a user-authorized development deployment.
 
 
-Updated: 2026-10-21. Reconciled with PR #145 development board; preserve PR #141 historical details. Canonical source: `current-site/`. Live: https://rnw4512-dev.github.io/majick-studies-assets/
+Updated: 2026-10-24. Reconciled through merged PR #195; preserve PR #141 historical details. Canonical source: `current-site/`. Live: https://rnw4512-dev.github.io/majick-studies-assets/
 
 **Vision:** An adult dark-academia witchy college where the learner adds real courses and studies through an integrated game world. Academic mastery remains course-specific; Scholar identity, avatar, Guardians, crystals, rewards, eggs and Sanctuary persist globally.
 
@@ -337,3 +337,27 @@ Every change must append **date / area / commit or PR / what changed / how / act
 - Sanctuary audit now recognizes Pixi ready messages. Pixi replies to the existing read-only roster protocol with actually visible saved Guardian IDs; duplicate species are not fabricated as additional rendered entities. Parent remains the state owner.
 - Collapsed Pose & direction controls into an accessible details section, freeing mirror space; increased minimum desktop stage height while preserving full-body art, zoom, saved appearance, pose checks and lighting.
 - No protected motion or artwork changes, no room reset, no reward or academic state writes. Run canonical preservation/syntax/hash checks and focused pose regressions before development publishing. Full stable certification remains waived; Pixi migration interaction gaps remain outside this focused fix. Rollback with a scoped revert.
+
+## 2026-10-24 — PR #194–195 reconciliation
+
+### Done
+- [PR #194](https://github.com/rnw4512-dev/majick-studies-assets/pull/194) — **merged 2026-10-24 18:19 ET**, merge commit `cd556246b5493f94434c2bd322af67940dbdc162`. Four-tab Study Realm: Skill Library, Practice, OA Prep, Progress; reuses D772 questions, scoring and progress owners. Merge does not imply production browser certification.
+- [PR #195](https://github.com/rnw4512-dev/majick-studies-assets/pull/195) — **merged 2026-10-24 18:41 ET**, merge commit `3698c1dd3154c5aea341baf775f66fd2aa2d132c`. Sanctuary saved-ID/duplicate-species matching, furniture placement persistence, exact-ID care, Phaser fallback and learning navigation repairs. Local tests reported in PR; production verification outstanding.
+
+### Needs Assets
+- [ ] Obtain and approve missing transparent Guardian walking-frame pairs for affected species/evolution stages. Canonical portraits are fallback artwork, **not** verified walking frames. Preserve protected 33 motion assets.
+
+### Needs Browser Certification
+- [ ] Production Study Realm four-tab navigation, mixed OA practice, scoring and saved progress across reload/course switching.
+- [ ] Production Guardian roster identities (including duplicate species), stage mapping and floor movement; furniture drag/store/place/reload; exact-ID pet/play/feed and inventory persistence; Phaser fallback.
+- [ ] Repeat at 390px, 820px and 1366px; do not infer certification from local tests or publishing.
+
+### Blocked / Needs Your Review
+- Previously reported failed subsequent Pages publishing run [#40139804213](https://github.com/rnw4512-dev/majick-studies-assets/actions/runs/40139804213) and Commons review [#40139598122](https://github.com/rnw4512-dev/majick-studies-assets/actions/runs/40139598122) require investigation or a documented passing replacement. Earlier successful publishing [#40139646876](https://github.com/rnw4512-dev/majick-studies-assets/actions/runs/40139646876) is separate. These are historical reported results, not freshly rechecked in this board-only edit.
+
+### Work-session log
+| Date | Scope | Changed | Tested | Outcome |
+|---|---|---|---|---|
+| 2026-10-24 | PR #194 | Four Study Realm tabs, existing D772 owners retained; merge `cd556246` at 18:19 ET | GitHub PR merged metadata confirmed; production browser not retested in board-sync session | Merged; certification pending |
+| 2026-10-24 | PR #195 | Sanctuary identity/furniture/care/navigation; merge `3698c1dd` at 18:41 ET | GitHub PR merged metadata confirmed; PR reports local Node/browser fixtures; production not retested in board-sync session | Merged; missing walking assets and certification pending |
+
