@@ -71,6 +71,11 @@ jobs:
         if: github.event_name == 'workflow_dispatch' && inputs.release_level == 'stable'
         run: node pages-release/current/browser-probability.cjs _site
 
+      - name: Verify rebuilt site entry point
+        run: |
+          test -s _site/index.html
+          echo 'PASS rebuilt Majick Studies entry point exists'
+
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
 
