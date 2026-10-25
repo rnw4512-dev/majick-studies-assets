@@ -155,8 +155,8 @@ check('connected probability evidence, freshness, replay safety and course isola
  assert(api.probabilityCheck('teaching',values(t)).ok);assert(api.masteryStatus(id).certified);
  assert.equal(credits,4,'teacher response must not award another answer reward');
  api.skillResult(c.MajickGeneratedPractice.generate('probability'),true,true,'game-realm');assert(state.progress.D772.adaptiveSkills[id].masteryCertified,'assisted follow-up must preserve already-earned explicit certification');
- const dataSignatures=new Set();for(let i=0;i<42;i++)for(const transfer of [false,true]){const q=c.MajickGeneratedPractice.probabilityCase(i,transfer);assert(c.MajickGeneratedPractice.validate(q));if(!transfer)dataSignatures.add(JSON.stringify(q.data));}
- assert.equal(dataSignatures.size,42);assert.equal(c.MajickGeneratedPractice.probabilityCase(42),null,'do not recycle exhausted datasets');
+ const dataSignatures=new Set();for(let i=0;i<180;i++)for(const transfer of [false,true]){const q=c.MajickGeneratedPractice.probabilityCase(i,transfer);assert(c.MajickGeneratedPractice.validate(q));if(!transfer)dataSignatures.add(JSON.stringify(q.data));}
+ assert.equal(dataSignatures.size,180);assert.equal(c.MajickGeneratedPractice.probabilityCase(180),null,'do not recycle exhausted datasets');
 
  assert.equal(JSON.stringify([state.progress.D755,state.progress.D756,state.majickAccount,state.legacy]),other);
  assert.equal(state.progress.D772.answers[0].qid,'historic');
