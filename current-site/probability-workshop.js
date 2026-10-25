@@ -101,8 +101,10 @@ function mount(){
    const fresh=C().probabilityAdvanceReasoning?.(fromId);
    if(fresh)mount();
   };
-  next.addEventListener('pointerup',advance);
-  next.addEventListener('click',advance);
+  // One activation owner: pointerup plus click could race with campus re-render.
+  // Capture the press before a stale button is detached; keyboard uses click.
+  next.addEventListener('pointerdown',e=>{if(e.button===0){e.preventDefault();advance();}});
+  next.addEventListener('click',e=>{if(e.detail===0)advance();});
  }
 }
 window.MajickProbabilityWorkshop={mount,open};
