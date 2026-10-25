@@ -1,6 +1,7 @@
 (()=>{
 'use strict';
 const VERSION='3.4.2-atelier-fitted-11';
+if(!document.querySelector('link[data-majick-ornate]')){const link=document.createElement('link');link.rel='stylesheet';link.href='./majick-ornate-panel.css';link.dataset.majickOrnate='true';document.head.append(link)}
 const HAIR=['Locs','Braids','Curls','Afro','Twists','Waves'];
 const SKIN=['#70412f','#9d6345','#bf8766','#deb192','#f0cdb4','#513024'];
 const ROBES=['Plum Scholar','Midnight Velvet','Emerald Witch','Moonlit Silver'];
