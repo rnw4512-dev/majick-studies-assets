@@ -249,7 +249,7 @@ function qset(n=3,mixed=false){
  let pool=mixed?b:b.filter(matchesCurrent);if(pool.length<n)pool=b;
  const seen=new Set((progress()?.answers||[]).map(a=>String(a.qid||'')));
  const fresh=pool.filter(q=>!seen.has(String(q.id||q.qid||'')));
- return shuffled(fresh.length?fresh:pool).slice(0,n);
+ return shuffled(fresh).slice(0,n);
 }
 function diagnostic(){
  const st=state(),key=current().concept.id;
