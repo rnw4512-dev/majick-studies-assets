@@ -165,7 +165,19 @@ function openRequiredRecovery(){
 }
 function finishRequiredRecovery(source){
  const api=window.MajickLearningContinuity,r=api?.practiceRecovery?.(source,false);if(!r||r.required)return;
- const fresh=practicePool('mixed').find(q=>api.practiceSkill(q)===api.practiceSkill(source)&&!r.seenIds.includes(q.id)&&window.MajickVisualEvidence?.evidence(q).ok);
+ const skill=api.practiceSkill(source),seen=new Set(r.seenIds||[]);
+ const acceptable=q=>!!q&&api.practiceSkill(q)===skill&&!seen.has(q.id)&&!!window.MajickVisualEvidence?.evidence(q)?.ok;
+ let fresh=practicePool('mixed').find(acceptable);
+ // Exhausting the static OA pool must not silently replay a completed question.
+ // Use the existing verified generator; no new scoring or mastery engine is created.
+ if(!fresh&&window.MajickGeneratedPractice){
+  const gen=window.MajickGeneratedPractice;
+  for(let ordinal=0;ordinal<180&&!fresh;ordinal++){
+   const q=skill==='probability'||skill==='dependent-probability'?gen.probabilityCase?.(ordinal):null;
+   if(acceptable(q)&&gen.validate?.(q))fresh=q;
+  }
+ }
+
  if(!fresh){window.rewardToast?.('Repair saved','No unused same-skill case remains. Independent recovery is still pending.');window.navigate?.('mission');return}
  if(session){const old=session.current;const i=session.questions?.findIndex(q=>q.id===old?.id);if(i>=0)session.questions[i]=fresh;session.current=fresh;session.answered=false;session.pendingChoice=null;session.adaptiveTracked=false;session.mathCoachAssisted=false;session.chartUsed=false;session.revealedClue=false;session.usedPetAbility=false}
  window.navigate?.('mission');
