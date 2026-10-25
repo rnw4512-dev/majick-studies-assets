@@ -350,3 +350,24 @@ html body .questionDataVisual svg foreignObject table,
 html body .questionDataVisual svg foreignObject :is(th,td) {
  background:#fffdf7!important;
 }
+
+/* Mobile Commons Sanctuary: opaque ivory labels on dark plum buttons.
+   The rendered audit measured 4.03:1 / 3.73:1 with translucent text
+   against the animated room; keep WCAG AA 4.5:1 unchanged. */
+@media(max-width:700px){
+ html body.majickCampus #content button.btn.ghost,
+ html body.majickCampus #content button.btn.primary{
+   background-color:#352440!important;
+   color:#fff6e8!important;
+   -webkit-text-fill-color:#fff6e8!important;
+   opacity:1!important;
+   text-shadow:none!important;
+   border:1px solid #c9a97b!important;
+ }
+ html body.majickCampus #content button.btn.ghost *,
+ html body.majickCampus #content button.btn.primary *{
+   color:#fff6e8!important;
+   -webkit-text-fill-color:#fff6e8!important;
+   opacity:1!important;
+ }
+}
