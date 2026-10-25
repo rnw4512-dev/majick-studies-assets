@@ -144,7 +144,7 @@
     "guardian-registry.js": "00a6baa6d67cfc0e63b2e336a38baca04b6d8705058f824d70e12b8fe88c18bc",
     "home-focus.css": "cbb719eb8e78701717b4016388d511553f2785212d839815ed006651ae738b2b",
     "home-focus.js": "f421d4c5e5b4193d1005e5ce5cdbeb0e969a0cffb8ece49b9dd7c255a16ca794",
-    "index.html": "ab08ad34d22c91ded657142cf48b4efa66063909cc75daad294dbb3ed605c65e",
+    "index.html": "a1178f29bd0bf014b16f5383dbf90846860251e2777f266ccc12bd6e31ac83c3",
     "learn-mode.css": "30181250c67efe7bd97c9276706a804a551e7904a2bb28160eeb0c193f35c002",
     "learn-mode.js": "49e424f3e40456772e4cb8adc550078c26ed793a5f83f9c216450609865ffa3c",
     "learning-lab.css": "b9c2c4f2ae393b3d291155a258cd01388bb71cd49a46d0187f224b03222ac2df",
@@ -849,6 +849,7 @@
     "pixi-sanctuary/frames/velora/celestial/walk-1.png": "1ce314e31cca9464755852a5bda17d44ad243509686417b1cd5cea6d970b0784",
     "pixi-sanctuary/frames/velora/celestial/walk-2.png": "841d4d2fefa59f5b6242ba5c8cc95c505bd06db5eb80d9aa713fdc013107dfaf",
     "assets/ui/collegium-nine-slice.svg": "8a17ce7985731a0f9de781956b1891ad55c3c654c12c8cb8735a083892cdc841",
-    "majick-ornate-panel.css": "b956b1c265713a5e0215786fa7e330bcb95b842b42aae0b48bda5645f38d7d31"
+    "majick-ornate-panel.css": "b956b1c265713a5e0215786fa7e330bcb95b842b42aae0b48bda5645f38d7d31",
+    "verified-milestone-ceremony.js": "8542be34a31d6367fa505223bf60305343e6cc975a51f0f63a3f2b2ba801cc76"
   }
 }
