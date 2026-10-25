@@ -77,6 +77,7 @@ function repairLesson(q){
  const clue=String(q.wguClue||q.keyClue||q.why||'Identify the details that distinguish the correct concept.');
  const questionId=String(q.id||q.qid||q.prompt||''), encoded=encodeURIComponent(questionId);
  const optionReason=String(coach[correct]||q.why||'Compare the correct answer with the key evidence.');
+ const distinctRule=optionReason.trim()===clue.trim()?'Use the clue to select the relevant rule. Check the answer against that rule and identify what the first choice overlooked.':optionReason;
  const hasWorked=!!q?.workedExample?.steps?.length||/(?:data set|data values|values are|numbers are)\s*:?\s*-?\d+(?:\.\d+)?(?:\s*,\s*-?\d+(?:\.\d+)?){2,}/i.test(String(q.prompt||''));
  const steps=hasWorked?'<details class="v342MatchedWork"><summary>Show the calculations using these exact values</summary>'+exactWorked(q)+'</details>':'<p>This question tests a concept or an interpretation. Use its actual clue and answer comparison below rather than an unrelated numerical example.</p>';
  return '<section class="v342Repair" data-repair-question="'+E(questionId)+'" style="padding:1rem;border:1px solid #ad8c55;border-radius:12px;margin:.8rem 0;background:#f6ebd9;color:#30233d">'+
@@ -85,7 +86,7 @@ function repairLesson(q){
  '<p><b>You selected:</b> '+E(chosen)+'</p><p><b>Correct answer:</b> '+E(correct)+'</p>'+
  '<p><b>Why your answer needs revision:</b> '+E(wrongReason)+'</p>'+
  '<div class="v342RepairSteps"><div><b>1 · Find the deciding clue</b><p>'+E(clue)+'</p></div>'+
- '<div><b>2 · Connect the clue to the rule</b><p>'+E(optionReason)+'</p></div>'+
+ '<div><b>2 · Connect the clue to the rule</b><p>'+E(distinctRule)+'</p><p><b>Why the original choice fails:</b> '+E(wrongReason)+'</p></div>'+
  '<div><b>3 · Work it through</b>'+steps+'</div>'+
  '<div><b>4 · Explain your thinking</b><p>What in the question made your first answer tempting? Which detail changes your reasoning?</p>'+
  '<textarea data-repair-thinking rows="3" style="width:100%;min-height:84px" placeholder="I chose ___ because ___. Now I see ___ in this question, which means ___..."></textarea>'+
