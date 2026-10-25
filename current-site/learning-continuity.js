@@ -224,6 +224,13 @@ function probabilityTask(kind){
  const m=probabilityMastery();
  if(kind!=='repair'&&!m.repairVerified||kind==='transfer'&&m.independentCorrect<2||kind==='teaching'&&!m.transferVerified)return null;
  const old=st.tasks[kind];if(old&&!old.completed)return old;
+ // Reconcile older saves before selecting a new dataset. A saved task may
+ // predate seenDatasets; it must never be selected again after a reload.
+ for(const saved of Object.values(st.tasks||{}))probabilitySeen(saved?.q);
+ for(const receipt of st.evidence||[]){
+  const match=/^connected-probability-(\\d+)$/.exec(String(receipt.id||''));
+  if(match){const previous=window.MajickGeneratedPractice?.probabilityCase(Number(match[1]),receipt.kind==='transfer');if(previous)probabilitySeen(previous);}
+ }
  if(kind==='repair'&&m.repairVerified||kind==='reasoning'&&m.independentCorrect>=2||kind==='transfer'&&m.transferVerified||kind==='teaching'&&m.teachBackVerified)return old||null;
  let q;
  while(st.next<42){
