@@ -8,7 +8,7 @@ const places={repair:'learninglab',reasoning:'mission',transfer:'games',teaching
 const labels={repair:'1 · Repair with counters',reasoning:'2 · Independent OA reasoning',transfer:'3 · Classroom role transfer',teaching:'4 · Teacher application'};
 function open(kind){
  if(S.activeCourse!=='D772')return;
- const t=C().probabilityTask(kind);if(!t){const box=document.querySelector('#connectedProbability [data-connected-task]');if(box)box.textContent='Complete the preceding evidence first. If all 42 fresh datasets have been used, your evidence is preserved; additional datasets are needed.';return;}
+ const t=C().probabilityTask(kind);if(!t){const box=document.querySelector('#connectedProbability [data-connected-task]');if(box){const m=C().probabilityMastery();const reason=kind==='reasoning'&&!m.repairVerified?'Complete the guided counter repair first.':kind==='transfer'&&m.independentCorrect<2?'Complete two correct independent OA questions first.':kind==='teaching'&&!m.transferVerified?'Complete the classroom transfer first.':'No unused verified dataset is available for this step. Your progress is saved.';box.textContent=reason;}return;}
  const st=C().probabilityState();st.focus=kind;window.save?.();
  if(S.screen!==places[kind])window.navigate(places[kind]);else mount();
  setTimeout(()=>{
@@ -48,7 +48,7 @@ function mount(){
  box.__majickProbabilityView=view;
  const nav=Object.keys(labels).map(k=>{
  const unlocked=k==='repair'||m.repairVerified&&(k==='reasoning'||m.independentCorrect>=2&&(k==='transfer'||m.transferVerified));
- return '<button type="button" data-connected-open="'+k+'" '+(!unlocked?'disabled':'')+'>'+labels[k]+'</button>';
+ return '<button type="button" data-connected-open="'+k+'" aria-disabled="'+(!unlocked)+'" title="'+(unlocked?'Open activity':'See prerequisite for this activity')+'">'+labels[k]+(unlocked?'':' · locked')+'</button>';
  }).join('');
  box.innerHTML='<button type="button" class="connectedBack" data-connected-back aria-label="Back to previous campus room">← Back</button><h2>Connected Learning · Probability</h2><p>Original simulated OA-style practice · D772 · Dependent events without replacement</p>'+(st?.need?'<p role="status">Practice recommendation from '+E(st.need.origin)+': recount the remaining favorable outcomes and sample space. This need follows you into Learn Lab, Study Now and Game Realm.</p>':'')+'<p data-connected-evidence>Repair: '+(m.repairVerified?'verified':'needed')+' · Independent reasoning: '+m.independentCorrect+'/2 · Transfer: '+(m.transferVerified?'verified':'needed')+' · Structured teach-back: '+(m.teachBackVerified?'verified':'needed')+' · '+(m.certified?'Probability skill certified':'Not yet certified')+'</p><nav aria-label="Probability learning flow">'+nav+'</nav><div data-connected-task></div><p>Guided work never counts as independent mastery. Written whiteboard and teaching explanations are saved for review; only the structured checks are automatically evaluated.</p>';
  box.querySelectorAll('[data-connected-open]').forEach(b=>b.onclick=()=>open(b.dataset.connectedOpen));
