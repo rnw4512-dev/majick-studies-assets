@@ -247,7 +247,9 @@ function shuffled(a){return [...a].sort(()=>Math.random()-.5)}
 function qset(n=3,mixed=false){
  const b=bank();if(!b.length)return [];
  let pool=mixed?b:b.filter(matchesCurrent);if(pool.length<n)pool=b;
- return shuffled(pool).slice(0,n);
+ const seen=new Set((progress()?.answers||[]).map(a=>String(a.qid||'')));
+ const fresh=pool.filter(q=>!seen.has(String(q.id||q.qid||'')));
+ return shuffled(fresh.length?fresh:pool).slice(0,n);
 }
 function diagnostic(){
  const st=state(),key=current().concept.id;
@@ -555,19 +557,22 @@ function ensureQuestion(scope,mixed=false){
  st.currentQuestions=st.currentQuestions||{};
  let id=st.currentQuestions[key];
  let q=id&&byId(id);
- if(!q){q=qset(1,mixed)[0];if(q)st.currentQuestions[key]=q.id||q.qid}
+ if(!q){const recent=new Set((progress()?.answers||[]).filter(a=>a.topicId==='adaptive:'+current().concept.id).map(a=>String(a.qid||'')));
+ const candidates=(mixed?bank():bank().filter(matchesCurrent)).filter(x=>!recent.has(String(x.id||x.qid||'')));
+ q=shuffled(candidates)[0]||qset(1,mixed)[0];if(q)st.currentQuestions[key]=q.id||q.qid}
  return q;
 }
 function stepBody(){
  const st=state(),step=Number(st.step||0),{lesson,concept}=current(),m=mastery();
  const recovery=step===0?recoveryHtml():'';
+ const targeted=st.recoveryActive===concept.id?'<div class="v349Recovery"><b>Targeted recovery</b><p>Review the explanation and worked example. When ready, answer a new independent question; guided work will not award mastery.</p><button type="button" data-maj-reassess>Try a fresh independent question</button></div>':'';
  if(step===0)return recovery+'<small>① WHAT AM I LEARNING?</small><h2>'+E(concept.title||lesson.title)+'</h2><p class="lead">'+E(concept.teach||lesson.goal)+'</p>'+profileCard()+'<div class="v346GoalGrid"><span>Recognize it</span><span>Use it independently</span><span>Explain why</span><span>Avoid the trap</span><span>Retrieve it later</span></div><button class="btn primary" data-v346-next>Quick Check →</button>';
  if(step===1){
    const d=diagnostic(),qs=d.questions.map(byId).filter(Boolean);
    if(!qs.length)return '<small>② QUICK CHECK</small><h2>Diagnostic pending</h2><p>Add course questions and Majick will automatically create a 2–3 item diagnostic.</p><button class="btn primary" data-v346-next>Teach Me →</button>';
    return '<small>② QUICK CHECK • NOT GRADED</small><h2>What do you already know?</h2>'+prereqHtml()+qs.map((q,i)=>'<section class="v346Diag"><b>'+(i+1)+'. '+E(q.prompt)+'</b>'+q.options.map(o=>'<button data-v346-diag="'+i+'" data-choice="'+E(o)+'" '+(d.answers[i]?'disabled':'')+'>'+E(o)+'</button>').join('')+(d.answers[i]?'<p>'+E(q.why||'Use this feedback to decide what needs teaching.')+'</p>':'')+'</section>').join('')+(d.answers.filter(Boolean).length===qs.length?branchCardHtml()+'<button class="btn primary" data-v349-branch>Follow My Best Path →</button>':'');
  }
- if(step===2)return '<small>③ TEACH ME</small><h2>'+E(concept.title||lesson.title)+'</h2>'+prereqHtml()+'<p class="lead">'+E(concept.teach||lesson.goal)+'</p><div class="v347ProfileGuide"><b>Best learning strategy for this concept</b><p>'+E(profileGuide())+'</p></div>'+tutorButtons()+supportMeterHtml()+'<button class="btn primary" data-v346-next>Show Me →</button>';
+ if(step===2)return targeted+'<small>③ TEACH ME</small><h2>'+E(concept.title||lesson.title)+'</h2>'+prereqHtml()+'<p class="lead">'+E(concept.teach||lesson.goal)+'</p><div class="v347ProfileGuide"><b>Best learning strategy for this concept</b><p>'+E(profileGuide())+'</p></div>'+tutorButtons()+supportMeterHtml()+'<button class="btn primary" data-v346-next>Show Me →</button>';
  if(step===3){
    const ex=concept?.worked?.scenario||concept?.examples?.[0]||concept.teach||lesson.goal,steps=concept?.worked?.steps||['Identify what the scenario is asking.','Name the concept or strategy.','Apply the rule.','Check the answer against the scenario.'];
    return '<small>④ SHOW ME • WATCH FIRST</small><h2>Worked example</h2><div class="v346Worked"><p>'+E(ex)+'</p><ol>'+steps.map(x=>'<li>'+E(x)+'</li>').join('')+'</ol></div>'+workedComparisonHtml()+workedErrorHtml()+'<button class="btn primary" data-v346-next>Why does this work? →</button>';
@@ -625,6 +630,14 @@ function observeGameSkill(q,correct,mode){
  }
  save();return true;
 }
+function openSkillRecovery(conceptId){
+ if(cid()!=='D772')return false;
+ const found=lessons().flatMap((l,li)=>(l.concepts||[]).map((c,ci)=>({c,li,ci}))).find(x=>String(x.c.id)===String(conceptId));
+ if(!found)return false;
+ const st=state();st.lessonIndex=found.li;st.conceptIndex=found.ci;st.step=2;st.currentQuestions={};st.recoveryActive=conceptId;save();
+ if(window.S?.screen!=='learninglab')window.navigate?.('learninglab');
+ setTimeout(()=>{showAdaptive();renderAdaptive()},0);return true;
+}
 function skillLibraryHtml(){
  if(cid()!=='D772')return '';
  const st=state(),rows=lessons(),p=progress();
@@ -638,7 +651,7 @@ function skillLibraryHtml(){
   const recovery=p.adaptiveLearning?.recoveryTargets?.[concept.id];
   const status=independent>=2&&transfer>=1&&accuracy!==null&&accuracy>=80?'Independent evidence met':independent?'Developing':'Not yet assessed';
   const example=concept.examples?.[0];const exampleText=typeof example==='string'?example:(example?.prompt||example?.question||'');
-  return '<article class="majSkillItem"><div><strong>'+E(concept.title||lesson.title)+'</strong><small>'+E(lesson.title)+' · '+status+'</small><p>'+E(concept.teach||lesson.goal||'Explore this skill with worked examples and practice.')+'</p>'+(exampleText?'<p><b>Example:</b> '+E(exampleText)+'</p>':'')+'<small>Independent correct: '+independent+' · Transfer: '+transfer+' · Recent accuracy: '+(accuracy===null?'Not assessed':accuracy+'%')+' · Game reinforcement: '+gameRows.filter(x=>x.correct).length+'/'+gameRows.length+'</small>'+(recovery?'<small>Recommended: review this skill, then try a fresh independent question.</small>':'')</div><button type="button" data-maj-skill="'+li+':'+ci+'">'+(selected===concept.id?'Continue practice':'Practice skill')+'</button></article>';
+  return '<article class="majSkillItem"><div><strong>'+E(concept.title||lesson.title)+'</strong><small>'+E(lesson.title)+' · '+status+'</small><p>'+E(concept.teach||lesson.goal||'Explore this skill with worked examples and practice.')+'</p>'+(exampleText?'<p><b>Example:</b> '+E(exampleText)+'</p>':'')+'<small>Independent correct: '+independent+' · Transfer: '+transfer+' · Recent accuracy: '+(accuracy===null?'Not assessed':accuracy+'%')+' · Game reinforcement: '+gameRows.filter(x=>x.correct).length+'/'+gameRows.length+'</small>'+(recovery?'<small>Recommended: review this skill, then try a fresh independent question.</small><button type="button" data-maj-recover="'+E(concept.id)+'">Review &amp; recover</button>':'')</div><button type="button" data-maj-skill="'+li+':'+ci+'">'+(selected===concept.id?'Continue practice':'Practice skill')+'</button></article>';
  })).join('');
  return '<details class="majSkillLibrary"><summary>Skill Library · All D772 concepts</summary><p>Choose any skill to practice. Your personalized recommendations and existing evidence are preserved.</p><div class="majSkillList">'+entries+'</div></details>';
 }
@@ -670,6 +683,8 @@ function handleAnswer(scope,choice){
  save();
 }
 function bindAdaptive(root){
+ root.querySelectorAll('[data-maj-recover]').forEach(b=>b.addEventListener('click',()=>openSkillRecovery(b.dataset.majRecover)));
+ root.querySelector('[data-maj-reassess]')?.addEventListener('click',()=>{const st=state(),key='turn:'+current().concept.id;delete st.currentQuestions[key];st.step=7;save();renderAdaptive()});
  root.querySelectorAll('[data-maj-skill]').forEach(b=>b.addEventListener('click',()=>{const [li,ci]=b.dataset.majSkill.split(':').map(Number);state().lessonIndex=li;state().conceptIndex=ci;state().step=0;save();renderAdaptive()}));
  root.querySelector('#v346Lesson')?.addEventListener('change',e=>{state().lessonIndex=Number(e.target.value)||0;state().conceptIndex=0;state().step=0;state().currentQuestions={};save();renderAdaptive()});
  root.querySelectorAll('[data-v346-step]').forEach(b=>b.addEventListener('click',()=>{state().step=Number(b.dataset.v346Step);save();renderAdaptive()}));
@@ -718,7 +733,7 @@ function patch(){
  window.MajickLearningLab.__sharedAdaptive=true;
 }
 patch();
-window.MajickAdaptiveLearning={resolveD772Skill,observeGameSkill,skillLibraryHtml,VERSION,STEPS,lessons,current,mastery,microDefs,microReceipt,learningPath,activeProfile,prereqStatus,misconceptionSummary,supportLevel,tomorrowQueue,memorySweep,guardianPersona,competencyGroups,show:showAdaptive,render:renderAdaptive,state,progress};
+window.MajickAdaptiveLearning={openSkillRecovery,resolveD772Skill,observeGameSkill,skillLibraryHtml,VERSION,STEPS,lessons,current,mastery,microDefs,microReceipt,learningPath,activeProfile,prereqStatus,misconceptionSummary,supportLevel,tomorrowQueue,memorySweep,guardianPersona,competencyGroups,show:showAdaptive,render:renderAdaptive,state,progress};
 document.documentElement.dataset.majickAdaptiveLearning=VERSION;
 })();
 
