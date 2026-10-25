@@ -96,7 +96,8 @@ function buildManager(sc,page=0){
  if(!sc)return;try{sc.v3411RewardManager?.destroy(true)}catch(_){}
  const rs=rewardState(),ids=rs.owned.filter(id=>REWARD_DECOR[id]),width=Math.min(590,Math.max(500,sc.scale.width-90)),height=500;
  const c=sc.add.container(0,0).setDepth(14500),bg=sc.add.rectangle(0,0,width,height,0x120817,.98).setOrigin(0).setStrokeStyle(2,0xc9a762,.72);
- c.add(bg);c.add(sc.add.text(18,14,'EARNED SANCTUARY TREASURES',{fontFamily:'Georgia',fontStyle:'bold',fontSize:'18px',color:'#f2d098'}));
+ const frame=window.MajickDecorativePanel?.phaserFrame?.(sc,width,height);if(frame)c.add(frame);
+ c.add(bg);if(frame)c.bringToTop(frame);c.add(sc.add.text(18,14,'EARNED SANCTUARY TREASURES',{fontFamily:'Georgia',fontStyle:'bold',fontSize:'18px',color:'#f2d098'}));
  c.add(sc.add.text(18,40,'Mastery rewards • drag in Edit Mode • shift-click rotates • alt-click scales',{fontFamily:'Arial',fontSize:'9px',color:'#baa9c2'}));
  const close=sc.add.text(width-16,14,'✕ CLOSE',{fontFamily:'Arial',fontStyle:'bold',fontSize:'9px',color:'#eee0f0',backgroundColor:'#56385f',padding:{x:8,y:5}}).setOrigin(1,0).setInteractive({useHandCursor:true});close.on('pointerup',()=>{try{c.destroy(true)}catch(_){}});c.add(close);
  let y=72;ids.slice(page*7,page*7+7).forEach(id=>{const d=REWARD_DECOR[id],stored=rs.stored.includes(id),row=sc.add.rectangle(14,y,width-28,48,0x1d1525,.94).setOrigin(0).setStrokeStyle(1,COLORS[d.rarity]||0x60466b,.55);
