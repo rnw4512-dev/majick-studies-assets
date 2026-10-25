@@ -503,7 +503,7 @@
     "assets/rewards/aurelia/items/treat-puzzle-carousel.webp": "e3f9675b47ac0ad0ae75667f3e6f565bd91cf5e92cf6a640c5248a8d549f1f4d",
     "assets/rewards/aurelia/items/flowering-sage-planter.webp": "34c168e82b480b132b8531d07006e4355bf5e802a647109128261d9556a26e3d",
     "assets/rewards/aurelia/items/feather-play-wand.webp": "ddef86bed10da763f1749c3e5b93ebb69098ef1eb0b1ccab8a759285895bf86e",
-    "enchanted-atelier.js": "ee8887c3a7d9572fbd742e95dcb2b866b7aeb1ad1a29d451083ba308c0d710f4",
+    "enchanted-atelier.js": "059ba8d60dd30e6222dca6232cbf523d50bfe631c8021b9439912d2bf19af7ad",
     "scholar-companion.js": "6af37282a99d75b3d01f5cee93625213757d41da068329efc1c8f25adc180337",
     "scholar-progression.js": "c7be90447c9015186e438d44034fe90fecd15e9926203f55ab89cd062ec9090c",
     "study-visual-anchors.js": "af9e8e33d4c33d9f5e6b6be1be7f8d942f90d73e3d3ebf6a17b87e06c6c7e0be",
@@ -828,8 +828,8 @@
     "scholar-wardrobe-studio.js": "3f3f20f90356815f90636291491d7c0e9984d56f9477b32621a31e932a1a8ad2",
     "milestone-particles.js": "084d63ea0b43ac787d8b467b7c6e097253e7460c01a0707c89728a6e860d0d5a",
     "room-transition.js": "e050a9ea7b337ac67993264353c650f2c4708972bf59e45946ac999a77467d27",
-    "pixi-sanctuary/index.html": "b80fa3b4cb029dbc79cf7d55d19d2b37d916925f2dd94fd7325256a54212e29a",
-    "pixi-sanctuary/prototype.js": "a4c683108b47bb110ebe1567c12ec579cb8a750bc0472f70fb379f2fdafd92d6",
+    "pixi-sanctuary/index.html": "cd1f6e9b8b9875ce89c95ae9b841d4bdc99ba40e048c33af025fa799c789f491",
+    "pixi-sanctuary/prototype.js": "11059b02fe75463dc969308af6143a6c8520134e50f62ca759bb56f4ccc4eaec",
     "atelier-pixi-scene.js": "8d59a87780d6862ef01cd3753b2779d5dfbab0bb516004c14450e903c51c1418",
     "vendor/pixi-8.6.6.min.js": "e5c38cccee4f99263df5f0b10dfd4d2484db5fdb730af3953cb6f1c07b3d85b2",
     "vendor/PIXI-LICENSE.txt": "5ce7447bc57f7349ffc48338782fbcabe613696e00712b20d66bc58e780f9473",
@@ -847,6 +847,8 @@
     "pixi-sanctuary/frames/velora/ascendant/walk-1.png": "8559a3386388a50108215dc381fea6cce938e60e0c35ded8e6c3bd946b08fd6c",
     "pixi-sanctuary/frames/velora/ascendant/walk-2.png": "717ed6caea64d4d85e327152cae68bf487ab0d56969c718f1e76cb376685e293",
     "pixi-sanctuary/frames/velora/celestial/walk-1.png": "1ce314e31cca9464755852a5bda17d44ad243509686417b1cd5cea6d970b0784",
-    "pixi-sanctuary/frames/velora/celestial/walk-2.png": "841d4d2fefa59f5b6242ba5c8cc95c505bd06db5eb80d9aa713fdc013107dfaf"
+    "pixi-sanctuary/frames/velora/celestial/walk-2.png": "841d4d2fefa59f5b6242ba5c8cc95c505bd06db5eb80d9aa713fdc013107dfaf",
+    "assets/ui/collegium-nine-slice.svg": "8a17ce7985731a0f9de781956b1891ad55c3c654c12c8cb8735a083892cdc841",
+    "majick-ornate-panel.css": "b956b1c265713a5e0215786fa7e330bcb95b842b42aae0b48bda5645f38d7d31"
   }
 }

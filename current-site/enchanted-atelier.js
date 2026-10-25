@@ -1,6 +1,7 @@
 (()=>{
 'use strict';
 const VERSION='3.4.2-atelier-fitted-11';
+if(!document.querySelector('link[data-majick-ornate]')){const link=document.createElement('link');link.rel='stylesheet';link.href='./majick-ornate-panel.css';link.dataset.majickOrnate='true';document.head.append(link)}
 const HAIR=['Locs','Braids','Curls','Afro','Twists','Waves'];
 const SKIN=['#70412f','#9d6345','#bf8766','#deb192','#f0cdb4','#513024'];
 const ROBES=['Plum Scholar','Midnight Velvet','Emerald Witch','Moonlit Silver'];
@@ -113,7 +114,7 @@ function avatar(p){
  const robes=ROBES.map((label,id)=>({id,label,img:AVATAR_ROBES[id]})).filter(x=>x.img);
  const skins=[{id:0,label:'Deep brown',tone:SKIN[0]},{id:2,label:'Warm brown',tone:SKIN[2]}];
  return '<div class="atelierSplit atelierV2"><div class="atelierPreview atelierV2Mirror"><div class="atelierV2Crest">☾ ✦ THE WARDROBE MIRROR ✦ ☽</div><div class="atelierV2Stage"><div class="atelierV2Figure" style="transform:translateY('+view[1]+'%) scale('+(view[0]*atelierZoom).toFixed(2)+')">'+illustratedAvatar(p,true)+'</div></div>'+mirrorTools()+(previewNotes.length?'<details class="atelierPreviewDetails"><summary>Preview details</summary><p class="atelierPreviewNotice">'+E(previewNotes.join(' '))+'</p></details>':'')+'<strong>'+E(p.name||'Scholar')+'</strong><small>'+E(ROBES[p.robe])+'</small></div>'+
- '<div class="atelierFields atelierV2Controls"><label>Scholar name<input data-atelier-name maxlength="26" value="'+E(p.name)+'"></label>'+
+ '<div class="atelierFields atelierV2Controls majick-ornate-panel majick-ornate-panel--wardrobe"><label>Scholar name<input data-atelier-name maxlength="26" value="'+E(p.name)+'"></label>'+
  '<h3>Skin tone</h3>'+avatarPicker('skin',skins,[0,5].includes(Number(p.skin))?0:2)+
  '<h3>Hair</h3>'+avatarPicker('hair',hairs,p.hair)+
  '<h3>Robe style</h3>'+avatarPicker('robe',robes,p.robe)+
