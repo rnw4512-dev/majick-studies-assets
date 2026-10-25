@@ -228,7 +228,7 @@ function probabilityTask(kind){
  // predate seenDatasets; it must never be selected again after a reload.
  for(const saved of Object.values(st.tasks||{}))probabilitySeen(saved?.q);
  for(const receipt of st.evidence||[]){
-  const match=/^connected-probability-(\\d+)$/.exec(String(receipt.id||''));
+  const match=/^connected-probability-(\d+)$/.exec(String(receipt.id||''));
   if(match){const previous=window.MajickGeneratedPractice?.probabilityCase(Number(match[1]),receipt.kind==='transfer');if(previous)probabilitySeen(previous);}
  }
  if(kind==='repair'&&m.repairVerified||kind==='reasoning'&&m.independentCorrect>=2||kind==='transfer'&&m.transferVerified||kind==='teaching'&&m.teachBackVerified)return old||null;
