@@ -638,6 +638,23 @@ function openSkillRecovery(conceptId){
  if(window.S?.screen!=='learninglab')window.navigate?.('learninglab');
  setTimeout(()=>{showAdaptive();renderAdaptive()},0);return true;
 }
+
+// Study Now access uses the existing adaptive owner; no second mastery or reward engine.
+function installStudySkillAccess(){
+ if(cid()!=='D772'||!window.S||!['mission','study','studynow'].includes(String(S.screen||'').toLowerCase()))return;
+ const host=document.querySelector('.content,main');if(!host)return;
+ if(host.querySelector('#majStudySkillAccess'))return;
+ const bar=document.createElement('div');bar.id='majStudySkillAccess';
+ bar.innerHTML='<button type="button" id="majStudySkillToggle" aria-expanded="false">✦ D772 Skill Library</button><div id="majStudySkillPanel" hidden></div>';
+ bar.querySelector('button').addEventListener('click',()=>{
+  const panel=bar.querySelector('#majStudySkillPanel'),open=panel.hidden;
+  panel.hidden=!open;bar.querySelector('button').setAttribute('aria-expanded',String(open));
+  if(open){panel.innerHTML=skillLibraryHtml();panel.querySelectorAll('[data-maj-skill]').forEach(b=>b.addEventListener('click',()=>{const [li,ci]=b.dataset.majSkill.split(':').map(Number);state().lessonIndex=li;state().conceptIndex=ci;state().step=2;state().recoveryActive=null;save();showAdaptive()}));panel.querySelectorAll('[data-maj-recover]').forEach(b=>b.addEventListener('click',()=>openSkillRecovery(b.dataset.majRecover)))}
+ });
+ host.prepend(bar);
+}
+if(!document.getElementById('majStudySkillAccessCSS')){const style=document.createElement('style');style.id='majStudySkillAccessCSS';style.textContent='#majStudySkillAccess{margin:12px 0;max-width:100%;padding:12px;border:1px solid #a887b6;border-radius:14px;background:#23162e;color:#f8e6ff}#majStudySkillToggle{cursor:pointer;background:#efd7a4;color:#29172e;border-radius:9px;padding:10px 16px;font-weight:800}#majStudySkillPanel[hidden]{display:none}#majStudySkillPanel{max-height:65vh;overflow:auto}';document.head.appendChild(style)}
+setInterval(installStudySkillAccess,1600);
 function skillLibraryHtml(){
  if(cid()!=='D772')return '';
  const st=state(),rows=lessons(),p=progress();
