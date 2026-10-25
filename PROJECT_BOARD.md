@@ -361,3 +361,9 @@ Every change must append **date / area / commit or PR / what changed / how / act
 | 2026-10-24 | PR #194 | Four Study Realm tabs, existing D772 owners retained; merge `cd556246` at 18:19 ET | GitHub PR merged metadata confirmed; production browser not retested in board-sync session | Merged; certification pending |
 | 2026-10-24 | PR #195 | Sanctuary identity/furniture/care/navigation; merge `3698c1dd` at 18:41 ET | GitHub PR merged metadata confirmed; PR reports local Node/browser fixtures; production not retested in board-sync session | Merged; missing walking assets and certification pending |
 
+
+## 2026-10-24 — Study Realm adaptive selector (development branch)
+- Connected Skill Library's practice action to existing `adaptive` session and `pickAdaptive()`; Smart Mission now uses that picker rather than section mixing. Mixed OA retains section mixing.
+- Difficulty targeting and adaptive skill accuracy now exclude records flagged `assisted`; original answer records, scoring, progress and reward owners are unchanged.
+- Branch commit `faf98f7a8f490558964602dea4f0639028f2f328`; code inspection only. **Not browser-tested, merged, or deployed.**
+- **Blocked before merge:** recompute `current-site/source-manifest.json` SHA-256 for changed `index.html`; run canonical integrity checks and fresh-question/reload/multi-course browser tests. No mastery migration.
