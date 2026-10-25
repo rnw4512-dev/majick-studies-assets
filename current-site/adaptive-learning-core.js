@@ -598,7 +598,23 @@ function panelHtml(){
  const {lesson,concept}=current(),g=guardian(),m=mastery();try{window.MajickLearningProfiles?.saveProfile?.(concept,lesson,cid())}catch(_){};try{rewardMasteryMilestones()}catch(_){}
  return '<section class="v346SharedAdaptive"><header><div><small>SHARED LEARNING ENGINE • '+E(cid())+'</small><h1>'+E(concept.title||lesson.title)+'</h1><p>'+E(course().title||cid())+'</p>'+pathMeterHtml()+supportMeterHtml()+'</div><select id="v346Lesson">'+lessons().map((l,i)=>'<option value="'+i+'" '+(i===state().lessonIndex?'selected':'')+'>'+E(l.title)+'</option>').join('')+'</select></header><div class="v346Grid"><nav>'+STEPS.map((x,i)=>'<button data-v346-step="'+i+'" class="'+(i===state().step?'active':'')+'"><i>'+(i+1)+'</i><span>'+E(x)+'</span></button>').join('')+'</nav><main>'+stepBody()+'</main><aside><div class="v346Guardian"><span>'+g.emoji+'</span><b>'+E(g.name)+'</b><p>'+(m.recurring?'“I see a repeated trap. We are repairing that exact distinction.”':m.independent>=2?'“You are showing independence. I will give fewer cues unless you ask.”':'“Name the strategy before you answer. Recognition comes before recall.”')+'</p></div><div class="v346Evidence"><small>SKILL EVIDENCE</small><b>'+Math.round(m.acc*100)+'%</b><span>'+m.independent+' independent • '+m.transfer+' transfer</span></div></aside></div></section>';
 }
-function renderAdaptive(){const box=document.getElementById('adaptiveLearningCore');if(!box)return;box.innerHTML=panelHtml();bindAdaptive(box)}
+if(!document.getElementById('majSkillLibraryStyles')){const e=document.createElement('style');e.id='majSkillLibraryStyles';e.textContent="\n.majSkillLibrary{margin:12px 0;padding:12px;border:1px solid #a887b6;border-radius:14px;background:#251831;color:#f7ebff}.majSkillLibrary summary{cursor:pointer;font-weight:800}.majSkillLibrary p{line-height:1.4}.majSkillList{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:10px;max-height:460px;overflow:auto;margin-top:12px}.majSkillItem{padding:12px;border:1px solid #9b82a9;border-radius:10px;background:#392848;display:flex;flex-direction:column;justify-content:space-between;gap:10px}.majSkillItem small{display:block;color:#e8d4f3;margin-top:4px}.majSkillItem button{background:#f1d6a0;color:#2b1936;border-radius:8px;padding:10px;font-weight:800;cursor:pointer}.majSkillItem button:focus-visible{outline:3px solid #fff}\n";document.head.appendChild(e)}
+function skillLibraryHtml(){
+ if(cid()!=='D772')return '';
+ const st=state(),rows=lessons(),p=progress();
+ const selected=current().concept.id;
+ const entries=rows.flatMap((lesson,li)=>(lesson.concepts?.length?lesson.concepts:[{id:lesson.id,title:lesson.title,teach:lesson.teach}]).map((concept,ci)=>{
+  const evidence=p.answers.filter(a=>a.topicId==='adaptive:'+concept.id);
+  const independent=evidence.filter(a=>a.correct&&!a.assisted&&/adaptive-(turn|retrieve|mastery)/.test(a.source||'')).length;
+  const transfer=evidence.filter(a=>a.correct&&!a.assisted&&a.source==='adaptive-mix').length;
+  const accuracy=evidence.length?Math.round(100*evidence.slice(-8).filter(a=>a.correct).length/Math.min(8,evidence.length)):null;
+  const status=independent>=2&&transfer>=1&&accuracy!==null&&accuracy>=80?'Independent evidence met':independent?'Developing':'Not yet assessed';
+  const example=concept.examples?.[0];const exampleText=typeof example==='string'?example:(example?.prompt||example?.question||'');
+  return '<article class="majSkillItem"><div><strong>'+E(concept.title||lesson.title)+'</strong><small>'+E(lesson.title)+' · '+status+'</small><p>'+E(concept.teach||lesson.goal||'Explore this skill with worked examples and practice.')+'</p>'+(exampleText?'<p><b>Example:</b> '+E(exampleText)+'</p>':'')+'<small>Independent correct: '+independent+' · Transfer: '+transfer+' · Recent accuracy: '+(accuracy===null?'Not assessed':accuracy+'%')+'</small></div><button type="button" data-maj-skill="'+li+':'+ci+'">'+(selected===concept.id?'Continue practice':'Practice skill')+'</button></article>';
+ })).join('');
+ return '<details class="majSkillLibrary"><summary>Skill Library · All D772 concepts</summary><p>Choose any skill to practice. Your personalized recommendations and existing evidence are preserved.</p><div class="majSkillList">'+entries+'</div></details>';
+}
+function renderAdaptive(){const box=document.getElementById('adaptiveLearningCore');if(!box)return;box.innerHTML=skillLibraryHtml()+panelHtml();bindAdaptive(box)}
 function showAdaptive(){
  // Later D772 sections use the existing verified lesson owner, not Section 1's adaptive bank.
  const tutor=window.MajickCourseTutor,selected=cid()==='D772'?tutor?.selectedLesson?.('D772'):null;
@@ -626,6 +642,7 @@ function handleAnswer(scope,choice){
  save();
 }
 function bindAdaptive(root){
+ root.querySelectorAll('[data-maj-skill]').forEach(b=>b.addEventListener('click',()=>{const [li,ci]=b.dataset.majSkill.split(':').map(Number);state().lessonIndex=li;state().conceptIndex=ci;state().step=0;save();renderAdaptive()}));
  root.querySelector('#v346Lesson')?.addEventListener('change',e=>{state().lessonIndex=Number(e.target.value)||0;state().conceptIndex=0;state().step=0;state().currentQuestions={};save();renderAdaptive()});
  root.querySelectorAll('[data-v346-step]').forEach(b=>b.addEventListener('click',()=>{state().step=Number(b.dataset.v346Step);save();renderAdaptive()}));
  root.querySelector('[data-v346-next]')?.addEventListener('click',next);
@@ -673,7 +690,7 @@ function patch(){
  window.MajickLearningLab.__sharedAdaptive=true;
 }
 patch();
-window.MajickAdaptiveLearning={VERSION,STEPS,lessons,current,mastery,microDefs,microReceipt,learningPath,activeProfile,prereqStatus,misconceptionSummary,supportLevel,tomorrowQueue,memorySweep,guardianPersona,competencyGroups,show:showAdaptive,render:renderAdaptive,state,progress};
+window.MajickAdaptiveLearning={skillLibraryHtml,VERSION,STEPS,lessons,current,mastery,microDefs,microReceipt,learningPath,activeProfile,prereqStatus,misconceptionSummary,supportLevel,tomorrowQueue,memorySweep,guardianPersona,competencyGroups,show:showAdaptive,render:renderAdaptive,state,progress};
 document.documentElement.dataset.majickAdaptiveLearning=VERSION;
 })();
 
