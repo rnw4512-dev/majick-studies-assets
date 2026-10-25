@@ -53,7 +53,25 @@ function questionBoard(q){
  const fields=[['clue','What does the question ask?'],['setup','Formula or diagram setup'],['work','Calculations and reasoning'],['check','Estimate and answer with units']];
  return '<details class="v342Whiteboard" style="padding:1rem;margin:1rem 0;border:1px solid #ad8c55;border-radius:12px;background:#fff7e8;color:#342944"><summary>✎ My whiteboard · autosaved</summary><p>Saved with this question. Notes never award mastery.</p>'+fields.map(([k,l])=>'<label style="display:block;margin:.5rem 0"><b>'+E(l)+'</b><textarea style="width:100%;min-height:68px;display:block" data-v342-field="'+k+'" data-v342-key="'+encodeURIComponent(id)+'">'+E(row[k]||'')+'</textarea></label>').join('')+'</details>';
 }
+function specificRepair(q,chosen){
+ const prompt=String(q.prompt||''),lower=prompt.toLowerCase(),id=String(q.misconceptionId||'').toLowerCase();
+ const counts=prompt.match(/(?:using|with)\s+(\d+)\s+green[^.]*?and\s+(\d+)\s+purple/i);
+ if((id.includes('sample-space')||/without replacement/.test(lower))&&counts){
+  const green=Number(counts[1]),purple=Number(counts[2]),total=green+purple;
+  const secondPurple=/recorder second|purple second|green.*purple/.test(lower);
+  const second=secondPurple?purple:green-1;
+  const numerator=green*second,denominator=total*(total-1);
+  return {clue:'The cards are drawn without replacement. The first draw changes the number of cards available for the second draw.',rule:'For dependent events, multiply the first probability by the conditional probability of the second event.',worked:['Before the first draw: '+green+' green and '+purple+' purple cards; '+total+' total.','P(green first) = '+green+'/'+total+'.','After removing a green: '+(green-1)+' green, '+purple+' purple, '+(total-1)+' total.','P('+(secondPurple?'purple':'green')+' second | green first) = '+second+'/'+(total-1)+'.','Multiply: '+green+'/'+total+' × '+second+'/'+(total-1)+' = '+numerator+'/'+denominator+'. Reduce if needed and compare with the answer choices.'],mistake:'Keeping the original denominator on the second draw incorrectly treats dependent draws as independent.'};
+ }
+ if(/\bmedian\b/.test(lower))return {clue:'The question asks for the median, not the mean.',rule:'Order the observations and select the middle value; for an even count average the two middle values.',mistake:'Adding all values and dividing by the count answers a mean question instead.'};
+ if(/\bmean\b|\baverage\b/.test(lower))return {clue:'The question asks for the arithmetic mean.',rule:'Add every observed value and divide by the number of observations.',mistake:'Selecting the middle value would calculate the median, not the mean.'};
+ if(/\bsampling\b|\bselection bias\b|\bconvenience sample\b/.test(lower))return {clue:'Identify how participants entered the sample and who had no chance to be selected.',rule:'A sampling method is judged by its selection process, not merely by the number of respondents.',mistake:'A large sample can still be biased if the selection process excludes part of the population.'};
+ if(/\bscatterplot\b|\bcorrelation\b/.test(lower))return {clue:'Look for the direction and strength of the association between two quantitative variables.',rule:'Association alone does not establish that one variable causes the other.',mistake:'A trend in a scatterplot cannot independently prove causation.'};
+ return null;
+}
 function exactWorked(q){
+ const tailored=specificRepair(q,'');
+ if(tailored?.worked?.length)return '<ol>'+tailored.worked.map(x=>'<li>'+E(x)+'</li>').join('')+'</ol>';
  const verified=q?.workedExample;
  if(verified&&Array.isArray(verified.steps)&&verified.steps.length&&verified.steps.every(x=>typeof x==='string'))return '<ol>'+verified.steps.map(x=>'<li>'+E(x)+'</li>').join('')+'</ol>';
  const prompt=String(q?.prompt||''),m=prompt.match(/(?:data set|data values|values are|numbers are)\s*:?\s*(-?\d+(?:\.\d+)?(?:\s*,\s*-?\d+(?:\.\d+)?){2,})(?=[.?!\s]|$)/i);
@@ -77,16 +95,17 @@ function repairLesson(q){
  const clue=String(q.wguClue||q.keyClue||q.why||'Identify the details that distinguish the correct concept.');
  const questionId=String(q.id||q.qid||q.prompt||''), encoded=encodeURIComponent(questionId);
  const optionReason=String(coach[correct]||q.why||'Compare the correct answer with the key evidence.');
+ const tailored=specificRepair(q,chosen);
  const distinctRule=optionReason.trim()===clue.trim()?'Use the clue to select the relevant rule. Check the answer against that rule and identify what the first choice overlooked.':optionReason;
- const hasWorked=!!q?.workedExample?.steps?.length||/(?:data set|data values|values are|numbers are)\s*:?\s*-?\d+(?:\.\d+)?(?:\s*,\s*-?\d+(?:\.\d+)?){2,}/i.test(String(q.prompt||''));
+ const hasWorked=!!tailored?.worked?.length||!!q?.workedExample?.steps?.length||/(?:data set|data values|values are|numbers are)\s*:?\s*-?\d+(?:\.\d+)?(?:\s*,\s*-?\d+(?:\.\d+)?){2,}/i.test(String(q.prompt||''));
  const steps=hasWorked?'<details class="v342MatchedWork"><summary>Show the calculations using these exact values</summary>'+exactWorked(q)+'</details>':'<p>This question tests a concept or an interpretation. Use its actual clue and answer comparison below rather than an unrelated numerical example.</p>';
  return '<section class="v342Repair" data-repair-question="'+E(questionId)+'" style="padding:1rem;border:1px solid #ad8c55;border-radius:12px;margin:.8rem 0;background:#f6ebd9;color:#30233d">'+
  '<h3>Professor’s Repair · Your Actual Question</h3>'+
  '<p><b>Question:</b> '+E(q.prompt||'')+'</p>'+
  '<p><b>You selected:</b> '+E(chosen)+'</p><p><b>Correct answer:</b> '+E(correct)+'</p>'+
  '<p><b>Why your answer needs revision:</b> '+E(wrongReason)+'</p>'+
- '<div class="v342RepairSteps"><div><b>1 · Find the deciding clue</b><p>'+E(clue)+'</p></div>'+
- '<div><b>2 · Connect the clue to the rule</b><p>'+E(distinctRule)+'</p><p><b>Why the original choice fails:</b> '+E(wrongReason)+'</p></div>'+
+ '<div class="v342RepairSteps"><div><b>1 · Find the deciding clue</b><p>'+E(tailored?.clue||clue)+'</p></div>'+
+ '<div><b>2 · Connect the clue to the rule</b><p>'+E(tailored?.rule||distinctRule)+'</p><p><b>Why the original choice fails:</b> '+E(tailored?.mistake||wrongReason)+'</p></div>'+
  '<div><b>3 · Work it through</b>'+steps+'</div>'+
  '<div><b>4 · Explain your thinking</b><p>What in the question made your first answer tempting? Which detail changes your reasoning?</p>'+
  '<textarea data-repair-thinking rows="3" style="width:100%;min-height:84px" placeholder="I chose ___ because ___. Now I see ___ in this question, which means ___..."></textarea>'+
