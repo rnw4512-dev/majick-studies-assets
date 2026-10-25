@@ -140,12 +140,34 @@ function startRepairTransfer(id){
  const source=session?.current&&String(session.current.id||session.current.qid||session.current.prompt||'')===original?session.current:practicePool('mixed').find(q=>String(q.id||q.qid||q.prompt||'')===original);
  if(!source)return window.rewardToast?.('Review unavailable','Original question not found.');
  const lesson=String(source.learningPathLessonId||source.lessonId||source.topicId||'');
- const valid=q=>String(q.id||q.qid||q.prompt||'')!==original&&String(q.learningPathLessonId||q.lessonId||q.topicId||'')===lesson&&q.options?.includes(q.answer)&&(!window.MajickVisualEvidence||window.MajickVisualEvidence.evidence(q).ok);
+ const api=window.MajickLearningContinuity;
+ const history=api?.practiceRecovery?.(source,false);
+ const seen=new Set([original,...(history?.seenIds||[]),...(session?.review||[]).map(x=>String(x.q?.id||''))]);
+ const sourceSkill=api?.practiceSkill?.(source)||String(source.skill||'');
+ const valid=q=>{
+  if(!q||seen.has(String(q.id||q.qid||q.prompt||'')))return false;
+  const candidateLesson=String(q.learningPathLessonId||q.lessonId||q.topicId||'');
+  if(lesson&&candidateLesson!==lesson)return false;
+  if(sourceSkill&&api?.practiceSkill?.(q)!==sourceSkill)return false;
+  return Array.isArray(q.options)&&q.options.includes(q.answer)&&(!window.MajickVisualEvidence||window.MajickVisualEvidence.evidence(q).ok);
+ };
  let candidates=shuffleCopy(practicePool('mixed').filter(valid));
- if(!candidates.length&&source.skill&&window.MajickGeneratedPractice?.generate){
-  candidates=Array.from({length:8},()=>window.MajickGeneratedPractice.generate(source.skill,2)).filter(q=>q&&valid(q));
+ if(!candidates.length&&window.MajickGeneratedPractice){
+  const gen=window.MajickGeneratedPractice;
+  if(/probab|sample.space|dependent/i.test(sourceSkill+' '+lesson+' '+source.prompt)){
+   for(let ordinal=0;ordinal<180&&!candidates.length;ordinal++){
+    for(const transfer of [false,true]){
+     const q=gen.probabilityCase?.(ordinal,transfer);
+     if(q&&gen.validate?.(q)&&valid(q)){candidates=[q];break}
+    }
+   }
+  }
+  if(!candidates.length&&source.skill&&gen.generate){
+   const generated=Array.from({length:24},()=>gen.generate(source.skill,2));
+   candidates=generated.filter(q=>q&&gen.validate?.(q)&&valid(q));
+  }
  }
- if(!candidates.length)return window.rewardToast?.('No fresh question','No different verified question is available for this lesson. Your repair progress was preserved.');
+ if(!candidates.length)return window.rewardToast?.('No unused verified question','This skill has no unused verified transfer item yet. Your guided repair is saved; no completed question will be recycled.');
  const q=candidates[0];
  session={type:'test',opts:{label:'Independent Transfer Check',limit:1,kind:'d772-diagnostic',hideMeta:true,assessmentOnly:true},index:1,score:0,combo:0,questions:[q],current:q,answered:false,confidence:'sure',review:[],start:Date.now(),pendingChoice:null};
  S.screen='mission';render();
