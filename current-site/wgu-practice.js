@@ -53,7 +53,25 @@ function questionBoard(q){
  const fields=[['clue','What does the question ask?'],['setup','Formula or diagram setup'],['work','Calculations and reasoning'],['check','Estimate and answer with units']];
  return '<details class="v342Whiteboard" style="padding:1rem;margin:1rem 0;border:1px solid #ad8c55;border-radius:12px;background:#fff7e8;color:#342944"><summary>✎ My whiteboard · autosaved</summary><p>Saved with this question. Notes never award mastery.</p>'+fields.map(([k,l])=>'<label style="display:block;margin:.5rem 0"><b>'+E(l)+'</b><textarea style="width:100%;min-height:68px;display:block" data-v342-field="'+k+'" data-v342-key="'+encodeURIComponent(id)+'">'+E(row[k]||'')+'</textarea></label>').join('')+'</details>';
 }
+function specificRepair(q,chosen){
+ const prompt=String(q.prompt||''),lower=prompt.toLowerCase(),id=String(q.misconceptionId||'').toLowerCase();
+ const counts=prompt.match(/(?:using|with)\s+(\d+)\s+green[^.]*?and\s+(\d+)\s+purple/i);
+ if((id.includes('sample-space')||/without replacement/.test(lower))&&counts){
+  const green=Number(counts[1]),purple=Number(counts[2]),total=green+purple;
+  const secondPurple=/recorder second|purple second|green.*purple/.test(lower);
+  const second=secondPurple?purple:green-1;
+  const numerator=green*second,denominator=total*(total-1);
+  return {clue:'The cards are drawn without replacement. The first draw changes the number of cards available for the second draw.',rule:'For dependent events, multiply the first probability by the conditional probability of the second event.',worked:['Before the first draw: '+green+' green and '+purple+' purple cards; '+total+' total.','P(green first) = '+green+'/'+total+'.','After removing a green: '+(green-1)+' green, '+purple+' purple, '+(total-1)+' total.','P('+(secondPurple?'purple':'green')+' second | green first) = '+second+'/'+(total-1)+'.','Multiply: '+green+'/'+total+' × '+second+'/'+(total-1)+' = '+numerator+'/'+denominator+'. Reduce if needed and compare with the answer choices.'],mistake:'Keeping the original denominator on the second draw incorrectly treats dependent draws as independent.'};
+ }
+ if(/\bmedian\b/.test(lower))return {clue:'The question asks for the median, not the mean.',rule:'Order the observations and select the middle value; for an even count average the two middle values.',mistake:'Adding all values and dividing by the count answers a mean question instead.'};
+ if(/\bmean\b|\baverage\b/.test(lower))return {clue:'The question asks for the arithmetic mean.',rule:'Add every observed value and divide by the number of observations.',mistake:'Selecting the middle value would calculate the median, not the mean.'};
+ if(/\bsampling\b|\bselection bias\b|\bconvenience sample\b/.test(lower))return {clue:'Identify how participants entered the sample and who had no chance to be selected.',rule:'A sampling method is judged by its selection process, not merely by the number of respondents.',mistake:'A large sample can still be biased if the selection process excludes part of the population.'};
+ if(/\bscatterplot\b|\bcorrelation\b/.test(lower))return {clue:'Look for the direction and strength of the association between two quantitative variables.',rule:'Association alone does not establish that one variable causes the other.',mistake:'A trend in a scatterplot cannot independently prove causation.'};
+ return null;
+}
 function exactWorked(q){
+ const tailored=specificRepair(q,'');
+ if(tailored?.worked?.length)return '<ol>'+tailored.worked.map(x=>'<li>'+E(x)+'</li>').join('')+'</ol>';
  const verified=q?.workedExample;
  if(verified&&Array.isArray(verified.steps)&&verified.steps.length&&verified.steps.every(x=>typeof x==='string'))return '<ol>'+verified.steps.map(x=>'<li>'+E(x)+'</li>').join('')+'</ol>';
  const prompt=String(q?.prompt||''),m=prompt.match(/(?:data set|data values|values are|numbers are)\s*:?\s*(-?\d+(?:\.\d+)?(?:\s*,\s*-?\d+(?:\.\d+)?){2,})(?=[.?!\s]|$)/i);
@@ -121,12 +139,34 @@ function startRepairTransfer(id){
  const source=session?.current&&String(session.current.id||session.current.qid||session.current.prompt||'')===original?session.current:practicePool('mixed').find(q=>String(q.id||q.qid||q.prompt||'')===original);
  if(!source)return window.rewardToast?.('Review unavailable','Original question not found.');
  const lesson=String(source.learningPathLessonId||source.lessonId||source.topicId||'');
- const valid=q=>String(q.id||q.qid||q.prompt||'')!==original&&String(q.learningPathLessonId||q.lessonId||q.topicId||'')===lesson&&q.options?.includes(q.answer)&&(!window.MajickVisualEvidence||window.MajickVisualEvidence.evidence(q).ok);
+ const api=window.MajickLearningContinuity;
+ const history=api?.practiceRecovery?.(source,false);
+ const seen=new Set([original,...(history?.seenIds||[]),...(session?.review||[]).map(x=>String(x.q?.id||''))]);
+ const sourceSkill=api?.practiceSkill?.(source)||String(source.skill||'');
+ const valid=q=>{
+  if(!q||seen.has(String(q.id||q.qid||q.prompt||'')))return false;
+  const candidateLesson=String(q.learningPathLessonId||q.lessonId||q.topicId||'');
+  if(lesson&&candidateLesson!==lesson)return false;
+  if(sourceSkill&&api?.practiceSkill?.(q)!==sourceSkill)return false;
+  return Array.isArray(q.options)&&q.options.includes(q.answer)&&(!window.MajickVisualEvidence||window.MajickVisualEvidence.evidence(q).ok);
+ };
  let candidates=shuffleCopy(practicePool('mixed').filter(valid));
- if(!candidates.length&&source.skill&&window.MajickGeneratedPractice?.generate){
-  candidates=Array.from({length:8},()=>window.MajickGeneratedPractice.generate(source.skill,2)).filter(q=>q&&valid(q));
+ if(!candidates.length&&window.MajickGeneratedPractice){
+  const gen=window.MajickGeneratedPractice;
+  if(/probab|sample.space|dependent/i.test(sourceSkill+' '+lesson+' '+source.prompt)){
+   for(let ordinal=0;ordinal<180&&!candidates.length;ordinal++){
+    for(const transfer of [false,true]){
+     const q=gen.probabilityCase?.(ordinal,transfer);
+     if(q&&gen.validate?.(q)&&valid(q)){candidates=[q];break}
+    }
+   }
+  }
+  if(!candidates.length&&source.skill&&gen.generate){
+   const generated=Array.from({length:24},()=>gen.generate(source.skill,2));
+   candidates=generated.filter(q=>q&&gen.validate?.(q)&&valid(q));
+  }
  }
- if(!candidates.length)return window.rewardToast?.('No fresh question','No different verified question is available for this lesson. Your repair progress was preserved.');
+ if(!candidates.length)return window.rewardToast?.('No unused verified question','This skill has no unused verified transfer item yet. Your guided repair is saved; no completed question will be recycled.');
  const q=candidates[0];
  session={type:'test',opts:{label:'Independent Transfer Check',limit:1,kind:'d772-diagnostic',hideMeta:true,assessmentOnly:true},index:1,score:0,combo:0,questions:[q],current:q,answered:false,confidence:'sure',review:[],start:Date.now(),pendingChoice:null};
  S.screen='mission';render();
@@ -515,8 +555,20 @@ function assessmentReport(){
 }
 function missionLanding(){
  const scopes=[['1','Section 1','Credibility, sampling, bias and study design'],['2','Section 2','Data, graphs and descriptive statistics'],['2c','Section 2C','Distributions, measures of center, spread and box plots'],['3','Section 3','Probability, events and probability rules'],['mixed','Mixed · All three sections','Balanced questions from each available section']];
- return '<div class="v3333Mission">'+skillGrowthDashboard()+'<section class="v3333Scope"><h3>Four assessment paths</h3><p>Diagnostic checks your starting knowledge; guided practice teaches; independent mastery removes hints; the full OA simulation mixes Sections 1–3.</p><div><button onclick="MajickWGUPractice.startDiagnostic()">Starting diagnostic</button><button onclick="MajickWGUPractice.startMixedOA()">Timed full-course OA simulation</button></div></section><div class="v3333MissionHead"><span class="v3333Eyebrow">D772 · SECTIONS 1, 2 AND 3</span><h2>Study Now</h2><p>Choose your section. Assisted practice offers anchor charts; independent OA practice keeps support closed.</p></div><div class="v3333MissionGrid">'+scopes.map(([id,title,detail])=>{const n=practicePool(id).length;return '<article class="v3333Scope"><h3>'+title+'</h3><p>'+detail+'</p><small>'+n+' available questions</small><div><button '+(!n?'disabled':'')+' onclick="MajickWGUPractice.startSection(\''+id+'\')"><span>Assisted practice</span><small>Anchor charts and worked examples</small></button><button '+(!n?'disabled':'')+' onclick="MajickWGUPractice.startSection(\''+id+'\',true)"><span>Independent OA practice</span><small>No hints or support</small></button></div></article>'}).join('')+'</div><details><summary>Section 1 focused drills</summary><div class="v3333MissionGrid"><button onclick="MajickWGUPractice.startExperiments()">Designed experiments</button><button onclick="MajickWGUPractice.startLabelStudy()">Label the study</button><button onclick="MajickWGUPractice.startStudyDesign()">Study design</button><button onclick="MajickWGUPractice.startSampling()">Sampling methods</button></div></details></div>';
+ const cards=(independent)=>'<div class="v3333MissionGrid">'+scopes.map(([id,title,detail])=>{const n=practicePool(id).length;return '<article class="v3333Scope"><h3>'+title+'</h3><p>'+detail+'</p><small>'+n+' available questions</small><div><button '+(!n?'disabled':'')+' onclick="MajickWGUPractice.startSection(&#39;'+id+'&#39;,'+independent+')">'+(independent?'Start independent OA':'Start guided practice')+'</button></div></article>'}).join('')+'</div>';
+ const tab=(id,label,html)=>'<section class="v346StudyTab" id="v346Study-'+id+'" role="tabpanel" '+(id==='skills'?'':'hidden')+'>'+html+'</section>';
+ return '<div class="v3333Mission v346StudyTabs"><div class="v3333MissionHead"><span class="v3333Eyebrow">D772 · SECTIONS 1, 2 AND 3</span><h2>Study Now</h2><p>Choose one learning path at a time. Guided practice never awards independent mastery.</p></div><nav class="v346StudyTabNav" role="tablist" aria-label="Study Now activities">'+[['skills','Skill Library'],['guided','Guided Practice'],['independent','Independent Practice'],['oa','OA Simulation']].map(([id,label])=>'<button type="button" role="tab" aria-controls="v346Study-'+id+'" aria-selected="'+(id==='skills')+'" onclick="MajickWGUPractice.studyTab(&#39;'+id+'&#39;)">'+label+'</button>').join('')+'</nav>'+
+ tab('skills','Skill Library','<p>Browse skills and open focused practice. Your progress remains saved across rooms.</p><button onclick="window.MajickAdaptiveLearning?.show?.()">Open Skill Library</button>'+cards(false))+
+ tab('guided','Guided Practice',cards(false)+'<details><summary>Section 1 focused drills</summary><div class="v3333MissionGrid"><button onclick="MajickWGUPractice.startExperiments()">Designed experiments</button><button onclick="MajickWGUPractice.startLabelStudy()">Label the study</button><button onclick="MajickWGUPractice.startStudyDesign()">Study design</button><button onclick="MajickWGUPractice.startSampling()">Sampling methods</button></div></details>')+
+ tab('independent','Independent Practice',cards(true))+
+ tab('oa','OA Simulation','<section class="v3333Scope"><h3>Exam readiness</h3><p>Test yourself with mixed WGU-style questions across all three sections.</p><button onclick="MajickWGUPractice.startDiagnostic()">Starting diagnostic</button><button onclick="MajickWGUPractice.startMixedOA()">Timed full-course OA simulation</button></section>')+'</div>';
 }
+function studyTab(id){
+ const root=document.querySelector('.v346StudyTabs');if(!root)return;
+ root.querySelectorAll('.v346StudyTab').forEach(p=>{p.hidden=p.id!=='v346Study-'+id});
+ root.querySelectorAll('[role="tab"]').forEach(b=>{const selected=b.getAttribute('aria-controls')==='v346Study-'+id;b.setAttribute('aria-selected',String(selected))});
+}
+
 const originalSessionHTML=window.sessionHTML||sessionHTML;
 const originalResultHTML=window.resultHTML||resultHTML;
 const originalMissionHTML=window.missionHTML||missionHTML;
@@ -573,7 +625,7 @@ function bootD772Practice(){
     }
   }catch(e){console.warn('D772 Practice Lab boot',e)}
 }
-window.MajickWGUPractice={VERSION,select,submit,openRequiredRecovery,finishRequiredRecovery,skipBrokenVisual,startSection,startSkillRetry,startDiagnostic,startMixedOA,startRepairTransfer,balancedMixedAssessment,practicePool,sectionNumber,startOA,startFocusedReview,startSampling,startStudyDesign,startLabelStudy,startExperiments,visualHtml,whyList,balancedOA,isD772Question,ensureD772Bank,bootD772Practice};
+window.MajickWGUPractice={VERSION,studyTab,select,submit,openRequiredRecovery,finishRequiredRecovery,skipBrokenVisual,startSection,startSkillRetry,startDiagnostic,startMixedOA,startRepairTransfer,balancedMixedAssessment,practicePool,sectionNumber,startOA,startFocusedReview,startSampling,startStudyDesign,startLabelStudy,startExperiments,visualHtml,whyList,balancedOA,isD772Question,ensureD772Bank,bootD772Practice};
 document.documentElement.dataset.majickWguPractice='3.3.36';
 bootD772Practice();
 })();
