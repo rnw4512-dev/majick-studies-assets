@@ -559,7 +559,7 @@ function ensureQuestion(scope,mixed=false){
  let q=id&&byId(id);
  if(!q){const recent=new Set((progress()?.answers||[]).filter(a=>a.topicId==='adaptive:'+current().concept.id).map(a=>String(a.qid||'')));
  const candidates=(mixed?bank():bank().filter(matchesCurrent)).filter(x=>!recent.has(String(x.id||x.qid||'')));
- q=shuffled(candidates)[0]||qset(1,mixed)[0];if(q)st.currentQuestions[key]=q.id||q.qid}
+ q=shuffled(candidates)[0]||(!st.recoveryActive?qset(1,mixed)[0]:null);if(q)st.currentQuestions[key]=q.id||q.qid}
  return q;
 }
 function stepBody(){
@@ -659,7 +659,7 @@ function renderAdaptive(){const box=document.getElementById('adaptiveLearningCor
 function showAdaptive(){
  // Later D772 sections use the existing verified lesson owner, not Section 1's adaptive bank.
  const tutor=window.MajickCourseTutor,selected=cid()==='D772'?tutor?.selectedLesson?.('D772'):null;
- if(cid()==='D772'&&selected&&typeof tutor?.show==='function'){
+ if(cid()==='D772'&&!state().recoveryActive&&selected&&typeof tutor?.show==='function'){
    const panel=document.querySelector('.learnPanel[data-panel="tutor"]');
    if(!panel||panel.hidden)tutor.show('tutor');
    return;
@@ -672,10 +672,12 @@ function showAdaptive(){
  renderAdaptive();
 }
 function next(){state().step=Math.min(11,Number(state().step||0)+1);state().currentQuestions={};save();renderAdaptive()}
+function assistedScope(scope){return scope==='help'}
 function handleAnswer(scope,choice){
  const q=ensureQuestion(scope,scope==='mix'||scope==='retrieve');if(!q)return;
  const result=record(q,choice,'adaptive-'+scope,{assisted:scope==='help',transfer:scope==='mix'}),ok=result.ok;
  state().pendingAnswer={qid:q.id||q.qid,scope,correct:ok,misconception:result.misconception||null};
+ if(ok&&state().recoveryActive===current().concept.id&&!assistedScope(scope)){delete state().recoveryTargets?.[current().concept.id];state().recoveryActive=null;}
  const fb=document.getElementById('v346Feedback');if(fb)fb.innerHTML='<div class="v346Feedback '+(ok?'ok':'repair')+'"><b>'+(ok?'✓ Correct':'Repair this reasoning')+'</b><p>'+E(q.why||'Compare the wording of the scenario to the definition or rule.')+'</p></div>'+confidenceHtml();
  if(scope==='mastery'){
    const ck=current().concept.id,c=state().checks[ck];c.answers.push(ok);if(c.index<2)c.index++;else c.done=true;save();return;
