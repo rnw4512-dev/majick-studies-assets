@@ -1,0 +1,10 @@
+/* Shared responsive ornamental nine-slice treatment; no independent state owner. */
+.majick-ornate-panel{border:24px solid transparent;border-image-source:url('./assets/ui/collegium-nine-slice.svg');border-image-slice:24 fill;border-image-width:24px;border-image-repeat:stretch;color:#f7e8d5;min-width:0;box-sizing:border-box;}
+.majick-ornate-panel :is(button,select,input){position:relative;z-index:1}
+.majick-ornate-panel--guardian{padding:8px 12px}
+.majick-ornate-panel--evolution{padding:12px 16px}
+.majick-ornate-panel--wardrobe{padding:10px 14px}
+.majick-ornate-panel--reward{padding:12px 16px}
+.majick-ornate-panel__emblem{display:inline-block;transform-origin:center;animation:majick-emblem-arrive .65s cubic-bezier(.2,.8,.2,1) both}
+@keyframes majick-emblem-arrive{from{opacity:0;transform:rotate(-12deg) scale(.78)}to{opacity:1;transform:rotate(0) scale(1)}}
+@media(prefers-reduced-motion:reduce){.majick-ornate-panel__emblem{animation:none}}
