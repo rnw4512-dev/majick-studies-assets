@@ -44,8 +44,9 @@ function mount(){
    card=document.createElement('aside');card.id='v3366AcademicGuardian';card.className='v3366AcademicGuardian';
  }
  card.className='v3366AcademicGuardian '+cardClass();
- card.innerHTML=(g.image?'<img src="'+String(g.image).replace(/"/g,'&quot;')+'" alt="">':'<span>'+String(g.icon||'✦')+'</span>')+
-  '<div><small>STUDY GUARDIAN • '+String(g.stage||'Bonded')+'</small><b>'+String(g.name||'Guardian')+'</b><p>'+contextLine()+'</p></div>';
+ const wasOpen=card.querySelector('details')?.open===true;
+ card.innerHTML='<details class="v3366GuardianFold" '+(wasOpen?'open':'')+'><summary>✦ '+String(g.name||'Guardian')+' · Study companion</summary><div class="v3366GuardianInner">'+(g.image?'<img src="'+String(g.image).replace(/"/g,'&quot;')+'" alt="">':'<span>'+String(g.icon||'✦')+'</span>')+
+  '<div><small>STUDY GUARDIAN • '+String(g.stage||'Bonded')+'</small><b>'+String(g.name||'Guardian')+'</b><p>'+contextLine()+'</p></div></div></details>';
  if(anchor.previousElementSibling!==card)anchor.insertAdjacentElement('beforebegin',card);
 }
 function remove(){document.getElementById('v3366AcademicGuardian')?.remove()}
