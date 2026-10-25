@@ -515,8 +515,20 @@ function assessmentReport(){
 }
 function missionLanding(){
  const scopes=[['1','Section 1','Credibility, sampling, bias and study design'],['2','Section 2','Data, graphs and descriptive statistics'],['2c','Section 2C','Distributions, measures of center, spread and box plots'],['3','Section 3','Probability, events and probability rules'],['mixed','Mixed · All three sections','Balanced questions from each available section']];
- return '<div class="v3333Mission">'+skillGrowthDashboard()+'<section class="v3333Scope"><h3>Four assessment paths</h3><p>Diagnostic checks your starting knowledge; guided practice teaches; independent mastery removes hints; the full OA simulation mixes Sections 1–3.</p><div><button onclick="MajickWGUPractice.startDiagnostic()">Starting diagnostic</button><button onclick="MajickWGUPractice.startMixedOA()">Timed full-course OA simulation</button></div></section><div class="v3333MissionHead"><span class="v3333Eyebrow">D772 · SECTIONS 1, 2 AND 3</span><h2>Study Now</h2><p>Choose your section. Assisted practice offers anchor charts; independent OA practice keeps support closed.</p></div><div class="v3333MissionGrid">'+scopes.map(([id,title,detail])=>{const n=practicePool(id).length;return '<article class="v3333Scope"><h3>'+title+'</h3><p>'+detail+'</p><small>'+n+' available questions</small><div><button '+(!n?'disabled':'')+' onclick="MajickWGUPractice.startSection(\''+id+'\')"><span>Assisted practice</span><small>Anchor charts and worked examples</small></button><button '+(!n?'disabled':'')+' onclick="MajickWGUPractice.startSection(\''+id+'\',true)"><span>Independent OA practice</span><small>No hints or support</small></button></div></article>'}).join('')+'</div><details><summary>Section 1 focused drills</summary><div class="v3333MissionGrid"><button onclick="MajickWGUPractice.startExperiments()">Designed experiments</button><button onclick="MajickWGUPractice.startLabelStudy()">Label the study</button><button onclick="MajickWGUPractice.startStudyDesign()">Study design</button><button onclick="MajickWGUPractice.startSampling()">Sampling methods</button></div></details></div>';
+ const cards=(independent)=>'<div class="v3333MissionGrid">'+scopes.map(([id,title,detail])=>{const n=practicePool(id).length;return '<article class="v3333Scope"><h3>'+title+'</h3><p>'+detail+'</p><small>'+n+' available questions</small><div><button '+(!n?'disabled':'')+' onclick="MajickWGUPractice.startSection(\\''+id+'\\','+independent+')">'+(independent?'Start independent OA':'Start guided practice')+'</button></div></article>'}).join('')+'</div>';
+ const tab=(id,label,html)=>'<section class="v346StudyTab" id="v346Study-'+id+'" role="tabpanel" '+(id==='skills'?'':'hidden')+'>'+html+'</section>';
+ return '<div class="v3333Mission v346StudyTabs"><div class="v3333MissionHead"><span class="v3333Eyebrow">D772 · SECTIONS 1, 2 AND 3</span><h2>Study Now</h2><p>Choose one learning path at a time. Guided practice never awards independent mastery.</p></div><nav class="v346StudyTabNav" role="tablist" aria-label="Study Now activities">'+[['skills','Skill Library'],['guided','Guided Practice'],['independent','Independent Practice'],['oa','OA Simulation']].map(([id,label])=>'<button type="button" role="tab" aria-controls="v346Study-'+id+'" aria-selected="'+(id==='skills')+'" onclick="MajickWGUPractice.studyTab(\\''+id+'\\')">'+label+'</button>').join('')+'</nav>'+
+ tab('skills','Skill Library','<p>Browse skills and open focused practice. Your progress remains saved across rooms.</p><button onclick="window.MajickAdaptiveLearning?.show?.()">Open Skill Library</button>'+cards(false))+
+ tab('guided','Guided Practice',cards(false)+'<details><summary>Section 1 focused drills</summary><div class="v3333MissionGrid"><button onclick="MajickWGUPractice.startExperiments()">Designed experiments</button><button onclick="MajickWGUPractice.startLabelStudy()">Label the study</button><button onclick="MajickWGUPractice.startStudyDesign()">Study design</button><button onclick="MajickWGUPractice.startSampling()">Sampling methods</button></div></details>')+
+ tab('independent','Independent Practice',cards(true))+
+ tab('oa','OA Simulation','<section class="v3333Scope"><h3>Exam readiness</h3><p>Test yourself with mixed WGU-style questions across all three sections.</p><button onclick="MajickWGUPractice.startDiagnostic()">Starting diagnostic</button><button onclick="MajickWGUPractice.startMixedOA()">Timed full-course OA simulation</button></section>')+'</div>';
 }
+function studyTab(id){
+ const root=document.querySelector('.v346StudyTabs');if(!root)return;
+ root.querySelectorAll('.v346StudyTab').forEach(p=>{p.hidden=p.id!=='v346Study-'+id});
+ root.querySelectorAll('[role="tab"]').forEach(b=>{const selected=b.getAttribute('aria-controls')==='v346Study-'+id;b.setAttribute('aria-selected',String(selected))});
+}
+
 const originalSessionHTML=window.sessionHTML||sessionHTML;
 const originalResultHTML=window.resultHTML||resultHTML;
 const originalMissionHTML=window.missionHTML||missionHTML;
@@ -573,7 +585,7 @@ function bootD772Practice(){
     }
   }catch(e){console.warn('D772 Practice Lab boot',e)}
 }
-window.MajickWGUPractice={VERSION,select,submit,openRequiredRecovery,finishRequiredRecovery,skipBrokenVisual,startSection,startSkillRetry,startDiagnostic,startMixedOA,startRepairTransfer,balancedMixedAssessment,practicePool,sectionNumber,startOA,startFocusedReview,startSampling,startStudyDesign,startLabelStudy,startExperiments,visualHtml,whyList,balancedOA,isD772Question,ensureD772Bank,bootD772Practice};
+window.MajickWGUPractice={VERSION,studyTab,select,submit,openRequiredRecovery,finishRequiredRecovery,skipBrokenVisual,startSection,startSkillRetry,startDiagnostic,startMixedOA,startRepairTransfer,balancedMixedAssessment,practicePool,sectionNumber,startOA,startFocusedReview,startSampling,startStudyDesign,startLabelStudy,startExperiments,visualHtml,whyList,balancedOA,isD772Question,ensureD772Bank,bootD772Practice};
 document.documentElement.dataset.majickWguPractice='3.3.36';
 bootD772Practice();
 })();
