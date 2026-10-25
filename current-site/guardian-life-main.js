@@ -79,7 +79,7 @@ function showEvolutionCeremony(d,p){
   host.className='majEvoBackdrop majEvo-'+stage;
   host.innerHTML=
     '<div class="majEvoStars" aria-hidden="true">'+Array.from({length:stageCelebration.stars},(_,i)=>'<i style="--i:'+i+'">'+E(i%7===0?stageCelebration.mark:'✦')+'</i>').join('')+'</div>'+
-    '<section class="majEvoCard" role="dialog" aria-modal="true" aria-labelledby="majEvoTitle">'+
+    '<section class="majEvoCard majick-decorative-panel" data-panel-kind="evolution" role="dialog" aria-modal="true" aria-labelledby="majEvoTitle">'+
       '<div class="majEvoAura" aria-hidden="true"></div>'+
       '<p class="majEvoKicker">'+E(celebration.sigil)+' GUARDIAN EVOLUTION '+E(celebration.sigil)+'</p>'+
       '<div class="majEvoStageHeadline">'+E(stageCelebration.headline)+'</div>'+
