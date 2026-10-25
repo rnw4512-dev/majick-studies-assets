@@ -59,7 +59,7 @@ function generate(skill='boxplot',difficulty=2){
 }
 // Persisted ordinal selects a new dataset; IDs alone do not establish freshness.
 function probabilityCase(ordinal=0,transfer=false){
- if(!Number.isInteger(ordinal)||ordinal<0||ordinal>=420)return null;
+ if(!Number.isInteger(ordinal)||ordinal<0||ordinal>=42)return null;
  const g=3+ordinal%6,p=2+Math.floor(ordinal/6),q=item('probability',[g,p],3);
  q.id='connected-probability-'+ordinal;q.connectedProbability=true;q.event=transfer?'green-purple':'green-green';
  q.topicId=q.learningPathLessonId;q.section='Section 3 · Probability';q.misconceptionId='unchanged-sample-space';q.rigor='multi-step-conditional-reasoning';q.sourceLabel='Original simulated practice; not official WGU questions';
