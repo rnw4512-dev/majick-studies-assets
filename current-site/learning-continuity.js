@@ -226,7 +226,7 @@ function probabilityTask(kind){
  const old=st.tasks[kind];if(old&&!old.completed)return old;
  if(kind==='repair'&&m.repairVerified||kind==='reasoning'&&m.independentCorrect>=2||kind==='transfer'&&m.transferVerified||kind==='teaching'&&m.teachBackVerified)return old||null;
  let q;
- while(st.next<42){
+ while(st.next<420){
   const candidate=window.MajickGeneratedPractice?.probabilityCase(st.next++,kind==='transfer');
   if(candidate&&!(st.seenDatasets||[]).includes(JSON.stringify(candidate.data))){q=candidate;break;}
  }
