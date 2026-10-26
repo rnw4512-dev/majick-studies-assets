@@ -48,6 +48,7 @@ async function click(selector){
  await call('Page.reload',{ignoreCache:true});await waitFor('!!document.querySelector("#connectedProbability")');
  const backState=await evalPage('JSON.stringify(S.progress)');
  console.log('BACK BEFORE',JSON.stringify(await evalPage('({screen:S.screen,stack:sessionStorage.getItem("majick_nav_stack_v3329")})')));
+ await waitFor('!!document.querySelector("[data-connected-back]")');
  await click('[data-connected-back]');
  console.log('BACK AFTER',JSON.stringify(await evalPage('({screen:S.screen,stack:sessionStorage.getItem("majick_nav_stack_v3329")})')));
  await waitFor('S.screen!=="games"');
