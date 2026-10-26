@@ -194,6 +194,8 @@ async function solveMean(values,sum,count,mean){
  assert.equal(await evalPage('S.progress.D772.adaptiveSkills["d772-s2-l4"].status'),'review-needed','Review need must survive reload');
  assert.equal(await evalPage('S.progress.D772.adaptiveSkills["d772-s2-l4"].attempts.length'),3,'Attempt history must survive reload');
  await action('navigate("mission")');
+ await waitFor('!!document.querySelector(".mjSkillGrowthDrawer")');
+ await action('document.querySelector(".mjSkillGrowthDrawer").open=true;const row=[...document.querySelectorAll(".mjCompactSkill")].find(e=>e.textContent.includes("d772-s2-l4"));if(!row)throw Error("Missing saved skill row");row.open=true');
  await waitFor('!!document.querySelector(".v3333Scope button[onclick*=skillReview]")');
  await action('const b=document.querySelector(".v3333Scope button[onclick*=skillReview]");if(typeof b.onclick!=="function")throw Error("Malformed review button handler");b.click()');
  assert.equal(await evalPage('S.progress.D772.adaptiveSkills["d772-s2-l4"].status'),'reviewing');
