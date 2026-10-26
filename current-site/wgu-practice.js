@@ -55,7 +55,7 @@ function questionBoard(q){
 }
 function specificRepair(q,chosen){
  const prompt=String(q.prompt||''),lower=prompt.toLowerCase(),id=String(q.misconceptionId||'').toLowerCase();
- const counts=prompt.match(/(?:using|with)\s+(\d+)\s+green[^.]*?and\s+(\d+)\s+purple/i);
+ const counts=prompt.match(/(?:prepares|using|with)\s+(\d+)\s+green[^.]*?and\s+(\d+)\s+purple/i);
  if((id.includes('sample-space')||/without replacement/.test(lower))&&counts){
   const green=Number(counts[1]),purple=Number(counts[2]),total=green+purple;
   const secondPurple=/recorder second|purple second|green.*purple/.test(lower);
@@ -205,7 +205,19 @@ function openRequiredRecovery(){
 }
 function finishRequiredRecovery(source){
  const api=window.MajickLearningContinuity,r=api?.practiceRecovery?.(source,false);if(!r||r.required)return;
- const fresh=practicePool('mixed').find(q=>api.practiceSkill(q)===api.practiceSkill(source)&&!r.seenIds.includes(q.id)&&window.MajickVisualEvidence?.evidence(q).ok);
+ const seen=new Set([String(source.id||source.qid||''),...(r.seenIds||[]).map(String)]);
+ const sourceSkill=api.practiceSkill(source);
+ const valid=q=>q&&!seen.has(String(q.id||q.qid||''))&&api.practiceSkill(q)===sourceSkill&&Array.isArray(q.options)&&q.options.includes(q.answer)&&(!window.MajickVisualEvidence||window.MajickVisualEvidence.evidence(q).ok);
+ let fresh=practicePool('mixed').find(valid);
+ if(!fresh&&window.MajickGeneratedPractice){
+  const gen=window.MajickGeneratedPractice;
+  if(/probab|sample.space|dependent/i.test(String(sourceSkill)+' '+String(source.prompt||''))){
+   for(let ordinal=0;ordinal<180&&!fresh;ordinal++)for(const transfer of [false,true]){
+    const candidate=gen.probabilityCase?.(ordinal,transfer);
+    if(candidate&&gen.validate?.(candidate)&&valid(candidate)){fresh=candidate;break}
+   }
+  }
+ }
  if(!fresh){window.rewardToast?.('Repair saved','No unused same-skill case remains. Independent recovery is still pending.');window.navigate?.('mission');return}
  if(session){const old=session.current;const i=session.questions?.findIndex(q=>q.id===old?.id);if(i>=0)session.questions[i]=fresh;session.current=fresh;session.answered=false;session.pendingChoice=null;session.adaptiveTracked=false;session.mathCoachAssisted=false;session.chartUsed=false;session.revealedClue=false;session.usedPetAbility=false}
  window.navigate?.('mission');
