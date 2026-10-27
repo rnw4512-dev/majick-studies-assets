@@ -220,6 +220,13 @@ Updated: 2026-10-27. PRs #214–218 reviewed against GitHub on 2026-10-27: #214 
 - **Unfinished:** One shared Gothic illustration is not the requested ten independently illustrated rooms. Sanctuary/Atelier/Potions/Store actual navigation and renderer integration remain unverified. Do not mark live or release-ready.
 - **Deployment:** Not merged or deployed; PR #219 remains draft.
 
+
+### 2026-10-27 — Illustrated rooms merged via PR #220
+- **Merge:** PR #220 merged into `main` at commit `8b5570f1b0fa3c0f9d94504169e940450560505d`, using a clean release branch after PR #219 had a board merge conflict.
+- **Changed:** Ten individually illustrated vector environments, architectural banners, Trial Chamber styling, and SHA-256 manifest entries for fifteen modified/new files.
+- **Verified:** GitHub merge API confirmed merge; manifest hashes were generated using a SHA-256 implementation validated against a standard test vector. **Not verified:** GitHub Pages publish completion, rendered room navigation at three widths, Guardian animation, saved progress, avatar persistence. No browser CI results were available before merge. This is a user-requested uncertified development release, not a certification pass.
+- **Next:** Check Pages workflow and live assets, execute browser tests, and repair any defects observed.
+
 ## Mandatory work-session log
 
 Every change must append **date / area / commit or PR / what changed / how / actual tests / failure and repair / deployment state**. Never call something fixed without saying what was verified.
