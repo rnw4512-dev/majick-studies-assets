@@ -117,3 +117,19 @@
  #content[data-majick-room] .majRoomBannerSub{font-size:9px;letter-spacing:.08em}
 }
 @media(prefers-reduced-motion:reduce){#content[data-majick-room]>.majRoomArchitecture{animation:none;transition:none}}
+
+
+/* Illustrated cathedral background is a real repository asset, not a mockup. */
+#content[data-majick-room]>.majRoomArchitecture{
+ background-image:linear-gradient(90deg,#110e20b8,#1b172b75,#110e20b8),url("./assets/rooms/collegium-hall.svg");
+ background-position:center;background-size:cover;
+}
+#content[data-majick-room="mission"]>.majRoomArchitecture{background-image:linear-gradient(90deg,#09291fe6,#17281eaa,#10261bd9),url("./assets/rooms/collegium-hall.svg")}
+#content[data-majick-room="reasoning"]>.majRoomArchitecture{background-image:linear-gradient(90deg,#102f29d9,#1c352e8c,#092720df),url("./assets/rooms/collegium-hall.svg")}
+#content[data-majick-room="learninglab"]>.majRoomArchitecture{background-image:linear-gradient(90deg,#35214bc9,#4a285a70,#2e1b46db),url("./assets/rooms/collegium-hall.svg")}
+#content[data-majick-room="game"]>.majRoomArchitecture{background-image:linear-gradient(90deg,#45234dc9,#4e285480,#2c173dd9),url("./assets/rooms/collegium-hall.svg")}
+#content[data-majick-room="sanctuary"]>.majRoomArchitecture{background-image:linear-gradient(90deg,#123b3bbd,#1c4b3c85,#122b3bd9),url("./assets/rooms/collegium-hall.svg")}
+#content[data-majick-room="atelier"]>.majRoomArchitecture{background-image:linear-gradient(90deg,#51263bc9,#6b334f82,#3d253dd9),url("./assets/rooms/collegium-hall.svg")}
+#content[data-majick-room="potions"]>.majRoomArchitecture{background-image:linear-gradient(90deg,#243c35cf,#274e3d80,#132c2bd9),url("./assets/rooms/collegium-hall.svg")}
+#content[data-majick-room="store"]>.majRoomArchitecture{background-image:linear-gradient(90deg,#46233dd1,#51344480,#2a2039e6),url("./assets/rooms/collegium-hall.svg")}
+#content[data-majick-room="analytics"]>.majRoomArchitecture{background-image:linear-gradient(90deg,#182d49d1,#2d355580,#18263ee6),url("./assets/rooms/collegium-hall.svg")}
