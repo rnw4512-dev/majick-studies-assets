@@ -213,6 +213,13 @@ Updated: 2026-10-27. PRs #214–218 reviewed against GitHub on 2026-10-27: #214 
 - **Verification:** Inspected actual `screenHTML`/`sideHTML` route identifiers and committed code via GitHub. **No executed browser or Node regression suite, source-manifest rehash, merge or deployment.** The current implementation does not yet supply full illustrated backgrounds for all ten desired spaces; Sanctuary, Atelier, Potions and Store require validation against their actual runtime navigation.
 - **Next:** Update manifest SHA-256 entries for index/room CSS/JS, reconcile PR #217 Trial Chamber styles, run 390/820/1366 browser regression and accessibility tests before merge.
 
+
+### 2026-10-27 — Illustrated background integration attempt (PR #219)
+- **Changed:** Created integration PR #219 combining #217 and #218; added `current-site/assets/rooms/collegium-hall.svg` as a real illustrated Gothic hall asset and connected it to the room banner CSS with distinct atmospheric overlays.
+- **Tested:** GitHub file writes succeeded; checked PR commit workflow runs for `705265c3` and found none. **No browser regression tests executed.** Source-manifest hashes have not been reconciled.
+- **Unfinished:** One shared Gothic illustration is not the requested ten independently illustrated rooms. Sanctuary/Atelier/Potions/Store actual navigation and renderer integration remain unverified. Do not mark live or release-ready.
+- **Deployment:** Not merged or deployed; PR #219 remains draft.
+
 ## Mandatory work-session log
 
 Every change must append **date / area / commit or PR / what changed / how / actual tests / failure and repair / deployment state**. Never call something fixed without saying what was verified.
