@@ -197,10 +197,10 @@ function restoreSessionCheckpoint(){
 function trackSkillAnswer(q){
  if(!session?.answered||session.current!==q||session.adaptiveTracked)return;
  session.adaptiveTracked=true;
- checkpointSession();
  const assisted=session.type!=='test'||!!(session.mathCoachAssisted||session.chartUsed||session.revealedClue||session.usedPetAbility);
  if(assisted)window.MajickLearningContinuity?.rememberGuidedQuestion?.(q);
  try{window.MajickLearningContinuity?.skillResult(q,session.chosen===q.answer,assisted,session.opts?.label==='Independent Transfer Check'?'independent-transfer':'study-now')}catch(_){}
+ checkpointSession();
 }
 function practiceFeedback(q){
   trackSkillAnswer(q);
