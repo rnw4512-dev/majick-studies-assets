@@ -133,3 +133,15 @@
 #content[data-majick-room="potions"]>.majRoomArchitecture{background-image:linear-gradient(90deg,#243c35cf,#274e3d80,#132c2bd9),url("./assets/rooms/collegium-hall.svg")}
 #content[data-majick-room="store"]>.majRoomArchitecture{background-image:linear-gradient(90deg,#46233dd1,#51344480,#2a2039e6),url("./assets/rooms/collegium-hall.svg")}
 #content[data-majick-room="analytics"]>.majRoomArchitecture{background-image:linear-gradient(90deg,#182d49d1,#2d355580,#18263ee6),url("./assets/rooms/collegium-hall.svg")}
+
+/* Independently illustrated room architecture (not tinted copies). */
+#content[data-majick-room="home"]>.majRoomArchitecture{background-image:linear-gradient(90deg,#0d1129a8,#17112248,#0d1129a8),url("./assets/rooms/collegium-hall.svg");background-size:cover;background-position:center}
+#content[data-majick-room="mission"]>.majRoomArchitecture{background-image:linear-gradient(90deg,#0d1129a8,#17112248,#0d1129a8),url("./assets/rooms/library.svg");background-size:cover;background-position:center}
+#content[data-majick-room="reasoning"]>.majRoomArchitecture{background-image:linear-gradient(90deg,#0d1129a8,#17112248,#0d1129a8),url("./assets/rooms/trial.svg");background-size:cover;background-position:center}
+#content[data-majick-room="learninglab"]>.majRoomArchitecture{background-image:linear-gradient(90deg,#0d1129a8,#17112248,#0d1129a8),url("./assets/rooms/alchemy.svg");background-size:cover;background-position:center}
+#content[data-majick-room="game"]>.majRoomArchitecture{background-image:linear-gradient(90deg,#0d1129a8,#17112248,#0d1129a8),url("./assets/rooms/arcade.svg");background-size:cover;background-position:center}
+#content[data-majick-room="sanctuary"]>.majRoomArchitecture{background-image:linear-gradient(90deg,#0d1129a8,#17112248,#0d1129a8),url("./assets/rooms/conservatory.svg");background-size:cover;background-position:center}
+#content[data-majick-room="atelier"]>.majRoomArchitecture{background-image:linear-gradient(90deg,#0d1129a8,#17112248,#0d1129a8),url("./assets/rooms/atelier.svg");background-size:cover;background-position:center}
+#content[data-majick-room="potions"]>.majRoomArchitecture{background-image:linear-gradient(90deg,#0d1129a8,#17112248,#0d1129a8),url("./assets/rooms/potions.svg");background-size:cover;background-position:center}
+#content[data-majick-room="store"]>.majRoomArchitecture{background-image:linear-gradient(90deg,#0d1129a8,#17112248,#0d1129a8),url("./assets/rooms/boutique.svg");background-size:cover;background-position:center}
+#content[data-majick-room="analytics"]>.majRoomArchitecture{background-image:linear-gradient(90deg,#0d1129a8,#17112248,#0d1129a8),url("./assets/rooms/observatory.svg");background-size:cover;background-position:center}
