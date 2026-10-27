@@ -169,11 +169,35 @@ function startRepairTransfer(id){
  if(!candidates.length)return window.rewardToast?.('No unused verified question','This skill has no unused verified transfer item yet. Your guided repair is saved; no completed question will be recycled.');
  const q=candidates[0];
  session={type:'test',opts:{label:'Independent Transfer Check',limit:1,kind:'d772-diagnostic',hideMeta:true,assessmentOnly:true},index:1,score:0,combo:0,questions:[q],current:q,answered:false,confidence:'sure',review:[],start:Date.now(),pendingChoice:null};
- S.screen='mission';render();
+ S.screen='mission';checkpointSession();render();
+}
+// Per-course recovery checkpoint: never writes mastery or rewards on restore.
+const CHECKPOINT_PREFIX='majick-d772-session-v1:';
+function checkpointKey(){return CHECKPOINT_PREFIX+String(window.S?.activeCourse||'D772')}
+function checkpointSession(){
+ if(!activeD772()||!session?.current)return;
+ try{
+  const snapshot={course:window.S.activeCourse,screen:window.S.screen,session:JSON.parse(JSON.stringify(session)),savedAt:Date.now()};
+  localStorage.setItem(checkpointKey(),JSON.stringify(snapshot));
+ }catch(e){console.warn('Study session checkpoint unavailable',e)}
+}
+function restoreSessionCheckpoint(){
+ if(!activeD772()||session||window.S?.screen!=='mission')return false;
+ try{
+  const raw=localStorage.getItem(checkpointKey());if(!raw)return false;
+  const snapshot=JSON.parse(raw),saved=snapshot.session;
+  if(snapshot.course!==window.S.activeCourse||!saved?.current||!Array.isArray(saved.questions)||!saved.questions.length)return false;
+  if(!saved.questions.some(q=>String(q.id||q.qid||q.prompt)===String(saved.current.id||saved.current.qid||saved.current.prompt)))return false;
+  session=saved;
+  // An already recorded answer must not be tracked again after reload.
+  if(saved.answered)session.adaptiveTracked=true;
+  return true;
+ }catch(e){console.warn('Study session checkpoint restore unavailable',e);return false}
 }
 function trackSkillAnswer(q){
  if(!session?.answered||session.current!==q||session.adaptiveTracked)return;
  session.adaptiveTracked=true;
+ checkpointSession();
  const assisted=session.type!=='test'||!!(session.mathCoachAssisted||session.chartUsed||session.revealedClue||session.usedPetAbility);
  if(assisted)window.MajickLearningContinuity?.rememberGuidedQuestion?.(q);
  try{window.MajickLearningContinuity?.skillResult(q,session.chosen===q.answer,assisted,session.opts?.label==='Independent Transfer Check'?'independent-transfer':'study-now')}catch(_){}
@@ -220,6 +244,7 @@ function finishRequiredRecovery(source){
  }
  if(!fresh){window.rewardToast?.('Repair saved','No unused same-skill case remains. Independent recovery is still pending.');window.navigate?.('mission');return}
  if(session){const old=session.current;const i=session.questions?.findIndex(q=>q.id===old?.id);if(i>=0)session.questions[i]=fresh;session.current=fresh;session.answered=false;session.pendingChoice=null;session.adaptiveTracked=false;session.mathCoachAssisted=false;session.chartUsed=false;session.revealedClue=false;session.usedPetAbility=false}
+ checkpointSession();
  window.navigate?.('mission');
 }
 function questionHtml(q){
@@ -252,6 +277,7 @@ function preserveAnswerScroll(action){
 function select(choice){
   if(!session||session.answered||!globalThis.MajickVisualEvidence?.evidence(session.current,x=>visualHtml(x.visual)||window.MajickCourseTutor?.questionVisualHtml?.(x)||'')?.ok)return;
   session.pendingChoice=choice;
+  checkpointSession();
   preserveAnswerScroll(()=>render());
 }
 function skipBrokenVisual(){
@@ -269,6 +295,7 @@ function submit(){
   const choice=session.pendingChoice;
   session.pendingChoice=null;
   preserveAnswerScroll(()=>answerQ(choice));
+  checkpointSession();
   if(fixedPractice()&&session.type!=='test'&&session.answered)session.review.push({q:session.current,chosen:choice,correct:choice===session.current.answer});
 }
 const SAMPLING_REASONS={
@@ -437,7 +464,7 @@ function skillGrowthDashboard(){
  const e=x=>E(String(x||''));
  const reviewCount=rows.filter(x=>x.status==='review-needed').length;
  return '<details class="v3333Scope mjSkillGrowthDrawer"><summary><strong>Skill growth and review</strong><span>'+rows.length+' skills tracked · '+reviewCount+' need review · Expand</span></summary><div class="mjSkillGrowthBody"><p>Assisted practice builds understanding; only independent practice counts toward readiness.</p>'+rows.map(x=>{
- const n=x.attempts.length,correct=x.attempts.filter(a=>a.correct&&!a.assisted).length,percent=n?Math.round(100*correct/n):0;
+ const independent=(Array.isArray(x.attempts)?x.attempts:[]).filter(a=>!a.assisted),n=independent.length,correct=independent.filter(a=>a.correct).length,percent=n?Math.round(100*correct/n):0;
  const label=x.status==='review-needed'?'Review recommended':x.status==='ready-for-teachback'?'Teaching check next':x.status==='reviewing'?'Review underway':x.status==='retry'?'Retry practice':'Developing';
  return '<details class="mjCompactSkill"><summary><strong>'+e(x.lessonId)+'</strong><span>'+e(label)+' · '+correct+'/'+n+' correct · '+percent+'%</span></summary><div class="mjCompactSkillDetails"><p>'+correct+'/'+n+' independent correct · '+(x.cycles||0)+' reteaching cycles. Guided work does not establish mastery.</p><button type="button" onclick="MajickWGUPractice.startSkillRetry('+E(JSON.stringify(x.lessonId))+')">Practice this skill</button>'+(x.status==='review-needed'?'<button type="button" onclick="MajickLearningContinuity.skillReview('+E(JSON.stringify(x.lessonId))+')">Review lesson</button>':'')+'</div></details>';
  }).join('')+'</div></details>';
@@ -602,6 +629,7 @@ resultHTML=function(){
 missionHTML=function(){
   if(activeD772()){
     ensureD772Bank();
+    restoreSessionCheckpoint();
     if(!session)return missionLanding();
   }
   return originalMissionHTML();
