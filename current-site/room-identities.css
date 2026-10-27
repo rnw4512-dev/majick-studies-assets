@@ -57,3 +57,63 @@
 #content[data-majick-room]::after{content:"";display:block;height:1px;margin-top:18px;background:linear-gradient(90deg,transparent,var(--room-accent),transparent);opacity:.5;pointer-events:none}
 @media(max-width:600px){#content[data-majick-room]::before{min-height:38px;padding:7px 10px;font-size:16px;letter-spacing:.13em;border-radius:24px 24px 10px 10px}}
 @media(prefers-reduced-motion:reduce){#content[data-majick-room]::before{animation:none;transition:none}}
+
+
+/* Actual immersive room surfaces — applied to existing navigation, cards and content. */
+#content[data-majick-room]::before{display:none}
+#content[data-majick-room]{
+ --room-parchment:#fff8e9;
+ --room-edge:color-mix(in srgb,var(--room-accent) 66%,#f8e4b9);
+}
+#content[data-majick-room]>.majRoomArchitecture{
+ position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;
+ min-height:180px;margin:0 0 20px;padding:28px 20px 22px;overflow:hidden;isolation:isolate;
+ border:2px solid var(--room-accent);border-bottom:6px double var(--room-accent);
+ border-radius:var(--room-arch-radius);background:var(--room-architecture);
+ box-shadow:inset 0 0 0 5px #f8e5b31a,inset 0 -30px 40px #080a1d52,0 12px 30px #17102032;
+ text-align:center;color:#fff5df;
+}
+#content[data-majick-room]>.majRoomArchitecture::before{
+ content:"";position:absolute;inset:8px;border:1px solid #f7d8a457;border-radius:inherit;
+ pointer-events:none;
+}
+#content[data-majick-room]>.majRoomArchitecture::after{
+ content:"✦     ☾     ✦";position:absolute;top:11px;left:0;right:0;
+ font:16px Georgia,serif;letter-spacing:.65em;color:var(--room-accent);opacity:.8;pointer-events:none;
+}
+#content[data-majick-room] .majRoomEmblem{display:block;font-size:30px;margin:7px 0 6px;filter:drop-shadow(0 0 8px var(--room-glow))}
+#content[data-majick-room] .majRoomBannerTitle{
+ font:600 clamp(23px,3.4vw,40px)/1.2 Cinzel,"Palatino Linotype",Georgia,serif;
+ color:#ffebbc;letter-spacing:.045em;text-shadow:0 2px 3px #110e24,0 0 20px var(--room-glow);
+}
+#content[data-majick-room] .majRoomBannerSub{
+ margin-top:9px;color:#f8eddc;font:600 11px/1.5 Inter,Arial,sans-serif;
+ letter-spacing:.17em;text-shadow:0 1px 3px #090b1c;
+}
+#content[data-majick-room] :is(.card,.majickRoomSections,.v3333MissionCard,.majCommonsWelcome){
+ border:1px solid var(--room-edge);
+ box-shadow:0 6px 18px #1b122518,0 0 0 1px #ffffff12;
+}
+#content[data-majick-room] :is(.card,.majickRoomSections,.v3333MissionCard):not(.v3333QuestionCard){
+ border-radius:12px;
+}
+#content[data-majick-room] :is(.hero,.majCommonsWelcome){
+ border:1px solid var(--room-accent);border-bottom:3px double var(--room-accent);
+ box-shadow:0 8px 25px #16102020,inset 0 0 0 3px #ffffff18;
+}
+#content[data-majick-room="atelier"]>.majRoomArchitecture{
+ background:radial-gradient(ellipse at 50% 32%,#ffe2d84a,transparent 40%),repeating-linear-gradient(90deg,#e9b3c914 0 4px,transparent 4px 100px),var(--room-architecture);
+}
+#content[data-majick-room="sanctuary"]>.majRoomArchitecture{
+ background:radial-gradient(circle at 83% 18%,#e3f9ff6b 0 18px,transparent 20px),repeating-linear-gradient(110deg,#b6e0c31c 0 2px,transparent 3px 75px),var(--room-architecture);
+}
+#content[data-majick-room="learninglab"]>.majRoomArchitecture{
+ background:radial-gradient(circle at 18% 68%,#d9b8ff55 0 12px,transparent 16px),radial-gradient(circle at 80% 40%,#b6edff48 0 18px,transparent 24px),var(--room-architecture);
+}
+#content[data-majick-room="analytics"] :is(canvas,svg){max-width:100%}
+@media(max-width:600px){
+ #content[data-majick-room]>.majRoomArchitecture{min-height:128px;padding:20px 12px 15px;margin-bottom:12px}
+ #content[data-majick-room] .majRoomEmblem{font-size:24px}
+ #content[data-majick-room] .majRoomBannerSub{font-size:9px;letter-spacing:.08em}
+}
+@media(prefers-reduced-motion:reduce){#content[data-majick-room]>.majRoomArchitecture{animation:none;transition:none}}
