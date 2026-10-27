@@ -170,6 +170,13 @@ Updated: 2026-10-24. Reconciled through merged PR #195; preserve PR #141 histori
 - **Current integration limit:** Projects do not auto-replace uploaded GitHub file snapshots. Connected GitHub provides live on-demand reads, not automatic project indexing. A Work PR-triggered task could supplement this if available/configured.
 - **Merge condition:** PR #141 must be merged for `main/PROJECT_BOARD.md` to become the default board; until then use the `master-project-board-20261017` branch.
 
+
+### 2026-10-27 — PR #219 illustration integration and manifest repair
+- **Changes:** Ten independently drawn room SVG assets under `current-site/assets/rooms/`; room banners reference distinct files; combined Trial Chamber styles from PR #217 with PR #218; source-manifest SHA-256 entries updated for fifteen changed/new files.
+- **Checks:** SHA-256 implementation verified against standard `abc` digest before manifest write; GitHub PR #219 reports mergeable, but its head has **no GitHub Actions workflow runs or status checks**. No 390/820/1366 browser run, persistence test or Guardian render certification was executed. Do not report these as passing.
+- **Limitations:** Current app `screenHTML` exposes home/mission/guide/games/test/analytics/sources/add; Sanctuary, Atelier, Potions and Store runtime integrations need direct UI checks. Illustrated assets are vector environment scenes, not full page replacement layouts.
+- **Release:** User explicitly requests deployment, but absence of required executed regression checks remains a release risk.
+
 ## Mandatory work-session log
 
 Every change must append **date / area / commit or PR / what changed / how / actual tests / failure and repair / deployment state**. Never call something fixed without saying what was verified.
