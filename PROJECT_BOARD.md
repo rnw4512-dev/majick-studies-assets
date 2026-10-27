@@ -206,6 +206,13 @@ Updated: 2026-10-27. PRs #214–218 reviewed against GitHub on 2026-10-27: #214 
 - **Verification:** Read GitHub PR metadata and `PROJECT_BOARD.md` from `main`. No new browser tests, CI run, source-manifest repair, merge or app deployment performed in this board-only update.
 - **Next:** Repair manifests, integrate overlapping Trial Chamber styles, run persistence and Back-button regressions plus 390/820/1366px browser checks, then separately decide merge/deployment.
 
+
+### 2026-10-27 — PR #218 immersive room UI implementation
+- **Area:** Gothic room identity and architecture.
+- **Changed:** PR #218 branch commits `6bbee59` and `73f8dc7` replace ornamental-only concepts with actual room banners, Gothic headings, atmospheric gradients and coordinated existing-card treatments; corrected mappings for real `home`, `mission`, `guide`, `games`, `test`, `analytics`, `sources` and `add` navigation identifiers.
+- **Verification:** Inspected actual `screenHTML`/`sideHTML` route identifiers and committed code via GitHub. **No executed browser or Node regression suite, source-manifest rehash, merge or deployment.** The current implementation does not yet supply full illustrated backgrounds for all ten desired spaces; Sanctuary, Atelier, Potions and Store require validation against their actual runtime navigation.
+- **Next:** Update manifest SHA-256 entries for index/room CSS/JS, reconcile PR #217 Trial Chamber styles, run 390/820/1366 browser regression and accessibility tests before merge.
+
 ## Mandatory work-session log
 
 Every change must append **date / area / commit or PR / what changed / how / actual tests / failure and repair / deployment state**. Never call something fixed without saying what was verified.
