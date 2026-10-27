@@ -1,0 +1,32 @@
+/* Majick Studies room identities. Scoped to the existing screen state; never change controls or grading. */
+#content{--room-accent:#c8a96c;--room-glow:rgba(200,169,108,.16);--room-title:#f6dfad;--room-velvet:#291d35}
+#content[data-majick-room="home"]{--room-accent:#dfbd75;--room-glow:rgba(221,185,107,.19);--room-title:#ffebc2;--room-velvet:#352338}
+#content[data-majick-room="mission"]{--room-accent:#c4a2e5;--room-glow:rgba(174,124,224,.18);--room-title:#f2ddff;--room-velvet:#2e1c42}
+#content[data-majick-room="reasoning"]{--room-accent:#e1bd7b;--room-glow:rgba(227,190,118,.17);--room-title:#f8e4b5;--room-velvet:#241b35}
+#content[data-majick-room="learninglab"]{--room-accent:#d1b0f2;--room-glow:rgba(197,155,241,.17);--room-title:#f4e4ff;--room-velvet:#302142}
+#content[data-majick-room="game"]{--room-accent:#e7a7cb;--room-glow:rgba(239,142,198,.18);--room-title:#ffe0f1;--room-velvet:#3b203e}
+#content[data-majick-room="sanctuary"]{--room-accent:#9ccfc0;--room-glow:rgba(132,210,190,.18);--room-title:#e0fff3;--room-velvet:#183b38}
+#content[data-majick-room="atelier"]{--room-accent:#efb9cc;--room-glow:rgba(245,175,207,.19);--room-title:#ffe3ef;--room-velvet:#40283e}
+#content[data-majick-room="potions"]{--room-accent:#b6d5b3;--room-glow:rgba(143,213,153,.17);--room-title:#e6ffdf;--room-velvet:#24372f}
+#content[data-majick-room="store"]{--room-accent:#efc47b;--room-glow:rgba(245,189,105,.17);--room-title:#ffedc7;--room-velvet:#3b2b38}
+#content[data-majick-room="analytics"]{--room-accent:#aacde8;--room-glow:rgba(155,203,244,.16);--room-title:#e0f2ff;--room-velvet:#223345}
+/* Room-specific ornamental heading treatment, not instructional text. */
+#content[data-majick-room] :is(.roomTitle,.majRoomTitle,.v3333MissionHead h2,.v3333QTop h2,.majCommonsWelcome h2){
+ font-family:Cinzel,"Palatino Linotype",Palatino,Georgia,serif;
+ letter-spacing:.035em;text-shadow:0 0 13px var(--room-glow);
+}
+#content[data-majick-room] :is(.roomTitle,.majRoomTitle):after{
+ content:" ✦";font-size:.55em;color:var(--room-accent);vertical-align:middle;
+}
+#content[data-majick-room] :is(.majickRoomSections,.majCommonsWelcome){
+ border-color:var(--room-accent);
+}
+#content[data-majick-room] .majickRoomSections{box-shadow:0 0 16px var(--room-glow)}
+#content[data-majick-room] :is(button,a,[role="tab"]):focus-visible{
+ outline:3px solid var(--room-accent);outline-offset:3px;
+}
+/* Study surfaces stay unglowed, legible and unchanged. */
+#content[data-majick-room] :is(.v3333QuestionCard,.anchorChart,.mjSolutionEngine,.mjtCoach,.majVisualExample) :is(p,li,span,label,input,textarea,select){
+ text-shadow:none;letter-spacing:normal;
+}
+@media(prefers-reduced-motion:reduce){#content[data-majick-room] *{scroll-behavior:auto}}
