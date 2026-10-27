@@ -8,7 +8,7 @@
 - Local canonical release checks and browser Add → three Stirs → Bottle flow passed, including Pause/Play. GPU/full responsive visual certification remains pending; this is a user-authorized development deployment.
 
 
-Updated: 2026-10-24. Reconciled through merged PR #195; preserve PR #141 historical details. Canonical source: `current-site/`. Live: https://rnw4512-dev.github.io/majick-studies-assets/
+Updated: 2026-10-27. PRs #214–218 reviewed against GitHub on 2026-10-27: #214 merged; #215 open; #216–218 open drafts. Reconciliation records their verified status without implying that open PRs are merged, certified, or deployed. Preserve PR #141 historical details. Canonical source: `current-site/`. Live: https://rnw4512-dev.github.io/majick-studies-assets/
 
 **Vision:** An adult dark-academia witchy college where the learner adds real courses and studies through an integrated game world. Academic mastery remains course-specific; Scholar identity, avatar, Guardians, crystals, rewards, eggs and Sanctuary persist globally.
 
@@ -30,6 +30,8 @@ Updated: 2026-10-24. Reconciled through merged PR #195; preserve PR #141 histori
 
 ## Done
 
+- [PR #214](https://github.com/rnw4512-dev/majick-studies-assets/pull/214) — **merged 2026-10-26**. Study Realm guided-repair recovery can select a fresh, validated generated probability transfer item when the static pool is exhausted, without recycling seen IDs or crediting guided work as independent mastery. **Full interactive browser certification remains separate and pending.**
+
 - Four original Guardian identities, protected 33 motion PNGs; ten canonical Guardian portraits and five portrait stages each exist.
 - Scholar appearance and single companion system, wardrobe layers, existing six hairstyle categories and robe variants exist in source.
 - Existing crystal earning, reward ledger, potion recipes, Guardian accessories, Sanctuary furniture and many reward images exist.
@@ -37,6 +39,16 @@ Updated: 2026-10-24. Reconciled through merged PR #195; preserve PR #141 histori
 - Repository review: prior developer branch PR #138 (Guardian stage-safe selector) CI passed; PR #139 (Scholar hair fit, companion reactions, six potion/crystal SVGs) CI passed. Both remain drafts, not deployed.
 
 ## In Progress
+
+### PR reconciliation — 2026-10-27 (open work, not merged)
+
+| PR | Verified status | Scope | Outstanding validation |
+|---|---|---|---|
+| [#215](https://github.com/rnw4512-dev/majick-studies-assets/pull/215) | **Open (non-draft); not merged/deployed** | Browser regression selectors for collapsed Skill Growth drawer and probability Back control after reload; no academic grading changes | Run connected browser checks at 390/820/1366px; confirm Back exists and works after reload and fast navigation |
+| [#216](https://github.com/rnw4512-dev/majick-studies-assets/pull/216) | **Open draft; not merged/deployed** | D772 course-keyed recovery session checkpoints, independent-only Skill Growth denominator, duplicate-evidence guard and Node regression checks | Execute reload-during-recovery, reload-after-answer, course-switch and duplicate-mastery tests; verify live UI/persistence and CI |
+| [#217](https://github.com/rnw4512-dev/majick-studies-assets/pull/217) | **Open draft; not merged/deployed** | Gothic-inspired Study Realm headings, shimmer, Trial Chamber examination/progress styling, guided-versus-independent visual cues | Reconcile latest JS/CSS source-manifest hashes; test progress semantics, contrast, reduced motion and 390/820/1366px layouts; review overlap with #218 |
+| [#218](https://github.com/rnw4512-dev/majick-studies-assets/pull/218) | **Open draft; not merged/deployed** | Room-specific magical palettes, architectural ornaments, heading styles and navigation-aware theme layer | Add/reconcile source-manifest entries/hashes; verify actual room identifiers, accessibility and 390/820/1366px views; integrate safely with #217 |
+
 
 - [PR #145](https://github.com/rnw4512-dev/majick-studies-assets/pull/145) — draft probability progression, Commons keyboard/contrast repairs, verified three-width browser review #39667511859. **Not merged or deployed**.
 - [PR #144](https://github.com/rnw4512-dev/majick-studies-assets/pull/144) — Guardian/Scholar integration and strict certification workflows proposed; asset/movement gates require separate verification.
@@ -90,6 +102,16 @@ Updated: 2026-10-24. Reconciled through merged PR #195; preserve PR #141 histori
 
 ## Needs Browser Certification
 
+### New release gates — PRs #214–218 (not yet certified)
+
+- [ ] D772: reload **during required guided reconstruction**, restore the exact pending recovery state and question without silently awarding mastery; then complete a genuinely fresh independent transfer item.
+- [ ] D772: reload **after an independent answer**, preserve answer/evidence and progress, and confirm no duplicate independent mastery, XP, crystals or other rewards from replay/re-render.
+- [ ] D772: switch between courses and back, preserving course-specific recovery, guided-versus-independent evidence and unrelated saved progress.
+- [ ] Probability Back control: wrong answer → repair/reasoning → Back, including reload, fast clicks and browser navigation; verify controls stay visible and usable (PR #215).
+- [ ] At **390px mobile, 820px tablet and 1366px desktop**, verify Trial Chamber headings, illuminated progress indicators, guided-versus-independent styles, room architecture, contrast, keyboard focus, screen-reader progress semantics, reduced motion and absence of overlapping controls.
+- [ ] Run canonical tests, source-manifest integrity checks, and full connected browser regression suite after integrating PRs #215–218; do not equate code review or individual passing tests with complete certification.
+
+
 - [x] PR #145 Commons browser review at 390px, 820px and 1366px: [run #39667511859](https://github.com/rnw4512-dev/majick-studies-assets/actions/runs/39667511859), all jobs PASS. Desktop full interaction and connected probability regressions PASS; mobile/tablet connected probability steps were skipped.
 - [ ] Strict all-ten Guardian assets and actual Phaser movement; certify approved action frames, never substitute portraits for movement.
 - [ ] Scholar appearance plus Guardian, XP, crystals and inventory persistence across reload, retries and course switches, with evidence.
@@ -111,6 +133,14 @@ Updated: 2026-10-24. Reconciled through merged PR #195; preserve PR #141 histori
 **None of PR #137–140.** They are all drafts. Do not merge or deploy until the complete release gate, reviewer screenshot verification and user-reported probability failure are resolved.
 
 ## Blocked / Needs Your Review
+
+### Visual-branch blockers — 2026-10-27
+
+- **PR #217**: latest Trial Chamber JavaScript/CSS edits require canonical `current-site/source-manifest.json` SHA-256 reconciliation; browser, accessibility and responsive testing remain pending. Do not merge/deploy until validated.
+- **PR #218**: newly added room-identity JS/CSS and modified `index.html` require source-manifest entries/hash reconciliation and verification against actual room navigation IDs; full testing remains pending. Do not merge/deploy until validated.
+- **Integration overlap:** PRs #217 and #218 both style the Scholar's Trial Chamber. Resolve cascade/selector precedence, typography, focus, color contrast, and reduced-motion behavior on an integration branch; run the three-width browser suite before merging either.
+- **Learning integration:** PR #216's recovery/persistence checks and PR #215's Back-button browser regressions must be executed together with the already merged fresh-transfer behavior from #214. Open PR status is not a release approval.
+
 
 - PR #145 and PR #141 board histories reconciled on PR #145 branch only; **PR #141 remains the source for historical sprint/asset/synchronization rules**. Resolve overlapping board PRs deliberately before merging. Do not merge PR #145 until all remaining release gates pass.
 
@@ -169,6 +199,12 @@ Updated: 2026-10-24. Reconciled through merged PR #195; preserve PR #141 histori
 - **Monitoring:** hourly Majick Studies PR Watch checks for new/updated PRs and board discrepancies and notifies on meaningful changes. This is a scheduled condition check, *not* a native GitHub event-triggered ChatGPT Project file sync.
 - **Current integration limit:** Projects do not auto-replace uploaded GitHub file snapshots. Connected GitHub provides live on-demand reads, not automatic project indexing. A Work PR-triggered task could supplement this if available/configured.
 - **Merge condition:** PR #141 must be merged for `main/PROJECT_BOARD.md` to become the default board; until then use the `master-project-board-20261017` branch.
+
+### 2026-10-27 — PR #214–218 status and board reconciliation
+- **Area:** Study Realm learning continuity, browser navigation and magical room presentation.
+- **Changed:** This board on `main` only; reviewed #214 merged 2026-10-26, #215 open, #216–218 open drafts. Added current statuses, scopes, certification gates and visual integration blockers.
+- **Verification:** Read GitHub PR metadata and `PROJECT_BOARD.md` from `main`. No new browser tests, CI run, source-manifest repair, merge or app deployment performed in this board-only update.
+- **Next:** Repair manifests, integrate overlapping Trial Chamber styles, run persistence and Back-button regressions plus 390/820/1366px browser checks, then separately decide merge/deployment.
 
 ## Mandatory work-session log
 
