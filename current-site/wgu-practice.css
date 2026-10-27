@@ -29,3 +29,48 @@
 .v3333QuestionCard .anchorChart,.v3333QuestionCard .majVisualExample{font-size:17px;line-height:1.65}
 
 .focusedAnchor{max-width:760px}.focusedAnchor h3{margin-bottom:8px}.focusedAnchor ul{margin:8px 0 12px;padding-left:22px}.focusedAnchor details{margin:10px 0;border-top:1px solid #c5af84;padding-top:8px}.focusedAnchor summary{color:#4a2854;font-weight:700;cursor:pointer}.focusedAnchor details svg{display:block;max-width:440px;margin:10px auto}.focusedAnchor small{margin-top:12px}
+
+
+/* Arcane typographic polish — Study Realm only. Readability always outranks decoration. */
+.v3333MissionHead h2,.v3333QTop h2,.v3333Scope h3{
+  font-family:"Palatino Linotype","Book Antiqua",Palatino,Georgia,serif;
+  font-variant:small-caps;letter-spacing:.055em;
+  color:#f9e4b9;text-shadow:0 1px 0 #35223d,0 0 13px rgba(237,193,113,.32);
+}
+.v3333Eyebrow,.v3333MissionHead .v3333Eyebrow{
+  color:#f4d79d;letter-spacing:.19em;text-transform:uppercase;
+  text-shadow:0 0 10px rgba(232,186,107,.4);
+}
+.v3333MissionHead h2::after,.v3333Scope h3::after{
+  content:" ✦";display:inline-block;margin-left:.35em;font-size:.52em;
+  vertical-align:middle;color:#f3d18e;text-shadow:0 0 12px rgba(243,209,142,.6);
+}
+.v3333MissionGrid button{position:relative;overflow:hidden;isolation:isolate;transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease}
+.v3333MissionGrid button::after{
+  content:"";position:absolute;inset:0;pointer-events:none;z-index:-1;
+  background:linear-gradient(110deg,transparent 27%,rgba(255,236,182,.12) 49%,transparent 68%);
+  transform:translateX(-130%);transition:transform .65s ease;
+}
+.v3333MissionGrid button:hover::after,.v3333MissionGrid button:focus-visible::after{transform:translateX(130%)}
+.v3333MissionGrid button:hover,.v3333MissionGrid button:focus-visible{
+  transform:translateY(-2px);border-color:#e9c98b;
+  box-shadow:inset 0 0 0 3px #160e22,0 0 0 1px rgba(244,211,155,.3),0 12px 28px rgba(0,0,0,.36),0 0 20px rgba(186,136,232,.15);
+}
+.v3333MissionGrid button:focus-visible{outline:3px solid #ffe2a8;outline-offset:3px}
+.v3333MissionGrid button:before{text-shadow:0 0 12px rgba(240,206,143,.55)}
+.v3333QuestionCard .v3333Prompt{
+  font-family:Georgia,"Times New Roman",serif;font-size:clamp(1.1rem,1.8vw,1.35rem);
+  font-weight:700;line-height:1.5;letter-spacing:normal;text-shadow:none;
+}
+.v3333QuestionCard :is(.v3333Option,.v3333Feedback,.anchorChart,.majVisualExample){
+  text-shadow:none;letter-spacing:normal;font-variant:normal;
+}
+.v3333QuestionCard :is(input,select,textarea){color:#302337;background:#fffaf0}
+.v3333QuestionCard :is(input,select,textarea):focus-visible{outline:3px solid #64427e;outline-offset:2px}
+@media (prefers-reduced-motion:reduce){
+ .v3333MissionGrid button,.v3333MissionGrid button::after{transition:none!important;transform:none!important}
+}
+@media(max-width:600px){
+ .v3333MissionHead h2,.v3333QTop h2{font-size:clamp(1.45rem,6vw,1.9rem);letter-spacing:.025em}
+ .v3333MissionGrid button:hover{transform:none}
+}
