@@ -29,3 +29,81 @@
 .v3333QuestionCard .anchorChart,.v3333QuestionCard .majVisualExample{font-size:17px;line-height:1.65}
 
 .focusedAnchor{max-width:760px}.focusedAnchor h3{margin-bottom:8px}.focusedAnchor ul{margin:8px 0 12px;padding-left:22px}.focusedAnchor details{margin:10px 0;border-top:1px solid #c5af84;padding-top:8px}.focusedAnchor summary{color:#4a2854;font-weight:700;cursor:pointer}.focusedAnchor details svg{display:block;max-width:440px;margin:10px auto}.focusedAnchor small{margin-top:12px}
+
+
+/* Arcane typographic polish — Study Realm only. Readability always outranks decoration. */
+.v3333MissionHead h2,.v3333QTop h2,.v3333Scope h3{
+  font-family:"Palatino Linotype","Book Antiqua",Palatino,Georgia,serif;
+  font-variant:small-caps;letter-spacing:.055em;
+  color:#f9e4b9;text-shadow:0 1px 0 #35223d,0 0 13px rgba(237,193,113,.32);
+}
+.v3333Eyebrow,.v3333MissionHead .v3333Eyebrow{
+  color:#f4d79d;letter-spacing:.19em;text-transform:uppercase;
+  text-shadow:0 0 10px rgba(232,186,107,.4);
+}
+.v3333MissionHead h2::after,.v3333Scope h3::after{
+  content:" ✦";display:inline-block;margin-left:.35em;font-size:.52em;
+  vertical-align:middle;color:#f3d18e;text-shadow:0 0 12px rgba(243,209,142,.6);
+}
+.v3333MissionGrid button{position:relative;overflow:hidden;isolation:isolate;transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease}
+.v3333MissionGrid button::after{
+  content:"";position:absolute;inset:0;pointer-events:none;z-index:-1;
+  background:linear-gradient(110deg,transparent 27%,rgba(255,236,182,.12) 49%,transparent 68%);
+  transform:translateX(-130%);transition:transform .65s ease;
+}
+.v3333MissionGrid button:hover::after,.v3333MissionGrid button:focus-visible::after{transform:translateX(130%)}
+.v3333MissionGrid button:hover,.v3333MissionGrid button:focus-visible{
+  transform:translateY(-2px);border-color:#e9c98b;
+  box-shadow:inset 0 0 0 3px #160e22,0 0 0 1px rgba(244,211,155,.3),0 12px 28px rgba(0,0,0,.36),0 0 20px rgba(186,136,232,.15);
+}
+.v3333MissionGrid button:focus-visible{outline:3px solid #ffe2a8;outline-offset:3px}
+.v3333MissionGrid button:before{text-shadow:0 0 12px rgba(240,206,143,.55)}
+.v3333QuestionCard .v3333Prompt{
+  font-family:Georgia,"Times New Roman",serif;font-size:clamp(1.1rem,1.8vw,1.35rem);
+  font-weight:700;line-height:1.5;letter-spacing:normal;text-shadow:none;
+}
+.v3333QuestionCard :is(.v3333Option,.v3333Feedback,.anchorChart,.majVisualExample){
+  text-shadow:none;letter-spacing:normal;font-variant:normal;
+}
+.v3333QuestionCard :is(input,select,textarea){color:#302337;background:#fffaf0}
+.v3333QuestionCard :is(input,select,textarea):focus-visible{outline:3px solid #64427e;outline-offset:2px}
+@media (prefers-reduced-motion:reduce){
+ .v3333MissionGrid button,.v3333MissionGrid button::after{transition:none!important;transform:none!important}
+}
+@media(max-width:600px){
+ .v3333MissionHead h2,.v3333QTop h2{font-size:clamp(1.45rem,6vw,1.9rem);letter-spacing:.025em}
+ .v3333MissionGrid button:hover{transform:none}
+}
+
+
+/* Scholar's Trial Chamber: distinct examination, guided repair, and verified transfer states. */
+.majTrialChamber .v3333QTop{gap:12px}
+.majTrialChamber .v3333QTop h2{
+ font-family:"Palatino Linotype","Book Antiqua",Palatino,Georgia,serif;
+ font-variant:small-caps;letter-spacing:.045em;line-height:1.2;
+ text-shadow:0 0 15px rgba(235,191,115,.32);
+}
+.majTrialBadge{display:inline-flex;align-items:center;margin-top:9px;padding:5px 11px;
+ border:1px solid #bda16c;border-radius:999px;background:#34243d;color:#f6dfb0;
+ font:700 12px/1.35 Georgia,serif;letter-spacing:.035em}
+.majTrialBadge.isIndependent{background:#153a32;border-color:#91c7a5;color:#e3f8eb}
+.majTrialChamber .v3333QCount{border:1px solid #b99b63;border-radius:10px;padding:8px 12px;
+ background:#251b32;color:#f7e7c4;font-weight:800;box-shadow:0 0 13px rgba(226,180,102,.18)}
+.majTrialProgress{height:12px;overflow:hidden;margin:0 8px 20px;border-radius:999px;
+ background:#201628;border:1px solid #c7a96b;box-shadow:inset 0 2px 5px #0008}
+.majTrialProgressFill{display:block;height:100%;min-width:0;border-radius:inherit;
+ background:linear-gradient(90deg,#8e69bb,#e6c57d 65%,#fff0b9);
+ box-shadow:0 0 12px rgba(246,214,151,.48);transition:width .25s ease}
+.majTrialChamber .v3333QuestionCard{border-color:#b58c55}
+.majTrialGuided{padding:18px;border:2px solid #ad8a52!important;border-radius:14px;
+ background:#fff1d8!important;color:#33253b!important;box-shadow:inset 0 0 0 4px #f7e6c7,0 8px 22px #0002}
+.majTrialGuided h3{font:700 1.35rem/1.3 "Palatino Linotype",Palatino,Georgia,serif;
+ color:#573e28!important;text-shadow:none}
+.majTrialGuided :is(p,b,small,label){color:#33253b!important;text-shadow:none}
+.majTrialGuided .v342RepairSteps>div{border-left:3px solid #9c773f;padding-left:12px;margin:12px 0}
+.majTrialGuided textarea{background:#fffdf6!important;color:#302337!important;border:1px solid #795e81}
+.majTrialGuided :is(button,[data-repair-transfer]){min-height:44px}
+.majTrialGuided [data-repair-transfer]:not(:disabled){box-shadow:0 0 0 2px #f7e6c7,0 0 13px #8a643d66}
+.majTrialChamber .v3333Feedback.correct{border-color:#91c7a5;box-shadow:inset 3px 0 #8dc7a6}
+@media(prefers-reduced-motion:reduce){.majTrialProgressFill{transition:none}}
+@media(max-width:600px){.majTrialBadge{font-size:11px}.majTrialChamber .v3333QCount{padding:6px 9px}.majTrialProgress{margin:0 2px 15px}}
