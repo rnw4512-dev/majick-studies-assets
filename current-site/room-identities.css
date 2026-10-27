@@ -30,3 +30,30 @@
  text-shadow:none;letter-spacing:normal;
 }
 @media(prefers-reduced-motion:reduce){#content[data-majick-room] *{scroll-behavior:auto}}
+
+
+/* Each room's architecture is a non-interactive cornice; the learning surface remains untouched. */
+#content[data-majick-room]{--room-ornament:"✦";--room-architecture:linear-gradient(135deg,#392c46,#1d172c);--room-arch-radius:38px 38px 12px 12px}
+#content[data-majick-room="home"]{--room-ornament:"✦  ☾  ✦";--room-architecture:radial-gradient(ellipse at 50% 0%,#bba05b45,transparent 64%),repeating-linear-gradient(90deg,transparent 0 90px,#e8c88914 92px 94px,transparent 96px 180px),linear-gradient(135deg,#35263c,#1c172d);--room-arch-radius:75px 75px 16px 16px}
+#content[data-majick-room="mission"]{--room-ornament:"❦  ✧  ❦";--room-architecture:repeating-linear-gradient(90deg,#d6c09b10 0 7px,transparent 8px 38px),linear-gradient(135deg,#2d263e,#16182a);--room-arch-radius:16px 16px 12px 12px}
+#content[data-majick-room="reasoning"]{--room-ornament:"☾  ✦  ☽";--room-architecture:radial-gradient(ellipse at 50% 0,#e2b96d40,transparent 65%),linear-gradient(120deg,#30223f,#171320);--room-arch-radius:90px 90px 14px 14px}
+#content[data-majick-room="learninglab"]{--room-ornament:"⚗  ✧  ⚗";--room-architecture:radial-gradient(circle at 82% 20%,#a97bd545,transparent 38%),linear-gradient(120deg,#352444,#1b1c35);--room-arch-radius:24px 24px 12px 12px}
+#content[data-majick-room="game"]{--room-ornament:"✦  ◈  ✦";--room-architecture:repeating-linear-gradient(125deg,#e6a9cb14 0 2px,transparent 2px 28px),linear-gradient(120deg,#3a2444,#1b1733);--room-arch-radius:24px 24px 12px 12px}
+#content[data-majick-room="sanctuary"]{--room-ornament:"☾  ❧  ☽";--room-architecture:radial-gradient(ellipse at 75% 0,#b5e9c13b,transparent 55%),linear-gradient(125deg,#20433b,#15272c);--room-arch-radius:80px 80px 14px 14px}
+#content[data-majick-room="atelier"]{--room-ornament:"✧  ♡  ✧";--room-architecture:radial-gradient(ellipse at 50% 0,#f1c8d33d,transparent 60%),linear-gradient(125deg,#49304a,#231d32);--room-arch-radius:65px 65px 14px 14px}
+#content[data-majick-room="potions"]{--room-ornament:"⚗  ✦  ⚗";--room-architecture:repeating-linear-gradient(90deg,#a8d5a414 0 1px,transparent 2px 60px),linear-gradient(125deg,#2b4238,#172c2b);--room-arch-radius:16px 16px 12px 12px}
+#content[data-majick-room="store"]{--room-ornament:"◈  ✦  ◈";--room-architecture:linear-gradient(90deg,#dcb46d22 1px,transparent 1px),linear-gradient(125deg,#45303e,#241c30);--room-arch-radius:36px 36px 12px 12px}
+#content[data-majick-room="analytics"]{--room-ornament:"✶  ☽  ✶";--room-architecture:radial-gradient(circle at 80% 15%,#b3d7f046,transparent 40%),linear-gradient(125deg,#26374d,#151f34);--room-arch-radius:58px 58px 12px 12px}
+#content[data-majick-room]::before{
+ content:var(--room-ornament);display:block;position:relative;isolation:isolate;
+ max-width:100%;min-height:50px;margin:0 0 12px;padding:11px 20px;
+ border:1px solid var(--room-accent);border-bottom:3px double var(--room-accent);
+ border-radius:var(--room-arch-radius);background:var(--room-architecture);
+ color:var(--room-title);font:600 21px/1.3 Cinzel,Palatino,Georgia,serif;
+ letter-spacing:.25em;text-align:center;text-shadow:0 0 13px var(--room-glow);
+ box-shadow:inset 0 0 0 4px #ffffff0b,0 8px 22px #100d1a24;
+ pointer-events:none;
+}
+#content[data-majick-room]::after{content:"";display:block;height:1px;margin-top:18px;background:linear-gradient(90deg,transparent,var(--room-accent),transparent);opacity:.5;pointer-events:none}
+@media(max-width:600px){#content[data-majick-room]::before{min-height:38px;padding:7px 10px;font-size:16px;letter-spacing:.13em;border-radius:24px 24px 10px 10px}}
+@media(prefers-reduced-motion:reduce){#content[data-majick-room]::before{animation:none;transition:none}}
