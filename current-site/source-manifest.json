@@ -144,7 +144,7 @@
     "guardian-registry.js": "00a6baa6d67cfc0e63b2e336a38baca04b6d8705058f824d70e12b8fe88c18bc",
     "home-focus.css": "cbb719eb8e78701717b4016388d511553f2785212d839815ed006651ae738b2b",
     "home-focus.js": "f421d4c5e5b4193d1005e5ce5cdbeb0e969a0cffb8ece49b9dd7c255a16ca794",
-    "index.html": "2771134def05587d549b7aa17ddeb734c133bd088db51c95baab21925b575e97",
+    "index.html": "89056ba1118ee0c48f98c541c868ef06821acd46ffe7bfa28475356aebfe5053",
     "learn-mode.css": "30181250c67efe7bd97c9276706a804a551e7904a2bb28160eeb0c193f35c002",
     "learn-mode.js": "49e424f3e40456772e4cb8adc550078c26ed793a5f83f9c216450609865ffa3c",
     "learning-lab.css": "b9c2c4f2ae393b3d291155a258cd01388bb71cd49a46d0187f224b03222ac2df",
@@ -864,11 +864,12 @@
     "assets/rooms/potions.svg": "f4c891b48ebc18738ef78cbe551d596fef9898a503e1e3c49b848d22323bbed7",
     "assets/rooms/boutique.svg": "7d9825aa030bdee44645a0899c80bed47cb952be5aeaaaeb24b88951f2975055",
     "assets/rooms/observatory.svg": "2f437e8a49e53c5fc065f8ef256c394a9f39683d257b5eefe9a3f5678e399d7b",
-    "connected-learning-path.js": "022e39f8978786cab063f1c7302f0c5205bb8a0508dc0c23130a12ff634229b2",
-    "connected-learning-path.css": "44b1e8878ffe6aeee947e625ddf760a7b652c603053403fe60b5a0acc0afe3b8",
+    "connected-learning-path.js": "f7d2f0d3b3298267a9f034c2bb8c7c11d8d7d7c2ec43f00cc37280f797b7992d",
+    "connected-learning-path.css": "e47387ec6be13710cce5d4203ed3789d7876c6bed2b90109cce24cdbfcbf1ed5",
     "screenshot-learning-repairs.js": "7dfec89b8390578e87b70318934e12aeee911d58378980f2d77a5dc889c3c0ac",
     "screenshot-learning-repairs.css": "0afe21165f01a3ca827f36d1c1a6e7281b8466229237ab4c1b0caba3b4c872d8",
     "aetheria-brand.js": "8b4eb06631f7bf12d34a3d4c4071519cd082c676444d89fb9edb6c33a8b88340",
-    "aetheria-brand.css": "1dbd726f5c716a51d3f242b3dfb18e027c0040968501548956052c155d99d9bb"
+    "aetheria-brand.css": "1dbd726f5c716a51d3f242b3dfb18e027c0040968501548956052c155d99d9bb",
+    "aetheria-parchment-contrast.css": "cd80387734dfeea9d40529f5b2a27c973cb4ae8cbcea8fa5adbe67d74daeb514"
   }
 }
