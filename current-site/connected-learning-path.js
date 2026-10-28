@@ -22,27 +22,32 @@ const teaching={
 'd772-s3-l2':['Compound probability depends on whether events are independent and whether replacement occurs.','Draw a tree or list ordered outcomes. Without replacement, update the second denominator.','Two red marbles without replacement from 3 red and 2 blue: (3/5) × (2/4) = 3/10.']};
 function showTeaching(id,mode='learn'){const root=$('#content');if(!root)return;let host=root.querySelector('#majPathTeaching');if(!host){host=document.createElement('section');host.id='majPathTeaching';host.className='majPathTeaching';const panel=root.querySelector('#majConnectedPath');panel?.after(host)}const [concept,steps,example]=teaching[id]||['Read the lesson objective and identify the given information.','Explain the method before calculating.','Use a fresh independent question after guidance.'];const title=document.createElement('h3');title.textContent=(mode==='reteach'?'Teach Me Again: ':mode==='review'?'Review: ':'Learn: ')+label(id);const p=document.createElement('p');p.textContent=mode==='reteach'?steps:concept;const detail=document.createElement('p');detail.textContent=mode==='reteach'?example:steps;const b=document.createElement('button');b.type='button';b.textContent='Show worked example';b.addEventListener('click',()=>{detail.textContent=example});host.replaceChildren(title,p,detail,b);host.scrollIntoView?.({block:'nearest',behavior:'auto'})}
 
+let pathExpanded=false;
 function render(){
  const root=$('#content');if(!root||!state())return;
  const room=route();if(!['home','mission','guide','reasoning','games','test'].includes(room)){root.querySelector(':scope > #majConnectedPath')?.remove();root.querySelector(':scope > #majPathTeaching')?.remove();return;}
  let host=root.querySelector(':scope > #majConnectedPath');
- if(!host){host=document.createElement('section');host.id='majConnectedPath';host.setAttribute('aria-label','Connected learning path');root.prepend(host)}
+ if(!host){host=document.createElement('section');host.id='majConnectedPath';host.setAttribute('aria-label','Learning path and practice stages');root.prepend(host)}
  const id=pick(),master=window.MajickLearningContinuity?.masteryStatus?.(id)||{},needs=window.MajickLearningContinuity?.skillNeeds?.()||[];
  const phases=[['Learn','guide'],['Review','guide'],['Guided Practice','mission'],['Independent Practice','mission'],['Exam Prep','reasoning']];
  const current={home:0,guide:0,mission:2,reasoning:4,test:4,games:3}[room]||0;
+ const previous=host.querySelector('details');if(previous)pathExpanded=previous.open;
  host.replaceChildren();
+ const details=document.createElement('details');details.className='majPathDisclosure';details.open=pathExpanded;details.addEventListener('toggle',()=>{pathExpanded=details.open});
+ const summary=document.createElement('summary');summary.className='majPathSummary';summary.textContent='✦ Learning Path · '+label(id)+' · '+(master.certified?'Mastered':'Review & practice');details.append(summary);
+ const body=document.createElement('div');body.className='majPathBody';details.append(body);host.append(details);
  const heading=document.createElement('div');heading.className='majPathHead';
- const h=document.createElement('h2');h.textContent='Your Learning Path';const status=document.createElement('p');status.textContent=label(id)+' · '+(master.certified?'Mastered independently':needs.length?'Review recommended':'Keep learning');heading.append(h,status);host.append(heading);
+ const h=document.createElement('h2');h.textContent='Your Learning Path';const status=document.createElement('p');status.textContent=label(id)+' · '+(master.certified?'Mastered independently':needs.length?'Review recommended':'Keep learning');heading.append(h,status);body.append(heading);
  const track=document.createElement('ol');track.className='majPathSteps';
- for(let i=0;i<phases.length;i++){const li=document.createElement('li');if(i===current)li.className='is-current';const b=document.createElement('button');b.type='button';b.textContent=(i+1)+'. '+phases[i][0];b.addEventListener('click',()=>{go(phases[i][1]);if(i<2)setTimeout(()=>showTeaching(id,i===0?'learn':'review'),140)});li.append(b);track.append(li)}host.append(track);
+ for(let i=0;i<phases.length;i++){const li=document.createElement('li');if(i===current)li.className='is-current';const b=document.createElement('button');b.type='button';b.textContent=(i+1)+'. '+phases[i][0];b.addEventListener('click',()=>{go(phases[i][1]);if(i<2)setTimeout(()=>showTeaching(id,i===0?'learn':'review'),140)});li.append(b);track.append(li)}body.append(track);
  const actions=document.createElement('div');actions.className='majPathActions';
  function button(text,fn){const b=document.createElement('button');b.type='button';b.textContent=text;b.addEventListener('click',fn);actions.append(b)}
  button('Continue Learning',()=>{goTeach(id,'learn')});
  button('Teach Me Again',()=>{goTeach(id,'reteach')});
  button('Practice Independently',()=>{go('mission');window.MajickWGUPractice?.startSkillRetry?.(id)});
  button('Review This Skill',()=>{goTeach(id,'review')});
- host.append(actions);
- const note=document.createElement('p');note.className='majPathNote';note.textContent='Guided work helps you learn. Only verified independent answers count toward mastery. Game rewards do not certify a skill.';host.append(note);
+ body.append(actions);
+ const note=document.createElement('p');note.className='majPathNote';note.textContent='Guided work helps you learn. Only verified independent answers count toward mastery. Game rewards do not certify a skill.';body.append(note);
 }
 let scheduled=false;function schedule(){if(scheduled)return;scheduled=true;setTimeout(()=>{scheduled=false;render()},80)}
 document.addEventListener('click',e=>{if(e.target.closest('[data-nav],#majConnectedPath'))schedule()});

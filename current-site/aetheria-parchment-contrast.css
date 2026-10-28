@@ -1,0 +1,8 @@
+/* Aetheria visual contract: light surfaces get dark text; dark surfaces get ivory. Scoped to content, not form inputs or graphics. */
+#content :is(.card,.paper,.parchment,.lessonCard,.lesson-panel,.lessonPanel,.majPathTeaching)[style*="background:#f"],
+#content :is(.card,.paper,.parchment,.lessonCard,.lesson-panel,.lessonPanel)[style*="background: #f"]{color:#19372e!important}
+#content :is(.v3333Scope,.v342Repair,.majPathTeaching)[style*="background"] :is(p,li,label,small){opacity:1}
+#content :is(.majPathTeaching,#majPathTeaching) :is(p,h2,h3,li,small){color:#18372e!important;text-shadow:none!important}
+#content :is(.majPathTeaching,#majPathTeaching) button{color:#fff!important}
+/* Gold remains decorative; never use pale gold for copy on a light card. */
+#content :is(.card,.paper,.parchment)[style*="background:#fff"] :is(p,li,small){color:#213d34}
