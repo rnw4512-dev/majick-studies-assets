@@ -144,7 +144,7 @@
     "guardian-registry.js": "00a6baa6d67cfc0e63b2e336a38baca04b6d8705058f824d70e12b8fe88c18bc",
     "home-focus.css": "cbb719eb8e78701717b4016388d511553f2785212d839815ed006651ae738b2b",
     "home-focus.js": "f421d4c5e5b4193d1005e5ce5cdbeb0e969a0cffb8ece49b9dd7c255a16ca794",
-    "index.html": "89056ba1118ee0c48f98c541c868ef06821acd46ffe7bfa28475356aebfe5053",
+    "index.html": "710273a980932a8f68d7c9fa143e0265efe952bf7e10c6ab4ae27fd58eb3c98a",
     "learn-mode.css": "30181250c67efe7bd97c9276706a804a551e7904a2bb28160eeb0c193f35c002",
     "learn-mode.js": "49e424f3e40456772e4cb8adc550078c26ed793a5f83f9c216450609865ffa3c",
     "learning-lab.css": "b9c2c4f2ae393b3d291155a258cd01388bb71cd49a46d0187f224b03222ac2df",
@@ -377,7 +377,7 @@
     "v339-main.css": "95fd6cb51076da0a40e5406b450eff11effb2af3c824172b9793dc032d0e6e72",
     "v339-main.js": "e1346861d157c7b1ddf8693ce81610abd6e750843ca665c5a4aee93e7464d202",
     "wgu-practice.css": "bc56f9f541a078fbcd9996292836af6db2265d97f5cc6416871f5d928ff89eb6",
-    "wgu-practice.js": "b416abe71794593a7bfd64709e53d9dc6f185998d1242778e766b6e041a40e7d",
+    "wgu-practice.js": "954bd9dcedee7240a01e5ccc79fd5ddd2f19ec888a855d12f47c9ce7b16fa01b",
     "coverage/d772-s2-l2-3.json": "05265a3d4372a4d4075dbc0e75f87743da0f2896493367285d909cc2dd59be22",
     "coverage/d772-s2-l2-summary.json": "d6c5a146210d14d520c720499a0ae93152bdca24c901db983bf97bcc08152118",
     "coverage/d772-s2-l2-quiz.json": "36433aca0c1ecbc57e655ed29da9a1d3e9fcc8f1bcfd01a31f067e4d9c6fbf19",
@@ -870,6 +870,7 @@
     "screenshot-learning-repairs.css": "0afe21165f01a3ca827f36d1c1a6e7281b8466229237ab4c1b0caba3b4c872d8",
     "aetheria-brand.js": "8b4eb06631f7bf12d34a3d4c4071519cd082c676444d89fb9edb6c33a8b88340",
     "aetheria-brand.css": "1dbd726f5c716a51d3f242b3dfb18e027c0040968501548956052c155d99d9bb",
-    "aetheria-parchment-contrast.css": "cd80387734dfeea9d40529f5b2a27c973cb4ae8cbcea8fa5adbe67d74daeb514"
+    "aetheria-parchment-contrast.css": "cd80387734dfeea9d40529f5b2a27c973cb4ae8cbcea8fa5adbe67d74daeb514",
+    "professors-repair-hands-on.css": "87c890be55e58f01942f3b45567b4832a4639ef7bbd552065b8439e06660073e"
   }
 }
