@@ -66,8 +66,11 @@ function newWorkshopState(task,previous={}){
  let serial=window.MajickLearningContinuity?.nextGuidedSequence?.('workshop:'+task.id);
  if(!Number.isFinite(Number(serial))||Number(serial)<=0){try{serial=Number(window.localStorage.getItem(sequenceKey)||0)+1;window.localStorage.setItem(sequenceKey,String(serial))}catch(_){serial=(previous.sequenceSerial||0)+1}}
  const generated=workshopCases(task,Number(serial));
- const used=previous.usedCases||[],cases=generated||task.cases.filter(c=>!used.includes(JSON.stringify(c)));
- if(!cases.length)return {...previous,exhausted:true};
+ const used=previous.usedCases||[];
+ // For conceptual/sequence tasks, cycle a verified source scenario as guided review.
+ // Never mark a repeated guided example as new independent mastery evidence.
+ const cases=generated||task.cases.filter(c=>!used.includes(JSON.stringify(c)));
+ if(!cases.length)return {...previous,exhausted:true,feedback:'This activity has no new verified scenario. Choose another skill below; your earlier work remains saved.'};
  return {stage:0,answers:{},caseIndex:0,feedback:'Fresh scenario selected. Your earlier evidence is preserved.',error:false,hint:false,finished:false,verified:{},sessionCases:cases,sequenceSerial:Number(serial),usedCases:generated?used:[...used,...cases.map(c=>JSON.stringify(c))]};
 }
 function saveWorkshopState(task,st){const p=window.S?.progress?.[window.S.activeCourse];if(p){(p.solutionWorkshop||(p.solutionWorkshop={}))[task.id]=st;try{window.save?.()}catch(_){}}}
@@ -107,7 +110,13 @@ function workshopMethodFeedback(task,choice){
  return 'Compare the requested quantity with the formula’s numerator, denominator and operations.';
 }
 function render(host,task){const topBefore=host.isConnected?host.getBoundingClientRect().top:null;setup(host,task);const st=STATES.get(host),cases=st.sessionCases||task.cases,ex=cases[st.caseIndex],independent=st.caseIndex===cases.length-1,step=st.stage;let body='',a=st.answers;
-if(st.exhausted||!ex){const picker=host.querySelector('.mjSeTaskSelect');host.innerHTML='<p>No unused verified scenario remains for this activity. Your work is saved. Choose another skill; completed questions will not silently repeat.</p>';if(picker)host.prepend(picker);return}
+if(st.exhausted||!ex){
+ const choices=(BANK[window.S?.activeCourse]||[]).filter(t=>t.id!==task.id&&t.cases?.length);
+ host.innerHTML='<section class="mjSeRecovery" role="status"><h3>Choose your next guided skill</h3><p>You have completed the available verified scenarios for '+esc(task.title)+'. Your earlier responses remain saved. Choose a different activity, or revisit a completed example as guided review only.</p><label for="mjSeNextSkill">Next skill</label><select id="mjSeNextSkill" class="mjSeNextSkill">'+choices.map(t=>'<option value="'+esc(t.id)+'">'+esc(t.title)+'</option>').join('')+'</select><button type="button" class="btn primary" data-next-guided>Open selected skill</button><button type="button" class="btn" data-revisit-guided>Review earlier example</button></section>';
+ host.querySelector('[data-next-guided]')?.addEventListener('click',()=>{const id=host.querySelector('.mjSeNextSkill')?.value,next=(BANK[window.S?.activeCourse]||[]).find(t=>t.id===id);if(!next)return;host.dataset.engineTask='';host.dataset.selectedTask=id;SELECTED_TASK.set(window.S.activeCourse,id);render(host,next)});
+ host.querySelector('[data-revisit-guided]')?.addEventListener('click',()=>{const review={...newWorkshopState(task,{usedCases:[]}),usedCases:st.usedCases||[],guidedReview:true};if(review.exhausted){review.exhausted=false;review.sessionCases=task.cases;review.caseIndex=0;review.stage=0;review.answers={};review.verified={};review.finished=false;}STATES.set(host,review);ACTIVE_STATES.set(window.S.activeCourse+':'+task.id,review);saveWorkshopState(task,review);render(host,task)});
+ return;
+}
 const input=(id,label,placeholder='Your answer')=>'<label class="mjSeLabel">'+esc(label)+'<input data-field="'+id+'" value="'+esc(a[id]||'')+'" placeholder="'+esc(placeholder)+'" autocomplete="off"></label>';
 if(task.kind==='math'){
  const known=ex.known||ex.numbers?.join(', ')||'';
