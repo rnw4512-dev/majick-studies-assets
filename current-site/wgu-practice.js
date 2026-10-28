@@ -88,6 +88,33 @@ function exactWorked(q){
 }
 function mistakeType(q){const reason=String(q.choiceCoach?.[String(session?.chosen??'')]||'').toLowerCase();if(/formula|equation|method|rule/.test(reason))return 'Formula-selection';if(/arithmetic|multiply|divide|subtract|add|round|decimal|calculat/.test(reason))return 'Calculation';if(/misread|question asks|instead|not asking/.test(reason))return 'Question interpretation';return 'Concept distinction or interpretation (provisional)'}
 document.addEventListener('input',e=>{const n=e.target,key=n?.dataset?.v342Key,field=n?.dataset?.v342Field;if(key&&field)saveBoard(decodeURIComponent(key),field,n.value)});
+function repairInteractive(q,clue){
+ const prompt=String(q.prompt||'');const context=prompt+' '+String(clue||'');
+ const fractions=[...context.matchAll(/(\\d+)\\s*\\/\\s*(\\d+)/g)].filter(m=>Number(m[2])>0);
+ const without=/without replacement|not replaced|without putting|remaining|after (?:taking|drawing|selecting)/i.test(context);
+ const area=/icon|pictograph|picture|symbol|graphic/i.test(prompt)&&/twice|double|doubled/i.test(prompt)&&/tall|height/i.test(prompt)&&/wide|width/i.test(prompt);
+ const type=area?'area':without&&fractions.length>=2?'compound':/\\bmean\\b|\\baverage\\b/i.test(prompt)?'mean':/\\brange\\b/i.test(prompt)?'range':'concept';
+ const initial=type==='compound'?[Number(fractions[0][1]),Number(fractions[0][2]),Number(fractions[1][1]),Number(fractions[1][2])]:type==='area'?[1,1,2,2]:[0,0,0,0];
+ const titles=type==='compound'?['First favorable','First total','Second favorable','Second total']:type==='area'?['Original height','Original width','New height','New width']:['Value 1','Value 2','Value 3','Value 4'];
+ const options=type==='compound'?[['multiply','Multiply probabilities'],['add','Add probabilities'],['divide','Divide first by second']]:type==='area'?[['area','Height × width (area)'],['height','Height only'],['perimeter','Add dimensions']]:type==='mean'?[['mean','Sum ÷ number of values'],['range','Maximum − minimum'],['multiply','Multiply values']]:type==='range'?[['range','Maximum − minimum'],['mean','Sum ÷ count']]:[['evidence','Identify evidence and explain the rule'],['formula','Use a numerical formula']];
+ const correct=options[0][0];const formula=type==='compound'?'P(A and B) = P(A) × P(B)':type==='area'?'Area = height × width; scale factor = new area ÷ original area':type==='mean'?'Mean = sum of values ÷ count':type==='range'?'Range = maximum − minimum':'Identify the deciding clue, then connect it to the correct rule.';
+ const fields=type==='concept'?'':initial.map((n,i)=>'<label>'+E(titles[i])+'<input type="number" step="any" data-repair-value="'+i+'" value="'+n+'" required></label>').join('');
+ return '<fieldset class="v342HandsOn" data-repair-type="'+type+'" data-repair-correct="'+correct+'"><legend>Try the reasoning yourself · guided formula workspace</legend><p><strong>Formula reference:</strong> '+E(formula)+'</p><label>Choose the method <select data-repair-method>'+options.map(([v,t])=>'<option value="'+v+'">'+E(t)+'</option>').join('')+'</select></label><div class="v342RepairInputs">'+fields+'</div><label>Your result or conclusion <input data-repair-result type="text" placeholder="Enter your calculated result or explain the rule"></label><button type="button" class="btn ghost" data-repair-calculate>Check my setup</button><p role="status" aria-live="polite" data-repair-calculation-feedback></p><small>These inputs are guided practice. They do not award independent mastery.</small></fieldset>';
+}
+function checkRepairCalculation(box){
+ const pane=box.querySelector('.v342HandsOn');if(!pane)return;const type=pane.dataset.repairType,method=pane.querySelector('[data-repair-method]').value,correct=pane.dataset.repairCorrect;
+ const fields=[...pane.querySelectorAll('[data-repair-value]')],values=fields.map(f=>Number(f.value));const answer=pane.querySelector('[data-repair-result]').value.trim();const out=pane.querySelector('[data-repair-calculation-feedback]');
+ if(method!==correct){out.textContent='Try another method. Look at the deciding clue and choose the formula that matches it.';return}
+ if(fields.some(f=>!f.value.trim()||!Number.isFinite(Number(f.value)))){out.textContent='Fill in every number before checking the setup.';return}
+ let expected,explanation='';if(type==='compound'){const [a,b,c,d]=values;if(b<=0||d<=0||a<0||c<0||a>b||c>d){out.textContent='Each denominator must be positive, and favorable outcomes cannot exceed total outcomes.';return}expected=(a/b)*(c/d);explanation='('+a+'/'+b+') × ('+c+'/'+d+') = '+(a*c)+'/'+(b*d)+' ≈ '+expected.toFixed(4)+'. Without replacement, recount the remaining outcomes before the second draw.'}
+ else if(type==='area'){const [a,b,c,d]=values;if(a<=0||b<=0||c<=0||d<=0){out.textContent='Heights and widths must be greater than zero.';return}expected=c*d/(a*b);explanation='Original area = '+a+' × '+b+' = '+(a*b)+'. New area = '+c+' × '+d+' = '+(c*d)+'. The visual area changes by a factor of '+expected+'.'}
+ else if(type==='mean'){expected=values.reduce((a,b)=>a+b,0)/values.length;explanation='Sum '+values.reduce((a,b)=>a+b,0)+' ÷ '+values.length+' = '+expected+'.'}
+ else if(type==='range'){expected=Math.max(...values)-Math.min(...values);explanation='Largest '+Math.max(...values)+' − smallest '+Math.min(...values)+' = '+expected+'.'}
+ else {out.textContent=answer.length>=20?'You described a rule. Compare it with the question’s deciding clue and explain why your first answer differed.':'Explain the deciding clue and the rule in a full sentence.';return}
+ if(!answer){out.textContent='Now enter your result. '+explanation;return}
+ const numeric=Number(answer.replace(/%$/,'')),percent=answer.endsWith('%');const converted=percent?numeric/100:numeric;
+ out.textContent=Number.isFinite(converted)&&Math.abs(converted-expected)<0.001?'Correct setup and calculation. '+explanation:'Recheck your answer. '+explanation+' Change the inputs to explore how the result changes.';
+}
 function repairLesson(q){
  if(!session||session.type==='test')return '';
  const chosen=String(session.chosen??''),correct=String(q.answer??''),coach=q.choiceCoach||{};
@@ -109,6 +136,7 @@ function repairLesson(q){
  '<p><b>Question:</b> '+E(q.prompt||'')+'</p>'+
  '<p><b>You selected:</b> '+E(chosen)+'</p><p><b>Correct answer:</b> '+E(correct)+'</p>'+
  '<p><b>Why your answer needs revision:</b> '+E(explainedWrong)+'</p>'+
+ repairInteractive(q,explainedClue)+
  '<div class="v342RepairSteps"><div><b>1 · Find the deciding clue</b><p>'+E(explainedClue)+'</p></div>'+
  '<div><b>2 · Connect the clue to the rule</b><p>'+E(explainedRule)+'</p><p><b>Why the original choice fails:</b> '+E(explainedWrong)+'</p></div>'+
  '<div><b>3 · Work it through</b>'+steps+'</div>'+
@@ -130,10 +158,11 @@ function checkRepairExplanation(box){
 
 }
 document.addEventListener('click',event=>{
- const button=event.target.closest?.('[data-repair-check]');
+ const button=event.target.closest?.('[data-repair-check],[data-repair-calculate]');
  if(!button)return;
  const box=button.closest('.v342Repair');if(!box)return;
  if(button.matches('[data-repair-check]')){checkRepairExplanation(box);return}
+ if(button.matches('[data-repair-calculate]')){checkRepairCalculation(box);return}
 });
 function startRepairTransfer(id){
  const original=String(id||'');
