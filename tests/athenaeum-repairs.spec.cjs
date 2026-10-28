@@ -62,7 +62,9 @@ for(const width of [390,820,1366])test.describe(width+'px',()=>{
    for(const geometry of geometries){expect(geometry.overflow,entry.id+' '+geometry.tab).toBe('visible');expect(geometry.scroll,entry.id+' '+geometry.tab).toBeLessThanOrEqual(geometry.height+2);}
   }
   await lesson(page);await page.locator('[data-classroom-tab="visual"]').click();
-  await page.locator('[aria-label="Scroll lesson down"]').click();
+  const down=page.locator('[aria-label="Scroll lesson down"]');await down.scrollIntoViewIfNeeded();
+  const offset=()=>page.evaluate(()=>[...new Set([document.scrollingElement,document.body,...document.querySelectorAll('main')])].reduce((sum,el)=>sum+(el?.scrollTop||0),0));
+  const beforeScroll=await offset();await down.click();await expect.poll(offset).toBeGreaterThan(beforeScroll);
   expect(await page.locator('.classroomStage').evaluate(el=>el.scrollTop)).toBe(0);
   await page.screenshot({path:'work/athenaeum-'+width+'.png',fullPage:false});
  });
