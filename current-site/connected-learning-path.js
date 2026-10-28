@@ -8,6 +8,7 @@ function pick(){const book=rows(),need=window.MajickLearningContinuity?.skillNee
 function route(){return String(state()?.screen||'home').toLowerCase()}
 function label(id){return lessons.find(x=>x[0]===id)?.[1]||id}
 function go(room){if(typeof window.navigate==='function')window.navigate(room);schedule()}
+function goTeach(id,mode){go('guide');setTimeout(()=>showTeaching(id,mode),140)}
 const teaching={
 'd772-s1-l1':['A population is the full group of interest. A sample is the smaller group actually observed.','Name the population first, then identify who was sampled. A large biased sample is still biased.','A school surveys 40 students out of 800. Population: 800 students; sample: 40 surveyed.'],
 'd772-s1-l2':['Selection methods affect whether a sample represents its population.','Check who could be selected, who responded, and who was excluded. Convenience and voluntary response can bias results.','A survey only sent to club members cannot fairly represent every student.'],
@@ -33,13 +34,13 @@ function render(){
  const heading=document.createElement('div');heading.className='majPathHead';
  const h=document.createElement('h2');h.textContent='Your Learning Path';const status=document.createElement('p');status.textContent=label(id)+' · '+(master.certified?'Mastered independently':needs.length?'Review recommended':'Keep learning');heading.append(h,status);host.append(heading);
  const track=document.createElement('ol');track.className='majPathSteps';
- for(let i=0;i<phases.length;i++){const li=document.createElement('li');if(i===current)li.className='is-current';const b=document.createElement('button');b.type='button';b.textContent=(i+1)+'. '+phases[i][0];b.addEventListener('click',()=>{go(phases[i][1]);if(i<2)showTeaching(id,i===0?'learn':'review')});li.append(b);track.append(li)}host.append(track);
+ for(let i=0;i<phases.length;i++){const li=document.createElement('li');if(i===current)li.className='is-current';const b=document.createElement('button');b.type='button';b.textContent=(i+1)+'. '+phases[i][0];b.addEventListener('click',()=>{go(phases[i][1]);if(i<2)setTimeout(()=>showTeaching(id,i===0?'learn':'review'),140)});li.append(b);track.append(li)}host.append(track);
  const actions=document.createElement('div');actions.className='majPathActions';
  function button(text,fn){const b=document.createElement('button');b.type='button';b.textContent=text;b.addEventListener('click',fn);actions.append(b)}
- button('Continue Learning',()=>{go('guide');showTeaching(id,'learn')});
- button('Teach Me Again',()=>{go('guide');showTeaching(id,'reteach')});
+ button('Continue Learning',()=>{goTeach(id,'learn')});
+ button('Teach Me Again',()=>{goTeach(id,'reteach')});
  button('Practice Independently',()=>{go('mission');window.MajickWGUPractice?.startSkillRetry?.(id)});
- button('Review This Skill',()=>{go('guide');showTeaching(id,'review')});
+ button('Review This Skill',()=>{goTeach(id,'review')});
  host.append(actions);
  const note=document.createElement('p');note.className='majPathNote';note.textContent='Guided work helps you learn. Only verified independent answers count toward mastery. Game rewards do not certify a skill.';host.append(note);
 }
