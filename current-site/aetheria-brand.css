@@ -1,0 +1,5 @@
+/* Aetheria identity: preserve the established layout and academic controls. */
+.brand .txt b{font-family:Georgia,'Times New Roman',serif;letter-spacing:.035em}
+.brand .txt small{letter-spacing:.055em}
+.majRoomBannerTitle{overflow-wrap:break-word}
+@media(max-width:600px){.majRoomBannerTitle{font-size:clamp(1.4rem,5vw,2.2rem)!important}}
