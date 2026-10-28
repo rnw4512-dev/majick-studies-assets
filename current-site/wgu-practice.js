@@ -116,28 +116,24 @@ function repairLesson(q){
  '<textarea data-repair-thinking rows="3" style="width:100%;min-height:84px" placeholder="I chose ___ because ___. Now I see ___ in this question, which means ___..."></textarea>'+
  '<button type="button" class="btn ghost" data-repair-check>Check my explanation</button>'+
  '<p data-repair-feedback role="status" aria-live="polite"></p></div></div>'+
- '<button type="button" class="btn primary" data-repair-transfer disabled>Try a different question on this same lesson →</button>'+
- '<small style="display:block">Repair is guided support, not independently verified mastery. The next problem is a separate transfer challenge.</small></section>';
+
+ '<small style="display:block">Repair is guided support, not independently verified mastery. Return to independent practice from Study Hall when ready.</small></section>';
 }
 function checkRepairExplanation(box){
  const q=session?.current;if(!box||!q)return;
- const input=box.querySelector('[data-repair-thinking]'),feedback=box.querySelector('[data-repair-feedback]'),transfer=box.querySelector('[data-repair-transfer]');
+ const input=box.querySelector('[data-repair-thinking]'),feedback=box.querySelector('[data-repair-feedback]');
  const text=String(input?.value||'').trim(),words=text.split(/\s+/).filter(Boolean);
  const reasonWords=/because|since|instead|rather|clue|evidence|shows|indicat|means|therefore|first|now|mistake|thought/i.test(text);
  const contrast=/but|instead|however|now|rather|correct|actually|should|different/i.test(text);
  const supplied=words.length>=15&&reasonWords&&contrast;
  feedback.textContent=supplied?'You have compared your original thinking with new reasoning. Read the model explanation above and check that your claim matches this exact scenario.':'Add why you chose the original answer AND what evidence in this question changes your thinking. Aim for a full explanation, not a single word.';
- transfer.disabled=!supplied;
+
 }
 document.addEventListener('click',event=>{
- const button=event.target.closest?.('[data-repair-check],[data-repair-transfer]');
+ const button=event.target.closest?.('[data-repair-check]');
  if(!button)return;
  const box=button.closest('.v342Repair');if(!box)return;
  if(button.matches('[data-repair-check]')){checkRepairExplanation(box);return}
- if(button.matches('[data-repair-transfer]')&&!button.disabled){
-  const id=box.dataset.repairQuestion;
-  startRepairTransfer(id);
- }
 });
 function startRepairTransfer(id){
  const original=String(id||'');
