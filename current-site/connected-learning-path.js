@@ -24,7 +24,7 @@ function render(){
  const actions=document.createElement('div');actions.className='majPathActions';
  function button(text,fn){const b=document.createElement('button');b.type='button';b.textContent=text;b.addEventListener('click',fn);actions.append(b)}
  button('Continue Learning',()=>go(current<2?'mission':current===2?'reasoning':'guide'));
- button('Teach Me Again',()=>{const lc=window.MajickLearningContinuity;lc?.skillReview?.(id);go('guide');const tutor=window.MajickCourseTutor;if(tutor?.openLesson)tutor.openLesson(id,'simpler',course())});
+ button('Teach Me Again',()=>{const lc=window.MajickLearningContinuity;if(rows()[id])lc?.skillReview?.(id);go('guide');const tutor=window.MajickCourseTutor;if(tutor?.openLesson)tutor.openLesson(id,'simpler',course())});
  button('Practice Independently',()=>{go('mission');window.MajickWGUPractice?.startSkillRetry?.(id)});
  host.append(actions);
  const note=document.createElement('p');note.className='majPathNote';note.textContent='Guided work helps you learn. Only verified independent answers count toward mastery. Game rewards do not certify a skill.';host.append(note);
