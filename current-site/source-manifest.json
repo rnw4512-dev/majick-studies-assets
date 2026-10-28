@@ -144,7 +144,7 @@
     "guardian-registry.js": "00a6baa6d67cfc0e63b2e336a38baca04b6d8705058f824d70e12b8fe88c18bc",
     "home-focus.css": "cbb719eb8e78701717b4016388d511553f2785212d839815ed006651ae738b2b",
     "home-focus.js": "f421d4c5e5b4193d1005e5ce5cdbeb0e969a0cffb8ece49b9dd7c255a16ca794",
-    "index.html": "c8e609b712fb5d35063fa5a05ddfb17d9cd2f801c3ed349373230557bc9d8225",
+    "index.html": "34c90610221aa0f08cfa20030b72c3696c4ba4a53cd6f9d08873b8b036b0e064",
     "learn-mode.css": "30181250c67efe7bd97c9276706a804a551e7904a2bb28160eeb0c193f35c002",
     "learn-mode.js": "49e424f3e40456772e4cb8adc550078c26ed793a5f83f9c216450609865ffa3c",
     "learning-lab.css": "b9c2c4f2ae393b3d291155a258cd01388bb71cd49a46d0187f224b03222ac2df",
@@ -863,6 +863,8 @@
     "assets/rooms/atelier.svg": "f8c17d3f026137c782539b1a29ff57a0b78041db02008c8ce7ff5f769fcc60a5",
     "assets/rooms/potions.svg": "f4c891b48ebc18738ef78cbe551d596fef9898a503e1e3c49b848d22323bbed7",
     "assets/rooms/boutique.svg": "7d9825aa030bdee44645a0899c80bed47cb952be5aeaaaeb24b88951f2975055",
-    "assets/rooms/observatory.svg": "2f437e8a49e53c5fc065f8ef256c394a9f39683d257b5eefe9a3f5678e399d7b"
+    "assets/rooms/observatory.svg": "2f437e8a49e53c5fc065f8ef256c394a9f39683d257b5eefe9a3f5678e399d7b",
+    "connected-learning-path.js": "3c0f74b6497e5ae3e4336ea9b73abc457998996fa0d6d77108c59da05ae98a33",
+    "connected-learning-path.css": "44b1e8878ffe6aeee947e625ddf760a7b652c603053403fe60b5a0acc0afe3b8"
   }
 }
