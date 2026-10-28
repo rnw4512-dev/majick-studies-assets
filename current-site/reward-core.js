@@ -211,6 +211,7 @@ function award(type,ctx={}){
    guardian:gr.guardian,egg:gr.egg,drop,fragmentTotal:r.eggFragments,conjuresReady:Math.floor(r.eggFragments/10),milestoneChest,chests:Number(cfg.chest||0)+milestoneChest,at:Date.now()
  };
  r.ledger[key]={type,at:receipt.at,receipt};r.lastReceipt=receipt;
+ try{document.dispatchEvent(new CustomEvent('majick:verified-reward-milestone',{detail:{key,type,course:ctx.course||state()?.activeCourse||'',receipt}}))}catch(_){}
  save();pushRewardState();showReceipt(receipt);
  if(['concept-mastered','lesson-mastered','competency-mastered','oa-competency-ready','course-passed'].includes(type)){
    if(typeof document!=='undefined'&&typeof CustomEvent==='function')document.dispatchEvent(new CustomEvent('majick:celebrate',{detail:{type:type==='course-passed'?'course':'mastery',key,course:ctx.course||window.S?.activeCourse||'',verified:true}}));
