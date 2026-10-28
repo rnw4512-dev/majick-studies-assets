@@ -96,15 +96,21 @@ function repairLesson(q){
  const questionId=String(q.id||q.qid||q.prompt||''), encoded=encodeURIComponent(questionId);
  const optionReason=String(coach[correct]||q.why||'Compare the correct answer with the key evidence.');
  const distinctRule=optionReason.trim()===clue.trim()?'Use the clue to select the relevant rule. Check the answer against that rule and identify what the first choice overlooked.':optionReason;
+ const prompt=String(q.prompt||'');
+ const areaDistortion=/icon|pictograph|picture|symbol|graphic/i.test(prompt)&&/twice|double|doubled/i.test(prompt)&&/tall|height/i.test(prompt)&&/wide|width/i.test(prompt);
+ const teachingReason=areaDistortion?'When an image doubles in height AND doubles in width, its area becomes 2 × 2 = 4 times the original. The data value only doubled (2 times), so the enlarged picture exaggerates the change by showing four times the area.':' ';
+ const explainedWrong=areaDistortion?'Representativeness concerns how participants were selected for a sample. This question is about scaling an icon in a graph, not sampling.':wrongReason;
+ const explainedClue=areaDistortion?'The icon was made twice as tall AND twice as wide. Both dimensions affect the area the eye sees.':clue;
+ const explainedRule=areaDistortion?'Area = height × width. New area = (2 × height) × (2 × width) = 4 × original area, even though the reported value only doubled.':distinctRule;
  const hasWorked=!!q?.workedExample?.steps?.length||/(?:data set|data values|values are|numbers are)\s*:?\s*-?\d+(?:\.\d+)?(?:\s*,\s*-?\d+(?:\.\d+)?){2,}/i.test(String(q.prompt||''));
- const steps=hasWorked?'<details class="v342MatchedWork"><summary>Show the calculations using these exact values</summary>'+exactWorked(q)+'</details>':'<p>This question tests a concept or an interpretation. Use its actual clue and answer comparison below rather than an unrelated numerical example.</p>';
+ const steps=areaDistortion?'<p><strong>Worked visual reasoning:</strong> Original icon: 1 unit high × 1 unit wide = 1 square unit. Enlarged icon: 2 units high × 2 units wide = 4 square units. <strong>4 ÷ 1 = 4</strong>, not 2. A fair doubling would use a visual encoding that represents a twofold change, not a fourfold area change.</p>':hasWorked?'<details class="v342MatchedWork"><summary>Show the calculations using these exact values</summary>'+exactWorked(q)+'</details>':'<p>This question tests a concept or an interpretation. Use its actual clue and answer comparison below rather than an unrelated numerical example.</p>';
  return '<section class="v342Repair majTrialGuided" data-repair-question="'+E(questionId)+'" style="padding:1rem;border:1px solid #ad8c55;border-radius:12px;margin:.8rem 0;background:#f6ebd9;color:#30233d">'+
  '<h3>Professor’s Repair · Your Actual Question</h3>'+
  '<p><b>Question:</b> '+E(q.prompt||'')+'</p>'+
  '<p><b>You selected:</b> '+E(chosen)+'</p><p><b>Correct answer:</b> '+E(correct)+'</p>'+
- '<p><b>Why your answer needs revision:</b> '+E(wrongReason)+'</p>'+
- '<div class="v342RepairSteps"><div><b>1 · Find the deciding clue</b><p>'+E(clue)+'</p></div>'+
- '<div><b>2 · Connect the clue to the rule</b><p>'+E(distinctRule)+'</p><p><b>Why the original choice fails:</b> '+E(wrongReason)+'</p></div>'+
+ '<p><b>Why your answer needs revision:</b> '+E(explainedWrong)+'</p>'+
+ '<div class="v342RepairSteps"><div><b>1 · Find the deciding clue</b><p>'+E(explainedClue)+'</p></div>'+
+ '<div><b>2 · Connect the clue to the rule</b><p>'+E(explainedRule)+'</p><p><b>Why the original choice fails:</b> '+E(explainedWrong)+'</p></div>'+
  '<div><b>3 · Work it through</b>'+steps+'</div>'+
  '<div><b>4 · Explain your thinking</b><p>What in the question made your first answer tempting? Which detail changes your reasoning?</p>'+
  '<textarea data-repair-thinking rows="3" style="width:100%;min-height:84px" placeholder="I chose ___ because ___. Now I see ___ in this question, which means ___..."></textarea>'+
