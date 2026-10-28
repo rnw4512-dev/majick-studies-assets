@@ -1,0 +1,4 @@
+/* Screenshot feedback: keep recovery actions legible and make overlays non-obstructive. */
+button[title^="Skill: d772-"]{white-space:normal;max-width:100%;overflow-wrap:anywhere;line-height:1.35;min-height:38px}
+#majConnectedPath{max-width:100%;box-sizing:border-box}
+@media(max-width:600px){#majConnectedPath .majPathActions button{flex:1 1 150px}}
