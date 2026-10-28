@@ -3762,8 +3762,16 @@ function compactClassroom(box,ch,lesson){
   const footer=document.createElement('div');footer.className='classroomNavigation';footer.innerHTML='<button type="button" class="classroomPrevious">← Previous</button><span aria-live="polite"></span><button type="button" class="classroomNext">Next →</button>';
   const scrollTools=document.createElement('div');scrollTools.className='classroomScrollTools';scrollTools.setAttribute('aria-label','Parchment scrolling');
   scrollTools.innerHTML='<span>Lesson parchment</span><button type="button" aria-label="Scroll lesson up">↑ Up</button><button type="button" aria-label="Scroll lesson down">↓ Down</button><button type="button" aria-label="Return to top of lesson parchment">↑ Top</button>';
-  scrollTools.querySelectorAll('button').forEach((b,i)=>b.addEventListener('click',()=>{const motion=window.matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth';if(i===2)stage.scrollTo({top:0,behavior:motion});else stage.scrollBy({top:(i===0?-1:1)*Math.max(150,stage.clientHeight*.65),behavior:motion})}));
-  stage.tabIndex=0;stage.setAttribute('aria-label','Scrollable lesson parchment');
+  scrollTools.querySelectorAll('button').forEach((b,i)=>b.addEventListener('click',()=>{
+    const behavior=window.matchMedia('(prefers-reduced-motion: reduce)').matches||document.documentElement.dataset.majickReduceMotion==='true'?'instant':'smooth';
+    let scroller=stage.parentElement;
+    while(scroller&&!( /auto|scroll/.test(getComputedStyle(scroller).overflowY)&&scroller.scrollHeight>scroller.clientHeight))scroller=scroller.parentElement;
+    scroller=scroller||document.scrollingElement;
+    const scrollTop=scroller?.scrollTop||0;
+    const top=stage.getBoundingClientRect().top-(scroller===document.scrollingElement?0:scroller.getBoundingClientRect().top)+scrollTop;
+    scroller?.scrollTo({top:i===2?Math.max(0,top-100):scrollTop+(i===0?-1:1)*Math.max(150,window.innerHeight*.65),behavior});
+  }));
+  stage.tabIndex=0;stage.setAttribute('aria-label','Lesson parchment');
   box.append(nav,scrollTools,stage,footer);
   const classroomState=tutorState(cid());const remembered=classroomState.classroomSteps?.[lesson.id];
   let active=0;

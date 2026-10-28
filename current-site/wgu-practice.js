@@ -90,10 +90,10 @@ function mistakeType(q){const reason=String(q.choiceCoach?.[String(session?.chos
 document.addEventListener('input',e=>{const n=e.target,key=n?.dataset?.v342Key,field=n?.dataset?.v342Field;if(key&&field)saveBoard(decodeURIComponent(key),field,n.value)});
 function repairInteractive(q,clue){
  const prompt=String(q.prompt||'');const context=prompt+' '+String(clue||'');
- const fractions=[...context.matchAll(/(\\d+)\\s*\\/\\s*(\\d+)/g)].filter(m=>Number(m[2])>0);
+ const fractions=[...context.matchAll(/(\d+)\s*\/\s*(\d+)/g)].filter(m=>Number(m[2])>0);
  const without=/without replacement|not replaced|without putting|remaining|after (?:taking|drawing|selecting)/i.test(context);
  const area=/icon|pictograph|picture|symbol|graphic/i.test(prompt)&&/twice|double|doubled/i.test(prompt)&&/tall|height/i.test(prompt)&&/wide|width/i.test(prompt);
- const type=area?'area':without&&fractions.length>=2?'compound':/\\bmean\\b|\\baverage\\b/i.test(prompt)?'mean':/\\brange\\b/i.test(prompt)?'range':'concept';
+ const type=area?'area':without&&fractions.length>=2?'compound':/\bmean\b|\baverage\b/i.test(prompt)?'mean':/\brange\b/i.test(prompt)?'range':'concept';
  const initial=type==='compound'?[Number(fractions[0][1]),Number(fractions[0][2]),Number(fractions[1][1]),Number(fractions[1][2])]:type==='area'?[1,1,2,2]:[0,0,0,0];
  const titles=type==='compound'?['First favorable','First total','Second favorable','Second total']:type==='area'?['Original height','Original width','New height','New width']:['Value 1','Value 2','Value 3','Value 4'];
  const options=type==='compound'?[['multiply','Multiply probabilities'],['add','Add probabilities'],['divide','Divide first by second']]:type==='area'?[['area','Height × width (area)'],['height','Height only'],['perimeter','Add dimensions']]:type==='mean'?[['mean','Sum ÷ number of values'],['range','Maximum − minimum'],['multiply','Multiply values']]:type==='range'?[['range','Maximum − minimum'],['mean','Sum ÷ count']]:[['evidence','Identify evidence and explain the rule'],['formula','Use a numerical formula']];
