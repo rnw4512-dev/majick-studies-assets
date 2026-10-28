@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Majick Studies — V3.4.2</title>
+<title>Aetheria | Moonlit Collegium</title>
 <style>
 :root{
  --ink:#27223f; --muted:#756f8f; --paper:#fffafb; --pearl:#fffdfd;
@@ -201,7 +201,7 @@ body.v523MotionOff .v525PetActor,body.v523MotionOff .v525PetActor .paw{animation
 
 
 /* =========================================================
-   MAJICK STUDIES • SANCTUARY EDITION
+   AETHERIA • SANCTUARY EDITION
    Visual shell inspired by the approved magical study sanctuary concept.
    Study logic, PMFC question bank, analytics, pets and progress remain intact.
    ========================================================= */
@@ -268,7 +268,7 @@ body:before{opacity:.5!important;background-image:
 .qbadge{background:linear-gradient(135deg,#f1ddff,#ffe0f0)!important;color:#5c347b!important;border:1px solid #d7b4ef!important}
 .confidence button,.word,.chip{background:rgba(255,255,255,.85)!important;color:#4e3d68!important}
 
-/* ===== MAJICK STUDIES HOME ===== */
+/* ===== AETHERIA HOME ===== */
 .majHome{display:grid;gap:16px}
 .majHero{position:relative;min-height:330px;border-radius:30px;overflow:hidden;padding:34px 34px 30px;color:#fff;border:1px solid rgba(247,205,117,.42);box-shadow:var(--maj-shadow);background:
  linear-gradient(90deg,rgba(13,9,35,.82),rgba(31,18,54,.50) 53%,rgba(28,21,67,.28)),
@@ -304,7 +304,7 @@ body:before{opacity:.5!important;background-image:
 @media(max-width:820px){.majFeatureGrid{grid-template-columns:1fr 1fr}.majHero h2{font-size:34px}.majFeature{min-height:145px}.majHabitat{height:280px}.majWindow{left:32%;width:35%}}
 
 
-/* ===== Majick Studies V2 • Collegiate Sanctuary ===== */
+/* ===== Aetheria V2 • Collegiate Sanctuary ===== */
 :root{
  --maj2-ink:#f8edd9; --maj2-muted:#cfc0da; --maj2-gold:#e7bf75; --maj2-rose:#dc6f9f;
  --maj2-wine:#6e274f; --maj2-plum:#25142f; --maj2-night:#100b20; --maj2-violet:#50366f;
@@ -615,7 +615,7 @@ body.mcFocus .mcRoom:after{display:none}
 </style>
 
 <style id="majickGoldWhiteContrastPatch">
-/* Majick Studies V3.1 — high-contrast collegiate palette */
+/* Aetheria V3.1 — high-contrast collegiate palette */
 body.majickCampus{color:#fff8f1!important}
 body.majickCampus .content,
 body.majickCampus .main,
@@ -995,9 +995,9 @@ body.mcFocus .masTwinkleLayer i,body.mcFocus .masPetalLayer i,body.mcFocus .masH
 
 <style id="livingFamiliarsV33Styles">
 /* ==========================================================
-   MAJICK STUDIES V3.3 — LIVING FAMILIARS
+   AETHERIA V3.3 — LIVING FAMILIARS
    Digital familiar behavior inspired by cozy companion apps,
-   while retaining Majick Studies' adult magical-college style.
+   while retaining Aetheria' adult magical-college style.
    ========================================================== */
 :root{
  --lf-gold:#f1cf91;--lf-ivory:#fff7ef;--lf-rose:#e48dbb;--lf-plum:#2b112e;
@@ -1254,7 +1254,7 @@ function pct(n){return Math.round((n||0)*100)}
 function navigate(screen){const previous=S.screen;clearTimer();S.screen=screen;save();render();if(previous!==screen)window.MajickRoomTransition?.play?.()}
 function clearTimer(){if(timerHandle){clearInterval(timerHandle);timerHandle=null}}
 function render(){try{const c=course();document.getElementById('app').innerHTML=`<aside class="side">${sideHTML()}</aside><main class="main"><header class="top"><div class="titleline"><span style="font-size:25px">☾</span><div><h1>Moonlit Learning Expedition</h1><span class="pill">Eternal Study Realm • V3.0</span></div></div><select class="courseSelect" onchange="switchCourse(this.value)">${Object.values(S.courses).map(x=>`<option value="${esc(x.id)}" ${x.id===S.activeCourse?'selected':''}>${esc(x.id)} • ${esc(x.title)}</option>`).join('')}</select></header><div class="content" id="content">${screenHTML()}</div></main>`;bind();}catch(e){console.error(e);document.getElementById('app').innerHTML=`<main class="main"><div class="content"><div class="error"><h2>The app caught an error instead of going blank.</h2><p>${esc(e.message)}</p><button class="btn dark" onclick="resetUI()">Return Home</button></div></div></main>`}}
-function sideHTML(){const nav=[['home','🏰','Home'],['mission','🎯','Study Now'],['guide','📖','Study Guide'],['games','🎮','Game Realm'],['test','📝','OA Practice'],['analytics','📊','Analytics'],['sources','📚','Sources'],['add','➕','Add Class']];return `<div class="brand"><div class="brandmark">☾</div><div class="txt"><b>Moonlit<br>Learning</b><small>Magical Study Expedition</small></div></div><nav class="nav">${nav.map(([id,ic,l])=>`<button data-nav="${id}" class="${S.screen===id?'active':''}" onclick="navigate('${id}')"><span>${ic}</span> <span class="label">${l}</span></button>`).join('')}</nav><div class="sidefoot"><span class="moon">🌙</span><div class="copy"><b>${dayStreak()} day study streak</b><small>Small wins become mastery.</small><div class="rewardStrip" style="margin-top:9px"><span class="rewardChip">✨ ${prog().xp||0} XP</span><span class="rewardChip">💎 ${prog().crystals||0}</span></div></div></div>`}
+function sideHTML(){const nav=[['home','🏰','Home'],['mission','🎯','Scholar’s Study Hall'],['guide','📖','Study Guide'],['games','🎮','The Enchanted Arcade'],['test','📝','OA Practice'],['analytics','📊','Analytics'],['sources','📚','Sources'],['add','➕','Add Class']];return `<div class="brand"><div class="brandmark">☾</div><div class="txt"><b>Moonlit<br>Learning</b><small>Magical Study Expedition</small></div></div><nav class="nav">${nav.map(([id,ic,l])=>`<button data-nav="${id}" class="${S.screen===id?'active':''}" onclick="navigate('${id}')"><span>${ic}</span> <span class="label">${l}</span></button>`).join('')}</nav><div class="sidefoot"><span class="moon">🌙</span><div class="copy"><b>${dayStreak()} day study streak</b><small>Small wins become mastery.</small><div class="rewardStrip" style="margin-top:9px"><span class="rewardChip">✨ ${prog().xp||0} XP</span><span class="rewardChip">💎 ${prog().crystals||0}</span></div></div></div>`}
 function screenHTML(){return ({home:homeHTML,mission:missionHTML,guide:guideHTML,games:gamesHTML,test:testHTML,analytics:analyticsHTML,sources:sourcesHTML,add:addHTML}[S.screen]||homeHTML)()}
 function stats(){const a=prog().answers||[], recent=a.slice(-30);const acc=recent.length?recent.filter(x=>x.correct).length/recent.length:0;const hard=recent.filter(x=>x.difficulty>=4), hardAcc=hard.length?hard.filter(x=>x.correct).length/hard.length:0;const concepts=course().concepts||[];let touched=new Set(a.map(x=>x.topicId));let cov=concepts.length?touched.size/concepts.length:0;let per={};for(const x of a){let z=per[x.topicId]||(per[x.topicId]=[]);z.push(x)};let vals=Object.values(per).filter(x=>x.length>=2).map(x=>x.slice(-6).filter(y=>y.correct).length/x.slice(-6).length);let floor=vals.length?Math.min(...vals):0;let readiness=a.length<8?Math.round(acc*55+cov*15):Math.round(acc*40+hardAcc*20+floor*20+cov*20);return {a,recent,acc,hardAcc,cov,floor,readiness:Math.min(100,readiness),touched,per}}
 function dayStreak(){const p=prog(),today=new Date().toDateString();return p.lastDay===today?Math.max(1,p.streak||1):Math.max(0,p.streak||0)}
@@ -1289,11 +1289,11 @@ function studyRealmLanding(){
  return studyRealmProgress();
 }
 function missionHTML(){if(!session)return '<div class="sectionTitle"><div><h2>Study Realm</h2><p>Practice one skill at a time or prepare with mixed WGU-style questions.</p></div></div>'+studyRealmTabs()+studyRealmLanding();return sessionHTML()}
-function legacyMissionHTML(){if(!session)return `<div class="sectionTitle"><div><h2>Study Now</h2><p>Practice questions from across your course sections. Use anchor charts and worked examples whenever you need them.</p></div></div><div class="grid">${S.activeCourse==='D772'?studySectionCounts():''}${missionCard('✨','Smart Mission','Adaptive questions prioritize weak and delayed-repair concepts','startAdaptive()')}${missionCard('🔎','Clue Hunter','Highlight clue words before choosing your answer','startClueHunter()')}${missionCard('🧠','Reason Ready','Choose the answer, then explain why it wins','startReason()')}${missionCard('🎲','Mixed OA','No topic labels; identify what WGU is testing','startMixed()')}</div>`;return sessionHTML()}
+function legacyMissionHTML(){if(!session)return `<div class="sectionTitle"><div><h2>Scholar’s Study Hall</h2><p>Practice questions from across your course sections. Use anchor charts and worked examples whenever you need them.</p></div></div><div class="grid">${S.activeCourse==='D772'?studySectionCounts():''}${missionCard('✨','Smart Mission','Adaptive questions prioritize weak and delayed-repair concepts','startAdaptive()')}${missionCard('🔎','Clue Hunter','Highlight clue words before choosing your answer','startClueHunter()')}${missionCard('🧠','Reason Ready','Choose the answer, then explain why it wins','startReason()')}${missionCard('🎲','Mixed OA','No topic labels; identify what WGU is testing','startMixed()')}</div>`;return sessionHTML()}
 function missionCard(ic,t,d,act){return `<div class="card c6 gameCard" onclick="${act}"><div class="gameIcon">${ic}</div><h3>${t}</h3><p>${d}</p><button class="btn violet">Begin</button></div>`}
 function autoStudySections(c){let e=Object.entries(c.glossary||{});if(!e.length)return (c.concepts||[]).map(x=>({id:x.id,title:x.title,icon:'✦',concepts:[x.id],summary:'Study this course concept, then practice it in multiple-choice.',rows:[[x.title,'Review your source material for the exact course wording.','SOURCE WORDING']],trap:'Choose the answer that most directly matches the course material.'}));let out=[];for(let i=0;i<e.length;i+=5){let z=e.slice(i,i+5);out.push({id:'auto'+i,title:z[0][0]+' & Related Concepts',icon:'✦',concepts:[],summary:'Automatically organized from this course glossary.',rows:z.map(x=>[x[0],x[1],'COURSE TERM']),trap:'Use the official course wording as the authority.'})}return out}
 function guideHTML(){const c=course();const sections=(c.studySections&&c.studySections.length)?c.studySections:autoStudySections(c);return `<div class="sectionTitle"><div><h2>PMFC Study Guide</h2><p>Read this first. Every section connects directly to your question bank.</p></div><button class="btn dark" onclick="startAdaptive()">Practice Mixed</button></div><div class="grid">${sections.map(sec=>`<article class="card c12 studyCard"><div class="studyHead"><div><div class="gameIcon">${sec.icon||'✦'}</div><h3>${esc(sec.title)}</h3><p>${esc(sec.summary)}</p></div>${sec.concepts?.length?`<button class="btn violet" onclick='practiceTopics(${JSON.stringify(sec.concepts)})'>🎯 Practice this topic</button>`:''}</div><div class="studyBody"><div class="studyRows">${(sec.rows||[]).map(r=>`<div class="studyRow"><b>${esc(r[0])}</b><span>${esc(r[1])}</span><span class="hook">${esc(r[2])}</span></div>`).join('')}</div><div class="trap"><b>WGU trap:</b> ${esc(sec.trap||'Read the final sentence and identify the exact task.')}</div></div></article>`).join('')}</div>`}
-function gamesHTML(){const games=[['🌠','Starlight Rush','Fast multiple-choice with combos and lives','startRush()'],['⚔️','Shadow Pair Duel','Targets concepts you confuse','startWeakPair()'],['👑','Guardian Boss Battle','Defeat your weakest concept','startBoss()'],['🔬','Shadow Choice Detective','Study why tempting wrong choices lose','startAutopsy()'],['🌑','Eclipse Elimination','Defend the best answer against a tempting distractor','startWhyNot()'],['🌙','Constellation Match','Match course terms to meanings','startMatch()'],['🧩','Moon Crystal Words','Crossword-like clue game with a word bank','startMoonword()'],['🪄','Transformation Fill','Fill the concept using multiple-choice','startFill()'],['🔎','Star Clue Hunter','Highlight clues, then answer, then explain','startClueHunter()'],['🔮','Moon Oracle Challenge','After a 3+ correct streak, optional AI can forge a harder four-choice question with plausible distractors','startAdaptive()']];return `<div class="sectionTitle"><div><h2>Game Realm</h2><p>Magical on the outside; course language and exam-level reasoning underneath.</p></div></div><div class="grid">${games.map(g=>`<div class="card c4 gameCard" onclick="${g[3]}"><div class="gameIcon">${g[0]}</div><div class="tag">Study Game</div><h3>${g[1]}</h3><p>${g[2]}</p></div>`).join('')}</div>`}
+function gamesHTML(){const games=[['🌠','Starlight Rush','Fast multiple-choice with combos and lives','startRush()'],['⚔️','Shadow Pair Duel','Targets concepts you confuse','startWeakPair()'],['👑','Guardian Boss Battle','Defeat your weakest concept','startBoss()'],['🔬','Shadow Choice Detective','Study why tempting wrong choices lose','startAutopsy()'],['🌑','Eclipse Elimination','Defend the best answer against a tempting distractor','startWhyNot()'],['🌙','Constellation Match','Match course terms to meanings','startMatch()'],['🧩','Moon Crystal Words','Crossword-like clue game with a word bank','startMoonword()'],['🪄','Transformation Fill','Fill the concept using multiple-choice','startFill()'],['🔎','Star Clue Hunter','Highlight clues, then answer, then explain','startClueHunter()'],['🔮','Moon Oracle Challenge','After a 3+ correct streak, optional AI can forge a harder four-choice question with plausible distractors','startAdaptive()']];return `<div class="sectionTitle"><div><h2>The Enchanted Arcade</h2><p>Magical on the outside; course language and exam-level reasoning underneath.</p></div></div><div class="grid">${games.map(g=>`<div class="card c4 gameCard" onclick="${g[3]}"><div class="gameIcon">${g[0]}</div><div class="tag">Study Game</div><h3>${g[1]}</h3><p>${g[2]}</p></div>`).join('')}</div>`}
 function testHTML(){const st=stats();return `<div class="sectionTitle"><div><h2>OA Practice</h2><p>Multiple-choice first. Feedback is delayed in simulations.</p></div></div><div class="grid"><div class="card c4 gameCard" onclick="startTest(15,true)"><div class="gameIcon">💎</div><h3>15 Hard Questions</h3><p>Difficulty 4–5 only.</p></div><div class="card c4 gameCard" onclick="startTest(30)"><div class="gameIcon">🌙</div><h3>30 Mixed Questions</h3><p>Mid-length endurance check.</p></div><div class="card c4 gameCard" onclick="startTest(45)"><div class="gameIcon">👑</div><h3>45-Question OA Simulation</h3><p>Mixed concepts with feedback at the end.</p></div></div><div class="card c12" style="margin-top:18px"><h3>Current readiness</h3><div class="progress"><i style="width:${st.readiness}%"></i></div><p><b>${st.readiness}%</b> readiness • ${pct(st.acc)}% recent accuracy • ${pct(st.hardAcc)}% hard-question accuracy</p></div>`}
 function analyticsHTML(){const st=stats(), c=course();let rows=c.concepts.map(k=>{const a=(st.per[k.id]||[]).slice(-8);let acc=a.length?a.filter(x=>x.correct).length/a.length:null;return {t:k.title,id:k.id,n:a.length,acc}}).sort((a,b)=>(a.acc??-1)-(b.acc??-1));return `<div class="sectionTitle"><div><h2>Thinking Analytics</h2><p>Tracks study performance, not intelligence. Use it to decide what to practice next.</p></div></div><div class="grid"><div class="card c4"><h3>Readiness</h3><div class="num">${st.readiness}%</div><div class="progress"><i style="width:${st.readiness}%"></i></div></div><div class="card c4"><h3>Coverage</h3><div class="num">${st.touched.size}/${c.concepts.length}</div><p>Concepts practiced</p></div><div class="card c4"><h3>High-confidence errors</h3><div class="num">${st.a.filter(x=>!x.correct&&x.confidence==='certain').length}</div><p>These deserve immediate repair.</p></div><div class="card c12"><h3>Concept mastery</h3><table class="table"><thead><tr><th>Concept</th><th>Recent items</th><th>Accuracy</th><th>Action</th></tr></thead><tbody>${rows.map(r=>`<tr><td>${esc(r.t)}</td><td>${r.n}</td><td class="${r.acc!=null&&r.acc>=.75?'strong':'weak'}">${r.acc==null?'Not practiced':pct(r.acc)+'%'}</td><td><button class="btn ghost" onclick="practiceTopics(['${r.id}'])">Practice</button></td></tr>`).join('')}</tbody></table></div></div>`}
 function sourcesHTML(){return `<div class="sectionTitle"><div><h2>Sources</h2><p>WGU terminology stays primary; reputable outside resources deepen understanding.</p></div></div><div class="grid">${(course().sources||[]).map(s=>`<div class="card c6"><h3>${esc(s.name)}</h3><p>${esc(s.note)}</p>${s.url?`<button class="btn ghost" onclick="openLink('${s.url}')">Open resource ↗</button>`:''}</div>`).join('')}</div>`}
@@ -1483,7 +1483,7 @@ function companionMessage(){let st=stats(),p=prog(),mist=st.a.slice(-12).filter(
 function mistakeEntries(){let a=(prog().answers||[]).filter(x=>!x.correct).slice(-40).reverse(), seen=new Set();let qs=course().questionBank||[];return a.filter(x=>{let k=x.qid+'|'+x.chosen;if(seen.has(k))return false;seen.add(k);return true}).slice(0,20).map(x=>({a:x,q:qs.find(q=>q.id===x.qid)})).filter(x=>x.q)}
 function topicMastery(id){let arr=(prog().answers||[]).filter(x=>x.topicId===id&&!x.assisted).slice(-8);if(!arr.length)return {n:0,acc:0,level:'unseen'};let acc=arr.filter(x=>x.correct).length/arr.length, hard=arr.filter(x=>x.difficulty>=4),hardAcc=hard.length?hard.filter(x=>x.correct).length/hard.length:0;let level=arr.length>=5&&acc>=.8&&(!hard.length||hardAcc>=.7)?'mastered':acc>=.65?'developing':'weakstar';return {n:arr.length,acc,hardAcc,level}}
 function readinessDimensions(){let st=stats(),a=st.a,recent=a.slice(-40),hard=recent.filter(x=>x.difficulty>=4),transfer=recent.filter(x=>x.format==='transfer'||x.difficulty>=5),mixed=recent.filter(x=>['mixed','test','hidden','elimination','finaltest'].includes(x.mode));let conf=recent.filter(x=>x.confidence==='certain');let cacc=conf.length?conf.filter(x=>x.correct).length/conf.length:0;let mastered=course().concepts.filter(c=>topicMastery(c.id).level==='mastered').length;return {Recall:Math.round(st.acc*100),Discrimination:Math.round((mixed.length?mixed.filter(x=>x.correct).length/mixed.length:st.acc)*100),Application:Math.round((transfer.length?transfer.filter(x=>x.correct).length/transfer.length:st.hardAcc)*100),Hard:Math.round(st.hardAcc*100),Coverage:Math.round(st.cov*100),Confidence:Math.round(cacc*100),Mastery:Math.round(mastered/Math.max(1,course().concepts.length)*100),Endurance:Math.min(100,Math.round(recent.length/40*100))}}
-const _sideHTMLV2=sideHTML;sideHTML=function(){const nav=[['home','🏰','Home'],['mission','🎯','Study Now'],['guide','📖','Study Guide'],['games','🎮','Game Realm'],['constellation','🌌','Constellation'],['grimoire','📕','Mistake Grimoire'],['vault','💎','Magic Vault'],['test','📝','OA Practice'],['analytics','📊','Analytics'],['sources','📚','Sources'],['add','➕','Add Class']];let r=rankInfo();return `<div class="brand"><div class="brandmark">☾</div><div class="txt"><b>Moonlit<br>Mastery</b><small>Eternal Study Realm</small></div></div><div style="margin:0 5px 14px"><span class="rankBadge"><span class="rankStar">${r.icon}</span>${esc(r.name)}</span></div><nav class="nav">${nav.map(([id,ic,l])=>`<button data-nav="${id}" class="${S.screen===id?'active':''}" onclick="navigate('${id}')"><span>${ic}</span> <span class="label">${l}</span></button>`).join('')}</nav><div class="sidefoot"><span class="moon">🌙</span><div class="copy"><b>${dayStreak()} day study streak</b><small>Mastery makes the magic stronger.</small><div class="rewardStrip" style="margin-top:9px"><span class="rewardChip">✨ ${prog().xp||0} XP</span><span class="rewardChip">💎 ${prog().crystals||0}</span><span class="rewardChip">🎁 ${prog().chests||0}</span></div></div></div>`}
+const _sideHTMLV2=sideHTML;sideHTML=function(){const nav=[['home','🏰','Home'],['mission','🎯','Scholar’s Study Hall'],['guide','📖','Study Guide'],['games','🎮','The Enchanted Arcade'],['constellation','🌌','Constellation'],['grimoire','📕','Mistake Grimoire'],['vault','💎','Magic Vault'],['test','📝','OA Practice'],['analytics','📊','Analytics'],['sources','📚','Sources'],['add','➕','Add Class']];let r=rankInfo();return `<div class="brand"><div class="brandmark">☾</div><div class="txt"><b>Moonlit<br>Mastery</b><small>Eternal Study Realm</small></div></div><div style="margin:0 5px 14px"><span class="rankBadge"><span class="rankStar">${r.icon}</span>${esc(r.name)}</span></div><nav class="nav">${nav.map(([id,ic,l])=>`<button data-nav="${id}" class="${S.screen===id?'active':''}" onclick="navigate('${id}')"><span>${ic}</span> <span class="label">${l}</span></button>`).join('')}</nav><div class="sidefoot"><span class="moon">🌙</span><div class="copy"><b>${dayStreak()} day study streak</b><small>Mastery makes the magic stronger.</small><div class="rewardStrip" style="margin-top:9px"><span class="rewardChip">✨ ${prog().xp||0} XP</span><span class="rewardChip">💎 ${prog().crystals||0}</span><span class="rewardChip">🎁 ${prog().chests||0}</span></div></div></div>`}
 const _screenHTMLV2=screenHTML;screenHTML=function(){let map={home:homeHTML,mission:missionHTML,guide:guideHTML,games:gamesHTML,test:testHTML,analytics:analyticsHTML,sources:sourcesHTML,add:addHTML,constellation:constellationHTML,grimoire:grimoireHTML,vault:vaultHTML};return (map[S.screen]||homeHTML)()}
 const _homeHTMLV2=homeHTML;homeHTML=function(){let base=_homeHTMLV2(),r=rankInfo(),p=prog();let companion=`<div class="card c12 glowCard companion"><div class="companionOrb">🐈‍⬛</div><div><div class="eyebrow" style="color:#7154b4">Luna • Study Guardian</div><h3>${esc(p.companion?.name||'Luna')} says…</h3><p>${esc(companionMessage())}</p><div class="magicMeter"><i style="width:${r.pct}%"></i></div><p class="tiny">${r.next?`${r.pct}% toward ${r.next}`:'Highest transformation rank reached'} • ${p.chests||0} chest(s) waiting</p><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn violet" onclick="navigate('vault')">💎 Visit Magic Vault</button><button class="btn ghost" onclick="navigate('constellation')">🌌 View Mastery Constellation</button></div></div></div>`;return base+`<div class="grid">${companion}</div>`}
 function constellationHTML(){let nodes=(course().concepts||[]).map(c=>{let m=topicMastery(c.id),pctv=Math.round(m.acc*100);return `<button class="starNode ${m.level}" onclick="practiceTopics(['${c.id}'])"><span class="star">${m.level==='mastered'?'★':m.level==='developing'?'✦':m.level==='weakstar'?'✧':'☆'}</span><b>${esc(c.title)}</b><small>${m.n?pctv+'% recent':'not explored'}</small></button>`}).join('');return `<div class="sectionTitle"><div><h2>Mastery Constellation</h2><p>Each star brightens when you prove the concept across multiple questions.</p></div></div><div class="constellation">${nodes}</div><div class="notice" style="margin-top:15px">★ gold = mastered • ✦ lavender = developing • ✧ pink = needs repair • ☆ dim = not yet practiced. Click any star to practice it.</div>`}
@@ -1750,7 +1750,7 @@ function companionQuestPanel(){return questHTML()}
 const _homeHTMLV4Base=homeHTML;
 homeHTML=function(){return _homeHTMLV4Base()+`<div class="sectionTitle"><div><h2>Magical Quest Board</h2><p>Real study actions earn chests, eggs, evolutions, and realm unlocks.</p></div></div>${questHTML()}`}
 const _sideHTMLV4Base=sideHTML;
-sideHTML=function(){const nav=[['home','🏰','Home'],['mission','🎯','Study Now'],['guide','📖','Study Guide'],['games','🎮','Game Realm'],['companions','🥚','Companions'],['constellation','🌌','Constellation'],['grimoire','📕','Mistake Grimoire'],['vault','💎','Magic Vault'],['trophies','🏆','Trophies'],['test','📝','OA Practice'],['analytics','📊','Analytics'],['sources','📚','Sources'],['add','➕','Add Class']];let pet=activePet(),d=petDef(pet);return `<div class="brand"><div class="brandmark">☾</div><div class="txt"><b>Moonlit<br>Mastery</b><small>Companion Realms</small></div></div><nav class="nav">${nav.map(([id,ic,l])=>`<button data-nav="${id}" class="${S.screen===id?'active':''}" onclick="navigate('${id}')"><span>${ic}</span> <span class="label">${l}</span></button>`).join('')}</nav><div class="sidefoot"><span class="moon">${d.emoji}</span><div class="copy"><b>${esc(pet.name)} • ${petStage(pet)}</b><small>${dayStreak()} day streak • ${esc(rankInfo().name)}</small><div class="rewardStrip" style="margin-top:9px"><span class="rewardChip">✨ ${prog().xp||0}</span><span class="rewardChip">💎 ${prog().crystals||0}</span><span class="rewardChip">🎁 ${prog().chests||0}</span></div></div></div>`}
+sideHTML=function(){const nav=[['home','🏰','Home'],['mission','🎯','Scholar’s Study Hall'],['guide','📖','Study Guide'],['games','🎮','The Enchanted Arcade'],['companions','🥚','Companions'],['constellation','🌌','Constellation'],['grimoire','📕','Mistake Grimoire'],['vault','💎','Magic Vault'],['trophies','🏆','Trophies'],['test','📝','OA Practice'],['analytics','📊','Analytics'],['sources','📚','Sources'],['add','➕','Add Class']];let pet=activePet(),d=petDef(pet);return `<div class="brand"><div class="brandmark">☾</div><div class="txt"><b>Moonlit<br>Mastery</b><small>Companion Realms</small></div></div><nav class="nav">${nav.map(([id,ic,l])=>`<button data-nav="${id}" class="${S.screen===id?'active':''}" onclick="navigate('${id}')"><span>${ic}</span> <span class="label">${l}</span></button>`).join('')}</nav><div class="sidefoot"><span class="moon">${d.emoji}</span><div class="copy"><b>${esc(pet.name)} • ${petStage(pet)}</b><small>${dayStreak()} day streak • ${esc(rankInfo().name)}</small><div class="rewardStrip" style="margin-top:9px"><span class="rewardChip">✨ ${prog().xp||0}</span><span class="rewardChip">💎 ${prog().crystals||0}</span><span class="rewardChip">🎁 ${prog().chests||0}</span></div></div></div>`}
 const _screenHTMLV4Base=screenHTML;
 screenHTML=function(){let map={companions:companionHTML,trophies:trophiesHTML};return map[S.screen]?map[S.screen]():_screenHTMLV4Base()}
 const _vaultHTMLV4Base=vaultHTML;
@@ -1773,7 +1773,7 @@ exportSave=function(){legacySync();_exportSaveV4Base()}
 function injectPetCoach(){document.querySelectorAll('.petCoach').forEach(x=>x.remove());if(S.screen==='mission'&&session&&!session.finished&&!session.focus){let box=document.createElement('div');box.innerHTML=petCoachHTML();if(box.firstElementChild)document.body.appendChild(box.firstElementChild);if(session.petEliminated){document.querySelectorAll('.opt').forEach(b=>{if(b.textContent.trim()===session.petEliminated){b.disabled=true;b.style.opacity=.38;b.style.textDecoration='line-through'}})}if(session.petHint){let p=document.querySelector('#petCoach p');if(p)p.textContent=session.petHint}}
 }
 const _renderV4Base=render;
-render=function(){_renderV4Base();applyRealm();let pill=document.querySelector('.top .pill');if(pill){pill.textContent='Majick Studies • V3.4.2';pill.classList.add('v4Badge')}injectPetCoach();setTimeout(aiStatusCheck,60)}
+render=function(){_renderV4Base();applyRealm();let pill=document.querySelector('.top .pill');if(pill){pill.textContent='Aetheria • V3.4.2';pill.classList.add('v4Badge')}injectPetCoach();setTimeout(aiStatusCheck,60)}
 // Initial legacy cosmetics from older Crystal Garden unlock.
 if((prog().cosmetics||[]).includes('crystalGarden')&&!S.legacy.realms.includes('roseNebula'))S.legacy.realms.push('roseNebula');
 legacySync();save();render();
@@ -1974,13 +1974,13 @@ function finalReviewHTML(){let risks=v5RiskTopics(5),p=prog();return `<div class
 
 /* navigation */
 const _sideHTMLV5Base=sideHTML;
-sideHTML=function(){const nav=[['home','🏰','Home'],['mission','🎯','Study Now'],['finalreview','🌙','Final Review'],['guide','📖','Study Guide'],['games','🎮','Game Realm'],['companions','🥚','Companions'],['constellation','🌌','Constellation'],['grimoire','📕','Mistake Grimoire'],['vault','💎','Magic Vault'],['trophies','🏆','Trophies'],['test','📝','OA Practice'],['analytics','📊','Analytics'],['control','⚙️','Control Room'],['sources','📚','Sources'],['add','➕','Add Class']];let pet=activePet(),d=petDef(pet);return `<div class="brand"><div class="brandmark">☾</div><div class="txt"><b>Moonlit<br>Mastery</b><small>Ascension Test Week</small></div></div><nav class="nav">${nav.map(([id,ic,l])=>`<button data-nav="${id}" class="${S.screen===id?'active':''}" onclick="navigate('${id}')"><span>${ic}</span> <span class="label">${l}</span></button>`).join('')}</nav><div class="sidefoot"><span class="moon">${d.emoji}</span><div class="copy"><b>${esc(pet.name)} • ${petStage(pet)}</b><small>${dayStreak()} day streak • ${esc(rankInfo().name)}</small><div class="rewardStrip" style="margin-top:9px"><span class="rewardChip">✨ ${prog().xp||0}</span><span class="rewardChip">💎 ${prog().crystals||0}</span><span class="rewardChip">🎁 ${prog().chests||0}</span></div></div></div>`}
+sideHTML=function(){const nav=[['home','🏰','Home'],['mission','🎯','Scholar’s Study Hall'],['finalreview','🌙','Final Review'],['guide','📖','Study Guide'],['games','🎮','The Enchanted Arcade'],['companions','🥚','Companions'],['constellation','🌌','Constellation'],['grimoire','📕','Mistake Grimoire'],['vault','💎','Magic Vault'],['trophies','🏆','Trophies'],['test','📝','OA Practice'],['analytics','📊','Analytics'],['control','⚙️','Control Room'],['sources','📚','Sources'],['add','➕','Add Class']];let pet=activePet(),d=petDef(pet);return `<div class="brand"><div class="brandmark">☾</div><div class="txt"><b>Moonlit<br>Mastery</b><small>Ascension Test Week</small></div></div><nav class="nav">${nav.map(([id,ic,l])=>`<button data-nav="${id}" class="${S.screen===id?'active':''}" onclick="navigate('${id}')"><span>${ic}</span> <span class="label">${l}</span></button>`).join('')}</nav><div class="sidefoot"><span class="moon">${d.emoji}</span><div class="copy"><b>${esc(pet.name)} • ${petStage(pet)}</b><small>${dayStreak()} day streak • ${esc(rankInfo().name)}</small><div class="rewardStrip" style="margin-top:9px"><span class="rewardChip">✨ ${prog().xp||0}</span><span class="rewardChip">💎 ${prog().crystals||0}</span><span class="rewardChip">🎁 ${prog().chests||0}</span></div></div></div>`}
 const _screenHTMLV5Base=screenHTML;
 screenHTML=function(){let map={control:controlHTML,finalreview:finalReviewHTML};return map[S.screen]?map[S.screen]():_screenHTMLV5Base()}
 
 /* safer rendering */
 const _renderV5Base=render;
-render=function(){try{_renderV5Base();let pill=document.querySelector('.top .pill');if(pill)pill.textContent='Majick Studies • V3.4.2';document.body.classList.toggle('v5Quiet',!!S.v5.settings.quiet);let content=document.getElementById('content');if(content&&!content.textContent.trim())throw Error('Main study area rendered empty.')}catch(e){console.error('V5 safe render',e);let app=document.getElementById('app');if(app)app.innerHTML=`<main class="main"><div class="content"><div class="card v5Safe"><div style="font-size:42px">🌙🛡️</div><h2>Safe Study Mode</h2><p>The full interface hit an error, so the app protected your study session instead of going blank.</p><p class="tiny">${esc(e.message||String(e))}</p><button class="btn violet" onclick="session=null;S.screen='guide';_saveV5Base();location.reload()">Open Study Guide</button> <button class="btn dark" onclick="session=null;S.screen='home';_saveV5Base();location.reload()">Return Home</button></div></div></main>`}}
+render=function(){try{_renderV5Base();let pill=document.querySelector('.top .pill');if(pill)pill.textContent='Aetheria • V3.4.2';document.body.classList.toggle('v5Quiet',!!S.v5.settings.quiet);let content=document.getElementById('content');if(content&&!content.textContent.trim())throw Error('Main study area rendered empty.')}catch(e){console.error('V5 safe render',e);let app=document.getElementById('app');if(app)app.innerHTML=`<main class="main"><div class="content"><div class="card v5Safe"><div style="font-size:42px">🌙🛡️</div><h2>Safe Study Mode</h2><p>The full interface hit an error, so the app protected your study session instead of going blank.</p><p class="tiny">${esc(e.message||String(e))}</p><button class="btn violet" onclick="session=null;S.screen='guide';_saveV5Base();location.reload()">Open Study Guide</button> <button class="btn dark" onclick="session=null;S.screen='home';_saveV5Base();location.reload()">Return Home</button></div></div></main>`}}
 
 /* add-class readiness notice */
 const _addHTMLV5Base=addHTML;
@@ -2128,7 +2128,7 @@ function examDayHTML(){let risks=ascRiskRows().slice(0,4),f=v5Fatigue();return `
 const _homeAscBase=homeHTML;
 homeHTML=function(){return ascCompassHTML()+_homeAscBase()}
 const _sideAscBase=sideHTML;
-sideHTML=function(){const nav=[['home','🏰','Home'],['mission','🎯','Study Now'],['finalreview','🌙','Final Review'],['guide','📖','Study Guide'],['games','🎮','Game Realm'],['companions','🥚','Companions'],['constellation','🌌','Constellation'],['grimoire','📕','Mistake Grimoire'],['vault','💎','Magic Vault'],['trophies','🏆','Trophies'],['test','📝','OA Practice'],['analytics','📊','Analytics'],['strategy','🧠','Strategy Lab'],['examday','👑','Exam Day'],['control','⚙️','Control Room'],['sources','📚','Sources'],['add','➕','Add Class']];let pet=activePet(),d=petDef(pet);return `<div class="brand"><div class="brandmark">☾</div><div class="txt"><b>Moonlit<br>Mastery</b><small>Ascension Test Week</small></div></div><nav class="nav">${nav.map(([id,ic,l])=>`<button data-nav="${id}" class="${S.screen===id?'active':''}" onclick="navigate('${id}')"><span>${ic}</span> <span class="label">${l}</span></button>`).join('')}</nav><div class="sidefoot"><span class="moon">${d.emoji}</span><div class="copy"><b>${esc(pet.name)} • ${petStage(pet)}</b><small>${dayStreak()} day streak • ${esc(rankInfo().name)}</small><div class="rewardStrip" style="margin-top:9px"><span class="rewardChip">✨ ${prog().xp||0}</span><span class="rewardChip">💎 ${prog().crystals||0}</span><span class="rewardChip">🎁 ${prog().chests||0}</span></div></div></div>`}
+sideHTML=function(){const nav=[['home','🏰','Home'],['mission','🎯','Scholar’s Study Hall'],['finalreview','🌙','Final Review'],['guide','📖','Study Guide'],['games','🎮','The Enchanted Arcade'],['companions','🥚','Companions'],['constellation','🌌','Constellation'],['grimoire','📕','Mistake Grimoire'],['vault','💎','Magic Vault'],['trophies','🏆','Trophies'],['test','📝','OA Practice'],['analytics','📊','Analytics'],['strategy','🧠','Strategy Lab'],['examday','👑','Exam Day'],['control','⚙️','Control Room'],['sources','📚','Sources'],['add','➕','Add Class']];let pet=activePet(),d=petDef(pet);return `<div class="brand"><div class="brandmark">☾</div><div class="txt"><b>Moonlit<br>Mastery</b><small>Ascension Test Week</small></div></div><nav class="nav">${nav.map(([id,ic,l])=>`<button data-nav="${id}" class="${S.screen===id?'active':''}" onclick="navigate('${id}')"><span>${ic}</span> <span class="label">${l}</span></button>`).join('')}</nav><div class="sidefoot"><span class="moon">${d.emoji}</span><div class="copy"><b>${esc(pet.name)} • ${petStage(pet)}</b><small>${dayStreak()} day streak • ${esc(rankInfo().name)}</small><div class="rewardStrip" style="margin-top:9px"><span class="rewardChip">✨ ${prog().xp||0}</span><span class="rewardChip">💎 ${prog().crystals||0}</span><span class="rewardChip">🎁 ${prog().chests||0}</span></div></div></div>`}
 const _screenAscBase=screenHTML;
 screenHTML=function(){if(S.screen==='strategy')return strategyHTML();if(S.screen==='examday')return examDayHTML();return _screenAscBase()}
 
@@ -2442,17 +2442,17 @@ function majickHomeHTML(){
  <div class="majLower">
   <section class="majHabitatPanel"><div class="majPanelHead"><div><h3>🐾 Magical Habitat</h3><small>Small companions. A brighter you.</small></div><button class="majPanelLink" onclick="navigate('companions')">View All Companions →</button></div><div class="majHabitat"><div class="majWindow"></div><div class="majShelf"></div><span class="majPlant">🌹🪴</span><div class="majRug"></div><div class="majPets">${majickPetPreview()}</div></div></section>
   <div class="majRightStack">
-   <section class="majFocusCard"><h3>☾ Today’s Focus</h3><div class="majTask done"><span class="dot">✓</span><span>Open Majick Studies and continue your PMFC streak.</span></div><div class="majTask"><span class="dot"></span><span>Practice ${focus1||'your weakest concept'}.</span></div><div class="majTask"><span class="dot"></span><span>Repair ${Math.max(1,Math.min(3,grimoire||1))} missed-question pattern${grimoire===1?'':'s'}.</span></div><div class="majTask"><span class="dot"></span><span>Finish with ${focus2||'mixed application'} questions.</span></div><div class="majQuote">“Progress looks good on you.” ✦</div></section>
+   <section class="majFocusCard"><h3>☾ Today’s Focus</h3><div class="majTask done"><span class="dot">✓</span><span>Open Aetheria and continue your PMFC streak.</span></div><div class="majTask"><span class="dot"></span><span>Practice ${focus1||'your weakest concept'}.</span></div><div class="majTask"><span class="dot"></span><span>Repair ${Math.max(1,Math.min(3,grimoire||1))} missed-question pattern${grimoire===1?'':'s'}.</span></div><div class="majTask"><span class="dot"></span><span>Finish with ${focus2||'mixed application'} questions.</span></div><div class="majQuote">“Progress looks good on you.” ✦</div></section>
    <section class="majProgressCard"><h3>✦ Your Progress</h3><div class="majProgressBar"><i style="width:${st.readiness}%"></i></div><div style="display:flex;justify-content:space-between;color:#e9dcf4;font-size:12px"><span>OA readiness</span><b style="color:#ffe8b4">${st.readiness}%</b></div><div class="majMiniStats"><div class="majMiniStat"><b>${answered}</b><span>answers</span></div><div class="majMiniStat"><b>${p.crystals||0}</b><span>crystals</span></div><div class="majMiniStat"><b>${dayStreak()}</b><span>day streak</span></div></div><p class="majQuote">“A little progress each day adds up to big majick.”</p></section>
   </div>
  </div></div>`;
 }
 
 /* Full brand rename while keeping legacy save keys for continuity. */
-sideHTML=function(){const nav=[['home','⌂','Home'],['mission','📖','Study Now'],['finalreview','🎓','Final Review'],['guide','📜','Study Guide'],['games','🎮','Game Realm'],['companions','🐾','Companions'],['constellation','✦','Constellation'],['grimoire','📕','Mistake Grimoire'],['vault','🗝️','Magic Vault'],['trophies','🏆','Trophies'],['test','📝','OA Practice'],['analytics','📊','Analytics'],['strategy','🧠','Strategy Lab'],['examday','👑','Exam Day'],['control','⚙️','Control Room'],['sources','📚','Sources'],['add','➕','Add Class']];let pet=activePet(),d=petDef(pet);return `<div class="brand"><div class="brandmark">☾</div><div class="txt"><b>Majick<br>Studies</b><small>Dreamy Study Sanctuary</small></div></div><nav class="nav">${nav.map(([id,ic,l])=>`<button data-nav="${id}" class="${S.screen===id?'active':''}" onclick="navigate('${id}')"><span>${ic}</span> <span class="label">${l}</span></button>`).join('')}</nav><div class="sidefoot"><span class="moon">${d.emoji}</span><div class="copy"><b>${esc(pet.name)} • ${petStage(pet)}</b><small>${dayStreak()} day streak • ${esc(rankInfo().name)}</small><div class="rewardStrip" style="margin-top:9px"><span class="rewardChip">✨ ${prog().xp||0}</span><span class="rewardChip">💎 ${prog().crystals||0}</span><span class="rewardChip">🎁 ${prog().chests||0}</span></div></div></div>`}
+sideHTML=function(){const nav=[['home','⌂','Home'],['mission','📖','Scholar’s Study Hall'],['finalreview','🎓','Final Review'],['guide','📜','Study Guide'],['games','🎮','The Enchanted Arcade'],['companions','🐾','Companions'],['constellation','✦','Constellation'],['grimoire','📕','Mistake Grimoire'],['vault','🗝️','Magic Vault'],['trophies','🏆','Trophies'],['test','📝','OA Practice'],['analytics','📊','Analytics'],['strategy','🧠','Strategy Lab'],['examday','👑','Exam Day'],['control','⚙️','Control Room'],['sources','📚','Sources'],['add','➕','Add Class']];let pet=activePet(),d=petDef(pet);return `<div class="brand"><div class="brandmark">☾</div><div class="txt"><b>Majick<br>Studies</b><small>Dreamy Study Sanctuary</small></div></div><nav class="nav">${nav.map(([id,ic,l])=>`<button data-nav="${id}" class="${S.screen===id?'active':''}" onclick="navigate('${id}')"><span>${ic}</span> <span class="label">${l}</span></button>`).join('')}</nav><div class="sidefoot"><span class="moon">${d.emoji}</span><div class="copy"><b>${esc(pet.name)} • ${petStage(pet)}</b><small>${dayStreak()} day streak • ${esc(rankInfo().name)}</small><div class="rewardStrip" style="margin-top:9px"><span class="rewardChip">✨ ${prog().xp||0}</span><span class="rewardChip">💎 ${prog().crystals||0}</span><span class="rewardChip">🎁 ${prog().chests||0}</span></div></div></div>`}
 homeHTML=majickHomeHTML;
-const _majRender=render;render=function(){_majRender();document.title='Majick Studies — V3.4.2';const h=document.querySelector('.titleline h1');if(h)h.textContent='Majick Studies';const pill=document.querySelector('.top .pill');if(pill)pill.textContent='Majick Studies • V3.4.2';document.body.classList.add('majickStudies')};
-try{render()}catch(e){console.error('Majick Studies boot',e)}
+const _majRender=render;render=function(){_majRender();document.title='Aetheria — V3.4.2';const h=document.querySelector('.titleline h1');if(h)h.textContent='Aetheria';const pill=document.querySelector('.top .pill');if(pill)pill.textContent='Aetheria • V3.4.2';document.body.classList.add('majickStudies')};
+try{render()}catch(e){console.error('Aetheria boot',e)}
 </script>
 
 
@@ -2486,20 +2486,20 @@ try{injectPetCoach=function(){v523MountGuardian()}}catch(_){ }
 /* Tone down kid-like labels while keeping the same working features. */
 const _maj2Side=sideHTML;
 sideHTML=function(){
- const nav=[['home','◈','Home'],['mission','✦','Study Now'],['finalreview','◐','Final Review'],['guide','▤','Study Guide'],['games','◇','Game Realm'],['companions','✧','Companions'],['constellation','✦','Constellation'],['grimoire','◫','Mistake Grimoire'],['vault','◆','Magic Vault'],['trophies','♕','Trophies'],['test','▣','OA Practice'],['analytics','⌁','Analytics'],['strategy','◒','Strategy Lab'],['examday','✺','Exam Day'],['control','⚙','Control Room'],['sources','▥','Sources'],['add','＋','Add Class']];
+ const nav=[['home','◈','Home'],['mission','✦','Scholar’s Study Hall'],['finalreview','◐','Final Review'],['guide','▤','Study Guide'],['games','◇','The Enchanted Arcade'],['companions','✧','Companions'],['constellation','✦','Constellation'],['grimoire','◫','Mistake Grimoire'],['vault','◆','Magic Vault'],['trophies','♕','Trophies'],['test','▣','OA Practice'],['analytics','⌁','Analytics'],['strategy','◒','Strategy Lab'],['examday','✺','Exam Day'],['control','⚙','Control Room'],['sources','▥','Sources'],['add','＋','Add Class']];
  let pet=activePet(),d=petDef(pet);return `<div class="brand"><div class="brandmark">☾</div><div class="txt"><b>Majick<br>Studies</b><small>Collegiate Sanctuary</small></div></div><nav class="nav">${nav.map(([id,ic,l])=>`<button data-nav="${id}" class="${S.screen===id?'active':''}" onclick="navigate('${id}')"><span>${ic}</span> <span class="label">${l}</span></button>`).join('')}</nav><div class="sidefoot"><span class="moon">${d.emoji}</span><div class="copy"><b>${esc(pet.name)} • ${petStage(pet)}</b><small>${dayStreak()} day streak • ${esc(rankInfo().name)}</small><div class="rewardStrip" style="margin-top:9px"><span class="rewardChip">✦ ${prog().xp||0}</span><span class="rewardChip">◆ ${prog().crystals||0}</span><span class="rewardChip">♕ ${prog().chests||0}</span></div></div></div>`;
 };
 const _maj2Render=render;
 render=function(){
-  try{_maj2Render();document.title='Majick Studies — V3.4.2';const h=document.querySelector('.titleline h1');if(h)h.textContent='Majick Studies';const pill=document.querySelector('.top .pill');if(pill)pill.textContent=MAJICK_V2;document.body.classList.add('majickStudies');}
-  catch(err){console.error('Majick V2 render recovery',err);const app=document.getElementById('app');if(app)app.innerHTML=`<div style="min-height:100vh;background:#140b21;color:#f6eadf;display:grid;place-items:center;padding:30px"><div style="max-width:620px;background:#251431;border:1px solid #a67f70;border-radius:24px;padding:28px"><h2 style="font-family:Georgia,serif;color:#f5ddba">Majick Studies Recovery</h2><p>The visual layer had a problem, but your progress remains stored.</p><button class="btn primary" onclick="session=null;S.screen='guide';save();location.reload()">Open Study Guide</button> <button class="btn secondary" onclick="location.reload()">Reload</button></div></div>`;}
+  try{_maj2Render();document.title='Aetheria — V3.4.2';const h=document.querySelector('.titleline h1');if(h)h.textContent='Aetheria';const pill=document.querySelector('.top .pill');if(pill)pill.textContent=MAJICK_V2;document.body.classList.add('majickStudies');}
+  catch(err){console.error('Majick V2 render recovery',err);const app=document.getElementById('app');if(app)app.innerHTML=`<div style="min-height:100vh;background:#140b21;color:#f6eadf;display:grid;place-items:center;padding:30px"><div style="max-width:620px;background:#251431;border:1px solid #a67f70;border-radius:24px;padding:28px"><h2 style="font-family:Georgia,serif;color:#f5ddba">Aetheria Recovery</h2><p>The visual layer had a problem, but your progress remains stored.</p><button class="btn primary" onclick="session=null;S.screen='guide';save();location.reload()">Open Study Guide</button> <button class="btn secondary" onclick="location.reload()">Reload</button></div></div>`;}
 };
 try{render()}catch(e){console.error('Majick V2 boot',e)}
 </script>
 
 
 <script id="majickCloudAI">
-/* ===== Majick Studies • Supabase Cloud AI =====
+/* ===== Aetheria • Supabase Cloud AI =====
    OpenAI API key stays in Supabase Secrets.
    Browser stores only the Supabase public key + your personal Majick app token.
 */
@@ -2782,7 +2782,7 @@ async function mcCloudSave(show=true){
 async function mcCloudRestore(){
   const C=mcState();
   if(typeof majickCloudConfigured!=='function'||!majickCloudConfigured()) return alert('Configure Majick Cloud AI first.');
-  if(!confirm('Restore your Majick Studies state from Supabase on this device? Your current local state will be replaced.')) return;
+  if(!confirm('Restore your Aetheria state from Supabase on this device? Your current local state will be replaced.')) return;
   try{
     const data=await mcCloudFetch('majick-state?profile_id='+encodeURIComponent(C.settings.cloudProfile||'primary'),{method:'GET'});
     if(!data?.state) return alert('No cloud save exists yet.');
@@ -2867,7 +2867,7 @@ function mcCampusHome(){
     <div class="mcStars"></div><div class="mcClouds"></div><div class="mcShimmer"></div>
     <div class="mcHeroInner">
       <div class="mcKicker">${esc(mcTimeMood())} • ${esc(course().id)} • Collegiate Sanctuary</div>
-      <h2>Welcome back to Majick Studies.</h2>
+      <h2>Welcome back to Aetheria.</h2>
       <p>Your living magical college puts every study tool in a room with a purpose. Learn in the Library, practice in the Lecture Hall, duel misconceptions, meet your professor during Office Hours, and let the Observatory tell you what your data actually says.</p>
       <p class="mcHeroQuote">“Discipline becomes its own kind of magic when the work begins to change you.”</p>
       <div class="mcHeroActions">
@@ -3172,7 +3172,7 @@ const _mcAddBase=addHTML;
 addHTML=function(){return `<div class="notice"><b>Universal course workflow:</b> create the course, add its real materials to the Course Material Vault, then use Cloud AI to build/refresh the blueprint and question families. Your pets, campus, cosmetics, and global rewards stay with you while academic mastery stays separated by course.</div>`+_mcAddBase()};
 
 const _mcTestBase=testHTML;
-testHTML=function(){return _mcTestBase()+`<div class="mcPanel" style="margin-top:18px"><h3>After-test debrief</h3><p>After a practice exam—or after the real assessment—record which topics felt uncertain. Majick Studies keeps that perception alongside your preparation data.</p><textarea id="mcDebrief" placeholder="What felt harder than expected? Which two concepts were hard to distinguish?"></textarea><button class="btn secondary" style="margin-top:8px" onclick="mcSaveDebrief()">Save debrief</button></div>`};
+testHTML=function(){return _mcTestBase()+`<div class="mcPanel" style="margin-top:18px"><h3>After-test debrief</h3><p>After a practice exam—or after the real assessment—record which topics felt uncertain. Aetheria keeps that perception alongside your preparation data.</p><textarea id="mcDebrief" placeholder="What felt harder than expected? Which two concepts were hard to distinguish?"></textarea><button class="btn secondary" style="margin-top:8px" onclick="mcSaveDebrief()">Save debrief</button></div>`};
 
 const _mcSideBase=sideHTML;
 sideHTML=function(){
@@ -3200,11 +3200,11 @@ const _mcRenderBase=render;
 render=function(){
   mcState();
   _mcRenderBase();
-  document.title='Majick Studies — V3.4.2';
+  document.title='Aetheria — V3.4.2';
   document.body.classList.add('majickCampus');
   document.body.classList.toggle('mcFocus',!!mcState().settings.focus);
-  const title=document.querySelector('.titleline h1');if(title)title.textContent='Majick Studies';
-  const pill=document.querySelector('.top .pill');if(pill)pill.textContent='Majick Studies • V3.4.2';
+  const title=document.querySelector('.titleline h1');if(title)title.textContent='Aetheria';
+  const pill=document.querySelector('.top .pill');if(pill)pill.textContent='Aetheria • V3.4.2';
   setTimeout(()=>{if(S.screen==='companions')mcBindRoomDrag();},0);
 };
 
@@ -3298,7 +3298,7 @@ feedbackHTML=function(q){return _masFeedbackBase(q)+masPetGainStrip()};
 function masTaskData(){
   const r=mcRiskTopics(3),due=(prog().spacedQueue||[]).filter(x=>x.dueCount<=(prog().answers||[]).length).length;
   return [
-    {done:true,text:`Open Majick Studies and continue your ${course().id} streak.`},
+    {done:true,text:`Open Aetheria and continue your ${course().id} streak.`},
     {done:false,text:`Practice ${r[0]?.title||'your weakest concept'}.`},
     {done:false,text:due?`Complete ${Math.min(due,6)} delayed-retrieval item${due===1?'':'s'}.`:'Repair one missed-question pattern.'},
     {done:false,text:`Finish with ${r[1]?.title||'mixed application'} questions.`}
@@ -3429,8 +3429,8 @@ screenHTML=function(){
 /* Sidebar aligned to approved design, with every item functional. */
 sideHTML=function(){
  const nav=[
-  ['home','⌂','Home'],['mission','▤','Study Now'],['journal','▧','My Journal'],['guide','▥','Study Guide'],['focus','◐','Focus Tools'],
-  ['games','◇','Game Realm'],['companions','♧','Companions'],['constellation','✦','Constellation'],['vault','◆','Magic Vault'],['trophies','♕','Trophies'],['control','⚙','Settings']
+  ['home','⌂','Home'],['mission','▤','Scholar’s Study Hall'],['journal','▧','My Journal'],['guide','▥','Study Guide'],['focus','◐','Focus Tools'],
+  ['games','◇','The Enchanted Arcade'],['companions','♧','Companions'],['constellation','✦','Constellation'],['vault','◆','Magic Vault'],['trophies','♕','Trophies'],['control','⚙','Settings']
  ];
  let p=activePet(),d=petDef(p);
  return `<div class="brand"><div class="brandmark">☾</div><div class="txt"><b>Majick<br>Studies</b><small>Discipline creates a more magical tomorrow</small></div></div>
@@ -3451,8 +3451,8 @@ function masDecorLayers(){
 }
 const _masRenderBase=render;
 render=function(){
- masEnsurePetXP();_masRenderBase();document.title='Majick Studies — V3.4.2';
- const pill=document.querySelector('.top .pill');if(pill)pill.textContent='Majick Studies • V3.4.2';
+ masEnsurePetXP();_masRenderBase();document.title='Aetheria — V3.4.2';
+ const pill=document.querySelector('.top .pill');if(pill)pill.textContent='Aetheria • V3.4.2';
  masDecorLayers();setTimeout(()=>{if(S.screen==='companions')mcBindRoomDrag()},0);
 };
 try{masEnsurePetXP();save();render()}catch(e){console.error('Majick V3.2 boot',e)}
@@ -3794,9 +3794,9 @@ function phase4OpenFullscreen(){const frame=document.getElementById('phase4Sanct
 function phase4SanctuaryHTML(){
  const directFile=location.protocol==='file:';
  if(directFile){
-   return `<section class="phase4Wrap" aria-label="Phase 4 Living Sanctuary"><div class="phase4Top"><div><b>✦ Phase 4 Living Sanctuary</b><br><span>Your Study Now engine is safe. Phaser just needs the app's local web launcher.</span></div><div class="phase4Actions"><button class="btn primary" onclick="navigate('mission')">Continue Studying</button></div></div><div style="min-height:420px;display:grid;place-items:center;padding:36px;text-align:center;background:linear-gradient(180deg,#1a0c24,#2b1236);color:#f7e9f1"><div style="max-width:720px"><div style="font-size:54px;margin-bottom:12px">✦</div><h2 style="color:#f4d19a;margin:0 0 12px">The moving sanctuary needs the Majick launcher</h2><p style="font-size:18px;line-height:1.55">You opened Majick Studies as a local file. Close this tab, go back to the extracted Majick Studies folder, and double-click <b>1 - START MAJICK STUDIES.bat</b>. It will reopen the same app through localhost so Phaser can load Luna, Ember, Nova, and Mallow correctly.</p><p style="opacity:.8">Your study progress is not damaged.</p></div></div></section>`;
+   return `<section class="phase4Wrap" aria-label="Phase 4 Living Sanctuary"><div class="phase4Top"><div><b>✦ Phase 4 Living Sanctuary</b><br><span>Your Scholar’s Study Hall engine is safe. Phaser just needs the app's local web launcher.</span></div><div class="phase4Actions"><button class="btn primary" onclick="navigate('mission')">Continue Studying</button></div></div><div style="min-height:420px;display:grid;place-items:center;padding:36px;text-align:center;background:linear-gradient(180deg,#1a0c24,#2b1236);color:#f7e9f1"><div style="max-width:720px"><div style="font-size:54px;margin-bottom:12px">✦</div><h2 style="color:#f4d19a;margin:0 0 12px">The moving sanctuary needs the Majick launcher</h2><p style="font-size:18px;line-height:1.55">You opened Aetheria as a local file. Close this tab, go back to the extracted Aetheria folder, and double-click <b>1 - START AETHERIA.bat</b>. It will reopen the same app through localhost so Phaser can load Luna, Ember, Nova, and Mallow correctly.</p><p style="opacity:.8">Your study progress is not damaged.</p></div></div></section>`;
  }
- return `<section class="phase4Wrap" aria-label="Phase 4 Living Sanctuary"><div class="phase4Top"><div><b>✦ Phase 4 Living Sanctuary</b><br><span>PixiJS 8 is the default renderer. The original Sanctuary remains available as a fallback.</span></div><div class="phase4Actions"><button class="btn ghost" type="button" onclick="majickTogglePixiSanctuary(this)" aria-pressed="false" title="Compare the PixiJS renderer without changing saved Sanctuary data">Use original Sanctuary (Phaser)</button><button class="btn ghost" onclick="phase4OpenFullscreen()">Full Sanctuary</button><button class="btn primary" onclick="navigate('mission')">Continue Studying</button></div></div><iframe id="phase4SanctuaryFrame" class="phase4Frame" src="pixi-sanctuary/index.html" title="Majick Studies PixiJS Sanctuary" loading="eager" allow="fullscreen"></iframe><div class="phase4Help">Tap glowing areas and furniture to explore the magical college • tap familiars for reactions • use Edit Room to move decor • the Magic Mirror reads your real study progress.</div></section>`
+ return `<section class="phase4Wrap" aria-label="Phase 4 Living Sanctuary"><div class="phase4Top"><div><b>✦ Phase 4 Living Sanctuary</b><br><span>PixiJS 8 is the default renderer. The original Sanctuary remains available as a fallback.</span></div><div class="phase4Actions"><button class="btn ghost" type="button" onclick="majickTogglePixiSanctuary(this)" aria-pressed="false" title="Compare the PixiJS renderer without changing saved Sanctuary data">Use original Sanctuary (Phaser)</button><button class="btn ghost" onclick="phase4OpenFullscreen()">Full Sanctuary</button><button class="btn primary" onclick="navigate('mission')">Continue Studying</button></div></div><iframe id="phase4SanctuaryFrame" class="phase4Frame" src="pixi-sanctuary/index.html" title="Aetheria PixiJS Sanctuary" loading="eager" allow="fullscreen"></iframe><div class="phase4Help">Tap glowing areas and furniture to explore the magical college • tap familiars for reactions • use Edit Room to move decor • the Magic Mirror reads your real study progress.</div></section>`
 }
 if(!window.__phase4BridgeBound){window.__phase4BridgeBound=true;new MutationObserver(()=>{const f=document.getElementById('phase4SanctuaryFrame');if(f&&!f.dataset.majickWatchBound){f.dataset.majickWatchBound='1';majickSanctuaryLoading()}}).observe(document.body,{childList:true,subtree:true});window.addEventListener('message',ev=>{const d=ev.data||{};if(ev.origin===location.origin&&ev.source===document.getElementById('phase4SanctuaryFrame')?.contentWindow&&(d.type==='MAJICK_SANCTUARY_READY'||d.type==='MAJICK_PIXI_SANCTUARY_READY')){majickSanctuaryReady();setTimeout(phase4PushState,80);}if(ev.origin===location.origin&&ev.source===document.getElementById('phase4SanctuaryFrame')?.contentWindow&&d.type==='MAJICK_PIXI_ACTION'){
  const reply=(ok,message,travelObject)=>ev.source?.postMessage({type:'MAJICK_PIXI_ACTION_RESULT',ok,message,travelObject,requestId:d.requestId},ev.origin);
@@ -3827,7 +3827,7 @@ function majickTogglePixiSanctuary(button){
  frame.src=pixi?'sanctuary/index.html':'pixi-sanctuary/index.html';
  button.textContent=pixi?'Return to PixiJS Sanctuary':'Use original Sanctuary (Phaser)';
  button.setAttribute('aria-pressed',String(pixi));
- frame.title=pixi?'Majick Studies original Phaser Sanctuary':'Majick Studies PixiJS Sanctuary';
+ frame.title=pixi?'Aetheria original Phaser Sanctuary':'Aetheria PixiJS Sanctuary';
  majickSanctuaryLoading();
  frame.addEventListener('load',()=>phase4PushState(),{once:true});
 }
@@ -3848,7 +3848,7 @@ function lfCompanionHTML(){
  return `<div class="sectionTitle"><div><h2>Living Familiar Conservatory</h2><p>Your guardians have routines, moods, memories, friendships, favorite objects, outfits, and lives in the sanctuary—but they never punish you for being away.</p></div><span class="rankBadge">Traveling: ${esc(active.name)}</span></div>
  <div class="masActiveRule"><b>Companion care rule:</b> there is no hunger meter, sickness, or guilt mechanic. Studying and interacting create positive moments; taking time away simply leaves them cozy at home.</div>
  <details class="majGuardianDetails"><summary>Guardian moods and routines</summary><div class="lfMoodPanel">${(L.pets||[]).map(lfPetNeedCard).join('')}</div></details>
- <div class="mcRoomEditBar"><span class="hint">${esc(lfTimeClass())} sanctuary • ${esc(lfWeatherForDay())} ambience • Phase 4 movement is isolated from the Study Now engine.</span></div>
+ <div class="mcRoomEditBar"><span class="hint">${esc(lfTimeClass())} sanctuary • ${esc(lfWeatherForDay())} ambience • Phase 4 movement is isolated from the Scholar’s Study Hall engine.</span></div>
  ${phase4SanctuaryHTML()}
  <h3 class="lfSubhead">Your Guardians</h3><p class="lfNote">Everyone gains study XP. The familiar traveling with you receives the larger bonus and reacts directly to your study session.</p><div class="lfRoster">${lfDetailedRoster()}</div>
  <details class="majGuardianDetails"><summary>Sanctuary friendships</summary><h3 class="lfSubhead">Sanctuary Friendships</h3><p class="lfNote">Friendships grow from shared study days and group moments—not from idle grinding.</p><div class="lfFriendGrid">${lfFriendHTML()}</div></details>
@@ -3872,7 +3872,7 @@ function lfAfterRender(){
  lfEnsure();if(S.screen==='companions'||S.screen==='home'){lfStartTicker();if(S.screen==='home')lfUpgradeHomeHabitat();if(S.screen==='companions')setTimeout(phase4PushState,220)}
 }
 const _lfRenderBase=render;
-render=function(){lfEnsure();_lfRenderBase();document.title='Majick Studies — V3.4.2';let pill=document.querySelector('.top .pill');if(pill)pill.textContent='Majick Studies • V3.4.2';setTimeout(lfAfterRender,0)};
+render=function(){lfEnsure();_lfRenderBase();document.title='Aetheria — V3.4.2';let pill=document.querySelector('.top .pill');if(pill)pill.textContent='Aetheria • V3.4.2';setTimeout(lfAfterRender,0)};
 
 /* First-run upgrade note + existing pet rewards are granted without resetting any XP. */
 try{
@@ -3944,7 +3944,7 @@ lfDetailedRoster=function(){
 masDetailedRoster=lfDetailedRoster;
 
 sideHTML=function(){
- const nav=[['home','⌂','Home'],['mission','▤','Study Now'],['journal','▧','My Journal'],['guide','▥','Study Guide'],['focus','◐','Focus Tools'],['games','◇','Game Realm'],['companions','♧','Companions'],['constellation','✦','Constellation'],['vault','◆','Magic Vault'],['trophies','♕','Trophies'],['control','⚙','Settings']];
+ const nav=[['home','⌂','Home'],['mission','▤','Scholar’s Study Hall'],['journal','▧','My Journal'],['guide','▥','Study Guide'],['focus','◐','Focus Tools'],['games','◇','The Enchanted Arcade'],['companions','♧','Companions'],['constellation','✦','Constellation'],['vault','◆','Magic Vault'],['trophies','♕','Trophies'],['control','⚙','Settings']];
  let p=activePet(),u=v334Identity(p);
  return `<div class="brand"><div class="brandmark">☾</div><div class="txt"><b>Majick<br>Studies</b><small>Discipline creates a more magical tomorrow</small></div></div><nav class="nav">${nav.map(([id,ic,l])=>`<button data-nav="${id}" class="${S.screen===id?'active':''}" onclick="navigate('${id}')"><span>${ic}</span><span class="label">${l}</span></button>`).join('')}</nav><div class="sidefoot unifiedFamiliarSide" data-pet-type="${esc(p.type)}" style="${v334Theme(p)}">${v334Portrait(p,'sidebar')}<div class="copy"><b>${esc(p.name)} • Level ${masPetLevel(p)}</b><small>${esc(u.title)} • ${masPetStage(p)} • ${dayStreak()} day streak</small><span class="familiarRole">${u.sigil} ${esc(u.role)}</span><div class="rewardStrip" style="margin-top:9px"><span class="rewardChip">✦ ${prog().xp||0}</span><span class="rewardChip">◆ ${prog().crystals||0}</span><span class="rewardChip">♕ ${prog().chests||0}</span></div></div></div>`;
 };
@@ -3960,8 +3960,8 @@ phase4StudyState=function(){
 const _v334RenderBase=render;
 render=function(){
  _v334RenderBase();
- document.title='Majick Studies — V3.4.2';
- const pill=document.querySelector('.top .pill');if(pill)pill.textContent='Majick Studies • V3.4.2';
+ document.title='Aetheria — V3.4.2';
+ const pill=document.querySelector('.top .pill');if(pill)pill.textContent='Aetheria • V3.4.2';
  document.body.classList.add('v334UnifiedFamiliars');
 };
 try{render()}catch(e){console.error('V3.3.4 unified familiar pass',e)}
@@ -3988,15 +3988,15 @@ const V335_APPROVED_FAMILIARS=[
  {id:'solara',name:'Solara',species:'Sunrise Hedgehog',role:'Courage Keeper',gift:'Rewards consistency and helps set one small achievable study target for the session.',portrait:'assets/familiars/canon/solara-guardian.webp',accent:'#ffc27b'}
 ];
 function v335ApprovedRegistryHTML(){
- return `<div class="approvedRegistryIntro"><b>✦ Academy Familiar Registry</b><p>These are approved future familiars. Their exact portraits are stored inside Majick Studies now, so the artwork you approved is the artwork the app uses. They are not active Phaser pets yet, which keeps Study Now and the current four moving familiars stable while you focus on studying.</p><span class="lockNote">🔒 APPROVED ART LOCKED • future animation must preserve these designs</span></div><div class="approvedFamiliarGrid">${V335_APPROVED_FAMILIARS.map(f=>`<article class="approvedFamiliarCard" style="--reg-accent:${f.accent}"><div class="approvedFamiliarPortrait"><img src="${f.portrait}" alt="${f.name}, ${f.species}"></div><div class="approvedFamiliarEyebrow">${f.role}</div><h4>${f.name}</h4><p class="approvedFamiliarSpecies">${f.species}</p><p class="approvedFamiliarGift">${f.gift}</p><div class="approvedFamiliarFooter"><span class="approvedFamiliarStatus">Approved portrait</span><span class="approvedFamiliarFuture">Phaser movement later</span></div></article>`).join('')}</div>`;
+ return `<div class="approvedRegistryIntro"><b>✦ Academy Familiar Registry</b><p>These are approved future familiars. Their exact portraits are stored inside Aetheria now, so the artwork you approved is the artwork the app uses. They are not active Phaser pets yet, which keeps Scholar’s Study Hall and the current four moving familiars stable while you focus on studying.</p><span class="lockNote">🔒 APPROVED ART LOCKED • future animation must preserve these designs</span></div><div class="approvedFamiliarGrid">${V335_APPROVED_FAMILIARS.map(f=>`<article class="approvedFamiliarCard" style="--reg-accent:${f.accent}"><div class="approvedFamiliarPortrait"><img src="${f.portrait}" alt="${f.name}, ${f.species}"></div><div class="approvedFamiliarEyebrow">${f.role}</div><h4>${f.name}</h4><p class="approvedFamiliarSpecies">${f.species}</p><p class="approvedFamiliarGift">${f.gift}</p><div class="approvedFamiliarFooter"><span class="approvedFamiliarStatus">Approved portrait</span><span class="approvedFamiliarFuture">Phaser movement later</span></div></article>`).join('')}</div>`;
 }
 const _v335CompanionBase=companionHTML;
 companionHTML=function(){return _v335CompanionBase()};
 const _v335RenderBase=render;
 render=function(){
  _v335RenderBase();
- document.title='Majick Studies — V3.4.2';
- const pill=document.querySelector('.top .pill');if(pill)pill.textContent='Majick Studies • V3.4.2';
+ document.title='Aetheria — V3.4.2';
+ const pill=document.querySelector('.top .pill');if(pill)pill.textContent='Aetheria • V3.4.2';
  document.body.classList.add('v335ApprovedRegistry');
 };
 try{render()}catch(e){console.error('V3.3.5 approved familiar registry',e)}
@@ -4068,7 +4068,7 @@ function v336EvolutionCodexHTML(){
 const V336_PROJECT_PROGRESS={
  overall:71,usableStudy:86,
  areas:[
-  ['Core study engine',90,'Study Now is stable; existing course/question/progress systems preserved.'],
+  ['Core study engine',90,'Scholar’s Study Hall is stable; existing course/question/progress systems preserved.'],
   ['Adaptive study + analytics',78,'Adaptive questioning, explanations, analytics and study tools exist; refinement and deeper AI tuning remain.'],
   ['Current four companions',88,'Luna, Ember, Nova and Mallow move in Phaser, receive study state, and can now travel to sanctuary stations for object-specific reactions.'],
   ['Magical college sanctuary',72,'Five study/common-room stations now support familiar travel and object-specific reactions; richer furniture art and more behaviors remain.'],
@@ -4080,7 +4080,7 @@ const V336_PROJECT_PROGRESS={
  next:['Visually confirm all five familiar-object stations in browser','Replace prototype furniture with polished collectible magical-college art','Prepare the first approved new familiar for Phaser animation without changing its canonical design']
 };
 function v336ProgressHTML(){
- return `<div class="v336ProgressPanel"><h3 style="margin:0;color:#f4d394;font-family:Georgia,'Times New Roman',serif">Project Progress • V3.3.7</h3><p class="v336StatusNote"><b>Full vision:</b> about ${V336_PROJECT_PROGRESS.overall}% functional. <b>Usable study app today:</b> about ${V336_PROJECT_PROGRESS.usableStudy}%. These are engineering estimates, not test scores: they measure implemented behavior against the current Majick Studies roadmap.</p><div class="v336ProgressGrid">${V336_PROJECT_PROGRESS.areas.map(([n,p,note])=>`<div class="v336ProgressItem"><b><span>${n}</span><span>${p}%</span></b><div class="v336ProgressBar"><i style="width:${p}%"></i></div><small style="display:block;color:#ad9da8;margin-top:6px;line-height:1.35">${note}</small></div>`).join('')}</div><p class="v336StatusNote"><b>Next priorities:</b> ${V336_PROJECT_PROGRESS.next.join(' → ')}.</p></div>`;
+ return `<div class="v336ProgressPanel"><h3 style="margin:0;color:#f4d394;font-family:Georgia,'Times New Roman',serif">Project Progress • V3.3.7</h3><p class="v336StatusNote"><b>Full vision:</b> about ${V336_PROJECT_PROGRESS.overall}% functional. <b>Usable study app today:</b> about ${V336_PROJECT_PROGRESS.usableStudy}%. These are engineering estimates, not test scores: they measure implemented behavior against the current Aetheria roadmap.</p><div class="v336ProgressGrid">${V336_PROJECT_PROGRESS.areas.map(([n,p,note])=>`<div class="v336ProgressItem"><b><span>${n}</span><span>${p}%</span></b><div class="v336ProgressBar"><i style="width:${p}%"></i></div><small style="display:block;color:#ad9da8;margin-top:6px;line-height:1.35">${note}</small></div>`).join('')}</div><p class="v336StatusNote"><b>Next priorities:</b> ${V336_PROJECT_PROGRESS.next.join(' → ')}.</p></div>`;
 }
 const _v336PhaseState=phase4StudyState;
 phase4StudyState=function(){const state=_v336PhaseState();if(state)state.version='V3.3.7 Familiar Interactions';return state};
@@ -4089,7 +4089,7 @@ companionHTML=function(){return _v336CompanionBase()+v336EvolutionCodexHTML()};
 const _v336ControlBase=controlHTML;
 controlHTML=function(){return _v336ControlBase()+v336ProgressHTML()};
 const _v336RenderBase=render;
-render=function(){_v336RenderBase();document.title='Majick Studies — V3.4.2';const pill=document.querySelector('.top .pill');if(pill)pill.textContent='Majick Studies • V3.4.2';document.body.classList.add('v336EvolutionCodex')};
+render=function(){_v336RenderBase();document.title='Aetheria — V3.4.2';const pill=document.querySelector('.top .pill');if(pill)pill.textContent='Aetheria • V3.4.2';document.body.classList.add('v336EvolutionCodex')};
 try{render()}catch(e){console.error('V3.3.7 familiar interactions',e)}
 </script>
 
@@ -4242,7 +4242,7 @@ v336EvolutionCodexHTML=function(){
 
 /* Registry wording: these are part of the game now, not duplicate placeholders. */
 v335ApprovedRegistryHTML=function(){
- return `<div class="approvedRegistryIntro"><b>✦ Academy Guardian Registry</b><p>Six additional unique guardian species are now part of Majick Studies. Their exact approved portraits are used in the app immediately; Phaser movement can be added later without delaying the portrait experience.</p><span class="lockNote">🔒 CANON ART LOCKED • no duplicate species placeholders</span></div><div class="approvedFamiliarGrid">${['vesper','briar','zephyr','prism','rook','solara'].map(id=>{const c=V338_CANON[id],owned=!!v336PetForType(id);return `<article class="approvedFamiliarCard" style="--reg-accent:${c.accent}"><div class="approvedFamiliarPortrait"><img src="${c.portrait}" alt="${c.display}, ${c.species}"></div><div class="approvedFamiliarEyebrow">${c.title}</div><h4>${c.display}</h4><p class="approvedFamiliarSpecies">${c.species}</p><p class="approvedFamiliarGift">${c.studyRole}</p><div class="approvedFamiliarFooter"><span class="approvedFamiliarStatus">${owned?'Bonded':'Available through guardian eggs'}</span><span class="approvedFamiliarFuture">Exact portrait UI • movement later</span></div></article>`}).join('')}</div>`;
+ return `<div class="approvedRegistryIntro"><b>✦ Academy Guardian Registry</b><p>Six additional unique guardian species are now part of Aetheria. Their exact approved portraits are used in the app immediately; Phaser movement can be added later without delaying the portrait experience.</p><span class="lockNote">🔒 CANON ART LOCKED • no duplicate species placeholders</span></div><div class="approvedFamiliarGrid">${['vesper','briar','zephyr','prism','rook','solara'].map(id=>{const c=V338_CANON[id],owned=!!v336PetForType(id);return `<article class="approvedFamiliarCard" style="--reg-accent:${c.accent}"><div class="approvedFamiliarPortrait"><img src="${c.portrait}" alt="${c.display}, ${c.species}"></div><div class="approvedFamiliarEyebrow">${c.title}</div><h4>${c.display}</h4><p class="approvedFamiliarSpecies">${c.species}</p><p class="approvedFamiliarGift">${c.studyRole}</p><div class="approvedFamiliarFooter"><span class="approvedFamiliarStatus">${owned?'Bonded':'Available through guardian eggs'}</span><span class="approvedFamiliarFuture">Exact portrait UI • movement later</span></div></article>`}).join('')}</div>`;
 };
 
 /* Send every saved identity; each renderer chooses its supported art safely. */
@@ -4259,7 +4259,7 @@ phase4StudyState=function(){
 V336_PROJECT_PROGRESS.overall=76;
 V336_PROJECT_PROGRESS.usableStudy=88;
 V336_PROJECT_PROGRESS.areas=[
- ['Core study engine',90,'Study Now remains the stable V5.2 engine; V3.3.8 does not rewrite question delivery or scoring.'],
+ ['Core study engine',90,'Scholar’s Study Hall remains the stable V5.2 engine; V3.3.8 does not rewrite question delivery or scoring.'],
  ['Adaptive study + analytics',78,'Adaptive questioning, explanations, analytics and repair systems remain intact.'],
  ['Guardian identity system',92,'Ten unique canon profiles are defined; exact approved portraits/icons are packaged; original four names are migrated everywhere visible.'],
  ['Magical college sanctuary',72,'The existing four Phaser movers and object interactions are preserved; visible names now use canon identities.'],
@@ -4305,8 +4305,8 @@ try{save()}catch(_){}
 const _v338RenderBase=render;
 render=function(){
  _v338RenderBase();
- document.title='Majick Studies — V3.4.2';
- const pill=document.querySelector('.top .pill');if(pill)pill.textContent='Majick Studies • V3.4.2';
+ document.title='Aetheria — V3.4.2';
+ const pill=document.querySelector('.top .pill');if(pill)pill.textContent='Aetheria • V3.4.2';
  document.body.classList.add('v338CanonGuardians');
  // Earlier V3.3.5 wrapper still says "Future"; replace that language in final rendered HTML.
  document.querySelectorAll('h3').forEach(h=>{if(h.textContent.trim()==='Future Academy Familiars')h.textContent='Academy Guardian Registry'});
@@ -4415,5 +4415,5 @@ majickShowSaveStatus(MajickSaveSafety.status());
 <link rel="stylesheet" href="./room-section-nav.css?v=1">
 <script src="./room-section-nav.js?v=1"></script>
 <link rel="stylesheet" href="./readability-guard.css?v=342-contrast-2">
-<script src="./decorative-panel.js" defer></script><script src="./verified-milestone-ceremony.js" defer></script><link rel="stylesheet" href="./room-identities.css?v=1"><script src="./room-identities.js?v=1" defer></script><link rel="stylesheet" href="./connected-learning-path.css?v=1"><script src="./connected-learning-path.js?v=1" defer></script><link rel="stylesheet" href="./screenshot-learning-repairs.css?v=1"><script src="./screenshot-learning-repairs.js?v=1" defer></script></body></html>
+<script src="./decorative-panel.js" defer></script><script src="./verified-milestone-ceremony.js" defer></script><link rel="stylesheet" href="./room-identities.css?v=1"><script src="./room-identities.js?v=1" defer></script><link rel="stylesheet" href="./connected-learning-path.css?v=1"><script src="./connected-learning-path.js?v=1" defer></script><link rel="stylesheet" href="./screenshot-learning-repairs.css?v=1"><script src="./screenshot-learning-repairs.js?v=1" defer></script><link rel="stylesheet" href="./aetheria-brand.css?v=1"><script src="./aetheria-brand.js?v=1" defer></script></body></html>
 

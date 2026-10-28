@@ -1,7 +1,7 @@
 /* Compact navigation for rooms other than Home. No academic DOM is moved or hidden. */
 (()=>{'use strict';if(window.MajickRoomSections)return;
 // No arbitrary section cap: every substantial room panel remains reachable.
-const ROOM_NAMES={reasoning:'Reasoning Workshop',mission:'Study Now',learninglab:'Learn Lab',games:'Game Realm',journal:'My Journal',grimoire:'Grimoire',companions:'Companions',livinggrimoire:'Grimoire',guide:'Study Guide',vault:'Magic Vault',analytics:'Analytics',addmaterial:'Notes Forge'};
+const ROOM_NAMES={reasoning:'Scholar’s Trial Chamber',mission:'Scholar’s Study Hall',learninglab:'The Athenaeum',games:'The Enchanted Arcade',journal:'My Journal',grimoire:'Grimoire',companions:'Companions',livinggrimoire:'Grimoire',guide:'Study Guide',vault:'Magic Vault',analytics:'Analytics',addmaterial:'Notes Forge'};
 // Preserve every academic renderer and form. The nonacademic rooms use one
 // visible section at a time; academic rooms keep their non-destructive jumps.
 const TABBED_ROOMS=new Set(['journal','grimoire','livinggrimoire','companions','guide','vault','analytics','addmaterial']);
