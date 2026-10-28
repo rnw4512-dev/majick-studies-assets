@@ -12,7 +12,7 @@ function open(kind){
  if(S.activeCourse!=='D772')return;
  const t=C().probabilityTask(kind);if(!t){if(S.screen!==workroom)window.navigate(workroom);setTimeout(()=>{const box=document.querySelector('#connectedProbability [data-connected-task]');if(box){const m=C().probabilityMastery();const reason=kind==='reasoning'&&!m.repairVerified?'Complete the guided counter repair first.':kind==='transfer'&&m.independentCorrect<2?'Complete two correct independent OA questions first.':kind==='teaching'&&!m.transferVerified?'Complete the classroom transfer first.':'No unused verified dataset is available for this step. Your progress is saved.';box.textContent=reason;}},80);return;}
  const st=C().probabilityState();st.focus=kind;window.save?.();
- if(S.screen!==workroom)window.navigate(workroom);else mount();
+ if(S.screen!==workroom)window.navigate(workroom);
  setTimeout(mount,0);
  setTimeout(()=>{
   const panel=document.getElementById('connectedProbability');
