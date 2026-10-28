@@ -10,9 +10,10 @@ const nextStage={repair:'reasoning',reasoning:'transfer',transfer:'teaching'};
 const labels={repair:'1 · Repair with counters',reasoning:'2 · Independent OA reasoning',transfer:'3 · Classroom role transfer',teaching:'4 · Teacher application'};
 function open(kind){
  if(S.activeCourse!=='D772')return;
- const t=C().probabilityTask(kind);if(!t){if(S.screen!==workroom)window.navigate(workroom);const box=document.querySelector('#connectedProbability [data-connected-task]');if(box){const m=C().probabilityMastery();const reason=kind==='reasoning'&&!m.repairVerified?'Complete the guided counter repair first.':kind==='transfer'&&m.independentCorrect<2?'Complete two correct independent OA questions first.':kind==='teaching'&&!m.transferVerified?'Complete the classroom transfer first.':'No unused verified dataset is available for this step. Your progress is saved.';box.textContent=reason;}return;}
+ const t=C().probabilityTask(kind);if(!t){if(S.screen!==workroom)window.navigate(workroom);setTimeout(()=>{const box=document.querySelector('#connectedProbability [data-connected-task]');if(box){const m=C().probabilityMastery();const reason=kind==='reasoning'&&!m.repairVerified?'Complete the guided counter repair first.':kind==='transfer'&&m.independentCorrect<2?'Complete two correct independent OA questions first.':kind==='teaching'&&!m.transferVerified?'Complete the classroom transfer first.':'No unused verified dataset is available for this step. Your progress is saved.';box.textContent=reason;}},80);return;}
  const st=C().probabilityState();st.focus=kind;window.save?.();
  if(S.screen!==workroom)window.navigate(workroom);else mount();
+ setTimeout(mount,0);
  setTimeout(()=>{
   const panel=document.getElementById('connectedProbability');
   if(!panel||S.screen!==workroom)return;
