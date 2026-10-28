@@ -144,7 +144,7 @@
     "guardian-registry.js": "00a6baa6d67cfc0e63b2e336a38baca04b6d8705058f824d70e12b8fe88c18bc",
     "home-focus.css": "cbb719eb8e78701717b4016388d511553f2785212d839815ed006651ae738b2b",
     "home-focus.js": "f421d4c5e5b4193d1005e5ce5cdbeb0e969a0cffb8ece49b9dd7c255a16ca794",
-    "index.html": "34c90610221aa0f08cfa20030b72c3696c4ba4a53cd6f9d08873b8b036b0e064",
+    "index.html": "b6ab6d9cbfc75339a9322bee7a92b3de955ad590ede39d423951b98b0e3aaba4",
     "learn-mode.css": "30181250c67efe7bd97c9276706a804a551e7904a2bb28160eeb0c193f35c002",
     "learn-mode.js": "49e424f3e40456772e4cb8adc550078c26ed793a5f83f9c216450609865ffa3c",
     "learning-lab.css": "b9c2c4f2ae393b3d291155a258cd01388bb71cd49a46d0187f224b03222ac2df",
@@ -377,7 +377,7 @@
     "v339-main.css": "95fd6cb51076da0a40e5406b450eff11effb2af3c824172b9793dc032d0e6e72",
     "v339-main.js": "e1346861d157c7b1ddf8693ce81610abd6e750843ca665c5a4aee93e7464d202",
     "wgu-practice.css": "bc56f9f541a078fbcd9996292836af6db2265d97f5cc6416871f5d928ff89eb6",
-    "wgu-practice.js": "7f098c0d70be8a60797f6587daa51011ddefb25312ac4e54ac57e021e6421a19",
+    "wgu-practice.js": "91a35338ce06108f64f8db7fcd7a14399ff5fc131e2e8457472076e209a45417",
     "coverage/d772-s2-l2-3.json": "05265a3d4372a4d4075dbc0e75f87743da0f2896493367285d909cc2dd59be22",
     "coverage/d772-s2-l2-summary.json": "d6c5a146210d14d520c720499a0ae93152bdca24c901db983bf97bcc08152118",
     "coverage/d772-s2-l2-quiz.json": "36433aca0c1ecbc57e655ed29da9a1d3e9fcc8f1bcfd01a31f067e4d9c6fbf19",
@@ -865,6 +865,8 @@
     "assets/rooms/boutique.svg": "7d9825aa030bdee44645a0899c80bed47cb952be5aeaaaeb24b88951f2975055",
     "assets/rooms/observatory.svg": "2f437e8a49e53c5fc065f8ef256c394a9f39683d257b5eefe9a3f5678e399d7b",
     "connected-learning-path.js": "022e39f8978786cab063f1c7302f0c5205bb8a0508dc0c23130a12ff634229b2",
-    "connected-learning-path.css": "44b1e8878ffe6aeee947e625ddf760a7b652c603053403fe60b5a0acc0afe3b8"
+    "connected-learning-path.css": "44b1e8878ffe6aeee947e625ddf760a7b652c603053403fe60b5a0acc0afe3b8",
+    "screenshot-learning-repairs.js": "7dfec89b8390578e87b70318934e12aeee911d58378980f2d77a5dc889c3c0ac",
+    "screenshot-learning-repairs.css": "0afe21165f01a3ca827f36d1c1a6e7281b8466229237ab4c1b0caba3b4c872d8"
   }
 }
