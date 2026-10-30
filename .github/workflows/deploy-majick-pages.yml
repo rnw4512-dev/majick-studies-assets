@@ -28,8 +28,8 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     env:
-      IMMERSION_QA_DIR: ${{ runner.temp }}/majick-immersion-qa
-      COMMONS_QA_DIR: ${{ runner.temp }}/majick-commons-qa
+      IMMERSION_QA_DIR: /tmp/majick-immersion-qa
+      COMMONS_QA_DIR: /tmp/majick-commons-qa
     steps:
       - name: Checkout current app
         uses: actions/checkout@v4
@@ -101,8 +101,8 @@ jobs:
         with:
           name: stable-browser-certification
           path: |
-            ${{ runner.temp }}/majick-immersion-qa
-            ${{ runner.temp }}/majick-commons-qa
+            /tmp/majick-immersion-qa
+            /tmp/majick-commons-qa
             commons-qa
           if-no-files-found: ignore
 
