@@ -8,7 +8,7 @@
 - Local canonical release checks and browser Add → three Stirs → Bottle flow passed, including Pause/Play. GPU/full responsive visual certification remains pending; this is a user-authorized development deployment.
 
 
-Updated: 2026-10-29. GitHub PR reconciliation verified on 2026-10-29: #219 open non-draft; #220–228 merged; #229–231 open drafts. Merge is not browser certification or live deployment. Preserve PR #141 historical details. Canonical source: `current-site/`. Live: https://rnw4512-dev.github.io/majick-studies-assets/
+Updated: 2026-10-30. GitHub PR reconciliation verified on 2026-10-30: #219 open non-draft; #220–228 and #232 merged; #229–231 open drafts. Merge is not browser certification or live deployment. Preserve PR #141 historical details. Canonical source: `current-site/`. Live: https://rnw4512-dev.github.io/majick-studies-assets/
 
 **Vision:** An adult dark-academia witchy college where the learner adds real courses and studies through an integrated game world. Academic mastery remains course-specific; Scholar identity, avatar, Guardians, crystals, rewards, eggs and Sanctuary persist globally.
 
@@ -40,6 +40,8 @@ Updated: 2026-10-29. GitHub PR reconciliation verified on 2026-10-29: #219 open 
 - [PR #226](https://github.com/rnw4512-dev/majick-studies-assets/pull/226) — **merged 2026-10-28**. Dedicated Probability Workshop sidebar destination with four stage tabs. **Responsive browser certification and live deployment not established by merge alone.**
 - [PR #227](https://github.com/rnw4512-dev/majick-studies-assets/pull/227) — **merged 2026-10-28**. Improved parchment contrast and collapsible Learning Path. **Responsive browser certification and live deployment not established by merge alone.**
 - [PR #228](https://github.com/rnw4512-dev/majick-studies-assets/pull/228) — **merged 2026-10-28**. Editable formula workspace for Professor's Repair. **Responsive browser certification and live deployment not established by merge alone.**
+
+- [PR #232](https://github.com/rnw4512-dev/majick-studies-assets/pull/232) — **merged 2026-10-29 at 10:41 p.m. ET (2026-10-30 02:41 UTC)**. Unified eight-step question-specific teaching and added licensed magical atmosphere enhancements. **Production browser certification and stable deployment remain unverified.**
 
 ### In Progress — unmerged pull requests
 | PR | Verified status | Work | Remaining release gates |
