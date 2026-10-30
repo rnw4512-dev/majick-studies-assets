@@ -25,7 +25,7 @@ function item(skill,values,difficulty){
  if(!prompt||!answer)return null;
  for(let offset=1;options.length<4&&offset<30;offset++){const base=Number(answer);if(Number.isFinite(base)){add(base+offset);add(base-offset)}else if(skill==='probability'){add((offset+1)+'/'+(g=>g)(values[0]+values[1]+offset+2))}else add('Alternative '+offset)}
  const choices=options.slice(0,4);if(choices.length<4)return null;for(let i=choices.length-1;i>0;i--){const j=randint(0,i);[choices[i],choices[j]]=[choices[j],choices[i]]}
- const q={id,course:'D772',learningPathLessonId:lessonId,skill,difficulty,data:values,prompt,answer,options:choices,visualHtml,why,misconception:mistake,teachBackPrompt:'A student makes this mistake: '+mistake+'. Model a correction and check understanding.',generated:true,format:'single-best-answer',sourceLabel:'MAJICK ORIGINAL • SUPPLEMENTAL OA-STYLE PRACTICE — NOT OFFICIAL WGU',languageReference:'wgu-d772-preassessment-2026-10-15',source:'verified-local-generator'};
+ const q={id,course:'D772',learningPathLessonId:lessonId,skill,difficulty,...(skill==='probability'?{event:'green-green'}:{}),data:values,prompt,answer,options:choices,visualHtml,why,misconception:mistake,teachBackPrompt:'A student makes this mistake: '+mistake+'. Model a correction and check understanding.',generated:true,format:'single-best-answer',sourceLabel:'MAJICK ORIGINAL • SUPPLEMENTAL OA-STYLE PRACTICE — NOT OFFICIAL WGU',languageReference:'wgu-d772-preassessment-2026-10-15',source:'verified-local-generator'};
  return validate(q)?q:null;
 }
 function validate(q){
@@ -134,6 +134,7 @@ function mountLab(root,lessonText){
    feedback.textContent=right
     ?'Correct ordering. '+(skill==='boxplot'?'Find Q1 and Q3 from the lower and upper halves, then subtract for IQR.':'Find the middle observation or average the two middle observations.')
     :'Not yet. Compare the smallest remaining values; every observation must appear exactly once. Clear and resubmit without losing your lesson.';
+   if(!right){const q={...guided,id:guided.id+':sort',skill:'order-observations',prompt:'Order these observations from least to greatest: '+guided.data.join(', '),answer:expected.join(', '),why:'Compare numerical values from smallest to largest, retaining every occurrence: '+expected.join(', ')};window.MajickQuestionRepair.recordWrong(q,given.join(', '),{assisted:true,room:'learn-lab-sort'});feedback.innerHTML=window.MajickQuestionRepair.html(q,given.join(', '))}
    if(right){
     if(!work.dataset.celebrated){
      work.dataset.celebrated='true';
@@ -148,6 +149,7 @@ function mountLab(root,lessonText){
  section.querySelector('[data-lab-guided]').onclick=()=>{
   const correct=input('guided').value.trim()===String(guided.answer),reason=input('reason').value.trim();
   section.querySelector('[data-lab-guided-feedback]').textContent=(correct?'Correct reconstruction. ':'Check the result using the matching visual. ')+(reason.length>=35?'Compare your explanation with the worked solution above.':'Name the operation, the evidence, and why it fits this question.')+' Guided work is not independent mastery.';
+  if(!correct){window.MajickQuestionRepair.recordWrong(guided,input('guided').value.trim(),{assisted:true,room:'learn-lab-guided'});section.querySelector('[data-lab-guided-feedback]').innerHTML=window.MajickQuestionRepair.html(guided,input('guided').value.trim())}
   window.MajickLearningContinuity?.record?.({courseId:'D772',term:guided.learningPathLessonId,lessonTitle:lessonText,correct,activity:'generated-lab-guided',question:guided});
  };
  const host=section.querySelector('[data-lab-independent]');
@@ -162,11 +164,11 @@ function mountLab(root,lessonText){
    return;
   }
   if(q.generated&&(recovery?.failedData||[]).includes(JSON.stringify(q.data))){host.textContent='A fresh dataset is required after guided repair. Select a new independent problem; your evidence is preserved.';return}
-  host.innerHTML='<p>'+E(q.prompt)+'</p>'+q.visualHtml+field('independent','Your independent answer')+field('independent-why','Show your whiteboard reasoning and interpretation',3)+'<button type="button" data-lab-submit>Submit independent response</button><p data-lab-independent-feedback role="status"></p>';
+  host.innerHTML='<p>'+E(q.prompt)+'</p>'+q.visualHtml+field('independent','Your independent answer')+field('independent-why','Show your whiteboard reasoning and interpretation',3)+'<button type="button" data-lab-submit>Submit independent response</button><div data-lab-independent-feedback role="status"></div>';
   host.querySelector('[data-lab-submit]').onclick=()=>{
    if(completed)return;completed=true;
    const answer=host.querySelector('[data-lab-field="independent"]').value.trim(),explanation=host.querySelector('[data-lab-field="independent-why"]').value.trim(),correct=answer===String(q.answer);
-   host.querySelector('[data-lab-independent-feedback]').textContent=(correct?'Correct. ':'Not yet. ')+(explanation.length<35?'Strengthen your written reasoning: name the method and explain the result in context. ':'Compare your interpretation against the scenario. ')+'Worked reasoning: '+q.why+' This is a formative independent attempt, not automatically certified mastery.';
+   const feedback=host.querySelector('[data-lab-independent-feedback]');if(correct)feedback.textContent='Correct. '+q.why+' This formative response does not automatically certify mastery.';else{window.MajickQuestionRepair.recordWrong(q,answer,{alreadyRecorded:true,room:'learn-lab'});feedback.innerHTML=window.MajickQuestionRepair.html(q,answer)}
    host.querySelector('[data-lab-submit]').disabled=true;
    if(!correct){
     const repair=document.createElement('button');repair.type='button';repair.dataset.labRepair='';
@@ -181,7 +183,7 @@ function mountLab(root,lessonText){
    window.MajickLearningContinuity?.record?.({courseId:'D772',term:q.learningPathLessonId,lessonTitle:lessonText,correct,activity:'generated-lab-independent-formative',question:q});
    // Share formative result with the existing adaptive skill tracker. The
    // origin is not independent-transfer, so this NEVER grants mastery.
-   window.MajickLearningContinuity?.skillResult?.(q,correct,false,'generated-lab-independent-formative');
+   window.MajickLearningContinuity?.skillResult?.(q,correct,false,'generated-lab-independent-formative',!correct);
    window.save?.();
   };
  }

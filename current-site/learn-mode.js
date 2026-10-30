@@ -360,7 +360,9 @@ function checkpointSelect(v){const st=progress();if(!st?.checkpoint||st.checkpoi
 function checkpointSubmit(){
  const {st,lesson}=current(),cp=st.checkpoint;if(!cp||cp.submitted||!cp.selected)return;
  const qs=checkpointQuestions(lesson,cp),q=qs[cp.index];if(!q)return;
+ if(window.MajickLearningContinuity?.practiceRecovery?.(q,false)?.required){window.MajickWGUPractice.openRequiredRecovery(q);return}
  const correct=cp.selected===q.answer,at=Date.now();
+ if(!correct)window.MajickQuestionRepair.recordWrong(q,cp.selected,{room:'learn-mode-checkpoint'});
  cp.submitted=true;cp.answers.push({qid:q.id,chosen:cp.selected,correct,wguTerm:q.wguTerm||q.testedConcept||'',at});
  window.MajickStudyProgress?.creditAnswer?.({key:'D772:learn-checkpoint:'+lesson.id+':'+q.id+':'+at,course:'D772',source:'d772-learn-checkpoint',qid:q.id,topicId:q.topicId||q.learningPathLessonId||lesson.id,correct,difficulty:q.difficulty||3,chosen:cp.selected,answer:q.answer,at});
  persist();render();
@@ -408,13 +410,16 @@ function nextLesson(){
  if(i<LESSONS.length-1){selectLesson(LESSONS[i+1].id)}
  else{try{window.MajickCourseTutor?.show?.('path')}catch(_){}}
 }
+function repairQuestion(q,kind,concept){return {...q,id:'learn-mode:'+concept.id+':'+kind,courseId:'D772',lessonId:current().lesson.id,visualHtml:q.visualHtml||''}}
 function responseKey(kind,concept){return concept.id+':'+kind}
 function answer(kind,choice){
  const {st,concept}=current(),q=kind==='transfer'?concept.transfer:concept.check,key=responseKey(kind,concept);
+ if(kind==='transfer'&&window.MajickLearningContinuity?.practiceRecovery?.(repairQuestion(q,kind,concept),false)?.required){window.MajickWGUPractice.openRequiredRecovery(repairQuestion(q,kind,concept));return}
  const correct=choice===q.answer;
  const at=Date.now();
  st.responses[key]={choice,correct,at};
  st.currentFeedback={kind,correct,answer:q.answer,why:q.why};
+ if(!correct)window.MajickQuestionRepair.recordWrong(repairQuestion(q,kind,concept),choice,{assisted:kind!=='transfer',room:'learn-mode'});
  window.MajickStudyProgress?.creditAnswer?.({key:'D772:learn:'+key+':'+at,course:'D772',source:'d772-learn',qid:'d772_learn_'+concept.id+'_'+kind,topicId:concept.id,correct,difficulty:3,chosen:choice,answer:q.answer,at});
  if(!correct&&concept.check?.repair){
    const rk=concept.check.repair;st.confusions[rk]=Number(st.confusions[rk]||0)+1;
@@ -425,6 +430,7 @@ function clearAnswer(kind){const {st,concept}=current();delete st.responses[resp
 function explainChoice(index){
  const {st,concept}=current(),ex=concept.explain;
  st.explanations[concept.id]={method:'choice',text:ex.choices[index],correct:Number(index)===Number(ex.correct),at:Date.now()};
+ if(Number(index)!==Number(ex.correct))window.MajickQuestionRepair.recordWrong({id:'learn-explain:'+concept.id,courseId:'D772',lessonId:current().lesson.id,prompt:ex.prompt,choices:ex.choices,answer:ex.correct,why:ex.model},Number(index),{assisted:true,room:'learn-mode-explain'});
  persist();render();
 }
 function saveExplanation(){
@@ -527,13 +533,13 @@ function questionCard(q,kind,concept){
  return '<section class="v3338Stage"><div class="stageTag">'+(kind==='transfer'?'TRANSFER • NEW SCENARIO':'YOU DO • CHECK YOUR UNDERSTANDING')+'</div><h2>'+E(q.prompt)+'</h2><div class="v3338Choices">'+q.options.map((o,i)=>{
    const cls=answered?(o===q.answer?'correct':o===r.choice?'wrong':''):'';
    return '<button type="button" class="'+cls+'" '+(answered?'disabled':'')+' data-v3338-answer="'+E(kind)+'" data-choice="'+E(o)+'"><i>'+String.fromCharCode(65+i)+'</i><span>'+E(o)+'</span></button>';
- }).join('')+'</div>'+(answered?'<div class="v3338Feedback '+(r.correct?'correct':'repair')+'"><b>'+(r.correct?'✓ Correct':'Not yet')+'</b><p>'+E(q.why)+'</p>'+(r.correct?'':'<button type="button" class="textBtn" data-v3338-retry="'+E(kind)+'">Try this question again</button>')+'</div>':'')+
+ }).join('')+'</div>'+(answered?'<div class="v3338Feedback '+(r.correct?'correct':'repair')+'">'+(r.correct?'<b>✓ Correct</b><p>'+E(q.why)+'</p>':window.MajickQuestionRepair.html(repairQuestion(q,kind,concept),r.choice))+(r.correct?'':'<button type="button" class="textBtn" data-v3338-retry="'+E(kind)+'">Try this question again</button>')+'</div>':'')+
  repairHtml(concept)+'<div class="stageFooter">'+(kind==='transfer'?'<button class="btn ghost" data-v3338-phase="3">← First check</button>':'<button class="btn ghost" data-v3338-phase="2">← Worked example</button>')+
  (answered?(kind==='transfer'?(r.correct?'<button class="btn primary" data-v3338-phase="5">Explain why →</button>':''):'<button class="btn primary" data-v3338-phase="4">Try a new scenario →</button>'):'')+'</div></section>';
 }
 function explainStage(concept){
  const st=progress(),saved=st.explanations[concept.id];
- return '<section class="v3338Stage"><div class="stageTag">EXPLAIN WHY • MAKE THE REASONING YOURS</div><h2>'+E(concept.explain.prompt)+'</h2><div class="explainMethods"><div class="typed"><label>Type it in your own words</label><textarea id="v3338ExplainText" placeholder="The best answer is ___ because the scenario tells me ___...">'+E(saved?.method==='typed'?saved.text:'')+'</textarea><button class="btn ghost" data-v3338-save-explain>Save my explanation</button></div><div class="reasoningChoices"><label>Or choose the reasoning statement that best explains it</label>'+concept.explain.choices.map((x,i)=>'<button type="button" class="'+(saved?.method==='choice'&&saved.text===x?(saved.correct?'correct':'wrong'):'')+'" data-v3338-explain-choice="'+i+'">'+E(x)+'</button>').join('')+'</div><div class="aloud"><label>Or explain it aloud</label><button class="btn ghost" data-v3338-aloud>I explained it aloud</button></div></div>'+(saved?'<div class="modelAnswer"><small>MODEL EXPLANATION</small><p>'+E(concept.explain.model)+'</p></div>':'')+'<div class="stageFooter"><button class="btn ghost" data-v3338-phase="4">← New scenario</button>'+(saved?'<button class="btn primary" data-v3338-phase="6">Lock in this concept →</button>':'')+'</div></section>';
+ return '<section class="v3338Stage"><div class="stageTag">EXPLAIN WHY • MAKE THE REASONING YOURS</div><h2>'+E(concept.explain.prompt)+'</h2><div class="explainMethods"><div class="typed"><label>Type it in your own words</label><textarea id="v3338ExplainText" placeholder="The best answer is ___ because the scenario tells me ___...">'+E(saved?.method==='typed'?saved.text:'')+'</textarea><button class="btn ghost" data-v3338-save-explain>Save my explanation</button></div><div class="reasoningChoices"><label>Or choose the reasoning statement that best explains it</label>'+concept.explain.choices.map((x,i)=>'<button type="button" class="'+(saved?.method==='choice'&&saved.text===x?(saved.correct?'correct':'wrong'):'')+'" data-v3338-explain-choice="'+i+'">'+E(x)+'</button>').join('')+'</div><div class="aloud"><label>Or explain it aloud</label><button class="btn ghost" data-v3338-aloud>I explained it aloud</button></div></div>'+(saved?(saved.correct===false?window.MajickQuestionRepair.html({id:'learn-explain:'+concept.id,courseId:'D772',lessonId:current().lesson.id,prompt:concept.explain.prompt,choices:concept.explain.choices,answer:concept.explain.correct,why:concept.explain.model},saved.text):'<div class="modelAnswer"><small>MODEL EXPLANATION</small><p>'+E(concept.explain.model)+'</p></div>'):'')+'<div class="stageFooter"><button class="btn ghost" data-v3338-phase="4">← New scenario</button>'+(saved?'<button class="btn primary" data-v3338-phase="6">Lock in this concept →</button>':'')+'</div></section>';
 }
 function completeStage(concept,lesson,idx){
  return '<section class="v3338Stage conceptComplete"><div class="completeSigil">✦</div><small>CONCEPT COMPLETE • ACADEMIC MASTERY ONLY</small><h2>'+E(concept.title)+'</h2><p>You taught it back, applied it to a new scenario, and unlocked its anchor chart. No game XP is being used to decide whether you understand this concept.</p>'+anchorHtml(concept.anchor,concept.id)+'<button class="btn primary" data-v3338-complete>'+ (idx<lesson.concepts.length-1?'Continue to next concept →':'Take the lesson checkpoint →')+'</button></section>';
@@ -545,7 +551,7 @@ function checkpointHtml(lesson,st){
  const cp=st.checkpoint||{};const qs=checkpointQuestions(lesson,cp),q=qs[cp.index||0];
  if(!q)return '<section class="v3338Stage"><h2>Checkpoint questions are loading.</h2><button class="btn ghost" data-v3338-repair-checkpoint>Return to teaching</button></section>';
  const submitted=!!cp.submitted;
- return '<section class="v3338Checkpoint"><div class="checkpointHead"><div><small>CAN I DO THIS? • LESSON '+lesson.number+'</small><h2>Lesson Checkpoint</h2><p>Six carefully chosen WGU-style scenarios. This changes academic mastery only; it does not affect game XP.</p></div><span>'+(Number(cp.index||0)+1)+' / '+qs.length+'</span></div><article><h3>'+E(q.prompt)+'</h3>'+(q.visual&&window.MajickWGUPractice?.visualHtml?window.MajickWGUPractice.visualHtml(q.visual):'')+'<div class="v3338Choices">'+q.options.map((o,i)=>'<button type="button" class="'+(submitted?(o===q.answer?'correct':o===cp.selected?'wrong':''):cp.selected===o?'selected':'')+'" '+(submitted?'disabled':'')+' data-v3338-cp-choice="'+E(o)+'"><i>'+String.fromCharCode(65+i)+'</i><span>'+E(o)+'</span></button>').join('')+'</div>'+(submitted?'<div class="v3338Feedback '+(cp.selected===q.answer?'correct':'repair')+'"><b>'+(cp.selected===q.answer?'✓ Correct':'Review this distinction')+'</b><p>'+E(q.why||'Use the defining WGU clue in the scenario.')+'</p></div>':'')+'<div class="stageFooter">'+(!submitted?'<button class="btn primary" data-v3338-cp-submit '+(cp.selected?'':'disabled')+'>Submit</button>':'<button class="btn primary" data-v3338-cp-next>'+((cp.index||0)<qs.length-1?'Next question →':'See lesson readiness →')+'</button>')+'</div></article></section>';
+ return '<section class="v3338Checkpoint"><div class="checkpointHead"><div><small>CAN I DO THIS? • LESSON '+lesson.number+'</small><h2>Lesson Checkpoint</h2><p>Six carefully chosen WGU-style scenarios. This changes academic mastery only; it does not affect game XP.</p></div><span>'+(Number(cp.index||0)+1)+' / '+qs.length+'</span></div><article><h3>'+E(q.prompt)+'</h3>'+(q.visual&&window.MajickWGUPractice?.visualHtml?window.MajickWGUPractice.visualHtml(q.visual):'')+'<div class="v3338Choices">'+q.options.map((o,i)=>'<button type="button" class="'+(submitted?(o===q.answer?'correct':o===cp.selected?'wrong':''):cp.selected===o?'selected':'')+'" '+(submitted?'disabled':'')+' data-v3338-cp-choice="'+E(o)+'"><i>'+String.fromCharCode(65+i)+'</i><span>'+E(o)+'</span></button>').join('')+'</div>'+(submitted?(cp.selected===q.answer?'<div class="v3338Feedback correct"><b>✓ Correct</b><p>'+E(q.why)+'</p></div>':window.MajickQuestionRepair.html(q,cp.selected)):'')+'<div class="stageFooter">'+(!submitted?'<button class="btn primary" data-v3338-cp-submit '+(cp.selected?'':'disabled')+'>Submit</button>':'<button class="btn primary" data-v3338-cp-next>'+((cp.index||0)<qs.length-1?'Next question →':'See lesson readiness →')+'</button>')+'</div></article></section>';
 }
 function checkpointResultHtml(lesson,st){
  const r=st.checkpoints[lesson.id]||{score:0,total:0,status:'Needs another teaching pass',answers:[]};
@@ -568,7 +574,7 @@ function render(){
 }
 function show(){
  if(!active())return;
- if(window.MajickCourseTutor){window.MajickCourseTutor.show('tutor');return;}
+ if(window.MajickCourseTutor){window.MajickCourseTutor.show('tutor',true);return;}
  document.querySelectorAll('.learnPanel').forEach(p=>p.hidden=true);
  const panel=document.querySelector('.learnPanel[data-panel="instruction"]');if(panel)panel.hidden=false;
  document.querySelectorAll('.learnTabs button').forEach(b=>b.classList.remove('active'));

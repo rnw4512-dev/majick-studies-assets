@@ -3149,7 +3149,13 @@ async function hydrate(id=cid()){
   if(changed&&id==='D772'){
     try{await MajickMaterialStore.syncQuestions(course(id),id)}catch(e){console.warn('D772 lesson bank repair',e)}
   }
-  renderPath();renderTutor();
+  // Hydration refreshes source data, but must not rebuild an active answer form.
+  // Newly uploaded material is available on the next explicit lesson selection.
+  if(id===cid()){
+    renderPath();
+    const box=document.getElementById('courseTutorLesson'),key=id+':'+selectedLesson(id)?.id;
+    if(!box?.querySelector('.classroomStage')||box.dataset.lessonKey!==key)renderTutor();
+  }
   return {rows:sourceRows,changed};
 }
 function rows(id=cid()){return (cache[id]||[]).filter(r=>r.active!==false)}
@@ -3447,7 +3453,7 @@ function questionVisualHtml(q){
  return '<figure class="questionDataVisual"><svg viewBox="0 0 600 310" role="img" aria-label="'+E(v.alt)+'" xmlns="http://www.w3.org/2000/svg"><title>'+E(v.alt)+'</title><rect width="600" height="310" rx="12" fill="#fffdf7"/><g fill="#253246" font-family="system-ui" font-size="16">'+plot+'</g></svg><figcaption>'+E(v.caption)+' · Exact data for this question.</figcaption></figure>';
 }
 
-function show(name){
+function show(name,preserveLesson=false){
   renderCourseNavigator();
   document.querySelectorAll('.learnPanel').forEach(p=>p.hidden=true);
   const panel=document.querySelector('.learnPanel[data-panel="'+name+'"]');if(panel)panel.hidden=false;
@@ -3455,7 +3461,7 @@ function show(name){
   document.querySelector('[data-tutor-tab="'+name+'"]')?.classList.add('active');
   document.querySelector('.learnLab')?.classList.toggle('tutorFocus',name==='path'||name==='tutor');
   if(name==='path')renderPath();
-  if(name==='tutor'){document.querySelector('.learnLab')?.classList.remove('instructionFocus');renderTutor();}
+  if(name==='tutor'){document.querySelector('.learnLab')?.classList.remove('instructionFocus');const box=document.getElementById('courseTutorLesson'),key=cid()+':'+selectedLesson(cid())?.id;if(!preserveLesson||box?.dataset.lessonKey!==key||!box.querySelector('.classroomStage'))renderTutor();}
 }
 if(typeof document!=='undefined'&&typeof document.createElement==='function'&&document.head){const recoveryStyle=document.createElement('style');recoveryStyle.textContent='.mjCourseRecovery{padding:16px;margin:18px 0;border:2px solid #d5b276;background:#30233d;color:#fff3df;border-radius:16px}.mjCourseRecovery h3,.mjCourseRecovery h4,.mjCourseRecovery p{color:#fff3df!important}.mjCourseRecovery article{padding:12px;margin:10px 0;border:1px solid #ae8da9;border-radius:10px}.mjCourseRecovery button{background:#70517d;border:1px solid #e3be89;color:#fff9ec;padding:9px;border-radius:8px;cursor:pointer}';document.head.append(recoveryStyle);}
 function courseRecoveryItems(id=cid()){
@@ -3541,6 +3547,8 @@ function bindLessonExperience(official,lessonId,courseId=cid()){
   if(work){work.maxLength=3000;work.value=st.workDrafts?.[q.id]||'';work.addEventListener('input',()=>{st.workDrafts=st.workDrafts||{};st.workDrafts[q.id]=work.value;try{save()}catch(_){}})}
   card.querySelectorAll('[data-v3401-answer]').forEach(btn=>btn.addEventListener('click',()=>{
    if(answered)return;
+   const recoveryQuestion={...q,lessonId,courseId};
+   if(window.MajickLearningContinuity?.practiceRecovery?.(recoveryQuestion,false)?.required){window.MajickWGUPractice.openRequiredRecovery(recoveryQuestion);return}
    answered=true;
    const pick=Number(btn.dataset.v3401Answer),correct=pick===Number(q.answer);
    const isRetry=retryCount>0;
@@ -3548,7 +3556,8 @@ function bindLessonExperience(official,lessonId,courseId=cid()){
    card.querySelectorAll('[data-v3401-answer]').forEach(x=>x.disabled=true);
    btn.classList.add(correct?'correct':'incorrect');
    const fb=card.querySelector('.v3401Feedback');
-   if(fb)fb.innerHTML='<b>'+(correct?'✓ Correct':'Not yet')+'</b> '+E(q.rationale||'Review the exact data and try a different question.');
+   if(!correct)window.MajickQuestionRepair.recordWrong({...q,lessonId,courseId},pick,{assisted,room:'learn-lab'});
+   if(fb)fb.innerHTML=correct?'<b>✓ Correct</b> '+E(q.rationale):window.MajickQuestionRepair.html({...q,lessonId,courseId},pick);
    status.textContent=isRetry?(correct?'Correct on retry — guided recovery, not independent mastery':'Retry attempted — review the feedback and try again'):assisted?(correct?'Assisted correct — practice credit only':'Assisted attempt — review needed'):(correct?'Independent correct — saved as evidence, not automatic mastery':'Independent attempt — review needed');
    const at=Date.now();
    if(!firstAttemptRecorded){firstAttemptRecorded=true;
@@ -3568,6 +3577,7 @@ function bindLessonExperience(official,lessonId,courseId=cid()){
     if(!retry){retry=document.createElement('button');retry.type='button';retry.className='btn ghost';retry.dataset.v3401Retry='true';retry.textContent='↻ Try Again · Same Question';card.append(retry)}
     retry.disabled=false;
     retry.onclick=()=>{
+      const source={...q,lessonId,courseId};if(window.MajickLearningContinuity?.practiceRecovery?.(source,false)?.required){window.MajickWGUPractice.openRequiredRecovery(source);return}
       answered=false;assisted=true;retryCount++;
       card.querySelectorAll('[data-v3401-answer]').forEach(x=>{x.disabled=false;x.classList.remove('correct','incorrect')});
       card.querySelectorAll('.v3401NextQuestion').forEach(x=>x.remove());
@@ -3676,7 +3686,8 @@ function renderTutorAssist(kind,lesson,ch,id=cid()){
       const picked=q.options[Number(btn.dataset.tutorGuidedChoice)],correct=String(picked)===String(q.answer);
       snapshot.answered=true;window.MajickLearningContinuity?.rememberGuidedQuestion?.(q);try{save()}catch(_){}
       panel.querySelectorAll('[data-tutor-guided-choice]').forEach(x=>x.disabled=true);
-      const feedback=panel.querySelector('.tutorQuickFeedback');if(feedback)feedback.innerHTML='<b>'+(correct?'✓ Correct':'Not yet')+'</b><p>'+E(q.why)+'</p><p>Guided practice only. Open Quiz Me again for a different question.</p>';
+      if(!correct)window.MajickQuestionRepair.recordWrong({...q,lessonId:lesson.id,courseId:id},picked,{assisted:true,room:'learn-lab-guided'});
+      const feedback=panel.querySelector('.tutorQuickFeedback');if(feedback)feedback.innerHTML=correct?'<b>✓ Correct</b><p>'+E(q.why)+'</p>':window.MajickQuestionRepair.html(q,picked);
       btn.classList.add(correct?'correct':'incorrect');
     }));
   }
@@ -3688,7 +3699,7 @@ function officialTeachingHtml(official){
   return '<article class="tutorOfficialTeaching"><small>'+E(official.sourceLabel||'VERIFIED D772 COURSE NOTES')+'</small><h4>'+E(official.overview)+'</h4>'+(official.teach||[]).map(x=>'<div class="tutorOfficialTopic"><b>'+E(x.title)+'</b><p>'+E(x.text)+'</p></div>').join('')+((official.memory||[]).length?'<div class="tutorMemoryCues"><small>MEMORY CUES</small><ul>'+official.memory.map(x=>'<li>'+E(x)+'</li>').join('')+'</ul></div>':'')+refHtml+'</article>';
 }
 function enterClassroom(){
-  show('tutor');
+  show('tutor',true);
   const box=document.getElementById('courseTutorLesson');if(!box)return;
   const selected=box.querySelector('[role="tab"][aria-selected="true"]');
   if(selected?.dataset.classroomTab==='opening')box.querySelector('[data-classroom-tab="teach"]')?.click();
@@ -3784,6 +3795,7 @@ function renderTutor(){
   const box=document.getElementById('courseTutorLesson');if(!box)return;
   const id=cid(),lesson=selectedLesson(id);
   if(!lesson){box.innerHTML='<div class="learnEmpty">Add course material to begin your tutor path.</div>';return}
+  box.dataset.lessonKey=id+':'+lesson.id;
   const ch=chapter(lesson,id),m=ch.mastery;
   const sourceNames=uniqText(ch.sourceRows.map(r=>r.sourceName));
   const deep=ch.mergedTeaching?[ch.mergedTeaching]:ch.passages.slice(0,5);
@@ -3823,7 +3835,7 @@ MajickLearningLab.bind=function(){
   const bindingCourse=cid();
   setTimeout(()=>hydrate(bindingCourse).then(()=>{
     if(cid()!==bindingCourse||window.S?.screen!=='learninglab')return;
-    show('tutor');
+    show('tutor',true);
   }),30);
 };
 const baseRefresh=MajickLearningLab.refresh;

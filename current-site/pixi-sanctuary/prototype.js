@@ -10,14 +10,23 @@ const toFloor=p=>({x:clamp(60+(Number(p.x)-100)*1080/2000,60,1140),y:clamp(490+(
 const fromFloor=p=>({x:Math.round(100+(p.x-60)*2000/1080),y:Math.round(620+(p.y-490)*260/160)});
 function failure(error){console.error(error);status.textContent='Graphics unavailable. Use the original Sanctuary above.';parent.postMessage({type:'MAJICK_PIXI_SANCTUARY_ERROR'},location.origin)}
 if(!window.PIXI){failure(Error('Pixi unavailable'));return}
-const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const motionMedia=matchMedia('(prefers-reduced-motion: reduce)');let reduced=motionMedia.matches;
 let paused=reduced,ambient=!reduced,stress=false,liveRoster=[],liveRoom=null,sequence=0,syncRevision=0;
-const pending=new Map(),entities=new Map(),furnitureSprites=new Map();
+const pending=new Map(),entities=new Map(),furnitureSprites=new Map(),revealGlows=new Map();
+motionMedia.addEventListener('change',event=>{reduced=event.matches;if(reduced){paused=true;ambient=false;$('toggle').textContent='Resume movement';$('motion').textContent='Ambient effects: off';$('motion').setAttribute('aria-pressed','false')}});
+
 const app=new PIXI.Application();
 try{await app.init({width:1200,height:700,backgroundAlpha:0,antialias:false,resolution:Math.min(devicePixelRatio||1,2),preference:'webgl',powerPreference:'low-power'})}catch(error){failure(error);return}
 room.append(app.canvas);
 const world=new PIXI.Container(),objects=new PIXI.Container();app.stage.addChild(world);world.addChild(objects);objects.sortableChildren=true;
 const sparks=new PIXI.Container();world.addChildAt(sparks,0);
+// Pixi 8.6 uses FillPattern(texture, repetition), rather than the newer
+// textureSpace options in the reference. One tiled constellation lives in room space.
+const tileArt=new PIXI.Graphics();tileArt.rect(0,0,64,64).fill({color:0x000000,alpha:0});tileArt.star(16,18,4,5,1.5).fill({color:0xf7e0a2});tileArt.circle(45,43,1.5).fill({color:0xd6b4ef});
+const constellationTexture=app.renderer.generateTexture({target:tileArt});tileArt.destroy();
+const floorPattern=new PIXI.FillPattern(constellationTexture,'repeat');
+const floorSigil=new PIXI.Graphics();floorSigil.ellipse(600,571,460,55).fill(floorPattern);floorSigil.alpha=.13;floorSigil.eventMode='none';sparks.addChild(floorSigil);
+
 for(let i=0;i<24;i++){const spark=new PIXI.Graphics();spark.circle(0,0,1+i%3).fill({color:0xe3c38c,alpha:.25});spark.position.set(30+Math.random()*1140,20+Math.random()*440);sparks.addChild(spark)}
 try{const texture=await PIXI.Assets.load('../assets/guardian-dorm-v1.png');const bg=new PIXI.Sprite(texture);bg.width=1200;bg.height=700;world.addChildAt(bg,0)}catch(error){console.warn('Room backdrop unavailable',error)}
 function resize(){const b=room.getBoundingClientRect(),w=Math.max(240,b.width),h=Math.max(240,b.height);app.renderer.resize(w,h);const k=Math.min(w/1200,h/700);world.scale.set(k);world.position.set((w-1200*k)/2,(h-700*k)/2);$('viewport').textContent=Math.round(w)+' × '+Math.round(h)}
@@ -45,7 +54,7 @@ $('edit-furniture').onclick=()=>{editing=!editing;$('edit-furniture').setAttribu
 $('furniture-store').onclick=()=>{const id=$('furniture-select').value;if(id)action('furniture-store',{id,stored:true})};
 $('furniture-place').onclick=()=>{const id=$('furniture-select').value;if(id)action('furniture-store',{id,stored:false})};
 function applyFurniture(){
- for(const [id,{sprite,obj}] of furnitureSprites){const pos=toFloor(liveRoom?.positions?.[id]||obj.placement);sprite.position.set(pos.x,pos.y);sprite.zIndex=pos.y;sprite.visible=!!liveRoom?.owned?.includes(id)&&!liveRoom?.stored?.includes(id)}
+ for(const [id,{sprite,obj}] of furnitureSprites){const pos=toFloor(liveRoom?.positions?.[id]||obj.placement);sprite.position.set(pos.x,pos.y);sprite.zIndex=pos.y;const wasVisible=sprite.visible;sprite.visible=!!liveRoom?.owned?.includes(id)&&!liveRoom?.stored?.includes(id);if(sprite.visible&&!wasVisible)revealSprite(sprite)}
  const select=$('furniture-select'),selected=select.value;
  select.replaceChildren(new Option('Choose furniture',''));
  for(const [id,{obj}] of furnitureSprites)if(liveRoom?.owned?.includes(id))select.add(new Option(obj.displayName+(liveRoom.stored?.includes(id)?' (stored)':''),id));
@@ -61,7 +70,7 @@ const furnitureReady=(async()=>{
  const manifest=await response.json();
  await Promise.all(manifest.objects.filter(o=>o.enabled&&o.preload&&o.placement).map(async obj=>{
   try{
-   const texture=await PIXI.Assets.load('../sanctuary/assets/objects/'+obj.filename),sprite=new PIXI.Sprite(texture);sprite.anchor.set(.5,1);sprite.scale.set(Number(obj.placement.width||180)*1200/2200/texture.width);sprite.eventMode='static';sprite.cursor='pointer';
+   const texture=await PIXI.Assets.load('../sanctuary/assets/objects/'+obj.filename),sprite=new PIXI.Sprite(texture);sprite.anchor.set(.5,1);sprite.scale.set(Number(obj.placement.width||180)*1200/2200/texture.width);interactiveSprite(sprite);
    sprite.on('pointerdown',event=>{if(!editing)return;event.stopPropagation();$('furniture-select').value=obj.id;drag={id:obj.id,sprite,moved:false};sprite.alpha=.75});
    sprite.on('pointertap',()=>{
     if(editing){$('furniture-select').value=obj.id;return}
@@ -95,9 +104,30 @@ function artFor(canon,stage){
 }
 function home(slot){const rows=Math.max(2,Math.ceil(liveRoster.length/6));return {x:130+(slot%6)*188,y:510+Math.floor(slot/6)*120/(rows-1)}}
 function setTarget(e){const h=home(e.slot);e.tx=clamp(h.x+(Math.random()-.5)*160,90,1110);e.ty=clamp(h.y+(Math.random()-.5)*35,490,650);e.pause=.6+Math.random()*2.1;e.speed=30+Math.random()*16}
+// Hit areas use the sprite's local coordinates, including its bottom-center anchor.
+// Mirroring and room scaling are handled by Pixi's existing event transform.
+function revealSprite(sprite){
+ if(reduced||paused||document.hidden||!sprite.visible||!sprite.parent)return;
+ let pulse=revealGlows.get(sprite);
+ if(!pulse){const glow=new PIXI.Graphics();glow.eventMode='none';glow.ellipse(0,0,Math.max(24,sprite.width*.62),Math.max(18,sprite.height*.55)).fill({color:0xe9c775,alpha:.35});sprite.parent.addChildAt(glow,0);pulse={glow,elapsed:0};revealGlows.set(sprite,pulse)}
+ pulse.elapsed=0;pulse.glow.position.set(sprite.x,sprite.y-sprite.height*.5);
+}
+function interactiveSprite(sprite){
+ sprite.eventMode='static';sprite.cursor='pointer';
+ sprite.hitArea=new PIXI.Rectangle(-sprite.texture.width/2,-sprite.texture.height,sprite.texture.width,sprite.texture.height);
+ let over=false;
+ sprite.on('pointerover',()=>{over=true;sprite.tint=0xe6d5ff;revealSprite(sprite)});
+ sprite.on('pointerout',()=>{over=false;sprite.tint=0xffffff});
+ sprite.on('pointerdown',()=>{sprite.tint=0xc5a6e8});
+ sprite.on('pointerup',()=>{sprite.tint=over?0xe6d5ff:0xffffff});
+ sprite.on('pointerupoutside',()=>{over=false;sprite.tint=0xffffff});
+ sprite.on('pointercancel',()=>{over=false;sprite.tint=0xffffff});
+ sprite.on('visibleChanged',()=>{if(sprite.visible)revealSprite(sprite)});
+ return sprite;
+}
 function fit(e,texture,direction=1){if(!texture)return;const scale=Math.min(110/texture.width,105/texture.height);e.sprite.scale.set(scale*direction,scale);e.sprite.position.set(0,0);e.sprite.rotation=0;if(e.sprite instanceof PIXI.AnimatedSprite){if(e.sprite.textures.length===1)e.sprite.gotoAndStop(0)}else e.sprite.texture=texture}
 function setMotion(e,moving,direction=1){const sprite=e.sprite;if(!(sprite instanceof PIXI.AnimatedSprite))return;sprite.scale.x=Math.abs(sprite.scale.x)*(direction<0?-1:1);if(!moving||paused||document.hidden){if(sprite.playing)sprite.gotoAndStop(0);return}if(sprite.textures.length>1&&!sprite.playing)sprite.play()}
-function installFrames(e,art){const previous=e.sprite;const textures=art.frames.length>=2?art.frames:[art.base];const sprite=new PIXI.AnimatedSprite(textures.map(texture=>({texture,time:180})));sprite.anchor.set(.5,1);sprite.loop=true;sprite.autoUpdate=true;sprite.eventMode='static';sprite.cursor='pointer';sprite.on('pointertap',()=>{$('care-guardian').value=e.id;care('pet')});e.root.removeChild(previous);previous.destroy();e.root.addChildAt(sprite,1);e.sprite=sprite;fit(e,art.base);sprite.gotoAndStop(0)}
+function installFrames(e,art){const previous=e.sprite;const textures=art.frames.length>=2?art.frames:[art.base];const sprite=new PIXI.AnimatedSprite(textures.map(texture=>({texture,time:180})));sprite.anchor.set(.5,1);sprite.loop=true;sprite.autoUpdate=true;interactiveSprite(sprite);sprite.on('pointertap',()=>{$('care-guardian').value=e.id;care('pet')});e.root.removeChild(previous);previous.destroy();e.root.addChildAt(sprite,1);e.sprite=sprite;fit(e,art.base);sprite.gotoAndStop(0);revealSprite(sprite)}
 function createEntity(id,slot){
  const root=new PIXI.Container(),shadow=new PIXI.Graphics();shadow.ellipse(0,0,42,8).fill({color:0x000000,alpha:.25});root.addChild(shadow);
  const sprite=new PIXI.Sprite(PIXI.Texture.EMPTY);sprite.anchor.set(.5,1);root.addChild(sprite);
@@ -152,10 +182,16 @@ $('toggle').textContent=paused?'Resume movement':'Pause movement';$('toggle').on
 $('reset').onclick=()=>{for(const e of entities.values()){const h=home(e.slot);e.root.position.set(h.x,h.y);e.tx=h.x;e.ty=h.y;e.pause=1;if(e.base){fit(e,e.base);setMotion(e,false)}}};
 $('motion').setAttribute('aria-pressed',String(ambient));$('motion').textContent='Ambient effects: '+(ambient?'on':'off');$('motion').onclick=()=>{ambient=!ambient;$('motion').setAttribute('aria-pressed',String(ambient));$('motion').textContent='Ambient effects: '+(ambient?'on':'off')};
 $('stress').onclick=()=>{stress=!stress;$('stress').setAttribute('aria-pressed',String(stress));$('stress').textContent='Stress test: '+(stress?'on':'off')};
-let frames=0,seconds=0;
+let frames=0,seconds=0,ambientTime=0;
 app.ticker.maxFPS=45;app.ticker.add(ticker=>{
  const dt=Math.min(ticker.deltaMS/1000,.06);let moving=0;
- sparks.visible=ambient;if(ambient&&!document.hidden)for(const spark of sparks.children){spark.y+=dt*(stress?24:5);if(spark.y>470)spark.y=20}
+ for(const [sprite,pulse] of revealGlows){
+  pulse.elapsed+=dt;const t=pulse.elapsed/.55;
+  if(t>=1||sprite.destroyed||!sprite.visible||paused||document.hidden){pulse.glow.destroy();revealGlows.delete(sprite);continue}
+  pulse.glow.position.set(sprite.x,sprite.y-sprite.height*.5);pulse.glow.alpha=(1-t)*.8;pulse.glow.scale.set(1+t*.2);
+ }
+
+ sparks.visible=ambient;if(ambient&&!paused&&!document.hidden){ambientTime+=dt;floorSigil.alpha=.11+Math.sin(ambientTime*.9)*.025}if(ambient&&!document.hidden)for(const spark of sparks.children){if(spark===floorSigil)continue;spark.y+=dt*(stress?24:5);if(spark.y>470)spark.y=20}
  for(const e of entities.values()){
   e.root.zIndex=e.root.y;if(!e.ready)continue;if(paused||document.hidden){setMotion(e,false);continue;}
   if(e.pause>0){e.pause-=dt;setMotion(e,false);continue}

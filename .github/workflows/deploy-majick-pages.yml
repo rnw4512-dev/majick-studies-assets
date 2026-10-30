@@ -27,6 +27,9 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
+    env:
+      IMMERSION_QA_DIR: /tmp/majick-immersion-qa
+      COMMONS_QA_DIR: /tmp/majick-commons-qa
     steps:
       - name: Checkout current app
         uses: actions/checkout@v4
@@ -52,6 +55,21 @@ jobs:
           node pages-release/current/test-atelier-scene-isolation.cjs
       - name: Verify shared Sanctuary identity and furniture migration
         run: node pages-release/current/test-sanctuary-state.cjs current-site
+      - name: Verify shared teaching, fresh evidence and magical interaction safety
+        run: |
+          node pages-release/current/test-shared-repair.cjs
+          node pages-release/current/test-interaction-magic.cjs
+          node pages-release/current/test-d772-hands-on.cjs current-site
+      - name: Verify remaining current regression suites
+        run: |
+          node pages-release/current/test-animation-effects.cjs current-site
+          node pages-release/current/test-compact-navigation.cjs current-site
+          node pages-release/current/test-d772-bank-expansion.cjs current-site
+          node pages-release/current/test-d772-cross-room.cjs current-site
+          node pages-release/current/test-d772-exam-resume.cjs current-site
+          node pages-release/current/test-d772-generated-depth.cjs current-site
+          node pages-release/current/test-phase6-owner.cjs current-site
+          node pages-release/current/test-practice-retry-controls.cjs current-site
       - name: Verify and publish current source only
         run: python pages-release/current/build.py current-site _site
 
@@ -70,6 +88,23 @@ jobs:
       - name: Browser test connected probability learning and teaching mastery
         if: github.event_name == 'workflow_dispatch' && inputs.release_level == 'stable'
         run: node pages-release/current/browser-probability.cjs _site
+
+      - name: Browser certify shared teaching and magical atmosphere
+        if: github.event_name == 'workflow_dispatch' && inputs.release_level == 'stable'
+        run: |
+          node pages-release/current/browser-shared-repair.cjs _site
+          node pages-release/current/browser-immersion.cjs _site
+
+      - name: Preserve stable browser screenshots and contrast evidence
+        if: always() && github.event_name == 'workflow_dispatch' && inputs.release_level == 'stable'
+        uses: actions/upload-artifact@v4
+        with:
+          name: stable-browser-certification
+          path: |
+            /tmp/majick-immersion-qa
+            /tmp/majick-commons-qa
+            commons-qa
+          if-no-files-found: ignore
 
       - name: Verify rebuilt site entry point
         run: |

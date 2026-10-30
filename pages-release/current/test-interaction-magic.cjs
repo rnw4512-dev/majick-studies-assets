@@ -1,0 +1,20 @@
+'use strict';
+const fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/strict');
+const source=f=>fs.readFileSync('current-site/'+f,'utf8');
+const listeners={};const protectedState=Object.freeze({xp:17,crystals:8,inventory:Object.freeze(['kept'])});
+const text={nodeValue:'Read the chart—then calculate.',parentElement:{closest:()=>null}};
+const attribute={value:'Open—lesson',hasAttribute:a=>a==='aria-label',getAttribute(){return this.value},setAttribute(a,v){this.value=v}};
+let walked=false;const root={querySelector:()=>null,querySelectorAll:()=>[attribute]};
+const doc={readyState:'loading',body:root,addEventListener:(k,v)=>listeners[k]=v,querySelector:()=>root,createTreeWalker:()=>({currentNode:text,nextNode(){if(walked)return false;walked=true;return true}})};
+const brand={window:{S:protectedState},document:doc,NodeFilter:{SHOW_TEXT:4,FILTER_ACCEPT:1,FILTER_REJECT:2},console};vm.createContext(brand);vm.runInContext(source('aetheria-brand.js'),brand);brand.window.AetheriaBrand.refresh();
+assert.equal(text.nodeValue,'Read the chart - then calculate.');assert.equal(attribute.value,'Open - lesson');assert.equal(brand.window.S,protectedState);
+console.log('PASS visible prose and accessible instructions remove em dashes without changing learner state');
+function element(){return {children:[],style:{setProperty(){}},isConnected:true,append(...els){this.children.push(...els)},setAttribute(){},dataset:{},remove(){this.removed=true}}}
+const body=element(),events={};let reduced=false;const html={dataset:{}};
+const context={window:{S:protectedState,matchMedia:()=>({matches:reduced})},document:{body,documentElement:html,hidden:false,createElement:element,addEventListener:(k,v)=>events[k]=v},setTimeout:()=>1,clearTimeout(){},console};vm.createContext(context);vm.runInContext(source('animation-effects.js'),context);
+const target={isConnected:true,disabled:false,getAttribute:()=>null,closest:()=>null,getBoundingClientRect:()=>({left:10,top:10,width:100,height:44})};
+const event={target:{closest:()=>target}};events.pointerdown(event);let layer=body.children[0],visual=layer.children.at(-1);assert.equal(visual.dataset.fxType,'touch');assert.equal(visual.children.filter(c=>c.className==='majickFxParticle').length,3);assert(!visual.children.some(c=>c.className==='majickFxLabel'));
+const api=context.window.MajickAnimationEffects;api.clear();api.play('mastery');visual=layer.children.at(-1);events.focusin(event);assert.equal(layer.children.at(-1),visual,'Small effects must not interrupt mastery');api.clear();
+reduced=true;const count=layer.children.length;events.pointerdown(event);assert.equal(layer.children.length,count);api.play('guardian');assert.equal(layer.children.at(-1).children.filter(c=>c.className==='majickFxParticle').length,0);api.clear();
+reduced=false;html.dataset.majickReduceMotion='true';events.focusin(event);assert.equal(layer.children.length,count+1);assert.equal(context.window.S,protectedState);
+console.log('PASS bounded interaction sparkles, celebration priority, system/app reduced motion and unchanged state');

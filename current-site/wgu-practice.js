@@ -53,121 +53,12 @@ function questionBoard(q){
  const fields=[['clue','What does the question ask?'],['setup','Formula or diagram setup'],['work','Calculations and reasoning'],['check','Estimate and answer with units']];
  return '<details class="v342Whiteboard" style="padding:1rem;margin:1rem 0;border:1px solid #ad8c55;border-radius:12px;background:#fff7e8;color:#342944"><summary>✎ My whiteboard · autosaved</summary><p>Saved with this question. Notes never award mastery.</p>'+fields.map(([k,l])=>'<label style="display:block;margin:.5rem 0"><b>'+E(l)+'</b><textarea style="width:100%;min-height:68px;display:block" data-v342-field="'+k+'" data-v342-key="'+encodeURIComponent(id)+'">'+E(row[k]||'')+'</textarea></label>').join('')+'</details>';
 }
-function specificRepair(q,chosen){
- const prompt=String(q.prompt||''),lower=prompt.toLowerCase(),id=String(q.misconceptionId||'').toLowerCase();
- const counts=prompt.match(/(?:prepares|using|with)\s+(\d+)\s+green[^.]*?and\s+(\d+)\s+purple/i);
- if((id.includes('sample-space')||/without replacement/.test(lower))&&counts){
-  const green=Number(counts[1]),purple=Number(counts[2]),total=green+purple;
-  const secondPurple=/recorder second|purple second|green.*purple/.test(lower);
-  const second=secondPurple?purple:green-1;
-  const numerator=green*second,denominator=total*(total-1);
-  return {clue:'The cards are drawn without replacement. The first draw changes the number of cards available for the second draw.',rule:'For dependent events, multiply the first probability by the conditional probability of the second event.',worked:['Before the first draw: '+green+' green and '+purple+' purple cards; '+total+' total.','P(green first) = '+green+'/'+total+'.','After removing a green: '+(green-1)+' green, '+purple+' purple, '+(total-1)+' total.','P('+(secondPurple?'purple':'green')+' second | green first) = '+second+'/'+(total-1)+'.','Multiply: '+green+'/'+total+' × '+second+'/'+(total-1)+' = '+numerator+'/'+denominator+'. Reduce if needed and compare with the answer choices.'],mistake:'Keeping the original denominator on the second draw incorrectly treats dependent draws as independent.'};
- }
- if(/\bmedian\b/.test(lower))return {clue:'The question asks for the median, not the mean.',rule:'Order the observations and select the middle value; for an even count average the two middle values.',mistake:'Adding all values and dividing by the count answers a mean question instead.'};
- if(/\bmean\b|\baverage\b/.test(lower))return {clue:'The question asks for the arithmetic mean.',rule:'Add every observed value and divide by the number of observations.',mistake:'Selecting the middle value would calculate the median, not the mean.'};
- if(/\bsampling\b|\bselection bias\b|\bconvenience sample\b/.test(lower))return {clue:'Identify how participants entered the sample and who had no chance to be selected.',rule:'A sampling method is judged by its selection process, not merely by the number of respondents.',mistake:'A large sample can still be biased if the selection process excludes part of the population.'};
- if(/\bscatterplot\b|\bcorrelation\b/.test(lower))return {clue:'Look for the direction and strength of the association between two quantitative variables.',rule:'Association alone does not establish that one variable causes the other.',mistake:'A trend in a scatterplot cannot independently prove causation.'};
- return null;
-}
-function exactWorked(q){
- const tailored=specificRepair(q,'');
- if(tailored?.worked?.length)return '<ol>'+tailored.worked.map(x=>'<li>'+E(x)+'</li>').join('')+'</ol>';
- const verified=q?.workedExample;
- if(verified&&Array.isArray(verified.steps)&&verified.steps.length&&verified.steps.every(x=>typeof x==='string'))return '<ol>'+verified.steps.map(x=>'<li>'+E(x)+'</li>').join('')+'</ol>';
- const prompt=String(q?.prompt||''),m=prompt.match(/(?:data set|data values|values are|numbers are)\s*:?\s*(-?\d+(?:\.\d+)?(?:\s*,\s*-?\d+(?:\.\d+)?){2,})(?=[.?!\s]|$)/i);
- if(!m)return '<p>This question needs a verified list of numbers before a question-specific calculation can be generated. Copy the givens to your whiteboard and choose a method.</p>';
- const nums=m[1].split(',').map(Number);
- if(nums.some(x=>!Number.isFinite(x))||nums.length>30)return '<p>Use the whiteboard to verify the data set before calculating.</p>';
- const sorted=[...nums].sort((a,b)=>a-b),sum=nums.reduce((a,b)=>a+b,0),n=nums.length,txt=prompt.toLowerCase();
- let steps=[];
- if(/\bmedian\b/.test(txt)){const v=n%2?sorted[(n-1)/2]:(sorted[n/2-1]+sorted[n/2])/2;steps=['Sort the values: '+sorted.join(', '),'Identify '+(n%2?'the middle position':'the two middle positions'),'Median = '+v]}
- else if(/\bmean\b|\baverage\b/.test(txt))steps=['Add values: '+nums.join(' + ')+' = '+sum,'Count the values: '+n,'Mean = '+sum+' ÷ '+n+' = '+Number((sum/n).toFixed(5))];
- else if(/\brange\b/.test(txt))steps=['Smallest = '+sorted[0]+'; largest = '+sorted[n-1],'Range = largest − smallest','Range = '+(sorted[n-1]-sorted[0])];
- else return '<p>These data have been identified, but this question needs an explicit verified formula template. Write the setup first.</p>';
- return '<ol>'+steps.map(x=>'<li>'+E(x)+'</li>').join('')+'</ol>';
-}
-function mistakeType(q){const reason=String(q.choiceCoach?.[String(session?.chosen??'')]||'').toLowerCase();if(/formula|equation|method|rule/.test(reason))return 'Formula-selection';if(/arithmetic|multiply|divide|subtract|add|round|decimal|calculat/.test(reason))return 'Calculation';if(/misread|question asks|instead|not asking/.test(reason))return 'Question interpretation';return 'Concept distinction or interpretation (provisional)'}
-document.addEventListener('input',e=>{const n=e.target,key=n?.dataset?.v342Key,field=n?.dataset?.v342Field;if(key&&field)saveBoard(decodeURIComponent(key),field,n.value)});
-function repairInteractive(q,clue){
- const prompt=String(q.prompt||'');const context=prompt+' '+String(clue||'');
- const fractions=[...context.matchAll(/(\\d+)\\s*\\/\\s*(\\d+)/g)].filter(m=>Number(m[2])>0);
- const without=/without replacement|not replaced|without putting|remaining|after (?:taking|drawing|selecting)/i.test(context);
- const area=/icon|pictograph|picture|symbol|graphic/i.test(prompt)&&/twice|double|doubled/i.test(prompt)&&/tall|height/i.test(prompt)&&/wide|width/i.test(prompt);
- const type=area?'area':without&&fractions.length>=2?'compound':/\\bmean\\b|\\baverage\\b/i.test(prompt)?'mean':/\\brange\\b/i.test(prompt)?'range':'concept';
- const initial=type==='compound'?[Number(fractions[0][1]),Number(fractions[0][2]),Number(fractions[1][1]),Number(fractions[1][2])]:type==='area'?[1,1,2,2]:[0,0,0,0];
- const titles=type==='compound'?['First favorable','First total','Second favorable','Second total']:type==='area'?['Original height','Original width','New height','New width']:['Value 1','Value 2','Value 3','Value 4'];
- const options=type==='compound'?[['multiply','Multiply probabilities'],['add','Add probabilities'],['divide','Divide first by second']]:type==='area'?[['area','Height × width (area)'],['height','Height only'],['perimeter','Add dimensions']]:type==='mean'?[['mean','Sum ÷ number of values'],['range','Maximum − minimum'],['multiply','Multiply values']]:type==='range'?[['range','Maximum − minimum'],['mean','Sum ÷ count']]:[['evidence','Identify evidence and explain the rule'],['formula','Use a numerical formula']];
- const correct=options[0][0];const formula=type==='compound'?'P(A and B) = P(A) × P(B)':type==='area'?'Area = height × width; scale factor = new area ÷ original area':type==='mean'?'Mean = sum of values ÷ count':type==='range'?'Range = maximum − minimum':'Identify the deciding clue, then connect it to the correct rule.';
- const fields=type==='concept'?'':initial.map((n,i)=>'<label>'+E(titles[i])+'<input type="number" step="any" data-repair-value="'+i+'" value="'+n+'" required></label>').join('');
- return '<fieldset class="v342HandsOn" data-repair-type="'+type+'" data-repair-correct="'+correct+'"><legend>Try the reasoning yourself · guided formula workspace</legend><p><strong>Formula reference:</strong> '+E(formula)+'</p><label>Choose the method <select data-repair-method>'+options.map(([v,t])=>'<option value="'+v+'">'+E(t)+'</option>').join('')+'</select></label><div class="v342RepairInputs">'+fields+'</div><label>Your result or conclusion <input data-repair-result type="text" placeholder="Enter your calculated result or explain the rule"></label><button type="button" class="btn ghost" data-repair-calculate>Check my setup</button><p role="status" aria-live="polite" data-repair-calculation-feedback></p><small>These inputs are guided practice. They do not award independent mastery.</small></fieldset>';
-}
-function checkRepairCalculation(box){
- const pane=box.querySelector('.v342HandsOn');if(!pane)return;const type=pane.dataset.repairType,method=pane.querySelector('[data-repair-method]').value,correct=pane.dataset.repairCorrect;
- const fields=[...pane.querySelectorAll('[data-repair-value]')],values=fields.map(f=>Number(f.value));const answer=pane.querySelector('[data-repair-result]').value.trim();const out=pane.querySelector('[data-repair-calculation-feedback]');
- if(method!==correct){out.textContent='Try another method. Look at the deciding clue and choose the formula that matches it.';return}
- if(fields.some(f=>!f.value.trim()||!Number.isFinite(Number(f.value)))){out.textContent='Fill in every number before checking the setup.';return}
- let expected,explanation='';if(type==='compound'){const [a,b,c,d]=values;if(b<=0||d<=0||a<0||c<0||a>b||c>d){out.textContent='Each denominator must be positive, and favorable outcomes cannot exceed total outcomes.';return}expected=(a/b)*(c/d);explanation='('+a+'/'+b+') × ('+c+'/'+d+') = '+(a*c)+'/'+(b*d)+' ≈ '+expected.toFixed(4)+'. Without replacement, recount the remaining outcomes before the second draw.'}
- else if(type==='area'){const [a,b,c,d]=values;if(a<=0||b<=0||c<=0||d<=0){out.textContent='Heights and widths must be greater than zero.';return}expected=c*d/(a*b);explanation='Original area = '+a+' × '+b+' = '+(a*b)+'. New area = '+c+' × '+d+' = '+(c*d)+'. The visual area changes by a factor of '+expected+'.'}
- else if(type==='mean'){expected=values.reduce((a,b)=>a+b,0)/values.length;explanation='Sum '+values.reduce((a,b)=>a+b,0)+' ÷ '+values.length+' = '+expected+'.'}
- else if(type==='range'){expected=Math.max(...values)-Math.min(...values);explanation='Largest '+Math.max(...values)+' − smallest '+Math.min(...values)+' = '+expected+'.'}
- else {out.textContent=answer.length>=20?'You described a rule. Compare it with the question’s deciding clue and explain why your first answer differed.':'Explain the deciding clue and the rule in a full sentence.';return}
- if(!answer){out.textContent='Now enter your result. '+explanation;return}
- const numeric=Number(answer.replace(/%$/,'')),percent=answer.endsWith('%');const converted=percent?numeric/100:numeric;
- out.textContent=Number.isFinite(converted)&&Math.abs(converted-expected)<0.001?'Correct setup and calculation. '+explanation:'Recheck your answer. '+explanation+' Change the inputs to explore how the result changes.';
-}
-function repairLesson(q){
- if(!session||session.type==='test')return '';
- const chosen=String(session.chosen??''),correct=String(q.answer??''),coach=q.choiceCoach||{};
- const wrongReason=String(coach[chosen]||'This answer does not match the defining evidence in the question.');
- const clue=String(q.wguClue||q.keyClue||q.why||'Identify the details that distinguish the correct concept.');
- const questionId=String(q.id||q.qid||q.prompt||''), encoded=encodeURIComponent(questionId);
- const optionReason=String(coach[correct]||q.why||'Compare the correct answer with the key evidence.');
- const distinctRule=optionReason.trim()===clue.trim()?'Use the clue to select the relevant rule. Check the answer against that rule and identify what the first choice overlooked.':optionReason;
- const prompt=String(q.prompt||'');
- const areaDistortion=/icon|pictograph|picture|symbol|graphic/i.test(prompt)&&/twice|double|doubled/i.test(prompt)&&/tall|height/i.test(prompt)&&/wide|width/i.test(prompt);
- const teachingReason=areaDistortion?'When an image doubles in height AND doubles in width, its area becomes 2 × 2 = 4 times the original. The data value only doubled (2 times), so the enlarged picture exaggerates the change by showing four times the area.':' ';
- const explainedWrong=areaDistortion?'Representativeness concerns how participants were selected for a sample. This question is about scaling an icon in a graph, not sampling.':wrongReason;
- const explainedClue=areaDistortion?'The icon was made twice as tall AND twice as wide. Both dimensions affect the area the eye sees.':clue;
- const explainedRule=areaDistortion?'Area = height × width. New area = (2 × height) × (2 × width) = 4 × original area, even though the reported value only doubled.':distinctRule;
- const hasWorked=!!q?.workedExample?.steps?.length||/(?:data set|data values|values are|numbers are)\s*:?\s*-?\d+(?:\.\d+)?(?:\s*,\s*-?\d+(?:\.\d+)?){2,}/i.test(String(q.prompt||''));
- const steps=areaDistortion?'<p><strong>Worked visual reasoning:</strong> Original icon: 1 unit high × 1 unit wide = 1 square unit. Enlarged icon: 2 units high × 2 units wide = 4 square units. <strong>4 ÷ 1 = 4</strong>, not 2. A fair doubling would use a visual encoding that represents a twofold change, not a fourfold area change.</p>':hasWorked?'<details class="v342MatchedWork"><summary>Show the calculations using these exact values</summary>'+exactWorked(q)+'</details>':'<p>This question tests a concept or an interpretation. Use its actual clue and answer comparison below rather than an unrelated numerical example.</p>';
- return '<section class="v342Repair majTrialGuided" data-repair-question="'+E(questionId)+'" style="padding:1rem;border:1px solid #ad8c55;border-radius:12px;margin:.8rem 0;background:#f6ebd9;color:#30233d">'+
- '<h3>Professor’s Repair · Your Actual Question</h3>'+
- '<p><b>Question:</b> '+E(q.prompt||'')+'</p>'+
- '<p><b>You selected:</b> '+E(chosen)+'</p><p><b>Correct answer:</b> '+E(correct)+'</p>'+
- '<p><b>Why your answer needs revision:</b> '+E(explainedWrong)+'</p>'+
- repairInteractive(q,explainedClue)+
- '<div class="v342RepairSteps"><div><b>1 · Find the deciding clue</b><p>'+E(explainedClue)+'</p></div>'+
- '<div><b>2 · Connect the clue to the rule</b><p>'+E(explainedRule)+'</p><p><b>Why the original choice fails:</b> '+E(explainedWrong)+'</p></div>'+
- '<div><b>3 · Work it through</b>'+steps+'</div>'+
- '<div><b>4 · Explain your thinking</b><p>What in the question made your first answer tempting? Which detail changes your reasoning?</p>'+
- '<textarea data-repair-thinking rows="3" style="width:100%;min-height:84px" placeholder="I chose ___ because ___. Now I see ___ in this question, which means ___..."></textarea>'+
- '<button type="button" class="btn ghost" data-repair-check>Check my explanation</button>'+
- '<p data-repair-feedback role="status" aria-live="polite"></p></div></div>'+
-
- '<small style="display:block">Repair is guided support, not independently verified mastery. Return to independent practice from Study Hall when ready.</small></section>';
-}
-function checkRepairExplanation(box){
- const q=session?.current;if(!box||!q)return;
- const input=box.querySelector('[data-repair-thinking]'),feedback=box.querySelector('[data-repair-feedback]');
- const text=String(input?.value||'').trim(),words=text.split(/\s+/).filter(Boolean);
- const reasonWords=/because|since|instead|rather|clue|evidence|shows|indicat|means|therefore|first|now|mistake|thought/i.test(text);
- const contrast=/but|instead|however|now|rather|correct|actually|should|different/i.test(text);
- const supplied=words.length>=15&&reasonWords&&contrast;
- feedback.textContent=supplied?'You have compared your original thinking with new reasoning. Read the model explanation above and check that your claim matches this exact scenario.':'Add why you chose the original answer AND what evidence in this question changes your thinking. Aim for a full explanation, not a single word.';
-
-}
-document.addEventListener('click',event=>{
- const button=event.target.closest?.('[data-repair-check],[data-repair-calculate]');
- if(!button)return;
- const box=button.closest('.v342Repair');if(!box)return;
- if(button.matches('[data-repair-check]')){checkRepairExplanation(box);return}
- if(button.matches('[data-repair-calculate]')){checkRepairCalculation(box);return}
-});
+function specificRepair(q,chosen){return window.MajickQuestionRepair.specificRepair(q,chosen)}
+function repairLesson(q){return window.MajickQuestionRepair.html(q,session?.chosen)}
 function startRepairTransfer(id){
  const original=String(id||'');
  // The current repaired item can come from a generated/inline pool, not just Study Now's fixed bank.
- const source=session?.current&&String(session.current.id||session.current.qid||session.current.prompt||'')===original?session.current:practicePool('mixed').find(q=>String(q.id||q.qid||q.prompt||'')===original);
+ const source=id&&typeof id==='object'?id:session?.current&&String(session.current.id||session.current.qid||session.current.prompt||'')===original?session.current:practicePool('mixed').find(q=>String(q.id||q.qid||q.prompt||'')===original);
  if(!source)return window.rewardToast?.('Review unavailable','Original question not found.');
  const lesson=String(source.learningPathLessonId||source.lessonId||source.topicId||'');
  const api=window.MajickLearningContinuity;
@@ -175,14 +66,14 @@ function startRepairTransfer(id){
  const seen=new Set([original,...(history?.seenIds||[]),...(session?.review||[]).map(x=>String(x.q?.id||''))]);
  const sourceSkill=api?.practiceSkill?.(source)||String(source.skill||'');
  const valid=q=>{
-  if(!q||seen.has(String(q.id||q.qid||q.prompt||'')))return false;
+  if(!q||seen.has(String(q.id||q.qid||q.prompt||''))||!window.MajickQuestionRepair.isFresh(source,q))return false;
   const candidateLesson=String(q.learningPathLessonId||q.lessonId||q.topicId||'');
   if(lesson&&candidateLesson!==lesson)return false;
   if(sourceSkill&&api?.practiceSkill?.(q)!==sourceSkill)return false;
   return Array.isArray(q.options)&&q.options.includes(q.answer)&&(!window.MajickVisualEvidence||window.MajickVisualEvidence.evidence(q).ok);
  };
  let candidates=shuffleCopy(practicePool('mixed').filter(valid));
- if(!candidates.length&&window.MajickGeneratedPractice){
+ if(!candidates.length&&activeD772()&&window.MajickGeneratedPractice){
   const gen=window.MajickGeneratedPractice;
   if(/probab|sample.space|dependent/i.test(sourceSkill+' '+lesson+' '+source.prompt)){
    for(let ordinal=0;ordinal<180&&!candidates.length;ordinal++){
@@ -203,11 +94,13 @@ function startRepairTransfer(id){
  S.screen='mission';render();
 }
 function trackSkillAnswer(q){
- if(!session?.answered||session.current!==q||session.adaptiveTracked)return;
+ if(!session?.answered||session.current!==q||session.adaptiveTracked||!window.MajickLearningContinuity)return;
  session.adaptiveTracked=true;
- const assisted=session.type!=='test'||!!(session.mathCoachAssisted||session.chartUsed||session.revealedClue||session.usedPetAbility);
- if(assisted)window.MajickLearningContinuity?.rememberGuidedQuestion?.(q);
- try{window.MajickLearningContinuity?.skillResult(q,session.chosen===q.answer,assisted,session.opts?.label==='Independent Transfer Check'?'independent-transfer':'study-now')}catch(_){}
+ const assisted=session.type!=='test'||!!(session.mathCoachAssisted||session.chartUsed||session.revealedClue||session.usedPetAbility),correct=session.chosen===q.answer;
+ if(assisted)window.MajickLearningContinuity.rememberGuidedQuestion(q);
+ window.MajickLearningContinuity.skillResult(q,correct,assisted,session.opts?.label==='Independent Transfer Check'?'independent-transfer':'study-now',true);
+ if(correct)window.MajickLearningContinuity.practiceAnswer(q,true,true,session.chosen,{assisted});
+ else window.MajickQuestionRepair.recordWrong(q,session.chosen,{assisted,alreadyRecorded:true,room:'study-now'});
 }
 function practiceFeedback(q){
   trackSkillAnswer(q);
@@ -217,42 +110,25 @@ function practiceFeedback(q){
   const skillRow=window.S?.progress?.[window.S.activeCourse]?.adaptiveSkills?.[skillId];
   const adaptivePanel=skillRow?.status==='review-needed'?'<section role="status" style="padding:12px;margin:12px 0;border:1px solid #d7ad75;border-radius:12px"><b>Professor recommends a targeted review</b><p>You have struggled on several questions about this concept. Review the skill using a different explanation, then try fresh questions.</p><button type="button" class="btn primary" onclick="MajickLearningContinuity.skillReview('+E(JSON.stringify(skillId))+')">Open Learning Hub →</button></section>':'';
 
+  if(wrong)return '<section class="v3333Feedback needsRepair">'+repairLesson(q)+'<button class="btn primary v3333Next" onclick="MajickWGUPractice.continueAfterRepair()">Continue after repair →</button></section>';
   const reason=String(q.why||'').replace(/\s+/g,' ').trim();
   let reasonBox='';
   if(session?.type==='reason'){
     reasonBox='<div class="v3333Reason"><b>Explain it in one sentence</b><p>Use the WGU term and the clue from the scenario.</p><textarea id="reasonText" placeholder="The best answer is ___ because the scenario says ___..."></textarea><div><button class="btn ghost" onclick="saveReason(false)">Save explanation</button><button class="btn ghost" onclick="saveReason(true)">I explained it aloud</button></div></div>';
   }
-  return '<section class="v3333Feedback '+(wrong?'needsRepair':'correct')+'"><div class="v3333FeedbackTitle">'+(wrong?'Review the distinction':'Correct')+'</div><p><b>Best answer:</b> '+E(q.answer)+'</p><p>'+E(reason)+'</p>'+whyList(q)+(wrong?repairLesson(q):'')+reasonBox+adaptivePanel+'<button class="btn primary v3333Next" onclick="continueSession()">Next question →</button></section>';
+  return '<section class="v3333Feedback '+(wrong?'needsRepair':'correct')+'"><div class="v3333FeedbackTitle">'+(wrong?'Review the distinction':'Correct')+'</div><p><b>Best answer:</b> '+E(q.answer)+'</p><p>'+E(reason)+'</p>'+whyList(q)+(wrong?repairLesson(q):'')+reasonBox+adaptivePanel+'<button class="btn primary v3333Next" onclick="MajickWGUPractice.continueAfterRepair()">Next question →</button></section>';
 }
 function confidenceHtml(){
   if(session?.opts?.kind==='d772-section1-oa')return '';
   const items=[['guess','Guess'],['50','50/50'],['sure','Sure'],['certain','Certain']];
   return '<div class="v3333Confidence"><span>How sure are you?</span>'+items.map(([v,l])=>'<button type="button" class="'+(session.confidence===v?'sel':'')+'" onclick="setConfidence(\''+v+'\')">'+l+'</button>').join('')+'</div>';
 }
-function openRequiredRecovery(){
- const q=session?.current,r=window.MajickLearningContinuity?.practiceRecovery?.(q,false);
+function openRequiredRecovery(source){
+ const q=source&&typeof source==='object'?source:session?.current,r=window.MajickLearningContinuity?.practiceRecovery?.(q,false);
  if(!q||!r)return;
- S.progress.D772.requiredReconstructionQuestion=JSON.parse(JSON.stringify(r.source||q));window.save?.();window.navigate?.('reasoning');
+ S.progress[S.activeCourse].requiredReconstructionQuestion=JSON.parse(JSON.stringify(r.source||q));window.save?.();window.navigate?.('reasoning');
 }
-function finishRequiredRecovery(source){
- const api=window.MajickLearningContinuity,r=api?.practiceRecovery?.(source,false);if(!r||r.required)return;
- const seen=new Set([String(source.id||source.qid||''),...(r.seenIds||[]).map(String)]);
- const sourceSkill=api.practiceSkill(source);
- const valid=q=>q&&!seen.has(String(q.id||q.qid||''))&&api.practiceSkill(q)===sourceSkill&&Array.isArray(q.options)&&q.options.includes(q.answer)&&(!window.MajickVisualEvidence||window.MajickVisualEvidence.evidence(q).ok);
- let fresh=practicePool('mixed').find(valid);
- if(!fresh&&window.MajickGeneratedPractice){
-  const gen=window.MajickGeneratedPractice;
-  if(/probab|sample.space|dependent/i.test(String(sourceSkill)+' '+String(source.prompt||''))){
-   for(let ordinal=0;ordinal<180&&!fresh;ordinal++)for(const transfer of [false,true]){
-    const candidate=gen.probabilityCase?.(ordinal,transfer);
-    if(candidate&&gen.validate?.(candidate)&&valid(candidate)){fresh=candidate;break}
-   }
-  }
- }
- if(!fresh){window.rewardToast?.('Repair saved','No unused same-skill case remains. Independent recovery is still pending.');window.navigate?.('mission');return}
- if(session){const old=session.current;const i=session.questions?.findIndex(q=>q.id===old?.id);if(i>=0)session.questions[i]=fresh;session.current=fresh;session.answered=false;session.pendingChoice=null;session.adaptiveTracked=false;session.mathCoachAssisted=false;session.chartUsed=false;session.revealedClue=false;session.usedPetAbility=false}
- window.navigate?.('mission');
-}
+function finishRequiredRecovery(source){const r=window.MajickLearningContinuity?.practiceRecovery(source,false);if(r&&!r.required)return startRepairTransfer(source)}
 function questionHtml(q){
  const recovery=window.MajickLearningContinuity?.practiceRecovery?.(q,false);
  if(session?.type==='test'&&!session.answered&&recovery&&(recovery.required||recovery.awaitingTransfer&&recovery.failedIds.includes(q.id)))return '<section class="majExamFeedback majTrialGuided" aria-label="Guided reconstruction; not independent mastery"><h3>Guided reconstruction required</h3><p>A missed independent question needs guided repair before another independent response for this skill. Your exam score and previous answers are preserved.</p><button onclick="MajickWGUPractice.openRequiredRecovery()">Complete guided reconstruction</button></section>';
@@ -276,7 +152,7 @@ function questionHtml(q){
   const trialMode=session?.opts?.label==='Independent Transfer Check'?'independent':'exam';
   const trialProgress='<div class="majTrialProgress" role="progressbar" aria-label="Examination progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="'+progressPct+'"><span class="majTrialProgressFill" style="width:'+progressPct+'%"></span></div>';
   const trialBadge='<span class="majTrialBadge '+(trialMode==='independent'?'isIndependent':'isExam')+'">'+(trialMode==='independent'?'✦ Independent mastery check':'☾ Scholar’s examination')+'</span>';
-  return '<div class="v3333QuestionShell majTrialChamber '+(oa?'oaMode':'practiceMode')+'"><div class="v3333QTop"><div><span class="v3333Eyebrow">D772 • STATISTICAL DATA LITERACY</span><h2>'+label+'</h2></div><div class="v3333QCount">Question '+progress+'</div><button class="btn ghost" onclick="session=null;navigate(\'mission\')">Choose section</button></div>'+trialProgress+(oa?'<div class="v3333OANote">No hints or lesson labels during the simulation.</div>':'')+(session?.opts?.timeLimitMs?'<div id="v342AssessClock" role="timer">Time remaining: '+Math.max(0,Math.ceil((session.opts.timeLimitMs-(Date.now()-session.start))/1000))+' seconds</div>':'')+'<article class="v3333QuestionCard"><div class="v3333Prompt">'+E(ev?.prompt||q.prompt)+'</div>'+(evidenceOk?ev.html:(globalThis.MajickVisualEvidence?.blockedHtml()||'<p role="alert">Visual evidence unavailable; do not answer.</p>')+'<button type="button" class="btn ghost" onclick="MajickWGUPractice.skipBrokenVisual()">Replace broken question without penalty →</button>')+(!oa&&evidenceOk?'<button class="btn ghost" '+(session.answered?'disabled':'')+' onclick="toggleAnchorChart()">'+(session.chartOpen?'Hide':'Open')+' skill anchor chart</button>':'')+(!oa&&session.chartOpen?anchorChartHTML(q):'')+(clue?'<div class="v3333ClueTraining">'+clueHTML(cleanPrompt(q.prompt))+'</div>':'')+confidenceHtml()+questionBoard(q)+'<div class="v3333Options">'+(evidenceOk?options:'')+'</div>'+(!session.answered&&evidenceOk?'<button type="button" class="btn primary v3333Submit" '+(selected?'':'disabled')+' onclick="MajickWGUPractice.submit()">Submit</button>':'')+(!oa&&session.answered?practiceFeedback(q):'')+'</article></div>';
+  return '<div class="v3333QuestionShell majTrialChamber '+(oa?'oaMode':'practiceMode')+'"><div class="v3333QTop"><div><span class="v3333Eyebrow">D772 • STATISTICAL DATA LITERACY</span><h2>'+label+'</h2></div><div class="v3333QCount">Question '+progress+'</div><button class="btn ghost" onclick="session=null;navigate(\'mission\')">Choose section</button></div>'+trialProgress+(oa?'<div class="v3333OANote">No hints before submission. After an incorrect answer, review the guided repair.</div>':'')+(session?.opts?.timeLimitMs?'<div id="v342AssessClock" role="timer">Time remaining: '+Math.max(0,Math.ceil((session.opts.timeLimitMs-(Date.now()-session.start))/1000))+' seconds</div>':'')+'<article class="v3333QuestionCard"><div class="v3333Prompt">'+E(ev?.prompt||q.prompt)+'</div>'+(evidenceOk?ev.html:(globalThis.MajickVisualEvidence?.blockedHtml()||'<p role="alert">Visual evidence unavailable; do not answer.</p>')+'<button type="button" class="btn ghost" onclick="MajickWGUPractice.skipBrokenVisual()">Replace broken question without penalty →</button>')+(!oa&&evidenceOk?'<button class="btn ghost" '+(session.answered?'disabled':'')+' onclick="toggleAnchorChart()">'+(session.chartOpen?'Hide':'Open')+' skill anchor chart</button>':'')+(!oa&&session.chartOpen?anchorChartHTML(q):'')+(clue?'<div class="v3333ClueTraining">'+clueHTML(cleanPrompt(q.prompt))+'</div>':'')+confidenceHtml()+questionBoard(q)+'<div class="v3333Options">'+(evidenceOk?options:'')+'</div>'+(!session.answered&&evidenceOk?'<button type="button" class="btn primary v3333Submit" '+(selected?'':'disabled')+' onclick="MajickWGUPractice.submit()">Submit</button>':'')+(session.answered?practiceFeedback(q):'')+'</article></div>';
 }
 function preserveAnswerScroll(action){
  const screen=window.S?.screen,docY=window.scrollY||0;
@@ -545,11 +421,7 @@ answerQ=function(choice){
  session.chosen=choice;session.answered=true;session.score+=correct?1:0;
  session.review.push({q,chosen:choice,correct});
  trackSkillAnswer(q);
- setTimeout(()=>{
-  if(!session||session.finished||!session.opts?.assessmentOnly)return;
-  if(session.index>=session.questions.length)finishSession();
-  else{session.current=session.questions[session.index++];session.answered=false;session.chosen=null;render()}
- },120);
+ render();
 };
 let assessmentClock=null;
 function tickAssessmentClock(){
@@ -607,7 +479,7 @@ function missionLanding(){
  const cards=(independent)=>'<div class="v3333MissionGrid">'+scopes.map(([id,title,detail])=>{const n=practicePool(id).length;return '<article class="v3333Scope"><h3>'+title+'</h3><p>'+detail+'</p><small>'+n+' available questions</small><div><button '+(!n?'disabled':'')+' onclick="MajickWGUPractice.startSection(&#39;'+id+'&#39;,'+independent+')">'+(independent?'Start independent OA':'Start guided practice')+'</button></div></article>'}).join('')+'</div>';
  const tab=(id,label,html)=>'<section class="v346StudyTab" id="v346Study-'+id+'" role="tabpanel" '+(id==='skills'?'':'hidden')+'>'+html+'</section>';
  return '<div class="v3333Mission v346StudyTabs"><div class="v3333MissionHead"><span class="v3333Eyebrow">D772 · SECTIONS 1, 2 AND 3</span><h2>Study Now</h2><p>Choose one learning path at a time. Guided practice never awards independent mastery.</p></div><nav class="v346StudyTabNav" role="tablist" aria-label="Study Now activities">'+[['skills','Skill Library'],['guided','Guided Practice'],['independent','Independent Practice'],['oa','OA Simulation']].map(([id,label])=>'<button type="button" role="tab" aria-controls="v346Study-'+id+'" aria-selected="'+(id==='skills')+'" onclick="MajickWGUPractice.studyTab(&#39;'+id+'&#39;)">'+label+'</button>').join('')+'</nav>'+
- tab('skills','Skill Library','<p>Browse skills and open focused practice. Your progress remains saved across rooms.</p><button onclick="window.MajickAdaptiveLearning?.show?.()">Open Skill Library</button>'+cards(false))+
+ tab('skills','Skill Library','<p>Browse skills and open focused practice. Your progress remains saved across rooms.</p><button onclick="window.MajickAdaptiveLearning?.show?.()">Open Skill Library</button>'+skillGrowthDashboard()+cards(false))+
  tab('guided','Guided Practice',cards(false)+'<details><summary>Section 1 focused drills</summary><div class="v3333MissionGrid"><button onclick="MajickWGUPractice.startExperiments()">Designed experiments</button><button onclick="MajickWGUPractice.startLabelStudy()">Label the study</button><button onclick="MajickWGUPractice.startStudyDesign()">Study design</button><button onclick="MajickWGUPractice.startSampling()">Sampling methods</button></div></details>')+
  tab('independent','Independent Practice',cards(true))+
  tab('oa','OA Simulation','<section class="v3333Scope"><h3>Exam readiness</h3><p>Test yourself with mixed WGU-style questions across all three sections.</p><button onclick="MajickWGUPractice.startDiagnostic()">Starting diagnostic</button><button onclick="MajickWGUPractice.startMixedOA()">Timed full-course OA simulation</button></section>')+'</div>';
@@ -628,7 +500,7 @@ sessionHTML=function(){
   if(session.finished&&['d772-diagnostic','d772-mixed-oa'].includes(session.opts?.kind))return assessmentReport();
   if(session.finished&&fixedPractice())return fixedResult();
   if(session.finished&&session.opts?.kind==='d772-section1-oa')return oaResult();
-  if(session.opts?.kind==='d772-section-practice'||isD772Question(session.current)||activeD772()&&/^d772-(oa-|pa-deep)/.test(session.current?.id||''))return questionHtml(session.current);
+  if(session.opts?.kind==='d772-section-practice'||isD772Question(session.current)||activeD772()&&/^(?:gen-d772-|d772-(?:oa-|pa-deep))/.test(session.current?.id||''))return questionHtml(session.current);
   return originalSessionHTML();
 };
 resultHTML=function(){
@@ -674,7 +546,8 @@ function bootD772Practice(){
     }
   }catch(e){console.warn('D772 Practice Lab boot',e)}
 }
-window.MajickWGUPractice={VERSION,studyTab,select,submit,openRequiredRecovery,finishRequiredRecovery,skipBrokenVisual,startSection,startSkillRetry,startDiagnostic,startMixedOA,startRepairTransfer,balancedMixedAssessment,practicePool,sectionNumber,startOA,startFocusedReview,startSampling,startStudyDesign,startLabelStudy,startExperiments,visualHtml,whyList,balancedOA,isD772Question,ensureD772Bank,bootD772Practice};
+function continueAfterRepair(){const r=window.MajickLearningContinuity?.practiceRecovery?.(session?.current,false);if(r?.required)return openRequiredRecovery(session.current);return window.continueSession()}
+window.MajickWGUPractice={VERSION,continueAfterRepair,specificRepair,repairLesson,studyTab,select,submit,openRequiredRecovery,finishRequiredRecovery,skipBrokenVisual,startSection,startSkillRetry,startDiagnostic,startMixedOA,startRepairTransfer,balancedMixedAssessment,practicePool,sectionNumber,startOA,startFocusedReview,startSampling,startStudyDesign,startLabelStudy,startExperiments,visualHtml,whyList,balancedOA,isD772Question,ensureD772Bank,bootD772Practice};
 document.documentElement.dataset.majickWguPractice='3.3.36';
 bootD772Practice();
 })();

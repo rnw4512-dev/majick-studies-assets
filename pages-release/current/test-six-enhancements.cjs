@@ -2,10 +2,10 @@
 const fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/strict');
 const read=f=>fs.readFileSync('current-site/'+f,'utf8');
 const ctx={console,setTimeout:()=>0,clearTimeout(){},document:{createElement:()=>({}),head:{append(){}},addEventListener(){}},localStorage:{getItem:()=>null,setItem(){}},save(){}};ctx.window=ctx;ctx.S={activeCourse:'D772',progress:{D772:{},D756:{sentinel:42}},majickAccount:{xp:1234,crystals:56},legacy:{pets:[{id:'p',type:'luna'}],eggs:[{id:'e'}]}};vm.createContext(ctx);
-for(const f of ['learning-continuity.js','solution-engine.js','visual-evidence-gate.js','d772-shared-oa-questions.js','d772-preassessment-deep-practice.js'])vm.runInContext(read(f),ctx);
+for(const f of ['question-repair.js','learning-continuity.js','solution-engine.js','visual-evidence-gate.js','d772-shared-oa-questions.js','d772-preassessment-deep-practice.js'])vm.runInContext(read(f),ctx);
 const C=ctx.MajickLearningContinuity,bank=ctx.MajickD772SharedQuestions.practiceQuestions();assert.equal(bank.length,60);assert.equal([1,2,3].reduce((n,s)=>n+ctx.MajickD772SharedQuestions.forSection(s).length,0),60);
 const trio=bank.filter(q=>q.skill==='weighted-mean');const unrelated=JSON.stringify({account:ctx.S.majickAccount,legacy:ctx.S.legacy,other:ctx.S.progress.D756});
-let r=C.practiceAnswer(trio[0],false);assert.equal(r.required,true);r=C.practiceAnswer(trio[1],false);assert(r.required);C.practiceAnswer(trio[1],false);assert.equal(r.misses,2,'replayed miss is not new evidence');
+let r=C.practiceAnswer(trio[0],false);assert.equal(r.required,false);r=C.practiceAnswer(trio[1],false);assert(r.required);C.practiceAnswer(trio[1],false);assert.equal(r.misses,2,'replayed miss is not new evidence');
 assert(!C.reconstructionCheck(trio[1],['wrong']).ok);assert.equal(r.stage,0);
 for(let i=0;i<ctx.MajickSolutionEngine.reconstructionPlan(trio[1]).length;i++){
  const step=ctx.MajickSolutionEngine.reconstructionPlan(trio[1])[i];const result=C.reconstructionCheck(trio[1],step.regions?step.regions.map(region=>region.selected):step.fields?step.fields.map(f=>String(f.value)):[step.answer]);assert(result.ok);if(i===1){ctx.S=JSON.parse(JSON.stringify(ctx.S));r=C.practiceRecovery(trio[1]);assert.equal(r.stage,2,'reconstruction survives reload')}
@@ -22,18 +22,18 @@ assert(ctx.probabilityTree({slots:[5,8,4,7]}).includes('After green: green 4/7 o
 const rewards=read('reward-core.js');let effects=0;const account={xp:100,crystals:5,chests:0,rewardCore:{ledger:{},stats:{},masteryXp:0,eggFragments:0}};
 const rewardCtx={account:()=>account,rewardKey:(_t,c)=>c.key,baseFor:()=>({xp:45,crystals:6}),treasureDrop:()=>null,save(){},pushRewardState(){},showReceipt(){},window:{MajickAnimationEffects:{play:()=>effects++}}};vm.createContext(rewardCtx);vm.runInContext(rewards.slice(rewards.indexOf('function award('),rewards.indexOf('function receiptLines')),rewardCtx);rewardCtx.award('lesson-mastered',{key:'D772:lesson:1'});const saved=JSON.stringify(account);rewardCtx.award('lesson-mastered',{key:'D772:lesson:1'});assert.equal(effects,1);assert.equal(JSON.stringify(account),saved);
 const html=read('index.html');const activeRoster=html.slice(html.indexOf('lfDetailedRoster=function(){'),html.indexOf('masDetailedRoster=lfDetailedRoster;',html.indexOf('lfDetailedRoster=function(){')));assert(activeRoster.includes('<details class="majGuardianDetails">'));const compat=read('study-ui-compat.js');assert(compat.includes('filter(type=>!pets.some(p=>p.type===type))'));assert(compat.includes('Personality and evolution'));assert(html.includes('<details class="majGuardianDetails"><summary>Personality, progress and wardrobe</summary>'));assert(html.includes('V336_EVOLUTION_FAMILIARS.filter(f=>!v336PetForType(f.id))'));assert(!html.includes('html.replace(marker,`<h3 class="lfSubhead">Future Academy Familiars'));
-console.log('PASS first-miss two-example recovery, save/reload, fresh-only transfer, no mastery/XP leakage, shared visual revisions, full-pool mixing, hands-on math/data, compact existing cards and ledger replay-safe celebrations');
+console.log('PASS two-mistake two-example recovery, save/reload, fresh-only transfer, no mastery/XP leakage, shared visual revisions, full-pool mixing, hands-on math/data, compact existing cards and ledger replay-safe celebrations');
 // New plans cover every eligible skill and every required value is present in its dropdown.
 vm.runInContext(solution.slice(solution.indexOf('function reconstructionNumbers('),solution.indexOf('function mountReconstruction(')),ctx);
 for(const q of bank){
- ctx.S.progress.D772.adaptiveSkills={};const repair=C.practiceAnswer(q,false);assert(repair.required,'first miss must open practice');
+ ctx.S.progress.D772.adaptiveSkills={};let repair=C.practiceAnswer(q,false);assert(!repair.required,'first miss teaches without mandatory reconstruction');repair=C.practiceAnswer(q,false,false,'wrong',{attemptId:'second-deliberate-attempt'});assert(repair.required,'second miss requires reconstruction');
  const plan=ctx.MajickSolutionEngine.reconstructionPlan(q);assert(plan.length>=6);assert(plan[0].text!==q.prompt);assert(plan.some(s=>s.title.startsWith('Hands-on practice')));
  assert(!C.reconstructionCheck(q,[]).ok,'missing values cannot become zero');
  for(const [stage,step] of plan.entries()){if(step.fields)for(const f of step.fields){assert(Number.isFinite(f.value));assert(ctx.reconstructionNumbers(plan,stage).includes(f.value),q.id+' missing formula option '+f.label)}const result=C.reconstructionCheck(q,step.regions?step.regions.map(region=>region.selected):step.fields?step.fields.map(f=>String(f.value)):[step.answer]);assert(result.ok,q.id+' '+step.title)}
- assert(repair.awaitingTransfer&&!repair.required);assert.equal(repair.misses,1,'guided corrections cannot add independent misses');
+ assert(repair.awaitingTransfer&&!repair.required);assert.equal(repair.misses,2,'guided corrections cannot add independent misses');
 }
 ctx.S.progress.D772.adaptiveSkills={};const legacy=C.practiceRecovery(trio[0]);Object.assign(legacy,{required:true,stage:2,verified:[0,1]});assert.equal(ctx.MajickSolutionEngine.reconstructionPlan(trio[0]).length,5,'paused legacy plan retains its stages');
-console.log('PASS all 60 first-miss plans, separate hands-on evidence, finite formula values, blank rejection and legacy recovery migration');
+console.log('PASS all 60 two-mistake plans, separate hands-on evidence, finite formula values, blank rejection and legacy recovery migration');
 
 // Freshness is based on new evidence, with deterministic snapshots surviving reload.
 vm.runInContext(solution.slice(solution.indexOf('function workshopCases('),solution.indexOf('function newWorkshopState(')),ctx);
@@ -49,15 +49,15 @@ for(const task of ctx.tasks.filter(t=>['mean','median','probability','weighted-m
 }
 const seenRepairs=new Map(),modelTypes=new Set(),individualExamples=new Set();
 for(let cycle=0;cycle<8;cycle++)for(const original of bank){
- const q={...original,id:original.id+'-fresh-test-'+cycle};const r=C.practiceAnswer(q,false,false,'wrong');const plan=ctx.MajickSolutionEngine.reconstructionPlan(q);assert(plan.length>=6);
+ const q={...original,id:original.id+'-fresh-test-'+cycle};C.practiceAnswer(q,false,false,'wrong');const r=C.practiceAnswer(q,false,false,'wrong',{attemptId:'second-deliberate-attempt'});const plan=ctx.MajickSolutionEngine.reconstructionPlan(q);assert(plan.length>=6);
  const signature=JSON.stringify(plan.map(step=>step.text));const key=q.skill||C.practiceSkill(q),seen=seenRepairs.get(key)||new Set();assert(!seen.has(signature),'Repeated guided evidence for '+key);seen.add(signature);seenRepairs.set(key,seen);
  const snapshot=JSON.stringify(plan);ctx.S=JSON.parse(JSON.stringify(ctx.S));assert.equal(JSON.stringify(ctx.MajickSolutionEngine.reconstructionPlan(q)),snapshot,'plan changed after reload');
  for(const step of plan){if(step.title.includes('Which formula fits?')){const example=step.text;assert(!individualExamples.has(example),'An individual guided or hands-on example repeated');individualExamples.add(example)}if(step.model)modelTypes.add(step.model.type);if(step.title.includes('Which formula fits?')){assert(step.choices.includes(step.answer));assert(step.justification);for(const wrong of step.choices.filter(c=>c!==step.answer))assert(step.explanations[wrong],'missing formula-specific rationale')}}
 }
 assert.deepEqual([...modelTypes].sort(),['boxplot','histogram','tree','venn']);
-const complement=bank.find(q=>q.skill==='complement-multistage'),d=complement.data;assert.equal(C.diagnosePracticeMistake(complement,String(d.trials*d.rate*(1-d.rate)**(d.trials-1))).code,'exactly-one-for-at-least-one');
-const conditional=bank.find(q=>q.skill==='conditional-denominator');assert.equal(C.diagnosePracticeMistake(conditional,'wrong').code,'conditional-denominator');
-ctx.S.progress.D772.adaptiveSkills={};const readinessQ={...trio[0],id:'readiness-miss'};let readinessR=C.practiceAnswer(readinessQ,false);assert.equal(C.practiceReadiness(readinessQ).label,'Needs guidance');
+const complement=bank.find(q=>q.skill==='complement-multistage'),d=complement.data;assert.equal(C.diagnosePracticeMistake(complement,String(d.trials*d.rate*(1-d.rate)**(d.trials-1))).confirmed,false);
+const conditional=bank.find(q=>q.skill==='conditional-denominator');assert.equal(C.diagnosePracticeMistake(conditional,'wrong').confirmed,false);
+ctx.S.progress.D772.adaptiveSkills={};const readinessQ={...trio[0],id:'readiness-miss'};let readinessR=C.practiceAnswer(readinessQ,false);assert.equal(C.practiceReadiness(readinessQ).label,'Needs guidance');C.practiceAnswer(readinessQ,false,false,'wrong',{attemptId:'readiness-second-miss'});
 for(const step of ctx.MajickSolutionEngine.reconstructionPlan(readinessQ)){const values=step.regions?step.regions.map(r=>r.selected):step.fields?step.fields.map(f=>String(f.value)):[step.answer];assert(C.reconstructionCheck(readinessQ,values).ok)}
 assert.equal(C.practiceReadiness(readinessQ).label,'Practicing independently');assert(readinessR.solvedSteps.some(step=>step.entries.some(entry=>entry.includes('Why:'))),'verified rationale missing from trail');
 C.practiceAnswer({...trio[1],id:'readiness-first'},true);assert.equal(C.practiceReadiness(readinessQ).label,'Practicing independently');C.practiceAnswer({...trio[2],id:'readiness-second'},true);assert.equal(C.practiceReadiness(readinessQ).label,'Demonstrated independently');assert.equal(C.practiceReadiness(readinessQ).certified,false);

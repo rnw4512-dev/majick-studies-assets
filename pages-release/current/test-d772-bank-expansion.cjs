@@ -1,5 +1,5 @@
 const assert=require('node:assert/strict'),fs=require('node:fs'),vm=require('node:vm');
-const ctx={window:{}};vm.createContext(ctx);vm.runInContext(fs.readFileSync('current-site/d772-shared-oa-questions.js','utf8'),ctx);
+const ctx={window:{},document:{addEventListener(){}}};vm.createContext(ctx);vm.runInContext(fs.readFileSync('current-site/d772-shared-oa-questions.js','utf8'),ctx);
 const bank=ctx.window.MajickD772SharedQuestions.questions,added=bank.filter(q=>q.id.startsWith('d772-oa-expansion-'));
 assert.equal(added.length,24);assert.equal(new Set(bank.map(q=>q.id)).size,bank.length);
 for(const q of added){assert.equal(new Set(q.options).size,4);assert(q.options.includes(q.answer));assert(q.why&&q.sourceLabel.includes('NOT OFFICIAL'));
@@ -11,6 +11,7 @@ for(const q of added){assert.equal(new Set(q.options).size,4);assert(q.options.i
  if(q.skill==='iqr-outlier'){const x=d.values;assert.equal((x[5]+x[6]-x[1]-x[2])/2,8);assert(d.newValue>(x[5]+x[6])/2+12)}
  assert.equal(added.filter(x=>x.skill===q.skill).length,3);
 }
+vm.runInContext(fs.readFileSync('current-site/question-repair.js','utf8'),ctx);
 const source=fs.readFileSync('current-site/room-section-nav.js','utf8');vm.runInContext(source.slice(source.indexOf('function queueExamFollowup'),source.indexOf('function examDeck')),ctx);
 const a=added[0],peer=added.find(q=>q.id!==a.id&&q.skill===a.skill),other=added.find(q=>q.skill!==a.skill);
 const state={deck:[a,other,peer],index:0};assert(ctx.queueExamFollowup(state,a));assert.equal(state.deck[1].id,peer.id);assert.equal(new Set(state.deck.map(q=>q.id)).size,3);

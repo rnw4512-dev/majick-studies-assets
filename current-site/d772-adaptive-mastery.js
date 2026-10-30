@@ -16,7 +16,9 @@ function reset(topic){const s=state(),prior=cycle(topic);if(!s||!prior)return;co
 function answer(topic,selected){
  const c=cycle(topic),phase=c?.stage;if(!c||!['diagnostic','independent','transfer'].includes(phase))return null;
  const q=pick(topic,phase,c);if(!q)return {error:'No distinct question available for this step; please choose a different topic.'};
+ const recovery=window.MajickLearningContinuity?.practiceRecovery?.(q,false);if(phase!=='diagnostic'&&recovery?.required)return {error:'Complete the mandatory guided reconstruction before independent practice.'};
  const correct=Number(selected)===q.correct;
+ if(!correct)window.MajickQuestionRepair?.recordWrong(q,Number(selected),{assisted:phase==='diagnostic',room:'learn-lab-adaptive'});else window.MajickLearningContinuity?.practiceAnswer?.(q,true,false,Number(selected),{assisted:phase==='diagnostic',origin:phase==='transfer'?'independent-transfer':'learn-lab-adaptive'});
  const item={topic:topic.id,stage:phase,qid:q.id,selected:Number(selected),correct,questionRevision:q.revision||1,at:Date.now(),assisted:phase==='diagnostic'};
  c.attempts.push(item);state().history.push(item);
  if(phase==='diagnostic'){c.first=q.id;c.stage='repair';c.status='in-progress'}
@@ -25,7 +27,8 @@ function answer(topic,selected){
  else{c.transfer=q.id;c.stage='teaching'}
  save();return {correct,why:q.why,stage:c.stage,phase};
 }
-function next(topic){const c=cycle(topic);if(!c)return;if(c.stage==='repair'){c.stage='independent';c.status='in-progress';save()} }
+function repairSource(topic,c){const missed=[...c.attempts].reverse().find(a=>!a.correct);return missed&&bank(topic).find(q=>q.id===missed.qid)}
+function next(topic){const c=cycle(topic);if(!c)return;if(c.stage==='repair'){const source=repairSource(topic,c);if(source&&window.MajickLearningContinuity?.practiceRecovery?.(source,false)?.required)return false;c.stage='independent';c.status='in-progress';save();return true} }
 function submitTeach(topic,text,diagnosis,action,probe){
  const c=cycle(topic);if(!c||c.stage!=='teaching')return {error:'Complete independent and transfer practice first.'};
  if(text.trim().length<100||!diagnosis||!action||!probe)return {error:'Write at least 100 characters and complete all three classroom reasoning checks.'};
@@ -55,11 +58,13 @@ function render(){
    line('p',q.prompt);
    const group=document.createElement('fieldset');group.setAttribute('aria-label',q.prompt);group.style.cssText='border:0;padding:0';work.append(group);
    q.choices.forEach((choice,i)=>{const label=document.createElement('label');label.style.cssText='display:block;padding:6px;color:#271b2d';const radio=document.createElement('input');radio.type='radio';radio.name='mjAdaptiveChoice';radio.value=String(i);label.append(radio,document.createTextNode(' '+String.fromCharCode(65+i)+'. '+choice));group.append(label)});
-   button('Submit '+c.stage+' answer',()=>{const v=group.querySelector('input:checked');if(!v){status.textContent='Choose an answer before submitting.';return}const r=answer(t,v.value);if(r?.error){status.textContent=r.error;return}draw();const p=line('p',(r.correct?'Correct. ':'Not yet. ')+r.why);p.setAttribute('role','status')});
+   button('Submit '+c.stage+' answer',()=>{const v=group.querySelector('input:checked');if(!v){status.textContent='Choose an answer before submitting.';return}const r=answer(t,v.value);if(r?.error){status.textContent=r.error;return}draw();const p=line('section',r.correct?'Correct. '+r.why:'');if(!r.correct)p.innerHTML=window.MajickQuestionRepair.html(q,Number(v.value));p.setAttribute('role','status')});
   }else if(c.stage==='repair'){
+   const source=repairSource(t,c),recovery=source&&window.MajickLearningContinuity?.practiceRecovery?.(source,false);
+   if(recovery?.required){line('h5','Guided misconception repair');line('p','Two mistakes require verified reconstruction before a fresh independent question.');const guided=document.createElement('section');work.append(guided);window.MajickSolutionEngine.mountReconstruction(guided,source,()=>{next(t);draw()});return}
    line('h5','Guided misconception repair');
    line('p','Common trap: '+t.misconception);line('p','Professor walkthrough: '+t.repair);
-   const example=bank(t).find(q=>q.id===c.first)||bank(t)[0];
+   const example=source||bank(t).find(q=>q.id===c.first)||bank(t)[0];
    if(example)line('p','Worked example: '+example.why);
    button('I understand · try a NEW independent question',()=>{next(t);draw()});
   }else if(c.stage==='teaching'){

@@ -127,7 +127,7 @@ function examQuestions(){
 function queueExamFollowup(state,question){
  const remaining=state.deck.slice(state.index+1);
  const skill=q=>window.MajickLearningContinuity?.practiceSkill?.(q)||q.skill||q.lessonId;
- const matches=q=>q.id!==question.id&&skill(q)===skill(question);
+ const matches=q=>q.id!==question.id&&skill(q)===skill(question)&&window.MajickQuestionRepair.isFresh(question,q);
  const offset=remaining.findIndex(matches);
  if(offset<0)return false;
  const [fresh]=state.deck.splice(state.index+1+offset,1);
@@ -226,7 +226,7 @@ function renderMixedExam(panel,focusTarget){
    if(state.submitted)return;
    if(!examEvidence(q).ok){renderMixedExam(panel);return}
    if(evidence.required){const visual=evidenceHost?.querySelector('svg,img,canvas,table');const rect=visual?.getBoundingClientRect();if(!rect||rect.width<=0||rect.height<=0||(visual.tagName==='IMG'&&(!visual.complete||!visual.naturalWidth))){const notice=document.createElement('p');notice.setAttribute('role','alert');notice.textContent='The diagram has not rendered. Nothing was scored. Check the diagram again before submitting.';panel.append(notice);return}}
-   window.MajickLearningContinuity?.practiceAnswer?.(q,state.selected===q.answer,false,state.selected);
+   window.MajickLearningContinuity?.practiceAnswer?.(q,state.selected===q.answer,false,state.selected,{origin:state.followupId===q.id?'independent-transfer':'trial'});
    const skill=window.MajickLearningContinuity?.practiceSkill?.(q)||q.skill||q.lessonId;state.skillResults=state.skillResults||{};const record=state.skillResults[skill]||(state.skillResults[skill]={missed:0,correct:0});record[state.selected===q.answer?'correct':'missed']++;
    state.submitted=true;if(state.selected!==q.answer)queueExamFollowup(state,q);state.attempted++;if(state.selected===q.answer)state.correct++;
    // Do not award mastery for a single exam-style response. Keep a separate
@@ -247,6 +247,7 @@ function renderMixedExam(panel,focusTarget){
   const why=document.createElement('p');why.textContent=q.why;
   if(state.selected!==q.answer&&q.distractorRationales?.[state.selected])why.textContent+=' '+q.distractorRationales[state.selected];
   feedback.append(verdict,answer,why);
+  if(state.selected!==q.answer){feedback.replaceChildren();feedback.innerHTML=window.MajickQuestionRepair.html(q,state.selected)}
   if(state.selected!==q.answer){const selected=document.createElement('p');selected.textContent='You chose: '+state.selected+'. Compare that choice with the deciding evidence in the explanation.';feedback.append(selected)}
   const source=document.createElement('small');source.textContent=q.sourceLabel||'MAJICK ORIGINAL · OA-STYLE PRACTICE — NOT OFFICIAL WGU ITEMS';feedback.append(source);
   panel.append(feedback);
@@ -278,12 +279,13 @@ function renderReasoning(){
   const host=document.createElement('section');host.className='mjSolutionEngine';host.setAttribute('aria-label','Reasoning Workshop activities');activity.append(host);
   const about=document.createElement('section');about.className='mjReasoningAbout';about.setAttribute('aria-hidden','true');
   about.innerHTML='';
-  const exam=document.createElement('section');exam.className='majMixedExam';exam.setAttribute('aria-label','Mixed D772 multiple-choice exam practice');
+  const exam=document.createElement('section');exam.className='majMixedExam';exam.setAttribute('aria-label','Scholar’s Trial Chamber · '+cid);
   const views=[{label:'✦ OA Trials',panel:exam},{label:'✧ Guided Reasoning',panel:activity}];
   activity.toggleAttribute('hidden',true);activity.setAttribute('aria-hidden','true');
   views.forEach(({label,panel},i)=>{const btn=document.createElement('button');btn.type='button';btn.textContent=label;btn.setAttribute('aria-pressed',String(i===0));btn.onclick=()=>{views.forEach((v,j)=>{v.panel.toggleAttribute('hidden',j!==i);v.panel.setAttribute('aria-hidden',String(j!==i));tabs.children[j].setAttribute('aria-pressed',String(j===i))})};tabs.append(btn)});
   page.append(header,tabs,exam,activity);root.append(page);
-  if(cid==='D772')renderMixedExam(exam);else exam.textContent='Mixed OA questions are currently available for D772 only.';
+  const source=window.S?.progress?.[cid]?.requiredReconstructionQuestion;
+  if(cid==='D772')renderMixedExam(exam);else if(source)window.MajickSolutionEngine.mountReconstruction(exam,source,()=>{delete window.S.progress[cid].requiredReconstructionQuestion;save();window.MajickWGUPractice.finishRequiredRecovery(source)});else exam.textContent='Choose a lesson activity or return here for required guided reconstruction.';
   page.dataset.practiceMode='mixed';
   root.dataset.majReasoningCourse=cid;
  }

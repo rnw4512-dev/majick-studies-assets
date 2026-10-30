@@ -4,7 +4,7 @@ button[title^="Skill: d772-"]{white-space:normal;max-width:100%;overflow-wrap:an
 @media(max-width:600px){#majConnectedPath .majPathActions button{flex:1 1 150px}}
 
 /* Compact academic screens: preserve questions and inputs, reduce decorative excess. */
-#content .majRoomArchitecture{min-height:120px!important;max-height:170px!important;padding:12px 16px!important;margin:8px 0 12px!important}
+#content .majRoomArchitecture:not(.aetheriaCastleArrival){min-height:120px!important;max-height:170px!important;padding:12px 16px!important;margin:8px 0 12px!important}
 #content .majRoomBannerTitle{font-size:clamp(1.5rem,3vw,2.7rem)!important}
 #content .majRoomBannerSub{font-size:.8rem!important}
 #content .v342RepairSteps{display:grid;gap:10px}
@@ -13,4 +13,4 @@ button[title^="Skill: d772-"]{white-space:normal;max-width:100%;overflow-wrap:an
 #content .v342Repair{max-width:100%;box-sizing:border-box}
 #content .v342Repair textarea{width:100%;box-sizing:border-box}
 @media(min-width:850px){#content .v342RepairSteps{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:600px){#content .majRoomArchitecture{min-height:95px!important;max-height:130px!important}}
+@media(max-width:600px){#content .majRoomArchitecture:not(.aetheriaCastleArrival){min-height:95px!important;max-height:130px!important}}

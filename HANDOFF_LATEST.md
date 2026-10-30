@@ -1,5 +1,15 @@
 # Majick Studies — Current V3.4.2
 
+## Shared teaching and magical immersion · 2026-10-30
+
+- Repair branch: `fix/shared-eight-step-repair`; runtime build `579d066118a6c07a`. Commit/PR/deployment outcomes are in the delivery report and PR. A built branch is not a deployed or certified release.
+- One question-aware eight-step explanation adapter now serves the existing learning rooms and Game Realm. Existing continuity owns two-mistake recovery and prevents guided work/replayed evidence from certifying independent mastery.
+- Study Hall now keeps submitted OA feedback visible and restores its Skill Growth drawer. Source hydration preserves active lesson work. Probability’s dedicated route has a working local Back button.
+- Home uses licensed human castle artwork, readable purple lighting and bounded fairy lights. Existing effects provide glows/sparkles. Existing ambience plays licensed human music with explicit enable, volume, mute and credits; no autoplay on reload.
+- Pixi adds local hit areas, hover/press feedback, reveal glows and a tiled constellation through its existing ticker. No replacement renderer, state store, Guardian assets or earned-progress reset was added. Phaser stays available.
+- Full change list, verification limits, asset provenance and actionable rollback: [REPAIR_AND_IMMERSION_REPORT_2026-10-30.md](REPAIR_AND_IMMERSION_REPORT_2026-10-30.md).
+
+
 ## Sanctuary identity, shared furniture and learning repair — 2026-10-24
 
 - PR: https://github.com/rnw4512-dev/majick-studies-assets/pull/195 . Source repair commit `7a9f628`; current branch includes #194 through merge `3b91d18`. The PR records the final commit and publication result.
