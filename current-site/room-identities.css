@@ -145,3 +145,22 @@
 #content[data-majick-room="potions"]>.majRoomArchitecture{background-image:linear-gradient(90deg,#0d1129a8,#17112248,#0d1129a8),url("./assets/rooms/potions.svg");background-size:cover;background-position:center}
 #content[data-majick-room="store"]>.majRoomArchitecture{background-image:linear-gradient(90deg,#0d1129a8,#17112248,#0d1129a8),url("./assets/rooms/boutique.svg");background-size:cover;background-position:center}
 #content[data-majick-room="analytics"]>.majRoomArchitecture{background-image:linear-gradient(90deg,#0d1129a8,#17112248,#0d1129a8),url("./assets/rooms/observatory.svg");background-size:cover;background-position:center}
+
+/* The home entrance is an actual human-painted castle landscape. */
+#content[data-majick-room="home"] .majRoomArchitecture.aetheriaCastleArrival{position:relative;isolation:isolate;display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-end;min-height:340px;padding:clamp(22px,4vw,46px);overflow:hidden;border:1px solid #c5a575;border-radius:20px;background:linear-gradient(0deg,#1b102a 0%,#261637cc 30%,#25153920 75%),url('./assets/rooms/landscape-castle.webp') 50% 40%/cover;box-shadow:0 14px 40px #130b2255,inset 0 0 60px #35204355;color:#fff1d1;gap:9px;text-align:left}
+#content[data-majick-room="home"] .aetheriaCastleArrival::before{content:"";position:absolute;inset:0;background:linear-gradient(115deg,#21102f66,#5b38802b 55%,#22103418);z-index:-1;pointer-events:none}
+#content[data-majick-room="home"] .aetheriaCastleArrival::after{content:"";position:absolute;width:56px;height:56px;border-radius:50%;top:20px;left:auto;right:28px;background:#f6e7c8;box-shadow:0 0 28px #f5deab99,0 0 75px #dab7ff44;pointer-events:none}
+#content[data-majick-room="home"] .aetheriaCastleArrival .majRoomEmblem{display:none}
+#content[data-majick-room="home"] .aetheriaCastleArrival .majRoomBannerTitle{display:block;max-width:100%;font:600 clamp(27px,3.5vw,46px)/1.1 Georgia,serif;letter-spacing:.015em;color:#fff1d1!important;text-shadow:0 2px 8px #180c24}
+#content[data-majick-room="home"] .aetheriaCastleArrival .majRoomBannerSub{display:block;color:#edc995!important;font:700 11px/1.5 system-ui;letter-spacing:.16em}
+.aetheriaCastleWelcome{max-width:46ch;font:16px/1.5 Georgia,serif;color:#f8ecd8!important;margin:0!important;text-shadow:0 1px 5px #160d20}
+.aetheriaCastleCredit{font:11px/1.5 system-ui;color:#eedfbf!important;margin-top:6px;text-underline-offset:3px}
+.aetheriaCastleFairy{position:absolute;left:calc(18% + var(--fairy)*26%);top:calc(20% + var(--fairy)*11%);width:4px;height:4px;border-radius:50%;background:#fff6cc;box-shadow:0 0 7px #fce3a3,0 0 17px #ddbaff;pointer-events:none;animation:aetheriaFairyWander 9s ease-in-out infinite alternate;animation-delay:calc(var(--fairy)*-3s)}
+.aetheriaCastleFairy:before,.aetheriaCastleFairy:after{content:"";position:absolute;top:-2px;width:6px;height:3px;background:#e8d8ff66;border-radius:70%;filter:blur(.5px)}
+.aetheriaCastleFairy:before{right:3px;transform:rotate(35deg)}.aetheriaCastleFairy:after{left:3px;transform:rotate(-35deg)}
+@keyframes aetheriaFairyWander{0%{transform:translate(0,0);opacity:.45}45%{transform:translate(24px,-18px);opacity:.85}100%{transform:translate(-16px,13px);opacity:.55}}
+@media(max-width:600px){#content[data-majick-room="home"] .majRoomArchitecture.aetheriaCastleArrival{min-height:420px;background-position:62% 0;background-size:auto,auto 330px;background-repeat:no-repeat;background-color:#20132a;padding:110px 16px 18px}.aetheriaCastleWelcome{font-size:14px}}
+@media(prefers-reduced-motion:reduce){.aetheriaCastleFairy{animation:none!important}}
+html[data-majick-reduce-motion="true"] .aetheriaCastleFairy{animation:none!important}
+
+#content .aetheriaCastleCopy{position:relative;display:flex;flex-direction:column;gap:8px;max-width:min(100%,620px);padding:18px 22px;background:#24132ff2!important;border:1px solid #bea16d88;border-left:3px solid #dfbf80;border-radius:5px 16px 16px 5px;box-shadow:0 4px 25px #12091b44;text-align:left;box-sizing:border-box}

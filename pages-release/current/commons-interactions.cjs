@@ -41,16 +41,24 @@ module.exports=async function({ev,waitFor,call,sleep}){
  const q=await ev('MajickD772PreassessmentReview.questions[Number(document.querySelector("#mjPaPracticeTopic").value)]');
  await click('[data-mj-pa-check]');assert((await ev('document.querySelector("[data-mj-pa-feedback]").textContent')).includes('Choose an answer'));
  await ev('document.querySelectorAll("input[name=mjPaPracticeChoice]")['+((q.correct+1)%q.choices.length)+'].click()');await click('[data-mj-pa-check]');
- assert((await ev('document.querySelector("[data-mj-pa-feedback]").textContent')).includes('Not yet.'));
+ assert.equal(await ev('document.querySelectorAll("[data-mj-pa-feedback] .aetheriaQuestionRepair details").length'),8);assert((await ev('document.querySelector("[data-mj-pa-feedback]").textContent')).includes('Mistake Diagnosis'));
  await ev('document.querySelectorAll("input[name=mjPaPracticeChoice]")['+q.correct+'].click()');await click('[data-mj-pa-check]');
  assert((await ev('document.querySelector("[data-mj-pa-feedback]").textContent')).includes('Correct.'));
  const oldIndex=await ev('document.querySelector("#mjPaPracticeTopic").value');await click('[data-mj-pa-next]');assert.notEqual(await ev('document.querySelector("#mjPaPracticeTopic").value'),oldIndex);
  // Real adaptive diagnostic miss -> repair -> fresh independent miss -> repair -> independent + transfer.
  const aq=()=>ev('(()=>{const a=MajickD772AdaptiveMastery,t=a.topics.find(t=>t.id===document.querySelector("#mjAdaptiveTopic").value),c=a.cycle(t);return a.pick(t,c.stage,c)})()');
  async function answer(correct){const q=await aq();const index=correct?q.correct:(q.correct+1)%q.choices.length;await ev('document.querySelectorAll("input[name=mjAdaptiveChoice]")['+index+'].click();document.querySelector("[data-am-work] button").click()');return q.id}
+ async function continueRepair(){
+  const source=await ev('(()=>{const a=MajickD772AdaptiveMastery,t=a.topics.find(t=>t.id===document.querySelector("#mjAdaptiveTopic").value),c=a.cycle(t),miss=[...c.attempts].reverse().find(a=>!a.correct);return miss&&a.bank(t).find(q=>q.id===miss.qid)})()');
+  if(source){for(let n=0;n<80;n++){
+   const step=await ev('(()=>{const q='+JSON.stringify(source)+',r=MajickLearningContinuity.practiceRecovery(q,false);return r?.required?MajickSolutionEngine.reconstructionPlan(q)[r.stage]:null})()');if(!step)break;
+   await ev('(()=>{const step='+JSON.stringify(step)+',form=document.querySelector("[data-am-work] [data-reconstruction-fields]");if(!form)throw Error("Mandatory reconstruction missing");if(step.regions)[...form.querySelectorAll("button")].forEach((b,i)=>{if(step.regions[i].selected)b.click()});else if(step.fields)[...form.querySelectorAll("select")].forEach((s,i)=>{s.value=String(step.fields[i].value);s.dispatchEvent(new Event("change",{bubbles:true}))});else [...form.querySelectorAll("input[type=radio]")][step.choices.indexOf(step.answer)].click();[...form.parentElement.querySelectorAll("button")].find(b=>b.textContent==="Verify reconstruction step").click()})()');
+  }}
+  await click('[data-am-work] button');
+ }
  const first=await answer(false);assert((await ev('document.querySelector("[data-am-work]").textContent')).includes('Guided misconception repair'));
- await click('[data-am-work] button');const independent=await answer(false);assert.notEqual(first,independent);assert((await ev('document.querySelector("[data-am-work]").textContent')).includes('Guided misconception repair'));
- await click('[data-am-work] button');const repaired=await answer(true),transfer=await answer(true);assert.notEqual(repaired,transfer);
+ await continueRepair();const independent=await answer(false);assert.notEqual(first,independent);assert((await ev('document.querySelector("[data-am-work]").textContent')).includes('Guided misconception repair'));
+ await continueRepair();const repaired=await answer(true),transfer=await answer(true);assert.notEqual(repaired,transfer);
  assert((await ev('document.querySelector("[data-am-work]").textContent')).includes('Teach it back'));
  await click('[data-am-work] button');assert((await ev('document.querySelector("[data-am-status]").textContent')).includes('100 characters'));
  await ev('(()=>{const ta=document.querySelector("[data-am-work] textarea");ta.value="The sample excludes part of the population. I would model representative sampling using all classroom groups, compare the biased sample, and ask students to explain a fresh case independently.";const values=["misconception","model-and-recheck","new-case"];document.querySelectorAll("[data-am-work] select").forEach((s,i)=>{s.value=values[i]})})()');

@@ -13,7 +13,7 @@ const rules=[
  [/repair\.dataset\.labRepair/,'Wrong independent answer must offer guided repair'],
  [/section\.querySelector\('\[data-lab-guided\]'\)/,'Guided review must return to the existing lesson owner'],
  [/generated-lab-independent-formative/,'Independent formative response must stay in existing tracker'],
- [/skillResult\?\.\(q,correct,false,'generated-lab-independent-formative'\)/,'Formative attempt must not be marked as certified transfer']
+ [/skillResult\?\.\(q,correct,false,'generated-lab-independent-formative',!correct\)/,'Formative attempt must not be marked as certified transfer']
 ];for(const [rx,why] of rules)assert(rx.test(src),why);
 const ctx={window:{},Math,Date,Array,Object,Number,String,JSON,Set};
 vm.runInNewContext(src,ctx,{filename:'generated-question-engine.js'});

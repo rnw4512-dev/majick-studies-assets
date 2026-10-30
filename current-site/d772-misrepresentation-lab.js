@@ -71,7 +71,7 @@ function render(){
   const selected=section.querySelector('input[name="mjMisleadAnswer"]:checked');if(!selected){feedback.textContent='Please choose a conclusion first.';return}
   const q=problem(type.value,Number(section.dataset.caseIndex)),correct=Number(selected.value)===q.correct;
   st.attempts.push({kind:q.kind,index:q.index,correct,at:Date.now(),assisted:true,source:'guided-misrepresentation-lab'});
-  feedback.textContent=(correct?'Correct. ':'Not yet. ')+q.explanation+' This answer is guided practice, not independent mastery.';
+  if(correct)feedback.textContent='Correct. '+q.explanation+' This is guided practice, not independent mastery.';else{const actual={...q,id:'misrepresentation:'+q.kind+':'+q.index,courseId:'D772',lessonId:LESSON,answer:q.correct,why:q.explanation,visualHtml:visual(q)};window.MajickQuestionRepair.recordWrong(actual,Number(selected.value),{assisted:true,room:'misrepresentation'});feedback.innerHTML=window.MajickQuestionRepair.html(actual,Number(selected.value))}
   window.MajickLearningContinuity?.record?.({courseId:'D772',lessonTitle:LESSON,correct,activity:'guided-misrepresentation-'+q.kind});
   persist();
  });

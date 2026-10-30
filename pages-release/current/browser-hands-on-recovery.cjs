@@ -23,7 +23,7 @@ module.exports=async({ev,call,waitFor})=>{
   q.querySelector('[data-lab-submit]').click();
   const wrong=q.querySelector('[data-lab-independent-feedback]')?.textContent;
   const repair=q.querySelector('[data-lab-repair]');
-  if(!wrong?.includes('Not yet')||!repair)throw Error('Wrong answer not recorded or repair unavailable');
+  if(!wrong?.includes('Mistake Diagnosis')||q.querySelectorAll('.aetheriaQuestionRepair details').length!==8||!repair)throw Error('Wrong answer not recorded or repair unavailable');
   const record=S.progress.D772.learningNeeds?.['d772-s2-l4-1'];
   if(!record?.struggles)throw Error('Learning need was not stored');
   const firstAttempts=S.progress.D772.adaptiveSkills?.['d772-s2-l4-1']?.attempts?.length||0;
@@ -36,6 +36,22 @@ module.exports=async({ev,call,waitFor})=>{
   lab.querySelector('[data-sort-clear]').click();
   if([...lab.querySelectorAll('[data-sort-pool] button:disabled')].length)throw Error('Clear did not re-enable observations');
   lab.querySelector('[data-lab-new]').click();
+  // Earlier checks may already have a miss on this skill. Respect mandatory
+  // reconstruction, verify its real controls, then request independent evidence.
+  const recovery=MajickLearningContinuity.practiceRecovery({skill:'median',lessonId:'d772-s2-l4-1'},false);
+  if(recovery?.required){
+   const source=recovery.source,plan=MajickSolutionEngine.reconstructionPlan(source);
+   for(let n=0;n<plan.length&&recovery.required;n++){
+    const step=plan[recovery.stage],form=lab.querySelector('[data-reconstruction-fields]');
+    if(!form)throw Error('Mandatory guided reconstruction missing');
+    if(step.regions)[...form.querySelectorAll('button')].forEach((b,i)=>{if(step.regions[i].selected)b.click()});
+    else if(step.fields)[...form.querySelectorAll('select')].forEach((s,i)=>{s.value=String(step.fields[i].value);s.dispatchEvent(new Event('change',{bubbles:true}))});
+    else [...form.querySelectorAll('input[type=radio]')][step.choices.indexOf(step.answer)].click();
+    [...form.parentElement.querySelectorAll('button')].find(b=>b.textContent==='Verify reconstruction step').click();
+   }
+   if(recovery.required||!recovery.awaitingTransfer)throw Error('Reconstruction did not preserve mandatory transfer');
+   [...lab.querySelectorAll('button')].find(b=>b.textContent==='Continue to fresh independent practice').click();
+  }
   const next=lab.querySelector('[data-lab-independent]');
   const nextVisual=next.querySelector('figure')?.outerHTML;
   if(!nextVisual||nextVisual===visual)throw Error('Fresh problem reused the same plotted data');

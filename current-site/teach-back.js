@@ -61,22 +61,26 @@ function mount(_box,lesson,index){
  const ev=visualQuestion?evidenceGate?.evidence(visualQuestion):null;
  const key=String(window.S?.activeCourse)+':'+index+':'+id;
  let st=memory.get(key);if(!st){st={answer:-1,attempts:0,explain:'',feedback:'',showModel:false};memory.set(key,st)}
+ const repairQuestion={...(visualQuestion||{}),id:'teach-back:'+id+':'+index,courseId:window.S?.activeCourse,lessonId:id,prompt:challenge[0],options:challenge[1],answer:challenge[2],why:challenge[3]};
  const draw=()=>{
  const visualReady=!visualQuestion||!!ev?.ok;
  const visualBlock=visualQuestion?(visualReady?'<div class="mjtEvidence"><h5>Read the evidence</h5><p>'+E(visualQuestion.prompt)+'</p>'+ev.html+'</div>':(evidenceGate?.blockedHtml()||'<p role="alert">Required visual is unavailable.</p>')):'';
  const html='<section class="mjtCoach"><header><small>YOUR PROFESSOR’S PRACTICE DESK</small><h4>✦ Explain · Apply · Teach it</h4><p>Use the concept in a realistic example before you leave this lesson.</p></header><div class="mjtTip"><b>Memory spell</b><p>'+E(tip?.[0]||'State the idea, give evidence, and connect it to a classroom example.')+'</p><small>'+E(tip?.[1]||'Explain it as though a student is hearing it for the first time.')+'</small></div><h5>Try a classroom challenge</h5><p>'+E(challenge[0])+'</p>'+visualBlock+'<div class="mjtChoices">'+(visualReady?challenge[1].map((option,i)=>'<button type="button" data-pick="'+i+'" aria-pressed="'+(st.answer===i)+'">'+E(option)+'</button>').join(''):'')+'</div><h5>Teach it back</h5><p>Explain why your answer makes sense, then say how you would teach or apply the concept in your own classroom.</p><textarea rows="3" aria-label="Explain this concept as a teacher" placeholder="I would explain this to my students by…">'+E(st.explain)+'</textarea><div class="mjtControls"><button type="button" data-check>Check and coach me</button><button type="button" data-model>Professor example</button><button type="button" data-reset>Try again</button></div>'+(st.feedback?'<p class="mjtFeedback" role="status">'+E(st.feedback)+'</p>':'')+(st.showModel?'<div class="mjtModel"><b>Model reasoning</b><p>'+E(challenge[3])+'</p><p>Teaching move: '+E(tip?.[1]||'Model the reasoning and ask students to explain it back in their own words.')+'</p></div>':'')+'</section>';
  let existing=root.querySelector('.mjtCoach');if(existing)existing.outerHTML=html;else root.insertAdjacentHTML('beforeend',html);
  const area=root.querySelector('.mjtCoach');
+ if(st.feedback&&st.answer>=0&&st.answer!==challenge[2]){const target=area.querySelector('.mjtFeedback');if(target)target.outerHTML=window.MajickQuestionRepair.html(repairQuestion,st.answer)}
  area.querySelectorAll('[data-pick]').forEach(b=>b.onclick=()=>{st.answer=Number(b.dataset.pick);st.feedback='';draw()});
  area.querySelector('textarea').oninput=e=>{st.explain=e.target.value};
  area.querySelector('[data-model]').onclick=()=>{st.showModel=!st.showModel;draw()};
  area.querySelector('[data-reset]').onclick=()=>{st.answer=-1;st.explain='';st.feedback='';st.showModel=false;draw()};
  area.querySelector('[data-check]').onclick=()=>{
  if(!visualReady){st.feedback='The visual did not render. No attempt or academic error will be recorded.';draw();return}
+ if(st.answer<0){st.feedback='Select a response to the displayed classroom question before checking.';draw();return}
  st.attempts++;const correct=st.answer===challenge[2];const words=st.explain.trim().split(/\s+/).filter(Boolean);
  const hasExplanation=words.length>=12&&/because|since|therefore|means|shows|indicat|reason|evidence|first|then/i.test(st.explain);
  const hasClassroom=/student|learner|teach|class|family|parent|iep|model|show|demonstrat|practice|group|example|instruction/i.test(st.explain);
  const reflective=hasExplanation&&hasClassroom;
+ if(!correct)window.MajickQuestionRepair.recordWrong(repairQuestion,st.answer,{assisted:true,room:'learn-lab-teach-back'});
  st.feedback=(correct?'✓ Your decision matches this example.':'Reconsider the decision. '+challenge[3])+' '+(!hasExplanation?'Explain the WHY using evidence or a step-by-step reason. ':'')+(!hasClassroom?'Describe how you would teach or apply this in a classroom. ':'')+(reflective?'Your teach-back includes reasoning and a classroom connection. Check it against the model; this is coaching, not verified mastery.':'');
  window.MajickLearningContinuity?.record?.({courseId:window.S?.activeCourse,lessonTitle:lesson.title,term:id,correct:correct&&reflective,activity:'learn-lab-teach-back'});
  if(correct&&reflective){const p=window.MajickInteractiveRewards?.award?.('learn-teachback-'+id,'participation');if(p?.awarded)st.feedback+=' ✦ +'+p.xp+' XP for practice.'}

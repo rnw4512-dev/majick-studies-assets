@@ -30,3 +30,17 @@ body[data-majick-polish-room=home] .v3358Door:hover,body[data-majick-polish-room
 @media(max-width:720px){.v3360RoomRibbon{padding:9px 11px}.v3360RoomSigil{flex-basis:34px;height:34px}.v3360MagicLayer{opacity:.4}.v3360Contained{contain-intrinsic-size:1px 320px}}
 @media(prefers-reduced-motion:reduce){.v3360MagicLayer .mote,.v3360Glow,body.v3360RoomPulse .v3360RoomRibbon{animation:none!important}.v3360MagicLayer{opacity:.25}}
 html[data-majick-reduce-motion=true] .v3360MagicLayer .mote,html[data-majick-reduce-motion=true] .v3360Glow,html[data-majick-reduce-motion=true] body.v3360RoomPulse .v3360RoomRibbon{animation:none!important}
+
+/* Responsive magic: a shared light language for controls in every room. */
+body :is(button,a[href],summary,[role="button"],input,select,textarea){transition:box-shadow .18s ease,border-color .18s ease,filter .18s ease}
+body :is(button,a[href],summary,[role="button"]):not(:disabled):not([aria-disabled="true"]):is(:hover,:focus-visible){box-shadow:0 0 0 1px #e6c381,0 0 13px #bd86e866,0 0 25px #edc97538!important;border-color:#eccd8d!important}
+body :is(button,[role="button"]):not(:disabled):not([aria-disabled="true"]):active{filter:brightness(1.16)}
+body :is(input,select,textarea):focus-visible{outline:2px solid #edce90;outline-offset:3px;box-shadow:0 0 16px #c79bea55}
+body :is([role="tab"][aria-selected="true"],button[aria-pressed="true"],details[open]>summary){border-color:#e6c381;box-shadow:inset 0 0 12px #edc97522,0 0 10px #b881dd33}
+.majickFx[data-fx-type="touch"] img{filter:drop-shadow(0 0 5px #eac37e)}
+@media(prefers-reduced-motion:reduce){body :is(button,a[href],summary,[role="button"],input,select,textarea){transition:none!important}}
+html[data-majick-reduce-motion="true"] :is(button,a[href],summary,[role="button"],input,select,textarea){transition:none!important}
+
+/* Existing six ambient motes become tiny winged lights, with no extra particles. */
+.v3360MagicLayer .mote::before,.v3360MagicLayer .mote::after{content:"";position:absolute;top:-2px;width:5px;height:3px;border-radius:70%;background:#dfc9fb66;filter:blur(.4px)}
+.v3360MagicLayer .mote::before{right:2px;transform:rotate(35deg)}.v3360MagicLayer .mote::after{left:2px;transform:rotate(-35deg)}

@@ -12,7 +12,7 @@ function classify(node){
  // Stable component identity wins over incidental words in buttons and descriptions.
  const identities=[
   ['today','#v3400DailyLoop,.v3400DailyLoop,.majDailyStudyLoop,.dailyStudyLoop,.v3327AcademicHall'],
-  ['overview','#v3377CampusDoors,.v3377CampusDoors,.v3327PortalHero,.v3327StudentRecord,.majCommonsRecordShelf,#majickRoomRibbon'],
+  ['overview','#v3377CampusDoors,.v3377CampusDoors,.v3327PortalHero,.v3327StudentRecord,.majCommonsRecordShelf,#majickRoomRibbon,.majRoomArchitecture'],
   ['review','.v3400MemoryQuest,#mjPreassessmentReview,#mjAdaptiveMastery,#mjD772WguHistory,#mjMisrepresentationLab,#mjD772AxisLab'],
   ['guardians','.v3327GuardianHall'],
   ['sanctuary','.v3317HomeSanctuary,.v3327CampusSanctuary']
@@ -136,6 +136,7 @@ function attach(){
   const destination=classify(node);
   if(destination!==tab)place(panels[destination],node,destination);
  }
+ const entrance=panels.overview.querySelector('.majRoomArchitecture');if(entrance&&panels.overview.firstElementChild!==entrance)panels.overview.prepend(entrance);
  navigateTab(selected);
  }catch(e){console.warn('Commons layout preserved original content:',e)}finally{updating=false}
 }

@@ -2513,7 +2513,7 @@ class Game extends Phaser.Scene
                 'Study Streak: ' + (s.streak || 0) + ' day' + ((s.streak || 0) === 1 ? '' : 's') + '\n' +
                 'Moon Crystals: ' + (s.crystals || 0) + '\n' +
                 'Answers Logged: ' + (s.answers || 0) + '\n\n' +
-                'Traveling Familiar: ' + (active ? active.name + ' • Lv ' + active.level : '—'),
+                'Traveling Familiar: ' + (active ? active.name + ' • Lv ' + active.level : ' - '),
 
                 {
                     fontFamily: 'Georgia',
@@ -2874,7 +2874,7 @@ class Game extends Phaser.Scene
     {
         const s = this.studyState || {};
         this.createSparkles(1480, 655, 18);
-        this.showInteractionPanel('Crystal Focus Alcove', 'Quiet Study', 'Your crystal reserve is ' + (s.crystals || 0) + '. Use the alcove to return to the work—or invite a familiar to react to the focus crystal.', [
+        this.showInteractionPanel('Crystal Focus Alcove', 'Quiet Study', 'Your crystal reserve is ' + (s.crystals || 0) + '. Use the alcove to return to the work - or invite a familiar to react to the focus crystal.', [
             {label:'FOCUS TOOLS', primary:true, run:()=>this.sendToStudyApp('MAJICK_OPEN_ROUTE',{route:'focus'})},
             {label:'STUDY PLANNER', run:()=>this.sendToStudyApp('MAJICK_OPEN_ROUTE',{route:'planner'})},
             {label:'FOCUS WITH FAMILIAR', run:()=>this.openFamiliarObjectPicker('focus')}
@@ -2884,7 +2884,7 @@ class Game extends Phaser.Scene
     openFamiliarLounge()
     {
         this.createSparkles(1870, 735, 14);
-        this.showInteractionPanel('Familiar Lounge', 'Companion Common Room', 'Choose a familiar and they will actually travel to the lounge, settle onto the cushion, and rest. Cozy interactions only—no hunger, sickness, punishment, or care debt.', [
+        this.showInteractionPanel('Familiar Lounge', 'Companion Common Room', 'Choose a familiar and they will actually travel to the lounge, settle onto the cushion, and rest. Cozy interactions only - no hunger, sickness, punishment, or care debt.', [
             {label:'LUNA • REST', run:()=>this.startFamiliarObjectInteraction('luna','lounge')},
             {label:'EMBER • CURL UP', run:()=>this.startFamiliarObjectInteraction('ember','lounge')},
             {label:'NOVA • NAP', run:()=>this.startFamiliarObjectInteraction('nova','lounge')},
@@ -2945,7 +2945,7 @@ class Game extends Phaser.Scene
                 messages:{
                     luna:'Velora takes the quiet side of the desk and keeps watch while you study.',
                     ember:'Cascade studies your notes like the page itself contains a pattern to solve.',
-                    nova:'Solstice settles in as your tiny study lookout—curious, alert, and ready to move.',
+                    nova:'Solstice settles in as your tiny study lookout - curious, alert, and ready to move.',
                     mallow:'Aurelia curls beside the desk and turns the whole corner into a calmer study space.'
                 }
             },

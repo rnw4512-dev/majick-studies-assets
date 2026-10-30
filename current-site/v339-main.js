@@ -68,14 +68,8 @@
    S.sound=S.sound===false?true:false;S.v5=S.v5||{};S.v5.settings=S.v5.settings||{};S.v5.settings.sounds=S.sound;
    await v339UnlockAudio();if(S.sound)playChime(true);try{save();render()}catch(_){ }
  };
- mcStartAmbience=function(){
-   try{
-     const c=v339AudioContext();if(!c)return;if(c.state==='suspended')c.resume();if(v339AmbienceNode)return;
-     const len=c.sampleRate*2,buf=c.createBuffer(1,len,c.sampleRate),d=buf.getChannelData(0);for(let i=0;i<len;i++)d[i]=(Math.random()*2-1)*.12;
-     const n=c.createBufferSource(),filter=c.createBiquadFilter(),gain=c.createGain();n.buffer=buf;n.loop=true;filter.type='lowpass';filter.frequency.value=420;gain.gain.value=.030;n.connect(filter).connect(gain).connect(v339MasterGain);n.start();v339AmbienceNode=n;v339AmbienceGain=gain;
-   }catch(e){console.warn('Majick ambience',e)}
- };
- mcStopAmbience=function(){try{v339AmbienceNode?.stop()}catch(_){ }v339AmbienceNode=null;v339AmbienceGain=null};
+ mcStartAmbience=function(){return window.MajickCollegiumAtmosphere?.start?.()};
+ mcStopAmbience=function(){return window.MajickCollegiumAtmosphere?.stop?.()};
 
  // ---------- Canon portraits everywhere in non-Phaser UI ----------
  masPetImage=function(p){const c=window.V338_CANON?.[p?.type]||V338_CANON?.[p?.type];return c?.portrait||''};

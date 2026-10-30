@@ -90,6 +90,8 @@
     }catch(_){}
   }
   function recordAnswer(q,chosen,correct,mode){
+    if(session)session.questionRepair=correct?null:{q,chosen};
+    if(!correct)window.MajickQuestionRepair.recordWrong(q,chosen,{assisted:true,alreadyRecorded:true,room:'game-realm'});
     try{record?.(q,chosen,correct,'sure',mode)}catch(_){}
     try{window.MajickLearningContinuity?.skillResult(q,correct,true,'game-realm')}catch(_){}
     try{window.MajickAdaptiveLearning?.observeGameSkill?.(q,correct,mode)}catch(_){}
@@ -736,6 +738,7 @@
     if(!session||session.type!=='runesort'||session.finished)return;
     const x=session.items?.[i];if(!x)return;
     x.choice=cat;x.ok=normalize(cat)===normalize(x.section);
+    if(!x.ok){const q={id:'rune-sort:'+x.id,courseId:window.S.activeCourse,lessonId:x.section,skill:'classify:'+x.section,prompt:'Classify the skill requested in: '+x.prompt,answer:session.categoryLabels?.[x.section]||categoryLabel(x.section),why:'The quantity or conclusion requested in “'+x.prompt+'” belongs to '+(session.categoryLabels?.[x.section]||categoryLabel(x.section))+'.'};session.questionRepair={q,chosen:session.categoryLabels?.[cat]||categoryLabel(cat)};window.MajickQuestionRepair.recordWrong(q,session.questionRepair.chosen,{assisted:true,room:'game-realm-rune-sort'})}else session.questionRepair=null;
     x.attempts=Number(x.attempts||0)+1;
     x.tried=Array.isArray(x.tried)?x.tried:[];
     if(!x.ok&&!x.tried.includes(cat))x.tried.push(cat);
@@ -904,6 +907,7 @@
     const isMatch=a.pair===b.pair&&a.kind!==b.kind;
 
     if(isMatch){
+      session.questionRepair=null;
       a.matched=b.matched=true;
       session.matched++;
       session.score++;
@@ -949,6 +953,9 @@
       return;
     }
 
+    const clue=a.kind==='clue'?a:b.kind==='clue'?b:a,selected=a.kind==='answer'?a:b;
+    const q=realmQuestionPool().find(q=>q.id===clue.qid);
+    if(q){session.questionRepair={q,chosen:selected.text};window.MajickQuestionRepair.recordWrong(q,selected.text,{assisted:true,room:'game-realm-constellation'})}
     renderKeepScroll();
     setTimeout(()=>{
       if(session?.type==='constellation'){
@@ -1017,7 +1024,8 @@
       session.bestBreakStreak=Math.max(Number(session.bestBreakStreak||0),session.breakStreak);
     }else session.breakStreak=0;
     const fullyCorrect=judgmentCorrect&&repairCorrect;
-    recordAnswer(q,session.claimValid?session.claim:value,fullyCorrect,'hexbreaker');
+    const evaluated=!judgmentCorrect?{...q,id:q.id+':claim-judgment',prompt:q.prompt+' Claim: “'+session.claim+'”. Is this claim valid or hexed?',answer:session.claimValid?'Valid':'Hexed',options:['Valid','Hexed'],why:'The supported conclusion is “'+q.answer+'”. '+(q.why||'')}:q;
+    recordAnswer(evaluated,!judgmentCorrect?(session.judgment==='valid'?'Valid':'Hexed'):session.claimValid?session.claim:value,fullyCorrect,'hexbreaker');
     session.guardianMessage=guardianLine(fullyCorrect?(session.breakStreak>=2?'streak':'correct'):'miss');
     render?.();
   };
@@ -1175,7 +1183,7 @@
 
   const baseSessionHTML=typeof sessionHTML==='function'?sessionHTML:null;
   if(baseSessionHTML){
-    sessionHTML=function(){
+    const realmHTML=function(){
       if(session?.type==='assessmentsigilsort')return assessmentSigilHTML();
       if(session?.type==='runesort')return runeSortHTML();
       if(session?.type==='oraclelens')return oracleHTML();
@@ -1184,6 +1192,7 @@
       if(session?.type==='gauntlet')return gauntletHTML();
       return baseSessionHTML();
     };
+    sessionHTML=function(){const q=session?.current||session?.items?.[session.index]||session?.questionRepair?.q,r=q&&window.MajickLearningContinuity?.practiceRecovery?.(window.MajickQuestionRepair.normalize(q),false);if(r?.required&&!session?.answered)return window.MajickQuestionRepair.html(r.source,r.selected);const html=realmHTML();return (session?.answered||['runesort','constellation'].includes(session?.type))&&session.questionRepair?html+window.MajickQuestionRepair.html(session.questionRepair.q,session.questionRepair.chosen):html};
   }
 
   globalThis.MajickGameRealm={

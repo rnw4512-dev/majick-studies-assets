@@ -340,7 +340,8 @@ function render(){
   const selected=section.querySelector('input[name="mjPaPracticeChoice"]:checked');if(!selected){fb.textContent='Choose an answer first.';return}
   const q=question(),correct=Number(selected.value)===q.correct;
   st.attempts.push({id:q.id,lessonId:q.lessonId,selected:Number(selected.value),correct,questionRevision:q.revision||1,source:'majick-oa-style-preassessment-repair',assisted:true,createdAt:Date.now()});
-  fb.textContent=(correct?'Correct. ':'Not yet. ')+q.why+' Guided review only; no mastery or reward is automatically awarded.';
+  if(correct)fb.textContent='Correct. '+q.why+' Guided review only; no mastery or reward is automatically awarded.';
+  else {window.MajickQuestionRepair.recordWrong(q,Number(selected.value),{assisted:true,room:'learn-lab-preassessment'});fb.innerHTML=window.MajickQuestionRepair.html(q,Number(selected.value))}
   window.MajickLearningContinuity?.record?.({courseId:'D772',lessonTitle:q.lessonId,correct,activity:'preassessment-guided-'+q.id});
   save();
  });

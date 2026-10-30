@@ -56,7 +56,7 @@ function learned({courseId=course(),lessonId,independent=false}={}){
  row.successes=Math.max(row.successes||0,row.struggles||0);row.updated=Date.now();
  try{if(typeof save==='function')save()}catch(_){}
 }
-function skillResult(q,correct,assisted=false,origin='practice'){
+function skillResult(q,correct,assisted=false,origin='practice',recoveryRecorded=false){
  const id=String(q?.learningPathLessonId||q?.lessonId||'')||identify([q?.prompt,q?.section,q?.wguTerm].join(' '));
  const p=window.S?.progress?.[course()];if(!p||!id||((q?.course||q?.courseId)&&String(q.course||q.courseId)!==course()))return null;
  const book=p.adaptiveSkills||(p.adaptiveSkills={});
@@ -83,7 +83,7 @@ function skillResult(q,correct,assisted=false,origin='practice'){
  row.masteryEvidence={independentCorrect:independent,attempts:count,transferVerified:false,teachBackVerified:false};
  if(course()==='D772'&&!correct&&(q?.skill==='probability'||/^d772-s3-/.test(id)&&/without replacement/i.test(q?.prompt||'')))probabilityNeed(origin,q);
  if(course()==='D772'&&id===PROBABILITY_ID&&row.connectedProbability){probabilitySeen(q);syncProbabilityEvidence();}
- if(course()==='D772'&&!assisted&&origin!=='mixed-exam-independent'&&origin!=='guided-reconstruction')practiceAnswer(q,correct,true);
+ if(!recoveryRecorded&&course()==='D772'&&!assisted&&origin!=='mixed-exam-independent'&&origin!=='guided-reconstruction')practiceAnswer(q,correct,true);
  row.updated=Date.now();try{window.save?.()}catch(_){}
  return row;
 }
@@ -96,13 +96,14 @@ function practiceSkill(q){
  return match?.[0]||String(q?.lessonId||'reasoning');
 }
 function practiceRecovery(q,create=true){
- if(course()!=='D772'||q?.courseId&&q.courseId!=='D772')return null;
- const p=window.S?.progress?.D772,id=q?.learningPathLessonId||q?.lessonId;
+ if((q?.courseId||q?.course)&&String(q.courseId||q.course)!==course())return null;
+ const p=window.S?.progress?.[course()],id=q?.learningPathLessonId||q?.lessonId||q?.topicId;
  if(!p||!id)return null;
  const book=p.adaptiveSkills||(create?(p.adaptiveSkills={}):{});
  const row=book[id]||(create?(book[id]={lessonId:id,attempts:[],cycles:0,status:'practice',errors:[]}):null);
  if(!row)return null;
  const map=row.reconstructionBySkill||(create?(row.reconstructionBySkill={}):{}),key=practiceSkill(q);
+ const shared=Object.values(book).map(r=>r.reconstructionBySkill?.[key]).find(Boolean);if(shared)return shared;
  return map[key]||(create?(map[key]={misses:0,required:false,awaitingTransfer:false,stage:0,verified:[],draft:{},failedIds:[],seenIds:[],source:null}):null);
 }
 function guidedQuestionKey(q){return JSON.stringify([String(q.prompt||q.question||'').replace(/\s+/g,' ').trim(),q.data||q.visual||q.visualHtml||null])}
@@ -116,34 +117,27 @@ function nextGuidedSequence(key){
  if(!Number.isSafeInteger(next))return null;sequences[key]=next;try{window.save?.()}catch(_){}return next;
 }
 function diagnosePracticeMistake(q,selected){
- const text=String(q.prompt||'').toLowerCase(),d=q.data||{},value=Number(String(selected??'').replace(/[^0-9.−-]/g,'').replace('−','-'));
- const close=n=>selected!=null&&Number.isFinite(n)&&Math.abs(value-n)<.001;
- if(/at least one/.test(text)){
-  const exactly=d.rate!=null?d.trials*d.rate*(1-d.rate)**(d.trials-1):NaN;
-  return {code:close(exactly)?'exactly-one-for-at-least-one':'complement-event',message:close(exactly)?'You calculated exactly one success. At least one includes one, two and every larger possible success count.':'Separate at least one success from no successes; subtract the no-success probability from 1.'};
- }
- if(/exactly one/.test(text))return {code:'exactly-one-event',message:'Exactly one requires one success and one failure in the qualifying orders. It excludes outcomes with two successes.'};
- if(/given that|conditional/.test(text)||d.deliveryOnly!=null)return {code:'conditional-denominator',message:'Given restricts the sample space. Use the size of the named group as the denominator, rather than everyone surveyed.'};
- if(/without replacement/.test(text))return {code:'remaining-denominator',message:'A draw removes one outcome. Rebuild the second branch with a total one smaller and update the favorable count only when that type was removed.'};
- return {code:'method-and-evidence',message:'Identify the requested quantity and match the method to the evidence before substituting numbers.'};
+ const model=window.MajickQuestionRepair?.specificRepair(q,selected);
+ return {code:'diagnostic-needed',confirmed:false,message:model?model.diagnosis+' '+model.diagnostic:'Which evidence in “'+q.prompt+'” led to the selected response “'+selected+'”? Explain the setup before a misconception is assigned.'};
 }
 function practiceReadiness(q){
  const r=practiceRecovery(q,false),count=(r?.recentIndependentIds||[]).length;
- return {label:r?.required?'Needs guidance':count>=2&&!r?.awaitingTransfer?'Demonstrated independently':r?'Practicing independently':'Needs guidance',independentCount:count,certified:false};
+ return {label:r?.required||r?.misses>0&&!r?.awaitingTransfer?'Needs guidance':count>=2&&!r?.awaitingTransfer?'Demonstrated independently':r?'Practicing independently':'Needs guidance',independentCount:count,certified:false};
 }
 function practiceReadinessList(){
  const rows=window.S?.progress?.[course()]?.adaptiveSkills||{};return Object.values(rows).flatMap(row=>Object.entries(row.reconstructionBySkill||{}).map(([skill])=>({skill,lessonId:row.lessonId,...practiceReadiness({skill,lessonId:row.lessonId})})));
 }
-function practiceAnswer(q,correct,alreadyRecorded=false,selected=null){
+function practiceAnswer(q,correct,alreadyRecorded=false,selected=null,options={}){
  const r=practiceRecovery(q);if(!r)return null;
  // Retries/replayed submissions of the same item cannot manufacture evidence.
- const evidenceKey=q.generated?practiceSkill(q)+'|'+JSON.stringify(q.data):String(q.id);
- r.seenKeys=r.seenKeys||r.seenIds.slice();if(r.seenKeys.includes(evidenceKey))return r;r.seenKeys.push(evidenceKey);r.seenKeys=r.seenKeys.slice(-300);
+ const semantic=window.MajickQuestionRepair?.evidenceKey(q);
+ const evidenceKey=semantic?practiceSkill(q)+'|'+semantic:q.generated?practiceSkill(q)+'|'+JSON.stringify(q.data):String(q.id);
+ r.seenKeys=r.seenKeys||r.seenIds.slice();if(r.seenKeys.includes(evidenceKey)&&!(!correct&&options.attemptId))return r;r.seenKeys.push(evidenceKey);r.seenKeys=r.seenKeys.slice(-300);
  r.seenIds.push(q.id);r.seenIds=r.seenIds.slice(-300);
- if(!alreadyRecorded)skillResult(q,correct,false,'mixed-exam-independent');
- if(!correct){r.failedData=r.failedData||[];if(q.generated)r.failedData.push(JSON.stringify(q.data));r.misses++;if(!r.failedIds.includes(q.id))r.failedIds.push(q.id);if(r.misses>=1){r.required=true;r.awaitingTransfer=false;r.stage=0;r.verified=[];r.draft={};r.planVersion=4;r.exampleSequence=nextGuidedSequence('repair');r.planSnapshot=null;r.solvedSteps=[];r.recentIndependentIds=[];r.coaching=diagnosePracticeMistake(q,selected);r.source=JSON.parse(JSON.stringify(q))}}
- else {r.recentIndependentIds=r.recentIndependentIds||[];if(!r.required&&!(q.generated?(r.failedData||[]).includes(JSON.stringify(q.data)):r.failedIds.includes(q.id)))r.recentIndependentIds.push(evidenceKey);
- if(r.awaitingTransfer&&!(q.generated?(r.failedData||[]).includes(JSON.stringify(q.data)):r.failedIds.includes(q.id))){r.awaitingTransfer=false;r.misses=0;r.transferId=q.id;r.stage=0;r.verified=[];r.draft={}}}
+ if(!alreadyRecorded)skillResult(q,correct,!!options.assisted,options.origin||'mixed-exam-independent',true);
+ if(!correct){r.failedData=r.failedData||[];if(q.generated)r.failedData.push(JSON.stringify(q.data));r.misses++;r.source=JSON.parse(JSON.stringify(q));r.selected=selected;if(!r.failedIds.includes(q.id))r.failedIds.push(q.id);if(r.misses>=2){r.required=true;r.awaitingTransfer=false;r.stage=0;r.verified=[];r.draft={};r.planVersion=4;r.exampleSequence=nextGuidedSequence('repair');r.planSnapshot=null;r.solvedSteps=[];r.recentIndependentIds=[];r.coaching=diagnosePracticeMistake(q,selected);r.source=JSON.parse(JSON.stringify(q))}}
+ else if(!options.assisted){r.recentIndependentIds=r.recentIndependentIds||[];if(!r.required&&!(q.generated?(r.failedData||[]).includes(JSON.stringify(q.data)):r.failedIds.includes(q.id)))r.recentIndependentIds.push(evidenceKey);
+ if(r.awaitingTransfer&&window.MajickQuestionRepair?.isFresh(r.source,q)!==false&&!(q.generated?(r.failedData||[]).includes(JSON.stringify(q.data)):r.failedIds.includes(q.id))){r.awaitingTransfer=false;r.misses=0;r.transferId=q.id;r.stage=0;r.verified=[];r.draft={}}}
  try{window.save?.()}catch(_){}return r;
 }
 function reconstructionCheck(q,values){
@@ -271,7 +265,9 @@ function probabilityCheck(kind,values={}){
  st.drafts[kind]={...values};
  st.evidence.push({id:t.id,kind,correct,assisted,origin:S.screen,at:Date.now(),values:{...values},rubric:'conditional-counts-product-v1'});
  // Existing adaptive tracker and existing idempotent reward bridge remain owners.
- skillResult(t.q,correct,assisted,kind==='transfer'?'independent-transfer':kind==='repair'?'connected-guided':kind==='teaching'?'structured-teachback':'independent-reasoning');
+ skillResult(t.q,correct,assisted,kind==='transfer'?'independent-transfer':kind==='repair'?'connected-guided':kind==='teaching'?'structured-teachback':'independent-reasoning',true);
+ if(!correct){const selected=Object.entries(values).map(([key,value])=>key+'='+value).join('; ');if(window.MajickQuestionRepair)window.MajickQuestionRepair.recordWrong(t.q,selected,{assisted,alreadyRecorded:true,room:'probability-workshop'});else practiceAnswer(t.q,false,true,selected,{assisted})}
+ else practiceAnswer(t.q,true,true,values.result,{assisted,origin:kind==='transfer'?'independent-transfer':'probability-workshop'});
  if(correct&&kind!=='teaching')window.MajickStudyProgress?.creditAnswer?.({key:'connected:D772:'+t.id,course:'D772',qid:t.id,topicId:PROBABILITY_ID,chosen:String(values.result),answer:t.q.answer,correct:true,assisted,source:'connected-'+kind,difficulty:3,transfer:kind==='transfer'});
  if(!correct){st.need={misconception:'unchanged-sample-space',origin:S.screen,at:Date.now()};}
  if(correct&&kind==='repair')st.need=null;

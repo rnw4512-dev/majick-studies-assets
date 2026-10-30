@@ -81,6 +81,9 @@ async function run(){
  for(const g of snapshot.guardians){assert(g.y>=490&&g.y<=650);assert(g.x>=60&&g.x<=1140);assert.equal(g.spriteY,0)}
  await ev('phase4PushState();phase4PushState()');await sleep(300);assert.equal((await ev(inspect)).roster.length,11);
  console.log('PASS Pixi eleven identities, duplicate Briars, species mapping, saved evolution stages, walking frames, repeated sync and floor bounds');
+ const hitFeedback=await ev(inside(`(()=>{const layer=MajickPixiSanctuary.app.stage.children[0].children.find(c=>c.sortableChildren),furniture=layer.children.find(c=>c instanceof PIXI.Sprite&&c.visible),guardian=layer.children.find(c=>c.children?.some(s=>s instanceof PIXI.AnimatedSprite)).children.find(s=>s instanceof PIXI.AnimatedSprite);return [furniture,guardian].map(s=>{const area=s.hitArea,inside=area.contains(0,-s.texture.height/2),outside=area.contains(s.texture.width,0);s.emit('pointerover');const hover=s.tint;s.emit('pointerdown');const press=s.tint;s.emit('pointerupoutside');return {inside,outside,hover,press,reset:s.tint,eventMode:s.eventMode,cursor:s.cursor}})})()`));
+ for(const feedback of hitFeedback){assert(feedback.inside);assert(!feedback.outside);assert.equal(feedback.eventMode,'static');assert.equal(feedback.cursor,'pointer');assert.notEqual(feedback.hover,0xffffff);assert.notEqual(feedback.press,feedback.hover);assert.equal(feedback.reset,0xffffff)}
+ console.log('PASS Pixi local hit areas and hover/press/outside-release feedback on Guardian and furniture sprites');
  assert.equal(snapshot.furniture.length,15);assert(snapshot.furniture.every(o=>o.visible));
  const id=snapshot.furniture[0].id;
  await ev(inside('document.querySelector("#furniture-select").value='+JSON.stringify(id)+';document.querySelector("#furniture-store").click()'));
@@ -90,7 +93,7 @@ async function run(){
  await waitFor('!S.majickAccount.sanctuaryFurniture.stored.includes('+JSON.stringify(id)+')');
  // Exercise the actual Pixi pointer drag handlers at scaled canvas coordinates.
  await ev(inside('document.querySelector("#edit-furniture").click()'));
- const drag=await ev(inside(`(()=>{const app=MajickPixiSanctuary.app,world=app.stage.children[0],layer=world.children.find(c=>c.sortableChildren),s=layer.children.find(c=>c.texture&&c.visible),global=s.getGlobalPosition();s.emit('pointerdown',{global,stopPropagation(){}});app.stage.emit('globalpointermove',{global:world.toGlobal({x:420,y:590})});app.stage.emit('pointerup',{});return true})()`));assert(drag);
+ const drag=await ev(inside(`(()=>{const app=MajickPixiSanctuary.app,world=app.stage.children[0],layer=world.children.find(c=>c.sortableChildren),s=layer.children.find(c=>c instanceof PIXI.Sprite&&c.visible),global=s.getGlobalPosition();s.emit('pointerdown',{global,stopPropagation(){}});app.stage.emit('globalpointermove',{global:world.toGlobal({x:420,y:590})});app.stage.emit('pointerup',{});return true})()`));assert(drag);
  await waitFor('Object.values(S.majickAccount.sanctuaryFurniture.positions).some(p=>Math.abs(p.x-767)<2&&Math.abs(p.y-783)<2)');
  const room=await ev('JSON.stringify(S.majickAccount.sanctuaryFurniture)');
  await call('Page.reload',{ignoreCache:true});await waitFor(inspect+'.roster.length===11&&'+inspect+'.roster.every(p=>p.present)');
