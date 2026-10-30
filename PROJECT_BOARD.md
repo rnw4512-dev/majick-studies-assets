@@ -8,7 +8,7 @@
 - Local canonical release checks and browser Add → three Stirs → Bottle flow passed, including Pause/Play. GPU/full responsive visual certification remains pending; this is a user-authorized development deployment.
 
 
-Updated: 2026-10-27. PRs #214–218 reviewed against GitHub on 2026-10-27: #214 merged; #215 open; #216–218 open drafts. Reconciliation records their verified status without implying that open PRs are merged, certified, or deployed. Preserve PR #141 historical details. Canonical source: `current-site/`. Live: https://rnw4512-dev.github.io/majick-studies-assets/
+Updated: 2026-10-29. GitHub PR reconciliation verified on 2026-10-29: #219 open non-draft; #220–228 merged; #229–231 open drafts. Merge is not browser certification or live deployment. Preserve PR #141 historical details. Canonical source: `current-site/`. Live: https://rnw4512-dev.github.io/majick-studies-assets/
 
 **Vision:** An adult dark-academia witchy college where the learner adds real courses and studies through an integrated game world. Academic mastery remains course-specific; Scholar identity, avatar, Guardians, crystals, rewards, eggs and Sanctuary persist globally.
 
@@ -27,6 +27,29 @@ Updated: 2026-10-27. PRs #214–218 reviewed against GitHub on 2026-10-27: #214 
 | Sanctuary animation | Existing Phaser Sanctuary roster and runtime | Protect all 33 original movement PNGs; no duplicate owner |
 | Rewards | `reward-core.js`, existing art/collections | One ledger, one currency balance, one item inventory |
 | UX | Existing Collegium Commons and its tab renderer | 390/820/1366px contrast/navigation/persistence gates |
+
+## GitHub PR reconciliation — 2026-10-29
+
+### Done — merged code (certification tracked separately)
+- [PR #220](https://github.com/rnw4512-dev/majick-studies-assets/pull/220) — **merged 2026-10-27**. Illustrated magical-room architecture, Trial Chamber integration and room visuals. **Guardian animation, responsive browser and live deployment certification pending independent verification.**
+- [PR #221](https://github.com/rnw4512-dev/majick-studies-assets/pull/221) — **merged 2026-10-28**. Connected Learn Lab, Study Now, and Trial Chamber learning path; guided progress remains separate from independent mastery. **Responsive browser certification and live deployment not established by merge alone.**
+- [PR #222](https://github.com/rnw4512-dev/majick-studies-assets/pull/222) — **merged 2026-10-28**. Academic readability and misleading-graph reteaching repairs. **Responsive browser certification and live deployment not established by merge alone.**
+- [PR #223](https://github.com/rnw4512-dev/majick-studies-assets/pull/223) — **merged 2026-10-28**. Removed broken Professor's Repair transfer-question action; independent work remains in Study Hall. **Responsive browser certification and live deployment not established by merge alone.**
+- [PR #224](https://github.com/rnw4512-dev/majick-studies-assets/pull/224) — **merged 2026-10-28**. Updated outdated stable-browser selectors for Skill Growth. **Responsive browser certification and live deployment not established by merge alone.**
+- [PR #225](https://github.com/rnw4512-dev/majick-studies-assets/pull/225) — **merged 2026-10-28**. Aetheria and Moonlit Collegium branding updates. **Responsive browser certification and live deployment not established by merge alone.**
+- [PR #226](https://github.com/rnw4512-dev/majick-studies-assets/pull/226) — **merged 2026-10-28**. Dedicated Probability Workshop sidebar destination with four stage tabs. **Responsive browser certification and live deployment not established by merge alone.**
+- [PR #227](https://github.com/rnw4512-dev/majick-studies-assets/pull/227) — **merged 2026-10-28**. Improved parchment contrast and collapsible Learning Path. **Responsive browser certification and live deployment not established by merge alone.**
+- [PR #228](https://github.com/rnw4512-dev/majick-studies-assets/pull/228) — **merged 2026-10-28**. Editable formula workspace for Professor's Repair. **Responsive browser certification and live deployment not established by merge alone.**
+
+### In Progress — unmerged pull requests
+| PR | Verified status | Work | Remaining release gates |
+|---|---|---|---|
+| [#219](https://github.com/rnw4512-dev/majick-studies-assets/pull/219) | **Open, non-draft; unmerged** | Immersive room identities and Trial Chamber styling | Resolve overlap and verify rendering, accessibility and deployment before merge |
+| [#229](https://github.com/rnw4512-dev/majick-studies-assets/pull/229) | **Open draft; unmerged** | Exhausted Guided Reasoning scenario navigation | Verify fresh scenario routing, saved progress, browser at 390/820/1366px |
+| [#230](https://github.com/rnw4512-dev/majick-studies-assets/pull/230) | **Open draft; unmerged** | Athenaeum feedback, saved practice and lesson scrolling | Verify grading, persistence, navigation, scrolling and complete browser regressions; reported test results are not independently certified here |
+| [#231](https://github.com/rnw4512-dev/majick-studies-assets/pull/231) | **Open draft; unmerged** | Scholar effort points, egg-fragment counter, reward journal and event bridge | Finish all qualifying event integrations; execute duplicate-award, cap, balance, reload and course-switch tests; update source-manifest; browser-certify before deployment |
+
+**Release gate:** Code merged does not imply certified or deployed. Preserve single XP/crystal and egg-fragment ledger, Guardian inventory, independent mastery evidence and all saved learner state. No ChatGPT Project-file synchronization is implied.
 
 ## Done
 
