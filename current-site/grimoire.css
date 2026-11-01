@@ -8,3 +8,6 @@
  #majickLivingGrimoire .v3311Book{grid-row:1;grid-column:1/-1;min-width:0;padding:30px 20px}
  #majickLivingGrimoire .v3311Arrow{grid-row:2;width:100%;min-height:44px}
 }
+/* Parchment text must not inherit the room's ivory-on-plum heading palette. */
+#majickLivingGrimoire .v3311Book:not(.cover) h3,
+#majickLivingGrimoire .v3311Book:not(.cover)>.v3311Lead{color:#493128!important;-webkit-text-fill-color:currentColor!important;opacity:1!important;text-shadow:none!important}

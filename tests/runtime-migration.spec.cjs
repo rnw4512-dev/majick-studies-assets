@@ -18,6 +18,12 @@ for(const width of [390,820,1366])test.describe(width+'px',()=>{
   });
   const before=await protectedState(page);await page.reload();await page.waitForFunction(()=>window.MajickGrimoire);await book(page);
   await expect(page.locator('.v3311Folio')).toContainText('2 /');await expect(page.locator('.v3311Book h3')).toHaveText("Teacher's evidence <lesson>");await expect(page.locator('.v3311Notes textarea')).toHaveValue("Keep teacher's note <safe> ✦");
+  const contrast=await page.evaluate(()=>{
+   const luminance=rgb=>rgb.map(v=>v/255).map(v=>v<=.04045?v/12.92:((v+.055)/1.055)**2.4).reduce((sum,v,i)=>sum+v*[.2126,.7152,.0722][i],0);
+   // Test against the darkest declared parchment stop, not just its bright center.
+   const paper=luminance([206,176,142]);
+   return [...document.querySelectorAll('.v3311Book:not(.cover) h3,.v3311Book:not(.cover)>.v3311Lead')].map(el=>{const ink=luminance(getComputedStyle(el).color.match(/[0-9.]+/g).slice(0,3).map(Number));return (Math.max(ink,paper)+.05)/(Math.min(ink,paper)+.05)});
+  });expect(contrast.length).toBeGreaterThanOrEqual(2);for(const ratio of contrast)expect(ratio).toBeGreaterThanOrEqual(4.5);
   expect(await page.evaluate(()=>S.v3311.grimoire.futureField)).toEqual({keep:true});expect(await page.evaluate(()=>S.v3311.guardianEvolutionState.customLegacyEntry)).toEqual({keep:true});
   const bookmark=page.locator('.v3311PageActions button').first();await bookmark.click();await expect(bookmark).toContainText('☆');await bookmark.click();await expect(bookmark).toContainText('★');
   await page.locator('.v3311Notes textarea').fill("New note with 'quotes' and <markup> ✦");await page.locator('.v3311Notes textarea').blur();
