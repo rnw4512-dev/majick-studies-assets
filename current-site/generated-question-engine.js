@@ -25,7 +25,17 @@ function item(skill,values,difficulty){
  if(!prompt||!answer)return null;
  for(let offset=1;options.length<4&&offset<30;offset++){const base=Number(answer);if(Number.isFinite(base)){add(base+offset);add(base-offset)}else if(skill==='probability'){add((offset+1)+'/'+(g=>g)(values[0]+values[1]+offset+2))}else add('Alternative '+offset)}
  const choices=options.slice(0,4);if(choices.length<4)return null;for(let i=choices.length-1;i>0;i--){const j=randint(0,i);[choices[i],choices[j]]=[choices[j],choices[i]]}
- const q={id,course:'D772',learningPathLessonId:lessonId,skill,difficulty,...(skill==='probability'?{event:'green-green'}:{}),data:values,prompt,answer,options:choices,visualHtml,why,misconception:mistake,teachBackPrompt:'A student makes this mistake: '+mistake+'. Model a correction and check understanding.',generated:true,format:'single-best-answer',sourceLabel:'MAJICK ORIGINAL • SUPPLEMENTAL OA-STYLE PRACTICE — NOT OFFICIAL WGU',languageReference:'wgu-d772-preassessment-2026-10-15',source:'verified-local-generator'};
+ const choiceCoach={};
+ for(const option of choices){
+  if(option===answer)continue;
+  if(skill==='mean'){const total=values.reduce((a,b)=>a+b,0);choiceCoach[option]='The total is '+total+' across '+values.length+' students. Dividing by '+values.length+' gives '+answer+', not '+option+'. Check the divisor and arithmetic before selecting.'}
+  else if(skill==='median'){choiceCoach[option]='Sort the actual scores: '+[...values].sort((a,b)=>a-b).join(', ')+'. The center is '+answer+'; '+option+' is not the middle of the ordered observations.'}
+  else if(skill==='boxplot'){const f=quartiles(values);choiceCoach[option]='The lower quartile is '+f[1]+' and the upper quartile is '+f[3]+'. Subtract Q3 − Q1 = '+answer+'. The full range ('+(f[4]-f[0])+') is a different measure; '+option+' does not match the middle-half spread.'}
+  else if(skill==='histogram'){choiceCoach[option]=option==='Bimodal'?'Bimodal requires two distinct main peaks; these frequencies '+values.join(', ')+' have one highest bar.':option==='Uniform'?'Uniform would mean approximately equal bar heights, but these frequencies are '+values.join(', ')+'.':'Multimodal requires several distinct peaks. Inspect the bar frequencies '+values.join(', ')+' and identify the single dominant peak.'}
+  else if(skill==='scatterplot'){choiceCoach[option]=option==='Negative association'?'Negative association requires y to decrease as x increases. Here the ordered pairs generally rise together.':option==='No association'?'The ordered pairs show a consistent upward direction rather than a directionless cloud.':'These pairs were observed, not randomly assigned; an upward trend supports positive association but cannot prove causation.'}
+  else if(skill==='probability'){const [g,p]=values,n=g+p;choiceCoach[option]='For two green draws without replacement, use '+g+'/'+n+' × '+(g-1)+'/'+(n-1)+' = '+answer+'. The option '+option+' does not account for both sequential draws with the updated counts.'}
+ }
+ const q={id,course:'D772',learningPathLessonId:lessonId,skill,difficulty,...(skill==='probability'?{event:'green-green'}:{}),data:values,prompt,answer,options:choices,visualHtml,why,choiceCoach,misconception:mistake,teachBackPrompt:'A student makes this mistake: '+mistake+'. Model a correction and check understanding.',generated:true,format:'single-best-answer',sourceLabel:'MAJICK ORIGINAL • SUPPLEMENTAL OA-STYLE PRACTICE — NOT OFFICIAL WGU',languageReference:'wgu-d772-preassessment-2026-10-15',source:'verified-local-generator'};
  return validate(q)?q:null;
 }
 function validate(q){
