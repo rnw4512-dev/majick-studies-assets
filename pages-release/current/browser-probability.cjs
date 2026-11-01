@@ -117,7 +117,7 @@ async function click(selector){
  console.log('PASS probability: two fresh multi-step Study Now responses and persisted whiteboard');
  task=await openKind('transfer');assert.equal(task.q.event,'green-purple');
  await fillTask(task);await click('[data-prob-form] button[type=submit]');
- assert.equal(await evalPage('MajickLearningContinuity.probabilityMastery().transferVerified'),true);
+ assert.equal(await evalPage('MajickLearningContinuity.probabilityMastery().transferVerified'),true,'Transfer evidence diagnostic: '+JSON.stringify(await evalPage('({mastery:MajickLearningContinuity.probabilityMastery(),transfer:MajickLearningContinuity.probabilityState().tasks.transfer,evidence:MajickLearningContinuity.probabilityState().evidence.slice(-4),need:MajickLearningContinuity.probabilityState().need})')));
  assert.equal(await evalPage('MajickLearningContinuity.probabilityMastery().certified'),false);
  const creditsBefore=await evalPage('Object.keys(S.majickAccount.studyProgressBridge.events).filter(k=>k.startsWith("connected:D772:")).length');
  assert.equal(creditsBefore,4);
