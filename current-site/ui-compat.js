@@ -1,5 +1,4 @@
 (function(){
- const V3310='V3.3.10 Phaser Motion Restore';
  function canonForPet(p){try{return v338Canon(p?.type||'luna')}catch(_){return null}}
  // Replace the older emoji guardian dock with the approved canon art.
  if(typeof v523GuardianDockHTML==='function'){
@@ -19,14 +18,5 @@
      return pp+ii;
    };
  }
- // Stability Reset: rendering is owned by V3.3.18. UI overrides above remain active.
- try{
-   if(typeof V336_PROJECT_PROGRESS==='object'){
-     V336_PROJECT_PROGRESS.overall=84;V336_PROJECT_PROGRESS.usableStudy=93;
-     const a=V336_PROJECT_PROGRESS.areas||[];
-     const s=a.find(x=>x[0]==='Magical college sanctuary');if(s){s[1]=89;s[2]='Original Phase 4 sprite art is preserved exactly; a movement director, visible startup patrols, depth correction, local assets and a richer Dark Collegium room are deployed.'}
-     const g=a.find(x=>x[0]==='Guardian identity system');if(g){g[1]=97;g[2]='Approved canon portraits now replace legacy emoji/simple-art guardian displays outside Phaser; original movement sprites remain untouched inside Phaser.'}
-     V336_PROJECT_PROGRESS.next=['Verify all four original movers visibly patrol in the live sanctuary','Continue replacing flat sanctuary props with richer collectible art','Create exact-design movement sets for the six newer guardians without altering the original four'];
-   }
- }catch(_){ }
+ // Preserve only active Guardian dock and habitat compatibility adapters.
 })();
