@@ -44,7 +44,7 @@ function specificRepair(raw,selected){
  const optionIndex=(q.options||q.choices||[]).findIndex(v=>String(v)===chosen);
  const optionCoach=q.choiceCoach?.[chosen]||q.distractorRationales?.[chosen]||(optionIndex>=0?(q.choiceCoach?.[optionIndex]||q.distractorRationales?.[optionIndex]):null);
  // Never present a reconstructed numerical answer as verified if the authored key disagrees.
- const answerNumber=String(correct).trim().match(/^(-?\\d+(?:\\.\\d+)?)(\\s*%)?$/);
+ const answerNumber=String(correct).trim().match(/^(-?\d+(?:\.\d+)?)(\s*%)?$/);
  const authoredNumeric=answerNumber?Number(answerNumber[1])*(answerNumber[2]?0.01:1):null;
  const computedMatches=result==null||!answerNumber||Math.abs(result-authoredNumeric)<=1e-8;
  if(!computedMatches){
