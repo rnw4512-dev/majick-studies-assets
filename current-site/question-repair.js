@@ -46,8 +46,8 @@ function specificRepair(raw,selected){
  }
  // Section 3: independence must be checked against the supplied intersection.
  if(!worked.length&&/independen/i.test(text)){
-  const fraction=(label)=>{const re=new RegExp('P\\\\s*\\\\(\\\\s*'+label+'\\\\s*\\\\)\\\\s*(?:=|is)\\\\s*(\\\\d+)\\\\s*\\\\/\\\\s*(\\\\d+)','i');const m=prompt.match(re);return m?[Number(m[1]),Number(m[2])]:null};
-  const a=fraction('A'),b=fraction('B'),joint=prompt.match(/P\\s*\\(\\s*A\\s*(?:and|∩|&|,|\\\\cap)\\s*B\\s*\\)\\s*(?:=|is)\\s*(\\d+)\\s*\\/\\s*(\\d+)/i);
+  const fraction=(label)=>{const re=new RegExp('P\\s*\\(\\s*'+label+'\\s*\\)\\s*(?:=|is)\\s*(\\d+)\\s*/\\s*(\\d+)','i');const m=prompt.match(re);return m?[Number(m[1]),Number(m[2])]:null};
+  const a=fraction('A'),b=fraction('B'),joint=prompt.match(/P\s*\(\s*A\s*(?:and|∩|&|,)\s*B\s*\)\s*(?:=|is)\s*(\d+)\s*\/\s*(\d+)/i);
   if(a&&b&&joint&&a[1]>0&&b[1]>0&&Number(joint[2])>0){
    const expected=a[0]*b[0]/(a[1]*b[1]),observed=Number(joint[1])/Number(joint[2]),independent=Math.abs(expected-observed)<1e-10;
    rule='Events A and B are independent exactly when P(A and B) = P(A) × P(B).';
