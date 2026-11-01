@@ -33,7 +33,7 @@ for(const skill of skills){
  if(seen.size<2){stats.missingFreshTransfers++;issues.push({skill,kind:'no-distinct-evidence-transfer'})}
  summary[skill]={...stats,distinctEvidence:seen.size};
 }
-const report={gate:'D772 deterministic academic coverage',generatedAt:new Date().toISOString(),summary,issues};
+const report={gate:'D772 deterministic academic coverage',summary,issues};
 const out=process.env.D772_AUDIT_REPORT||'d772-academic-audit.json';
 fs.writeFileSync(out,JSON.stringify(report,null,2)+'\n');
 console.log(JSON.stringify(summary,null,2));
