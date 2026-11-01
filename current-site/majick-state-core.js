@@ -265,6 +265,10 @@ function safeProg(){
   st.progress[st.activeCourse]=normalizeProgressRow(st.progress[st.activeCourse],st.activeCourse);
   return st.progress[st.activeCourse];
 }
+// Preserve the historical UI extension namespace, including unknown saved fields.
+function legacyExtensions(){const current=stateRef();current.v3311=current.v3311||{};let v=current.v3311;v.schemaVersion=v.schemaVersion||1;v.grimoire=v.grimoire||{};v.grimoire.page=Number.isFinite(v.grimoire.page)?v.grimoire.page:Math.max(0,Number(current.v3311Page)||0);v.grimoire.bookmarks=Array.isArray(v.grimoire.bookmarks)?v.grimoire.bookmarks:[];v.grimoire.notes=v.grimoire.notes||{};v.grimoire.remember=v.grimoire.remember||{};v.grimoire.search=v.grimoire.search||'';v.guardianEvolutionState=v.guardianEvolutionState||{};v.sanctuaryState=v.sanctuaryState||{bedAssignments:{}};v.sanctuaryState.bedAssignments=v.sanctuaryState.bedAssignments||{};v.collectionState=v.collectionState||{};v.lastSyncedAt=v.lastSyncedAt||null;return v}
+
+
 function install(){
   const st=exposeState();
   if(!st)return false;
@@ -272,7 +276,7 @@ function install(){
   // One compatibility surface for all legacy code. Shared values route to majickAccount.
   window.prog=safeProg;
   window.course=safeCourse;
-  window.MajickStateCore={version:5,SHARED,BALANCE_RECOVERY_V3322,PROGRESS_MERGE_V3323,stateRef,exposeState,blankProgress,normalizeProgressRow,normalizeAll,ensureAccount,applyBalanceRecovery,applyProgressMergeV3323,reconcileHatchedGuardians,guardianProgressSignature,recoverySignature,safeProg,safeCourse,install};
+  window.MajickStateCore={legacyExtensions,version:5,SHARED,BALANCE_RECOVERY_V3322,PROGRESS_MERGE_V3323,stateRef,exposeState,blankProgress,normalizeProgressRow,normalizeAll,ensureAccount,applyBalanceRecovery,applyProgressMergeV3323,reconcileHatchedGuardians,guardianProgressSignature,recoverySignature,safeProg,safeCourse,install};
   document.documentElement.dataset.majickStateCore='5';
   return true;
 }

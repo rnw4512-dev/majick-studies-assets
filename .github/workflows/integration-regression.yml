@@ -3,6 +3,13 @@ on:
   push:
     branches:
       - integration/sanctuary-atelier-rewards-20261024
+      - chore/safe-legacy-cleanup-20261101
+  pull_request:
+    paths:
+      - 'current-site/**'
+      - 'tests/runtime-migration.spec.cjs'
+      - 'pages-release/current/test-runtime-migration.cjs'
+      - '.github/workflows/integration-regression.yml'
   workflow_dispatch:
 permissions:
   contents: read
@@ -24,10 +31,12 @@ jobs:
           node --check current-site/pixi-sanctuary/prototype.js
           node --check current-site/verified-milestone-ceremony.js
           node --check current-site/scholar-wardrobe-studio.js
+      - name: Check runtime migration contract
+        run: node pages-release/current/test-runtime-migration.cjs current-site
       - name: Run browser regression
         run: |
           python3 -m http.server 8765 --directory current-site >/tmp/majick-server.log 2>&1 &
-          npx playwright test tests/integration-regression.spec.cjs --browser chromium --workers 1 --reporter list
+          MIGRATION_URL=http://127.0.0.1:8765 npx playwright test tests/integration-regression.spec.cjs tests/runtime-migration.spec.cjs --browser chromium --workers 1 --reporter list
       - name: Upload test results
         if: always()
         uses: actions/upload-artifact@v4
@@ -35,5 +44,6 @@ jobs:
           name: majick-integration-results
           path: |
             test-results/
+            work/migration-*.png
             /tmp/majick-server.log
           if-no-files-found: ignore

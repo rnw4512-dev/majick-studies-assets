@@ -68,7 +68,7 @@ async function click(selector){
   await action('navigate("probability")');
   await waitFor('!!document.querySelector("[data-connected-open='+kind+']")&&!document.querySelector("[data-connected-open='+kind+']").disabled');
   await click('[data-connected-open='+kind+']');
-  await waitFor('!!document.querySelector("[data-prob-form]")&&MajickLearningContinuity.probabilityState().focus==='+JSON.stringify(kind));
+  await waitFor('!!document.querySelector("[data-prob-form]")&&MajickLearningContinuity.probabilityState().focus==='+JSON.stringify(kind)+'&&document.querySelector("[data-prob-prompt]")?.textContent===MajickLearningContinuity.probabilityState().tasks['+JSON.stringify(kind)+'].q.prompt');
   const task=await evalPage('MajickLearningContinuity.probabilityState().tasks['+JSON.stringify(kind)+']');
   const sign=JSON.stringify(task.q.data);assert(!datasets.has(sign),'fresh practice must change the dataset');datasets.add(sign);
   assert.equal(await evalPage('S.screen'),'probability');

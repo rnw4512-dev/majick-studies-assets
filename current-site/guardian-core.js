@@ -409,6 +409,6 @@ function installRenderIntegration(){
   return 'legacy-fallback';
 }
 setTimeout(()=>{installRenderIntegration();postRenderGuardian();observeReactions()},0);
-window.MajickGuardianCore={VERSION,activePet,meta:guardianMeta,select:setActive,cycle,study,react,sound,sparks,toggleSound,settings,studyPrefs,debriefEnabled,toggleDebrief,applyDebriefPreference,journey:guardianJourney,relationshipEvent,relationshipSnapshot,recentMemories,decorate,guardianHeroHtml,studyDockHtml};
+window.MajickGuardianCore={presentation:window.MajickGuardianPresentation,VERSION,activePet,meta:guardianMeta,select:setActive,cycle,study,react,sound,sparks,toggleSound,settings,studyPrefs,debriefEnabled,toggleDebrief,applyDebriefPreference,journey:guardianJourney,relationshipEvent,relationshipSnapshot,recentMemories,decorate,guardianHeroHtml,studyDockHtml};
 document.documentElement.dataset.majickGuardianCore=VERSION;
 })();

@@ -6,56 +6,40 @@ const RELEASE_LABEL='Collegium Commons • V3.4.2';
 const RELEASE_TITLE='Majick Studies — V3.4.2';
 const registry=()=>window.MajickGuardianRegistry;
 const canonOf=type=>registry()?.get?.(type)?.canon||String(type||'').toLowerCase();
-const STAGE_SLUGS=['new-bond','apprentice','guardian','ascendant','celestial'];
-const STAGE_NAMES=['New Bond','Apprentice','Guardian','Ascendant','Celestial'];
-
 function E(s){
   try{return esc(String(s??''))}
   catch(_){return String(s??'').replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]))}
 }
-function levelOf(p){
-  try{return Math.max(1,Number(masPetLevel(p))||1)}
-  catch(_){return Math.max(1,Number(p?.level||1)||1)}
-}
-function stageIndexFromLevel(level){
-  const n=Math.max(1,Number(level)||1);
-  return n>=12?4:n>=8?3:n>=5?2:n>=3?1:0;
-}
-function stageForPet(p){
-  const level=levelOf(p),index=stageIndexFromLevel(level);
-  return {level,index,slug:STAGE_SLUGS[index],name:STAGE_NAMES[index]};
-}
-function approvedStageImage(type,index){
-  const canon=canonOf(type);
-  const i=Math.max(0,Math.min(4,Number(index)||0));
-  return 'assets/familiars/evolution_stages/'+canon+'-'+STAGE_SLUGS[i]+'.webp?v=3317-clean';
-}
+const stageForPet=window.MajickGuardianPresentation.stageForPet;
+window.MajickGrimoire.courseView();
+ function retireStudyLocks(){
+   try{
+     S.v5=S.v5||{};S.v5.settings=S.v5.settings||{};
+     S.v5.settings.testWeek=false;
+     S.v5.settings.freezeUpdates=false;
+     // Keep source grounding on by default; this is not a lock and prevents invented course facts.
+     if(typeof S.v5.settings.noNewConcepts!=='boolean')S.v5.settings.noNewConcepts=true;
+     S.asc=S.asc||{};S.asc.settings=S.asc.settings||{};
+     S.asc.settings.testWeekLock=false;
+     S.campus=S.campus||{};S.campus.settings=S.campus.settings||{};
+     S.campus.settings.pretestLock=false;
+     document.body.classList.remove('ascFrozen');
+   }catch(e){console.warn('V3.3.9 unlock migration',e)}
+ }
+ retireStudyLocks();
+ try{save()}catch(_){ }
 
-window.v3317StageForPet=stageForPet;
-window.v3312StageImage=(type,index)=>approvedStageImage(type,index);
-window.v3312CurrentGuardianImage=p=>approvedStageImage(p?.type||'luna',stageForPet(p).index);
-window.v3313CurrentImage=window.v3312CurrentGuardianImage;
+ // The lock functions are retained as harmless no-ops so stale buttons cannot re-freeze the app.
+ ascLock=function(){retireStudyLocks();try{save();render()}catch(_){ }rewardToast('✦ Study system stays open','The old Test Week lock has been retired.');};
+ ascUnlock=function(){retireStudyLocks();try{save();render()}catch(_){ }};
+ ascApplyBody=function(){document.body.classList.toggle('ascLowMotion',!!S.asc?.settings?.performance);document.body.classList.remove('ascFrozen');};
 
-// Approved UI portraits only. Walk/play/sleep art stays inside Phaser.
-const priorPortrait=window.v334Portrait;
-window.v334Portrait=function(p,variant='card'){
-  if(!p||!registry()?.get?.(p.type))return priorPortrait?priorPortrait(p,variant):'';
-  let c=null;
-  try{c=typeof v338Canon==='function'?v338Canon(p.type):(window.V338_CANON||{})[p.type]}catch(_){}
-  const st=stageForPet(p),name=p.name||c?.display||registry()?.get?.(p.type)?.name||canonOf(p.type);
-  // Evolution sheets contain several panels and captions. Use the single-character art in compact portraits.
-  const fallback=c?.portrait||'assets/familiars/canon/'+canonOf(p.type)+'-guardian.webp';
-  const src=variant==='evolution'?approvedStageImage(p.type,st.index):fallback;
-  const priority=(variant==='sidebar'||variant==='study')?'eager':'lazy';
-  return '<div class="familiarPortrait '+variant+' v3317ApprovedPortrait" data-pet-type="'+E(p.type)+'" data-stage="'+st.slug+'" style="--pet-accent:'+E(c?.accent||'#b99cff')+'" title="'+E(name+' • '+st.name)+'">'+
-    '<img src="'+src+'" data-fallback="'+E(fallback)+'" loading="'+priority+'" decoding="async" '+(priority==='eager'?'fetchpriority="high"':'')+' onerror="this.onerror=null;if(this.dataset.fallback)this.src=this.dataset.fallback" alt="'+E(name+', '+st.name)+'">'+
-    '<span class="v3313Stage">'+st.name+'</span></div>';
-};
 
 // Learning Lab and Notes Forge belong to the main study app.
 const previousScreenHTML=window.screenHTML;
 if(typeof previousScreenHTML==='function'){
   window.screenHTML=function(){
+    if(window.S?.screen==='livinggrimoire'&&window.MajickGrimoire)return window.MajickGrimoire.render();
     if(window.S?.screen==='learninglab'&&window.MajickLearningLab)return window.MajickLearningLab.render();
     if(window.S?.screen==='addmaterial'&&window.AddStudyMaterialPage)return window.AddStudyMaterialPage.render();
     return previousScreenHTML();
@@ -65,6 +49,13 @@ const previousSideHTML=window.sideHTML;
 if(typeof previousSideHTML==='function'){
   window.sideHTML=function(){
     let h=previousSideHTML();
+    if(!h.includes('data-nav="livinggrimoire"')){
+      const at=h.indexOf('<button data-nav="guide"');
+      const nav='<button data-nav="livinggrimoire" class="'+(window.S?.screen==='livinggrimoire'?'active':'')+'" onclick="navigate(\'livinggrimoire\')"><span>◫</span><span class="label">Living Grimoire</span></button>';
+      h=at>=0?h.slice(0,at)+nav+h.slice(at):h+nav;
+    }
+    const soundOn=S.sound!==false&&S.v5?.settings?.sounds!==false;
+    h=h.replace('</nav>','<div class="v339SoundRow"><button class="v339SoundBtn" onclick="MajickStudyAudio.toggleSound()">'+(soundOn?'🔊 Sound on • tap to test/mute':'🔇 Sound off • tap to enable')+'</button></div></nav>');
     if(!h.includes('data-nav="learninglab"')){
       const learn='<button data-nav="learninglab" class="'+(window.S?.screen==='learninglab'?'active':'')+'" onclick="navigate(\'learninglab\')"><span>✦</span><span class="label">Learn Lab</span></button>';
       const target='<button data-nav="livinggrimoire"';
@@ -80,6 +71,25 @@ if(typeof previousSideHTML==='function'){
     return h;
   };
 }
+
+ const previousControl=controlHTML;
+ controlHTML=function(){
+   let html=previousControl();
+   html=html.replace(/<div class="ascPanel"><h3>🔒 Test Week Lock<\/h3>[\s\S]*?<\/div>/,'');
+   html=html.replace(/⚙️ Test Week Control Room/g,'⚙️ Majick Studies Control Room');
+   return `<div class="v339UnlockedNote"><b>✦ Study system:</b> Test Week Lock retired. Adaptive Study is open and will rotate scenarios while escalating difficulty from your recent performance.</div>`+html;
+ };
+
+ const previousSession=sessionHTML;
+ sessionHTML=function(){
+   let html=previousSession();
+   if(session?.current&&!session?.opts?.hideMeta&&!session?.finalTransformation){
+     const target=window.MajickQuestionScheduler.targetDifficulty();
+     html=html.replace(`Difficulty ${session.current.difficulty||1}`,`Difficulty ${session.current.difficulty||1} <span class="v339AdaptiveChip">adaptive target ${target}</span>`);
+   }
+   return html;
+ };
+
 
 const NAV_STACK_KEY='majick_nav_stack_v3329';
 let suppressNavHistory=false;
@@ -290,6 +300,8 @@ if(!window.__v3317Bridge){
       if(note)note.innerHTML='PixiJS graphics could not start on this device. Your saved room is unchanged. <button type="button" onclick="majickSanctuaryRetry()">Retry</button> <button type="button" onclick="majickSanctuaryFallback()">Use original Sanctuary</button>';
     }
 
+    if(d.type==='MAJICK_OPEN_ROUTE_V3311'&&d.guardian){S.v3311GuardianFocus=d.guardian;save()}
+    if(d.type==='MAJICK_BED_ASSIGN'&&d.bed&&d.guardian){window.MajickStateCore.legacyExtensions().sanctuaryState.bedAssignments[d.bed]=d.guardian;save()}
     if((d.type==='MAJICK_OPEN_ROUTE_V3311'||d.type==='MAJICK_OPEN_ROUTE')&&d.route){
       try{navigate(d.route)}catch(e){console.error('V3.3.18 route bridge',e)}
     }
@@ -419,8 +431,12 @@ window.addEventListener('unhandledrejection',ev=>console.warn('Majick promise wa
 const previousRender=typeof window.render==='function'?window.render:null;
 if(previousRender){
   window.render=function(){
+    retireStudyLocks();
     const practiceRefresh=refreshD772PracticeSync();
     const result=previousRender.apply(this,arguments);
+    // Retired lock UI stays retired; current runtime owns this post-render policy.
+    document.querySelectorAll('.v5Toggle').forEach(el=>{if(/Test Week Freeze/i.test(el.textContent||''))el.style.display='none'});
+    document.querySelectorAll('h2,h3,.rankBadge').forEach(el=>{if(/Test Week/i.test(el.textContent||''))el.textContent=(el.textContent||'').replace(/Test Week/gi,'Study')});
     try{window.MajickCourseManager?.decorateSelector?.()}catch(_){}
     if(window.S?.screen==='addmaterial'){
       setTimeout(()=>window.MajickCourseManager?.bindPanel?.(),0);

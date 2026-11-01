@@ -35,7 +35,7 @@ module.exports=async function({ev,waitFor,call,sleep}){
  assert.equal(await ev('document.querySelectorAll("#commons-panel-guardians .majEggFocus").length'),eggs.length,'All real eggs must appear in Guardians');
  if(eggs.length){await click('#commons-panel-guardians .majEggFocus');await waitFor('document.querySelector("#commons-panel-guardians .majEggFocus[aria-pressed=true]")');}
  // All original questions remain browsable; guided errors never certify mastery.
- await home('review');await ev('document.querySelector("#mjPreassessmentReview details").open=true');
+ await home('review');await waitFor('!!document.querySelector("#mjPreassessmentReview details")');await ev('document.querySelector("#mjPreassessmentReview details").open=true');
  await ev('const s=document.querySelector("#mjPaOriginal");s.value="49";s.dispatchEvent(new Event("change",{bubbles:true}))');
  assert((await ev('document.querySelector("[data-mj-pa-source]").textContent')).includes('49'));
  const q=await ev('MajickD772PreassessmentReview.questions[Number(document.querySelector("#mjPaPracticeTopic").value)]');

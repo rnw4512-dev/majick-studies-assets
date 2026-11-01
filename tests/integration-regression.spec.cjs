@@ -1,7 +1,8 @@
-const { test, expect } = require('@playwright/test');
+const { test, expect } = require('playwright/test');
 const fs = require('node:fs');
 const path = require('node:path');
 const root = path.resolve(__dirname, '../current-site');
+const url = process.env.MIGRATION_URL || 'http://127.0.0.1:8765';
 test('Guardian animation code retains frame playback and stop conditions', () => {
  const src = fs.readFileSync(path.join(root,'pixi-sanctuary/prototype.js'),'utf8');
  expect(src).toContain('new PIXI.AnimatedSprite');
@@ -17,7 +18,7 @@ test('Avatar saved outfits retain the existing owner and save callback', () => {
  expect(src).toContain('window.save?.()');
 });
 test('Verified ceremony opens, skips and rejects unverified events', async ({page}) => {
- await page.goto('http://127.0.0.1:8765/index.html');
+ await page.goto(url+'/index.html');
  await page.waitForFunction(() => !!window.MajickVerifiedCeremony, {timeout:30000});
  await page.evaluate(() => document.dispatchEvent(new CustomEvent('majick:celebrate',{detail:{key:'unverified-ci',type:'mastery',verified:false}})));
  await expect(page.locator('.majick-ceremony')).toHaveCount(0);
@@ -28,7 +29,7 @@ test('Verified ceremony opens, skips and rejects unverified events', async ({pag
 });
 test('Reduced-motion ceremony does not animate its emblem', async ({page}) => {
  await page.emulateMedia({reducedMotion:'reduce'});
- await page.goto('http://127.0.0.1:8765/index.html');
+ await page.goto(url+'/index.html');
  await page.waitForFunction(() => !!window.MajickVerifiedCeremony, {timeout:30000});
  await page.evaluate(() => document.dispatchEvent(new CustomEvent('majick:celebrate',{detail:{key:'reduced-ci',type:'lesson',verified:true}})));
  const emblem=page.locator('.majick-ceremony__emblem');
@@ -36,7 +37,7 @@ test('Reduced-motion ceremony does not animate its emblem', async ({page}) => {
  expect(await emblem.evaluate(el=>getComputedStyle(el).animationName)).toBe('none');
 });
 test('Existing application renders without an empty page', async ({page}) => {
- await page.goto('http://127.0.0.1:8765/index.html');
+ await page.goto(url+'/index.html');
  await expect(page.locator('body')).not.toBeEmpty();
  expect(await page.title()).toBeTruthy();
 });
