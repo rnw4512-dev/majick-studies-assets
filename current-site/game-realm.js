@@ -1050,7 +1050,7 @@
       '<h3>1. Is this claim valid or hexed?</h3><div class="realmHexJudge">'+
         '<button class="'+(session.judgment==='valid'?'selected':'')+'" '+(session.answered?'disabled':'')+' onclick="hexJudge(&quot;valid&quot;)">✓ Valid</button>'+
         '<button class="'+(session.judgment==='hexed'?'selected':'')+'" '+(session.answered?'disabled':'')+' onclick="hexJudge(&quot;hexed&quot;)">⬡ Hexed</button></div>'+
-      (session.judgment!=null?'<p class="'+(judgementCorrect?'strong':'weak')+'">'+(judgementCorrect?'Your diagnosis is on target.':'The claim is '+(session.claimValid?'valid':'hexed')+'.')+'</p>':'')+
+      (session.judgment!=null&&!session.answered?'<p class="realmHexPending">Your judgment is recorded. Check the evidence, then submit your repair to reveal whether the claim holds.</p>':'')+
       (!session.claimValid&&session.judgment!=null?
         '<h3>2. Break the hex: choose the correct repair.</h3><div class="realmHexRepairs">'+q.options.map(o=>'<button '+(session.answered?'disabled':'')+' data-repair="'+E(o)+'" onclick="hexRepair(this.dataset.repair)">'+E(o)+'</button>').join('')+'</div>':
         session.claimValid&&session.judgment!=null&&!session.answered?'<button class="btn violet" data-repair="'+E(q.answer)+'" onclick="hexRepair(this.dataset.repair)">Seal this valid claim ✦</button>':'')+
