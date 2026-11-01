@@ -88,6 +88,39 @@ class Game extends Phaser.Scene
         {
             this.syncPetUI();
         });
+        this.startMotionDirector();
+    }
+
+    setPetDepths()
+    {
+        const rows=[['luna','lunaGlow','lunaName','lunaType'],['ember','emberGlow','emberName','emberType'],['nova','novaGlow','novaName','novaType'],['mallow','mallowGlow','mallowName','mallowType']];
+        rows.forEach(([p,g,n,t])=>{if(this[p])this[p].setDepth(70);if(this[g])this[g].setDepth(62);if(this[n])this[n].setDepth(92);if(this[t])this[t].setDepth(92)});
+    }
+
+
+    startMotionDirector()
+    {
+        this.setPetDepths();
+        this.time.delayedCall(650,()=>{if(this.luna&&this.luna.input?.enabled!==false)this.lunaWalk()});
+        this.time.delayedCall(1050,()=>{if(this.ember&&this.ember.input?.enabled!==false)this.emberSlither()});
+        this.time.delayedCall(1450,()=>{if(this.nova&&this.nova.input?.enabled!==false)this.novaRun()});
+        this.time.delayedCall(1850,()=>{if(this.mallow&&this.mallow.input?.enabled!==false)this.mallowFly()});
+        this.motionLastPositions={};
+        this.motionWatchdog=this.time.addEvent({delay:5200,loop:true,callback:()=>{
+            const defs=[
+              ['luna','lunaMoveTween','lunaNextTimer','lunaWalk'],['ember','emberMoveTween','emberNextTimer','emberWalk'],['nova','novaMoveTween','novaNextTimer','novaRun'],['mallow','mallowMoveTween','mallowNextTimer','mallowHop']
+            ];
+            defs.forEach(([petKey,tweenKey,timerKey,moveKey])=>{
+                const pet=this[petKey];if(!pet||pet.input?.enabled===false)return;
+                const prev=this.motionLastPositions[petKey];this.motionLastPositions[petKey]={x:pet.x,y:pet.y,at:Date.now()};
+                const moving=!!(this[tweenKey]&&this[tweenKey].isPlaying&&this[tweenKey].isPlaying());
+                const timer=!!this[timerKey];
+                if(!moving&&!timer&&typeof this[moveKey]==='function')this[moveKey]();
+                if(prev&&Math.abs(prev.x-pet.x)<2&&Math.abs(prev.y-pet.y)<2&&!moving&&typeof this[moveKey]==='function')this[moveKey]();
+            });
+            this.setPetDepths();
+        }});
+        this.events.once('shutdown',()=>{this.motionWatchdog?.remove();this.motionWatchdog=null;});
     }
 
     // =========================================================
@@ -437,24 +470,7 @@ class Game extends Phaser.Scene
 
     chooseLunaBehavior()
     {
-        const choice = Phaser.Math.Between(0, 4);
-
-        if (choice <= 1)
-        {
-            this.lunaWalk();
-        }
-        else if (choice === 2)
-        {
-            this.lunaSit();
-        }
-        else if (choice === 3)
-        {
-            this.lunaSleep();
-        }
-        else
-        {
-            this.lunaHop();
-        }
+        const r=Phaser.Math.Between(0,9);if(r<=5)return this.lunaWalk();if(r===6)return this.lunaHop();if(r===7)return this.lunaSit();return this.lunaSleep()
     }
 
     lunaWalk()
@@ -762,33 +778,7 @@ class Game extends Phaser.Scene
 
     chooseEmberBehavior()
     {
-        const choice =
-            Phaser.Math.Between(0, 7);
-
-        if (choice <= 1)
-        {
-            this.emberWalk();
-        }
-        else if (choice <= 3)
-        {
-            this.emberSlither();
-        }
-        else if (choice === 4)
-        {
-            this.emberFly();
-        }
-        else if (choice === 5)
-        {
-            this.emberHop();
-        }
-        else if (choice === 6)
-        {
-            this.emberSit();
-        }
-        else
-        {
-            this.emberSleep();
-        }
+        const r=Phaser.Math.Between(0,9);if(r<=2)return this.emberWalk();if(r<=5)return this.emberSlither();if(r===6)return this.emberFly();if(r===7)return this.emberHop();if(r===8)return this.emberSit();return this.emberSleep()
     }
 
     emberWalk()
@@ -1243,41 +1233,7 @@ class Game extends Phaser.Scene
 
     chooseNovaBehavior()
     {
-        const choice =
-            Phaser.Math.Between(0, 9);
-
-        if (choice <= 1)
-        {
-            this.novaWalk();
-        }
-        else if (choice === 2)
-        {
-            this.novaRun();
-        }
-        else if (choice === 3)
-        {
-            this.novaHop();
-        }
-        else if (choice === 4)
-        {
-            this.novaSpin();
-        }
-        else if (choice === 5)
-        {
-            this.novaPounce();
-        }
-        else if (choice === 6)
-        {
-            this.novaSit();
-        }
-        else if (choice === 7)
-        {
-            this.novaSleep();
-        }
-        else
-        {
-            this.novaRun();
-        }
+        const r=Phaser.Math.Between(0,9);if(r<=2)return this.novaWalk();if(r<=5)return this.novaRun();if(r===6)return this.novaPounce();if(r===7)return this.novaHop();if(r===8)return this.novaSpin();return this.novaSit()
     }
 
     novaWalk()
@@ -1825,33 +1781,7 @@ class Game extends Phaser.Scene
 
     chooseMallowBehavior()
     {
-        const choice =
-            Phaser.Math.Between(0, 9);
-
-        if (choice <= 2)
-        {
-            this.mallowHop();
-        }
-        else if (choice <= 4)
-        {
-            this.mallowFly();
-        }
-        else if (choice === 5)
-        {
-            this.mallowBinky();
-        }
-        else if (choice === 6)
-        {
-            this.mallowPaw();
-        }
-        else if (choice === 7)
-        {
-            this.mallowSit();
-        }
-        else
-        {
-            this.mallowSleep();
-        }
+        const r=Phaser.Math.Between(0,9);if(r<=3)return this.mallowHop();if(r<=6)return this.mallowFly();if(r===7)return this.mallowBinky();if(r===8)return this.mallowPaw();return this.mallowSit()
     }
 
     mallowHop()
