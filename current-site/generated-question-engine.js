@@ -8,7 +8,25 @@ const quartiles=a=>{const x=[...a].sort((m,n)=>m-n),n=x.length,half=Math.floor(n
 const frame=(title,plot,alt)=>'<figure class="majickGeneratedFigure" style="background:#22162e;color:#fbeacd;padding:12px;border-radius:12px;border:1px solid #c9a97b"><figcaption><b>'+E(title)+'</b></figcaption><svg role="img" aria-label="'+E(alt)+'" viewBox="0 0 500 275" xmlns="http://www.w3.org/2000/svg" style="display:block;width:100%;max-width:680px;margin:auto">'+plot+'</svg></figure>';
 const tx=(x,y,v)=>'<text x="'+x+'" y="'+y+'" text-anchor="middle" fill="#fff1d6" font-size="13">'+E(v)+'</text>';
 const axis='<path d="M55 20V225H475" fill="none" stroke="#fff1d6" stroke-width="2"/>';
-function dots(vals){const lo=Math.min(...vals),hi=Math.max(...vals),span=hi-lo||1;let plot=axis;const seen={};vals.forEach(v=>{const x=65+(v-lo)/span*390,j=seen[v]||0;seen[v]=j+1;plot+='<circle cx="'+x+'" cy="'+(210-22*j)+'" r="8" fill="#bca0f0"/>'});plot+=tx(70,245,lo)+tx(455,245,hi)+tx(260,264,'Value');return frame('Dot plot',plot,'Dot plot of '+vals.join(', '))}
+function dots(vals){
+ const lo=Math.min(...vals),hi=Math.max(...vals),span=hi-lo||1;
+ const counts=new Map();vals.forEach(v=>counts.set(v,(counts.get(v)||0)+1));
+ const unique=[...counts.keys()].sort((a,b)=>a-b);
+ const x=v=>65+(v-lo)/span*390;
+ // Every observation is represented; label each distinct value directly under its column.
+ // On dense datasets stagger adjacent labels rather than suppressing middle values.
+ let plot='<path d="M55 24V177H475" fill="none" stroke="#fff1d6" stroke-width="2"/>';
+ unique.forEach((v,i)=>{
+  const cx=x(v),count=counts.get(v);
+  for(let j=0;j<count;j++)plot+='<circle cx="'+cx+'" cy="'+(163-20*j)+'" r="7.5" fill="#bca0f0"/>';
+  const nearPrevious=i>0&&cx-x(unique[i-1])<37;
+  const nearNext=i<unique.length-1&&x(unique[i+1])-cx<37;
+  const labelY=(nearPrevious||nearNext)?(i%2?221:202):202;
+  plot+=tx(cx,labelY,v);
+ });
+ plot+=tx(260,253,'Value');
+ return frame('Dot plot',plot,'Dot plot with values '+unique.map(v=>v+' ('+counts.get(v)+' observation'+(counts.get(v)===1?'':'s')+')').join(', '));
+}
 function box(vals){const five=quartiles(vals),lo=five[0],span=five[4]-lo||1,x=v=>65+(v-lo)/span*390;let plot=axis+'<path d="M'+x(five[0])+' 130H'+x(five[4])+'" stroke="#caa7f2" stroke-width="4"/><rect x="'+x(five[1])+'" y="94" width="'+Math.max(1,x(five[3])-x(five[1]))+'" height="72" fill="#784b9d" stroke="#f5dfa9" stroke-width="2"/><path d="M'+x(five[2])+' 94V166 M'+x(five[0])+' 112V148 M'+x(five[4])+' 112V148" stroke="#fff1d6" stroke-width="3"/>';five.forEach((v,i)=>plot+=tx(x(v),i%2?194:212,v));return frame('Box plot',plot,'Five-number summary minimum '+five.join(', Q1 median Q3 maximum in order: '))}
 function histogram(counts){const max=Math.max(...counts,1),w=370/counts.length;let plot=axis+tx(29,14,'Frequency')+tx(267,268,'Quiz score intervals');counts.forEach((n,i)=>{const height=n/max*168,x=67+i*w;plot+='<rect x="'+x+'" y="'+(225-height)+'" width="'+w+'" height="'+height+'" stroke="#d9bf9a" fill="#8553ab"/>'+tx(x+w/2,243,(i*10)+'–'+(i*10+9))+tx(x+w/2,Math.max(18,216-height),n)});return frame('Histogram · equal-width intervals',plot,'Frequencies in successive equal-width groups: '+counts.join(', '))}
 function scatter(points){let plot=axis;for(let n=0;n<=10;n+=2){plot+=tx(62+n*36,245,n)+tx(39,224-n*17,n)}points.forEach(([x,y])=>plot+='<circle cx="'+(62+x*36)+'" cy="'+(220-y*17)+'" r="6" fill="#e5b9e9"/>');plot+=tx(260,270,'Weekly practice hours (x)')+tx(250,15,'Performance score (y)');return frame('Scatterplot · association, not causation',plot,'Practice hours on x-axis and performance score on y-axis. Ordered pairs: '+points.map(p=>p.join(' comma ')).join('; '))}
