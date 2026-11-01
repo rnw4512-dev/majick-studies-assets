@@ -41,9 +41,10 @@ function specificRepair(raw,selected){
  if(!worked.length&&Array.isArray(authored)&&authored.every(s=>typeof s==='string'))worked=authored;
  if(!rule)rule=q.rule||q.formula||q.wguClue||q.keyClue||q.why;
  if(!worked.length)worked=[`Question: ${prompt}`,`Correct conclusion: ${correct}.`,q.why].filter(Boolean);
- const optionCoach=q.choiceCoach?.[chosen]||q.distractorRationales?.[chosen];
- const diagnosis=optionCoach?`For the selected option “${chosen}”: ${optionCoach}`:`“${chosen}” does not match “${correct}”. The selection alone does not establish how you reasoned.`;
- const diagnostic=`In “${prompt}”, which ${givens?'values and operation':'specific words or graph features'} led you to choose “${chosen}”? ${givens?'Write your setup before calculating.':'Identify the evidence you used, then compare it with the conclusion.'}`;
+ const optionIndex=(q.options||q.choices||[]).findIndex(v=>String(v)===chosen);
+ const optionCoach=q.choiceCoach?.[chosen]||q.distractorRationales?.[chosen]||(optionIndex>=0?(q.choiceCoach?.[optionIndex]||q.distractorRationales?.[optionIndex]):null);
+ const diagnosis=optionCoach?`For the selected option “${chosen}”: ${optionCoach}`:`Your answer “${chosen}” differs from the verified answer “${correct}”. That difference alone cannot identify your exact misconception. Compare your setup with the worked steps, then identify where your reasoning changed.`;
+ const diagnostic=`In “${prompt}”, which ${givens?'values and operation':'specific words or graph features'} led you to choose “${chosen}”? ${givens?'Write your setup before calculating.':'Identify the evidence you used, then compare it with the conclusion.'} Compare your setup with: ${worked[0]||rule||q.why||'the evidence given in the question'}.`;
  if(!visual){const evidence=window.MajickVisualEvidence?.evidence?.(q,x=>window.MajickWGUPractice?.visualHtml?.(x.visual)||window.MajickCourseTutor?.questionVisualHtml?.(x)||'');visual=evidence?.ok&&evidence.html?evidence.html:q.visualHtml||''}
  if(!visual)visual=`<table><caption>Evidence map for the actual question</caption><tr><th scope="row">Scenario</th><td>${E(prompt)}</td></tr><tr><th scope="row">Supported conclusion</th><td>${E(correct)}</td></tr><tr><th scope="row">Evidence to inspect</th><td>${E(q.why||q.keyClue||q.wguClue||diagnostic)}</td></tr></table>`;
  return {question:q,chosen,correct,clue:q.keyClue||q.wguClue||prompt,rule,worked,result,givens,visual,diagnosis,diagnostic,diagnosisConfirmed:false,reviewNeeded:!q.why&&!rule};
