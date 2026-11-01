@@ -236,3 +236,6 @@ body[data-majick-room=home] .top .courseSelect{min-width:0!important;max-width:1
 
 /* Production mobile certification: solid plaque behind the small Commons eyebrow. */
 #majCommonsHub .majCommonsEyebrow{display:inline-block!important;background:#100b16!important;color:#fff8ed!important;padding:5px 8px!important;border-radius:6px;text-shadow:none!important;box-shadow:0 0 0 2px #100b16!important;max-width:100%;}
+
+/* Keep the Commons eyebrow on a solid high-contrast plaque at narrow widths. */
+@media(max-width:480px){#majCommonsHub .majCommonsEyebrow{max-width:calc(100% - 20px)!important;width:fit-content!important;overflow-wrap:anywhere!important;box-decoration-break:clone!important;-webkit-box-decoration-break:clone!important;background:#100b16!important;color:#fff8ed!important;box-shadow:0 0 0 5px #100b16!important}}

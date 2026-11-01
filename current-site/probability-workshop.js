@@ -46,8 +46,9 @@ function mount(){
  if(box.__majickProbabilityView===view)return;
  // Do not replace a focused form control during a background render pass.
  // Explicit task changes can still render after submission/advancement.
- if(box.contains(document.activeElement)&&document.activeElement?.matches?.('[data-prob-field]')&&box.__majickProbabilityView&&st?.tasks[st?.focus]?.submitted!==true)return;
+ if(box.contains(document.activeElement)&&document.activeElement?.matches?.('[data-prob-field]')&&box.__majickProbabilityView&&box.__majickProbabilityFocus===st?.focus&&st?.tasks[st?.focus]?.submitted!==true)return;
  box.__majickProbabilityView=view;
+ box.__majickProbabilityFocus=st?.focus;
  const nav=Object.keys(labels).map(k=>{
  const unlocked=k==='repair'||m.repairVerified&&(k==='reasoning'||m.independentCorrect>=2&&(k==='transfer'||m.transferVerified));
  return '<button type="button" data-connected-open="'+k+'" aria-disabled="'+(!unlocked)+'" title="'+(unlocked?'Open activity':'See prerequisite for this activity')+'">'+labels[k]+(unlocked?'':' · prerequisite needed')+'</button>';
