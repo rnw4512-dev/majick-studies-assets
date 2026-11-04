@@ -42,8 +42,8 @@ function specificRepair(raw,selected){
  if(!rule)rule=q.rule||q.formula||q.wguClue||q.keyClue||q.why;
  if(!worked.length)worked=[`Question: ${prompt}`,`Correct conclusion: ${correct}.`,q.why].filter(Boolean);
  const optionCoach=q.choiceCoach?.[chosen]||q.distractorRationales?.[chosen];
- const diagnosis=optionCoach?`For the selected option “${chosen}”: ${optionCoach}`:`“${chosen}” does not match “${correct}”. The selection alone does not establish how you reasoned.`;
- const diagnostic=`In “${prompt}”, which ${givens?'values and operation':'specific words or graph features'} led you to choose “${chosen}”? ${givens?'Write your setup before calculating.':'Identify the evidence you used, then compare it with the conclusion.'}`;
+ const diagnosis=optionCoach?`For the selected option “${chosen}”: ${optionCoach}`:`You selected “${chosen}”, but the verified answer is “${correct}”. This answer alone cannot prove which reasoning step went wrong. Check the first step below against your own setup, then identify where your method diverged.`;
+ const diagnostic=`In “${prompt}”, which ${givens?'values and operation':'specific words or graph features'} led you to choose “${chosen}”? ${givens?'Write your setup before calculating.':'Identify the evidence you used, then compare it with the conclusion.'} Compare that setup with: ${worked[0]||rule||q.why||'the verified answer and the question evidence'}.`;
  if(!visual){const evidence=window.MajickVisualEvidence?.evidence?.(q,x=>window.MajickWGUPractice?.visualHtml?.(x.visual)||window.MajickCourseTutor?.questionVisualHtml?.(x)||'');visual=evidence?.ok&&evidence.html?evidence.html:q.visualHtml||''}
  if(!visual)visual=`<table><caption>Evidence map for the actual question</caption><tr><th scope="row">Scenario</th><td>${E(prompt)}</td></tr><tr><th scope="row">Supported conclusion</th><td>${E(correct)}</td></tr><tr><th scope="row">Evidence to inspect</th><td>${E(q.why||q.keyClue||q.wguClue||diagnostic)}</td></tr></table>`;
  return {question:q,chosen,correct,clue:q.keyClue||q.wguClue||prompt,rule,worked,result,givens,visual,diagnosis,diagnostic,diagnosisConfirmed:false,reviewNeeded:!q.why&&!rule};
