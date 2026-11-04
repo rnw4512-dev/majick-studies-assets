@@ -41,12 +41,25 @@ function specificRepair(raw,selected){
  if(!worked.length&&Array.isArray(authored)&&authored.every(s=>typeof s==='string'))worked=authored;
  if(!rule)rule=q.rule||q.formula||q.wguClue||q.keyClue||q.why;
  if(!worked.length)worked=[`Question: ${prompt}`,`Correct conclusion: ${correct}.`,q.why].filter(Boolean);
- const optionCoach=q.choiceCoach?.[chosen]||q.distractorRationales?.[chosen];
- const diagnosis=optionCoach?`For the selected option “${chosen}”: ${optionCoach}`:`“${chosen}” does not match “${correct}”. The selection alone does not establish how you reasoned.`;
- const diagnostic=`In “${prompt}”, which ${givens?'values and operation':'specific words or graph features'} led you to choose “${chosen}”? ${givens?'Write your setup before calculating.':'Identify the evidence you used, then compare it with the conclusion.'}`;
+ const optionIndex=(q.options||q.choices||[]).findIndex(v=>String(v)===chosen);
+ const optionCoach=q.choiceCoach?.[chosen]||q.distractorRationales?.[chosen]||(optionIndex>=0?(q.choiceCoach?.[optionIndex]||q.distractorRationales?.[optionIndex]):null);
+ // Never present a reconstructed numerical answer as verified if the authored key disagrees.
+ const answerNumber=String(correct).trim().match(/^(-?\d+(?:\.\d+)?)(\s*%)?$/);
+ const authoredNumeric=answerNumber?Number(answerNumber[1])*(answerNumber[2]?0.01:1):null;
+ const computedMatches=result==null||!answerNumber||Math.abs(result-authoredNumeric)<=1e-8;
+ const answerKeyConflict=!computedMatches;
+ if(!computedMatches){
+  worked=[`Answer-key review required: the computed result is ${result}, while the question marks “${correct}” correct.`,'Do not rely on this worked calculation until the source answer key and question wording have been checked.'];
+  rule='This question has conflicting academic evidence. Review the source before independent assessment.';
+  visual='<p role="alert">Academic verification required: calculated result and answer key disagree.</p>';
+  result=null;
+ }
+
+ const diagnosis=!computedMatches?'The question answer key conflicts with the computed result. Your response cannot be evaluated fairly until this is corrected.':optionCoach?`For the selected option “${chosen}”: ${optionCoach}`:`You selected “${chosen}”, but the answer key says “${correct}”. The selected option alone does not establish your exact misconception. Compare your setup with the worked steps.`;
+ const diagnostic=`In “${prompt}”, which ${givens?'values and operation':'specific words or graph features'} led you to choose “${chosen}”? ${givens?'Write your setup before calculating.':'Identify the evidence you used, then compare it with the conclusion.'} Compare with: ${worked[0]||rule||'the question evidence'}.`;
  if(!visual){const evidence=window.MajickVisualEvidence?.evidence?.(q,x=>window.MajickWGUPractice?.visualHtml?.(x.visual)||window.MajickCourseTutor?.questionVisualHtml?.(x)||'');visual=evidence?.ok&&evidence.html?evidence.html:q.visualHtml||''}
  if(!visual)visual=`<table><caption>Evidence map for the actual question</caption><tr><th scope="row">Scenario</th><td>${E(prompt)}</td></tr><tr><th scope="row">Supported conclusion</th><td>${E(correct)}</td></tr><tr><th scope="row">Evidence to inspect</th><td>${E(q.why||q.keyClue||q.wguClue||diagnostic)}</td></tr></table>`;
- return {question:q,chosen,correct,clue:q.keyClue||q.wguClue||prompt,rule,worked,result,givens,visual,diagnosis,diagnostic,diagnosisConfirmed:false,reviewNeeded:!q.why&&!rule};
+ return {question:q,chosen,correct,clue:q.keyClue||q.wguClue||prompt,rule,worked,result,givens,visual,diagnosis,diagnostic,answerKeyConflict,diagnosisConfirmed:false,reviewNeeded:answerKeyConflict||!q.why&&!rule};
 }
 function evidenceKey(raw){const q=normalize(raw),m=specificRepair(q,'');let data=q.data??q.transferEvidence??q.scenarioEvidence??m.givens??q.visual;const numeric=q.prompt.match(/-?\d+(?:\.\d+)?/g);if(data==null&&numeric?.length)data=numeric.map(Number).sort((a,b)=>a-b);if(data==null)return null;if(Array.isArray(data)&&/^(mean|median|range|boxplot)$/.test(q.skill||'')&&data.every(Number.isFinite))data=[...data].sort((a,b)=>a-b);const stable=x=>Array.isArray(x)?x.map(stable):x&&typeof x==='object'?Object.fromEntries(Object.keys(x).filter(k=>!['id','wording','prompt','serial','questionId'].includes(k)).sort().map(k=>[k,stable(x[k])])):x;return JSON.stringify(stable(data))}
 function isFresh(source,candidate){const a=evidenceKey(source),b=evidenceKey(candidate);return !!a&&!!b&&a!==b&&String(source.id)!==String(candidate.id)}
