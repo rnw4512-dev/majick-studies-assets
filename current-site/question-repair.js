@@ -37,6 +37,24 @@ function specificRepair(raw,selected){
   rule='Area = height × width; compare the area multiplier with the reported data multiplier.';result=4;givens=[1,1,2,2];worked=['Original relative area = 1 × 1 = 1.','Doubled height and width: (2 × 1) × (2 × 1) = 4.','The data doubled (×2), but the area quadrupled (×4): the picture exaggerates the change.'];
   visual='<svg role="img" aria-label="Original relative area one square; doubled height and width create four squares" viewBox="0 0 300 140"><g fill="none" stroke="currentColor" stroke-width="2"><rect x="15" y="45" width="40" height="40"/><rect x="130" y="25" width="80" height="80"/><path d="M170 25V105M130 65H210"/></g><g fill="currentColor"><text x="15" y="125">1 unit²</text><text x="130" y="125">4 units², not 2</text></g></svg>';
  }
+ // Section 1: explain sampling and causal-inference clues using the actual scenario.
+ if(!worked.length&&/sampling|sample|survey|population|selection bias|random assignment|observational study|experiment/i.test(text)){
+  const observational=/observational/i.test(prompt),random=/random assignment|randomly assigned/i.test(prompt),voluntary=/voluntar|opt.in|self.select/i.test(prompt),convenience=/convenience|only (?:staff|students|people)|one school|nearby/i.test(prompt);
+  rule=random?'Random assignment supports causal comparison; random sampling supports population generalization.':observational?'An observational study measures without assigning treatments; association alone does not establish causation.':voluntary||convenience?'Compare the target population with who could actually enter the sample; selection can systematically exclude people.':'Identify the population, the sampling frame, the actual sample, and any unsupported causal or generalization claim.';
+  worked=[`Question evidence: ${prompt}`,random?'Locate the randomly assigned treatment groups and check what outcomes were compared.':observational?'Identify what was observed and confirm that researchers did not assign a treatment.':voluntary?'Identify who chose to respond and who may be systematically absent.':convenience?'Identify the restricted location or group from which participants were recruited.':'Identify the target population and who was actually sampled.',`Use that distinction to evaluate the claimed conclusion: ${correct}.`];
+  visual=`<table><caption>Study design evidence</caption><tr><th scope="row">Question evidence</th><td>${E(prompt)}</td></tr><tr><th scope="row">Design check</th><td>${E(rule)}</td></tr><tr><th scope="row">Supported answer</th><td>${E(correct)}</td></tr></table>`;
+ }
+ // Section 3: independence must be checked against the supplied intersection.
+ if(!worked.length&&/independen/i.test(text)){
+  const fraction=(label)=>{const re=new RegExp('P\\s*\\(\\s*'+label+'\\s*\\)\\s*(?:=|is)\\s*(\\d+)\\s*/\\s*(\\d+)','i');const m=prompt.match(re);return m?[Number(m[1]),Number(m[2])]:null};
+  const a=fraction('A'),b=fraction('B'),joint=prompt.match(/P\s*\(\s*A\s*(?:and|∩|&|,)\s*B\s*\)\s*(?:=|is)\s*(\d+)\s*\/\s*(\d+)/i);
+  if(a&&b&&joint&&a[1]>0&&b[1]>0&&Number(joint[2])>0){
+   const expected=a[0]*b[0]/(a[1]*b[1]),observed=Number(joint[1])/Number(joint[2]),independent=Math.abs(expected-observed)<1e-10;
+   rule='Events A and B are independent exactly when P(A and B) = P(A) × P(B).';
+   worked=[`P(A) = ${a[0]}/${a[1]}; P(B) = ${b[0]}/${b[1]}.`,`Multiply: ${a[0]}/${a[1]} × ${b[0]}/${b[1]} = ${a[0]*b[0]}/${a[1]*b[1]} = ${expected}.`,`Compare with given P(A and B) = ${joint[1]}/${joint[2]} = ${observed}.`,independent?'The values agree, so the events are independent.':'The values differ, so the events are dependent.'];
+   visual=`<table><caption>Independence test</caption><tr><th>Product P(A) × P(B)</th><td>${expected}</td></tr><tr><th>Given P(A and B)</th><td>${observed}</td></tr><tr><th>Conclusion</th><td>${independent?'Independent':'Dependent'}</td></tr></table>`;
+  }
+ }
  const authored=q.workedExample?.steps;
  if(!worked.length&&Array.isArray(authored)&&authored.every(s=>typeof s==='string'))worked=authored;
  if(!rule)rule=q.rule||q.formula||q.wguClue||q.keyClue||q.why;
