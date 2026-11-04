@@ -38,11 +38,34 @@ function visualHtml(v){
   }
   return '';
 }
+function derivedChoiceCoach(q,o){
+ const p=String(q.prompt||''),v=String(o).trim(),correct=String(q.answer||'');
+ if(/25\s*%.*rain|rain.*25\s*%/i.test(p)&&/at least one day/i.test(p)){
+  return {'43.75%':'At least one rainy day is the complement of no rain on both independent days: 1 − (0.75 × 0.75) = 0.4375 = 43.75%.','6.25%':'0.25 × 0.25 = 6.25% is rain on BOTH days, not at least one day.','50%':'Adding 25% + 25% double-counts the 6.25% chance of rain on both days; subtract that overlap.','75%':'75% is the probability of NO rain on a single day. For at least one rainy day across two days, subtract the two-day no-rain probability from 1.'}[v]||'Use P(at least one) = 1 − P(neither). With independent days, P(neither) = 0.75².';
+ }
+ if(/ticket costs?\s*\$?2\b/i.test(p)&&/pays?\s*\$?10\b/i.test(p)&&/0\.2\b/.test(p)&&/NET value/i.test(p)){
+  if(v==='$0'||v==='0')return 'Expected payout = (0.2 × $10) + (0.8 × $0) = $2. Subtract the $2 ticket cost: expected NET value = $0.';
+  if(v==='$8'||v==='8')return '$10 − $2 = $8 is the net amount IF you win; it ignores the 20% chance of winning. Weight the payouts by their probabilities first.';
+  if(v==='$2'||v==='2')return '$2 is the expected payout BEFORE subtracting the $2 ticket cost. The question asks for NET value.';
+  return 'Compute both outcomes: win net $8 with probability 0.2; lose net −$2 with probability 0.8. Expected net = 0.2($8) + 0.8(−$2) = $0.';
+ }
+ if(/math club OR the science club/i.test(p)&&/28 students/i.test(p)){
+  if(v==='19/28')return 'Math only 8 + both 4 + science only 7 = 19 students in at least one club. Divide by 28: 19/28.';
+  if(v==='15/28')return '8 + 7 = 15 counts only students in exactly one club. Inclusive OR also includes the 4 students in BOTH clubs: (8 + 4 + 7)/28 = 19/28.';
+  return 'For inclusive OR, add each non-overlapping region once: math only 8, both 4, science only 7. Do not count neither (9).';
+ }
+ const data=Array.isArray(q.data)?q.data:null;
+ if(data&&data.length&&data.every(n=>typeof n==='number'&&Number.isFinite(n))&&/median/i.test(p)){
+  const sorted=[...data].sort((a,b)=>a-b),n=sorted.length,mid=n%2?sorted[(n-1)/2]:(sorted[n/2-1]+sorted[n/2])/2;
+  return 'Order the actual observations: '+sorted.join(', ')+'. '+(n%2?'The middle (position '+((n+1)/2)+') is '+mid+'.':'The two middle values are '+sorted[n/2-1]+' and '+sorted[n/2]+'; their average is '+mid+'.')+' '+v+' is not the median of the ordered data.';
+ }
+ return null;
+}
 function whyList(q){
   const coach=q.choiceCoach||{};
   return '<details class="v3333Why"><summary>Why each answer is right or wrong</summary><div class="v3333ChoiceWhy">'+(q.options||[]).map(o=>{
     const ok=o===q.answer;
-    const txt=ok?'This is the best answer for this scenario. '+String(q.wguClue||'Use the defining feature in the stem.'):coach[o]||'This term does not match the defining feature described in this scenario.';
+    const txt=coach[o]||derivedChoiceCoach(q,o)||(ok?String(q.why||q.wguClue||'Compare the correct option with the evidence in the question.'):('The answer '+String(o)+' is not supported by this question. '+String(q.why||'Review the givens and the required calculation.')));
     return '<div class="'+(ok?'isCorrect':'')+'"><b>'+(ok?'✓ ':'')+E(o)+'</b><p>'+E(txt)+'</p></div>';
   }).join('')+'</div></details>';
 }
