@@ -128,11 +128,21 @@ function pinClassroomAnchors(){
  const reviews=window.S?.progress?.D772?.adaptiveSkills||{};
  const pending=Object.values(reviews).filter(x=>x.status==='review-needed'||x.status==='reviewing'||x.status==='retry');
  if(pending.length){
-  const footer=document.createElement('div');footer.className='majickAnchorRepair';footer.style.cssText='padding:10px;border-top:1px solid #c7a56f';
-  const label=document.createElement('strong');label.textContent='Professor’s Recovery Circle · '+pending.length+' skill(s) to revisit';footer.append(label);
-  for(const item of pending.slice(0,4)){
-   const button=document.createElement('button');button.type='button';button.style.margin='6px';button.textContent=(item.status==='review-needed'?'Reteach ':'Practice again ')+item.lessonId;
-   button.addEventListener('click',()=>{if(item.status==='review-needed')window.MajickLearningContinuity?.skillReview?.(item.lessonId);else window.MajickLearningContinuity?.skillRetry?.(item.lessonId)});footer.append(button)
+  const footer=document.createElement('details');footer.className='majickAnchorRepair';footer.style.cssText='padding:10px;border-top:1px solid #c7a56f;margin-top:8px';
+  const label=document.createElement('summary');label.textContent='Professor’s Recovery Circle · '+pending.length+' skill(s) to revisit';label.style.cssText='cursor:pointer;font-weight:700;color:#ffe0a5';footer.append(label);
+  const list=document.createElement('div');list.style.cssText='display:flex;flex-wrap:wrap;gap:8px;margin-top:10px';footer.append(list);
+  const readable=id=>{
+   const key=String(id||''),course=window.S?.courses?.D772;
+   const lesson=course?.lessons?.[key]||course?.lessonMap?.[key];
+   const known=lesson?.title||lesson?.name||window.MajickLearningContinuity?.lessonTitle?.(key);
+   if(known&&String(known)!==key)return String(known);
+   const match=key.match(/^d772-s(\d+)-l(\d+)(?:-(\d+))?$/i);
+   return match?'Section '+match[1]+' · Lesson '+match[2]+(match[3]?' · Skill '+match[3]:''):key.replace(/[-_]/g,' ');
+  };
+  for(const item of pending){
+   const button=document.createElement('button');button.type='button';button.textContent=(item.status==='review-needed'?'Reteach: ':'Practice: ')+readable(item.lessonId);
+   button.title='Open guided recovery for '+readable(item.lessonId);
+   button.addEventListener('click',()=>{if(item.status==='review-needed')window.MajickLearningContinuity?.skillReview?.(item.lessonId);else window.MajickLearningContinuity?.skillRetry?.(item.lessonId)});list.append(button);
   }
   host.querySelector('details').append(footer);
  }
