@@ -1,0 +1,258 @@
+{
+  "schemaVersion": 1,
+  "courseId": "D756",
+  "title": "IEP Collaboration and Communication",
+  "status": "source-intake-not-yet-wired-to-runtime",
+  "compentency": "The learner communicates with stakeholders in a school setting to build consensus, meet goals, and promote culturally responsive communication.",
+  "provenance": "User-provided WGU course material in conversation, November 2026; reorganized for app ingestion. Original test questions are review material, not independent transfer proofs.",
+  "sections": [
+    {
+      "id": "d756-s1",
+      "title": "Collaboration and Communication",
+      "status": "source-material-collected",
+      "lessons": [
+        {
+          "id": "d756-s1-l1",
+          "title": "Communication and Collaboration with the Team",
+          "topics": [
+            "IEP preparation, welcoming environment, active listening",
+            "Meeting dynamics and participant roles",
+            "Valid IEP meeting checklist with procedural caveats",
+            "Co-teaching and team characteristics",
+            "Tuckman: forming, storming, norming, performing",
+            "Instructional, student-centered, special education teams",
+            "Formal vs informal collaboration",
+            "Voluntary participation, equal voice, mutual goals, shared responsibility",
+            "Linear and transactional communication",
+            "Paraphrasing, clarifying, probing, perception checking",
+            "Power dynamics, collaboration barriers and benefits"
+          ]
+        },
+        {
+          "id": "d756-s1-l2",
+          "title": "Culturally Responsive Communication",
+          "topics": [
+            "Ways of knowing, solving problems, nonverbal communication, learning styles, conflict resolution",
+            "Inclusive decision-making and group conversations",
+            "Problem definition using multiple data sources",
+            "Brainstorming and brainwriting",
+            "Nominal group technique",
+            "Plus/Minus/Implications evaluation",
+            "De-escalation, shared goals, four-box consensus technique",
+            "Resistance indicators",
+            "Six steps for challenging family conversations"
+          ]
+        }
+      ],
+      "vocabulary": [
+        {
+          "id": "d756-s1-term-01",
+          "term": "Active Listening",
+          "definition": "Engaging fully in hearing and understanding another person's message, including verbal, nonverbal, and symbolic communication.",
+          "source": "user-supplied WGU Section 1 Key Terms PowerPoint"
+        },
+        {
+          "id": "d756-s1-term-02",
+          "term": "Paraphrasing",
+          "definition": "Restating someone else's message in your own words to confirm understanding and allow the speaker to reflect on their communication.",
+          "source": "user-supplied WGU Section 1 Key Terms PowerPoint"
+        },
+        {
+          "id": "d756-s1-term-03",
+          "term": "Clarifying",
+          "definition": "Asking questions to ensure that you fully understand the speaker's message and intent.",
+          "source": "user-supplied WGU Section 1 Key Terms PowerPoint"
+        },
+        {
+          "id": "d756-s1-term-04",
+          "term": "Probing",
+          "definition": "Encouraging the speaker to provide more details or explore unclear aspects of the conversation.",
+          "source": "user-supplied WGU Section 1 Key Terms PowerPoint"
+        },
+        {
+          "id": "d756-s1-term-05",
+          "term": "Perception Checking",
+          "definition": "Verifying your interpretation of the speaker's emotions or feelings by describing your perception, offering an interpretation, and asking for confirmation.",
+          "source": "user-supplied WGU Section 1 Key Terms PowerPoint"
+        },
+        {
+          "id": "d756-s1-term-06",
+          "term": "Communication Competence",
+          "definition": "The ability to effectively send and receive messages in different situations, often combining verbal, nonverbal, and cognitive skills like perspective-taking.",
+          "source": "user-supplied WGU Section 1 Key Terms PowerPoint"
+        },
+        {
+          "id": "d756-s1-term-07",
+          "term": "Brainwriting",
+          "definition": "A brainstorming technique where each participant writes down ideas, swaps them with others, and continues to generate new ideas based on the shared lists.",
+          "source": "user-supplied WGU Section 1 Key Terms PowerPoint"
+        },
+        {
+          "id": "d756-s1-term-08",
+          "term": "Nominal Group Technique",
+          "definition": "A structured method for generating and prioritizing ideas, where participants first write down their ideas individually, then share, discuss, and rank them as a group.",
+          "source": "user-supplied WGU Section 1 Key Terms PowerPoint"
+        },
+        {
+          "id": "d756-s1-term-09",
+          "term": "Plus/Minus/Implications (PMI) Method",
+          "definition": "An evaluation tool used to assess the positives, negatives, and potential implications of a proposed solution.",
+          "source": "user-supplied WGU Section 1 Key Terms PowerPoint"
+        },
+        {
+          "id": "d756-s1-term-10",
+          "term": "Resistance Indicators",
+          "definition": "Behaviors or responses that indicate reluctance or refusal to accept change, such as refusing to participate, supporting without substance, displacing responsibilities, deferring to a future time, and relying on past practice.",
+          "source": "user-supplied WGU Section 1 Key Terms PowerPoint"
+        },
+        {
+          "id": "d756-s1-term-11",
+          "term": "Face (Cultural Concept)",
+          "definition": "The concept of maintaining respect and dignity in interactions, especially important in culturally sensitive situations within the IEP process.",
+          "source": "user-supplied WGU Section 1 Key Terms PowerPoint"
+        }
+      ],
+      "testQuestions": [
+        {
+          "id": "d756-s1-test-q1",
+          "prompt": "Which explanation describes the importance of the general education teacher to the IEP process?",
+          "options": [
+            "The general educator can give extensive details about the curriculum, including the textbooks and other learning resources.",
+            "The general educator has experience leading the class and can share instructional strategies that are effective for all students.",
+            "The general education teacher can provide feedback and observations about what is happening in the classroom and provide input on how to make needed adjustments to support learning.",
+            "The general educator works with paraprofessionals and other support staff in the classroom and can discuss the credentials of those individuals."
+          ],
+          "correctIndex": 2,
+          "userResult": "correct",
+          "source": "user-supplied Section 1 Test",
+          "mode": "review",
+          "countsForIndependentMastery": false
+        },
+        {
+          "id": "d756-s1-test-q2",
+          "prompt": "What is an example of a Procedural Safeguard?",
+          "options": [
+            "Guarantee or private services outside of the school day",
+            "Unlimited accommodations for student",
+            "Teacher selection for following year",
+            "Prior Written Notice"
+          ],
+          "correctIndex": 3,
+          "userResult": "correct",
+          "source": "user-supplied Section 1 Test",
+          "mode": "review",
+          "countsForIndependentMastery": false
+        },
+        {
+          "id": "d756-s1-test-q3",
+          "prompt": "What role does a district representative play in an IEP meeting?",
+          "options": [
+            "Makes sure resources needed are available",
+            "Has a close understanding of the student’s strengths and weaknesses.",
+            "Responsible for providing instruction tailored to the student’s needs",
+            "Interprets evaluation results"
+          ],
+          "correctIndex": 0,
+          "userResult": "correct",
+          "source": "user-supplied Section 1 Test",
+          "mode": "review",
+          "countsForIndependentMastery": false
+        },
+        {
+          "id": "d756-s1-test-q4",
+          "prompt": "What is the definition of the active listening technique of “paraphrasing”?",
+          "options": [
+            "Emphasizing the importance of listening for both words and feelings by describing what you perceive, stating your possible interpretation, and requesting confirmation.",
+            "Restating the content of a message in your own words to allow the speaker to reflect and refine their communication.",
+            "Prompting the speaker to provide more information or explore unclear aspects of the situation, often in sensitive or important contexts.",
+            "Asking questions to understand the broader context and ensure clear communication by reflecting the speaker’s intent."
+          ],
+          "correctIndex": 1,
+          "userResult": "correct",
+          "source": "user-supplied Section 1 Test",
+          "mode": "review",
+          "countsForIndependentMastery": false
+        },
+        {
+          "id": "d756-s1-test-q5",
+          "prompt": "Which statement best describes a key cultural difference in educational practices?",
+          "options": [
+            "Non-verbal communication cues are identical across all cultures, preventing misunderstandings.",
+            "Some cultures favor collaborative learning while others emphasize teacher-centered instruction.",
+            "Conflict resolution methods are the same in every culture, leading to similar outcomes.",
+            "All cultures rely equally on academic research for acquiring information."
+          ],
+          "correctIndex": 1,
+          "userResult": "unanswered",
+          "source": "user-supplied Section 1 Test",
+          "mode": "review",
+          "countsForIndependentMastery": false
+        },
+        {
+          "id": "d756-s1-test-q6",
+          "prompt": "Which is a way for a teacher to increase competence in cross-cultural communication?",
+          "options": [
+            "Learn more about the specific curriculum being used in the classroom.",
+            "Include personal stories during lessons.",
+            "Build relationships with students and parents.",
+            "Attend sporting events at the school."
+          ],
+          "correctIndex": 2,
+          "userResult": "unanswered",
+          "source": "user-supplied Section 1 Test",
+          "mode": "review",
+          "countsForIndependentMastery": false
+        },
+        {
+          "id": "d756-s1-test-q7",
+          "prompt": "What is one strategy to overcome barriers in communication with a family that English is not their primary language?",
+          "options": [
+            "Send emails with a link to an outside website that they can use to translate the document themselves.",
+            "Send written correspondences in English so they can learn English faster.",
+            "Avoid sending written communications so they don’t get overwhelmed.",
+            "Translate all written communications (evaluations, emails, forms, etc.) into their primary language."
+          ],
+          "correctIndex": 3,
+          "userResult": "correct",
+          "source": "user-supplied Section 1 Test",
+          "mode": "review",
+          "countsForIndependentMastery": false
+        }
+      ],
+      "lesson2QuizAnswerTopics": [
+        "PMI method",
+        "Return to shared goals during disagreement",
+        "Nominal Group Technique to address deferral",
+        "Four-box method and refocusing on student success (choose two)"
+      ],
+      "masteryPolicy": "Original and guided source questions are review only; independent mastery requires unseen transfer items, with separate course records."
+    },
+    {
+      "id": "d756-s2",
+      "title": "Collaboration and Resources",
+      "status": "introduction-received",
+      "competency": "The learner communicates with stakeholders in a school setting to build consensus, meet goals, and promote culturally responsive communication.",
+      "learningFocus": [
+        "Educational advocacy for students, schools, communities, and teaching profession",
+        "Collaboration with families, colleagues, professionals, and community resources",
+        "Cross-cultural organizational communication",
+        "Monitoring accommodations, IEP goals, and student progress"
+      ],
+      "lessons": [
+        {
+          "id": "d756-s2-l1-1",
+          "title": "Collaboration with Families and Colleagues",
+          "status": "awaiting-lesson-content",
+          "topics": []
+        },
+        {
+          "id": "d756-s2-l2",
+          "title": "Culturally Responsive Collaboration",
+          "status": "awaiting-lesson-content",
+          "topics": []
+        }
+      ],
+      "assessmentPrompt": "How will I collaborate with families, colleagues, and other professionals to monitor and advocate for the accommodations, goals, and progress of students with exceptionalities?"
+    }
+  ]
+}

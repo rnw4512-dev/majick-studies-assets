@@ -1,0 +1,173 @@
+{
+  "schemaVersion": 1,
+  "courseId": "D756",
+  "sectionId": "d756-s2",
+  "lessonId": "d756-s2-l1-1",
+  "title": "Collaboration with Families and Colleagues",
+  "status": "source-content-received-not-runtime-integrated",
+  "source": "user-supplied WGU lesson paste, November 2026",
+  "sourceScope": "1343 lines of study text, including guided practice, case studies, figures descriptions, references, and resource listings",
+  "topics": [
+    {
+      "id": "families",
+      "title": "Families and collaboration",
+      "concepts": [
+        "IDEA family participation and diverse family structures",
+        "Active listening and empathy",
+        "Clear and concise communication",
+        "Develop check-in plans",
+        "Cultural self-awareness",
+        "Stress management",
+        "Seek colleague support",
+        "Use multiple perspectives"
+      ]
+    },
+    {
+      "id": "fape-settings",
+      "title": "Navigating FAPE across educational settings",
+      "concepts": [
+        "Public schools and charter schools",
+        "Parent-placed versus district-placed private schools",
+        "Homeschool and Child Find",
+        "IEP, 504, and equitable services"
+      ],
+      "reviewFlag": "Complex state-dependent IDEA distinctions; verify legal accuracy before teaching as categorical rules."
+    },
+    {
+      "id": "omar",
+      "title": "Omar Phan and Ms. Leilani Kim scenarios",
+      "concepts": [
+        "29 communications over six weeks",
+        "Respond respectfully to concerns",
+        "Review progress and consider IEP team reconvening",
+        "Two Muzzy Lane simulations"
+      ],
+      "mode": "scenario"
+    },
+    {
+      "id": "special-ed-law",
+      "title": "Twelve school law scenarios",
+      "cases": [
+        "504 plan after IEP eligibility ends",
+        "Least Restrictive Environment",
+        "Disability designation with ADHD and learning disability",
+        "Parental rights notices",
+        "Parental participation and scheduling",
+        "General education teacher participation",
+        "RTI and referral",
+        "FBA and BIP",
+        "Team monitoring of BIP",
+        "Positive behavior supports and co-teaching",
+        "Manifestation determination and discipline",
+        "Disciplinary response to illegal drugs"
+      ],
+      "reviewFlags": [
+        "IDEA generally allows an IEP meeting without a parent after documented reasonable efforts under specified conditions; do not teach absolute parent-consent-to-meet requirement.",
+        "RTI may not be used to delay or deny a special education evaluation; flag any claim that RTI must always precede referral.",
+        "IEP team member attendance and excusal require regulatory nuance.",
+        "Disciplinary manifestation rules and exceptions are situation-specific."
+      ]
+    },
+    {
+      "id": "family-stress",
+      "title": "Family emotions, stressors, strengths and engagement",
+      "concepts": [
+        "Nonlinear feelings including fear, anger, hope and pride",
+        "Accept families, understand coping styles, build on strengths",
+        "Meeting barriers from work, finances, healthcare and accessibility",
+        "Flexible meetings and respectful inquiry"
+      ]
+    },
+    {
+      "id": "distance-learning",
+      "title": "Distance learning supports",
+      "concepts": [
+        "Flexible scheduling and formats",
+        "Technology and community resources",
+        "Shared parent decision-making"
+      ]
+    },
+    {
+      "id": "family-empowerment",
+      "title": "Empowering families and students",
+      "concepts": [
+        "Procedural safeguards and due process",
+        "Access to records and confidentiality",
+        "Prior Written Notice",
+        "Independent Educational Evaluation",
+        "Consent, dispute resolution and stay put",
+        "Family-friendly evaluation-result communication",
+        "Family resource organizations",
+        "Student self-advocacy"
+      ]
+    },
+    {
+      "id": "interpreters",
+      "title": "Using interpreters",
+      "concepts": [
+        "Confirm language preferences, avoid assumptions",
+        "Prepare documents and glossary",
+        "Allocate enough meeting time",
+        "Clarify confidentiality",
+        "Avoid children as interpreters",
+        "Speak directly to the family",
+        "Respect nonverbal cues and debrief"
+      ]
+    },
+    {
+      "id": "family-participation",
+      "title": "Family participation in IEP decisions",
+      "concepts": [
+        "Facilitated IEP meetings",
+        "Welcoming environment",
+        "Preparing materials",
+        "Continuous family input",
+        "Informed decision-making"
+      ]
+    },
+    {
+      "id": "colleagues",
+      "title": "Collaboration with educators, paraeducators and administrators",
+      "concepts": [
+        "Shared knowledge and differentiated instruction",
+        "IEP implementation and consistent strategies",
+        "Open communication and progress monitoring",
+        "Regular planning/check-ins",
+        "Leadership support and clear roles",
+        "Administrator data-based advocacy",
+        "Specialist scheduling and caseload constraints",
+        "Collaboration with EL teachers",
+        "Co-teaching models and benefits"
+      ]
+    },
+    {
+      "id": "transition",
+      "title": "Community resources and transition",
+      "concepts": [
+        "Student self-determination and voice",
+        "Interagency collaboration",
+        "IEP/Transition Team",
+        "Vocational rehabilitation",
+        "Community networks and organizations"
+      ]
+    }
+  ],
+  "keyTerms": [
+    {
+      "term": "Consensus-Building",
+      "definition": "The process of getting everyone to agree on a decision or plan by listening to each person's ideas and finding common ground."
+    },
+    {
+      "term": "Interagency Collaboration",
+      "definition": "Different organizations or groups working together to achieve a shared goal, such as helping students during transition planning."
+    }
+  ],
+  "sourcePractice": "Contains guided matching, multiple choice, true/false, and multi-select; keep source questions as guided/review content, never verified independent mastery.",
+  "integration": {
+    "courseIsolation": true,
+    "countsForMastery": false,
+    "rewards": false,
+    "readyForNextLesson": "Lesson 1.1 content collected; awaiting next user segment",
+    "runtimeWired": false
+  }
+}
