@@ -21,6 +21,18 @@ const COURSE_CATALOG={
     glossary:{},questionBank:[],misconceptionCatalog:[],
     preassessmentProfile:{priorityConcepts:['uploaded-notes']},
     studySections:[],sources:[],localGenerated:true,catalogSeed:true
+  },
+  D756:{
+    id:'D756',
+    title:'IEP Collaboration and Communication',
+    version:'majick-d756-2026-11',
+    concepts:[
+      {id:'d756-s1-collaboration',title:'Collaboration and Communication',section:'Section 1',priority:'core'},
+      {id:'d756-s2-resources',title:'Collaboration and Resources',section:'Section 2',priority:'core'}
+    ],
+    glossary:{},questionBank:[],misconceptionCatalog:[],
+    preassessmentProfile:{priorityConcepts:['d756-s1-collaboration','d756-s2-resources']},
+    studySections:[],sources:[],localGenerated:true,catalogSeed:true
   }
 };
 const E=s=>{try{return esc(String(s??''))}catch(_){return String(s??'').replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]))}};
