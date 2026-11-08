@@ -4,7 +4,7 @@
   "sectionId": "d756-s2",
   "lessonId": "d756-s2-l1-1",
   "title": "Collaboration with Families and Colleagues",
-  "status": "source-content-received-not-runtime-integrated",
+  "status": "lesson-summary-received-content-mapped",
   "source": "user-supplied WGU lesson paste, November 2026",
   "sourceScope": "1343 lines of study text, including guided practice, case studies, figures descriptions, references, and resource listings",
   "topics": [
@@ -169,5 +169,24 @@
     "rewards": false,
     "readyForNextLesson": "Lesson 1.1 content collected; awaiting next user segment",
     "runtimeWired": false
+  },
+  "lessonSummary": {
+    "sourceTitle": "Summary of D756 Section 2 Lesson 1",
+    "sourceUrl": "https://assets.wgu.edu/b2d8861bce3e749121b578d690dc72fd",
+    "keyPoints": [
+      "Promote positive communication and consensus-building through collaboration skills to address student needs and develop shared goals.",
+      "Co-teaching combines the expertise of two or more educators in planning, instruction, and assessment to differentiate instruction, engage students, and improve outcomes.",
+      "Interagency collaboration supports student transitions to post-school activities, including higher education and employment."
+    ],
+    "learningOutcomeTopics": [
+      "Collaboration skills",
+      "Co-teaching",
+      "Effective communication with parents",
+      "Transition planning",
+      "Advocacy at IEP meetings",
+      "Clear and inclusive content at an eighth-grade reading level"
+    ],
+    "sourceLabelNote": "The excerpt's headings inconsistently identify 'Lesson 1: Communication and Collaboration with the Team' and 'Lesson 2: Summary', though the link is labeled Section 2 Lesson 1. Filed under Section 2 Lesson 1 based on the user's context.",
+    "completeness": "Summary sentence about transition planning was truncated in supplied text; do not invent the missing ending."
   }
 }
