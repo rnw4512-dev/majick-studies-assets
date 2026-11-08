@@ -1,0 +1,134 @@
+{
+  "courseId": "D756",
+  "section": "Section 2",
+  "lessonId": "d756-s2-l2",
+  "title": "Lesson 2.1: Culturally Responsive Collaboration",
+  "status": "received",
+  "source": "User-provided WGU lesson text and summary",
+  "summaryUrl": "https://assets.wgu.edu/f4dffc7200bf9fd3cba75d99a232a2f8",
+  "summary": [
+    "Recognize cultural differences and how they shape interactions and meetings with families.",
+    "Consider socioeconomic circumstances, family structure, caregiving and childcare needs as potential participation barriers.",
+    "Use preferred languages, flexible times, family knowledge and classroom invitations to foster student and family voice."
+  ],
+  "concepts": [
+    "Cultural sensitivity including culture, language, religion, gender, disability, socioeconomic status, sexual orientation",
+    "Life conditions and barriers to family engagement",
+    "Student voice, family voice and safe/open environments",
+    "Student strategies: modeling voice, feedback, co-creating lessons, choice, projects, and technology",
+    "Family strategies: preferred-language communication, community gatherings, office hours, incorporating family knowledge, flexible meetings, family participation"
+  ],
+  "terms": [
+    {
+      "term": "Cultural Competence",
+      "definition": "The ability to understand, respect, and interact with people from different cultures. It means being aware of differences and treating everyone fairly, no matter their background."
+    },
+    {
+      "term": "Culturally Responsive Classroom",
+      "definition": "A classroom where the educator respects and includes students' various cultures in lessons and activities. It helps all students feel valued and supported in their learning."
+    },
+    {
+      "term": "Student Voice",
+      "definition": "When students share their ideas, opinions, and experiences to help shape their learning and school environment."
+    },
+    {
+      "term": "Family Voice",
+      "definition": "When families share their thoughts and experiences to help support their child’s education and influence decisions made at school."
+    }
+  ],
+  "quiz": [
+    {
+      "id": "d756-s2l2-q1",
+      "type": "single",
+      "prompt": "How can teachers integrate family voice into the classroom to support students with exceptionalities?",
+      "options": [
+        "Set strict meeting schedules that do not account for family availability",
+        "Avoid discussing student progress with families to prevent misunderstandings",
+        "Only communicate with families when issues arise with the student",
+        "Regularly communicate in the family's preferred language to build trust and collaboration"
+      ],
+      "correctIndex": 3,
+      "reported": "correct"
+    },
+    {
+      "id": "d756-s2l2-q2",
+      "type": "single",
+      "prompt": "How does providing students with choice in learning activities support students with exceptionalities?",
+      "options": [
+        "It standardizes learning by requiring all students to choose the same activities.",
+        "It forces students to take on challenges they are not prepared for.",
+        "It limits the teacher’s control over classroom management.",
+        "It empowers students to select tasks that align with their strengths and interests, promoting autonomy."
+      ],
+      "correctIndex": 3,
+      "reported": "correct",
+      "note": "WGU pasted feedback about transparency and sharing progress does not match this question. The answer on autonomy is supported by the lesson's student voice table."
+    },
+    {
+      "id": "d756-s2l2-q3",
+      "type": "multiple",
+      "prompt": "Which three factors should teachers consider when collaborating with families to support students with exceptionalities? Select three answers.",
+      "options": [
+        "Language barriers, which may require teachers to adapt communication to be more accessible",
+        "Setting a strict communication style without regard for family preferences",
+        "Assuming that all families can meet at the same times regardless of their circumstances",
+        "Family structure, as caregiving responsibilities may influence how much time families can dedicate to school involvement",
+        "Treating every family the same to ensure consistency across the board",
+        "Economic status, which can impact the family's ability to participate in school events"
+      ],
+      "correctIndices": [
+        0,
+        3,
+        5
+      ],
+      "reported": "correct"
+    },
+    {
+      "id": "d756-s2l2-q4",
+      "type": "matching",
+      "prompt": "Match the following student voice strategies with how they support students with exceptionalities.",
+      "pairs": [
+        [
+          "Project-based learning",
+          "Allows students to demonstrate understanding through various formats"
+        ],
+        [
+          "Providing choice in learning activities",
+          "Empowers students to select activities that align with their strengths and interests, promoting autonomy"
+        ],
+        [
+          "Modeling voice",
+          "Demonstrates ways for students to express opinions and build confidence"
+        ]
+      ],
+      "reported": "correct"
+    }
+  ],
+  "additionalGuidedPractice": [
+    {
+      "prompt": "Mei is working with a family new to the United States who does not speak English fluently and hesitates to participate. What should Mei do?",
+      "correct": "Use a translator to communicate in the family's native language and provide information about community resources."
+    },
+    {
+      "prompt": "Families with limited resources or facing economic hardships are just as likely to participate in school activities as families with abundant resources.",
+      "correct": "False"
+    },
+    {
+      "prompt": "For a community helpers lesson, which approach integrates both student and family voice?",
+      "correct": "Solicit student feedback, offer presentation choices, and invite family cultural perspectives and classroom participation."
+    }
+  ],
+  "grading": "ungraded-source-review",
+  "masteryEligible": false,
+  "feedbackNote": "Lesson 2 quiz Q2 pasted feedback does not align with the displayed question; preserve answer but flag feedback.",
+  "sectionSummary": {
+    "title": "Section 2: Collaboration and Resources",
+    "sourceUrl": "https://assets.wgu.edu/8e8cbdd165ad7fadbcc9707b1e4fee27",
+    "learningOutcome": "Building respectful family and colleague relationships, recognizing backgrounds and circumstances, identifying supportive resources and advocating for students with exceptionalities.",
+    "keyPoints": [
+      "Co-teaching and collaboration share expertise and create inclusive learning environments.",
+      "Involving students and families in decisions strengthens individualized supports.",
+      "Understanding cultural differences supports trust and culturally responsive resource connections."
+    ]
+  }
+}
