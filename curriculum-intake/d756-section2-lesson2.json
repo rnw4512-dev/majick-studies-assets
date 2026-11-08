@@ -120,5 +120,15 @@
   ],
   "grading": "ungraded-source-review",
   "masteryEligible": false,
-  "feedbackNote": "Lesson 2 quiz Q2 pasted feedback does not align with the displayed question; preserve answer but flag feedback."
+  "feedbackNote": "Lesson 2 quiz Q2 pasted feedback does not align with the displayed question; preserve answer but flag feedback.",
+  "sectionSummary": {
+    "title": "Section 2: Collaboration and Resources",
+    "sourceUrl": "https://assets.wgu.edu/8e8cbdd165ad7fadbcc9707b1e4fee27",
+    "learningOutcome": "Building respectful family and colleague relationships, recognizing backgrounds and circumstances, identifying supportive resources and advocating for students with exceptionalities.",
+    "keyPoints": [
+      "Co-teaching and collaboration share expertise and create inclusive learning environments.",
+      "Involving students and families in decisions strengthens individualized supports.",
+      "Understanding cultural differences supports trust and culturally responsive resource connections."
+    ]
+  }
 }
