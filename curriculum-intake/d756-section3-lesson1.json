@@ -1,0 +1,257 @@
+{
+  "courseId": "D756",
+  "sectionId": "d756-s3",
+  "sectionTitle": "Individualized Education Plan (IEP)",
+  "sectionOverview": {
+    "competencyQuoted": "You will communicate with stakeholders in a school setting to build consensus, meet goals, and promote culturally responsive communication.",
+    "employabilitySkills": [
+      "Academic Accommodation Plans — Provide Individualized Education Program Information",
+      "Academic Advising — Student Development and Achievement Plan",
+      "Family Engagement — Collaboration with Families",
+      "Problem Solving — Student with Exceptionalities Goals Determination",
+      "Teamwork — Collaboration for Learner Support"
+    ],
+    "assessmentPrompt": "Can I collaborate with families, colleagues, and other professionals to monitor and advocate for the accommodations, goals, and progress of students with exceptionalities?",
+    "lessons": [
+      "Creating the IEP with a Team",
+      "PLAAFP and Annual Goals",
+      "Services, Supports, and Progress Monitoring",
+      "Transition Plan"
+    ]
+  },
+  "sampleIEP": {
+    "student": "Randal Lee",
+    "sourceUrl": "https://assets.wgu.edu/f87bd9317a8bf6293ed003a1962e401c",
+    "description": "WGU-provided example IEP with secondary transition, featuring specific learning disabilities in math and post-school interest in becoming an automotive technician.",
+    "sourceNote": "Linked sample's complete document is not reproduced in the pasted text; do not invent individual data or annual goals."
+  },
+  "lesson1": {
+    "title": "Creating the IEP with a Team",
+    "subheadingInUserPaste": "Lesson 1.1: Collaboration with Families and Colleagues",
+    "objective": "You will create an individualized education plan (IEP) by collaborating with the team supporting the student with exceptionalities.",
+    "concepts": [
+      "IEP as a collaborative legal document to provide FAPE",
+      "Roles of parents, general and special education teachers, district representative, person interpreting evaluations, and student",
+      "Provide parent notice, scheduling options, and meaningful participation",
+      "First IEP meeting within 30 calendar days after eligibility determination",
+      "Initial meeting: review evaluations, strengths, needs, goals, accommodations and placement",
+      "Annual review and parents' ability to request meetings sooner",
+      "Progress monitoring using work samples, assessments, grades, intervention data, and accommodation effectiveness",
+      "Collaboration between general and special education teachers",
+      "State/district assessment accommodations, accessibility features, alternative assessment decisions",
+      "FAPE and LRE individualized support",
+      "Student strengths and family voice in present levels and goals",
+      "IEP elements: service delivery, academic performance, goals, educational services, program modifications, transition planning, assessments, peer participation"
+    ],
+    "keyTerms": [
+      {
+        "term": "Accommodation",
+        "definition": "Supports how a student learns or completes work without changing the content they are learning.",
+        "provenance": "User-provided WGU Section 3 Lesson 1 key terms; capitalization/spelling lightly normalized"
+      },
+      {
+        "term": "Annual IEP Goals",
+        "definition": "Measurable goals based on the student’s current level, aimed at achieving specific targets within a year.",
+        "provenance": "User-provided WGU Section 3 Lesson 1 key terms; capitalization/spelling lightly normalized"
+      },
+      {
+        "term": "Annual IEP Meeting",
+        "definition": "A meeting is held at least once a year to review the student’s progress and develop next year’s IEP.",
+        "provenance": "User-provided WGU Section 3 Lesson 1 key terms; capitalization/spelling lightly normalized"
+      },
+      {
+        "term": "Assistive Technology",
+        "definition": "Devices or equipment that help students learn, communicate, or function at school.",
+        "provenance": "User-provided WGU Section 3 Lesson 1 key terms; capitalization/spelling lightly normalized"
+      },
+      {
+        "term": "Disability",
+        "definition": "There are fourteen specific categories of disability that qualify a student for an IEP.",
+        "provenance": "User-provided WGU Section 3 Lesson 1 key terms; capitalization/spelling lightly normalized"
+      },
+      {
+        "term": "Eligibility Determination Meeting",
+        "definition": "A meeting to decide if a child qualifies for special education services and an IEP.",
+        "provenance": "User-provided WGU Section 3 Lesson 1 key terms; capitalization/spelling lightly normalized"
+      },
+      {
+        "term": "Impact of Disability",
+        "definition": "Explanation of how the student’s disability affects their progress in the general education curriculum.",
+        "provenance": "User-provided WGU Section 3 Lesson 1 key terms; capitalization/spelling lightly normalized"
+      },
+      {
+        "term": "Individualized Education Program (IEP)",
+        "definition": "A legal document that describes the special education services and supports a student's needs to make progress in school.",
+        "provenance": "User-provided WGU Section 3 Lesson 1 key terms; capitalization/spelling lightly normalized"
+      },
+      {
+        "term": "Initial IEP Meeting",
+        "definition": "The first meeting to develop an IEP, held within 30 days after a child is found eligible for special education services.",
+        "provenance": "User-provided WGU Section 3 Lesson 1 key terms; capitalization/spelling lightly normalized"
+      },
+      {
+        "term": "Least Restrictive Environment (LRE)",
+        "definition": "The requirement that students with disabilities are educated alongside nondisabled peers as much as appropriate.",
+        "provenance": "User-provided WGU Section 3 Lesson 1 key terms; capitalization/spelling lightly normalized"
+      },
+      {
+        "term": "Notice of Meeting",
+        "definition": "A written notice from the school inviting parents to a meeting about their student, including the date, time, and purpose of the meeting.",
+        "provenance": "User-provided WGU Section 3 Lesson 1 key terms; capitalization/spelling lightly normalized"
+      },
+      {
+        "term": "Parent Report",
+        "definition": "A document prepared by parents to share information about their child’s strengths, challenges, and successes at home, school, and in the community.",
+        "provenance": "User-provided WGU Section 3 Lesson 1 key terms; capitalization/spelling lightly normalized"
+      },
+      {
+        "term": "Placement",
+        "definition": "The settings where the IEP is carried out, ensuring it is in the least restrictive environment.",
+        "provenance": "User-provided WGU Section 3 Lesson 1 key terms; capitalization/spelling lightly normalized"
+      },
+      {
+        "term": "Present Levels of Performance (PLAAFP)",
+        "definition": "A section of the IEP that describes a student’s current academic, functional, and social-emotional abilities, along with their challenges and strengths.",
+        "provenance": "User-provided WGU Section 3 Lesson 1 key terms; capitalization/spelling lightly normalized"
+      },
+      {
+        "term": "Progress Monitoring Report",
+        "definition": "A report that tracks how much progress a student is making toward their IEP goals, provided to parents regularly.",
+        "provenance": "User-provided WGU Section 3 Lesson 1 key terms; capitalization/spelling lightly normalized"
+      },
+      {
+        "term": "Reevaluation Meeting",
+        "definition": "A meeting is held every three years to review if a student continues to need special education services and determine their future needs.",
+        "provenance": "User-provided WGU Section 3 Lesson 1 key terms; capitalization/spelling lightly normalized"
+      },
+      {
+        "term": "Related Services",
+        "definition": "Additional services, like speech therapy or occupational therapy, are provided to help students benefit from their special education program.",
+        "provenance": "User-provided WGU Section 3 Lesson 1 key terms; capitalization/spelling lightly normalized"
+      },
+      {
+        "term": "Supplementary Aids and Services",
+        "definition": "Support is provided to help students succeed in the least restrictive environment.",
+        "provenance": "User-provided WGU Section 3 Lesson 1 key terms; capitalization/spelling lightly normalized"
+      },
+      {
+        "term": "Transition Plan",
+        "definition": "A plan included in the IEP outlines what a student will do after high school and how to reach those goals.",
+        "provenance": "User-provided WGU Section 3 Lesson 1 key terms; capitalization/spelling lightly normalized"
+      }
+    ],
+    "guidedQuestions": [
+      {
+        "id": "d756-s3l1-q1",
+        "type": "multiple",
+        "prompt": "Which three of the following actions should be taken by the IEP team during the first IEP meeting? Select three answers.",
+        "options": [
+          "Review the results of the student's evaluation",
+          "Discuss the student’s strengths and areas of need",
+          "Develop annual goals for the student",
+          "Schedule the next annual IEP meeting",
+          "Finalize the transition plan for after high school",
+          "Confirm the student’s eligibility for graduation"
+        ],
+        "correctIndices": [
+          0,
+          1,
+          2
+        ],
+        "keyOrigin": "derived from accompanying WGU reading; user input showed unanswered"
+      },
+      {
+        "id": "d756-s3l1-q2",
+        "type": "single",
+        "prompt": "A student with a disability is guaranteed free appropriate public education, which must be tailored to meet their unique educational needs. True or False?",
+        "options": [
+          "True",
+          "False"
+        ],
+        "correctIndex": 0,
+        "keyOrigin": "derived from accompanying WGU reading; unanswered"
+      },
+      {
+        "id": "d756-s3l1-q3",
+        "type": "single",
+        "prompt": "During the IEP meeting, which individual is primarily responsible for facilitating the discussion and ensuring all components of the IEP are covered?",
+        "options": [
+          "Administrator",
+          "General Education Teacher",
+          "Special Education Teacher",
+          "Parent"
+        ],
+        "correctIndex": 2,
+        "keyOrigin": "derived from WGU lesson's framing of special educator as meeting facilitator; unanswered"
+      },
+      {
+        "id": "d756-s3l1-q4",
+        "type": "single",
+        "prompt": "Why is it important for the IEP to include a Least Restrictive Environment (LRE) statement?",
+        "options": [
+          "To determine the student's testing accommodations",
+          "To ensure that the student is educated with non-disabled peers as much as possible",
+          "To evaluate whether a student needs assistive technology",
+          "To provide a plan for behavior interventions"
+        ],
+        "correctIndex": 1,
+        "keyOrigin": "derived from WGU reading; unanswered",
+        "note": "The accurate standard is 'to the maximum extent appropriate,' not unconditional full-time general education placement."
+      },
+      {
+        "id": "d756-s3l1-q5",
+        "type": "multiple",
+        "prompt": "Which three of the following components must be included in a student’s IEP? Select three answers.",
+        "options": [
+          "Present Levels of Academic Achievement and Functional Performance (PLAAFP)",
+          "Measurable Annual Goals",
+          "Teacher evaluations of student’s peers",
+          "Participation with Non-Disabled Peers (LRE)",
+          "Recommendations for after-school activities"
+        ],
+        "correctIndices": [
+          0,
+          1,
+          3
+        ],
+        "keyOrigin": "derived from WGU reading; unanswered"
+      }
+    ],
+    "additionalMatching": {
+      "prompt": "Match each IEP team member to their responsibility.",
+      "roles": [
+        "Parent or Guardian",
+        "General Education Teacher",
+        "Special Education Teacher",
+        "School District Representative",
+        "School Psychologist",
+        "Student"
+      ],
+      "sourceLimitation": "The pasted source provides role names but omits the draggable responsibility text. Do not manufacture an original matching answer key."
+    },
+    "definitionMatching": {
+      "prompt": "Match IEP terms to their definitions",
+      "terms": [
+        "Accommodation",
+        "Annual IEP Goals",
+        "Assistive Technology",
+        "Impact of Disability",
+        "Individualized Education Program (IEP)",
+        "Least Restrictive Environment (LRE)",
+        "Present Levels of Performance (PLAAFP)",
+        "Progress Monitoring Report",
+        "Reevaluation Meeting",
+        "Transition Plan"
+      ],
+      "sourceLimitation": "Source shows definition side only; terms drawn from the immediately preceding WGU definitions list."
+    },
+    "cautions": [
+      "WGU's description of who must physically attend every IEP meeting is simplified; lawful team-member excusal and parent-absence exceptions exist.",
+      "Federal transition planning generally starts by the IEP effective by age 16 at the latest; state rules may require an earlier age.",
+      "WGU's reference to 'fourteen' IDEA disability categories needs careful verification before treating that number as a legal fact.",
+      "A three-year reevaluation is the usual maximum interval unless parent and agency agree it is unnecessary, and can occur earlier.",
+      "Original quiz responses were marked unanswered; keyed answers are inferred from the accompanying lesson, not verified Show Answer."
+    ],
+    "mastery": "Source guided questions are review-only and do not grant independent mastery, progress or rewards."
+  }
+}
