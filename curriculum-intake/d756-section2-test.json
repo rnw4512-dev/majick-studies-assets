@@ -1,0 +1,149 @@
+{
+  "courseId": "D756",
+  "sectionId": "d756-s2",
+  "title": "Section 2: Test",
+  "competency": "The learner coordinates with other professionals and families of students with exceptionalities to foster advocacy, facilitate connection with available resources, and promote culturally responsive communication.",
+  "ungraded": true,
+  "reportedScore": {
+    "earned": 7,
+    "possible": 7
+  },
+  "questions": [
+    {
+      "prompt": "Which strategy should a teacher use to inform parents of their rights as part of the IEP process?",
+      "options": [
+        "Call the parents and explain to them the parental rights and responsibilities.",
+        "Have the principal of the school take responsibility for sharing parental rights and responsibilities.",
+        "Send parents an email with a detailed description of parental rights and responsibilities.",
+        "Provide parents with a written copy of parental rights and responsibilities during every meeting and be sure the parents understand the information being presented."
+      ],
+      "correctIndex": 3,
+      "why": "Providing a written copy must be accompanied by conversation so parents understand their rights and responsibilities.",
+      "note": "WGU's best-practice answer says 'every meeting'; the general legal requirement for providing safeguards notices is more nuanced. Teach the answer as the course's preferred inclusive practice, not an absolute legal frequency.",
+      "id": "d756-s2-test-q1",
+      "type": "single",
+      "section": "Section 2",
+      "reported": "correct",
+      "score": 1,
+      "possible": 1,
+      "origin": "user-provided WGU Section 2 Test",
+      "masteryEligible": false
+    },
+    {
+      "prompt": "Which strategy can effectively help parents understand assessment results?",
+      "options": [
+        "Allowing the parents to silently read the assessment results at the PPT meeting and wait for them to ask questions",
+        "Providing feedback and assessment results in a private, comfortable setting and using language that is free of jargon while allowing time for questions or concerns throughout your meeting",
+        "Providing a website or online link that explains generic assessment results",
+        "Providing the written assessment results and telling them to call or email you with questions"
+      ],
+      "correctIndex": 1,
+      "why": "A private discussion using plain language and pauses for questions gives parents information they can use in educational decisions.",
+      "id": "d756-s2-test-q2",
+      "type": "single",
+      "section": "Section 2",
+      "reported": "correct",
+      "score": 1,
+      "possible": 1,
+      "origin": "user-provided WGU Section 2 Test",
+      "masteryEligible": false
+    },
+    {
+      "prompt": "Which statement best illustrates the importance of collaboration in student-centered teams?",
+      "options": [
+        "Inclusive practices in collaboration mean that only the needs of the students are prioritized, leaving educators' needs unaddressed.",
+        "Collaboration allows for individual accountability, ensuring that each member can work independently without considering others’ contributions.",
+        "Effective communication in teams enables members to analyze data together, leading to decisions based on shared facts and evidence.",
+        "Collaboration restricts goal setting to a single leader, preventing confusion about team objectives."
+      ],
+      "correctIndex": 2,
+      "why": "Communicating and examining evidence together allows the team to make shared, data-informed decisions.",
+      "id": "d756-s2-test-q3",
+      "type": "single",
+      "section": "Section 2",
+      "reported": "correct",
+      "score": 1,
+      "possible": 1,
+      "origin": "user-provided WGU Section 2 Test",
+      "masteryEligible": false
+    },
+    {
+      "prompt": "Which is an effective strategy for overcoming collaboration challenges with general education teachers?",
+      "options": [
+        "Keep students’ well-being and success at the forefront of collaborative efforts.",
+        "Accepting that there are differences of opinion and working separately.",
+        "Focusing on the credentials of the special educator and the general educator.",
+        "Using a paraprofessional as a mediator when disagreements arise."
+      ],
+      "correctIndex": 0,
+      "why": "A student-centered focus helps general and special educators work toward a shared purpose.",
+      "id": "d756-s2-test-q4",
+      "type": "single",
+      "section": "Section 2",
+      "reported": "correct",
+      "score": 1,
+      "possible": 1,
+      "origin": "user-provided WGU Section 2 Test",
+      "masteryEligible": false
+    },
+    {
+      "prompt": "Which statement best captures the importance of culturally responsive practices in educational settings?",
+      "options": [
+        "Teachers should only focus on their own cultural background when planning lessons.",
+        "Involving families in decision-making is less important than meeting academic standards.",
+        "Building good relationships and understanding cultural differences among team members enhances collaboration and improves educational outcomes for all students.",
+        "Culturally responsive practices are mainly about incorporating diverse teaching materials."
+      ],
+      "correctIndex": 2,
+      "why": "Cultural understanding and strong relationships support teamwork and positive outcomes.",
+      "id": "d756-s2-test-q5",
+      "type": "single",
+      "section": "Section 2",
+      "reported": "correct",
+      "score": 1,
+      "possible": 1,
+      "origin": "user-provided WGU Section 2 Test",
+      "masteryEligible": false
+    },
+    {
+      "prompt": "What is an effective way to create a welcoming environment in advance of an IEP meeting?",
+      "options": [
+        "Email the parents a list of concerns regarding the students' progress.",
+        "Send the parents a list of things they can and cannot ask during the IEP meeting to make sure the meeting time is used effectively.",
+        "Prepare parents by sending agendas and potential questions in advance and arranging informal interactions before the IEP meeting.",
+        "Call the parents to discuss specific categories of disability and which category the student will likely fall under to prepare the parents for the meeting."
+      ],
+      "correctIndex": 2,
+      "why": "Advance agendas, sample questions, and informal contact help parents arrive feeling prepared, respected and welcome.",
+      "id": "d756-s2-test-q6",
+      "type": "single",
+      "section": "Section 2",
+      "reported": "correct",
+      "score": 1,
+      "possible": 1,
+      "origin": "user-provided WGU Section 2 Test",
+      "masteryEligible": false
+    },
+    {
+      "prompt": "At the start of the meeting, why is it important to explain the interpreter's commitment to confidentiality to parents?",
+      "options": [
+        "Avoids legal issues",
+        "Reduces hesitation in sharing sensitive information",
+        "Allows parents to know the translator is a professional",
+        "Keeps the meeting flowing at a steady pace"
+      ],
+      "correctIndex": 1,
+      "why": "Explaining interpreter confidentiality can reassure parents that sensitive information will remain private and encourage them to speak openly.",
+      "id": "d756-s2-test-q7",
+      "type": "single",
+      "section": "Section 2",
+      "reported": "correct",
+      "score": 1,
+      "possible": 1,
+      "origin": "user-provided WGU Section 2 Test",
+      "masteryEligible": false
+    }
+  ],
+  "source": "User-provided WGU Section 2 Test; original wording retained, explanations lightly paraphrased from supplied answer feedback",
+  "masteryPolicy": "Source test is review and does not grant new independent mastery or rewards."
+}
