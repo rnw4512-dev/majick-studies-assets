@@ -164,7 +164,7 @@ function installFrames(e,art){
  const textures=accepted?art.frames:[art.base];
  if(art.frames.length&&!accepted){e.frameSource='walking frames rejected: unequal or invalid dimensions; safe stage fallback';console.warn('Guardian frame geometry mismatch',e.id,e.stage)}
  const sprite=new PIXI.AnimatedSprite(textures.map(texture=>({texture,time:180})));
- sprite.anchor.set(.5,1);sprite.loop=true;sprite.autoUpdate=true;sprite.roundPixels=true;
+ sprite.anchor.set(.5,1);sprite.loop=true;sprite.autoUpdate=false;sprite.roundPixels=true;
  interactiveSprite(sprite);
  sprite.on('pointertap',()=>{$('care-guardian').value=e.id;care('pet')});
  e.root.removeChild(previous);previous.destroy();e.root.addChildAt(sprite,1);
@@ -226,24 +226,30 @@ $('reset').onclick=()=>{for(const e of entities.values()){const h=home(e.slot);e
 $('motion').setAttribute('aria-pressed',String(ambient));$('motion').textContent='Ambient effects: '+(ambient?'on':'off');$('motion').onclick=()=>{ambient=!ambient;$('motion').setAttribute('aria-pressed',String(ambient));$('motion').textContent='Ambient effects: '+(ambient?'on':'off')};
 $('stress').onclick=()=>{stress=!stress;$('stress').setAttribute('aria-pressed',String(stress));$('stress').textContent='Stress test: '+(stress?'on':'off')};
 let frames=0,seconds=0,ambientTime=0;
+// One app-owned Pixi ticker drives Guardian position AND AnimatedSprite frames.
 app.ticker.maxFPS=45;app.ticker.add(ticker=>{
- const dt=Math.min(ticker.deltaMS/1000,.06);let moving=0;
+ const rawSeconds=Math.max(0,Number(ticker.elapsedMS)||0)/1000;
+ // Limit movement on tab restoration; do not use capped time for measured FPS.
+ const dt=Math.min(Math.max(0,Number(ticker.deltaMS)||0)/1000,.06);
+ let moving=0;
  for(const [sprite,pulse] of revealGlows){
   pulse.elapsed+=dt;const t=pulse.elapsed/.55;
   if(t>=1||sprite.destroyed||!sprite.visible||paused||document.hidden){pulse.glow.destroy();revealGlows.delete(sprite);continue}
   pulse.glow.position.set(sprite.x,sprite.y-sprite.height*.5);pulse.glow.alpha=(1-t)*.8;pulse.glow.scale.set(1+t*.2);
  }
 
- sparks.visible=ambient;if(ambient&&!paused&&!document.hidden){ambientTime+=dt;floorSigil.alpha=.11+Math.sin(ambientTime*.9)*.025}if(ambient&&!document.hidden)for(const spark of dust.children){spark.y+=dt*(stress?24:5);if(spark.y>470)spark.y=20}
+ sparks.visible=ambient;if(ambient&&!paused&&!document.hidden){ambientTime+=dt;floorSigil.alpha=.11+Math.sin(ambientTime*.9)*.025}if(ambient&&!paused&&!document.hidden)for(const spark of dust.children){spark.y+=dt*(stress?24:5);if(spark.y>470)spark.y=20}
  for(const e of entities.values()){
   e.root.zIndex=e.root.y;if(!e.ready)continue;if(paused||document.hidden){setMotion(e,false);continue;}
   if(e.pause>0){e.pause-=dt;setMotion(e,false);continue}
   const dx=e.tx-e.root.x,dy=e.ty-e.root.y,d=Math.hypot(dx,dy);
   if(d<3){setMotion(e,false);setTarget(e);continue}
   const step=Math.min(d,dt*e.speed);e.root.x=clamp(e.root.x+dx/d*step,90,1110);e.root.y=clamp(e.root.y+dy/d*step,490,650);e.clock+=dt;
-  setMotion(e,true,dx<0?-1:1);moving++;
+  setMotion(e,true,dx<0?-1:1);
+  if(e.sprite instanceof PIXI.AnimatedSprite&&e.sprite.playing&&e.sprite.textures.length>1)e.sprite.update(ticker);
+  moving++;
  }
- frames++;seconds+=dt;if(seconds>=1){$('fps').textContent=Math.round(frames/seconds);$('ms').textContent=(seconds/frames*1000).toFixed(1)+' ms';$('moving').textContent=moving+' / '+entities.size;frames=0;seconds=0}
+ frames++;seconds+=rawSeconds;if(seconds>=1){$('fps').textContent=Math.round(frames/seconds);$('ms').textContent=(seconds/Math.max(1,frames)*1000).toFixed(1)+' ms';$('moving').textContent=moving+' / '+entities.size;frames=0;seconds=0}
 });
 await furnitureReady.catch(error=>{$('care-result').textContent=error.message});
 // Inspection exposes renderer facts, not another state or persistence owner.
