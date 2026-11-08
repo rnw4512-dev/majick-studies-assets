@@ -80,6 +80,7 @@
     }catch(_){return null}
   }
   function addReward(label,xp=0,cr=0){
+    if(globalThis.S?.activeCourse==='D756')return; // D756 source-review games cannot duplicate earned mastery/rewards.
     try{
       const p=prog();
       p.xp=Number(p.xp||0)+Number(xp||0);
@@ -90,6 +91,11 @@
     }catch(_){}
   }
   function recordAnswer(q,chosen,correct,mode){
+    if(globalThis.S?.activeCourse==='D756'){
+      if(session)session.questionRepair=correct?null:{q,chosen};
+      guardianReact(correct?'correct':'miss',{mode,courseId:'D756',reviewOnly:true});
+      return; // No independent proof, academic answer records, or duplicate reward for review games.
+    }
     if(session)session.questionRepair=correct?null:{q,chosen};
     if(!correct)window.MajickQuestionRepair.recordWrong(q,chosen,{assisted:true,alreadyRecorded:true,room:'game-realm'});
     try{record?.(q,chosen,correct,'sure',mode)}catch(_){}
@@ -243,15 +249,16 @@
         '<section class="realmHero"><div><small>THE MAJICK GAME REALM</small><h2>Train the skill, not just the answer.</h2><p>Featured trials now use different mechanics. Your active Guardian joins the run, and question repetition is suppressed until the pool needs to recycle.</p></div>'+
         (g?'<div class="realmHeroGuardian" style="--guardian-accent:'+E(g.accent||'#b79ad9')+'">'+(g.image?'<img src="'+E(g.image)+'" alt="'+E(g.name)+'" style="filter:hue-rotate('+Number(g.hue||0)+'deg)">':'<span>'+E(g.icon||'✦')+'</span>')+'<div><small>ENTERING WITH</small><b>'+E(g.name)+'</b><em>'+E(g.personality||g.role||'Study Guardian')+'</em></div></div>':'')+
         '</section>'+
+        (globalThis.S?.activeCourse==='D756'?'<p class="mhRealmReviewNote" role="note">D756 Game Realm uses its own IEP collaboration scenarios for review. These rounds do not grant independent mastery or duplicate XP.</p>':'')+
         realmProgressHTML()+
         '<div class="realmStats"><span>ᚱ '+E(bestText('runesort'))+' Rune Sort</span><span>◉ '+E(bestText('oraclelens'))+' Oracle Lens</span><span>♛ '+E(bestText('gauntlet'))+' Gauntlet</span><span>✧ '+E(bestText('constellation'))+' Constellation</span><span>⬡ '+E(bestText('hexbreaker'))+' Hex Breaker</span></div>'+
         '<div class="realmFeaturedGrid">'+
-          gameCard('ᚱ','Rune Sort','Sort D772 questions spanning research credibility, graphs and statistics, and probability when D772 is active.','startRuneSort()')+
+          (globalThis.S?.activeCourse==='D756'?gameCard('ᚱ','IEP Rune Sort','Sort D756 family, team and IEP scenarios into their course sections. Review-only practice.','startRuneSort()','D756 TRIAL'):gameCard('ᚱ','Rune Sort','Sort D772 questions spanning research credibility, graphs and statistics, and probability when D772 is active.','startRuneSort()'))+
           (globalThis.S?.activeCourse==='D755'?gameCard('✥','Assessment Sigil Sort','Sort D755 scenarios through Qualitative/Quantitative, Formal/Informal, Formative/Summative, Norm/Criterion, Screening/Monitoring, or Observation/Anecdotal gates.','startAssessmentSigilSort()','D755 TRIAL'):'')+
-          gameCard('◉','Oracle Lens','Identify the controlling statistical clue first, then answer through that clue.','startOracleLens()')+
+          gameCard('◉','Oracle Lens',globalThis.S?.activeCourse==='D756'?'Identify what an IEP collaboration scenario is asking before choosing a response.':'Identify the controlling statistical clue first, then answer through that clue.','startOracleLens()')+
           (globalThis.S?.activeCourse==='D772'?gameCard('♛','All-Section Review Gauntlet','Twelve D772 questions drawn equally from Sections 1, 2, and 3.','startD772SectionReview()','D772 REVIEW'):gameCard('♛','Guardian Gauntlet','A multi-round boss run with hearts, boss HP, combos, and one Guardian shield.','startGuardianGauntlet()'))+
           gameCard('✧','Memory Constellation','Match controlling clues to the correct answers and build a glowing constellation.','startMemoryConstellation()')+
-          gameCard('⬡','Hex Breaker','Judge a statistical claim, expose the misconception, and repair it with the correct concept.','startHexBreaker()')+
+          gameCard('⬡','Hex Breaker',globalThis.S?.activeCourse==='D756'?'Decide whether a proposed school-team response is appropriate, then repair the choice.':'Judge a statistical claim, expose the misconception, and repair it with the correct concept.','startHexBreaker()')+
         '</div>'+
         '<details class="realmClassic"><summary><span>Classic Trials</span><small>All previous Game Realm modes are still available</small></summary><div class="realmClassicBody">'+baseGamesHTML()+'</div></details>'+
       '</div>';
@@ -689,6 +696,7 @@
   }
   function realmQuestionPool(opts){
     const base=(typeof questionPool==='function'?questionPool(opts):[])||[];
+    if(globalThis.S?.activeCourse==='D756')return globalThis.MajickHandsOnStudio?.realmQuestions?.()||[];
     if(globalThis.S?.activeCourse!== 'D772')return base;
     const seen=new Set(),out=[];
     const generated=(globalThis.MajickGeneratedPractice?.batch?.(18,2)||[]).map(q=>({...q,section:q.learningPathLessonId?.startsWith('d772-s3')?'Section 3 · Probability':'Section 2 · Graphs and statistics'}));
