@@ -5,9 +5,17 @@ const $=id=>document.getElementById(id),room=$('room'),status=$('status');
 const registry=window.MajickGuardianRegistry;
 const FLOOR={left:60,right:1140,top:490,bottom:650};
 const clamp=(n,min,max)=>Math.max(min,Math.min(max,n));
-// Shared Phaser-world coordinates, mapped reversibly onto the Pixi floor.
-const toFloor=p=>({x:clamp(60+(Number(p.x)-100)*1080/2000,60,1140),y:clamp(490+(Number(p.y)-620)*160/260,490,650)});
-const fromFloor=p=>({x:Math.round(100+(p.x-60)*2000/1080),y:Math.round(620+(p.y-490)*260/160)});
+// Reversible Phaser-world ⇄ Pixi floor map. Keep existing save coordinates unchanged.
+const floorTransform=new PIXI.Matrix(1080/2000,0,0,160/260,60-100*1080/2000,490-620*160/260);
+const inverseFloorTransform=floorTransform.clone().invert();
+const toFloor=p=>{
+ const point=floorTransform.apply(new PIXI.Point(Number(p.x)||100,Number(p.y)||620));
+ return {x:clamp(point.x,FLOOR.left,FLOOR.right),y:clamp(point.y,FLOOR.top,FLOOR.bottom)};
+};
+const fromFloor=p=>{
+ const point=inverseFloorTransform.apply(new PIXI.Point(p.x,p.y));
+ return {x:Math.round(point.x),y:Math.round(point.y)};
+};
 function failure(error){console.error(error);status.textContent='Graphics unavailable. Use the original Sanctuary above.';parent.postMessage({type:'MAJICK_PIXI_SANCTUARY_ERROR'},location.origin)}
 if(!window.PIXI){failure(Error('Pixi unavailable'));return}
 const motionMedia=matchMedia('(prefers-reduced-motion: reduce)');let reduced=motionMedia.matches;
@@ -20,6 +28,10 @@ try{await app.init({width:1200,height:700,backgroundAlpha:0,antialias:false,reso
 room.append(app.canvas);
 const world=new PIXI.Container(),objects=new PIXI.Container();app.stage.addChild(world);world.addChild(objects);objects.sortableChildren=true;
 const sparks=new PIXI.Container();world.addChildAt(sparks,0);
+// Clip only floating dust; the floor's constellation sigil stays visible.
+const dust=new PIXI.Container();sparks.addChild(dust);
+const dustMask=new PIXI.Graphics().rect(0,0,1200,490).fill({color:0xffffff});
+sparks.addChild(dustMask);dust.mask=dustMask;dustMask.eventMode='none';
 // Pixi 8.6 uses FillPattern(texture, repetition), rather than the newer
 // textureSpace options in the reference. One tiled constellation lives in room space.
 const tileArt=new PIXI.Graphics();tileArt.rect(0,0,64,64).fill({color:0x000000,alpha:0});tileArt.star(16,18,4,5,1.5).fill({color:0xf7e0a2});tileArt.circle(45,43,1.5).fill({color:0xd6b4ef});
@@ -27,7 +39,7 @@ const constellationTexture=app.renderer.generateTexture({target:tileArt});tileAr
 const floorPattern=new PIXI.FillPattern(constellationTexture,'repeat');
 const floorSigil=new PIXI.Graphics();floorSigil.ellipse(600,571,460,55).fill(floorPattern);floorSigil.alpha=.13;floorSigil.eventMode='none';sparks.addChild(floorSigil);
 
-for(let i=0;i<24;i++){const spark=new PIXI.Graphics();spark.circle(0,0,1+i%3).fill({color:0xe3c38c,alpha:.25});spark.position.set(30+Math.random()*1140,20+Math.random()*440);sparks.addChild(spark)}
+for(let i=0;i<24;i++){const spark=new PIXI.Graphics();spark.circle(0,0,1+i%3).fill({color:0xe3c38c,alpha:.25});spark.position.set(30+Math.random()*1140,20+Math.random()*440);dust.addChild(spark)}
 try{const texture=await PIXI.Assets.load('../assets/guardian-dorm-v1.png');const bg=new PIXI.Sprite(texture);bg.width=1200;bg.height=700;world.addChildAt(bg,0)}catch(error){console.warn('Room backdrop unavailable',error)}
 function resize(){const b=room.getBoundingClientRect(),w=Math.max(240,b.width),h=Math.max(240,b.height);app.renderer.resize(w,h);const k=Math.min(w/1200,h/700);world.scale.set(k);world.position.set((w-1200*k)/2,(h-700*k)/2);$('viewport').textContent=Math.round(w)+' × '+Math.round(h)}
 new ResizeObserver(resize).observe(room);resize();
@@ -125,9 +137,39 @@ function interactiveSprite(sprite){
  sprite.on('visibleChanged',()=>{if(sprite.visible)revealSprite(sprite)});
  return sprite;
 }
-function fit(e,texture,direction=1){if(!texture)return;const scale=Math.min(110/texture.width,105/texture.height);e.sprite.scale.set(scale*direction,scale);e.sprite.position.set(0,0);e.sprite.rotation=0;if(e.sprite instanceof PIXI.AnimatedSprite){if(e.sprite.textures.length===1)e.sprite.gotoAndStop(0)}else e.sprite.texture=texture}
+function fit(e,texture,direction=1){
+ if(!texture)return;
+ const sprite=e.sprite;
+ // Fit the actual animation frame, not an unrelated fallback portrait.
+ const reference=sprite instanceof PIXI.AnimatedSprite&&sprite.textures.length>1?sprite.textures[0]:texture;
+ const width=Math.max(1,Number(reference.width)||1),height=Math.max(1,Number(reference.height)||1);
+ const scale=Math.min(110/width,105/height);
+ sprite.scale.set(scale*(direction<0?-1:1),scale);
+ sprite.position.set(0,0);sprite.rotation=0;
+ if(sprite instanceof PIXI.AnimatedSprite){sprite.gotoAndStop(0)}
+ else sprite.texture=texture;
+ sprite.hitArea=new PIXI.Rectangle(-width/2,-height,width,height);
+}
+function validWalkFrames(frames){
+ return Array.isArray(frames)&&frames.length>=2&&frames.every(frame=>
+   frame&&Number.isFinite(frame.width)&&Number.isFinite(frame.height)&&frame.width>0&&frame.height>0&&
+   frame.width===frames[0].width&&frame.height===frames[0].height
+ );
+}
 function setMotion(e,moving,direction=1){const sprite=e.sprite;if(!(sprite instanceof PIXI.AnimatedSprite))return;sprite.scale.x=Math.abs(sprite.scale.x)*(direction<0?-1:1);if(!moving||paused||document.hidden){if(sprite.playing)sprite.gotoAndStop(0);return}if(sprite.textures.length>1&&!sprite.playing)sprite.play()}
-function installFrames(e,art){const previous=e.sprite;const textures=art.frames.length>=2?art.frames:[art.base];const sprite=new PIXI.AnimatedSprite(textures.map(texture=>({texture,time:180})));sprite.anchor.set(.5,1);sprite.loop=true;sprite.autoUpdate=true;interactiveSprite(sprite);sprite.on('pointertap',()=>{$('care-guardian').value=e.id;care('pet')});e.root.removeChild(previous);previous.destroy();e.root.addChildAt(sprite,1);e.sprite=sprite;fit(e,art.base);sprite.gotoAndStop(0);revealSprite(sprite)}
+function installFrames(e,art){
+ const previous=e.sprite;
+ const accepted=validWalkFrames(art.frames);
+ const textures=accepted?art.frames:[art.base];
+ if(art.frames.length&&!accepted){e.frameSource='walking frames rejected: unequal or invalid dimensions; safe stage fallback';console.warn('Guardian frame geometry mismatch',e.id,e.stage)}
+ const sprite=new PIXI.AnimatedSprite(textures.map(texture=>({texture,time:180})));
+ sprite.anchor.set(.5,1);sprite.loop=true;sprite.autoUpdate=true;sprite.roundPixels=true;
+ interactiveSprite(sprite);
+ sprite.on('pointertap',()=>{$('care-guardian').value=e.id;care('pet')});
+ e.root.removeChild(previous);previous.destroy();e.root.addChildAt(sprite,1);
+ e.sprite=sprite;e.walkFrameCount=textures.length;fit(e,art.base);
+ revealSprite(sprite);
+}
 function createEntity(id,slot){
  const root=new PIXI.Container(),shadow=new PIXI.Graphics();shadow.ellipse(0,0,42,8).fill({color:0x000000,alpha:.25});root.addChild(shadow);
  const sprite=new PIXI.Sprite(PIXI.Texture.EMPTY);sprite.anchor.set(.5,1);root.addChild(sprite);
@@ -137,7 +179,7 @@ function createEntity(id,slot){
  sprite.eventMode='static';sprite.cursor='pointer';sprite.on('pointertap',()=>{$('care-guardian').value=id;care('pet')});
  entities.set(id,e);return e;
 }
-function rosterReport(){return [...entities.values()].map(e=>({petId:e.id,name:e.pet.name,canon:e.canon,stage:e.stage,present:e.ready,frameSource:e.frameSource}))}
+function rosterReport(){return [...entities.values()].map(e=>({petId:e.id,name:e.pet?.name||'',canon:e.canon,stage:e.stage,present:e.ready,frameSource:e.frameSource,walkFrames:e.walkFrameCount||0,frameDimensions:e.sprite?.textures?.[0]?{width:e.sprite.textures[0].width,height:e.sprite.textures[0].height}:null}))}
 function publish(){if(parent!==window)parent.postMessage({type:'MAJICK_SANCTUARY_ROSTER_V3350',rows:rosterReport()},location.origin)}
 async function applyState(payload){
  if(!Array.isArray(payload?.pets))return;
@@ -191,7 +233,7 @@ app.ticker.maxFPS=45;app.ticker.add(ticker=>{
   pulse.glow.position.set(sprite.x,sprite.y-sprite.height*.5);pulse.glow.alpha=(1-t)*.8;pulse.glow.scale.set(1+t*.2);
  }
 
- sparks.visible=ambient;if(ambient&&!paused&&!document.hidden){ambientTime+=dt;floorSigil.alpha=.11+Math.sin(ambientTime*.9)*.025}if(ambient&&!document.hidden)for(const spark of sparks.children){if(spark===floorSigil)continue;spark.y+=dt*(stress?24:5);if(spark.y>470)spark.y=20}
+ sparks.visible=ambient;if(ambient&&!paused&&!document.hidden){ambientTime+=dt;floorSigil.alpha=.11+Math.sin(ambientTime*.9)*.025}if(ambient&&!document.hidden)for(const spark of dust.children){spark.y+=dt*(stress?24:5);if(spark.y>470)spark.y=20}
  for(const e of entities.values()){
   e.root.zIndex=e.root.y;if(!e.ready)continue;if(paused||document.hidden){setMotion(e,false);continue;}
   if(e.pause>0){e.pause-=dt;setMotion(e,false);continue}
@@ -204,7 +246,7 @@ app.ticker.maxFPS=45;app.ticker.add(ticker=>{
 });
 await furnitureReady.catch(error=>{$('care-result').textContent=error.message});
 // Inspection exposes renderer facts, not another state or persistence owner.
-window.MajickPixiSanctuary=Object.freeze({inspect:()=>({ready:true,floor:FLOOR,roster:rosterReport(),guardians:[...entities.values()].map(e=>({id:e.id,x:e.root.x,y:e.root.y,spriteY:e.sprite.y,stage:e.stage,canon:e.canon,frames:e.frames.length})),furniture:[...furnitureSprites].map(([id,e])=>({id,x:e.sprite.x,y:e.sprite.y,visible:e.sprite.visible})),pending:pending.size}),app});
+window.MajickPixiSanctuary=Object.freeze({inspect:()=>({ready:true,floor:FLOOR,roster:rosterReport(),guardians:[...entities.values()].map(e=>({id:e.id,x:e.root.x,y:e.root.y,spriteY:e.sprite.y,stage:e.stage,canon:e.canon,frames:e.walkFrameCount||0,frameSource:e.frameSource})),furniture:[...furnitureSprites].map(([id,e])=>({id,x:e.sprite.x,y:e.sprite.y,visible:e.sprite.visible})),pending:pending.size}),app});
 status.textContent='Room ready · waiting for saved Guardians';
 if(parent!==window)parent.postMessage({type:'MAJICK_PIXI_SANCTUARY_READY'},location.origin);
 })();
