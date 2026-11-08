@@ -9,7 +9,8 @@ const clamp=(n,min,max)=>Math.max(min,Math.min(max,n));
 const floorTransform=new PIXI.Matrix(1080/2000,0,0,160/260,60-100*1080/2000,490-620*160/260);
 const inverseFloorTransform=floorTransform.clone().invert();
 const toFloor=p=>{
- const point=floorTransform.apply(new PIXI.Point(Number(p.x)||100,Number(p.y)||620));
+ const px=Number(p?.x),py=Number(p?.y);
+ const point=floorTransform.apply(new PIXI.Point(Number.isFinite(px)?px:100,Number.isFinite(py)?py:620));
  return {x:clamp(point.x,FLOOR.left,FLOOR.right),y:clamp(point.y,FLOOR.top,FLOOR.bottom)};
 };
 const fromFloor=p=>{
