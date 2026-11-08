@@ -373,6 +373,17 @@ function decorateSelector(){
 }
 
 ensure();mirrorAccount();
+// Reconcile the already-rendered dropdown now and after every subsequent render.
+// No course progress or reward data is changed by this view-only synchronization.
+const previousCourseSelectorRender=window.render;
+if(typeof previousCourseSelectorRender==='function'){
+  window.render=function(){
+    const result=previousCourseSelectorRender.apply(this,arguments);
+    decorateSelector();
+    return result;
+  };
+}
+decorateSelector();
 
 async function migrateLegacyMaterialSources(){
   try{
