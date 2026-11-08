@@ -1,0 +1,86 @@
+{
+  "courseId": "D756",
+  "section": "Section 2",
+  "lesson": "Lesson 1: Collaboration with Families and Colleagues",
+  "origin": "user-provided WGU lesson quiz",
+  "grading": "ungraded",
+  "masteryEligible": false,
+  "questions": [
+    {
+      "id": "d756-s2l1-q1",
+      "type": "matching",
+      "prompt": "Match each task to the member of the special education team responsible for the task.",
+      "pairs": [
+        [
+          "School Counselor",
+          "Offers emotional support and guidance on social issues"
+        ],
+        [
+          "Special Education Teacher",
+          "Provides specialized instruction and adapts materials to meet student needs"
+        ],
+        [
+          "Parent/Guardian",
+          "Shares insights about the child’s strengths, needs, and home life"
+        ],
+        [
+          "Student",
+          "Communicates their goals and preferences for their own education"
+        ],
+        [
+          "General Education Teacher",
+          "Delivers content knowledge and supports classroom management"
+        ]
+      ],
+      "reported": "correct"
+    },
+    {
+      "id": "d756-s2l1-q2",
+      "type": "single",
+      "prompt": "Mei and Ahmed are co-teaching a classroom that includes students with exceptionalities. Mei is a special education teacher, and Ahmed is a general education teacher. They are planning a lesson and want to ensure that both their expertise is used effectively. What would be the best approach for them to take?",
+      "options": [
+        "Ahmed and Mei should divide the class and teach different lessons simultaneously.",
+        "Ahmed should lead the lesson alone, while Mei observes from the back.",
+        "Mei should teach the entire lesson while Ahmed gives feedback on papers.",
+        "Mei can provide modifications and support during Ahmed’s lesson, making sure that all students can access the content."
+      ],
+      "correctIndex": 3,
+      "reported": "correct",
+      "note": "Source marks option 4 correct; co-teaching also calls for substantive shared planning and responsibility, so do not generalize this answer into a rule that one teacher always leads."
+    },
+    {
+      "id": "d756-s2l1-q3",
+      "type": "single",
+      "prompt": "Jack’s parents are feeling overwhelmed because of his recent diagnosis of a learning disability. As his teacher, you want to empower the family and support Jack's education. What is the most effective first step you can take?",
+      "options": [
+        "Arrange a meeting to discuss Jack’s strengths, needs, and available resources.",
+        "Suggest that Jack’s parents attend a support group without school involvement.",
+        "Encourage the parents to leave all decisions to the school professionals.",
+        "Provide the parents with educational articles without further explanation."
+      ],
+      "correctIndex": 0,
+      "reported": "correct",
+      "note": "Source feedback pasted under this question refers to Mei and co-teaching; preserve reported correctness but flag feedback as misattributed."
+    },
+    {
+      "id": "d756-s2l1-q4",
+      "type": "multiple",
+      "prompt": "Which three of the following are essential components of effective co-teaching? Select three answers.",
+      "options": [
+        "Mutual planning time to discuss lesson goals and student needs.",
+        "Co-teaching should only occur when the principal is present.",
+        "Only the special education teacher is responsible for modifying assignments.",
+        "Sharing equal responsibility for instruction and assessment.",
+        "Maintaining open communication and collaboration between co-teachers.",
+        "Each teacher should manage their own students separately."
+      ],
+      "correctIndices": [
+        0,
+        3,
+        4
+      ],
+      "reported": "correct",
+      "note": "All three source explanations confirm planning, shared instruction/assessment, and open communication."
+    }
+  ]
+}
