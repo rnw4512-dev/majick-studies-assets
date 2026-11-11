@@ -4,6 +4,7 @@ Fresh browser context only: never edits a real learner's saved account.
 """
 import os,json
 from urllib.parse import urlsplit
+from datetime import datetime,timezone
 from playwright.sync_api import sync_playwright
 URL=os.environ.get('MAJICK_URL','http://127.0.0.1:8765/')
 KEY='majick-d756-task2-rehearsal-v1'
@@ -13,7 +14,7 @@ with sync_playwright() as pw:
  page.on('pageerror',lambda e: errors.append(e.stack))
  page.on('response',lambda r: failed.append(r.url) if r.status>=400 else None)
  page.goto(URL);page.wait_for_function('!!window.MajickD756Meeting && !!window.MajickRewardCore')
- page.clock.install()
+ page.clock.install(time=datetime(2026,11,11,12,0,tzinfo=timezone.utc))
  page.evaluate('switchCourse("D756")')
  page.locator('#majickHandsOnLaunch').click();page.locator('#d756Task2Launch').click()
  room=page.locator('#d756MeetingRoom')
@@ -112,9 +113,13 @@ with sync_playwright() as pw:
  failed_meeting=complete('angela','independent',False)
  assert failed_meeting['reward']['xp']==0
  assert page.evaluate('MajickStateCore.ensureAccount().xp')==before+38
+ print('Calendar before next-day jump',page.evaluate('new Date().toString()'),flush=True)
  page.clock.fast_forward(86400000)
+ print('Calendar after next-day jump',page.evaluate('new Date().toString()'),flush=True)
+ next_day_key=page.evaluate('(()=>{const d=new Date();return "d756:task2:meeting:repeat:"+d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")})()')
+ assert page.evaluate('(key)=>!MajickStateCore.ensureAccount().rewardCore.ledger[key]',next_day_key),next_day_key
  tomorrow=complete('jordan','guided')
- assert tomorrow['reward']['xp']==8
+ assert tomorrow['reward']['xp']==8,{'reward':tomorrow['reward'],'now':page.evaluate('new Date().toString()'),'ledger':page.evaluate('Object.keys(MajickStateCore.ensureAccount().rewardCore.ledger).filter(k=>k.startsWith("d756:task2:meeting:"))')}
  assert page.evaluate('MajickStateCore.ensureAccount().xp')==before+46
  print('PASS completed short attempt earns zero; next calendar day repeat earns eight XP')
  click('retry');assert saved()['step']==7
