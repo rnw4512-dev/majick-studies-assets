@@ -1,7 +1,7 @@
 name: D756 meeting acceptance
 on:
   pull_request:
-    paths: ['current-site/**', 'tests/d756-meeting-browser.py', '.github/workflows/d756-meeting.yml']
+    paths: ['current-site/**', 'tests/d756-meeting-browser.py', 'tests/d756-question-classification.test.cjs', '.github/workflows/d756-meeting.yml']
   workflow_dispatch:
 permissions:
   contents: read
@@ -17,6 +17,8 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
+      - name: Instructor question classification checks
+        run: node --test tests/d756-question-classification.test.cjs
       - run: python -m pip install playwright==1.56.0
       - run: python pages-release/current/build.py current-site _site
       - name: All scenarios, modes, viewports, dialogue, persistence and real reward owner
