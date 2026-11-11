@@ -41,7 +41,7 @@ const challenges=[
 [2,'Four minutes left. How will you make sure every voice is heard before we close?']
 ];
 const coaching=[
-'Welcome the team, provide a short agenda, and ask whether anyone needs clarification.',
+'Welcome the team, give a short agenda, and invite specific input. Once a participant shares a concern, ask a contextual follow-up question.',
 'Name art and mathematics strengths, literacy and executive-functioning needs. Invite Mr. Moore’s observations.',
 'Reading: infer and cite two details, 4/5 rubric points across four of five consecutive assessments. Ask Elena what she sees at home.',
 'Ask Angela how writing, visual checklists and private feedback could help.',
@@ -50,9 +50,9 @@ const coaching=[
 'Postsecondary goal: associate-degree graphic design program; compare three programs and practice self-advocacy.',
 'Acknowledge Elena’s concern. Center Angela’s choice. Explore practical connections between art, math, technology and business.',
 'Explain three paragraphs as scaffold, not permanent limit on grade-level five-paragraph expectations.',
-'Assign student, counselor, ELA and special educator next steps; ask for questions.',
+'Assign student, counselor, ELA and special educator next steps; clarify any specific uncertainty a participant has already raised.',
 'Reflect Angela’s stated preferences and invite concrete suggestions.',
-'Review agreement, solicit questions for clarification, thank each participant.'
+'Review agreement, seek clarification about a specific stakeholder statement if needed, and thank each participant.'
 ];
 const councilPhases=['Opening Ceremony',"Scholar’s Portrait",'Three Goal Scrolls','Crossroads of Tomorrow','Final Accord'];
 const phaseFor=stage=>[0,1,1,1,2,2,3,3,3,4,4,4][Math.min(11,stage)];
@@ -63,11 +63,11 @@ function replayChoices(){const unique=[];for(const stage of [7,8,10,5,3,2]){cons
 function replayVariant(record,n){const p=person(),v={7:['I want to support '+p.student.split(' ')[0]+' but I still worry about stable employment. What evidence could help us compare options?','We may not agree on a career today. How can we leave with an actionable plan that respects the student?'],8:['I have a full classroom. How will these supports fit into our shared routine?','What should I collect to know whether the accommodation is helping?'],10:['I am not sure how my views changed the plan. Could you check my understanding?','Could you explain who I should contact if the plan is not working?'],5:['I thought one passing score meant support would stop. Is that correct?','What will you do if the progress data do not improve?'],3:['I want to help choose the supports. How will you include my preference?','I am reluctant to speak when adults interrupt. Can you make room for me?']};return (v[record.stage]||['How will you listen to my perspective and record the next action?','What evidence and next steps should the team agree to review?'])[n%2];}
 function replayView(){const item=replay.queue[replay.index];if(!item)return '<h3>Replay Chamber complete</h3><p>Your original meeting, feedback and reward receipt are unchanged. These coached exchanges earn no completion XP.</p><button data-action="replay-exit">Return to original review</button>';return '<h3>Replay Chamber · '+(replay.index+1)+' / '+replay.queue.length+'</h3><p>Practice only · original evidence remains unchanged · no XP or mastery credit</p><blockquote><b>'+esc(item.record.speaker)+':</b> '+esc(item.variant)+'</blockquote><p>Reflect the concern, refer to this student’s plan, and propose a concrete next action. Try: “I hear your concern. Let us review the evidence together and agree who will follow up.”</p><label for="dmReplayAnswer">Rehearsed response</label><textarea id="dmReplayAnswer" rows="4"></textarea><button data-action="replay-submit">Rehearse this exchange</button><button data-action="replay-exit">Return to original review</button>'+(replay.feedback?'<p role="status">'+esc(replay.feedback)+'</p><button data-action="replay-next">Next selected exchange</button>':'');}
 function repairView(){const r=s.repair;return '<h3>Pause-and-Repair · guided practice</h3><p>The active meeting clock is paused. Coached replies remain practice evidence and do not demonstrate independent mastery.</p><blockquote>'+esc(r.line)+'</blockquote><p>'+esc(r.reason)+'</p><p><b>Sentence starter:</b> '+esc(r.starter)+'</p><p>'+esc(s.profile==='angela'?localize(coaching[s.step]):person().goals.map(g=>g[1]).join(' '))+'</p><label for="dmRepairAnswer">Retry the exchange</label><textarea id="dmRepairAnswer" rows="4">'+esc(s.draft||'')+'</textarea><button data-action="repair-submit">Use rehearsed reply and resume</button><button data-action="repair-cancel">Resume without changing original reply</button>';}
-function meaningfulResponse(a){const i=indicators(a),words=a.trim().split(/\s+/).length,unique=new Set(norm(a).split(' ')).size;return ((i.input&&words>=5&&unique>=4)||(i.clarify&&words>=4&&unique>=4)||(words>=10&&unique>=8))&&!s.records.some(r=>norm(r.answer)===norm(a));}
-function commitTurn(a,assisted=false){const scene=activeScene(),people=peopleNow(),isFollow=!!s.pending,pending=s.pending;const contextMatch=!!pending&&!indicators(a).input&&!indicators(a).clarify&&addressesPending(a,pending);s.draft='';s.records.push({speaker:people[scene[0]][0],line:localize(scene[2]),answer:a,core:!isFollow,stage:s.step,valid:true,assisted,contextMatch,responseTo:pending?.line||null,at:Date.now()});
+function meaningfulResponse(a){const i=indicators(a),words=a.trim().split(/\s+/).length,unique=new Set(norm(a).split(' ')).size,clarify=contextualClarification(a,activeScene()[2]);return ((i.input&&words>=5&&unique>=4)||(clarify&&words>=7&&unique>=6)||(words>=10&&unique>=8))&&!s.records.some(r=>norm(r.answer)===norm(a));}
+function commitTurn(a,assisted=false){const scene=activeScene(),people=peopleNow(),isFollow=!!s.pending,pending=s.pending;const clarified=contextualClarification(a,localize(scene[2]));const contextMatch=!!pending&&!clarified&&!indicators(a).input&&addressesPending(a,pending);s.draft='';s.records.push({speaker:people[scene[0]][0],line:localize(scene[2]),answer:a,core:!isFollow,stage:s.step,valid:true,assisted,contextMatch,clarifyingFollowUp:clarified,responseTo:pending?.line||null,at:Date.now()});
  if(s.step===7&&resolves(a)){s.concernResolved=true;s.concernStatus=/disagree|unresolved|not agree|differ|remain/i.test(a)?'follow-up scheduled':'options acknowledged';}
- s.last='Invite ideas separately from questions for clarification. Reflect the actual stakeholder concern before proposing a next action.';
- s.pending=isFollow&&!indicators(a).input&&!indicators(a).clarify&&!addressesPending(a,pending)?pending:followUp(a,s.step);s.awaitingReply=!!s.pending;s.reply=s.pending?null:[scene[0],'Stakeholder response',s.step===7&&s.concernResolved?'Thank you for hearing my concern. We can keep our differing views and compare practical options through the follow-up plan while keeping the student’s preference central.':'I have heard your proposal. Please document the responsibilities and the point when we will review this together.'];persist();paint();}
+ s.last='Invite substantive input; then clarify something specific the stakeholder said. Generic questions do not count.';
+ s.pending=clarified?{who:scene[0],line:'To clarify what I shared: '+localize(scene[2])+' I would appreciate a specific plan that addresses that concern.',kind:'clarification-response'}:isFollow&&!indicators(a).input&&!addressesPending(a,pending)?pending:followUp(a,s.step);s.awaitingReply=!!s.pending;s.reply=s.pending?null:[scene[0],'Stakeholder response',s.step===7&&s.concernResolved?'Thank you for hearing my concern. We can keep our differing views and compare practical options through the follow-up plan while keeping the student’s preference central.':'I have heard your proposal. Please document the responsibilities and the point when we will review this together.'];persist();paint();}
 function badges(){const m=meter(),all=s.records.map(r=>r.answer).join(' ');return [m.stakeholders===3?'Voice of the Council':null,m.clarify>=3?'Seeker of Clarity':null,s.concernResolved?'Bridge Builder':null,/(college|postsecondary|training)/i.test(all)&&/(employ|career)/i.test(all)?'Keeper of Futures':null].filter(Boolean);}
 let s={mode:'guided',profile:'angela',step:0,records:[],started:0,elapsed:0,active:false,done:false,last:'',pending:null},tick,returnFocus;
 try{let saved=JSON.parse(localStorage.getItem(key));if(saved&&saved.mode)s={...s,...saved,active:false,resumable:saved.mode==='guided'&&!saved.done&&(saved.resumable||saved.elapsed>0||saved.records?.length>0||!!saved.draft)};}catch(_){}
@@ -77,12 +77,39 @@ function history(){try{return JSON.parse(localStorage.getItem(key+'-history')||'
 function pause(){const draft=document.getElementById('dmAnswer');if(draft)s.draft=draft.value;if(s.active){s.elapsed=elapsed();s.active=false;s.resumable=true;}persist();}
 window.addEventListener('pagehide',()=>{if(s.active&&s.mode!=='guided'){s.interrupted=true;end();}else pause();});
 function norm(t){return t.toLowerCase().replace(/[^a-z0-9]+/g,' ').trim()}
-function indicators(a){const t=a.toLowerCase();const question=/[?]/.test(t)||/^please (share|tell|ask)/.test(t);const clarify=question&&/(any|what|which|do you have|does anyone have|please ask).{0,45}(questions?|clarification)|what.{0,25}(unclear|clarify)/.test(t);const input=question&&!clarify&&/(share|thought|input|perspective|feel|concern|suggest|prefer|notice|ideas|what would|what do you|what are your|tell us|tell me|how do you|describe|observe|think|what.*after graduation|what.{0,30}(want|hope|plan|interest|goal)|how.{0,40}(doing|perform|class|work|progress)|tell (me|us))/.test(t);const who=peopleNow().map((p,i)=>({i,match:p[0].toLowerCase().split(' ').filter(n=>n.length>2&&!['mr.','ms.','mrs.','dr.'].includes(n)).some(n=>new RegExp('\\b'+n+'\\b').test(t))})).filter(x=>x.match).sort((a,b)=>{const first=i=>Math.min(...peopleNow()[i][0].toLowerCase().split(' ').filter(n=>n.length>2&&!['mr.','ms.','mrs.','dr.'].includes(n)).map(n=>t.indexOf(n)).filter(n=>n>=0));return first(a.i)-first(b.i)}).slice(0,1).map(x=>x.i);return {input,clarify,who};}
-
-function meter(){let input=0,clarify=0,who=new Set(),seen=new Set();for(const r of s.records){if(!r.valid||seen.has(norm(r.answer)))continue;seen.add(norm(r.answer));const i=indicators(r.answer);if(i.input){input++;i.who.filter(x=>[0,1,3].includes(x)).forEach(x=>who.add(x));}if(i.clarify)clarify++;}return {input,clarify,stakeholders:who.size,turns:s.records.length};}
+function indicators(a){
+ const t=a.toLowerCase(),question=/\?/.test(a)||/^please (share|tell|ask)/.test(t);
+ // Instructor rule: generic "any questions?" and "anything to add?" are neither clarification nor substantive input.
+ const generic=/(?:anyone|everybody|everyone).{0,45}(?:questions|add|thoughts)|any (?:questions|clarification)|does (?:anyone|somebody) have/i.test(t);
+ const substantive=/(goal|iep|plan|transition|education|career|writing|reading|math|strength|need|support|accommod|progress|class|home|routine|future|graduat|program|assignment|student|angela|maya|jordan|feedback|instruction|schedule|participat)/i.test(t);
+ const input=question&&!generic&&substantive&&/(how do you feel|what do you think|what are your (thoughts|concerns|ideas)|what would (you|help)|what (do you|have you) (notice|observ|prefer|suggest|recommend)|tell (me|us) (about|what)|describe (what|how)|share (your|what)|what.{0,30}(want|hope|plan|interest|goal)|how.{0,40}(doing|perform|class|work|progress)|how is.{0,40}(doing|perform)|what (?:ideas|concerns|suggestions|observations|thoughts) would you (?:like to )?share|what (?:supports|accommodations|tools|strategies) do you (?:prefer|need|find helpful))/i.test(t);
+ const who=/^\s*(team|everyone|all of you)[,:]/i.test(t)?[]:peopleNow().map((p,i)=>{const positions=p[0].toLowerCase().split(' ').filter(n=>n.length>2&&!['mr.','ms.','mrs.','dr.'].includes(n)).map(n=>t.search(new RegExp('\\b'+n+'\\b'))).filter(n=>n>=0);return {i,at:positions.length?Math.min(...positions):Infinity};}).filter(x=>Number.isFinite(x.at)).sort((a,b)=>a.at-b.at).map(x=>x.i);
+ return {input,clarify:false,generic,who};
+}
+function contextualClarification(answer,statement){
+ const t=answer.toLowerCase(),speaker=String(statement||'').toLowerCase();
+ if(!speaker||!/\?/.test(answer)||/(?:anyone|everyone|everybody).{0,45}(?:questions|add)|any (?:questions|clarification)/i.test(t))return false;
+ // Follow-up must seek the meaning, evidence, example or deeper explanation of a specific stakeholder statement.
+ const probe=/(when you (say|said|mention|mentioned|describe)|you (said|mentioned|noted|shared)|do you mean|what do you mean|what does.{0,45}look like|could you (describe|explain|give (?:me |us )?an example|tell (?:me |us )?more)|can you (clarify|explain|give (?:me |us )?an example)|is your concern|am i understanding|help me understand|what specifically|which (part|aspect|situation))/i.test(t);
+ if(!probe)return false;
+ const stop=new Set(['about','after','again','along','before','could','every','first','from','have','help','into','just','like','more','much','need','other','really','some','that','their','them','there','these','they','this','those','what','when','where','which','while','with','would','your','youre','because','question','questions','explain','describe','example','understand','clarify','mentioned','shared','specific','specifically','student']);
+ const tokens=[...new Set(speaker.match(/[a-z]{5,}/g)||[])].filter(w=>!stop.has(w));
+ const anchored=tokens.some(w=>t.includes(w));
+ return anchored;
+}
+function meter(){
+ let input=0,clarify=0,who=new Set(),seen=new Set();
+ for(const r of s.records){
+  if(!r.valid||seen.has(norm(r.answer)))continue;seen.add(norm(r.answer));
+  const i=indicators(r.answer);
+  if(i.input){input++;i.who.filter(x=>[0,1,3].includes(x)).forEach(x=>who.add(x));}
+  if(r.clarifyingFollowUp===true)clarify++;
+ }
+ return {input,clarify,stakeholders:who.size,turns:s.records.length};
+}
 function activeScene(){if(s.reply&&!s.pending)return s.reply;if(s.pending)return [s.pending.who,'Follow-up question',s.pending.line];if(s.step===7&&!s.financialDiscovered)return [0,'Listen to the family perspective','I am not comfortable with this pathway yet. I would like to talk before we decide.'];if(s.mode==='challenge'){const p=person(),complications={2:[0,'I disagree with this proposed goal. Why is it appropriate for my child?'],3:[1,'I feel unheard when adults choose my supports without asking me.'],5:[0,'Sorry to interrupt. Does meeting one rubric score mean all support ends?'],7:[0,'I prefer '+p.option+'; '+p.career+' worries me financially.'],8:[3,'I question whether we can implement these accommodations during every classroom lesson.'],9:[2,'We have four minutes left. How will we preserve time for student voice and next steps?'],10:[3,'If progress stalls, what evidence would lead us to revise the teaching approach?']};if(complications[s.step])return [complications[s.step][0],"Meeting complication",complications[s.step][1]];}let scene=[...scenes[Math.min(s.step,11)]];if(s.profile!=='angela'){const p=person();const lines={1:p.strengths+'. We need support with '+p.needs+'.',3:p.supports+' Which supports can I help choose?',4:'How will we measure these goals? '+p.goals.map(g=>g[1]).join(' '),7:'I want to understand the costs and employment prospects for '+p.career+'. Can we compare that pathway with '+p.option+' while hearing the student’s view?',8:'How can we make these supports practical in our classroom?'};scene[2]=lines[s.step]||scene[2];}return scene;}
 function followUp(a,step){const t=a.toLowerCase(),p=person(),i=indicators(a);const future=/after|graduat|college|postsecondary|career|future|interest|want.{0,20}do/i.test(t)||(step>=6&&!/support|help|accommod|class|work|writing|reading/i.test(t));
- if(i.clarify)return {who:0,line:['How will you tell us whether progress is on track?','Does meeting the goal mean supports stop immediately?','Who should I contact if we need to review the plan?'][(s.records.length+s.variant)%3],kind:'question'};
+ if(contextualClarification(a,activeScene()[2]))return null;
  if(i.input){const who=i.who.length?i.who[0]:[1,0,3][(s.records.length+s.variant)%3];if(who===0&&future)s.financialDiscovered=true;const lines={
   0:!future?['At home, getting started is difficult. Can we coordinate a routine?', 'I would like regular updates with examples of the work.']:['I worry about financial stability. How can we compare career options?', 'I want to support this choice and understand the training costs.'],
   1:!future?['I want to choose which supports help me. '+p.supports,'Private feedback helps me stay confident. Please ask me before changing my plan.']:['I want to pursue '+p.career+'. '+p.transition,'My preference is '+p.career+'. I feel unheard when that interest is dismissed. Can we explore my preference?'],
@@ -111,7 +138,7 @@ function grade(){
  const checks=[
   ['All 12 core meeting stages completed',s.step>=12&&new Set(s.records.filter(x=>x.valid).map(x=>x.stage)).size===12],
   ['At least five separate stakeholder input invitations',m.input>=5],
-  ['At least three separate clarification invitations',m.clarify>=3],
+  ['At least three contextual clarifying follow-up questions',m.clarify>=3],
   ['Student, parent and general education teacher directly invited to contribute',m.stakeholders>=3],
   ['All three annual goal areas discussed',goals],
   ['Postsecondary education and employment discussed',transition],
@@ -128,14 +155,14 @@ function grade(){
  ];
  return {passed:checks.every(x=>x[1]),checks,duration};
 }
-function advice(label){if(/clarification/i.test(label))return 'Invite questions at three distinct points. Example: “What questions do you have about how we will measure progress?”';if(/input|invited/i.test(label))return 'Ask for ideas on five separate turns and directly address the student, parent and teacher. Example: “'+person().student.split(' ')[0]+', what would help you start your work?”';if(/goal/i.test(label))return 'Explain each behavior, measurement, threshold and consistency period from this case reference. Example: “'+person().goals[0][1]+'”';if(/closing/i.test(label))return 'Assign responsibilities and a review time, then thank the team. Example: “Next, I will share the plan and meet with you in four weeks to review data. Thank you for your ideas.”';if(/monitor/i.test(label))return 'Name the evidence, collection schedule and family reporting schedule. Example: “We will collect weekly work samples and share progress reports each quarter.”';if(/Postsecondary/i.test(label))return person().transition;if(/concern/i.test(label))return 'Reflect the actual concern and preserve student choice. Example: “I hear your concern about career security. Let us explore training costs and employment options together while honoring the student’s preference.”';if(/lasted/i.test(label))return 'Complete a 15–20-minute active rehearsal; Back and Close pause the clock. Time alone never earns a reward.';return 'Use the agenda and transcript to identify an omitted topic; give a specific explanation and invite a relevant stakeholder response.';}
+function advice(label){if(/clarif/i.test(label))return 'Ask three genuine follow-up questions about what a person just shared. Example: “Mr. Moore, when you say Angela needs frequent prompts, what does that look like during written assignments?” Generic “Any questions?” does not count.';if(/input|invited/i.test(label))return 'Ask for ideas on five separate turns and directly address the student, parent and teacher. Example: “'+person().student.split(' ')[0]+', what would help you start your work?”';if(/goal/i.test(label))return 'Explain each behavior, measurement, threshold and consistency period from this case reference. Example: “'+person().goals[0][1]+'”';if(/closing/i.test(label))return 'Assign responsibilities and a review time, then thank the team. Example: “Next, I will share the plan and meet with you in four weeks to review data. Thank you for your ideas.”';if(/monitor/i.test(label))return 'Name the evidence, collection schedule and family reporting schedule. Example: “We will collect weekly work samples and share progress reports each quarter.”';if(/Postsecondary/i.test(label))return person().transition;if(/concern/i.test(label))return 'Reflect the actual concern and preserve student choice. Example: “I hear your concern about career security. Let us explore training costs and employment options together while honoring the student’s preference.”';if(/lasted/i.test(label))return 'Complete a 15–20-minute active rehearsal; Back and Close pause the clock. Time alone never earns a reward.';return 'Use the agenda and transcript to identify an omitted topic; give a specific explanation and invite a relevant stakeholder response.';}
 function evidenceFor(label){
  const rows=s.records.filter(r=>r.valid);
  if(/measurable goal/.test(label))return [...new Set(goalEvidence().flat())];
  let matches;
  if(/12 core/.test(label))matches=rows.filter((r,i)=>rows.findIndex(x=>x.stage===r.stage)===i);
  else if(/input invitations/.test(label))matches=rows.filter(r=>indicators(r.answer).input);
- else if(/clarification invitations/.test(label))matches=rows.filter(r=>indicators(r.answer).clarify);
+ else if(/clarifying follow-up/.test(label))matches=rows.filter(r=>r.clarifyingFollowUp===true);
  else if(/directly invited/.test(label))matches=rows.filter(r=>indicators(r.answer).input&&indicators(r.answer).who.length);
  else if(/annual goal areas/.test(label))matches=rows.filter(r=>/reading|writing|executive|organization/i.test(r.answer));
  else if(/Postsecondary/.test(label))matches=rows.filter(r=>/college|postsecondary|education|employ|career|program/i.test(r.answer));
@@ -176,7 +203,7 @@ function close(){if(s.active&&s.mode!=='guided'&&!s.done){s.interrupted=true;end
 function paint(){
  const root=document.getElementById('d756MeetingRoom');if(!root)return;
  let m=meter(),scene=activeScene(),people=peopleNow(),speaker=people[scene[0]],p=person();
- let stats='<p><strong>Meeting Compass</strong><small>Scripted branching dialogue · provisional rule-based practice indicators</small></p><div class="dmStats"><span>Stakeholder input <b>'+m.input+'/5</b></span><span>Clarification prompts <b>'+m.clarify+'/3</b></span><span>Stakeholders named <b>'+m.stakeholders+'/3</b></span><span>Time <b id="dmTime">'+timer()+'</b></span></div>';
+ let stats='<p><strong>Meeting Compass</strong><small>Scripted branching dialogue · provisional rule-based practice indicators</small></p><div class="dmStats"><span>Stakeholder input <b>'+m.input+'/5</b></span><span>Clarifying follow-ups <b>'+m.clarify+'/3</b></span><span>Stakeholders named <b>'+m.stakeholders+'/3</b></span><span>Time <b id="dmTime">'+timer()+'</b></span></div>';
  let content='';
  if(replay?.active){content=replayView();}
  else if(s.repair){content=repairView();}
