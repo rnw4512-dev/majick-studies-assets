@@ -92,7 +92,7 @@ with sync_playwright() as pw:
     assert room.evaluate('(r)=>r.scrollWidth<=r.clientWidth+1')
     submit('Yes')
     assert saved()['records']==[]
-    submit('Can you please share your ideas about this meeting with the whole team today?')
+    submit('Elena, what ideas would you share about Angela’s reading goal and classroom supports?')
     assert saved()['pending']
     click('next');assert saved()['step']==0
     room.locator('#dmAnswer').fill('Draft response that must survive closing the meeting room.')
