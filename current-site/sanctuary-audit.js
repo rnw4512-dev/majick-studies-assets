@@ -2,7 +2,7 @@
  'use strict';
  const VERSION='3.4.2',states=new WeakMap();
  function expected(){return (window.S?.legacy?.pets||[]).filter(p=>p?.id).map(p=>({id:String(p.id),name:p.name||'Guardian'}))}
- function frameFor(source){return [...document.querySelectorAll('.v3317SanctuaryFrame')].find(f=>f.contentWindow===source)}
+ function frameFor(source){return [...document.querySelectorAll('#phase4SanctuaryFrame, .v3317SanctuaryFrame')].find(f=>f.contentWindow===source)}
  function banner(frame){
    const wrap=frame.closest('.phase4Wrap');if(!wrap)return null;
    let box=wrap.querySelector('.v3350RoomAudit');if(box)return box;
@@ -48,7 +48,7 @@
      states.set(frame,{expected:expected().length,unverified:true,reason:'roster-timeout'});
    },6500);
  }
- function mount(){document.querySelectorAll('.v3317SanctuaryFrame').forEach(f=>{if(!f.dataset.v3350Audit){f.dataset.v3350Audit='1';request(f)}})}
+ function mount(){document.querySelectorAll('#phase4SanctuaryFrame, .v3317SanctuaryFrame').forEach(f=>{if(!f.dataset.v3350Audit){f.dataset.v3350Audit='1';request(f)}})}
  window.addEventListener('message',ev=>{
    if(ev.origin!==location.origin)return;
    const frame=frameFor(ev.source);if(!frame)return;
@@ -62,5 +62,5 @@
  const previous=window.render;
  if(typeof previous==='function')window.render=function(){const result=previous.apply(this,arguments);setTimeout(mount,0);return result};
  setTimeout(mount,300);
- window.MajickSanctuaryAudit={VERSION,expected,status:()=>[...document.querySelectorAll('.v3317SanctuaryFrame')].map(f=>states.get(f)||{checking:true}),request};
+ window.MajickSanctuaryAudit={VERSION,expected,status:()=>[...document.querySelectorAll('#phase4SanctuaryFrame, .v3317SanctuaryFrame')].map(f=>states.get(f)||{checking:true}),request};
 })();
