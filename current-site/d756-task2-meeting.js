@@ -62,6 +62,21 @@ function meter(){
 }
 function activeScene(){if(s.pending)return [s.pending.who,'Follow-up question',s.pending.line];if(s.mode==='challenge'&&s.step>=7&&s.step<=10)return challenges[(s.step-7)%challenges.length];return scenes[Math.min(s.step,11)];}
 function followUp(a,step){let t=a.toLowerCase(),p=person();
+ // Respond to direct participant invitations, one extra conversational turn per stage.
+ const asks=/\?/.test(a)&&/(share|thought|think|input|perspective|feel|concern|prefer|suggest|notice|idea|what|how)/.test(t);
+ if(asks){
+  const student=p.student.toLowerCase(),parent=p.parent.toLowerCase(),teacher=p.teacher.toLowerCase();
+  if(t.includes(student.split(' ')[0])||t.includes(student.split(' ').slice(-1)[0])){
+    return {who:1,line:step<5?'It helps when teachers explain the steps and let me type. I want to feel more confident doing work on my own.':'I want to explore '+p.career+' and understand which classes and skills I will need.'};
+  }
+  if(t.includes(parent.split(' ')[0])||t.includes(parent.split(' ').slice(-1)[0])){
+    return {who:0,line:step<6?'At home, getting started and staying organized are still difficult. How will we know the plan is working?':'I want to support '+p.student.split(' ')[0]+', but I also want us to look realistically at the education and career options.'};
+  }
+  if(t.includes(teacher.split(' ').slice(-1)[0])){
+    return {who:3,line:step<6?'The written organizer helps, but transferring ideas into a complete essay still requires modeling and checkpoints.':'I can support this with classroom writing samples and a shared planning routine.'};
+  }
+ }
+
  if(step===0&&!/(purpose|agenda|meeting|today)/.test(t))return {who:2,line:'Could you explain the purpose and agenda before we begin?'};
  if(step===2&&!/(progress|data|report|monitor|measur)/.test(t))return {who:0,line:'Can you give a concrete example of how you will measure progress?'};
  if(step===4&&!(/read|inferen/.test(t)&&/writ|paragraph/.test(t)&&/organiz|executive|task/.test(t)))return {who:3,line:'Can you explain all three annual goals and how we will measure them?'};
