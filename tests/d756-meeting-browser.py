@@ -46,6 +46,7 @@ with sync_playwright() as pw:
   for stage,text in enumerate(responses):
    submit(text)
    if saved().get('pending'):
+    if stage in [1,2,3,6,9]: assert saved()['pending']['who']=={1:3,2:0,3:1,6:1,9:3}[stage],saved()['pending']
     # Address the specific stakeholder statement rather than advancing past it.
     submit('I understand your point about '+saved()['pending']['line'].rstrip('?')+' We will use weekly work samples and a planning routine to review supports, preserve student choice, compare career training costs and assign follow-up responsibilities at review '+str(stage)+'.')
    assert not saved().get('pending'),saved()
@@ -106,6 +107,10 @@ with sync_playwright() as pw:
  assert tomorrow['reward']['xp']==8
  assert page.evaluate('MajickStateCore.ensureAccount().xp')==before+46
  print('PASS completed short attempt earns zero; next calendar day repeat earns eight XP')
+ click('retry');assert saved()['step']==7
+ submit('I hear your concern and respect the student choice. We can explore options together and compare practical training costs.')
+ click('finish');assert saved()['reward']['xp']==0
+ print('PASS focused disagreement retry earns zero XP')
  # Never silently dismiss a concern.
  start('angela','challenge')
  for stage in range(7):
