@@ -110,7 +110,24 @@ function grade(){
  return {passed:checks.every(x=>x[1]),checks,duration};
 }
 function advice(label){if(/clarification/i.test(label))return 'Invite questions at three distinct points. Example: “What questions do you have about how we will measure progress?”';if(/input|invited/i.test(label))return 'Ask for ideas on five separate turns and directly address the student, parent and teacher. Example: “'+person().student.split(' ')[0]+', what would help you start your work?”';if(/goal/i.test(label))return 'Explain each behavior, measurement, threshold and consistency period from this case reference. Example: “'+person().goals[0][1]+'”';if(/closing/i.test(label))return 'Assign responsibilities and a review time, then thank the team. Example: “Next, I will share the plan and meet with you in four weeks to review data. Thank you for your ideas.”';if(/monitor/i.test(label))return 'Name the evidence, collection schedule and family reporting schedule. Example: “We will collect weekly work samples and share progress reports each quarter.”';if(/Postsecondary/i.test(label))return person().transition;if(/concern/i.test(label))return 'Reflect the actual concern and preserve student choice. Example: “I hear your concern about career security. Let us explore training costs and employment options together while honoring the student’s preference.”';if(/lasted/i.test(label))return 'Complete a 15–20-minute active rehearsal; Back and Close pause the clock. Time alone never earns a reward.';return 'Use the agenda and transcript to identify an omitted topic; give a specific explanation and invite a relevant stakeholder response.';}
-function evidenceFor(label){const patterns=[[/invitation|input/i,/(share|thought|input|ideas|prefer|notice)/i],[/clarification/i,/(question|clarif)/i],[/goal/i,/(read|writ|executive|paragraph|checklist)/i],[/Postsecondary/i,/(college|education|employ|career|program)/i],[/concern/i,/(concern|hear|choice|explore)/i],[/closing/i,/(next|thank|follow.up|close)/i],[/monitor/i,/(monitor|data|report|sample|probe)/i]];const rule=patterns.find(x=>x[0].test(label))?.[1];return s.records.filter(r=>r.valid&&(!rule||rule.test(r.answer))).slice(-4);}
+function evidenceFor(label){
+ const rows=s.records.filter(r=>r.valid);
+ if(/measurable goal/.test(label))return [...new Set(goalEvidence().flat())];
+ let matches;
+ if(/12 core/.test(label))matches=rows.filter((r,i)=>rows.findIndex(x=>x.stage===r.stage)===i);
+ else if(/input invitations/.test(label))matches=rows.filter(r=>indicators(r.answer).input);
+ else if(/clarification invitations/.test(label))matches=rows.filter(r=>indicators(r.answer).clarify);
+ else if(/directly invited/.test(label))matches=rows.filter(r=>indicators(r.answer).input&&indicators(r.answer).who.length);
+ else if(/annual goal areas/.test(label))matches=rows.filter(r=>/reading|writing|executive|organization/i.test(r.answer));
+ else if(/Postsecondary/.test(label))matches=rows.filter(r=>/college|postsecondary|education|employ|career|program/i.test(r.answer));
+ else if(/concern/.test(label))matches=rows.filter(r=>r.stage===7&&resolves(r.answer));
+ else if(/Strengths/.test(label))matches=rows.filter(r=>/strength|math|art|coding|storytelling|need|challenge/i.test(r.answer));
+ else if(/monitoring/.test(label))matches=rows.filter(r=>/monitor|probe|sample|log|data/i.test(r.answer)&&/weekly|quarter|report|update|every|family/i.test(r.answer));
+ else if(/closing/.test(label))matches=rows.filter(r=>r.stage===11&&/next|follow.up|responsib/i.test(r.answer)&&/thank|adjourn|close/i.test(r.answer));
+ else if(/lasted/.test(label))return [];
+ else matches=rows;
+ return matches;
+}
 function issueReward(result){
  if(!result.passed||s.retryOnly)return {status:'not-earned',xp:0,crystals:0};
  const reward=window.MajickRewardCore;
