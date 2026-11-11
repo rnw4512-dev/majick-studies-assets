@@ -49,15 +49,58 @@ function meter(){
   let a=answers[i];
   if(/[?]/.test(a)&&/(share|thought|input|perspective|feel|concern|suggest|prefer|notice|ideas|what would|what do you)/.test(a))input++;
   if(/[?]/.test(a)&&/(question|clarif|explain|understand|clear|make sense)/.test(a))clarify++;
-  if(a.includes('angela'))who.add('Angela');
-  if(/elena|kahale/.test(a))who.add('Elena');
-  if(/moore/.test(a))who.add('Moore');
+  if(/[?]/.test(a)&&/(angela)[, :]/.test(a))who.add('Angela');
+  if(/[?]/.test(a)&&/(elena|ms\.? kahale|mrs\.? kahale)[, :]/.test(a))who.add('Elena');
+  if(/[?]/.test(a)&&/(mr\.? moore|moore)[, :]/.test(a))who.add('Moore');
  }
  return {input,clarify,stakeholders:who.size,turns:answers.length};
 }
 function activeScene(){if(s.mode==='challenge'&&s.step>=7&&s.step<=10)return challenges[(s.step-7)%challenges.length];return scenes[Math.min(s.step,11)];}
 function timer(){let n=s.elapsed+(s.active?Math.floor((Date.now()-s.started)/1000):0);return String(Math.floor(n/60)).padStart(2,'0')+':'+String(n%60).padStart(2,'0');}
-function end(){if(s.active)s.elapsed+=Math.floor((Date.now()-s.started)/1000);s.active=false;s.done=true;persist();paint();}
+function grade(){
+ const m=meter(),responses=s.records.map(x=>x.answer.trim()),all=responses.join(' ').toLowerCase();
+ const duration=s.elapsed+(s.active?Math.floor((Date.now()-s.started)/1000):0);
+ const goals=/(reading|comprehension|inferen)/.test(all)&&/(writing|paragraph|written expression)/.test(all)&&/(executive|organiza|multi.step|task initiation|checklist)/.test(all);
+ const transition=/(graphic design)/.test(all)&&/(college|postsecondary|degree|training)/.test(all)&&/(employ|career|job|workplace)/.test(all);
+ const respect=/(hear|understand|appreciate|respect|thank you|concern)/.test(all)&&/(explore|compare|choice|options|collaborat|together)/.test(all);
+ const nontrivial=responses.filter(x=>x.length>=65).length>=10;
+ const distinct=new Set(responses.map(x=>x.toLowerCase().replace(/\s+/g,' '))).size===responses.length;
+ const checks=[
+  ['All 12 scenes completed',s.records.length===12],
+  ['At least five separate stakeholder input invitations',m.input>=5],
+  ['At least three separate clarification invitations',m.clarify>=3],
+  ['Angela, Elena and Mr. Moore directly invited to contribute',m.stakeholders>=3],
+  ['All three annual goal areas discussed',goals],
+  ['Postsecondary education and employment discussed',transition],
+  ['Family concern acknowledged and choices considered',respect],
+  ['Meaningful, non-repeated responses throughout',nontrivial&&distinct],
+  ['Meeting lasted at least 15 and no more than 20 minutes',duration>=900&&duration<=1200]
+ ];
+ return {passed:checks.every(x=>x[1]),checks,duration};
+}
+function issueReward(result){
+ if(!result.passed)return {status:'not-earned',xp:0,crystals:0};
+ const reward=window.MajickRewardCore;
+ const account=window.MajickStateCore?.ensureAccount?.()||window.S?.majickAccount;
+ if(!reward?.award||!account?.rewardCore?.ledger)return {status:'unavailable',xp:0,crystals:0};
+ const ledger=account.rewardCore.ledger;
+ const firstKey='d756:task2:meeting:first-success:v1';
+ const firstDone=Boolean(ledger[firstKey]);
+ const day=new Date().toISOString().slice(0,10);
+ const key=firstDone?'d756:task2:meeting:repeat:'+day:firstKey;
+ if(ledger[key])return {status:'already-awarded',xp:0,crystals:0};
+ const type=firstDone?'d756-meeting-repeat-practice':'d756-meeting-first-pass';
+ const receipt=reward.award(type,{key,course:'D756',source:'d756-task2-meeting',independent:false,masteryEligible:false});
+ if(!receipt)return {status:'unavailable',xp:0,crystals:0};
+ return {status:firstDone?'repeat-success':'first-success',xp:receipt.xp||0,crystals:receipt.crystals||0};
+}
+function end(){
+ if(s.active)s.elapsed+=Math.floor((Date.now()-s.started)/1000);
+ s.active=false;s.done=true;
+ s.assessment=grade();
+ s.reward=issueReward(s.assessment);
+ persist();paint();
+}
 function close(){clearInterval(tick);document.getElementById('d756MeetingRoom')?.remove();}
 function paint(){
  const root=document.getElementById('d756MeetingRoom');if(!root)return;
@@ -65,19 +108,20 @@ function paint(){
  let stats='<div class="dmStats"><span>Stakeholder input <b>'+m.input+'/5</b></span><span>Clarification prompts <b>'+m.clarify+'/3</b></span><span>Stakeholders named <b>'+m.stakeholders+'/3</b></span><span>Time <b id="dmTime">'+timer()+'</b></span></div>';
  let content='';
  if(s.done){
- content='<h3>Rehearsal review</h3>'+stats+'<p>Check whether you discussed all three annual goals, student strengths and needs, postsecondary education, employment, disagreement resolution and next steps.</p><p>This keyword tracker is a practice aid, not official Mursion scoring or certified independent mastery.</p><button data-action="reset">Practice again</button>';
+ const assessment=s.assessment||grade(),receipt=s.reward||{status:'not-earned',xp:0,crystals:0};
+ content='<h3>Rehearsal review</h3>'+stats+'<p><b>'+(assessment.passed?'Practice criteria met':'Practice criteria not yet met')+'</b></p><p>'+esc(receipt.status==='first-success'?'First successful meeting: +30 Scholar XP and +5 crystals':receipt.status==='repeat-success'?'Successful repeat: +8 Scholar XP and +1 crystal':receipt.status==='already-awarded'?'Today’s practice reward was already granted; no duplicate XP':receipt.status==='unavailable'?'Reward system unavailable; no XP granted':'No XP awarded until all criteria are satisfied')+'</p><ul>'+assessment.checks.map(x=>'<li>'+(x[1]?'✓ ':'○ ')+esc(x[0])+'</li>').join('')+'</ul><p>Automated rehearsal checks are not official Mursion evaluation or verified independent academic mastery. A repeat reward is available at most once per calendar day.</p><button data-action="reset">Practice again</button>';
  }else if(!s.active){
- content='<p>Lead a meeting as Angela’s special education teacher. Four role-play stakeholders respond through scenario prompts. Rehearse aloud, then type what you said. Practice records stay separate from your other course progress.</p><label for="dmMode">Practice mode</label><select id="dmMode"><option value="guided">Guided coaching</option><option value="independent">Independent, no hints</option><option value="challenge">Challenging disagreements</option></select><button data-action="start">Begin rehearsal</button>';
+ content='<p>Lead a meeting as Angela’s special education teacher. Four role-play stakeholders respond through scenario prompts. Rehearse aloud, then type what you said. A passing rehearsal can earn Scholar XP through the existing reward system; no XP is granted for incomplete attempts. Practice records remain separate from academic mastery.</p><label for="dmMode">Practice mode</label><select id="dmMode"><option value="guided">Guided coaching</option><option value="independent">Independent, no hints</option><option value="challenge">Challenging disagreements</option></select><button data-action="start">Begin rehearsal</button>';
  }else{
  content='<div class="dmPeople">'+people.map((p,i)=>'<div class="dmPerson '+(i===scene[0]?'active':'')+'"><span class="dmFace">'+esc(p[0].split(' ').map(x=>x[0]).join(''))+'</span><b>'+esc(p[0])+'</b><small>'+esc(p[1])+'</small></div>').join('')+'</div>'+stats+'<p><b>Scene '+(s.step+1)+' of 12:</b> '+esc(scenes[s.step][1])+'</p><div class="dmPrompt"><b>'+esc(speaker[0])+':</b><p>'+esc(scene[2])+'</p></div>'+(s.mode==='guided'?'<div class="dmHint"><b>Coach</b><p>'+esc(coaching[s.step])+'</p></div>':'')+'<label for="dmAnswer">Your spoken response (type or summarize it):</label><textarea id="dmAnswer" rows="5"></textarea><div class="dmBtns"><button data-action="submit">Submit response</button><button data-action="finish">Finish and review</button></div>'+(s.last?'<div class="dmHint"><b>Feedback on previous turn</b><p>'+esc(s.last)+'</p></div>':'');
  }
  let transcript=s.records.length?'<details><summary>Practice transcript ('+s.records.length+' turns)</summary><div class="dmTranscript">'+s.records.map(x=>'<p><b>'+esc(x.speaker)+':</b> '+esc(x.line)+'</p><p><b>You:</b> '+esc(x.answer)+'</p>').join('')+'</div></details>':'';
- root.innerHTML='<section class="dmPanel" role="dialog" aria-modal="true" aria-label="D756 meeting practice"><header><div><small>D756 · Hands-on Learning Studio · Task 2</small><h2>Angela Madina — IEP Meeting Rehearsal</h2></div><button data-action="close">Close ✕</button></header>'+content+transcript+'<small>15–20 minutes is the Mursion target. This local rehearsal does not record or submit a Mursion video, and awards no XP or mastery credit.</small></section>';
+ root.innerHTML='<section class="dmPanel" role="dialog" aria-modal="true" aria-label="D756 meeting practice"><header><div><small>D756 · Hands-on Learning Studio · Task 2</small><h2>Angela Madina — IEP Meeting Rehearsal</h2></div><button data-action="close">Close ✕</button></header>'+content+transcript+'<small>15–20 minutes is the Mursion target. Qualified rehearsals earn +30 XP and +5 crystals the first time; later qualifying practice earns +8 XP and +1 crystal, at most once a day. No mastery credit or official Mursion recording.</small></section>';
  root.querySelector('[data-action=close]').onclick=close;
- const start=root.querySelector('[data-action=start]');if(start)start.onclick=()=>{s={mode:root.querySelector('#dmMode').value,step:0,records:[],started:Date.now(),elapsed:0,active:true,done:false,last:''};persist();paint();};
+ const start=root.querySelector('[data-action=start]');if(start)start.onclick=()=>{s={mode:root.querySelector('#dmMode').value,step:0,records:[],started:Date.now(),elapsed:0,active:true,done:false,last:'',assessment:null,reward:null};persist();paint();};
  const submit=root.querySelector('[data-action=submit]');if(submit)submit.onclick=()=>{let el=root.querySelector('#dmAnswer'),a=el.value.trim();if(!a){el.focus();return;}let previous=meter();s.records.push({speaker:speaker[0],line:scene[2],answer:a});let after=meter();s.last=(after.input>previous.input?'Stakeholder input invitation detected. ':'Invite a team member to contribute an idea. ')+(after.clarify>previous.clarify?'Clarification invitation detected. ':'Remember to invite clarification questions at three different points. ')+(s.mode==='guided'?'Continue to reflect what the stakeholder said before changing topics.':'');s.step++;if(s.step>=12){end();return;}persist();paint();};
  const finish=root.querySelector('[data-action=finish]');if(finish)finish.onclick=end;
- const reset=root.querySelector('[data-action=reset]');if(reset)reset.onclick=()=>{s={mode:s.mode,step:0,records:[],started:0,elapsed:0,active:false,done:false,last:''};persist();paint();};
+ const reset=root.querySelector('[data-action=reset]');if(reset)reset.onclick=()=>{s={mode:s.mode,step:0,records:[],started:0,elapsed:0,active:false,done:false,last:'',assessment:null,reward:null};persist();paint();};
 }
 function open(){
  if(window.S?.activeCourse!=='D756'){alert('Select the D756 course first.');return;}
