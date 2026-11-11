@@ -61,7 +61,7 @@ function updateEvolution(){
  const p=liveRoster.find(p=>String(p.id)===$('care-guardian').value),meta=p&&registry.get(p);
  if(!p||!meta){$('evolution-art').hidden=true;return}
  $('evolution-art').hidden=false;$('evolution-name').textContent=p.name+' · '+registry.stage(p.level).name;
- $('evolution-image').src='../assets/familiars/evolution_stages/'+meta.canon+'-'+registry.stage(p.level).slug+'.webp';
+ $('evolution-image').src=stagePortrait(meta.canon,registry.stage(p.level).slug)||'../assets/familiars/evolution_stages/'+meta.canon+'-'+registry.stage(p.level).slug+'.webp';
  $('evolution-image').alt=p.name+' · '+registry.stage(p.level).name+' evolution artwork';
 }
 $('care-guardian').onchange=updateEvolution;
@@ -103,13 +103,17 @@ const furnitureReady=(async()=>{
 const assetCache=new Map();
 // An empty manifest deliberately keeps every existing protected asset active.
 const approvedFrameManifest=fetch('./guardian-walk-manifest.json').then(response=>response.ok?response.json():{}).catch(()=>({}));
+// Stage portraits are static, approved separately from four-frame motion cycles.
+const VELORA_PORTRAIT_ROOT='./evolution-portraits/velora/velora_5_evolution_1024_transparent_pngs (5)/';
+const VELORA_PORTRAIT_FILES=Object.freeze({'new-bond':'01_new-bond.png','apprentice':'02_apprentice.png','guardian':'03_guardian.png','ascendant':'04_ascendant.png','celestial':'05_celestial.png'});
+function stagePortrait(canon,stage){return canon==='velora'&&VELORA_PORTRAIT_FILES[stage]?VELORA_PORTRAIT_ROOT+VELORA_PORTRAIT_FILES[stage]:null;}
 function artFor(canon,stage){
  const key=canon+':'+stage;
  if(!assetCache.has(key))assetCache.set(key,(async()=>{
   const original=['velora','cascade','solstice','aurelia'].includes(canon);
   // Six species have illustrated evolution cards, not transparent stage sprites.
   // Keep those cards in the profile; never walk an opaque card around the floor.
-  const basePath=original?'../sanctuary/assets/evolutions/'+canon+'/'+stage+'/walk.webp':'../assets/familiars/canon/'+canon+'-guardian.webp';
+  const basePath=stagePortrait(canon,stage)||(original?'../sanctuary/assets/evolutions/'+canon+'/'+stage+'/walk.webp':'../assets/familiars/canon/'+canon+'-guardian.webp');
   let base;try{base=await PIXI.Assets.load(basePath)}catch(error){diagnostics.missingTextures.push({canon,stage,path:basePath});throw error}
   let frames=[],source=original?'stage artwork (no approved walking pair)':'transparent canonical portrait fallback; evolution artwork in profile';
   if(canon==='velora'){
