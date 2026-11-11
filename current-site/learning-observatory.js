@@ -81,6 +81,30 @@ function csv(records){
 }
 
 
+
+function skillEvidence(records){
+ const out=[],by=new Map();
+ for(const r of records){if(r.correct===null)continue;let group=by.get(r.topic)||[];group.push(r);by.set(r.topic,group)}
+ for(const [topic,group] of by){
+  const independent=group.filter(r=>r.classification==='independent'),transfer=independent.filter(r=>r.transfer),days=new Set(independent.map(r=>new Date(r.at).toISOString().slice(0,10)));
+  const recent=independent.slice(-5),acc=accuracy(recent);
+  const strong=recent.length>=5&&acc>=.8&&days.size>=2&&transfer.some(r=>r.correct);
+  const status=strong?'Strong independent evidence':recent.length>=2?'Developing independent evidence':'Insufficient independent evidence';
+  const wrong=group.filter(r=>!r.correct).length;
+  out.push({topic,status,independent:independent.length,accuracy:acc,transfer:transfer.length,days:days.size,wrong});
+ }
+ return out.sort((a,b)=>a.status.localeCompare(b.status)||a.accuracy-b.accuracy);
+}
+function trendSVG(series){
+ const valid=series.map((x,i)=>({...x,i})).filter(x=>Number.isFinite(x.overall));
+ if(valid.length<2)return '<p><small>At least two recorded weeks are needed for a trend line.</small></p>';
+ const W=720,H=190,L=40,R=15,T=15,B=30,xx=i=>L+(i/(Math.max(1,series.length-1)))*(W-L-R),yy=v=>H-B-(v*(H-T-B));
+ const path=valid.map((r,i)=>(i?'L':'M')+xx(r.i).toFixed(1)+' '+yy(r.overall).toFixed(1)).join(' ');
+ const grid=[0,.25,.5,.75,1].map(v=>'<line x1="'+L+'" x2="'+(W-R)+'" y1="'+yy(v)+'" y2="'+yy(v)+'" stroke="#695675" stroke-width="1"/><text x="3" y="'+(yy(v)+4)+'" font-size="12" fill="#fff1e3">'+Math.round(v*100)+'%</text>').join('');
+ const tick=series.filter((x,i)=>i===0||i===series.length-1||i%3===0).map((x)=>{const i=series.indexOf(x);return '<text x="'+xx(i)+'" y="'+(H-7)+'" text-anchor="middle" font-size="11" fill="#fff1e3">'+E(x.week.slice(5))+'</text>'}).join('');
+ return '<svg viewBox="0 0 '+W+' '+H+'" style="width:100%;height:auto;display:block" role="img" aria-label="Overall weekly accuracy trend"><title>Weekly correct-answer rate</title><desc>Line showing recorded overall answer accuracy by week. The table below provides exact values.</desc>'+grid+tick+'<path d="'+path+'" fill="none" stroke="#ffdc94" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>'+valid.map(x=>'<circle cx="'+xx(x.i)+'" cy="'+yy(x.overall)+'" r="4.5" fill="#ffe5aa"/>').join('')+'</svg>';
+}
+
 function learningTransitions(records){
  const ordered=records.filter(x=>x.correct!==null).slice().sort((a,b)=>a.at-b.at),byTopic=new Map();
  for(const row of ordered){if(!byTopic.has(row.topic))byTopic.set(row.topic,[]);byTopic.get(row.topic).push(row)}
@@ -128,12 +152,14 @@ function draw(){
  const date=new Date(now()-windowDays*msDay).toLocaleDateString();
  const weeks=weeklySeries(items),studyTips=insights(items),audit=coverage(items,meetings);
  const moves=learningTransitions(items),aggregates=summaryOnly();
+ const evidence=skillEvidence(items),confidentErrors=items.filter(x=>x.correct===false&&/^(certain|very sure|high)$/i.test(x.confidence)).length;
  const metrics=[['Recorded attempts',scored.length],['Accuracy',number(accuracy(scored))],['Guided accuracy',number(accuracy(guided))],['Independent accuracy',number(accuracy(ind))],['Unknown mode',uncertain.length],['IEP rehearsals',meetings.length]];
  const metricHTML=metrics.map(([k,v])=>'<div class="loMetric"><small>'+E(k)+'</small><b>'+E(v)+'</b></div>').join('');
  const skillHTML=skills.map(v=>'<tr><td>'+E(v.topic)+'</td><td>'+v.attempts+'</td><td>'+number(v.acc)+'</td><td>'+number(v.guided)+'</td><td>'+number(v.independent)+'</td><td>'+v.unknown+'</td><td class="loTrend">'+(v.delta===null?'Not enough data':(v.delta>=0?'+':'')+Math.round(v.delta*100)+' percentage points')+'</td></tr>').join('');
  const sourceMap=new Map();items.forEach(x=>{const a=sourceMap.get(x.source)||[];a.push(x);sourceMap.set(x.source,a)});
  const sourceHTML=[...sourceMap.entries()].sort((a,b)=>b[1].length-a[1].length).map(([k,a])=>'<tr><td>'+E(k)+'</td><td>'+a.length+'</td><td>'+number(accuracy(a))+'</td></tr>').join('');
  const meetingsHTML=meetings.slice(-12).reverse().map(x=>'<tr><td>'+new Date(x.at).toLocaleDateString()+'</td><td>'+E(x.profile)+'</td><td>'+E(x.mode)+'</td><td>'+(x.met?'Practice checks met':'Needs practice')+'</td><td>'+x.xp+'</td></tr>').join('');
+ const evidenceHTML=evidence.map(x=>'<tr><td>'+E(x.topic)+'</td><td>'+E(x.status)+'</td><td>'+x.independent+'</td><td>'+number(x.accuracy)+'</td><td>'+x.transfer+'</td><td>'+x.days+'</td></tr>').join('');
  const weekHTML=weeks.map(x=>'<tr><td>'+E(x.week)+'</td><td>'+x.n+'</td><td>'+number(x.overall)+'</td><td>'+number(x.guided)+'</td><td>'+number(x.independent)+'</td></tr>').join('');
  const tipHTML=studyTips.map(x=>'<li><b>'+E(x.title)+':</b> '+E(x.text)+'</li>').join('');
  const aggregateHTML=aggregates.map(x=>'<tr><td>'+E(x.course)+'</td><td>'+E(x.system)+'</td><td>'+x.amount+'</td><td>'+E(x.note)+'</td></tr>').join('');
@@ -143,8 +169,10 @@ function draw(){
  '<div class="loControls"><label>Course <select id="loCourse"><option value="all">All courses</option>'+available.map(x=>'<option value="'+E(x)+'" '+(selected===x?'selected':'')+'>'+E(x)+'</option>').join('')+'</select></label><label>Period <select id="loWindow">'+[7,30,90,365].map(n=>'<option value="'+n+'" '+(windowDays===n?'selected':'')+'>'+n+' days</option>').join('')+'</select></label><button id="loRefresh">Refresh</button></div>'+
  '<p><small>From '+E(date)+' · '+scored.length+' scored attempts with timestamps · '+(total.length-scored.length)+' records outside the selected period or course</small></p><div class="loMetrics">'+metricHTML+'</div>'+
  '<div class="loNote"><b>How to interpret:</b> Guided and independent attempts are separate. Unlabeled records remain unknown mode, not assumed independent. A good guided score does not prove mastery. Skill trends compare the latest eight scored responses against the previous eight, only when each period contains four or more attempts. Small samples are not definitive.</div>'+
+ '<h3>Mastery evidence — not automatic mastery credit</h3><p><small>Strong evidence requires at least five recent independent attempts, 80% accuracy, attempts on two dates, and one correct fresh transfer-marked attempt. This is an advisory signal, not the formal independent mastery engine.</small></p><div class="loScroll"><table><thead><tr><th>Skill</th><th>Evidence</th><th>Independent attempts</th><th>Recent accuracy</th><th>Transfer attempts</th><th>Practice days</th></tr></thead><tbody>'+(evidenceHTML||'<tr><td colspan="6">No independent skill evidence available.</td></tr>')+'</tbody></table></div>'+
+ '<p><small>High-confidence errors in selected attempts: '+confidentErrors+'. These may deserve priority review when the original confidence label is available.</small></p>'+
  '<h3>Skills that need attention</h3><div class="loScroll"><table><thead><tr><th>Concept</th><th>Attempts</th><th>Overall</th><th>Guided</th><th>Independent</th><th>Unknown mode</th><th>Recent change</th></tr></thead><tbody>'+(skillHTML||'<tr><td colspan="7">No timestamped skill records yet.</td></tr>')+'</tbody></table></div>'+
- '<h3>Weekly performance trends</h3><div class="loScroll"><table><thead><tr><th>Week</th><th>Attempts</th><th>Overall</th><th>Guided</th><th>Independent</th></tr></thead><tbody>'+(weekHTML||'<tr><td colspan="5">No dated attempts yet.</td></tr>')+'</tbody></table></div>'+
+ '<h3>Weekly performance trends</h3><div class="loNote">'+trendSVG(weeks)+'</div><div class="loScroll"><table><thead><tr><th>Week</th><th>Attempts</th><th>Overall</th><th>Guided</th><th>Independent</th></tr></thead><tbody>'+(weekHTML||'<tr><td colspan="5">No dated attempts yet.</td></tr>')+'</tbody></table></div>'+
  '<h3>Which practice systems are generating results?</h3><div class="loScroll"><table><thead><tr><th>Source</th><th>Attempts</th><th>Accuracy</th></tr></thead><tbody>'+(sourceHTML||'<tr><td colspan="3">No answer-level records available for this selection.</td></tr>')+'</tbody></table></div>'+
  '<h3>D756 meeting practice</h3><p>'+meetings.length+' completed rehearsals in this period; '+pass+' met the app’s provisional practice criteria. This is not official Mursion scoring.</p><div class="loScroll"><table><thead><tr><th>Date</th><th>Case</th><th>Mode</th><th>Checks</th><th>XP</th></tr></thead><tbody>'+(meetingsHTML||'<tr><td colspan="5">No completed meeting history saved in this browser.</td></tr>')+'</tbody></table></div>'+
  '<h3>What to work on next</h3><div class="loNote"><ul>'+tipHTML+'</ul><small>Data-driven practice suggestions are provisional; they do not establish cause or independently certify mastery.</small></div>'+
