@@ -3,9 +3,9 @@
   "diagnostics": {
     "missingTextures": [],
     "bridgeFailures": [],
-    "ticks": 4,
+    "ticks": 3,
     "spawns": 11,
-    "lastSyncAt": 1794431897483,
+    "lastSyncAt": 1794432076692,
     "tickerStarted": true,
     "walkSpeed": 1,
     "renderer": 1,
@@ -367,26 +367,20 @@
   ],
   "furniture": [
     {
-      "id": "arcane-stacks",
-      "x": 138.3,
-      "y": 554.6153846153846,
-      "visible": true
-    },
-    {
-      "id": "moonlit-study-desk",
-      "x": 554.1,
-      "y": 600.7692307692307,
-      "visible": true
-    },
-    {
-      "id": "observatory-telescope",
-      "x": 699.9000000000001,
-      "y": 560.7692307692307,
-      "visible": true
-    },
-    {
       "id": "guardian-play-rug",
       "x": 743.1,
+      "y": 650,
+      "visible": true
+    },
+    {
+      "id": "guardian-treat-jar",
+      "x": 278.70000000000005,
+      "y": 591.5384615384615,
+      "visible": true
+    },
+    {
+      "id": "guardian-water-basin",
+      "x": 551.4000000000001,
       "y": 650,
       "visible": true
     },
@@ -397,20 +391,8 @@
       "visible": true
     },
     {
-      "id": "guardian-treat-jar",
-      "x": 278.70000000000005,
-      "y": 591.5384615384615,
-      "visible": true
-    },
-    {
       "id": "guardian-toy-basket",
       "x": 932.1,
-      "y": 650,
-      "visible": true
-    },
-    {
-      "id": "guardian-water-basin",
-      "x": 551.4000000000001,
       "y": 650,
       "visible": true
     },
@@ -439,6 +421,12 @@
       "visible": true
     },
     {
+      "id": "moonstone-crystal-bed",
+      "x": 400.20000000000005,
+      "y": 634.6153846153846,
+      "visible": true
+    },
+    {
       "id": "crystal-focus-pedestal",
       "x": 821.4000000000001,
       "y": 588.4615384615385,
@@ -451,9 +439,21 @@
       "visible": true
     },
     {
-      "id": "moonstone-crystal-bed",
-      "x": 400.20000000000005,
-      "y": 634.6153846153846,
+      "id": "moonlit-study-desk",
+      "x": 554.1,
+      "y": 600.7692307692307,
+      "visible": true
+    },
+    {
+      "id": "observatory-telescope",
+      "x": 699.9000000000001,
+      "y": 560.7692307692307,
+      "visible": true
+    },
+    {
+      "id": "arcane-stacks",
+      "x": 138.3,
+      "y": 554.6153846153846,
       "visible": true
     }
   ],

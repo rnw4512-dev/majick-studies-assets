@@ -5,7 +5,7 @@
     "bridgeFailures": [],
     "ticks": 5,
     "spawns": 11,
-    "lastSyncAt": 1794431863784,
+    "lastSyncAt": 1794432044836,
     "tickerStarted": true,
     "walkSpeed": 1,
     "renderer": 1,
@@ -373,6 +373,12 @@
       "visible": true
     },
     {
+      "id": "observatory-telescope",
+      "x": 699.9000000000001,
+      "y": 560.7692307692307,
+      "visible": true
+    },
+    {
       "id": "guardian-play-rug",
       "x": 743.1,
       "y": 650,
@@ -385,24 +391,6 @@
       "visible": true
     },
     {
-      "id": "guardian-brush",
-      "x": 330,
-      "y": 619.2307692307693,
-      "visible": true
-    },
-    {
-      "id": "observatory-telescope",
-      "x": 699.9000000000001,
-      "y": 560.7692307692307,
-      "visible": true
-    },
-    {
-      "id": "guardian-toy-basket",
-      "x": 932.1,
-      "y": 650,
-      "visible": true
-    },
-    {
       "id": "moonlit-study-desk",
       "x": 554.1,
       "y": 600.7692307692307,
@@ -412,6 +400,18 @@
       "id": "guardian-water-basin",
       "x": 551.4000000000001,
       "y": 650,
+      "visible": true
+    },
+    {
+      "id": "guardian-toy-basket",
+      "x": 932.1,
+      "y": 650,
+      "visible": true
+    },
+    {
+      "id": "guardian-brush",
+      "x": 330,
+      "y": 619.2307692307693,
       "visible": true
     },
     {

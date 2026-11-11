@@ -3,9 +3,9 @@
   "diagnostics": {
     "missingTextures": [],
     "bridgeFailures": [],
-    "ticks": 6,
+    "ticks": 4,
     "spawns": 11,
-    "lastSyncAt": 1794431818392,
+    "lastSyncAt": 1794432020652,
     "tickerStarted": true,
     "walkSpeed": 1,
     "renderer": 1,
@@ -367,18 +367,6 @@
   ],
   "furniture": [
     {
-      "id": "moonlit-study-desk",
-      "x": 554.1,
-      "y": 600.7692307692307,
-      "visible": true
-    },
-    {
-      "id": "arcane-stacks",
-      "x": 138.3,
-      "y": 554.6153846153846,
-      "visible": true
-    },
-    {
       "id": "guardian-play-rug",
       "x": 743.1,
       "y": 650,
@@ -415,12 +403,6 @@
       "visible": true
     },
     {
-      "id": "observatory-telescope",
-      "x": 699.9000000000001,
-      "y": 560.7692307692307,
-      "visible": true
-    },
-    {
       "id": "familiar-lounge",
       "x": 986.1,
       "y": 603.8461538461538,
@@ -451,9 +433,27 @@
       "visible": true
     },
     {
+      "id": "observatory-telescope",
+      "x": 699.9000000000001,
+      "y": 560.7692307692307,
+      "visible": true
+    },
+    {
       "id": "moonstone-crystal-bed",
       "x": 400.20000000000005,
       "y": 634.6153846153846,
+      "visible": true
+    },
+    {
+      "id": "moonlit-study-desk",
+      "x": 554.1,
+      "y": 600.7692307692307,
+      "visible": true
+    },
+    {
+      "id": "arcane-stacks",
+      "x": 138.3,
+      "y": 554.6153846153846,
       "visible": true
     }
   ],
