@@ -179,7 +179,7 @@ function paint(){
  const submit=root.querySelector('[data-action=submit]');if(submit)submit.onclick=()=>{
  let el=root.querySelector('#dmAnswer'),a=el.value.trim();if(!a){el.focus();return;}
  const intent=indicators(a),words=a.split(/\s+/).length,unique=new Set(norm(a).split(' ')).size;
- const meaningfulInvitation=(intent.input&&intent.who.length&&words>=5&&unique>=4)||(intent.clarify&&words>=4&&unique>=4);
+ const meaningfulInvitation=(intent.input&&words>=5&&unique>=4)||(intent.clarify&&words>=4&&unique>=4);
  const valid=(meaningfulInvitation||(words>=10&&unique>=8))&&!s.records.some(r=>norm(r.answer)===norm(a));
  if(!valid){s.last='Please revise: use a specific professional explanation (at least ten words) or a complete invitation for input/questions; avoid repeating an earlier response.';el.setCustomValidity(s.last);el.reportValidity();return;}
  s.draft='';const isFollow=Boolean(s.pending);
