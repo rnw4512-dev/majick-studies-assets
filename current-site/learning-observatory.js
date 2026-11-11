@@ -6,6 +6,25 @@ const E=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt
 const msDay=86400000;
 let selected='all',windowDays=30,focusBefore=null;
 function now(){return Date.now()}
+// Producers verified in source review to report assistance truthfully on a first attempt:
+// learning-lab.js (guided-independent-retry is emitted only for the unassisted retry),
+// course-tutor.js (lesson-you-do tracks hint/retry use), adaptive-learning-core.js
+// (assisted only in the help scope) and learning-continuity.js (connected-*).
+// For every other source a missing or default assisted:false stays unknown.
+function verifiedUnassistedSource(source){
+ const s=String(source||'').toLowerCase();
+ return s==='guided-independent-retry'||s==='lesson-you-do'||s==='connected-reasoning'||s==='connected-transfer'||(s.indexOf('adaptive-')===0&&s!=='adaptive-help');
+}
+function classify(row,fallbackSource){
+ if(row.assisted===true)return 'guided';
+ const origin=String(row.source||row.mode||fallbackSource||'').toLowerCase();
+ if(verifiedUnassistedSource(origin))return 'independent';
+ const names=[row.mode,row.source,fallbackSource].map(x=>String(x||'').toLowerCase()).join(' ');
+ if(/(guided|repair|hint|worked|teaching|coach|help)/.test(names))return 'guided';
+ if(/(independent|transfer|oa-|mock|diagnostic|exam)/.test(names))return 'independent';
+ return 'unknown';
+}
+function localDay(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
 function data(){
  const st=window.S||{},courses=st.progress||{},out=[],seen=new Set();
  function add(course,row,source){
@@ -14,7 +33,7 @@ function data(){
   if(!Number.isFinite(at)||at<=0||at>now()+msDay)return;
   const correct=typeof row.correct==='boolean'?row.correct:null;
   const modeName=String(row.mode||row.source||source||'').toLowerCase();
-  const classification=row.assisted===true||/(guided|repair|hint|worked|teaching|coach)/.test(modeName)?'guided':/(independent|transfer|oa-|mock|diagnostic|exam)/.test(modeName)?'independent':'unknown';
+  const classification=classify(row,source);
   const key=String(row.guardianBridgeKey||row.key||row.id||'');
   const uid=course+'|'+(key?'id:'+key:'row:'+at+':'+String(row.qid||'')+':'+String(row.source||row.mode||source));
   if(seen.has(uid))return;seen.add(uid);
@@ -48,7 +67,7 @@ function buckets(items){
 
 function weeklySeries(records){
  const groups=new Map();
- for(const x of records){let d=new Date(x.at);d.setDate(d.getDate()-(d.getDay()+6)%7);let k=d.toISOString().slice(0,10);if(!groups.has(k))groups.set(k,[]);groups.get(k).push(x)}
+ for(const x of records){let d=new Date(x.at);d.setDate(d.getDate()-(d.getDay()+6)%7);let k=localDay(d);if(!groups.has(k))groups.set(k,[]);groups.get(k).push(x)}
  return [...groups].sort((a,b)=>a[0].localeCompare(b[0])).slice(-15).map(([week,a])=>({week,n:a.filter(x=>x.correct!==null).length,overall:accuracy(a),guided:accuracy(a.filter(x=>x.classification==='guided')),independent:accuracy(a.filter(x=>x.classification==='independent'))}));
 }
 function insights(records){
@@ -62,7 +81,7 @@ function insights(records){
 function coverage(records,meetings){
  const all=records.map(x=>x.source.toLowerCase()),has=re=>all.some(s=>re.test(s));
  const map=[
- ['Scholar’s Study Hall',records.length>0,'Saved course answer arrays and shared ledger'],
+ ['Saved course answers (all rooms combined)',records.length>0,'Course answer arrays and shared ledger; this row does not identify a specific room'],
  ['Learn Lab / lesson checks',has(/lab|learn|checkpoint|lesson/),'Look for learning-checkpoint events and independent follow-up'],
  ['Game Realm / Arcade',has(/game|realm|arcade|boss|duel/),'Game wins alone are not academic mastery'],
  ['Professor’s Repair',has(/repair|mistake|misconception/),'Require paired initial mistake, repair, and fresh transfer'],
@@ -70,7 +89,13 @@ function coverage(records,meetings){
  ['Council Chamber / D756',meetings.length>0,'Saved rehearsal rubric; not official Mursion scoring'],
  ['Historical D755/D772',records.some(x=>/d755|d772/i.test(x.course)),'Older records may lack timestamps or mode labels']
  ];
- return map.map(([name,found,detail])=>({name,status:found?'Evidence present':'Not confirmed',detail}));
+ const rowsOut=map.map(([name,found,detail])=>({name,status:found?'Evidence present':'Not confirmed',detail}));
+ // Source review (November 2026): these engines save only a rolling five-attempt window per skill
+ // or no attempt record at all, so they cannot appear in the trends above.
+ rowsOut.push({name:'Trial practice, generated questions, D772 adaptive mastery',status:'Summary only — not in trends',detail:'Kept as the latest five attempts per skill; no durable dated attempt history'});
+ rowsOut.push({name:'Probability workshop (connected practice)',status:'Partial — correct answers only',detail:'Incorrect attempts are not sent to the answer ledger, so accuracy for this source is overstated'});
+ rowsOut.push({name:'Hands-on Studio, formula lab, manipulatives, teach-back, embedded lesson practice',status:'No attempt records',detail:'No dated graded attempts are saved by these activities'});
+ return rowsOut;
 }
 function csv(records){
  const quote=x=>'"'+String(x??'').replace(/"/g,'""')+'"';
@@ -86,7 +111,7 @@ function skillEvidence(records){
  const out=[],by=new Map();
  for(const r of records){if(r.correct===null)continue;let group=by.get(r.topic)||[];group.push(r);by.set(r.topic,group)}
  for(const [topic,group] of by){
-  const independent=group.filter(r=>r.classification==='independent'),transfer=independent.filter(r=>r.transfer),days=new Set(independent.map(r=>new Date(r.at).toISOString().slice(0,10)));
+  const independent=group.filter(r=>r.classification==='independent'),transfer=independent.filter(r=>r.transfer),days=new Set(independent.map(r=>localDay(new Date(r.at))));
   const recent=independent.slice(-5),acc=accuracy(recent);
   const strong=recent.length>=5&&acc>=.8&&days.size>=2&&transfer.some(r=>r.correct);
   const status=strong?'Strong independent evidence':recent.length>=2?'Developing independent evidence':'Insufficient independent evidence';
@@ -196,7 +221,7 @@ function draw(){
  host.innerHTML='<section role="dialog" aria-modal="true" aria-label="Learning progress observatory"><header><div><small>Moonlit Collegium · Learning Observatory</small><h2>My Learning Trends</h2></div><button id="loClose">Close ✕</button></header>'+
  '<p>Compare what is working across your course practice. These charts are based on saved records in this browser, not a complete audit of every learning system.</p>'+
  '<div class="loControls"><label>Course <select id="loCourse"><option value="all">All courses</option>'+available.map(x=>'<option value="'+E(x)+'" '+(selected===x?'selected':'')+'>'+E(x)+'</option>').join('')+'</select></label><label>Period <select id="loWindow">'+[7,30,90,365].map(n=>'<option value="'+n+'" '+(windowDays===n?'selected':'')+'>'+n+' days</option>').join('')+'</select></label><button id="loRefresh">Refresh</button></div>'+
- '<p><small>From '+E(date)+' · '+scored.length+' scored attempts with timestamps · '+(total.length-scored.length)+' records outside the selected period or course</small></p><div class="loMetrics">'+metricHTML+'</div>'+
+ '<p><small>From '+E(date)+' · '+scored.length+' scored attempts with timestamps · '+(items.length-scored.length)+' unscored in this selection · '+(total.length-items.length)+' records outside the selected period or course</small></p><div class="loMetrics">'+metricHTML+'</div>'+
  '<div class="loNote"><b>How to interpret:</b> Guided and independent attempts are separate. Unlabeled records remain unknown mode, not assumed independent. A good guided score does not prove mastery. Skill trends compare the latest eight scored responses against the previous eight, only when each period contains four or more attempts. Small samples are not definitive.</div>'+
  '<h3>Mastery evidence — not automatic mastery credit</h3><p><small>Strong evidence requires at least five recent independent attempts, 80% accuracy, attempts on two dates, and one correct fresh transfer-marked attempt. This is an advisory signal, not the formal independent mastery engine.</small></p><div class="loScroll"><table><thead><tr><th>Skill</th><th>Evidence</th><th>Independent attempts</th><th>Recent accuracy</th><th>Transfer attempts</th><th>Practice days</th></tr></thead><tbody>'+(evidenceHTML||'<tr><td colspan="6">No independent skill evidence available.</td></tr>')+'</tbody></table></div>'+
  '<p><small>High-confidence errors in selected attempts: '+confidentErrors+'. These may deserve priority review when the original confidence label is available.</small></p>'+
@@ -222,9 +247,18 @@ function draw(){
  host.querySelector('#loRefresh').onclick=draw;
  host.querySelector('#loExport').onclick=()=>csv(items);
 }
-function open(){style();focusBefore=document.activeElement;let host=document.getElementById('majLearningObservatory');if(!host){host=document.createElement('div');host.id='majLearningObservatory';document.body.append(host);}draw();host.querySelector('#loClose')?.focus();}
+function open(){style();focusBefore=document.activeElement;let host=document.getElementById('majLearningObservatory');if(!host){host=document.createElement('div');host.id='majLearningObservatory';host.addEventListener?.('keydown',keys);document.body.append(host);}draw();host.querySelector('#loClose')?.focus();}
 function close(){document.getElementById('majLearningObservatory')?.remove();focusBefore?.focus?.();}
+function keys(e){
+ const host=document.getElementById('majLearningObservatory');if(!host)return;
+ if(e.key==='Escape'){e.preventDefault();close();return}
+ if(e.key!=='Tab')return;
+ const f=[...host.querySelectorAll('button,select,[href],[tabindex]:not([tabindex="-1"])')].filter(x=>!x.disabled);if(!f.length)return;
+ const first=f[0],last=f[f.length-1];
+ if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus()}
+ else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus()}
+}
 function attach(){style();const nav=document.querySelector('.side .nav, aside .nav');if(!nav||document.getElementById('majLearningObservatoryBtn'))return;let b=document.createElement('button');b.id='majLearningObservatoryBtn';b.type='button';b.setAttribute('aria-label','Open Learning Observatory');b.innerHTML='<span>◈</span><span class="label">Learning Observatory</span>';b.onclick=open;const journal=nav.querySelector('button[data-nav="journal"]');if(journal)journal.after(b);else nav.append(b);}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',attach,{once:true});else attach();const watcher=new MutationObserver(()=>{if(!document.getElementById('majLearningObservatoryBtn'))attach()});watcher.observe(document.body,{childList:true,subtree:true});
-window.MajickLearningObservatory={version:'1.0',open,refresh:draw,summary:()=>({attempts:data().length,meetings:d756().length})};
+window.MajickLearningObservatory={version:'1.1',open,close,refresh:draw,classify:(row,source)=>classify(row||{},source),summary:()=>({attempts:data().length,meetings:d756().length})};
 })();

@@ -89,3 +89,32 @@ test('shows an evidence warning rather than inventing missing mastery results',(
  assert.match(html,/No independent skill evidence available/);
  assert.match(html,/No completed meeting history/);
 });
+test('classifies producer-verified unassisted sources as independent and keeps ambiguous defaults unknown',()=>{
+ const c=boot().window.MajickLearningObservatory.classify;
+ assert.equal(c({source:'guided-independent-retry',mode:'guided-independent-retry',assisted:false}),'independent');
+ assert.equal(c({source:'lesson-you-do',assisted:false}),'independent');
+ assert.equal(c({source:'lesson-you-do',assisted:true}),'guided');
+ assert.equal(c({source:'adaptive-mix',assisted:false}),'independent');
+ assert.equal(c({source:'adaptive-help',assisted:false}),'guided');
+ assert.equal(c({source:'connected-repair',assisted:false}),'guided');
+ assert.equal(c({source:'d772-learn',assisted:false}),'unknown');
+ assert.equal(c({source:'d772-learn-checkpoint',assisted:false}),'unknown');
+ assert.equal(c({mode:'studyme',assisted:false}),'unknown');
+ assert.equal(c({}),'unknown');
+});
+test('does not let an unlabeled ledger default create independent evidence',()=>{
+ const t=Date.now()-5000;
+ const env=boot({events:{'D772:x:1':{course:'D772',source:'study',correct:true,independent:true,at:t}}});
+ env.window.MajickLearningObservatory.open();
+ const html=env.nodes.get('majLearningObservatory').innerHTML;
+ assert.match(html,/No independent skill evidence available|Insufficient independent evidence/);
+ assert.match(html,/<small>Unknown mode<\/small><b>1<\/b>/);
+});
+test('lists summary-only and untracked practice engines in the coverage audit',()=>{
+ const env=boot();
+ env.window.MajickLearningObservatory.open();
+ const html=env.nodes.get('majLearningObservatory').innerHTML;
+ assert.match(html,/Summary only — not in trends/);
+ assert.match(html,/Partial — correct answers only/);
+ assert.match(html,/No attempt records/);
+});

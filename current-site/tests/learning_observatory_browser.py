@@ -46,6 +46,10 @@ async def smoke(width):
         assert before==after,(before,after)
         await room.locator("#loClose").click()
         assert await room.count()==0
+        await page.locator("#majLearningObservatoryBtn").click()
+        await room.wait_for(timeout=5000)
+        await page.keyboard.press("Escape")
+        assert await room.count()==0
         assert await page.locator("#majLearningObservatoryBtn").count()==1
         assert not errors,errors[:3]
         await browser.close()
