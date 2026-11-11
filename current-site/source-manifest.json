@@ -880,7 +880,7 @@
     "d772-oa-entry.js": "c22f97fc2c528409b54b5c4fe42d1cedfc1c861231c915b44ad0bac1e434f746",
     "d772-oa-focus.html": "987fe97e57c96c36ff2bf6dbe2b989e2677af7d326ec033d231fff96f8e01bfc",
     "d756-task2-meeting.js": "e355e997355fcabc143d4b146c63d75bc8fa645732f46d3be306fd3542b02d85",
-    "learning-observatory.js": "5ec78b348ac22c47d3d1764a121bfc0bc748ca6da850800f5a8cc770a41c7b71",
+    "learning-observatory.js": "a2e0c42588c1693e472445f507034e815186b65bf7449a9f35de1dcf8e574f26",
     "tests/learning-observatory.test.cjs": "faa3c0b575c1cc35ec7c971ae9481068bb15ec74c186f0eba06d101e0a621ee5",
     "tests/learning_observatory_browser.py": "8e6d9f0e65d15829d92fd9b097e12b01b19d5445d6bc0a63ab05089a03c1512b"
   }
