@@ -119,7 +119,7 @@ function artFor(canon,stage){
   }
   // Only complete, approved four-frame stage sets can supersede existing artwork.
   const manifest=await approvedFrameManifest;
-  const approved=await window.MajickGuardianAnimation.loadApprovedStage(canon,stage,manifest);
+  const approved=await window.MajickGuardianAnimation.loadApprovedStage(canon,stage,manifest.guardians||{});
   if(approved){frames=approved;source='approved four-frame stage walking cycle'}
   return {base,frames,source};
  })().catch(error=>{assetCache.delete(key);throw error}));
