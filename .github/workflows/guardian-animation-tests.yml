@@ -21,5 +21,32 @@ jobs:
           node --check current-site/pixi-sanctuary/prototype.js
       - name: Run Guardian animation unit tests
         run: node --test current-site/pixi-sanctuary/guardian-animation-controller.test.cjs
+      - name: Verify uploaded Velora PNG geometry and integrity
+        shell: bash
+        run: |
+          python - <<'PY'
+          import hashlib,json,struct
+          from pathlib import Path
+          src=Path('current-site')
+          review_path=src/'pixi-sanctuary/evolution-portraits/velora/velora_5_evolution_1024_transparent_pngs (5)/review.json'
+          data=json.loads(review_path.read_text())
+          records=data['records']
+          assert len(records)==5, 'Expected five evolution portraits'
+          expected=['01_new-bond.png','02_apprentice.png','03_guardian.png','04_ascendant.png','05_celestial.png']
+          assert [x['file'] for x in records]==expected
+          manifest=json.loads((src/'source-manifest.json').read_text())['files']
+          for x in records:
+              path=review_path.parent/x['file']
+              raw=path.read_bytes()
+              assert raw[:8]==b'\\x89PNG\\r\\n\\x1a\\n',path
+              width,height,depth,color=struct.unpack('>IIBB',raw[16:26])
+              assert (width,height)==(1024,1024),(path,width,height)
+              assert color in (4,6), (path,'missing alpha channel')
+              assert depth==8, (path,'unsupported bit depth')
+              key=str(path.relative_to(src))
+              digest=hashlib.sha256(raw).hexdigest()
+              assert digest==x['sha256']==manifest[key],(path,'checksum mismatch')
+              print('Verified',x['stage'],width,height,'RGBA/gray-alpha and SHA256')
+          PY
       - name: Check release source manifest approval
         run: python pages-release/current/build.py current-site _site
