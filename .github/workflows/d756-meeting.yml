@@ -1,7 +1,7 @@
 name: D756 meeting acceptance
 on:
   pull_request:
-    paths: ['current-site/**', 'tests/d756-meeting-browser.py', 'tests/d756-question-classification.test.cjs', '.github/workflows/d756-meeting.yml']
+    paths: ['current-site/**', 'tests/d756-meeting-browser.py', 'tests/d756-responsive-writing-browser.py', 'tests/d756-question-classification.test.cjs', '.github/workflows/d756-meeting.yml']
   workflow_dispatch:
 permissions:
   contents: read
@@ -27,3 +27,4 @@ jobs:
         run: |
           python -m http.server 8765 --directory _site > /tmp/d756-server.log 2>&1 &
           python -u tests/d756-meeting-browser.py
+          python -u tests/d756-responsive-writing-browser.py
