@@ -75,6 +75,14 @@ with sync_playwright() as pw:
     click('close');page.evaluate('MajickD756Meeting.open()');click('resume')
     assert room.locator('#dmAnswer').input_value().startswith('Draft response')
  print('PASS scenario/mode/viewport launches, meaningful response gate, pending reply gate and draft resume')
+ # Natural short questions must reach the addressed person, without a ten-word barrier.
+ start('angela','independent')
+ for question,who in [('Angela, what do you want to do after graduation?',1),('Elena, what do you think?',0),('Mr. Moore, how is Angela doing in class?',3)]:
+  submit(question);assert saved()['pending']['who']==who,(question,saved())
+  if who==1:assert 'graphic design' in saved()['pending']['line']
+  submit('I hear your perspective. We will document the supports and review progress together with the student at our next meeting about '+str(who)+'.')
+ submit('Does anyone have questions?');assert saved()['pending']['kind']=='question'
+ print('PASS short natural participant questions and four-word clarification invitation')
  # reload resume and pause timer
  click('back');elapsed=saved()['elapsed'];page.clock.fast_forward(60000)
  assert saved()['elapsed']==elapsed
