@@ -1,0 +1,67 @@
+"""Real browser save/restore and schema protection; isolated learner contexts only."""
+import json
+import os
+from pathlib import Path
+from playwright.sync_api import sync_playwright
+
+URL = os.environ.get('MAJICK_URL', 'http://127.0.0.1:8875/')
+OUT = Path(os.environ.get('CLEANUP_QA_DIR', '/tmp/aetheria-cleanup-qa'))
+OUT.mkdir(parents=True, exist_ok=True)
+with sync_playwright() as pw:
+    browser = pw.chromium.launch(executable_path=os.environ.get('CHROMIUM_PATH', '/usr/bin/chromium'), args=['--no-sandbox'])
+    for width in (390, 820, 1366):
+        context = browser.new_context(viewport={'width': width, 'height': 900})
+        page = context.new_page()
+        errors = []
+        page.on('pageerror', lambda e: errors.append(str(e)))
+        page.goto(URL)
+        page.wait_for_function('!!window.MajickSaveSafety && !!window.MajickCourseManager')
+        page.evaluate('''() => {
+            S.cleanupUnknownField={preserve:'unknown valid data'};
+            for(const id of ['D755','D772','D756']) {
+                switchCourse(id);
+                S.progress[id].cleanupSentinel='isolated-'+id;
+            }
+            save();navigate('control');
+        }''')
+        panel = page.locator('.v338SavePanel')
+        panel.get_by_role('button', name='Save now', exact=True).click()
+        with page.expect_download() as download:
+            panel.get_by_role('button', name='Download backup', exact=True).click()
+        payload = json.loads(Path(download.value.path()).read_text())
+        assert payload['state']['cleanupUnknownField']['preserve'] == 'unknown valid data'
+        assert all(payload['state']['progress'][cid]['cleanupSentinel'] == 'isolated-'+cid for cid in ('D755', 'D772', 'D756'))
+        protected = page.evaluate('JSON.stringify({account:S.majickAccount,legacy:S.legacy,progress:S.progress})')
+        # Change only a test sentinel, then import the browser-downloaded backup.
+        page.evaluate("S.cleanupUnknownField.preserve='modified';save()")
+        page.on('dialog', lambda dialog: dialog.accept())
+        panel.locator('input[type=file]').set_input_files({'name': 'backup.json', 'mimeType': 'application/json', 'buffer': json.dumps(payload).encode()})
+        page.wait_for_function("S.cleanupUnknownField?.preserve==='unknown valid data'")
+        assert page.evaluate('JSON.stringify({account:S.majickAccount,legacy:S.legacy,progress:S.progress})') == protected
+        page.evaluate("navigate('control')")
+        page.locator('.v338SavePanel').get_by_role('button', name='Restore recovery copy', exact=True).click()
+        page.wait_for_function("S.cleanupUnknownField?.preserve==='modified'")
+        page.reload()
+        page.wait_for_function("S.cleanupUnknownField?.preserve==='modified'")
+        assert all(page.evaluate('(id)=>S.progress[id].cleanupSentinel', cid) == 'isolated-'+cid for cid in ('D755','D772','D756'))
+        # Exercise the real storage API with a newer save and a tempting older backup.
+        result = page.evaluate('''() => {
+            const api=MajickSaveSafety, raw=localStorage.getItem(api.keys.KEY);
+            const future=JSON.parse(raw);future.saveSchemaVersion=2;
+            const futureRaw=JSON.stringify(future);
+            localStorage.setItem(api.keys.PREVIOUS,raw);
+            localStorage.setItem(api.keys.KEY,futureRaw);
+            let message='';try{api.read()}catch(e){message=e.message}
+            const intact=localStorage.getItem(api.keys.KEY)===futureRaw;
+            localStorage.setItem(api.keys.KEY,raw);
+            return {message,intact};
+        }''')
+        assert result['intact'] and 'newer schema' in result['message'], result
+        page.evaluate("save();navigate('control')")
+        safety = page.locator('.v338SavePanel')
+        safety.scroll_into_view_if_needed()
+        safety.screenshot(path=str(OUT / f'progress-safety-{width}.png'))
+        assert not errors, errors
+        print(f'PASS {width}px: download/import/restore/reload, unknown fields, course isolation and newer-schema bytes protected', flush=True)
+        context.close()
+    browser.close()

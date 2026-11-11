@@ -6,7 +6,8 @@
  const object=x=>x&&typeof x==='object'&&!Array.isArray(x);
  function validate(x){
   if(!object(x)||!object(x.courses)||!object(x.progress))throw Error('The file does not contain Majick courses and progress.');
-  if(x.saveSchemaVersion!=null&&(!Number.isInteger(x.saveSchemaVersion)||x.saveSchemaVersion>SCHEMA))throw Error('This save uses a newer schema. Open it in a compatible release.');
+  if(x.saveSchemaVersion>SCHEMA){const error=Error('This save uses a newer schema. Open it in a compatible release.');error.code='MAJICK_NEWER_SAVE_SCHEMA';throw error;}
+  if(x.saveSchemaVersion!=null&&!Number.isInteger(x.saveSchemaVersion))throw Error('Invalid save schema version.');
   for(const [id,p] of Object.entries(x.progress)){if(!object(p)||p.answers!=null&&!Array.isArray(p.answers))throw Error('Invalid course progress: '+id)}
   if(x.legacy){if(!object(x.legacy))throw Error('Invalid Guardian state.');for(const k of ['pets','eggs'])if(x.legacy[k]!=null&&!Array.isArray(x.legacy[k]))throw Error('Invalid '+k+' roster.');}
   return x;
@@ -15,7 +16,7 @@
  function migrate(value){const x=JSON.parse(JSON.stringify(validate(value)));x.saveSchemaVersion=SCHEMA;return x;}
  function notify(ok,message){status={ok,message,at:Date.now()};try{window.dispatchEvent(new CustomEvent('majick-save-status',{detail:{...status}}))}catch(_){}return status;}
  function read(){
-  let raw;try{raw=localStorage.getItem(KEY);if(raw){try{return migrate(parse(raw))}catch(error){try{localStorage.setItem(BAD,raw)}catch(_){} }}
+  let raw;try{raw=localStorage.getItem(KEY);if(raw){try{return migrate(parse(raw))}catch(error){if(error.code==='MAJICK_NEWER_SAVE_SCHEMA')throw error;try{localStorage.setItem(BAD,raw)}catch(_){} }}
    for(const key of [PREVIOUS,PIN,KEY+'__good_backup',KEY+'__session_backup']){const backup=localStorage.getItem(key);if(!backup)continue;try{const recovered=migrate(parse(backup));localStorage.setItem(KEY,JSON.stringify(recovered));notify(true,'Recovered a validated browser snapshot.');return recovered}catch(_){}}
    if(raw){notify(false,'The saved data could not be read. Its original copy has been retained for recovery.');throw Error(status.message)}return null;
   }catch(error){notify(false,error.message);throw error;}
