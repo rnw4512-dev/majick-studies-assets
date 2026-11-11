@@ -14,9 +14,10 @@ Baseline: `31be7d10f31ebb71b66a2055ef0246d228aac9ce`. Tests run against the actu
 | Existing full shared-repair browser suite | FAIL before; PASS after shared diagnostic caution repair |
 | Existing Sanctuary browser suite | PASS baseline: identities, duplicate instances, five Velora stages, movement, care, furniture, persistence, Phaser fallback |
 | Existing immersion browser suite | PASS baseline: audio preferences, reduced motion, mobile layout, protected state |
-| Existing full interactions browser suite | Core learning, XP, course isolation, exact full-state reload and sampled contrast PASS; final parchment target visibility condition FAIL |
-| Existing Commons browser suite | Many navigation/control-state checks PASS; preassessment lookup FAIL. Overall suite FAIL |
+| Existing full interactions browser suite | Baseline final visibility condition FAIL; subsequent full interactions rerun PASS including rendered parchment contrast (7.94:1 mobile / 8.6:1 desktop) |
+| Existing Commons browser suite | Baseline local disclosure lookup FAIL; initial PR-head CI PASS at 390/820/1366. Hardened desktop local rerun PASS with every assertion retained; see final-head CI separately |
 | D756 meeting browser suite on deployed baseline | PASS earlier in this session across 390/820/1366; cases/modes, +30/+8/0 XP, replay, save, disagreement and no runtime errors/assets. Virtual time explicitly used for duration |
+| Expanded appearance and ceremony browser checks | PASS at 390/820/1366 after desktop launcher repair: real appearance, robe, saved outfit, reload, accessory-data preservation, unchanged wallet and ceremony gates/reduced motion |
 | Every visible button / all legacy saves / all Guardian clothing variants | INCOMPLETE; no full certification claim |
 
 Reproduce focused checks:
@@ -35,4 +36,4 @@ node pages-release/current/browser-shared-repair.cjs /tmp/aetheria-build
 
 Evidence is in `evidence/`. Screenshots from the new tests are emitted under CLEANUP_QA_DIR (default `/tmp/aetheria-cleanup-qa`) and retained by the new CI artifact. Logs report automated interactions, not manual visual approval or comprehensive WCAG certification.
 
-Stable cleanup release and deployment are blocked until the Commons and parchment failures are diagnosed, fixed and re-run, and remaining critical coverage gaps are resolved. Existing passing live simulator publication does not certify this cleanup branch.
+Stable cleanup release and deployment require final-head CI and remaining critical coverage gaps to be resolved. Initial PR head 4af41b3 passed all five remote jobs, including the full Commons matrix, meeting acceptance and cleanup safety. That does not certify later changes. Existing passing live simulator publication does not certify this cleanup branch.

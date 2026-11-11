@@ -28,11 +28,17 @@ Verification: nine existing source checks and the unchanged shared-repair browse
 
 Visual inspection and a new real-browser bounds assertion reproduced the panel extending to x=414 in a 390px viewport. It was an unspanned child of the 12-column control grid, and the intrinsic-width file label also overflowed. The focused existing CSS in `current-site/index.html` now spans the panel across the grid, permits shrinking and bounds the file label/input. A before-fix browser assertion fails; after-fix testing is recorded separately in `evidence/mobile-after.log`. No global grid rule or visual theme was changed.
 
-## Remaining findings
+## 5. Desktop Atelier launcher blocked by Hands-on Studio
 
-- Confirmed baseline browser failures: Commons preassessment panel lookup is null (`commons-interactions.cjs:38`); parchment contrast target fails its viewport visibility condition (`parchment-contrast.cjs:40`). Their root causes are not yet established. They block stable certification and deployment.
+The expanded actual-browser wardrobe flow passed at 390/820 but failed at 1366 because `#majickHandsOnLaunch` intercepted the pointer click intended for `#atelierLaunch`. Both fixed controls occupied the lower-right corner. `current-site/readability-guard.css` now places the existing Atelier launcher above the Studio. Its existing mobile static positioning remains unchanged. There is no duplicate studio, wardrobe engine or new launcher. The expanded suite exercises skin/hair/robe choice, saved outfit Wear/Save, reload, preserved accessory and unknown fields, unchanged wallet, and ceremony reduced motion/Skip at all three widths. Before/after evidence is preserved.
+
+## Test readiness findings and remaining gaps
+
+- Baseline full interactions failed its final parchment target visibility condition. The unchanged contrast assertions subsequently passed in an isolated reproduction and the full interactions rerun. Added geometry diagnostics for future failures; no app contrast defect is claimed repaired from this transient failure.
+- Baseline Commons attempted disclosure operations before target nodes mounted. Added waits for actual tab/disclosure nodes and explicit D772 setup before its course-specific preassessment fixture; no content/count/assertion is skipped. The first PR head's remote Commons matrix passed at all three widths; local timing remains separately recorded.
 - Suspected progress gap: Task 2 rehearsals/history live outside S while the general backup exports S. This pass does not claim full rehearsal export/import coverage; separate-key backup compatibility needs a versioned design and tests before changing it.
-- No claim that every visible button or every old save format is certified. Remaining defects are not hidden by skipping or weakening existing assertions.
+- Active wardrobe Accessories describes pending fitted artwork; this pass tests preservation of an existing accessory fixture, not new accessory selection or approved accessory art.
+- No claim that every visible button or every old save format is certified. Remaining coverage gaps are not hidden by weakening existing assertions.
 
 ## Recovery
 

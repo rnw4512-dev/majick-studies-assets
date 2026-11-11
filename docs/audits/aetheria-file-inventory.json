@@ -17812,7 +17812,7 @@
         "Quoted-path/basename search: 0 potential consumers; no-reference is not proof of disuse."
       ],
       "identical_files": [],
-      "bytes": 4743
+      "bytes": 6042
     },
     {
       "path": "docs/audits/aetheria-cleanup-summary.md",
@@ -17826,7 +17826,7 @@
         "Quoted-path/basename search: 0 potential consumers; no-reference is not proof of disuse."
       ],
       "identical_files": [],
-      "bytes": 4136
+      "bytes": 4536
     },
     {
       "path": "docs/audits/aetheria-code-consolidation.md",
@@ -17854,7 +17854,7 @@
         "Quoted-path/basename search: 0 potential consumers; no-reference is not proof of disuse."
       ],
       "identical_files": [],
-      "bytes": 1047791
+      "bytes": 1051188
     },
     {
       "path": "docs/audits/aetheria-file-inventory.md",
@@ -17910,7 +17910,21 @@
         "Quoted-path/basename search: 0 potential consumers; no-reference is not proof of disuse."
       ],
       "identical_files": [],
-      "bytes": 3432
+      "bytes": 3865
+    },
+    {
+      "path": "docs/audits/evidence/atelier-launcher-before.log",
+      "purpose": "Documentation or historical source/asset; external consumers unverified",
+      "runtime_status": "unknown",
+      "references": [],
+      "risk": "high",
+      "recommendation": "keep",
+      "evidence": [
+        "Tracked at baseline; canonical build copies current-site only.",
+        "Quoted-path/basename search: 0 potential consumers; no-reference is not proof of disuse."
+      ],
+      "identical_files": [],
+      "bytes": 3593
     },
     {
       "path": "docs/audits/evidence/baseline-browser-commons.log",
@@ -18011,6 +18025,48 @@
       "bytes": 7285
     },
     {
+      "path": "docs/audits/evidence/commons-after.log",
+      "purpose": "Documentation or historical source/asset; external consumers unverified",
+      "runtime_status": "unknown",
+      "references": [],
+      "risk": "high",
+      "recommendation": "keep",
+      "evidence": [
+        "Tracked at baseline; canonical build copies current-site only.",
+        "Quoted-path/basename search: 0 potential consumers; no-reference is not proof of disuse."
+      ],
+      "identical_files": [],
+      "bytes": 6921
+    },
+    {
+      "path": "docs/audits/evidence/expanded-browser-after.log",
+      "purpose": "Documentation or historical source/asset; external consumers unverified",
+      "runtime_status": "unknown",
+      "references": [],
+      "risk": "high",
+      "recommendation": "keep",
+      "evidence": [
+        "Tracked at baseline; canonical build copies current-site only.",
+        "Quoted-path/basename search: 0 potential consumers; no-reference is not proof of disuse."
+      ],
+      "identical_files": [],
+      "bytes": 876
+    },
+    {
+      "path": "docs/audits/evidence/final-build.log",
+      "purpose": "Documentation or historical source/asset; external consumers unverified",
+      "runtime_status": "unknown",
+      "references": [],
+      "risk": "high",
+      "recommendation": "keep",
+      "evidence": [
+        "Tracked at baseline; canonical build copies current-site only.",
+        "Quoted-path/basename search: 0 potential consumers; no-reference is not proof of disuse."
+      ],
+      "identical_files": [],
+      "bytes": 53
+    },
+    {
       "path": "docs/audits/evidence/final-node-results.json",
       "purpose": "Documentation or historical source/asset; external consumers unverified",
       "runtime_status": "unknown",
@@ -18037,6 +18093,34 @@
       ],
       "identical_files": [],
       "bytes": 53
+    },
+    {
+      "path": "docs/audits/evidence/initial-head-ci.json",
+      "purpose": "Documentation or historical source/asset; external consumers unverified",
+      "runtime_status": "unknown",
+      "references": [],
+      "risk": "high",
+      "recommendation": "keep",
+      "evidence": [
+        "Tracked at baseline; canonical build copies current-site only.",
+        "Quoted-path/basename search: 0 potential consumers; no-reference is not proof of disuse."
+      ],
+      "identical_files": [],
+      "bytes": 1646
+    },
+    {
+      "path": "docs/audits/evidence/interactions-after.log",
+      "purpose": "Documentation or historical source/asset; external consumers unverified",
+      "runtime_status": "unknown",
+      "references": [],
+      "risk": "high",
+      "recommendation": "keep",
+      "evidence": [
+        "Tracked at baseline; canonical build copies current-site only.",
+        "Quoted-path/basename search: 0 potential consumers; no-reference is not proof of disuse."
+      ],
+      "identical_files": [],
+      "bytes": 7585
     },
     {
       "path": "docs/audits/evidence/mobile-after.log",
@@ -19179,7 +19263,7 @@
         "Quoted-path/basename search: 4 potential consumers; no-reference is not proof of disuse."
       ],
       "identical_files": [],
-      "bytes": 13086
+      "bytes": 13476
     },
     {
       "path": "pages-release/current/freeze-current.py",
@@ -19212,7 +19296,7 @@
         "Quoted-path/basename search: 4 potential consumers; no-reference is not proof of disuse."
       ],
       "identical_files": [],
-      "bytes": 6176
+      "bytes": 6794
     },
     {
       "path": "pages-release/current/release-checks.cjs",
@@ -22838,7 +22922,7 @@
         "Quoted-path/basename search: 1 potential consumers; no-reference is not proof of disuse."
       ],
       "identical_files": [],
-      "bytes": 4291
+      "bytes": 7049
     },
     {
       "path": "tests/d756-meeting-browser.py",
