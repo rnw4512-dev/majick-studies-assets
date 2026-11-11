@@ -120,6 +120,8 @@ function guardianRewards({correct=true,hard=false,independent=false,delayed=fals
 }
 function baseFor(type,ctx){
  const d=Math.max(1,Math.min(5,Number(ctx.difficulty||3))),hard=ctx.hard===true||d>=4;
+ if(type==='d756-meeting-first-pass')return {xp:30,crystals:5,masteryXp:0,eggFragments:0,lootChance:0,hard:false};
+ if(type==='d756-meeting-repeat-practice')return {xp:8,crystals:1,masteryXp:0,eggFragments:0,lootChance:0,hard:false};
  if(type==='correct-answer'){
    const xp=8+d*3,crystals=hard?2:1;
    return {xp,crystals,masteryXp:0,eggFragments:0,lootChance:.045,hard};

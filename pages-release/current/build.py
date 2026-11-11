@@ -29,7 +29,7 @@ for p in sorted(output.rglob("*")):
  text=text.replace("?v=3.4.2&context=", "?v="+release+"&context=")
  if p.name=="index.html":
   # No storage writes: release checks cannot alter learner saves or course state.
-  root="../" if p.parent.name=="sanctuary" else "./"
+  root="../"*len(p.parent.relative_to(output).parts) or "./"
   guard="""<script>
 window.MAJICK_RELEASE=__RELEASE__;
 fetch(__ROOT__+'release.json?check='+Date.now(),{cache:'no-store'}).then(r=>{
