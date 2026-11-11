@@ -101,6 +101,8 @@ const furnitureReady=(async()=>{
  }));
 })();
 const assetCache=new Map();
+// An empty manifest deliberately keeps every existing protected asset active.
+const approvedFrameManifest=fetch('./guardian-walk-manifest.json').then(response=>response.ok?response.json():{}).catch(()=>({}));
 function artFor(canon,stage){
  const key=canon+':'+stage;
  if(!assetCache.has(key))assetCache.set(key,(async()=>{
@@ -115,6 +117,10 @@ function artFor(canon,stage){
   }else if(stage==='new-bond'&&['cascade','solstice','aurelia'].includes(canon)){
    try{frames=await Promise.all([1,2].map(n=>PIXI.Assets.load('../assets/atelier/v2/fitted/companions/'+canon+'_walk_'+n+'.webp')));source='existing new-bond walking pair'}catch(error){console.info('Walking pair unavailable',key)}
   }
+  // Only complete, approved four-frame stage sets can supersede existing artwork.
+  const manifest=await approvedFrameManifest;
+  const approved=await window.MajickGuardianAnimation.loadApprovedStage(canon,stage,manifest);
+  if(approved){frames=approved;source='approved four-frame stage walking cycle'}
   return {base,frames,source};
  })().catch(error=>{assetCache.delete(key);throw error}));
  return assetCache.get(key);
@@ -161,7 +167,7 @@ function validWalkFrames(frames){
    frame.width===frames[0].width&&frame.height===frames[0].height
  );
 }
-function setMotion(e,moving,direction=1){const sprite=e.sprite;if(!(sprite instanceof PIXI.AnimatedSprite))return;sprite.scale.x=Math.abs(sprite.scale.x)*(direction<0?-1:1);if(!moving||paused||document.hidden){if(sprite.playing)sprite.gotoAndStop(0);return}if(sprite.textures.length>1&&!sprite.playing)sprite.play()}
+function setMotion(e,moving,direction=1){e.animation?.setMotion(moving,direction,!paused&&!document.hidden)}
 function installFrames(e,art){
  const previous=e.sprite;
  const accepted=validWalkFrames(art.frames);
@@ -171,8 +177,10 @@ function installFrames(e,art){
  sprite.anchor.set(.5,1);sprite.loop=true;sprite.autoUpdate=false;sprite.roundPixels=true;
  interactiveSprite(sprite);
  sprite.on('pointertap',()=>{$('care-guardian').value=e.id;care('pet')});
+ e.animation?.dispose();
  e.root.removeChild(previous);previous.destroy();e.root.addChildAt(sprite,1);
  e.sprite=sprite;e.walkFrameCount=textures.length;fit(e,art.base);
+ e.animation=new window.MajickGuardianAnimation.GuardianAnimationController(sprite);
  revealSprite(sprite);
 }
 function createEntity(id,slot){
@@ -197,7 +205,7 @@ async function applyState(payload){
  select.value=liveRoster.some(p=>String(p.id)===selected)?selected:(liveRoster.length?String(payload.activePetId||liveRoster[0].id):'');
  updateEvolution();
  const ids=new Set(liveRoster.map(p=>String(p.id)));
- for(const [id,e] of entities)if(!ids.has(id)){e.token++;e.root.destroy({children:true});entities.delete(id)}
+ for(const [id,e] of entities)if(!ids.has(id)){e.token++;e.animation?.dispose();e.root.destroy({children:true});entities.delete(id)}
  await Promise.all(liveRoster.map(async(p,slot)=>{
   const id=String(p.id),meta=registry.get(p),canon=meta?.canon;
   const e=entities.get(id)||createEntity(id,slot);e.pet=p;e.slot=slot;e.caption.text=p.name+' · Lv '+p.level;
@@ -253,7 +261,7 @@ app.ticker.maxFPS=45;app.ticker.add(ticker=>{
   if(d<3){setMotion(e,false);setTarget(e);continue}
   const step=Math.min(d,dt*e.speed*walkSpeed);e.root.x=clamp(e.root.x+dx/d*step,90,1110);e.root.y=clamp(e.root.y+dy/d*step,490,650);e.clock+=dt;
   setMotion(e,true,dx<0?-1:1);
-  if(e.sprite instanceof PIXI.AnimatedSprite&&e.sprite.playing&&e.sprite.textures.length>1)e.sprite.update({deltaTime:ticker.deltaTime*walkSpeed});
+  e.animation?.tick(ticker.deltaTime,walkSpeed);
   moving++;
  }
  frames++;seconds+=rawSeconds;if(seconds>=1){$('fps').textContent=Math.round(frames/seconds);$('ms').textContent=(seconds/Math.max(1,frames)*1000).toFixed(1)+' ms';$('moving').textContent=moving+' / '+entities.size;frames=0;seconds=0}
