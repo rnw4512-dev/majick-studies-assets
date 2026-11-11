@@ -1,0 +1,97 @@
+{
+  "guardian": "Velora",
+  "purpose": "five distinct single-cat evolution sprite candidates",
+  "live_manifest_updated": false,
+  "records": [
+    {
+      "stage": "01_new-bond",
+      "source": "a_highly_detailed_polished_digital_illustration_o.png",
+      "file": "01_new-bond.png",
+      "dimensions": [
+        1024,
+        1024
+      ],
+      "alpha_corners": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "transparent_pixels": 560391,
+      "sha256": "d259958bebd4066b43c66bed4519c0f65430d4514abef4342dbe63e2a4924851",
+      "status": "candidate_not_canonical_certified"
+    },
+    {
+      "stage": "02_apprentice",
+      "source": "a_detailed_high_quality_fantasy_illustration_png.png",
+      "file": "02_apprentice.png",
+      "dimensions": [
+        1024,
+        1024
+      ],
+      "alpha_corners": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "transparent_pixels": 534580,
+      "sha256": "7e93153cc00494e25bce02efb4f039834af444214e993a06c4663143470ec304",
+      "status": "candidate_not_canonical_certified"
+    },
+    {
+      "stage": "03_guardian",
+      "source": "a_highly_detailed_fantasy_digital_illustration_of.png",
+      "file": "03_guardian.png",
+      "dimensions": [
+        1024,
+        1024
+      ],
+      "alpha_corners": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "transparent_pixels": 435528,
+      "sha256": "df98145e3b3661d35abf41b35847c0138185407c233f5023a4857e006f3301bb",
+      "status": "candidate_not_canonical_certified"
+    },
+    {
+      "stage": "04_ascendant",
+      "source": "velora_guardian_of_the_celestial_realm.png",
+      "file": "04_ascendant.png",
+      "dimensions": [
+        1024,
+        1024
+      ],
+      "alpha_corners": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "transparent_pixels": 497043,
+      "sha256": "6631c305015b3145abfee5ec9ddaaec259075aaf59e3c46848b4b86da4ed9aac",
+      "status": "candidate_not_canonical_certified"
+    },
+    {
+      "stage": "05_celestial",
+      "source": "celestial_crowned_cosmic_cat.png",
+      "file": "05_celestial.png",
+      "dimensions": [
+        1024,
+        1024
+      ],
+      "alpha_corners": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "transparent_pixels": 491310,
+      "sha256": "ba603a71b8f37958f99be43956f4a36b1556434abff436a08fd94b890b153916",
+      "status": "candidate_not_canonical_certified"
+    }
+  ]
+}
