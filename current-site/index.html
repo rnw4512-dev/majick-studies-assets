@@ -3819,12 +3819,13 @@ if(!window.__phase4BridgeBound){window.__phase4BridgeBound=true;new MutationObse
   phase4PushState();
  }catch(error){reply(false,String(error.message||error))}
 }
-if(d.type==='MAJICK_CONTINUE_STUDYING')navigate('mission');if(d.type==='MAJICK_OPEN_ROUTE'){const ok=['guide','grimoire','journal','constellation','finalreview','focus','planner','mission'];if(ok.includes(d.route))navigate(d.route)}})}
+if(ev.origin===location.origin&&ev.source===document.getElementById('phase4SanctuaryFrame')?.contentWindow){if(d.type==='MAJICK_CONTINUE_STUDYING')navigate('mission');if(d.type==='MAJICK_OPEN_ROUTE'){const ok=['guide','grimoire','journal','constellation','finalreview','focus','planner','mission'];if(ok.includes(d.route))navigate(d.route)}}})}
 
 function majickTogglePixiSanctuary(button){
  const frame=document.getElementById('phase4SanctuaryFrame');if(!frame)return;
  const pixi=frame.getAttribute('src')?.startsWith('pixi-sanctuary/');
  try{localStorage.setItem('majick-sanctuary-renderer',pixi?'phaser':'pixi')}catch(_){}
+ frame.style.height='';frame.style.aspectRatio='';
  frame.src=pixi?'sanctuary/index.html':'pixi-sanctuary/index.html';
  button.textContent=pixi?'Return to PixiJS Sanctuary':'Use original Sanctuary (Phaser)';
  button.setAttribute('aria-pressed',String(pixi));

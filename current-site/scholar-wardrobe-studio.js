@@ -126,7 +126,7 @@ function open(){
  if(!root){root=document.createElement('div');root.id='wsOverlay';document.body.append(root)}
  snapshot={...get()};root.hidden=false;render();root.querySelector('[data-close]')?.focus();
 }
-function close(){window.MajickAtelierScene?.dispose();stopWalk();poseRevision++;const r=document.getElementById('wsOverlay');if(r)r.hidden=true;window.MajickScholarCompanion?.refresh?.(true)}
+function close(){document.dispatchEvent(new Event('majick:scholar-appearance-changed'));window.MajickAtelierScene?.dispose();stopWalk();poseRevision++;const r=document.getElementById('wsOverlay');if(r)r.hidden=true;window.MajickScholarCompanion?.refresh?.(true)}
 document.addEventListener('keydown',ev=>{if(ev.key==='Escape'&&!document.getElementById('wsOverlay')?.hidden)close()});
 const style=document.createElement('style');style.textContent=`
 #wsOverlay{position:fixed;inset:0;z-index:1800;background:#0d0815ed;color:#f5e5d0;font:15px system-ui;overflow:auto}

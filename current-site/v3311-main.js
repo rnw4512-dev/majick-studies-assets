@@ -81,7 +81,7 @@ try{
 
 if(!window.__v3311Bridge){
  window.__v3311Bridge=true;
- window.addEventListener('message',ev=>{const d=ev.data||{};if(d.type==='MAJICK_OPEN_ROUTE_V3311'&&d.route)navigate(d.route)});
+ window.addEventListener('message',ev=>{const d=ev.data||{};if(ev.origin===location.origin&&[...document.querySelectorAll('#phase4SanctuaryFrame,.v3317SanctuaryFrame')].some(f=>f.contentWindow===ev.source)&&d.type==='MAJICK_OPEN_ROUTE_V3311'&&d.route)navigate(d.route)});
 }
 
 window.v3311RefreshBrand=function(){

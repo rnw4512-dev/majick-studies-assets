@@ -284,16 +284,18 @@ if(!window.__v3317Bridge){
   window.addEventListener('message',ev=>{
     if(ev.origin!==location.origin)return;
     const d=ev.data||{};
+    const activeFrame=document.getElementById('phase4SanctuaryFrame');
+    if(d.type==='MAJICK_PIXI_VIEWPORT'&&ev.source===activeFrame?.contentWindow&&activeFrame.src.includes('/pixi-sanctuary/')&&Number.isFinite(d.height)&&d.height>=200&&d.height<=6000){activeFrame.style.height=Math.ceil(d.height)+'px';activeFrame.style.aspectRatio='auto'}
     if(d.type==='MAJICK_PIXI_SANCTUARY_ERROR'&&ev.source===document.getElementById('phase4SanctuaryFrame')?.contentWindow){
       window.majickSanctuaryReady?.();
       const note=document.getElementById('majickSanctuaryLoadStatus');
       if(note)note.innerHTML='PixiJS graphics could not start on this device. Your saved room is unchanged. <button type="button" onclick="majickSanctuaryRetry()">Retry</button> <button type="button" onclick="majickSanctuaryFallback()">Use original Sanctuary</button>';
     }
 
-    if((d.type==='MAJICK_OPEN_ROUTE_V3311'||d.type==='MAJICK_OPEN_ROUTE')&&d.route){
+    if((d.type==='MAJICK_OPEN_ROUTE_V3311'||d.type==='MAJICK_OPEN_ROUTE')&&d.route&&[...document.querySelectorAll('#phase4SanctuaryFrame,.v3317SanctuaryFrame')].some(f=>f.contentWindow===ev.source)){
       try{navigate(d.route)}catch(e){console.error('V3.3.18 route bridge',e)}
     }
-    if(d.type==='MAJICK_CONTINUE_STUDYING'){
+    if(d.type==='MAJICK_CONTINUE_STUDYING'&&[...document.querySelectorAll('#phase4SanctuaryFrame,.v3317SanctuaryFrame')].some(f=>f.contentWindow===ev.source)){
       try{navigate('mission')}catch(_){}
     }
     if(d.type==='MAJICK_SANCTUARY_READY_V3317'){
