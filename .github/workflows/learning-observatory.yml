@@ -1,0 +1,36 @@
+name: Learning Observatory checks
+
+on:
+  pull_request:
+    paths:
+      - 'current-site/learning-observatory.js'
+      - 'current-site/game-realm.js'
+      - 'current-site/solution-engine.js'
+      - 'current-site/tests/learning-observatory.test.cjs'
+      - '.github/workflows/learning-observatory.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'current-site/learning-observatory.js'
+      - 'current-site/game-realm.js'
+      - 'current-site/solution-engine.js'
+      - 'current-site/tests/learning-observatory.test.cjs'
+
+jobs:
+  unit:
+    name: Learning evidence unit checks
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: JavaScript syntax checks
+        run: |
+          node --check current-site/learning-observatory.js
+          node --check current-site/game-realm.js
+          node --check current-site/solution-engine.js
+      - name: Learning Observatory regression tests
+        run: node --test current-site/tests/learning-observatory.test.cjs
