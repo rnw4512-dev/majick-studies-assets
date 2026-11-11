@@ -1,0 +1,112 @@
+[
+  {
+    "test": "pages-release/current/release-checks.cjs",
+    "exit_code": 0,
+    "output": "PASS course units, question keys, coverage and visual assets\nAUDIT D772 ACADEMIC COVERAGE {\"lessons\":51,\"scenario\":44,\"explanation\":44,\"visual\":50,\"worked\":32,\"interaction\":21,\"practice\":21,\"teacher\":0}\nAUDIT D772 INSTRUCTION GAPS [{\"lesson\":\"d772-s1-l1\",\"component\":\"worked\"},{\"lesson\":\"d772-s1-l1\",\"component\":\"interaction\"},{\"lesson\":\"d772-s1-l1\",\"component\":\"practice\"},{\"lesson\":\"d772-s1-l1\",\"component\":\"teacher\"},{\"lesson\":\"d772-s1-l2\",\"component\":\"worked\"},{\"lesson\":\"d772-s1-l2\",\"component\":\"interaction\"},{\"lesson\":\"d772-s1-l2\",\"component\":\"practice\"},{\"lesson\":\"d772-s1-l2\",\"component\":\"teacher\"},{\"lesson\":\"d772-s1-l3\",\"component\":\"worked\"},{\"lesson\":\"d772-s1-l3\",\"component\":\"interaction\"},{\"lesson\":\"d772-s1-l3\",\"component\":\"practice\"},{\"lesson\":\"d772-s1-l3\",\"component\":\"teacher\"},{\"lesson\":\"d772-s1-l4\",\"component\":\"worked\"},{\"lesson\":\"d772-s1-l4\",\"component\":\"interaction\"},{\"lesson\":\"d772-s1-l4\",\"component\":\"practice\"},{\"lesson\":\"d772-s1-l4\",\"component\":\"teacher\"},{\"lesson\":\"d772-s1-review\",\"component\":\"worked\"},{\"lesson\":\"d772-s1-review\",\"component\":\"interaction\"},{\"lesson\":\"d772-s1-review\",\"component\":\"practice\"},{\"lesson\":\"d772-s1-review\",\"component\":\"teacher\"},{\"lesson\":\"d772-s2-l1\",\"component\":\"worked\"},{\"lesson\":\"d772-s2-l1\",\"component\":\"interaction\"},{\"lesson\":\"d772-s2-l1\",\"component\":\"practice\"},{\"lesson\":\"d772-s2-l1\",\"component\":\"teacher\"},{\"lesson\":\"d772-s2-l1-2\",\"component\":\"teacher\"},{\"lesson\":\"d772-s2-l2\",\"component\":\"teacher\"},{\"lesson\":\"d772-s2-l2-1\",\"component\":\"scenario\"},{\"lesson\":\"d772-s2-l2-1\",\"component\":\"explanation\"},{\"lesson\":\"d772-s2-l2-1\",\"component\":\"worked\"},{\"lesson\":\"d772-s2-l2-1\",\"component\":\"interaction\"},{\"lesson\":\"d772-s2-l2-1\",\"component\":\"practice\"},{\"lesson\":\"d772-s2-l2-1\",\"component\":\"teacher\"},{\"lesson\":\"d772-s2-l2-2\",\"component\":\"scenario\"},{\"lesson\":\"d772-s2-l2-2\",\"component\":\"explanation\"},{\"lesson\":\"d772-s2-l2-2\",\"component\":\"worked\"},{\"lesson\":\"d772-s2-l2-2\",\"component\":\"interaction\"},{\"lesson\":\"d772-s2-l2-2\",\"component\":\"practice\"},{\"lesson\":\"d772-s2-l2-2\",\"component\":\"teacher\"},{\"lesson\":\"d772-s2-l2-3\",\"component\":\"teacher\"},{\"lesson\":\"d772-s2-l2-summary\",\"component\":\"worked\"},{\"lesson\":\"d772-s2-l2-summary\",\"component\":\"interaction\"},{\"lesson\":\"d772-s2-l2-summary\",\"component\":\"practice\"},{\"lesson\":\"d772-s2-l2-summary\",\"component\":\"teacher\"},{\"lesson\":\"d772-s2-l2-quiz\",\"component\":\"worked\"},{\"lesson\":\"d772-s2-l2-quiz\",\"component\":\"teacher\"},{\"lesson\":\"d772-s2-l3\",\"component\":\"worked\"},{\"lesson\":\"d772-s2-l3\",\"component\":\"interaction\"},{\"lesson\":\"d772-s2-l3\",\"component\":\"practice\"},{\"lesson\":\"d772-s2-l3\",\"component\":\"teacher\"},{\"lesson\":\"d772-s2-l3-1\",\"component\":\"teacher\"},{\"lesson\":\"d772-s2-l3-summary\",\"component\":\"scenario\"},{\"lesson\":\"d772-s2-l3-summary\",\"component\":\"explanation\"},{\"lesson\":\"d772-s2-l3-summary\",\"component\":\"worked\"},{\"lesson\":\"d772-s2-l3-summary\",\"component\":\"interaction\"},{\"lesson\":\"d772-s2-l3-summary\",\"component\":\"practice\"},{\"lesson\":\"d772-s2-l3-summary\",\"component\":\"teacher\"},{\"lesson\":\"d772-s2-l3-quiz\",\"component\":\"teacher\"},{\"lesson\":\"d772-s2-l4\",\"component\":\"worked\"},{\"lesson\":\"d772-s2-l4\",\"component\":\"interaction\"},{\"lesson\":\"d772-s2-l4\",\"component\":\"practice\"},{\"lesson\":\"d772-s2-l4\",\"component\":\"teacher\"},{\"lesson\":\"d772-s2-l4-1\",\"component\":\"teacher\"},{\"lesson\":\"d772-s2-l4-2\",\"component\":\"teacher\"},{\"lesson\":\"d772-s2-l4-3\",\"component\":\"teacher\"},{\"lesson\":\"d772-s2-l4-summary\",\"component\":\"scenario\"},{\"lesson\":\"d772-s2-l4-summary\",\"component\":\"explanation\"},{\"lesson\":\"d772-s2-l4-summary\",\"component\":\"worked\"},{\"lesson\":\"d772-s2-l4-summary\",\"component\":\"interaction\"},{\"lesson\":\"d772-s2-l4-summary\",\"component\":\"practice\"},{\"lesson\":\"d772-s2-l4-summary\",\"component\":\"teacher\"},{\"lesson\":\"d772-s2-l4-quiz\",\"component\":\"scenario\"},{\"lesson\":\"d772-s2-l4-quiz\",\"component\":\"explanation\"},{\"lesson\":\"d772-s2-l4-quiz\",\"component\":\"worked\"},{\"lesson\":\"d772-s2-l4-quiz\",\"component\":\"interaction\"},{\"lesson\":\"d772-s2-l4-quiz\",\"component\":\"practice\"},{\"lesson\":\"d772-s2-l4-quiz\",\"component\":\"teacher\"},{\"lesson\":\"d772-s2-l4-ratios\",\"component\":\"visual\"},{\"lesson\":\"d772-s2-l4-ratios\",\"component\":\"teacher\"},{\"lesson\":\"d772-s2-review\",\"component\":\"worked\"},{\"lesson\":\"d772-s2-review\",\"component\":\"interaction\"},{\"lesson\":\"d772-s2-review\",\"component\":\"practice\"},{\"lesson\":\"d772-s2-review\",\"component\":\"teacher\"},{\"lesson\":\"d772-s2-summary\",\"component\":\"scenario\"},{\"lesson\":\"d772-s2-summary\",\"component\":\"explanation\"},{\"lesson\":\"d772-s2-summary\",\"component\":\"worked\"},{\"lesson\":\"d772-s2-summary\",\"component\":\"interaction\"},{\"lesson\":\"d772-s2-summary\",\"component\":\"practice\"},{\"lesson\":\"d772-s2-summary\",\"component\":\"teacher\"},{\"lesson\":\"d772-s2-test\",\"component\":\"scenario\"},{\"lesson\":\"d772-s2-test\",\"component\":\"explanation\"},{\"lesson\":\"d772-s2-test\",\"component\":\"worked\"},{\"lesson\":\"d772-s2-test\",\"component\":\"interaction\"},{\"lesson\":\"d772-s2-test\",\"component\":\"practice\"},{\"lesson\":\"d772-s2-test\",\"component\":\"teacher\"},{\"lesson\":\"d772-s3-l1\",\"component\":\"interaction\"},{\"lesson\":\"d772-s3-l1\",\"component\":\"practice\"},{\"lesson\":\"d772-s3-l1\",\"component\":\"teacher\"},{\"lesson\":\"d772-s3-l1-1\",\"component\":\"teacher\"},{\"lesson\":\"d772-s3-l1-2\",\"component\":\"teacher\"},{\"lesson\":\"d772-s3-l1-3\",\"component\":\"teacher\"},{\"lesson\":\"d772-s3-l1-summary\",\"component\":\"interaction\"},{\"lesson\":\"d772-s3-l1-summary\",\"component\":\"practice\"},{\"lesson\":\"d772-s3-l1-summary\",\"component\":\"teacher\"},{\"lesson\":\"d772-s3-l1-quiz\",\"component\":\"interaction\"},{\"lesson\":\"d772-s3-l1-quiz\",\"component\":\"practice\"},{\"lesson\":\"d772-s3-l1-quiz\",\"component\":\"teacher\"},{\"lesson\":\"d772-s3-l2\",\"component\":\"interaction\"},{\"lesson\":\"d772-s3-l2\",\"component\":\"practice\"},{\"lesson\":\"d772-s3-l2\",\"component\":\"teacher\"},{\"lesson\":\"d772-s3-l2-1\",\"component\":\"teacher\"},{\"lesson\":\"d772-s3-l2-2\",\"component\":\"teacher\"},{\"lesson\":\"d772-s3-l2-summary\",\"component\":\"interaction\"},{\"lesson\":\"d772-s3-l2-summary\",\"component\":\"practice\"},{\"lesson\":\"d772-s3-l2-summary\",\"component\":\"teacher\"},{\"lesson\":\"d772-s3-l2-quiz\",\"component\":\"interaction\"},{\"lesson\":\"d772-s3-l2-quiz\",\"component\":\"practice\"},{\"lesson\":\"d772-s3-l2-quiz\",\"component\":\"teacher\"},{\"lesson\":\"d772-s3-l3\",\"component\":\"interaction\"},{\"lesson\":\"d772-s3-l3\",\"component\":\"practice\"},{\"lesson\":\"d772-s3-l3\",\"component\":\"teacher\"},{\"lesson\":\"d772-s3-l3-1\",\"component\":\"teacher\"},{\"lesson\":\"d772-s3-l3-2\",\"component\":\"teacher\"},{\"lesson\":\"d772-s3-l3-3\",\"component\":\"teacher\"},{\"lesson\":\"d772-s3-l3-4\",\"component\":\"teacher\"},{\"lesson\":\"d772-s3-l3-summary\",\"component\":\"interaction\"},{\"lesson\":\"d772-s3-l3-summary\",\"component\":\"practice\"},{\"lesson\":\"d772-s3-l3-summary\",\"component\":\"teacher\"},{\"lesson\":\"d772-s3-l3-quiz\",\"component\":\"interaction\"},{\"lesson\":\"d772-s3-l3-quiz\",\"component\":\"practice\"},{\"lesson\":\"d772-s3-l3-quiz\",\"component\":\"teacher\"},{\"lesson\":\"d772-s3-l4\",\"component\":\"interaction\"},{\"lesson\":\"d772-s3-l4\",\"component\":\"practice\"},{\"lesson\":\"d772-s3-l4\",\"component\":\"teacher\"},{\"lesson\":\"d772-s3-l4-1\",\"component\":\"teacher\"},{\"lesson\":\"d772-s3-l4-2\",\"component\":\"teacher\"},{\"lesson\":\"d772-s3-l4-summary\",\"component\":\"interaction\"},{\"lesson\":\"d772-s3-l4-summary\",\"component\":\"practice\"},{\"lesson\":\"d772-s3-l4-summary\",\"component\":\"teacher\"},{\"lesson\":\"d772-s3-l4-quiz\",\"component\":\"interaction\"},{\"lesson\":\"d772-s3-l4-quiz\",\"component\":\"practice\"},{\"lesson\":\"d772-s3-l4-quiz\",\"component\":\"teacher\"},{\"lesson\":\"d772-s3-review\",\"component\":\"worked\"},{\"lesson\":\"d772-s3-review\",\"component\":\"interaction\"},{\"lesson\":\"d772-s3-review\",\"component\":\"practice\"},{\"lesson\":\"d772-s3-review\",\"component\":\"teacher\"}]\nPASS D772 lesson completeness inventory (gaps reported, not silently marked complete)\nPASS games have unique usable D772 questions and valid answer choices\nPASS reward replay, focused eggs, course isolation and saved reload\nCanonical release checks passed. Browser interaction and cloud-sync checks remain separate.\nPASS Mistake, guided retry, Guardian and Sanctuary persistence across course switching\nPASS Academic mastery requires independently verified transfer and teaching\nPASS D772 generated Section 2 math, charts and visual evidence across fresh datasets\nPASS save migration, backups, corruption recovery and storage failure\nPASS connected probability evidence, freshness, replay safety and course isolation\n"
+  },
+  {
+    "test": "pages-release/current/test-animation-effects.cjs",
+    "exit_code": 0,
+    "output": "PASS animation effects: three celebration identities, one overlay, auto cleanup, dedupe, reduced motion, desktop/tablet/mobile\n"
+  },
+  {
+    "test": "pages-release/current/test-atelier-preview-recovery.cjs",
+    "exit_code": 0,
+    "output": "PASS Atelier stale pose/walk, decode failure and atomic preview replacement\n"
+  },
+  {
+    "test": "pages-release/current/test-atelier-scene-isolation.cjs",
+    "exit_code": 0,
+    "output": "PASS Atelier scenery never owns avatar images or learner state; context loss cleans up safely\n"
+  },
+  {
+    "test": "pages-release/current/test-collegium-commons.cjs",
+    "exit_code": 0,
+    "output": "PASS Commons: five tabs, original DOM ownership, navigation, session retention, text theme and reduced motion\nPASS Commons stable component ownership despite cross-tab action labels\n"
+  },
+  {
+    "test": "pages-release/current/test-compact-navigation.cjs",
+    "exit_code": 0,
+    "output": "PASS compact navigation: stable Commons ownership, tab visibility, shortcut safety, keyboard focus and responsive styling\n"
+  },
+  {
+    "test": "pages-release/current/test-d772-academic-gate.cjs",
+    "exit_code": 0,
+    "output": "{\n  \"mean\": {\n    \"questions\": 30,\n    \"missingDistractorRationales\": 0,\n    \"keyConflicts\": 0,\n    \"invalid\": 0,\n    \"missingFreshTransfers\": 0,\n    \"distinctEvidence\": 30\n  },\n  \"median\": {\n    \"questions\": 30,\n    \"missingDistractorRationales\": 0,\n    \"keyConflicts\": 0,\n    \"invalid\": 0,\n    \"missingFreshTransfers\": 0,\n    \"distinctEvidence\": 30\n  },\n  \"boxplot\": {\n    \"questions\": 30,\n    \"missingDistractorRationales\": 0,\n    \"keyConflicts\": 0,\n    \"invalid\": 0,\n    \"missingFreshTransfers\": 0,\n    \"distinctEvidence\": 30\n  },\n  \"histogram\": {\n    \"questions\": 30,\n    \"missingDistractorRationales\": 0,\n    \"keyConflicts\": 0,\n    \"invalid\": 0,\n    \"missingFreshTransfers\": 0,\n    \"distinctEvidence\": 30\n  },\n  \"scatterplot\": {\n    \"questions\": 30,\n    \"missingDistractorRationales\": 0,\n    \"keyConflicts\": 0,\n    \"invalid\": 0,\n    \"missingFreshTransfers\": 0,\n    \"distinctEvidence\": 30\n  },\n  \"probability\": {\n    \"questions\": 30,\n    \"missingDistractorRationales\": 0,\n    \"keyConflicts\": 0,\n    \"invalid\": 0,\n    \"missingFreshTransfers\": 0,\n    \"distinctEvidence\": 30\n  }\n}\nAcademic coverage report: d772-academic-audit.json\n"
+  },
+  {
+    "test": "pages-release/current/test-d772-adaptive.cjs",
+    "exit_code": 0,
+    "output": "PASS adaptive D772: distinct diagnostic/independent/transfer questions, wrong-answer repair, structured teaching evidence, save-state isolation and no false mastery credit\n"
+  },
+  {
+    "test": "pages-release/current/test-d772-bank-expansion.cjs",
+    "exit_code": 0,
+    "output": "24 new items: schema, numeric evidence, skill coverage and unseen follow-up routing passed\n"
+  },
+  {
+    "test": "pages-release/current/test-d772-cross-room.cjs",
+    "exit_code": 0,
+    "output": "PASS D772 cross-room continuity: guided, Study Now, Game Realm, remediation, unearned mastery, course isolation and save calls\n"
+  },
+  {
+    "test": "pages-release/current/test-d772-exam-resume.cjs",
+    "exit_code": 0,
+    "output": "PASS mixed exam: selected/submitted reload, course isolation, question snapshots, corrupted round recovery and save failure\n"
+  },
+  {
+    "test": "pages-release/current/test-d772-exam-visuals.cjs",
+    "exit_code": 0,
+    "output": "PASS 60-item visual audit, plot/data agreement, blocked grading, zero-size diagram, no-penalty replacement and preserved score/account/course state\n"
+  },
+  {
+    "test": "pages-release/current/test-d772-generated-depth.cjs",
+    "exit_code": 0,
+    "output": "PASS generated D772 question audit: 720 fresh draws + 42 probability cases, numeric consistency, distinct options, visual and provenance\n"
+  },
+  {
+    "test": "pages-release/current/test-d772-hands-on.cjs",
+    "exit_code": 0,
+    "output": "PASS hands-on D772: selectable observation identity, same-dataset clear, guided repair, formative mastery safety, 150 computed cases\n"
+  },
+  {
+    "test": "pages-release/current/test-d772-preassessment.cjs",
+    "exit_code": 0,
+    "output": "PASS D772 preassessment: 58 original source items, 47 correct, 2 incorrect, 9 unanswered, 30 separated four-option OA-style questions, safe app loading, intact learner and reward state\n"
+  },
+  {
+    "test": "pages-release/current/test-interaction-magic.cjs",
+    "exit_code": 0,
+    "output": "PASS visible prose and accessible instructions remove em dashes without changing learner state\nPASS bounded interaction sparkles, celebration priority, system/app reduced motion and unchanged state\n"
+  },
+  {
+    "test": "pages-release/current/test-phase6-owner.cjs",
+    "exit_code": 0,
+    "output": "PASS Phase 6 ownership: existing visual effects, successful care and placement only, one-shot learning, no reward owner duplication\n"
+  },
+  {
+    "test": "pages-release/current/test-practice-retry-controls.cjs",
+    "exit_code": 0,
+    "output": "PASS Phase 5 retry controls: syntax, scoped clear/resubmit, no replaced probability grading, and existing fresh-retry path\n"
+  },
+  {
+    "test": "pages-release/current/test-sanctuary-state.cjs",
+    "exit_code": 0,
+    "output": "PASS Back uses current navigation cleanup, prior room history and unchanged learner progress\nPASS Sanctuary registry: ten species aliases, renamed identities, duplicate Briars and fifty stage assets\nPASS shared furniture: non-destructive legacy migration, inventory preservation, position validation, store/place and repeatability\n"
+  },
+  {
+    "test": "pages-release/current/test-save-schema-safety.cjs",
+    "exit_code": 0,
+    "output": "PASS newer schemas remain intact; corrupt saves still recover; unknown fields survive backup roundtrip\n"
+  },
+  {
+    "test": "pages-release/current/test-shared-repair.cjs",
+    "exit_code": 0,
+    "output": "PASS eight ordered expandable teaching steps; actual response and numbers\nPASS authored option rationale, escaping and no invented diagnosis\nPASS median even/odd, negatives, range and IQR use actual data\nPASS without replacement distinguishes GG from GP using the actual event\nPASS image scaling explains area not a fabricated sampling misconception\nPASS freshness rejects rewording, changed IDs, reordered observations and cosmetic data\nPASS two misses across rooms and lesson aliases, guided attempts never certify\nPASS replayed correct same evidence cannot clear transfer requirement\nPASS unassisted Study Hall tracking counts a real submission exactly once\nShared repair checks completed: 9\n"
+  },
+  {
+    "test": "pages-release/current/test-six-enhancements.cjs",
+    "exit_code": 0,
+    "output": "PASS two-mistake two-example recovery, save/reload, fresh-only transfer, no mastery/XP leakage, shared visual revisions, full-pool mixing, hands-on math/data, compact existing cards and ledger replay-safe celebrations\nPASS all 60 two-mistake plans, separate hands-on evidence, finite formula values, blank rejection and legacy recovery migration\nPASS 480 fresh repair snapshots, 900 native datasets, formula rationales, four construction models, targeted diagnoses, calculation trails and two-item readiness without mastery/currency leakage\nPASS six generators: 600 nonrepeating datasets across reload, native scenario/draft persistence, cross-room guided evidence and all four visual models with empty/correct selections\nPASS finite-source exhaustion and Tutor snapshot/unused-question selection without rewriting source records\nPASS stale guided callbacks cannot write another course\u2019s history\n"
+  }
+]

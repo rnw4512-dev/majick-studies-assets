@@ -1,0 +1,81 @@
+Commons Chrome connected
+Commons D772 Home mounted
+PASS Commons delayed root/panel hydration and physical keyboard focus
+PASS browser celebration viewport 1366 overlay/no-clicks/reduced-motion/state isolation
+Commons scroll geometry {"width":1366,"tab":"overview","height":1986,"viewport":860,"tag":"MAIN","className":"main"}
+COMMONS RENDERED CONTRAST {"width":1366,"tab":"overview","count":48,"frames":3,"minimum":6.23,"failures":[]}
+Commons scroll geometry {"width":1366,"tab":"student-record","height":2254,"viewport":860,"tag":"MAIN","className":"main"}
+COMMONS RENDERED CONTRAST {"width":1366,"tab":"student-record","count":62,"frames":4,"minimum":6.23,"failures":[]}
+Commons scroll geometry {"width":1366,"tab":"today","height":1680,"viewport":860,"tag":"MAIN","className":"main"}
+COMMONS RENDERED CONTRAST {"width":1366,"tab":"today","count":65,"frames":3,"minimum":9.31,"failures":[]}
+Commons scroll geometry {"width":1366,"tab":"review","height":1935,"viewport":860,"tag":"MAIN","className":"main"}
+COMMONS RENDERED CONTRAST {"width":1366,"tab":"review","count":37,"frames":3,"minimum":9.17,"failures":[]}
+Commons scroll geometry {"width":1366,"tab":"guardians","height":1448,"viewport":860,"tag":"MAIN","className":"main"}
+COMMONS RENDERED CONTRAST {"width":1366,"tab":"guardians","count":47,"frames":2,"minimum":6.29,"failures":[]}
+Commons scroll geometry {"width":1366,"tab":"sanctuary","height":1423,"viewport":860,"tag":"MAIN","className":"main"}
+COMMONS RENDERED CONTRAST {"width":1366,"tab":"sanctuary","count":25,"frames":2,"minimum":9.85,"failures":[]}
+PASS browser celebration viewport 820 overlay/no-clicks/reduced-motion/state isolation
+Commons scroll geometry {"width":820,"tab":"overview","height":2529,"viewport":860,"tag":"MAIN","className":"main"}
+COMMONS RENDERED CONTRAST {"width":820,"tab":"overview","count":46,"frames":5,"minimum":6.23,"failures":[]}
+Commons scroll geometry {"width":820,"tab":"today","height":1996,"viewport":860,"tag":"MAIN","className":"main"}
+COMMONS RENDERED CONTRAST {"width":820,"tab":"today","count":64,"frames":4,"minimum":8.7,"failures":[]}
+Commons scroll geometry {"width":820,"tab":"review","height":4770,"viewport":860,"tag":"MAIN","className":"main"}
+COMMONS RENDERED CONTRAST {"width":820,"tab":"review","count":70,"frames":9,"minimum":7.8,"failures":[]}
+Commons scroll geometry {"width":820,"tab":"guardians","height":1816,"viewport":860,"tag":"MAIN","className":"main"}
+COMMONS RENDERED CONTRAST {"width":820,"tab":"guardians","count":46,"frames":3,"minimum":4.93,"failures":[]}
+Commons scroll geometry {"width":820,"tab":"sanctuary","height":1725,"viewport":860,"tag":"MAIN","className":"main"}
+COMMONS RENDERED CONTRAST {"width":820,"tab":"sanctuary","count":24,"frames":3,"minimum":8.8,"failures":[]}
+PASS browser celebration viewport 390 overlay/no-clicks/reduced-motion/state isolation
+Commons scroll geometry {"width":390,"tab":"overview","height":3306,"viewport":860,"tag":"BODY","className":"v524Starlight majickStudies majickCampus v334UnifiedFamiliars v335ApprovedRegistry v336EvolutionCodex v338CanonGuardians realm-moonPalace"}
+COMMONS RENDERED CONTRAST {"width":390,"tab":"overview","count":45,"frames":7,"minimum":5.99,"failures":[]}
+Commons scroll geometry {"width":390,"tab":"today","height":2980,"viewport":860,"tag":"BODY","className":"v524Starlight majickStudies majickCampus v334UnifiedFamiliars v335ApprovedRegistry v336EvolutionCodex v338CanonGuardians realm-moonPalace"}
+COMMONS RENDERED CONTRAST {"width":390,"tab":"today","count":63,"frames":6,"minimum":7.16,"failures":[]}
+Commons scroll geometry {"width":390,"tab":"review","height":5840,"viewport":860,"tag":"BODY","className":"v524Starlight majickStudies majickCampus v334UnifiedFamiliars v335ApprovedRegistry v336EvolutionCodex v338CanonGuardians realm-moonPalace"}
+COMMONS RENDERED CONTRAST {"width":390,"tab":"review","count":68,"frames":12,"minimum":7.24,"failures":[]}
+Commons scroll geometry {"width":390,"tab":"guardians","height":2511,"viewport":860,"tag":"BODY","className":"v524Starlight majickStudies majickCampus v334UnifiedFamiliars v335ApprovedRegistry v336EvolutionCodex v338CanonGuardians realm-moonPalace"}
+COMMONS RENDERED CONTRAST {"width":390,"tab":"guardians","count":45,"frames":5,"minimum":6.89,"failures":[]}
+Commons scroll geometry {"width":390,"tab":"sanctuary","height":2097,"viewport":860,"tag":"BODY","className":"v524Starlight majickStudies majickCampus v334UnifiedFamiliars v335ApprovedRegistry v336EvolutionCodex v338CanonGuardians realm-moonPalace"}
+COMMONS RENDERED CONTRAST {"width":390,"tab":"sanctuary","count":23,"frames":4,"minimum":6.38,"failures":[]}
+COMMONS CONTROL STATE {"tab":"overview","selector":"[data-commons-tab=overview]","state":"normal","minimum":10.93,"samples":336}
+COMMONS CONTROL STATE {"tab":"overview","selector":"[data-commons-tab=overview]","state":"hover","minimum":10.93,"samples":336}
+COMMONS CONTROL STATE {"tab":"overview","selector":"[data-commons-tab=overview]","state":"focus","minimum":10.93,"samples":336}
+COMMONS CONTROL STATE {"tab":"overview","selector":"[data-commons-tab=overview]","state":"disabled","minimum":10.93,"samples":336}
+COMMONS CONTROL STATE {"tab":"overview","selector":"[data-commons-tab=review]","state":"normal","minimum":11.85,"samples":264}
+COMMONS CONTROL STATE {"tab":"overview","selector":"[data-commons-tab=review]","state":"hover","minimum":11.85,"samples":264}
+COMMONS CONTROL STATE {"tab":"overview","selector":"[data-commons-tab=review]","state":"focus","minimum":11.85,"samples":264}
+COMMONS CONTROL STATE {"tab":"overview","selector":"[data-commons-tab=review]","state":"disabled","minimum":11.85,"samples":264}
+COMMONS CONTROL STATE {"tab":"overview","selector":"[data-commons-next]","state":"normal","minimum":12.12,"samples":161}
+COMMONS CONTROL STATE {"tab":"overview","selector":"[data-commons-next]","state":"hover","minimum":12.12,"samples":161}
+COMMONS CONTROL STATE {"tab":"overview","selector":"[data-commons-next]","state":"focus","minimum":12.12,"samples":161}
+COMMONS CONTROL STATE {"tab":"overview","selector":"[data-commons-next]","state":"disabled","minimum":12.12,"samples":161}
+COMMONS CONTROL STATE {"tab":"overview","selector":".v3327Primary","state":"normal","minimum":13.55,"samples":497}
+COMMONS CONTROL STATE {"tab":"overview","selector":".v3327Primary","state":"hover","minimum":13.55,"samples":497}
+COMMONS CONTROL STATE {"tab":"overview","selector":".v3327Primary","state":"focus","minimum":13.55,"samples":497}
+COMMONS CONTROL STATE {"tab":"overview","selector":".v3327Primary","state":"disabled","minimum":13.55,"samples":497}
+COMMONS CONTROL STATE {"tab":"today","selector":"[data-v3400-next]","state":"normal","minimum":13.55,"samples":343}
+COMMONS CONTROL STATE {"tab":"today","selector":"[data-v3400-next]","state":"hover","minimum":13.55,"samples":343}
+COMMONS CONTROL STATE {"tab":"today","selector":"[data-v3400-next]","state":"focus","minimum":13.55,"samples":343}
+COMMONS CONTROL STATE {"tab":"today","selector":"[data-v3400-next]","state":"disabled","minimum":13.55,"samples":343}
+COMMONS CONTROL STATE {"tab":"review","selector":"[data-mj-pa-check]","state":"normal","minimum":13.86,"samples":594}
+COMMONS CONTROL STATE {"tab":"review","selector":"[data-mj-pa-check]","state":"hover","minimum":13.86,"samples":594}
+COMMONS CONTROL STATE {"tab":"review","selector":"[data-mj-pa-check]","state":"focus","minimum":13.86,"samples":594}
+COMMONS CONTROL STATE {"tab":"review","selector":"[data-mj-pa-check]","state":"disabled","minimum":13.86,"samples":594}
+COMMONS CONTROL STATE {"tab":"review","selector":"[data-am-work] button","state":"normal","minimum":13.55,"samples":855}
+COMMONS CONTROL STATE {"tab":"review","selector":"[data-am-work] button","state":"hover","minimum":13.55,"samples":855}
+COMMONS CONTROL STATE {"tab":"review","selector":"[data-am-work] button","state":"focus","minimum":13.55,"samples":855}
+COMMONS CONTROL STATE {"tab":"review","selector":"[data-am-work] button","state":"disabled","minimum":13.55,"samples":855}
+COMMONS CONTROL STATE {"tab":"guardians","selector":".v3327GuardianHall .v3327TextBtn","state":"normal","minimum":13.55,"samples":343}
+COMMONS CONTROL STATE {"tab":"guardians","selector":".v3327GuardianHall .v3327TextBtn","state":"hover","minimum":13.55,"samples":343}
+COMMONS CONTROL STATE {"tab":"guardians","selector":".v3327GuardianHall .v3327TextBtn","state":"focus","minimum":13.55,"samples":343}
+COMMONS CONTROL STATE {"tab":"guardians","selector":".v3327GuardianHall .v3327TextBtn","state":"disabled","minimum":13.55,"samples":343}
+COMMONS CONTROL STATE {"tab":"sanctuary","selector":".v3327CampusSanctuary .v3327TextBtn","state":"normal","minimum":13.55,"samples":581}
+COMMONS CONTROL STATE {"tab":"sanctuary","selector":".v3327CampusSanctuary .v3327TextBtn","state":"hover","minimum":13.55,"samples":581}
+COMMONS CONTROL STATE {"tab":"sanctuary","selector":".v3327CampusSanctuary .v3327TextBtn","state":"focus","minimum":11.02,"samples":581}
+COMMONS CONTROL STATE {"tab":"sanctuary","selector":".v3327CampusSanctuary .v3327TextBtn","state":"disabled","minimum":13.55,"samples":581}
+PASS Commons rendered normal, hover, focus and disabled states
+PASS every current sidebar destination, campus tools and expanded Student Record navigation
+PASS Commons existing Learn, Study Now, Grimoire, Realm, Guardian, Sanctuary, material, daily-loop and Memory Quest actions
+FAIL Commons browser: Error: {"exceptionId":1,"text":"Uncaught","lineNumber":0,"columnNumber":61,"scriptId":"508","stackTrace":{"callFrames":[{"functionName":"","scriptId":"508","url":"","lineNumber":0,"columnNumber":61}]},"exception":{"type":"object","subtype":"error","className":"TypeError","description":"TypeError: Cannot set properties of null (setting 'open')\n    at <anonymous>:1:62","objectId":"6399769453306814926.6.2"}}
+    at ev (/workspace/majick-studies-assets/pages-release/current/browser-commons.cjs:9:149)
+    at async module.exports (/workspace/majick-studies-assets/pages-release/current/commons-interactions.cjs:38:23)
+    at async run (/workspace/majick-studies-assets/pages-release/current/browser-commons.cjs:90:249)

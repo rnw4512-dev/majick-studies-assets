@@ -1,0 +1,2914 @@
+{
+  "baseline": "31be7d10f31ebb71b66a2055ef0246d228aac9ce",
+  "branches": [
+    {
+      "branch": "app-classroom-tool-search",
+      "sha": "a7836caee5817b376bb7673e7720dad9ea303d13",
+      "protected": false,
+      "behind_baseline": 1244,
+      "ahead_of_baseline": 5,
+      "commit_date": "2026-10-02T07:18:30-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "app-smooth-render-oct1",
+      "sha": "84217d205e703a4ae7f82825225916c7e39ad6a2",
+      "protected": false,
+      "behind_baseline": 1248,
+      "ahead_of_baseline": 4,
+      "commit_date": "2026-09-30T22:52:47-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "atelier-hair-fit-connected-presence-20261016",
+      "sha": "ff6aee38b34d4529f5962e835e375e6758391360",
+      "protected": false,
+      "behind_baseline": 373,
+      "ahead_of_baseline": 25,
+      "commit_date": "2026-10-16T23:32:01-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "chore/safe-legacy-cleanup-20261101",
+      "sha": "a8fffa4dcb26298c1984b5042a68b0be785c317f",
+      "protected": false,
+      "behind_baseline": 14,
+      "ahead_of_baseline": 7,
+      "commit_date": "2026-11-01T22:57:32Z",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "codex/active-room-mirror-sizing",
+      "sha": "3fbd4c8811080e0c8efa61ccfd1a2bb90416a0a9",
+      "protected": false,
+      "behind_baseline": 107,
+      "ahead_of_baseline": 0,
+      "commit_date": "2026-10-24T16:52:56-04:00",
+      "recommendation": "Deletion candidate only after owner review and archive; no deletion authorized"
+    },
+    {
+      "branch": "codex/appwide-course-resume-comfort",
+      "sha": "76019dc575edf407d9f127343b79d71a9dc497e7",
+      "protected": false,
+      "behind_baseline": 1257,
+      "ahead_of_baseline": 7,
+      "commit_date": "2026-09-30T20:19:45-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "codex/atelier-preview-recovery",
+      "sha": "41caefbe94cd902e93fec6503fb104283be1c7d5",
+      "protected": false,
+      "behind_baseline": 151,
+      "ahead_of_baseline": 0,
+      "commit_date": "2026-10-24T13:28:28-04:00",
+      "recommendation": "Deletion candidate only after owner review and archive; no deletion authorized"
+    },
+    {
+      "branch": "codex/coordinate-study-startup",
+      "sha": "2c1abe6a4c76642eb8e902605acf829460d33655",
+      "protected": false,
+      "behind_baseline": 1255,
+      "ahead_of_baseline": 9,
+      "commit_date": "2026-09-30T20:33:28-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "codex/course-resume-startup-guard",
+      "sha": "a6831a0fa49c6fc4b4636f91e4851df2d9b21ce1",
+      "protected": false,
+      "behind_baseline": 1256,
+      "ahead_of_baseline": 8,
+      "commit_date": "2026-09-30T20:26:34-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "codex/d755-law-referral-rotation-20260930",
+      "sha": "b52cf7f9d27d6e1cfb9466dc1f3d7bedb9f0caa1",
+      "protected": false,
+      "behind_baseline": 1267,
+      "ahead_of_baseline": 4,
+      "commit_date": "2026-09-30T18:09:35-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "codex/d755-rotation-cache-20260930",
+      "sha": "3ac38c4b3b00f9af0e3a366f4a38191d4a19bb22",
+      "protected": false,
+      "behind_baseline": 1266,
+      "ahead_of_baseline": 3,
+      "commit_date": "2026-09-30T18:11:22-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "codex/d755-sorter-navigation-cache",
+      "sha": "a7e8fcad09f4387152aa901f571b788cad6284de",
+      "protected": false,
+      "behind_baseline": 1263,
+      "ahead_of_baseline": 5,
+      "commit_date": "2026-09-30T18:45:09-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "codex/d755-sorter-navigation-fix",
+      "sha": "1fa49dd390571cfe30f34abff1b39a3a37095f26",
+      "protected": false,
+      "behind_baseline": 1264,
+      "ahead_of_baseline": 2,
+      "commit_date": "2026-09-30T18:41:50-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "codex/d755-sorter-readable",
+      "sha": "c38e8ad33cc41b2e91bf768db9c53de8326a7028",
+      "protected": false,
+      "behind_baseline": 1262,
+      "ahead_of_baseline": 6,
+      "commit_date": "2026-09-30T18:48:56-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "codex/d755-study-repair-sorter-20260930",
+      "sha": "8fb6249c7884e38ba1f2d503853ae014081a3c4d",
+      "protected": false,
+      "behind_baseline": 1265,
+      "ahead_of_baseline": 8,
+      "commit_date": "2026-09-30T18:38:02-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "codex/distinct-mastery-release-gate",
+      "sha": "992be7d83b0ec008b909b5640ff5800834b1ca71",
+      "protected": false,
+      "behind_baseline": 230,
+      "ahead_of_baseline": 0,
+      "commit_date": "2026-10-24T10:38:44-04:00",
+      "recommendation": "Deletion candidate only after owner review and archive; no deletion authorized"
+    },
+    {
+      "branch": "codex/dropdown-contrast-mirror-layout",
+      "sha": "64c53febc3791861521a5e3ec9e23364f3cc79ad",
+      "protected": false,
+      "behind_baseline": 232,
+      "ahead_of_baseline": 0,
+      "commit_date": "2026-10-24T10:36:17-04:00",
+      "recommendation": "Deletion candidate only after owner review and archive; no deletion authorized"
+    },
+    {
+      "branch": "codex/first-miss-guided-workshop",
+      "sha": "9a4fc8ee27baee40b715983d33325b7057f055c5",
+      "protected": false,
+      "behind_baseline": 257,
+      "ahead_of_baseline": 0,
+      "commit_date": "2026-10-23T17:05:15-04:00",
+      "recommendation": "Deletion candidate only after owner review and archive; no deletion authorized"
+    },
+    {
+      "branch": "codex/fresh-guided-strategies",
+      "sha": "e047ff2bb02e237abf18d38d91caa5cb15b6153d",
+      "protected": false,
+      "behind_baseline": 253,
+      "ahead_of_baseline": 0,
+      "commit_date": "2026-10-23T18:10:41-04:00",
+      "recommendation": "Deletion candidate only after owner review and archive; no deletion authorized"
+    },
+    {
+      "branch": "codex/guided-formula-dropdowns",
+      "sha": "e9ef68b91f129a812cf4ad79f4e9d78befd87dbd",
+      "protected": false,
+      "behind_baseline": 255,
+      "ahead_of_baseline": 0,
+      "commit_date": "2026-10-23T17:10:26-04:00",
+      "recommendation": "Deletion candidate only after owner review and archive; no deletion authorized"
+    },
+    {
+      "branch": "codex/persistent-avatar-vanity",
+      "sha": "a111f05c242ce2266629d5e45dc7ce9a76ca0811",
+      "protected": false,
+      "behind_baseline": 149,
+      "ahead_of_baseline": 0,
+      "commit_date": "2026-10-24T13:42:38-04:00",
+      "recommendation": "Deletion candidate only after owner review and archive; no deletion authorized"
+    },
+    {
+      "branch": "codex/pixi-atelier-scene",
+      "sha": "10465f179e19c078cc4d0321a5f4d70ad2d0ed7f",
+      "protected": false,
+      "behind_baseline": 153,
+      "ahead_of_baseline": 0,
+      "commit_date": "2026-10-24T13:07:05-04:00",
+      "recommendation": "Deletion candidate only after owner review and archive; no deletion authorized"
+    },
+    {
+      "branch": "codex/process-guides-missed-review",
+      "sha": "ba7a26e350f3cf94ce31e2ac50fadfbbf06ebdf2",
+      "protected": false,
+      "behind_baseline": 1260,
+      "ahead_of_baseline": 8,
+      "commit_date": "2026-09-30T19:24:13-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "codex/process-progress-focused-review",
+      "sha": "9e5ef3d4871632357b6b6bc5b612d82c032ab4a5",
+      "protected": false,
+      "behind_baseline": 1259,
+      "ahead_of_baseline": 8,
+      "commit_date": "2026-09-30T19:37:56-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "codex/question-table-contrast",
+      "sha": "3ab6d882b49a9b69ab749ffdd6f8a97e1376864f",
+      "protected": false,
+      "behind_baseline": 145,
+      "ahead_of_baseline": 0,
+      "commit_date": "2026-10-24T14:06:36-04:00",
+      "recommendation": "Deletion candidate only after owner review and archive; no deletion authorized"
+    },
+    {
+      "branch": "codex/saved-question-shelf",
+      "sha": "342527457ebbd4105e270c3891ce52fa5e71367d",
+      "protected": false,
+      "behind_baseline": 1258,
+      "ahead_of_baseline": 8,
+      "commit_date": "2026-09-30T20:08:07-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "codex/timelines-behavior-study-comfort",
+      "sha": "8843e8f7553e2368e6a9d946e6f919088019427b",
+      "protected": false,
+      "behind_baseline": 1261,
+      "ahead_of_baseline": 10,
+      "commit_date": "2026-09-30T19:10:35-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "codex/without-replacement-anchor",
+      "sha": "5ce434e84cb4a19e70fef3651782b41d5b87bf7c",
+      "protected": false,
+      "behind_baseline": 114,
+      "ahead_of_baseline": 0,
+      "commit_date": "2026-10-24T16:18:23-04:00",
+      "recommendation": "Deletion candidate only after owner review and archive; no deletion authorized"
+    },
+    {
+      "branch": "commons-prod-reading-surface-fix",
+      "sha": "0b1da3bad547528fd6ba702b64aac1b828dd7571",
+      "protected": false,
+      "behind_baseline": 391,
+      "ahead_of_baseline": 7,
+      "commit_date": "2026-10-16T09:23:23-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "commons-rendered-certification",
+      "sha": "5fb5f14ea3bd901215e8d65117ef1a9625240f95",
+      "protected": false,
+      "behind_baseline": 469,
+      "ahead_of_baseline": 0,
+      "commit_date": "2026-10-15T21:33:07-04:00",
+      "recommendation": "Deletion candidate only after owner review and archive; no deletion authorized"
+    },
+    {
+      "branch": "compact-active-guardian-renderer",
+      "sha": "7d6c85b41b729079581fd2dac24e5b1449554280",
+      "protected": false,
+      "behind_baseline": 259,
+      "ahead_of_baseline": 0,
+      "commit_date": "2026-10-23T16:42:38-04:00",
+      "recommendation": "Deletion candidate only after owner review and archive; no deletion authorized"
+    },
+    {
+      "branch": "companions-focused-tabs-20261017",
+      "sha": "cf2a652e81bb18689bb8faf84e1f754dacb043cf",
+      "protected": false,
+      "behind_baseline": 373,
+      "ahead_of_baseline": 19,
+      "commit_date": "2026-10-17T11:28:36-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "content/d756-s2-lesson1-summary-20261108",
+      "sha": "fc3f4992da0ab3344e6c8a54064f9493f2f5dc8d",
+      "protected": false,
+      "behind_baseline": 10,
+      "ahead_of_baseline": 5,
+      "commit_date": "2026-11-08T12:40:31-05:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "content/d756-s2l1-quiz-20261108",
+      "sha": "64a7eae41f26ddb2fca8b7bee35b31ec9bad2a4a",
+      "protected": false,
+      "behind_baseline": 9,
+      "ahead_of_baseline": 4,
+      "commit_date": "2026-11-08T12:44:59-05:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "content/d756-s2l2-responsive-20261108",
+      "sha": "3923d28854c5c0f65b2a701ced2557c0de621bb0",
+      "protected": false,
+      "behind_baseline": 8,
+      "ahead_of_baseline": 6,
+      "commit_date": "2026-11-08T13:54:07-05:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "content/d756-section2-test-20261108",
+      "sha": "610749ced3aefe224512fa9e82006059485e2a43",
+      "protected": false,
+      "behind_baseline": 7,
+      "ahead_of_baseline": 4,
+      "commit_date": "2026-11-08T14:02:51-05:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "content/d756-section3-iep-team-20261108",
+      "sha": "af56705d6c60d0cf3061876ebe4a187646825290",
+      "protected": false,
+      "behind_baseline": 6,
+      "ahead_of_baseline": 4,
+      "commit_date": "2026-11-08T14:08:54-05:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "content/d756-sections-1-2-intake-20261107",
+      "sha": "4687cbdb119cea6d8b48c262ffe27a6fbdf7dafb",
+      "protected": false,
+      "behind_baseline": 13,
+      "ahead_of_baseline": 4,
+      "commit_date": "2026-11-07T18:27:13-05:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "d755-actionable-evidence-snapshot",
+      "sha": "0cb3a34cd8df20f63b9e2fc84b738fbe851cf174",
+      "protected": false,
+      "behind_baseline": 1278,
+      "ahead_of_baseline": 6,
+      "commit_date": "2026-09-30T07:46:40-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "d755-adaptive-assessment-drill",
+      "sha": "de7e7d8ad48c41e7772a848fd95fefd20c5a51f6",
+      "protected": false,
+      "behind_baseline": 1305,
+      "ahead_of_baseline": 12,
+      "commit_date": "2026-09-29T20:25:11-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "d755-adaptive-assessment-drill-rebased",
+      "sha": "062caa5195207af39016cb7c86ec0692dd883d83",
+      "protected": false,
+      "behind_baseline": 1304,
+      "ahead_of_baseline": 6,
+      "commit_date": "2026-09-29T20:26:22-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "d755-assessment-dimension-detective",
+      "sha": "adf843096cc6618f1e053f13ad4cefdafb1ff1e4",
+      "protected": false,
+      "behind_baseline": 1300,
+      "ahead_of_baseline": 5,
+      "commit_date": "2026-09-29T20:43:30-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "d755-assessment-dimension-detective-final",
+      "sha": "817e3b57710a4dc71bb6d94f91f121a339db0984",
+      "protected": false,
+      "behind_baseline": 1299,
+      "ahead_of_baseline": 6,
+      "commit_date": "2026-09-29T20:45:08-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "d755-assessment-drill-breakdown",
+      "sha": "36f6965a75aa588a27f3481ab9bf2c842a8717cd",
+      "protected": false,
+      "behind_baseline": 1306,
+      "ahead_of_baseline": 6,
+      "commit_date": "2026-09-29T20:12:36-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "d755-assessment-laws-weak-area-expansion",
+      "sha": "17b6bd94cd080f46c1982ad56709c17fce710bff",
+      "protected": false,
+      "behind_baseline": 1268,
+      "ahead_of_baseline": 8,
+      "commit_date": "2026-09-30T17:28:20-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "d755-assessment-mastery-ladder",
+      "sha": "ab957e3e7a71a47288b1048cc61f764ad05451db",
+      "protected": false,
+      "behind_baseline": 1297,
+      "ahead_of_baseline": 6,
+      "commit_date": "2026-09-29T20:58:24-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "d755-assessment-mistake-queue",
+      "sha": "edf29cb580d658cd6c7d880e913a34ef9000b4dc",
+      "protected": false,
+      "behind_baseline": 1288,
+      "ahead_of_baseline": 6,
+      "commit_date": "2026-09-29T21:22:11-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "d755-assessment-question-rotation",
+      "sha": "dd97b5e920076815522714d8f1f949cea6e08007",
+      "protected": false,
+      "behind_baseline": 1289,
+      "ahead_of_baseline": 5,
+      "commit_date": "2026-09-29T21:19:49-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "d755-assessment-sigil-sort",
+      "sha": "3548c6371cbdb9b76c8693e16f9aa92afafa96b5",
+      "protected": false,
+      "behind_baseline": 1305,
+      "ahead_of_baseline": 6,
+      "commit_date": "2026-09-29T20:22:24-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "d755-assessment-sigil-sort-final",
+      "sha": "d1a87f660d2195158096d2133759eec87a94c413",
+      "protected": false,
+      "behind_baseline": 1302,
+      "ahead_of_baseline": 6,
+      "commit_date": "2026-09-29T20:32:00-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "d755-assessment-sigil-sort-rebased",
+      "sha": "794febc558ad688f1b877ac7cc7f6fb510e3d5d2",
+      "protected": false,
+      "behind_baseline": 1303,
+      "ahead_of_baseline": 6,
+      "commit_date": "2026-09-29T20:27:39-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "d755-assessment-type-anchor-chart",
+      "sha": "aaa7b5be2426611775f926a08f43452d8b9469d0",
+      "protected": false,
+      "behind_baseline": 1307,
+      "ahead_of_baseline": 6,
+      "commit_date": "2026-09-29T20:10:48-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "d755-assessment-type-drill",
+      "sha": "2de8051941f1dbefec1f4e67e074e93567e4ae04",
+      "protected": false,
+      "behind_baseline": 1308,
+      "ahead_of_baseline": 5,
+      "commit_date": "2026-09-29T20:08:59-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "d755-assessment-types-expansion",
+      "sha": "2b56b99589945638b22ceaa3d99ad0cede08c17f",
+      "protected": false,
+      "behind_baseline": 1311,
+      "ahead_of_baseline": 5,
+      "commit_date": "2026-09-29T20:01:42-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "d755-assessment-types-expansion-2",
+      "sha": "c731dc61d25f43220961424adcd904cd4b94306b",
+      "protected": false,
+      "behind_baseline": 1301,
+      "ahead_of_baseline": 5,
+      "commit_date": "2026-09-29T20:36:54-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "d755-confusing-pairs-repair",
+      "sha": "4e8a0ee0d1f23e44c597d0a6c20ad7ec36188eb1",
+      "protected": false,
+      "behind_baseline": 1294,
+      "ahead_of_baseline": 7,
+      "commit_date": "2026-09-29T21:06:53-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "d755-cumulative-assessment-mastery",
+      "sha": "be362ed2a98b1f758d4daeeb66397fd20b23f6ef",
+      "protected": false,
+      "behind_baseline": 1292,
+      "ahead_of_baseline": 5,
+      "commit_date": "2026-09-29T21:12:57-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "d755-evidence-trends",
+      "sha": "8fc0268c7a23d3e04a2c9df592c574cb24fa3a61",
+      "protected": false,
+      "behind_baseline": 1277,
+      "ahead_of_baseline": 5,
+      "commit_date": "2026-09-30T07:48:29-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "d755-focused-family-practice",
+      "sha": "51aeb147573d6e17d64c6f5f93a85843c188fd64",
+      "protected": false,
+      "behind_baseline": 1296,
+      "ahead_of_baseline": 6,
+      "commit_date": "2026-09-29T21:00:39-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "d755-focused-family-practice-rebased",
+      "sha": "d6e0f24ef334acb80f2e18e98facd94c59bb4994",
+      "protected": false,
+      "behind_baseline": 1295,
+      "ahead_of_baseline": 6,
+      "commit_date": "2026-09-29T21:04:13-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "d755-mistake-queue-breakdown",
+      "sha": "24c53b0dad81eac3f1cac529497315ce4d11e5a0",
+      "protected": false,
+      "behind_baseline": 1284,
+      "ahead_of_baseline": 6,
+      "commit_date": "2026-09-29T21:30:14-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "d755-next-practice-card",
+      "sha": "cb7694165bf8879bfc1789d3b250bfb9a9a45190",
+      "protected": false,
+      "behind_baseline": 1290,
+      "ahead_of_baseline": 6,
+      "commit_date": "2026-09-29T21:17:39-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "d755-pairs-into-mastery",
+      "sha": "d5d5d4c66e087dc4abff8fb3673df133ebc1d7fa",
+      "protected": false,
+      "behind_baseline": 1291,
+      "ahead_of_baseline": 5,
+      "commit_date": "2026-09-29T21:15:25-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "d755-practice-readiness-snapshot",
+      "sha": "bc98ac9c37f592e4eb3c1df0f74e2d32b09e1168",
+      "protected": false,
+      "behind_baseline": 1287,
+      "ahead_of_baseline": 6,
+      "commit_date": "2026-09-29T21:24:17-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "d755-recommend-mistake-repair",
+      "sha": "980346dfa5b8552d2611fe56f74142c62fb56a06",
+      "protected": false,
+      "behind_baseline": 1286,
+      "ahead_of_baseline": 2,
+      "commit_date": "2026-09-29T21:26:08-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "d755-recommend-mistake-repair-rebased",
+      "sha": "877dce61927c109fd49f5252cc65a8ca8d1ed08b",
+      "protected": false,
+      "behind_baseline": 1285,
+      "ahead_of_baseline": 5,
+      "commit_date": "2026-09-29T21:27:59-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "d755-recommend-smart-review",
+      "sha": "1c8de59ac14fcadfe7b0ab73100c77a9a6c87b9b",
+      "protected": false,
+      "behind_baseline": 1282,
+      "ahead_of_baseline": 5,
+      "commit_date": "2026-09-29T21:35:53-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "d755-retake-evidence-snapshot",
+      "sha": "468f1d7877ee12a947f864eead9993ff6aa0c1e1",
+      "protected": false,
+      "behind_baseline": 1281,
+      "ahead_of_baseline": 6,
+      "commit_date": "2026-09-30T07:38:19-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "d755-retake-evidence-snapshot-rebased",
+      "sha": "aac38b16a19daaebfe4142d36246bf3c227c7497",
+      "protected": false,
+      "behind_baseline": 1279,
+      "ahead_of_baseline": 6,
+      "commit_date": "2026-09-30T07:43:14-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "d755-smart-review",
+      "sha": "62b7fb640564008dde61fa44415fc86fd640a4da",
+      "protected": false,
+      "behind_baseline": 1283,
+      "ahead_of_baseline": 5,
+      "commit_date": "2026-09-29T21:32:49-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "d755-smart-review-summary",
+      "sha": "2c06889e40033af61b098e1ed027eb76f48761f1",
+      "protected": false,
+      "behind_baseline": 1282,
+      "ahead_of_baseline": 6,
+      "commit_date": "2026-09-30T07:36:24-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "d772-designed-experiments-oct1",
+      "sha": "f845455ae14ce43b9c937b1f29176f49b4fb5304",
+      "protected": false,
+      "behind_baseline": 1246,
+      "ahead_of_baseline": 4,
+      "commit_date": "2026-09-30T23:07:04-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "d772-focused-review-oct1",
+      "sha": "5dbb68c41e7bd47bcae986c360773ce5abe8c26e",
+      "protected": false,
+      "behind_baseline": 1254,
+      "ahead_of_baseline": 4,
+      "commit_date": "2026-09-30T22:05:04-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "d772-historical-quiz-results",
+      "sha": "d7dbd3a1b1e74b0b0993478131c26f10ee8fb89c",
+      "protected": false,
+      "behind_baseline": 600,
+      "ahead_of_baseline": 0,
+      "commit_date": "2026-10-15T11:37:53-04:00",
+      "recommendation": "Deletion candidate only after owner review and archive; no deletion authorized"
+    },
+    {
+      "branch": "d772-lesson32-study-guide",
+      "sha": "8ec3fd334ebc5c90c6c124524e72302ce9840743",
+      "protected": false,
+      "behind_baseline": 1245,
+      "ahead_of_baseline": 4,
+      "commit_date": "2026-10-01T18:19:07-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "d772-phases-2-4c-instruction",
+      "sha": "5b4ff1848dda7db329cb204e73dee0dfd053bbfe",
+      "protected": false,
+      "behind_baseline": 456,
+      "ahead_of_baseline": 0,
+      "commit_date": "2026-10-15T21:57:04-04:00",
+      "recommendation": "Deletion candidate only after owner review and archive; no deletion authorized"
+    },
+    {
+      "branch": "d772-practice-comfort",
+      "sha": "df858a0acf3a4b8bba78f1d48ded55104066a389",
+      "protected": false,
+      "behind_baseline": 265,
+      "ahead_of_baseline": 0,
+      "commit_date": "2026-10-22T21:04:11-04:00",
+      "recommendation": "Deletion candidate only after owner review and archive; no deletion authorized"
+    },
+    {
+      "branch": "d772-sampling-drill-oct1",
+      "sha": "74db3a2d1edf15c7b61569fb8aeb693ab8c638ec",
+      "protected": false,
+      "behind_baseline": 1252,
+      "ahead_of_baseline": 4,
+      "commit_date": "2026-09-30T22:30:36-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "d772-saved-exam-round",
+      "sha": "67e6a0f7fc340dd216cc238c690d440ecd83a1ad",
+      "protected": false,
+      "behind_baseline": 267,
+      "ahead_of_baseline": 0,
+      "commit_date": "2026-10-22T20:59:24-04:00",
+      "recommendation": "Deletion candidate only after owner review and archive; no deletion authorized"
+    },
+    {
+      "branch": "d772-study-design-oct1",
+      "sha": "c51e686f145c9c37b441d257e517e451b3247d6f",
+      "protected": false,
+      "behind_baseline": 1249,
+      "ahead_of_baseline": 4,
+      "commit_date": "2026-09-30T22:47:50-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "d772-visual-evidence-recovery",
+      "sha": "68cd4168f9c6e230f2767b735f9039b1cddb861e",
+      "protected": false,
+      "behind_baseline": 263,
+      "ahead_of_baseline": 0,
+      "commit_date": "2026-10-23T07:51:40-04:00",
+      "recommendation": "Deletion candidate only after owner review and archive; no deletion authorized"
+    },
+    {
+      "branch": "enhancement/misconception-recovery-20261022",
+      "sha": "8083730ae17171622fbbd0f0ab72413889613589",
+      "protected": false,
+      "behind_baseline": 319,
+      "ahead_of_baseline": 2,
+      "commit_date": "2026-10-22T18:09:48-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "enhancement/shorter-room-tabs-20261022",
+      "sha": "1a5c075ec4f7d65c01f17f860af6efa44a2ed62a",
+      "protected": false,
+      "behind_baseline": 301,
+      "ahead_of_baseline": 0,
+      "commit_date": "2026-10-22T18:29:24-04:00",
+      "recommendation": "Deletion candidate only after owner review and archive; no deletion authorized"
+    },
+    {
+      "branch": "evolution-ceremony-enhancements",
+      "sha": "e79499a0bcf7d2e21a7b8cbe12a9d7dd41e68a14",
+      "protected": false,
+      "behind_baseline": 1330,
+      "ahead_of_baseline": 2,
+      "commit_date": "2026-09-29T18:36:47-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "evolution-ceremony-ui",
+      "sha": "b60f5fa4b214f7735bdb18de437072de39cf2fd8",
+      "protected": false,
+      "behind_baseline": 1335,
+      "ahead_of_baseline": 9,
+      "commit_date": "2026-09-29T18:20:19-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "expand-d772-mixed-followups",
+      "sha": "d6c427320070e138aca079051a31205edc1253ae",
+      "protected": false,
+      "behind_baseline": 269,
+      "ahead_of_baseline": 0,
+      "commit_date": "2026-10-22T20:37:27-04:00",
+      "recommendation": "Deletion candidate only after owner review and archive; no deletion authorized"
+    },
+    {
+      "branch": "feat/d756-iep-rehearsal-studio-20261103",
+      "sha": "11856d029a6598d01baf52eba1b15fef4b2d1cd6",
+      "protected": false,
+      "behind_baseline": 13,
+      "ahead_of_baseline": 3,
+      "commit_date": "2026-11-03T23:59:26-05:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "feat/d772-interactive-repair-hex-20261101",
+      "sha": "4dd383a23643cd5c684a3f122f3de2d220754192",
+      "protected": false,
+      "behind_baseline": 14,
+      "ahead_of_baseline": 9,
+      "commit_date": "2026-11-01T17:00:43-05:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "feat/d772-verified-repair-20261101",
+      "sha": "d1f5e7f8e0ef32ed64c35694eda67fe6f83462a5",
+      "protected": false,
+      "behind_baseline": 16,
+      "ahead_of_baseline": 3,
+      "commit_date": "2026-11-01T12:45:54-05:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "feat/question-repair-verification-20261101",
+      "sha": "0e892186233de2a703f35123514fe6c8a47e8b41",
+      "protected": false,
+      "behind_baseline": 16,
+      "ahead_of_baseline": 3,
+      "commit_date": "2026-11-01T12:43:52-05:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "feat/study-tabs-scholar-repair-20261025",
+      "sha": "e6b5b0c2e37fdea76ccfd715611ebe2b33f6947b",
+      "protected": false,
+      "behind_baseline": 43,
+      "ahead_of_baseline": 0,
+      "commit_date": "2026-10-25T00:15:47-04:00",
+      "recommendation": "Deletion candidate only after owner review and archive; no deletion authorized"
+    },
+    {
+      "branch": "feature/aetheria-brand-20261028",
+      "sha": "7ce6822e6f57cb7100d0c86293b5fa9370139ed9",
+      "protected": false,
+      "behind_baseline": 25,
+      "ahead_of_baseline": 8,
+      "commit_date": "2026-10-28T12:16:19-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "feature/balanced-chest-eggs-20261024",
+      "sha": "add6fed9908a6f5959543943631ec0e0ab1b9914",
+      "protected": false,
+      "behind_baseline": 121,
+      "ahead_of_baseline": 3,
+      "commit_date": "2026-10-24T14:48:47-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "feature/complete-room-tabs-20261022",
+      "sha": "2807c13cb693b9d780a289c975cb5e4d30c78a71",
+      "protected": false,
+      "behind_baseline": 282,
+      "ahead_of_baseline": 0,
+      "commit_date": "2026-10-22T19:35:21-04:00",
+      "recommendation": "Deletion candidate only after owner review and archive; no deletion authorized"
+    },
+    {
+      "branch": "feature/connected-learning-path-20261028",
+      "sha": "8528cd9934511ac81771ed8c591a729962f27345",
+      "protected": false,
+      "behind_baseline": 29,
+      "ahead_of_baseline": 9,
+      "commit_date": "2026-10-28T10:54:17-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "feature/cozy-potion-brewing-20261024",
+      "sha": "4b96c13fc393efe4d732e4bd6168fa5ed4121b7a",
+      "protected": false,
+      "behind_baseline": 119,
+      "ahead_of_baseline": 2,
+      "commit_date": "2026-10-24T15:03:50-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "feature/cozy-potions-atmosphere-20261024",
+      "sha": "c31458fe62dd80494636417a52517da43d484ba9",
+      "protected": false,
+      "behind_baseline": 118,
+      "ahead_of_baseline": 3,
+      "commit_date": "2026-10-24T15:08:49-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "feature/crystal-chest-visual-polish-20261024",
+      "sha": "94d0ac18d123efb91b64ecf749dfd67159e3783a",
+      "protected": false,
+      "behind_baseline": 120,
+      "ahead_of_baseline": 2,
+      "commit_date": "2026-10-24T14:52:34-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "feature/d756-task2-meeting-rehearsal",
+      "sha": "e899b97cf029d0aa00dd1daea5450289a7c1f0d6",
+      "protected": false,
+      "behind_baseline": 2,
+      "ahead_of_baseline": 8,
+      "commit_date": "2026-11-11T12:32:35-05:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "feature/d772-oa-calculator-guided-20261103",
+      "sha": "8d13b17483ba5be5b32f1521859ef36288b697cc",
+      "protected": false,
+      "behind_baseline": 14,
+      "ahead_of_baseline": 4,
+      "commit_date": "2026-11-03T19:25:46-05:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "feature/d772-skill-library-20261025",
+      "sha": "0f646d8c1a03281d7284238198bd10b4c5971a86",
+      "protected": false,
+      "behind_baseline": 69,
+      "ahead_of_baseline": 11,
+      "commit_date": "2026-10-24T22:59:00-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "feature/guardian-ceremony-main-rebase-20261024",
+      "sha": "e89878e5dbf2ce44b5e6a7b82f1652b66d74d891",
+      "protected": false,
+      "behind_baseline": 76,
+      "ahead_of_baseline": 0,
+      "commit_date": "2026-10-24T21:47:15-04:00",
+      "recommendation": "Deletion candidate only after owner review and archive; no deletion authorized"
+    },
+    {
+      "branch": "feature/hands-on-professors-repair-20261028",
+      "sha": "507908103edcddb808f90dd60d0e1df657f9b49e",
+      "protected": false,
+      "behind_baseline": 22,
+      "ahead_of_baseline": 4,
+      "commit_date": "2026-10-28T13:13:42-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "feature/mixed-exam-room",
+      "sha": "7457d874bc37da10ea1ba283b6fe22ec14e495c1",
+      "protected": false,
+      "behind_baseline": 271,
+      "ahead_of_baseline": 0,
+      "commit_date": "2026-10-22T20:28:46-04:00",
+      "recommendation": "Deletion candidate only after owner review and archive; no deletion authorized"
+    },
+    {
+      "branch": "feature/mixed-reasoning-top-tabs-20261022",
+      "sha": "b4a9744c2322a6ba6a9a4e393066acd77b98331e",
+      "protected": false,
+      "behind_baseline": 286,
+      "ahead_of_baseline": 0,
+      "commit_date": "2026-10-22T19:17:28-04:00",
+      "recommendation": "Deletion candidate only after owner review and archive; no deletion authorized"
+    },
+    {
+      "branch": "feature/one-time-potion-test-kit-20261024",
+      "sha": "6a3f32f5445588d5d2f58dc2f07585edbb0f3772",
+      "protected": false,
+      "behind_baseline": 113,
+      "ahead_of_baseline": 2,
+      "commit_date": "2026-10-24T16:23:28-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "feature/pixi-care-furniture-persistence-20261024",
+      "sha": "72f2f5576f8265cab4cdd31bf8d1dbc47c90e316",
+      "protected": false,
+      "behind_baseline": 103,
+      "ahead_of_baseline": 4,
+      "commit_date": "2026-10-24T17:15:15-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "feature/pixi-cozy-cauldron-20261024",
+      "sha": "23b17647cdc1f47cf8e19586eaf6440b30d605d9",
+      "protected": false,
+      "behind_baseline": 117,
+      "ahead_of_baseline": 2,
+      "commit_date": "2026-10-24T15:11:22-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "feature/pixi-default-sanctuary-20261024",
+      "sha": "9b0c9e1130fea795c56b40af9c914dc0089d81c8",
+      "protected": false,
+      "behind_baseline": 109,
+      "ahead_of_baseline": 4,
+      "commit_date": "2026-10-24T16:47:06-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "feature/pixi-guardian-animation-integration-20261024",
+      "sha": "fd0a29af1599c48cae1e265fa05e32545869ca6b",
+      "protected": false,
+      "behind_baseline": 91,
+      "ahead_of_baseline": 13,
+      "commit_date": "2026-10-24T21:01:22-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "feature/pixi-live-roster-bridge-20261024",
+      "sha": "a4cb645c3c7722e86e14ff2c71488cd75dada092",
+      "protected": false,
+      "behind_baseline": 111,
+      "ahead_of_baseline": 3,
+      "commit_date": "2026-10-24T16:30:36-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "feature/pixi-potion-ceremony-20261024",
+      "sha": "f61ae2aab233e6fe654bbdb61fb7568f9b563c3a",
+      "protected": false,
+      "behind_baseline": 116,
+      "ahead_of_baseline": 2,
+      "commit_date": "2026-10-24T15:15:57-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "feature/pixi-sanctuary-furniture-evolution-20261024",
+      "sha": "2a9092f5f26236689557596d0f47a07d3f409f33",
+      "protected": false,
+      "behind_baseline": 110,
+      "ahead_of_baseline": 2,
+      "commit_date": "2026-10-24T16:34:22-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "feature/pixi-sanctuary-integrated-preview-20261024",
+      "sha": "4be53538e65736fd6a0c4f3d7c5b1dc37f07da37",
+      "protected": false,
+      "behind_baseline": 112,
+      "ahead_of_baseline": 2,
+      "commit_date": "2026-10-24T16:29:01-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "feature/pixi-sanctuary-motion-foundation-20261108",
+      "sha": "29cd47c40a5920298d61488b0cecfa2385f0c5ab",
+      "protected": false,
+      "behind_baseline": 4,
+      "ahead_of_baseline": 4,
+      "commit_date": "2026-11-08T18:51:45-05:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "feature/pixi-sanctuary-room-polish-20261024",
+      "sha": "b4e3f6dd5b0eabb25822ec5a789de9ceeca01f36",
+      "protected": false,
+      "behind_baseline": 106,
+      "ahead_of_baseline": 3,
+      "commit_date": "2026-10-24T17:00:04-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "feature/pixi-sanctuary-single-ticker-20261108",
+      "sha": "40a14413dcb6c1b2cf10c8ebdc55b8d7f48ee784",
+      "protected": false,
+      "behind_baseline": 3,
+      "ahead_of_baseline": 3,
+      "commit_date": "2026-11-08T18:53:39-05:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "feature/probability-mcq-controls-20261022",
+      "sha": "42d7e9a7c0e0ce4545bc1043acbbff79430bb724",
+      "protected": false,
+      "behind_baseline": 275,
+      "ahead_of_baseline": 0,
+      "commit_date": "2026-10-22T20:13:50-04:00",
+      "recommendation": "Deletion candidate only after owner review and archive; no deletion authorized"
+    },
+    {
+      "branch": "feature/probability-sidebar-20261028",
+      "sha": "5b63f7e6955b4bde3edfb554b5b9e430d363af4b",
+      "protected": false,
+      "behind_baseline": 24,
+      "ahead_of_baseline": 8,
+      "commit_date": "2026-10-28T12:20:04-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "feature/scholar-atelier-dressup-v1",
+      "sha": "a24bd5bfa58e2cff22317c8feb707f78e436a317",
+      "protected": false,
+      "behind_baseline": 194,
+      "ahead_of_baseline": 0,
+      "commit_date": "2026-10-24T11:55:29-04:00",
+      "recommendation": "Deletion candidate only after owner review and archive; no deletion authorized"
+    },
+    {
+      "branch": "feature/scholar-effort-rewards-20261028",
+      "sha": "e495203e3f2a42b9ede0d68a0a7e7cd2ba8606ec",
+      "protected": false,
+      "behind_baseline": 21,
+      "ahead_of_baseline": 7,
+      "commit_date": "2026-10-28T14:28:38-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "feature/shared-ceremony-panels-20261024",
+      "sha": "cd31b1a009d0db1a887c566877c6fb3cc7b1e383",
+      "protected": false,
+      "behind_baseline": 79,
+      "ahead_of_baseline": 9,
+      "commit_date": "2026-10-24T21:40:34-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "feature/short-pages-reasoning-room-20261022",
+      "sha": "67cd53a9aa96967dffbd2130dd192c7114339c03",
+      "protected": false,
+      "behind_baseline": 291,
+      "ahead_of_baseline": 0,
+      "commit_date": "2026-10-22T19:07:05-04:00",
+      "recommendation": "Deletion candidate only after owner review and archive; no deletion authorized"
+    },
+    {
+      "branch": "feature/study-realm-adaptive-skills-20261024",
+      "sha": "878b4175c6d0954d066745896af145f237c1fada",
+      "protected": false,
+      "behind_baseline": 97,
+      "ahead_of_baseline": 0,
+      "commit_date": "2026-10-24T18:17:27-04:00",
+      "recommendation": "Deletion candidate only after owner review and archive; no deletion authorized"
+    },
+    {
+      "branch": "fix/adaptive-syntax-pages-20261025",
+      "sha": "1bfc9221092e3e7966c58586dfa65d4bdc7d4d86",
+      "protected": false,
+      "behind_baseline": 61,
+      "ahead_of_baseline": 0,
+      "commit_date": "2026-10-24T23:39:52-04:00",
+      "recommendation": "Deletion candidate only after owner review and archive; no deletion authorized"
+    },
+    {
+      "branch": "fix/aetheria-path-contrast-collapse-20261028",
+      "sha": "09cb3445299f42db9cf31831c94edc6dd4737688",
+      "protected": false,
+      "behind_baseline": 23,
+      "ahead_of_baseline": 5,
+      "commit_date": "2026-10-28T13:09:21-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "fix/anchor-recovery-labels-20261101",
+      "sha": "2c6f50bad45a5ff3f67793b38d864165c07b992a",
+      "protected": false,
+      "behind_baseline": 14,
+      "ahead_of_baseline": 2,
+      "commit_date": "2026-11-01T15:58:17-05:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "fix/athenaeum-feedback-flow-20261028",
+      "sha": "7d26562a1ea3e405de846061f232c7d1d8b308dd",
+      "protected": false,
+      "behind_baseline": 21,
+      "ahead_of_baseline": 6,
+      "commit_date": "2026-10-28T18:46:28Z",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "fix/browser-navigation-20261026",
+      "sha": "91efc62f38f73ebbfe6beb0302ec479468aae748",
+      "protected": false,
+      "behind_baseline": 34,
+      "ahead_of_baseline": 3,
+      "commit_date": "2026-10-26T16:01:33-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "fix/compact-study-navigation-20261025",
+      "sha": "35c56fb6dc8a9257e770e383b78dfe8f9212f249",
+      "protected": false,
+      "behind_baseline": 68,
+      "ahead_of_baseline": 3,
+      "commit_date": "2026-10-24T23:14:55-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "fix/compact-study-panel-20261022",
+      "sha": "3bbef97dffba09316cdfaee515d1720ece21d512",
+      "protected": false,
+      "behind_baseline": 298,
+      "ahead_of_baseline": 0,
+      "commit_date": "2026-10-22T18:50:26-04:00",
+      "recommendation": "Deletion candidate only after owner review and archive; no deletion authorized"
+    },
+    {
+      "branch": "fix/d756-game-realm-scoped-questions-20261108",
+      "sha": "c2aaf296cade917f1fdcebf5ce195e289a778b00",
+      "protected": false,
+      "behind_baseline": 5,
+      "ahead_of_baseline": 4,
+      "commit_date": "2026-11-08T18:19:47-05:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "fix/d756-meeting-integration",
+      "sha": "dc396bbc27f284ca2e02749016a9688f44652a45",
+      "protected": false,
+      "behind_baseline": 2,
+      "ahead_of_baseline": 9,
+      "commit_date": "2026-11-11T18:41:02Z",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "fix/d756-natural-questions",
+      "sha": "f53ed196009b37d8bc9c2625b1d9e15a03fc0946",
+      "protected": false,
+      "behind_baseline": 1,
+      "ahead_of_baseline": 4,
+      "commit_date": "2026-11-11T19:06:23Z",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "fix/d756-runtime-loader-and-selector-20261108",
+      "sha": "497f6f1a10f8e9fb917a26d6c119b7f5486a81b4",
+      "protected": false,
+      "behind_baseline": 11,
+      "ahead_of_baseline": 3,
+      "commit_date": "2026-11-08T11:50:00-05:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "fix/d756-visible-course-selector-20261107",
+      "sha": "187a5b6b4d8823da40e093c2aafab319fbeedbe6",
+      "protected": false,
+      "behind_baseline": 12,
+      "ahead_of_baseline": 2,
+      "commit_date": "2026-11-07T18:48:17-05:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "fix/d772-answer-validation-20261101",
+      "sha": "bd7c81164a9e90b0aa7842e9c3b46d53846df0b8",
+      "protected": false,
+      "behind_baseline": 16,
+      "ahead_of_baseline": 5,
+      "commit_date": "2026-11-01T12:51:39-05:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "fix/d772-dotplot-labels-20261101",
+      "sha": "88abbfe28e19bb86970748e89e27ded15eac893a",
+      "protected": false,
+      "behind_baseline": 14,
+      "ahead_of_baseline": 2,
+      "commit_date": "2026-11-01T14:00:17-05:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "fix/d772-probability-fresh-20261024",
+      "sha": "cc37847e1681f61d59dae2334ee82a30ef1263d0",
+      "protected": false,
+      "behind_baseline": 75,
+      "ahead_of_baseline": 10,
+      "commit_date": "2026-10-24T21:59:41-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "fix/d772-review-distractor-feedback-20261101",
+      "sha": "5a87f6e777f471daceeda43a4db86aaf509be13a",
+      "protected": false,
+      "behind_baseline": 14,
+      "ahead_of_baseline": 2,
+      "commit_date": "2026-11-01T15:54:16-05:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "fix/fresh-questions-compact-learning-20261025",
+      "sha": "2511695e0317afa0f6f92511534913f53317d2c3",
+      "protected": false,
+      "behind_baseline": 51,
+      "ahead_of_baseline": 0,
+      "commit_date": "2026-10-24T23:56:32-04:00",
+      "recommendation": "Deletion candidate only after owner review and archive; no deletion authorized"
+    },
+    {
+      "branch": "fix/hex-evidence-before-feedback-20261101",
+      "sha": "c75a9df0f1ea52441c16ba20d74ee3af293ada38",
+      "protected": false,
+      "behind_baseline": 14,
+      "ahead_of_baseline": 3,
+      "commit_date": "2026-11-01T16:08:39-05:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "fix/mobile-sanctuary-contrast-20261025",
+      "sha": "2cbe76b655f8dd8f5eaa70ecaaf398cb177461f8",
+      "protected": false,
+      "behind_baseline": 42,
+      "ahead_of_baseline": 2,
+      "commit_date": "2026-10-25T00:23:22-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "fix/pixi-floor-walking-20261024",
+      "sha": "cd327c3f91a03e7d531b169fd6cc7caa16afa5c1",
+      "protected": false,
+      "behind_baseline": 100,
+      "ahead_of_baseline": 2,
+      "commit_date": "2026-10-24T17:51:07-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "fix/pixi-guardian-roster-visibility-20261024",
+      "sha": "2e8c1436e65971e3b752a1d1bdfb5658cf39bc21",
+      "protected": false,
+      "behind_baseline": 102,
+      "ahead_of_baseline": 1,
+      "commit_date": "2026-10-24T17:34:24-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "fix/pixi-roster-duplicate-and-publish-20261024",
+      "sha": "0a05e1837ed55c852e1051fd1ac3537f7b221080",
+      "protected": false,
+      "behind_baseline": 101,
+      "ahead_of_baseline": 2,
+      "commit_date": "2026-10-24T17:37:12-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "fix/potion-animation-depth",
+      "sha": "cd4bba17ab6d64605d6fcd94f91387ffeccf06d6",
+      "protected": false,
+      "behind_baseline": 104,
+      "ahead_of_baseline": 0,
+      "commit_date": "2026-10-24T17:11:25-04:00",
+      "recommendation": "Deletion candidate only after owner review and archive; no deletion authorized"
+    },
+    {
+      "branch": "fix/probability-stage-navigation-20261025",
+      "sha": "38fc74107314b44722967cfa641a374bc1b13295",
+      "protected": false,
+      "behind_baseline": 64,
+      "ahead_of_baseline": 0,
+      "commit_date": "2026-10-24T23:29:04-04:00",
+      "recommendation": "Deletion candidate only after owner review and archive; no deletion authorized"
+    },
+    {
+      "branch": "fix/probability-stage-render-20261101",
+      "sha": "7ea932efb22c37b4c6df47aa35d2566737868e70",
+      "protected": false,
+      "behind_baseline": 15,
+      "ahead_of_baseline": 4,
+      "commit_date": "2026-11-01T13:44:54-05:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "fix/professor-repair-contrast-20261022",
+      "sha": "f67a55873c9c3e3bfece9105671bb4f079ca8a28",
+      "protected": false,
+      "behind_baseline": 279,
+      "ahead_of_baseline": 0,
+      "commit_date": "2026-10-22T19:41:18-04:00",
+      "recommendation": "Deletion candidate only after owner review and archive; no deletion authorized"
+    },
+    {
+      "branch": "fix/professor-specific-transfer-20261025",
+      "sha": "c40f055b4a16c5327db0e6196120800ccd1ac792",
+      "protected": false,
+      "behind_baseline": 50,
+      "ahead_of_baseline": 3,
+      "commit_date": "2026-10-25T00:10:28-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "fix/question-repair-verified-feedback-20261101",
+      "sha": "956195b1313680991ccd5b18966c39f43cf57543",
+      "protected": false,
+      "behind_baseline": 16,
+      "ahead_of_baseline": 2,
+      "commit_date": "2026-11-01T12:42:18-05:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "fix/reasoning-mean-knowns-validation-20261023",
+      "sha": "3e554d4c94e0f8eee65433970ba99ab658623639",
+      "protected": false,
+      "behind_baseline": 252,
+      "ahead_of_baseline": 4,
+      "commit_date": "2026-10-23T18:34:00-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "fix/recovery-fresh-generator-20261025",
+      "sha": "ba4f6f09af6720a307335db178985833f4bf1fcd",
+      "protected": false,
+      "behind_baseline": 50,
+      "ahead_of_baseline": 2,
+      "commit_date": "2026-10-25T00:06:57-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "fix/release-and-mobile-audit-20261025",
+      "sha": "321a1d4f0a51b26290590283b8d3f704fd03a5fe",
+      "protected": false,
+      "behind_baseline": 39,
+      "ahead_of_baseline": 0,
+      "commit_date": "2026-10-25T00:24:59-04:00",
+      "recommendation": "Deletion candidate only after owner review and archive; no deletion authorized"
+    },
+    {
+      "branch": "fix/release-test-probability-180-20261025",
+      "sha": "8be34c988d6251d0aef6b13c6f4acc2386d53e94",
+      "protected": false,
+      "behind_baseline": 50,
+      "ahead_of_baseline": 1,
+      "commit_date": "2026-10-25T00:04:14-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "fix/remove-broken-repair-transfer-20261028",
+      "sha": "2812af069027dedfe36e74fe679e15ddd02c1f6e",
+      "protected": false,
+      "behind_baseline": 27,
+      "ahead_of_baseline": 2,
+      "commit_date": "2026-10-28T12:04:54-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "fix/sanctuary-identity-mapping-20261024",
+      "sha": "b01f0a521175bc0a9dcbb6e238f0ece4db695226",
+      "protected": false,
+      "behind_baseline": 99,
+      "ahead_of_baseline": 0,
+      "commit_date": "2026-10-24T17:51:16-04:00",
+      "recommendation": "Deletion candidate only after owner review and archive; no deletion authorized"
+    },
+    {
+      "branch": "fix/sanctuary-learning-certification",
+      "sha": "0605af970fdc1b6e24a061a922dc619fe6ecc9ed",
+      "protected": false,
+      "behind_baseline": 93,
+      "ahead_of_baseline": 0,
+      "commit_date": "2026-10-24T22:40:51Z",
+      "recommendation": "Deletion candidate only after owner review and archive; no deletion authorized"
+    },
+    {
+      "branch": "fix/screenshots-learning-ui-20261028",
+      "sha": "65fcb80af1c9c74c62b1ed3debe9dc03f0a2c89e",
+      "protected": false,
+      "behind_baseline": 28,
+      "ahead_of_baseline": 6,
+      "commit_date": "2026-10-28T11:05:20-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "fix/shared-eight-step-repair",
+      "sha": "4da3ab3675424dac695ba729e4ffe6b9ff2c27a0",
+      "protected": false,
+      "behind_baseline": 18,
+      "ahead_of_baseline": 0,
+      "commit_date": "2026-10-30T02:36:39Z",
+      "recommendation": "Deletion candidate only after owner review and archive; no deletion authorized"
+    },
+    {
+      "branch": "fix/stable-browser-selector-20261028",
+      "sha": "d42a7011cc49792b9ec89b4aff02499acf63a6de",
+      "protected": false,
+      "behind_baseline": 26,
+      "ahead_of_baseline": 1,
+      "commit_date": "2026-10-28T12:07:07-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "fix/study-now-compact-counters-20261025",
+      "sha": "5b16a0a094dd5500aea75213e32ad81f4678189e",
+      "protected": false,
+      "behind_baseline": 70,
+      "ahead_of_baseline": 2,
+      "commit_date": "2026-10-24T22:32:46-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "fix/study-realm-fresh-transfer-20261026",
+      "sha": "4572f35513f880764e0260ee9e0ce6a4463c39b9",
+      "protected": false,
+      "behind_baseline": 35,
+      "ahead_of_baseline": 0,
+      "commit_date": "2026-10-26T12:42:01-04:00",
+      "recommendation": "Deletion candidate only after owner review and archive; no deletion authorized"
+    },
+    {
+      "branch": "fix/study-realm-persistence-evidence-20261027",
+      "sha": "bd520bc3e2e8ed3acd33debafc895bf510d3e98e",
+      "protected": false,
+      "behind_baseline": 34,
+      "ahead_of_baseline": 3,
+      "commit_date": "2026-10-27T05:29:22-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "game-realm-accessibility-3356",
+      "sha": "0db327eeb8b03d43e87414ee5aa0f5753e950314",
+      "protected": false,
+      "behind_baseline": 1312,
+      "ahead_of_baseline": 5,
+      "commit_date": "2026-09-29T19:57:30-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "game-realm-clarity-3355",
+      "sha": "0498fdc0824800c55277890f05d82c1cc6e70d4e",
+      "protected": false,
+      "behind_baseline": 1313,
+      "ahead_of_baseline": 6,
+      "commit_date": "2026-09-29T19:56:03-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "game-realm-d755-sigil-expansion",
+      "sha": "e23056f6083e9325cf26ebc268b999d9eb49d30f",
+      "protected": false,
+      "behind_baseline": 1293,
+      "ahead_of_baseline": 5,
+      "commit_date": "2026-09-29T21:09:22-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "game-realm-enhancements-3353",
+      "sha": "6a3f7b4bbc290c40f21be1110205729b2f1dde2d",
+      "protected": false,
+      "behind_baseline": 1315,
+      "ahead_of_baseline": 6,
+      "commit_date": "2026-09-29T19:48:19-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "game-realm-feedback-3354",
+      "sha": "254ebbaa9c857f0ea8f0f32a8642579a5f351bdf",
+      "protected": false,
+      "behind_baseline": 1314,
+      "ahead_of_baseline": 6,
+      "commit_date": "2026-09-29T19:54:21-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "game-realm-mystical-worlds",
+      "sha": "d1000d225cda73bbc48d16bf7a735714e48cde55",
+      "protected": false,
+      "behind_baseline": 1325,
+      "ahead_of_baseline": 1,
+      "commit_date": "2026-09-29T19:01:13-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "game-realm-overhaul-1",
+      "sha": "7bd43b34c2a0e332f2cdecf05229c339d8210202",
+      "protected": false,
+      "behind_baseline": 1329,
+      "ahead_of_baseline": 0,
+      "commit_date": "2026-09-29T18:37:02-04:00",
+      "recommendation": "Deletion candidate only after owner review and archive; no deletion authorized"
+    },
+    {
+      "branch": "game-realm-overhaul-2",
+      "sha": "d1c155597dfbaa7ed2ccf3dc0f7db26ceea96b12",
+      "protected": false,
+      "behind_baseline": 1328,
+      "ahead_of_baseline": 0,
+      "commit_date": "2026-09-29T18:48:04-04:00",
+      "recommendation": "Deletion candidate only after owner review and archive; no deletion authorized"
+    },
+    {
+      "branch": "game-realm-overhaul-3",
+      "sha": "cd32920e88349335080b231eb4badb60a1e3cb48",
+      "protected": false,
+      "behind_baseline": 1327,
+      "ahead_of_baseline": 3,
+      "commit_date": "2026-09-29T18:55:49-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "game-realm-overhaul-4",
+      "sha": "b2f2ca18340a6f6cb7b7f1afe8827006d267c90b",
+      "protected": false,
+      "behind_baseline": 1326,
+      "ahead_of_baseline": 3,
+      "commit_date": "2026-09-29T19:00:05-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "game-realm-progress-3357-rebased",
+      "sha": "474d1cab607befcda23bc6e5537eaca1a1fca14e",
+      "protected": false,
+      "behind_baseline": 1309,
+      "ahead_of_baseline": 6,
+      "commit_date": "2026-09-29T20:06:24-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "game-realm-progress-3357",
+      "sha": "79a66d7aa8a8c5a2d7b8d44a732610bcf09fb4e2",
+      "protected": false,
+      "behind_baseline": 1311,
+      "ahead_of_baseline": 6,
+      "commit_date": "2026-09-29T19:58:58-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "game-realm-visual-worlds",
+      "sha": "5a5e1b4b8cebbfba07fe1dabec9b8239a37ace50",
+      "protected": false,
+      "behind_baseline": 1317,
+      "ahead_of_baseline": 4,
+      "commit_date": "2026-09-29T19:26:08-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "guardian-bed-sleep-polish",
+      "sha": "271e910bb9d238337050e2ee0ce3465bfdca747e",
+      "protected": false,
+      "behind_baseline": 1274,
+      "ahead_of_baseline": 6,
+      "commit_date": "2026-09-30T08:05:32-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "guardian-care-station-travel",
+      "sha": "a750bc14d1855933cbb0bf80a61042f8e9e5175d",
+      "protected": false,
+      "behind_baseline": 1270,
+      "ahead_of_baseline": 7,
+      "commit_date": "2026-09-30T17:18:09-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "guardian-care-visual-moments",
+      "sha": "028336a352c16188c0248d9030e393e7380e9cdb",
+      "protected": false,
+      "behind_baseline": 1271,
+      "ahead_of_baseline": 5,
+      "commit_date": "2026-09-30T17:15:09-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "guardian-distinct-play-reactions",
+      "sha": "cd6fb5b32bcc4abc486312dea302b234c1114ced",
+      "protected": false,
+      "behind_baseline": 1275,
+      "ahead_of_baseline": 5,
+      "commit_date": "2026-09-30T08:01:06-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "guardian-dynamic-motion-polish",
+      "sha": "5b10cd701d9aae911e1a9fbdf47c606c706ca2b3",
+      "protected": false,
+      "behind_baseline": 1276,
+      "ahead_of_baseline": 6,
+      "commit_date": "2026-09-30T07:58:04-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "guardian-favorite-item-moments",
+      "sha": "06f62d8969da5911f90fd8dff2ae91021b513a41",
+      "protected": false,
+      "behind_baseline": 1269,
+      "ahead_of_baseline": 0,
+      "commit_date": "2026-09-30T17:18:39-04:00",
+      "recommendation": "Deletion candidate only after owner review and archive; no deletion authorized"
+    },
+    {
+      "branch": "guardian-favorite-item-moments-v2",
+      "sha": "6141bff923952d13577031c3bdcd69e1a7b640be",
+      "protected": false,
+      "behind_baseline": 1268,
+      "ahead_of_baseline": 4,
+      "commit_date": "2026-09-30T17:21:44-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "guardian-identity-canon-fix",
+      "sha": "7df85968b6c2a3c7486bf804a52f8c3aac008dd9",
+      "protected": false,
+      "behind_baseline": 1329,
+      "ahead_of_baseline": 6,
+      "commit_date": "2026-09-29T18:47:48-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "guardian-individual-behavior",
+      "sha": "375e4fdb8addcb911541ab28c3cbddf477a69de1",
+      "protected": false,
+      "behind_baseline": 1272,
+      "ahead_of_baseline": 5,
+      "commit_date": "2026-09-30T08:10:53-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "guardian-individual-variants",
+      "sha": "f2d3c2498d60df3e37760171304bdb3f37336946",
+      "protected": false,
+      "behind_baseline": 1328,
+      "ahead_of_baseline": 5,
+      "commit_date": "2026-09-29T18:52:32-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "guardian-personality-idles",
+      "sha": "6257f42d8536b4e47194fdefdc830191f13b5536",
+      "protected": false,
+      "behind_baseline": 1273,
+      "ahead_of_baseline": 5,
+      "commit_date": "2026-09-30T08:08:50-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "guardian-runtime-authority-fix",
+      "sha": "e75b1b7f14a7d8e565d57b4c1d7ec30867ad99ce",
+      "protected": false,
+      "behind_baseline": 1335,
+      "ahead_of_baseline": 1,
+      "commit_date": "2026-09-29T17:03:40-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "guardian-stage-action-safety-20261016",
+      "sha": "030a78d5dd9b0fbfe8661c5a56b063f8522f6b69",
+      "protected": false,
+      "behind_baseline": 373,
+      "ahead_of_baseline": 4,
+      "commit_date": "2026-10-16T21:52:30-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "hotfix-adaptive-verifier-syntax",
+      "sha": "bd348a8bab1f0addd0e40bf6b52e9c6cda1fa072",
+      "protected": false,
+      "behind_baseline": 1303,
+      "ahead_of_baseline": 1,
+      "commit_date": "2026-09-29T20:28:19-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "hotfix-d755-assess2-smoke-ids",
+      "sha": "6cc79d3b9c50527e1ff280327e6053d4962f5de0",
+      "protected": false,
+      "behind_baseline": 1300,
+      "ahead_of_baseline": 1,
+      "commit_date": "2026-09-29T20:41:43-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "hotfix-d755-detective-smoke",
+      "sha": "279d620ff75c0eeb3614bef116ac25748587e46d",
+      "protected": false,
+      "behind_baseline": 1298,
+      "ahead_of_baseline": 1,
+      "commit_date": "2026-09-29T20:56:07-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "hotfix-d755-detective-smoke-view",
+      "sha": "019e9e6113af0d63fb627fb254e0455de46af0dd",
+      "protected": false,
+      "behind_baseline": 1298,
+      "ahead_of_baseline": 1,
+      "commit_date": "2026-09-29T20:47:42-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "hotfix-d755-mastery-export",
+      "sha": "10d774a66ea0a5496d33ef0f2133f767e8393d8d",
+      "protected": false,
+      "behind_baseline": 1296,
+      "ahead_of_baseline": 1,
+      "commit_date": "2026-09-29T21:01:27-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "hotfix-d755-mistake-queue-smoke",
+      "sha": "07b69cb45b3ba031d76403d49b7f24c7c601c545",
+      "protected": false,
+      "behind_baseline": 1287,
+      "ahead_of_baseline": 1,
+      "commit_date": "2026-09-29T21:24:38-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "hotfix-d755-mistake-smoke-state",
+      "sha": "a12610d29c5026d18b5031ef694205f8d57660e2",
+      "protected": false,
+      "behind_baseline": 1286,
+      "ahead_of_baseline": 1,
+      "commit_date": "2026-09-29T21:25:14-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "hotfix-d755-smart-review-smoke-order",
+      "sha": "dc7d1b5d84d9a2f388773740a69f294d352e682e",
+      "protected": false,
+      "behind_baseline": 1280,
+      "ahead_of_baseline": 1,
+      "commit_date": "2026-09-30T07:40:34-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "hotfix-d755-smart-summary-export",
+      "sha": "8652361250bb895e2b465251e12645c855327bca",
+      "protected": false,
+      "behind_baseline": 1281,
+      "ahead_of_baseline": 1,
+      "commit_date": "2026-09-30T07:39:04-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "hotfix-game-realm-smoke-sessionhtml",
+      "sha": "d911941f0aa8b1df4868734894a3ee7579a821d7",
+      "protected": false,
+      "behind_baseline": 1310,
+      "ahead_of_baseline": 1,
+      "commit_date": "2026-09-29T20:04:33-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "hotfix-game-realm-syntax",
+      "sha": "75920d73997b8af66dc51524e2d5ff7c78746568",
+      "protected": false,
+      "behind_baseline": 1324,
+      "ahead_of_baseline": 1,
+      "commit_date": "2026-09-29T19:05:34-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "hotfix-guardian-treat-route",
+      "sha": "63e18893f2d5d0f5c5b442c48c15b0693b97d17d",
+      "protected": false,
+      "behind_baseline": 1269,
+      "ahead_of_baseline": 1,
+      "commit_date": "2026-09-30T17:20:04-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "hotfix-study-screen-3352",
+      "sha": "ab2753d625af2bc881ebfad74675ccfd28a56ed6",
+      "protected": false,
+      "behind_baseline": 1323,
+      "ahead_of_baseline": 2,
+      "commit_date": "2026-09-29T19:08:30-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "integration/majick-rooms-trial-20261027",
+      "sha": "ee3cedc25ce6837a33eea7910c0a066f6775050e",
+      "protected": false,
+      "behind_baseline": 34,
+      "ahead_of_baseline": 24,
+      "commit_date": "2026-10-27T10:54:54-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "integration/sanctuary-atelier-rewards-20261024",
+      "sha": "4c736da017a47a06ff2fd49744459d882559b0e5",
+      "protected": false,
+      "behind_baseline": 72,
+      "ahead_of_baseline": 0,
+      "commit_date": "2026-10-24T22:03:07-04:00",
+      "recommendation": "Deletion candidate only after owner review and archive; no deletion authorized"
+    },
+    {
+      "branch": "label-study-candlelit-oct1",
+      "sha": "98927da660f04bb58ca7f22f46aa72d1845f30a6",
+      "protected": false,
+      "behind_baseline": 1247,
+      "ahead_of_baseline": 8,
+      "commit_date": "2026-09-30T23:01:54-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "main",
+      "sha": "31be7d10f31ebb71b66a2055ef0246d228aac9ce",
+      "protected": false,
+      "behind_baseline": 0,
+      "ahead_of_baseline": 0,
+      "commit_date": "2026-11-11T14:13:06-05:00",
+      "recommendation": "Deletion candidate only after owner review and archive; no deletion authorized"
+    },
+    {
+      "branch": "majick-phase5-reliability",
+      "sha": "714f95b2a36dcf8cb69a1216a88c0040d3b63ddd",
+      "protected": false,
+      "behind_baseline": 394,
+      "ahead_of_baseline": 0,
+      "commit_date": "2026-10-16T06:52:51-04:00",
+      "recommendation": "Deletion candidate only after owner review and archive; no deletion authorized"
+    },
+    {
+      "branch": "master-project-board-20261017",
+      "sha": "c801e27527e4407e48f2b8d345132a126b480c57",
+      "protected": false,
+      "behind_baseline": 373,
+      "ahead_of_baseline": 7,
+      "commit_date": "2026-10-17T10:50:33-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "memory-constellation-ux-fix",
+      "sha": "4678f78aed0aeee1b5d882c81757dca494ad02e0",
+      "protected": false,
+      "behind_baseline": 1316,
+      "ahead_of_baseline": 7,
+      "commit_date": "2026-09-29T19:35:42-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "oa-variants-v2",
+      "sha": "6e6b0270ab5a136fe2538a1380925a335a8d1565",
+      "protected": false,
+      "behind_baseline": 270,
+      "ahead_of_baseline": 0,
+      "commit_date": "2026-10-22T20:29:01-04:00",
+      "recommendation": "Deletion candidate only after owner review and archive; no deletion authorized"
+    },
+    {
+      "branch": "pages-live-verifier-diagnostics",
+      "sha": "d32d53c17c16abf5e7e3a42ea82703d5f35a13b2",
+      "protected": false,
+      "behind_baseline": 1305,
+      "ahead_of_baseline": 1,
+      "commit_date": "2026-09-29T20:23:40-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "phase2-connected-probability",
+      "sha": "0ce009653f0fb5790feafd28e1a90c6f562ce108",
+      "protected": false,
+      "behind_baseline": 604,
+      "ahead_of_baseline": 0,
+      "commit_date": "2026-10-15T02:18:32Z",
+      "recommendation": "Deletion candidate only after owner review and archive; no deletion authorized"
+    },
+    {
+      "branch": "phase6-commons-analytics-access-20261016",
+      "sha": "63055e70c03e38df0e6e7ff54021f6095375f460",
+      "protected": false,
+      "behind_baseline": 380,
+      "ahead_of_baseline": 0,
+      "commit_date": "2026-10-16T11:01:31-04:00",
+      "recommendation": "Deletion candidate only after owner review and archive; no deletion authorized"
+    },
+    {
+      "branch": "phase7-layered-campus-ambience-20261016",
+      "sha": "4311881df539f57bce6d7bd10ed25176db01c3bb",
+      "protected": false,
+      "behind_baseline": 373,
+      "ahead_of_baseline": 14,
+      "commit_date": "2026-10-16T20:42:31-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "release/illustrated-rooms-20261027",
+      "sha": "066bec1e6b3c68a092731231604480786ad352b2",
+      "protected": false,
+      "behind_baseline": 31,
+      "ahead_of_baseline": 16,
+      "commit_date": "2026-10-27T10:56:40-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "release/pixi-ceremony-live-20261024",
+      "sha": "a756fe27c45b880989ee8ce01a3d194e42799d8d",
+      "protected": false,
+      "behind_baseline": 80,
+      "ahead_of_baseline": 0,
+      "commit_date": "2026-10-24T21:16:38-04:00",
+      "recommendation": "Deletion candidate only after owner review and archive; no deletion authorized"
+    },
+    {
+      "branch": "release-version-3352",
+      "sha": "3e0cc150a391c6899fa456bcefa9588486f0c25d",
+      "protected": false,
+      "behind_baseline": 1325,
+      "ahead_of_baseline": 3,
+      "commit_date": "2026-09-29T19:02:49-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "repair/commons-keyboard-release-20261021",
+      "sha": "f7b8141f316554a20eb15f8b3981cbd1709d49c7",
+      "protected": false,
+      "behind_baseline": 329,
+      "ahead_of_baseline": 0,
+      "commit_date": "2026-10-22T17:37:03-04:00",
+      "recommendation": "Deletion candidate only after owner review and archive; no deletion authorized"
+    },
+    {
+      "branch": "repair/d772-readability-navigation-20261021",
+      "sha": "b384e632a50f6c4edd42e3c8a5c1769228cbb324",
+      "protected": false,
+      "behind_baseline": 371,
+      "ahead_of_baseline": 5,
+      "commit_date": "2026-10-21T20:26:04-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "repair/guardian-approved-identity-20261021",
+      "sha": "aef9411e198c3ec71707ef12e965b1494ab88246",
+      "protected": false,
+      "behind_baseline": 371,
+      "ahead_of_baseline": 5,
+      "commit_date": "2026-10-21T18:49:46-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "repair/probability-release-gate-20261021",
+      "sha": "943263d2c5a401071c9d55f824fbf1aee2976587",
+      "protected": false,
+      "behind_baseline": 373,
+      "ahead_of_baseline": 12,
+      "commit_date": "2026-10-21T16:17:44-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "repair-guided-scenarios-20261028",
+      "sha": "2ebbea972efc35295be0f8130f350180076914d5",
+      "protected": false,
+      "behind_baseline": 21,
+      "ahead_of_baseline": 2,
+      "commit_date": "2026-10-28T13:29:42-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "repair-histogram-scenario-20261017",
+      "sha": "fbc20e2d7b93594536256b955ade70e4a8d18b96",
+      "protected": false,
+      "behind_baseline": 373,
+      "ahead_of_baseline": 3,
+      "commit_date": "2026-10-17T10:26:37-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "sanctuary-real-motion-frames-20261017",
+      "sha": "5be05d345312414edfd6cfa4956b11911e6f9eb3",
+      "protected": false,
+      "behind_baseline": 373,
+      "ahead_of_baseline": 96,
+      "commit_date": "2026-10-20T08:15:44-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "scholar-base-layer-contract-20261017",
+      "sha": "190657fa79d8ece386ffceb2094db61ae691e97b",
+      "protected": false,
+      "behind_baseline": 373,
+      "ahead_of_baseline": 10,
+      "commit_date": "2026-10-17T10:53:07-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "six-connected-study-enhancements",
+      "sha": "f16acc80782ba6c468e9203cd1e8ef24ef233a01",
+      "protected": false,
+      "behind_baseline": 261,
+      "ahead_of_baseline": 0,
+      "commit_date": "2026-10-23T16:35:54-04:00",
+      "recommendation": "Deletion candidate only after owner review and archive; no deletion authorized"
+    },
+    {
+      "branch": "study-realm-adaptive-selection-20261024",
+      "sha": "4a0ff065fe6e46b5c8c1cedf45a8fdd0f46e4298",
+      "protected": false,
+      "behind_baseline": 88,
+      "ahead_of_baseline": 0,
+      "commit_date": "2026-10-24T20:40:54-04:00",
+      "recommendation": "Deletion candidate only after owner review and archive; no deletion authorized"
+    },
+    {
+      "branch": "style/room-identities-20261027",
+      "sha": "73f8dc7d2d776709774e2ce8be823b31ceec0bb0",
+      "protected": false,
+      "behind_baseline": 34,
+      "ahead_of_baseline": 8,
+      "commit_date": "2026-10-27T10:02:40-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "style/study-realm-arcane-typography-20261027",
+      "sha": "9695ab4c3c1ce9890fc63797e466757c8bffc8cd",
+      "protected": false,
+      "behind_baseline": 34,
+      "ahead_of_baseline": 5,
+      "commit_date": "2026-10-27T05:43:45-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "test/d772-deterministic-academic-gate-20261101",
+      "sha": "77014e8880ffd9fdb66b3f4a1a669243e8914a95",
+      "protected": false,
+      "behind_baseline": 16,
+      "ahead_of_baseline": 7,
+      "commit_date": "2026-11-01T13:05:00-05:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "v3317-guardian-care-economy",
+      "sha": "c0714eeea908997b83942e77a2df2a6ba00706e9",
+      "protected": false,
+      "behind_baseline": 1634,
+      "ahead_of_baseline": 0,
+      "commit_date": "2026-09-20T11:10:40-04:00",
+      "recommendation": "Deletion candidate only after owner review and archive; no deletion authorized"
+    },
+    {
+      "branch": "v3317-inline-script-repair",
+      "sha": "486b15a0cda522e80cd3f3594dcf9ac5a95550c6",
+      "protected": false,
+      "behind_baseline": 1612,
+      "ahead_of_baseline": 0,
+      "commit_date": "2026-09-20T12:05:19-04:00",
+      "recommendation": "Deletion candidate only after owner review and archive; no deletion authorized"
+    },
+    {
+      "branch": "v3317-notes-forge-finish",
+      "sha": "c13c1186a34f27e592c45cf808c8e1c4c28a8f9e",
+      "protected": false,
+      "behind_baseline": 1652,
+      "ahead_of_baseline": 0,
+      "commit_date": "2026-09-20T10:35:47-04:00",
+      "recommendation": "Deletion candidate only after owner review and archive; no deletion authorized"
+    },
+    {
+      "branch": "v3317-render-owner-repair",
+      "sha": "821d108f6717846877ffdbc226ad5937c58984c4",
+      "protected": false,
+      "behind_baseline": 1616,
+      "ahead_of_baseline": 0,
+      "commit_date": "2026-09-20T11:53:04-04:00",
+      "recommendation": "Deletion candidate only after owner review and archive; no deletion authorized"
+    },
+    {
+      "branch": "v3317-sanctuary-object-pass",
+      "sha": "6c4ab3f41a316c63bc8a486179efd568cd5fcdb4",
+      "protected": false,
+      "behind_baseline": 1656,
+      "ahead_of_baseline": 0,
+      "commit_date": "2026-09-20T10:33:01-04:00",
+      "recommendation": "Deletion candidate only after owner review and archive; no deletion authorized"
+    },
+    {
+      "branch": "v3317-save-migration-fix",
+      "sha": "1d6b380ffc042091b26423adf31a49b7a145dc23",
+      "protected": false,
+      "behind_baseline": 1623,
+      "ahead_of_baseline": 0,
+      "commit_date": "2026-09-20T11:41:07-04:00",
+      "recommendation": "Deletion candidate only after owner review and archive; no deletion authorized"
+    },
+    {
+      "branch": "v3318-golden-baseline",
+      "sha": "9a4ee83e7188e72373ed23fec8635cdafb13fe12",
+      "protected": false,
+      "behind_baseline": 1852,
+      "ahead_of_baseline": 1,
+      "commit_date": "2026-09-20T17:28:35Z",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "v3353-assessment-depth",
+      "sha": "db3c0a1f976129aec9db0ece9f7332ca3b03447a",
+      "protected": false,
+      "behind_baseline": 1243,
+      "ahead_of_baseline": 6,
+      "commit_date": "2026-10-02T22:51:07-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "v3354-d772-collegium-rebuild",
+      "sha": "189ce7332d345631433b28d071a7661cc0dff6c2",
+      "protected": false,
+      "behind_baseline": 1242,
+      "ahead_of_baseline": 7,
+      "commit_date": "2026-10-02T23:12:53-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "v3354-deploy-hotfix",
+      "sha": "985dbaafa39b764883e01b7c25ca2091ebec0554",
+      "protected": false,
+      "behind_baseline": 1241,
+      "ahead_of_baseline": 2,
+      "commit_date": "2026-10-02T23:14:48-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "v3355-d772-realm-training",
+      "sha": "0f9da00355eca37c4918399f9f799686f69aa668",
+      "protected": false,
+      "behind_baseline": 1240,
+      "ahead_of_baseline": 7,
+      "commit_date": "2026-10-02T23:19:07-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "v3356-d772-instruction-depth",
+      "sha": "492030715b7cdb16bd773bb5848543b411fe5f67",
+      "protected": false,
+      "behind_baseline": 1239,
+      "ahead_of_baseline": 7,
+      "commit_date": "2026-10-02T23:21:17-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "v3356-smoke-hotfix",
+      "sha": "04ce6f472e106e945cc71a634fbe794614c1d7ef",
+      "protected": false,
+      "behind_baseline": 1238,
+      "ahead_of_baseline": 2,
+      "commit_date": "2026-10-02T23:22:37-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "v3357-sanctuary-dorm-polish",
+      "sha": "44c222a92199b6354caabc8930ca2b7afba385d2",
+      "protected": false,
+      "behind_baseline": 1237,
+      "ahead_of_baseline": 7,
+      "commit_date": "2026-10-02T23:24:43-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "v3358-d772-hall-map",
+      "sha": "1215ab0d2aa4ca08314b8e6d410fa754d838d5da",
+      "protected": false,
+      "behind_baseline": 1236,
+      "ahead_of_baseline": 7,
+      "commit_date": "2026-10-02T23:27:09-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "v3359-d772-section-review",
+      "sha": "a33f3d77ffea45a319fac1593b924a640c5f5cb7",
+      "protected": false,
+      "behind_baseline": 1235,
+      "ahead_of_baseline": 6,
+      "commit_date": "2026-10-02T23:30:20-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "v3360-living-magic-smoothness",
+      "sha": "39d6939e726da7dcd9628f9437bf12c78613b149",
+      "protected": false,
+      "behind_baseline": 1234,
+      "ahead_of_baseline": 7,
+      "commit_date": "2026-10-02T23:40:59-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "v3361-campus-runtime",
+      "sha": "97a23727c4d7043917a82ab05f581f57a7d51f90",
+      "protected": false,
+      "behind_baseline": 1233,
+      "ahead_of_baseline": 13,
+      "commit_date": "2026-10-03T00:06:16-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "v3361-render-fallback-hotfix",
+      "sha": "434e17b0be270548e2e0a8e1ff705e9da9f3b7a5",
+      "protected": false,
+      "behind_baseline": 1231,
+      "ahead_of_baseline": 1,
+      "commit_date": "2026-10-03T00:10:33-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "v3361-verify-hotfix",
+      "sha": "428d6be743fe154a64204bd78fd8eef510e2eccb",
+      "protected": false,
+      "behind_baseline": 1232,
+      "ahead_of_baseline": 1,
+      "commit_date": "2026-10-03T00:08:55-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "v3362-classroom-library-life",
+      "sha": "b9f4608a2f30fa3fa77989addda0225d418dfbe5",
+      "protected": false,
+      "behind_baseline": 1232,
+      "ahead_of_baseline": 7,
+      "commit_date": "2026-10-03T00:09:50-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "v3363-focus-feedback",
+      "sha": "45c9ca23c3cbbee55f3bfd4a93fccce960f5c98b",
+      "protected": false,
+      "behind_baseline": 1229,
+      "ahead_of_baseline": 7,
+      "commit_date": "2026-10-03T00:14:19-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "v3364-room-micro-sound",
+      "sha": "f8b2ad3edea8c56f41ee487240e17b6fdda3a301",
+      "protected": false,
+      "behind_baseline": 1228,
+      "ahead_of_baseline": 6,
+      "commit_date": "2026-10-03T00:16:19-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "v3365-mobile-cleanup",
+      "sha": "416e6e8338e304396a3f85c2cade675eb36cc252",
+      "protected": false,
+      "behind_baseline": 1227,
+      "ahead_of_baseline": 7,
+      "commit_date": "2026-10-03T01:01:47-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "v3366-guardian-academic-presence",
+      "sha": "042ec35a1297766d2e894f159d535cfd3d719d16",
+      "protected": false,
+      "behind_baseline": 1226,
+      "ahead_of_baseline": 7,
+      "commit_date": "2026-10-03T01:03:17-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "v3367-d772-course-map",
+      "sha": "4092eb5dbdc8d63ccebced55ef10525659d4d105",
+      "protected": false,
+      "behind_baseline": 1225,
+      "ahead_of_baseline": 7,
+      "commit_date": "2026-10-03T01:05:09-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "v3368-d772-section-aware-intake",
+      "sha": "eb378e181f0859fb27d8022ed784527a5a8779ee",
+      "protected": false,
+      "behind_baseline": 1224,
+      "ahead_of_baseline": 9,
+      "commit_date": "2026-10-03T01:08:15-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "v3369-d772-section-readiness",
+      "sha": "43631fb755f329ef4ad35b6d3b751e6be0fea4c4",
+      "protected": false,
+      "behind_baseline": 1223,
+      "ahead_of_baseline": 7,
+      "commit_date": "2026-10-03T01:10:38-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "v3369-smoke-hotfix",
+      "sha": "4a656971dcbb1a0a25be7953f4fb6a26353e63d8",
+      "protected": false,
+      "behind_baseline": 1222,
+      "ahead_of_baseline": 1,
+      "commit_date": "2026-10-03T01:12:29-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "v3370-d772-section-library",
+      "sha": "e93dd247e75c415c69d0b695b8e80854ca685c48",
+      "protected": false,
+      "behind_baseline": 1222,
+      "ahead_of_baseline": 7,
+      "commit_date": "2026-10-03T01:13:26-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "v3371-section-intake-shortcuts",
+      "sha": "c3ca70381e8b3c3e913d9e628fd8352fd180c86e",
+      "protected": false,
+      "behind_baseline": 1220,
+      "ahead_of_baseline": 7,
+      "commit_date": "2026-10-03T01:15:49-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "v3372-source-provenance",
+      "sha": "709a31b2d486d6638e15aac4428b1e7ad244df28",
+      "protected": false,
+      "behind_baseline": 1219,
+      "ahead_of_baseline": 10,
+      "commit_date": "2026-10-03T13:24:35-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "v3373-d772-l3-quiz1-repair",
+      "sha": "872950562ce10b52b390c17103f236e1d6a8bc02",
+      "protected": false,
+      "behind_baseline": 1218,
+      "ahead_of_baseline": 0,
+      "commit_date": "2026-10-03T13:25:08-04:00",
+      "recommendation": "Deletion candidate only after owner review and archive; no deletion authorized"
+    },
+    {
+      "branch": "v3374-d772-section2-structure",
+      "sha": "b12848dc26c3af63fa54ef90399e1aec9b5075a6",
+      "protected": false,
+      "behind_baseline": 1218,
+      "ahead_of_baseline": 9,
+      "commit_date": "2026-10-03T14:13:52-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "v3374-repair-smoke-hotfix",
+      "sha": "8d58540e5bd691e98e18c76eaa6cc78210774d23",
+      "protected": false,
+      "behind_baseline": 1216,
+      "ahead_of_baseline": 1,
+      "commit_date": "2026-10-03T14:21:04-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "v3375-d772-l3-quiz1-repair",
+      "sha": "54c864b29d5459099f5792c0f6957c167efcd237",
+      "protected": false,
+      "behind_baseline": 1217,
+      "ahead_of_baseline": 6,
+      "commit_date": "2026-10-03T14:16:18-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "v3376-egg-hatch-policy",
+      "sha": "bad21759e3c45077034a7318be2545de34f3fa45",
+      "protected": false,
+      "behind_baseline": 1216,
+      "ahead_of_baseline": 7,
+      "commit_date": "2026-10-03T14:20:30-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "v3376-s2-l1-domain-hotfix",
+      "sha": "80a724f99022e9eb3ae43a9e4b416eca7cd8d23b",
+      "protected": false,
+      "behind_baseline": 1212,
+      "ahead_of_baseline": 1,
+      "commit_date": "2026-10-03T14:57:42-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "v3376-s2-l1-verify-hotfix",
+      "sha": "55c7f57f5e1f7c8cc635f12df2d8cae5e60fed4f",
+      "protected": false,
+      "behind_baseline": 1213,
+      "ahead_of_baseline": 1,
+      "commit_date": "2026-10-03T14:56:11-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "v3377-d772-s2-l1-data-types",
+      "sha": "7b9da9469ffe10db05f3458a53f6b2795e448cf1",
+      "protected": false,
+      "behind_baseline": 1214,
+      "ahead_of_baseline": 7,
+      "commit_date": "2026-10-03T14:54:33-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "v3377-dorm-path-hotfix",
+      "sha": "d59a2762620aec0dfab114c28bf4b17eb2b8cfd9",
+      "protected": false,
+      "behind_baseline": 1208,
+      "ahead_of_baseline": 1,
+      "commit_date": "2026-10-03T15:12:48-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "v3377-dorm-smoke-hotfix",
+      "sha": "43c437b3fb069ab0f66393eb75ec125606baad9b",
+      "protected": false,
+      "behind_baseline": 1210,
+      "ahead_of_baseline": 1,
+      "commit_date": "2026-10-03T15:09:06-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "v3377-dorm-verifier-hotfix",
+      "sha": "cae2603bd6ff2fb51408fee1f16e77d7815fe457",
+      "protected": false,
+      "behind_baseline": 1209,
+      "ahead_of_baseline": 1,
+      "commit_date": "2026-10-03T15:10:59-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "v3378-campus-focus-dormitory",
+      "sha": "fd9c178a48a626a5698a585cf505c3481c6b78fc",
+      "protected": false,
+      "behind_baseline": 1211,
+      "ahead_of_baseline": 12,
+      "commit_date": "2026-10-03T15:07:36-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "v3378-s2-l1-explanatory-response-release",
+      "sha": "faec3eeecdccb887cf6e33c6f060ca41e35240d1",
+      "protected": false,
+      "behind_baseline": 1206,
+      "ahead_of_baseline": 4,
+      "commit_date": "2026-10-03T15:15:28-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "v3379-d772-s2-l1-explanatory-response",
+      "sha": "82ced9c3e64da9cdaf59673710ce9d7e51f82870",
+      "protected": false,
+      "behind_baseline": 1208,
+      "ahead_of_baseline": 3,
+      "commit_date": "2026-10-03T15:13:30-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "v3400-product-core",
+      "sha": "6921b61a8007fcd873a38fc5f8702af16e1e0b01",
+      "protected": false,
+      "behind_baseline": 1205,
+      "ahead_of_baseline": 18,
+      "commit_date": "2026-10-03T16:04:57-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "v3401-d772-s2-l1-2",
+      "sha": "5aef5cea6f5cac9194d3ff4135ddc8f58e6aa863",
+      "protected": false,
+      "behind_baseline": 1204,
+      "ahead_of_baseline": 9,
+      "commit_date": "2026-10-04T11:16:10-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "v3401-verifier-colon-hotfix",
+      "sha": "83908f87a7a8492e88b380641889507f2e471526",
+      "protected": false,
+      "behind_baseline": 1203,
+      "ahead_of_baseline": 1,
+      "commit_date": "2026-10-04T11:17:31-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "v3402-d772-s2-l2-graphs",
+      "sha": "36c84fd554d26fa1a69b2058c38154f80b256cbd",
+      "protected": false,
+      "behind_baseline": 1202,
+      "ahead_of_baseline": 12,
+      "commit_date": "2026-10-04T12:11:02-04:00",
+      "recommendation": "KEEP; review before deletion"
+    },
+    {
+      "branch": "v3402-realm-verifier-hotfix",
+      "sha": "5961ef1518b800dc73518eb60ffe9bb1d32c0c21",
+      "protected": false,
+      "behind_baseline": 1201,
+      "ahead_of_baseline": 1,
+      "commit_date": "2026-10-04T11:48:10-04:00",
+      "recommendation": "KEEP; review before deletion"
+    }
+  ],
+  "open_prs": [
+    {
+      "number": 245,
+      "title": "D756 IEP meeting rehearsal: guided \u2192 independent \u2192 challenge",
+      "url": "https://github.com/rnw4512-dev/majick-studies-assets/pull/245",
+      "head": "feat/d756-iep-rehearsal-studio-20261103",
+      "updated_at": "2026-11-04T04:59:35Z",
+      "draft": false,
+      "action": "KEEP unmerged work; review dependencies before integration"
+    },
+    {
+      "number": 243,
+      "title": "Migrate active legacy scripts into permanent runtime owners",
+      "url": "https://github.com/rnw4512-dev/majick-studies-assets/pull/243",
+      "head": "chore/safe-legacy-cleanup-20261101",
+      "updated_at": "2026-11-01T22:58:26Z",
+      "draft": false,
+      "action": "KEEP unmerged work; review dependencies before integration"
+    },
+    {
+      "number": 242,
+      "title": "Teach without-replacement probability interactively and delay Hex Breaker correctness",
+      "url": "https://github.com/rnw4512-dev/majick-studies-assets/pull/242",
+      "head": "feat/d772-interactive-repair-hex-20261101",
+      "updated_at": "2026-11-01T22:00:45Z",
+      "draft": false,
+      "action": "KEEP unmerged work; review dependencies before integration"
+    },
+    {
+      "number": 241,
+      "title": "Compact Anchor Wall recovery and replace raw skill identifiers",
+      "url": "https://github.com/rnw4512-dev/majick-studies-assets/pull/241",
+      "head": "fix/anchor-recovery-labels-20261101",
+      "updated_at": "2026-11-01T20:58:22Z",
+      "draft": false,
+      "action": "KEEP unmerged work; review dependencies before integration"
+    },
+    {
+      "number": 240,
+      "title": "Repair D772 missed-question explanations with mathematical distractor coaching",
+      "url": "https://github.com/rnw4512-dev/majick-studies-assets/pull/240",
+      "head": "fix/d772-review-distractor-feedback-20261101",
+      "updated_at": "2026-11-01T20:54:23Z",
+      "draft": false,
+      "action": "KEEP unmerged work; review dependencies before integration"
+    },
+    {
+      "number": 239,
+      "title": "Show all distinct values on generated D772 dot plots",
+      "url": "https://github.com/rnw4512-dev/majick-studies-assets/pull/239",
+      "head": "fix/d772-dotplot-labels-20261101",
+      "updated_at": "2026-11-01T19:00:22Z",
+      "draft": false,
+      "action": "KEEP unmerged work; review dependencies before integration"
+    },
+    {
+      "number": 236,
+      "title": "Detect conflicting numerical keys and improve distractor coaching in shared repair",
+      "url": "https://github.com/rnw4512-dev/majick-studies-assets/pull/236",
+      "head": "fix/d772-answer-validation-20261101",
+      "updated_at": "2026-11-01T17:51:40Z",
+      "draft": false,
+      "action": "KEEP unmerged work; review dependencies before integration"
+    },
+    {
+      "number": 235,
+      "title": "Extend shared D772 question repair with sampling and independence evidence",
+      "url": "https://github.com/rnw4512-dev/majick-studies-assets/pull/235",
+      "head": "feat/d772-verified-repair-20261101",
+      "updated_at": "2026-11-01T17:46:00Z",
+      "draft": false,
+      "action": "KEEP unmerged work; review dependencies before integration"
+    },
+    {
+      "number": 234,
+      "title": "Improve shared question repair option-specific diagnosis and numeric validation",
+      "url": "https://github.com/rnw4512-dev/majick-studies-assets/pull/234",
+      "head": "feat/question-repair-verification-20261101",
+      "updated_at": "2026-11-01T17:43:58Z",
+      "draft": false,
+      "action": "KEEP unmerged work; review dependencies before integration"
+    },
+    {
+      "number": 233,
+      "title": "Improve question-specific wrong-answer diagnosis in shared Aetheria repair",
+      "url": "https://github.com/rnw4512-dev/majick-studies-assets/pull/233",
+      "head": "fix/question-repair-verified-feedback-20261101",
+      "updated_at": "2026-11-01T17:42:23Z",
+      "draft": false,
+      "action": "KEEP unmerged work; review dependencies before integration"
+    },
+    {
+      "number": 231,
+      "title": "WIP: Scholar effort fragments and reward journal",
+      "url": "https://github.com/rnw4512-dev/majick-studies-assets/pull/231",
+      "head": "feature/scholar-effort-rewards-20261028",
+      "updated_at": "2026-10-28T18:28:39Z",
+      "draft": true,
+      "action": "KEEP unmerged work; review dependencies before integration"
+    },
+    {
+      "number": 230,
+      "title": "Repair Athenaeum feedback, saved practice and lesson scrolling",
+      "url": "https://github.com/rnw4512-dev/majick-studies-assets/pull/230",
+      "head": "fix/athenaeum-feedback-flow-20261028",
+      "updated_at": "2026-10-28T18:46:59Z",
+      "draft": true,
+      "action": "KEEP unmerged work; review dependencies before integration"
+    },
+    {
+      "number": 229,
+      "title": "Repair exhausted Guided Reasoning scenario navigation",
+      "url": "https://github.com/rnw4512-dev/majick-studies-assets/pull/229",
+      "head": "repair-guided-scenarios-20261028",
+      "updated_at": "2026-10-28T17:29:51Z",
+      "draft": true,
+      "action": "KEEP unmerged work; review dependencies before integration"
+    },
+    {
+      "number": 219,
+      "title": "Integrate immersive room identities and Scholar Trial Chamber styling",
+      "url": "https://github.com/rnw4512-dev/majick-studies-assets/pull/219",
+      "head": "integration/majick-rooms-trial-20261027",
+      "updated_at": "2026-10-27T14:55:13Z",
+      "draft": false,
+      "action": "KEEP unmerged work; review dependencies before integration"
+    },
+    {
+      "number": 218,
+      "title": "Give Majick Studies rooms distinct magical visual identities",
+      "url": "https://github.com/rnw4512-dev/majick-studies-assets/pull/218",
+      "head": "style/room-identities-20261027",
+      "updated_at": "2026-10-27T14:02:43Z",
+      "draft": true,
+      "action": "KEEP unmerged work; review dependencies before integration"
+    },
+    {
+      "number": 217,
+      "title": "Study Realm visual polish: gothic headings, enchanted shimmer and accessible contrast",
+      "url": "https://github.com/rnw4512-dev/majick-studies-assets/pull/217",
+      "head": "style/study-realm-arcane-typography-20261027",
+      "updated_at": "2026-10-27T09:44:03Z",
+      "draft": true,
+      "action": "KEEP unmerged work; review dependencies before integration"
+    },
+    {
+      "number": 216,
+      "title": "Study Realm: preserve D772 recovery sessions and correct independent mastery metrics",
+      "url": "https://github.com/rnw4512-dev/majick-studies-assets/pull/216",
+      "head": "fix/study-realm-persistence-evidence-20261027",
+      "updated_at": "2026-10-27T09:29:27Z",
+      "draft": true,
+      "action": "KEEP unmerged work; review dependencies before integration"
+    },
+    {
+      "number": 215,
+      "title": "Repair browser regression navigation for compact Study Realm and probability back",
+      "url": "https://github.com/rnw4512-dev/majick-studies-assets/pull/215",
+      "head": "fix/browser-navigation-20261026",
+      "updated_at": "2026-10-26T20:01:43Z",
+      "draft": false,
+      "action": "KEEP unmerged work; review dependencies before integration"
+    },
+    {
+      "number": 212,
+      "title": "Fix mobile Sanctuary button contrast",
+      "url": "https://github.com/rnw4512-dev/majick-studies-assets/pull/212",
+      "head": "fix/mobile-sanctuary-contrast-20261025",
+      "updated_at": "2026-10-25T04:23:27Z",
+      "draft": false,
+      "action": "KEEP unmerged work; review dependencies before integration"
+    },
+    {
+      "number": 210,
+      "title": "Continue guided probability recovery with unused generated OA questions",
+      "url": "https://github.com/rnw4512-dev/majick-studies-assets/pull/210",
+      "head": "fix/recovery-fresh-generator-20261025",
+      "updated_at": "2026-10-25T04:07:02Z",
+      "draft": false,
+      "action": "KEEP unmerged work; review dependencies before integration"
+    },
+    {
+      "number": 209,
+      "title": "Fix release gate for expanded 180-question probability bank",
+      "url": "https://github.com/rnw4512-dev/majick-studies-assets/pull/209",
+      "head": "fix/release-test-probability-180-20261025",
+      "updated_at": "2026-10-25T04:04:19Z",
+      "draft": false,
+      "action": "KEEP unmerged work; review dependencies before integration"
+    },
+    {
+      "number": 205,
+      "title": "Expose D772 Skill Library from Study Now",
+      "url": "https://github.com/rnw4512-dev/majick-studies-assets/pull/205",
+      "head": "fix/compact-study-navigation-20261025",
+      "updated_at": "2026-10-25T03:14:59Z",
+      "draft": false,
+      "action": "KEEP unmerged work; review dependencies before integration"
+    },
+    {
+      "number": 197,
+      "title": "Integrate PixiJS frame animation with Sanctuary Guardian floor movement",
+      "url": "https://github.com/rnw4512-dev/majick-studies-assets/pull/197",
+      "head": "feature/pixi-guardian-animation-integration-20261024",
+      "updated_at": "2026-10-25T01:01:23Z",
+      "draft": false,
+      "action": "KEEP unmerged work; review dependencies before integration"
+    },
+    {
+      "number": 149,
+      "title": "Prevent false academic penalties and enforce independent misconception recovery",
+      "url": "https://github.com/rnw4512-dev/majick-studies-assets/pull/149",
+      "head": "enhancement/misconception-recovery-20261022",
+      "updated_at": "2026-10-22T22:09:58Z",
+      "draft": false,
+      "action": "KEEP unmerged work; review dependencies before integration"
+    },
+    {
+      "number": 146,
+      "title": "Guardian identity repair: preserve Velora and distinct Luna variants",
+      "url": "https://github.com/rnw4512-dev/majick-studies-assets/pull/146",
+      "head": "repair/guardian-approved-identity-20261021",
+      "updated_at": "2026-10-21T22:49:47Z",
+      "draft": true,
+      "action": "KEEP unmerged work; review dependencies before integration"
+    },
+    {
+      "number": 145,
+      "title": "Repair probability progression and establish release certification board",
+      "url": "https://github.com/rnw4512-dev/majick-studies-assets/pull/145",
+      "head": "repair/probability-release-gate-20261021",
+      "updated_at": "2026-10-21T20:17:46Z",
+      "draft": true,
+      "action": "KEEP unmerged work; review dependencies before integration"
+    },
+    {
+      "number": 144,
+      "title": "Integrate all ten Guardians into existing Phaser roster with real original walk frames",
+      "url": "https://github.com/rnw4512-dev/majick-studies-assets/pull/144",
+      "head": "sanctuary-real-motion-frames-20261017",
+      "updated_at": "2026-10-20T12:15:46Z",
+      "draft": true,
+      "action": "KEEP unmerged work; review dependencies before integration"
+    },
+    {
+      "number": 143,
+      "title": "Companions: compact four-tab room with canonical Guardian portrait cards",
+      "url": "https://github.com/rnw4512-dev/majick-studies-assets/pull/143",
+      "head": "companions-focused-tabs-20261017",
+      "updated_at": "2026-10-17T15:28:37Z",
+      "draft": true,
+      "action": "KEEP unmerged work; review dependencies before integration"
+    },
+    {
+      "number": 142,
+      "title": "Sprint 1: canonical Scholar layers, wearable slots and pose approval contract",
+      "url": "https://github.com/rnw4512-dev/majick-studies-assets/pull/142",
+      "head": "scholar-base-layer-contract-20261017",
+      "updated_at": "2026-10-17T14:53:16Z",
+      "draft": true,
+      "action": "KEEP unmerged work; review dependencies before integration"
+    },
+    {
+      "number": 141,
+      "title": "Master project board: source of truth, four sprints, transparent asset gates and release blockers",
+      "url": "https://github.com/rnw4512-dev/majick-studies-assets/pull/141",
+      "head": "master-project-board-20261017",
+      "updated_at": "2026-10-17T14:50:35Z",
+      "draft": true,
+      "action": "KEEP unmerged work; review dependencies before integration"
+    },
+    {
+      "number": 140,
+      "title": "Repair D772 histogram workshop: real classroom scenario, observations and meaningful checks",
+      "url": "https://github.com/rnw4512-dev/majick-studies-assets/pull/140",
+      "head": "repair-histogram-scenario-20261017",
+      "updated_at": "2026-10-17T14:27:24Z",
+      "draft": true,
+      "action": "KEEP unmerged work; review dependencies before integration"
+    },
+    {
+      "number": 139,
+      "title": "Phase 7: shared scholar hair fitting and real Magic Vault item artwork",
+      "url": "https://github.com/rnw4512-dev/majick-studies-assets/pull/139",
+      "head": "atelier-hair-fit-connected-presence-20261016",
+      "updated_at": "2026-10-17T03:33:22Z",
+      "draft": true,
+      "action": "KEEP unmerged work; review dependencies before integration"
+    },
+    {
+      "number": 138,
+      "title": "Guardian identity-safe stage rendering and fallback for six additional Guardians",
+      "url": "https://github.com/rnw4512-dev/majick-studies-assets/pull/138",
+      "head": "guardian-stage-action-safety-20261016",
+      "updated_at": "2026-10-17T01:53:03Z",
+      "draft": true,
+      "action": "KEEP unmerged work; review dependencies before integration"
+    },
+    {
+      "number": 137,
+      "title": "Phase 7: layered magical campus ambience and graduated celebrations",
+      "url": "https://github.com/rnw4512-dev/majick-studies-assets/pull/137",
+      "head": "phase7-layered-campus-ambience-20261016",
+      "updated_at": "2026-10-17T00:42:42Z",
+      "draft": true,
+      "action": "KEEP unmerged work; review dependencies before integration"
+    },
+    {
+      "number": 135,
+      "title": "Release gate: fix Commons welcome contrast in sequential 820px audit",
+      "url": "https://github.com/rnw4512-dev/majick-studies-assets/pull/135",
+      "head": "commons-prod-reading-surface-fix",
+      "updated_at": "2026-10-16T13:23:27Z",
+      "draft": false,
+      "action": "KEEP unmerged work; review dependencies before integration"
+    },
+    {
+      "number": 49,
+      "title": "Recommend Smart Review for broad D755 weakness",
+      "url": "https://github.com/rnw4512-dev/majick-studies-assets/pull/49",
+      "head": "d755-recommend-smart-review",
+      "updated_at": "2026-09-30T01:36:07Z",
+      "draft": false,
+      "action": "KEEP unmerged work; review dependencies before integration"
+    },
+    {
+      "number": 43,
+      "title": "Rotate D755 assessment questions before recycling",
+      "url": "https://github.com/rnw4512-dev/majick-studies-assets/pull/43",
+      "head": "d755-assessment-question-rotation",
+      "updated_at": "2026-09-30T01:23:38Z",
+      "draft": false,
+      "action": "KEEP unmerged work; review dependencies before integration"
+    },
+    {
+      "number": 31,
+      "title": "Fix D755 Detective smoke view assertion",
+      "url": "https://github.com/rnw4512-dev/majick-studies-assets/pull/31",
+      "head": "hotfix-d755-detective-smoke-view",
+      "updated_at": "2026-09-30T00:48:03Z",
+      "draft": false,
+      "action": "KEEP unmerged work; review dependencies before integration"
+    },
+    {
+      "number": 23,
+      "title": "Add D755 Assessment Sigil Sort to Game Realm",
+      "url": "https://github.com/rnw4512-dev/majick-studies-assets/pull/23",
+      "head": "d755-assessment-sigil-sort",
+      "updated_at": "2026-09-30T00:22:42Z",
+      "draft": false,
+      "action": "KEEP unmerged work; review dependencies before integration"
+    },
+    {
+      "number": 22,
+      "title": "Make D755 Assessment Type Drill adaptive",
+      "url": "https://github.com/rnw4512-dev/majick-studies-assets/pull/22",
+      "head": "d755-adaptive-assessment-drill",
+      "updated_at": "2026-09-30T00:25:12Z",
+      "draft": false,
+      "action": "KEEP unmerged work; review dependencies before integration"
+    }
+  ]
+}

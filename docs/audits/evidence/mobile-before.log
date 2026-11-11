@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "/workspace/majick-studies-assets/tests/aetheria-cleanup-browser.py", line 63, in <module>
+    assert safety.evaluate('(e)=>{const r=e.getBoundingClientRect();return r.left>=0 && r.right<=innerWidth && e.scrollWidth<=e.clientWidth+1}'), 'Progress safety panel clips outside viewport'
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Progress safety panel clips outside viewport
