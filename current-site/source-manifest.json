@@ -829,7 +829,7 @@
     "milestone-particles.js": "084d63ea0b43ac787d8b467b7c6e097253e7460c01a0707c89728a6e860d0d5a",
     "room-transition.js": "e050a9ea7b337ac67993264353c650f2c4708972bf59e45946ac999a77467d27",
     "pixi-sanctuary/index.html": "b8ea65847ca7f48e5f040d4801a54604e4601085ade5d4d1dce6c16c9aa2f94b",
-    "pixi-sanctuary/prototype.js": "c5d126c3fa0e435285d10f7e4fc5d1a974e1f784c849b14ac5ea3c14f81290e4",
+    "pixi-sanctuary/prototype.js": "a934d8c44e72a840ab3884ff86b08d1f197a8bd8f94f0b68aeff2f9d3ef87f86",
     "atelier-pixi-scene.js": "8d59a87780d6862ef01cd3753b2779d5dfbab0bb516004c14450e903c51c1418",
     "vendor/pixi-8.6.6.min.js": "e5c38cccee4f99263df5f0b10dfd4d2484db5fdb730af3953cb6f1c07b3d85b2",
     "vendor/PIXI-LICENSE.txt": "5ce7447bc57f7349ffc48338782fbcabe613696e00712b20d66bc58e780f9473",
@@ -883,6 +883,12 @@
     "d756-council.css": "bf2f2b2e396556c04e934b708d23dd6da528f7ffddaf069a9e2992721d30e9e1",
     "pixi-sanctuary/guardian-animation-controller.js": "79277310b7c9da10cf8faff0035fd0647161e32fbc3f4c441f8571bcf5d126b0",
     "pixi-sanctuary/guardian-animation-controller.test.cjs": "d8936a04300ccafb769900c0b6e64acbb5f33af8090b3bdc8a6feca0660de763",
-    "pixi-sanctuary/guardian-walk-manifest.json": "1ab3cf64563285f2c6db762d4f8cff95cd73f122d708aa31d622e7d6ac384377"
+    "pixi-sanctuary/guardian-walk-manifest.json": "1ab3cf64563285f2c6db762d4f8cff95cd73f122d708aa31d622e7d6ac384377",
+    "pixi-sanctuary/evolution-portraits/velora/velora_5_evolution_1024_transparent_pngs (5)/01_new-bond.png": "d259958bebd4066b43c66bed4519c0f65430d4514abef4342dbe63e2a4924851",
+    "pixi-sanctuary/evolution-portraits/velora/velora_5_evolution_1024_transparent_pngs (5)/02_apprentice.png": "7e93153cc00494e25bce02efb4f039834af444214e993a06c4663143470ec304",
+    "pixi-sanctuary/evolution-portraits/velora/velora_5_evolution_1024_transparent_pngs (5)/03_guardian.png": "df98145e3b3661d35abf41b35847c0138185407c233f5023a4857e006f3301bb",
+    "pixi-sanctuary/evolution-portraits/velora/velora_5_evolution_1024_transparent_pngs (5)/04_ascendant.png": "6631c305015b3145abfee5ec9ddaaec259075aaf59e3c46848b4b86da4ed9aac",
+    "pixi-sanctuary/evolution-portraits/velora/velora_5_evolution_1024_transparent_pngs (5)/05_celestial.png": "ba603a71b8f37958f99be43956f4a36b1556434abff436a08fd94b890b153916",
+    "pixi-sanctuary/evolution-portraits/velora/velora_5_evolution_1024_transparent_pngs (5)/review.json": "c6ec2e297a0768564106e683ba6f6761a5b0c65ba5352d31a09b5e42490642cd"
   }
 }
