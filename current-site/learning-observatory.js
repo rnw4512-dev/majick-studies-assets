@@ -141,10 +141,22 @@ function summaryOnly(){
    if(plays)out.push({course,system:'Game Realm',amount:plays,note:sessions.length?'Dated game sessions: '+sessions.length+'; game scores still do not establish independent skill mastery':'Older aggregate game plays only; no dated session history'});
   }
   if(Array.isArray(p?.repair)&&p.repair.length)out.push({course,system:'Legacy repair log',amount:p.repair.length,note:'Repairs recorded; independent transfer evidence not guaranteed'});
+  if(Array.isArray(p?.solutionWorkshopSessions)&&p.solutionWorkshopSessions.length)out.push({course,system:'Solution Workshop',amount:p.solutionWorkshopSessions.length,note:'Dated guided completion records; no independent academic mastery is implied'});
  }
  return out;
 }
 
+function meetingSkillHistory(meetings){
+ const m=new Map();
+ for(const meeting of meetings){
+  for(const check of meeting.checks||[]){
+   if(!Array.isArray(check)||typeof check[1]!=='boolean')continue;
+   let a=m.get(String(check[0]))||{name:String(check[0]),count:0,met:0};
+   a.count++;if(check[1])a.met++;m.set(a.name,a);
+  }
+ }
+ return [...m.values()].sort((a,b)=>(a.met/a.count)-(b.met/b.count));
+}
 function d756(){
  try{
   let records=JSON.parse(localStorage.getItem('majick-d756-task2-rehearsal-v1-history')||'[]');
@@ -166,6 +178,7 @@ function draw(){
  const weeks=weeklySeries(items),studyTips=insights(items),audit=coverage(items,meetings);
  const moves=learningTransitions(items),aggregates=summaryOnly();
  const games=gameSessionTrends();
+ const meetingSkills=meetingSkillHistory(meetings);
  const evidence=skillEvidence(items),confidentErrors=items.filter(x=>x.correct===false&&/^(certain|very sure|high)$/i.test(x.confidence)).length;
  const metrics=[['Recorded attempts',scored.length],['Accuracy',number(accuracy(scored))],['Guided accuracy',number(accuracy(guided))],['Independent accuracy',number(accuracy(ind))],['Unknown mode',uncertain.length],['IEP rehearsals',meetings.length]];
  const metricHTML=metrics.map(([k,v])=>'<div class="loMetric"><small>'+E(k)+'</small><b>'+E(v)+'</b></div>').join('');
@@ -176,6 +189,7 @@ function draw(){
  const evidenceHTML=evidence.map(x=>'<tr><td>'+E(x.topic)+'</td><td>'+E(x.status)+'</td><td>'+x.independent+'</td><td>'+number(x.accuracy)+'</td><td>'+x.transfer+'</td><td>'+x.days+'</td></tr>').join('');
  const weekHTML=weeks.map(x=>'<tr><td>'+E(x.week)+'</td><td>'+x.n+'</td><td>'+number(x.overall)+'</td><td>'+number(x.guided)+'</td><td>'+number(x.independent)+'</td></tr>').join('');
  const tipHTML=studyTips.map(x=>'<li><b>'+E(x.title)+':</b> '+E(x.text)+'</li>').join('');
+ const meetingSkillHTML=meetingSkills.map(x=>'<tr><td>'+E(x.name)+'</td><td>'+x.met+' / '+x.count+'</td><td>'+number(x.met/x.count)+'</td></tr>').join('');
  const gameHTML=games.slice(-50).reverse().map(x=>'<tr><td>'+new Date(x.at).toLocaleDateString()+'</td><td>'+E(x.course)+'</td><td>'+E(x.game)+'</td><td>'+(x.percent===null?'Not scored':number(x.percent))+'</td><td>'+(x.won?'Yes':'No')+'</td></tr>').join('');
  const aggregateHTML=aggregates.map(x=>'<tr><td>'+E(x.course)+'</td><td>'+E(x.system)+'</td><td>'+x.amount+'</td><td>'+E(x.note)+'</td></tr>').join('');
  const auditHTML=audit.map(x=>'<tr><td>'+E(x.name)+'</td><td>'+E(x.status)+'</td><td>'+E(x.detail)+'</td></tr>').join('');
@@ -189,6 +203,7 @@ function draw(){
  '<h3>Skills that need attention</h3><div class="loScroll"><table><thead><tr><th>Concept</th><th>Attempts</th><th>Overall</th><th>Guided</th><th>Independent</th><th>Unknown mode</th><th>Recent change</th></tr></thead><tbody>'+(skillHTML||'<tr><td colspan="7">No timestamped skill records yet.</td></tr>')+'</tbody></table></div>'+
  '<h3>Weekly performance trends</h3><div class="loNote">'+trendSVG(weeks)+'</div><div class="loScroll"><table><thead><tr><th>Week</th><th>Attempts</th><th>Overall</th><th>Guided</th><th>Independent</th></tr></thead><tbody>'+(weekHTML||'<tr><td colspan="5">No dated attempts yet.</td></tr>')+'</tbody></table></div>'+
  '<h3>Which practice systems are generating results?</h3><div class="loScroll"><table><thead><tr><th>Source</th><th>Attempts</th><th>Accuracy</th></tr></thead><tbody>'+(sourceHTML||'<tr><td colspan="3">No answer-level records available for this selection.</td></tr>')+'</tbody></table></div>'+
+ '<h3>D756 meeting rubric trends</h3><p><small>Shows the share of completed rehearsals meeting each provisional criterion. It is not official WGU scoring.</small></p><div class="loScroll"><table><thead><tr><th>Collaboration skill</th><th>Meetings met</th><th>Rate</th></tr></thead><tbody>'+(meetingSkillHTML||'<tr><td colspan="3">No comparable D756 meeting rubric history yet.</td></tr>')+'</tbody></table></div>'+ 
  '<h3>D756 meeting practice</h3><p>'+meetings.length+' completed rehearsals in this period; '+pass+' met the app’s provisional practice criteria. This is not official Mursion scoring.</p><div class="loScroll"><table><thead><tr><th>Date</th><th>Case</th><th>Mode</th><th>Checks</th><th>XP</th></tr></thead><tbody>'+(meetingsHTML||'<tr><td colspan="5">No completed meeting history saved in this browser.</td></tr>')+'</tbody></table></div>'+
  '<h3>What to work on next</h3><div class="loNote"><ul>'+tipHTML+'</ul><small>Data-driven practice suggestions are provisional; they do not establish cause or independently certify mastery.</small></div>'+
  '<h3>Are practice strategies translating into independence?</h3><div class="loMetrics">'+
