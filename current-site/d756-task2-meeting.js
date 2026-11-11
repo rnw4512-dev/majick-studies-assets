@@ -83,7 +83,7 @@ function indicators(a){
  const generic=/(?:anyone|everybody|everyone).{0,45}(?:questions|add|thoughts)|any (?:questions|clarification)|does (?:anyone|somebody) have/i.test(t);
  const substantive=/(goal|iep|plan|transition|education|career|writing|reading|math|strength|need|support|accommod|progress|class|home|routine|future|graduat|program|assignment|student|angela|maya|jordan|feedback|instruction|schedule|participat)/i.test(t);
  const input=question&&!generic&&substantive&&/(how do you feel|what do you think|what are your (thoughts|concerns|ideas)|what would (you|help)|what (do you|have you) (notice|observ|prefer|suggest|recommend)|tell (me|us) (about|what)|describe (what|how)|share (your|what)|what.{0,30}(want|hope|plan|interest|goal)|how.{0,40}(doing|perform|class|work|progress)|how is.{0,40}(doing|perform)|what (?:ideas|concerns|suggestions|observations|thoughts) would you share|what (?:supports|accommodations|tools|strategies) do you (?:prefer|need|find helpful))/i.test(t);
- const who=peopleNow().map((p,i)=>({i,match:p[0].toLowerCase().split(' ').filter(n=>n.length>2&&!['mr.','ms.','mrs.','dr.'].includes(n)).some(n=>new RegExp('\\b'+n+'\\b').test(t))})).filter(x=>x.match).map(x=>x.i);
+ const who=peopleNow().map((p,i)=>{const positions=p[0].toLowerCase().split(' ').filter(n=>n.length>2&&!['mr.','ms.','mrs.','dr.'].includes(n)).map(n=>t.search(new RegExp('\\b'+n+'\\b'))).filter(n=>n>=0);return {i,at:positions.length?Math.min(...positions):Infinity};}).filter(x=>Number.isFinite(x.at)).sort((a,b)=>a.at-b.at).map(x=>x.i);
  return {input,clarify:false,generic,who};
 }
 function contextualClarification(answer,statement){
