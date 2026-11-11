@@ -64,5 +64,43 @@ with sync_playwright() as pw:
         safety.screenshot(path=str(OUT / f'progress-safety-{width}.png'))
         assert not errors, errors
         print(f'PASS {width}px: download/import/restore/reload, unknown fields, course isolation and newer-schema bytes protected', flush=True)
+        # Exercise the existing wardrobe owner with an isolated older accessory
+        # fixture. Active accessory artwork/selection is explicitly pending.
+        page.evaluate('''() => {const p=MajickAtelier.player();p.accessory='fixture-accessory';p.cleanupUnknown='keep';save()}''')
+        wallet = page.evaluate('JSON.stringify([S.majickAccount.xp,S.majickAccount.crystals])')
+        page.locator('#atelierLaunch').click()
+        wardrobe = page.locator('#wsOverlay')
+        wardrobe.locator('[data-section=Appearance]').click()
+        wardrobe.locator('[data-skin="4"]').click()
+        wardrobe.locator('[data-hair="2"]').click()
+        wardrobe.locator('[data-section=Wardrobe]').click()
+        wardrobe.locator('[data-robe="3"]').click()
+        wardrobe.locator('#wsLookName').fill('Cleanup fixture look')
+        wardrobe.locator('[data-save-slot]').click()
+        wardrobe.locator('[data-robe="0"]').click()
+        wardrobe.locator('[data-load-look]').last.click()
+        wardrobe.locator('[data-save]').click()
+        wardrobe.locator('[data-section=Accessories]').click()
+        assert 'remain saved' in wardrobe.locator('.wsControls').inner_text()
+        wardrobe.locator('[data-close]').click()
+        page.reload()
+        page.wait_for_function('!!window.MajickAtelier')
+        look = page.evaluate('MajickAtelier.player()')
+        assert (look['skin'], look['hair'], look['robe']) == (4, 2, 3)
+        assert look['accessory'] == 'fixture-accessory' and look['cleanupUnknown'] == 'keep'
+        assert look['savedScholarLooks'][-1]['name'] == 'Cleanup fixture look'
+        assert page.evaluate('JSON.stringify([S.majickAccount.xp,S.majickAccount.crystals])') == wallet
+        print(f'PASS {width}px: actual appearance/robe/saved-outfit controls and reload; accessory/unknown fields and wallet preserved', flush=True)
+        # Presentation event fixtures do not create reward receipts or mastery.
+        page.emulate_media(reduced_motion='reduce')
+        page.evaluate("document.dispatchEvent(new CustomEvent('majick:celebrate',{detail:{key:'cleanup-unverified',type:'mastery',verified:false}}))")
+        assert page.locator('.majick-ceremony').count() == 0
+        page.evaluate("document.dispatchEvent(new CustomEvent('majick:celebrate',{detail:{key:'cleanup-verified',type:'lesson',verified:true}}))")
+        emblem = page.locator('.majick-ceremony__emblem')
+        assert emblem.evaluate('(e)=>getComputedStyle(e).animationName') == 'none'
+        page.get_by_role('button', name='Skip / Close', exact=True).click()
+        assert page.locator('.majick-ceremony').count() == 0
+        assert not errors, errors
+        print(f'PASS {width}px: verified ceremony gate, Skip/Close and reduced motion', flush=True)
         context.close()
     browser.close()
