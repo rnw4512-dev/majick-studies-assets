@@ -120,12 +120,25 @@ function learningTransitions(records){
  }
  return result;
 }
+function gameSessionTrends(){
+ const out=[],cutoff=now()-windowDays*msDay;
+ for(const [course,p] of Object.entries(window.S?.progress||{})){
+  if(selected!=='all'&&selected!==course)continue;
+  for(const x of (Array.isArray(p?.realmSessions)?p.realmSessions:[])){
+   if(Number(x.at)<cutoff||Number(x.at)>now()+msDay)continue;
+   const score=Number(x.score),total=Number(x.total);
+   out.push({course,game:String(x.gameId||'Game Realm'),at:Number(x.at),percent:total>0?score/total:null,won:x.won===true});
+  }
+ }
+ return out.sort((a,b)=>a.at-b.at);
+}
 function summaryOnly(){
  const progress=window.S?.progress||{},out=[];
  for(const [course,p] of Object.entries(progress)){
   if(p?.realmRecords&&typeof p.realmRecords==='object'){
+   const sessions=Array.isArray(p.realmSessions)?p.realmSessions:[];
    const plays=Object.values(p.realmRecords).reduce((n,r)=>n+Math.max(0,Number(r?.plays||0)),0);
-   if(plays)out.push({course,system:'Game Realm',amount:plays,note:'Aggregate game plays only; cannot attribute specific independent skill accuracy without attempts'});
+   if(plays)out.push({course,system:'Game Realm',amount:plays,note:sessions.length?'Dated game sessions: '+sessions.length+'; game scores still do not establish independent skill mastery':'Older aggregate game plays only; no dated session history'});
   }
   if(Array.isArray(p?.repair)&&p.repair.length)out.push({course,system:'Legacy repair log',amount:p.repair.length,note:'Repairs recorded; independent transfer evidence not guaranteed'});
  }
@@ -152,6 +165,7 @@ function draw(){
  const date=new Date(now()-windowDays*msDay).toLocaleDateString();
  const weeks=weeklySeries(items),studyTips=insights(items),audit=coverage(items,meetings);
  const moves=learningTransitions(items),aggregates=summaryOnly();
+ const games=gameSessionTrends();
  const evidence=skillEvidence(items),confidentErrors=items.filter(x=>x.correct===false&&/^(certain|very sure|high)$/i.test(x.confidence)).length;
  const metrics=[['Recorded attempts',scored.length],['Accuracy',number(accuracy(scored))],['Guided accuracy',number(accuracy(guided))],['Independent accuracy',number(accuracy(ind))],['Unknown mode',uncertain.length],['IEP rehearsals',meetings.length]];
  const metricHTML=metrics.map(([k,v])=>'<div class="loMetric"><small>'+E(k)+'</small><b>'+E(v)+'</b></div>').join('');
@@ -162,6 +176,7 @@ function draw(){
  const evidenceHTML=evidence.map(x=>'<tr><td>'+E(x.topic)+'</td><td>'+E(x.status)+'</td><td>'+x.independent+'</td><td>'+number(x.accuracy)+'</td><td>'+x.transfer+'</td><td>'+x.days+'</td></tr>').join('');
  const weekHTML=weeks.map(x=>'<tr><td>'+E(x.week)+'</td><td>'+x.n+'</td><td>'+number(x.overall)+'</td><td>'+number(x.guided)+'</td><td>'+number(x.independent)+'</td></tr>').join('');
  const tipHTML=studyTips.map(x=>'<li><b>'+E(x.title)+':</b> '+E(x.text)+'</li>').join('');
+ const gameHTML=games.slice(-50).reverse().map(x=>'<tr><td>'+new Date(x.at).toLocaleDateString()+'</td><td>'+E(x.course)+'</td><td>'+E(x.game)+'</td><td>'+(x.percent===null?'Not scored':number(x.percent))+'</td><td>'+(x.won?'Yes':'No')+'</td></tr>').join('');
  const aggregateHTML=aggregates.map(x=>'<tr><td>'+E(x.course)+'</td><td>'+E(x.system)+'</td><td>'+x.amount+'</td><td>'+E(x.note)+'</td></tr>').join('');
  const auditHTML=audit.map(x=>'<tr><td>'+E(x.name)+'</td><td>'+E(x.status)+'</td><td>'+E(x.detail)+'</td></tr>').join('');
  host.innerHTML='<section role="dialog" aria-modal="true" aria-label="Learning progress observatory"><header><div><small>Moonlit Collegium · Learning Observatory</small><h2>My Learning Trends</h2></div><button id="loClose">Close ✕</button></header>'+
@@ -181,7 +196,7 @@ function draw(){
  '<div class="loMetric"><small>Independent attempts after an earlier mistake (same skill, within 7 days)</small><b>'+moves.errorToIndependent+'</b><small>Correct: '+moves.errorToIndependentCorrect+'</small></div>'+
  '<div class="loMetric"><small>Saved transfer/recall-marked attempts</small><b>'+moves.transferAttempts+'</b><small>Correct: '+moves.transferCorrect+'</small></div></div>'+
  '<p><small>These counts require chronological, skill-tagged answers. Missing timestamps and summary-only activities cannot support the analysis.</small></p>'+
- '<h3>Summary-only practice records</h3><div class="loScroll"><table><thead><tr><th>Course</th><th>Activity</th><th>Count</th><th>Interpretation</th></tr></thead><tbody>'+(aggregateHTML||'<tr><td colspan="4">No separate summary-only results found.</td></tr>')+'</tbody></table></div>'+
+ '<h3>Game Realm sessions (scores, not mastery)</h3><div class="loScroll"><table><thead><tr><th>Date</th><th>Course</th><th>Game</th><th>Score</th><th>Won</th></tr></thead><tbody>'+(gameHTML||'<tr><td colspan="5">No dated game sessions available yet. Historical aggregate game results are listed below.</td></tr>')+'</tbody></table></div>'+'<h3>Summary-only practice records</h3><div class="loScroll"><table><thead><tr><th>Course</th><th>Activity</th><th>Count</th><th>Interpretation</th></tr></thead><tbody>'+(aggregateHTML||'<tr><td colspan="4">No separate summary-only results found.</td></tr>')+'</tbody></table></div>'+
  '<h3>Evidence coverage by practice room</h3><div class="loScroll"><table><thead><tr><th>System</th><th>Status</th><th>Notes</th></tr></thead><tbody>'+auditHTML+'</tbody></table></div><button id="loExport">Export filtered practice data (CSV)</button>'+
  '<div class="loNote"><b>Coverage limitation:</b> This view reads existing course answer arrays, the study ledger and saved D756 history. Activities that only store a summary or save no attempt-level results cannot yet produce meaningful trend lines. Old responses with missing timestamps are excluded, not assigned invented dates. Records in a different browser/device are not included unless synchronized.</div>'+
  '<p><small>Read-only report. Viewing this screen never awards XP or changes academic mastery.</small></p></section>';
