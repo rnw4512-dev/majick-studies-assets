@@ -60,7 +60,11 @@ with sync_playwright() as pw:
     # Address the specific stakeholder statement rather than advancing past it.
     submit('I understand your point about '+saved()['pending']['line'].rstrip('?')+' We will use weekly work samples and a planning routine to review supports, preserve student choice, compare career training costs and assign follow-up responsibilities at review '+str(stage)+'.')
    assert not saved().get('pending'),saved()
-   if stage==11 and qualify:page.clock.fast_forward(901000)
+   if stage==11 and qualify:
+    # Move the browser wall clock atomically; fast_forward can race a resumed
+    # clock after reload/day jumps in CI. The engine still measures its own time.
+    now=page.evaluate('Date.now()');page.clock.set_system_time(datetime.fromtimestamp((now+901000)/1000,timezone.utc))
+    assert page.evaluate('MajickD756Meeting.assessment().duration')>=900
    click('next')
   state=saved()
   assert state['done']
