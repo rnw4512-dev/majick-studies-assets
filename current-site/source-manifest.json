@@ -828,8 +828,8 @@
     "scholar-wardrobe-studio.js": "2d45a1e0ee98521c72fbb0076191d9a901f0b21469e67356b575446066d4e68a",
     "milestone-particles.js": "084d63ea0b43ac787d8b467b7c6e097253e7460c01a0707c89728a6e860d0d5a",
     "room-transition.js": "e050a9ea7b337ac67993264353c650f2c4708972bf59e45946ac999a77467d27",
-    "pixi-sanctuary/index.html": "8463887561ac3df88684b1ba02b69bbdd95a7820d485a6cd7be87c4631c4edb8",
-    "pixi-sanctuary/prototype.js": "88743d2e546cf58f1299187fdfcc40562a21dabd625400d26f63f47a6feb0ee4",
+    "pixi-sanctuary/index.html": "b8ea65847ca7f48e5f040d4801a54604e4601085ade5d4d1dce6c16c9aa2f94b",
+    "pixi-sanctuary/prototype.js": "c5d126c3fa0e435285d10f7e4fc5d1a974e1f784c849b14ac5ea3c14f81290e4",
     "atelier-pixi-scene.js": "8d59a87780d6862ef01cd3753b2779d5dfbab0bb516004c14450e903c51c1418",
     "vendor/pixi-8.6.6.min.js": "e5c38cccee4f99263df5f0b10dfd4d2484db5fdb730af3953cb6f1c07b3d85b2",
     "vendor/PIXI-LICENSE.txt": "5ce7447bc57f7349ffc48338782fbcabe613696e00712b20d66bc58e780f9473",
@@ -880,6 +880,9 @@
     "d772-oa-entry.js": "c22f97fc2c528409b54b5c4fe42d1cedfc1c861231c915b44ad0bac1e434f746",
     "d772-oa-focus.html": "987fe97e57c96c36ff2bf6dbe2b989e2677af7d326ec033d231fff96f8e01bfc",
     "d756-task2-meeting.js": "b98e1381cce08561758f6fee469b5beb51295254f76cf6c8db4574f628cff2dd",
-    "d756-council.css": "bf2f2b2e396556c04e934b708d23dd6da528f7ffddaf069a9e2992721d30e9e1"
+    "d756-council.css": "bf2f2b2e396556c04e934b708d23dd6da528f7ffddaf069a9e2992721d30e9e1",
+    "pixi-sanctuary/guardian-animation-controller.js": "79277310b7c9da10cf8faff0035fd0647161e32fbc3f4c441f8571bcf5d126b0",
+    "pixi-sanctuary/guardian-animation-controller.test.cjs": "d8936a04300ccafb769900c0b6e64acbb5f33af8090b3bdc8a6feca0660de763",
+    "pixi-sanctuary/guardian-walk-manifest.json": "1ab3cf64563285f2c6db762d4f8cff95cd73f122d708aa31d622e7d6ac384377"
   }
 }

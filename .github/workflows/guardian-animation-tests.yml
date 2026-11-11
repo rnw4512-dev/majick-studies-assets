@@ -1,0 +1,25 @@
+name: Guardian animation controller tests
+on:
+  pull_request:
+    paths:
+      - 'current-site/pixi-sanctuary/**'
+      - 'current-site/source-manifest.json'
+      - '.github/workflows/guardian-animation-tests.yml'
+  workflow_dispatch:
+
+jobs:
+  controller:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate controller JavaScript
+        run: |
+          node --check current-site/pixi-sanctuary/guardian-animation-controller.js
+          node --check current-site/pixi-sanctuary/prototype.js
+      - name: Run Guardian animation unit tests
+        run: node --test current-site/pixi-sanctuary/guardian-animation-controller.test.cjs
+      - name: Check release source manifest approval
+        run: python pages-release/current/build.py current-site _site
