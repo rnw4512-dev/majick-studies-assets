@@ -14,7 +14,7 @@ function data(){
   if(!Number.isFinite(at)||at<=0||at>now()+msDay)return;
   const correct=typeof row.correct==='boolean'?row.correct:null;
   const modeName=String(row.mode||row.source||source||'').toLowerCase();
-  const classification=row.assisted===true?'guided':row.assisted===false?'independent':row.independent===true?'independent':row.independent===false?'guided':/(guided|repair|hint|worked|teaching|coach)/.test(modeName)?'guided':/(independent|transfer|oa-|mock|diagnostic|exam)/.test(modeName)?'independent':'unknown';
+  const classification=row.assisted===true||/(guided|repair|hint|worked|teaching|coach)/.test(modeName)?'guided':/(independent|transfer|oa-|mock|diagnostic|exam)/.test(modeName)?'independent':'unknown';
   const key=String(row.guardianBridgeKey||row.key||row.id||'');
   const uid=course+'|'+(key?'id:'+key:'row:'+at+':'+String(row.qid||'')+':'+String(row.source||row.mode||source));
   if(seen.has(uid))return;seen.add(uid);
