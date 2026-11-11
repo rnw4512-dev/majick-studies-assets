@@ -4,7 +4,11 @@
 if(window.MajickD756Meeting)return;
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const key='majick-d756-task2-rehearsal-v1';
-const people=[['Elena Kahale','Mother'],['Angela Madina','Student'],['Mr. Mehta','Principal / LEA'],['Mr. Moore','English teacher']];
+const profiles={angela:{student:'Angela Madina',age:15,parent:'Elena Kahale',principal:'Mr. Mehta',teacher:'Mr. Moore',career:'graphic design',option:'accounting'},maya:{student:'Maya Rivera',age:16,parent:'Sofia Rivera',principal:'Dr. Bennett',teacher:'Ms. Patel',career:'animation',option:'engineering'},jordan:{student:'Jordan Ellis',age:17,parent:'Marcus Ellis',principal:'Ms. Chen',teacher:'Mr. Harris',career:'web design',option:'business'}};
+function person(){return profiles[s.profile]||profiles.angela}
+function peopleNow(){let p=person();return [[p.parent,'Parent/guardian'],[p.student,'Student, age '+p.age],[p.principal,'Principal / LEA'],[p.teacher,'English teacher']]}
+function localize(t){let p=person();if(s.profile==='angela')return t;return t.replace(/\bAngela\b/g,p.student.split(' ')[0]).replace(/graphic design/gi,p.career).replace(/accounting/gi,p.option)}
+
 const scenes=[
 [2,'Welcome the team, introduce the purpose and invite everyone to participate.','Thank you for bringing us together. Can you start by sharing today’s purpose?'],
 [3,'Summarize strengths and needs; seek classroom input.','Angela shares creative ideas in class, but inferencing and extended writing are challenging. What should we focus on?'],
@@ -39,37 +43,48 @@ const coaching=[
 'Reflect Angela’s stated preferences and invite concrete suggestions.',
 'Review agreement, solicit questions for clarification, thank each participant.'
 ];
-let s={mode:'guided',step:0,records:[],started:0,elapsed:0,active:false,done:false,last:''},tick;
+let s={mode:'guided',profile:'angela',step:0,records:[],started:0,elapsed:0,active:false,done:false,last:'',pending:null},tick;
 try{let saved=JSON.parse(localStorage.getItem(key));if(saved&&saved.mode)s={...s,...saved,active:false};}catch(_){}
 function persist(){try{localStorage.setItem(key,JSON.stringify({...s,active:false}));}catch(_){}}
 function meter(){
  const answers=s.records.map(x=>x.answer.toLowerCase());
+ const p=person(),names=[p.student,p.parent,p.teacher].map(x=>x.toLowerCase().split(' ').slice(-1)[0]);
  let input=0,clarify=0,who=new Set();
  for(let i=0;i<answers.length;i++){
   let a=answers[i];
   if(/[?]/.test(a)&&/(share|thought|input|perspective|feel|concern|suggest|prefer|notice|ideas|what would|what do you)/.test(a))input++;
   if(/[?]/.test(a)&&/(question|clarif|explain|understand|clear|make sense)/.test(a))clarify++;
-  if(/[?]/.test(a)&&/(angela)[, :]/.test(a))who.add('Angela');
-  if(/[?]/.test(a)&&/(elena|ms\.? kahale|mrs\.? kahale)[, :]/.test(a))who.add('Elena');
-  if(/[?]/.test(a)&&/(mr\.? moore|moore)[, :]/.test(a))who.add('Moore');
+  if(/[?]/.test(a)&&a.includes(names[0]))who.add('student');
+  if(/[?]/.test(a)&&a.includes(names[1]))who.add('parent');
+  if(/[?]/.test(a)&&a.includes(names[2]))who.add('teacher');
  }
  return {input,clarify,stakeholders:who.size,turns:answers.length};
 }
-function activeScene(){if(s.mode==='challenge'&&s.step>=7&&s.step<=10)return challenges[(s.step-7)%challenges.length];return scenes[Math.min(s.step,11)];}
+function activeScene(){if(s.pending)return [s.pending.who,'Follow-up question',s.pending.line];if(s.mode==='challenge'&&s.step>=7&&s.step<=10)return challenges[(s.step-7)%challenges.length];return scenes[Math.min(s.step,11)];}
+function followUp(a,step){let t=a.toLowerCase(),p=person();
+ if(step===0&&!/(purpose|agenda|meeting|today)/.test(t))return {who:2,line:'Could you explain the purpose and agenda before we begin?'};
+ if(step===2&&!/(progress|data|report|monitor|measur)/.test(t))return {who:0,line:'Can you give a concrete example of how you will measure progress?'};
+ if(step===4&&!(/read|inferen/.test(t)&&/writ|paragraph/.test(t)&&/organiz|executive|task/.test(t)))return {who:3,line:'Can you explain all three annual goals and how we will measure them?'};
+ if(step===6&&!/(college|program|postsecondary|training)/.test(t))return {who:1,line:'What would I do first to pursue '+p.career+' after high school?'};
+ if(step===7&&!/(hear|understand|concern|respect|appreciate|both|together)/.test(t))return {who:0,line:'I feel like my concerns about the future haven’t been addressed. Can we discuss them?'};
+ if(step===8&&!/(scaffold|step|progress|build|paragraph|gradual|model)/.test(t))return {who:3,line:'How will these supports move the student toward grade-level writing expectations?'};
+ if(step===11&&!/(next|summary|summar|thank|question|clarif)/.test(t))return {who:2,line:'Can you summarize next steps and invite final questions before we adjourn?'};
+ return null;
+}
 function timer(){let n=s.elapsed+(s.active?Math.floor((Date.now()-s.started)/1000):0);return String(Math.floor(n/60)).padStart(2,'0')+':'+String(n%60).padStart(2,'0');}
 function grade(){
  const m=meter(),responses=s.records.map(x=>x.answer.trim()),all=responses.join(' ').toLowerCase();
  const duration=s.elapsed+(s.active?Math.floor((Date.now()-s.started)/1000):0);
  const goals=/(reading|comprehension|inferen)/.test(all)&&/(writing|paragraph|written expression)/.test(all)&&/(executive|organiza|multi.step|task initiation|checklist)/.test(all);
- const transition=/(graphic design)/.test(all)&&/(college|postsecondary|degree|training)/.test(all)&&/(employ|career|job|workplace)/.test(all);
+ const transition=(all.includes(person().career)||/(design|art|creative)/.test(all))&&/(college|postsecondary|degree|training)/.test(all)&&/(employ|career|job|workplace)/.test(all);
  const respect=/(hear|understand|appreciate|respect|thank you|concern)/.test(all)&&/(explore|compare|choice|options|collaborat|together)/.test(all);
  const nontrivial=responses.filter(x=>x.length>=65).length>=10;
  const distinct=new Set(responses.map(x=>x.toLowerCase().replace(/\s+/g,' '))).size===responses.length;
  const checks=[
-  ['All 12 scenes completed',s.records.length===12],
+  ['All 12 core meeting stages completed',s.step>=12&&s.records.filter(x=>x.core!==false).length===12],
   ['At least five separate stakeholder input invitations',m.input>=5],
   ['At least three separate clarification invitations',m.clarify>=3],
-  ['Angela, Elena and Mr. Moore directly invited to contribute',m.stakeholders>=3],
+  ['Student, parent and English teacher directly invited to contribute',m.stakeholders>=3],
   ['All three annual goal areas discussed',goals],
   ['Postsecondary education and employment discussed',transition],
   ['Family concern acknowledged and choices considered',respect],
@@ -104,7 +119,7 @@ function end(){
 function close(){clearInterval(tick);document.getElementById('d756MeetingRoom')?.remove();}
 function paint(){
  const root=document.getElementById('d756MeetingRoom');if(!root)return;
- let m=meter(),scene=activeScene(),speaker=people[scene[0]];
+ let m=meter(),scene=activeScene(),people=peopleNow(),speaker=people[scene[0]],p=person();
  let stats='<div class="dmStats"><span>Stakeholder input <b>'+m.input+'/5</b></span><span>Clarification prompts <b>'+m.clarify+'/3</b></span><span>Stakeholders named <b>'+m.stakeholders+'/3</b></span><span>Time <b id="dmTime">'+timer()+'</b></span></div>';
  let content='';
  if(s.done){
@@ -113,10 +128,10 @@ function paint(){
  }else if(!s.active){
  content='<p>Lead a meeting as Angela’s special education teacher. Four role-play stakeholders respond through scenario prompts. Rehearse aloud, then type what you said. A passing rehearsal can earn Scholar XP through the existing reward system; no XP is granted for incomplete attempts. Practice records remain separate from academic mastery.</p><label for="dmMode">Practice mode</label><select id="dmMode"><option value="guided">Guided coaching</option><option value="independent">Independent, no hints</option><option value="challenge">Challenging disagreements</option></select><button data-action="start">Begin rehearsal</button>';
  }else{
- content='<div class="dmPeople">'+people.map((p,i)=>'<div class="dmPerson '+(i===scene[0]?'active':'')+'"><span class="dmFace">'+esc(p[0].split(' ').map(x=>x[0]).join(''))+'</span><b>'+esc(p[0])+'</b><small>'+esc(p[1])+'</small></div>').join('')+'</div>'+stats+'<p><b>Scene '+(s.step+1)+' of 12:</b> '+esc(scenes[s.step][1])+'</p><div class="dmPrompt"><b>'+esc(speaker[0])+':</b><p>'+esc(scene[2])+'</p></div>'+(s.mode==='guided'?'<div class="dmHint"><b>Coach</b><p>'+esc(coaching[s.step])+'</p></div>':'')+'<label for="dmAnswer">Your spoken response (type or summarize it):</label><textarea id="dmAnswer" rows="5"></textarea><div class="dmBtns"><button data-action="submit">Submit response</button><button data-action="finish">Finish and review</button></div>'+(s.last?'<div class="dmHint"><b>Feedback on previous turn</b><p>'+esc(s.last)+'</p></div>':'');
+ content='<div class="dmPeople">'+people.map((p,i)=>'<div class="dmPerson '+(i===scene[0]?'active':'')+'"><span class="dmFace">'+esc(p[0].split(' ').map(x=>x[0]).join(''))+'</span><b>'+esc(p[0])+'</b><small>'+esc(p[1])+'</small></div>').join('')+'</div>'+stats+'<p><b>Scene '+(s.step+1)+' of 12:</b> '+esc(scenes[s.step][1])+'</p><div class="dmPrompt"><b>'+esc(speaker[0])+':</b><p>'+esc(localize(scene[2]))+'</p></div>'+(s.mode==='guided'?'<div class="dmHint"><b>Coach</b><p>'+esc(localize(coaching[s.step]))+'</p></div>':'')+'<label for="dmAnswer">Your spoken response (type or summarize it):</label><textarea id="dmAnswer" rows="5"></textarea><div class="dmBtns"><button data-action="submit">Submit response</button><button data-action="finish">Finish and review</button></div>'+(s.last?'<div class="dmHint"><b>Feedback on previous turn</b><p>'+esc(s.last)+'</p></div>':'');
  }
  let transcript=s.records.length?'<details><summary>Practice transcript ('+s.records.length+' turns)</summary><div class="dmTranscript">'+s.records.map(x=>'<p><b>'+esc(x.speaker)+':</b> '+esc(x.line)+'</p><p><b>You:</b> '+esc(x.answer)+'</p>').join('')+'</div></details>':'';
- root.innerHTML='<section class="dmPanel" role="dialog" aria-modal="true" aria-label="D756 meeting practice"><header><div><small>D756 · Hands-on Learning Studio · Task 2</small><h2>Angela Madina — IEP Meeting Rehearsal</h2></div><button data-action="close">Close ✕</button></header>'+content+transcript+'<small>15–20 minutes is the Mursion target. Qualified rehearsals earn +30 XP and +5 crystals the first time; later qualifying practice earns +8 XP and +1 crystal, at most once a day. No mastery credit or official Mursion recording.</small></section>';
+ root.innerHTML='<section class="dmPanel" role="dialog" aria-modal="true" aria-label="D756 meeting practice"><header><div><small>D756 · Hands-on Learning Studio · Task 2</small><h2>'+esc(p.student)+' — Full IEP Meeting Rehearsal</h2></div><button data-action="close">Close ✕</button></header>'+content+transcript+'<small>15–20 minutes is the Mursion target. Qualified rehearsals earn +30 XP and +5 crystals the first time; later qualifying practice earns +8 XP and +1 crystal, at most once a day. No mastery credit or official Mursion recording.</small></section>';
  root.querySelector('[data-action=close]').onclick=close;
  const start=root.querySelector('[data-action=start]');if(start)start.onclick=()=>{s={mode:root.querySelector('#dmMode').value,step:0,records:[],started:Date.now(),elapsed:0,active:true,done:false,last:'',assessment:null,reward:null};persist();paint();};
  const submit=root.querySelector('[data-action=submit]');if(submit)submit.onclick=()=>{let el=root.querySelector('#dmAnswer'),a=el.value.trim();if(!a){el.focus();return;}let previous=meter();s.records.push({speaker:speaker[0],line:scene[2],answer:a});let after=meter();s.last=(after.input>previous.input?'Stakeholder input invitation detected. ':'Invite a team member to contribute an idea. ')+(after.clarify>previous.clarify?'Clarification invitation detected. ':'Remember to invite clarification questions at three different points. ')+(s.mode==='guided'?'Continue to reflect what the stakeholder said before changing topics.':'');s.step++;if(s.step>=12){end();return;}persist();paint();};
