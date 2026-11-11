@@ -101,7 +101,7 @@ function draw(){
  const weeks=weeklySeries(items),studyTips=insights(items),audit=coverage(items,meetings);
  const metrics=[['Recorded attempts',scored.length],['Accuracy',number(accuracy(scored))],['Guided accuracy',number(accuracy(guided))],['Independent accuracy',number(accuracy(ind))],['Unknown mode',uncertain.length],['IEP rehearsals',meetings.length]];
  const metricHTML=metrics.map(([k,v])=>'<div class="loMetric"><small>'+E(k)+'</small><b>'+E(v)+'</b></div>').join('');
- const skillHTML=skills.map(v=>'<tr><td>'+E(v.topic)+'</td><td>'+v.attempts+'</td><td>'+number(v.acc)+'</td><td>'+number(v.guided)+'</td><td>'+number(v.independent)+'</td><td class="loTrend">'+(v.delta===null?'Not enough data':(v.delta>=0?'+':'')+Math.round(v.delta*100)+' percentage points')+'</td></tr>').join('');
+ const skillHTML=skills.map(v=>'<tr><td>'+E(v.topic)+'</td><td>'+v.attempts+'</td><td>'+number(v.acc)+'</td><td>'+number(v.guided)+'</td><td>'+number(v.independent)+'</td><td>'+v.unknown+'</td><td class="loTrend">'+(v.delta===null?'Not enough data':(v.delta>=0?'+':'')+Math.round(v.delta*100)+' percentage points')+'</td></tr>').join('');
  const sourceMap=new Map();items.forEach(x=>{const a=sourceMap.get(x.source)||[];a.push(x);sourceMap.set(x.source,a)});
  const sourceHTML=[...sourceMap.entries()].sort((a,b)=>b[1].length-a[1].length).map(([k,a])=>'<tr><td>'+E(k)+'</td><td>'+a.length+'</td><td>'+number(accuracy(a))+'</td></tr>').join('');
  const meetingsHTML=meetings.slice(-12).reverse().map(x=>'<tr><td>'+new Date(x.at).toLocaleDateString()+'</td><td>'+E(x.profile)+'</td><td>'+E(x.mode)+'</td><td>'+(x.met?'Practice checks met':'Needs practice')+'</td><td>'+x.xp+'</td></tr>').join('');
