@@ -9,7 +9,7 @@ KEY='majick-d756-task2-rehearsal-v1'
 with sync_playwright() as pw:
  browser=pw.chromium.launch(executable_path=os.environ.get('CHROMIUM_PATH','/usr/bin/chromium'),args=['--no-sandbox'])
  context=browser.new_context(); page=context.new_page(); errors=[]; failed=[]
- page.on('pageerror',lambda e: errors.append(str(e)))
+ page.on('pageerror',lambda e: errors.append(e.stack))
  page.on('response',lambda r: failed.append(r.url) if r.status>=400 else None)
  page.goto(URL);page.wait_for_function('!!window.MajickD756Meeting && !!window.MajickRewardCore')
  page.clock.install()
