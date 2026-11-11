@@ -23,6 +23,7 @@ function play(type,{target=null,label=null}={}){
  const img=document.createElement('img');img.src='./assets/effects/'+cfg[0];img.alt='';img.decoding='async';visual.append(img);
  const text=document.createElement('span');text.className='majickFxLabel';text.textContent=label==null?cfg[3]:String(label).slice(0,48);if(type!=='touch')visual.append(text);
  const bounds=target?.isConnected?target.getBoundingClientRect():null;
+ if(bounds&&type==='touch')visual.style.setProperty('--fx-touch-size',Math.max(0,Math.min(36,bounds.width-8,bounds.height-8))+'px');
  if(bounds){visual.style.setProperty('--fx-x',(bounds.left+bounds.width/2)+'px');visual.style.setProperty('--fx-y',(bounds.top+bounds.height/2)+'px')}
  visual.dataset.fxType=type;
  if(!reduced()){
