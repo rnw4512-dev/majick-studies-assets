@@ -39,6 +39,8 @@ jobs:
           node-version: '22'
       - name: Check lessons, games, rewards, eggs and saved reload
         run: node pages-release/current/release-checks.cjs current-site
+      - name: Reject destructive newer-schema fallback
+        run: node pages-release/current/test-save-schema-safety.cjs current-site
       - name: Validate imported D772 preassessment and targeted practice
         run: node pages-release/current/test-d772-preassessment.cjs current-site
       - name: Test D772 adaptive mastery lifecycle

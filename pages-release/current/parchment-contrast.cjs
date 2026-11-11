@@ -37,7 +37,12 @@ module.exports=async function parchmentContrast({call,evalPage,action,waitFor,sl
    await action('const e=[...document.querySelectorAll("#classroom-panel-opening li")].find(e=>e.textContent.includes("Calculating correctly but interpreting the statistic incorrectly"));if(!e)throw Error("Expected lesson warning missing");e.dataset.parchmentContrast="target";e.scrollIntoView({block:"center",behavior:"instant"})');
    await waitFor('!document.querySelector("#majickCampusPortal.active")&&!document.querySelector(".rewardToast")');await sleep(300);
    await action('document.querySelector("[data-parchment-contrast=target]").scrollIntoView({block:"center",behavior:"instant"})');await sleep(300);
-   await waitFor('(()=>{const r=document.querySelector("[data-parchment-contrast=target]").getBoundingClientRect();return r.y>80&&r.bottom<innerHeight-90})()');
+   try{
+    await waitFor('(()=>{const r=document.querySelector("[data-parchment-contrast=target]").getBoundingClientRect();return r.y>80&&r.bottom<innerHeight-90})()');
+   }catch(error){
+    console.error('Parchment visibility diagnostic',await evalPage('(()=>{const e=document.querySelector("[data-parchment-contrast=target]");return {viewport:{width:innerWidth,height:innerHeight},targets:document.querySelectorAll("[data-parchment-contrast=target]").length,rect:e?.getBoundingClientRect().toJSON(),scroll:{x:scrollX,y:scrollY},ancestors:[...function*(x){while(x){yield x;x=x.parentElement}}(e)].map(x=>({tag:x.tagName,class:x.className,height:x.clientHeight,scrollHeight:x.scrollHeight,top:x.scrollTop,overflow:getComputedStyle(x).overflowY}))}})()'));
+    throw error;
+   }
    const info=await evalPage('(()=>{const e=document.querySelector("[data-parchment-contrast=target]"),range=document.createRange();range.selectNodeContents(e);const cs=getComputedStyle(e),layers=[];for(let n=e;n;n=n.parentElement){const s=getComputedStyle(n);layers.push({opacity:s.opacity,filter:s.filter})}return {text:e.textContent,color:cs.color,size:cs.fontSize,rects:[...range.getClientRects()].map(r=>({x:r.x,y:r.y,width:r.width,height:r.height})),gradient:getComputedStyle(e.closest(".classroomStage")).backgroundImage,layers}})()');
    assert(info.gradient.startsWith('linear-gradient('),'Approved parchment gradient must remain intact');
    assert(info.layers.every(x=>Number(x.opacity)===1&&x.filter==='none'),'Text needs separate opacity/filter analysis');

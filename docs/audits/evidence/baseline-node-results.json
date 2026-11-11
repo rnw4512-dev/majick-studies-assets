@@ -1,0 +1,107 @@
+[
+  {
+    "test": "pages-release/current/release-checks.cjs",
+    "exit_code": 0,
+    "tail": "772 questions and valid answer choices\nPASS reward replay, focused eggs, course isolation and saved reload\nCanonical release checks passed. Browser interaction and cloud-sync checks remain separate.\nPASS Mistake, guided retry, Guardian and Sanctuary persistence across course switching\nPASS Academic mastery requires independently verified transfer and teaching\nPASS D772 generated Section 2 math, charts and visual evidence across fresh datasets\nPASS save migration, backups, corruption recovery and storage failure\nPASS connected probability evidence, freshness, replay safety and course isolation\n"
+  },
+  {
+    "test": "pages-release/current/test-animation-effects.cjs",
+    "exit_code": 0,
+    "tail": "PASS animation effects: three celebration identities, one overlay, auto cleanup, dedupe, reduced motion, desktop/tablet/mobile\n"
+  },
+  {
+    "test": "pages-release/current/test-atelier-preview-recovery.cjs",
+    "exit_code": 0,
+    "tail": "PASS Atelier stale pose/walk, decode failure and atomic preview replacement\n"
+  },
+  {
+    "test": "pages-release/current/test-atelier-scene-isolation.cjs",
+    "exit_code": 0,
+    "tail": "PASS Atelier scenery never owns avatar images or learner state; context loss cleans up safely\n"
+  },
+  {
+    "test": "pages-release/current/test-collegium-commons.cjs",
+    "exit_code": 0,
+    "tail": "PASS Commons: five tabs, original DOM ownership, navigation, session retention, text theme and reduced motion\nPASS Commons stable component ownership despite cross-tab action labels\n"
+  },
+  {
+    "test": "pages-release/current/test-compact-navigation.cjs",
+    "exit_code": 0,
+    "tail": "PASS compact navigation: stable Commons ownership, tab visibility, shortcut safety, keyboard focus and responsive styling\n"
+  },
+  {
+    "test": "pages-release/current/test-d772-academic-gate.cjs",
+    "exit_code": 0,
+    "tail": "\n  \"histogram\": {\n    \"questions\": 30,\n    \"missingDistractorRationales\": 0,\n    \"keyConflicts\": 0,\n    \"invalid\": 0,\n    \"missingFreshTransfers\": 0,\n    \"distinctEvidence\": 30\n  },\n  \"scatterplot\": {\n    \"questions\": 30,\n    \"missingDistractorRationales\": 0,\n    \"keyConflicts\": 0,\n    \"invalid\": 0,\n    \"missingFreshTransfers\": 0,\n    \"distinctEvidence\": 30\n  },\n  \"probability\": {\n    \"questions\": 30,\n    \"missingDistractorRationales\": 0,\n    \"keyConflicts\": 0,\n    \"invalid\": 0,\n    \"missingFreshTransfers\": 0,\n    \"distinctEvidence\": 30\n  }\n}\nAcademic coverage report: d772-academic-audit.json\n"
+  },
+  {
+    "test": "pages-release/current/test-d772-adaptive.cjs",
+    "exit_code": 0,
+    "tail": "PASS adaptive D772: distinct diagnostic/independent/transfer questions, wrong-answer repair, structured teaching evidence, save-state isolation and no false mastery credit\n"
+  },
+  {
+    "test": "pages-release/current/test-d772-bank-expansion.cjs",
+    "exit_code": 0,
+    "tail": "24 new items: schema, numeric evidence, skill coverage and unseen follow-up routing passed\n"
+  },
+  {
+    "test": "pages-release/current/test-d772-cross-room.cjs",
+    "exit_code": 0,
+    "tail": "PASS D772 cross-room continuity: guided, Study Now, Game Realm, remediation, unearned mastery, course isolation and save calls\n"
+  },
+  {
+    "test": "pages-release/current/test-d772-exam-resume.cjs",
+    "exit_code": 0,
+    "tail": "PASS mixed exam: selected/submitted reload, course isolation, question snapshots, corrupted round recovery and save failure\n"
+  },
+  {
+    "test": "pages-release/current/test-d772-exam-visuals.cjs",
+    "exit_code": 0,
+    "tail": "PASS 60-item visual audit, plot/data agreement, blocked grading, zero-size diagram, no-penalty replacement and preserved score/account/course state\n"
+  },
+  {
+    "test": "pages-release/current/test-d772-generated-depth.cjs",
+    "exit_code": 0,
+    "tail": "PASS generated D772 question audit: 720 fresh draws + 42 probability cases, numeric consistency, distinct options, visual and provenance\n"
+  },
+  {
+    "test": "pages-release/current/test-d772-hands-on.cjs",
+    "exit_code": 0,
+    "tail": "PASS hands-on D772: selectable observation identity, same-dataset clear, guided repair, formative mastery safety, 150 computed cases\n"
+  },
+  {
+    "test": "pages-release/current/test-d772-preassessment.cjs",
+    "exit_code": 0,
+    "tail": "PASS D772 preassessment: 58 original source items, 47 correct, 2 incorrect, 9 unanswered, 30 separated four-option OA-style questions, safe app loading, intact learner and reward state\n"
+  },
+  {
+    "test": "pages-release/current/test-interaction-magic.cjs",
+    "exit_code": 0,
+    "tail": "PASS visible prose and accessible instructions remove em dashes without changing learner state\nPASS bounded interaction sparkles, celebration priority, system/app reduced motion and unchanged state\n"
+  },
+  {
+    "test": "pages-release/current/test-phase6-owner.cjs",
+    "exit_code": 0,
+    "tail": "PASS Phase 6 ownership: existing visual effects, successful care and placement only, one-shot learning, no reward owner duplication\n"
+  },
+  {
+    "test": "pages-release/current/test-practice-retry-controls.cjs",
+    "exit_code": 0,
+    "tail": "PASS Phase 5 retry controls: syntax, scoped clear/resubmit, no replaced probability grading, and existing fresh-retry path\n"
+  },
+  {
+    "test": "pages-release/current/test-sanctuary-state.cjs",
+    "exit_code": 0,
+    "tail": "PASS Back uses current navigation cleanup, prior room history and unchanged learner progress\nPASS Sanctuary registry: ten species aliases, renamed identities, duplicate Briars and fifty stage assets\nPASS shared furniture: non-destructive legacy migration, inventory preservation, position validation, store/place and repeatability\n"
+  },
+  {
+    "test": "pages-release/current/test-shared-repair.cjs",
+    "exit_code": 0,
+    "tail": "rationale, escaping and no invented diagnosis\nPASS median even/odd, negatives, range and IQR use actual data\nPASS without replacement distinguishes GG from GP using the actual event\nPASS image scaling explains area not a fabricated sampling misconception\nPASS freshness rejects rewording, changed IDs, reordered observations and cosmetic data\nPASS two misses across rooms and lesson aliases, guided attempts never certify\nPASS replayed correct same evidence cannot clear transfer requirement\nPASS unassisted Study Hall tracking counts a real submission exactly once\nShared repair checks completed: 9\n"
+  },
+  {
+    "test": "pages-release/current/test-six-enhancements.cjs",
+    "exit_code": 0,
+    "tail": "es, blank rejection and legacy recovery migration\nPASS 480 fresh repair snapshots, 900 native datasets, formula rationales, four construction models, targeted diagnoses, calculation trails and two-item readiness without mastery/currency leakage\nPASS six generators: 600 nonrepeating datasets across reload, native scenario/draft persistence, cross-room guided evidence and all four visual models with empty/correct selections\nPASS finite-source exhaustion and Tutor snapshot/unused-question selection without rewriting source records\nPASS stale guided callbacks cannot write another course\u2019s history\n"
+  }
+]

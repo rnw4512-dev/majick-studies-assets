@@ -1,0 +1,38 @@
+name: Aetheria cleanup safety
+on:
+  pull_request:
+    paths: ['current-site/**', 'pages-release/current/**', 'tests/aetheria-cleanup-browser.py', '.github/workflows/aetheria-cleanup.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  save-and-learning-regression:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install playwright==1.56.0
+      - run: node pages-release/current/test-save-schema-safety.cjs current-site
+      - run: python pages-release/current/build.py current-site _site
+      - name: Browser backup, import, recovery and course isolation at three widths
+        env:
+          CHROMIUM_PATH: /usr/bin/google-chrome
+          MAJICK_URL: http://127.0.0.1:8875/
+        run: |
+          python -m http.server 8875 --directory _site >/tmp/aetheria-cleanup-server.log 2>&1 &
+          python -u tests/aetheria-cleanup-browser.py
+      - name: Real pointer navigation, independent evidence and saved probability work
+        run: node pages-release/current/browser-probability.cjs _site
+      - name: Shared diagnosis and mandatory reconstruction across rooms
+        run: node pages-release/current/browser-shared-repair.cjs _site
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: aetheria-cleanup-save-evidence
+          path: /tmp/aetheria-cleanup-qa

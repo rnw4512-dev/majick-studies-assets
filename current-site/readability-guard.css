@@ -239,7 +239,7 @@ body.majickCampus .titleline .pill.v4Badge{
 }
 
 /* Release repair: the floating Atelier must not cover lesson reading or controls. */
-body.majickCampus .atelierLaunch{right:16px!important;bottom:16px!important;max-width:min(210px,45vw);font-size:14px!important;padding:8px 12px!important}
+body.majickCampus .atelierLaunch{right:16px!important;bottom:84px!important;max-width:min(210px,45vw);font-size:14px!important;padding:8px 12px!important}
 body.majickCampus .content,body.majickCampus #content{padding-bottom:max(96px,env(safe-area-inset-bottom))!important}
 .d772WorkedExample{background:#fff8eb!important;color:#241827!important;border:2px solid #b99358;border-radius:12px;padding:20px;line-height:1.65}
 .d772WorkedExample :is(h3,p,li,strong){color:#241827!important;opacity:1!important;text-shadow:none!important}
