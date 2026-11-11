@@ -45,11 +45,11 @@ for(const it of [{"id": "aurelia-bunny-ear-reading-chair", "name": "Aurelia’s 
 const ITEM_ART={"velvet-study-chair": "assets/rewards/items/velvet-study-chair.webp", "constellation-rug": "assets/rewards/items/constellation-rug.webp", "moon-phase-wall-hanging": "assets/rewards/items/moon-phase-wall-hanging.webp", "potion-shelf": "assets/rewards/items/potion-shelf.webp", "crystal-lamp": "assets/rewards/items/crystal-lamp.webp", "floating-book-stack": "sanctuary/assets/runtime-objects/enchanted-bookstack.webp", "celestial-telescope": "sanctuary/assets/runtime-objects/celestial-telescope.webp", "guardian-toy-chest": "assets/rewards/items/guardian-toy-chest.webp", "enchanted-fireplace": "assets/rewards/items/enchanted-fireplace.webp", "moonflower-planter": "assets/rewards/items/moonflower-planter.webp", "canopy-bed-curtains": "assets/rewards/items/canopy-bed-curtains.webp", "rune-writing-desk": "sanctuary/assets/runtime-objects/moonlit-study-desk.webp", "memory-moon-brooch": "assets/rewards/items/memory-moon-brooch.webp", "scholar-rune-circlet": "assets/rewards/items/scholar-rune-circlet.webp", "fortune-seer-monocle": "assets/rewards/items/fortune-seer-monocle.webp", "celestial-dice-charm": "assets/rewards/items/celestial-dice-charm.webp", "star-cartographer-glasses": "assets/rewards/items/star-cartographer-glasses.webp", "probability-scholar-cape": "assets/rewards/items/probability-scholar-cape.webp"};
 for(const item of TREASURES){if(item.image)ITEM_ART[item.id]=item.image;else item.image=ITEM_ART[item.id];}
 const RECIPES=[
- {id:'clarity-potion',name:'Clarity Potion',icon:'⚗',effect:'Highlights one important clue word.',cost:{'moonpetal':2,'silver-sage':1}},
- {id:'recall-draught',name:'Recall Draught',icon:'☾',effect:'Calls back one older concept for bonus retrieval XP.',cost:{'star-moss':2,'dream-lavender':1}},
- {id:'moonfocus-elixir',name:'Moonfocus Elixir',icon:'✧',effect:'+25% Guardian bond rewards for the next five questions.',cost:{'moonpetal':1,'celestial-dew':1}},
- {id:'crystal-sight-potion',name:'Crystal Sight Potion',icon:'◇',effect:'Previews the misconception family behind one distractor.',cost:{'silver-sage':1,'crystal-nectar':1}},
- {id:'starlight-tonic',name:'Starlight Tonic',icon:'✦',effect:'Adds egg moonlight to the next three independent answers.',cost:{'star-moss':2,'sunstone-dust':1}}
+ {id:'clarity-potion',name:'Clarity Potion',icon:'⚗',effect:'Highlights an authored clue/explanation in eligible Oracle Lens/Gauntlet questions; the answer is assisted practice.',cost:{'moonpetal':2,'silver-sage':1}},
+ {id:'recall-draught',name:'Recall Draught',icon:'☾',effect:'Retrieve one older unassisted question for +4 practice XP if correct; no mastery/fragments.',cost:{'star-moss':2,'dream-lavender':1}},
+ {id:'moonfocus-elixir',name:'Moonfocus Elixir',icon:'✧',effect:'+25% active Guardian bond, rounded up, for five independent correct answers.',cost:{'moonpetal':1,'celestial-dew':1}},
+ {id:'crystal-sight-potion',name:'Crystal Sight Potion',icon:'◇',effect:'Previews one distractor contrast; not a diagnosis. The answer becomes assisted practice.',cost:{'silver-sage':1,'crystal-nectar':1}},
+ {id:'starlight-tonic',name:'Starlight Tonic',icon:'✦',effect:'+1 focused-egg moonlight for three independent correct answers with an incubating egg.',cost:{'star-moss':2,'sunstone-dust':1}}
 ];
 const E=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 function state(){try{return window.MajickStateCore?.exposeState?.()||window.S||null}catch(_){return window.S||null}}
@@ -68,6 +68,7 @@ function account(){
  r.masteryXp=Math.max(0,Number(r.masteryXp||0));
  r.lastReceipt=r.lastReceipt||null;
  r.stats=r.stats&&typeof r.stats==='object'?r.stats:{correct:0,independent:0,delayed:0,repairs:0,drops:0};
+ if(!r.legacyInstantChargesMigrated){const refund={};for(const [field,id] of Object.entries({clarity:'clarity-potion',recall:'recall-draught',crystalSight:'crystal-sight-potion'})){const count=Math.max(0,Math.floor(Number(r.activeEffects?.[field]||0)));if(count){r.potions[id]=Number(r.potions[id]||0)+count;r.activeEffects[field]=0;refund[id]=count;}}r.legacyInstantChargesMigrated=true;if(Object.keys(refund).length){r.alchemyTransactions=r.alchemyTransactions||{};r.alchemyTransactions['migration:instant-charges:v1']={key:'migration:instant-charges:v1',kind:'unapplied-potion-refund',at:Date.now(),refund,message:'Previously queued instant effects returned to potion inventory once.'};r.lastAlchemyTransaction=r.alchemyTransactions['migration:instant-charges:v1'];setTimeout(()=>{try{window.save?.()}catch(_){}},0);}}
  return a;
 }
 function save(){try{window.save?.()}catch(_){}}
@@ -93,7 +94,7 @@ function activePet(){
 function focusedEgg(){
  const eggs=(state()?.legacy?.eggs||[]).filter(Boolean);if(!eggs.length)return null;
  const id=account()?.guardianIncubator?.focusEggId;
- return eggs.find(e=>e.id===id)||eggs[0];
+ const egg=eggs.find(e=>e.id===id)||eggs[0];return Number(egg.progress||0)<Math.max(1,Number(egg.goal||1))?egg:null;
 }
 function hatchIfReady(egg){
  if(!egg||Number(egg.progress||0)<Math.max(1,Number(egg.goal||1)))return;
@@ -102,7 +103,8 @@ function hatchIfReady(egg){
 function guardianRewards({correct=true,hard=false,independent=false,delayed=false,eggMoonlight=0,bondBonus=0}={}){
  const st=state(),rows=(st?.legacy?.pets||[]).filter(Boolean),active=activePet();
  const activeXp=correct?(hard?15:10):3,sharedXp=correct?(hard?5:3):1;
- const activeBond=correct?(hard?4:3):1;
+ const effects=account()?.rewardCore?.activeEffects||{};const focusBoost=correct&&independent&&Number(effects.moonfocus||0)>0;
+ const activeBond=correct?(focusBoost?Math.ceil((hard?4:3)*1.25):(hard?4:3)):1;
  for(const p of rows){
    const isActive=active&&p.id===active.id;
    p.studyXP=Math.max(0,Number(p.studyXP||0))+(isActive?activeXp:sharedXp);
@@ -112,14 +114,16 @@ function guardianRewards({correct=true,hard=false,independent=false,delayed=fals
  }
  let moon=correct?(hard?3:2):0;
  if(delayed)moon+=1;
- if(independent&&account()?.rewardCore?.activeEffects?.starlightTonic>0)moon+=1;
+ const tonicBoost=correct&&independent&&Number(effects.starlightTonic||0)>0&&!!focusedEgg();if(tonicBoost)moon+=1;
  moon+=Number(eggMoonlight||0);
  const egg=focusedEgg();
  if(egg&&moon>0){egg.progress=Math.max(0,Number(egg.progress||0))+moon;hatchIfReady(egg)}
+ if(focusBoost&&active)effects.moonfocus--;if(tonicBoost)effects.starlightTonic--;
  return {guardian:active?{name:active.name||window.MajickGuardianRegistry?.getFor?.(active)?.name||'Guardian',xp:activeXp,bond:activeBond+Number(bondBonus||0)}:null,egg:egg?{id:egg.id,moonlight:moon,progress:Number(egg.progress||0),goal:Number(egg.goal||1)}:null};
 }
 function baseFor(type,ctx){
  const d=Math.max(1,Math.min(5,Number(ctx.difficulty||3))),hard=ctx.hard===true||d>=4;
+ if(type==='potion-recall-practice')return {xp:4,crystals:0,masteryXp:0,eggFragments:0,lootChance:0,hard:false};
  if(type==='d756-meeting-first-pass')return {xp:30,crystals:5,masteryXp:0,eggFragments:0,lootChance:0,hard:false};
  if(type==='d756-meeting-repeat-practice')return {xp:8,crystals:1,masteryXp:0,eggFragments:0,lootChance:0,hard:false};
  if(type==='correct-answer'){
@@ -188,6 +192,7 @@ function award(type,ctx={}){
  const a=account();if(!a)return null;const r=a.rewardCore,key=rewardKey(type,ctx);
  if(r.ledger[key])return r.ledger[key].receipt||null;
  const cfg=baseFor(type,ctx),independent=ctx.independent===true||type==='independent-correct',delayed=ctx.delayed===true||type==='delayed-recall',transfer=ctx.transfer===true||type==='mixed-transfer-success';
+ if(ctx.assisted===true||ctx.independent===false||ctx.masteryEligible===false){if(['concept-mastered','lesson-mastered','competency-mastered','oa-competency-ready','course-passed','misconception-repaired','delayed-recall'].includes(type))return {key,type,xp:0,crystals:0,masteryXp:0,eggFragments:0,rejected:'assisted-or-ineligible'};cfg.eggFragments=0;cfg.masteryXp=0;}
  const beforeXp=Math.max(Number(a.xp||0),Number(a.xpHighWater||0));
  let xp=Number(cfg.xp||0),crystals=Number(cfg.crystals||0);
  if(type==='correct-answer'&&independent){xp+=5;cfg.masteryXp=Number(cfg.masteryXp||0)+5}
@@ -247,36 +252,44 @@ function showReceipt(receipt){
  setTimeout(()=>{if(document.body.contains(host))host.remove()},receipt.drop||receipt.eggFragments?5200:3000);
 }
 function availableEggTypes(){
- const st=state(),owned=new Set((st?.legacy?.pets||[]).map(p=>String(p.type||''))),eggs=new Set((st?.legacy?.eggs||[]).map(e=>String(e.type||'')));
+ const st=state(),owned=new Set((st?.legacy?.pets||[]).map(p=>window.MajickGuardianRegistry?.getFor?.(p)?.type||String(p.type||''))),eggs=new Set((st?.legacy?.eggs||[]).map(e=>window.MajickGuardianRegistry?.getFor?.(e)?.type||String(e.type||'')));
  const all=(window.MajickGuardianRegistry?.all?.()||[]).map(x=>x.type).filter(Boolean);
- const fresh=all.filter(t=>!owned.has(t)&&!eggs.has(t));return fresh.length?fresh:all.filter(t=>!eggs.has(t)).length?all.filter(t=>!eggs.has(t)):all;
+ const fresh=all.filter(t=>!owned.has(t)&&!eggs.has(t));return fresh.length?fresh:all.filter(t=>!eggs.has(t));
 }
 function eggMystery(type,key){
  const colors=['amethyst','moon-silver','rose-gold','deep teal','midnight blue','sunrise amber'],auras=['starlight mist','flickering runes','soft lunar fire','tiny orbiting stars','aurora shimmer'],patterns=['constellation speckles','crescent bands','crystal veining','rune spirals','comet streaks'],marks=['The Lantern','The Scholar','The Wanderer','The Crown','The Twin Moons'];
  const pick=(a,s)=>a[hash(key+'|'+s)%a.length];
  return {type,color:pick(colors,'c'),aura:pick(auras,'a'),pattern:pick(patterns,'p'),mark:pick(marks,'m')};
 }
+let alchemySequence=0;
+function alchemyKey(kind){return kind+':'+Date.now()+':'+(++alchemySequence)}
+function alchemyTransaction(key,kind,mutate){const a=account(),r=a?.rewardCore,st=state();if(!a||!st||!r)return {ok:false,message:'Scholar save is unavailable.'};r.alchemyTransactions=r.alchemyTransactions||{};if(r.alchemyTransactions[key])return {...r.alchemyTransactions[key],replayed:true};
+ const before={reward:JSON.parse(JSON.stringify(r)),eggs:JSON.parse(JSON.stringify(st.legacy?.eggs||[])),incubator:JSON.parse(JSON.stringify(a.guardianIncubator||null))};
+ try{const result=mutate(a,r,st);if(!result?.ok)return result||{ok:false,message:'Nothing was changed.'};const receipt={...result,key,kind,at:Date.now()};r.alchemyTransactions[key]=receipt;r.lastAlchemyTransaction=receipt;if(typeof window.save!=='function')throw Error('Local save is unavailable.');window.save();if(window.MajickSaveSafety?.status?.().ok===false)throw Error(window.MajickSaveSafety.status().message);return receipt;
+ }catch(error){for(const name of Object.keys(r))delete r[name];Object.assign(r,before.reward);st.legacy=st.legacy||{};st.legacy.eggs=before.eggs;if(before.incubator)a.guardianIncubator=before.incubator;else delete a.guardianIncubator;return {ok:false,message:'Nothing was spent: '+error.message};}}
+function alchemyNotice(message){window.rewardToast?.('Alchemy Ledger',message);return {ok:false,message};}
+function potionInfo(id){return {
+ 'clarity-potion':{where:'Unanswered Oracle Lens or Guardian Gauntlet round',duration:'Current question',effect:'Displays and highlights an authored clue or explanation. This answer becomes assisted practice.'},
+ 'crystal-sight-potion':{where:'Unanswered Oracle Lens or Guardian Gauntlet round',duration:'Current question',effect:'Previews a specific distractor contrast. It is an example, not a diagnosis of your thinking; this answer becomes assisted practice.'},
+ 'recall-draught':{where:'Oracle Lens or Guardian Gauntlet after an older unassisted answer',duration:'One saved retrieval question',effect:'Retrieve an older studied question for +4 practice XP if correct. Once per question per calendar day; no mastery or fragments.'},
+ 'moonfocus-elixir':{where:'Any room with an owned Guardian',duration:'Next 5 independent correct answers',effect:'Adds 25% to the active Guardian’s bond gain, rounded up. Guided/wrong answers do not spend a charge.'},
+ 'starlight-tonic':{where:'Any room with a focused incubating egg',duration:'Next 3 independent correct answers with an egg',effect:'Adds one moonlight to the focused egg per eligible answer. Guided/wrong answers do not spend a charge.'}
+ }[id]||null;}
+function alchemyLedgerHTML(){const a=account(),r=a.rewardCore,last=r.lastAlchemyTransaction,fx=r.activeEffects||{};return '<section class="majAlchemyLedger" aria-label="Alchemy Ledger"><h3>Alchemy Ledger</h3><p><b>Egg fragments: '+r.eggFragments+' / 10</b> · '+Math.floor(r.eggFragments/10)+' egg bonds ready</p><progress max="10" value="'+Math.min(10,r.eggFragments)+'" aria-label="Fragments toward the next egg"></progress><p>Fragments come from earned concept/lesson milestones, independently repaired misconceptions and eligible delayed retrieval. Ordinary/guided-only clicks do not earn fragments; each reward event is counted once.</p><p>Owned ingredients: '+Object.entries(r.ingredients).map(([id,n])=>E(ingredientName(id))+': '+Number(n)).join(' · ')+'</p><p>Active charges · Moonfocus '+Number(fx.moonfocus||0)+' / Starlight '+Number(fx.starlightTonic||0)+'</p><p>Last transaction: '+(last?E(last.kind)+' · '+E(last.message||last.recipe?.name||last.eggId||last.potion||'')+' · '+new Date(last.at).toLocaleString():'No alchemy transaction yet')+'</p>'+Object.values(r.alchemyTransactions||{}).filter(x=>x.hint).slice(-3).map(x=>'<details><summary>Saved potion learning effect · '+E(x.potion)+'</summary><p>'+E(x.question?.prompt||'')+'</p><blockquote>'+E(x.hint)+'</blockquote><small>Assisted practice; no independent mastery proof.</small></details>').join('')+'<button onclick="navigate(\'games\')">Earn through learning · Game Realm</button><button onclick="navigate(\'companions\')">Open Sanctuary & incubator</button>'+((r.activeRecall&&!r.activeRecall.answered)?'<p>Saved Recall Draught question is waiting.</p><button onclick="MajickRewardCore.showRecall()">Resume saved retrieval</button>':'')+'</section>';}
+function localDay(){const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
+function showRecall(){const task=account()?.rewardCore?.activeRecall;if(!task)return false;document.getElementById('majAlchemyRecall')?.remove();const host=document.createElement('div');host.id='majAlchemyRecall';host.className='majConjureBackdrop';host.innerHTML='<section class="majConjureDialog" role="dialog" aria-modal="true" aria-label="Recall Draught retrieval"><h3>Recall Draught · older concept</h3><p>'+E(task.question.prompt)+'</p><p>One response · +4 practice XP if correct · no mastery/fragments</p>'+task.question.options.map((o,i)=>'<button data-recall-option="'+i+'" '+(task.answered?'disabled':'')+'>'+E(o)+'</button>').join('')+'<p role="status" id="majRecallResult">'+E(task.result||'')+'</p><button data-recall-close>Return to learning</button></section>';document.body.append(host);host.querySelector('[data-recall-close]').onclick=()=>host.remove();host.querySelectorAll('[data-recall-option]').forEach(b=>b.onclick=()=>{const result=submitRecall(task.question.options[Number(b.dataset.recallOption)]);host.querySelectorAll('[data-recall-option]').forEach(x=>x.disabled=true);host.querySelector('#majRecallResult').textContent=result.message;});return true;}
+function submitRecall(chosen){const r=account()?.rewardCore,task=r?.activeRecall;if(!task||task.answered)return {ok:false,message:task?.result||'No retrieval is waiting.'};if(!(task.question.options||[]).includes(chosen))return {ok:false,message:'Choose an available response.'};task.answered=true;task.correct=chosen===task.question.answer;task.result=task.correct?'Correct retrieval · +4 practice XP. No mastery/fragments.':'No bonus XP this time. '+task.question.why;const receipt=task.correct?award('potion-recall-practice',{key:task.rewardKey,course:task.course,source:'alchemy-retrieval',independent:false,masteryEligible:false}):null;if(!task.correct)save();return {ok:true,correct:task.correct,receipt,message:task.result};}
 function showConjuring(){
  const a=account(),r=a.rewardCore;if(r.eggFragments<10)return;
  document.getElementById('majEggConjure')?.remove();
- const types=availableEggTypes();if(!types.length)return;
+ const types=availableEggTypes();if(!types.length){alchemyNotice('All species already have an incubating egg. Hatch one before sealing another bond.');return;}
  const key='egg-'+r.eggsConjured+'-'+r.eggFragments,m=eggMystery(types[hash(key)%types.length],key);
  const host=document.createElement('div');host.id='majEggConjure';host.className='majConjureBackdrop';
  host.innerHTML='<section class="majConjureDialog"><div class="majConjureSigil">☾✦</div><small>CELESTIAL EGG CONJURING</small><h2>The fragments answer you.</h2><div class="majMysteryEgg '+E(m.color.replace(/\s+/g,'-'))+'">🥚</div><p><b>Aura:</b> '+E(m.aura)+'<br><b>Shell:</b> '+E(m.color)+' with '+E(m.pattern)+'<br><b>Constellation mark:</b> '+E(m.mark)+'</p><p>The species remains hidden until the bond is sealed.</p><button data-seal>Seal the Egg Bond</button><button class="ghost" data-close>Not yet</button></section>';
  document.body.appendChild(host);host.querySelector('[data-close]').onclick=()=>host.remove();
- host.querySelector('[data-seal]').onclick=()=>{conjureEgg(m,key);host.remove()};
+ host.querySelector('[data-seal]').onclick=()=>{const button=host.querySelector('[data-seal]');if(button.disabled)return;button.disabled=true;const egg=conjureEgg(m,key);if(egg)host.remove();else{button.disabled=false;alchemyNotice('No fragments were spent. Check your saved inventory and egg roster.');}};
 }
-function conjureEgg(m,key){
- const a=account(),r=a.rewardCore;if(r.eggFragments<10)return null;
- const st=state();st.legacy=st.legacy||{};st.legacy.eggs=Array.isArray(st.legacy.eggs)?st.legacy.eggs:[];
- r.eggFragments-=10;r.eggsConjured++;
- const egg={id:'earned_'+Date.now()+'_'+(hash(key)%9999),type:m.type,progress:0,goal:28,source:'celestial-fragments',createdAt:Date.now(),mystery:{color:m.color,aura:m.aura,pattern:m.pattern,constellationMark:m.mark}};
- st.legacy.eggs.push(egg);a.guardianIncubator=a.guardianIncubator||{version:'3.4.10',focusEggId:null,lastFocusAt:0};a.guardianIncubator.focusEggId=egg.id;a.guardianIncubator.lastFocusAt=Date.now();
- save();
- try{window.rewardToast?.('🥚 Celestial Egg discovered!',m.color+' • '+m.aura+' • Study answers will now grow it.')}catch(_){}
- try{window.render?.()}catch(_){}
- return egg;
-}
+function conjureEgg(m,key){if(!m||!key)return null;const result=alchemyTransaction('conjure:'+key,'egg-bond',(a,r,st)=>{if(r.eggFragments<10)return {ok:false,message:'Ten fragments are required.'};const allowed=(window.MajickGuardianRegistry?.all?.()||[]).map(x=>x.type);if(!allowed.includes(m.type))return {ok:false,message:'No approved Guardian species matches this egg.'};st.legacy=st.legacy||{};st.legacy.eggs=Array.isArray(st.legacy.eggs)?st.legacy.eggs:[];if(st.legacy.eggs.some(e=>(window.MajickGuardianRegistry?.getFor?.(e)?.type||e.type)===m.type))return {ok:false,message:'This species already has an incubating egg.'};r.eggFragments-=10;r.eggsConjured++;const egg={id:'earned_'+Date.now()+'_'+r.eggsConjured+'_'+hash(key),type:m.type,progress:0,goal:28,source:'celestial-fragments',createdAt:Date.now(),mystery:{color:m.color,aura:m.aura,pattern:m.pattern,constellationMark:m.mark}};st.legacy.eggs.push(egg);a.guardianIncubator=a.guardianIncubator||{version:'3.4.10',focusEggId:null};a.guardianIncubator.focusEggId=egg.id;a.guardianIncubator.lastFocusAt=Date.now();return {ok:true,eggId:egg.id,type:egg.type,fragmentsSpent:10,message:'Ten fragments sealed into one saved egg.'};});if(!result.ok)return null;const egg=state().legacy.eggs.find(e=>e.id===result.eggId)||{id:result.eggId,type:result.type,alreadyCommitted:true};if(!result.replayed){document.getElementById('majRewardReceipt')?.remove();pushRewardState();window.rewardToast?.('Celestial Egg discovered','Open Sanctuary to care for your focused egg.');window.render?.();}return egg;}
 
 function rarityLabel(id){return RARITIES.find(x=>x.id===id)?.label||id}
 function ingredientName(id){return INGREDIENTS.find(x=>x.id===id)?.name||id}
@@ -359,7 +372,7 @@ function vaultPanelHTML(){
  '<div class="majVaultStats"><span>✦ '+TREASURES.filter(it=>owned.has(it.id)).length+' / '+TREASURES.length+' treasures discovered</span><span>◇ '+Object.values(inv.ingredients).reduce((a,b)=>a+Number(b||0),0)+' ingredients</span><span>⚗ '+Object.values(inv.potions).reduce((a,b)=>a+Number(b||0),0)+' potions</span><span>🥚 '+inv.eggFragments+' egg fragments'+(ready?' • '+ready+' conjuring'+(ready===1?'':'s')+' ready':'')+'</span></div>'+
  tabs+
  panel('treasures')+'<h3 id="majVaultTreasureHeading" tabindex="-1">Your Treasure Collection</h3><div class="majVaultFilters">'+select('collection','Collection',[['all','All collections'],['solstice','Solstice'],['aurelia','Aurelia'],['shared','Shared treasures']])+select('status','Discovery',[['all','All treasures'],['owned','Owned'],['locked','Undiscovered']])+select('kind','Item type',[['all','All types'],['furniture','Furniture'],['decor','Decor'],['toy','Exploration toys'],['accessory','Accessories']])+select('rarity','Rarity',[['all','All rarities'],...RARITIES.map(x=>[x.id,x.label])])+'</div><div class="majVaultCollection">'+(finds.length?pageRows.map(it=>vaultCard(it,owned.has(it.id))).join(''):'<p class="majVaultEmpty">No treasures match these filters. Choose All treasures to explore the collection.</p>')+'</div>'+pagination+'</section>'+
- panel('potions')+'<div class="majRecipeShelf"><h3>Potion Workshop</h3><p>Try each recipe with a one-time complimentary brewing kit.</p>'+(r.potionTestKitClaimed?'<p>✓ Test kit collected</p>':'<button type="button" onclick="majickClaimPotionTestKit()">Claim free brewing test kit ✦</button>')+RECIPES.map(rec=>{const count=Number(inv.potions[rec.id]||0),can=Object.entries(rec.cost).every(([k,n])=>Number(inv.ingredients[k]||0)>=n);return '<div class="majRecipe"><span aria-hidden="true">'+E(rec.icon)+'</span><div><b>'+E(rec.name)+'</b><p>'+E(rec.effect)+'</p><div class="majRecipeCosts">'+Object.entries(rec.cost).map(([k,n])=>{const have=Number(inv.ingredients[k]||0);return '<span class="'+(have>=n?'ready':'missing')+'">'+E(ingredientName(k))+' '+have+'/'+n+(have>=n?' ✓':' • need '+(n-have))+'</span>'}).join('')+'</div></div><aside><button onclick="majickCraftPotion(\''+E(rec.id)+'\')" '+(can?'':'disabled')+'>'+ (can?'Craft potion':'Gather ingredients')+'</button>'+(count?'<button class="use" onclick="majickUsePotion(\''+E(rec.id)+'\')">Use • '+count+' owned</button>':'')+'</aside></div>'}).join('')+'</div>'+'</section>'+
+ panel('potions')+'<div class="majRecipeShelf"><h3>Potion Workshop</h3>'+alchemyLedgerHTML()+'<p>Try each recipe with a one-time complimentary brewing kit.</p>'+(r.potionTestKitClaimed?'<p>✓ Test kit collected</p>':'<button type="button" onclick="majickClaimPotionTestKit()">Claim free brewing test kit ✦</button>')+RECIPES.map(rec=>{const count=Number(inv.potions[rec.id]||0),can=Object.entries(rec.cost).every(([k,n])=>Number(inv.ingredients[k]||0)>=n);return '<div class="majRecipe"><span aria-hidden="true">'+E(rec.icon)+'</span><div><b>'+E(rec.name)+'</b><p>'+E(potionInfo(rec.id)?.effect||rec.effect)+'</p><small>'+E(potionInfo(rec.id)?.where||'')+' · '+E(potionInfo(rec.id)?.duration||'')+'</small><div class="majRecipeCosts">'+Object.entries(rec.cost).map(([k,n])=>{const have=Number(inv.ingredients[k]||0);return '<span class="'+(have>=n?'ready':'missing')+'">'+E(ingredientName(k))+' '+have+'/'+n+(have>=n?' ✓':' • need '+(n-have))+'</span>'}).join('')+'</div></div><aside><button onclick="majickCraftPotion(\''+E(rec.id)+'\')" '+(can?'':'disabled')+'>'+ (can?'Craft potion':'Gather ingredients')+'</button>'+(count?'<button class="use" onclick="majickUsePotion(\''+E(rec.id)+'\')">Use • '+count+' owned</button>':'')+'</aside></div>'}).join('')+'</div>'+'</section>'+
  panel('ingredients')+'<div class="majRecipeShelf"><h3>Ingredient Cabinet</h3><div class="majLootGrid">'+(ingredients.length?ingredients.map(([id,n])=>{const it=INGREDIENTS.find(x=>x.id===id)||{};return '<span class="'+E(it.rarity||'common')+'"><i aria-hidden="true">'+E(it.icon||'✦')+'</i><b>'+E(it.name||id)+'</b><small>'+E(rarityLabel(it.rarity||'common'))+' • '+Number(n)+' owned</small></span>'}).join(''):'<p class="majVaultEmpty">Your cabinet is waiting for its first discovery. Study treasure can reveal magical ingredients.</p>')+'</div></div>'+'</section>'+
  panel('eggs')+'<div class="majVaultEggProgress"><label for="majVaultEggMeter">Next egg • '+Math.min(10,inv.eggFragments)+'/10 fragments</label><progress id="majVaultEggMeter" value="'+Math.min(10,inv.eggFragments)+'" max="10"></progress><p>Earn fragments through mastery and learning milestones.</p></div>'+'</section>'+
  panel('recent')+'<div class="majRecipeShelf"><h3>Recent Discoveries</h3>'+(recent.length?recent.map(x=>'<div class="majVaultRecent"><b>'+E(x.drop?x.drop.name:'Celestial Egg Fragments')+'</b><span>'+E(x.label||x.type.replace(/-/g,' '))+(x.drop?' • '+E(rarityLabel(x.drop.rarity)):' • +'+x.eggFragments+' fragments')+'</span></div>').join(''):'<p class="majVaultEmpty">New treasures and egg fragments will appear here as you earn them.</p>')+'</div>'+ '</section>'+
@@ -382,23 +395,14 @@ function inventory(){
  const r=account()?.rewardCore||{};
  return {ingredients:{...(r.ingredients||{})},collectibles:[...(r.collectibles||[])],blueprints:[...(r.blueprints||[])],potions:{...(r.potions||{})},eggFragments:Number(r.eggFragments||0),recipes:RECIPES,treasures:TREASURES};
 }
-function claimPotionTestKit(){
- const a=account();if(!a)return false;const r=a.rewardCore;
- if(r.potionTestKitClaimed){window.rewardToast?.('Already collected','Your one-time brewing kit was already added.');return false}
- const kit={'moonpetal':6,'silver-sage':4,'star-moss':6,'dream-lavender':3,'celestial-dew':2,'crystal-nectar':2,'sunstone-dust':2};
- for(const [id,n] of Object.entries(kit))r.ingredients[id]=Number(r.ingredients[id]||0)+n;
- r.potionTestKitClaimed=true;save();refreshVault();window.rewardToast?.('✦ Brewing test kit collected','Ingredients added for all five recipes.');return true;
-}
+function claimPotionTestKit(){const r=account()?.rewardCore;if(!r||r.potionTestKitClaimed){alchemyNotice('The one-time brewing kit was already collected.');return false;}const result=alchemyTransaction('alchemy:kit:v1','brewing-kit',(a,r)=>{const kit={'moonpetal':6,'silver-sage':4,'star-moss':6,'dream-lavender':3,'celestial-dew':2,'crystal-nectar':2,'sunstone-dust':2};for(const [id,n] of Object.entries(kit))r.ingredients[id]=Number(r.ingredients[id]||0)+n;r.potionTestKitClaimed=true;return {ok:true,message:'One-time ingredients for all five recipes added.'};});if(!result.ok){alchemyNotice(result.message);return false;}refreshVault();return true;}
 window.majickClaimPotionTestKit=claimPotionTestKit;
-function craft(id){
- const a=account(),r=a.rewardCore,rec=RECIPES.find(x=>x.id===id);if(!rec)return {ok:false,message:'Unknown recipe.'};
- for(const [k,n] of Object.entries(rec.cost))if(Number(r.ingredients[k]||0)<n)return {ok:false,message:'You still need '+n+' '+(INGREDIENTS.find(x=>x.id===k)?.name||k)+'.'};
- for(const [k,n] of Object.entries(rec.cost))r.ingredients[k]-=n;r.potions[id]=Number(r.potions[id]||0)+1;save();
- return {ok:true,recipe:rec,count:r.potions[id]};
-}
-function usePotion(id){
- const a=account(),r=a.rewardCore;if(Number(r.potions[id]||0)<1)return false;r.potions[id]--;const fx=updateEffects();
- if(id==='moonfocus-elixir')fx.moonfocus=5;if(id==='starlight-tonic')fx.starlightTonic=3;if(id==='clarity-potion')fx.clarity=1;if(id==='recall-draught')fx.recall=1;if(id==='crystal-sight-potion')fx.crystalSight=1;save();return true;
+function craft(id,ctx={}){const rec=RECIPES.find(x=>x.id===id);if(!rec)return {ok:false,message:'Unknown recipe.'};const result=alchemyTransaction(ctx.key||alchemyKey('craft:'+id),'craft-potion',(a,r)=>{for(const [k,n] of Object.entries(rec.cost))if(Number(r.ingredients[k]||0)<n)return {ok:false,message:'You need '+n+' '+ingredientName(k)+'; own '+Number(r.ingredients[k]||0)+'.'};for(const [k,n] of Object.entries(rec.cost))r.ingredients[k]-=n;r.potions[id]=Number(r.potions[id]||0)+1;r.discoveredRecipes=r.discoveredRecipes||{};r.discoveredRecipes[id]=r.discoveredRecipes[id]||Date.now();return {ok:true,recipe:rec,count:r.potions[id],message:rec.name+' bottled; recipe ingredients spent once.'};});if(result.ok&&!result.replayed)refreshVault();return result;}
+function usePotion(id){const a=account(),r=a?.rewardCore,info=potionInfo(id);if(!r||!info||Number(r.potions[id]||0)<1)return false;let prepared=null,applied=null;
+ if(id==='moonfocus-elixir'){if(!activePet()||Number(r.activeEffects?.moonfocus||0)>0){alchemyNotice('Choose an owned Guardian, and finish existing Moonfocus charges first. Nothing was consumed.');return false;}}
+ else if(id==='starlight-tonic'){if(!focusedEgg()||Number(r.activeEffects?.starlightTonic||0)>0){alchemyNotice('Focus an incubating egg, and finish existing Starlight charges first. Nothing was consumed.');return false;}}
+ else{prepared=window.MajickGameRealm?.preparePotion?.(id);if(!prepared?.ok){alchemyNotice(prepared?.message||'Open an unanswered Oracle Lens or Guardian Gauntlet question. Nothing was consumed.');return false;}}
+ const tx=alchemyKey('use:'+id),result=alchemyTransaction(tx,'use-potion',(a,r)=>{if(prepared&&id!=='recall-draught'){applied=window.MajickGameRealm.applyPotion(id,prepared);if(!applied?.ok)return {ok:false,message:applied?.message||'The learning effect could not be applied.'};}r.potions[id]--;const fx=updateEffects();if(id==='moonfocus-elixir')fx.moonfocus=5;else if(id==='starlight-tonic')fx.starlightTonic=3;else if(id==='recall-draught')r.activeRecall={question:prepared.question,course:state().activeCourse,answered:false,rewardKey:prepared.rewardKey,at:Date.now()};return {ok:true,potion:id,message:info.effect,duration:info.duration,question:prepared?.question||null,hint:prepared?.text||null};});if(!result.ok){applied?.undo?.();alchemyNotice(result.message);return false;}if(id==='recall-draught')showRecall();return true;
 }
 function rewardPreview(type,ctx={}){const x=baseFor(type,ctx);return {...x,type};}
 function patchLegacyGameRewards(){
@@ -413,11 +417,11 @@ function patchLegacyGameRewards(){
  };fn.__majickRewardCore=true;window.grantMoonlight=fn;
 }
 function inspect(){const a=account(),r=a?.rewardCore;return {version:VERSION,xp:a?.xp||0,crystals:a?.crystals||0,chests:a?.chests||0,eggFragments:r?.eggFragments||0,ingredients:{...(r?.ingredients||{})},collectibles:[...(r?.collectibles||[])],blueprints:[...(r?.blueprints||[])],stats:{...(r?.stats||{})},lastReceipt:r?.lastReceipt||null}}
-window.MajickRewardCore={VERSION,RARITIES,INGREDIENTS,TREASURES,RECIPES,award,rewardPreview,inventory,craft,usePotion,showConjuring,conjureEgg,vaultPanelHTML,patchVault,inspect,patchLegacyGameRewards,placeReward,equipReward,pushRewardState,ITEM_ART};
+window.MajickRewardCore={VERSION,RARITIES,INGREDIENTS,TREASURES,RECIPES,award,rewardPreview,inventory,claimPotionTestKit,craft,usePotion,showConjuring,conjureEgg,vaultPanelHTML,patchVault,inspect,patchLegacyGameRewards,potionInfo,alchemyLedgerHTML,showRecall,submitRecall,placeReward,equipReward,pushRewardState,ITEM_ART};
 window.majickConjureEgg=()=>showConjuring();
 
 // Cozy Alchemy is a presentation layer. Inventory is changed only by craft(), never by animation.
-let cozyRecipe=null,cozyStage=0,cozyStirs=0,cozyCommitted=false,cozySound=false,cozyAudio=null,cozyMotion=!window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches;
+let cozyTransaction=null;let cozyRecipe=null,cozyStage=0,cozyStirs=0,cozyCommitted=false,cozySound=false,cozyAudio=null,cozyMotion=!window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches;
 const cozyLooks={
  'clarity-potion':['#9d62f1','#d4a7ff','38% 38% 25% 25%'],
  'recall-draught':['#4da5f2','#a5dfff','48% 48% 10% 10%'],
@@ -435,7 +439,7 @@ function cozyGuardian(){const pets=state()?.legacy?.pets;const pet=Array.isArray
 
 const cozyStyle=document.createElement('style');
 cozyStyle.textContent=`
-.majCozyShade{position:fixed;inset:0;z-index:99990;background:#0c0719cf;display:grid;place-items:center;padding:18px;overflow:auto}
+.majCozyShade{position:fixed;inset:0;z-index:99990;background:#0c0719cf;display:grid;place-items:center;padding:18px;overflow:hidden}
 .majCozyModal{width:min(520px,100%);max-height:95vh;overflow:auto;position:relative;padding:24px;border:2px solid #c8a36c;border-radius:22px;color:#fff2df;background:radial-gradient(ellipse at 50% 35%,#55346d,#1a1029 72%);box-shadow:0 20px 70px #080411}
 .majCozyModal h2{font-family:Georgia,serif;color:#ffe0a4;margin:4px 0 8px}.majCozyModal p{color:#f7e8ff;line-height:1.5}
 .majCozyPixiLayer{position:absolute;inset:0;z-index:2;pointer-events:none}.majCozyPixiLayer canvas{display:block;width:100%;height:100%}.majCozyScene:has(.majCozyPixiLayer) .majCozyCauldron,.majCozyScene:has(.majCozyPixiLayer) .majCozySmoke,.majCozyScene:has(.majCozyPixiLayer) .majCozyParticles{visibility:hidden}.majCozyScene{height:210px;display:grid;place-items:center;position:relative;overflow:hidden}
@@ -507,7 +511,7 @@ function cozyDraw(){
  const look=cozyLooks[rec.id]||cozyLooks['clarity-potion'];
  const labels=['Add ingredients','Stir the potion','Bottle your potion','Potion crafted!'];
  const actions=cozyStage===0?'<button onclick="majCozyNext()">Add all ingredients ✦</button>':cozyStage===1?'<button onclick="majCozyNext()">Stir ✨ '+cozyStirs+'/3</button><button onclick="majCozyQuick()">Quick mix</button>':cozyStage===2?'<button onclick="majCozyNext()">Bottle potion ⚗</button>':'<button onclick="majCozyClose()">Return to workshop</button>';
- box.innerHTML='<div class="majCozyModal" style="--potion-color:'+look[0]+';--potion-glow:'+look[1]+';--bottle-shape:'+look[2]+'" role="dialog" aria-modal="true" aria-labelledby="majCozyTitle"><button class="majCozyClose" aria-label="Close brewing workshop" onclick="majCozyClose()">×</button><small>THE MOONLIT CAULDRON • '+E(labels[cozyStage])+'</small><h2 id="majCozyTitle">'+E(rec.name)+'</h2><button type="button" onclick="majCozySound()" aria-pressed="'+cozySound+'">'+(cozySound?'♫ Cozy sound on':'♪ Cozy sound off')+'</button><button type="button" class="majCozyMotion" onclick="majCozyMotion()" aria-pressed="'+cozyMotion+'">'+(cozyMotion?'Pause animations':'Play animations')+'</button><p>'+E(rec.effect)+'</p><div class="majCozyScene" data-brew-stage="'+cozyStage+'" data-motion="'+(cozyMotion?'on':'off')+'">'+cozyFallbackMarkup(look)+'</div><p style="text-align:center">'+(cozyStage===3?'Your potion has been saved to inventory. '+cozyGuardian()+'':cozyStage===1?'Stir three times, or use Quick mix.':cozyStage===2?'The mixture is glowing. Ready to bottle!':'Ingredients are ready. Brew without any extra resource cost.')+'</p><div class="majCozyActions">'+actions+'</div></div>';
+ box.innerHTML='<div class="majCozyModal" style="--potion-color:'+look[0]+';--potion-glow:'+look[1]+';--bottle-shape:'+look[2]+'" role="dialog" aria-modal="true" aria-labelledby="majCozyTitle"><button class="majCozyClose" aria-label="Close brewing workshop" onclick="majCozyClose()">×</button><small>THE MOONLIT CAULDRON • '+E(labels[cozyStage])+'</small><h2 id="majCozyTitle">'+E(rec.name)+'</h2><button type="button" onclick="majCozySound()" aria-pressed="'+cozySound+'">'+(cozySound?'♫ Cozy sound on':'♪ Cozy sound off')+'</button><button type="button" class="majCozyMotion" onclick="majCozyMotion()" aria-pressed="'+cozyMotion+'">'+(cozyMotion?'Pause animations':'Play animations')+'</button><p>'+E(potionInfo(rec.id)?.effect||rec.effect)+'</p><p>'+Object.entries(rec.cost).map(([k,n])=>E(ingredientName(k))+': '+n+' required / '+Number(inventory().ingredients[k]||0)+' owned').join(' · ')+'</p><div class="majCozyScene" data-brew-stage="'+cozyStage+'" data-motion="'+(cozyMotion?'on':'off')+'">'+cozyFallbackMarkup(look)+'</div><p style="text-align:center">'+(cozyStage===3?'Your potion has been saved to inventory. '+cozyGuardian()+'':cozyStage===1?'Stir three times, or use Quick mix.':cozyStage===2?'The mixture is glowing. Ready to bottle!':'Review the recipe costs below. Ingredients are spent only when you confirm Bottle potion; closing beforehand spends nothing.')+'</p><div class="majCozyActions">'+actions+'</div></div>';
  if(previousScene){box.querySelector('.majCozyScene').replaceWith(previousScene);previousScene.dataset.brewStage=String(cozyStage);previousScene.dataset.motion=cozyMotion?'on':'off';previousScene.querySelector('.majCozyFallbackArt')?.remove();previousScene.insertAdjacentHTML('afterbegin',cozyFallbackMarkup(look));}
  cozyPixi?.update?.();cozyMountPixi();
 }
@@ -519,7 +523,7 @@ window.majCozyNext=()=>{
  cozyChime();
  if(cozyStage===0)cozyStage=1;
  else if(cozyStage===1){cozyStirs++;if(cozyStirs>=3)cozyStage=2}
- else if(cozyStage===2){cozyCommitted=true;const result=craft(cozyRecipe);if(!result.ok){window.rewardToast?.('Missing ingredients',result.message);cozyClose();return}cozyDiscover(result.recipe);cozyStage=3;window.rewardToast?.('⚗ Potion crafted',result.recipe.name)}
+ else if(cozyStage===2){cozyCommitted=true;const result=craft(cozyRecipe,{key:cozyTransaction});if(!result.ok){window.rewardToast?.('Brewing not committed',result.message);cozyClose();return}cozyDiscover(result.recipe);cozyStage=3;window.rewardToast?.('⚗ Potion crafted',result.recipe.name)}
  cozyDraw();
 };
 window.majickCraftPotion=id=>{
@@ -528,11 +532,11 @@ window.majickCraftPotion=id=>{
  const missing=Object.entries(rec.cost).filter(([k,n])=>Number(inv.ingredients[k]||0)<n);
  if(missing.length){window.rewardToast?.('Missing ingredients','Earn more ingredients by studying.');return {ok:false,message:'Missing ingredients'}}
  if(document.getElementById('majCozyBrewing'))return {ok:false,message:'Brewing already open'};
- cozyRecipe=id;cozyStage=0;cozyStirs=0;cozyCommitted=false;
+ cozyRecipe=id;cozyTransaction=alchemyKey('brew:'+id);cozyStage=0;cozyStirs=0;cozyCommitted=false;
  const overlay=document.createElement('div');overlay.id='majCozyBrewing';overlay.className='majCozyShade';document.body.appendChild(overlay);cozyDraw();return {ok:true,pending:true};
 };
 
-window.majickUsePotion=id=>{const ok=usePotion(id);try{window.rewardToast?.(ok?'✦ Potion activated':'No potion available',ok?(RECIPES.find(x=>x.id===id)?.effect||'Magic stirred.'):'Craft one first.')}catch(_){};try{window.render?.()}catch(_){};return ok};
+window.majickUsePotion=id=>{const available=Number(inventory().potions[id]||0)>0,ok=usePotion(id);if(ok)window.rewardToast?.('Potion activated',potionInfo(id)?.effect||'');else if(!available)alchemyNotice('No potion is owned. Craft one first.');window.render?.();return ok};
 document.documentElement.dataset.majickRewardCore=VERSION;
 setTimeout(()=>{patchLegacyGameRewards();patchVault()},0);
 })();

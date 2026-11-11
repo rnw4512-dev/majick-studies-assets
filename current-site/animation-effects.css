@@ -5,3 +5,6 @@
 .majickFx[data-fx-type="guardian"] img{filter:drop-shadow(0 0 21px #d8a6d9)}
 @keyframes majickFxSpark{0%{opacity:0;transform:rotate(var(--angle)) translateY(0) scale(.5)}26%{opacity:1}100%{opacity:0;transform:rotate(var(--angle)) translateY(calc(-1 * var(--dist))) scale(.2)}}
 @media(prefers-reduced-motion:reduce){.majickFxParticle{display:none!important}}
+
+/* Interaction feedback stays inside its control, including mobile size overrides. */
+.majickFx[data-fx-type="touch"]{--fx-size:var(--fx-touch-size,36px)!important;overflow:hidden;contain:paint;border-radius:50%}.majickFx[data-fx-type="touch"] img{filter:none}

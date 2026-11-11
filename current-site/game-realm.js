@@ -104,8 +104,9 @@
       return; // No independent proof, academic answer records, or duplicate reward for review games.
     }
     if(session)session.questionRepair=correct?null:{q,chosen};
+    if(session?.potionAssistedFor===q.id){window.MajickStudyProgress?.creditAnswer?.({key:'potion-assisted:'+String(S.activeCourse)+':'+String(q.id)+':'+session.round+':'+session.alchemyAttempt,course:S.activeCourse,qid:q.id,topicId:q.topicId||'',chosen,answer:q.answer,correct,assisted:true,source:'potion-guided-practice',difficulty:q.difficulty||1});guardianReact(correct?'correct':'miss',{mode,qid:q.id,assisted:true});return;}
     if(!correct)window.MajickQuestionRepair.recordWrong(q,chosen,{assisted:true,alreadyRecorded:true,room:'game-realm'});
-    try{record?.(q,chosen,correct,'sure',mode)}catch(_){}
+    try{record?.(q,chosen,correct,'sure',mode);const memory=(prog()?.questionMemory||[]).slice().reverse().find(x=>x.id===q.id);if(memory)Object.assign(memory,{options:(q.options||[]).map(String),answer:String(q.answer),why:q.why||'',keyClue:q.keyClue||'',assisted:false,recallEligible:!/shown below|graph below|diagram below/i.test(q.prompt||'')});save?.();}catch(_){}
     try{window.MajickLearningContinuity?.skillResult(q,correct,true,'game-realm')}catch(_){}
     try{window.MajickAdaptiveLearning?.observeGameSkill?.(q,correct,mode)}catch(_){}
     if(correct){
@@ -1196,6 +1197,15 @@
       '<div class="heroBtns"><button class="btn primary" onclick="'+(id==='assessmentsigilsort'?'startAssessmentSigilSort()':id==='runesort'?'startRuneSort()':id==='oraclelens'?'startOracleLens()':id==='constellation'?'startMemoryConstellation()':id==='hexbreaker'?'startHexBreaker()':'startGuardianGauntlet()')+'">Play again</button><button class="btn secondary" onclick="session=null;navigate(\'games\')">Back to Game Realm</button></div></section></div>';
   }
 
+  // Learning UI supplies the context; reward-core alone commits inventory and rewards.
+  function potionContext(){const q=session?.current,recovery=q&&window.MajickLearningContinuity?.practiceRecovery?.(window.MajickQuestionRepair.normalize(q),false);return {ready:!recovery?.required&&!!q&&['oraclelens','gauntlet'].includes(session?.type)&&!session?.answered&&!session?.finished&&S?.screen==='mission',question:q,mode:session?.type,course:S?.activeCourse};}
+  function preparePotion(id){const context=potionContext(),q=context.question;if(!context.ready)return {ok:false,message:'Open an unanswered Oracle Lens or Guardian Gauntlet question. Nothing was consumed.'};session.potionUses=session.potionUses||{};if(session.potionUses[q.id+'|'+id])return {ok:false,message:'That potion has already helped with this question. Nothing was consumed.'};
+   if(id==='recall-draught'){const answers=prog()?.answers||[],r=window.MajickStateCore?.ensureAccount?.()?.rewardCore,d=new Date(),day=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');if(r?.activeRecall&&!r.activeRecall.answered)return {ok:false,message:'Finish the saved Recall Draught retrieval first; nothing was consumed.'};const remembered=(prog()?.questionMemory||[]).filter(x=>Array.isArray(x.options)&&x.answer!=null&&x.recallEligible!==false);const older=[...remembered,...realmQuestionPool()].find(x=>x.id!==q.id&&x.options?.length>=2&&answers.some(a=>a.qid===x.id&&a.assisted!==true)&&!r?.ledger?.['alchemy:recall:'+S.activeCourse+':'+x.id+':'+day]);if(!older)return {ok:false,message:'Study another unassisted question in this course first. No eligible older retrieval is available; nothing was consumed.'};return {ok:true,question:{id:older.id,prompt:older.prompt,options:older.options.map(String),answer:String(older.answer),why:older.why||''},rewardKey:'alchemy:recall:'+S.activeCourse+':'+older.id+':'+day};}
+   let text='';if(id==='clarity-potion')text=q.keyClue||q.wguClue||(q.why&&!/verify (the )?source|review this concept/i.test(q.why)?q.why:'');else if(id==='crystal-sight-potion'){const wrong=q.options?.find(o=>o!==q.answer),model=wrong&&window.MajickQuestionRepair?.specificRepair?.(q,wrong);text=q.distractorCoach||model?.diagnosis||'';}
+   if(!text)return {ok:false,message:'This question has no verified clue/contrast to preview. Your potion remains in inventory.'};return {ok:true,question:{id:q.id,prompt:q.prompt},text:String(text)};
+  }
+  function applyPotion(id,prepared){const context=potionContext();if(!context.ready||context.question.id!==prepared.question.id)return {ok:false,message:'The active question changed; no potion was used.'};session.alchemyAttempt=session.alchemyAttempt||String(Date.now());const prior={hints:session.potionHints,assisted:session.potionAssistedFor,uses:{...(session.potionUses||{})}};session.potionUses=session.potionUses||{};session.potionUses[context.question.id+'|'+id]=true;session.potionHints=session.potionHints?.qid===context.question.id?session.potionHints:{qid:context.question.id};session.potionHints[id]=prepared.text;session.potionAssistedFor=context.question.id;render?.();return {ok:true,undo:()=>{session.potionHints=prior.hints;session.potionAssistedFor=prior.assisted;session.potionUses=prior.uses;render?.();}};}
+  function potionToolsHTML(){const context=potionContext();if(!context.ready)return '';const inv=window.MajickRewardCore?.inventory?.();if(!inv)return '';const hints=session.potionHints?.qid===context.question.id?session.potionHints:{};return '<aside class="realmPotionTools" aria-label="Learning potions"><details><summary>Learning potions · assistance is labeled</summary><p>Hinted answers do not count as independent mastery. Unavailable effects do not consume inventory.</p>'+inv.recipes.filter(r=>Number(inv.potions[r.id]||0)>0).map(r=>'<button onclick="majickUsePotion(\''+E(r.id)+'\')">'+E(r.name)+' · '+Number(inv.potions[r.id])+' owned</button>').join('')+'<button onclick="navigate(\'vault\');majickVaultTab(\'potions\')">Alchemy Ledger / workshop</button></details>'+(hints['clarity-potion']?'<p data-potion-effect="clarity"><b>Clarity Potion · controlling clue</b><br><mark>'+E(hints['clarity-potion'])+'</mark></p>':'')+(hints['crystal-sight-potion']?'<p data-potion-effect="crystal-sight"><b>Crystal Sight · distractor contrast</b><br>'+E(hints['crystal-sight-potion'])+'<br><small>Example contrast; not a confirmed diagnosis of your reasoning.</small></p>':'')+'</aside>';}
   const baseSessionHTML=typeof sessionHTML==='function'?sessionHTML:null;
   if(baseSessionHTML){
     const realmHTML=function(){
@@ -1207,7 +1217,7 @@
       if(session?.type==='gauntlet')return gauntletHTML();
       return baseSessionHTML();
     };
-    sessionHTML=function(){const q=session?.current||session?.items?.[session.index]||session?.questionRepair?.q,r=q&&window.MajickLearningContinuity?.practiceRecovery?.(window.MajickQuestionRepair.normalize(q),false);if(r?.required&&!session?.answered)return window.MajickQuestionRepair.html(r.source,r.selected);const html=realmHTML();return (session?.answered||['runesort','constellation'].includes(session?.type))&&session.questionRepair?html+window.MajickQuestionRepair.html(session.questionRepair.q,session.questionRepair.chosen):html};
+    sessionHTML=function(){const q=session?.current||session?.items?.[session.index]||session?.questionRepair?.q,r=q&&window.MajickLearningContinuity?.practiceRecovery?.(window.MajickQuestionRepair.normalize(q),false);if(r?.required&&!session?.answered)return window.MajickQuestionRepair.html(r.source,r.selected);const html=realmHTML()+potionToolsHTML();return (session?.answered||['runesort','constellation'].includes(session?.type))&&session.questionRepair?html+window.MajickQuestionRepair.html(session.questionRepair.q,session.questionRepair.chosen):html};
   }
 
   globalThis.MajickGameRealm={
@@ -1219,6 +1229,7 @@
     buildD772SectionReview,
     assessmentSigilPool,
     buildConstellation,
+    potionContext,preparePotion,applyPotion,
     inspect(){
       return {
         version:VERSION,

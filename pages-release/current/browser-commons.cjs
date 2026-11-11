@@ -48,6 +48,8 @@ async function run(){
   const reduced=await ev('(()=>{const api=MajickAnimationEffects;api.play("guardian");const x=document.querySelector(".majickFx");const out={type:x?.dataset.fxType,particles:x?.querySelectorAll(".majickFxParticle").length};api.clear();return out})()');
   assert.equal(reduced.type,'guardian');assert.equal(reduced.particles,0,'Reduced motion must omit particles');
   await call('Emulation.setEmulatedMedia',{features:[]});
+  const boundedTouch=await ev('(()=>{const b=document.querySelector("[data-commons-tab=overview]"),api=MajickAnimationEffects;api.play("touch",{target:b});const e=document.querySelector(".majickFx"),r=e.getBoundingClientRect(),t=b.getBoundingClientRect(),overflow=getComputedStyle(e).overflow;api.clear();return {width:r.width,height:r.height,targetWidth:t.width,targetHeight:t.height,overflow}})()');
+  assert(boundedTouch.width<=boundedTouch.targetWidth&&boundedTouch.height<=boundedTouch.targetHeight&&boundedTouch.overflow==='hidden','Touch feedback must stay inside its actual control at '+width);
   console.log('PASS browser celebration viewport '+width+' overlay/no-clicks/reduced-motion/state isolation');
   const header=await ev('(()=>{const top=document.querySelector(".top"),r=top.getBoundingClientRect();return [...top.children].filter(e=>e.getClientRects().length&&getComputedStyle(e).position!=="absolute").map(e=>({tag:e.tagName,bottom:e.getBoundingClientRect().bottom,parentBottom:r.bottom}))})()');
   for(const child of header)assert(child.bottom<=child.parentBottom+2,'Header control escapes into reading area at '+width+': '+JSON.stringify(child));

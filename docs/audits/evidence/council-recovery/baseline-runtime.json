@@ -1,0 +1,1801 @@
+{
+  "commit": "31be7d10f31ebb71b66a2055ef0246d228aac9ce",
+  "kit": true,
+  "alchemy": {
+    "before": {
+      "ingredients": {
+        "moonpetal": 6,
+        "silver-sage": 4,
+        "star-moss": 6,
+        "dream-lavender": 3,
+        "celestial-dew": 2,
+        "crystal-nectar": 2,
+        "sunstone-dust": 2
+      },
+      "collectibles": [],
+      "blueprints": [],
+      "potions": {},
+      "eggFragments": 0,
+      "recipes": [
+        {
+          "id": "clarity-potion",
+          "name": "Clarity Potion",
+          "icon": "\u2697",
+          "effect": "Highlights one important clue word.",
+          "cost": {
+            "moonpetal": 2,
+            "silver-sage": 1
+          }
+        },
+        {
+          "id": "recall-draught",
+          "name": "Recall Draught",
+          "icon": "\u263e",
+          "effect": "Calls back one older concept for bonus retrieval XP.",
+          "cost": {
+            "star-moss": 2,
+            "dream-lavender": 1
+          }
+        },
+        {
+          "id": "moonfocus-elixir",
+          "name": "Moonfocus Elixir",
+          "icon": "\u2727",
+          "effect": "+25% Guardian bond rewards for the next five questions.",
+          "cost": {
+            "moonpetal": 1,
+            "celestial-dew": 1
+          }
+        },
+        {
+          "id": "crystal-sight-potion",
+          "name": "Crystal Sight Potion",
+          "icon": "\u25c7",
+          "effect": "Previews the misconception family behind one distractor.",
+          "cost": {
+            "silver-sage": 1,
+            "crystal-nectar": 1
+          }
+        },
+        {
+          "id": "starlight-tonic",
+          "name": "Starlight Tonic",
+          "icon": "\u2726",
+          "effect": "Adds egg moonlight to the next three independent answers.",
+          "cost": {
+            "star-moss": 2,
+            "sunstone-dust": 1
+          }
+        }
+      ],
+      "treasures": [
+        {
+          "id": "velvet-study-chair",
+          "name": "Velvet Study Chair",
+          "kind": "furniture",
+          "rarity": "enchanted",
+          "icon": "\u265c",
+          "image": "assets/rewards/items/velvet-study-chair.webp"
+        },
+        {
+          "id": "constellation-rug",
+          "name": "Constellation Rug",
+          "kind": "furniture",
+          "rarity": "rare",
+          "icon": "\u2726",
+          "image": "assets/rewards/items/constellation-rug.webp"
+        },
+        {
+          "id": "moon-phase-wall-hanging",
+          "name": "Moon-Phase Wall Hanging",
+          "kind": "decor",
+          "rarity": "enchanted",
+          "icon": "\u263e",
+          "image": "assets/rewards/items/moon-phase-wall-hanging.webp"
+        },
+        {
+          "id": "potion-shelf",
+          "name": "Potion Shelf",
+          "kind": "furniture",
+          "rarity": "rare",
+          "icon": "\u2697",
+          "image": "assets/rewards/items/potion-shelf.webp"
+        },
+        {
+          "id": "crystal-lamp",
+          "name": "Crystal Lamp",
+          "kind": "decor",
+          "rarity": "rare",
+          "icon": "\u25c7",
+          "image": "assets/rewards/items/crystal-lamp.webp"
+        },
+        {
+          "id": "floating-book-stack",
+          "name": "Floating Book Stack",
+          "kind": "decor",
+          "rarity": "arcane",
+          "icon": "\ud83d\udcda",
+          "image": "sanctuary/assets/runtime-objects/enchanted-bookstack.webp"
+        },
+        {
+          "id": "celestial-telescope",
+          "name": "Celestial Telescope",
+          "kind": "furniture",
+          "rarity": "arcane",
+          "icon": "\ud83d\udd2d",
+          "image": "sanctuary/assets/runtime-objects/celestial-telescope.webp"
+        },
+        {
+          "id": "guardian-toy-chest",
+          "name": "Guardian Toy Chest",
+          "kind": "furniture",
+          "rarity": "rare",
+          "icon": "\ud83c\udf81",
+          "image": "assets/rewards/items/guardian-toy-chest.webp"
+        },
+        {
+          "id": "enchanted-fireplace",
+          "name": "Enchanted Fireplace",
+          "kind": "furniture",
+          "rarity": "celestial",
+          "icon": "\ud83d\udd25",
+          "image": "assets/rewards/items/enchanted-fireplace.webp"
+        },
+        {
+          "id": "moonflower-planter",
+          "name": "Moonflower Planter",
+          "kind": "decor",
+          "rarity": "enchanted",
+          "icon": "\u2740",
+          "image": "assets/rewards/items/moonflower-planter.webp"
+        },
+        {
+          "id": "canopy-bed-curtains",
+          "name": "Canopy-Bed Curtains",
+          "kind": "decor",
+          "rarity": "rare",
+          "icon": "\u2662",
+          "image": "assets/rewards/items/canopy-bed-curtains.webp"
+        },
+        {
+          "id": "rune-writing-desk",
+          "name": "Rune Writing Desk",
+          "kind": "furniture",
+          "rarity": "arcane",
+          "icon": "\u2318",
+          "image": "sanctuary/assets/runtime-objects/moonlit-study-desk.webp"
+        },
+        {
+          "id": "memory-moon-brooch",
+          "name": "Memory Moon Brooch",
+          "kind": "accessory",
+          "rarity": "rare",
+          "icon": "\u263e",
+          "image": "assets/rewards/items/memory-moon-brooch.webp"
+        },
+        {
+          "id": "scholar-rune-circlet",
+          "name": "Scholar's Rune Circlet",
+          "kind": "accessory",
+          "rarity": "arcane",
+          "icon": "\u265b",
+          "image": "assets/rewards/items/scholar-rune-circlet.webp"
+        },
+        {
+          "id": "fortune-seer-monocle",
+          "name": "Fortune-Seer's Monocle",
+          "kind": "accessory",
+          "rarity": "rare",
+          "icon": "\u25c9",
+          "image": "assets/rewards/items/fortune-seer-monocle.webp"
+        },
+        {
+          "id": "celestial-dice-charm",
+          "name": "Celestial Dice Charm",
+          "kind": "accessory",
+          "rarity": "rare",
+          "icon": "\u2684",
+          "image": "assets/rewards/items/celestial-dice-charm.webp"
+        },
+        {
+          "id": "star-cartographer-glasses",
+          "name": "Star Cartographer Glasses",
+          "kind": "accessory",
+          "rarity": "arcane",
+          "icon": "\u2316",
+          "image": "assets/rewards/items/star-cartographer-glasses.webp"
+        },
+        {
+          "id": "probability-scholar-cape",
+          "name": "Probability Scholar Cape",
+          "kind": "accessory",
+          "rarity": "celestial",
+          "icon": "\u2726",
+          "image": "assets/rewards/items/probability-scholar-cape.webp"
+        },
+        {
+          "id": "solstice-reading-chaise",
+          "name": "Solstice\u2019s Reading Chaise",
+          "kind": "furniture",
+          "rarity": "rare",
+          "icon": "\u263e",
+          "image": "assets/rewards/solstice/items/reading-chaise.webp",
+          "collection": "solstice"
+        },
+        {
+          "id": "solstice-star-pouf",
+          "name": "Solstice\u2019s Star Pouf",
+          "kind": "furniture",
+          "rarity": "enchanted",
+          "icon": "\u263e",
+          "image": "assets/rewards/solstice/items/star-pouf.webp",
+          "collection": "solstice"
+        },
+        {
+          "id": "solstice-explorer-telescope",
+          "name": "Solstice\u2019s Explorer Telescope",
+          "kind": "furniture",
+          "rarity": "arcane",
+          "icon": "\u263e",
+          "image": "assets/rewards/solstice/items/explorer-telescope.webp",
+          "collection": "solstice"
+        },
+        {
+          "id": "solstice-starlight-hammock",
+          "name": "Solstice\u2019s Starlight Hammock",
+          "kind": "furniture",
+          "rarity": "rare",
+          "icon": "\u263e",
+          "image": "assets/rewards/solstice/items/starlight-hammock.webp",
+          "collection": "solstice"
+        },
+        {
+          "id": "solstice-galaxy-vanity",
+          "name": "Solstice\u2019s Galaxy Vanity",
+          "kind": "furniture",
+          "rarity": "arcane",
+          "icon": "\u263e",
+          "image": "assets/rewards/solstice/items/galaxy-vanity.webp",
+          "collection": "solstice"
+        },
+        {
+          "id": "solstice-nebula-bowl",
+          "name": "Solstice\u2019s Nebula Bowl",
+          "kind": "decor",
+          "rarity": "arcane",
+          "icon": "\u263e",
+          "image": "assets/rewards/solstice/items/nebula-bowl.webp",
+          "collection": "solstice"
+        },
+        {
+          "id": "solstice-solar-orrery",
+          "name": "Solstice\u2019s Solar Orrery",
+          "kind": "toy",
+          "rarity": "celestial",
+          "icon": "\u2727",
+          "image": "assets/rewards/solstice/items/solar-orrery.webp",
+          "collection": "solstice"
+        },
+        {
+          "id": "solstice-astronomy-bookshelf",
+          "name": "Solstice\u2019s Astronomy Bookshelf",
+          "kind": "furniture",
+          "rarity": "rare",
+          "icon": "\u263e",
+          "image": "assets/rewards/solstice/items/astronomy-bookshelf.webp",
+          "collection": "solstice"
+        },
+        {
+          "id": "solstice-fox-star-den",
+          "name": "Solstice\u2019s Fox Star Den",
+          "kind": "furniture",
+          "rarity": "celestial",
+          "icon": "\u263e",
+          "image": "assets/rewards/solstice/items/fox-star-den.webp",
+          "collection": "solstice"
+        },
+        {
+          "id": "solstice-constellation-rug",
+          "name": "Solstice\u2019s Constellation Rug",
+          "kind": "furniture",
+          "rarity": "rare",
+          "icon": "\u263e",
+          "image": "assets/rewards/solstice/items/constellation-rug.webp",
+          "collection": "solstice"
+        },
+        {
+          "id": "solstice-exploration-chest",
+          "name": "Solstice\u2019s Exploration Chest",
+          "kind": "toy",
+          "rarity": "rare",
+          "icon": "\u2727",
+          "image": "assets/rewards/solstice/items/exploration-chest.webp",
+          "collection": "solstice"
+        },
+        {
+          "id": "solstice-planet-climbing-tower",
+          "name": "Solstice\u2019s Planet Climbing Tower",
+          "kind": "toy",
+          "rarity": "rare",
+          "icon": "\u2727",
+          "image": "assets/rewards/solstice/items/planet-climbing-tower.webp",
+          "collection": "solstice"
+        },
+        {
+          "id": "solstice-amber-canopy-bed",
+          "name": "Solstice\u2019s Amber Canopy Bed",
+          "kind": "furniture",
+          "rarity": "celestial",
+          "icon": "\u263e",
+          "image": "assets/rewards/solstice/items/amber-canopy-bed.webp",
+          "collection": "solstice"
+        },
+        {
+          "id": "solstice-star-perch-tree",
+          "name": "Solstice\u2019s Star Perch Tree",
+          "kind": "toy",
+          "rarity": "rare",
+          "icon": "\u2727",
+          "image": "assets/rewards/solstice/items/star-perch-tree.webp",
+          "collection": "solstice"
+        },
+        {
+          "id": "solstice-moon-writing-desk",
+          "name": "Solstice\u2019s Moon Writing Desk",
+          "kind": "furniture",
+          "rarity": "arcane",
+          "icon": "\u263e",
+          "image": "assets/rewards/solstice/items/moon-writing-desk.webp",
+          "collection": "solstice"
+        },
+        {
+          "id": "solstice-fox-ear-reading-chair",
+          "name": "Solstice\u2019s Fox-Ear Reading Chair",
+          "kind": "furniture",
+          "rarity": "rare",
+          "icon": "\u263e",
+          "image": "assets/rewards/solstice/items/fox-ear-reading-chair.webp",
+          "collection": "solstice"
+        },
+        {
+          "id": "solstice-crescent-lantern",
+          "name": "Solstice\u2019s Crescent Lantern",
+          "kind": "decor",
+          "rarity": "enchanted",
+          "icon": "\u263e",
+          "image": "assets/rewards/solstice/items/crescent-lantern.webp",
+          "collection": "solstice"
+        },
+        {
+          "id": "solstice-astral-doorway",
+          "name": "Solstice\u2019s Astral Doorway",
+          "kind": "decor",
+          "rarity": "arcane",
+          "icon": "\u263e",
+          "image": "assets/rewards/solstice/items/astral-doorway.webp",
+          "collection": "solstice"
+        },
+        {
+          "id": "solstice-galaxy-folding-screen",
+          "name": "Solstice\u2019s Galaxy Folding Screen",
+          "kind": "furniture",
+          "rarity": "arcane",
+          "icon": "\u263e",
+          "image": "assets/rewards/solstice/items/galaxy-folding-screen.webp",
+          "collection": "solstice"
+        },
+        {
+          "id": "solstice-orbit-play-ball",
+          "name": "Solstice\u2019s Orbit Play Ball",
+          "kind": "toy",
+          "rarity": "enchanted",
+          "icon": "\u2727",
+          "image": "assets/rewards/solstice/items/orbit-play-ball.webp",
+          "collection": "solstice"
+        },
+        {
+          "id": "solstice-star-charm-rack",
+          "name": "Solstice\u2019s Star Charm Rack",
+          "kind": "toy",
+          "rarity": "rare",
+          "icon": "\u2727",
+          "image": "assets/rewards/solstice/items/star-charm-rack.webp",
+          "collection": "solstice"
+        },
+        {
+          "id": "solstice-solar-circlet",
+          "name": "Solstice\u2019s Solar Circlet",
+          "kind": "accessory",
+          "rarity": "celestial",
+          "icon": "\u2726",
+          "image": "assets/rewards/solstice/items/solar-circlet.webp",
+          "collection": "solstice"
+        },
+        {
+          "id": "solstice-moon-collar",
+          "name": "Solstice\u2019s Moon Collar",
+          "kind": "accessory",
+          "rarity": "enchanted",
+          "icon": "\u2726",
+          "image": "assets/rewards/solstice/items/moon-collar.webp",
+          "collection": "solstice"
+        },
+        {
+          "id": "solstice-nebula-wand",
+          "name": "Solstice\u2019s Nebula Wand",
+          "kind": "accessory",
+          "rarity": "arcane",
+          "icon": "\u2726",
+          "image": "assets/rewards/solstice/items/nebula-wand.webp",
+          "collection": "solstice"
+        },
+        {
+          "id": "solstice-star-glasses",
+          "name": "Solstice\u2019s Star Glasses",
+          "kind": "accessory",
+          "rarity": "rare",
+          "icon": "\u2726",
+          "image": "assets/rewards/solstice/items/star-glasses.webp",
+          "collection": "solstice"
+        },
+        {
+          "id": "solstice-orbit-bracelet",
+          "name": "Solstice\u2019s Orbit Bracelet",
+          "kind": "accessory",
+          "rarity": "rare",
+          "icon": "\u2726",
+          "image": "assets/rewards/solstice/items/orbit-bracelet.webp",
+          "collection": "solstice"
+        },
+        {
+          "id": "solstice-explorer-satchel",
+          "name": "Solstice\u2019s Explorer Satchel",
+          "kind": "accessory",
+          "rarity": "rare",
+          "icon": "\u2726",
+          "image": "assets/rewards/solstice/items/explorer-satchel.webp",
+          "collection": "solstice"
+        },
+        {
+          "id": "solstice-galaxy-cape",
+          "name": "Solstice\u2019s Galaxy Cape",
+          "kind": "accessory",
+          "rarity": "celestial",
+          "icon": "\u2726",
+          "image": "assets/rewards/solstice/items/galaxy-cape.webp",
+          "collection": "solstice"
+        },
+        {
+          "id": "solstice-astronomy-book-stack",
+          "name": "Solstice\u2019s Astronomy Book Stack",
+          "kind": "decor",
+          "rarity": "enchanted",
+          "icon": "\u263e",
+          "image": "assets/rewards/solstice/items/astronomy-book-stack.webp",
+          "collection": "solstice"
+        },
+        {
+          "id": "solstice-planet-mobile",
+          "name": "Solstice\u2019s Planet Mobile",
+          "kind": "decor",
+          "rarity": "rare",
+          "icon": "\u263e",
+          "image": "assets/rewards/solstice/items/planet-mobile.webp",
+          "collection": "solstice"
+        },
+        {
+          "id": "solstice-starlight-tea-table",
+          "name": "Solstice\u2019s Starlight Tea Table",
+          "kind": "furniture",
+          "rarity": "rare",
+          "icon": "\u263e",
+          "image": "assets/rewards/solstice/items/starlight-tea-table.webp",
+          "collection": "solstice"
+        },
+        {
+          "id": "solstice-cosmic-orbit-puzzle",
+          "name": "Solstice\u2019s Cosmic Orbit Puzzle",
+          "kind": "toy",
+          "rarity": "arcane",
+          "icon": "\u2727",
+          "image": "assets/rewards/solstice/items/cosmic-orbit-puzzle.webp",
+          "collection": "solstice"
+        },
+        {
+          "id": "solstice-sun-globe-lamp",
+          "name": "Solstice\u2019s Sun Globe Lamp",
+          "kind": "decor",
+          "rarity": "arcane",
+          "icon": "\u263e",
+          "image": "assets/rewards/solstice/items/sun-globe-lamp.webp",
+          "collection": "solstice"
+        },
+        {
+          "id": "solstice-celestial-fox-gateway",
+          "name": "Solstice\u2019s Celestial Fox Gateway",
+          "kind": "decor",
+          "rarity": "celestial",
+          "icon": "\u263e",
+          "image": "assets/rewards/solstice/items/celestial-fox-gateway.webp",
+          "collection": "solstice"
+        },
+        {
+          "id": "aurelia-bunny-ear-reading-chair",
+          "name": "Aurelia\u2019s Bunny-Ear Reading Chair",
+          "kind": "furniture",
+          "rarity": "rare",
+          "icon": "\u263e",
+          "collection": "aurelia",
+          "image": "assets/rewards/aurelia/items/bunny-ear-reading-chair.webp"
+        },
+        {
+          "id": "aurelia-wingback-reading-chaise",
+          "name": "Aurelia\u2019s Wingback Reading Chaise",
+          "kind": "furniture",
+          "rarity": "rare",
+          "icon": "\u263e",
+          "collection": "aurelia",
+          "image": "assets/rewards/aurelia/items/wingback-reading-chaise.webp"
+        },
+        {
+          "id": "aurelia-quilted-ruby-canopy-bed",
+          "name": "Aurelia\u2019s Quilted Ruby Canopy Bed",
+          "kind": "furniture",
+          "rarity": "celestial",
+          "icon": "\u263e",
+          "collection": "aurelia",
+          "image": "assets/rewards/aurelia/items/quilted-ruby-canopy-bed.webp"
+        },
+        {
+          "id": "aurelia-burrow-hammock",
+          "name": "Aurelia\u2019s Burrow Hammock",
+          "kind": "furniture",
+          "rarity": "rare",
+          "icon": "\u263e",
+          "collection": "aurelia",
+          "image": "assets/rewards/aurelia/items/burrow-hammock.webp"
+        },
+        {
+          "id": "aurelia-velvet-footstool",
+          "name": "Aurelia\u2019s Velvet Footstool",
+          "kind": "furniture",
+          "rarity": "rare",
+          "icon": "\u263e",
+          "collection": "aurelia",
+          "image": "assets/rewards/aurelia/items/velvet-footstool.webp"
+        },
+        {
+          "id": "aurelia-scholar-writing-desk",
+          "name": "Aurelia\u2019s Scholar Writing Desk",
+          "kind": "furniture",
+          "rarity": "arcane",
+          "icon": "\u263e",
+          "collection": "aurelia",
+          "image": "assets/rewards/aurelia/items/scholar-writing-desk.webp"
+        },
+        {
+          "id": "aurelia-arched-bookcase",
+          "name": "Aurelia\u2019s Arched Bookcase",
+          "kind": "furniture",
+          "rarity": "enchanted",
+          "icon": "\u263e",
+          "collection": "aurelia",
+          "image": "assets/rewards/aurelia/items/arched-bookcase.webp"
+        },
+        {
+          "id": "aurelia-rose-crystal-lamp",
+          "name": "Aurelia\u2019s Rose Crystal Lamp",
+          "kind": "decor",
+          "rarity": "enchanted",
+          "icon": "\u263e",
+          "collection": "aurelia",
+          "image": "assets/rewards/aurelia/items/rose-crystal-lamp.webp"
+        },
+        {
+          "id": "aurelia-wing-framed-moon-mirror",
+          "name": "Aurelia\u2019s Wing-Framed Moon Mirror",
+          "kind": "decor",
+          "rarity": "rare",
+          "icon": "\u263e",
+          "collection": "aurelia",
+          "image": "assets/rewards/aurelia/items/wing-framed-moon-mirror.webp"
+        },
+        {
+          "id": "aurelia-feather-lantern",
+          "name": "Aurelia\u2019s Feather Lantern",
+          "kind": "decor",
+          "rarity": "arcane",
+          "icon": "\u263e",
+          "collection": "aurelia",
+          "image": "assets/rewards/aurelia/items/feather-lantern.webp"
+        },
+        {
+          "id": "aurelia-flowering-sage-planter",
+          "name": "Aurelia\u2019s Flowering Sage Planter",
+          "kind": "decor",
+          "rarity": "rare",
+          "icon": "\u263e",
+          "collection": "aurelia",
+          "image": "assets/rewards/aurelia/items/flowering-sage-planter.webp"
+        },
+        {
+          "id": "aurelia-feeding-and-water-station",
+          "name": "Aurelia\u2019s Feeding and Water Station",
+          "kind": "decor",
+          "rarity": "enchanted",
+          "icon": "\u263e",
+          "collection": "aurelia",
+          "image": "assets/rewards/aurelia/items/feeding-and-water-station.webp"
+        },
+        {
+          "id": "aurelia-potion-apothecary",
+          "name": "Aurelia\u2019s Potion Apothecary",
+          "kind": "decor",
+          "rarity": "rare",
+          "icon": "\u263e",
+          "collection": "aurelia",
+          "image": "assets/rewards/aurelia/items/potion-apothecary.webp"
+        },
+        {
+          "id": "aurelia-wing-embroidered-rug",
+          "name": "Aurelia\u2019s Wing-Embroidered Rug",
+          "kind": "decor",
+          "rarity": "arcane",
+          "icon": "\u263e",
+          "collection": "aurelia",
+          "image": "assets/rewards/aurelia/items/wing-embroidered-rug.webp"
+        },
+        {
+          "id": "aurelia-rose-tea-table",
+          "name": "Aurelia\u2019s Rose Tea Table",
+          "kind": "toy",
+          "rarity": "rare",
+          "icon": "\u263e",
+          "collection": "aurelia",
+          "image": "assets/rewards/aurelia/items/rose-tea-table.webp"
+        },
+        {
+          "id": "aurelia-feather-play-wand",
+          "name": "Aurelia\u2019s Feather Play Wand",
+          "kind": "toy",
+          "rarity": "enchanted",
+          "icon": "\u263e",
+          "collection": "aurelia",
+          "image": "assets/rewards/aurelia/items/feather-play-wand.webp"
+        },
+        {
+          "id": "aurelia-rune-play-ball",
+          "name": "Aurelia\u2019s Rune Play Ball",
+          "kind": "toy",
+          "rarity": "rare",
+          "icon": "\u263e",
+          "collection": "aurelia",
+          "image": "assets/rewards/aurelia/items/rune-play-ball.webp"
+        },
+        {
+          "id": "aurelia-treat-puzzle-carousel",
+          "name": "Aurelia\u2019s Treat Puzzle Carousel",
+          "kind": "toy",
+          "rarity": "rare",
+          "icon": "\u263e",
+          "collection": "aurelia",
+          "image": "assets/rewards/aurelia/items/treat-puzzle-carousel.webp"
+        },
+        {
+          "id": "aurelia-bunny-toy-trunk",
+          "name": "Aurelia\u2019s Bunny Toy Trunk",
+          "kind": "toy",
+          "rarity": "rare",
+          "icon": "\u263e",
+          "collection": "aurelia",
+          "image": "assets/rewards/aurelia/items/bunny-toy-trunk.webp"
+        },
+        {
+          "id": "aurelia-hopping-stones",
+          "name": "Aurelia\u2019s Hopping Stones",
+          "kind": "toy",
+          "rarity": "rare",
+          "icon": "\u263e",
+          "collection": "aurelia",
+          "image": "assets/rewards/aurelia/items/hopping-stones.webp"
+        },
+        {
+          "id": "aurelia-rose-and-star-mobile",
+          "name": "Aurelia\u2019s Rose and Star Mobile",
+          "kind": "toy",
+          "rarity": "arcane",
+          "icon": "\u263e",
+          "collection": "aurelia",
+          "image": "assets/rewards/aurelia/items/rose-and-star-mobile.webp"
+        },
+        {
+          "id": "aurelia-ruby-rose-circlet",
+          "name": "Aurelia\u2019s Ruby Rose Circlet",
+          "kind": "accessory",
+          "rarity": "celestial",
+          "icon": "\u2726",
+          "collection": "aurelia",
+          "image": "assets/rewards/aurelia/items/ruby-rose-circlet.webp"
+        },
+        {
+          "id": "aurelia-sage-moon-collar",
+          "name": "Aurelia\u2019s Sage Moon Collar",
+          "kind": "accessory",
+          "rarity": "enchanted",
+          "icon": "\u2726",
+          "collection": "aurelia",
+          "image": "assets/rewards/aurelia/items/sage-moon-collar.webp"
+        },
+        {
+          "id": "aurelia-scholar-glasses",
+          "name": "Aurelia\u2019s Scholar Glasses",
+          "kind": "accessory",
+          "rarity": "rare",
+          "icon": "\u2726",
+          "collection": "aurelia",
+          "image": "assets/rewards/aurelia/items/scholar-glasses.webp"
+        },
+        {
+          "id": "aurelia-wing-and-petal-cloak",
+          "name": "Aurelia\u2019s Wing-and-Petal Cloak",
+          "kind": "accessory",
+          "rarity": "celestial",
+          "icon": "\u2726",
+          "collection": "aurelia",
+          "image": "assets/rewards/aurelia/items/wing-and-petal-cloak.webp"
+        },
+        {
+          "id": "aurelia-scholar-satchel",
+          "name": "Aurelia\u2019s Scholar Satchel",
+          "kind": "accessory",
+          "rarity": "rare",
+          "icon": "\u2726",
+          "collection": "aurelia",
+          "image": "assets/rewards/aurelia/items/scholar-satchel.webp"
+        },
+        {
+          "id": "aurelia-rose-heart-arcane-orb",
+          "name": "Aurelia\u2019s Rose-Heart Arcane Orb",
+          "kind": "decor",
+          "rarity": "arcane",
+          "icon": "\u263e",
+          "collection": "aurelia",
+          "image": "assets/rewards/aurelia/items/rose-heart-arcane-orb.webp"
+        },
+        {
+          "id": "aurelia-celestial-rabbit-dream-altar",
+          "name": "Aurelia\u2019s Celestial Rabbit Dream Altar",
+          "kind": "decor",
+          "rarity": "celestial",
+          "icon": "\u263e",
+          "collection": "aurelia",
+          "image": "assets/rewards/aurelia/items/celestial-rabbit-dream-altar.webp"
+        }
+      ]
+    },
+    "results": [
+      {
+        "id": "clarity-potion",
+        "craft": {
+          "ok": true,
+          "recipe": {
+            "id": "clarity-potion",
+            "name": "Clarity Potion",
+            "icon": "\u2697",
+            "effect": "Highlights one important clue word.",
+            "cost": {
+              "moonpetal": 2,
+              "silver-sage": 1
+            }
+          },
+          "count": 1
+        },
+        "useOutsideLearning": true
+      },
+      {
+        "id": "recall-draught",
+        "craft": {
+          "ok": true,
+          "recipe": {
+            "id": "recall-draught",
+            "name": "Recall Draught",
+            "icon": "\u263e",
+            "effect": "Calls back one older concept for bonus retrieval XP.",
+            "cost": {
+              "star-moss": 2,
+              "dream-lavender": 1
+            }
+          },
+          "count": 1
+        },
+        "useOutsideLearning": true
+      },
+      {
+        "id": "moonfocus-elixir",
+        "craft": {
+          "ok": true,
+          "recipe": {
+            "id": "moonfocus-elixir",
+            "name": "Moonfocus Elixir",
+            "icon": "\u2727",
+            "effect": "+25% Guardian bond rewards for the next five questions.",
+            "cost": {
+              "moonpetal": 1,
+              "celestial-dew": 1
+            }
+          },
+          "count": 1
+        },
+        "useOutsideLearning": true
+      },
+      {
+        "id": "crystal-sight-potion",
+        "craft": {
+          "ok": true,
+          "recipe": {
+            "id": "crystal-sight-potion",
+            "name": "Crystal Sight Potion",
+            "icon": "\u25c7",
+            "effect": "Previews the misconception family behind one distractor.",
+            "cost": {
+              "silver-sage": 1,
+              "crystal-nectar": 1
+            }
+          },
+          "count": 1
+        },
+        "useOutsideLearning": true
+      },
+      {
+        "id": "starlight-tonic",
+        "craft": {
+          "ok": true,
+          "recipe": {
+            "id": "starlight-tonic",
+            "name": "Starlight Tonic",
+            "icon": "\u2726",
+            "effect": "Adds egg moonlight to the next three independent answers.",
+            "cost": {
+              "star-moss": 2,
+              "sunstone-dust": 1
+            }
+          },
+          "count": 1
+        },
+        "useOutsideLearning": true
+      }
+    ],
+    "after": {
+      "ingredients": {
+        "moonpetal": 3,
+        "silver-sage": 2,
+        "star-moss": 2,
+        "dream-lavender": 2,
+        "celestial-dew": 1,
+        "crystal-nectar": 1,
+        "sunstone-dust": 1
+      },
+      "collectibles": [],
+      "blueprints": [],
+      "potions": {
+        "clarity-potion": 0,
+        "recall-draught": 0,
+        "moonfocus-elixir": 0,
+        "crystal-sight-potion": 0,
+        "starlight-tonic": 0
+      },
+      "eggFragments": 0,
+      "recipes": [
+        {
+          "id": "clarity-potion",
+          "name": "Clarity Potion",
+          "icon": "\u2697",
+          "effect": "Highlights one important clue word.",
+          "cost": {
+            "moonpetal": 2,
+            "silver-sage": 1
+          }
+        },
+        {
+          "id": "recall-draught",
+          "name": "Recall Draught",
+          "icon": "\u263e",
+          "effect": "Calls back one older concept for bonus retrieval XP.",
+          "cost": {
+            "star-moss": 2,
+            "dream-lavender": 1
+          }
+        },
+        {
+          "id": "moonfocus-elixir",
+          "name": "Moonfocus Elixir",
+          "icon": "\u2727",
+          "effect": "+25% Guardian bond rewards for the next five questions.",
+          "cost": {
+            "moonpetal": 1,
+            "celestial-dew": 1
+          }
+        },
+        {
+          "id": "crystal-sight-potion",
+          "name": "Crystal Sight Potion",
+          "icon": "\u25c7",
+          "effect": "Previews the misconception family behind one distractor.",
+          "cost": {
+            "silver-sage": 1,
+            "crystal-nectar": 1
+          }
+        },
+        {
+          "id": "starlight-tonic",
+          "name": "Starlight Tonic",
+          "icon": "\u2726",
+          "effect": "Adds egg moonlight to the next three independent answers.",
+          "cost": {
+            "star-moss": 2,
+            "sunstone-dust": 1
+          }
+        }
+      ],
+      "treasures": [
+        {
+          "id": "velvet-study-chair",
+          "name": "Velvet Study Chair",
+          "kind": "furniture",
+          "rarity": "enchanted",
+          "icon": "\u265c",
+          "image": "assets/rewards/items/velvet-study-chair.webp"
+        },
+        {
+          "id": "constellation-rug",
+          "name": "Constellation Rug",
+          "kind": "furniture",
+          "rarity": "rare",
+          "icon": "\u2726",
+          "image": "assets/rewards/items/constellation-rug.webp"
+        },
+        {
+          "id": "moon-phase-wall-hanging",
+          "name": "Moon-Phase Wall Hanging",
+          "kind": "decor",
+          "rarity": "enchanted",
+          "icon": "\u263e",
+          "image": "assets/rewards/items/moon-phase-wall-hanging.webp"
+        },
+        {
+          "id": "potion-shelf",
+          "name": "Potion Shelf",
+          "kind": "furniture",
+          "rarity": "rare",
+          "icon": "\u2697",
+          "image": "assets/rewards/items/potion-shelf.webp"
+        },
+        {
+          "id": "crystal-lamp",
+          "name": "Crystal Lamp",
+          "kind": "decor",
+          "rarity": "rare",
+          "icon": "\u25c7",
+          "image": "assets/rewards/items/crystal-lamp.webp"
+        },
+        {
+          "id": "floating-book-stack",
+          "name": "Floating Book Stack",
+          "kind": "decor",
+          "rarity": "arcane",
+          "icon": "\ud83d\udcda",
+          "image": "sanctuary/assets/runtime-objects/enchanted-bookstack.webp"
+        },
+        {
+          "id": "celestial-telescope",
+          "name": "Celestial Telescope",
+          "kind": "furniture",
+          "rarity": "arcane",
+          "icon": "\ud83d\udd2d",
+          "image": "sanctuary/assets/runtime-objects/celestial-telescope.webp"
+        },
+        {
+          "id": "guardian-toy-chest",
+          "name": "Guardian Toy Chest",
+          "kind": "furniture",
+          "rarity": "rare",
+          "icon": "\ud83c\udf81",
+          "image": "assets/rewards/items/guardian-toy-chest.webp"
+        },
+        {
+          "id": "enchanted-fireplace",
+          "name": "Enchanted Fireplace",
+          "kind": "furniture",
+          "rarity": "celestial",
+          "icon": "\ud83d\udd25",
+          "image": "assets/rewards/items/enchanted-fireplace.webp"
+        },
+        {
+          "id": "moonflower-planter",
+          "name": "Moonflower Planter",
+          "kind": "decor",
+          "rarity": "enchanted",
+          "icon": "\u2740",
+          "image": "assets/rewards/items/moonflower-planter.webp"
+        },
+        {
+          "id": "canopy-bed-curtains",
+          "name": "Canopy-Bed Curtains",
+          "kind": "decor",
+          "rarity": "rare",
+          "icon": "\u2662",
+          "image": "assets/rewards/items/canopy-bed-curtains.webp"
+        },
+        {
+          "id": "rune-writing-desk",
+          "name": "Rune Writing Desk",
+          "kind": "furniture",
+          "rarity": "arcane",
+          "icon": "\u2318",
+          "image": "sanctuary/assets/runtime-objects/moonlit-study-desk.webp"
+        },
+        {
+          "id": "memory-moon-brooch",
+          "name": "Memory Moon Brooch",
+          "kind": "accessory",
+          "rarity": "rare",
+          "icon": "\u263e",
+          "image": "assets/rewards/items/memory-moon-brooch.webp"
+        },
+        {
+          "id": "scholar-rune-circlet",
+          "name": "Scholar's Rune Circlet",
+          "kind": "accessory",
+          "rarity": "arcane",
+          "icon": "\u265b",
+          "image": "assets/rewards/items/scholar-rune-circlet.webp"
+        },
+        {
+          "id": "fortune-seer-monocle",
+          "name": "Fortune-Seer's Monocle",
+          "kind": "accessory",
+          "rarity": "rare",
+          "icon": "\u25c9",
+          "image": "assets/rewards/items/fortune-seer-monocle.webp"
+        },
+        {
+          "id": "celestial-dice-charm",
+          "name": "Celestial Dice Charm",
+          "kind": "accessory",
+          "rarity": "rare",
+          "icon": "\u2684",
+          "image": "assets/rewards/items/celestial-dice-charm.webp"
+        },
+        {
+          "id": "star-cartographer-glasses",
+          "name": "Star Cartographer Glasses",
+          "kind": "accessory",
+          "rarity": "arcane",
+          "icon": "\u2316",
+          "image": "assets/rewards/items/star-cartographer-glasses.webp"
+        },
+        {
+          "id": "probability-scholar-cape",
+          "name": "Probability Scholar Cape",
+          "kind": "accessory",
+          "rarity": "celestial",
+          "icon": "\u2726",
+          "image": "assets/rewards/items/probability-scholar-cape.webp"
+        },
+        {
+          "id": "solstice-reading-chaise",
+          "name": "Solstice\u2019s Reading Chaise",
+          "kind": "furniture",
+          "rarity": "rare",
+          "icon": "\u263e",
+          "image": "assets/rewards/solstice/items/reading-chaise.webp",
+          "collection": "solstice"
+        },
+        {
+          "id": "solstice-star-pouf",
+          "name": "Solstice\u2019s Star Pouf",
+          "kind": "furniture",
+          "rarity": "enchanted",
+          "icon": "\u263e",
+          "image": "assets/rewards/solstice/items/star-pouf.webp",
+          "collection": "solstice"
+        },
+        {
+          "id": "solstice-explorer-telescope",
+          "name": "Solstice\u2019s Explorer Telescope",
+          "kind": "furniture",
+          "rarity": "arcane",
+          "icon": "\u263e",
+          "image": "assets/rewards/solstice/items/explorer-telescope.webp",
+          "collection": "solstice"
+        },
+        {
+          "id": "solstice-starlight-hammock",
+          "name": "Solstice\u2019s Starlight Hammock",
+          "kind": "furniture",
+          "rarity": "rare",
+          "icon": "\u263e",
+          "image": "assets/rewards/solstice/items/starlight-hammock.webp",
+          "collection": "solstice"
+        },
+        {
+          "id": "solstice-galaxy-vanity",
+          "name": "Solstice\u2019s Galaxy Vanity",
+          "kind": "furniture",
+          "rarity": "arcane",
+          "icon": "\u263e",
+          "image": "assets/rewards/solstice/items/galaxy-vanity.webp",
+          "collection": "solstice"
+        },
+        {
+          "id": "solstice-nebula-bowl",
+          "name": "Solstice\u2019s Nebula Bowl",
+          "kind": "decor",
+          "rarity": "arcane",
+          "icon": "\u263e",
+          "image": "assets/rewards/solstice/items/nebula-bowl.webp",
+          "collection": "solstice"
+        },
+        {
+          "id": "solstice-solar-orrery",
+          "name": "Solstice\u2019s Solar Orrery",
+          "kind": "toy",
+          "rarity": "celestial",
+          "icon": "\u2727",
+          "image": "assets/rewards/solstice/items/solar-orrery.webp",
+          "collection": "solstice"
+        },
+        {
+          "id": "solstice-astronomy-bookshelf",
+          "name": "Solstice\u2019s Astronomy Bookshelf",
+          "kind": "furniture",
+          "rarity": "rare",
+          "icon": "\u263e",
+          "image": "assets/rewards/solstice/items/astronomy-bookshelf.webp",
+          "collection": "solstice"
+        },
+        {
+          "id": "solstice-fox-star-den",
+          "name": "Solstice\u2019s Fox Star Den",
+          "kind": "furniture",
+          "rarity": "celestial",
+          "icon": "\u263e",
+          "image": "assets/rewards/solstice/items/fox-star-den.webp",
+          "collection": "solstice"
+        },
+        {
+          "id": "solstice-constellation-rug",
+          "name": "Solstice\u2019s Constellation Rug",
+          "kind": "furniture",
+          "rarity": "rare",
+          "icon": "\u263e",
+          "image": "assets/rewards/solstice/items/constellation-rug.webp",
+          "collection": "solstice"
+        },
+        {
+          "id": "solstice-exploration-chest",
+          "name": "Solstice\u2019s Exploration Chest",
+          "kind": "toy",
+          "rarity": "rare",
+          "icon": "\u2727",
+          "image": "assets/rewards/solstice/items/exploration-chest.webp",
+          "collection": "solstice"
+        },
+        {
+          "id": "solstice-planet-climbing-tower",
+          "name": "Solstice\u2019s Planet Climbing Tower",
+          "kind": "toy",
+          "rarity": "rare",
+          "icon": "\u2727",
+          "image": "assets/rewards/solstice/items/planet-climbing-tower.webp",
+          "collection": "solstice"
+        },
+        {
+          "id": "solstice-amber-canopy-bed",
+          "name": "Solstice\u2019s Amber Canopy Bed",
+          "kind": "furniture",
+          "rarity": "celestial",
+          "icon": "\u263e",
+          "image": "assets/rewards/solstice/items/amber-canopy-bed.webp",
+          "collection": "solstice"
+        },
+        {
+          "id": "solstice-star-perch-tree",
+          "name": "Solstice\u2019s Star Perch Tree",
+          "kind": "toy",
+          "rarity": "rare",
+          "icon": "\u2727",
+          "image": "assets/rewards/solstice/items/star-perch-tree.webp",
+          "collection": "solstice"
+        },
+        {
+          "id": "solstice-moon-writing-desk",
+          "name": "Solstice\u2019s Moon Writing Desk",
+          "kind": "furniture",
+          "rarity": "arcane",
+          "icon": "\u263e",
+          "image": "assets/rewards/solstice/items/moon-writing-desk.webp",
+          "collection": "solstice"
+        },
+        {
+          "id": "solstice-fox-ear-reading-chair",
+          "name": "Solstice\u2019s Fox-Ear Reading Chair",
+          "kind": "furniture",
+          "rarity": "rare",
+          "icon": "\u263e",
+          "image": "assets/rewards/solstice/items/fox-ear-reading-chair.webp",
+          "collection": "solstice"
+        },
+        {
+          "id": "solstice-crescent-lantern",
+          "name": "Solstice\u2019s Crescent Lantern",
+          "kind": "decor",
+          "rarity": "enchanted",
+          "icon": "\u263e",
+          "image": "assets/rewards/solstice/items/crescent-lantern.webp",
+          "collection": "solstice"
+        },
+        {
+          "id": "solstice-astral-doorway",
+          "name": "Solstice\u2019s Astral Doorway",
+          "kind": "decor",
+          "rarity": "arcane",
+          "icon": "\u263e",
+          "image": "assets/rewards/solstice/items/astral-doorway.webp",
+          "collection": "solstice"
+        },
+        {
+          "id": "solstice-galaxy-folding-screen",
+          "name": "Solstice\u2019s Galaxy Folding Screen",
+          "kind": "furniture",
+          "rarity": "arcane",
+          "icon": "\u263e",
+          "image": "assets/rewards/solstice/items/galaxy-folding-screen.webp",
+          "collection": "solstice"
+        },
+        {
+          "id": "solstice-orbit-play-ball",
+          "name": "Solstice\u2019s Orbit Play Ball",
+          "kind": "toy",
+          "rarity": "enchanted",
+          "icon": "\u2727",
+          "image": "assets/rewards/solstice/items/orbit-play-ball.webp",
+          "collection": "solstice"
+        },
+        {
+          "id": "solstice-star-charm-rack",
+          "name": "Solstice\u2019s Star Charm Rack",
+          "kind": "toy",
+          "rarity": "rare",
+          "icon": "\u2727",
+          "image": "assets/rewards/solstice/items/star-charm-rack.webp",
+          "collection": "solstice"
+        },
+        {
+          "id": "solstice-solar-circlet",
+          "name": "Solstice\u2019s Solar Circlet",
+          "kind": "accessory",
+          "rarity": "celestial",
+          "icon": "\u2726",
+          "image": "assets/rewards/solstice/items/solar-circlet.webp",
+          "collection": "solstice"
+        },
+        {
+          "id": "solstice-moon-collar",
+          "name": "Solstice\u2019s Moon Collar",
+          "kind": "accessory",
+          "rarity": "enchanted",
+          "icon": "\u2726",
+          "image": "assets/rewards/solstice/items/moon-collar.webp",
+          "collection": "solstice"
+        },
+        {
+          "id": "solstice-nebula-wand",
+          "name": "Solstice\u2019s Nebula Wand",
+          "kind": "accessory",
+          "rarity": "arcane",
+          "icon": "\u2726",
+          "image": "assets/rewards/solstice/items/nebula-wand.webp",
+          "collection": "solstice"
+        },
+        {
+          "id": "solstice-star-glasses",
+          "name": "Solstice\u2019s Star Glasses",
+          "kind": "accessory",
+          "rarity": "rare",
+          "icon": "\u2726",
+          "image": "assets/rewards/solstice/items/star-glasses.webp",
+          "collection": "solstice"
+        },
+        {
+          "id": "solstice-orbit-bracelet",
+          "name": "Solstice\u2019s Orbit Bracelet",
+          "kind": "accessory",
+          "rarity": "rare",
+          "icon": "\u2726",
+          "image": "assets/rewards/solstice/items/orbit-bracelet.webp",
+          "collection": "solstice"
+        },
+        {
+          "id": "solstice-explorer-satchel",
+          "name": "Solstice\u2019s Explorer Satchel",
+          "kind": "accessory",
+          "rarity": "rare",
+          "icon": "\u2726",
+          "image": "assets/rewards/solstice/items/explorer-satchel.webp",
+          "collection": "solstice"
+        },
+        {
+          "id": "solstice-galaxy-cape",
+          "name": "Solstice\u2019s Galaxy Cape",
+          "kind": "accessory",
+          "rarity": "celestial",
+          "icon": "\u2726",
+          "image": "assets/rewards/solstice/items/galaxy-cape.webp",
+          "collection": "solstice"
+        },
+        {
+          "id": "solstice-astronomy-book-stack",
+          "name": "Solstice\u2019s Astronomy Book Stack",
+          "kind": "decor",
+          "rarity": "enchanted",
+          "icon": "\u263e",
+          "image": "assets/rewards/solstice/items/astronomy-book-stack.webp",
+          "collection": "solstice"
+        },
+        {
+          "id": "solstice-planet-mobile",
+          "name": "Solstice\u2019s Planet Mobile",
+          "kind": "decor",
+          "rarity": "rare",
+          "icon": "\u263e",
+          "image": "assets/rewards/solstice/items/planet-mobile.webp",
+          "collection": "solstice"
+        },
+        {
+          "id": "solstice-starlight-tea-table",
+          "name": "Solstice\u2019s Starlight Tea Table",
+          "kind": "furniture",
+          "rarity": "rare",
+          "icon": "\u263e",
+          "image": "assets/rewards/solstice/items/starlight-tea-table.webp",
+          "collection": "solstice"
+        },
+        {
+          "id": "solstice-cosmic-orbit-puzzle",
+          "name": "Solstice\u2019s Cosmic Orbit Puzzle",
+          "kind": "toy",
+          "rarity": "arcane",
+          "icon": "\u2727",
+          "image": "assets/rewards/solstice/items/cosmic-orbit-puzzle.webp",
+          "collection": "solstice"
+        },
+        {
+          "id": "solstice-sun-globe-lamp",
+          "name": "Solstice\u2019s Sun Globe Lamp",
+          "kind": "decor",
+          "rarity": "arcane",
+          "icon": "\u263e",
+          "image": "assets/rewards/solstice/items/sun-globe-lamp.webp",
+          "collection": "solstice"
+        },
+        {
+          "id": "solstice-celestial-fox-gateway",
+          "name": "Solstice\u2019s Celestial Fox Gateway",
+          "kind": "decor",
+          "rarity": "celestial",
+          "icon": "\u263e",
+          "image": "assets/rewards/solstice/items/celestial-fox-gateway.webp",
+          "collection": "solstice"
+        },
+        {
+          "id": "aurelia-bunny-ear-reading-chair",
+          "name": "Aurelia\u2019s Bunny-Ear Reading Chair",
+          "kind": "furniture",
+          "rarity": "rare",
+          "icon": "\u263e",
+          "collection": "aurelia",
+          "image": "assets/rewards/aurelia/items/bunny-ear-reading-chair.webp"
+        },
+        {
+          "id": "aurelia-wingback-reading-chaise",
+          "name": "Aurelia\u2019s Wingback Reading Chaise",
+          "kind": "furniture",
+          "rarity": "rare",
+          "icon": "\u263e",
+          "collection": "aurelia",
+          "image": "assets/rewards/aurelia/items/wingback-reading-chaise.webp"
+        },
+        {
+          "id": "aurelia-quilted-ruby-canopy-bed",
+          "name": "Aurelia\u2019s Quilted Ruby Canopy Bed",
+          "kind": "furniture",
+          "rarity": "celestial",
+          "icon": "\u263e",
+          "collection": "aurelia",
+          "image": "assets/rewards/aurelia/items/quilted-ruby-canopy-bed.webp"
+        },
+        {
+          "id": "aurelia-burrow-hammock",
+          "name": "Aurelia\u2019s Burrow Hammock",
+          "kind": "furniture",
+          "rarity": "rare",
+          "icon": "\u263e",
+          "collection": "aurelia",
+          "image": "assets/rewards/aurelia/items/burrow-hammock.webp"
+        },
+        {
+          "id": "aurelia-velvet-footstool",
+          "name": "Aurelia\u2019s Velvet Footstool",
+          "kind": "furniture",
+          "rarity": "rare",
+          "icon": "\u263e",
+          "collection": "aurelia",
+          "image": "assets/rewards/aurelia/items/velvet-footstool.webp"
+        },
+        {
+          "id": "aurelia-scholar-writing-desk",
+          "name": "Aurelia\u2019s Scholar Writing Desk",
+          "kind": "furniture",
+          "rarity": "arcane",
+          "icon": "\u263e",
+          "collection": "aurelia",
+          "image": "assets/rewards/aurelia/items/scholar-writing-desk.webp"
+        },
+        {
+          "id": "aurelia-arched-bookcase",
+          "name": "Aurelia\u2019s Arched Bookcase",
+          "kind": "furniture",
+          "rarity": "enchanted",
+          "icon": "\u263e",
+          "collection": "aurelia",
+          "image": "assets/rewards/aurelia/items/arched-bookcase.webp"
+        },
+        {
+          "id": "aurelia-rose-crystal-lamp",
+          "name": "Aurelia\u2019s Rose Crystal Lamp",
+          "kind": "decor",
+          "rarity": "enchanted",
+          "icon": "\u263e",
+          "collection": "aurelia",
+          "image": "assets/rewards/aurelia/items/rose-crystal-lamp.webp"
+        },
+        {
+          "id": "aurelia-wing-framed-moon-mirror",
+          "name": "Aurelia\u2019s Wing-Framed Moon Mirror",
+          "kind": "decor",
+          "rarity": "rare",
+          "icon": "\u263e",
+          "collection": "aurelia",
+          "image": "assets/rewards/aurelia/items/wing-framed-moon-mirror.webp"
+        },
+        {
+          "id": "aurelia-feather-lantern",
+          "name": "Aurelia\u2019s Feather Lantern",
+          "kind": "decor",
+          "rarity": "arcane",
+          "icon": "\u263e",
+          "collection": "aurelia",
+          "image": "assets/rewards/aurelia/items/feather-lantern.webp"
+        },
+        {
+          "id": "aurelia-flowering-sage-planter",
+          "name": "Aurelia\u2019s Flowering Sage Planter",
+          "kind": "decor",
+          "rarity": "rare",
+          "icon": "\u263e",
+          "collection": "aurelia",
+          "image": "assets/rewards/aurelia/items/flowering-sage-planter.webp"
+        },
+        {
+          "id": "aurelia-feeding-and-water-station",
+          "name": "Aurelia\u2019s Feeding and Water Station",
+          "kind": "decor",
+          "rarity": "enchanted",
+          "icon": "\u263e",
+          "collection": "aurelia",
+          "image": "assets/rewards/aurelia/items/feeding-and-water-station.webp"
+        },
+        {
+          "id": "aurelia-potion-apothecary",
+          "name": "Aurelia\u2019s Potion Apothecary",
+          "kind": "decor",
+          "rarity": "rare",
+          "icon": "\u263e",
+          "collection": "aurelia",
+          "image": "assets/rewards/aurelia/items/potion-apothecary.webp"
+        },
+        {
+          "id": "aurelia-wing-embroidered-rug",
+          "name": "Aurelia\u2019s Wing-Embroidered Rug",
+          "kind": "decor",
+          "rarity": "arcane",
+          "icon": "\u263e",
+          "collection": "aurelia",
+          "image": "assets/rewards/aurelia/items/wing-embroidered-rug.webp"
+        },
+        {
+          "id": "aurelia-rose-tea-table",
+          "name": "Aurelia\u2019s Rose Tea Table",
+          "kind": "toy",
+          "rarity": "rare",
+          "icon": "\u263e",
+          "collection": "aurelia",
+          "image": "assets/rewards/aurelia/items/rose-tea-table.webp"
+        },
+        {
+          "id": "aurelia-feather-play-wand",
+          "name": "Aurelia\u2019s Feather Play Wand",
+          "kind": "toy",
+          "rarity": "enchanted",
+          "icon": "\u263e",
+          "collection": "aurelia",
+          "image": "assets/rewards/aurelia/items/feather-play-wand.webp"
+        },
+        {
+          "id": "aurelia-rune-play-ball",
+          "name": "Aurelia\u2019s Rune Play Ball",
+          "kind": "toy",
+          "rarity": "rare",
+          "icon": "\u263e",
+          "collection": "aurelia",
+          "image": "assets/rewards/aurelia/items/rune-play-ball.webp"
+        },
+        {
+          "id": "aurelia-treat-puzzle-carousel",
+          "name": "Aurelia\u2019s Treat Puzzle Carousel",
+          "kind": "toy",
+          "rarity": "rare",
+          "icon": "\u263e",
+          "collection": "aurelia",
+          "image": "assets/rewards/aurelia/items/treat-puzzle-carousel.webp"
+        },
+        {
+          "id": "aurelia-bunny-toy-trunk",
+          "name": "Aurelia\u2019s Bunny Toy Trunk",
+          "kind": "toy",
+          "rarity": "rare",
+          "icon": "\u263e",
+          "collection": "aurelia",
+          "image": "assets/rewards/aurelia/items/bunny-toy-trunk.webp"
+        },
+        {
+          "id": "aurelia-hopping-stones",
+          "name": "Aurelia\u2019s Hopping Stones",
+          "kind": "toy",
+          "rarity": "rare",
+          "icon": "\u263e",
+          "collection": "aurelia",
+          "image": "assets/rewards/aurelia/items/hopping-stones.webp"
+        },
+        {
+          "id": "aurelia-rose-and-star-mobile",
+          "name": "Aurelia\u2019s Rose and Star Mobile",
+          "kind": "toy",
+          "rarity": "arcane",
+          "icon": "\u263e",
+          "collection": "aurelia",
+          "image": "assets/rewards/aurelia/items/rose-and-star-mobile.webp"
+        },
+        {
+          "id": "aurelia-ruby-rose-circlet",
+          "name": "Aurelia\u2019s Ruby Rose Circlet",
+          "kind": "accessory",
+          "rarity": "celestial",
+          "icon": "\u2726",
+          "collection": "aurelia",
+          "image": "assets/rewards/aurelia/items/ruby-rose-circlet.webp"
+        },
+        {
+          "id": "aurelia-sage-moon-collar",
+          "name": "Aurelia\u2019s Sage Moon Collar",
+          "kind": "accessory",
+          "rarity": "enchanted",
+          "icon": "\u2726",
+          "collection": "aurelia",
+          "image": "assets/rewards/aurelia/items/sage-moon-collar.webp"
+        },
+        {
+          "id": "aurelia-scholar-glasses",
+          "name": "Aurelia\u2019s Scholar Glasses",
+          "kind": "accessory",
+          "rarity": "rare",
+          "icon": "\u2726",
+          "collection": "aurelia",
+          "image": "assets/rewards/aurelia/items/scholar-glasses.webp"
+        },
+        {
+          "id": "aurelia-wing-and-petal-cloak",
+          "name": "Aurelia\u2019s Wing-and-Petal Cloak",
+          "kind": "accessory",
+          "rarity": "celestial",
+          "icon": "\u2726",
+          "collection": "aurelia",
+          "image": "assets/rewards/aurelia/items/wing-and-petal-cloak.webp"
+        },
+        {
+          "id": "aurelia-scholar-satchel",
+          "name": "Aurelia\u2019s Scholar Satchel",
+          "kind": "accessory",
+          "rarity": "rare",
+          "icon": "\u2726",
+          "collection": "aurelia",
+          "image": "assets/rewards/aurelia/items/scholar-satchel.webp"
+        },
+        {
+          "id": "aurelia-rose-heart-arcane-orb",
+          "name": "Aurelia\u2019s Rose-Heart Arcane Orb",
+          "kind": "decor",
+          "rarity": "arcane",
+          "icon": "\u263e",
+          "collection": "aurelia",
+          "image": "assets/rewards/aurelia/items/rose-heart-arcane-orb.webp"
+        },
+        {
+          "id": "aurelia-celestial-rabbit-dream-altar",
+          "name": "Aurelia\u2019s Celestial Rabbit Dream Altar",
+          "kind": "decor",
+          "rarity": "celestial",
+          "icon": "\u263e",
+          "collection": "aurelia",
+          "image": "assets/rewards/aurelia/items/celestial-rabbit-dream-altar.webp"
+        }
+      ]
+    },
+    "effects": {
+      "clarity": 1,
+      "recall": 1,
+      "moonfocus": 5,
+      "crystalSight": 1,
+      "starlightTonic": 3
+    }
+  },
+  "duplicateConjure": {
+    "first": true,
+    "duplicate": true,
+    "fragments": 0,
+    "eggs": 2
+  },
+  "sanctuary": {
+    "frame": "http://127.0.0.1:40355/pixi-sanctuary/index.html?v=f2091057235fc98c?v=f2091057235fc98c&context=companions",
+    "audit": [
+      {
+        "expected": 1,
+        "present": 1,
+        "missing": [],
+        "extra": []
+      }
+    ],
+    "renderer": {
+      "ready": true,
+      "floor": {
+        "left": 60,
+        "right": 1140,
+        "top": 490,
+        "bottom": 650
+      },
+      "roster": [
+        {
+          "petId": "luna",
+          "name": "Velora",
+          "canon": "velora",
+          "stage": "new-bond",
+          "present": true,
+          "frameSource": "approved stage walking pair",
+          "walkFrames": 2,
+          "frameDimensions": {
+            "width": 320,
+            "height": 220
+          }
+        }
+      ],
+      "guardians": [
+        {
+          "id": "luna",
+          "x": 130,
+          "y": 510,
+          "spriteY": 0,
+          "stage": "new-bond",
+          "canon": "velora",
+          "frames": 2,
+          "frameSource": "approved stage walking pair"
+        }
+      ],
+      "furniture": [
+        {
+          "id": "arcane-stacks",
+          "x": 138.3,
+          "y": 554.6153846153846,
+          "visible": true
+        },
+        {
+          "id": "observatory-telescope",
+          "x": 699.9000000000001,
+          "y": 560.7692307692307,
+          "visible": true
+        },
+        {
+          "id": "guardian-play-rug",
+          "x": 743.1,
+          "y": 650,
+          "visible": true
+        },
+        {
+          "id": "guardian-treat-jar",
+          "x": 278.70000000000005,
+          "y": 591.5384615384615,
+          "visible": true
+        },
+        {
+          "id": "guardian-toy-basket",
+          "x": 932.1,
+          "y": 650,
+          "visible": true
+        },
+        {
+          "id": "moonlit-study-desk",
+          "x": 554.1,
+          "y": 600.7692307692307,
+          "visible": true
+        },
+        {
+          "id": "guardian-brush",
+          "x": 330,
+          "y": 619.2307692307693,
+          "visible": true
+        },
+        {
+          "id": "guardian-food-bowl",
+          "x": 470.40000000000003,
+          "y": 650,
+          "visible": true
+        },
+        {
+          "id": "guardian-water-basin",
+          "x": 551.4000000000001,
+          "y": 650,
+          "visible": true
+        },
+        {
+          "id": "familiar-lounge",
+          "x": 986.1,
+          "y": 603.8461538461538,
+          "visible": true
+        },
+        {
+          "id": "magic-mirror",
+          "x": 886.2,
+          "y": 533.0769230769231,
+          "visible": true
+        },
+        {
+          "id": "study-apothecary",
+          "x": 200.4,
+          "y": 631.5384615384615,
+          "visible": true
+        },
+        {
+          "id": "amethyst-crystal-bed",
+          "x": 1104.9,
+          "y": 634.6153846153846,
+          "visible": true
+        },
+        {
+          "id": "crystal-focus-pedestal",
+          "x": 821.4000000000001,
+          "y": 588.4615384615385,
+          "visible": true
+        },
+        {
+          "id": "moonstone-crystal-bed",
+          "x": 400.20000000000005,
+          "y": 634.6153846153846,
+          "visible": true
+        }
+      ],
+      "pending": 0
+    }
+  },
+  "errors": [],
+  "missing": []
+}
