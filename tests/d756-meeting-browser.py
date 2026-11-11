@@ -106,7 +106,7 @@ with sync_playwright() as pw:
  # Natural short questions must reach the addressed person, without a ten-word barrier.
  start('angela','independent')
  for question,who in [('Angela, what do you want to do after graduation?',1),('Elena, what do you think about Angela’s reading goal?',0),('Mr. Moore, how is Angela doing in class?',3),('Team, what ideas would you like to share about Angela’s classroom supports?',None)]:
-  submit(question);assert saved()['pending']
+  submit(question);assert saved()['pending'],(question,saved())
   if who is not None:assert saved()['pending']['who']==who,(question,saved())
   if who==1:assert 'graphic design' in saved()['pending']['line']
   submit('I hear your perspective. We will document the supports and review progress together with the student at our next meeting about '+str(who)+'.')
