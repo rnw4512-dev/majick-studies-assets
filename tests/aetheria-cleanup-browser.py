@@ -60,6 +60,7 @@ with sync_playwright() as pw:
         page.evaluate("save();navigate('control')")
         safety = page.locator('.v338SavePanel')
         safety.scroll_into_view_if_needed()
+        assert safety.evaluate('(e)=>{const r=e.getBoundingClientRect();return r.left>=0 && r.right<=innerWidth && e.scrollWidth<=e.clientWidth+1}'), 'Progress safety panel clips outside viewport'
         safety.screenshot(path=str(OUT / f'progress-safety-{width}.png'))
         assert not errors, errors
         print(f'PASS {width}px: download/import/restore/reload, unknown fields, course isolation and newer-schema bytes protected', flush=True)
