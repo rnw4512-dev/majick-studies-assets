@@ -1,0 +1,17 @@
+/* Council Chamber presentation. The existing meeting engine owns all interactions/state. */
+#d756MeetingRoom .dmCouncil{background:linear-gradient(145deg,#21182cee,#171220f5),url('assets/rooms/collegium-hall.svg') center/cover;border-color:#c8a968;box-shadow:0 28px 90px #0009}
+#d756MeetingRoom .dmCouncilPhases{list-style:none;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:7px;padding:0;margin:15px 0}
+#d756MeetingRoom .dmCouncilPhases li{border:1px solid #756279;border-radius:10px;padding:9px;font-size:12px;background:#302239}
+#d756MeetingRoom .dmCouncilPhases span{display:block;color:#e7c78b;font-weight:bold}
+#d756MeetingRoom .dmCouncilPhases [aria-current=step]{border-color:#f2d49c;background:#58405d}
+#d756MeetingRoom .dmCurveball{border:1px solid #d3a569;border-radius:10px;background:#51313b;padding:9px;color:#ffe9c7}
+#d756MeetingRoom .dmReplayChoices{border:1px solid #917c98;border-radius:12px;padding:14px;margin:15px 0}
+#d756MeetingRoom .dmReplayChoices label{display:flex;gap:9px;align-items:flex-start;margin:9px 0}
+#d756MeetingRoom .dmReplayChoices input{accent-color:#bd94cb;flex-shrink:0}
+#d756MeetingRoom button:disabled{opacity:.5;cursor:default}
+#d756MeetingRoom blockquote{border-left:3px solid #b79867;margin:12px 0;padding:8px 12px;background:#37283f}
+#d756MeetingRoom #dmRepairAnswer,#d756MeetingRoom #dmReplayAnswer{background:#fffaf4!important;color:#211526!important}
+#d756MeetingRoom .dmGlance{padding:8px 0}
+#d756Task2Launch{border-color:#e5c68f!important;background:#594063!important;color:#fff0cf!important}
+@media(max-width:600px){#d756MeetingRoom .dmCouncilPhases{display:block;margin:8px 0}#d756MeetingRoom .dmCouncilPhases li{display:none}#d756MeetingRoom .dmCouncilPhases [aria-current=step]{display:block;padding:6px}#d756MeetingRoom .dmCouncilPhases span{display:inline;margin-right:9px}}
+#d756MeetingRoom .dmCouncil .dmHint{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;padding:8px;margin:8px 0}#d756MeetingRoom .dmCouncil .dmHint button{padding:7px 10px}#d756MeetingRoom .dmCouncil .dmPerson{padding:7px}#d756MeetingRoom .dmCouncil .dmFace{width:36px;padding:7px;margin-bottom:3px}#d756MeetingRoom .dmCouncilPhases li{padding:6px}

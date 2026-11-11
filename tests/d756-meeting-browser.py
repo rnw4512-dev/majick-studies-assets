@@ -19,14 +19,20 @@ with sync_playwright() as pw:
  page.locator('#majickHandsOnLaunch').click();page.locator('#d756Task2Launch').click()
  room=page.locator('#d756MeetingRoom')
  def click(a):room.locator('[data-action='+a+']').click()
- def submit(text):room.locator('#dmAnswer').fill(text);click('submit')
+ assisting=False
+ def submit(text):
+  if assisting:
+   click('repair');room.locator('#dmRepairAnswer').fill(text);click('repair-submit')
+  else:room.locator('#dmAnswer').fill(text);click('submit')
  def saved():return page.evaluate('(key)=>JSON.parse(localStorage.getItem(key))',KEY)
  def start(profile,mode):
   if room.locator('[data-action=reset]').count():click('reset')
-  if room.locator('[data-action=back]').count():click('back')
+  if room.locator('#dmAnswer').count():click('finish');click('reset')
   room.locator('#dmProfile').select_option(profile);room.locator('#dmMode').select_option(mode);click('start')
- def complete(profile,mode,qualify=True):
+ def complete(profile,mode,qualify=True,assisted=False):
+  global assisting
   start(profile,mode)
+  assisting=assisted
   names={'angela':['Angela','Elena','Mr. Moore'],'maya':['Maya','Sofia','Ms. Patel'],'jordan':['Jordan','Marcus','Mr. Harris']}[profile]
   career={'angela':'graphic design','maya':'animation','jordan':'web design'}[profile]
   case=room.locator('details').first.inner_text()
@@ -46,6 +52,8 @@ with sync_playwright() as pw:
    'Our next steps are for the counselor to arrange program visits, the student to select portfolio examples and me to share data in four weeks. Thank you for your participation; we can close the meeting.'
   ]
   for stage,text in enumerate(responses):
+   if stage==7:
+    submit(names[1]+', what concerns would you share about the student’s future education and career options?')
    submit(text)
    if saved().get('pending'):
     if stage in [1,2,3,6,9]: assert saved()['pending']['who']=={1:3,2:0,3:1,6:1,9:3}[stage],saved()['pending']
@@ -56,7 +64,8 @@ with sync_playwright() as pw:
    click('next')
   state=saved()
   assert state['done']
-  assert state['assessment']['passed']==qualify,state['assessment']
+  assert state['assessment']['passed']==(qualify and not assisted),state['assessment']
+  assisting=False
   return state
  # Mobile/tablet/desktop and all scenario/mode combinations, no coaching leakage.
  for width in ([1366] if os.environ.get('MEETING_QUICK') else [390,820,1366]):
@@ -73,8 +82,12 @@ with sync_playwright() as pw:
     assert saved()['pending']
     click('next');assert saved()['step']==0
     room.locator('#dmAnswer').fill('Draft response that must survive closing the meeting room.')
-    click('close');page.evaluate('MajickD756Meeting.open()');click('resume')
-    assert room.locator('#dmAnswer').input_value().startswith('Draft response')
+    click('close');page.evaluate('MajickD756Meeting.open()')
+    if mode=='guided':
+     click('resume');assert room.locator('#dmAnswer').input_value().startswith('Draft response')
+    else:
+     assert saved()['done'] and saved()['interrupted'] and saved()['reward']['xp']==0
+     assert room.locator('[data-action=resume]').count()==0
  print('PASS scenario/mode/viewport launches, meaningful response gate, pending reply gate and draft resume')
  # Natural short questions must reach the addressed person, without a ten-word barrier.
  start('angela','independent')
@@ -85,7 +98,8 @@ with sync_playwright() as pw:
   submit('I hear your perspective. We will document the supports and review progress together with the student at our next meeting about '+str(who)+'.')
  submit('Does anyone have questions?');assert saved()['pending']['kind']=='question'
  print('PASS short natural participant questions and four-word clarification invitation')
- # reload resume and pause timer
+ # Guided practice alone supports pausing/resume; trials archive interrupted evidence.
+ start('angela','guided');submit('Elena, what ideas would you share about the supports we can coordinate for this meeting?')
  click('back');elapsed=saved()['elapsed'];page.clock.fast_forward(60000)
  assert saved()['elapsed']==elapsed
  page.reload();page.wait_for_function('!!window.MajickD756Meeting');page.evaluate('switchCourse("D756");MajickD756Meeting.open()');click('resume')
@@ -122,19 +136,32 @@ with sync_playwright() as pw:
  assert tomorrow['reward']['xp']==8,{'reward':tomorrow['reward'],'now':page.evaluate('new Date().toString()'),'ledger':page.evaluate('Object.keys(MajickStateCore.ensureAccount().rewardCore.ledger).filter(k=>k.startsWith("d756:task2:meeting:"))')}
  assert page.evaluate('MajickStateCore.ensureAccount().xp')==before+46
  print('PASS completed short attempt earns zero; next calendar day repeat earns eight XP')
- click('retry');assert saved()['step']==7
- submit('I hear your concern and respect the student choice. We can explore options together and compare practical training costs.')
- click('finish');assert saved()['reward']['xp']==0
- print('PASS focused disagreement retry earns zero XP')
+ original=page.evaluate('(key)=>localStorage.getItem(key)',KEY)
+ original_history=page.evaluate('(key)=>localStorage.getItem(key+"-history")',KEY)
+ original_xp=page.evaluate('MajickStateCore.ensureAccount().xp')
+ choices=room.locator('[data-replay-choice]');choices.nth(0).check();choices.nth(1).check();click('replay-start')
+ for n in range(2):
+  room.locator('#dmReplayAnswer').fill('I hear your concern and respect the student voice. We will review the evidence together and assign the counselor a follow-up next week about issue '+str(n)+'.')
+  click('replay-submit');click('replay-next')
+ click('replay-exit')
+ assert page.evaluate('(key)=>localStorage.getItem(key)',KEY)==original
+ assert page.evaluate('(key)=>localStorage.getItem(key+"-history")',KEY)==original_history
+ assert page.evaluate('MajickStateCore.ensureAccount().xp')==original_xp
+ print('PASS two-exchange Replay Chamber preserves original evidence and grants zero XP')
+ assisted_only=complete('angela','guided',True,True)
+ assert assisted_only['reward']['xp']==0
+ print('PASS guided repair-only meeting earns zero completion XP')
  # Never silently dismiss a concern.
  start('angela','challenge')
  for stage in range(7):
   submit('We are reviewing this topic carefully with the team and documenting concrete supports for the learner at agenda point '+str(stage)+'.');click('next')
  submit('We should move on because I have already decided what the student needs for this topic today.')
  assert saved()['pending']['kind']=='concern';click('next');assert saved()['step']==7
- submit('I hear your concern and respect the student choice. We can explore options together and compare realistic costs and employment outcomes.')
+ submit('Elena, what concerns would you share about the student’s future education and career pathway?')
+ submit('I hear your concern and respect the student choice. We still disagree. We will explore options together and compare realistic costs and employment outcomes next week.')
  click('next');assert saved()['step']==8
- print('PASS disagreement remains unresolved until acknowledged and addressed')
+ assert saved()['concernStatus']=='follow-up scheduled'
+ print('PASS disagreement requires listening and concern discovery; follow-up plan may retain differing views')
  assert not errors,errors
  # release.json is absent when testing raw source; a canonical build must have no missing assets.
  # /health is the pre-existing optional localhost AI bridge, not a static asset.
