@@ -16,6 +16,7 @@ Back / pause and Close preserve the draft, elapsed active time, transcript and p
 - `current-site/d756-hands-on.js`: existing studio; launch is attached to its current overlay through the meeting module. It remains the studio owner.
 - `current-site/reward-core.js`: sole wallet and reward ledger owner; adds two practice reward definitions only. The meeting calls `inspect()` to let this owner initialize a fresh ledger before inspecting prior claims.
 - `current-site/index.html`: loads meeting module once, after the studio.
+- `pages-release/current/build.py`: resolves the release check from every nested index (including Pixi Sanctuary), avoiding its pre-existing missing nested release.json request.
 - `current-site/source-manifest.json`: reviewed runtime byte hashes for canonical build/cache release.
 - `tests/d756-meeting-browser.py` and `.github/workflows/d756-meeting.yml`: Chromium acceptance coverage against the real app and reward core.
 
