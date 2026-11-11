@@ -80,6 +80,34 @@ function csv(records){
  link.href=url;link.download='aetheria-learning-trends-'+new Date().toISOString().slice(0,10)+'.csv';link.click();setTimeout(()=>URL.revokeObjectURL(url),1200);
 }
 
+
+function learningTransitions(records){
+ const ordered=records.filter(x=>x.correct!==null).slice().sort((a,b)=>a.at-b.at),byTopic=new Map();
+ for(const row of ordered){if(!byTopic.has(row.topic))byTopic.set(row.topic,[]);byTopic.get(row.topic).push(row)}
+ const result={guidedToIndependent:0,guidedToIndependentCorrect:0,errorToIndependent:0,errorToIndependentCorrect:0,transferAttempts:0,transferCorrect:0};
+ for(const row of ordered){if(row.transfer){result.transferAttempts++;if(row.correct)result.transferCorrect++;}}
+ for(const rows of byTopic.values()){
+  for(let i=0;i<rows.length;i++){
+   const r=rows[i];if(r.classification!=='independent')continue;
+   const earlier=rows.slice(0,i).filter(p=>r.at>p.at&&r.at-p.at<=7*msDay);
+   if(earlier.some(p=>p.classification==='guided')){result.guidedToIndependent++;if(r.correct)result.guidedToIndependentCorrect++}
+   if(earlier.some(p=>p.correct===false)){result.errorToIndependent++;if(r.correct)result.errorToIndependentCorrect++}
+  }
+ }
+ return result;
+}
+function summaryOnly(){
+ const progress=window.S?.progress||{},out=[];
+ for(const [course,p] of Object.entries(progress)){
+  if(p?.realmRecords&&typeof p.realmRecords==='object'){
+   const plays=Object.values(p.realmRecords).reduce((n,r)=>n+Math.max(0,Number(r?.plays||0)),0);
+   if(plays)out.push({course,system:'Game Realm',amount:plays,note:'Aggregate game plays only; cannot attribute specific independent skill accuracy without attempts'});
+  }
+  if(Array.isArray(p?.repair)&&p.repair.length)out.push({course,system:'Legacy repair log',amount:p.repair.length,note:'Repairs recorded; independent transfer evidence not guaranteed'});
+ }
+ return out;
+}
+
 function d756(){
  try{
   let records=JSON.parse(localStorage.getItem('majick-d756-task2-rehearsal-v1-history')||'[]');
@@ -99,6 +127,7 @@ function draw(){
  const meetings=d756().filter(x=>x.at>=now()-windowDays*msDay),pass=meetings.filter(x=>x.met).length;
  const date=new Date(now()-windowDays*msDay).toLocaleDateString();
  const weeks=weeklySeries(items),studyTips=insights(items),audit=coverage(items,meetings);
+ const moves=learningTransitions(items),aggregates=summaryOnly();
  const metrics=[['Recorded attempts',scored.length],['Accuracy',number(accuracy(scored))],['Guided accuracy',number(accuracy(guided))],['Independent accuracy',number(accuracy(ind))],['Unknown mode',uncertain.length],['IEP rehearsals',meetings.length]];
  const metricHTML=metrics.map(([k,v])=>'<div class="loMetric"><small>'+E(k)+'</small><b>'+E(v)+'</b></div>').join('');
  const skillHTML=skills.map(v=>'<tr><td>'+E(v.topic)+'</td><td>'+v.attempts+'</td><td>'+number(v.acc)+'</td><td>'+number(v.guided)+'</td><td>'+number(v.independent)+'</td><td>'+v.unknown+'</td><td class="loTrend">'+(v.delta===null?'Not enough data':(v.delta>=0?'+':'')+Math.round(v.delta*100)+' percentage points')+'</td></tr>').join('');
@@ -107,6 +136,7 @@ function draw(){
  const meetingsHTML=meetings.slice(-12).reverse().map(x=>'<tr><td>'+new Date(x.at).toLocaleDateString()+'</td><td>'+E(x.profile)+'</td><td>'+E(x.mode)+'</td><td>'+(x.met?'Practice checks met':'Needs practice')+'</td><td>'+x.xp+'</td></tr>').join('');
  const weekHTML=weeks.map(x=>'<tr><td>'+E(x.week)+'</td><td>'+x.n+'</td><td>'+number(x.overall)+'</td><td>'+number(x.guided)+'</td><td>'+number(x.independent)+'</td></tr>').join('');
  const tipHTML=studyTips.map(x=>'<li><b>'+E(x.title)+':</b> '+E(x.text)+'</li>').join('');
+ const aggregateHTML=aggregates.map(x=>'<tr><td>'+E(x.course)+'</td><td>'+E(x.system)+'</td><td>'+x.amount+'</td><td>'+E(x.note)+'</td></tr>').join('');
  const auditHTML=audit.map(x=>'<tr><td>'+E(x.name)+'</td><td>'+E(x.status)+'</td><td>'+E(x.detail)+'</td></tr>').join('');
  host.innerHTML='<section role="dialog" aria-modal="true" aria-label="Learning progress observatory"><header><div><small>Moonlit Collegium · Learning Observatory</small><h2>My Learning Trends</h2></div><button id="loClose">Close ✕</button></header>'+
  '<p>Compare what is working across your course practice. These charts are based on saved records in this browser, not a complete audit of every learning system.</p>'+
@@ -118,6 +148,12 @@ function draw(){
  '<h3>Which practice systems are generating results?</h3><div class="loScroll"><table><thead><tr><th>Source</th><th>Attempts</th><th>Accuracy</th></tr></thead><tbody>'+(sourceHTML||'<tr><td colspan="3">No answer-level records available for this selection.</td></tr>')+'</tbody></table></div>'+
  '<h3>D756 meeting practice</h3><p>'+meetings.length+' completed rehearsals in this period; '+pass+' met the app’s provisional practice criteria. This is not official Mursion scoring.</p><div class="loScroll"><table><thead><tr><th>Date</th><th>Case</th><th>Mode</th><th>Checks</th><th>XP</th></tr></thead><tbody>'+(meetingsHTML||'<tr><td colspan="5">No completed meeting history saved in this browser.</td></tr>')+'</tbody></table></div>'+
  '<h3>What to work on next</h3><div class="loNote"><ul>'+tipHTML+'</ul><small>Data-driven practice suggestions are provisional; they do not establish cause or independently certify mastery.</small></div>'+
+ '<h3>Are practice strategies translating into independence?</h3><div class="loMetrics">'+
+ '<div class="loMetric"><small>Independent attempts after guided practice (same skill, within 7 days)</small><b>'+moves.guidedToIndependent+'</b><small>Correct: '+moves.guidedToIndependentCorrect+' · This is an association, not proof of cause</small></div>'+
+ '<div class="loMetric"><small>Independent attempts after an earlier mistake (same skill, within 7 days)</small><b>'+moves.errorToIndependent+'</b><small>Correct: '+moves.errorToIndependentCorrect+'</small></div>'+
+ '<div class="loMetric"><small>Saved transfer/recall-marked attempts</small><b>'+moves.transferAttempts+'</b><small>Correct: '+moves.transferCorrect+'</small></div></div>'+
+ '<p><small>These counts require chronological, skill-tagged answers. Missing timestamps and summary-only activities cannot support the analysis.</small></p>'+
+ '<h3>Summary-only practice records</h3><div class="loScroll"><table><thead><tr><th>Course</th><th>Activity</th><th>Count</th><th>Interpretation</th></tr></thead><tbody>'+(aggregateHTML||'<tr><td colspan="4">No separate summary-only results found.</td></tr>')+'</tbody></table></div>'+
  '<h3>Evidence coverage by practice room</h3><div class="loScroll"><table><thead><tr><th>System</th><th>Status</th><th>Notes</th></tr></thead><tbody>'+auditHTML+'</tbody></table></div><button id="loExport">Export filtered practice data (CSV)</button>'+
  '<div class="loNote"><b>Coverage limitation:</b> This view reads existing course answer arrays, the study ledger and saved D756 history. Activities that only store a summary or save no attempt-level results cannot yet produce meaningful trend lines. Old responses with missing timestamps are excluded, not assigned invented dates. Records in a different browser/device are not included unless synchronized.</div>'+
  '<p><small>Read-only report. Viewing this screen never awards XP or changes academic mastery.</small></p></section>';
