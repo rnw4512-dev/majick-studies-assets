@@ -53,7 +53,9 @@ with sync_playwright() as pw:
   ]
   for stage,text in enumerate(responses):
    if stage==7:
+    assert not __import__('re').search(r'financial|training costs|financially',room.locator('.dmPrompt').inner_text(),__import__('re').I), 'Concern leaked before elicitation'
     submit(names[1]+', what concerns would you share about the student’s future education and career options?')
+    assert saved()['financialDiscovered'], 'Parent concern must follow an actual invitation'
    submit(text)
    if saved().get('pending'):
     if stage in [1,2,3,6,9]: assert saved()['pending']['who']=={1:3,2:0,3:1,6:1,9:3}[stage],saved()['pending']
