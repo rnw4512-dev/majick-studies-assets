@@ -59,6 +59,14 @@ with sync_playwright() as pw:
    submit(text)
    if saved().get('pending'):
     if stage in [1,2,3,6,9]: assert saved()['pending']['who']=={1:3,2:0,3:1,6:1,9:3}[stage],saved()['pending']
+    # Instructor-defined clarification asks about a participant's actual statement.
+    # Generic invitations such as "Any questions?" must not earn clarification credit.
+    if stage in [1,2,3] and qualify:
+     original=saved()['pending']['line']
+     speaker={1:names[2],2:names[1],3:names[0]}[stage]
+     submit(speaker+', when you mentioned '+original.split('.')[0].rstrip('?')+', could you describe a specific example so we understand your concern?')
+     assert saved()['records'][-1]['clarifyingFollowUp'] is True, saved()['records'][-1]
+     assert saved()['pending']['kind']=='clarification-response'
     # Address the specific stakeholder statement rather than advancing past it.
     submit('I understand your point about '+saved()['pending']['line'].rstrip('?')+' We will use weekly work samples and a planning routine to review supports, preserve student choice, compare career training costs and assign follow-up responsibilities at review '+str(stage)+'.')
    assert not saved().get('pending'),saved()
@@ -97,13 +105,15 @@ with sync_playwright() as pw:
  print('PASS scenario/mode/viewport launches, meaningful response gate, pending reply gate and draft resume')
  # Natural short questions must reach the addressed person, without a ten-word barrier.
  start('angela','independent')
- for question,who in [('Angela, what do you want to do after graduation?',1),('Elena, what do you think?',0),('Mr. Moore, how is Angela doing in class?',3),('Team, what ideas would you like to share?',None)]:
+ for question,who in [('Angela, what do you want to do after graduation?',1),('Elena, what do you think about Angela’s reading goal?',0),('Mr. Moore, how is Angela doing in class?',3),('Team, what ideas would you like to share about Angela’s classroom supports?',None)]:
   submit(question);assert saved()['pending']
   if who is not None:assert saved()['pending']['who']==who,(question,saved())
   if who==1:assert 'graphic design' in saved()['pending']['line']
   submit('I hear your perspective. We will document the supports and review progress together with the student at our next meeting about '+str(who)+'.')
- submit('Does anyone have questions?');assert saved()['pending']['kind']=='question'
- print('PASS short natural participant questions and four-word clarification invitation')
+ before_count=len(saved()['records'])
+ submit('Does anyone have questions?')
+ assert len(saved()['records'])==before_count, 'Generic question must not be counted as substantive input or clarification'
+ print('PASS topic-specific participant input and generic invitation rejection')
  # Guided practice alone supports pausing/resume; trials archive interrupted evidence.
  start('angela','guided');submit('Elena, what ideas would you share about the supports we can coordinate for this meeting?')
  click('back');elapsed=saved()['elapsed'];page.clock.fast_forward(60000)
