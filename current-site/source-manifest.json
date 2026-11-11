@@ -144,7 +144,7 @@
     "guardian-registry.js": "00a6baa6d67cfc0e63b2e336a38baca04b6d8705058f824d70e12b8fe88c18bc",
     "home-focus.css": "cbb719eb8e78701717b4016388d511553f2785212d839815ed006651ae738b2b",
     "home-focus.js": "f421d4c5e5b4193d1005e5ce5cdbeb0e969a0cffb8ece49b9dd7c255a16ca794",
-    "index.html": "3a1d8ce2bbe947db8e2002f9929fed81dcb40619210c2c7b5c5050efe5f80d01",
+    "index.html": "c3ca2e0bd11a2b9f856549388f45084c45657781bb4ccad4912644cb722aba7e",
     "learn-mode.css": "30181250c67efe7bd97c9276706a804a551e7904a2bb28160eeb0c193f35c002",
     "learn-mode.js": "0fe77e5b84d801270edb07bba57e412c5c23e21f29d7354ae3630ab936dd8c52",
     "learning-lab.css": "b9c2c4f2ae393b3d291155a258cd01388bb71cd49a46d0187f224b03222ac2df",
@@ -789,7 +789,7 @@
     "assets/atelier/v2/fitted/contact-sheets/afro_full.png": "65294ef9c97b537d5169e2ee84c9781efc91d39728bd9affc45b275cb87739ee",
     "assets/atelier/v3/sprite-registry.json": "ae716a28e90d2699cfdd3cad01fea009d361ecf86b074493c0ffc808a4b7278f",
     "d772-shared-oa-questions.js": "15b50204f498081f282b0a9511c0ea4071183d25fd8612e135ec2c6a61fdfa7d",
-    "d756-hands-on.js": "ae8691c38fd13836a49122b25d9b086d9bdb2945a3bba213cbdbffabd0afb85a",
+    "d756-hands-on.js": "8bee75beae37bd4fc38d652f7af7246669bd05623c9a4f49fa1a0a524fb4079b",
     "interactive-formula-lab.js": "0ad379b7f1e43cf051b119177584d538cff786cda9ec8a921562b7c500534cba",
     "embedded-practice.js": "17dd9f8d07873abd2ac135a828b2ffcde922c5057d659087faf5551a65979a2e",
     "manipulatives.js": "549df6d1a0a33a538ed0c1469ec4b2284c76720d1bda69cedeca49c9dfd29b06",
@@ -815,12 +815,12 @@
     "d772-preassessment-deep-practice.js": "5aadf393fadd1639c668962fb8d6b6a45b069ebee2bf94a3617db3c362fdbb2f",
     "d772-adaptive-mastery.js": "11a7496b538fbabf6a4c7232d7e1b62466ffb6d5eaf49ecd6b216bd3a94d6112",
     "collegium-commons.js": "857c36995fafce1e337bd75fa793c82857bb1eab6d5a04b6cea3c14b318800fa",
-    "collegium-commons.css": "6da4aa16265e8ba40251863a4a353a76b19f8145e6743d63e7b326558b25ea39",
+    "collegium-commons.css": "68093aa087908cbeb93f55fa58d3b481f08ceaacf20952434464664dc0f077ad",
     "assets/effects/celebrations/celebration-starburst.svg": "ef1d59a84c7f49296e1e0c004263b2770deafff1c0eaf4b8c5eb6e7ddfd847da",
     "assets/effects/celebrations/celebration-constellation-ring.svg": "ae1302a0bd672e6df21f9827957262982db2ba6add4665df2f6b70033b45f6e3",
     "assets/effects/guardians/guardian-heart-sigil.svg": "aef9ed713e6a52b117c1de6d60f8fcbf1a7da9d8e9014932cfc44d58c351213f",
-    "animation-effects.css": "851afc04da699fcedb2c3d511d3bb30f5e890e6b25d899d1b77aa5bc051ae66b",
-    "animation-effects.js": "3affbc30e275969e167c1ab30ea220b4c8274a61bd2571711aa88c1deefbfaac",
+    "animation-effects.css": "f8145388f076eb938b26414fae7be9391f77e70f9e5ad167ef28c9ca37824d53",
+    "animation-effects.js": "279e6ad575a35071de442bc71202f4ab6e7d91d616324c28c62cbd1a797b7c3f",
     "assets/effects/celebrations/lesson-complete-seal.svg": "66d0d723db2bda1149c79bd1aa03e2c9be22df891ed9a5f842bf44cecf922ddf",
     "assets/effects/celebrations/course-complete-sigil.svg": "5bb72f7c3da585d477527f057c9c42930abd859db8681edaac3616ed130ca1a6",
     "room-section-nav.js": "43790ae661400e14c0d022a612ad71bcbc17aea404eab837b3bc7acd1ca375db",
@@ -879,6 +879,7 @@
     "assets/rooms/licenses/GPL-2.0.txt": "e6d6a009505e345fe949e1310334fcb0747f28dae2856759de102ab66b722cb4",
     "d772-oa-entry.js": "c22f97fc2c528409b54b5c4fe42d1cedfc1c861231c915b44ad0bac1e434f746",
     "d772-oa-focus.html": "987fe97e57c96c36ff2bf6dbe2b989e2677af7d326ec033d231fff96f8e01bfc",
-    "d756-task2-meeting.js": "e355e997355fcabc143d4b146c63d75bc8fa645732f46d3be306fd3542b02d85"
+    "d756-task2-meeting.js": "b98e1381cce08561758f6fee469b5beb51295254f76cf6c8db4574f628cff2dd",
+    "d756-council.css": "bf2f2b2e396556c04e934b708d23dd6da528f7ffddaf069a9e2992721d30e9e1"
   }
 }
