@@ -1,6 +1,8 @@
 /* Pixi render adapter. The parent account and Guardian care API own all saves. */
 (async function(){
 'use strict';
+let sentHeight=0;function shareViewport(){if(parent===window)return;const main=document.querySelector('main');if(!main)return;const height=Math.ceil(main.getBoundingClientRect().bottom+scrollY+14);if(height!==sentHeight){sentHeight=height;parent.postMessage({type:'MAJICK_PIXI_VIEWPORT',height},location.origin)}}
+new ResizeObserver(()=>requestAnimationFrame(shareViewport)).observe(document.body);
 const $=id=>document.getElementById(id),room=$('room'),status=$('status');
 const registry=window.MajickGuardianRegistry;
 const FLOOR={left:60,right:1140,top:490,bottom:650};
@@ -21,6 +23,7 @@ function failure(error){console.error(error);status.textContent='Graphics unavai
 if(!window.PIXI){failure(Error('Pixi unavailable'));return}
 const motionMedia=matchMedia('(prefers-reduced-motion: reduce)');let reduced=motionMedia.matches;
 let paused=reduced,ambient=!reduced,stress=false,liveRoster=[],liveRoom=null,sequence=0,syncRevision=0;
+const diagnostics={missingTextures:[],bridgeFailures:[],ticks:0,spawns:0,lastSyncAt:null};let walkSpeed=1;
 const pending=new Map(),entities=new Map(),furnitureSprites=new Map(),revealGlows=new Map();
 motionMedia.addEventListener('change',event=>{reduced=event.matches;if(reduced){paused=true;ambient=false;$('toggle').textContent='Resume movement';$('motion').textContent='Ambient effects: off';$('motion').setAttribute('aria-pressed','false')}});
 
@@ -47,7 +50,7 @@ new ResizeObserver(resize).observe(room);resize();
 function action(kind,fields={}){
  if(parent===window){$('care-result').textContent='Open Sanctuary inside Majick Studies to save changes.';return}
  const requestId=++sequence;
- const timer=setTimeout(()=>{if(pending.delete(requestId))$('care-result').textContent='Save was not confirmed. Retry after reconnecting.'},10000);
+ const timer=setTimeout(()=>{if(pending.delete(requestId)){diagnostics.bridgeFailures.push({kind,requestId,reason:'acknowledgement-timeout'});$('care-result').textContent='Save was not confirmed. Retry after reconnecting.'}},10000);
  pending.set(requestId,{timer,kind,...fields});
  parent.postMessage({type:'MAJICK_PIXI_ACTION',action:kind,requestId,...fields},location.origin);
  $('care-result').textContent='Saving…';
@@ -104,7 +107,8 @@ function artFor(canon,stage){
   const original=['velora','cascade','solstice','aurelia'].includes(canon);
   // Six species have illustrated evolution cards, not transparent stage sprites.
   // Keep those cards in the profile; never walk an opaque card around the floor.
-  const base=await PIXI.Assets.load(original?'../sanctuary/assets/evolutions/'+canon+'/'+stage+'/walk.webp':'../assets/familiars/canon/'+canon+'-guardian.webp');
+  const basePath=original?'../sanctuary/assets/evolutions/'+canon+'/'+stage+'/walk.webp':'../assets/familiars/canon/'+canon+'-guardian.webp';
+  let base;try{base=await PIXI.Assets.load(basePath)}catch(error){diagnostics.missingTextures.push({canon,stage,path:basePath});throw error}
   let frames=[],source=original?'stage artwork (no approved walking pair)':'transparent canonical portrait fallback; evolution artwork in profile';
   if(canon==='velora'){
    try{frames=await Promise.all([1,2].map(n=>PIXI.Assets.load('./frames/velora/'+stage+'/walk-'+n+'.png')));source='approved stage walking pair'}catch(error){console.info('Walking pair unavailable; preserving stage art',key)}
@@ -172,6 +176,7 @@ function installFrames(e,art){
  revealSprite(sprite);
 }
 function createEntity(id,slot){
+ diagnostics.spawns++;
  const root=new PIXI.Container(),shadow=new PIXI.Graphics();shadow.ellipse(0,0,42,8).fill({color:0x000000,alpha:.25});root.addChild(shadow);
  const sprite=new PIXI.Sprite(PIXI.Texture.EMPTY);sprite.anchor.set(.5,1);root.addChild(sprite);
  const caption=new PIXI.Text({text:'',style:new PIXI.TextStyle({fontFamily:'Georgia, serif',fontSize:16,fontWeight:'bold',fill:0xffe4ae,stroke:{color:0x1b1022,width:4,join:'round'},dropShadow:{color:0x110b19,alpha:.75,blur:3,distance:2},align:'center'})});caption.anchor.set(.5,0);caption.y=8;root.addChild(caption);
@@ -180,11 +185,11 @@ function createEntity(id,slot){
  sprite.eventMode='static';sprite.cursor='pointer';sprite.on('pointertap',()=>{$('care-guardian').value=id;care('pet')});
  entities.set(id,e);return e;
 }
-function rosterReport(){return [...entities.values()].map(e=>({petId:e.id,name:e.pet?.name||'',canon:e.canon,stage:e.stage,present:e.ready,frameSource:e.frameSource,walkFrames:e.walkFrameCount||0,frameDimensions:e.sprite?.textures?.[0]?{width:e.sprite.textures[0].width,height:e.sprite.textures[0].height}:null}))}
+function rosterReport(){return [...entities.values()].map(e=>({petId:e.id,name:e.pet?.name||'',canon:e.canon,stage:e.stage,present:e.ready,frameSource:e.frameSource,visibleFallback:!!e.visibleFallback,walkCycleComplete:(e.walkFrameCount||0)>=4,walkFrames:e.walkFrameCount||0,frameDimensions:e.sprite?.textures?.[0]?{width:e.sprite.textures[0].width,height:e.sprite.textures[0].height}:null}))}
 function publish(){if(parent!==window)parent.postMessage({type:'MAJICK_SANCTUARY_ROSTER_V3350',rows:rosterReport()},location.origin)}
 async function applyState(payload){
  if(!Array.isArray(payload?.pets))return;
- const revision=++syncRevision;liveRoster=payload.pets;liveRoom=payload.room;
+ const revision=++syncRevision;diagnostics.lastSyncAt=Date.now();liveRoster=payload.pets;liveRoom=payload.room;
  applyFurniture();
  const select=$('care-guardian'),selected=select.value;
  select.replaceChildren(new Option('Choose a saved Guardian',''));
@@ -202,8 +207,8 @@ async function applyState(payload){
   try{
    if(!canon)throw Error('Unrecognized saved Guardian species: '+p.type);
    const art=await artFor(canon,stage);if(token!==e.token||!entities.has(id))return;
-   e.base=art.base;e.frames=art.frames;e.frameSource=art.source;e.clock=0;installFrames(e,art);e.ready=true;
-  }catch(error){console.warn('Guardian artwork unavailable',id,error);e.frameSource=error.message}
+   e.visibleFallback=false;e.caption.style.fill=0xffe4ae;e.base=art.base;e.frames=art.frames;e.frameSource=art.source;e.clock=0;installFrames(e,art);e.ready=true;
+  }catch(error){console.warn('Guardian artwork unavailable',id,error);e.frameSource=error.message;e.visibleFallback=true;e.caption.text=p.name+' · artwork unavailable';e.caption.style.fill=0xffbf86;e.caption.eventMode='static';e.caption.cursor='pointer';e.caption.removeAllListeners('pointertap');e.caption.on('pointertap',()=>{$('care-guardian').value=id;care('pet')})}
  }));
  if(revision!==syncRevision)return;
  const ready=[...entities.values()].filter(e=>e.ready).length;$('loaded').textContent=ready+' / '+liveRoster.length;
@@ -218,16 +223,18 @@ window.addEventListener('message',event=>{
   const request=pending.get(data.requestId);if(!request)return;clearTimeout(request.timer);pending.delete(data.requestId);
   $('care-result').textContent=data.message||(data.ok?'Saved':'Could not save');
   if(data.ok&&request.petId){const e=entities.get(request.petId),object=furnitureSprites.get(data.travelObject||request.objectId);if(e&&object?.sprite.visible){e.tx=object.sprite.x;e.ty=object.sprite.y;e.pause=0}}
-  if(!data.ok)applyFurniture();
+  if(!data.ok){diagnostics.bridgeFailures.push({kind:request.kind,reason:data.message||'action-rejected'});applyFurniture()}
  }
 });
 $('toggle').textContent=paused?'Resume movement':'Pause movement';$('toggle').onclick=()=>{paused=!paused;$('toggle').textContent=paused?'Resume movement':'Pause movement'};
 $('reset').onclick=()=>{for(const e of entities.values()){const h=home(e.slot);e.root.position.set(h.x,h.y);e.tx=h.x;e.ty=h.y;e.pause=1;if(e.base){fit(e,e.base);setMotion(e,false)}}};
 $('motion').setAttribute('aria-pressed',String(ambient));$('motion').textContent='Ambient effects: '+(ambient?'on':'off');$('motion').onclick=()=>{ambient=!ambient;$('motion').setAttribute('aria-pressed',String(ambient));$('motion').textContent='Ambient effects: '+(ambient?'on':'off')};
 $('stress').onclick=()=>{stress=!stress;$('stress').setAttribute('aria-pressed',String(stress));$('stress').textContent='Stress test: '+(stress?'on':'off')};
+if($('walk-speed'))$('walk-speed').onchange=()=>{walkSpeed=clamp(Number($('walk-speed').value)||1,.5,1.5)};
 let frames=0,seconds=0,ambientTime=0;
 // One app-owned Pixi ticker drives Guardian position AND AnimatedSprite frames.
 app.ticker.maxFPS=45;app.ticker.add(ticker=>{
+ diagnostics.ticks++;
  const rawSeconds=Math.max(0,Number(ticker.elapsedMS)||0)/1000;
  // Limit movement on tab restoration; do not use capped time for measured FPS.
  const dt=Math.min(Math.max(0,Number(ticker.deltaMS)||0)/1000,.06);
@@ -244,16 +251,16 @@ app.ticker.maxFPS=45;app.ticker.add(ticker=>{
   if(e.pause>0){e.pause-=dt;setMotion(e,false);continue}
   const dx=e.tx-e.root.x,dy=e.ty-e.root.y,d=Math.hypot(dx,dy);
   if(d<3){setMotion(e,false);setTarget(e);continue}
-  const step=Math.min(d,dt*e.speed);e.root.x=clamp(e.root.x+dx/d*step,90,1110);e.root.y=clamp(e.root.y+dy/d*step,490,650);e.clock+=dt;
+  const step=Math.min(d,dt*e.speed*walkSpeed);e.root.x=clamp(e.root.x+dx/d*step,90,1110);e.root.y=clamp(e.root.y+dy/d*step,490,650);e.clock+=dt;
   setMotion(e,true,dx<0?-1:1);
-  if(e.sprite instanceof PIXI.AnimatedSprite&&e.sprite.playing&&e.sprite.textures.length>1)e.sprite.update(ticker);
+  if(e.sprite instanceof PIXI.AnimatedSprite&&e.sprite.playing&&e.sprite.textures.length>1)e.sprite.update({deltaTime:ticker.deltaTime*walkSpeed});
   moving++;
  }
  frames++;seconds+=rawSeconds;if(seconds>=1){$('fps').textContent=Math.round(frames/seconds);$('ms').textContent=(seconds/Math.max(1,frames)*1000).toFixed(1)+' ms';$('moving').textContent=moving+' / '+entities.size;frames=0;seconds=0}
 });
 await furnitureReady.catch(error=>{$('care-result').textContent=error.message});
 // Inspection exposes renderer facts, not another state or persistence owner.
-window.MajickPixiSanctuary=Object.freeze({inspect:()=>({ready:true,floor:FLOOR,roster:rosterReport(),guardians:[...entities.values()].map(e=>({id:e.id,x:e.root.x,y:e.root.y,spriteY:e.sprite.y,stage:e.stage,canon:e.canon,frames:e.walkFrameCount||0,frameSource:e.frameSource})),furniture:[...furnitureSprites].map(([id,e])=>({id,x:e.sprite.x,y:e.sprite.y,visible:e.sprite.visible})),pending:pending.size}),app});
+window.MajickPixiSanctuary=Object.freeze({inspect:()=>({ready:true,diagnostics:{...diagnostics,tickerStarted:app.ticker.started,walkSpeed,renderer:app.renderer.type,duplicateSavedIds:liveRoster.map(p=>String(p.id)).filter((id,i,a)=>a.indexOf(id)!==i),duplicateRenderedIds:[],approvedFourFrameGaps:rosterReport().filter(p=>!p.walkCycleComplete).map(p=>({id:p.petId,canon:p.canon,stage:p.stage,frames:p.walkFrames}))},floor:FLOOR,roster:rosterReport(),guardians:[...entities.values()].map(e=>({id:e.id,x:e.root.x,y:e.root.y,spriteY:e.sprite.y,stage:e.stage,canon:e.canon,frames:e.walkFrameCount||0,frameSource:e.frameSource})),furniture:[...furnitureSprites].map(([id,e])=>({id,x:e.sprite.x,y:e.sprite.y,visible:e.sprite.visible})),pending:pending.size}),app});
 status.textContent='Room ready · waiting for saved Guardians';
 if(parent!==window)parent.postMessage({type:'MAJICK_PIXI_SANCTUARY_READY'},location.origin);
 })();

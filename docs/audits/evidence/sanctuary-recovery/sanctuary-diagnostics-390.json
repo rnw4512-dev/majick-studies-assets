@@ -1,0 +1,461 @@
+{
+  "ready": true,
+  "diagnostics": {
+    "missingTextures": [],
+    "bridgeFailures": [],
+    "ticks": 6,
+    "spawns": 11,
+    "lastSyncAt": 1794431818392,
+    "tickerStarted": true,
+    "walkSpeed": 1,
+    "renderer": 1,
+    "duplicateSavedIds": [],
+    "duplicateRenderedIds": [],
+    "approvedFourFrameGaps": [
+      {
+        "id": "recovery-pet-0",
+        "canon": "velora",
+        "stage": "new-bond",
+        "frames": 2
+      },
+      {
+        "id": "recovery-pet-1",
+        "canon": "cascade",
+        "stage": "new-bond",
+        "frames": 2
+      },
+      {
+        "id": "recovery-pet-2",
+        "canon": "solstice",
+        "stage": "new-bond",
+        "frames": 2
+      },
+      {
+        "id": "recovery-pet-3",
+        "canon": "aurelia",
+        "stage": "new-bond",
+        "frames": 2
+      },
+      {
+        "id": "recovery-pet-4",
+        "canon": "vesper",
+        "stage": "new-bond",
+        "frames": 1
+      },
+      {
+        "id": "recovery-pet-5",
+        "canon": "briar",
+        "stage": "new-bond",
+        "frames": 1
+      },
+      {
+        "id": "recovery-pet-6",
+        "canon": "zephyr",
+        "stage": "new-bond",
+        "frames": 1
+      },
+      {
+        "id": "recovery-pet-7",
+        "canon": "prism",
+        "stage": "new-bond",
+        "frames": 1
+      },
+      {
+        "id": "recovery-pet-8",
+        "canon": "rook",
+        "stage": "new-bond",
+        "frames": 1
+      },
+      {
+        "id": "recovery-pet-9",
+        "canon": "solara",
+        "stage": "new-bond",
+        "frames": 1
+      },
+      {
+        "id": "recovery-pet-10",
+        "canon": "briar",
+        "stage": "ascendant",
+        "frames": 1
+      }
+    ]
+  },
+  "floor": {
+    "left": 60,
+    "right": 1140,
+    "top": 490,
+    "bottom": 650
+  },
+  "roster": [
+    {
+      "petId": "recovery-pet-0",
+      "name": "Guardian 0",
+      "canon": "velora",
+      "stage": "new-bond",
+      "present": true,
+      "frameSource": "approved stage walking pair",
+      "visibleFallback": false,
+      "walkCycleComplete": false,
+      "walkFrames": 2,
+      "frameDimensions": {
+        "width": 320,
+        "height": 220
+      }
+    },
+    {
+      "petId": "recovery-pet-1",
+      "name": "Guardian 1",
+      "canon": "cascade",
+      "stage": "new-bond",
+      "present": true,
+      "frameSource": "existing new-bond walking pair",
+      "visibleFallback": false,
+      "walkCycleComplete": false,
+      "walkFrames": 2,
+      "frameDimensions": {
+        "width": 512,
+        "height": 512
+      }
+    },
+    {
+      "petId": "recovery-pet-2",
+      "name": "Guardian 2",
+      "canon": "solstice",
+      "stage": "new-bond",
+      "present": true,
+      "frameSource": "existing new-bond walking pair",
+      "visibleFallback": false,
+      "walkCycleComplete": false,
+      "walkFrames": 2,
+      "frameDimensions": {
+        "width": 512,
+        "height": 512
+      }
+    },
+    {
+      "petId": "recovery-pet-3",
+      "name": "Guardian 3",
+      "canon": "aurelia",
+      "stage": "new-bond",
+      "present": true,
+      "frameSource": "existing new-bond walking pair",
+      "visibleFallback": false,
+      "walkCycleComplete": false,
+      "walkFrames": 2,
+      "frameDimensions": {
+        "width": 512,
+        "height": 512
+      }
+    },
+    {
+      "petId": "recovery-pet-4",
+      "name": "Guardian 4",
+      "canon": "vesper",
+      "stage": "new-bond",
+      "present": true,
+      "frameSource": "transparent canonical portrait fallback; evolution artwork in profile",
+      "visibleFallback": false,
+      "walkCycleComplete": false,
+      "walkFrames": 1,
+      "frameDimensions": {
+        "width": 900,
+        "height": 900
+      }
+    },
+    {
+      "petId": "recovery-pet-5",
+      "name": "Briar",
+      "canon": "briar",
+      "stage": "new-bond",
+      "present": true,
+      "frameSource": "transparent canonical portrait fallback; evolution artwork in profile",
+      "visibleFallback": false,
+      "walkCycleComplete": false,
+      "walkFrames": 1,
+      "frameDimensions": {
+        "width": 900,
+        "height": 900
+      }
+    },
+    {
+      "petId": "recovery-pet-6",
+      "name": "Guardian 6",
+      "canon": "zephyr",
+      "stage": "new-bond",
+      "present": true,
+      "frameSource": "transparent canonical portrait fallback; evolution artwork in profile",
+      "visibleFallback": false,
+      "walkCycleComplete": false,
+      "walkFrames": 1,
+      "frameDimensions": {
+        "width": 900,
+        "height": 900
+      }
+    },
+    {
+      "petId": "recovery-pet-7",
+      "name": "Guardian 7",
+      "canon": "prism",
+      "stage": "new-bond",
+      "present": true,
+      "frameSource": "transparent canonical portrait fallback; evolution artwork in profile",
+      "visibleFallback": false,
+      "walkCycleComplete": false,
+      "walkFrames": 1,
+      "frameDimensions": {
+        "width": 900,
+        "height": 900
+      }
+    },
+    {
+      "petId": "recovery-pet-8",
+      "name": "Guardian 8",
+      "canon": "rook",
+      "stage": "new-bond",
+      "present": true,
+      "frameSource": "transparent canonical portrait fallback; evolution artwork in profile",
+      "visibleFallback": false,
+      "walkCycleComplete": false,
+      "walkFrames": 1,
+      "frameDimensions": {
+        "width": 900,
+        "height": 900
+      }
+    },
+    {
+      "petId": "recovery-pet-9",
+      "name": "Guardian 9",
+      "canon": "solara",
+      "stage": "new-bond",
+      "present": true,
+      "frameSource": "transparent canonical portrait fallback; evolution artwork in profile",
+      "visibleFallback": false,
+      "walkCycleComplete": false,
+      "walkFrames": 1,
+      "frameDimensions": {
+        "width": 900,
+        "height": 900
+      }
+    },
+    {
+      "petId": "recovery-pet-10",
+      "name": "Briar",
+      "canon": "briar",
+      "stage": "ascendant",
+      "present": true,
+      "frameSource": "transparent canonical portrait fallback; evolution artwork in profile",
+      "visibleFallback": false,
+      "walkCycleComplete": false,
+      "walkFrames": 1,
+      "frameDimensions": {
+        "width": 900,
+        "height": 900
+      }
+    }
+  ],
+  "guardians": [
+    {
+      "id": "recovery-pet-0",
+      "x": 130,
+      "y": 510,
+      "spriteY": 0,
+      "stage": "new-bond",
+      "canon": "velora",
+      "frames": 2,
+      "frameSource": "approved stage walking pair"
+    },
+    {
+      "id": "recovery-pet-1",
+      "x": 318,
+      "y": 510,
+      "spriteY": 0,
+      "stage": "new-bond",
+      "canon": "cascade",
+      "frames": 2,
+      "frameSource": "existing new-bond walking pair"
+    },
+    {
+      "id": "recovery-pet-2",
+      "x": 506,
+      "y": 510,
+      "spriteY": 0,
+      "stage": "new-bond",
+      "canon": "solstice",
+      "frames": 2,
+      "frameSource": "existing new-bond walking pair"
+    },
+    {
+      "id": "recovery-pet-3",
+      "x": 694,
+      "y": 510,
+      "spriteY": 0,
+      "stage": "new-bond",
+      "canon": "aurelia",
+      "frames": 2,
+      "frameSource": "existing new-bond walking pair"
+    },
+    {
+      "id": "recovery-pet-4",
+      "x": 882,
+      "y": 510,
+      "spriteY": 0,
+      "stage": "new-bond",
+      "canon": "vesper",
+      "frames": 1,
+      "frameSource": "transparent canonical portrait fallback; evolution artwork in profile"
+    },
+    {
+      "id": "recovery-pet-5",
+      "x": 1070,
+      "y": 510,
+      "spriteY": 0,
+      "stage": "new-bond",
+      "canon": "briar",
+      "frames": 1,
+      "frameSource": "transparent canonical portrait fallback; evolution artwork in profile"
+    },
+    {
+      "id": "recovery-pet-6",
+      "x": 130,
+      "y": 630,
+      "spriteY": 0,
+      "stage": "new-bond",
+      "canon": "zephyr",
+      "frames": 1,
+      "frameSource": "transparent canonical portrait fallback; evolution artwork in profile"
+    },
+    {
+      "id": "recovery-pet-7",
+      "x": 318,
+      "y": 630,
+      "spriteY": 0,
+      "stage": "new-bond",
+      "canon": "prism",
+      "frames": 1,
+      "frameSource": "transparent canonical portrait fallback; evolution artwork in profile"
+    },
+    {
+      "id": "recovery-pet-8",
+      "x": 506,
+      "y": 630,
+      "spriteY": 0,
+      "stage": "new-bond",
+      "canon": "rook",
+      "frames": 1,
+      "frameSource": "transparent canonical portrait fallback; evolution artwork in profile"
+    },
+    {
+      "id": "recovery-pet-9",
+      "x": 694,
+      "y": 630,
+      "spriteY": 0,
+      "stage": "new-bond",
+      "canon": "solara",
+      "frames": 1,
+      "frameSource": "transparent canonical portrait fallback; evolution artwork in profile"
+    },
+    {
+      "id": "recovery-pet-10",
+      "x": 882,
+      "y": 630,
+      "spriteY": 0,
+      "stage": "ascendant",
+      "canon": "briar",
+      "frames": 1,
+      "frameSource": "transparent canonical portrait fallback; evolution artwork in profile"
+    }
+  ],
+  "furniture": [
+    {
+      "id": "moonlit-study-desk",
+      "x": 554.1,
+      "y": 600.7692307692307,
+      "visible": true
+    },
+    {
+      "id": "arcane-stacks",
+      "x": 138.3,
+      "y": 554.6153846153846,
+      "visible": true
+    },
+    {
+      "id": "guardian-play-rug",
+      "x": 743.1,
+      "y": 650,
+      "visible": true
+    },
+    {
+      "id": "guardian-treat-jar",
+      "x": 278.70000000000005,
+      "y": 591.5384615384615,
+      "visible": true
+    },
+    {
+      "id": "guardian-brush",
+      "x": 330,
+      "y": 619.2307692307693,
+      "visible": true
+    },
+    {
+      "id": "guardian-toy-basket",
+      "x": 932.1,
+      "y": 650,
+      "visible": true
+    },
+    {
+      "id": "guardian-water-basin",
+      "x": 551.4000000000001,
+      "y": 650,
+      "visible": true
+    },
+    {
+      "id": "guardian-food-bowl",
+      "x": 470.40000000000003,
+      "y": 650,
+      "visible": true
+    },
+    {
+      "id": "observatory-telescope",
+      "x": 699.9000000000001,
+      "y": 560.7692307692307,
+      "visible": true
+    },
+    {
+      "id": "familiar-lounge",
+      "x": 986.1,
+      "y": 603.8461538461538,
+      "visible": true
+    },
+    {
+      "id": "study-apothecary",
+      "x": 200.4,
+      "y": 631.5384615384615,
+      "visible": true
+    },
+    {
+      "id": "amethyst-crystal-bed",
+      "x": 1104.9,
+      "y": 634.6153846153846,
+      "visible": true
+    },
+    {
+      "id": "crystal-focus-pedestal",
+      "x": 821.4000000000001,
+      "y": 588.4615384615385,
+      "visible": true
+    },
+    {
+      "id": "magic-mirror",
+      "x": 886.2,
+      "y": 533.0769230769231,
+      "visible": true
+    },
+    {
+      "id": "moonstone-crystal-bed",
+      "x": 400.20000000000005,
+      "y": 634.6153846153846,
+      "visible": true
+    }
+  ],
+  "pending": 0
+}
