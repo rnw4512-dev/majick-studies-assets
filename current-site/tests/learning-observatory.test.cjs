@@ -72,6 +72,15 @@ test('reads completed D756 rehearsals without treating the rehearsal as mastery 
  assert.match(html,/D756 meeting practice/);
  assert.match(html,/not official Mursion scoring/i);
 });
+test('shows recorded Game Realm sessions without claiming independent academic mastery',()=>{
+ const env=boot();
+ env.app.progress.D772.realmSessions=[{key:'hex:1:1',gameId:'hex-breaker',score:7,total:10,won:true,at:Date.now(),masteryEligible:false}];
+ env.window.MajickLearningObservatory.open();
+ const html=env.nodes.get('majLearningObservatory').innerHTML;
+ assert.match(html,/Game Realm sessions \(scores, not mastery\)/);
+ assert.match(html,/hex-breaker/);
+ assert.match(html,/70%/);
+});
 test('shows an evidence warning rather than inventing missing mastery results',()=>{
  const env=boot();
  env.window.MajickLearningObservatory.open();
