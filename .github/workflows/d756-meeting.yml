@@ -1,0 +1,27 @@
+name: D756 meeting acceptance
+on:
+  pull_request:
+    paths: ['current-site/**', 'tests/d756-meeting-browser.py', '.github/workflows/d756-meeting.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  meeting-browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: python -m pip install playwright==1.56.0
+      - run: python pages-release/current/build.py current-site _site
+      - name: All scenarios, modes, viewports, dialogue, persistence and real reward owner
+        env:
+          CHROMIUM_PATH: /usr/bin/google-chrome
+        run: |
+          python -m http.server 8765 --directory _site > /tmp/d756-server.log 2>&1 &
+          python -u tests/d756-meeting-browser.py

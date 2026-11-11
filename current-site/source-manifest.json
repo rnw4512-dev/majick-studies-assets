@@ -144,7 +144,7 @@
     "guardian-registry.js": "00a6baa6d67cfc0e63b2e336a38baca04b6d8705058f824d70e12b8fe88c18bc",
     "home-focus.css": "cbb719eb8e78701717b4016388d511553f2785212d839815ed006651ae738b2b",
     "home-focus.js": "f421d4c5e5b4193d1005e5ce5cdbeb0e969a0cffb8ece49b9dd7c255a16ca794",
-    "index.html": "528178dcf65e5fb62d77d86e90af0f794e2dd9a6921da45f4a9d19d8e3c84b45",
+    "index.html": "095f2ebafefd94bee40c16b2bea0cc0b0046b017262b3c014cc89fe598fd06a8",
     "learn-mode.css": "30181250c67efe7bd97c9276706a804a551e7904a2bb28160eeb0c193f35c002",
     "learn-mode.js": "0fe77e5b84d801270edb07bba57e412c5c23e21f29d7354ae3630ab936dd8c52",
     "learning-lab.css": "b9c2c4f2ae393b3d291155a258cd01388bb71cd49a46d0187f224b03222ac2df",
@@ -407,7 +407,7 @@
     "adaptive-learning-core.css": "f984e356b6efa4d7608e1226aec5df13f024f702ea3a51b56d8c75a589a44646",
     "course-learning-profiles.js": "60d25988b6ae0ed1cab981ce99d2d8ed49fe9c8553b189df3d83103797bfe925",
     "course-learning-profiles.css": "f0f4f53b2c9422f0ed884d4688af1d8367e63851b367331f78b994b6548b5caa",
-    "reward-core.js": "f1bf2855030addc7b510edd7600a86cec43300fecf9dca57bfa5aa094ecc1680",
+    "reward-core.js": "e1e28af7f16d4b6d64906e7b0a509d1d4749e77febfa77eec38b9944ba4262ed",
     "reward-core.css": "21e9a4623f58b5a8a4cc4a720d4dc12adf9781928b801c328aceb9e24d8f6922",
     "assets/rewards/reference-boards/cascade/cascade-collection-reference-board.webp": "1b4d05d2b5303afeec9d2b51713d3a1aef76754ff6c0e242724a165218f79b68",
     "assets/rewards/reference-boards/cascade/cascade-collection-reference-board-runtime.webp": "19a8202353e552f20173d109a6c7b61fcfe91420e5efa59de56bea771e745b1b",
@@ -878,6 +878,7 @@
     "assets/rooms/landscape-castle.webp": "d5cce4d47cdf578b76f3b30fe076678e75cb4ff97baf0b0d2d25487d9e104c8a",
     "assets/rooms/licenses/GPL-2.0.txt": "e6d6a009505e345fe949e1310334fcb0747f28dae2856759de102ab66b722cb4",
     "d772-oa-entry.js": "c22f97fc2c528409b54b5c4fe42d1cedfc1c861231c915b44ad0bac1e434f746",
-    "d772-oa-focus.html": "987fe97e57c96c36ff2bf6dbe2b989e2677af7d326ec033d231fff96f8e01bfc"
+    "d772-oa-focus.html": "987fe97e57c96c36ff2bf6dbe2b989e2677af7d326ec033d231fff96f8e01bfc",
+    "d756-task2-meeting.js": "a6671143c3e62739407f9709326642761a995936b9ea543965e3feb8154f79ae"
   }
 }
