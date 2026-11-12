@@ -65,6 +65,21 @@ with sync_playwright() as pw:
   assert initial==end, "Knowledge check is coaching, not a second XP system"
   quiz.locator("[data-kclose]").click()
   assert quiz.count()==0
+  # Disrespectful wording must trigger a realistic interpersonal response and repair.
+  page.evaluate('MajickD756Meeting.open()')
+  room.locator("#dmMode").select_option("independent")
+  room.locator("[data-action=start]").click()
+  room.locator("#dmAnswer").fill("Angela, you are lazy about writing and need to try harder.")
+  room.locator("[data-action=submit]").click()
+  state=page.evaluate(f'JSON.parse(localStorage.getItem("{KEY}"))')
+  assert state["toneOpen"] is True
+  assert state["pending"]["kind"]=="respect-repair"
+  assert state["records"][-1]["professionalToneFlag"]=="blaming-label"
+  assert "blamed" in room.locator(".dmPrompt").inner_text().lower()
+  room.locator("#dmAnswer").fill("Angela, I am sorry that sounded blaming. I hear your concern and want us to make a supportive writing plan together that respects your preferences.")
+  room.locator("[data-action=submit]").click()
+  state=page.evaluate(f'JSON.parse(localStorage.getItem("{KEY}"))')
+  assert state["toneOpen"] is False,"Respectful repair must be recognized"
   assert not js_errors,js_errors
   print(f"PASS D756 course study, responsive Council UX, knowledge check, no duplicate reward, {width}px")
   ctx.close()
