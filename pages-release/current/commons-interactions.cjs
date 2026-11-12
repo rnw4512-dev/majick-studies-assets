@@ -25,9 +25,9 @@ module.exports=async function({ev,waitFor,call,sleep}){
  for(const route of navigation){await click('.nav button[data-nav="'+route+'"]');await waitFor('S.screen==='+JSON.stringify(route));assert((await ev('document.querySelector("#content").textContent.trim().length'))>0,'Empty app screen '+route)}
  await home('overview');
  const tools=await ev('[...document.querySelectorAll("#v3377CampusDoors details [data-go]")].map(b=>b.dataset.go)');
- for(const route of tools){await home('overview');await ev('document.querySelector("#v3377CampusDoors details").open=true');await click('#v3377CampusDoors [data-go="'+route+'"]');await waitFor('S.screen==='+JSON.stringify(route))}
+ for(const route of tools){await home('overview');await waitFor('!!document.querySelector("#v3377CampusDoors details")');await ev('document.querySelector("#v3377CampusDoors details").open=true');await click('#v3377CampusDoors [data-go="'+route+'"]');await waitFor('S.screen==='+JSON.stringify(route))}
  const quickRoutes=['learninglab','guide','analytics','vault'];
- for(const route of quickRoutes){await home('overview');await ev('document.querySelector(".majCommonsRecordShelf").open=true');await click('.v3327QuickLinks button[onclick*="'+route+'"]');await waitFor('S.screen==='+JSON.stringify(route))}
+ for(const route of quickRoutes){await home('overview');await waitFor('!!document.querySelector(".majCommonsRecordShelf")');await ev('document.querySelector(".majCommonsRecordShelf").open=true');await click('.v3327QuickLinks button[onclick*="'+route+'"]');await waitFor('S.screen==='+JSON.stringify(route))}
  console.log('PASS every current sidebar destination, campus tools and expanded Student Record navigation');
  console.log('PASS Commons existing Learn, Study Now, Grimoire, Realm, Guardian, Sanctuary, material, daily-loop and Memory Quest actions');
  await home('guardians');
@@ -35,7 +35,7 @@ module.exports=async function({ev,waitFor,call,sleep}){
  assert.equal(await ev('document.querySelectorAll("#commons-panel-guardians .majEggFocus").length'),eggs.length,'All real eggs must appear in Guardians');
  if(eggs.length){await click('#commons-panel-guardians .majEggFocus');await waitFor('document.querySelector("#commons-panel-guardians .majEggFocus[aria-pressed=true]")');}
  // All original questions remain browsable; guided errors never certify mastery.
- await home('review');await ev('document.querySelector("#mjPreassessmentReview details").open=true');
+ await home('review');await waitFor('!!document.querySelector("#mjPreassessmentReview details")');await ev('document.querySelector("#mjPreassessmentReview details").open=true');
  await ev('const s=document.querySelector("#mjPaOriginal");s.value="49";s.dispatchEvent(new Event("change",{bubbles:true}))');
  assert((await ev('document.querySelector("[data-mj-pa-source]").textContent')).includes('49'));
  const q=await ev('MajickD772PreassessmentReview.questions[Number(document.querySelector("#mjPaPracticeTopic").value)]');
