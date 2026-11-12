@@ -16,7 +16,7 @@ with sync_playwright() as pw:
   page.goto(URL)
   page.wait_for_function("!!window.MajickD756Meeting && !!window.MajickRewardCore")
   page.evaluate('switchCourse("D756")')
-  page.evaluate('navigate("mission")')
+  page.evaluate('navigate("mission");studyRealmSwitch("practice")')
   assert page.get_by_text("Choose a meeting practice scenario").count()>0
   assert page.get_by_text("Practice scenario").count()==8
   api=page.evaluate("MajickD756Meeting.scenarios()")
@@ -44,7 +44,7 @@ with sync_playwright() as pw:
    page.evaluate(f'localStorage.removeItem("{KEY}")')
    page.reload()
    page.wait_for_function("!!window.MajickD756Meeting && !!window.MajickRewardCore")
-   page.evaluate('switchCourse("D756");navigate("mission")')
+   page.evaluate('switchCourse("D756");navigate("mission");studyRealmSwitch("practice")')
   assert not errors,errors
   print(f"PASS all eight varied D756 scenarios and complete spoken answers at {width}px")
   ctx.close()
