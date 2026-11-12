@@ -1,7 +1,7 @@
 name: D756 meeting acceptance
 on:
   pull_request:
-    paths: ['current-site/**', 'tests/d756-meeting-browser.py', 'tests/d756-responsive-writing-browser.py', 'tests/d756-ux-browser.py', 'tests/d756-scenario-library-browser.py', 'tests/d756-short-meetings-browser.py', 'tests/d756-question-classification.test.cjs', '.github/workflows/d756-meeting.yml']
+    paths: ['current-site/**', 'tests/d756-meeting-browser.py', 'tests/d756-responsive-writing-browser.py', 'tests/d756-ux-browser.py', 'tests/d756-scenario-library-browser.py', 'tests/d756-short-meetings-browser.py', 'tests/d756-full-script-browser.py', 'tests/d756-question-classification.test.cjs', '.github/workflows/d756-meeting.yml']
   workflow_dispatch:
 permissions:
   contents: read
@@ -31,3 +31,4 @@ jobs:
           python -u tests/d756-ux-browser.py
           python -u tests/d756-scenario-library-browser.py
           python -u tests/d756-short-meetings-browser.py
+          python -u tests/d756-full-script-browser.py
