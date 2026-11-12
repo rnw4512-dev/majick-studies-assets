@@ -110,6 +110,29 @@ function repairView(){const r=s.repair;return '<h3>Pause-and-Repair · guided pr
 
 
 
+function stakeholderClarification(scene,answer){
+ const p=person(),first=p.student.split(' ')[0],who=scene[0],line=String(scene[2]||'').toLowerCase();
+ const say=(line)=>({who,kind:'clarification-response',line});
+ if(who===2&&/purpose|today|meeting|agenda|introduc/.test(line))return say("I mean that the family should know why we are here, what decisions we will discuss, and what will happen next. Could you briefly explain today's agenda before we hear everyone's perspectives?");
+ if(who===1){
+  if(/embarrass|remind|prompt|private|signal/.test(line))return say("I feel embarrassed when someone comes to my desk again and again because other students notice. I would rather use a quiet signal or ask for help privately.");
+  if(/write|essay|start|idea|organize/.test(line))return say("I understand more when I can talk about it. When I have to write, I can't decide which idea goes first. Seeing the steps or saying the ideas aloud helps.");
+  if(/career|future|design|college/.test(line))return say("I want to explore "+p.career+" and look at real programs before someone decides it is not a good option for me.");
+  return say("I want to be included when adults decide which supports I should use. Please ask me how they feel before changing them.");
+ }
+ if(who===0){
+  if(/goal|progress|rubric|sample|data|score/.test(line))return say("I want to know what "+first+" can do now, what growth we expect, and what a progress report will actually look like. Seeing a work sample would help.");
+  if(/career|future|training|cost|financial|employ/.test(line))return say("I worry most about the cost of training and whether there will be work afterward. I want to compare real options while hearing my child's preferences.");
+  return say("At home I see trouble getting started, too. A checklist helps, but I want my child to learn to use it without needing me beside them.");
+ }
+ if(who===3){
+  if(/independen|prompt|remind|organize|checklist|support/.test(line))return say("I want to know whether the student can begin a task without an adult prompt. I can collect prompt counts and work samples while we continue the agreed accommodations.");
+  if(/goal|writing|reading|class|rubric/.test(line))return say("I want the goals to help with actual classroom assignments, not only with a separate rubric. Could we compare classwork and the goal scores?");
+  return say("I can share classroom observations. I need to know who will collect the information and how we will decide whether supports are working.");
+ }
+ return say("Could you explain which part of the plan needs clarification? I want everyone to understand our next steps.");
+}
+
 function naturalStakeholderReply(answer,scene){
  const t=answer.toLowerCase(),p=person();
  if(/tim(er|ed)|countdown|rush|deadline/.test(t)&&s.profile==='angela')return [1,'Angela responds to pacing','I can work toward a deadline, but watching a timer makes me rush. Could we track the writing steps without making me feel watched?'];
@@ -184,7 +207,7 @@ function meaningfulResponse(a){const i=indicators(a),words=a.trim().split(/\s+/)
 function commitTurn(a,assisted=false){typingResume();const scene=activeScene(),people=peopleNow(),isFollow=!!s.pending,pending=s.pending;const clarified=contextualClarification(a,localize(scene[2]));const tone=professionalConcern(a);if(tone)s.toneOpen=true;else if(s.toneOpen&&/(i'm sorry|i apologize|sorry|i hear|i understand|thank you)/i.test(a)&&/(support|listen|respect|together|choice|help|plan)/i.test(a))s.toneOpen=false;const contextMatch=!!pending&&!clarified&&!indicators(a).input&&addressesPending(a,pending);s.draft='';s.records.push({speaker:people[scene[0]][0],line:localize(scene[2]),answer:a,core:!isFollow,stage:s.step,valid:true,assisted,contextMatch,professionalToneFlag:tone||null,clarifyingFollowUp:clarified,responseTo:pending?.line||null,at:Date.now()});
  if(s.step===7&&resolves(a)){s.concernResolved=true;s.concernStatus=/disagree|unresolved|not agree|differ|remain/i.test(a)?'follow-up scheduled':'options acknowledged';}
  s.last=professionalFeedback(a,clarified,assisted,scene);
- s.pending=tone?professionalRepairPrompt(tone):clarified?{who:scene[0],line:'To clarify what I shared: '+localize(scene[2])+' I would appreciate a specific plan that addresses that concern.',kind:'clarification-response'}:isFollow&&!indicators(a).input&&!addressesPending(a,pending)?pending:classroomResponsivePrompt(a,scene)||followUp(a,s.step);s.awaitingReply=!!s.pending;s.reply=s.pending?null:s.step===7&&s.concernResolved?[0,'Family follow-up','Thank you for hearing my concern. We can keep differing views, compare real options, and record a next step while Angela’s preference remains central.']:naturalStakeholderReply(a,scene);persist();paint();}
+ s.pending=tone?professionalRepairPrompt(tone):clarified?stakeholderClarification(scene,a):isFollow&&!indicators(a).input&&!addressesPending(a,pending)?pending:classroomResponsivePrompt(a,scene)||followUp(a,s.step);s.awaitingReply=!!s.pending;s.reply=s.pending?null:s.step===7&&s.concernResolved?[0,'Family follow-up','Thank you for hearing my concern. We can keep differing views, compare real options, and record a next step while Angela’s preference remains central.']:naturalStakeholderReply(a,scene);persist();paint();}
 function badges(){const m=meter(),all=s.records.map(r=>r.answer).join(' ');return [m.stakeholders===3?'Voice of the Council':null,m.clarify>=3?'Seeker of Clarity':null,s.concernResolved?'Bridge Builder':null,/(college|postsecondary|training)/i.test(all)&&/(employ|career)/i.test(all)?'Keeper of Futures':null].filter(Boolean);}
 let s={shortMeeting:null,mode:'guided',profile:'angela',storyline:'standard',pacing:'normal',typingPausedAt:null,toneOpen:false,step:0,records:[],started:0,elapsed:0,active:false,done:false,last:'',pending:null},tick,returnFocus;
 try{let saved=JSON.parse(localStorage.getItem(key));if(saved&&saved.mode)s={...s,...saved,typingPausedAt:null,active:false,resumable:saved.mode==='guided'&&!saved.done&&(saved.resumable||saved.elapsed>0||saved.records?.length>0||!!saved.draft)};}catch(_){}
