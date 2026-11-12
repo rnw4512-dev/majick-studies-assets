@@ -48,7 +48,7 @@ function stageMarkup(a,st){
  return '<h4>Apply It Somewhere New</h4><p>'+safe(a.challenge)+'</p><label>Your transfer response<textarea data-hu-text placeholder="Apply the skill to this new situation…">'+safe(v)+'</textarea></label><button data-hu-transfer>Save transfer attempt</button>'+result()+'<p class="huMuted">A fresh transfer attempt is practice evidence, not automatic verified mastery.</p>';
 }
 function result(){return feedback?'<div class="huFeedback" role="status">'+safe(feedback)+'</div>':''}
-function open(id){selected=id;phase=0;draft={};feedback='';state().lastActivity=id;persist();window.render?.()}
+function open(id){selected=id;phase=0;const st=state()[id]||{};draft={text:st.draft0||'',steps:st.steps||[]};feedback='';state().lastActivity=id;persist();window.render?.()}
 function phaseSet(n){saveDraft();phase=n;const st=state()[selected]||{};draft={text:st['draft'+n]||'',steps:st.steps||[]};feedback='';window.render?.()}
 function saveDraft(){const a=item();if(!a)return;const st=state()[a.id]||(state()[a.id]={});if(phase===1)st.steps=draft.steps||[];else st['draft'+phase]=draft.text||'';persist()}
 function handler(e){
@@ -74,6 +74,8 @@ const css=document.createElement('style');css.textContent='.huStudio{max-width:1
 const install=()=>{
  if(typeof window.sideHTML!=='function'||typeof window.screenHTML!=='function'||typeof window.render!=='function')return;
  if(window.__huSidebarInstalled)return;
+ // Existing course-aware Hands-on Studio reads window.S; keep it pointed at the single active store.
+ if(!window.S && appState())window.S=appState();
  window.__huSidebarInstalled=true;
  const side=window.sideHTML;window.sideHTML=function(){let html=side.apply(this,arguments);if(!html.includes('data-nav="hands-on"'))html=html.replace('</nav>','<button data-nav="hands-on" class="'+(appState()?.screen==='hands-on'?'active':'')+'" onclick="navigate(\'hands-on\')"><span>✦</span><span class="label">Hands-on Studio</span></button></nav>');return html;};
  const screenBase=window.screenHTML;window.screenHTML=function(){return appState()?.screen==='hands-on'?screen():screenBase.apply(this,arguments)};
