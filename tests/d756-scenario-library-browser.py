@@ -18,7 +18,7 @@ with sync_playwright() as pw:
   page.evaluate('switchCourse("D756")')
   page.evaluate('navigate("mission");studyRealmSwitch("practice")')
   assert page.get_by_text("Choose a meeting practice scenario").count()>0
-  assert page.get_by_text("Practice scenario").count()==8
+  assert page.locator('button[onclick*="openScenario"]').count()==8, "Eight unique meeting scenario launchers must be present"
   api=page.evaluate("MajickD756Meeting.scenarios()")
   assert sorted(v["id"] for v in api)==sorted(CASES),api
   for case in CASES:
