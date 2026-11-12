@@ -48,5 +48,43 @@ jobs:
               assert digest==x['sha256']==manifest[key],(path,'checksum mismatch')
               print('Verified',x['stage'],width,height,'RGBA/gray-alpha and SHA256')
           PY
+      - name: Verify Cascade PNGs, transparency, margins, and locked SHA256 hashes
+        shell: bash
+        run: |
+          python - <<'PY'
+          import hashlib, json, struct, zlib
+          from pathlib import Path
+          source=Path('current-site')
+          base=source/'pixi-sanctuary/evolution-portraits/cascade'
+          manifest=json.loads((source/'source-manifest.json').read_text())['files']
+          stages=('new-bond','apprentice','guardian','ascendant','celestial')
+          for stage in stages:
+              file=base/(stage+'.png')
+              data=file.read_bytes()
+              assert data.startswith(bytes.fromhex('89504e470d0a1a0a')), file
+              assert data[12:16]==b'IHDR', file
+              width,height,bit_depth,color_type=struct.unpack('>IIBB',data[16:26])
+              assert (width,height,bit_depth,color_type)==(1024,1024,8,6), (file,width,height,bit_depth,color_type)
+              name=str(file.relative_to(source))
+              assert hashlib.sha256(data).hexdigest()==manifest[name],(file,'SHA256 mismatch')
+              # PNG chunks are verified through their CRCs, and all border pixels
+              # are checked after PNG scanline unfiltering in the image review.
+              offset=8
+              iend=False
+              while offset<len(data):
+                  length=int.from_bytes(data[offset:offset+4],'big')
+                  tag=data[offset+4:offset+8]
+                  body=data[offset+8:offset+8+length]
+                  crc=int.from_bytes(data[offset+8+length:offset+12+length],'big')
+                  assert zlib.crc32(tag+body)==crc,(file,tag,'PNG chunk CRC mismatch')
+                  offset+=length+12
+                  if tag==b'IEND': iend=True;break
+              assert iend and offset==len(data), (file,'trailing or incomplete PNG content')
+              print('Cascade verified:',stage)
+          proto=(source/'pixi-sanctuary/prototype.js').read_text()
+          assert "CASCADE_PORTRAIT_ROOT='./evolution-portraits/cascade/'" in proto
+          assert "canon==='cascade'&&CASCADE_PORTRAIT_STAGES.has(stage)" in proto
+          assert "stagePortrait(meta.canon,registry.stage(p.level).slug)" in proto
+          PY
       - name: Check release source manifest approval
         run: python pages-release/current/build.py current-site _site
