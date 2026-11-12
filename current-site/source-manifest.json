@@ -829,7 +829,7 @@
     "milestone-particles.js": "084d63ea0b43ac787d8b467b7c6e097253e7460c01a0707c89728a6e860d0d5a",
     "room-transition.js": "e050a9ea7b337ac67993264353c650f2c4708972bf59e45946ac999a77467d27",
     "pixi-sanctuary/index.html": "b8ea65847ca7f48e5f040d4801a54604e4601085ade5d4d1dce6c16c9aa2f94b",
-    "pixi-sanctuary/prototype.js": "a934d8c44e72a840ab3884ff86b08d1f197a8bd8f94f0b68aeff2f9d3ef87f86",
+    "pixi-sanctuary/prototype.js": "6b6c0a77d4ea1f5f90caef91564cb3ed02ba63c92409e43c6ba3c777d592cd1b",
     "atelier-pixi-scene.js": "8d59a87780d6862ef01cd3753b2779d5dfbab0bb516004c14450e903c51c1418",
     "vendor/pixi-8.6.6.min.js": "e5c38cccee4f99263df5f0b10dfd4d2484db5fdb730af3953cb6f1c07b3d85b2",
     "vendor/PIXI-LICENSE.txt": "5ce7447bc57f7349ffc48338782fbcabe613696e00712b20d66bc58e780f9473",
@@ -889,6 +889,11 @@
     "pixi-sanctuary/evolution-portraits/velora/velora_5_evolution_1024_transparent_pngs (5)/03_guardian.png": "df98145e3b3661d35abf41b35847c0138185407c233f5023a4857e006f3301bb",
     "pixi-sanctuary/evolution-portraits/velora/velora_5_evolution_1024_transparent_pngs (5)/04_ascendant.png": "6631c305015b3145abfee5ec9ddaaec259075aaf59e3c46848b4b86da4ed9aac",
     "pixi-sanctuary/evolution-portraits/velora/velora_5_evolution_1024_transparent_pngs (5)/05_celestial.png": "ba603a71b8f37958f99be43956f4a36b1556434abff436a08fd94b890b153916",
-    "pixi-sanctuary/evolution-portraits/velora/velora_5_evolution_1024_transparent_pngs (5)/review.json": "c6ec2e297a0768564106e683ba6f6761a5b0c65ba5352d31a09b5e42490642cd"
+    "pixi-sanctuary/evolution-portraits/velora/velora_5_evolution_1024_transparent_pngs (5)/review.json": "c6ec2e297a0768564106e683ba6f6761a5b0c65ba5352d31a09b5e42490642cd",
+    "pixi-sanctuary/evolution-portraits/cascade/new-bond.png": "69753490d613486741f842328a3c49e3d8d1a2b872c1489a8ef0190e3ac5f475",
+    "pixi-sanctuary/evolution-portraits/cascade/apprentice.png": "448e073025bfa731853ffb892b86fbeab186d12509bbc2847a4a9f1ce5334e9b",
+    "pixi-sanctuary/evolution-portraits/cascade/guardian.png": "9438ef4f38e49be66db0267225c44a512de9e715746bd235d2921dd91972546c",
+    "pixi-sanctuary/evolution-portraits/cascade/ascendant.png": "ef1cce07bdff0cdd9d5a37ea48a4538ca59d23c77814ecfcf7d51f4814eec23c",
+    "pixi-sanctuary/evolution-portraits/cascade/celestial.png": "e173ec93bbee9950be3539b1c45b8ab24da58e3ad8eeadeffa39afc8d3d259db"
   }
 }
