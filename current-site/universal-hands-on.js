@@ -23,7 +23,23 @@ const appState=()=>typeof S!=='undefined'?S:window.S;
 let saved={};try{saved=JSON.parse(localStorage.getItem(key)||'{}')||{}}catch(_){}
 let selected=null,phase=0,draft={},feedback='';
 const courseId=()=>appState()?.activeCourse||'D755';
-const list=()=>catalog[courseId()]||[];
+function sourceBasedActivities(){
+ const c=appState()?.courses?.[courseId()];if(!c)return [];
+ const bank=(Array.isArray(c.questionBank)?c.questionBank:[]).filter(q=>q&&String(q.prompt||q.question||'').trim()&&Array.isArray(q.options||q.choices)&&Array.isArray(q.options||q.choices)&&Number.isInteger(q.correctIndex));
+ const seen=new Set();
+ return bank.filter(q=>{const id=String(q.topicId||q.conceptId||q.section||q.id||'general');if(seen.has(id))return false;seen.add(id);return true}).slice(0,12).map((q,i)=>{
+  const options=(q.options||q.choices).map(o=>typeof o==='string'?o:o?.text||o?.label||String(o));
+  const topic=String(q.topicId||q.conceptId||q.section||'Course practice');
+  return {id:'source-'+String(q.id||i),title:'Apply: '+topic,section:String(q.section||'Course practice'),concept:topic,
+   context:String(q.prompt||q.question),skill:'Interpret the original course problem, identify its important evidence, choose a justified approach, and explain how you reached the conclusion.',
+   clue:'Locate the question’s key terms, distinguish relevant details from distractors, and compare the reasoning behind possible responses.',
+   guided:String(q.prompt||q.question),choices:options,answer:q.correctIndex,
+   steps:['Identify the question’s goal and relevant evidence.','Explain the underlying concept in your own words.','Compare the possible approaches and justify your decision.','Describe how you could check whether your reasoning is correct.'],
+   challenge:'Apply the same concept to a different situation of your choice. Describe a new example, explain its differences, and justify the conclusion.'
+  };
+ });
+}
+const list=()=>catalog[courseId()]||sourceBasedActivities();
 const state=()=>saved[courseId()]||(saved[courseId()]={});
 function persist(){try{localStorage.setItem(key,JSON.stringify(saved))}catch(_){}}
 function item(){return list().find(x=>x.id===selected)||null}
