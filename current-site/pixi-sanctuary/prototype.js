@@ -106,7 +106,13 @@ const approvedFrameManifest=fetch('./guardian-walk-manifest.json').then(response
 // Stage portraits are static, approved separately from four-frame motion cycles.
 const VELORA_PORTRAIT_ROOT='./evolution-portraits/velora/velora_5_evolution_1024_transparent_pngs (5)/';
 const VELORA_PORTRAIT_FILES=Object.freeze({'new-bond':'01_new-bond.png','apprentice':'02_apprentice.png','guardian':'03_guardian.png','ascendant':'04_ascendant.png','celestial':'05_celestial.png'});
-function stagePortrait(canon,stage){return canon==='velora'&&VELORA_PORTRAIT_FILES[stage]?VELORA_PORTRAIT_ROOT+VELORA_PORTRAIT_FILES[stage]:null;}
+const CASCADE_PORTRAIT_ROOT='./evolution-portraits/cascade/';
+const CASCADE_PORTRAIT_STAGES=new Set(['new-bond','apprentice','guardian','ascendant','celestial']);
+function stagePortrait(canon,stage){
+ if(canon==='cascade'&&CASCADE_PORTRAIT_STAGES.has(stage))return CASCADE_PORTRAIT_ROOT+stage+'.png';
+ if(canon==='velora'&&VELORA_PORTRAIT_FILES[stage])return VELORA_PORTRAIT_ROOT+VELORA_PORTRAIT_FILES[stage];
+ return null;
+}
 function artFor(canon,stage){
  const key=canon+':'+stage;
  if(!assetCache.has(key))assetCache.set(key,(async()=>{
