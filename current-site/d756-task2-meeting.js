@@ -110,6 +110,38 @@ function repairView(){const r=s.repair;return '<h3>Pause-and-Repair · guided pr
 
 
 
+
+function contextResponsiveStakeholder(answer,scene){
+ const p=person(),t=answer.toLowerCase(),name=p.student.split(' ')[0];
+ const isQuestion=answer.includes('?')||/\b(?:ask|tell|share|what|how|which|could you|would you)\b/.test(t);
+ const targeted=/\b(?:elena|sofia|marcus|family|parent|guardian|home)\b/.test(t)?0:/\b(?:angela|maya|jordan|student|you feel|you prefer)\b/.test(t)?1:/\b(?:moore|patel|harris|general education|classroom teacher)\b/.test(t)?3:scene[0];
+ const who=isQuestion?targeted:scene[0];
+ const focus=/college|career|graduat|postsecond|training|future|employ|portfolio/.test(t)?'transition':
+ /progress|monitor|data|rubric|baseline|probe|quarter|report|weekly|sample/.test(t)?'progress':
+ /support|accommod|checklist|organizer|prompt|independen|assist|classroom/.test(t)?'supports':
+ /goal|reading|writing|paragraph|inferen|executive/.test(t)?'goals':'general';
+ const lines={
+ transition:[
+ ['I want to support '+name+'’s interest, but could we compare training costs, employment pathways, and who will help us investigate them?','I want the team to include my choice of '+p.career+'. Can we examine programs and portfolio requirements instead of deciding for me?','Who will contact the programs, and how will we document student and family input?','I can connect classwork to '+p.career+', but we need measurable milestones to prepare for the next setting.'],
+ ],
+ progress:[
+ ['What will a progress update actually show me? If scores stop improving, how quickly can we change the plan?','Can I review my own progress and help say what is working?','Who collects the data, how frequently, and when will reports be sent to home?','I can collect work samples, but we need to agree which independent skills and prompting levels to record.']
+ ],
+ supports:[
+ ['I do not want supports removed on a calendar date. What student input and progress data will justify any change?','I would prefer a private checklist or signal rather than adults calling attention to me. Can that be part of the plan?','Can we document the specific support, provider, setting and monitoring responsibility?','I can use these tools in class, but I need a practical way to monitor effectiveness and independence.']
+ ],
+ goals:[
+ ['What is the student able to do now, what is the annual target, and how will you measure the difference?','Could you explain this goal to me without the technical terms? How will it relate to my own interests?','How does each measurable goal link to the services and student needs?','Could we specify the classroom task, rubric and schedule so our observations are consistent?']
+ ],
+ general:[
+ ['Can you connect that decision to my child’s needs and invite what I see at home?','I would like to share what works for me before the team decides.','What is the team deciding now, and which issues need follow-up?','Could you connect that proposal to classroom evidence and state who will be responsible?']
+ ]};
+ if(/remove|take away|stop.*support/.test(t)&&!/progress|data|monitor|review|student input/.test(t))return [1,'Student expresses concern','What if I still need the support? I would like a voice in any change and would want us to look at my actual progress first.'];
+ if(/quarter/.test(t)&&focus==='progress'&&!/weekly|biweekly|every two weeks/.test(t))return [0,'Parent requests information sooner','A quarterly report is useful, but how will you tell me if progress stalls between reports?'];
+ if(/financial|cost|money/.test(t)&&focus==='transition')return [0,'Parent clarifies their concern','My worry is the cost of training and whether it leads to employment. I am not trying to dismiss '+name+'’s interests. Can we compare options?'];
+ if(/thank|hear|understand|appreciate/.test(t)&&/goal|progress|support/.test(t))return [who,'Stakeholder clarifies a practical concern',lines[focus][0][who]];
+ return [who,'Team responds about '+focus,lines[focus][0][who]];
+}
 function naturalStakeholderReply(answer,scene){
  const t=answer.toLowerCase(),p=person();
  if(/tim(er|ed)|countdown|rush|deadline/.test(t)&&s.profile==='angela')return [1,'Angela responds to pacing','I can work toward a deadline, but watching a timer makes me rush. Could we track the writing steps without making me feel watched?'];
@@ -204,7 +236,7 @@ function meaningfulResponse(a){const i=indicators(a),words=a.trim().split(/\s+/)
 function commitTurn(a,assisted=false){typingResume();const scene=activeScene(),people=peopleNow(),isFollow=!!s.pending,pending=s.pending;const clarified=contextualClarification(a,localize(scene[2]));const tone=professionalConcern(a);if(tone)s.toneOpen=true;else if(s.toneOpen&&/(i'm sorry|i apologize|sorry|i hear|i understand|thank you)/i.test(a)&&/(support|listen|respect|together|choice|help|plan)/i.test(a))s.toneOpen=false;const contextMatch=!!pending&&!clarified&&!indicators(a).input&&addressesPending(a,pending);s.draft='';s.records.push({speaker:people[scene[0]][0],line:localize(scene[2]),answer:a,core:!isFollow,stage:s.step,valid:true,assisted,contextMatch,professionalToneFlag:tone||null,clarifyingFollowUp:clarified,responseTo:pending?.line||null,at:Date.now()});
  if(s.step===7&&resolves(a)){s.concernResolved=true;s.concernStatus=/disagree|unresolved|not agree|differ|remain/i.test(a)?'follow-up scheduled':'options acknowledged';}
  s.last=professionalFeedback(a,clarified,assisted,scene);
- s.pending=tone?professionalRepairPrompt(tone):clarified?{who:scene[0],line:'To clarify what I shared: '+localize(scene[2])+' I would appreciate a specific plan that addresses that concern.',kind:'clarification-response'}:isFollow&&!indicators(a).input&&!addressesPending(a,pending)?pending:classroomResponsivePrompt(a,scene)||followUp(a,s.step);s.awaitingReply=!!s.pending;s.reply=s.pending?null:s.step===7&&s.concernResolved?[0,'Family follow-up','Thank you for hearing my concern. We can keep differing views, compare real options, and record a next step while Angela’s preference remains central.']:naturalStakeholderReply(a,scene);persist();paint();}
+ s.pending=tone?professionalRepairPrompt(tone):clarified?{who:scene[0],line:'To clarify what I shared: '+localize(scene[2])+' I would appreciate a specific plan that addresses that concern.',kind:'clarification-response'}:isFollow&&!indicators(a).input&&!addressesPending(a,pending)?pending:classroomResponsivePrompt(a,scene)||followUp(a,s.step);s.awaitingReply=!!s.pending;s.reply=s.pending?null:s.step===7&&s.concernResolved?[0,'Family follow-up','Thank you for hearing my concern. We can keep differing views, compare real options, and record a next step while Angela’s preference remains central.']:contextResponsiveStakeholder(a,scene);persist();paint();}
 function badges(){const m=meter(),all=s.records.map(r=>r.answer).join(' ');return [m.stakeholders===3?'Voice of the Council':null,m.clarify>=3?'Seeker of Clarity':null,s.concernResolved?'Bridge Builder':null,/(college|postsecondary|training)/i.test(all)&&/(employ|career)/i.test(all)?'Keeper of Futures':null].filter(Boolean);}
 let s={mode:'guided',profile:'angela',storyline:'standard',pacing:'normal',typingPausedAt:null,toneOpen:false,step:0,records:[],started:0,elapsed:0,active:false,done:false,last:'',pending:null},tick,returnFocus;
 try{let saved=JSON.parse(localStorage.getItem(key));if(saved&&saved.mode)s={...s,...saved,typingPausedAt:null,active:false,resumable:saved.mode==='guided'&&!saved.done&&(saved.resumable||saved.elapsed>0||saved.records?.length>0||!!saved.draft)};}catch(_){}
