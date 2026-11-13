@@ -113,13 +113,30 @@ async function sync({participants=[],speaker=0,active:isActive=true}={}){
   const baseW=900,baseH=310;
   function fit(){if(current.dead)return;const w=Math.max(1,host.clientWidth),h=Math.max(1,host.clientHeight);app.renderer.resize(w,h);scene.scale.set(Math.min(w/baseW,h/baseH));scene.position.set((w-baseW*scene.scale.x)/2,(h-baseH*scene.scale.y)/2)}
   current.resize=new ResizeObserver(()=>{fit();if(current.ready)app.render()});current.resize.observe(host);fit();
-  // The portraits and conference-room art are intentionally static.
-  // Render on demand rather than running a perpetual animation ticker.
-  app.stop();
-  app.render();
-  current.onMotion=()=>{if(!current.dead&&current.ready)app.render()};
+  // Short, restrained speaking cue: one gentle bounce as a new statement appears.
+  // No looping animation, no position changes for other participants.
+  const motion=window.matchMedia('(prefers-reduced-motion: reduce)');
+  current.motion=motion;
+  const speakingFigure=figures[speaker];
+  const normalY=seats[speaker]?.y||160;
+  let animationMs=0;
+  const animate=ticker=>{
+    if(current.dead||document.hidden||motion.matches||!speakingFigure){
+      if(speakingFigure)speakingFigure.root.y=normalY;
+      app.stop();app.render();return;
+    }
+    animationMs+=ticker.deltaMS;
+    const progress=Math.min(1,animationMs/540);
+    const wobble=Math.sin(progress*Math.PI*3)*Math.sin(progress*Math.PI)*2.4;
+    speakingFigure.root.y=normalY-wobble;
+    if(progress>=1){speakingFigure.root.y=normalY;app.stop();app.render();}
+  };
+  app.ticker.add(animate);
+  current.onMotion=()=>{if(!current.dead&&current.ready){if(document.hidden){app.stop();if(speakingFigure)speakingFigure.root.y=normalY;}app.render()}};
   document.addEventListener('visibilitychange',current.onMotion);
+  if(!motion.matches&&!document.hidden)app.start();else{app.stop();app.render();}
+
  }catch(e){if(current.dead)return;console.warn('Council Chamber Pixi scene fallback:',e);if(active===current){try{current.app?.destroy(true,{children:true,texture:false,textureSource:false})}catch(_){}active=null;stageFallback(host,speaker)}}
 }
-window.MajickIEPVisual={sync,dispose,version:'1.0-council-graphics'};
+window.MajickIEPVisual={sync,dispose,version:'1.1-council-speaking-cue'};
 })();
