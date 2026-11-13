@@ -5,6 +5,8 @@ on:
     branches: [main]
     paths:
       - 'current-site/**'
+      - 'index.html'
+      - '.nojekyll'
       - '.github/workflows/publish-aetheria.yml'
   workflow_dispatch:
 
@@ -26,8 +28,12 @@ jobs:
     steps:
       - name: Check out site content
         uses: actions/checkout@v4
-      - name: Verify app entry point
-        run: test -s current-site/index.html
+      - name: Verify app entry point and meeting assets
+        run: |
+          test -s current-site/index.html
+          test -s current-site/d756-task2-meeting.js
+          test -s current-site/iep-meeting-pixi-scene.js
+          for role in parent student lea teacher; do test -s "current-site/assets/iep-council/$role.svg"; done
       - name: Preserve canonical /current-site/ route
         run: |
           mkdir -p _aetheria_pages/current-site
