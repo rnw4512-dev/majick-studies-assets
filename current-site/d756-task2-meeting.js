@@ -226,8 +226,13 @@ function independentTalkingPoints(){
  return '<section class="dmIndependentNotes" aria-label="Independent rehearsal talking points" style="border:1px solid #8c7398;border-radius:12px;background:#fffaf4;padding:12px;margin:12px 0"><b>At-a-glance essentials (not a script)</b><ul>'+item.map(x=>'<li>'+esc(x)+'</li>').join('')+'</ul><p><small>Use these as reminders; build your own spoken response. Your wording is not filled in or supplied automatically.</small></p><label for="dmPersonalNotes">Your private, editable notes for this agenda item</label><textarea id="dmPersonalNotes" rows="2" placeholder="Add facts from the IEP, a follow-up question, or your own opening...">'+esc((s.personalNotes||{})[s.step]||'')+'</textarea></section>';
 }
 function coachedOptions(){
- if(!s.active||s.mode!=='guided')return '';
- return '<section class="dmChoices" aria-label="Guided sample responses"><b>Optional response examples</b><p>Speak one aloud, then edit it. Selecting an example labels this turn as coached rather than independent.</p><div class="dmChoiceList">'+responseChoices().map((x,i)=>'<button type="button" data-response-choice="'+i+'">'+esc(x)+'</button>').join('')+'</div></section>';
+ if(!s.active)return '';
+ const hints=s.mode==='guided'?responseChoices():[
+ 'I hear your concern about ____. Could you tell me more about what you have noticed?',
+ 'Based on the IEP information, we could ____. How does that sound to the team?',
+ 'Before we move forward, I would like to hear from ____. What have you observed?'
+ ];
+ return '<section class="dmChoices" aria-label="Optional speaking prompts"><details '+(s.mode==='guided'?'open':'')+'><summary>Optional speaking prompts · '+(s.mode==='guided'?'guided examples':'sentence starters')+'</summary><p>Click to insert a starting point, then personalize it. Using a prompt marks this turn as assisted practice, not independent mastery.</p><div class="dmChoiceList">'+hints.map((x,i)=>'<button type="button" data-response-choice="'+i+'">'+esc(x)+'</button>').join('')+'</div></details></section>';
 }
 function typingPause(){if(s.active&&s.pacing==='typing'&&!s.typingPausedAt)s.typingPausedAt=Date.now();}
 function typingResume(){if(s.active&&s.typingPausedAt){s.started+=Date.now()-s.typingPausedAt;s.typingPausedAt=null;}}
@@ -398,7 +403,15 @@ function paint(){
  root.querySelector('#dmAnswer, [data-action=resume], [data-action=start], [data-action=reset]')?.focus({preventScroll:true});
  root.querySelectorAll('[data-history]').forEach(b=>b.onclick=()=>{const r=history().reverse()[Number(b.dataset.history)];const area=document.createElement('section');area.innerHTML='<h3>Previous attempt transcript</h3>'+r.records.map(t=>'<p><b>'+esc(t.speaker)+':</b> '+esc(t.line)+'</p><blockquote>'+esc(t.answer)+'</blockquote>').join('');b.parentElement.after(area);b.disabled=true;});
  const start=root.querySelector('[data-action=start]');if(start)start.onclick=()=>{if(s.records.length&&!s.done){const old={...s,elapsed:elapsed(),active:false,completedAt:Date.now(),reward:{status:'abandoned',xp:0,crystals:0}};try{localStorage.setItem(key+'-history',JSON.stringify([...history(),old].slice(-30)))}catch(_){}}s={mode:root.querySelector('#dmMode').value,pacing:root.querySelector('#dmPacing').value,typingPausedAt:null,toneOpen:false,profile:root.querySelector('#dmProfile').value,storyline:root.querySelector('#dmProfile').value==='angela'?root.querySelector('#dmStoryline').value:'standard',step:0,records:[],draft:'',started:Date.now(),elapsed:0,active:true,done:false,last:'',pending:null,assessment:null,reward:null,variant:Math.floor(Math.random()*3),concernResolved:false};persist();paint();};
- root.querySelectorAll('[data-response-choice]').forEach(btn=>btn.onclick=()=>{const chosen=responseChoices()[Number(btn.dataset.responseChoice)],area=root.querySelector('#dmAnswer');if(area&&chosen){area.value=chosen;s.draft=chosen;s.assistedStage=true;persist();area.focus();}});
+ root.querySelectorAll('[data-response-choice]').forEach(btn=>btn.onclick=()=>{
+ const choices=s.mode==='guided'?responseChoices():[
+ 'I hear your concern about ____. Could you tell me more about what you have noticed?',
+ 'Based on the IEP information, we could ____. How does that sound to the team?',
+ 'Before we move forward, I would like to hear from ____. What have you observed?'
+ ];
+ const chosen=choices[Number(btn.dataset.responseChoice)],area=root.querySelector('#dmAnswer');
+ if(area&&chosen){area.value=(area.value.trim()?area.value.trim()+' ':'')+chosen;s.draft=area.value;s.assistedStage=true;persist();area.focus();}
+});
  const hear=root.querySelector('[data-action=hear]');
  if(hear)hear.onclick=()=>{
    if(!('speechSynthesis' in window)){hear.textContent='Audio reading unavailable in this browser';hear.disabled=true;return}
