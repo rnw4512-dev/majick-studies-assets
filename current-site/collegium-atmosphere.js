@@ -6,17 +6,28 @@
  function room(){return Object.hasOwn(ROOMS,window.S?.screen)?window.S.screen:'home'}
  function volume(){const value=Number(window.S?.majickAccount?.guardianAudio?.musicVolume??.22);return Math.max(0,Math.min(.7,Number.isFinite(value)?value:.22))}
  function stop(){music?.pause()}
- function recording(){if(!music){music=new window.Audio('./assets/audio/dreams-become-real.ogg');music.loop=true;music.preload='none';music.addEventListener('error',()=>{enabled=false;error='Music could not load. Your study progress is safe.';stop();decorate()})}music.volume=volume();return music}
+ function recording(){if(!music){music=new window.Audio('./assets/audio/dreams-become-real.ogg');music.loop=true;music.preload='auto';music.addEventListener('error',()=>{enabled=false;error='Music file could not load. Check the audio asset and connection.';stop();decorate()});music.addEventListener('ended',()=>{if(enabled){enabled=false;decorate()}})}music.volume=volume();return music}
  async function start(){
-   if(enabled)return true;
+   if(enabled&&music&&!music.paused)return true;
    error='';enabled=true;const request=++audioRequest;
    try{
+     // Begin HTMLAudioElement playback directly inside the user's click gesture.
+     // Waiting for AudioContext.resume() first can lose transient user activation.
+     const track=recording();
+     if(track.volume<=0){error='Music volume is 0. Raise it under Sound settings.';enabled=false;decorate();return false}
+     const playPromise=track.play();
      const AudioContext=window.AudioContext||window.webkitAudioContext;
-     if(AudioContext){ctx=ctx||new AudioContext();await ctx.resume()}
-     // Called only by an explicit button press; no autoplay on load or reload.
-     if(!enabled||request!==audioRequest)return false;
-     await recording().play();if(!enabled)stop();
-   }catch(_){if(request!==audioRequest)return false;enabled=false;stop();error='Tap Enable music to allow audio in this browser.'}
+     if(AudioContext){
+       try{ctx=ctx||new AudioContext();ctx.resume().catch(()=>{})}
+       catch(_){/* Music can play without Web Audio sound effects. */}
+     }
+     await playPromise;
+     if(!enabled||request!==audioRequest){stop();return false}
+   }catch(e){
+     if(request!==audioRequest)return false;
+     enabled=false;stop();
+     error='Music could not start. Check volume, browser sound permission, and audio loading, then tap Enable music again.';
+   }
    decorate();return enabled;
  }
  async function toggle(){if(enabled){enabled=false;audioRequest++;stop();if(ctx)ctx.suspend();decorate()}else await start()}
@@ -64,6 +75,7 @@
    let controls=top.querySelector('.caSoundControls');
    if(!controls){controls=document.createElement('div');controls.className='caSoundControls';const button=document.createElement('button');button.type='button';button.className='caAmbience';button.addEventListener('click',toggle);controls.append(button);const options=document.createElement('details');options.className='caSoundOptions';const summary=document.createElement('summary');summary.textContent='Sound settings';options.append(summary);const label=document.createElement('label');label.textContent='Music volume ';const slider=document.createElement('input');slider.type='range';slider.min='0';slider.max='70';slider.step='1';slider.value=String(Math.round(volume()*100));slider.setAttribute('aria-label','Music volume');slider.addEventListener('input',()=>setVolume(Number(slider.value)/100));label.append(slider);options.append(label);const credit=document.createElement('a');credit.href='./assets/IMMERSION-CREDITS.html';credit.textContent='Music by Kevin MacLeod · Artist credits';options.append(credit);const note=document.createElement('p');note.className='caSoundStatus';note.setAttribute('role','status');options.append(note);controls.append(options);top.append(controls)}
    const b=controls.querySelector('.caAmbience');
+   if(enabled&&music?.paused){enabled=false;error=error||'Music stopped. Tap Enable music to restart it.'}
    b.textContent=(enabled?'♫ ':'♪ ')+ROOMS[r]+' · music '+(enabled?'on':'off');
    b.setAttribute('aria-label',(enabled?'Mute':'Enable')+' ethereal music');
    b.setAttribute('aria-pressed',String(enabled));
