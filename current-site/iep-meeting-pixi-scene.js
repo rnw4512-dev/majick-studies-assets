@@ -24,7 +24,7 @@ function dispose(){
  try{previous.app?.destroy(true,{children:true,texture:false,textureSource:false})}catch(_){}
 }
 function stageFallback(host,speaker){
- host.innerHTML='<div class="iepSceneFallback" aria-hidden="true"><div class="iepFallbackTable">✦ Council Chamber ✦</div><div class="iepFallbackGuests">'+['Parent / guardian','Student','School representative','General education teacher'].map((role,i)=>'<div class="'+(i===speaker?'speaking':'')+'"><span>◆</span>'+role+'</div>').join('')+'</div></div>';
+ host.innerHTML='<div class="iepSceneFallback" aria-hidden="true"><div class="iepFallbackTable">✦ Council Chamber ✦</div><div class="iepFallbackGuests">'+['Parent / guardian','Student','School representative','General education teacher'].map((role,i)=>'<div class="'+(i===speaker?'speaking':'')+'"><img alt="" loading="eager" src="./assets/iep-council/'+['parent','student','lea','teacher'][i]+'.svg">'+role+'</div>').join('')+'</div></div>';
 }
 function shapePerson(P,i){
  const root=new P.Container();
@@ -82,6 +82,25 @@ async function sync({participants=[],speaker=0,active:isActive=true}={}){
    f.lamp.visible=i===speaker;
    return f;
   });
+  // Custom illustrated portraits share one consistent, original textbook-style art system.
+  // Each file is authored for Aetheria and documented in the asset manifest.
+  const portraitPaths=['parent','student','lea','teacher'].map(name=>'./assets/iep-council/'+name+'.svg');
+  const portraitResults=await Promise.all(portraitPaths.map(path=>P.Assets.load(path).catch(()=>null)));
+  if(current.dead||request!==serial||!host.isConnected)return;
+  portraitResults.forEach((texture,i)=>{
+   if(!texture)return;
+   const figure=figures[i];
+   const sprite=new P.Sprite(texture);
+   sprite.anchor.set(.5,.5);
+   sprite.width=142;
+   sprite.height=142;
+   sprite.position.set(0,-12);
+   figure.root.children.forEach(child=>{if(child!==figure.lamp)child.visible=false});
+   figure.root.addChildAt(sprite,0);
+   // Speaking highlight remains above the visual portrait.
+   figure.lamp.clear().roundRect(-77,-84,154,154,21).stroke({color:0xffdda2,width:3,alpha:.9});
+   figure.lamp.visible=i===speaker;
+  });
   const labels=seats.map((seat,i)=>{
    const who=participants[i]||{},name=String(who.name||['Family','Student','School representative','Teacher'][i]).split(' ')[0];
    const text=addText(P,name,16,i===speaker?0xffe3aa:0xe7d7d1);
@@ -99,7 +118,7 @@ async function sync({participants=[],speaker=0,active:isActive=true}={}){
   app.ticker.add(ticker=>{
    if(current.dead||motion.matches||document.hidden)return;
    phase+=ticker.deltaMS*.001;
-   figures.forEach((f,i)=>{f.root.y=seats[i].y+Math.sin(phase*1.3+i*.6)*1.3;f.lamp.alpha=i===speaker?.55+.35*Math.sin(phase*3):0});
+   figures.forEach((f,i)=>{f.root.y=seats[i].y;f.lamp.alpha=i===speaker?.86:0});
   });
   current.onMotion=()=>{if(current.dead)return;if(document.hidden||motion.matches){app.stop();app.render()}else app.start()};
   motion.addEventListener('change',current.onMotion);document.addEventListener('visibilitychange',current.onMotion);current.onMotion();
