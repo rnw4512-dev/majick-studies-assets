@@ -112,16 +112,13 @@ async function sync({participants=[],speaker=0,active:isActive=true}={}){
   title.position.set(450,13);decor.addChild(title);
   const baseW=900,baseH=310;
   function fit(){if(current.dead)return;const w=Math.max(1,host.clientWidth),h=Math.max(1,host.clientHeight);app.renderer.resize(w,h);scene.scale.set(Math.min(w/baseW,h/baseH));scene.position.set((w-baseW*scene.scale.x)/2,(h-baseH*scene.scale.y)/2)}
-  current.resize=new ResizeObserver(fit);current.resize.observe(host);fit();
-  const motion=window.matchMedia('(prefers-reduced-motion: reduce)');current.motion=motion;
-  let phase=0;
-  app.ticker.add(ticker=>{
-   if(current.dead||motion.matches||document.hidden)return;
-   phase+=ticker.deltaMS*.001;
-   figures.forEach((f,i)=>{f.root.y=seats[i].y;f.lamp.alpha=i===speaker?.86:0});
-  });
-  current.onMotion=()=>{if(current.dead)return;if(document.hidden||motion.matches){app.stop();app.render()}else app.start()};
-  motion.addEventListener('change',current.onMotion);document.addEventListener('visibilitychange',current.onMotion);current.onMotion();
+  current.resize=new ResizeObserver(()=>{fit();if(current.ready)app.render()});current.resize.observe(host);fit();
+  // The portraits and conference-room art are intentionally static.
+  // Render on demand rather than running a perpetual animation ticker.
+  app.stop();
+  app.render();
+  current.onMotion=()=>{if(!current.dead&&current.ready)app.render()};
+  document.addEventListener('visibilitychange',current.onMotion);
  }catch(e){if(current.dead)return;console.warn('Council Chamber Pixi scene fallback:',e);if(active===current){try{current.app?.destroy(true,{children:true,texture:false,textureSource:false})}catch(_){}active=null;stageFallback(host,speaker)}}
 }
 window.MajickIEPVisual={sync,dispose,version:'1.0-council-graphics'};
