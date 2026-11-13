@@ -1,11 +1,7 @@
 name: Publish Majick Studies Current V3.4.2
+# Legacy, integrity-gated stable release workflow. Run manually for certification.
+# Routine main-branch publishing is owned by publish-aetheria.yml.
 on:
-  push:
-    branches: [main]
-    paths:
-      - 'current-site/**'
-      - 'pages-release/current/**'
-      - '.github/workflows/deploy-majick-pages.yml'
   workflow_dispatch:
     inputs:
       release_level:
