@@ -30,3 +30,7 @@ Rollback restores reviewed code/artifacts, never learner storage. Prefer focused
 ## Limits
 
 Universal four-frame walking is blocked by absent approved sets; the tested existing pairs/fallback remain active. Observatory does not fabricate missing historical timestamps, ambiguous assistance, or fresh transfer. Local cloud startup measurements are indicative, not a speed guarantee. Final publication is contingent on a green exact-commit release gate and verified live build; this document does not claim an unobserved deployment.
+
+## Exact-build fixture correction
+
+The first complete release run passed 12 of 13 certification jobs; probability failed in its test helper's initial unguarded `querySelector(...).scrollIntoView()` before the helper's existing guarded readiness loop. Removed that redundant early dereference. Physical hit-testing, pointer/remount checks and every learning/reward assertion remain unchanged. The failure is retained in evidence, and the exact-head full workflow is rerun before publication.

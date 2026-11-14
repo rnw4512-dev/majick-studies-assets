@@ -1,0 +1,8 @@
+2026-11-14T18:42:25.9727493Z PASS probability: in-card Back returns to the previous room and preserves progress
+2026-11-14T18:42:26.7684766Z PASS probability: real Oracle Lens miss creates shared misconception
+2026-11-14T18:42:27.9352975Z PASS probability: repeated mounts preserve typing, selection and saved draft; pointer clicks include an intervening mount
+2026-11-14T18:42:28.6119121Z PASS probability: counter removal, guided calculation, no independent mastery credit
+2026-11-14T18:42:30.2895227Z FAIL browser QA: Error: {"exceptionId":1,"text":"Uncaught","lineNumber":0,"columnNumber":48,"scriptId":"424","stackTrace":{"callFrames":[{"functionName":"","scriptId":"424","url":"","lineNumber":0,"columnNumber":48},{"functionName":"","scriptId":"424","url":"","lineNumber":0,"columnNumber":114}]},"exception":{"type":"object","subtype":"error","className":"TypeError","description":"TypeError: Cannot read properties of null (reading 'scrollIntoView')\n    at <anonymous>:1:49\n    at <anonymous>:1:115","objectId":"7951526345569407552.14.2"}}
+2026-11-14T18:42:30.2904571Z     at evalPage (/home/runner/work/majick-studies-assets/majick-studies-assets/pages-release/current/browser-probability.cjs:10:162)
+2026-11-14T18:42:30.3089619Z     at async click (/home/runner/work/majick-studies-assets/majick-studies-assets/pages-release/current/browser-probability.cjs:14:2)
+2026-11-14T18:42:30.3199260Z     at async /home/runner/work/majick-studies-assets/majick-studies-assets/pages-release/current/browser-probability.cjs:118:2
