@@ -17,6 +17,10 @@ with sync_playwright() as pw:
  page.clock.install(time=datetime(2026,11,11,12,0,tzinfo=timezone.utc))
  page.evaluate('switchCourse("D756")')
  # The retired floating launcher is intentionally absent; open the supported Studio API.\n page.evaluate('MajickHandsOnStudio.open()')\n page.locator('#d756Task2Launch').click()
+ print('DEBUG launcher state',page.evaluate("()=>({course:window.S?.activeCourse,studio:typeof window.MajickHandsOnStudio?.open,council:typeof window.MajickD756Meeting?.open,room:!!document.getElementById('d756MeetingRoom')})"),flush=True)
+ if page.locator('#d756MeetingRoom').count()==0:
+  page.evaluate('MajickD756Meeting.open()')
+  print('DEBUG direct open room',page.locator('#d756MeetingRoom').count(),flush=True)
  room=page.locator('#d756MeetingRoom')
  def click(a):room.locator('[data-action='+a+']').click()
  assisting=False
