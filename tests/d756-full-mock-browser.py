@@ -29,6 +29,8 @@ with sync_playwright() as pw:
         assert state["assistedStage"] is True
         room.locator('[data-action="submit"]').click()
         assert room.locator(".dmLearningFeedback").count() == 1
+        assert "Why this matters in the lesson" in room.locator(".dmLearningFeedback").inner_text()
+        assert "Specific next improvement" in room.locator(".dmLearningFeedback").inner_text()
         state = page.evaluate('JSON.parse(localStorage.getItem("majick-d756-task2-rehearsal-v1"))')
         assert state["records"][-1]["assisted"] is True
         text_color = room.locator(".dmLearningFeedback li").first.evaluate("(el)=>getComputedStyle(el).color")
