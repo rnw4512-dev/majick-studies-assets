@@ -194,8 +194,9 @@ function updateEffects(){
 function award(type,ctx={}){
  const a=account();if(!a)return null;const r=a.rewardCore,key=rewardKey(type,ctx);
  if(r.ledger[key])return r.ledger[key].receipt||null;
- const cfg=baseFor(type,ctx),independent=ctx.independent===true||type==='independent-correct',delayed=ctx.delayed===true||type==='delayed-recall',transfer=ctx.transfer===true||type==='mixed-transfer-success';
- if(ctx.assisted===true||ctx.independent===false||ctx.masteryEligible===false){if(['concept-mastered','lesson-mastered','competency-mastered','oa-competency-ready','course-passed','misconception-repaired','delayed-recall'].includes(type))return {key,type,xp:0,crystals:0,masteryXp:0,eggFragments:0,rejected:'assisted-or-ineligible'};cfg.eggFragments=0;cfg.masteryXp=0;}
+ const eligible=ctx.assisted!==true&&ctx.independent!==false&&ctx.masteryEligible!==false;
+ const cfg=baseFor(type,ctx),independent=eligible&&(ctx.independent===true||type==='independent-correct'),delayed=eligible&&(ctx.delayed===true||type==='delayed-recall'),transfer=eligible&&(ctx.transfer===true||type==='mixed-transfer-success');
+ if(ctx.assisted===true||ctx.independent===false||ctx.masteryEligible===false){if(['independent-correct','mixed-transfer-success','micro-skill-mastered','concept-mastered','lesson-mastered','competency-mastered','oa-competency-ready','course-passed','misconception-repaired','delayed-recall'].includes(type))return {key,type,xp:0,crystals:0,masteryXp:0,eggFragments:0,rejected:'assisted-or-ineligible'};cfg.eggFragments=0;cfg.masteryXp=0;}
  const beforeXp=Math.max(Number(a.xp||0),Number(a.xpHighWater||0));
  let xp=Number(cfg.xp||0),crystals=Number(cfg.crystals||0);
  if(type==='correct-answer'&&independent){xp+=5;cfg.masteryXp=Number(cfg.masteryXp||0)+5}
@@ -359,6 +360,11 @@ document.addEventListener('click',ev=>{
  if(b.dataset.equipItem){const id=b.dataset.equipItem,select=document.querySelector('[data-equip-target="'+id+'"]');equipReward(id,select?.value)}
  if(b.dataset.unequipItem)equipReward(b.dataset.unequipItem,b.dataset.petId,true);
 });
+function rewardJournalHTML(){
+ const ledger=state()?.majickAccount?.rewardCore?.ledger||{};
+ const entries=Object.entries(ledger).filter(([,entry])=>entry?.receipt).sort((a,b)=>Number(b[1].at||b[1].receipt.at||0)-Number(a[1].at||a[1].receipt.at||0)).slice(0,50);
+ return '<details class="majRewardJournal"><summary>Reward Journal · '+Object.keys(ledger).length+' recorded rewards</summary><p>Recent receipts from your existing reward ledger. Reading the journal does not grant rewards.</p><ol>'+entries.map(([key,entry])=>{const r=entry.receipt,at=Number(entry.at||r.at),date=Number.isFinite(at)&&at>0?new Date(at).toLocaleString():'Date not recorded';return '<li><b>'+E(r.label||entry.type||'Reward')+'</b> · '+E(Number(r.xp)||0)+' XP · '+E(Number(r.crystals)||0)+' crystals · '+E(Number(r.eggFragments)||0)+' egg fragments<small> '+E(date)+'</small></li>'}).join('')+(entries.length?'':'<li>No reward receipts recorded yet.</li>')+'</ol></details>';
+}
 function vaultPanelHTML(){
  const inv=inventory(),r=account()?.rewardCore||{},owned=new Set([...inv.collectibles,...inv.blueprints]);
  const ingredients=Object.entries(inv.ingredients).filter(([,n])=>Number(n)>0);
@@ -373,7 +379,7 @@ function vaultPanelHTML(){
  const pagination='<nav class="majVaultPages" aria-label="Treasure pages"><button type="button" onclick="majickVaultPage('+(vaultPage-1)+')" '+(vaultPage===0?'disabled':'')+'>← Previous</button><span aria-live="polite">'+(finds.length?'Showing '+(vaultPage*VAULT_PAGE_SIZE+1)+'–'+Math.min(finds.length,(vaultPage+1)*VAULT_PAGE_SIZE)+' of '+finds.length:'No treasures')+' • Page '+(vaultPage+1)+' of '+pages+'</span><button type="button" onclick="majickVaultPage('+(vaultPage+1)+')" '+(vaultPage===pages-1?'disabled':'')+'>Next →</button></nav>';
  return '<section class="majArcaneVault" id="majArcaneVault"><header><div><small>MAGIC VAULT</small><h2>The treasures of your studies.</h2><p>Explore your discoveries, prepare a potion, and watch your next egg take shape.</p></div><button onclick="majickConjureEgg()" '+(ready?'':'disabled')+'>'+(ready?'✦ Conjure Egg':'🥚 '+remaining+' fragments to your next egg')+'</button></header>'+
  '<div class="majVaultStats"><span>✦ '+TREASURES.filter(it=>owned.has(it.id)).length+' / '+TREASURES.length+' treasures discovered</span><span>◇ '+Object.values(inv.ingredients).reduce((a,b)=>a+Number(b||0),0)+' ingredients</span><span>⚗ '+Object.values(inv.potions).reduce((a,b)=>a+Number(b||0),0)+' potions</span><span>🥚 '+inv.eggFragments+' egg fragments'+(ready?' • '+ready+' conjuring'+(ready===1?'':'s')+' ready':'')+'</span></div>'+
- tabs+
+ rewardJournalHTML()+tabs+
  panel('treasures')+'<h3 id="majVaultTreasureHeading" tabindex="-1">Your Treasure Collection</h3><div class="majVaultFilters">'+select('collection','Collection',[['all','All collections'],['solstice','Solstice'],['aurelia','Aurelia'],['shared','Shared treasures']])+select('status','Discovery',[['all','All treasures'],['owned','Owned'],['locked','Undiscovered']])+select('kind','Item type',[['all','All types'],['furniture','Furniture'],['decor','Decor'],['toy','Exploration toys'],['accessory','Accessories']])+select('rarity','Rarity',[['all','All rarities'],...RARITIES.map(x=>[x.id,x.label])])+'</div><div class="majVaultCollection">'+(finds.length?pageRows.map(it=>vaultCard(it,owned.has(it.id))).join(''):'<p class="majVaultEmpty">No treasures match these filters. Choose All treasures to explore the collection.</p>')+'</div>'+pagination+'</section>'+
  panel('potions')+'<div class="majRecipeShelf"><h3>Potion Workshop</h3>'+alchemyLedgerHTML()+'<p>Try each recipe with a one-time complimentary brewing kit.</p>'+(r.potionTestKitClaimed?'<p>✓ Test kit collected</p>':'<button type="button" onclick="majickClaimPotionTestKit()">Claim free brewing test kit ✦</button>')+RECIPES.map(rec=>{const count=Number(inv.potions[rec.id]||0),can=Object.entries(rec.cost).every(([k,n])=>Number(inv.ingredients[k]||0)>=n);return '<div class="majRecipe"><span aria-hidden="true">'+E(rec.icon)+'</span><div><b>'+E(rec.name)+'</b><p>'+E(potionInfo(rec.id)?.effect||rec.effect)+'</p><small>'+E(potionInfo(rec.id)?.where||'')+' · '+E(potionInfo(rec.id)?.duration||'')+'</small><div class="majRecipeCosts">'+Object.entries(rec.cost).map(([k,n])=>{const have=Number(inv.ingredients[k]||0);return '<span class="'+(have>=n?'ready':'missing')+'">'+E(ingredientName(k))+' '+have+'/'+n+(have>=n?' ✓':' • need '+(n-have))+'</span>'}).join('')+'</div></div><aside><button onclick="majickCraftPotion(\''+E(rec.id)+'\')" '+(can?'':'disabled')+'>'+ (can?'Craft potion':'Gather ingredients')+'</button>'+(count?'<button class="use" onclick="majickUsePotion(\''+E(rec.id)+'\')">Use • '+count+' owned</button>':'')+'</aside></div>'}).join('')+'</div>'+'</section>'+
  panel('ingredients')+'<div class="majRecipeShelf"><h3>Ingredient Cabinet</h3><div class="majLootGrid">'+(ingredients.length?ingredients.map(([id,n])=>{const it=INGREDIENTS.find(x=>x.id===id)||{};return '<span class="'+E(it.rarity||'common')+'"><i aria-hidden="true">'+E(it.icon||'✦')+'</i><b>'+E(it.name||id)+'</b><small>'+E(rarityLabel(it.rarity||'common'))+' • '+Number(n)+' owned</small></span>'}).join(''):'<p class="majVaultEmpty">Your cabinet is waiting for its first discovery. Study treasure can reveal magical ingredients.</p>')+'</div></div>'+'</section>'+
@@ -408,19 +414,23 @@ function usePotion(id){const a=account(),r=a?.rewardCore,info=potionInfo(id);if(
  const tx=alchemyKey('use:'+id),result=alchemyTransaction(tx,'use-potion',(a,r)=>{if(prepared&&id!=='recall-draught'){applied=window.MajickGameRealm.applyPotion(id,prepared);if(!applied?.ok)return {ok:false,message:applied?.message||'The learning effect could not be applied.'};}r.potions[id]--;const fx=updateEffects();if(id==='moonfocus-elixir')fx.moonfocus=5;else if(id==='starlight-tonic')fx.starlightTonic=3;else if(id==='recall-draught')r.activeRecall={question:prepared.question,course:state().activeCourse,answered:false,rewardKey:prepared.rewardKey,at:Date.now()};return {ok:true,potion:id,message:info.effect,duration:info.duration,question:prepared?.question||null,hint:prepared?.text||null};});if(!result.ok){applied?.undo?.();alchemyNotice(result.message);return false;}if(id==='recall-draught')showRecall();return true;
 }
 function rewardPreview(type,ctx={}){const x=baseFor(type,ctx);return {...x,type};}
+let legacyRewardSerial=0;
 function patchLegacyGameRewards(){
  if(typeof window.grantMoonlight!=='function'||window.grantMoonlight.__majickRewardCore)return;
  const fn=function(q){
-   const combo=Number(window.session?.combo||0),d=Number(q?.difficulty||1),hard=d>=4;
-   const receipt=award('correct-answer',{key:'game:'+String(state()?.activeCourse||'')+':'+String(q?.id||'q')+':'+Date.now(),course:state()?.activeCourse,qid:q?.id,difficulty:d,hard,independent:true,source:'game-realm'});
-   if(combo>0&&combo%5===0)award('streak-5',{key:'streak5:'+String(state()?.activeCourse||'')+':'+String(q?.id||'q')+':'+combo,source:'combo',difficulty:d});
-   if(combo>0&&combo%10===0)award('streak-10',{key:'streak10:'+String(state()?.activeCourse||'')+':'+String(q?.id||'q')+':'+combo,source:'combo',difficulty:d});
-   if(window.session)window.session.reward={xp:receipt?.xp||0,cr:receipt?.crystals||0};
+   const currentSession=typeof session!=='undefined'&&session?session:window.session;if(!currentSession)return null;
+   currentSession.rewardSessionId=currentSession.rewardSessionId||window.crypto?.randomUUID?.()||String(Date.now())+':'+(++legacyRewardSerial);
+   const combo=Number(currentSession.combo||0),d=Number(q?.difficulty||1),hard=d>=4;
+   const attemptKey='game:'+String(state()?.activeCourse||'')+':'+currentSession.rewardSessionId+':'+String(q?.id||'q')+':'+String(currentSession.round??currentSession.index??0);
+   const receipt=award('correct-answer',{key:attemptKey,course:state()?.activeCourse,qid:q?.id,difficulty:d,hard,independent:false,assisted:true,masteryEligible:false,source:'game-realm'});
+   if(combo>0&&combo%5===0)award('streak-5',{key:attemptKey+':streak5:'+combo,source:'combo',difficulty:d});
+   if(combo>0&&combo%10===0)award('streak-10',{key:attemptKey+':streak10:'+combo,source:'combo',difficulty:d});
+   currentSession.reward={xp:receipt?.xp||0,cr:receipt?.crystals||0};
    return receipt;
  };fn.__majickRewardCore=true;window.grantMoonlight=fn;
 }
 function inspect(){const a=account(),r=a?.rewardCore;return {version:VERSION,xp:a?.xp||0,crystals:a?.crystals||0,chests:a?.chests||0,eggFragments:r?.eggFragments||0,ingredients:{...(r?.ingredients||{})},collectibles:[...(r?.collectibles||[])],blueprints:[...(r?.blueprints||[])],stats:{...(r?.stats||{})},lastReceipt:r?.lastReceipt||null}}
-window.MajickRewardCore={VERSION,RARITIES,INGREDIENTS,TREASURES,RECIPES,award,rewardPreview,inventory,claimPotionTestKit,craft,usePotion,showConjuring,conjureEgg,vaultPanelHTML,patchVault,inspect,patchLegacyGameRewards,potionInfo,alchemyLedgerHTML,showRecall,submitRecall,placeReward,equipReward,pushRewardState,ITEM_ART};
+window.MajickRewardCore={VERSION,RARITIES,INGREDIENTS,TREASURES,RECIPES,award,rewardPreview,inventory,rewardJournalHTML,claimPotionTestKit,craft,usePotion,showConjuring,conjureEgg,vaultPanelHTML,patchVault,inspect,patchLegacyGameRewards,potionInfo,alchemyLedgerHTML,showRecall,submitRecall,placeReward,equipReward,pushRewardState,ITEM_ART};
 window.majickConjureEgg=()=>showConjuring();
 
 // Cozy Alchemy is a presentation layer. Inventory is changed only by craft(), never by animation.
