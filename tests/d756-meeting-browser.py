@@ -17,10 +17,7 @@ with sync_playwright() as pw:
  page.clock.install(time=datetime(2026,11,11,12,0,tzinfo=timezone.utc))
  page.evaluate('switchCourse("D756")')
  # The retired floating launcher is intentionally absent; open the supported Studio API.\n page.evaluate('MajickHandsOnStudio.open()')\n page.locator('#d756Task2Launch').click()
- print('DEBUG launcher state',page.evaluate("()=>({course:window.S?.activeCourse,studio:typeof window.MajickHandsOnStudio?.open,council:typeof window.MajickD756Meeting?.open,room:!!document.getElementById('d756MeetingRoom')})"),flush=True)
- if page.locator('#d756MeetingRoom').count()==0:
-  page.evaluate('MajickD756Meeting.open()')
-  print('DEBUG direct open room',page.locator('#d756MeetingRoom').count(),flush=True)
+ assert page.locator('#d756MeetingRoom').count()==1,'Council Chamber launcher must open the meeting'
  room=page.locator('#d756MeetingRoom')
  def click(a):room.locator('[data-action='+a+']').click()
  assisting=False
@@ -32,8 +29,6 @@ with sync_playwright() as pw:
  def start(profile,mode):
   if room.locator('[data-action=reset]').count():click('reset')
   if room.locator('#dmAnswer').count():click('finish');click('reset')
-  if room.locator('#dmProfile').count()==0:
-   print('DEBUG council start:',profile,mode,'room=',room.count(),'html=',room.inner_text()[:800] if room.count() else 'missing','state=',saved(),flush=True)
   room.locator('#dmProfile').select_option(profile);room.locator('#dmMode').select_option(mode);click('start')
  def complete(profile,mode,qualify=True,assisted=False):
   global assisting
@@ -42,7 +37,7 @@ with sync_playwright() as pw:
   names={'angela':['Angela','Elena','Mr. Moore'],'maya':['Maya','Sofia','Ms. Patel'],'jordan':['Jordan','Marcus','Mr. Harris']}[profile]
   career={'angela':'graphic design','maya':'animation','jordan':'web design'}[profile]
   case=room.locator('details').first.inner_text()
-  goals=page.evaluate('()=>{const d=document.querySelector("#d756MeetingRoom details");return [...d.querySelectorAll("[data-goal]")].map(p=>p.textContent).join(" ")}')
+  goals=page.evaluate('()=>{const d=document.querySelector("#d756MeetingRoom .dmReferenceQuick");return [...d.querySelectorAll("[data-goal]")].map(p=>p.textContent).join(" ")}')
   responses=[
    'Welcome everyone. Today our meeting purpose and agenda are to review strengths, needs, goals and transition decisions. What questions do you have about our agenda?',
    names[2]+', what observations would you share about classroom strengths and support needs so we can build our plan?',
