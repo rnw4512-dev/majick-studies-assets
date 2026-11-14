@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "description": "Approved four-frame walking texture paths indexed by canonical Guardian and evolution stage. Each stage must list idle, left, passing, right in that order. Empty until art is certified; existing protected motion remains active.",
+  "stages": [
+    "new-bond",
+    "apprentice",
+    "guardian",
+    "ascendant",
+    "celestial"
+  ],
+  "guardians": {}
+}
