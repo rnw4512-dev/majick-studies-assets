@@ -49,3 +49,24 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+      - name: Confirm live Pages routes return HTTP 200
+        env:
+          PAGES_URL: ${{ steps.deployment.outputs.page_url }}
+        run: |
+          set -euo pipefail
+          echo "Published Pages URL: ${PAGES_URL}"
+          for path in "" "current-site/" "current-site/index.html"; do
+            url="${PAGES_URL%/}/${path}"
+            status="000"
+            for attempt in 1 2 3 4 5 6 7 8; do
+              status="$(curl --location --silent --show-error --output /dev/null --max-time 20 --write-out '%{http_code}' --header 'Cache-Control: no-cache' "${url}?release=${GITHUB_SHA}" || true)"
+              echo "GET ${url} HTTP ${status} attempt ${attempt}/8"
+              if [[ "${status}" == "200" ]]; then break; fi
+              sleep 8
+            done
+            if [[ "${status}" != "200" ]]; then
+              echo "::error::Public GitHub Pages URL did not respond with HTTP 200: ${url} (got ${status}). Check Settings → Pages, source GitHub Actions, and published artifact."
+              exit 1
+            fi
+          done
+          echo "Public root and current-site entry points verified."
