@@ -33,6 +33,30 @@ with sync_playwright() as pw:
         assert "Specific next improvement" in room.locator(".dmLearningFeedback").inner_text()
         state = page.evaluate('JSON.parse(localStorage.getItem("majick-d756-task2-rehearsal-v1"))')
         assert state["records"][-1]["assisted"] is True
+        # Rewrite practice is not a new stakeholder turn or a new reward.
+        original_count = len(state["records"])
+        original_answer = state["records"][-1]["answer"]
+        room.locator('[data-action=revise-last]').click()
+        assert "does not" in room.locator(".dmRevisionBox").inner_text()
+        room.locator("#dmRevision").fill("Thank you for joining us today. We will review Angela's strengths, learning needs, measurable goals, transition plans, and invite Elena's concerns.")
+        room.locator('[data-action=revision-submit]').click()
+        checked = page.evaluate('JSON.parse(localStorage.getItem("majick-d756-task2-rehearsal-v1"))')
+        assert len(checked["records"]) == original_count
+        assert checked["records"][-1]["answer"] == original_answer
+        assert checked["records"][-1].get("revisions"), "Practice rewrite not retained"
+        room.locator('[data-action=feedback-dismiss]').click()
+        room.locator('[data-action=undo-turn]').click()
+        undone = page.evaluate('JSON.parse(localStorage.getItem("majick-d756-task2-rehearsal-v1"))')
+        assert len(undone["records"]) == original_count - 1, "Undo created another response"
+        room.locator('[data-action=redo-turn]').click()
+        redone = page.evaluate('JSON.parse(localStorage.getItem("majick-d756-task2-rehearsal-v1"))')
+        assert len(redone["records"]) == original_count
+        assert redone["records"][-1]["answer"] == original_answer
+        room.locator('[data-action=council-help]').click()
+        assert page.locator('#aetheriaHelpDialog').count() == 1
+        assert "Undo last response" in page.locator('#aetheriaHelpDialog').inner_text()
+        page.locator('#aetheriaHelpDialog [data-help-close]').first.click()
+        assert page.locator('#aetheriaHelpDialog').count() == 0
         text_color = room.locator(".dmLearningFeedback li").first.evaluate("(el)=>getComputedStyle(el).color")
         assert text_color in ("rgb(48, 37, 56)", "rgb(40, 29, 48)"), text_color
         assert room.locator(".dmPanel [data-action=close]").is_visible()
