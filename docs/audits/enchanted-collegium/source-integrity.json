@@ -1,0 +1,25 @@
+{
+  "base": "3d5fa2889a91170a332eb9d70f9156934c032156",
+  "inheritedMismatches": [
+    {
+      "file": "collegium-atmosphere.js",
+      "expected": "1dd215e14fad8d739ec8604628eb718c8ca9b411dafd400085d06eef8568d34b",
+      "actualOnMain": "9c88e8547e4ac97fd9ad176832b4f010aaed1504669f18acab5d5432807f2a97",
+      "unchangedOnVisualBranch": true
+    },
+    {
+      "file": "d756-hands-on.js",
+      "expected": "8bee75beae37bd4fc38d652f7af7246669bd05623c9a4f49fa1a0a524fb4079b",
+      "actualOnMain": "3dd63f90b27f59bfbc0ecb2be12e4742b297efadac89eaf4bb90d03f405b3174",
+      "unchangedOnVisualBranch": true
+    },
+    {
+      "file": "d756-task2-meeting.js",
+      "expected": "584092070ff9822362f94d34634df0903a62a105874d4d35397a7802a537a40b",
+      "actualOnMain": "fd41f8ff0c6ae07f9567ae3ab91aaed85629c0eb6d3b1d520afd9498ebe67f9f",
+      "unchangedOnVisualBranch": true
+    }
+  ],
+  "stylesheetBytes": 13159,
+  "stylesheetGzipBytes": 3807
+}
