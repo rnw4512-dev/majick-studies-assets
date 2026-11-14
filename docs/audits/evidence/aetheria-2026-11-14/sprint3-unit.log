@@ -1,0 +1,22 @@
+PASS eight ordered expandable teaching steps; actual response and numbers
+PASS authored option rationale, escaping and no invented diagnosis
+PASS median even/odd, negatives, range and IQR use actual data
+PASS without replacement distinguishes GG from GP using the actual event
+PASS image scaling explains area not a fabricated sampling misconception
+PASS freshness rejects rewording, changed IDs, reordered observations and cosmetic data
+PASS two misses across rooms and lesson aliases, guided attempts never certify
+PASS replayed correct same evidence cannot clear transfer requirement
+PASS unassisted Study Hall tracking counts a real submission exactly once
+Shared repair checks completed: 9
+✔ specific input questions are credited and the person addressed first responds (54.808954ms)
+✔ generic invitations are not input or clarification, even when they contain question marks (0.470936ms)
+✔ clarification requires a question grounded in the actual stakeholder statement (0.747474ms)
+✔ meeting compass counts contextual clarifications separately from substantive input (17.401792ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 4
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 274.679096

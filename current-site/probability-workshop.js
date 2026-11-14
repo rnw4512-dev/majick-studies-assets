@@ -12,7 +12,9 @@ function open(kind){
  const t=C().probabilityTask(kind);if(!t){if(S.screen!==workroom)window.navigate(workroom);setTimeout(()=>{const box=document.querySelector('#connectedProbability [data-connected-task]');if(box){const m=C().probabilityMastery();const reason=kind==='reasoning'&&!m.repairVerified?'Complete the guided counter repair first.':kind==='transfer'&&m.independentCorrect<2?'Complete two correct independent OA questions first.':kind==='teaching'&&!m.transferVerified?'Complete the classroom transfer first.':'No unused verified dataset is available for this step. Your progress is saved.';box.textContent=reason;}},80);return;}
  const st=C().probabilityState();st.focus=kind;window.save?.();
  if(S.screen!==workroom)window.navigate(workroom);
- setTimeout(mount,0);
+ // Switch the visible form in the same activation as its state. Deferring this
+ // leaves the previous stage's handlers attached to newly selected work.
+ mount();
  setTimeout(()=>{
   const panel=document.getElementById('connectedProbability');
   if(!panel||S.screen!==workroom)return;
@@ -22,11 +24,12 @@ function open(kind){
 // One stable navigation owner: document capture sees the real pointer press
 // before any campus renderer can replace the button. Keyboard uses click.
 function onProbabilityBack(event){
- const back=event.target?.closest?.('#connectedProbability [data-connected-back]');
- if(!back||event.type==='pointerdown'&&event.button!==0)return;
+ const control=event.target?.closest?.('#connectedProbability [data-connected-back], #connectedProbability [data-connected-open]');
+ if(!control||event.type==='pointerdown'&&event.button!==0)return;
  if(event.type==='click'&&event.detail!==0)return; // pointer activation already navigated
  event.preventDefault();
  event.stopPropagation();
+ if(control.hasAttribute('data-connected-open')){open(control.dataset.connectedOpen);return;}
  if(window.S?.screen!=='home'){
   if(typeof window.majickBack==='function')window.majickBack();
   else window.navigate?.('home');
@@ -54,7 +57,6 @@ function mount(){
  return '<button type="button" data-connected-open="'+k+'" aria-disabled="'+(!unlocked)+'" title="'+(unlocked?'Open activity':'See prerequisite for this activity')+'">'+labels[k]+(unlocked?'':' · prerequisite needed')+'</button>';
  }).join('');
  box.innerHTML='<button type="button" data-connected-back>← Back to previous room</button><h2>Probability Workshop · Four Learning Stages</h2><p>Original simulated OA-style practice · D772 · Dependent events without replacement</p>'+(st?.need?'<p role="status">Practice recommendation from '+E(st.need.origin)+': recount the remaining favorable outcomes and sample space. This learning path keeps your guided work separate from independent mastery.</p>':'')+'<p data-connected-evidence>Repair: '+(m.repairVerified?'verified':'needed')+' · Independent reasoning: '+m.independentCorrect+'/2 · Transfer: '+(m.transferVerified?'verified':'needed')+' · Structured teach-back: '+(m.teachBackVerified?'verified':'needed')+' · '+(m.certified?'Probability skill certified':'Not yet certified')+'</p><nav aria-label="Probability learning flow">'+nav+'</nav><div data-connected-task></div><p>Guided work never counts as independent mastery. Written whiteboard and teaching explanations are saved for review; only the structured checks are automatically evaluated.</p>';
- box.querySelectorAll('[data-connected-open]').forEach(b=>b.onclick=()=>open(b.dataset.connectedOpen));
  const kind=st?.focus,t=st?.tasks[kind];if(!t)return;
  const host=box.querySelector('[data-connected-task]'),draft=st.drafts[kind]||{},q=t.q,[g,p]=q.data,total=g+p;
  const gcd=(a,b)=>b?gcd(b,a%b):a;
