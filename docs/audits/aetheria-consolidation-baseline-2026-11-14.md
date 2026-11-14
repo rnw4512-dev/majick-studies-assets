@@ -78,3 +78,11 @@ These are candidates, *not* certified authoritative owners.
 
 ## Next implementation PR
 **PR #260 save-schema preservation on current main**, with its relevant regression fixture and no unrelated UI changes. Do not assume the fix is missing until comparing current main implementation and tests. If already present, mark it superseded and select the next verified P0 gap.
+
+## Additional source-level reconciliation — current main save safety
+Compared `current-site/save-safety.js` on `main` against PR #260's cleanup branch:
+- Both implementations reject `MAJICK_NEWER_SAVE_SCHEMA` before attempting recovery from an older snapshot. **The narrow save-schema protection is already in main.**
+- Current main additionally exports/restores separate D756 rehearsal keys, preserves later-earned reward/alchemy transaction records when restoring an older backup, retains Guardian egg/roster information and exposes the backup download action. The old #260 branch lacks these current additions.
+- PR #260's `pages-release/current/test-save-schema-safety.cjs` is not present at that path on `main` and may be valuable to adapt as a small regression test. Before adding it, inspect current main's equivalent tests and avoid duplication.
+
+**Updated next implementation candidate:** reconcile and add only a missing schema/restore regression test to the current test suite. Do not replace `save-safety.js` with PR #260's older copy; do not claim a test run solely from code inspection.
