@@ -21,3 +21,7 @@ The new partial-import test failed on current main: a successfully written new C
 All 22 canonical Node suites pass; exact commands/output in evidence/aetheria-2026-11-14/sprint1-tests.json. Integration workflow now runs on relevant pull requests and includes the schema suite. This does not authorize production publishing or claim browser certification. Tests use isolated synthetic storage only.
 
 Rollback: revert this focused change; never clear learner storage. Current production publishes current-site on main pushes, so this branch must remain unmerged pending certification and deployment authorization.
+
+## Baseline CI repair
+
+Initial PR CI exposed three stale main-branch manifest entries (collegium-atmosphere.js, d756-hands-on.js, d756-task2-meeting.js). Their exact existing source bytes were reviewed and hashed; no historical runtime was restored. The unchanged integration test also expected an obsolete literal frame fallback; its assertion now checks the current geometry validation and safe single-stage fallback. No behavior threshold or scoring assertion is relaxed. These repairs allow the existing acceptance workflows to execute instead of stopping at baseline integrity drift.
