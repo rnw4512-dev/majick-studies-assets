@@ -253,7 +253,7 @@ function coachEvidenceFor(answer,step){
   [{name:'Student agreement',pattern:/\b(?:angela|feel|prefer|choose|change|explain)\b/i,expected:'Check Angela understands and agrees with the plan.'}],
   [{name:'Closing and follow-up',pattern:/\b(?:summary|summarize|next step|follow.up|thank|close)\b/i,expected:'Summarize decisions, next steps and remaining questions.'}]
  ];
- return (checks[stage]||checks[0]).map(item=>{const match=text.match(item.pattern);return {name:item.name,quote:match?match[0]:null,expected:item.expected};});
+ return (checks[stage]||checks[0]).map(item=>{const match=text.match(item.pattern);const index=match?.index??-1;const start=Math.max(0,index-55),end=index>=0?Math.min(text.length,index+Math.max(90,match[0].length+50)):-1;const quote=index>=0?(start?'…':'')+text.slice(start,end).trim()+(end<text.length?'…':''):null;return {name:item.name,quote,expected:item.expected};});
 }
 function feedbackCard(){
  const f=s.lastReview;if(!f)return '';
