@@ -28,8 +28,8 @@ with sync_playwright() as pw:
   room.locator("#dmPacing").select_option("typing")
   initial=page.evaluate("({xp:MajickStateCore.ensureAccount().xp,crystals:MajickStateCore.ensureAccount().crystals})")
   room.locator("[data-action=start]").click()
-  assert room.locator(".dmReference .dmGlance").count()==1
-  assert room.locator(".dmReference [data-goal]").count()==3
+  assert room.locator(".dmReference .dmReferenceQuick").count()==1
+  assert room.locator(".dmReference .dmGoalCard").count()==3
   assert room.locator(".dmChoiceList button").count()==3
   assert room.locator("[data-action=dictate]").count()==1
   box=room.locator("#dmAnswer")

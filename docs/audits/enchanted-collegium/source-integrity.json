@@ -21,5 +21,17 @@
     }
   ],
   "stylesheetBytes": 13159,
-  "stylesheetGzipBytes": 3807
+  "stylesheetGzipBytes": 3807,
+  "resolution": {
+    "status": "resolved",
+    "reviewedMainCommits": {
+      "collegium-atmosphere.js": "511a7a0c20a3e20590d46513699e11c132096ab3",
+      "d756-hands-on.js": "9a33181812c7b3065d6c54303b6f01582f8757ec",
+      "d756-task2-meeting.js": "1673ed44d71f100ecdcab6145d635403b5e1eb6f"
+    },
+    "runtimeFilesModified": false,
+    "canonicalBuild": "0eaa5222d9537a77",
+    "checks": "syntax, reviewed history, exact SHA-256, canonical build",
+    "remainingManifestMismatches": []
+  }
 }
