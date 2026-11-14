@@ -37,9 +37,9 @@ with sync_playwright() as pw:
         assert "Found:" in evidence.inner_text(), "Feedback must quote the learner's submitted words"
         coach = room.locator(".dmCoachDetails")
         assert coach.get_attribute("open") is not None
-        coach.locator("summary").click()
+        coach.locator(":scope > summary").click()
         assert coach.get_attribute("open") is None, "Feedback did not collapse"
-        coach.locator("summary").click()
+        coach.locator(":scope > summary").click()
         assert coach.get_attribute("open") is not None, "Feedback did not expand"
         feedback_ink = room.locator(".dmCoachDetails > ul:not(.dmCoachEvidence) li").first.evaluate("(el)=>getComputedStyle(el).color")
         assert feedback_ink in ("rgb(48, 37, 56)", "rgb(40, 29, 48)", "rgb(53, 40, 62)"), feedback_ink
