@@ -107,7 +107,7 @@ function classroomResponsivePrompt(a,scene){
  const t=a.toLowerCase(),speaker=scene[0];
  if(speaker===1&&/tim(er|ed)|minute|deadline/.test(t))return {who:1,kind:'concern',line:'A timer can make me anxious and rush my writing. Can we agree on a way to keep track without putting me under pressure?'};
  if(speaker===1&&/remove|take away|fade|month/.test(t))return {who:1,kind:'concern',line:'If I still need my organizer after a month or two, will I be allowed to keep using it?'};
- if(speaker===3&&/gradual|fade|independen|checklist|prompt/.test(t))return {who:3,kind:'concern',line:'How will we know the checklist is helping me work independently rather than just helping me finish after reminders?'};
+ if(speaker===3&&/gradual|fade|independen|checklist|prompt/.test(t))return {who:3,kind:'concern',line:'How will we know whether the checklist helps Angela start independently, rather than simply helping her finish after adult reminders? What classroom evidence should I collect?'};
  if(speaker===0&&/reduce|remove|independen|fade/.test(t))return {who:0,kind:'concern',line:'I support Angela developing independence, but I want support changes tied to her progress data, not just a calendar date.'};
  return null;
 }
@@ -128,7 +128,10 @@ function repairView(){const r=s.repair;return '<h3>Pause-and-Repair · guided pr
 function contextResponsiveStakeholder(answer,scene){
  const p=person(),t=answer.toLowerCase(),name=p.student.split(' ')[0];
  const isQuestion=answer.includes('?')||/\b(?:ask|tell|share|what|how|which|could you|would you)\b/.test(t);
- const targeted=/\b(?:elena|sofia|marcus|family|parent|guardian|home)\b/.test(t)?0:/\b(?:angela|maya|jordan|student|you feel|you prefer)\b/.test(t)?1:/\b(?:moore|patel|harris|general education|classroom teacher)\b/.test(t)?3:scene[0];
+ // First decide who is explicitly being addressed; a third-person mention of Angela must not override “Mr. Moore”.
+ const addressed=t.match(/(?:^|[.!?]\\s+|\\s)(?:mr\\.?\\s+moore|mr\\.?\\s+mehta|ms\\.?\\s+patel|mr\\.?\\s+harris|dr\\.?\\s+bennett|ms\\.?\\s+chen|elena|sofia|marcus|angela|maya|jordan)\\s*[,?:]/i);
+ const targetName=addressed?.[0]?.toLowerCase()||'';
+ const targeted=/moore|patel|harris/.test(targetName)?3:/mehta|bennett|chen/.test(targetName)?2:/elena|sofia|marcus/.test(targetName)?0:/angela|maya|jordan/.test(targetName)?1:/\\b(?:moore|patel|harris|general education teacher|classroom teacher)\\b/.test(t)?3:/\\b(?:mehta|bennett|chen|\\blea\\b)\\b/.test(t)?2:/\\b(?:elena|sofia|marcus|parent|guardian)\\b/.test(t)?0:/\\b(?:angela|maya|jordan|student)\\b/.test(t)?1:scene[0];
  const who=isQuestion?targeted:scene[0];
  const focus=/college|career|graduat|postsecond|training|future|employ|portfolio/.test(t)?'transition':
  /progress|monitor|data|rubric|baseline|probe|quarter|report|weekly|sample/.test(t)?'progress':
@@ -182,6 +185,37 @@ function professionalRepairPrompt(kind){
  if(kind==='support-removal')return {who:1,kind:'respect-repair',line:'I am scared I will lose the organizer that helps me write. Could we decide about supports using my progress and my input instead?'};
  return {who:1,kind:'respect-repair',line:'That made me feel blamed. I am trying, and I want the team to understand what is difficult without making me embarrassed.'};
 }
+function councilEvidenceCoach(answer,scene){
+ const t=String(answer||'').toLowerCase(),step=Math.min(11,Math.max(0,Number(s.step)||0)),p=person(),good=[],fix=[];
+ const has=(rx)=>rx.test(t),g=(msg)=>good.push(msg),f=(msg)=>fix.push(msg);
+ const lessons=[
+  'D756 Section 1: team communication and shared decision-making — welcome stakeholders, state a clear purpose, invite substantive input and confirm understanding.',
+  'D756 Section 2: strengths-based family collaboration — include student, family and teacher observations before making decisions.',
+  'D756 Section 3, PLAAFP — connect observed current performance, strengths, needs, disability impact and defensible baseline evidence.',
+  'D756 culturally responsive communication — listen to the student, clarify meaning and preserve the student’s dignity.',
+  'D756 Section 3, measurable annual goals — define condition, observable skill, mastery criterion and how progress is measured.',
+  'D756 Section 3, progress monitoring — name the evidence, who collects it, reporting schedule and what happens when progress stalls.',
+  'D756 transition planning — center the student’s postsecondary education and employment preferences, with measurable next steps.',
+  'D756 collaborative problem-solving — acknowledge family concerns, compare options, seek student input and record responsibilities.',
+  'D756 services and accommodations — preserve access to the general curriculum and connect supports to PLAAFP needs.',
+  'D756 team coordination — identify responsible participants, action items and follow-up evidence.',
+  'D756 student and family participation — confirm the student understands and that preferences are reflected in the plan.',
+  'D756 collaborative closing — summarize decisions, assign next steps and invite final clarification.'
+ ];
+ if(step===0){if(has(/purpose|agenda|review|welcome/))g('You established the meeting purpose or welcomed the team, supporting a clear collaborative agenda.');else f('Start with the meeting purpose and a short agenda so family members understand what decisions will be discussed.');}
+ if(step===1){if(has(/math|art|creativ|strength/))g('You grounded the strengths discussion in Angela’s documented mathematics and art strengths.');else f('Name Angela’s actual strengths in mathematics and art rather than giving generic praise.');}
+ if(step===2){if(has(/reading|comprehension|writ|organiza|task initiat/))g('You connected the discussion to documented learning needs.');else f('Explain reading comprehension, written expression and task initiation needs and their impact on grade-level work.');if(has(/65%|85%|\\b73\\b/))f('Do not borrow Randal Lee’s math baseline; use only Angela’s approved IEP data.');}
+ if(step===3||step===10){if(has(/angela|prefer|choice|feel|help|support/))g('You included student preferences when discussing the plan.');else f('Invite Angela to explain which supports and future goals match her own experience.');}
+ if(step===4){if(has(/reading|inferen/)&&has(/writing|paragraph/)&&has(/organiza|step|initiat/))g('You addressed all three annual goal areas: reading, writing and executive functioning.');else f('Review all three goals explicitly: reading inference, organized writing and independently starting/checking tasks.');if(!has(/4\\s*(?:\\/|out of)\\s*5|8\\s*(?:\\/|out of)\\s*10|rubric|consecutive/))f('Give a measurable criterion such as 8/10 writing rubric points across four of five samples, rather than saying only “improve writing.”');}
+ if(step===5){if(has(/rubric|sample|probe|log|data/))g('You named a concrete source of progress evidence.');else f('Name goal-aligned evidence: reading rubrics, writing samples, or task-start logs.');if(!has(/family|elena|report|update|schedule|share/))f('Explain when and how Elena will receive progress updates and when the team will revisit supports.');}
+ if(step===6||step===7){if(has(/graphic design|art|prefer|student choice|angela.*want/))g('You acknowledged Angela’s stated interest in graphic design.');else f('Protect Angela’s preference for graphic design rather than choosing a different path for her.');if(step===7&&!has(/cost|financial|employ|compare|explore|follow.up/))f('Respond directly to Elena’s concern about costs or job security, and propose a collaborative comparison.');}
+ if(step===8){if(has(/organizer|chunk|model|checklist|private feedback/))g('You identified a practical classroom support.');else f('Connect a specific accommodation (organizer, modeling or chunking) to Angela’s writing and task initiation needs.');if(!has(/work sample|monitor|data|independen|prompt/))f('Agree what data Mr. Moore can collect to see whether supports are working.');}
+ if(step===9||step===11){if(has(/will|responsib|follow.up|next step|coordinate/))g('You moved toward an actionable next step.');else f('Name the next action, the responsible team member and a point to review progress.');}
+ const spoken=scene?.[2]||'';
+ if(!has(/\\?/)&&!has(/what have you|could you|would you|tell us|share your/))f('Ask one targeted, open-ended question tied to the stakeholder’s statement, not just “Any questions?”');
+ if(/how|what|why|concern|question/.test(spoken.toLowerCase())&&!has(/because|we will|we can|i hear|i understand|we have|goal|support|data|plan|review|thank/))f('Answer the actual question before advancing the agenda. Explain your reasoning using the IEP rather than only acknowledging the speaker.');
+ return {good,fix,lesson:lessons[step],next:'Revise by naming the case evidence, explaining why it matters, then asking a targeted question or assigning a next step.'};
+}
 function learningReview(answer,scene,assisted){
  const t=answer.toLowerCase(),q=String(scene[2]||'').toLowerCase(),good=[],fix=[],p=person(),ang=s.profile==='angela';
  if(/thank|welcome|appreciate|hear|understand|concern/.test(t))good.push('You acknowledged the participant.');
@@ -199,12 +233,13 @@ function learningReview(answer,scene,assisted){
  if(goal&&!/rubric|sample|inference|paragraph|criterion|detail|measure/.test(t))fix.push('Describe the observable goal behavior and mastery criterion in everyday language.');
  if(transition&&!/interest|design|career|college|training|student|angela|maya|jordan|employment/.test(t))fix.push('Include the student’s preferred education and employment goals.');
  if(!answer.includes('?')&&!indicators(answer).input)fix.push('Ask a specific team member an open-ended question.');
+ const evidence=councilEvidenceCoach(answer,scene);good.push(...evidence.good);fix.push(...evidence.fix);
  const example=progress?'We will use goal-aligned reading and writing rubrics, work samples and task-start records to track progress. We will share updates on the IEP schedule and review instruction if progress stalls. Which information would be most useful for your family?':goal?(ang?'Angela’s writing goal is to organize three paragraphs with supporting details, transitions and a conclusion, reaching 8 out of 10 rubric points on four of five samples. Angela, which part feels hardest?':'Let us review what the annual goal asks the student to do, how it is measured, and the success criterion. What do you notice in class?'):transition?'We will include '+p.student.split(' ')[0]+'’s interests when comparing training programs and employment opportunities. What would you like to explore first?':'Thank you for sharing that. We can use the student’s strengths, needs, and IEP supports to agree on a next step. What have you observed?';
- return {status:fix.some(x=>/Incorrect|Do not remove|respectful/.test(x))?'Needs correction':fix.length>=2?'Needs more detail':'On track, with room to improve',good,fix,example,assisted};
+ return {status:fix.some(x=>/Incorrect|Do not remove|respectful/.test(x))?'Needs correction':fix.length>=2?'Needs more detail':'On track, with room to improve',good:[...new Set(good)],fix:[...new Set(fix)],example,assisted,lesson:evidence.lesson,next:evidence.next};
 }
 function feedbackCard(){
  const f=s.lastReview;if(!f)return '';
- return '<section class="dmLearningFeedback" id="dmLearningFeedback" tabindex="-1"><h3>Response Coach: '+esc(f.status)+'</h3><p><small>Rule-based learning feedback, not an official WGU/Mursion judgment. '+(f.assisted?'Guided assistance used.':'')+'</small></p><b>What you did well</b><ul>'+f.good.map(x=>'<li>'+esc(x)+'</li>').join('')+'</ul><b>What was wrong or missing</b><ul>'+(f.fix.length?f.fix.map(x=>'<li>'+esc(x)+'</li>').join(''):'<li>No clear factual error detected by these limited checks; verify the full IEP.</li>')+'</ul><details '+(s.mode==='guided'?'open':'')+'><summary>How to say it better</summary><p>'+esc(f.example)+'</p><small>This is a coaching example, not independent mastery.</small></details><div class="dmCoachButtons"><button data-action="revise-last">Fix my answer</button><button data-action="feedback-dismiss">Hide feedback</button></div>'+(s.revising?'<label for="dmRevision">Try again in your own words</label><textarea id="dmRevision" rows="4">'+esc(s.revisionDraft||'')+'</textarea><button data-action="revision-submit">Check my revision</button>':'')+'</section>';
+ return '<section class="dmLearningFeedback" id="dmLearningFeedback" tabindex="-1"><h3>Response Coach: '+esc(f.status)+'</h3><p><small>Rule-based learning feedback, not an official WGU/Mursion judgment. '+(f.assisted?'Guided assistance used.':'')+'</small></p><b>What you did well</b><ul>'+f.good.map(x=>'<li>'+esc(x)+'</li>').join('')+'</ul><b>What was wrong or missing</b><ul>'+(f.fix.length?f.fix.map(x=>'<li>'+esc(x)+'</li>').join(''):'<li>No clear factual error detected by these limited checks; verify the full IEP.</li>')+'</ul><p><b>Why this matters in the lesson</b> '+esc(f.lesson||'IEP decisions should be evidence-based, collaborative and measurable.')+'</p><p><b>Specific next improvement</b> '+esc(f.next||'Use the student’s IEP evidence and ask a focused follow-up question.')+'</p><details '+(s.mode==='guided'?'open':'')+'><summary>How to say it better</summary><p>'+esc(f.example)+'</p><small>This is a coaching example, not independent mastery.</small></details><div class="dmCoachButtons"><button data-action="revise-last">Fix my answer</button><button data-action="feedback-dismiss">Hide feedback</button></div>'+(s.revising?'<label for="dmRevision">Try again in your own words</label><textarea id="dmRevision" rows="4">'+esc(s.revisionDraft||'')+'</textarea><button data-action="revision-submit">Check my revision</button>':'')+'</section>';
 }
 function professionalFeedback(answer,clarified,assisted,scene){
  if(professionalConcern(answer))return 'Professional-language repair: this wording could feel blaming, dismissive, or threatening to remove accommodations. Acknowledge the impact; ask how the student experiences the problem; restate the need without blame; and propose a measurable support plan. A response repair is needed.';
