@@ -8,7 +8,8 @@ test('Guardian animation code retains frame playback and stop conditions', () =>
  expect(src).toContain('sprite.play()');
  expect(src).toContain('sprite.gotoAndStop(0)');
  expect(src).toContain('if(paused||document.hidden){setMotion(e,false)');
- expect(src).toContain('art.frames.length>=2?art.frames:[art.base]');
+ expect(src).toContain('const accepted=validWalkFrames(art.frames)');
+ expect(src).toContain('const textures=accepted?art.frames:[art.base]');
 });
 test('Avatar saved outfits retain the existing owner and save callback', () => {
  const src=fs.readFileSync(path.join(root,'scholar-wardrobe-studio.js'),'utf8');
