@@ -822,8 +822,8 @@
     "scholar-wardrobe-studio.js": "2d45a1e0ee98521c72fbb0076191d9a901f0b21469e67356b575446066d4e68a",
     "milestone-particles.js": "084d63ea0b43ac787d8b467b7c6e097253e7460c01a0707c89728a6e860d0d5a",
     "room-transition.js": "e050a9ea7b337ac67993264353c650f2c4708972bf59e45946ac999a77467d27",
-    "pixi-sanctuary/index.html": "8463887561ac3df88684b1ba02b69bbdd95a7820d485a6cd7be87c4631c4edb8",
-    "pixi-sanctuary/prototype.js": "88743d2e546cf58f1299187fdfcc40562a21dabd625400d26f63f47a6feb0ee4",
+    "pixi-sanctuary/index.html": "4f8eeb689c617228598b04328138c5f883bb1bc67abdc8e44e373ec87916be07",
+    "pixi-sanctuary/prototype.js": "0150b513d6b1d1a4430487083f3ad0334473f9b38e6280270e8ee244ef0aa839",
     "atelier-pixi-scene.js": "8d59a87780d6862ef01cd3753b2779d5dfbab0bb516004c14450e903c51c1418",
     "vendor/pixi-8.6.6.min.js": "e5c38cccee4f99263df5f0b10dfd4d2484db5fdb730af3953cb6f1c07b3d85b2",
     "vendor/PIXI-LICENSE.txt": "5ce7447bc57f7349ffc48338782fbcabe613696e00712b20d66bc58e780f9473",
@@ -881,6 +881,9 @@
     "question-scheduler.js": "17d7e27a51e76180e23921e2fba624c458783090f83f0328b8a457f79367b443",
     "sanctuary-ui.js": "cb183865af4243dcc1b5f6371ee94b56bb12aa32360f3fc73deb5dafe93c0967",
     "study-audio.js": "9de2a4056e78e93f997be38949d2306cb09ed9a691e9b2318897689c0f006d21",
-    "iep-meeting-pixi-scene.js": "920b2628a542a65f644734d0e2d85df2b96ef033bc1f41d93558dc498faae894"
+    "iep-meeting-pixi-scene.js": "920b2628a542a65f644734d0e2d85df2b96ef033bc1f41d93558dc498faae894",
+    "pixi-sanctuary/guardian-animation-controller.js": "79277310b7c9da10cf8faff0035fd0647161e32fbc3f4c441f8571bcf5d126b0",
+    "pixi-sanctuary/guardian-animation-controller.test.cjs": "c5315d9c896f8cdaf96711475fd0e0dab3ab928b997fef82df4978512599f46e",
+    "pixi-sanctuary/guardian-walk-manifest.json": "1ab3cf64563285f2c6db762d4f8cff95cd73f122d708aa31d622e7d6ac384377"
   }
 }

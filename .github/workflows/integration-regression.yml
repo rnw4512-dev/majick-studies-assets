@@ -25,6 +25,8 @@ jobs:
         run: node pages-release/current/test-save-schema-safety.cjs current-site
       - name: Verify permanent runtime ownership
         run: node pages-release/current/test-runtime-migration.cjs current-site
+      - name: Verify Guardian animation ownership
+        run: node --test current-site/pixi-sanctuary/guardian-animation-controller.test.cjs
       - name: Install Playwright
         run: |
           npm install --no-save @playwright/test

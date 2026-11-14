@@ -1,0 +1,8 @@
+PASS fresh-account Phaser bootstrap, early account sync and real furniture STORE
+PASS all five Velora stage walking pairs and selected duplicate Briar evolution artwork
+PASS Pixi eleven identities, duplicate Briars, species mapping, saved evolution stages, walking frames, repeated sync and floor bounds
+PASS Pixi local hit areas and hover/press/outside-release feedback on Guardian and furniture sprites
+PASS furniture initialization, store/place, floor-coordinate drag and actual reload persistence
+PASS exact duplicate Guardian care through shared API, progress/currency/inventory isolation and reload
+PASS Phaser fallback shares room positions without resetting eleven Guardians or learner state
+PASS Phaser STORE/PLACE acknowledgement and rejection of stale room snapshots

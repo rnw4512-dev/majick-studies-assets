@@ -6,8 +6,10 @@ const url = process.env.MIGRATION_URL || 'http://127.0.0.1:8765';
 test('Guardian animation code retains frame playback and stop conditions', () => {
  const src = fs.readFileSync(path.join(root,'pixi-sanctuary/prototype.js'),'utf8');
  expect(src).toContain('new PIXI.AnimatedSprite');
- expect(src).toContain('sprite.play()');
- expect(src).toContain('sprite.gotoAndStop(0)');
+ const controller=fs.readFileSync(path.join(root,'pixi-sanctuary/guardian-animation-controller.js'),'utf8');
+ expect(controller).toContain('sprite.play()');
+ expect(controller).toContain('sprite.gotoAndStop(0)');
+ expect(src).toContain('e.animation?.tick(ticker.deltaTime,walkSpeed)');
  expect(src).toContain('if(paused||document.hidden){setMotion(e,false)');
  expect(src).toContain('const accepted=validWalkFrames(art.frames)');
  expect(src).toContain('const textures=accepted?art.frames:[art.base]');
