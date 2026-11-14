@@ -33,4 +33,4 @@ Universal four-frame walking is blocked by absent approved sets; the tested exis
 
 ## Exact-build fixture correction
 
-The first complete release run passed 12 of 13 certification jobs; probability failed in its test helper's initial unguarded `querySelector(...).scrollIntoView()` before the helper's existing guarded readiness loop. Removed that redundant early dereference. Physical hit-testing, pointer/remount checks and every learning/reward assertion remain unchanged. The failure is retained in evidence, and the exact-head full workflow is rerun before publication.
+The first release run’s other completed certification jobs passed; probability failed in its test helper's initial unguarded `querySelector(...).scrollIntoView()` before the helper's existing guarded readiness loop. Removed that redundant early dereference. Physical hit-testing, pointer/remount checks and every learning/reward assertion remain unchanged. The failure is retained in evidence, and the exact-head full workflow is rerun before publication.
