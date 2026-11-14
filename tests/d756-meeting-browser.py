@@ -28,7 +28,7 @@ with sync_playwright() as pw:
  def start(profile,mode):
   if room.locator('[data-action=reset]').count():click('reset')
   if room.locator('#dmAnswer').count():click('finish');click('reset')
-  room.locator('#dmProfile').select_option(profile);room.locator('#dmMode').select_option(mode);click('start')
+  if room.locator('#dmProfile').count()==0:\n   print('DEBUG council start:',profile,mode,'room=',room.count(),'html=',room.inner_text()[:800] if room.count() else 'missing','state=',saved(),flush=True)\n  room.locator('#dmProfile').select_option(profile);room.locator('#dmMode').select_option(mode);click('start')
  def complete(profile,mode,qualify=True,assisted=False):
   global assisting
   start(profile,mode)
