@@ -65,6 +65,21 @@ with sync_playwright() as pw:
         redone = page.evaluate('JSON.parse(localStorage.getItem("majick-d756-task2-rehearsal-v1"))')
         assert len(redone["records"]) == original_count
         assert redone["records"][-1]["answer"] == original_answer
+        # After a question to Elena and her reply, the full mock must advance to agenda 2.
+        if redone["step"] == 0:
+            assert redone["pending"], "A stakeholder question should create one follow-up"
+            room.locator('[data-action=feedback-dismiss]').click()
+            room.locator("#dmAnswer").fill("Thank you, Elena. We will collect classroom work samples, check which supports help Angela begin writing, and share the evidence with the family.")
+            room.locator('[data-action=submit]').click()
+            advanced = page.evaluate('JSON.parse(localStorage.getItem("majick-d756-task2-rehearsal-v1"))')
+            assert advanced["step"] == 1, f"Full mock failed to advance after stakeholder reply: {advanced['step']}"
+            assert not advanced.get("pending"), "Full mock kept chaining the same stakeholder follow-up"
+            assert advanced["records"][-1]["stage"] == 0
+            assert advanced["records"][-1]["core"] is False
+            room.locator('[data-action=feedback-dismiss]').click()
+        else:
+            assert redone["step"] == 1, "Full mock should advance after a completed core turn"
+        assert "STEP 2/12" in room.locator(".dmMockGuide").inner_text(), "The displayed agenda did not follow the meeting state"
         room.locator('[data-action=council-help]').click()
         assert page.locator('#aetheriaHelpDialog').count() == 1
         assert "Undo last response" in page.locator('#aetheriaHelpDialog').inner_text()
