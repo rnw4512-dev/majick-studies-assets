@@ -351,7 +351,7 @@ function commitTurn(a,assisted=false){typingResume();s.undoLastTurn=JSON.parse(J
  s.reply=s.pending?null:s.step===7&&s.concernResolved?[0,'Family follow-up','Thank you for hearing my concern. We can keep differing views, compare real options, and record a next step while Angela’s preference remains central.']:contextResponsiveStakeholder(a,scene);
  if(s.fullMock&&!s.pending&&(s.step!==7||s.concernResolved)){
    s.step=Math.min(12,s.step+1);s.reply=null;s.assistedStage=false;
-   s.undoLastTurn=null;s.redoLastTurn=null;
+   // Keep the previous snapshot so Undo can restore the just-completed exchange.
    if(s.step===12){end();return;}
  }
  persist();paint();}
