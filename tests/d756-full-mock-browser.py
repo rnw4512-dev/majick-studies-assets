@@ -36,6 +36,17 @@ with sync_playwright() as pw:
         text_color = room.locator(".dmLearningFeedback li").first.evaluate("(el)=>getComputedStyle(el).color")
         assert text_color in ("rgb(48, 37, 56)", "rgb(40, 29, 48)"), text_color
         assert room.locator(".dmPanel [data-action=close]").is_visible()
+        # New rehearsal: explicitly address the teacher while also mentioning Angela.
+        # The speaker must be Mr. Moore, not Angela or student-voiced wording.
+        room.locator('[data-action=close]').click()
+        page.evaluate('MajickD756Meeting.open()')
+        room.locator('[data-action=reset]').click() if room.locator('[data-action=reset]').count() else None
+        room.locator('#dmMode').select_option('guided')
+        room.locator('[data-action=start]').click()
+        room.locator('#dmAnswer').fill("Mr. Moore, what have you noticed about Angela's writing in class? I would like your specific observations to inform our measurable IEP goals.")
+        room.locator('[data-action=submit]').click()
+        speaker_name = room.locator('.dmPrompt b').inner_text()
+        assert 'Moore' in speaker_name, "Teacher question was assigned to the wrong speaking character: " + speaker_name
         assert not errors, errors
         room.locator('[data-action="close"]').click()
         context.close()
