@@ -31,6 +31,19 @@ with sync_playwright() as pw:
         assert room.locator(".dmLearningFeedback").count() == 1
         assert "Why this matters in the lesson" in room.locator(".dmLearningFeedback").inner_text()
         assert "Specific next improvement" in room.locator(".dmLearningFeedback").inner_text()
+        assert room.locator(".dmCoachDetails").count() == 1
+        evidence = room.locator(".dmCoachEvidence")
+        assert "Team greeting" in evidence.inner_text()
+        assert "Found:" in evidence.inner_text(), "Feedback must quote the learner's submitted words"
+        coach = room.locator(".dmCoachDetails")
+        assert coach.get_attribute("open") is not None
+        coach.locator("summary").click()
+        assert coach.get_attribute("open") is None, "Feedback did not collapse"
+        coach.locator("summary").click()
+        assert coach.get_attribute("open") is not None, "Feedback did not expand"
+        feedback_ink = room.locator(".dmCoachDetails > ul:not(.dmCoachEvidence) li").first.evaluate("(el)=>getComputedStyle(el).color")
+        assert feedback_ink in ("rgb(48, 37, 56)", "rgb(40, 29, 48)", "rgb(53, 40, 62)"), feedback_ink
+        assert room.locator('[data-action=guide-next]').is_visible()
         state = page.evaluate('JSON.parse(localStorage.getItem("majick-d756-task2-rehearsal-v1"))')
         assert state["records"][-1]["assisted"] is True
         # Rewrite practice is not a new stakeholder turn or a new reward.
@@ -57,8 +70,6 @@ with sync_playwright() as pw:
         assert "Undo last response" in page.locator('#aetheriaHelpDialog').inner_text()
         page.locator('#aetheriaHelpDialog [data-help-close]').first.click()
         assert page.locator('#aetheriaHelpDialog').count() == 0
-        text_color = room.locator(".dmLearningFeedback li").first.evaluate("(el)=>getComputedStyle(el).color")
-        assert text_color in ("rgb(48, 37, 56)", "rgb(40, 29, 48)"), text_color
         assert room.locator(".dmPanel [data-action=close]").is_visible()
         # New rehearsal: explicitly address the teacher while also mentioning Angela.
         # The speaker must be Mr. Moore, not Angela or student-voiced wording.
