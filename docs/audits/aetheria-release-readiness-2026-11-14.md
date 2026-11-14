@@ -34,3 +34,5 @@ Universal four-frame walking is blocked by absent approved sets; the tested exis
 ## Exact-build fixture correction
 
 The first release run’s other completed certification jobs passed; probability failed in its test helper's initial unguarded `querySelector(...).scrollIntoView()` before the helper's existing guarded readiness loop. Removed that redundant early dereference. Physical hit-testing, pointer/remount checks and every learning/reward assertion remain unchanged. The failure is retained in evidence, and the exact-head full workflow is rerun before publication.
+
+The opt-in music fixture also used coordinates captured during an unfinished smooth scroll. The failing run had never enabled or loaded audio (false/false/0 with no playback error). It now uses instant scroll, hit-testing and a receipt proving that the physical pointer reached the actual music button; only an actual coordinate miss may be retargeted. The original decode/play, loaded-state, volume, navigation, mute, protected-state, reduced-motion and reload assertions all pass against the built candidate. No autoplay flag, scoring assertion or application audio behavior is relaxed.
