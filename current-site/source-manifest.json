@@ -132,7 +132,7 @@
     "focus-feedback.css": "bf9ca907849ea30be24b9f8b0f986789d6013a6ddd8f01773abc3494a1ea1976",
     "focus-feedback.js": "1681cd12131e3168ceba9f76d6bf3831dc12eb047d7cdd782a747c3fc098a1d9",
     "game-realm.css": "11cc8fcb5ae7e7b597fed5030001ba4f87c38e1fcd15a458fb80788166ca677f",
-    "game-realm.js": "7647433d1f3bdf9062ee24e6445363e03382cc45db5616127ef566d06e5b8291",
+    "game-realm.js": "0622c1bda8daef5e13e7ddba5a9c5d96c01d7145c56205fb4f05e0d8ee3cf8fd",
     "guardian-academic-presence.css": "48db71515dbed8ec6b6bdfae1063a82a8f63383178618a3ee69c570e90d03497",
     "guardian-academic-presence.js": "05b18b5f7099fdf05121837f0e2d4de74359088e7cdd07b0e01cd7adf2844cbf",
     "guardian-care-economy.css": "6d0d30eb4cb79d96189530480438f8678ae818e51d10bac108f6f5b17ae2db05",
@@ -144,7 +144,7 @@
     "guardian-registry.js": "00a6baa6d67cfc0e63b2e336a38baca04b6d8705058f824d70e12b8fe88c18bc",
     "home-focus.css": "cbb719eb8e78701717b4016388d511553f2785212d839815ed006651ae738b2b",
     "home-focus.js": "f421d4c5e5b4193d1005e5ce5cdbeb0e969a0cffb8ece49b9dd7c255a16ca794",
-    "index.html": "6c3c1f0931fd4fe7931f9e79c60c2f63491edfe33687ad5999877e8a61f78a62",
+    "index.html": "f6ecd0e43264d53561a6a8c0dae7d241ff526cac8341f6ff7486a032dd741a85",
     "learn-mode.css": "30181250c67efe7bd97c9276706a804a551e7904a2bb28160eeb0c193f35c002",
     "learn-mode.js": "0fe77e5b84d801270edb07bba57e412c5c23e21f29d7354ae3630ab936dd8c52",
     "learning-lab.css": "706f831154a59a0636a2ff9125d68eda4998d09efabaabd88f932b43f3a2be15",
@@ -788,7 +788,7 @@
     "embedded-practice.js": "17dd9f8d07873abd2ac135a828b2ffcde922c5057d659087faf5551a65979a2e",
     "manipulatives.js": "549df6d1a0a33a538ed0c1469ec4b2284c76720d1bda69cedeca49c9dfd29b06",
     "curriculum-lab.js": "29edc47d8c36b88deaaef0116cffbe22297a081fed8874353cdadbc1e259c7d5",
-    "solution-engine.js": "058304b95582b9a6e3a5fcc50fef24895e96647259ab6641309f4b8980f67f91",
+    "solution-engine.js": "12829940771b1d1f4d791a6856e213b5426f190ce9eb4e2806d689fabfbe9416",
     "lesson-activity-bank.js": "f05001ede3815ff29491824d88cca6da6852f7b8fb3a070cdd5c2ef2154026ce",
     "inline-lesson-practice.js": "6545c1bc6b38a560bc2d861020081647aa9bdeef481cba5af16a8f14e2ce3c8e",
     "learning-continuity.js": "49d4183be371fd24d350c04010f0072a886d561c88e91bbbe6ff296062aa4037",
@@ -884,6 +884,9 @@
     "iep-meeting-pixi-scene.js": "920b2628a542a65f644734d0e2d85df2b96ef033bc1f41d93558dc498faae894",
     "pixi-sanctuary/guardian-animation-controller.js": "79277310b7c9da10cf8faff0035fd0647161e32fbc3f4c441f8571bcf5d126b0",
     "pixi-sanctuary/guardian-animation-controller.test.cjs": "c5315d9c896f8cdaf96711475fd0e0dab3ab928b997fef82df4978512599f46e",
-    "pixi-sanctuary/guardian-walk-manifest.json": "1ab3cf64563285f2c6db762d4f8cff95cd73f122d708aa31d622e7d6ac384377"
+    "pixi-sanctuary/guardian-walk-manifest.json": "1ab3cf64563285f2c6db762d4f8cff95cd73f122d708aa31d622e7d6ac384377",
+    "learning-observatory.js": "aa9b21e817274d2c5e9cd12a17e7977201bc53a9ae4121fce4fe5ad7fe6e4368",
+    "tests/learning-observatory.test.cjs": "93be21a75016ee9ac9aa82860d61bf7a157ee8ec39b54c2e9879d6ee22adfd55",
+    "tests/learning_observatory_browser.py": "586d29acac3065b717ad89d3a7e0f212562b6973d496a1a617352c24efb3450c"
   }
 }
