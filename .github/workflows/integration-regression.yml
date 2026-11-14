@@ -3,6 +3,12 @@ on:
   push:
     branches:
       - integration/sanctuary-atelier-rewards-20261024
+  pull_request:
+    paths:
+      - current-site/**
+      - tests/**
+      - pages-release/current/**
+      - .github/workflows/integration-regression.yml
   workflow_dispatch:
 permissions:
   contents: read
@@ -15,6 +21,8 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
+      - name: Verify save-schema safety
+        run: node pages-release/current/test-save-schema-safety.cjs current-site
       - name: Install Playwright
         run: |
           npm install --no-save @playwright/test
