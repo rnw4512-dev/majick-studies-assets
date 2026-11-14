@@ -70,7 +70,22 @@ function newWorkshopState(task,previous={}){
  if(!cases.length)return {...previous,exhausted:true};
  return {stage:0,answers:{},caseIndex:0,feedback:'Fresh scenario selected. Your earlier evidence is preserved.',error:false,hint:false,finished:false,verified:{},sessionCases:cases,sequenceSerial:Number(serial),usedCases:generated?used:[...used,...cases.map(c=>JSON.stringify(c))]};
 }
-function saveWorkshopState(task,st){const p=window.S?.progress?.[window.S.activeCourse];if(p){(p.solutionWorkshop||(p.solutionWorkshop={}))[task.id]=st;try{window.save?.()}catch(_){}}}
+function saveWorkshopState(task,st){
+ const p=window.S?.progress?.[window.S.activeCourse];
+ if(!p)return;
+ (p.solutionWorkshop||(p.solutionWorkshop={}))[task.id]=st;
+ // Learning Observatory: one bounded completion record per specific workshop case.
+ // The sequence is guided instruction; it is NOT independent mastery or an XP event.
+ if(st?.finished===true){
+   p.solutionWorkshopSessions=Array.isArray(p.solutionWorkshopSessions)?p.solutionWorkshopSessions:[];
+   const id=String(task.id)+':'+String(st.sequenceSerial||0)+':'+String(st.caseIndex||0);
+   if(!p.solutionWorkshopSessions.some(row=>row.key===id)){
+     p.solutionWorkshopSessions.push({key:id,activityId:String(task.id),course:String(window.S?.activeCourse||''),at:Date.now(),completed:true,source:'solution-workshop',masteryEligible:false,assisted:true});
+     if(p.solutionWorkshopSessions.length>300)p.solutionWorkshopSessions=p.solutionWorkshopSessions.slice(-300);
+   }
+ }
+ try{window.save?.()}catch(_){}
+}
 const STATES=new WeakMap();
 // Preserve an in-progress six-stage response when the campus replaces its host.
 // Keep separate records for each course/task; never touch saved course progress.
