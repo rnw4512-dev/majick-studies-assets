@@ -4,7 +4,7 @@
 (()=>{
 'use strict';
 if(window.MajickIEPVisual)return;
-let loading=null,active=null,serial=0;
+let loading=null,active=null,serial=0,applicationsCreated=0,sceneUpdates=0;
 function library(){
  if(window.PIXI?.VERSION?.startsWith('8.'))return Promise.resolve(window.PIXI);
  if(!loading)loading=new Promise((resolve,reject)=>{
@@ -47,15 +47,16 @@ function addText(P,text,size,color){
 async function sync({participants=[],speaker=0,active:isActive=true}={}){
  const host=document.getElementById('dmVisualStage');
  if(!host||!isActive){dispose();return}
+ if(active?.host===host&&!active.dead){active.latest={participants,speaker};active.update?.(active.latest);return}
  const request=++serial;dispose();
- const current={host,dead:false,ready:false};
+ const current={host,dead:false,ready:false,latest:{participants,speaker}};
  active=current;
  stageFallback(host,speaker);
  try{
   const P=await library();
   if(current.dead||request!==serial||!host.isConnected)return;
   host.innerHTML='';
-  const app=current.app=new P.Application();
+  const app=current.app=new P.Application();applicationsCreated++;
   await app.init({width:Math.max(1,host.clientWidth),height:Math.max(1,host.clientHeight),backgroundAlpha:0,antialias:true,resolution:Math.min(2,window.devicePixelRatio||1),autoDensity:true,preference:'webgl'});
   if(current.dead||request!==serial||!host.isConnected){app.destroy(true,{children:true,texture:false,textureSource:false});return}
   current.ready=true;app.canvas.setAttribute('aria-hidden','true');app.canvas.style.pointerEvents='none';host.append(app.canvas);
@@ -117,8 +118,8 @@ async function sync({participants=[],speaker=0,active:isActive=true}={}){
   // No looping animation, no position changes for other participants.
   const motion=window.matchMedia('(prefers-reduced-motion: reduce)');
   current.motion=motion;
-  const speakingFigure=figures[speaker];
-  const normalY=seats[speaker]?.y||160;
+  let speakingFigure=figures[speaker];
+  let normalY=seats[speaker]?.y||160;
   let animationMs=0;
   const animate=ticker=>{
     if(current.dead||document.hidden||motion.matches||!speakingFigure){
@@ -132,11 +133,20 @@ async function sync({participants=[],speaker=0,active:isActive=true}={}){
     if(progress>=1){speakingFigure.root.y=normalY;app.stop();app.render();}
   };
   app.ticker.add(animate);
-  current.onMotion=()=>{if(!current.dead&&current.ready){if(document.hidden){app.stop();if(speakingFigure)speakingFigure.root.y=normalY;}app.render()}};
+  current.onMotion=()=>{if(!current.dead&&current.ready){if(document.hidden||motion.matches){app.stop();if(speakingFigure)speakingFigure.root.y=normalY;}app.render()}};
   document.addEventListener('visibilitychange',current.onMotion);
-  if(!motion.matches&&!document.hidden)app.start();else{app.stop();app.render();}
+  current.update=({participants:nextPeople=[],speaker:nextSpeaker=0})=>{
+    sceneUpdates++;
+    figures.forEach((figure,i)=>{figure.root.y=seats[i].y;figure.lamp.visible=i===nextSpeaker});
+    labels.forEach((label,i)=>{label.text=String(nextPeople[i]?.name||['Family','Student','School representative','Teacher'][i]).split(' ')[0];label.style.fill=i===nextSpeaker?0xffe3aa:0xe7d7d1});
+    turn.text=(nextPeople[nextSpeaker]?.name||'Team member')+' is speaking';
+    speakingFigure=figures[nextSpeaker];normalY=seats[nextSpeaker]?.y||160;animationMs=0;
+    if(!motion.matches&&!document.hidden)app.start();else{app.stop();app.render();}
+  };
+  motion.addEventListener?.('change',current.onMotion);
+  current.update(current.latest);
 
  }catch(e){if(current.dead)return;console.warn('Council Chamber Pixi scene fallback:',e);if(active===current){try{current.app?.destroy(true,{children:true,texture:false,textureSource:false})}catch(_){}active=null;stageFallback(host,speaker)}}
 }
-window.MajickIEPVisual={sync,dispose,version:'1.1-council-speaking-cue'};
+window.MajickIEPVisual={sync,dispose,inspect:()=>({applicationsCreated,sceneUpdates,active:!!active,ready:!!active?.ready,speaker:active?.latest?.speaker}),version:'1.1-council-speaking-cue'};
 })();

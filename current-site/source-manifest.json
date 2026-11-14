@@ -873,13 +873,14 @@
     "assets/rooms/licenses/GPL-2.0.txt": "e6d6a009505e345fe949e1310334fcb0747f28dae2856759de102ab66b722cb4",
     "d772-oa-entry.js": "c22f97fc2c528409b54b5c4fe42d1cedfc1c861231c915b44ad0bac1e434f746",
     "d772-oa-focus.html": "987fe97e57c96c36ff2bf6dbe2b989e2677af7d326ec033d231fff96f8e01bfc",
-    "d756-task2-meeting.js": "d62b4b46e7ae93add4f4c2f34c021c5288b37d738ef8948d642ea4b376589aa3",
+    "d756-task2-meeting.js": "adcc6155c68b901e0e753c373bd76a67d7c132ab9a8dc4bf94e85e8a4cec826a",
     "d756-council.css": "bf2f2b2e396556c04e934b708d23dd6da528f7ffddaf069a9e2992721d30e9e1",
     "grimoire.css": "4ba7fe41ec937c7d377349fc8795b39f8bbd2ca8c135984a4828e92a2a033046",
     "grimoire.js": "b5a192ff752253829a0d61fab36002bdc09ca01717fa343cc2bcc9a19c054e64",
     "guardian-presentation.js": "305cbb0acf3f3d44dd707e0035f7e71feb085f92b5343d5d5282049ecb9f78a4",
     "question-scheduler.js": "17d7e27a51e76180e23921e2fba624c458783090f83f0328b8a457f79367b443",
     "sanctuary-ui.js": "cb183865af4243dcc1b5f6371ee94b56bb12aa32360f3fc73deb5dafe93c0967",
-    "study-audio.js": "9de2a4056e78e93f997be38949d2306cb09ed9a691e9b2318897689c0f006d21"
+    "study-audio.js": "9de2a4056e78e93f997be38949d2306cb09ed9a691e9b2318897689c0f006d21",
+    "iep-meeting-pixi-scene.js": "920b2628a542a65f644734d0e2d85df2b96ef033bc1f41d93558dc498faae894"
   }
 }
