@@ -1,0 +1,15 @@
+{
+  "candidateGitRef": "release/aetheria-certified-consolidation-20261114",
+  "releasePr": 280,
+  "baseMain": "3d5fa2889a91170a332eb9d70f9156934c032156",
+  "sourceManifestSHA256": "6560ce3e684ab695d1423878fd94a629722007843e39433e9a33c3a9f0a7b84f",
+  "expectedReleaseBuild": "0a030cfcba2bb36d",
+  "localSuiteEvidence": "release-node-final.json",
+  "requiredViewports": [
+    390,
+    820,
+    1366
+  ],
+  "authorization": "User explicitly requested publishing passing work on 2026-11-14",
+  "githubEvidence": "Exact tested commit SHA and job results are in PR #280 checks and workflow artifacts"
+}

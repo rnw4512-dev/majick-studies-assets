@@ -1,0 +1,13 @@
+# Code cleanup evidence
+
+Six live legacy files are retired after owner reconciliation: v3311-main.js, v3311-plus.js, v339-main.js, study-ui-compat.js, ui-compat.js and sanctuary/v3310-sanctuary.js. Their actual responsibilities, retained global aliases and source/loader changes are mapped in aetheria-runtime-migration-2026-11-14.md. Current-site references were searched across HTML, scripts and dynamic/iframe loaders; none requires those retired filenames. Saved v3311 identifiers are deliberately retained.
+
+Removed runtime duplication includes the extra route bridge/listener, superseded Guardian/Grimoire/habitat render wrappers, fabricated historical completion overrides, and Phaser's extra create/restart wrapper. Original deterministic selection/history and all 40 original Phaser behavior branches compare equal to main. Newer viewport/source validation, D756 loading and audio activation fixes were kept during conflict reconciliation.
+
+No new framework, renderer library, persistence service, wallet, room engine or reward ledger is introduced. The Guardian controller drives existing sprites through the existing ticker. Observatory and Reward Journal read the established owners. Existing Sanctuary and Atelier assets, CSS compatibility selectors, unknown saved fields and original namespaces remain. Thirty-three protected motion assets retain their hashes.
+
+The Council host/app lifecycle is repaired rather than replaced: reuses its stage, updates speaker state, disposes on close. Stable game attempt keys prevent replay rewards; assisted flags override contradictory bonuses, while unassisted potion behavior remains verified by the unchanged Alchemy suite. Legacy analytics routing points to the canonical Observatory.
+
+Retained intentionally: historical inline code and CSS that still have callers or lack reachability proof, Phaser fallback, old-save aliases, separate Council keys, and archives outside the published source. No unused dependency deletion is claimed without evidence. Final feature additions increase total payload despite the measured 24,992-byte migration reduction; see aetheria-performance-2026-11-14.md.
+
+Risks are addressed by the full exact-commit release workflow and source-manifest build gate. The empty approved four-frame walking manifest remains an explicit asset limitation; tested walking pairs/fallback continue. Rollback references and known baseline limits are in aetheria-release-readiness-2026-11-14.md. Source branches and unresolved historical PRs are retained; dispositions and destination PRs are machine-readable in aetheria-branch-dispositions-2026-11-14.json.
