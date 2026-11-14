@@ -1,0 +1,17 @@
+BACK BEFORE {"screen":"probability","stack":"[\"home\"]"}
+BACK AFTER {"screen":"home","stack":"[]"}
+PASS probability: in-card Back returns to the previous room and preserves progress
+PASS probability: real Oracle Lens miss creates shared misconception
+PASS probability: repeated mounts preserve typing, selection and saved draft; pointer clicks include an intervening mount
+PROBABILITY SUBMIT HIT {"disabled":false,"hit":"<button type=\"submit\">Check guided repair</button>","rect":{"x":399.75,"y":196.28125,"w":181,"h":44},"screen":"probability"}
+PASS probability: counter removal, guided calculation, no independent mastery credit
+PROBABILITY NEXT HIT TEST {"disabled":false,"rect":{"x":272,"y":196.28125,"w":278.015625,"h":44},"hit":"<button type=\"button\" data-prob-next=\"\">Next fresh independent question</button>","button":"<button type=\"button\" data-prob-next=\"\">Next fresh independent question</button>","screen":"probability","history":false}
+PROBABILITY SUBMIT HIT {"disabled":false,"hit":"<button type=\"submit\">Check independent response</button>","rect":{"x":399.75,"y":196.28125,"w":248.8125,"h":44},"screen":"probability"}
+PASS probability: two fresh multi-step Study Now responses and persisted whiteboard
+PROBABILITY SUBMIT HIT {"disabled":false,"hit":"<button type=\"submit\">Check independent response</button>","rect":{"x":399.75,"y":196.09375,"w":248.8125,"h":44},"screen":"probability"}
+PROBABILITY SUBMIT HIT {"disabled":false,"hit":"<button type=\"submit\">Check independent response</button>","rect":{"x":399.75,"y":196.140625,"w":248.8125,"h":44},"screen":"probability"}
+PASS probability: Game Realm transfer and structured classroom teach-back unlock certification separately
+PASS probability: reload, replay prevention, D755/D756 isolation, history/Guardian/Sanctuary preservation and phone layout
+PASS probability: native Study Now miss revokes current certification and recommends repair in Game Realm
+PASS probability: native Learn Lab guided miss produces shared Study Now recommendation
+PASS Phase 2 probability end-to-end browser flow

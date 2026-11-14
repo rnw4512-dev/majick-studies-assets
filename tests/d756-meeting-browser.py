@@ -16,7 +16,8 @@ with sync_playwright() as pw:
  page.goto(URL);page.wait_for_function('!!window.MajickD756Meeting && !!window.MajickRewardCore')
  page.clock.install(time=datetime(2026,11,11,12,0,tzinfo=timezone.utc))
  page.evaluate('switchCourse("D756")')
- page.locator('#majickHandsOnLaunch').click();page.locator('#d756Task2Launch').click()
+ page.evaluate('navigate("mission");studyRealmSwitch("practice")')
+ page.locator('article.card').filter(has=page.get_by_role('heading',name='Guided Council Chamber',exact=True)).get_by_role('button',name='Open activity',exact=True).click()
  room=page.locator('#d756MeetingRoom')
  def click(a):room.locator('[data-action='+a+']').click()
  assisting=False

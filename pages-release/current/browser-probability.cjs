@@ -104,6 +104,7 @@ async function click(selector){
  const draft=await evalPage('MajickLearningContinuity.probabilityState().drafts.reasoning.whiteboard');
  await call('Page.reload',{ignoreCache:true});await waitFor('!!document.querySelector("[data-prob-form]")');
  assert.equal(await evalPage('document.querySelector("[data-prob-field=whiteboard]").value'),draft);
+ await waitFor('!!document.querySelector("[data-prob-form] button[type=submit]")');
  await action('document.querySelector("[data-prob-form] button[type=submit]").click()');
  assert.equal(await evalPage('MajickLearningContinuity.probabilityMastery().independentCorrect'),1);
  const priorReasoningId=await evalPage('MajickLearningContinuity.probabilityState().tasks.reasoning.id');
@@ -131,6 +132,7 @@ async function click(selector){
  await action('switchCourse("D772");navigate("probability")');await waitFor('!!document.querySelector("#connectedProbability")');
  assert.equal(await evalPage('JSON.stringify(MajickLearningContinuity.probabilityState())'),persisted);
  assert.equal(await evalPage('MajickLearningContinuity.probabilityMastery().certified'),true);
+ await waitFor('!!document.querySelector("[data-prob-form] button[type=submit]")');
  await action('document.querySelector("[data-prob-form] button[type=submit]").click()');
  assert.equal(await evalPage('JSON.stringify(MajickLearningContinuity.probabilityState())'),persisted,'disabled response must not replay');
  const after=await evalPage('({D755:S.progress.D755,D756:S.progress.D756,history:S.progress.D772.answers.map(x=>x.qid),guardians:S.legacy.pets.map(x=>x.id),xp:S.majickAccount.xp,crystals:S.majickAccount.crystals,furniture:S.majickAccount.sanctuaryFurniture})');
