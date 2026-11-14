@@ -39,7 +39,7 @@ with sync_playwright() as pw:
   names={'angela':['Angela','Elena','Mr. Moore'],'maya':['Maya','Sofia','Ms. Patel'],'jordan':['Jordan','Marcus','Mr. Harris']}[profile]
   career={'angela':'graphic design','maya':'animation','jordan':'web design'}[profile]
   case=room.locator('details').first.inner_text()
-  goals=page.evaluate('()=>{const d=document.querySelector("#d756MeetingRoom .dmReferenceQuick");return [...d.querySelectorAll("[data-goal]")].map(p=>p.textContent).join(" ")}')
+  goals=page.evaluate('()=>{const d=document.querySelector("#d756MeetingRoom .dmReferenceQuick");return [...d.querySelectorAll(".dmGoalCard")].map(p=>p.textContent).join(" ")}')
   responses=[
    'Welcome everyone. Today our meeting purpose and agenda are to review strengths, needs, goals and transition decisions. What questions do you have about our agenda?',
    names[2]+', what observations would you share about classroom strengths and support needs so we can build our plan?',
