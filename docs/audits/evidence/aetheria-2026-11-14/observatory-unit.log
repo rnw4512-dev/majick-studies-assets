@@ -1,0 +1,18 @@
+✔ opens the Observatory with historical answers and never changes saved course progress (49.940607ms)
+✔ deduplicates forwarded answers that are also present in the shared ledger (1.610436ms)
+✔ reads completed D756 rehearsals without treating the rehearsal as mastery or awarding XP (3.861265ms)
+✔ shows recorded Game Realm sessions without claiming independent academic mastery (6.197742ms)
+✔ shows an evidence warning rather than inventing missing mastery results (2.747369ms)
+✔ classifies producer-verified unassisted sources as independent and keeps ambiguous defaults unknown (9.025159ms)
+✔ does not let an unlabeled ledger default create independent evidence (3.771869ms)
+✔ lists summary-only and untracked practice engines in the coverage audit (3.582423ms)
+✔ transfer labels alone cannot invent fresh-transfer evidence (10.133092ms)
+✔ canonical mastery is read from the existing owner without rewriting progress (3.138947ms)
+ℹ tests 10
+ℹ suites 0
+ℹ pass 10
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 277.514051

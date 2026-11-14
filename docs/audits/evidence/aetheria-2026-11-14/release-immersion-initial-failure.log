@@ -1,0 +1,4 @@
+2026-11-14T18:50:52.5686326Z Audio state { enabled: false, playing: false, volume: 0.22, loaded: 0, error: '' }
+2026-11-14T18:50:52.5864833Z FAIL immersion browser: Error: Page condition: MajickCollegiumAtmosphere.inspect().playing&&MajickCollegiumAtmosphere.inspect().loaded>=2
+2026-11-14T18:50:52.5869523Z     at waitFor (/home/runner/work/majick-studies-assets/majick-studies-assets/pages-release/current/browser-immersion.cjs:10:878)
+2026-11-14T18:50:52.5875194Z     at async run (/home/runner/work/majick-studies-assets/majick-studies-assets/pages-release/current/browser-immersion.cjs:34:2)

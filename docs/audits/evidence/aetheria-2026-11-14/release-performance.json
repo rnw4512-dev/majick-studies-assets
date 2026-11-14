@@ -1,0 +1,97 @@
+{
+  "definition": "Cold synthetic browser context, 1366x900, main Commons ready; identical hardware, sequential runs. Not full-room readiness or a benchmark guarantee.",
+  "static": {
+    "baseline": {
+      "externalScriptCount": 93,
+      "externalScriptBytes": 2521727,
+      "externalScriptGzipBytes": 734867,
+      "entryHtmlBytes": 783529
+    },
+    "candidate": {
+      "externalScriptCount": 94,
+      "externalScriptBytes": 2577346,
+      "externalScriptGzipBytes": 751564,
+      "entryHtmlBytes": 786251
+    }
+  },
+  "runs": [
+    {
+      "variant": "baseline",
+      "iteration": 0,
+      "readyMs": 4457.299999999814,
+      "domContentLoadedMs": 4128.200000000186,
+      "JSEventListeners": 902,
+      "Nodes": 10395,
+      "LayoutCount": 0,
+      "JSHeapUsedSize": 12967072,
+      "errors": []
+    },
+    {
+      "variant": "candidate",
+      "iteration": 0,
+      "readyMs": 3397.2999999998137,
+      "domContentLoadedMs": 2938,
+      "JSEventListeners": 863,
+      "Nodes": 9841,
+      "LayoutCount": 0,
+      "JSHeapUsedSize": 14498804,
+      "errors": []
+    },
+    {
+      "variant": "baseline",
+      "iteration": 1,
+      "readyMs": 3039.6999999997206,
+      "domContentLoadedMs": 2708.7999999998137,
+      "JSEventListeners": 907,
+      "Nodes": 10436,
+      "LayoutCount": 0,
+      "JSHeapUsedSize": 12187456,
+      "errors": []
+    },
+    {
+      "variant": "candidate",
+      "iteration": 1,
+      "readyMs": 5244.9000000003725,
+      "domContentLoadedMs": 4688.100000000093,
+      "JSEventListeners": 868,
+      "Nodes": 10090,
+      "LayoutCount": 0,
+      "JSHeapUsedSize": 11911300,
+      "errors": []
+    },
+    {
+      "variant": "baseline",
+      "iteration": 2,
+      "readyMs": 2764.2999999998137,
+      "domContentLoadedMs": 1858.6999999997206,
+      "JSEventListeners": 868,
+      "Nodes": 10229,
+      "LayoutCount": 0,
+      "JSHeapUsedSize": 10445136,
+      "errors": []
+    },
+    {
+      "variant": "candidate",
+      "iteration": 2,
+      "readyMs": 3209.7000000001863,
+      "domContentLoadedMs": 2739.600000000093,
+      "JSEventListeners": 861,
+      "Nodes": 9747,
+      "LayoutCount": 0,
+      "JSHeapUsedSize": 12536124,
+      "errors": []
+    }
+  ],
+  "summary": {
+    "baseline": {
+      "medianMainReadyMs": 3040,
+      "medianEventListeners": 902,
+      "medianHeapBytes": 12187456
+    },
+    "candidate": {
+      "medianMainReadyMs": 3397,
+      "medianEventListeners": 863,
+      "medianHeapBytes": 12536124
+    }
+  }
+}

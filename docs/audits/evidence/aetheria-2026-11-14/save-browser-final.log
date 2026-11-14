@@ -1,0 +1,10 @@
+
+Running 3 tests using 1 worker
+
+(node:29901) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 tests/save-safety-browser.spec.cjs:3:35 › backup download and file import preserve synthetic progress at 390 (6.8s)
+  ✓  2 tests/save-safety-browser.spec.cjs:3:35 › backup download and file import preserve synthetic progress at 820 (7.9s)
+  ✓  3 tests/save-safety-browser.spec.cjs:3:35 › backup download and file import preserve synthetic progress at 1366 (8.7s)
+
+  3 passed (25.4s)

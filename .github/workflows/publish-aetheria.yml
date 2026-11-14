@@ -1,51 +1,55 @@
 name: Publish Aetheria to GitHub Pages
-
 on:
-  push:
+  workflow_run:
+    workflows: [Aetheria release certification]
+    types: [completed]
     branches: [main]
-    paths:
-      - 'current-site/**'
-      - 'index.html'
-      - '.nojekyll'
-      - '.github/workflows/publish-aetheria.yml'
   workflow_dispatch:
-
 permissions:
   contents: read
+  actions: read
   pages: write
   id-token: write
-
 concurrency:
   group: github-pages
   cancel-in-progress: false
-
 jobs:
   deploy:
-    runs-on: ubuntu-latest
+    if: >-
+      (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main') ||
+      (github.event.workflow_run.conclusion == 'success' &&
+       github.event.workflow_run.event == 'push' &&
+       github.event.workflow_run.head_branch == 'main' &&
+       github.event.workflow_run.head_repository.full_name == github.repository)
+    runs-on: ubuntu-24.04
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - name: Check out site content
-        uses: actions/checkout@v4
-      - name: Verify app entry point and meeting assets
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Require successful certification of these exact source bytes
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
-          test -s current-site/index.html
-          test -s current-site/d756-task2-meeting.js
-          test -s current-site/iep-meeting-pixi-scene.js
-          for role in parent student lea teacher; do test -s "current-site/assets/iep-council/$role.svg"; done
-      - name: Preserve canonical /current-site/ route
+          set -euo pipefail
+          candidate_sha="$(git rev-parse HEAD)"
+          count="$(gh api "repos/$GITHUB_REPOSITORY/actions/workflows/aetheria-release-certification.yml/runs?head_sha=$candidate_sha&status=success" --jq '[.workflow_runs[] | select(.event == "push" and .head_branch == "main")] | length')"
+          test "$count" -gt 0
+      - name: Build canonical source and preserve the existing route
         run: |
-          mkdir -p _aetheria_pages/current-site
-          cp -a current-site/. _aetheria_pages/current-site/
+          python pages-release/current/build.py current-site _aetheria_pages/current-site
           printf '%s\n' '<!doctype html><html lang="en"><meta charset="utf-8"><meta http-equiv="refresh" content="0; url=./current-site/"><title>Aetheria</title><a href="./current-site/">Open Aetheria</a></html>' > _aetheria_pages/index.html
+          cp _aetheria_pages/current-site/release.json _aetheria_pages/release.json
           touch _aetheria_pages/.nojekyll
-      - name: Configure GitHub Pages
-        uses: actions/configure-pages@v5
-      - name: Upload site artifact
-        uses: actions/upload-pages-artifact@v4
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v4
         with:
           path: _aetheria_pages
-      - name: Deploy to GitHub Pages
+      - name: Deploy certified Aetheria
         id: deployment
         uses: actions/deploy-pages@v4

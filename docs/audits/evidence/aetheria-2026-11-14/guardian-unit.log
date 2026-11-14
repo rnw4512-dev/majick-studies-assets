@@ -1,0 +1,26 @@
+Four-frame set rejected: inconsistent canvas dimensions velora new-bond
+Four-frame artwork unavailable; keeping current artwork velora guardian Error: missing fixture
+    at /workspace/majick-studies-assets/current-site/pixi-sanctuary/guardian-animation-controller.test.cjs:66:105
+    at evalmachine.<anonymous>:27:58
+    at Array.map (<anonymous>)
+    at Object.loadApprovedStage (evalmachine.<anonymous>:27:46)
+    at TestContext.<anonymous> (/workspace/majick-studies-assets/current-site/pixi-sanctuary/guardian-animation-controller.test.cjs:66:25)
+    at Test.runInAsyncScope (node:async_hooks:227:14)
+    at Test.run (node:internal/test_runner/test:1382:25)
+    at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+    at Test.postRun (node:internal/test_runner/test:1522:19)
+    at Test.run (node:internal/test_runner/test:1447:12)
+✔ supports every registered evolution stage (1.739588ms)
+✔ preserves stationary idle pose and existing Pixi ticker ownership (0.524804ms)
+✔ will not load unapproved stage images (0.732317ms)
+✔ accepts four aligned frames and rejects mismatched dimensions (1.195094ms)
+✔ keeps the two-frame fallback and stops for pause, hidden view and disposal (1.634995ms)
+✔ a missing approved texture retains current artwork without throwing (1.128329ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 6
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 88.45766

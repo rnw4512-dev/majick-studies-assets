@@ -1,0 +1,10 @@
+{
+  "root": {
+    "url": "https://rnw4512-dev.github.io/majick-studies-assets/release.json",
+    "error": "HTTP Error 404: Not Found"
+  },
+  "canonical": {
+    "url": "https://rnw4512-dev.github.io/majick-studies-assets/current-site/release.json",
+    "error": "HTTP Error 404: Not Found"
+  }
+}

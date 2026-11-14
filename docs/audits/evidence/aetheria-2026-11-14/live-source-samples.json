@@ -1,0 +1,32 @@
+[
+  {
+    "path": "index.html",
+    "url": "https://rnw4512-dev.github.io/majick-studies-assets/current-site/index.html",
+    "sha256": "7561c311422cfc57976e39c036620315eeba2595c1961c4b2b87c661e8064792",
+    "matchesMain": true
+  },
+  {
+    "path": "save-safety.js",
+    "url": "https://rnw4512-dev.github.io/majick-studies-assets/current-site/save-safety.js",
+    "sha256": "fbfd7c48cc252690a2469bef73e1bb260e0bbac4aaa6652a1dc16f49ffd5a796",
+    "matchesMain": true
+  },
+  {
+    "path": "app-runtime.js",
+    "url": "https://rnw4512-dev.github.io/majick-studies-assets/current-site/app-runtime.js",
+    "sha256": "d97d5d010e2384b05496519975f16eda349e154389f19d19499c595b12fa6d20",
+    "matchesMain": true
+  },
+  {
+    "path": "d756-task2-meeting.js",
+    "url": "https://rnw4512-dev.github.io/majick-studies-assets/current-site/d756-task2-meeting.js",
+    "sha256": "fd41f8ff0c6ae07f9567ae3ab91aaed85629c0eb6d3b1d520afd9498ebe67f9f",
+    "matchesMain": true
+  },
+  {
+    "path": "pixi-sanctuary/prototype.js",
+    "url": "https://rnw4512-dev.github.io/majick-studies-assets/current-site/pixi-sanctuary/prototype.js",
+    "sha256": "88743d2e546cf58f1299187fdfcc40562a21dabd625400d26f63f47a6feb0ee4",
+    "matchesMain": true
+  }
+]

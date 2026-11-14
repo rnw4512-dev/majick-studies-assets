@@ -1,0 +1,10 @@
+[
+  {
+    "variant": "before",
+    "applicationsForStartAndOneDialogueUpdate": 2
+  },
+  {
+    "variant": "after",
+    "applicationsForStartAndOneDialogueUpdate": 1
+  }
+]

@@ -41,3 +41,6 @@
  .learnVisual{min-height:155px!important}
 }
 @media(prefers-reduced-motion:reduce){.learnTabs button{transition:none!important}}
+
+/* Study mode tabs, owned by Learn Lab. */
+.v346StudyTabNav{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0 18px}.v346StudyTabNav button{padding:10px 14px;border-radius:10px;min-height:42px}.v346StudyTabNav button[aria-selected="true"]{outline:2px solid #a98646;background:#392b4c;color:#fff}.v346StudyTab[hidden]{display:none!important}.v346StudyTab .v3333MissionGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}.v346StudyTab .v3333Scope{min-width:0;margin:0}.v346StudyTab .v3333Scope button{max-width:100%}@media(max-width:600px){.v346StudyTabNav{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.v346StudyTabNav button{min-width:0}}

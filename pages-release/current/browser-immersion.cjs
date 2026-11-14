@@ -28,9 +28,17 @@ async function run(){
  assert.equal(await ev('document.querySelectorAll(".aetheriaCastleFairy").length'),3);
  await ev('AetheriaBrand.refresh()');
  assert.equal(await ev('document.querySelector(".aetheriaCastleArrival").textContent.includes("—")'),false);
- await ev('document.querySelector(".caAmbience").scrollIntoView({block:"center"})');
- const musicButton=await ev('(()=>{const b=document.querySelector(".caAmbience").getBoundingClientRect();return {x:b.x+b.width/2,y:b.y+b.height/2}})()');
- await call('Input.dispatchMouseEvent',{type:'mousePressed',...musicButton,button:'left',clickCount:1});await call('Input.dispatchMouseEvent',{type:'mouseReleased',...musicButton,button:'left',clickCount:1});
+ // Wait for the actual button to receive the physical press after late layout/scroll.
+ // A missed coordinate may be retargeted; playback itself must still pass unchanged.
+ let musicHit=false;
+ for(let attempt=0;attempt<3&&!musicHit;attempt++){
+  await waitFor('(()=>{const b=document.querySelector(".caAmbience");if(!b)return false;b.scrollIntoView({block:"center",behavior:"instant"});const r=b.getBoundingClientRect(),x=r.x+r.width/2,y=r.y+r.height/2,hit=document.elementFromPoint(x,y);return hit===b||b.contains(hit)})()');
+  await ev('window.__musicPointerHit=false;if(window.__musicPointerListener)document.removeEventListener("pointerdown",window.__musicPointerListener,true);window.__musicPointerListener=e=>{window.__musicPointerHit=e.composedPath().some(n=>n.matches?.(".caAmbience"))};document.addEventListener("pointerdown",window.__musicPointerListener,{capture:true,once:true})');
+  const musicButton=await ev('(()=>{const b=document.querySelector(".caAmbience").getBoundingClientRect();return {x:b.x+b.width/2,y:b.y+b.height/2}})()');
+  await call('Input.dispatchMouseEvent',{type:'mousePressed',...musicButton,button:'left',clickCount:1});await call('Input.dispatchMouseEvent',{type:'mouseReleased',...musicButton,button:'left',clickCount:1});
+  musicHit=await ev('window.__musicPointerHit');
+ }
+ assert(musicHit,'Physical music activation must reach the actual button');
  await waitFor('MajickCollegiumAtmosphere.inspect().playing&&MajickCollegiumAtmosphere.inspect().loaded>=2');
  assert.equal(await ev('document.querySelector(".caAmbience").getAttribute("aria-pressed")'), 'true');
  await ev('(()=>{const slider=document.querySelector(".caSoundOptions input");slider.value="12";slider.dispatchEvent(new Event("input",{bubbles:true}))})()');

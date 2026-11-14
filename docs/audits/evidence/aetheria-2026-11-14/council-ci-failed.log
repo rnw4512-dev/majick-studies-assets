@@ -1,0 +1,40 @@
+meeting-browser	All scenarios, modes, viewports, dialogue, persistence and real reward owner	﻿2026-11-14T18:08:11.8154584Z ##[group]Run python -m http.server 8765 --directory _site > /tmp/d756-server.log 2>&1 &
+meeting-browser	All scenarios, modes, viewports, dialogue, persistence and real reward owner	2026-11-14T18:08:11.8155310Z [36;1mpython -m http.server 8765 --directory _site > /tmp/d756-server.log 2>&1 &[0m
+meeting-browser	All scenarios, modes, viewports, dialogue, persistence and real reward owner	2026-11-14T18:08:11.8155829Z [36;1mpython -u tests/d756-meeting-browser.py[0m
+meeting-browser	All scenarios, modes, viewports, dialogue, persistence and real reward owner	2026-11-14T18:08:11.8156272Z [36;1mpython -u tests/d756-responsive-writing-browser.py[0m
+meeting-browser	All scenarios, modes, viewports, dialogue, persistence and real reward owner	2026-11-14T18:08:11.8156698Z [36;1mpython -u tests/d756-ux-browser.py[0m
+meeting-browser	All scenarios, modes, viewports, dialogue, persistence and real reward owner	2026-11-14T18:08:11.8157084Z [36;1mpython -u tests/d756-full-script-browser.py[0m
+meeting-browser	All scenarios, modes, viewports, dialogue, persistence and real reward owner	2026-11-14T18:08:11.8157965Z [36;1mpython -u tests/d756-scenario-library-browser.py[0m
+meeting-browser	All scenarios, modes, viewports, dialogue, persistence and real reward owner	2026-11-14T18:08:11.8158481Z [36;1mpython -u tests/d756-short-meetings-browser.py[0m
+meeting-browser	All scenarios, modes, viewports, dialogue, persistence and real reward owner	2026-11-14T18:08:11.8191697Z shell: /usr/bin/bash -e {0}
+meeting-browser	All scenarios, modes, viewports, dialogue, persistence and real reward owner	2026-11-14T18:08:11.8192054Z env:
+meeting-browser	All scenarios, modes, viewports, dialogue, persistence and real reward owner	2026-11-14T18:08:11.8192499Z   pythonLocation: /opt/hostedtoolcache/Python/3.11.18/x64
+meeting-browser	All scenarios, modes, viewports, dialogue, persistence and real reward owner	2026-11-14T18:08:11.8193049Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.11.18/x64/lib/pkgconfig
+meeting-browser	All scenarios, modes, viewports, dialogue, persistence and real reward owner	2026-11-14T18:08:11.8193568Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.18/x64
+meeting-browser	All scenarios, modes, viewports, dialogue, persistence and real reward owner	2026-11-14T18:08:11.8194159Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.18/x64
+meeting-browser	All scenarios, modes, viewports, dialogue, persistence and real reward owner	2026-11-14T18:08:11.8194608Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.18/x64
+meeting-browser	All scenarios, modes, viewports, dialogue, persistence and real reward owner	2026-11-14T18:08:11.8195073Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.11.18/x64/lib
+meeting-browser	All scenarios, modes, viewports, dialogue, persistence and real reward owner	2026-11-14T18:08:11.8195533Z   CHROMIUM_PATH: /usr/bin/google-chrome
+meeting-browser	All scenarios, modes, viewports, dialogue, persistence and real reward owner	2026-11-14T18:08:11.8195895Z ##[endgroup]
+meeting-browser	All scenarios, modes, viewports, dialogue, persistence and real reward owner	2026-11-14T18:10:18.9761493Z PASS scenario/mode/viewport launches, meaningful response gate, pending reply gate and draft resume
+meeting-browser	All scenarios, modes, viewports, dialogue, persistence and real reward owner	2026-11-14T18:10:29.3309366Z PASS topic-specific participant input and generic invitation rejection
+meeting-browser	All scenarios, modes, viewports, dialogue, persistence and real reward owner	2026-11-14T18:10:34.1470133Z PASS reload resume and paused clock
+meeting-browser	All scenarios, modes, viewports, dialogue, persistence and real reward owner	2026-11-14T18:13:09.6799676Z PASS complete meetings in three scenarios/modes, live shared XP +30/+8/0, profile-switch first-award protection, unrelated D772 state
+meeting-browser	All scenarios, modes, viewports, dialogue, persistence and real reward owner	2026-11-14T18:13:13.4400218Z PASS persisted ledger, reviewable history and zero mastery XP
+meeting-browser	All scenarios, modes, viewports, dialogue, persistence and real reward owner	2026-11-14T18:13:52.1696761Z Calendar before next-day jump Wed Nov 11 2026 12:49:33 GMT+0000 (Coordinated Universal Time)
+meeting-browser	All scenarios, modes, viewports, dialogue, persistence and real reward owner	2026-11-14T18:13:52.2017556Z Calendar after next-day jump Thu Nov 12 2026 12:49:33 GMT+0000 (Coordinated Universal Time)
+meeting-browser	All scenarios, modes, viewports, dialogue, persistence and real reward owner	2026-11-14T18:14:36.1464731Z PASS completed short attempt earns zero; next calendar day repeat earns eight XP
+meeting-browser	All scenarios, modes, viewports, dialogue, persistence and real reward owner	2026-11-14T18:14:37.6705974Z PASS two-exchange Replay Chamber preserves original evidence and grants zero XP
+meeting-browser	All scenarios, modes, viewports, dialogue, persistence and real reward owner	2026-11-14T18:15:19.6417172Z PASS guided repair-only meeting earns zero completion XP
+meeting-browser	All scenarios, modes, viewports, dialogue, persistence and real reward owner	2026-11-14T18:15:44.8023138Z PASS disagreement requires listening and concern discovery; follow-up plan may retain differing views
+meeting-browser	All scenarios, modes, viewports, dialogue, persistence and real reward owner	2026-11-14T18:15:44.8045652Z INFO optional legacy local AI bridge offline; scripted meeting has no AI dependency
+meeting-browser	All scenarios, modes, viewports, dialogue, persistence and real reward owner	2026-11-14T18:15:44.8059801Z PASS no runtime errors or failed application assets
+meeting-browser	All scenarios, modes, viewports, dialogue, persistence and real reward owner	2026-11-14T18:15:50.5945024Z PASS optional responsive classroom conversation 390px
+meeting-browser	All scenarios, modes, viewports, dialogue, persistence and real reward owner	2026-11-14T18:15:54.7360589Z PASS optional responsive classroom conversation 820px
+meeting-browser	All scenarios, modes, viewports, dialogue, persistence and real reward owner	2026-11-14T18:15:59.5176330Z PASS optional responsive classroom conversation 1366px
+meeting-browser	All scenarios, modes, viewports, dialogue, persistence and real reward owner	2026-11-14T18:16:03.3814538Z Traceback (most recent call last):
+meeting-browser	All scenarios, modes, viewports, dialogue, persistence and real reward owner	2026-11-14T18:16:03.3815620Z   File "/home/runner/work/majick-studies-assets/majick-studies-assets/tests/d756-ux-browser.py", line 31, in <module>
+meeting-browser	All scenarios, modes, viewports, dialogue, persistence and real reward owner	2026-11-14T18:16:03.3819871Z     assert room.locator(".dmReference .dmGlance").count()==1
+meeting-browser	All scenarios, modes, viewports, dialogue, persistence and real reward owner	2026-11-14T18:16:03.3820947Z            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+meeting-browser	All scenarios, modes, viewports, dialogue, persistence and real reward owner	2026-11-14T18:16:03.3821962Z AssertionError
+meeting-browser	All scenarios, modes, viewports, dialogue, persistence and real reward owner	2026-11-14T18:16:03.4043854Z ##[error]Process completed with exit code 1.

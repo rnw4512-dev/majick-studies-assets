@@ -1,5 +1,5 @@
 // Majick Studies V3.3.17 — CLEAN PHASER SANCTUARY RUNTIME
-// Runtime chain: base Game.js -> V3.3.10 protected motion -> THIS FILE.
+// Runtime chain: Game.js (scene and protected motion) -> sanctuary-runtime.js (room presentation).
 // Do not load V3.3.11–V3.3.15 sanctuary wrappers with this file.
 (function(){
 'use strict';

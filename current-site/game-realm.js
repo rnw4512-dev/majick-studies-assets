@@ -74,6 +74,13 @@
       if(won)row.wins=Number(row.wins||0)+1;
       row.at=Date.now();
       p.realmRecords[id]=row;
+      // Observatory evidence: record actual completed game sessions without treating scores as mastery.
+      p.realmSessions=Array.isArray(p.realmSessions)?p.realmSessions:[];
+      const sessionKey=String(id)+':'+String(row.at)+':'+String(row.plays);
+      if(!p.realmSessions.some(item=>item.key===sessionKey)){
+        p.realmSessions.push({key:sessionKey,gameId:String(id),score:Number(score)||0,total:Number(total)||0,won:won===true,at:row.at,source:'game-realm',masteryEligible:false});
+        if(p.realmSessions.length>300)p.realmSessions=p.realmSessions.slice(-300);
+      }
       try{window.MajickProductCore?.record?.('practice-complete',{course:window.S?.activeCourse||'',game:id,score,total,won})}catch(_){}
       save?.();
       return {previousBest,best:row.best,newBest:row.last>previousBest&&row.last>0,plays:row.plays,wins:row.wins};

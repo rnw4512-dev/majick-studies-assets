@@ -1,0 +1,33 @@
+
+Running 3 tests using 1 worker
+
+(node:28883) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 tests/save-safety-browser.spec.cjs:3:35 › backup download and file import preserve synthetic progress at 390 (5.6s)
+(node:29216) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  2 tests/save-safety-browser.spec.cjs:3:35 › backup download and file import preserve synthetic progress at 820 (7.4s)
+  ✓  3 tests/save-safety-browser.spec.cjs:3:35 › backup download and file import preserve synthetic progress at 1366 (9.5s)
+
+
+  1) tests/save-safety-browser.spec.cjs:3:35 › backup download and file import preserve synthetic progress at 390 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: true
+    Received: false
+
+       6 |  await page.evaluate(()=>{S.fixtureMarker={unknownField:'retained'};localStorage.setItem('majick-d756-task2-rehearsal-v1-history',JSON.stringify([{done:true,profile:'angela',mode:'guided',records:[],completedAt:Date.now(),assessment:{passed:false},synthetic:true}]));save();navigate('control')});
+       7 |  const panel=page.locator('.v338SavePanel');await expect(panel).toBeVisible();
+    >  8 |  expect(await panel.evaluate(el=>{const r=el.getBoundingClientRect();return r.left>=-1&&r.right<=innerWidth+1})).toBe(true);
+         |                                                                                                                  ^
+       9 |  const downloadPromise=page.waitForEvent('download');await panel.getByRole('button',{name:'Download backup',exact:true}).click();const download=await downloadPromise;
+      10 |  const payload=JSON.parse(fs.readFileSync(await download.path(),'utf8'));expect(payload.state.fixtureMarker.unknownField).toBe('retained');expect(payload.browserData['majick-d756-task2-rehearsal-v1-history']).toContain('synthetic');
+      11 |  await page.evaluate(()=>{S.fixtureMarker.unknownField='changed';localStorage.setItem('majick-d756-task2-rehearsal-v1-history','[]');save()});
+        at /workspace/majick-studies-assets/tests/save-safety-browser.spec.cjs:8:114
+
+    Error Context: test-results/save-safety-browser-backup-e018d-e-synthetic-progress-at-390/error-context.md
+
+  1 failed
+    tests/save-safety-browser.spec.cjs:3:35 › backup download and file import preserve synthetic progress at 390 
+  2 passed (26.5s)
