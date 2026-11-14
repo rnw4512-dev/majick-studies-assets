@@ -16,9 +16,7 @@ with sync_playwright() as pw:
  page.goto(URL);page.wait_for_function('!!window.MajickD756Meeting && !!window.MajickRewardCore')
  page.clock.install(time=datetime(2026,11,11,12,0,tzinfo=timezone.utc))
  page.evaluate('switchCourse("D756")')
- # The retired floating launcher is intentionally absent; open the supported Studio API.\n page.evaluate('MajickHandsOnStudio.open()')\n page.evaluate("()=>{const fn=window.MajickD756Meeting.open;window.MajickD756Meeting.open=function(){window.__councilOpenCount=(window.__councilOpenCount||0)+1;return fn.apply(this,arguments)}}")
- page.locator('#d756Task2Launch').click()
- print('LAUNCH TRACE',page.evaluate("()=>({count:window.__councilOpenCount||0,room:!!document.getElementById('d756MeetingRoom'),course:window.S?.activeCourse,button:!!document.getElementById('d756Task2Launch')})"),flush=True)
+ # The retired floating launcher is intentionally absent; open the supported Studio API.\n page.evaluate('MajickHandsOnStudio.open()')\n page.locator('#d756Task2Launch').click()
  assert page.locator('#d756MeetingRoom').count()==1,'Council Chamber launcher must open the meeting'
  room=page.locator('#d756MeetingRoom')
  def click(a):room.locator('[data-action='+a+']').click()
