@@ -14,13 +14,20 @@ async function click(selector){
  await action('document.querySelector('+JSON.stringify(selector)+').scrollIntoView({block:"center",behavior:"instant"})');
  if(selector==='[data-prob-next]'){const detail=await evalPage('(()=>{const e=document.querySelector("[data-prob-next]");if(!e)return {found:false};const r=e.getBoundingClientRect(),h=document.elementFromPoint(r.x+r.width/2,r.y+r.height/2);return {disabled:e.disabled,rect:{x:r.x,y:r.y,w:r.width,h:r.height},hit:h?.outerHTML.slice(0,300),button:e.outerHTML.slice(0,300),screen:S.screen,history:!!document.querySelector("#mjD772WguHistory")}})()');console.log('PROBABILITY NEXT HIT TEST',JSON.stringify(detail))}
  if(selector==='[data-prob-form] button[type=submit]'){const d=await evalPage('(()=>{const e=document.querySelector("[data-prob-form] button[type=submit]");if(!e)return {missing:true};const r=e.getBoundingClientRect(),hit=document.elementFromPoint(r.x+r.width/2,r.y+r.height/2);return {disabled:e.disabled,hit:hit?.outerHTML.slice(0,300),rect:{x:r.x,y:r.y,w:r.width,h:r.height},screen:S.screen}})()');console.log('PROBABILITY SUBMIT HIT',JSON.stringify(d))}
- // Delayed campus rendering may move a valid control after the first scroll.
- // Reposition the actual element during hit testing; do not synthesize clicks.
- await waitFor('(()=>{const e=document.querySelector('+JSON.stringify(selector)+');if(!e||e.disabled)return false;e.scrollIntoView({block:"center",behavior:"instant"});const r=e.getBoundingClientRect(),x=r.x+r.width/2,y=r.y+r.height/2;if(x<0||y<0||x>=innerWidth||y>=innerHeight)return false;const hit=document.elementFromPoint(x,y);return hit===e||e.contains(hit)})()');
- const r=await evalPage('(()=>{const r=document.querySelector('+JSON.stringify(selector)+').getBoundingClientRect();return {x:r.x+r.width/2,y:r.y+r.height/2}})()');
- await call('Input.dispatchMouseEvent',{type:'mousePressed',button:'left',clickCount:1,...r});
- await action('MajickProbabilityWorkshop.mount();MajickProbabilityWorkshop.mount()');
- await call('Input.dispatchMouseEvent',{type:'mouseReleased',button:'left',clickCount:1,...r});
+ // Retry only a physical pointer miss caused by late layout movement. Once the
+ // intended control receives pointerdown, all application assertions must pass.
+ for(let attempt=0;attempt<3;attempt++){
+  await waitFor('(()=>{const e=document.querySelector('+JSON.stringify(selector)+');if(!e||e.disabled)return false;e.scrollIntoView({block:"center",behavior:"instant"});const r=e.getBoundingClientRect(),x=r.x+r.width/2,y=r.y+r.height/2;if(x<0||y<0||x>=innerWidth||y>=innerHeight)return false;const hit=document.elementFromPoint(x,y);return hit===e||e.contains(hit)})()');
+  await action('window.__probPointerHit=false;if(window.__probPointerListener)document.removeEventListener("pointerdown",window.__probPointerListener,true);window.__probPointerListener=e=>{window.__probPointerHit=e.composedPath().some(n=>n.matches?.('+JSON.stringify(selector)+'))};document.addEventListener("pointerdown",window.__probPointerListener,{capture:true,once:true})');
+  const r=await evalPage('(()=>{const r=document.querySelector('+JSON.stringify(selector)+').getBoundingClientRect();return {x:r.x+r.width/2,y:r.y+r.height/2}})()');
+  await call('Input.dispatchMouseEvent',{type:'mousePressed',button:'left',clickCount:1,...r});
+  await action('MajickProbabilityWorkshop.mount();MajickProbabilityWorkshop.mount()');
+  await call('Input.dispatchMouseEvent',{type:'mouseReleased',button:'left',clickCount:1,...r});
+  if(await evalPage('window.__probPointerHit'))return;
+  console.log('Pointer missed moving control; retargeting',selector);
+ }
+ throw Error('Physical pointer did not reach '+selector);
+
 }
 (async()=>{
  await new Promise(r=>server.listen(0,'127.0.0.1',r));

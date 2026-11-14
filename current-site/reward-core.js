@@ -422,7 +422,8 @@ function patchLegacyGameRewards(){
    currentSession.rewardSessionId=currentSession.rewardSessionId||window.crypto?.randomUUID?.()||String(Date.now())+':'+(++legacyRewardSerial);
    const combo=Number(currentSession.combo||0),d=Number(q?.difficulty||1),hard=d>=4;
    const attemptKey='game:'+String(state()?.activeCourse||'')+':'+currentSession.rewardSessionId+':'+String(q?.id||'q')+':'+String(currentSession.round??currentSession.index??0);
-   const receipt=award('correct-answer',{key:attemptKey,course:state()?.activeCourse,qid:q?.id,difficulty:d,hard,independent:false,assisted:true,masteryEligible:false,source:'game-realm'});
+   const assisted=currentSession.assisted===true||currentSession.opts?.guided===true||currentSession.potionAssistedFor===q?.id;
+   const receipt=award('correct-answer',{key:attemptKey,course:state()?.activeCourse,qid:q?.id,difficulty:d,hard,independent:!assisted,assisted,masteryEligible:!assisted,source:'game-realm'});
    if(combo>0&&combo%5===0)award('streak-5',{key:attemptKey+':streak5:'+combo,source:'combo',difficulty:d});
    if(combo>0&&combo%10===0)award('streak-10',{key:attemptKey+':streak10:'+combo,source:'combo',difficulty:d});
    currentSession.reward={xp:receipt?.xp||0,cr:receipt?.crystals||0};

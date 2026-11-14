@@ -69,6 +69,7 @@ module.exports=async function({ev,waitFor,call,sleep}){
   await ev('(()=>{const s=document.querySelector(".top select");s.value='+JSON.stringify(course)+';s.dispatchEvent(new Event("change",{bubbles:true}))})()');await waitFor('!!document.querySelector("#majCommonsHub")');
   assert.equal(await ev('S.activeCourse'),course);
   assert.equal(await ev('JSON.stringify(S.progress.D772)'),d772,'D772 academic state changed on course switch '+course);
+  if(course==='D772')await waitFor('!!document.querySelector("#mjPreassessmentReview")');
   assert.equal(await ev('!!document.querySelector("#mjPreassessmentReview")'),course==='D772','D772 panels leaked across courses');
  }
  await call('Page.reload',{ignoreCache:true});await waitFor('!!window.MajickD772AdaptiveMastery&&!!document.querySelector("#majCommonsHub")');assert.equal(await ev('JSON.stringify(S.progress.D772)'),d772,'Review evidence lost on reload');

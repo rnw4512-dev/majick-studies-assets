@@ -13,13 +13,13 @@ for(const type of ['independent-correct','mixed-transfer-success','micro-skill-m
  const prior=JSON.stringify(account);assert.equal(c.award(type,{key:type,assisted:true}).rejected,'assisted-or-ineligible');assert.equal(JSON.stringify(account),prior);
 }
 // Exercise the actual legacy adapter with a lexical session and advancing clock.
-let clock=1000;const calls=[],session={round:2,index:2,combo:5};
+let clock=1000;const calls=[],session={round:2,index:2,combo:5,assisted:true};
 const adapter={window:{grantMoonlight(){},crypto:{randomUUID:()=> 'synthetic-session'}},session,Date:{now:()=>clock++},state:()=>({activeCourse:'D772'}),award:(type,ctx)=>{calls.push({type,ctx});return {xp:8,crystals:1}}};
 vm.createContext(adapter);vm.runInContext(source.slice(source.indexOf('let legacyRewardSerial='),source.indexOf('function inspect(){')),adapter);adapter.patchLegacyGameRewards();
 adapter.window.grantMoonlight({id:'q',difficulty:3});adapter.window.grantMoonlight({id:'q',difficulty:3});
 assert.equal(calls[0].ctx.key,calls[2].ctx.key,'same attempt must not depend on a fresh timestamp');
 assert.equal(calls[0].ctx.independent,false);assert.equal(calls[0].ctx.assisted,true);
-session.round++;adapter.window.grantMoonlight({id:'q',difficulty:3});assert.notEqual(calls[0].ctx.key,calls[4].ctx.key,'a distinct round remains distinct');
+session.round++;session.assisted=false;adapter.window.grantMoonlight({id:'q',difficulty:3});assert.notEqual(calls[0].ctx.key,calls[4].ctx.key,'a distinct round remains distinct');assert.equal(calls[4].ctx.independent,true,'unassisted gameplay keeps existing potion and reward behavior');
 // Journal reads receipts without normalizing or mutating the account.
 const journalState={majickAccount:{rewardCore:{ledger:{'<unsafe>':{type:'reward',receipt:{label:'<script>',xp:5,crystals:1}}}}}};
 const journal={state:()=>journalState};vm.createContext(journal);

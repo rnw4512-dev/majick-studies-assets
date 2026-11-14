@@ -1,0 +1,81 @@
+{
+  "schemaVersion": 1,
+  "baseMain": "3d5fa2889a91170a332eb9d70f9156934c032156",
+  "releaseCandidateRef": "release/aetheria-certified-consolidation-20261114",
+  "automaticBranchDeletion": false,
+  "automaticPrClosure": false,
+  "branches": [
+    {
+      "originalPr": 260,
+      "originalBranch": "maintenance/aetheria-safe-cleanup",
+      "inspectedHead": "08165c35a46f29b3c2fd6975060ea9597f1c9535",
+      "disposition": "partially-reconciled",
+      "evidence": "Save tests, diagnostic caution, probability controls and mobile save panel retained; remaining older UI changes need separate unique-work review.",
+      "archiveRecommendation": "retain until release certification and unique-work review"
+    },
+    {
+      "originalPr": 243,
+      "originalBranch": "chore/safe-legacy-cleanup-20261101",
+      "inspectedHead": "a8fffa4dcb26298c1984b5042a68b0be785c317f",
+      "disposition": "reconciled-in-candidate",
+      "evidence": "Six live wrappers retired, newer main behavior preserved; differential and browser evidence recorded.",
+      "archiveRecommendation": "retain until release certification and unique-work review"
+    },
+    {
+      "originalPr": 270,
+      "originalBranch": "feature/d756-multi-scenario-library-20261111",
+      "inspectedHead": "d6da37ba075bc9660ffb7f8e85e2708cc1987791",
+      "disposition": "reconciled-in-candidate",
+      "evidence": "Eight scenarios, full models and supplemental drills retained in existing meeting engine.",
+      "archiveRecommendation": "retain until release certification and unique-work review"
+    },
+    {
+      "originalPr": 266,
+      "originalBranch": "feature/guardian-four-frame-controller-20261111",
+      "inspectedHead": "d7a68bd124ad7c586c82152dbfd586fe48659866",
+      "disposition": "partially-reconciled",
+      "evidence": "Controller retained; approved walking manifest empty; separate static portrait replacement excluded.",
+      "archiveRecommendation": "retain until release certification and unique-work review"
+    },
+    {
+      "originalPr": 263,
+      "originalBranch": "feature/learning-progress-observatory",
+      "inspectedHead": "a95a13e181e2b90b0d44722897f45d73fd488e16",
+      "disposition": "reconciled-in-candidate",
+      "evidence": "Read-only Observatory retained with explicit freshness and canonical mastery safeguards.",
+      "archiveRecommendation": "retain until release certification and unique-work review"
+    },
+    {
+      "originalPr": 231,
+      "originalBranch": "feature/scholar-effort-rewards-20261028",
+      "inspectedHead": "e495203e3f2a42b9ede0d68a0a7e7cd2ba8606ec",
+      "disposition": "journal-superseded-in-candidate",
+      "evidence": "Journal uses existing ledger; parallel effort currency/wallet writer excluded.",
+      "archiveRecommendation": "retain until release certification and unique-work review"
+    },
+    {
+      "originalPr": 261,
+      "originalBranch": "fix/sanctuary-audit-live-iframe-20261111",
+      "inspectedHead": "cf1c66d3d4c1aa4c56881464b32057ebfdd4d822",
+      "disposition": "selector-fix-superseded",
+      "evidence": "Current main already supports both iframe selectors and newer diagnostics; current Sanctuary browser suite verifies the bridge.",
+      "archiveRecommendation": "retain until release certification and unique-work review"
+    },
+    {
+      "originalPr": 245,
+      "originalBranch": "feat/d756-iep-rehearsal-studio-20261103",
+      "inspectedHead": "11856d029a6598d01baf52eba1b15fef4b2d1cd6",
+      "disposition": "requires-unique-work-review",
+      "evidence": "Existing current-main meeting engine preserved; no whole-branch merge or closure justified.",
+      "archiveRecommendation": "retain until release certification and unique-work review"
+    },
+    {
+      "originalPr": 197,
+      "originalBranch": "feature/pixi-guardian-animation-integration-20261024",
+      "inspectedHead": "fd0a29af1599c48cae1e265fa05e32545869ca6b",
+      "disposition": "requires-unique-work-review",
+      "evidence": "Existing single ticker and walking pairs preserved; no automatic branch disposal justified.",
+      "archiveRecommendation": "retain until release certification and unique-work review"
+    }
+  ]
+}

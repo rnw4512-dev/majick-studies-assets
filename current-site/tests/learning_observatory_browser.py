@@ -51,6 +51,11 @@ async def smoke(width):
         await page.keyboard.press("Escape")
         assert await room.count()==0
         assert await page.locator("#majLearningObservatoryBtn").count()==1
+        await page.evaluate('navigate("analytics")')
+        await page.locator('[data-learning-observatory-open]').click()
+        await room.wait_for(timeout=5000)
+        assert await room.count()==1
+        await page.keyboard.press("Escape")
         assert not errors,errors[:3]
         await browser.close()
 

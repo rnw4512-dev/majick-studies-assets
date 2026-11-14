@@ -1,0 +1,22 @@
+[
+  {
+    "ref": "origin/main",
+    "allJavaScriptBytes": 4882509,
+    "javaScriptFileCount": 120
+  },
+  {
+    "ref": "8d31d10",
+    "allJavaScriptBytes": 4857517,
+    "javaScriptFileCount": 119
+  },
+  {
+    "ref": "HEAD",
+    "allJavaScriptBytes": 4931538,
+    "javaScriptFileCount": 121
+  },
+  {
+    "ref": "release candidate worktree",
+    "allJavaScriptBytes": 4932071,
+    "javaScriptFileCount": 121
+  }
+]

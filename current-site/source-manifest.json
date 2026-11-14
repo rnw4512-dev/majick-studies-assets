@@ -144,7 +144,7 @@
     "guardian-registry.js": "00a6baa6d67cfc0e63b2e336a38baca04b6d8705058f824d70e12b8fe88c18bc",
     "home-focus.css": "cbb719eb8e78701717b4016388d511553f2785212d839815ed006651ae738b2b",
     "home-focus.js": "f421d4c5e5b4193d1005e5ce5cdbeb0e969a0cffb8ece49b9dd7c255a16ca794",
-    "index.html": "f6ecd0e43264d53561a6a8c0dae7d241ff526cac8341f6ff7486a032dd741a85",
+    "index.html": "e9288ef8b10ce7aa6cedde498a9e08b7ac86f1bb8a8fbe135cacb9370f5c4a49",
     "learn-mode.css": "30181250c67efe7bd97c9276706a804a551e7904a2bb28160eeb0c193f35c002",
     "learn-mode.js": "0fe77e5b84d801270edb07bba57e412c5c23e21f29d7354ae3630ab936dd8c52",
     "learning-lab.css": "706f831154a59a0636a2ff9125d68eda4998d09efabaabd88f932b43f3a2be15",
@@ -401,7 +401,7 @@
     "adaptive-learning-core.css": "f984e356b6efa4d7608e1226aec5df13f024f702ea3a51b56d8c75a589a44646",
     "course-learning-profiles.js": "60d25988b6ae0ed1cab981ce99d2d8ed49fe9c8553b189df3d83103797bfe925",
     "course-learning-profiles.css": "f0f4f53b2c9422f0ed884d4688af1d8367e63851b367331f78b994b6548b5caa",
-    "reward-core.js": "9df17db13978e67853621f65357ef2efcf4b1bf3b90d54a1feadcf95302c5d1f",
+    "reward-core.js": "83fe0b77600f13f8da0c3c4bfaac6119f80c746d0f0c62108306648d1a4f881b",
     "reward-core.css": "89cf35cb286bdb2c67df07c2d01df1ec60bf737b4230f41a6457280789d4a853",
     "assets/rewards/reference-boards/cascade/cascade-collection-reference-board.webp": "1b4d05d2b5303afeec9d2b51713d3a1aef76754ff6c0e242724a165218f79b68",
     "assets/rewards/reference-boards/cascade/cascade-collection-reference-board-runtime.webp": "19a8202353e552f20173d109a6c7b61fcfe91420e5efa59de56bea771e745b1b",
@@ -885,8 +885,8 @@
     "pixi-sanctuary/guardian-animation-controller.js": "79277310b7c9da10cf8faff0035fd0647161e32fbc3f4c441f8571bcf5d126b0",
     "pixi-sanctuary/guardian-animation-controller.test.cjs": "c5315d9c896f8cdaf96711475fd0e0dab3ab928b997fef82df4978512599f46e",
     "pixi-sanctuary/guardian-walk-manifest.json": "1ab3cf64563285f2c6db762d4f8cff95cd73f122d708aa31d622e7d6ac384377",
-    "learning-observatory.js": "aa9b21e817274d2c5e9cd12a17e7977201bc53a9ae4121fce4fe5ad7fe6e4368",
+    "learning-observatory.js": "10275dfe23849e1a58453eadcf108d968d38787ada9ed859ac7b145508c0ee4d",
     "tests/learning-observatory.test.cjs": "93be21a75016ee9ac9aa82860d61bf7a157ee8ec39b54c2e9879d6ee22adfd55",
-    "tests/learning_observatory_browser.py": "586d29acac3065b717ad89d3a7e0f212562b6973d496a1a617352c24efb3450c"
+    "tests/learning_observatory_browser.py": "b2489283de1a6e712150c89b9e4c6809e06053be83153c0f79cb44e8ff6b6a78"
   }
 }
