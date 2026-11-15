@@ -32,12 +32,12 @@ with sync_playwright() as pw:
    room.locator("#dmMode").select_option("guided")
    room.locator("[data-action=start]").click()
    buttons=room.locator("[data-response-choice]")
+   room.locator('.dmChoices details > summary').first.click()
    assert buttons.count()==3,(case,buttons.count())
    for i in range(3):
     body=buttons.nth(i).inner_text()
     assert len(body.split())>=55,(case,i,len(body.split()))
     assert "Angela" in body or "Elena" in body or "Moore" in body,(case,i,body)
-   room.locator('.dmChoices details > summary').first.click()
    buttons.first.click()
    answer=room.locator("#dmAnswer").input_value()
    assert len(answer.split())>=50,(case,answer)
