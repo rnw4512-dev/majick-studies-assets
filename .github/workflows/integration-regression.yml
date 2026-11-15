@@ -21,10 +21,10 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Verify save-schema safety
-        run: node pages-release/current/test-save-schema-safety.cjs current-site
-      - name: Verify permanent runtime ownership
-        run: node pages-release/current/test-runtime-migration.cjs current-site
+      - name: Verify canonical source and current save compatibility
+        run: |
+          node pages-release/current/release-checks.cjs current-site
+          python pages-release/current/build.py current-site _site
       - name: Install Playwright
         run: |
           npm install --no-save @playwright/test
@@ -37,7 +37,7 @@ jobs:
       - name: Run browser regression
         run: |
           python3 -m http.server 8765 --directory current-site >/tmp/majick-server.log 2>&1 &
-          MIGRATION_URL=http://127.0.0.1:8765 npx playwright test tests/integration-regression.spec.cjs tests/runtime-migration.spec.cjs tests/council-lifecycle.spec.cjs --browser chromium --workers 1 --reporter list
+          MIGRATION_URL=http://127.0.0.1:8765 npx playwright test tests/integration-regression.spec.cjs tests/council-lifecycle.spec.cjs --browser chromium --workers 1 --reporter list
       - name: Upload test results
         if: always()
         uses: actions/upload-artifact@v4
