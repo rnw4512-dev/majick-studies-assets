@@ -43,6 +43,7 @@ with sync_playwright() as pw:
   close=room.locator('[data-action=close]')
   assert close.is_visible()
   assert close.evaluate("(el)=>{const r=el.getBoundingClientRect();return r.top>=0&&r.bottom<=innerHeight}"),"Close button escaped viewport"
+  room.locator(".dmChoices details > summary").click()
   room.locator("[data-response-choice='0']").click()
   assert len(box.input_value())>35
   assert page.evaluate(f'JSON.parse(localStorage.getItem("{KEY}")).assistedStage') is True
