@@ -144,7 +144,7 @@
     "guardian-registry.js": "00a6baa6d67cfc0e63b2e336a38baca04b6d8705058f824d70e12b8fe88c18bc",
     "home-focus.css": "cbb719eb8e78701717b4016388d511553f2785212d839815ed006651ae738b2b",
     "home-focus.js": "f421d4c5e5b4193d1005e5ce5cdbeb0e969a0cffb8ece49b9dd7c255a16ca794",
-    "index.html": "54167a7b335cfb9867d1b314c4e8fa8402ab1474f573de4bea9402bffa5f48ff",
+    "index.html": "b48d5ff74842dcb476a3333b89e6be8c6aaa2f60cc2786f70a3ad2b33f7b07cc",
     "learn-mode.css": "30181250c67efe7bd97c9276706a804a551e7904a2bb28160eeb0c193f35c002",
     "learn-mode.js": "0fe77e5b84d801270edb07bba57e412c5c23e21f29d7354ae3630ab936dd8c52",
     "learning-lab.css": "b9c2c4f2ae393b3d291155a258cd01388bb71cd49a46d0187f224b03222ac2df",
@@ -883,6 +883,7 @@
     "d756-council.css": "bf2f2b2e396556c04e934b708d23dd6da528f7ffddaf069a9e2992721d30e9e1",
     "interaction-help.js": "f057d0b8e96b381f0d8065feb8c03d10ae56fa7cef9169967e5384e0fc560a1d",
     "startup-core.20261114.js": "21e537370ebce46dcc426829fe2d102bad407bd1a0ef2637aa310095a751cce5",
-    "startup-save-bridge.20261114.js": "eaf5fe9ad81a250b471949dbfa243d9f9540b58d9fe2ff7cd6c1fd86c45ba379"
+    "startup-save-bridge.20261114.js": "eaf5fe9ad81a250b471949dbfa243d9f9540b58d9fe2ff7cd6c1fd86c45ba379",
+    "enchanted-collegium.css": "28f3d651540c8e6e49d58f4e56e09684982e9119958ccb45a1e5a22145726faa"
   }
 }
