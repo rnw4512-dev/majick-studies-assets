@@ -1,5 +1,0 @@
-FAIL shared repair browser: AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
-
-  assert(diagnostic.includes('selection alone does not establish'))
-
-    at run (/workspace/majick-studies-assets/pages-release/current/browser-shared-repair.cjs:29:2)

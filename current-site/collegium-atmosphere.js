@@ -18,7 +18,7 @@
      const playPromise=track.play();
      const AudioContext=window.AudioContext||window.webkitAudioContext;
      if(AudioContext){
-       try{ctx=ctx||window.MajickStudyAudio?.context?.()||new AudioContext();ctx.resume().catch(()=>{})}
+       try{ctx=ctx||new AudioContext();ctx.resume().catch(()=>{})}
        catch(_){/* Music can play without Web Audio sound effects. */}
      }
      await playPromise;
@@ -30,7 +30,7 @@
    }
    decorate();return enabled;
  }
- async function toggle(){if(enabled){enabled=false;audioRequest++;stop();decorate()}else await start()}
+ async function toggle(){if(enabled){enabled=false;audioRequest++;stop();if(ctx)ctx.suspend();decorate()}else await start()}
  function setVolume(value){const v=Math.max(0,Math.min(.7,Number(value)||0));const account=window.S?.majickAccount;if(account){account.guardianAudio=window.MajickGuardianCore?.settings?.()||account.guardianAudio||{enabled:true,guardian:true,magic:true,volume:.58};account.guardianAudio.musicVolume=v;window.save?.()}if(music)music.volume=v}
  function ping(freq,duration=.12,volume=.008,type='sine',endFreq=null,offset=0){
    if(!ctx||ctx.state!=='running')return;
@@ -73,8 +73,7 @@
    const top=document.querySelector('.top');if(!top)return;
    const pill=top.querySelector('.pill');if(pill)pill.textContent='Guardian Room Check • V'+VERSION;
    let controls=top.querySelector('.caSoundControls');
-   if(!controls){controls=document.createElement('div');controls.className='caSoundControls';const button=document.createElement('button');button.type='button';button.className='caAmbience';button.addEventListener('click',toggle);controls.append(button);const options=document.createElement('details');options.className='caSoundOptions';const summary=document.createElement('summary');summary.textContent='Sound settings';options.append(summary);const effects=document.createElement('button');effects.type='button';effects.className='caStudyEffects';effects.addEventListener('click',()=>window.MajickStudyAudio?.toggleSound?.());options.append(effects);const label=document.createElement('label');label.textContent='Music volume ';const slider=document.createElement('input');slider.type='range';slider.min='0';slider.max='70';slider.step='1';slider.value=String(Math.round(volume()*100));slider.setAttribute('aria-label','Music volume');slider.addEventListener('input',()=>setVolume(Number(slider.value)/100));label.append(slider);options.append(label);const credit=document.createElement('a');credit.href='./assets/IMMERSION-CREDITS.html';credit.textContent='Music by Kevin MacLeod · Artist credits';options.append(credit);const note=document.createElement('p');note.className='caSoundStatus';note.setAttribute('role','status');options.append(note);controls.append(options);top.append(controls)}
-   const effects=controls.querySelector('.caStudyEffects');const studySounds=window.S?.sound!==false&&window.S?.v5?.settings?.sounds!==false;if(effects){effects.textContent='Study sounds: '+(studySounds?'on':'off');effects.setAttribute('aria-pressed',String(studySounds));}
+   if(!controls){controls=document.createElement('div');controls.className='caSoundControls';const button=document.createElement('button');button.type='button';button.className='caAmbience';button.addEventListener('click',toggle);controls.append(button);const options=document.createElement('details');options.className='caSoundOptions';const summary=document.createElement('summary');summary.textContent='Sound settings';options.append(summary);const label=document.createElement('label');label.textContent='Music volume ';const slider=document.createElement('input');slider.type='range';slider.min='0';slider.max='70';slider.step='1';slider.value=String(Math.round(volume()*100));slider.setAttribute('aria-label','Music volume');slider.addEventListener('input',()=>setVolume(Number(slider.value)/100));label.append(slider);options.append(label);const credit=document.createElement('a');credit.href='./assets/IMMERSION-CREDITS.html';credit.textContent='Music by Kevin MacLeod · Artist credits';options.append(credit);const note=document.createElement('p');note.className='caSoundStatus';note.setAttribute('role','status');options.append(note);controls.append(options);top.append(controls)}
    const b=controls.querySelector('.caAmbience');
    if(enabled&&music?.paused){enabled=false;error=error||'Music stopped. Tap Enable music to restart it.'}
    b.textContent=(enabled?'♫ ':'♪ ')+ROOMS[r]+' · music '+(enabled?'on':'off');
@@ -105,5 +104,5 @@ if(renderQueue?.register){
  }
  setTimeout(decorate,120);
 }
- window.MajickCollegiumAtmosphere={VERSION,ROOMS,room,decorate,micro,start,stop:()=>{enabled=false;audioRequest++;stop();decorate()},setVolume,inspect:()=>({enabled,playing:!!music&&!music.paused,volume:volume(),loaded:music?.readyState||0,error}),enabled:()=>enabled};
+ window.MajickCollegiumAtmosphere={VERSION,ROOMS,room,decorate,micro,start,stop:()=>{enabled=false;audioRequest++;stop();ctx?.suspend();decorate()},setVolume,inspect:()=>({enabled,playing:!!music&&!music.paused,volume:volume(),loaded:music?.readyState||0,error}),enabled:()=>enabled};
 })();

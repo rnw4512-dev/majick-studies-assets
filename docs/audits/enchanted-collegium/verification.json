@@ -1,0 +1,116 @@
+{
+  "checks": [
+    "CSS application preserves complete S state, control count and progress value/max/label",
+    "mission 390: no overflow, rendered contrast and interaction",
+    "learninglab 390: no overflow, rendered contrast and interaction",
+    "reasoning 390: no overflow, rendered contrast and interaction",
+    "mission 820: no overflow, rendered contrast and interaction",
+    "learninglab 820: no overflow, rendered contrast and interaction",
+    "reasoning 820: no overflow, rendered contrast and interaction",
+    "mission 1366: no overflow, rendered contrast and interaction",
+    "learninglab 1366: no overflow, rendered contrast and interaction",
+    "reasoning 1366: no overflow, rendered contrast and interaction",
+    "Expanded shared-card edges: seven remaining routes at all three widths, original rooms mount without overflow",
+    "Trial selection, clear, submit feedback and guided-mode switch",
+    "Unverified receipts ignored; reduced motion static; finite success feedback; no reward writes"
+  ],
+  "contrast": [
+    {
+      "label": "study copy 390",
+      "count": 11,
+      "minimum": 8.92,
+      "failures": []
+    },
+    {
+      "label": "study card 390",
+      "count": 2,
+      "minimum": 13.14,
+      "failures": []
+    },
+    {
+      "label": "learning navigator 390",
+      "count": 17,
+      "minimum": 8.48,
+      "failures": []
+    },
+    {
+      "label": "lesson reading 390",
+      "count": 7,
+      "minimum": 7.21,
+      "failures": []
+    },
+    {
+      "label": "trial prompt 390",
+      "count": 8,
+      "minimum": 10.54,
+      "failures": []
+    },
+    {
+      "label": "study copy 820",
+      "count": 19,
+      "minimum": 8.26,
+      "failures": []
+    },
+    {
+      "label": "study card 820",
+      "count": 2,
+      "minimum": 13.14,
+      "failures": []
+    },
+    {
+      "label": "learning navigator 820",
+      "count": 20,
+      "minimum": 8.48,
+      "failures": []
+    },
+    {
+      "label": "lesson reading 820",
+      "count": 9,
+      "minimum": 7.21,
+      "failures": []
+    },
+    {
+      "label": "trial prompt 820",
+      "count": 9,
+      "minimum": 10.54,
+      "failures": []
+    },
+    {
+      "label": "study copy 1366",
+      "count": 22,
+      "minimum": 7.14,
+      "failures": []
+    },
+    {
+      "label": "study card 1366",
+      "count": 2,
+      "minimum": 13.14,
+      "failures": []
+    },
+    {
+      "label": "learning navigator 1366",
+      "count": 20,
+      "minimum": 8.48,
+      "failures": []
+    },
+    {
+      "label": "lesson reading 1366",
+      "count": 9,
+      "minimum": 7.21,
+      "failures": []
+    },
+    {
+      "label": "trial prompt 1366",
+      "count": 9,
+      "minimum": 10.54,
+      "failures": []
+    },
+    {
+      "label": "submitted trial feedback",
+      "count": 13,
+      "minimum": 11.76,
+      "failures": []
+    }
+  ],
+  "errors": []
+}
