@@ -811,7 +811,7 @@
     "d772-historical-quiz-results.js": "f4eb868c705edb74e61d72f87d550129e0c83fdc27e7e05d2e1a94bc5f6d8a2d",
     "d772-misrepresentation-lab.js": "813ea242656f8abdae991f1fd1dc92780099bfc54a6f85061720fd42eeddc90c",
     "d772-preassessment-source.js": "ae5d1a3404db25e74ae5a08887a39d4679b123d02f6c07af1307b51779c88172",
-    "d772-preassessment-review.js": "88e399620636cfcec715d2971adb5a8b9a10563510a40c03c53090c922fb22af",
+    "d772-preassessment-review.js": "eccab4d59de8e01b5c77938932f7b0b5a0136d66e9366f3d3f881e8aba8c96c9",
     "d772-preassessment-deep-practice.js": "5aadf393fadd1639c668962fb8d6b6a45b069ebee2bf94a3617db3c362fdbb2f",
     "d772-adaptive-mastery.js": "11a7496b538fbabf6a4c7232d7e1b62466ffb6d5eaf49ecd6b216bd3a94d6112",
     "collegium-commons.js": "857c36995fafce1e337bd75fa793c82857bb1eab6d5a04b6cea3c14b318800fa",
@@ -884,6 +884,6 @@
     "interaction-help.js": "f057d0b8e96b381f0d8065feb8c03d10ae56fa7cef9169967e5384e0fc560a1d",
     "startup-core.20261114.js": "21e537370ebce46dcc426829fe2d102bad407bd1a0ef2637aa310095a751cce5",
     "startup-save-bridge.20261114.js": "eaf5fe9ad81a250b471949dbfa243d9f9540b58d9fe2ff7cd6c1fd86c45ba379",
-    "enchanted-collegium.css": "b77b1666e4627c32ddf8f8edc577394c5f530fdd3cf16b017bcdda2ae02cf209"
+    "enchanted-collegium.css": "1c5574be2ac5fa8338a57834f9110c903710419ca8c8bd34bbd59c94753b473e"
   }
 }
