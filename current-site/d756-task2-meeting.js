@@ -346,7 +346,7 @@ function commitTurn(a,assisted=false){typingResume();s.undoLastTurn=JSON.parse(J
  s.last=professionalFeedback(a,clarified,assisted,scene);s.lastReview=learningReview(a,scene,assisted);s.lastReviewStage=answeredStage;s.lastReviewFollowup=isFollow;s.revisionChecked=false;s.revisionDraft='';s.lastScene=scene;s.reviewVisible=true;s.revising=false;
  // A follow-up receives one reply, not another automatically generated follow-up.
  // Guided full mock moves to the next agenda topic after that exchange, while preserving every submitted turn.
- s.pending=isFollow?null:tone?professionalRepairPrompt(tone):clarified?{who:scene[0],line:contextResponsiveStakeholder(a,scene)[2],kind:'clarification-response'}:classroomResponsivePrompt(a,scene)||followUp(a,s.step);
+ s.pending=isFollow?(clarified&&pending?.kind!=='clarification-response'?{who:scene[0],line:contextResponsiveStakeholder(a,scene)[2],kind:'clarification-response'}:null):tone?professionalRepairPrompt(tone):clarified?{who:scene[0],line:contextResponsiveStakeholder(a,scene)[2],kind:'clarification-response'}:classroomResponsivePrompt(a,scene)||followUp(a,s.step);
  s.awaitingReply=!!s.pending;
  s.reply=s.pending?null:s.step===7&&s.concernResolved?[0,'Family follow-up','Thank you for hearing my concern. We can keep differing views, compare real options, and record a next step while Angela’s preference remains central.']:contextResponsiveStakeholder(a,scene);
  if(s.fullMock&&!s.pending&&(s.step!==7||s.concernResolved)){
