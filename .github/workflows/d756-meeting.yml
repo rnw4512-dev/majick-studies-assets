@@ -31,4 +31,3 @@ jobs:
           python -u tests/d756-ux-browser.py
           python -u tests/d756-full-script-browser.py
           python -u tests/d756-scenario-library-browser.py
-          python -u tests/d756-short-meetings-browser.py

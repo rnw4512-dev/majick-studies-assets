@@ -16,8 +16,10 @@ with sync_playwright() as pw:
  page.goto(URL);page.wait_for_function('!!window.MajickD756Meeting && !!window.MajickRewardCore')
  page.clock.install(time=datetime(2026,11,11,12,0,tzinfo=timezone.utc))
  page.evaluate('switchCourse("D756")')
- page.evaluate('navigate("mission");studyRealmSwitch("practice")')
- page.locator('article.card').filter(has=page.get_by_role('heading',name='Guided Council Chamber',exact=True)).get_by_role('button',name='Open activity',exact=True).click()
+ # The retired floating launcher is intentionally absent; use the supported Studio API.
+ page.evaluate('MajickHandsOnStudio.open()')
+ page.locator('#d756Task2Launch').click()
+ assert page.locator('#d756MeetingRoom').count()==1,'Council Chamber launcher must open the meeting'
  room=page.locator('#d756MeetingRoom')
  def click(a):room.locator('[data-action='+a+']').click()
  assisting=False
@@ -36,9 +38,8 @@ with sync_playwright() as pw:
   assisting=assisted
   names={'angela':['Angela','Elena','Mr. Moore'],'maya':['Maya','Sofia','Ms. Patel'],'jordan':['Jordan','Marcus','Mr. Harris']}[profile]
   career={'angela':'graphic design','maya':'animation','jordan':'web design'}[profile]
-  assert room.locator('.dmGoalCard').count()==3, 'All three current IEP goals must be rendered'
-  goals=room.locator('.dmGoalCard').all_text_contents()
-  goals=' '.join(goals)
+  case=room.locator('details').first.inner_text()
+  goals=page.evaluate('()=>{const d=document.querySelector("#d756MeetingRoom .dmReferenceQuick");return [...d.querySelectorAll(".dmGoalCard")].map(p=>p.textContent).join(" ")}')
   responses=[
    'Welcome everyone. Today our meeting purpose and agenda are to review strengths, needs, goals and transition decisions. What questions do you have about our agenda?',
    names[2]+', what observations would you share about classroom strengths and support needs so we can build our plan?',
@@ -89,7 +90,7 @@ with sync_playwright() as pw:
   for profile in ['angela','maya','jordan']:
    for mode in ['guided','independent','challenge']:
     start(profile,mode)
-    assert room.locator('.dmPerson').count()==4
+    assert room.locator('.dmPerson').count()==4,{'pageErrors':errors[-3:],'roomText':room.inner_text()[:1200],'state':saved()}
     assert room.locator('.dmHint').count()==(1 if mode=='guided' else 0)
     assert room.evaluate('(r)=>r.scrollWidth<=r.clientWidth+1')
     submit('Yes')

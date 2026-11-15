@@ -1,0 +1,149 @@
+[
+  {
+    "width": 390,
+    "screen": "home",
+    "overflow": false,
+    "content": 12235,
+    "sharedCards": 0
+  },
+  {
+    "width": 390,
+    "screen": "guide",
+    "overflow": false,
+    "content": 911,
+    "sharedCards": 1
+  },
+  {
+    "width": 390,
+    "screen": "games",
+    "overflow": false,
+    "content": 4545,
+    "sharedCards": 19
+  },
+  {
+    "width": 390,
+    "screen": "analytics",
+    "overflow": false,
+    "content": 1225,
+    "sharedCards": 4
+  },
+  {
+    "width": 390,
+    "screen": "vault",
+    "overflow": false,
+    "content": 6269,
+    "sharedCards": 0
+  },
+  {
+    "width": 390,
+    "screen": "sources",
+    "overflow": false,
+    "content": 921,
+    "sharedCards": 0
+  },
+  {
+    "width": 390,
+    "screen": "journal",
+    "overflow": false,
+    "content": 372,
+    "sharedCards": 0
+  },
+  {
+    "width": 820,
+    "screen": "home",
+    "overflow": false,
+    "content": 12235,
+    "sharedCards": 0
+  },
+  {
+    "width": 820,
+    "screen": "guide",
+    "overflow": false,
+    "content": 911,
+    "sharedCards": 1
+  },
+  {
+    "width": 820,
+    "screen": "games",
+    "overflow": false,
+    "content": 4545,
+    "sharedCards": 19
+  },
+  {
+    "width": 820,
+    "screen": "analytics",
+    "overflow": false,
+    "content": 1209,
+    "sharedCards": 4
+  },
+  {
+    "width": 820,
+    "screen": "vault",
+    "overflow": false,
+    "content": 6269,
+    "sharedCards": 0
+  },
+  {
+    "width": 820,
+    "screen": "sources",
+    "overflow": false,
+    "content": 921,
+    "sharedCards": 0
+  },
+  {
+    "width": 820,
+    "screen": "journal",
+    "overflow": false,
+    "content": 372,
+    "sharedCards": 0
+  },
+  {
+    "width": 1366,
+    "screen": "home",
+    "overflow": false,
+    "content": 12235,
+    "sharedCards": 0
+  },
+  {
+    "width": 1366,
+    "screen": "guide",
+    "overflow": false,
+    "content": 911,
+    "sharedCards": 1
+  },
+  {
+    "width": 1366,
+    "screen": "games",
+    "overflow": false,
+    "content": 4545,
+    "sharedCards": 19
+  },
+  {
+    "width": 1366,
+    "screen": "analytics",
+    "overflow": false,
+    "content": 1209,
+    "sharedCards": 4
+  },
+  {
+    "width": 1366,
+    "screen": "vault",
+    "overflow": false,
+    "content": 6269,
+    "sharedCards": 0
+  },
+  {
+    "width": 1366,
+    "screen": "sources",
+    "overflow": false,
+    "content": 921,
+    "sharedCards": 0
+  },
+  {
+    "width": 1366,
+    "screen": "journal",
+    "overflow": false,
+    "content": 372,
+    "sharedCards": 0
+  }
+]
