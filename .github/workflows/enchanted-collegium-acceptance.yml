@@ -1,0 +1,35 @@
+name: Enchanted Collegium visual acceptance
+on:
+  pull_request:
+    paths:
+      - 'current-site/**'
+      - 'pages-release/current/browser-collegium-polish.cjs'
+      - '.github/workflows/enchanted-collegium-acceptance.yml'
+permissions:
+  contents: read
+jobs:
+  visual-browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify canonical release build
+        run: python pages-release/current/build.py current-site _site
+      - name: Inspect real Study Hall, Learn Lab and Trial Chamber visuals
+        env:
+          CHROMIUM_PATH: /usr/bin/google-chrome
+          COLLEGIUM_URL: http://127.0.0.1:8765
+          COLLEGIUM_QA_DIR: collegium-visual-qa
+        run: |
+          python -m http.server 8765 --directory _site >/tmp/collegium-visual-server.log 2>&1 &
+          timeout 720s node pages-release/current/browser-collegium-polish.cjs
+      - name: Preserve visual audit report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: enchanted-collegium-visual-evidence
+          path: collegium-visual-qa/
+          if-no-files-found: warn
