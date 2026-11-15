@@ -76,13 +76,13 @@ html body.majickCampus #content :is(.v3333Scope,.majMixedExam,.lessonExplain,.tu
 }
 /* Ink follows paper only on known copy, never form controls or colored diagrams. */
 html body.majickCampus #content :is(.v3333Scope,.majMixedExam,.lessonExplain,.tutorChapterBlock:not(.classroomStage *),.learnRecommendation,.lcContinue,.courseLessonNavigator,.classroomStage)
- :is(h2,h3,h4,p,li,small,summary,.majExamTop,.majExamTop strong,.majExamTop span,.majExamPrompt,.majExamSaveStatus,label):not(:where(button *, .mjSolutionEngine *, .mjtCoach *, .mjtYourTurn *, .majickGeneratedLab *, .mjConstructActivity *, .questionDataVisual *, .majickGeneratedFigure *)) {
+ :is(h2,h3,h4,p,li,small,summary,.majExamTop,.majExamTop strong,.majExamTop span,.majExamPrompt,.majExamSaveStatus,label):not(:where(button *, .mjSolutionEngine *, .mjtCoach *, .mjtYourTurn *, .majickGeneratedLab *, .mjConstructActivity *, .questionDataVisual *, .majickGeneratedFigure *, .mjSkillGrowthDrawer *)) {
  color:var(--collegium-ink)!important;
  -webkit-text-fill-color:var(--collegium-ink)!important;
  opacity:1!important;text-shadow:none!important;
 }
 /* The Skill Growth drawer stays dark: never put parchment ink on its progress text. */
-html body.majickCampus #content .mjSkillGrowthDrawer .mjCompactSkillDetails p {
+html body.majickCampus #content .v3333Scope.mjSkillGrowthDrawer .mjSkillGrowthBody .mjCompactSkillDetails p {
  color:#fff6e8!important;
  -webkit-text-fill-color:#fff6e8!important;
 }
