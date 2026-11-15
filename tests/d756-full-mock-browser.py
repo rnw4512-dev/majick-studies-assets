@@ -26,6 +26,7 @@ with sync_playwright() as pw:
         assert room.locator(".dmGoalCard").count() == 3
         assert room.locator('[data-action="hear"]').count() == 1
         assert room.locator('[data-mock-model]').count() == 1
+        room.locator(".dmMockGuide details > summary").click()
         room.locator('[data-mock-model]').click()
         assert len(room.locator("#dmAnswer").input_value()) > 40
         state = page.evaluate('JSON.parse(localStorage.getItem("majick-d756-task2-rehearsal-v1"))')
