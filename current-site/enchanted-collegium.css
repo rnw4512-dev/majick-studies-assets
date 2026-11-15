@@ -151,6 +151,13 @@ html body.majickCampus #content .majExamChoice:has(input:checked) {
  box-shadow:inset 3px 0 #3d625b;
 }
 #content .majExamChoice input {accent-color:#3d625b;}
+/* Keep Clear selection and other enabled Trial controls readable on every width. */
+html body.majickCampus #content .majExamActions button:not(:disabled) {
+ background:#3d2949!important;
+ color:#fff6e8!important;
+ -webkit-text-fill-color:#fff6e8!important;
+ border:1px solid #b99a65!important;
+}
 html body.majickCampus #content .majExamActions button:disabled {
  opacity:1!important;background:#e7dfd3!important;color:#62536b!important;
  -webkit-text-fill-color:#62536b!important;border-color:#9d8970!important;
