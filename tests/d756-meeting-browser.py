@@ -16,8 +16,10 @@ with sync_playwright() as pw:
  page.goto(URL);page.wait_for_function('!!window.MajickD756Meeting && !!window.MajickRewardCore')
  page.clock.install(time=datetime(2026,11,11,12,0,tzinfo=timezone.utc))
  page.evaluate('switchCourse("D756")')
- # Use the retained sidebar route; main intentionally removed the floating launcher.
- page.locator('[data-nav="hands-on"]').click();page.locator('[data-hu-council]').click()
+ # The retired floating launcher is intentionally absent; use the supported Studio API.
+ page.evaluate('MajickHandsOnStudio.open()')
+ page.locator('#d756Task2Launch').click()
+ assert page.locator('#d756MeetingRoom').count()==1,'Council Chamber launcher must open the meeting'
  room=page.locator('#d756MeetingRoom')
  def click(a):room.locator('[data-action='+a+']').click()
  assisting=False

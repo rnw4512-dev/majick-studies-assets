@@ -300,7 +300,7 @@ function save(){try{if(typeof window.save==='function')window.save();else if(typ
 const asPractice=q=>({...q,course:'D772',courseId:'D772',learningPathLessonId:q.lessonId,topicId:q.lessonId,section:q.lessonId.includes('-s1-')?'Section 1 · Research credibility':q.lessonId.includes('-s2-')?'Section 2 · Statistics and graphs':'Section 3 · Probability',options:q.choices,choices:q.choices,answer:q.choices[q.correct],sourceName:q.sourceLabel,source:q.sourceLabel,rigorLevel:3,independentMastery:true,whiteboard:'Identify what the question asks, show the evidence or calculation, and justify the best answer.',generated:true});
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;','\'':'&#39;'}[c]));
 function render(){
- if(window.S?.activeCourse!=='D772'||window.S?.screen!=='home')return;
+ if(window.S?.activeCourse!=='D772'||window.S?.screen!=='home'){document.getElementById('mjPreassessmentReview')?.remove();return;}
  const root=document.querySelector('.content');if(!root||root.querySelector('#mjPreassessmentReview'))return;
  const data=origin(),st=state();if(data.length!==58||!st)return;
  const section=document.createElement('section');section.id='mjPreassessmentReview';section.setAttribute('aria-label','D772 preassessment review and practice');

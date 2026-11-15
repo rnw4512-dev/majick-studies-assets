@@ -28,8 +28,10 @@ with sync_playwright() as pw:
   room.locator("#dmPacing").select_option("typing")
   initial=page.evaluate("({xp:MajickStateCore.ensureAccount().xp,crystals:MajickStateCore.ensureAccount().crystals})")
   room.locator("[data-action=start]").click()
-  assert room.locator(".dmReference .dmReferenceQuick").count()==1
-  assert room.locator(".dmReference .dmGoalCard").count()==3
+  # The live reference uses .dmReferenceQuick / .dmGoalCard, not retired .dmGlance / [data-goal].
+  assert room.locator(".dmReference .dmReferenceQuick").count()==1, "IEP at a Glance reference is missing"
+  assert room.locator(".dmReference .dmGoalCard").count()==3, "Expected three annual IEP goals in the reference panel"
+  assert "IEP at a Glance" in room.locator(".dmReferenceQuick h3").inner_text()
   assert room.locator(".dmChoiceList button").count()==3
   assert room.locator("[data-action=dictate]").count()==1
   box=room.locator("#dmAnswer")
@@ -41,6 +43,7 @@ with sync_playwright() as pw:
   close=room.locator('[data-action=close]')
   assert close.is_visible()
   assert close.evaluate("(el)=>{const r=el.getBoundingClientRect();return r.top>=0&&r.bottom<=innerHeight}"),"Close button escaped viewport"
+  room.locator(".dmChoices details > summary").click()
   room.locator("[data-response-choice='0']").click()
   assert len(box.input_value())>35
   assert page.evaluate(f'JSON.parse(localStorage.getItem("{KEY}")).assistedStage') is True
