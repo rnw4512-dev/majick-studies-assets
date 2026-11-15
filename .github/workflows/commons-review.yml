@@ -79,6 +79,8 @@ jobs:
           node-version: '22'
       - name: Canonical release integrity build
         run: python pages-release/current/build.py current-site _site
+      - name: Install isolated visual QA dependencies
+        run: npm install --no-save --no-package-lock playwright@1.56.1 pngjs@7.0.0
       - name: Real-browser enchanted study room visual certification
         env:
           CHROMIUM_PATH: /usr/bin/google-chrome
