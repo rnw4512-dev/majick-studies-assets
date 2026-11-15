@@ -349,6 +349,14 @@ function render(){
  showPractice();
 }
 window.MajickD772PreassessmentReview={sourceId:SOURCE_ID,questions:SUPPORT,practiceQuestions:()=>SUPPORT.map(asPractice),forLesson:id=>SUPPORT.filter(q=>q.lessonId===id||q.lessonId.startsWith(id+'-')).map(asPractice),source:origin,state,render};
+// Remove this course-only panel immediately when the user changes courses.
+// The deferred render queue may not run during a cross-course navigation.
+document.addEventListener('change',event=>{
+ if(!event.target?.matches?.('.top select'))return;
+ queueMicrotask(()=>{
+  if(window.S?.activeCourse!=='D772'||window.S?.screen!=='home')document.getElementById('mjPreassessmentReview')?.remove();
+ });
+},true);
 if(window.MajickRenderQueue?.register){window.MajickRenderQueue.register('d772-preassessment-review',render,81);window.MajickRenderQueue.schedule()}
 else{document.addEventListener('DOMContentLoaded',render);setInterval(render,1500)}
 })();
