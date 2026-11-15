@@ -26,8 +26,8 @@ jobs:
           CHROMIUM_PATH: /usr/bin/google-chrome
         run: |
           python -m http.server 8765 --directory _site > /tmp/d756-server.log 2>&1 &
+          python -u tests/d756-full-script-browser.py
+          python -u tests/d756-scenario-library-browser.py
           python -u tests/d756-meeting-browser.py
           python -u tests/d756-responsive-writing-browser.py
           python -u tests/d756-ux-browser.py
-          python -u tests/d756-full-script-browser.py
-          python -u tests/d756-scenario-library-browser.py
