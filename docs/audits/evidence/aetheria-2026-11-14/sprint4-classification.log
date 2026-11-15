@@ -1,0 +1,12 @@
+✔ specific input questions are credited and the person addressed first responds (7.777215ms)
+✔ generic invitations are not input or clarification, even when they contain question marks (0.655655ms)
+✔ clarification requires a question grounded in the actual stakeholder statement (1.644311ms)
+✔ meeting compass counts contextual clarifications separately from substantive input (2.798806ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 4
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 327.648931

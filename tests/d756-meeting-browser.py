@@ -90,7 +90,7 @@ with sync_playwright() as pw:
   for profile in ['angela','maya','jordan']:
    for mode in ['guided','independent','challenge']:
     start(profile,mode)
-    assert room.locator('.dmPerson').count()==4
+    assert room.locator('.dmPerson').count()==4,{'pageErrors':errors[-3:],'roomText':room.inner_text()[:1200],'state':saved()}
     assert room.locator('.dmHint').count()==(1 if mode=='guided' else 0)
     assert room.evaluate('(r)=>r.scrollWidth<=r.clientWidth+1')
     submit('Yes')

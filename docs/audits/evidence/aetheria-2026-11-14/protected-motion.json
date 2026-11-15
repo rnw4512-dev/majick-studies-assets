@@ -1,0 +1,134 @@
+{
+  "sanctuary/assets/motion/ember-hop.png": {
+    "sha256": "0198a4fa97d89122c306fffc9f38426accf5ac08edc925e6285175bdba97eb04",
+    "unchanged": true
+  },
+  "sanctuary/assets/motion/ember-idle.png": {
+    "sha256": "faeef552b08afcc1491b7a82c4fd284558e81a40c4a5b361fbfcb75460970062",
+    "unchanged": true
+  },
+  "sanctuary/assets/motion/ember-sit.png": {
+    "sha256": "461a818636f6130d8e1870a1b81a86c69933b41056d60a299b3fb2a40e228a2e",
+    "unchanged": true
+  },
+  "sanctuary/assets/motion/ember-sleep.png": {
+    "sha256": "36e98f9f74daf3c5a42c093cbbe5fd3ae8e1fe526fdf9d6cc21de581c45b38ed",
+    "unchanged": true
+  },
+  "sanctuary/assets/motion/ember-slither-1.png": {
+    "sha256": "52c4c9db11f87b7a3949b44224ad10a3b19968457d3e343ab9d566eba927d298",
+    "unchanged": true
+  },
+  "sanctuary/assets/motion/ember-slither-2.png": {
+    "sha256": "77622a6d80fadc4538e882142f6fc8a38be65c5a5c38bb77d801e0081fbe7b9a",
+    "unchanged": true
+  },
+  "sanctuary/assets/motion/ember-walk-1.png": {
+    "sha256": "7a132717e819793584d51539ebf6d34acf6ea48682bbef414f18685245900b2a",
+    "unchanged": true
+  },
+  "sanctuary/assets/motion/ember-walk-2.png": {
+    "sha256": "023125c8c7226849f22b47233d5c96ed4148607ee973efb3c64ab90bd646581f",
+    "unchanged": true
+  },
+  "sanctuary/assets/motion/luna-hop.png": {
+    "sha256": "17de7d2d5598f6b6cab2dd8c8c0df8d818ff70af5d61e0c1ecbb988e4100e58f",
+    "unchanged": true
+  },
+  "sanctuary/assets/motion/luna-idle.png": {
+    "sha256": "f7cb2e45548f7029f977d524af9f198d2c6814a5bf185061e44771bed6f52c6e",
+    "unchanged": true
+  },
+  "sanctuary/assets/motion/luna-walk-1.png": {
+    "sha256": "d4d4cab37605394ec461633d1e11e5c2d9fe0923802460121a3ca0aead2c2c9b",
+    "unchanged": true
+  },
+  "sanctuary/assets/motion/luna-walk-2.png": {
+    "sha256": "bee5011fa38d651506cf581924392d33f3c104d7dbc843fb629da1b6e84fde5d",
+    "unchanged": true
+  },
+  "sanctuary/assets/motion/mallow-binky.png": {
+    "sha256": "8e1cae83b9d5de334696b61cebdb65994e96967079f0ca6a67bc73cf82f13d34",
+    "unchanged": true
+  },
+  "sanctuary/assets/motion/mallow-fly-1.png": {
+    "sha256": "7261ddf29ffd119cecb66c3fb6216b1c26789733e53dfd8b18ed6e90b4c1578c",
+    "unchanged": true
+  },
+  "sanctuary/assets/motion/mallow-fly-2.png": {
+    "sha256": "1877290e8862096bb89784bc8206a77c64f4c2225430b4d37c0e7d32685d1243",
+    "unchanged": true
+  },
+  "sanctuary/assets/motion/mallow-hop-1.png": {
+    "sha256": "30dea2990100ef8afcbe3162bde65cb316025bea9b1234fcd4d365c44732f22e",
+    "unchanged": true
+  },
+  "sanctuary/assets/motion/mallow-hop-2.png": {
+    "sha256": "e1e9fdfce11ab5182714c7bb43e6e4b5c324843e610b0801e10fdf8a9628c8c2",
+    "unchanged": true
+  },
+  "sanctuary/assets/motion/mallow-idle.png": {
+    "sha256": "a504ae78e4e24f193f5bbf4986c09b71b56eebb143c94e7d36fdf9915fa44187",
+    "unchanged": true
+  },
+  "sanctuary/assets/motion/mallow-land.png": {
+    "sha256": "ffe58378d479aa57b639c480e66abfa92a0705890e47abd6a135e4900779b71a",
+    "unchanged": true
+  },
+  "sanctuary/assets/motion/mallow-paw.png": {
+    "sha256": "2b9d8173f9fa871b4bd7f537713dcf65a97386f01e631ecc727802c9dc9991eb",
+    "unchanged": true
+  },
+  "sanctuary/assets/motion/mallow-sit.png": {
+    "sha256": "953d6c0f1d2d84614231ce5e2e6ae51cf99b1f487eea08790d8e5a2af68c2e43",
+    "unchanged": true
+  },
+  "sanctuary/assets/motion/mallow-sleep.png": {
+    "sha256": "b167a94a26d0acc3716c4dfe7c294f6a0501a1ef810854ac210c22a443473c47",
+    "unchanged": true
+  },
+  "sanctuary/assets/motion/nova-hop.png": {
+    "sha256": "ec2a99c37bf64f9e175a72305c7948a40beb7fd6f66b6673d2c26d4abaaf4457",
+    "unchanged": true
+  },
+  "sanctuary/assets/motion/nova-paw.png": {
+    "sha256": "52a39fc30ba13231f89168bc78bef64ff51f0dffbc2bb63312373d926e7c1df3",
+    "unchanged": true
+  },
+  "sanctuary/assets/motion/nova-pounce.png": {
+    "sha256": "54788c79448bc5bf97b6777f8edad70737ff4f11fb084882f93b77afefcae852",
+    "unchanged": true
+  },
+  "sanctuary/assets/motion/nova-pounce2.png": {
+    "sha256": "a10fac4597ab37b7493a2009321b41ed93dda950c0cb5e48233ba3cfb507e53b",
+    "unchanged": true
+  },
+  "sanctuary/assets/motion/nova-pounce3.png": {
+    "sha256": "d443934193a7da1d3639bd18fdb346ccf97602003c7ca5330a55d6f62b1fe4bc",
+    "unchanged": true
+  },
+  "sanctuary/assets/motion/nova-run.png": {
+    "sha256": "551c16a72854f1d3f0944182f66e655be7958b52f081701e777d17510898085b",
+    "unchanged": true
+  },
+  "sanctuary/assets/motion/nova-sit.png": {
+    "sha256": "9daf1996bf6483afc60784eae9fce1b2c6d91026d993c908d5046183905e4ba4",
+    "unchanged": true
+  },
+  "sanctuary/assets/motion/nova-sleep.png": {
+    "sha256": "5fd788a2ef20ffe910e663a8dd6e58acf42c16bc25cb1b9e171957bdce784f69",
+    "unchanged": true
+  },
+  "sanctuary/assets/motion/nova-spin.png": {
+    "sha256": "0ac61061bdb38c99d9bcd2dcf1a8aa8fcea0c2c2b5d35ec70b5f3eb2e54f3abe",
+    "unchanged": true
+  },
+  "sanctuary/assets/motion/nova-walk-1.png": {
+    "sha256": "28f6c033c4e0936238ba940e7eb8d738b52fc1cc0c41d7221ceb99ff65dde8a0",
+    "unchanged": true
+  },
+  "sanctuary/assets/motion/nova-walk-2.png": {
+    "sha256": "563baabb39555c54101966b6147e7225da5a77c95c2d2ce4a45dce746eb03d39",
+    "unchanged": true
+  }
+}
