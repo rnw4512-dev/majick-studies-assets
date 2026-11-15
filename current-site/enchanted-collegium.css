@@ -78,7 +78,7 @@ html body.majickCampus #content :is(.v3333Scope,.majMixedExam,.lessonExplain,.tu
 html body.majickCampus #content :is(.v3333Scope,.majMixedExam,.lessonExplain,.tutorChapterBlock:not(.classroomStage *),.learnRecommendation,.lcContinue,.courseLessonNavigator,.classroomStage)
  :is(h2,h3,h4,p,li,small,summary,.majExamTop,.majExamTop strong,.majExamTop span,.majExamPrompt,.majExamSaveStatus,label):not(:where(button *, .mjSolutionEngine *, .mjtCoach *, .mjtYourTurn *, .majickGeneratedLab *, .mjConstructActivity *, .questionDataVisual *, .majickGeneratedFigure *, .mjSkillGrowthDrawer *)) {
  color:var(--collegium-ink)!important;
- -webkit-text-fill-color:var(--collegium-ink)!important;
+ -webkit-text-fill-color:currentColor!important;
  opacity:1!important;text-shadow:none!important;
 }
 /* The Skill Growth drawer stays dark: never put parchment ink on its progress text. */
