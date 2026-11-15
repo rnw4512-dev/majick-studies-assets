@@ -20,12 +20,12 @@ with sync_playwright() as pw:
   room.locator('[data-action=start]').click()
   script=room.locator('.dmFullScript')
   assert script.count()==1
+  script.locator('details > summary').first.click()
   assert 'Good afternoon' in script.locator('blockquote').inner_text()
   assert 'introduce ourselves' in script.locator('blockquote').inner_text().lower()
   assert script.locator('li').count()==12
   assert room.locator('.dmFullScript').evaluate('(el)=>el.compareDocumentPosition(document.querySelector(".dmChoices")) & Node.DOCUMENT_POSITION_FOLLOWING')!=0
   initial=page.evaluate('({xp:MajickStateCore.ensureAccount().xp,crystals:MajickStateCore.ensureAccount().crystals})')
-  script.locator('details > summary').first.click()
   script.locator('[data-action=use-full-script]').click()
   response=room.locator('#dmAnswer').input_value()
   assert len(response.split())>85,response
