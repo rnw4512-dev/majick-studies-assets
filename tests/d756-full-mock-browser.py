@@ -17,6 +17,10 @@ with sync_playwright() as pw:
         room.locator("#dmMode").select_option("mock")
         room.locator('[data-action="start"]').click()
         assert room.locator(".dmMockGuide").count() == 1, "Full mock guide not visible"
+        assert room.locator(".dmMockGuide details").get_attribute("open") is None, "Full sample should be optional"
+        assert room.locator(".dmChoices details").get_attribute("open") is None, "Prompts should be initially collapsed"
+        assert room.locator(".dmVoiceHelp").count() == 1
+        assert room.locator('[data-action=submit]').inner_text() == "Send response to stakeholder"
         assert "STEP 1/12" in room.locator(".dmMockGuide").inner_text()
         assert room.locator(".dmReferenceQuick").count() == 1
         assert room.locator(".dmGoalCard").count() == 3
