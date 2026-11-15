@@ -81,6 +81,11 @@ html body.majickCampus #content :is(.v3333Scope,.majMixedExam,.lessonExplain,.tu
  -webkit-text-fill-color:var(--collegium-ink)!important;
  opacity:1!important;text-shadow:none!important;
 }
+/* The Skill Growth drawer stays dark: never put parchment ink on its progress text. */
+html body.majickCampus #content .mjSkillGrowthDrawer .mjCompactSkillDetails p {
+ color:#fff6e8!important;
+ -webkit-text-fill-color:#fff6e8!important;
+}
 html body.majickCampus #content .learnRecommendation>span {color:var(--collegium-ink)!important;}
 html body.majickCampus #content .tutorChapterBlock article {border-color:#b59b7366;}
 html body.majickCampus #content .tutorBlockTitle>span {
