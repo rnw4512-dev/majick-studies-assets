@@ -241,7 +241,7 @@ function receiptLines(x){
 function showReceipt(receipt){
  if(typeof document==='undefined')return;
  document.getElementById('majRewardReceipt')?.remove();
- const host=document.createElement('div');host.id='majRewardReceipt';host.className='majRewardReceipt '+(receipt.drop?'hasDrop':'');
+ const host=document.createElement('div');host.id='majRewardReceipt';host.className='majRewardReceipt '+(receipt.drop?'hasDrop':!receipt.eggFragments?'isCompact':'');host.setAttribute('role','status');host.setAttribute('aria-live','polite');host.setAttribute('aria-atomic','true');
  const rarity=receipt.drop?.rarity||'common';
  host.innerHTML='<section class="majRewardCard '+E(rarity)+'"><div class="majRewardStars">✦ ✧ ✦</div><small>'+E(receipt.type==='misconception-repaired'?'MISCONCEPTION BROKEN':'MAJICK REWARD')+'</small><h3>'+E(receipt.type==='correct-answer'?'Correct — the Collegium responds!':receipt.label.replace(/\b\w/g,m=>m.toUpperCase()))+'</h3>'+
  '<div class="majRewardLines">'+receiptLines(receipt).map(x=>'<span>'+E(x)+'</span>').join('')+'</div>'+

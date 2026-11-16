@@ -1,6 +1,6 @@
 (()=>{'use strict';if(window.MajickInlineLessonPractice)return;
 const esc=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const states=new Map();
+// Activity drafts live with the existing course progress save.
 function model(lesson,index){
  const course=String(window.S?.activeCourse||''),all=window.MajickLearningLab?.vocab?.(course)||[];
  const terms=all.filter(v=>v?.term&&v?.definition&&String(v.definition).length>10);
@@ -9,7 +9,7 @@ function model(lesson,index){
  const scored=terms.map(v=>{const term=String(v.term).toLowerCase();let rank=context.includes(term)?10:0;rank+=term.split(/\s+/).filter(w=>w.length>3&&words.has(w)).length*2;return {v,rank}}).sort((a,b)=>b.rank-a.rank);
  const relevant=scored.filter(x=>x.rank>0).map(x=>x.v);
  const pool=(relevant.length>=3?relevant:scored.map(x=>x.v)).slice(0,Math.min(4,terms.length));
- return {course,key:course+':'+index+':'+String(lesson.title||''),pool,relevant:relevant.length>0,lesson};
+ return {course,key:String(lesson.id||lesson.title||index),pool,relevant:relevant.length>0,lesson};
 }
 function fillSentence(row,lesson){
  const text=String(lesson.explain||'').replace(/\s+/g,' ').trim();
@@ -22,7 +22,11 @@ function mount(_box,lesson,index){
  let host=outer.querySelector('.mliVocabularyPanel');if(!host){host=document.createElement('section');host.className='mliVocabularyPanel';outer.appendChild(host)}
  const m=model(lesson,index);
  if(m.pool.length<2){host.innerHTML='<h4>✦ Practice this concept</h4><p>Vocabulary practice will appear here when at least two terms and definitions from this course are available. Add lesson notes or key terms to unlock it.</p>';return}
- let st=states.get(m.key);if(!st){st={mode:'match',picked:-1,matched:{},fills:{},feedback:'',hint:false};states.set(m.key,st)}
+ const progress=window.S?.progress?.[m.course];if(!progress)return;
+ const states=progress.inlineVocabulary||(progress.inlineVocabulary={});
+ let st=states[m.key];if(!st){st={courseId:m.course,lessonId:m.key,mode:'match',picked:-1,matched:{},fills:{},feedback:'',hint:false,pool:m.pool.map(({term,definition})=>({term,definition})),completedModes:{}};states[m.key]=st;}
+ st.completedModes=st.completedModes||{};if(st.pool?.length>=2)m.pool=st.pool;
+ host.__majickVocabularyOwner=st;
  const draw=()=>{
  const rows=m.pool,used=new Set(Object.values(st.matched));
  const definitions=rows.map((v,i)=>({i,text:v.definition})).sort((a,b)=>((a.i+1)*7)%5-((b.i+1)*7)%5);
@@ -45,11 +49,15 @@ function mount(_box,lesson,index){
  if(st.mode==='match'){total=rows.length;right=rows.filter((_,i)=>st.matched[i]===i).length}
  else{total=Math.min(3,rows.length);right=rows.slice(0,total).filter((_,i)=>st.fills[i]===i).length}
  st.feedback=right===total?'✓ All '+total+' correct! Try the other tab or continue the lesson.':'You matched '+right+' of '+total+'. Review the definitions and adjust your choices.';
- window.MajickLearningContinuity?.record?.({courseId:m.course,lessonTitle:lesson.title,term:lesson.title,correct:right===total,activity:'learn-lab-'+st.mode});
+ if(right!==total||!st.completedModes[st.mode])window.MajickLearningContinuity?.record?.({courseId:m.course,lessonTitle:lesson.title,term:lesson.title,correct:right===total,activity:'learn-lab-'+st.mode});
  if(right<total)st.feedback+=' This skill will also be prioritized in Study Realm and Game Realm.';
- if(right===total){const reward=window.MajickInteractiveRewards?.award?.('learn-vocab-'+index+'-'+st.mode,'participation');if(reward?.awarded)st.feedback+=' +'+reward.xp+' XP earned through the existing reward system.'}
+ if(right===total&&!st.completedModes[st.mode]){st.completedModes[st.mode]=true;const reward=window.MajickInteractiveRewards?.award?.('learn-vocab-'+index+'-'+st.mode,'participation');if(reward?.awarded)st.feedback+=' +'+reward.xp+' XP earned through the existing reward system.'}
  draw();
  };
+ host.querySelectorAll('button').forEach(button=>{
+  const handler=button.onclick;if(!handler)return;
+  button.onclick=event=>{if(!button.isConnected||window.S?.activeCourse!==m.course||host.__majickVocabularyOwner!==st)return;handler(event);window.save?.()};
+ });
  };draw();
  window.MajickInlineLessonTabs?.refresh?.();
 }

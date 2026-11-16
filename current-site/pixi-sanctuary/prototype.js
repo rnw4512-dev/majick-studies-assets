@@ -61,7 +61,7 @@ for(const x of [48,1152]){
 sanctuaryEdges.moveTo(62,635).quadraticCurveTo(155,629,246,638).stroke({color:0x8db1ad,width:2,alpha:.36});
 sanctuaryEdges.moveTo(952,638).quadraticCurveTo(1050,628,1138,635).stroke({color:0x8db1ad,width:2,alpha:.36});
 world.addChildAt(sanctuaryEdges,world.getChildIndex(objects));
-try{const texture=await PIXI.Assets.load('../assets/guardian-dorm-v1.png');const bg=new PIXI.Sprite(texture);bg.width=1200;bg.height=700;world.addChildAt(bg,0)}catch(error){console.warn('Room backdrop unavailable',error)}
+try{const texture=await PIXI.Assets.load('../assets/guardian-dorm-v1.webp');const bg=new PIXI.Sprite(texture);bg.width=1200;bg.height=700;world.addChildAt(bg,0)}catch(error){console.warn('Room backdrop unavailable',error)}
 function resize(){const b=room.getBoundingClientRect(),w=Math.max(240,b.width),h=Math.max(240,b.height);app.renderer.resize(w,h);const k=Math.min(w/1200,h/700);world.scale.set(k);world.position.set((w-1200*k)/2,(h-700*k)/2);$('viewport').textContent=Math.round(w)+' × '+Math.round(h)}
 new ResizeObserver(resize).observe(room);resize();
 function action(kind,fields={}){

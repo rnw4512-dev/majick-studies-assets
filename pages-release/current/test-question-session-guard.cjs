@@ -1,0 +1,14 @@
+'use strict';
+const fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/strict');
+const source=fs.readFileSync('current-site/startup-core.20261114.js','utf8');
+const start=source.indexOf('function answerQ(chosen){'),end=source.indexOf('\nfunction grantMoonlight(',start);
+const q1={id:'q1',answer:'A'},q2={id:'q2',answer:'B'};
+const makeSession=()=>({current:q1,questions:[q1,q2],index:1,type:'test',answered:false,score:0,combo:0,review:[],confidence:'sure'});
+const context={S:{activeCourse:'D772',screen:'mission'},session:makeSession(),timers:[],setTimeout:fn=>context.timers.push(fn),record(){},playChime(){},render(){context.renders++},finishSession(){context.finished++},renders:0,finished:0};
+vm.createContext(context);vm.runInContext(source.slice(start,end),context);
+context.answerQ('wrong');const replacement=makeSession();replacement.current=q2;context.session=replacement;
+context.timers.shift()();assert.equal(context.session,replacement);assert.equal(context.session.answered,false);assert.equal(context.renders,0);
+context.session=makeSession();context.answerQ('wrong');context.S.activeCourse='D756';context.timers.shift()();assert.equal(context.session.current.id,'q1');
+context.S.activeCourse='D772';context.session=makeSession();context.answerQ('wrong');context.S.screen='home';context.timers.shift()();assert.equal(context.session.current.id,'q1');
+context.S.screen='mission';context.session=makeSession();context.answerQ('wrong');context.answerQ('wrong');assert.equal(context.timers.length,1);context.timers.shift()();assert.equal(context.session.current.id,'q2');assert.equal(context.session.answered,false);assert.equal(context.session.chosen,null);assert.equal(context.session.review.length,1);assert.equal(context.renders,1);
+console.log('PASS delayed evaluation cannot alter a newer session, course or room; normal question advancement clears feedback and records once');

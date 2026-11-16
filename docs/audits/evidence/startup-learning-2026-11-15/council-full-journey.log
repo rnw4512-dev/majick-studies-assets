@@ -1,0 +1,13 @@
+PASS scenario/mode/viewport launches, meaningful response gate, pending reply gate and draft resume
+PASS topic-specific participant input and generic invitation rejection
+PASS reload resume and paused clock
+PASS complete meetings in three scenarios/modes, live shared XP +30/+8/0, profile-switch first-award protection, unrelated D772 state
+PASS persisted ledger, reviewable history and zero mastery XP
+Calendar before next-day jump Wed Nov 11 2026 07:51:43 GMT-0500 (Eastern Standard Time)
+Calendar after next-day jump Thu Nov 12 2026 07:51:43 GMT-0500 (Eastern Standard Time)
+PASS completed short attempt earns zero; next calendar day repeat earns eight XP
+PASS two-exchange Replay Chamber preserves original evidence and grants zero XP
+PASS guided repair-only meeting earns zero completion XP
+PASS disagreement requires listening and concern discovery; follow-up plan may retain differing views
+INFO optional legacy local AI bridge offline; scripted meeting has no AI dependency
+PASS no runtime errors or failed application assets

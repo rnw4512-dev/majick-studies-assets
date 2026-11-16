@@ -218,7 +218,7 @@ function sessionHTML(){if(!session)return '';if(session.type==='match')return ma
 function clueHTML(text){let toks=text.split(/(\s+)/);return `<div class="tiny"><b>Step 1:</b> Click the clue words or phrases that matter. You are not graded on highlighting.</div><div class="clueWords">${toks.map((w,i)=>/^\s+$/.test(w)?w:`<span class="word ${session.highlight.includes(i)?'on':''}" onclick="toggleClue(${i})">${esc(w)}</span>`).join('')}</div><div class="tiny"><b>Step 2:</b> Choose the best answer.</div>`}
 function toggleClue(i){let a=session.highlight,ix=a.indexOf(i);ix>=0?a.splice(ix,1):a.push(i);render()}
 function setConfidence(x){session.confidence=x;render()}
-function answerQ(chosen){if(!session||session.answered)return;let q=session.current,correct=chosen===q.answer;session.chosen=chosen;session.answered=true;session.score+=correct?1:0;session.combo=correct?session.combo+1:0;if(session.type==='rush'&&!correct)session.lives--;if(session.type==='boss'){session.bossHP-=correct?Math.min(18,8+(q.difficulty||1)*2):0;if(!correct)session.playerHP--}record(q,chosen,correct,session.confidence,session.type);if(correct){if(session.chartUsed&&window.MajickRewardCore?.award){window.MajickRewardCore.award('correct-answer',{key:'guided-study:'+String(S.activeCourse||'')+':'+q.id+':'+Date.now(),course:S.activeCourse,qid:q.id,difficulty:q.difficulty||1,independent:false,source:'guided-anchor-chart'});session.reward={xp:0,cr:0}}else grantMoonlight(q);sparkle(true);playChime(true);if(session.combo>0&&session.combo%5===0)transformationBurst();if(session.combo>=3&&(q.difficulty||1)>=3)requestAIChallenge(q)}else{playChime(false)}if(session.type==='test'){session.review.push({q,chosen,correct});setTimeout(()=>{if(session.index>=session.questions.length){finishSession()}else{session.current=session.questions[session.index++];session.answered=false;render()}},100);return}render()}
+function answerQ(chosen){if(!session||session.answered)return;let q=session.current,correct=chosen===q.answer;session.chosen=chosen;session.answered=true;session.score+=correct?1:0;session.combo=correct?session.combo+1:0;if(session.type==='rush'&&!correct)session.lives--;if(session.type==='boss'){session.bossHP-=correct?Math.min(18,8+(q.difficulty||1)*2):0;if(!correct)session.playerHP--}record(q,chosen,correct,session.confidence,session.type);if(correct){if(session.chartUsed&&window.MajickRewardCore?.award){window.MajickRewardCore.award('correct-answer',{key:'guided-study:'+String(S.activeCourse||'')+':'+q.id+':'+Date.now(),course:S.activeCourse,qid:q.id,difficulty:q.difficulty||1,independent:false,source:'guided-anchor-chart'});session.reward={xp:0,cr:0}}else grantMoonlight(q);sparkle(true);playChime(true);if(session.combo>0&&session.combo%5===0)transformationBurst();if(session.combo>=3&&(q.difficulty||1)>=3)requestAIChallenge(q)}else{playChime(false)}if(session.type==='test'){session.review.push({q,chosen,correct});const submittedSession=session,submittedQuestionId=q.id,submittedCourse=S.activeCourse;setTimeout(()=>{if(session!==submittedSession||S.activeCourse!==submittedCourse||S.screen!=='mission'||session.current?.id!==submittedQuestionId||!session.answered)return;if(session.index>=session.questions.length){finishSession()}else{session.current=session.questions[session.index++];session.answered=false;session.chosen=null;session.reward=null;render()}},100);return}render()}
 function grantMoonlight(q){let p=prog();let base=8+(q.difficulty||1)*3,bonus=Math.min(15,Math.max(0,(session.combo||1)-1)*2),xp=base+bonus,cr=(q.difficulty||1)>=4?2:1;p.xp=(p.xp||0)+xp;p.crystals=(p.crystals||0)+cr;session.reward={xp,cr};let milestones=[[25,'Crescent Charm'],[75,'Starlight Charm'],[150,'Crystal Heart'],[300,'Moon Crown']];p.charms=p.charms||[];for(const [n,name] of milestones)if(p.xp>=n&&!p.charms.includes(name))p.charms.push(name);save();rewardToast(`+${xp} XP  ✦  +${cr} 💎`,session.combo>=5?`Transformation streak x${session.combo}!`:`Correct answer • difficulty ${q.difficulty||1}`)}
 function grantInteractiveMoonlight(taskId,kind){
  if(!S?.activeCourse||!S.progress?.[S.activeCourse]||!['participation','transfer'].includes(kind))return {awarded:false};
@@ -2075,13 +2075,60 @@ companionHTML=function(){
 };
 
 /* Journal */
-function masJournalHTML(){
-  const C=mcState();C.journal=C.journal||[];
-  return `<div class="sectionTitle"><div><h2>My Journal</h2><p>Private study notes, reflections, memory cues, and things you want to explain again later.</p></div></div>
-  <div class="mcDashboard"><section class="mcPanel"><h3>New entry</h3><textarea id="masJournalText" placeholder="What clicked? What still feels slippery? What would you tell yourself before the OA?" style="min-height:170px"></textarea><button class="btn primary" style="margin-top:9px" onclick="masSaveJournal()">Save Entry</button></section><section class="mcPanel"><h3>Why journal?</h3><p>Writing what you think you know makes retrieval visible. Keep these short and useful—this is a study journal, not homework.</p></section></div>
-  <div class="mcPanel">${C.journal.length?C.journal.slice().reverse().map(x=>`<div class="masJournalEntry"><b>${new Date(x.at).toLocaleString()} • ${esc(x.courseId)}</b><p>${esc(x.text)}</p></div>`).join(''):'<p>No entries yet.</p>'}</div>`;
+function masJournalSelect(id,event){
+ const root=document.getElementById('masScholarJournal');if(!root)return;
+ const buttons=[...root.querySelectorAll('[data-journal-tab]')];
+ let target=buttons.find(b=>b.dataset.journalTab===id);
+ if(event){
+  const position=buttons.indexOf(target),key=event.key;
+  const offset=key==='ArrowRight'?1:key==='ArrowLeft'?-1:0;
+  if(!offset&&!['Home','End'].includes(key))return;
+  event.preventDefault();target=buttons[key==='Home'?0:key==='End'?buttons.length-1:(position+offset+buttons.length)%buttons.length];id=target.dataset.journalTab;target.focus();
+ }
+ buttons.forEach(b=>{const active=b===target;b.setAttribute('aria-selected',String(active));b.tabIndex=active?0:-1});
+ root.querySelectorAll('[data-journal-page]').forEach(p=>p.hidden=p.dataset.journalPage!==id);
 }
-function masSaveJournal(){const t=(document.getElementById('masJournalText')?.value||'').trim();if(!t)return;const C=mcState();C.journal=C.journal||[];C.journal.push({text:t,courseId:course().id,at:Date.now()});save();render()}
+function masJournalResume(id){
+ if(id&&window.MajickCourseTutor?.openLesson)window.MajickCourseTutor.openLesson(id,null,S.activeCourse);
+ else navigate('mission');
+}
+function masJournalHTML(){
+ const C=mcState(),p=prog(),account=window.MajickStateCore?.ensureAccount?.()||S.majickAccount||{};
+ C.journal=C.journal||[];
+ const lessons=Object.values(p.yourTurnPractice||{}).sort((a,b)=>(b.updatedAt||0)-(a.updatedAt||0));
+ const answers=(p.answers||[]).filter(a=>!a.historical),needs=Object.values(p.learningNeeds||{});
+ const skills=Object.values(p.adaptiveSkills||{});
+ const guided=lessons.reduce((n,l)=>n+Object.values(l.completed||{}).filter(Boolean).length,0);
+ const independent=answers.filter(a=>a.correct&&a.assisted===false).length;
+ const transfers=answers.filter(a=>a.correct&&a.assisted===false&&a.transfer===true).length;
+ const repairs=skills.flatMap(row=>{
+  const records=Object.entries(row.reconstructionBySkill||{}).filter(([,r])=>!r.required&&((r.verified||[]).length>=5||(r.solvedSteps||[]).length>=5&&r.transferId));
+  if(records.length)return records.map(([skill,r])=>({lessonId:row.lessonId,skill,transferVerified:!!r.transferId&&!r.awaitingTransfer,misconceptionHistory:{awaitingIndependentTransfer:r.awaitingTransfer===true}}));
+  return row.misconceptionHistory?.recoveryCompleted||row.misconceptionHistory?.awaitingIndependentTransfer?[row]:[];
+ });
+ const incomplete=lessons.filter(l=>(l.questionIds||[]).some(id=>!l.completed?.[id]));
+ const goals=needs.filter(r=>r.struggles>r.successes).sort((a,b)=>(b.struggles-b.successes)-(a.struggles-a.successes));
+ const official=window.MajickCourseTutor?.sections?.(S.activeCourse)||[];
+ const units=official.flatMap(section=>window.MajickCourseTutor?.sectionUnits?.(section)||section.lessons||[]);
+ const name=id=>units.find(l=>l.id===id)?.title||String(id||'Recent practice').replace(/^d\d+-s(\d+)-l(\d+)$/i,'Section $1 · Lesson $2');
+ const resume=id=>'<button type="button" data-journal-resume="'+esc(id||'')+'" onclick="masJournalResume(this.dataset.journalResume)">Resume learning</button>';
+ const rows=(items,empty)=>items.length?'<ul class="masJournalList">'+items.join('')+'</ul>':'<p>'+empty+'</p>';
+ const recent=lessons.slice(0,8).map(l=>'<li><b>'+esc(name(l.lessonId))+'</b><p>Guided practice · '+Object.values(l.completed||{}).filter(Boolean).length+' completed questions</p>'+resume(l.lessonId)+'</li>');
+ if(!recent.length)answers.slice(-8).reverse().forEach(a=>recent.push('<li><b>'+esc(name(a.lessonId||a.topicId))+'</b><p>'+esc(a.assisted===true?'Supported practice':a.assisted===false?'Independent response':'Recorded practice · assistance not recorded')+' · '+esc(a.correct?'Correct':'Needs repair')+'</p>'+resume(a.lessonId)+'</li>'));
+ const achievements=(p.charms||[]).map(c=>'<li>'+esc(typeof c==='string'?c:c.name||c.id)+'</li>');
+ const milestoneReceipts=Object.values(account.rewardCore?.ledger||{}).map(r=>r.receipt).filter(r=>r&&/mastered|course-passed|competency-ready/.test(r.type||''));
+ milestoneReceipts.slice(-8).reverse().forEach(r=>achievements.push('<li>'+esc(r.label||r.type)+' · '+esc(new Date(r.at).toLocaleDateString())+'</li>'));
+ const tabs=[['achievements','Achievements'],['recent','Recent Lessons'],['repairs','Mistakes Repaired'],['goals','Next Learning Goals'],['notes','My Notes']];
+ const pages={
+ achievements:'<h3>Achievements</h3><p>'+Number(account.xp||0)+' Scholar XP · '+Number(account.crystals||0)+' Moon Crystals</p><div class="masMastery"><p><b>Guided practice</b><br>'+guided+' completed questions with support</p><p><b>Independent evidence</b><br>'+independent+' explicitly unassisted correct responses · '+transfers+' fresh transfers</p></div><p>Supported completion is separate from independent mastery.</p>'+rows(achievements,'No course charms earned yet. Your next learning activity is a good place to begin.'),
+ recent:'<h3>Recent Lessons</h3>'+rows(recent,'No lesson activity recorded yet. Begin a lesson in Study Hall.'),
+ repairs:'<h3>Mistakes Repaired</h3>'+rows(repairs.slice(0,8).map(r=>'<li><b>'+esc(name(r.lessonId))+'</b><p>Guided reconstruction completed'+(r.misconceptionHistory?.awaitingIndependentTransfer?' · Fresh independent transfer still needed':r.transferVerified?' · Fresh independent transfer verified':'')+'</p>'+resume(r.lessonId)+'</li>'),'No completed repairs recorded yet. Repair opportunities appear after practice identifies a need.')+'<h4>Areas needing practice</h4>'+rows(goals.slice(0,5).map(r=>'<li>'+esc(name(r.lessonId))+' '+resume(r.lessonId)+'</li>'),'No outstanding learning needs recorded.'),
+ goals:'<h3>Next Learning Goals</h3><h4>Continue your lessons</h4>'+rows(incomplete.slice(0,5).map(l=>'<li>'+esc(name(l.lessonId))+' '+resume(l.lessonId)+'</li>'),'No unfinished guided sessions recorded.')+'<h4>Recommended practice</h4>'+rows(goals.slice(0,8).map(r=>'<li><b>'+esc(name(r.lessonId))+'</b><p>Revisit the concept, then demonstrate it independently.</p>'+resume(r.lessonId)+'</li>'),'No targeted recommendations yet. Continue your current lesson to build evidence.')+'<h4>Independent mastery targets</h4>'+rows(repairs.filter(r=>r.misconceptionHistory?.awaitingIndependentTransfer).slice(0,5).map(r=>'<li>'+esc(name(r.lessonId))+' · Try a new problem without hints. '+resume(r.lessonId)+'</li>'),'No pending fresh-transfer targets recorded.'),
+ notes:'<h3>My Notes</h3><label for="masJournalText">Reflection or memory cue</label><textarea id="masJournalText" placeholder="What clicked? What would you explain again?" rows="4"></textarea><button class="btn primary" onclick="masSaveJournal()">Save Entry</button><div class="masJournalNotes">'+C.journal.slice().reverse().map(x=>'<article class="masJournalEntry"><b>'+esc(new Date(x.at).toLocaleString())+' · '+esc(x.courseId)+'</b><p>'+esc(x.text)+'</p></article>').join('')+(C.journal.length?'':'<p>No notes yet.</p>')+'</div>'
+ };
+ return '<section id="masScholarJournal" class="mcPanel"><h2>Scholar Journal</h2><p>'+esc(course().title)+' · Your saved learning record</p><div class="masJournalTabs" role="tablist" aria-label="Journal sections">'+tabs.map(([id,label],i)=>'<button id="journal-tab-'+id+'" type="button" role="tab" data-journal-tab="'+id+'" aria-controls="journal-page-'+id+'" aria-selected="'+(i===0)+'" tabindex="'+(i===0?0:-1)+'" onclick="masJournalSelect(this.dataset.journalTab)" onkeydown="masJournalSelect(this.dataset.journalTab,event)">'+label+'</button>').join('')+'</div>'+tabs.map(([id,label],i)=>'<section id="journal-page-'+id+'" role="tabpanel" tabindex="0" aria-labelledby="journal-tab-'+id+'" data-journal-page="'+id+'" '+(i===0?'':'hidden')+'>'+pages[id]+'</section>').join('')+'</section>';
+}
+function masSaveJournal(){const t=(document.getElementById('masJournalText')?.value||'').trim();if(!t)return;const C=mcState();C.journal=C.journal||[];C.journal.push({text:t,courseId:course().id,at:Date.now()});save();render();masJournalSelect('notes')}
 function masFocusHTML(){
   const C=mcState();
   return `<div class="sectionTitle"><div><h2>Focus Tools</h2><p>Change the atmosphere without lowering the academic rigor.</p></div></div>

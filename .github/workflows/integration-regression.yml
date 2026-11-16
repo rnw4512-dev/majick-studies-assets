@@ -37,7 +37,9 @@ jobs:
       - name: Verify startup isolation and durable question state
         env:
           CHROMIUM_PATH: /usr/bin/google-chrome
-        run: python -u tests/startup-learning-browser.py _site
+        run: |
+          python -u tests/startup-learning-browser.py _site
+          python -u tests/room-navigation-browser.py _site
       - name: Check JavaScript syntax
         run: |
           node --check current-site/pixi-sanctuary/prototype.js

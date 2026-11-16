@@ -28,6 +28,43 @@ jobs:
     steps:
       - name: Check out site content
         uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Verify existing learning and save regressions
+        run: |
+          node pages-release/current/release-checks.cjs current-site
+          for suite in pages-release/current/test-*.cjs; do node "$suite" current-site; done
+          node --test tests/d756-question-classification.test.cjs
+          python pages-release/current/build.py current-site _certified
+      - name: Install browser runner
+        run: python -m pip install playwright==1.56.0
+      - name: Verify real learning, Journal, Council and Guardian flows before publishing
+        env:
+          CHROMIUM_PATH: /usr/bin/google-chrome
+          RECOVERY_EVIDENCE: /tmp/aetheria-sanctuary-evidence
+        run: |
+          python -u tests/startup-learning-browser.py _certified
+          python -u tests/room-navigation-browser.py _certified
+          python -u tests/aetheria-sanctuary-browser.py _certified
+          python -m http.server 8765 --directory _certified > /tmp/aetheria-pages-test-server.log 2>&1 &
+          python -u tests/d756-full-script-browser.py
+          python -u tests/d756-scenario-library-browser.py
+          python -u tests/d756-meeting-browser.py
+          python -u tests/d756-ux-browser.py
+      - name: Preserve browser verification evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: aetheria-pages-browser-evidence
+          path: |
+            /tmp/aetheria-sanctuary-evidence
+            /tmp/aetheria-learning-evidence
+            /tmp/aetheria-pages-test-server.log
+          if-no-files-found: ignore
       - name: Verify app entry point and meeting assets
         run: |
           test -s current-site/index.html
@@ -37,7 +74,13 @@ jobs:
       - name: Preserve canonical /current-site/ route
         run: |
           mkdir -p _aetheria_pages/current-site
-          cp -a current-site/. _aetheria_pages/current-site/
+          cp -a _certified/. _aetheria_pages/current-site/
+          cp _certified/release.json _aetheria_pages/release.json
+          python - <<'PYCOMMIT'
+          import json,os
+          from pathlib import Path
+          Path('_aetheria_pages/current-site/deployment.json').write_text(json.dumps({'commit':os.environ['GITHUB_SHA']}))
+          PYCOMMIT
           printf '%s\n' '<!doctype html><html lang="en"><meta charset="utf-8"><meta http-equiv="refresh" content="0; url=./current-site/"><title>Aetheria</title><a href="./current-site/">Open Aetheria</a></html>' > _aetheria_pages/index.html
           touch _aetheria_pages/.nojekyll
       - name: Configure GitHub Pages
@@ -70,3 +113,29 @@ jobs:
             fi
           done
           echo "Public root and current-site entry points verified."
+
+      - name: Verify the exact deployed source and release
+        env:
+          PAGES_URL: ${{ steps.deployment.outputs.page_url }}
+        run: |
+          python - <<'PYVERIFY'
+          import json,os,time,urllib.request
+          from pathlib import Path
+          base=os.environ['PAGES_URL'].rstrip('/')+'/'
+          expected=json.loads(Path('_certified/release.json').read_text())
+          for attempt in range(30):
+              try:
+                  def read(path):
+                      with urllib.request.urlopen(base+path+'?verify='+str(time.time()),timeout=20) as response:
+                          return response.read().decode()
+                  assert json.loads(read('current-site/deployment.json'))['commit']==os.environ['GITHUB_SHA']
+                  assert json.loads(read('current-site/release.json'))==expected
+                  assert expected['build'] in read('current-site/index.html')
+                  print('Verified exact live commit:',os.environ['GITHUB_SHA'],'release:',expected['build'])
+                  break
+              except Exception as error:
+                  print('Waiting for exact Pages release:',error)
+                  time.sleep(5)
+          else:
+              raise SystemExit('Exact production commit was not verified')
+          PYVERIFY

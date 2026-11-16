@@ -68,3 +68,17 @@
   .v3356BriefActions button{width:100%}
   .v3362Bookmark{right:6px!important;transform:scale(.9);transform-origin:top right}
 }
+
+/* Reuse Home's compact navigation for every learning room on small screens. */
+@media(max-width:1000px){
+ body .side{position:relative!important;height:auto!important;min-height:0!important;padding:8px!important}
+ body .side :is(.brand,.sidefoot){display:none!important}
+ body .side .nav{display:flex!important;height:72px!important;max-height:72px!important;align-items:stretch!important;overflow-x:auto!important;overflow-y:hidden!important;gap:6px;padding-bottom:4px}
+ body .side .nav button{flex:0 0 78px;height:56px!important;min-height:56px!important;max-height:56px!important;padding:6px!important;margin:0!important}
+ body .top{height:auto!important;min-height:82px!important;max-height:none!important;flex-wrap:wrap!important;gap:8px;padding:10px 16px}
+ body .top .titleline{min-width:0;flex:1 1 140px}
+ body .top .pill{display:none}
+ body .top .courseSelect{min-width:0!important;max-width:100%!important;width:auto!important;flex:1 1 140px}
+ body .top .caAmbience{width:100%;flex:1 1 100%;margin:0}
+ body[data-majick-room=journal] #majickRoomRibbon{display:none}
+}

@@ -37,3 +37,11 @@ button.majVaultItemArt{width:100%;border:0;border-bottom:1px solid #ffffff12;bor
 @media(max-width:600px){.majVaultTabs{gap:6px;padding:8px}.majVaultTabs button{flex:1 1 42%;padding:10px 8px}.majVaultPages span{order:-1;flex-basis:100%;text-align:center}.majVaultPanel .majVaultCollection{grid-template-columns:repeat(2,minmax(0,1fr))}.majVaultItemArt{min-height:100px}.majVaultItemActions{flex-wrap:wrap}}
 /* Alchemy presentation; reward-core.js remains the only inventory transaction owner. */
 .majAlchemyLedger{padding:14px;border:1px solid #b89b67;border-radius:14px;margin:12px 0;background:#24182c;color:#fff0df;overflow-wrap:anywhere}.majAlchemyLedger h3{color:#f4d89d}.majAlchemyLedger progress{width:100%;max-width:100%;accent-color:#ba94ce}.majAlchemyLedger button,.realmPotionTools button{border:1px solid #aa8f68;border-radius:9px;background:#48304f;color:#fff4df;padding:8px 10px;margin:5px;cursor:pointer}.realmPotionTools{padding:14px;margin:12px 0;border:1px solid #a68c6b;border-radius:14px;background:#261b31;color:#fff1df;line-height:1.6;overflow-wrap:anywhere}.realmPotionTools mark{color:#201326;background:#f8de9f;padding:2px 4px}.realmPotionTools button:focus-visible,.majAlchemyLedger button:focus-visible{outline:3px solid #ffe1a1;outline-offset:2px}#majAlchemyRecall .majConjureDialog{max-height:90vh;overflow:auto}#majAlchemyRecall button{display:block;margin:8px auto;max-width:100%;white-space:normal}
+
+/* Brief numerical XP feedback uses the existing authoritative receipt. */
+.majRewardReceipt.isCompact{inset:auto 16px 18px auto;display:block;padding:0;max-width:calc(100vw - 32px)}
+.majRewardReceipt.isCompact .majRewardCard{width:min(340px,calc(100vw - 32px));box-sizing:border-box;padding:14px 18px;animation:majXpGlow 500ms ease-out both}
+.majRewardReceipt.isCompact .majRewardStars,.majRewardReceipt.isCompact small{display:none}
+.majRewardReceipt.isCompact h3{font-size:17px;margin:0 0 7px}.majRewardReceipt.isCompact .majRewardLines{gap:5px;font-size:14px}
+@keyframes majXpGlow{from{opacity:.75;transform:translateY(3px)}to{opacity:1;transform:translateY(0)}}
+@media(prefers-reduced-motion:reduce){.majRewardReceipt.isCompact .majRewardCard{animation:none}}

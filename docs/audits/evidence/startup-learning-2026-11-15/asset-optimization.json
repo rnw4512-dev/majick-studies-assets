@@ -1,0 +1,77 @@
+[
+  {
+    "asset": "guardian-dorm-v1",
+    "originalBytes": 2341414,
+    "webpBytes": 1854636,
+    "mobileBytes": 369326,
+    "pixelExactFullSize": true,
+    "dimensions": [
+      1902,
+      827
+    ],
+    "mobileDimensions": [
+      820,
+      357
+    ]
+  },
+  {
+    "asset": "ancient-study-library-v1",
+    "originalBytes": 2826015,
+    "webpBytes": 2231428,
+    "mobileBytes": 524704,
+    "pixelExactFullSize": true,
+    "dimensions": [
+      1774,
+      887
+    ],
+    "mobileDimensions": [
+      820,
+      410
+    ]
+  },
+  {
+    "asset": "learn-classroom-v1",
+    "originalBytes": 2804493,
+    "webpBytes": 2193378,
+    "mobileBytes": 578992,
+    "pixelExactFullSize": true,
+    "dimensions": [
+      1672,
+      941
+    ],
+    "mobileDimensions": [
+      820,
+      461
+    ]
+  },
+  {
+    "asset": "learn-classroom-v2",
+    "originalBytes": 2731635,
+    "webpBytes": 2163088,
+    "mobileBytes": 586858,
+    "pixelExactFullSize": true,
+    "dimensions": [
+      1672,
+      941
+    ],
+    "mobileDimensions": [
+      820,
+      461
+    ]
+  },
+  {
+    "asset": "game-observatory-v1",
+    "originalBytes": 2944385,
+    "webpBytes": 2299476,
+    "mobileBytes": 519450,
+    "pixelExactFullSize": true,
+    "dimensions": [
+      1774,
+      887
+    ],
+    "mobileDimensions": [
+      820,
+      410
+    ]
+  }
+]
