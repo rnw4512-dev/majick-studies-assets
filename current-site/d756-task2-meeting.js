@@ -387,6 +387,8 @@ function commitTurn(a,assisted=false){typingResume();s.undoLastTurn=JSON.parse(J
 function badges(){const m=meter(),all=s.records.map(r=>r.answer).join(' ');return [m.stakeholders===3?'Voice of the Council':null,m.clarify>=3?'Seeker of Clarity':null,s.concernResolved?'Bridge Builder':null,/(college|postsecondary|training)/i.test(all)&&/(employ|career)/i.test(all)?'Keeper of Futures':null].filter(Boolean);}
 let s={mode:'guided',fullMock:false,profile:'angela',storyline:'standard',pacing:'normal',typingPausedAt:null,toneOpen:false,step:0,records:[],started:0,elapsed:0,active:false,done:false,last:'',pending:null},tick,returnFocus;
 try{let saved=JSON.parse(localStorage.getItem(key));if(saved&&saved.mode)s={...s,...saved,typingPausedAt:null,active:false,resumable:saved.mode==='guided'&&!saved.done&&(saved.resumable||saved.elapsed>0||saved.records?.length>0||!!saved.draft)};}catch(_){}
+// Repair previously saved follow-ups produced before speaker and dialogue were paired.
+if(s.pending?.who===1&&/^I can collect work samples, but we need to agree which independent skills and prompting levels to record\.$/.test(s.pending.line||''))s.pending.who=3;
 function elapsed(){return s.elapsed+(s.active?Math.floor(((s.typingPausedAt||Date.now())-s.started)/1000):0)}
 function persist(){try{localStorage.setItem(key,JSON.stringify({...s,elapsed:elapsed(),started:0,active:false}));}catch(_){s.storageError=true;}}
 function history(){try{return JSON.parse(localStorage.getItem(key+'-history')||'[]')}catch(_){return []}}
