@@ -250,3 +250,56 @@ html body.majickCampus #content .courseLessonNavigator .hubSkillShortcuts>b {
 #content[data-majick-room] .majRoomArchitecture {
  box-shadow:inset 0 0 0 4px #d0b27b16,0 5px 15px #24172c20;
 }
+
+/* Finishing details: no overlays, images, motion loops or additional progress owners.
+   Cards remain real text and controls; all embellishment is paint-only. */
+#content[data-majick-room] :is(.v3333Scope,.lessonExplain,.courseLessonNavigator,.v346StudyTab>.card) {
+ background-image:linear-gradient(135deg,#aa86501c 0 11px,transparent 11px),
+                  linear-gradient(225deg,#aa86501c 0 11px,transparent 11px)!important;
+ background-position:top left,top right!important;
+ background-size:26px 26px!important;
+ background-repeat:no-repeat!important;
+}
+#content :is(.v346StudyTabNav,.courseLessonNavigator) button {
+ position:relative;
+}
+#content .v346StudyTabNav button[aria-selected="true"] {
+ border-bottom:3px solid #b99454!important;
+ box-shadow:inset 0 -1px #f6e8c6,0 2px 0 #392b46!important;
+}
+#content :is(.v347PathMeter span.done,.pathLesson.mastered) {
+ border-color:#547866!important;
+ box-shadow:inset 0 0 0 2px #f9f3df,0 0 0 1px #967341!important;
+}
+#content .v347PathMeter span.done::after {
+ content:"✦";
+ display:inline-block;
+ margin-inline-start:.35em;
+ font-size:.78em;
+ color:#35584e;
+}
+#content :is(.majExamChoice,.mjCompactSkill,.v346Feedback,.mjtCoach) {
+ border-radius:8px;
+}
+#content :is(.majExamChoice,.mjCompactSkill) {
+ border-inline-start:3px solid #967e58;
+}
+#content :is(.mjtCoach,.v346Feedback) {
+ border-inline-start:3px solid #557568;
+}
+#content :is(.lessonExplain,.mjtCoach,.v346Feedback) :is(ol,ul) {
+ padding-inline-start:1.5rem;
+ line-height:1.6;
+}
+#content :is(.lessonExplain,.mjtCoach,.v346Feedback) li+li {
+ margin-block-start:.3rem;
+}
+#content :is(.mjtCoach,.v346Feedback) :is(strong,b) {
+ text-underline-offset:3px;
+}
+@media(max-width:600px){
+ #content[data-majick-room] :is(.v3333Scope,.lessonExplain,.courseLessonNavigator,.v346StudyTab>.card) {
+  background-size:18px 18px!important;
+ }
+ #content .v346StudyTabNav {gap:6px;}
+}
