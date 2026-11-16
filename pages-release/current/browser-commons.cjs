@@ -92,6 +92,6 @@ async function run(){
  if(!process.env.COMMONS_WIDTH||process.env.COMMONS_WIDTH==='1366'){await call('Emulation.setDeviceMetricsOverride',{width:1366,height:860,deviceScaleFactor:1,mobile:false});await sleep(400);await require('./commons-control-states.cjs')({ev,call});await require('./commons-interactions.cjs')({ev,waitFor,call,sleep})}
  if(!process.env.COMMONS_WIDTH||process.env.COMMONS_WIDTH==='1366')await require('./browser-hands-on-recovery.cjs')({ev,call,waitFor});
  assert.equal(contrastFailures.length,0,'Rendered Commons contrast failures: '+JSON.stringify(contrastFailures));
- console.log('PASS Commons actual browser audit: 1366/820/390 widths, five tabs, no escaped nodes, Next/Previous, persistence after reload');
+ console.log('PASS Commons actual browser audit: '+widths.join('/')+' widths, five tabs, no escaped nodes, Next/Previous, persistence after reload');
 }
 run().catch(e=>{console.error('FAIL Commons browser:',e.stack||e);process.exitCode=1}).finally(async()=>{clearTimeout(deadline);try{ws?.close()}catch{}try{proc?.kill()}catch{}server.closeAllConnections();await new Promise(r=>server.close(r));try{fs.rmSync(profile,{recursive:true,force:true})}catch{}});

@@ -12,7 +12,7 @@ url=os.environ.get('MAJICK_URL',f'http://127.0.0.1:{server.server_port}/')
 with sync_playwright() as pw:
  browser=pw.chromium.launch(executable_path=os.environ.get('CHROMIUM_PATH','/usr/bin/chromium'),args=['--no-sandbox','--enable-unsafe-swiftshader'])
  for width in [390,820,1366]:
-  ctx=browser.new_context(viewport={'width':width,'height':1000});page=ctx.new_page();errors=[];page.on('pageerror',lambda e:errors.append(str(e)))
+  ctx=browser.new_context(ignore_https_errors=os.environ.get('BROWSER_IGNORE_HTTPS_ERRORS')=='1',viewport={'width':width,'height':1000});page=ctx.new_page();errors=[];page.on('pageerror',lambda e:errors.append(str(e)))
   page.goto(url);page.wait_for_function('!!window.MajickYourTurn && !!window.MajickUniversalHandsOn');page.wait_for_timeout(600)
   routes=page.locator('.nav [data-nav]').evaluate_all('(buttons)=>[...new Set(buttons.map(b=>b.dataset.nav))]')
   for route in routes:

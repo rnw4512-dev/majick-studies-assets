@@ -17,9 +17,11 @@ async function run(){
 
  await waitFor('!!window.MajickSanctuaryState&&!!window.MajickGuardianCare&&!!window.MajickGuardianRegistry');
  await ev('MajickSanctuaryState.initialize()');
- // Fresh-account Home exercises the initial sync before furniture has timestamps.
+ // A fresh account opens the room before its first furniture sync; Home stays lightweight.
  await ev('navigate("home")');await waitFor('!!document.querySelector("#majCommonsHub")');
  await ev('MajickCollegiumCommons.select("sanctuary")');
+ assert.equal(await ev('document.querySelectorAll(".v3317SanctuaryFrame").length'),0,'Home must not initialize an invisible scene');
+ await ev('document.querySelector(".v3327CampusSanctuary .v3327TextBtn").click()');await waitFor('S.screen==="companions"');
  await waitFor('!!document.querySelector(".v3317SanctuaryFrame")');
  await ev('document.querySelector("[onclick^=majickTogglePixiSanctuary]").click()');
  await waitFor('!!document.querySelector(".v3317SanctuaryFrame").contentWindow.majickPhaserGame?.scene?.getScene("Game")');

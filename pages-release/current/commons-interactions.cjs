@@ -13,11 +13,13 @@ module.exports=async function({ev,waitFor,call,sleep}){
   ['overview','#v3377CampusDoors [data-go="companions"]','companions'],
   ['guardians','.v3327GuardianHall .v3327TextBtn','companions'],
   ['sanctuary','.v3327CampusSanctuary .v3327TextBtn','companions'],
-  ['sanctuary','.phase4Actions button[onclick*="addmaterial"]','addmaterial'],
   ['today','[data-v3400-next]','learninglab'],
   ['review','[data-v3400-memory]','learninglab']
  ];
  for(const [tab,selector,screen] of routes){await home(tab);await click(selector);await waitFor('S.screen==='+JSON.stringify(screen));assert((await ev('document.querySelector("#content").textContent.trim().length'))>20,'Empty destination '+screen)}
+ // Scene controls belong to the active room; Home is now a lightweight portal.
+ await home('sanctuary');await click('.v3327CampusSanctuary .v3327TextBtn');await waitFor('S.screen==="companions"');
+ await click('.phase4Actions button[onclick*="addmaterial"]');await waitFor('S.screen==="addmaterial"');
  // Exercise every current sidebar destination and every campus-tools action.
  await home('overview');
  const navigation=await ev('[...document.querySelectorAll(".nav button[data-nav]")].map(b=>b.dataset.nav)');
@@ -69,6 +71,7 @@ module.exports=async function({ev,waitFor,call,sleep}){
   await ev('(()=>{const s=document.querySelector(".top select");s.value='+JSON.stringify(course)+';s.dispatchEvent(new Event("change",{bubbles:true}))})()');await waitFor('!!document.querySelector("#majCommonsHub")');
   assert.equal(await ev('S.activeCourse'),course);
   assert.equal(await ev('JSON.stringify(S.progress.D772)'),d772,'D772 academic state changed on course switch '+course);
+  await waitFor(course==='D772'?'!!document.querySelector("#mjPreassessmentReview")':'!document.querySelector("#mjPreassessmentReview")');
   assert.equal(await ev('!!document.querySelector("#mjPreassessmentReview")'),course==='D772','D772 panels leaked across courses');
  }
  await call('Page.reload',{ignoreCache:true});await waitFor('!!window.MajickD772AdaptiveMastery&&!!document.querySelector("#majCommonsHub")');assert.equal(await ev('JSON.stringify(S.progress.D772)'),d772,'Review evidence lost on reload');
@@ -84,6 +87,7 @@ module.exports=async function({ev,waitFor,call,sleep}){
  console.log('PASS real Guardian water action and persisted care/world data without academic/currency changes');
  // Exercise the existing Phaser furniture controls and the parent persistence bridge.
  await home('sanctuary');
+ await click('.v3327CampusSanctuary .v3327TextBtn');await waitFor('S.screen==="companions"');
  // Certify the retained Phaser fallback explicitly; Pixi has its own gate.
  await ev('(()=>{const f=document.querySelector(".v3317SanctuaryFrame");if(f?.getAttribute("src")?.startsWith("pixi-sanctuary/"))f.closest(".phase4Wrap").querySelector("[onclick^=majickTogglePixiSanctuary]").click()})()');
  await waitFor('!!document.querySelector(".v3317SanctuaryFrame")?.contentWindow?.majickPhaserGame?.scene?.getScene("Game")?.v3321FurnitureButton?.active');

@@ -16,7 +16,7 @@ def mount(page):
 with sync_playwright() as pw:
  browser=pw.chromium.launch(executable_path=os.environ.get('CHROMIUM_PATH','/usr/bin/chromium'),args=['--no-sandbox'])
  for width in [390,820,1366]:
-  ctx=browser.new_context(viewport={'width':width,'height':1000},reduced_motion='reduce');page=ctx.new_page();errors=[];requests=[]
+  ctx=browser.new_context(ignore_https_errors=os.environ.get('BROWSER_IGNORE_HTTPS_ERRORS')=='1',viewport={'width':width,'height':1000},reduced_motion='reduce');page=ctx.new_page();errors=[];requests=[]
   page.on('pageerror',lambda e:errors.append(str(e)))
   page.on('request',lambda r:requests.append(r.url))
   page.goto(url);page.wait_for_function('!!window.MajickYourTurn && !!window.MajickLearningContinuity');page.wait_for_timeout(600)

@@ -1,0 +1,170 @@
+[
+  {
+    "width": 390,
+    "view": "journal-achievements",
+    "violations": [],
+    "incomplete": [
+      "color-contrast"
+    ]
+  },
+  {
+    "width": 390,
+    "view": "journal-recent",
+    "violations": [],
+    "incomplete": [
+      "color-contrast"
+    ]
+  },
+  {
+    "width": 390,
+    "view": "journal-repairs",
+    "violations": [],
+    "incomplete": [
+      "color-contrast"
+    ]
+  },
+  {
+    "width": 390,
+    "view": "journal-goals",
+    "violations": [],
+    "incomplete": [
+      "color-contrast"
+    ]
+  },
+  {
+    "width": 390,
+    "view": "journal-notes",
+    "violations": [],
+    "incomplete": [
+      "color-contrast"
+    ]
+  },
+  {
+    "width": 390,
+    "view": "your-turn-9",
+    "violations": [],
+    "incomplete": [
+      "color-contrast"
+    ]
+  },
+  {
+    "width": 390,
+    "view": "your-turn-12",
+    "violations": [],
+    "incomplete": [
+      "color-contrast"
+    ]
+  },
+  {
+    "width": 820,
+    "view": "journal-achievements",
+    "violations": [],
+    "incomplete": [
+      "color-contrast"
+    ]
+  },
+  {
+    "width": 820,
+    "view": "journal-recent",
+    "violations": [],
+    "incomplete": [
+      "color-contrast"
+    ]
+  },
+  {
+    "width": 820,
+    "view": "journal-repairs",
+    "violations": [],
+    "incomplete": [
+      "color-contrast"
+    ]
+  },
+  {
+    "width": 820,
+    "view": "journal-goals",
+    "violations": [],
+    "incomplete": [
+      "color-contrast"
+    ]
+  },
+  {
+    "width": 820,
+    "view": "journal-notes",
+    "violations": [],
+    "incomplete": [
+      "color-contrast"
+    ]
+  },
+  {
+    "width": 820,
+    "view": "your-turn-9",
+    "violations": [],
+    "incomplete": [
+      "color-contrast"
+    ]
+  },
+  {
+    "width": 820,
+    "view": "your-turn-12",
+    "violations": [],
+    "incomplete": [
+      "color-contrast"
+    ]
+  },
+  {
+    "width": 1366,
+    "view": "journal-achievements",
+    "violations": [],
+    "incomplete": [
+      "color-contrast"
+    ]
+  },
+  {
+    "width": 1366,
+    "view": "journal-recent",
+    "violations": [],
+    "incomplete": [
+      "color-contrast"
+    ]
+  },
+  {
+    "width": 1366,
+    "view": "journal-repairs",
+    "violations": [],
+    "incomplete": [
+      "color-contrast"
+    ]
+  },
+  {
+    "width": 1366,
+    "view": "journal-goals",
+    "violations": [],
+    "incomplete": [
+      "color-contrast"
+    ]
+  },
+  {
+    "width": 1366,
+    "view": "journal-notes",
+    "violations": [],
+    "incomplete": [
+      "color-contrast"
+    ]
+  },
+  {
+    "width": 1366,
+    "view": "your-turn-9",
+    "violations": [],
+    "incomplete": [
+      "color-contrast"
+    ]
+  },
+  {
+    "width": 1366,
+    "view": "your-turn-12",
+    "violations": [],
+    "incomplete": [
+      "color-contrast"
+    ]
+  }
+]

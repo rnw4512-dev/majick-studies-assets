@@ -1,0 +1,134 @@
+{
+  "scope": "Home tab rendered text at all three widths; later interaction timing assertion in this run was fixed and repeated at 1366 separately. Original suite printed a hardcoded three-width summary even for a focused run; logging is now corrected.",
+  "minimumRatio": 5.73,
+  "panels": [
+    {
+      "width": 1366,
+      "tab": "overview",
+      "count": 48,
+      "frames": 3,
+      "minimum": 6.23,
+      "failures": []
+    },
+    {
+      "width": 1366,
+      "tab": "student-record",
+      "count": 62,
+      "frames": 4,
+      "minimum": 6.23,
+      "failures": []
+    },
+    {
+      "width": 1366,
+      "tab": "today",
+      "count": 65,
+      "frames": 3,
+      "minimum": 9.91,
+      "failures": []
+    },
+    {
+      "width": 1366,
+      "tab": "review",
+      "count": 38,
+      "frames": 3,
+      "minimum": 9.44,
+      "failures": []
+    },
+    {
+      "width": 1366,
+      "tab": "guardians",
+      "count": 47,
+      "frames": 2,
+      "minimum": 6.29,
+      "failures": []
+    },
+    {
+      "width": 1366,
+      "tab": "sanctuary",
+      "count": 20,
+      "frames": 2,
+      "minimum": 9.85,
+      "failures": []
+    },
+    {
+      "width": 820,
+      "tab": "overview",
+      "count": 46,
+      "frames": 5,
+      "minimum": 6.42,
+      "failures": []
+    },
+    {
+      "width": 820,
+      "tab": "today",
+      "count": 64,
+      "frames": 4,
+      "minimum": 8.56,
+      "failures": []
+    },
+    {
+      "width": 820,
+      "tab": "review",
+      "count": 72,
+      "frames": 10,
+      "minimum": 8.19,
+      "failures": []
+    },
+    {
+      "width": 820,
+      "tab": "guardians",
+      "count": 46,
+      "frames": 4,
+      "minimum": 6.66,
+      "failures": []
+    },
+    {
+      "width": 820,
+      "tab": "sanctuary",
+      "count": 19,
+      "frames": 2,
+      "minimum": 8.95,
+      "failures": []
+    },
+    {
+      "width": 390,
+      "tab": "overview",
+      "count": 45,
+      "frames": 7,
+      "minimum": 6.32,
+      "failures": []
+    },
+    {
+      "width": 390,
+      "tab": "today",
+      "count": 63,
+      "frames": 6,
+      "minimum": 7.16,
+      "failures": []
+    },
+    {
+      "width": 390,
+      "tab": "review",
+      "count": 73,
+      "frames": 13,
+      "minimum": 7.2,
+      "failures": []
+    },
+    {
+      "width": 390,
+      "tab": "guardians",
+      "count": 45,
+      "frames": 5,
+      "minimum": 5.73,
+      "failures": []
+    },
+    {
+      "width": 390,
+      "tab": "sanctuary",
+      "count": 18,
+      "frames": 3,
+      "minimum": 7.11,
+      "failures": []
+    }
+  ]
+}

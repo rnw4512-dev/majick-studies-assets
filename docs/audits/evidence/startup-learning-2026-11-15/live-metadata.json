@@ -1,0 +1,23 @@
+{
+  "/": {
+    "status": 200,
+    "data": "HTML"
+  },
+  "current-site/": {
+    "status": 200,
+    "data": "HTML"
+  },
+  "current-site/deployment.json": {
+    "status": 200,
+    "data": {
+      "commit": "d69a13156999441e7a61b2f50c76f83160f59fe4"
+    }
+  },
+  "current-site/release.json": {
+    "status": 200,
+    "data": {
+      "version": "3.4.2",
+      "build": "dc7e0aa83e6f8b8d"
+    }
+  }
+}
