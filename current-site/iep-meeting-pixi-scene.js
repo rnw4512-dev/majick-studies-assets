@@ -88,6 +88,13 @@ async function sync({participants=[],speaker=0,mood='listening',active:isActive=
   const folder=new P.Graphics().roundRect(566,215,85,41,7).fill(0x413d5b).roundRect(577,220,60,2,1).fill(0xd2be9a);
   const mugs=new P.Graphics().ellipse(307,239,18,8).fill(0xcbb7a1).ellipse(612,253,18,8).fill(0xd9c7b0);
   decor.addChild(papers,folder,mugs);
+  // One painted quill and IEP wax seal, static in the reused desktop scene.
+  const stationery=new P.Graphics()
+   .moveTo(462,231).quadraticCurveTo(478,213,487,194).stroke({color:0xe7d0a0,width:2.2})
+   .moveTo(487,194).quadraticCurveTo(505,209,477,222).quadraticCurveTo(482,207,487,194).fill({color:0xe1c68e,alpha:.82})
+   .circle(486,237,8).fill({color:0x8c4b58,alpha:.94})
+   .circle(486,237,4).stroke({color:0xf5dba4,width:1.3});
+  stationery.eventMode='none';decor.addChild(stationery);
   const seats=[{x:175,y:172,s:1},{x:365,y:160,s:1.02},{x:565,y:160,s:1.02},{x:752,y:172,s:1}];
   const figures=seats.map((seat,i)=>{
    const f=shapePerson(P,i);f.root.position.set(seat.x,seat.y);f.root.scale.set(seat.s);characters.addChild(f.root);
