@@ -353,10 +353,11 @@ window.MajickD772PreassessmentReview={sourceId:SOURCE_ID,questions:SUPPORT,pract
 // The deferred render queue may not run during a cross-course navigation.
 document.addEventListener('change',event=>{
  if(!event.target?.matches?.('.top select'))return;
- queueMicrotask(()=>{
-  if(window.S?.activeCourse!=='D772'||window.S?.screen!=='home')document.getElementById('mjPreassessmentReview')?.remove();
- });
-},true);
+ // Bubble AFTER the select's own change handler has updated S.activeCourse.
+ const clean=()=>{if(window.S?.activeCourse!=='D772'||window.S?.screen!=='home')document.getElementById('mjPreassessmentReview')?.remove();};
+ clean();
+ requestAnimationFrame(clean); // also covers queued course-panel reconciliation
+},false);
 if(window.MajickRenderQueue?.register){window.MajickRenderQueue.register('d772-preassessment-review',render,81);window.MajickRenderQueue.schedule()}
 else{document.addEventListener('DOMContentLoaded',render);setInterval(render,1500)}
 })();

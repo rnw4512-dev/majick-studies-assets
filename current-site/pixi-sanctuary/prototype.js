@@ -44,6 +44,23 @@ const floorPattern=new PIXI.FillPattern(constellationTexture,'repeat');
 const floorSigil=new PIXI.Graphics();floorSigil.ellipse(600,571,460,55).fill(floorPattern);floorSigil.alpha=.13;floorSigil.eventMode='none';sparks.addChild(floorSigil);
 
 for(let i=0;i<24;i++){const spark=new PIXI.Graphics();spark.circle(0,0,1+i%3).fill({color:0xe3c38c,alpha:.25});spark.position.set(30+Math.random()*1140,20+Math.random()*440);dust.addChild(spark)}
+// Static edge decoration; no additional ticker, reward state or collision surface.
+const sanctuaryEdges=new PIXI.Graphics();
+sanctuaryEdges.eventMode='none';
+for(const x of [48,1152]){
+ const sign=x<600?1:-1;
+ sanctuaryEdges.moveTo(x,616).quadraticCurveTo(x+sign*7,606,x+sign*3,591).stroke({color:0x54725d,width:3,alpha:.78});
+ sanctuaryEdges.moveTo(x,616).quadraticCurveTo(x-sign*8,601,x-sign*3,587).stroke({color:0x54725d,width:2,alpha:.6});
+ sanctuaryEdges.ellipse(x,622,22,7).fill({color:0x2e4d3c,alpha:.28});
+ sanctuaryEdges.roundRect(x-4,575,8,22,4).fill({color:0xd6b594,alpha:.85});
+ sanctuaryEdges.ellipse(x,575,19,9).fill({color:0x8f5b6e,alpha:.9});
+ for(const dx of [-8,0,8])sanctuaryEdges.circle(x+dx,573,1.8).fill({color:0xffe3ad,alpha:.9});
+ sanctuaryEdges.circle(x,470,13).fill({color:0xe4ca84,alpha:.12});
+ sanctuaryEdges.circle(x,470,4).fill({color:0xe4ca84,alpha:.78});
+}
+sanctuaryEdges.moveTo(62,635).quadraticCurveTo(155,629,246,638).stroke({color:0x8db1ad,width:2,alpha:.36});
+sanctuaryEdges.moveTo(952,638).quadraticCurveTo(1050,628,1138,635).stroke({color:0x8db1ad,width:2,alpha:.36});
+world.addChildAt(sanctuaryEdges,world.getChildIndex(objects));
 try{const texture=await PIXI.Assets.load('../assets/guardian-dorm-v1.png');const bg=new PIXI.Sprite(texture);bg.width=1200;bg.height=700;world.addChildAt(bg,0)}catch(error){console.warn('Room backdrop unavailable',error)}
 function resize(){const b=room.getBoundingClientRect(),w=Math.max(240,b.width),h=Math.max(240,b.height);app.renderer.resize(w,h);const k=Math.min(w/1200,h/700);world.scale.set(k);world.position.set((w-1200*k)/2,(h-700*k)/2);$('viewport').textContent=Math.round(w)+' × '+Math.round(h)}
 new ResizeObserver(resize).observe(room);resize();

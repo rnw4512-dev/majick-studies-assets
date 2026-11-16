@@ -1,0 +1,24 @@
+const {test,expect}=require('playwright/test');
+test.use({launchOptions:{executablePath:'/usr/bin/chromium',args:['--no-sandbox']},reducedMotion:'reduce'});
+test('dialogue repaint reuses the Council canvas and closes it cleanly',async({page})=>{
+ test.setTimeout(90000);
+ await page.goto(process.env.MIGRATION_URL||'http://127.0.0.1:8765',{waitUntil:'domcontentloaded'});
+ await page.waitForFunction(()=>window.MajickD756Meeting&&window.MajickIEPVisual);
+ await page.evaluate(()=>{switchCourse('D756');MajickD756Meeting.openScenario('standard')});
+ await page.locator('[data-action=start]').click();
+ await expect(page.locator('#dmVisualStage canvas')).toHaveCount(1,{timeout:30000});
+ await page.evaluate(()=>{window.__councilCanvas=document.querySelector('#dmVisualStage canvas');window.__councilApplications=MajickIEPVisual.inspect().applicationsCreated});
+ await page.locator('#dmAnswer').fill('Thank you everyone for joining the meeting. We will review strengths, needs, goals and the next steps together.');
+ await page.locator('[data-action=submit]').click();
+ await expect(page.locator('#dmVisualStage canvas')).toHaveCount(1,{timeout:30000});
+ expect(await page.evaluate(()=>document.querySelector('#dmVisualStage canvas')===window.__councilCanvas)).toBe(true);
+ expect(await page.evaluate(()=>MajickIEPVisual.inspect().applicationsCreated)).toBe(await page.evaluate(()=>window.__councilApplications));
+ await page.evaluate(()=>MajickIEPVisual.sync({participants:[{name:'Parent'},{name:'Student'},{name:'LEA'},{name:'Teacher'}],speaker:3,mood:'concern'}));
+ expect(await page.evaluate(()=>MajickIEPVisual.inspect().speaker)).toBe(3);
+ expect(await page.evaluate(()=>MajickIEPVisual.inspect().mood)).toBe('concern');
+ await expect(page.locator('.dmEmotionCue')).toHaveCount(1);
+ expect(await page.evaluate(()=>document.querySelector('#dmVisualStage canvas')===window.__councilCanvas)).toBe(true);
+ await page.locator('[data-action=close]').click();
+ await expect(page.locator('#dmVisualStage')).toHaveCount(0);
+ expect(await page.evaluate(()=>MajickIEPVisual.inspect().active)).toBe(false);
+});
