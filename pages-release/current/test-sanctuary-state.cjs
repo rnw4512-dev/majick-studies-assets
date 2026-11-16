@@ -14,7 +14,8 @@ const root=path.resolve(process.argv[2]||'current-site');
   for(const stage of registry.stages)assert(fs.existsSync(path.join(root,'assets/familiars/evolution_stages',meta.canon+'-'+stage.slug+'.webp')));
  }
  assert.equal(registry.getFor(pets[0]).canon,'briar');assert.equal(registry.getFor(pets[1]).name,'Briar');assert.equal(registry.getFor(pets[2]).canon,'prism');assert.equal(registry.getFor(pets[2]).name,'Briar');assert.equal(JSON.stringify(pets),before);
- const source=fs.readFileSync(path.join(root,'app-runtime.js'),'utf8'),start=source.indexOf('let furnitureManifest=null;'),end=source.indexOf('\ninitializeFurniture().catch',start);
+ const source=fs.readFileSync(path.join(root,'app-runtime.js'),'utf8'),start=source.indexOf('let furnitureManifest='),end=source.indexOf('\n// Furniture is prepared',start);
+ assert(start>=0&&end>start,'Furniture owner boundaries are present');
  vm.runInContext(source.slice(start,end),context);
  const api=context.window.MajickSanctuaryState;await api.initialize();const room=api.room();
  assert.equal(room.owned.length,16);assert(room.owned.includes('future-item'));assert(room.stored.includes('future-item'));assert(room.stored.includes('guardian-brush'));

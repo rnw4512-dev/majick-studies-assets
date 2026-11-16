@@ -19,7 +19,7 @@
    V336_PROJECT_PROGRESS.next=['Verify the restored sanctuary across desktop and phone','Build the polished collectible furniture inventory and unlock loop','Create movement sets for the six portrait-ready guardians without altering the original four movers'];
   }
  }catch(_){ }
- try{render()}catch(e){console.warn('V3.3.9 sanctuary re-render',e)}
+ // The installed app bridge paints these upgrades after setup.
 })();
 
 (function(){
@@ -227,5 +227,5 @@
    V336_PROJECT_PROGRESS.next=['Verify Dark Collegium sanctuary and same-origin familiar movement in the live browser','Expand study-earned furniture inventory and placement without changing the four existing movement routines','Create movement sets for Vesper, Briar, Zephyr, Prism, Rook and Solara from their exact canon designs'];
  }catch(_){ }
 
- try{save();render()}catch(e){console.error('V3.3.9 boot',e)}
+ try{save()}catch(e){console.error('V3.3.9 boot',e)}
 })();

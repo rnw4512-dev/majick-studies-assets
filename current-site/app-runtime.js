@@ -194,7 +194,7 @@ window.v3317PushGuardianLevels=function(){
 };
 // Both renderers use this account record. Legacy fields are read once, never
 // maintained as a second room save. Unknown owned items and positions survive.
-let furnitureManifest=null;
+let furnitureManifest=null,furnitureLoading=null;
 function furnitureAccountState(){
   const account=window.MajickStateCore?.ensureAccount?.();
   if(!account)return null;
@@ -210,9 +210,12 @@ function furnitureAccountState(){
 }
 async function initializeFurniture(){
   if(!furnitureManifest){
-    const response=await fetch('./sanctuary/assets/objects/objects-manifest.json');
-    if(!response.ok)throw Error('Sanctuary furniture manifest unavailable');
-    furnitureManifest=(await response.json()).objects.filter(o=>o.enabled&&o.preload&&o.placement);
+    if(!furnitureLoading)furnitureLoading=(async()=>{
+      const response=await fetch('./sanctuary/assets/objects/objects-manifest.json');
+      if(!response.ok)throw Error('Sanctuary furniture manifest unavailable');
+      return (await response.json()).objects.filter(o=>o.enabled&&o.preload&&o.placement);
+    })();
+    try{furnitureManifest=await furnitureLoading}finally{furnitureLoading=null}
   }
   const room=furnitureAccountState();if(!room)return;
   const owned=[...new Set([...(room.owned||[]),...furnitureManifest.map(o=>o.id)])];
@@ -233,7 +236,7 @@ function changeFurniture(id,change){
   room.updatedAt=Math.max(Date.now(),Number(room.updatedAt||0)+1);save();window.v3321PushFurnitureState();return room;
 }
 window.MajickSanctuaryState=Object.freeze({room:furnitureAccountState,initialize:initializeFurniture,change:changeFurniture});
-initializeFurniture().catch(error=>console.warn('Sanctuary furniture initialization',error));
+// Furniture is prepared only when the active Sanctuary requests its state.
 window.v3321PushFurnitureState=function(target){
   const state=furnitureAccountState();
   if(!state)return;
@@ -248,6 +251,10 @@ window.v3321PushFurnitureState=function(target){
 };
 
 function sanctuaryMarkup(context){
+  // Home contains legacy hidden companion panels. They must not create a GPU
+  // scene or load the roster before the learner opens the actual room.
+  if(window.S?.screen!=='companions')return '<section class="phase4Wrap v3317Phase" aria-label="Living Sanctuary"><h3>Living Sanctuary</h3><p>Visit your Guardians, care for them, and arrange your room.</p><button class="btn primary" type="button" onclick="navigate(\'companions\')">Visit Sanctuary</button></section>';
+
   if(location.protocol==='file:'){
     return '<section class="phase4Wrap"><div class="phase4Top"><b>✦ Phaser 4 Living Sanctuary</b><br><span>Open Majick Studies through GitHub Pages so Phaser can load.</span></div></section>';
   }
@@ -298,11 +305,13 @@ if(!window.__v3317Bridge){
     if(d.type==='MAJICK_CONTINUE_STUDYING'&&[...document.querySelectorAll('#phase4SanctuaryFrame,.v3317SanctuaryFrame')].some(f=>f.contentWindow===ev.source)){
       try{navigate('mission')}catch(_){}
     }
-    if(d.type==='MAJICK_SANCTUARY_READY_V3317'){
+    if(d.type==='MAJICK_SANCTUARY_READY_V3317'&&ev.source===activeFrame?.contentWindow){
+      initializeFurniture().catch(error=>console.warn('Sanctuary furniture initialization',error));
       window.v3317PushGuardianLevels();
       window.v3321PushFurnitureState(ev.source);
     }
-    if(d.type==='MAJICK_SANCTUARY_FURNITURE_REQUEST_V3321'){
+    if(d.type==='MAJICK_SANCTUARY_FURNITURE_REQUEST_V3321'&&ev.source===activeFrame?.contentWindow){
+      initializeFurniture().catch(error=>console.warn('Sanctuary furniture initialization',error));
       window.v3321PushFurnitureState(ev.source);
     }
     if(d.type==='MAJICK_SANCTUARY_FURNITURE_STATE_V3321'&&d.state){

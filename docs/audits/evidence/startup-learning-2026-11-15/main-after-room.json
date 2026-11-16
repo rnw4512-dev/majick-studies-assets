@@ -1,0 +1,3813 @@
+[
+  {
+    "audit": {
+      "long": [
+        {
+          "start": 199.79999999998836,
+          "duration": 51
+        },
+        {
+          "start": 556.0999999999767,
+          "duration": 302
+        },
+        {
+          "start": 1015.7999999999884,
+          "duration": 257
+        },
+        {
+          "start": 1331.5999999999767,
+          "duration": 73
+        }
+      ],
+      "renders": [
+        {
+          "at": 853.2000000000116,
+          "script": "http://127.0.0.1:8765/startup-core.20261114.js"
+        },
+        {
+          "at": 916.9000000000233,
+          "script": "http://127.0.0.1:8765/app-runtime.js?v=3402-s2-l2-graphs"
+        },
+        {
+          "at": 951.5999999999767,
+          "script": null
+        },
+        {
+          "at": 1324.5999999999767,
+          "script": "http://127.0.0.1:8765/universal-hands-on.js?v=20261113-council-entry"
+        }
+      ],
+      "frames": []
+    },
+    "nav": [
+      {
+        "dom": 1336.2999999999884,
+        "load": 1510.2999999999884
+      }
+    ],
+    "frames": [],
+    "resources": [
+      {
+        "name": "http://127.0.0.1:8765/v339-main.css?v=339",
+        "bytes": 8296
+      },
+      {
+        "name": "http://127.0.0.1:8765/v3310-main.css?v=3310",
+        "bytes": 2680
+      },
+      {
+        "name": "http://127.0.0.1:8765/v3311-main.css?v=3311",
+        "bytes": 6855
+      },
+      {
+        "name": "http://127.0.0.1:8765/v3311-plus.css?v=3311",
+        "bytes": 6860
+      },
+      {
+        "name": "http://127.0.0.1:8765/v3312-main.css?v=3312",
+        "bytes": 8183
+      },
+      {
+        "name": "http://127.0.0.1:8765/v3314-main.css?v=3314",
+        "bytes": 586
+      },
+      {
+        "name": "http://127.0.0.1:8765/v3313-main.css?v=3313",
+        "bytes": 2656
+      },
+      {
+        "name": "http://127.0.0.1:8765/v3315-main.css?v=3315",
+        "bytes": 4690
+      },
+      {
+        "name": "http://127.0.0.1:8765/learning-lab.css?v=3319",
+        "bytes": 10024
+      },
+      {
+        "name": "http://127.0.0.1:8765/v3316-main.css?v=3316",
+        "bytes": 4125
+      },
+      {
+        "name": "http://127.0.0.1:8765/guardian-care-economy.css?v=3322-recovery",
+        "bytes": 11340
+      },
+      {
+        "name": "http://127.0.0.1:8765/learning-plan.css?v=3324",
+        "bytes": 2902
+      },
+      {
+        "name": "http://127.0.0.1:8765/course-tutor.css?v=342-targeted-skills",
+        "bytes": 22588
+      },
+      {
+        "name": "http://127.0.0.1:8765/magical-college-home.css?v=3337",
+        "bytes": 9416
+      },
+      {
+        "name": "http://127.0.0.1:8765/learn-mode.css?v=3338-candlelit",
+        "bytes": 23462
+      },
+      {
+        "name": "http://127.0.0.1:8765/wgu-practice.css?v=3333-candlelit",
+        "bytes": 17830
+      },
+      {
+        "name": "http://127.0.0.1:8765/d755-retake.css?v=3340-study-shelf-resume",
+        "bytes": 42222
+      },
+      {
+        "name": "http://127.0.0.1:8765/guardian-core.css?v=3341",
+        "bytes": 6751
+      },
+      {
+        "name": "http://127.0.0.1:8765/guardian-life-main.css?v=3342",
+        "bytes": 16710
+      },
+      {
+        "name": "http://127.0.0.1:8765/game-realm.css?v=3362-d772-review",
+        "bytes": 43180
+      },
+      {
+        "name": "http://127.0.0.1:8765/living-collegium.css?v=3346-tool-search-smooth-render",
+        "bytes": 6578
+      },
+      {
+        "name": "http://127.0.0.1:8765/collegium-atmosphere.css?v=3348-roster",
+        "bytes": 17561
+      },
+      {
+        "name": "http://127.0.0.1:8765/sanctuary-audit.css?v=3350",
+        "bytes": 1924
+      },
+      {
+        "name": "http://127.0.0.1:8765/d772-collegium.css?v=3354",
+        "bytes": 5754
+      },
+      {
+        "name": "http://127.0.0.1:8765/d772-instruction-depth.css?v=3356",
+        "bytes": 3096
+      },
+      {
+        "name": "http://127.0.0.1:8765/d772-hall-map.css?v=3358",
+        "bytes": 3576
+      },
+      {
+        "name": "http://127.0.0.1:8765/living-magic.css?v=3360",
+        "bytes": 6840
+      },
+      {
+        "name": "http://127.0.0.1:8765/campus-runtime.css?v=3361",
+        "bytes": 1534
+      },
+      {
+        "name": "http://127.0.0.1:8765/classroom-library-life.css?v=3362",
+        "bytes": 5217
+      },
+      {
+        "name": "http://127.0.0.1:8765/focus-feedback.css?v=3363",
+        "bytes": 3563
+      },
+      {
+        "name": "http://127.0.0.1:8765/guardian-academic-presence.css?v=3366",
+        "bytes": 1803
+      },
+      {
+        "name": "http://127.0.0.1:8765/mobile-cleanup.css?v=3365",
+        "bytes": 5305
+      },
+      {
+        "name": "http://127.0.0.1:8765/d772-course-map.css?v=3367",
+        "bytes": 3998
+      },
+      {
+        "name": "http://127.0.0.1:8765/section-aware-intake.css?v=3368",
+        "bytes": 1163
+      },
+      {
+        "name": "http://127.0.0.1:8765/d772-section-readiness.css?v=3369",
+        "bytes": 1419
+      },
+      {
+        "name": "http://127.0.0.1:8765/section-library.css?v=3370",
+        "bytes": 1439
+      },
+      {
+        "name": "http://127.0.0.1:8765/section-intake-shortcuts.css?v=3371",
+        "bytes": 813
+      },
+      {
+        "name": "http://127.0.0.1:8765/source-provenance.css?v=3372",
+        "bytes": 2474
+      },
+      {
+        "name": "http://127.0.0.1:8765/home-focus.css?v=3377",
+        "bytes": 2396
+      },
+      {
+        "name": "http://127.0.0.1:8765/product-core.css?v=3400",
+        "bytes": 4305
+      },
+      {
+        "name": "http://127.0.0.1:8765/duplicate-safe-hatch.css?v=3375",
+        "bytes": 1064
+      },
+      {
+        "name": "http://127.0.0.1:8765/adaptive-learning-core.css?v=349",
+        "bytes": 15711
+      },
+      {
+        "name": "http://127.0.0.1:8765/math-support.css?v=349",
+        "bytes": 12193
+      },
+      {
+        "name": "http://127.0.0.1:8765/course-learning-profiles.css?v=347",
+        "bytes": 1014
+      },
+      {
+        "name": "http://127.0.0.1:8765/reward-core.css?v=342-aurelia-live",
+        "bytes": 13609
+      },
+      {
+        "name": "http://127.0.0.1:8765/collegium-immersion.css?v=342-ambient-1",
+        "bytes": 5404
+      },
+      {
+        "name": "http://127.0.0.1:8765/d756-council.css?v=3.4.2",
+        "bytes": 2533
+      },
+      {
+        "name": "http://127.0.0.1:8765/save-safety.js",
+        "bytes": 9070
+      },
+      {
+        "name": "http://127.0.0.1:8765/startup-core.20261114.js",
+        "bytes": 607056
+      },
+      {
+        "name": "http://127.0.0.1:8765/v339-main.js?v=339",
+        "bytes": 15870
+      },
+      {
+        "name": "http://127.0.0.1:8765/v3311-main.js?v=3311",
+        "bytes": 7961
+      },
+      {
+        "name": "http://127.0.0.1:8765/v3311-plus.js?v=3311",
+        "bytes": 11033
+      },
+      {
+        "name": "http://127.0.0.1:8765/study-material/materialParser.js?v=3315",
+        "bytes": 2852
+      },
+      {
+        "name": "http://127.0.0.1:8765/study-material/materialStoreModel.js?v=3315",
+        "bytes": 10098
+      },
+      {
+        "name": "http://127.0.0.1:8765/study-material/questionBuilder.js?v=3315",
+        "bytes": 71296
+      },
+      {
+        "name": "http://127.0.0.1:8765/study-material/AddStudyMaterialPage.js?v=3315",
+        "bytes": 24534
+      },
+      {
+        "name": "http://127.0.0.1:8765/courseManager.js?v=3316-d756-catalog-2",
+        "bytes": 19948
+      },
+      {
+        "name": "http://127.0.0.1:8765/d756-hands-on.js?v=20261113-floating-removed",
+        "bytes": 125000
+      },
+      {
+        "name": "http://127.0.0.1:8765/iep-meeting-pixi-scene.js?v=20261113-speaker-jiggle-v4",
+        "bytes": 12327
+      },
+      {
+        "name": "http://127.0.0.1:8765/ui-compat.js?v=stability-1",
+        "bytes": 3440
+      },
+      {
+        "name": "http://127.0.0.1:8765/study-ui-compat.js?v=stability-1",
+        "bytes": 12663
+      },
+      {
+        "name": "http://127.0.0.1:8765/d756-task2-meeting.js?v=20261113-iep-feedback-coach-v5",
+        "bytes": 165539
+      },
+      {
+        "name": "http://127.0.0.1:8765/guardian-registry.js?v=stability-1",
+        "bytes": 11563
+      },
+      {
+        "name": "http://127.0.0.1:8765/majick-state-core.js?v=3322-recovery",
+        "bytes": 12167
+      },
+      {
+        "name": "http://127.0.0.1:8765/guardian-care-economy.js?v=3347-stations",
+        "bytes": 33843
+      },
+      {
+        "name": "http://127.0.0.1:8765/reward-core.js?v=342-aurelia-live",
+        "bytes": 86956
+      },
+      {
+        "name": "http://127.0.0.1:8765/learning-lab.js?v=342-guided-mastery",
+        "bytes": 41554
+      },
+      {
+        "name": "http://127.0.0.1:8765/learning-plan.js?v=3324",
+        "bytes": 9659
+      },
+      {
+        "name": "http://127.0.0.1:8765/d772-shared-oa-questions.js?v=342-multistep-1",
+        "bytes": 80618
+      },
+      {
+        "name": "http://127.0.0.1:8765/course-tutor.js?v=342-working-controls",
+        "bytes": 408172
+      },
+      {
+        "name": "http://127.0.0.1:8765/learn-mode.js?v=3400-product-flow",
+        "bytes": 96071
+      },
+      {
+        "name": "http://127.0.0.1:8765/d755-retake.js?v=3340-study-shelf-resume",
+        "bytes": 240738
+      },
+      {
+        "name": "http://127.0.0.1:8765/generated-question-engine.js?v=342-local-svg-1",
+        "bytes": 29768
+      },
+      {
+        "name": "http://127.0.0.1:8765/question-repair.js",
+        "bytes": 14595
+      },
+      {
+        "name": "http://127.0.0.1:8765/wgu-practice.js?v=342-question-whiteboard-worked",
+        "bytes": 61107
+      },
+      {
+        "name": "http://127.0.0.1:8765/magical-college-home.js?v=3337",
+        "bytes": 12781
+      },
+      {
+        "name": "http://127.0.0.1:8765/app-runtime.js?v=3402-s2-l2-graphs",
+        "bytes": 25761
+      },
+      {
+        "name": "http://127.0.0.1:8765/app-recovery.js?v=3322",
+        "bytes": 2824
+      },
+      {
+        "name": "http://127.0.0.1:8765/guardian-core.js?v=3400",
+        "bytes": 24017
+      },
+      {
+        "name": "http://127.0.0.1:8765/study-progress-bridge.js?v=342-scholar-answers",
+        "bytes": 15436
+      },
+      {
+        "name": "http://127.0.0.1:8765/milestone-particles.js?v=1",
+        "bytes": 4845
+      },
+      {
+        "name": "http://127.0.0.1:8765/room-transition.js?v=1",
+        "bytes": 1107
+      },
+      {
+        "name": "http://127.0.0.1:8765/guardian-life-main.js?v=3342",
+        "bytes": 13804
+      },
+      {
+        "name": "http://127.0.0.1:8765/campus-runtime.js?v=3361",
+        "bytes": 3175
+      },
+      {
+        "name": "http://127.0.0.1:8765/visual-evidence-gate.js?v=342-graph-evidence-1",
+        "bytes": 10445
+      },
+      {
+        "name": "http://127.0.0.1:8765/game-realm.js?v=20261108-realm-d756",
+        "bytes": 114054
+      },
+      {
+        "name": "http://127.0.0.1:8765/living-collegium.js?v=3361-shared-queue",
+        "bytes": 16601
+      },
+      {
+        "name": "http://127.0.0.1:8765/collegium-atmosphere.js?v=20261113-music-gesture-fix",
+        "bytes": 8769
+      },
+      {
+        "name": "http://127.0.0.1:8765/sanctuary-audit.js?v=3350",
+        "bytes": 6679
+      },
+      {
+        "name": "http://127.0.0.1:8765/d772-collegium.js?v=3361-shared-queue",
+        "bytes": 6808
+      },
+      {
+        "name": "http://127.0.0.1:8765/d772-instruction-depth.js?v=3361-shared-queue",
+        "bytes": 6554
+      },
+      {
+        "name": "http://127.0.0.1:8765/d772-hall-map.js?v=3361-shared-queue",
+        "bytes": 3407
+      },
+      {
+        "name": "http://127.0.0.1:8765/living-magic.js?v=3361-shared-queue",
+        "bytes": 4211
+      },
+      {
+        "name": "http://127.0.0.1:8765/classroom-library-life.js?v=3362",
+        "bytes": 2472
+      },
+      {
+        "name": "http://127.0.0.1:8765/mobile-cleanup.js?v=3365",
+        "bytes": 2061
+      },
+      {
+        "name": "http://127.0.0.1:8765/focus-feedback.js?v=3363",
+        "bytes": 5358
+      },
+      {
+        "name": "http://127.0.0.1:8765/guardian-academic-presence.js?v=3366",
+        "bytes": 3566
+      },
+      {
+        "name": "http://127.0.0.1:8765/d772-course-map.js?v=342-section3",
+        "bytes": 4734
+      },
+      {
+        "name": "http://127.0.0.1:8765/d772-section-readiness.js?v=3369",
+        "bytes": 2734
+      },
+      {
+        "name": "http://127.0.0.1:8765/section-intake-shortcuts.js?v=3371",
+        "bytes": 2425
+      },
+      {
+        "name": "http://127.0.0.1:8765/source-provenance.js?v=3372",
+        "bytes": 3281
+      },
+      {
+        "name": "http://127.0.0.1:8765/duplicate-safe-hatch.js?v=3375",
+        "bytes": 8054
+      },
+      {
+        "name": "http://127.0.0.1:8765/home-focus.js?v=3400",
+        "bytes": 4430
+      },
+      {
+        "name": "http://127.0.0.1:8765/product-core.js?v=3400",
+        "bytes": 11370
+      },
+      {
+        "name": "http://127.0.0.1:8765/course-learning-profiles.js?v=347",
+        "bytes": 7879
+      },
+      {
+        "name": "http://127.0.0.1:8765/adaptive-learning-core.js?v=342-targeted-skills-342-selected-material",
+        "bytes": 63243
+      },
+      {
+        "name": "http://127.0.0.1:8765/math-support.js?v=342-expanded-formula-workbench",
+        "bytes": 35563
+      },
+      {
+        "name": "http://127.0.0.1:8765/startup-save-bridge.20261114.js",
+        "bytes": 1481
+      },
+      {
+        "name": "http://127.0.0.1:8765/anchor-interactives.js?v=342-priority2-v1",
+        "bytes": 6741
+      },
+      {
+        "name": "http://127.0.0.1:8765/study-visual-anchors.js?v=342-visual-anchor-v1",
+        "bytes": 26505
+      },
+      {
+        "name": "http://127.0.0.1:8765/scholar-progression.js?v=342-progression-1",
+        "bytes": 6823
+      },
+      {
+        "name": "http://127.0.0.1:8765/enchanted-atelier.js?v=342-functional-atelier-v2",
+        "bytes": 47542
+      },
+      {
+        "name": "http://127.0.0.1:8765/atelier-pixi-scene.js",
+        "bytes": 3954
+      },
+      {
+        "name": "http://127.0.0.1:8765/scholar-wardrobe-studio.js?v=342-dressup-v1",
+        "bytes": 31926
+      },
+      {
+        "name": "http://127.0.0.1:8765/scholar-companion.js?v=342-stable-avatar-v2",
+        "bytes": 8812
+      },
+      {
+        "name": "http://127.0.0.1:8765/atelier-sprite-actions.js?v=342-activity-gated-1",
+        "bytes": 6609
+      },
+      {
+        "name": "http://127.0.0.1:8765/atelier-v2-approval-gate.js?v=342-approval-gate-1",
+        "bytes": 4863
+      },
+      {
+        "name": "http://127.0.0.1:8765/learning-continuity.js?v=1",
+        "bytes": 24986
+      },
+      {
+        "name": "http://127.0.0.1:8765/inline-lesson-practice.js?v=1",
+        "bytes": 8995
+      },
+      {
+        "name": "http://127.0.0.1:8765/teach-back.js?v=1",
+        "bytes": 15984
+      },
+      {
+        "name": "http://127.0.0.1:8765/inline-learning-tabs.js?v=1",
+        "bytes": 2262
+      },
+      {
+        "name": "http://127.0.0.1:8765/your-turn-practice.js?v=1",
+        "bytes": 9576
+      },
+      {
+        "name": "http://127.0.0.1:8765/lesson-activity-bank.js?v=1",
+        "bytes": 33573
+      },
+      {
+        "name": "http://127.0.0.1:8765/solution-engine.js?v=2",
+        "bytes": 83752
+      },
+      {
+        "name": "http://127.0.0.1:8765/animation-effects.css?v=1",
+        "bytes": 2661
+      },
+      {
+        "name": "http://127.0.0.1:8765/animation-effects.js?v=1",
+        "bytes": 4340
+      },
+      {
+        "name": "http://127.0.0.1:8765/probability-workshop.js?v=phase2-probability-1",
+        "bytes": 16549
+      },
+      {
+        "name": "http://127.0.0.1:8765/d772-historical-quiz-results.js?v=342-history-1",
+        "bytes": 9517
+      },
+      {
+        "name": "http://127.0.0.1:8765/d772-misrepresentation-lab.js?v=342-misrep-lab-1",
+        "bytes": 12829
+      },
+      {
+        "name": "http://127.0.0.1:8765/d772-preassessment-source.js?v=342-wgu-preassessment-source-1",
+        "bytes": 36206
+      },
+      {
+        "name": "http://127.0.0.1:8765/d772-preassessment-review.js?v=342-preassessment-repair-1",
+        "bytes": 24157
+      },
+      {
+        "name": "http://127.0.0.1:8765/d772-preassessment-deep-practice.js?v=342-deep-1",
+        "bytes": 33110
+      },
+      {
+        "name": "http://127.0.0.1:8765/d772-adaptive-mastery.js?v=342-adaptive-1",
+        "bytes": 13800
+      },
+      {
+        "name": "http://127.0.0.1:8765/collegium-commons.css?v=commons-1",
+        "bytes": 22308
+      },
+      {
+        "name": "http://127.0.0.1:8765/room-section-nav.css?v=1",
+        "bytes": 9562
+      },
+      {
+        "name": "http://127.0.0.1:8765/collegium-commons.js?v=commons-1",
+        "bytes": 12633
+      },
+      {
+        "name": "http://127.0.0.1:8765/room-section-nav.js?v=1",
+        "bytes": 26355
+      },
+      {
+        "name": "http://127.0.0.1:8765/readability-guard.css?v=342-contrast-2",
+        "bytes": 22438
+      },
+      {
+        "name": "http://127.0.0.1:8765/decorative-panel.js",
+        "bytes": 2443
+      },
+      {
+        "name": "http://127.0.0.1:8765/room-identities.css?v=1",
+        "bytes": 17567
+      },
+      {
+        "name": "http://127.0.0.1:8765/verified-milestone-ceremony.js",
+        "bytes": 3095
+      },
+      {
+        "name": "http://127.0.0.1:8765/room-identities.js?v=1",
+        "bytes": 3022
+      },
+      {
+        "name": "http://127.0.0.1:8765/connected-learning-path.css?v=1",
+        "bytes": 3375
+      },
+      {
+        "name": "http://127.0.0.1:8765/screenshot-learning-repairs.css?v=1",
+        "bytes": 1591
+      },
+      {
+        "name": "http://127.0.0.1:8765/connected-learning-path.js?v=1",
+        "bytes": 9007
+      },
+      {
+        "name": "http://127.0.0.1:8765/aetheria-brand.css?v=1",
+        "bytes": 639
+      },
+      {
+        "name": "http://127.0.0.1:8765/screenshot-learning-repairs.js?v=1",
+        "bytes": 2349
+      },
+      {
+        "name": "http://127.0.0.1:8765/aetheria-parchment-contrast.css?v=1",
+        "bytes": 1161
+      },
+      {
+        "name": "http://127.0.0.1:8765/aetheria-brand.js?v=1",
+        "bytes": 2628
+      },
+      {
+        "name": "http://127.0.0.1:8765/professors-repair-hands-on.css?v=1",
+        "bytes": 1490
+      },
+      {
+        "name": "http://127.0.0.1:8765/universal-hands-on.js?v=20261113-council-entry",
+        "bytes": 28577
+      },
+      {
+        "name": "http://127.0.0.1:8765/d772-oa-entry.js?v=1",
+        "bytes": 1152
+      },
+      {
+        "name": "http://127.0.0.1:8765/enchanted-collegium.css?v=20261115",
+        "bytes": 15927
+      },
+      {
+        "name": "http://127.0.0.1:8765/interaction-help.js?v=20261114",
+        "bytes": 9269
+      },
+      {
+        "name": "https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap",
+        "bytes": 0
+      },
+      {
+        "name": "http://127.0.0.1:8765/assets/familiars/canon/velora-guardian.webp",
+        "bytes": 209678
+      },
+      {
+        "name": "http://127.0.0.1:8765/assets/familiars/evolution_stages/velora-new-bond.webp?v=3317-clean",
+        "bytes": 185808
+      },
+      {
+        "name": "http://127.0.0.1:8765/majick-ornate-panel.css",
+        "bytes": 1254
+      },
+      {
+        "name": "http://127.0.0.1:8765/assets/atelier/avatars/layer-body-warm-v2.webp",
+        "bytes": 92272
+      },
+      {
+        "name": "http://127.0.0.1:8765/assets/approved_sanctuary_backdrop.jpg",
+        "bytes": 84024
+      },
+      {
+        "name": "http://127.0.0.1:8765/assets/ancient-study-library-v1.png",
+        "bytes": 2826315
+      },
+      {
+        "name": "http://127.0.0.1:8765/assets/rooms/landscape-castle.webp",
+        "bytes": 987392
+      },
+      {
+        "name": "http://127.0.0.1:8765/health",
+        "bytes": 635
+      },
+      {
+        "name": "http://127.0.0.1:8765/assets/familiars/evolution_stages/velora-apprentice.webp",
+        "bytes": 177766
+      },
+      {
+        "name": "http://127.0.0.1:8765/health",
+        "bytes": 635
+      },
+      {
+        "name": "http://127.0.0.1:8765/assets/atelier/avatars/layer-dress-plum.webp",
+        "bytes": 49460
+      },
+      {
+        "name": "http://127.0.0.1:8765/assets/atelier/avatars/layer-boots-plum.webp",
+        "bytes": 5410
+      },
+      {
+        "name": "http://127.0.0.1:8765/assets/atelier/avatars/layer-hair-locs-v2.webp",
+        "bytes": 131392
+      },
+      {
+        "name": "http://127.0.0.1:8765/health",
+        "bytes": 635
+      },
+      {
+        "name": "http://127.0.0.1:8765/health",
+        "bytes": 635
+      },
+      {
+        "name": "http://127.0.0.1:8765/favicon.ico",
+        "bytes": 635
+      },
+      {
+        "name": "http://127.0.0.1:8765/health",
+        "bytes": 635
+      }
+    ],
+    "errors": []
+  },
+  {
+    "audit": {
+      "long": [
+        {
+          "start": 398.70000000001164,
+          "duration": 158
+        },
+        {
+          "start": 586.4000000000233,
+          "duration": 230
+        },
+        {
+          "start": 907.6000000000349,
+          "duration": 71
+        },
+        {
+          "start": 1171,
+          "duration": 50
+        }
+      ],
+      "renders": [
+        {
+          "at": 516.3000000000466,
+          "script": "http://127.0.0.1:8765/startup-core.20261114.js"
+        },
+        {
+          "at": 838.8000000000466,
+          "script": "http://127.0.0.1:8765/app-runtime.js?v=3402-s2-l2-graphs"
+        },
+        {
+          "at": 854.7000000000116,
+          "script": null
+        },
+        {
+          "at": 903.4000000000233,
+          "script": "http://127.0.0.1:8765/universal-hands-on.js?v=20261113-council-entry"
+        }
+      ],
+      "frames": []
+    },
+    "nav": [
+      {
+        "dom": 910.7000000000116,
+        "load": 1083.600000000035
+      }
+    ],
+    "frames": [],
+    "resources": [
+      {
+        "name": "http://127.0.0.1:8765/v339-main.css?v=339",
+        "bytes": 8296
+      },
+      {
+        "name": "http://127.0.0.1:8765/v3310-main.css?v=3310",
+        "bytes": 2680
+      },
+      {
+        "name": "http://127.0.0.1:8765/v3311-main.css?v=3311",
+        "bytes": 6855
+      },
+      {
+        "name": "http://127.0.0.1:8765/v3312-main.css?v=3312",
+        "bytes": 8183
+      },
+      {
+        "name": "http://127.0.0.1:8765/v3311-plus.css?v=3311",
+        "bytes": 6860
+      },
+      {
+        "name": "http://127.0.0.1:8765/v3313-main.css?v=3313",
+        "bytes": 2656
+      },
+      {
+        "name": "http://127.0.0.1:8765/v3315-main.css?v=3315",
+        "bytes": 4690
+      },
+      {
+        "name": "http://127.0.0.1:8765/v3314-main.css?v=3314",
+        "bytes": 586
+      },
+      {
+        "name": "http://127.0.0.1:8765/v3316-main.css?v=3316",
+        "bytes": 4125
+      },
+      {
+        "name": "http://127.0.0.1:8765/learning-plan.css?v=3324",
+        "bytes": 2902
+      },
+      {
+        "name": "http://127.0.0.1:8765/guardian-care-economy.css?v=3322-recovery",
+        "bytes": 11340
+      },
+      {
+        "name": "http://127.0.0.1:8765/learning-lab.css?v=3319",
+        "bytes": 10024
+      },
+      {
+        "name": "http://127.0.0.1:8765/course-tutor.css?v=342-targeted-skills",
+        "bytes": 22588
+      },
+      {
+        "name": "http://127.0.0.1:8765/magical-college-home.css?v=3337",
+        "bytes": 9416
+      },
+      {
+        "name": "http://127.0.0.1:8765/wgu-practice.css?v=3333-candlelit",
+        "bytes": 17830
+      },
+      {
+        "name": "http://127.0.0.1:8765/learn-mode.css?v=3338-candlelit",
+        "bytes": 23462
+      },
+      {
+        "name": "http://127.0.0.1:8765/d755-retake.css?v=3340-study-shelf-resume",
+        "bytes": 42222
+      },
+      {
+        "name": "http://127.0.0.1:8765/guardian-core.css?v=3341",
+        "bytes": 6751
+      },
+      {
+        "name": "http://127.0.0.1:8765/guardian-life-main.css?v=3342",
+        "bytes": 16710
+      },
+      {
+        "name": "http://127.0.0.1:8765/game-realm.css?v=3362-d772-review",
+        "bytes": 43180
+      },
+      {
+        "name": "http://127.0.0.1:8765/living-collegium.css?v=3346-tool-search-smooth-render",
+        "bytes": 6578
+      },
+      {
+        "name": "http://127.0.0.1:8765/collegium-atmosphere.css?v=3348-roster",
+        "bytes": 17561
+      },
+      {
+        "name": "http://127.0.0.1:8765/sanctuary-audit.css?v=3350",
+        "bytes": 1924
+      },
+      {
+        "name": "http://127.0.0.1:8765/d772-collegium.css?v=3354",
+        "bytes": 5754
+      },
+      {
+        "name": "http://127.0.0.1:8765/d772-hall-map.css?v=3358",
+        "bytes": 3576
+      },
+      {
+        "name": "http://127.0.0.1:8765/d772-instruction-depth.css?v=3356",
+        "bytes": 3096
+      },
+      {
+        "name": "http://127.0.0.1:8765/campus-runtime.css?v=3361",
+        "bytes": 1534
+      },
+      {
+        "name": "http://127.0.0.1:8765/living-magic.css?v=3360",
+        "bytes": 6840
+      },
+      {
+        "name": "http://127.0.0.1:8765/classroom-library-life.css?v=3362",
+        "bytes": 5217
+      },
+      {
+        "name": "http://127.0.0.1:8765/focus-feedback.css?v=3363",
+        "bytes": 3563
+      },
+      {
+        "name": "http://127.0.0.1:8765/guardian-academic-presence.css?v=3366",
+        "bytes": 1803
+      },
+      {
+        "name": "http://127.0.0.1:8765/mobile-cleanup.css?v=3365",
+        "bytes": 5305
+      },
+      {
+        "name": "http://127.0.0.1:8765/d772-course-map.css?v=3367",
+        "bytes": 3998
+      },
+      {
+        "name": "http://127.0.0.1:8765/section-aware-intake.css?v=3368",
+        "bytes": 1163
+      },
+      {
+        "name": "http://127.0.0.1:8765/section-library.css?v=3370",
+        "bytes": 1439
+      },
+      {
+        "name": "http://127.0.0.1:8765/d772-section-readiness.css?v=3369",
+        "bytes": 1419
+      },
+      {
+        "name": "http://127.0.0.1:8765/section-intake-shortcuts.css?v=3371",
+        "bytes": 813
+      },
+      {
+        "name": "http://127.0.0.1:8765/home-focus.css?v=3377",
+        "bytes": 2396
+      },
+      {
+        "name": "http://127.0.0.1:8765/source-provenance.css?v=3372",
+        "bytes": 2474
+      },
+      {
+        "name": "http://127.0.0.1:8765/duplicate-safe-hatch.css?v=3375",
+        "bytes": 1064
+      },
+      {
+        "name": "http://127.0.0.1:8765/product-core.css?v=3400",
+        "bytes": 4305
+      },
+      {
+        "name": "http://127.0.0.1:8765/math-support.css?v=349",
+        "bytes": 12193
+      },
+      {
+        "name": "http://127.0.0.1:8765/adaptive-learning-core.css?v=349",
+        "bytes": 15711
+      },
+      {
+        "name": "http://127.0.0.1:8765/course-learning-profiles.css?v=347",
+        "bytes": 1014
+      },
+      {
+        "name": "http://127.0.0.1:8765/reward-core.css?v=342-aurelia-live",
+        "bytes": 13609
+      },
+      {
+        "name": "http://127.0.0.1:8765/d756-council.css?v=3.4.2",
+        "bytes": 2533
+      },
+      {
+        "name": "http://127.0.0.1:8765/collegium-immersion.css?v=342-ambient-1",
+        "bytes": 5404
+      },
+      {
+        "name": "http://127.0.0.1:8765/save-safety.js",
+        "bytes": 9070
+      },
+      {
+        "name": "http://127.0.0.1:8765/startup-core.20261114.js",
+        "bytes": 607056
+      },
+      {
+        "name": "http://127.0.0.1:8765/v3311-main.js?v=3311",
+        "bytes": 7961
+      },
+      {
+        "name": "http://127.0.0.1:8765/v339-main.js?v=339",
+        "bytes": 15870
+      },
+      {
+        "name": "http://127.0.0.1:8765/v3311-plus.js?v=3311",
+        "bytes": 11033
+      },
+      {
+        "name": "http://127.0.0.1:8765/study-material/materialStoreModel.js?v=3315",
+        "bytes": 10098
+      },
+      {
+        "name": "http://127.0.0.1:8765/study-material/materialParser.js?v=3315",
+        "bytes": 2852
+      },
+      {
+        "name": "http://127.0.0.1:8765/study-material/questionBuilder.js?v=3315",
+        "bytes": 71296
+      },
+      {
+        "name": "http://127.0.0.1:8765/study-material/AddStudyMaterialPage.js?v=3315",
+        "bytes": 24534
+      },
+      {
+        "name": "http://127.0.0.1:8765/courseManager.js?v=3316-d756-catalog-2",
+        "bytes": 19948
+      },
+      {
+        "name": "http://127.0.0.1:8765/iep-meeting-pixi-scene.js?v=20261113-speaker-jiggle-v4",
+        "bytes": 12327
+      },
+      {
+        "name": "http://127.0.0.1:8765/d756-hands-on.js?v=20261113-floating-removed",
+        "bytes": 125000
+      },
+      {
+        "name": "http://127.0.0.1:8765/d756-task2-meeting.js?v=20261113-iep-feedback-coach-v5",
+        "bytes": 165539
+      },
+      {
+        "name": "http://127.0.0.1:8765/ui-compat.js?v=stability-1",
+        "bytes": 3440
+      },
+      {
+        "name": "http://127.0.0.1:8765/study-ui-compat.js?v=stability-1",
+        "bytes": 12663
+      },
+      {
+        "name": "http://127.0.0.1:8765/guardian-registry.js?v=stability-1",
+        "bytes": 11563
+      },
+      {
+        "name": "http://127.0.0.1:8765/majick-state-core.js?v=3322-recovery",
+        "bytes": 12167
+      },
+      {
+        "name": "http://127.0.0.1:8765/guardian-care-economy.js?v=3347-stations",
+        "bytes": 33843
+      },
+      {
+        "name": "http://127.0.0.1:8765/reward-core.js?v=342-aurelia-live",
+        "bytes": 86956
+      },
+      {
+        "name": "http://127.0.0.1:8765/learning-lab.js?v=342-guided-mastery",
+        "bytes": 41554
+      },
+      {
+        "name": "http://127.0.0.1:8765/learning-plan.js?v=3324",
+        "bytes": 9659
+      },
+      {
+        "name": "http://127.0.0.1:8765/d772-shared-oa-questions.js?v=342-multistep-1",
+        "bytes": 80618
+      },
+      {
+        "name": "http://127.0.0.1:8765/learn-mode.js?v=3400-product-flow",
+        "bytes": 96071
+      },
+      {
+        "name": "http://127.0.0.1:8765/course-tutor.js?v=342-working-controls",
+        "bytes": 408172
+      },
+      {
+        "name": "http://127.0.0.1:8765/generated-question-engine.js?v=342-local-svg-1",
+        "bytes": 29768
+      },
+      {
+        "name": "http://127.0.0.1:8765/d755-retake.js?v=3340-study-shelf-resume",
+        "bytes": 240738
+      },
+      {
+        "name": "http://127.0.0.1:8765/question-repair.js",
+        "bytes": 14595
+      },
+      {
+        "name": "http://127.0.0.1:8765/wgu-practice.js?v=342-question-whiteboard-worked",
+        "bytes": 61107
+      },
+      {
+        "name": "http://127.0.0.1:8765/app-runtime.js?v=3402-s2-l2-graphs",
+        "bytes": 25761
+      },
+      {
+        "name": "http://127.0.0.1:8765/app-recovery.js?v=3322",
+        "bytes": 2824
+      },
+      {
+        "name": "http://127.0.0.1:8765/magical-college-home.js?v=3337",
+        "bytes": 12781
+      },
+      {
+        "name": "http://127.0.0.1:8765/guardian-core.js?v=3400",
+        "bytes": 24017
+      },
+      {
+        "name": "http://127.0.0.1:8765/study-progress-bridge.js?v=342-scholar-answers",
+        "bytes": 15436
+      },
+      {
+        "name": "http://127.0.0.1:8765/milestone-particles.js?v=1",
+        "bytes": 4845
+      },
+      {
+        "name": "http://127.0.0.1:8765/room-transition.js?v=1",
+        "bytes": 1107
+      },
+      {
+        "name": "http://127.0.0.1:8765/guardian-life-main.js?v=3342",
+        "bytes": 13804
+      },
+      {
+        "name": "http://127.0.0.1:8765/visual-evidence-gate.js?v=342-graph-evidence-1",
+        "bytes": 10445
+      },
+      {
+        "name": "http://127.0.0.1:8765/campus-runtime.js?v=3361",
+        "bytes": 3175
+      },
+      {
+        "name": "http://127.0.0.1:8765/living-collegium.js?v=3361-shared-queue",
+        "bytes": 16601
+      },
+      {
+        "name": "http://127.0.0.1:8765/game-realm.js?v=20261108-realm-d756",
+        "bytes": 114054
+      },
+      {
+        "name": "http://127.0.0.1:8765/collegium-atmosphere.js?v=20261113-music-gesture-fix",
+        "bytes": 8769
+      },
+      {
+        "name": "http://127.0.0.1:8765/d772-collegium.js?v=3361-shared-queue",
+        "bytes": 6808
+      },
+      {
+        "name": "http://127.0.0.1:8765/sanctuary-audit.js?v=3350",
+        "bytes": 6679
+      },
+      {
+        "name": "http://127.0.0.1:8765/d772-instruction-depth.js?v=3361-shared-queue",
+        "bytes": 6554
+      },
+      {
+        "name": "http://127.0.0.1:8765/living-magic.js?v=3361-shared-queue",
+        "bytes": 4211
+      },
+      {
+        "name": "http://127.0.0.1:8765/d772-hall-map.js?v=3361-shared-queue",
+        "bytes": 3407
+      },
+      {
+        "name": "http://127.0.0.1:8765/focus-feedback.js?v=3363",
+        "bytes": 5358
+      },
+      {
+        "name": "http://127.0.0.1:8765/mobile-cleanup.js?v=3365",
+        "bytes": 2061
+      },
+      {
+        "name": "http://127.0.0.1:8765/guardian-academic-presence.js?v=3366",
+        "bytes": 3566
+      },
+      {
+        "name": "http://127.0.0.1:8765/classroom-library-life.js?v=3362",
+        "bytes": 2472
+      },
+      {
+        "name": "http://127.0.0.1:8765/d772-course-map.js?v=342-section3",
+        "bytes": 4734
+      },
+      {
+        "name": "http://127.0.0.1:8765/d772-section-readiness.js?v=3369",
+        "bytes": 2734
+      },
+      {
+        "name": "http://127.0.0.1:8765/section-intake-shortcuts.js?v=3371",
+        "bytes": 2425
+      },
+      {
+        "name": "http://127.0.0.1:8765/source-provenance.js?v=3372",
+        "bytes": 3281
+      },
+      {
+        "name": "http://127.0.0.1:8765/duplicate-safe-hatch.js?v=3375",
+        "bytes": 8054
+      },
+      {
+        "name": "http://127.0.0.1:8765/home-focus.js?v=3400",
+        "bytes": 4430
+      },
+      {
+        "name": "http://127.0.0.1:8765/product-core.js?v=3400",
+        "bytes": 11370
+      },
+      {
+        "name": "http://127.0.0.1:8765/course-learning-profiles.js?v=347",
+        "bytes": 7879
+      },
+      {
+        "name": "http://127.0.0.1:8765/adaptive-learning-core.js?v=342-targeted-skills-342-selected-material",
+        "bytes": 63243
+      },
+      {
+        "name": "http://127.0.0.1:8765/math-support.js?v=342-expanded-formula-workbench",
+        "bytes": 35563
+      },
+      {
+        "name": "http://127.0.0.1:8765/startup-save-bridge.20261114.js",
+        "bytes": 1481
+      },
+      {
+        "name": "http://127.0.0.1:8765/anchor-interactives.js?v=342-priority2-v1",
+        "bytes": 6741
+      },
+      {
+        "name": "http://127.0.0.1:8765/study-visual-anchors.js?v=342-visual-anchor-v1",
+        "bytes": 26505
+      },
+      {
+        "name": "http://127.0.0.1:8765/scholar-progression.js?v=342-progression-1",
+        "bytes": 6823
+      },
+      {
+        "name": "http://127.0.0.1:8765/enchanted-atelier.js?v=342-functional-atelier-v2",
+        "bytes": 47542
+      },
+      {
+        "name": "http://127.0.0.1:8765/atelier-pixi-scene.js",
+        "bytes": 3954
+      },
+      {
+        "name": "http://127.0.0.1:8765/scholar-wardrobe-studio.js?v=342-dressup-v1",
+        "bytes": 31926
+      },
+      {
+        "name": "http://127.0.0.1:8765/scholar-companion.js?v=342-stable-avatar-v2",
+        "bytes": 8812
+      },
+      {
+        "name": "http://127.0.0.1:8765/atelier-sprite-actions.js?v=342-activity-gated-1",
+        "bytes": 6609
+      },
+      {
+        "name": "http://127.0.0.1:8765/atelier-v2-approval-gate.js?v=342-approval-gate-1",
+        "bytes": 4863
+      },
+      {
+        "name": "http://127.0.0.1:8765/learning-continuity.js?v=1",
+        "bytes": 24986
+      },
+      {
+        "name": "http://127.0.0.1:8765/inline-lesson-practice.js?v=1",
+        "bytes": 8995
+      },
+      {
+        "name": "http://127.0.0.1:8765/teach-back.js?v=1",
+        "bytes": 15984
+      },
+      {
+        "name": "http://127.0.0.1:8765/inline-learning-tabs.js?v=1",
+        "bytes": 2262
+      },
+      {
+        "name": "http://127.0.0.1:8765/your-turn-practice.js?v=1",
+        "bytes": 9576
+      },
+      {
+        "name": "http://127.0.0.1:8765/lesson-activity-bank.js?v=1",
+        "bytes": 33573
+      },
+      {
+        "name": "http://127.0.0.1:8765/animation-effects.css?v=1",
+        "bytes": 2661
+      },
+      {
+        "name": "http://127.0.0.1:8765/solution-engine.js?v=2",
+        "bytes": 83752
+      },
+      {
+        "name": "http://127.0.0.1:8765/animation-effects.js?v=1",
+        "bytes": 4340
+      },
+      {
+        "name": "http://127.0.0.1:8765/d772-historical-quiz-results.js?v=342-history-1",
+        "bytes": 9517
+      },
+      {
+        "name": "http://127.0.0.1:8765/probability-workshop.js?v=phase2-probability-1",
+        "bytes": 16549
+      },
+      {
+        "name": "http://127.0.0.1:8765/d772-preassessment-source.js?v=342-wgu-preassessment-source-1",
+        "bytes": 36206
+      },
+      {
+        "name": "http://127.0.0.1:8765/d772-misrepresentation-lab.js?v=342-misrep-lab-1",
+        "bytes": 12829
+      },
+      {
+        "name": "http://127.0.0.1:8765/collegium-commons.css?v=commons-1",
+        "bytes": 22308
+      },
+      {
+        "name": "http://127.0.0.1:8765/d772-adaptive-mastery.js?v=342-adaptive-1",
+        "bytes": 13800
+      },
+      {
+        "name": "http://127.0.0.1:8765/d772-preassessment-review.js?v=342-preassessment-repair-1",
+        "bytes": 24157
+      },
+      {
+        "name": "http://127.0.0.1:8765/d772-preassessment-deep-practice.js?v=342-deep-1",
+        "bytes": 33110
+      },
+      {
+        "name": "http://127.0.0.1:8765/room-section-nav.css?v=1",
+        "bytes": 9562
+      },
+      {
+        "name": "http://127.0.0.1:8765/collegium-commons.js?v=commons-1",
+        "bytes": 12633
+      },
+      {
+        "name": "http://127.0.0.1:8765/room-section-nav.js?v=1",
+        "bytes": 26355
+      },
+      {
+        "name": "http://127.0.0.1:8765/readability-guard.css?v=342-contrast-2",
+        "bytes": 22438
+      },
+      {
+        "name": "http://127.0.0.1:8765/verified-milestone-ceremony.js",
+        "bytes": 3095
+      },
+      {
+        "name": "http://127.0.0.1:8765/decorative-panel.js",
+        "bytes": 2443
+      },
+      {
+        "name": "http://127.0.0.1:8765/room-identities.css?v=1",
+        "bytes": 17567
+      },
+      {
+        "name": "http://127.0.0.1:8765/room-identities.js?v=1",
+        "bytes": 3022
+      },
+      {
+        "name": "http://127.0.0.1:8765/connected-learning-path.css?v=1",
+        "bytes": 3375
+      },
+      {
+        "name": "http://127.0.0.1:8765/connected-learning-path.js?v=1",
+        "bytes": 9007
+      },
+      {
+        "name": "http://127.0.0.1:8765/screenshot-learning-repairs.css?v=1",
+        "bytes": 1591
+      },
+      {
+        "name": "http://127.0.0.1:8765/aetheria-brand.css?v=1",
+        "bytes": 639
+      },
+      {
+        "name": "http://127.0.0.1:8765/screenshot-learning-repairs.js?v=1",
+        "bytes": 2349
+      },
+      {
+        "name": "http://127.0.0.1:8765/aetheria-brand.js?v=1",
+        "bytes": 2628
+      },
+      {
+        "name": "http://127.0.0.1:8765/professors-repair-hands-on.css?v=1",
+        "bytes": 1490
+      },
+      {
+        "name": "http://127.0.0.1:8765/aetheria-parchment-contrast.css?v=1",
+        "bytes": 1161
+      },
+      {
+        "name": "http://127.0.0.1:8765/d772-oa-entry.js?v=1",
+        "bytes": 1152
+      },
+      {
+        "name": "http://127.0.0.1:8765/universal-hands-on.js?v=20261113-council-entry",
+        "bytes": 28577
+      },
+      {
+        "name": "http://127.0.0.1:8765/interaction-help.js?v=20261114",
+        "bytes": 9269
+      },
+      {
+        "name": "http://127.0.0.1:8765/enchanted-collegium.css?v=20261115",
+        "bytes": 15927
+      },
+      {
+        "name": "https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap",
+        "bytes": 0
+      },
+      {
+        "name": "http://127.0.0.1:8765/assets/familiars/canon/velora-guardian.webp",
+        "bytes": 209678
+      },
+      {
+        "name": "http://127.0.0.1:8765/assets/approved_sanctuary_backdrop.jpg",
+        "bytes": 84024
+      },
+      {
+        "name": "http://127.0.0.1:8765/assets/academy_hero.jpg",
+        "bytes": 253376
+      },
+      {
+        "name": "http://127.0.0.1:8765/assets/room_library.jpg",
+        "bytes": 52652
+      },
+      {
+        "name": "http://127.0.0.1:8765/assets/room_lecture.jpg",
+        "bytes": 52381
+      },
+      {
+        "name": "http://127.0.0.1:8765/assets/room_observatory.jpg",
+        "bytes": 52742
+      },
+      {
+        "name": "http://127.0.0.1:8765/assets/room_conservatory.jpg",
+        "bytes": 48461
+      },
+      {
+        "name": "http://127.0.0.1:8765/assets/room_archive.jpg",
+        "bytes": 48552
+      },
+      {
+        "name": "http://127.0.0.1:8765/assets/room_exam.jpg",
+        "bytes": 52114
+      },
+      {
+        "name": "http://127.0.0.1:8765/assets/majick_garden.jpg",
+        "bytes": 335305
+      },
+      {
+        "name": "http://127.0.0.1:8765/assets/familiars/evolution_stages/velora-new-bond.webp?v=3317-clean",
+        "bytes": 185808
+      },
+      {
+        "name": "http://127.0.0.1:8765/majick-ornate-panel.css",
+        "bytes": 1254
+      },
+      {
+        "name": "http://127.0.0.1:8765/assets/atelier/avatars/layer-body-warm-v2.webp",
+        "bytes": 92272
+      },
+      {
+        "name": "http://127.0.0.1:8765/assets/rooms/landscape-castle.webp",
+        "bytes": 987392
+      },
+      {
+        "name": "http://127.0.0.1:8765/assets/ancient-study-library-v1.png",
+        "bytes": 2826315
+      },
+      {
+        "name": "http://127.0.0.1:8765/health",
+        "bytes": 635
+      },
+      {
+        "name": "http://127.0.0.1:8765/assets/familiars/evolution_stages/velora-apprentice.webp",
+        "bytes": 177766
+      },
+      {
+        "name": "http://127.0.0.1:8765/assets/atelier/avatars/layer-dress-plum.webp",
+        "bytes": 49460
+      },
+      {
+        "name": "http://127.0.0.1:8765/assets/atelier/avatars/layer-boots-plum.webp",
+        "bytes": 5410
+      },
+      {
+        "name": "http://127.0.0.1:8765/assets/atelier/avatars/layer-hair-locs-v2.webp",
+        "bytes": 131392
+      },
+      {
+        "name": "http://127.0.0.1:8765/health",
+        "bytes": 635
+      },
+      {
+        "name": "http://127.0.0.1:8765/health",
+        "bytes": 635
+      },
+      {
+        "name": "http://127.0.0.1:8765/health",
+        "bytes": 635
+      },
+      {
+        "name": "http://127.0.0.1:8765/health",
+        "bytes": 635
+      }
+    ],
+    "errors": []
+  },
+  {
+    "audit": {
+      "long": [
+        {
+          "start": 58.59999999997672,
+          "duration": 51
+        },
+        {
+          "start": 400.5,
+          "duration": 124
+        },
+        {
+          "start": 600.5,
+          "duration": 172
+        },
+        {
+          "start": 888.2000000000116,
+          "duration": 77
+        },
+        {
+          "start": 1017.5,
+          "duration": 54
+        },
+        {
+          "start": 1166.9000000000233,
+          "duration": 60
+        }
+      ],
+      "renders": [
+        {
+          "at": 506.79999999998836,
+          "script": "http://127.0.0.1:8765/startup-core.20261114.js"
+        },
+        {
+          "at": 795.9000000000233,
+          "script": "http://127.0.0.1:8765/app-runtime.js?v=3402-s2-l2-graphs"
+        },
+        {
+          "at": 827.5,
+          "script": null
+        },
+        {
+          "at": 1013.2000000000116,
+          "script": "http://127.0.0.1:8765/universal-hands-on.js?v=20261113-council-entry"
+        }
+      ],
+      "frames": []
+    },
+    "nav": [
+      {
+        "dom": 1020,
+        "load": 1126.7999999999884
+      }
+    ],
+    "frames": [],
+    "resources": [
+      {
+        "name": "http://127.0.0.1:8765/v339-main.css?v=339",
+        "bytes": 8296
+      },
+      {
+        "name": "http://127.0.0.1:8765/v3310-main.css?v=3310",
+        "bytes": 2680
+      },
+      {
+        "name": "http://127.0.0.1:8765/v3311-main.css?v=3311",
+        "bytes": 6855
+      },
+      {
+        "name": "http://127.0.0.1:8765/v3311-plus.css?v=3311",
+        "bytes": 6860
+      },
+      {
+        "name": "http://127.0.0.1:8765/v3314-main.css?v=3314",
+        "bytes": 586
+      },
+      {
+        "name": "http://127.0.0.1:8765/v3313-main.css?v=3313",
+        "bytes": 2656
+      },
+      {
+        "name": "http://127.0.0.1:8765/v3312-main.css?v=3312",
+        "bytes": 8183
+      },
+      {
+        "name": "http://127.0.0.1:8765/v3315-main.css?v=3315",
+        "bytes": 4690
+      },
+      {
+        "name": "http://127.0.0.1:8765/v3316-main.css?v=3316",
+        "bytes": 4125
+      },
+      {
+        "name": "http://127.0.0.1:8765/learning-lab.css?v=3319",
+        "bytes": 10024
+      },
+      {
+        "name": "http://127.0.0.1:8765/guardian-care-economy.css?v=3322-recovery",
+        "bytes": 11340
+      },
+      {
+        "name": "http://127.0.0.1:8765/learning-plan.css?v=3324",
+        "bytes": 2902
+      },
+      {
+        "name": "http://127.0.0.1:8765/course-tutor.css?v=342-targeted-skills",
+        "bytes": 22588
+      },
+      {
+        "name": "http://127.0.0.1:8765/magical-college-home.css?v=3337",
+        "bytes": 9416
+      },
+      {
+        "name": "http://127.0.0.1:8765/wgu-practice.css?v=3333-candlelit",
+        "bytes": 17830
+      },
+      {
+        "name": "http://127.0.0.1:8765/learn-mode.css?v=3338-candlelit",
+        "bytes": 23462
+      },
+      {
+        "name": "http://127.0.0.1:8765/d755-retake.css?v=3340-study-shelf-resume",
+        "bytes": 42222
+      },
+      {
+        "name": "http://127.0.0.1:8765/guardian-core.css?v=3341",
+        "bytes": 6751
+      },
+      {
+        "name": "http://127.0.0.1:8765/guardian-life-main.css?v=3342",
+        "bytes": 16710
+      },
+      {
+        "name": "http://127.0.0.1:8765/game-realm.css?v=3362-d772-review",
+        "bytes": 43180
+      },
+      {
+        "name": "http://127.0.0.1:8765/collegium-atmosphere.css?v=3348-roster",
+        "bytes": 17561
+      },
+      {
+        "name": "http://127.0.0.1:8765/living-collegium.css?v=3346-tool-search-smooth-render",
+        "bytes": 6578
+      },
+      {
+        "name": "http://127.0.0.1:8765/sanctuary-audit.css?v=3350",
+        "bytes": 1924
+      },
+      {
+        "name": "http://127.0.0.1:8765/d772-collegium.css?v=3354",
+        "bytes": 5754
+      },
+      {
+        "name": "http://127.0.0.1:8765/living-magic.css?v=3360",
+        "bytes": 6840
+      },
+      {
+        "name": "http://127.0.0.1:8765/campus-runtime.css?v=3361",
+        "bytes": 1534
+      },
+      {
+        "name": "http://127.0.0.1:8765/d772-hall-map.css?v=3358",
+        "bytes": 3576
+      },
+      {
+        "name": "http://127.0.0.1:8765/d772-instruction-depth.css?v=3356",
+        "bytes": 3096
+      },
+      {
+        "name": "http://127.0.0.1:8765/classroom-library-life.css?v=3362",
+        "bytes": 5217
+      },
+      {
+        "name": "http://127.0.0.1:8765/focus-feedback.css?v=3363",
+        "bytes": 3563
+      },
+      {
+        "name": "http://127.0.0.1:8765/mobile-cleanup.css?v=3365",
+        "bytes": 5305
+      },
+      {
+        "name": "http://127.0.0.1:8765/guardian-academic-presence.css?v=3366",
+        "bytes": 1803
+      },
+      {
+        "name": "http://127.0.0.1:8765/d772-course-map.css?v=3367",
+        "bytes": 3998
+      },
+      {
+        "name": "http://127.0.0.1:8765/section-aware-intake.css?v=3368",
+        "bytes": 1163
+      },
+      {
+        "name": "http://127.0.0.1:8765/d772-section-readiness.css?v=3369",
+        "bytes": 1419
+      },
+      {
+        "name": "http://127.0.0.1:8765/section-library.css?v=3370",
+        "bytes": 1439
+      },
+      {
+        "name": "http://127.0.0.1:8765/section-intake-shortcuts.css?v=3371",
+        "bytes": 813
+      },
+      {
+        "name": "http://127.0.0.1:8765/source-provenance.css?v=3372",
+        "bytes": 2474
+      },
+      {
+        "name": "http://127.0.0.1:8765/home-focus.css?v=3377",
+        "bytes": 2396
+      },
+      {
+        "name": "http://127.0.0.1:8765/product-core.css?v=3400",
+        "bytes": 4305
+      },
+      {
+        "name": "http://127.0.0.1:8765/adaptive-learning-core.css?v=349",
+        "bytes": 15711
+      },
+      {
+        "name": "http://127.0.0.1:8765/math-support.css?v=349",
+        "bytes": 12193
+      },
+      {
+        "name": "http://127.0.0.1:8765/course-learning-profiles.css?v=347",
+        "bytes": 1014
+      },
+      {
+        "name": "http://127.0.0.1:8765/duplicate-safe-hatch.css?v=3375",
+        "bytes": 1064
+      },
+      {
+        "name": "http://127.0.0.1:8765/collegium-immersion.css?v=342-ambient-1",
+        "bytes": 5404
+      },
+      {
+        "name": "http://127.0.0.1:8765/reward-core.css?v=342-aurelia-live",
+        "bytes": 13609
+      },
+      {
+        "name": "http://127.0.0.1:8765/d756-council.css?v=3.4.2",
+        "bytes": 2533
+      },
+      {
+        "name": "http://127.0.0.1:8765/save-safety.js",
+        "bytes": 9070
+      },
+      {
+        "name": "http://127.0.0.1:8765/startup-core.20261114.js",
+        "bytes": 607056
+      },
+      {
+        "name": "http://127.0.0.1:8765/v339-main.js?v=339",
+        "bytes": 15870
+      },
+      {
+        "name": "http://127.0.0.1:8765/v3311-main.js?v=3311",
+        "bytes": 7961
+      },
+      {
+        "name": "http://127.0.0.1:8765/v3311-plus.js?v=3311",
+        "bytes": 11033
+      },
+      {
+        "name": "http://127.0.0.1:8765/study-material/materialStoreModel.js?v=3315",
+        "bytes": 10098
+      },
+      {
+        "name": "http://127.0.0.1:8765/study-material/materialParser.js?v=3315",
+        "bytes": 2852
+      },
+      {
+        "name": "http://127.0.0.1:8765/study-material/questionBuilder.js?v=3315",
+        "bytes": 71296
+      },
+      {
+        "name": "http://127.0.0.1:8765/study-material/AddStudyMaterialPage.js?v=3315",
+        "bytes": 24534
+      },
+      {
+        "name": "http://127.0.0.1:8765/iep-meeting-pixi-scene.js?v=20261113-speaker-jiggle-v4",
+        "bytes": 12327
+      },
+      {
+        "name": "http://127.0.0.1:8765/courseManager.js?v=3316-d756-catalog-2",
+        "bytes": 19948
+      },
+      {
+        "name": "http://127.0.0.1:8765/d756-hands-on.js?v=20261113-floating-removed",
+        "bytes": 125000
+      },
+      {
+        "name": "http://127.0.0.1:8765/ui-compat.js?v=stability-1",
+        "bytes": 3440
+      },
+      {
+        "name": "http://127.0.0.1:8765/d756-task2-meeting.js?v=20261113-iep-feedback-coach-v5",
+        "bytes": 165539
+      },
+      {
+        "name": "http://127.0.0.1:8765/guardian-registry.js?v=stability-1",
+        "bytes": 11563
+      },
+      {
+        "name": "http://127.0.0.1:8765/study-ui-compat.js?v=stability-1",
+        "bytes": 12663
+      },
+      {
+        "name": "http://127.0.0.1:8765/majick-state-core.js?v=3322-recovery",
+        "bytes": 12167
+      },
+      {
+        "name": "http://127.0.0.1:8765/reward-core.js?v=342-aurelia-live",
+        "bytes": 86956
+      },
+      {
+        "name": "http://127.0.0.1:8765/guardian-care-economy.js?v=3347-stations",
+        "bytes": 33843
+      },
+      {
+        "name": "http://127.0.0.1:8765/learning-lab.js?v=342-guided-mastery",
+        "bytes": 41554
+      },
+      {
+        "name": "http://127.0.0.1:8765/learning-plan.js?v=3324",
+        "bytes": 9659
+      },
+      {
+        "name": "http://127.0.0.1:8765/d772-shared-oa-questions.js?v=342-multistep-1",
+        "bytes": 80618
+      },
+      {
+        "name": "http://127.0.0.1:8765/learn-mode.js?v=3400-product-flow",
+        "bytes": 96071
+      },
+      {
+        "name": "http://127.0.0.1:8765/generated-question-engine.js?v=342-local-svg-1",
+        "bytes": 29768
+      },
+      {
+        "name": "http://127.0.0.1:8765/d755-retake.js?v=3340-study-shelf-resume",
+        "bytes": 240738
+      },
+      {
+        "name": "http://127.0.0.1:8765/course-tutor.js?v=342-working-controls",
+        "bytes": 408172
+      },
+      {
+        "name": "http://127.0.0.1:8765/question-repair.js",
+        "bytes": 14595
+      },
+      {
+        "name": "http://127.0.0.1:8765/wgu-practice.js?v=342-question-whiteboard-worked",
+        "bytes": 61107
+      },
+      {
+        "name": "http://127.0.0.1:8765/app-runtime.js?v=3402-s2-l2-graphs",
+        "bytes": 25761
+      },
+      {
+        "name": "http://127.0.0.1:8765/app-recovery.js?v=3322",
+        "bytes": 2824
+      },
+      {
+        "name": "http://127.0.0.1:8765/room-transition.js?v=1",
+        "bytes": 1107
+      },
+      {
+        "name": "http://127.0.0.1:8765/guardian-core.js?v=3400",
+        "bytes": 24017
+      },
+      {
+        "name": "http://127.0.0.1:8765/magical-college-home.js?v=3337",
+        "bytes": 12781
+      },
+      {
+        "name": "http://127.0.0.1:8765/study-progress-bridge.js?v=342-scholar-answers",
+        "bytes": 15436
+      },
+      {
+        "name": "http://127.0.0.1:8765/milestone-particles.js?v=1",
+        "bytes": 4845
+      },
+      {
+        "name": "http://127.0.0.1:8765/guardian-life-main.js?v=3342",
+        "bytes": 13804
+      },
+      {
+        "name": "http://127.0.0.1:8765/campus-runtime.js?v=3361",
+        "bytes": 3175
+      },
+      {
+        "name": "http://127.0.0.1:8765/collegium-atmosphere.js?v=20261113-music-gesture-fix",
+        "bytes": 8769
+      },
+      {
+        "name": "http://127.0.0.1:8765/living-collegium.js?v=3361-shared-queue",
+        "bytes": 16601
+      },
+      {
+        "name": "http://127.0.0.1:8765/visual-evidence-gate.js?v=342-graph-evidence-1",
+        "bytes": 10445
+      },
+      {
+        "name": "http://127.0.0.1:8765/d772-collegium.js?v=3361-shared-queue",
+        "bytes": 6808
+      },
+      {
+        "name": "http://127.0.0.1:8765/sanctuary-audit.js?v=3350",
+        "bytes": 6679
+      },
+      {
+        "name": "http://127.0.0.1:8765/game-realm.js?v=20261108-realm-d756",
+        "bytes": 114054
+      },
+      {
+        "name": "http://127.0.0.1:8765/d772-instruction-depth.js?v=3361-shared-queue",
+        "bytes": 6554
+      },
+      {
+        "name": "http://127.0.0.1:8765/living-magic.js?v=3361-shared-queue",
+        "bytes": 4211
+      },
+      {
+        "name": "http://127.0.0.1:8765/classroom-library-life.js?v=3362",
+        "bytes": 2472
+      },
+      {
+        "name": "http://127.0.0.1:8765/d772-hall-map.js?v=3361-shared-queue",
+        "bytes": 3407
+      },
+      {
+        "name": "http://127.0.0.1:8765/focus-feedback.js?v=3363",
+        "bytes": 5358
+      },
+      {
+        "name": "http://127.0.0.1:8765/mobile-cleanup.js?v=3365",
+        "bytes": 2061
+      },
+      {
+        "name": "http://127.0.0.1:8765/guardian-academic-presence.js?v=3366",
+        "bytes": 3566
+      },
+      {
+        "name": "http://127.0.0.1:8765/d772-course-map.js?v=342-section3",
+        "bytes": 4734
+      },
+      {
+        "name": "http://127.0.0.1:8765/d772-section-readiness.js?v=3369",
+        "bytes": 2734
+      },
+      {
+        "name": "http://127.0.0.1:8765/source-provenance.js?v=3372",
+        "bytes": 3281
+      },
+      {
+        "name": "http://127.0.0.1:8765/section-intake-shortcuts.js?v=3371",
+        "bytes": 2425
+      },
+      {
+        "name": "http://127.0.0.1:8765/duplicate-safe-hatch.js?v=3375",
+        "bytes": 8054
+      },
+      {
+        "name": "http://127.0.0.1:8765/home-focus.js?v=3400",
+        "bytes": 4430
+      },
+      {
+        "name": "http://127.0.0.1:8765/product-core.js?v=3400",
+        "bytes": 11370
+      },
+      {
+        "name": "http://127.0.0.1:8765/course-learning-profiles.js?v=347",
+        "bytes": 7879
+      },
+      {
+        "name": "http://127.0.0.1:8765/adaptive-learning-core.js?v=342-targeted-skills-342-selected-material",
+        "bytes": 63243
+      },
+      {
+        "name": "http://127.0.0.1:8765/startup-save-bridge.20261114.js",
+        "bytes": 1481
+      },
+      {
+        "name": "http://127.0.0.1:8765/math-support.js?v=342-expanded-formula-workbench",
+        "bytes": 35563
+      },
+      {
+        "name": "http://127.0.0.1:8765/anchor-interactives.js?v=342-priority2-v1",
+        "bytes": 6741
+      },
+      {
+        "name": "http://127.0.0.1:8765/scholar-progression.js?v=342-progression-1",
+        "bytes": 6823
+      },
+      {
+        "name": "http://127.0.0.1:8765/study-visual-anchors.js?v=342-visual-anchor-v1",
+        "bytes": 26505
+      },
+      {
+        "name": "http://127.0.0.1:8765/enchanted-atelier.js?v=342-functional-atelier-v2",
+        "bytes": 47542
+      },
+      {
+        "name": "http://127.0.0.1:8765/atelier-pixi-scene.js",
+        "bytes": 3954
+      },
+      {
+        "name": "http://127.0.0.1:8765/atelier-v2-approval-gate.js?v=342-approval-gate-1",
+        "bytes": 4863
+      },
+      {
+        "name": "http://127.0.0.1:8765/scholar-companion.js?v=342-stable-avatar-v2",
+        "bytes": 8812
+      },
+      {
+        "name": "http://127.0.0.1:8765/atelier-sprite-actions.js?v=342-activity-gated-1",
+        "bytes": 6609
+      },
+      {
+        "name": "http://127.0.0.1:8765/scholar-wardrobe-studio.js?v=342-dressup-v1",
+        "bytes": 31926
+      },
+      {
+        "name": "http://127.0.0.1:8765/learning-continuity.js?v=1",
+        "bytes": 24986
+      },
+      {
+        "name": "http://127.0.0.1:8765/inline-lesson-practice.js?v=1",
+        "bytes": 8995
+      },
+      {
+        "name": "http://127.0.0.1:8765/teach-back.js?v=1",
+        "bytes": 15984
+      },
+      {
+        "name": "http://127.0.0.1:8765/inline-learning-tabs.js?v=1",
+        "bytes": 2262
+      },
+      {
+        "name": "http://127.0.0.1:8765/your-turn-practice.js?v=1",
+        "bytes": 9576
+      },
+      {
+        "name": "http://127.0.0.1:8765/animation-effects.css?v=1",
+        "bytes": 2661
+      },
+      {
+        "name": "http://127.0.0.1:8765/solution-engine.js?v=2",
+        "bytes": 83752
+      },
+      {
+        "name": "http://127.0.0.1:8765/lesson-activity-bank.js?v=1",
+        "bytes": 33573
+      },
+      {
+        "name": "http://127.0.0.1:8765/animation-effects.js?v=1",
+        "bytes": 4340
+      },
+      {
+        "name": "http://127.0.0.1:8765/probability-workshop.js?v=phase2-probability-1",
+        "bytes": 16549
+      },
+      {
+        "name": "http://127.0.0.1:8765/d772-historical-quiz-results.js?v=342-history-1",
+        "bytes": 9517
+      },
+      {
+        "name": "http://127.0.0.1:8765/d772-misrepresentation-lab.js?v=342-misrep-lab-1",
+        "bytes": 12829
+      },
+      {
+        "name": "http://127.0.0.1:8765/d772-preassessment-source.js?v=342-wgu-preassessment-source-1",
+        "bytes": 36206
+      },
+      {
+        "name": "http://127.0.0.1:8765/d772-preassessment-deep-practice.js?v=342-deep-1",
+        "bytes": 33110
+      },
+      {
+        "name": "http://127.0.0.1:8765/d772-preassessment-review.js?v=342-preassessment-repair-1",
+        "bytes": 24157
+      },
+      {
+        "name": "http://127.0.0.1:8765/collegium-commons.css?v=commons-1",
+        "bytes": 22308
+      },
+      {
+        "name": "http://127.0.0.1:8765/readability-guard.css?v=342-contrast-2",
+        "bytes": 22438
+      },
+      {
+        "name": "http://127.0.0.1:8765/room-section-nav.css?v=1",
+        "bytes": 9562
+      },
+      {
+        "name": "http://127.0.0.1:8765/d772-adaptive-mastery.js?v=342-adaptive-1",
+        "bytes": 13800
+      },
+      {
+        "name": "http://127.0.0.1:8765/collegium-commons.js?v=commons-1",
+        "bytes": 12633
+      },
+      {
+        "name": "http://127.0.0.1:8765/room-section-nav.js?v=1",
+        "bytes": 26355
+      },
+      {
+        "name": "http://127.0.0.1:8765/connected-learning-path.css?v=1",
+        "bytes": 3375
+      },
+      {
+        "name": "http://127.0.0.1:8765/room-identities.css?v=1",
+        "bytes": 17567
+      },
+      {
+        "name": "http://127.0.0.1:8765/decorative-panel.js",
+        "bytes": 2443
+      },
+      {
+        "name": "http://127.0.0.1:8765/room-identities.js?v=1",
+        "bytes": 3022
+      },
+      {
+        "name": "http://127.0.0.1:8765/verified-milestone-ceremony.js",
+        "bytes": 3095
+      },
+      {
+        "name": "http://127.0.0.1:8765/connected-learning-path.js?v=1",
+        "bytes": 9007
+      },
+      {
+        "name": "http://127.0.0.1:8765/aetheria-parchment-contrast.css?v=1",
+        "bytes": 1161
+      },
+      {
+        "name": "http://127.0.0.1:8765/screenshot-learning-repairs.css?v=1",
+        "bytes": 1591
+      },
+      {
+        "name": "http://127.0.0.1:8765/aetheria-brand.css?v=1",
+        "bytes": 639
+      },
+      {
+        "name": "http://127.0.0.1:8765/professors-repair-hands-on.css?v=1",
+        "bytes": 1490
+      },
+      {
+        "name": "http://127.0.0.1:8765/screenshot-learning-repairs.js?v=1",
+        "bytes": 2349
+      },
+      {
+        "name": "http://127.0.0.1:8765/aetheria-brand.js?v=1",
+        "bytes": 2628
+      },
+      {
+        "name": "http://127.0.0.1:8765/d772-oa-entry.js?v=1",
+        "bytes": 1152
+      },
+      {
+        "name": "http://127.0.0.1:8765/universal-hands-on.js?v=20261113-council-entry",
+        "bytes": 28577
+      },
+      {
+        "name": "http://127.0.0.1:8765/interaction-help.js?v=20261114",
+        "bytes": 9269
+      },
+      {
+        "name": "http://127.0.0.1:8765/enchanted-collegium.css?v=20261115",
+        "bytes": 15927
+      },
+      {
+        "name": "https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap",
+        "bytes": 0
+      },
+      {
+        "name": "http://127.0.0.1:8765/assets/familiars/canon/velora-guardian.webp",
+        "bytes": 209678
+      },
+      {
+        "name": "http://127.0.0.1:8765/assets/approved_sanctuary_backdrop.jpg",
+        "bytes": 84024
+      },
+      {
+        "name": "http://127.0.0.1:8765/assets/academy_hero.jpg",
+        "bytes": 253376
+      },
+      {
+        "name": "http://127.0.0.1:8765/assets/room_library.jpg",
+        "bytes": 52652
+      },
+      {
+        "name": "http://127.0.0.1:8765/assets/room_lecture.jpg",
+        "bytes": 52381
+      },
+      {
+        "name": "http://127.0.0.1:8765/assets/room_observatory.jpg",
+        "bytes": 52742
+      },
+      {
+        "name": "http://127.0.0.1:8765/assets/room_conservatory.jpg",
+        "bytes": 48461
+      },
+      {
+        "name": "http://127.0.0.1:8765/assets/room_archive.jpg",
+        "bytes": 48552
+      },
+      {
+        "name": "http://127.0.0.1:8765/assets/room_exam.jpg",
+        "bytes": 52114
+      },
+      {
+        "name": "http://127.0.0.1:8765/assets/majick_garden.jpg",
+        "bytes": 335305
+      },
+      {
+        "name": "http://127.0.0.1:8765/assets/familiars/evolution_stages/velora-new-bond.webp?v=3317-clean",
+        "bytes": 185808
+      },
+      {
+        "name": "http://127.0.0.1:8765/majick-ornate-panel.css",
+        "bytes": 1254
+      },
+      {
+        "name": "http://127.0.0.1:8765/assets/atelier/avatars/layer-body-warm-v2.webp",
+        "bytes": 92272
+      },
+      {
+        "name": "http://127.0.0.1:8765/assets/ancient-study-library-v1.png",
+        "bytes": 2826315
+      },
+      {
+        "name": "http://127.0.0.1:8765/health",
+        "bytes": 635
+      },
+      {
+        "name": "http://127.0.0.1:8765/assets/rooms/landscape-castle.webp",
+        "bytes": 987392
+      },
+      {
+        "name": "http://127.0.0.1:8765/assets/familiars/evolution_stages/velora-apprentice.webp",
+        "bytes": 177766
+      },
+      {
+        "name": "http://127.0.0.1:8765/health",
+        "bytes": 635
+      },
+      {
+        "name": "http://127.0.0.1:8765/health",
+        "bytes": 635
+      },
+      {
+        "name": "http://127.0.0.1:8765/assets/atelier/avatars/layer-dress-plum.webp",
+        "bytes": 49460
+      },
+      {
+        "name": "http://127.0.0.1:8765/assets/atelier/avatars/layer-boots-plum.webp",
+        "bytes": 5410
+      },
+      {
+        "name": "http://127.0.0.1:8765/assets/atelier/avatars/layer-hair-locs-v2.webp",
+        "bytes": 131392
+      },
+      {
+        "name": "http://127.0.0.1:8765/health",
+        "bytes": 635
+      },
+      {
+        "name": "http://127.0.0.1:8765/health",
+        "bytes": 635
+      }
+    ],
+    "errors": []
+  },
+  {
+    "audit": {
+      "long": [
+        {
+          "start": 314.79999999998836,
+          "duration": 83
+        },
+        {
+          "start": 398.29999999998836,
+          "duration": 291
+        },
+        {
+          "start": 797,
+          "duration": 105
+        }
+      ],
+      "renders": [
+        {
+          "at": 391.8999999999651,
+          "script": "http://127.0.0.1:8765/startup-core.20261114.js"
+        },
+        {
+          "at": 720,
+          "script": "http://127.0.0.1:8765/app-runtime.js?v=3402-s2-l2-graphs"
+        },
+        {
+          "at": 733.3999999999651,
+          "script": null
+        },
+        {
+          "at": 792.7999999999884,
+          "script": "http://127.0.0.1:8765/universal-hands-on.js?v=20261113-council-entry"
+        }
+      ],
+      "frames": []
+    },
+    "nav": [
+      {
+        "dom": 913.2999999999884,
+        "load": 991.5999999999767
+      }
+    ],
+    "frames": [],
+    "resources": [
+      {
+        "name": "http://127.0.0.1:8765/v339-main.css?v=339",
+        "bytes": 8296
+      },
+      {
+        "name": "http://127.0.0.1:8765/v3310-main.css?v=3310",
+        "bytes": 2680
+      },
+      {
+        "name": "http://127.0.0.1:8765/v3311-main.css?v=3311",
+        "bytes": 6855
+      },
+      {
+        "name": "http://127.0.0.1:8765/v3311-plus.css?v=3311",
+        "bytes": 6860
+      },
+      {
+        "name": "http://127.0.0.1:8765/v3313-main.css?v=3313",
+        "bytes": 2656
+      },
+      {
+        "name": "http://127.0.0.1:8765/v3312-main.css?v=3312",
+        "bytes": 8183
+      },
+      {
+        "name": "http://127.0.0.1:8765/v3315-main.css?v=3315",
+        "bytes": 4690
+      },
+      {
+        "name": "http://127.0.0.1:8765/v3316-main.css?v=3316",
+        "bytes": 4125
+      },
+      {
+        "name": "http://127.0.0.1:8765/v3314-main.css?v=3314",
+        "bytes": 586
+      },
+      {
+        "name": "http://127.0.0.1:8765/guardian-care-economy.css?v=3322-recovery",
+        "bytes": 11340
+      },
+      {
+        "name": "http://127.0.0.1:8765/learning-lab.css?v=3319",
+        "bytes": 10024
+      },
+      {
+        "name": "http://127.0.0.1:8765/learning-plan.css?v=3324",
+        "bytes": 2902
+      },
+      {
+        "name": "http://127.0.0.1:8765/magical-college-home.css?v=3337",
+        "bytes": 9416
+      },
+      {
+        "name": "http://127.0.0.1:8765/course-tutor.css?v=342-targeted-skills",
+        "bytes": 22588
+      },
+      {
+        "name": "http://127.0.0.1:8765/wgu-practice.css?v=3333-candlelit",
+        "bytes": 17830
+      },
+      {
+        "name": "http://127.0.0.1:8765/learn-mode.css?v=3338-candlelit",
+        "bytes": 23462
+      },
+      {
+        "name": "http://127.0.0.1:8765/d755-retake.css?v=3340-study-shelf-resume",
+        "bytes": 42222
+      },
+      {
+        "name": "http://127.0.0.1:8765/guardian-core.css?v=3341",
+        "bytes": 6751
+      },
+      {
+        "name": "http://127.0.0.1:8765/guardian-life-main.css?v=3342",
+        "bytes": 16710
+      },
+      {
+        "name": "http://127.0.0.1:8765/game-realm.css?v=3362-d772-review",
+        "bytes": 43180
+      },
+      {
+        "name": "http://127.0.0.1:8765/living-collegium.css?v=3346-tool-search-smooth-render",
+        "bytes": 6578
+      },
+      {
+        "name": "http://127.0.0.1:8765/collegium-atmosphere.css?v=3348-roster",
+        "bytes": 17561
+      },
+      {
+        "name": "http://127.0.0.1:8765/sanctuary-audit.css?v=3350",
+        "bytes": 1924
+      },
+      {
+        "name": "http://127.0.0.1:8765/d772-collegium.css?v=3354",
+        "bytes": 5754
+      },
+      {
+        "name": "http://127.0.0.1:8765/d772-instruction-depth.css?v=3356",
+        "bytes": 3096
+      },
+      {
+        "name": "http://127.0.0.1:8765/d772-hall-map.css?v=3358",
+        "bytes": 3576
+      },
+      {
+        "name": "http://127.0.0.1:8765/living-magic.css?v=3360",
+        "bytes": 6840
+      },
+      {
+        "name": "http://127.0.0.1:8765/campus-runtime.css?v=3361",
+        "bytes": 1534
+      },
+      {
+        "name": "http://127.0.0.1:8765/classroom-library-life.css?v=3362",
+        "bytes": 5217
+      },
+      {
+        "name": "http://127.0.0.1:8765/focus-feedback.css?v=3363",
+        "bytes": 3563
+      },
+      {
+        "name": "http://127.0.0.1:8765/mobile-cleanup.css?v=3365",
+        "bytes": 5305
+      },
+      {
+        "name": "http://127.0.0.1:8765/guardian-academic-presence.css?v=3366",
+        "bytes": 1803
+      },
+      {
+        "name": "http://127.0.0.1:8765/d772-course-map.css?v=3367",
+        "bytes": 3998
+      },
+      {
+        "name": "http://127.0.0.1:8765/section-aware-intake.css?v=3368",
+        "bytes": 1163
+      },
+      {
+        "name": "http://127.0.0.1:8765/d772-section-readiness.css?v=3369",
+        "bytes": 1419
+      },
+      {
+        "name": "http://127.0.0.1:8765/section-library.css?v=3370",
+        "bytes": 1439
+      },
+      {
+        "name": "http://127.0.0.1:8765/section-intake-shortcuts.css?v=3371",
+        "bytes": 813
+      },
+      {
+        "name": "http://127.0.0.1:8765/home-focus.css?v=3377",
+        "bytes": 2396
+      },
+      {
+        "name": "http://127.0.0.1:8765/source-provenance.css?v=3372",
+        "bytes": 2474
+      },
+      {
+        "name": "http://127.0.0.1:8765/product-core.css?v=3400",
+        "bytes": 4305
+      },
+      {
+        "name": "http://127.0.0.1:8765/duplicate-safe-hatch.css?v=3375",
+        "bytes": 1064
+      },
+      {
+        "name": "http://127.0.0.1:8765/reward-core.css?v=342-aurelia-live",
+        "bytes": 13609
+      },
+      {
+        "name": "http://127.0.0.1:8765/course-learning-profiles.css?v=347",
+        "bytes": 1014
+      },
+      {
+        "name": "http://127.0.0.1:8765/adaptive-learning-core.css?v=349",
+        "bytes": 15711
+      },
+      {
+        "name": "http://127.0.0.1:8765/math-support.css?v=349",
+        "bytes": 12193
+      },
+      {
+        "name": "http://127.0.0.1:8765/d756-council.css?v=3.4.2",
+        "bytes": 2533
+      },
+      {
+        "name": "http://127.0.0.1:8765/collegium-immersion.css?v=342-ambient-1",
+        "bytes": 5404
+      },
+      {
+        "name": "http://127.0.0.1:8765/save-safety.js",
+        "bytes": 9070
+      },
+      {
+        "name": "http://127.0.0.1:8765/startup-core.20261114.js",
+        "bytes": 607056
+      },
+      {
+        "name": "http://127.0.0.1:8765/v339-main.js?v=339",
+        "bytes": 15870
+      },
+      {
+        "name": "http://127.0.0.1:8765/v3311-plus.js?v=3311",
+        "bytes": 11033
+      },
+      {
+        "name": "http://127.0.0.1:8765/study-material/materialParser.js?v=3315",
+        "bytes": 2852
+      },
+      {
+        "name": "http://127.0.0.1:8765/v3311-main.js?v=3311",
+        "bytes": 7961
+      },
+      {
+        "name": "http://127.0.0.1:8765/study-material/materialStoreModel.js?v=3315",
+        "bytes": 10098
+      },
+      {
+        "name": "http://127.0.0.1:8765/study-material/questionBuilder.js?v=3315",
+        "bytes": 71296
+      },
+      {
+        "name": "http://127.0.0.1:8765/study-material/AddStudyMaterialPage.js?v=3315",
+        "bytes": 24534
+      },
+      {
+        "name": "http://127.0.0.1:8765/courseManager.js?v=3316-d756-catalog-2",
+        "bytes": 19948
+      },
+      {
+        "name": "http://127.0.0.1:8765/d756-hands-on.js?v=20261113-floating-removed",
+        "bytes": 125000
+      },
+      {
+        "name": "http://127.0.0.1:8765/iep-meeting-pixi-scene.js?v=20261113-speaker-jiggle-v4",
+        "bytes": 12327
+      },
+      {
+        "name": "http://127.0.0.1:8765/d756-task2-meeting.js?v=20261113-iep-feedback-coach-v5",
+        "bytes": 165539
+      },
+      {
+        "name": "http://127.0.0.1:8765/ui-compat.js?v=stability-1",
+        "bytes": 3440
+      },
+      {
+        "name": "http://127.0.0.1:8765/study-ui-compat.js?v=stability-1",
+        "bytes": 12663
+      },
+      {
+        "name": "http://127.0.0.1:8765/guardian-registry.js?v=stability-1",
+        "bytes": 11563
+      },
+      {
+        "name": "http://127.0.0.1:8765/guardian-care-economy.js?v=3347-stations",
+        "bytes": 33843
+      },
+      {
+        "name": "http://127.0.0.1:8765/majick-state-core.js?v=3322-recovery",
+        "bytes": 12167
+      },
+      {
+        "name": "http://127.0.0.1:8765/learning-lab.js?v=342-guided-mastery",
+        "bytes": 41554
+      },
+      {
+        "name": "http://127.0.0.1:8765/reward-core.js?v=342-aurelia-live",
+        "bytes": 86956
+      },
+      {
+        "name": "http://127.0.0.1:8765/learning-plan.js?v=3324",
+        "bytes": 9659
+      },
+      {
+        "name": "http://127.0.0.1:8765/d772-shared-oa-questions.js?v=342-multistep-1",
+        "bytes": 80618
+      },
+      {
+        "name": "http://127.0.0.1:8765/learn-mode.js?v=3400-product-flow",
+        "bytes": 96071
+      },
+      {
+        "name": "http://127.0.0.1:8765/course-tutor.js?v=342-working-controls",
+        "bytes": 408172
+      },
+      {
+        "name": "http://127.0.0.1:8765/generated-question-engine.js?v=342-local-svg-1",
+        "bytes": 29768
+      },
+      {
+        "name": "http://127.0.0.1:8765/question-repair.js",
+        "bytes": 14595
+      },
+      {
+        "name": "http://127.0.0.1:8765/d755-retake.js?v=3340-study-shelf-resume",
+        "bytes": 240738
+      },
+      {
+        "name": "http://127.0.0.1:8765/wgu-practice.js?v=342-question-whiteboard-worked",
+        "bytes": 61107
+      },
+      {
+        "name": "http://127.0.0.1:8765/magical-college-home.js?v=3337",
+        "bytes": 12781
+      },
+      {
+        "name": "http://127.0.0.1:8765/app-runtime.js?v=3402-s2-l2-graphs",
+        "bytes": 25761
+      },
+      {
+        "name": "http://127.0.0.1:8765/guardian-core.js?v=3400",
+        "bytes": 24017
+      },
+      {
+        "name": "http://127.0.0.1:8765/app-recovery.js?v=3322",
+        "bytes": 2824
+      },
+      {
+        "name": "http://127.0.0.1:8765/study-progress-bridge.js?v=342-scholar-answers",
+        "bytes": 15436
+      },
+      {
+        "name": "http://127.0.0.1:8765/room-transition.js?v=1",
+        "bytes": 1107
+      },
+      {
+        "name": "http://127.0.0.1:8765/milestone-particles.js?v=1",
+        "bytes": 4845
+      },
+      {
+        "name": "http://127.0.0.1:8765/guardian-life-main.js?v=3342",
+        "bytes": 13804
+      },
+      {
+        "name": "http://127.0.0.1:8765/campus-runtime.js?v=3361",
+        "bytes": 3175
+      },
+      {
+        "name": "http://127.0.0.1:8765/visual-evidence-gate.js?v=342-graph-evidence-1",
+        "bytes": 10445
+      },
+      {
+        "name": "http://127.0.0.1:8765/sanctuary-audit.js?v=3350",
+        "bytes": 6679
+      },
+      {
+        "name": "http://127.0.0.1:8765/collegium-atmosphere.js?v=20261113-music-gesture-fix",
+        "bytes": 8769
+      },
+      {
+        "name": "http://127.0.0.1:8765/living-collegium.js?v=3361-shared-queue",
+        "bytes": 16601
+      },
+      {
+        "name": "http://127.0.0.1:8765/game-realm.js?v=20261108-realm-d756",
+        "bytes": 114054
+      },
+      {
+        "name": "http://127.0.0.1:8765/d772-collegium.js?v=3361-shared-queue",
+        "bytes": 6808
+      },
+      {
+        "name": "http://127.0.0.1:8765/d772-instruction-depth.js?v=3361-shared-queue",
+        "bytes": 6554
+      },
+      {
+        "name": "http://127.0.0.1:8765/d772-hall-map.js?v=3361-shared-queue",
+        "bytes": 3407
+      },
+      {
+        "name": "http://127.0.0.1:8765/classroom-library-life.js?v=3362",
+        "bytes": 2472
+      },
+      {
+        "name": "http://127.0.0.1:8765/living-magic.js?v=3361-shared-queue",
+        "bytes": 4211
+      },
+      {
+        "name": "http://127.0.0.1:8765/mobile-cleanup.js?v=3365",
+        "bytes": 2061
+      },
+      {
+        "name": "http://127.0.0.1:8765/focus-feedback.js?v=3363",
+        "bytes": 5358
+      },
+      {
+        "name": "http://127.0.0.1:8765/guardian-academic-presence.js?v=3366",
+        "bytes": 3566
+      },
+      {
+        "name": "http://127.0.0.1:8765/d772-course-map.js?v=342-section3",
+        "bytes": 4734
+      },
+      {
+        "name": "http://127.0.0.1:8765/d772-section-readiness.js?v=3369",
+        "bytes": 2734
+      },
+      {
+        "name": "http://127.0.0.1:8765/section-intake-shortcuts.js?v=3371",
+        "bytes": 2425
+      },
+      {
+        "name": "http://127.0.0.1:8765/source-provenance.js?v=3372",
+        "bytes": 3281
+      },
+      {
+        "name": "http://127.0.0.1:8765/product-core.js?v=3400",
+        "bytes": 11370
+      },
+      {
+        "name": "http://127.0.0.1:8765/duplicate-safe-hatch.js?v=3375",
+        "bytes": 8054
+      },
+      {
+        "name": "http://127.0.0.1:8765/home-focus.js?v=3400",
+        "bytes": 4430
+      },
+      {
+        "name": "http://127.0.0.1:8765/anchor-interactives.js?v=342-priority2-v1",
+        "bytes": 6741
+      },
+      {
+        "name": "http://127.0.0.1:8765/startup-save-bridge.20261114.js",
+        "bytes": 1481
+      },
+      {
+        "name": "http://127.0.0.1:8765/math-support.js?v=342-expanded-formula-workbench",
+        "bytes": 35563
+      },
+      {
+        "name": "http://127.0.0.1:8765/course-learning-profiles.js?v=347",
+        "bytes": 7879
+      },
+      {
+        "name": "http://127.0.0.1:8765/adaptive-learning-core.js?v=342-targeted-skills-342-selected-material",
+        "bytes": 63243
+      },
+      {
+        "name": "http://127.0.0.1:8765/study-visual-anchors.js?v=342-visual-anchor-v1",
+        "bytes": 26505
+      },
+      {
+        "name": "http://127.0.0.1:8765/scholar-progression.js?v=342-progression-1",
+        "bytes": 6823
+      },
+      {
+        "name": "http://127.0.0.1:8765/enchanted-atelier.js?v=342-functional-atelier-v2",
+        "bytes": 47542
+      },
+      {
+        "name": "http://127.0.0.1:8765/atelier-pixi-scene.js",
+        "bytes": 3954
+      },
+      {
+        "name": "http://127.0.0.1:8765/scholar-companion.js?v=342-stable-avatar-v2",
+        "bytes": 8812
+      },
+      {
+        "name": "http://127.0.0.1:8765/scholar-wardrobe-studio.js?v=342-dressup-v1",
+        "bytes": 31926
+      },
+      {
+        "name": "http://127.0.0.1:8765/atelier-sprite-actions.js?v=342-activity-gated-1",
+        "bytes": 6609
+      },
+      {
+        "name": "http://127.0.0.1:8765/atelier-v2-approval-gate.js?v=342-approval-gate-1",
+        "bytes": 4863
+      },
+      {
+        "name": "http://127.0.0.1:8765/learning-continuity.js?v=1",
+        "bytes": 24986
+      },
+      {
+        "name": "http://127.0.0.1:8765/inline-lesson-practice.js?v=1",
+        "bytes": 8995
+      },
+      {
+        "name": "http://127.0.0.1:8765/teach-back.js?v=1",
+        "bytes": 15984
+      },
+      {
+        "name": "http://127.0.0.1:8765/your-turn-practice.js?v=1",
+        "bytes": 9576
+      },
+      {
+        "name": "http://127.0.0.1:8765/inline-learning-tabs.js?v=1",
+        "bytes": 2262
+      },
+      {
+        "name": "http://127.0.0.1:8765/animation-effects.css?v=1",
+        "bytes": 2661
+      },
+      {
+        "name": "http://127.0.0.1:8765/lesson-activity-bank.js?v=1",
+        "bytes": 33573
+      },
+      {
+        "name": "http://127.0.0.1:8765/solution-engine.js?v=2",
+        "bytes": 83752
+      },
+      {
+        "name": "http://127.0.0.1:8765/animation-effects.js?v=1",
+        "bytes": 4340
+      },
+      {
+        "name": "http://127.0.0.1:8765/probability-workshop.js?v=phase2-probability-1",
+        "bytes": 16549
+      },
+      {
+        "name": "http://127.0.0.1:8765/d772-historical-quiz-results.js?v=342-history-1",
+        "bytes": 9517
+      },
+      {
+        "name": "http://127.0.0.1:8765/d772-misrepresentation-lab.js?v=342-misrep-lab-1",
+        "bytes": 12829
+      },
+      {
+        "name": "http://127.0.0.1:8765/collegium-commons.css?v=commons-1",
+        "bytes": 22308
+      },
+      {
+        "name": "http://127.0.0.1:8765/room-section-nav.css?v=1",
+        "bytes": 9562
+      },
+      {
+        "name": "http://127.0.0.1:8765/d772-preassessment-source.js?v=342-wgu-preassessment-source-1",
+        "bytes": 36206
+      },
+      {
+        "name": "http://127.0.0.1:8765/d772-preassessment-deep-practice.js?v=342-deep-1",
+        "bytes": 33110
+      },
+      {
+        "name": "http://127.0.0.1:8765/collegium-commons.js?v=commons-1",
+        "bytes": 12633
+      },
+      {
+        "name": "http://127.0.0.1:8765/d772-adaptive-mastery.js?v=342-adaptive-1",
+        "bytes": 13800
+      },
+      {
+        "name": "http://127.0.0.1:8765/d772-preassessment-review.js?v=342-preassessment-repair-1",
+        "bytes": 24157
+      },
+      {
+        "name": "http://127.0.0.1:8765/room-section-nav.js?v=1",
+        "bytes": 26355
+      },
+      {
+        "name": "http://127.0.0.1:8765/readability-guard.css?v=342-contrast-2",
+        "bytes": 22438
+      },
+      {
+        "name": "http://127.0.0.1:8765/decorative-panel.js",
+        "bytes": 2443
+      },
+      {
+        "name": "http://127.0.0.1:8765/verified-milestone-ceremony.js",
+        "bytes": 3095
+      },
+      {
+        "name": "http://127.0.0.1:8765/room-identities.css?v=1",
+        "bytes": 17567
+      },
+      {
+        "name": "http://127.0.0.1:8765/room-identities.js?v=1",
+        "bytes": 3022
+      },
+      {
+        "name": "http://127.0.0.1:8765/connected-learning-path.css?v=1",
+        "bytes": 3375
+      },
+      {
+        "name": "http://127.0.0.1:8765/connected-learning-path.js?v=1",
+        "bytes": 9007
+      },
+      {
+        "name": "http://127.0.0.1:8765/screenshot-learning-repairs.css?v=1",
+        "bytes": 1591
+      },
+      {
+        "name": "http://127.0.0.1:8765/aetheria-brand.css?v=1",
+        "bytes": 639
+      },
+      {
+        "name": "http://127.0.0.1:8765/screenshot-learning-repairs.js?v=1",
+        "bytes": 2349
+      },
+      {
+        "name": "http://127.0.0.1:8765/aetheria-parchment-contrast.css?v=1",
+        "bytes": 1161
+      },
+      {
+        "name": "http://127.0.0.1:8765/aetheria-brand.js?v=1",
+        "bytes": 2628
+      },
+      {
+        "name": "http://127.0.0.1:8765/professors-repair-hands-on.css?v=1",
+        "bytes": 1490
+      },
+      {
+        "name": "http://127.0.0.1:8765/d772-oa-entry.js?v=1",
+        "bytes": 1152
+      },
+      {
+        "name": "http://127.0.0.1:8765/universal-hands-on.js?v=20261113-council-entry",
+        "bytes": 28577
+      },
+      {
+        "name": "http://127.0.0.1:8765/interaction-help.js?v=20261114",
+        "bytes": 9269
+      },
+      {
+        "name": "http://127.0.0.1:8765/enchanted-collegium.css?v=20261115",
+        "bytes": 15927
+      },
+      {
+        "name": "https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap",
+        "bytes": 0
+      },
+      {
+        "name": "http://127.0.0.1:8765/assets/familiars/canon/velora-guardian.webp",
+        "bytes": 209678
+      },
+      {
+        "name": "http://127.0.0.1:8765/assets/approved_sanctuary_backdrop.jpg",
+        "bytes": 84024
+      },
+      {
+        "name": "http://127.0.0.1:8765/assets/academy_hero.jpg",
+        "bytes": 253376
+      },
+      {
+        "name": "http://127.0.0.1:8765/assets/room_library.jpg",
+        "bytes": 52652
+      },
+      {
+        "name": "http://127.0.0.1:8765/assets/room_lecture.jpg",
+        "bytes": 52381
+      },
+      {
+        "name": "http://127.0.0.1:8765/assets/room_observatory.jpg",
+        "bytes": 52742
+      },
+      {
+        "name": "http://127.0.0.1:8765/assets/room_conservatory.jpg",
+        "bytes": 48461
+      },
+      {
+        "name": "http://127.0.0.1:8765/assets/room_archive.jpg",
+        "bytes": 48552
+      },
+      {
+        "name": "http://127.0.0.1:8765/assets/room_exam.jpg",
+        "bytes": 52114
+      },
+      {
+        "name": "http://127.0.0.1:8765/assets/majick_garden.jpg",
+        "bytes": 335305
+      },
+      {
+        "name": "http://127.0.0.1:8765/assets/familiars/evolution_stages/velora-new-bond.webp?v=3317-clean",
+        "bytes": 185808
+      },
+      {
+        "name": "http://127.0.0.1:8765/majick-ornate-panel.css",
+        "bytes": 1254
+      },
+      {
+        "name": "http://127.0.0.1:8765/assets/atelier/avatars/layer-body-warm-v2.webp",
+        "bytes": 92272
+      },
+      {
+        "name": "http://127.0.0.1:8765/assets/ancient-study-library-v1.png",
+        "bytes": 2826315
+      },
+      {
+        "name": "http://127.0.0.1:8765/assets/rooms/landscape-castle.webp",
+        "bytes": 987392
+      },
+      {
+        "name": "http://127.0.0.1:8765/health",
+        "bytes": 635
+      },
+      {
+        "name": "http://127.0.0.1:8765/assets/familiars/evolution_stages/velora-apprentice.webp",
+        "bytes": 177766
+      },
+      {
+        "name": "http://127.0.0.1:8765/assets/atelier/avatars/layer-dress-plum.webp",
+        "bytes": 49460
+      },
+      {
+        "name": "http://127.0.0.1:8765/assets/atelier/avatars/layer-boots-plum.webp",
+        "bytes": 5410
+      },
+      {
+        "name": "http://127.0.0.1:8765/assets/atelier/avatars/layer-hair-locs-v2.webp",
+        "bytes": 131392
+      },
+      {
+        "name": "http://127.0.0.1:8765/health",
+        "bytes": 635
+      },
+      {
+        "name": "http://127.0.0.1:8765/health",
+        "bytes": 635
+      },
+      {
+        "name": "http://127.0.0.1:8765/health",
+        "bytes": 635
+      },
+      {
+        "name": "http://127.0.0.1:8765/health",
+        "bytes": 635
+      }
+    ],
+    "errors": []
+  },
+  {
+    "audit": {
+      "long": [
+        {
+          "start": 484.5,
+          "duration": 88
+        },
+        {
+          "start": 572.7000000000116,
+          "duration": 209
+        },
+        {
+          "start": 874.7000000000116,
+          "duration": 61
+        },
+        {
+          "start": 938.5,
+          "duration": 53
+        }
+      ],
+      "renders": [
+        {
+          "at": 562.4000000000233,
+          "script": "http://127.0.0.1:8765/startup-core.20261114.js"
+        },
+        {
+          "at": 822.5,
+          "script": "http://127.0.0.1:8765/app-runtime.js?v=3402-s2-l2-graphs"
+        },
+        {
+          "at": 868.7999999999884,
+          "script": "http://127.0.0.1:8765/universal-hands-on.js?v=20261113-council-entry"
+        },
+        {
+          "at": 998,
+          "script": null
+        }
+      ],
+      "frames": []
+    },
+    "nav": [
+      {
+        "dom": 879.7999999999884,
+        "load": 1161.2000000000116
+      }
+    ],
+    "frames": [],
+    "resources": [
+      {
+        "name": "http://127.0.0.1:8765/v339-main.css?v=339",
+        "bytes": 8296
+      },
+      {
+        "name": "http://127.0.0.1:8765/v3310-main.css?v=3310",
+        "bytes": 2680
+      },
+      {
+        "name": "http://127.0.0.1:8765/v3311-main.css?v=3311",
+        "bytes": 6855
+      },
+      {
+        "name": "http://127.0.0.1:8765/v3311-plus.css?v=3311",
+        "bytes": 6860
+      },
+      {
+        "name": "http://127.0.0.1:8765/v3312-main.css?v=3312",
+        "bytes": 8183
+      },
+      {
+        "name": "http://127.0.0.1:8765/v3313-main.css?v=3313",
+        "bytes": 2656
+      },
+      {
+        "name": "http://127.0.0.1:8765/v3314-main.css?v=3314",
+        "bytes": 586
+      },
+      {
+        "name": "http://127.0.0.1:8765/guardian-care-economy.css?v=3322-recovery",
+        "bytes": 11340
+      },
+      {
+        "name": "http://127.0.0.1:8765/v3316-main.css?v=3316",
+        "bytes": 4125
+      },
+      {
+        "name": "http://127.0.0.1:8765/v3315-main.css?v=3315",
+        "bytes": 4690
+      },
+      {
+        "name": "http://127.0.0.1:8765/learning-lab.css?v=3319",
+        "bytes": 10024
+      },
+      {
+        "name": "http://127.0.0.1:8765/learning-plan.css?v=3324",
+        "bytes": 2902
+      },
+      {
+        "name": "http://127.0.0.1:8765/course-tutor.css?v=342-targeted-skills",
+        "bytes": 22588
+      },
+      {
+        "name": "http://127.0.0.1:8765/magical-college-home.css?v=3337",
+        "bytes": 9416
+      },
+      {
+        "name": "http://127.0.0.1:8765/learn-mode.css?v=3338-candlelit",
+        "bytes": 23462
+      },
+      {
+        "name": "http://127.0.0.1:8765/wgu-practice.css?v=3333-candlelit",
+        "bytes": 17830
+      },
+      {
+        "name": "http://127.0.0.1:8765/guardian-core.css?v=3341",
+        "bytes": 6751
+      },
+      {
+        "name": "http://127.0.0.1:8765/d755-retake.css?v=3340-study-shelf-resume",
+        "bytes": 42222
+      },
+      {
+        "name": "http://127.0.0.1:8765/game-realm.css?v=3362-d772-review",
+        "bytes": 43180
+      },
+      {
+        "name": "http://127.0.0.1:8765/guardian-life-main.css?v=3342",
+        "bytes": 16710
+      },
+      {
+        "name": "http://127.0.0.1:8765/living-collegium.css?v=3346-tool-search-smooth-render",
+        "bytes": 6578
+      },
+      {
+        "name": "http://127.0.0.1:8765/collegium-atmosphere.css?v=3348-roster",
+        "bytes": 17561
+      },
+      {
+        "name": "http://127.0.0.1:8765/d772-collegium.css?v=3354",
+        "bytes": 5754
+      },
+      {
+        "name": "http://127.0.0.1:8765/d772-hall-map.css?v=3358",
+        "bytes": 3576
+      },
+      {
+        "name": "http://127.0.0.1:8765/sanctuary-audit.css?v=3350",
+        "bytes": 1924
+      },
+      {
+        "name": "http://127.0.0.1:8765/d772-instruction-depth.css?v=3356",
+        "bytes": 3096
+      },
+      {
+        "name": "http://127.0.0.1:8765/campus-runtime.css?v=3361",
+        "bytes": 1534
+      },
+      {
+        "name": "http://127.0.0.1:8765/classroom-library-life.css?v=3362",
+        "bytes": 5217
+      },
+      {
+        "name": "http://127.0.0.1:8765/living-magic.css?v=3360",
+        "bytes": 6840
+      },
+      {
+        "name": "http://127.0.0.1:8765/focus-feedback.css?v=3363",
+        "bytes": 3563
+      },
+      {
+        "name": "http://127.0.0.1:8765/mobile-cleanup.css?v=3365",
+        "bytes": 5305
+      },
+      {
+        "name": "http://127.0.0.1:8765/guardian-academic-presence.css?v=3366",
+        "bytes": 1803
+      },
+      {
+        "name": "http://127.0.0.1:8765/d772-course-map.css?v=3367",
+        "bytes": 3998
+      },
+      {
+        "name": "http://127.0.0.1:8765/section-aware-intake.css?v=3368",
+        "bytes": 1163
+      },
+      {
+        "name": "http://127.0.0.1:8765/d772-section-readiness.css?v=3369",
+        "bytes": 1419
+      },
+      {
+        "name": "http://127.0.0.1:8765/section-intake-shortcuts.css?v=3371",
+        "bytes": 813
+      },
+      {
+        "name": "http://127.0.0.1:8765/section-library.css?v=3370",
+        "bytes": 1439
+      },
+      {
+        "name": "http://127.0.0.1:8765/source-provenance.css?v=3372",
+        "bytes": 2474
+      },
+      {
+        "name": "http://127.0.0.1:8765/home-focus.css?v=3377",
+        "bytes": 2396
+      },
+      {
+        "name": "http://127.0.0.1:8765/product-core.css?v=3400",
+        "bytes": 4305
+      },
+      {
+        "name": "http://127.0.0.1:8765/duplicate-safe-hatch.css?v=3375",
+        "bytes": 1064
+      },
+      {
+        "name": "http://127.0.0.1:8765/adaptive-learning-core.css?v=349",
+        "bytes": 15711
+      },
+      {
+        "name": "http://127.0.0.1:8765/math-support.css?v=349",
+        "bytes": 12193
+      },
+      {
+        "name": "http://127.0.0.1:8765/course-learning-profiles.css?v=347",
+        "bytes": 1014
+      },
+      {
+        "name": "http://127.0.0.1:8765/reward-core.css?v=342-aurelia-live",
+        "bytes": 13609
+      },
+      {
+        "name": "http://127.0.0.1:8765/collegium-immersion.css?v=342-ambient-1",
+        "bytes": 5404
+      },
+      {
+        "name": "http://127.0.0.1:8765/d756-council.css?v=3.4.2",
+        "bytes": 2533
+      },
+      {
+        "name": "http://127.0.0.1:8765/save-safety.js",
+        "bytes": 9070
+      },
+      {
+        "name": "http://127.0.0.1:8765/v339-main.js?v=339",
+        "bytes": 15870
+      },
+      {
+        "name": "http://127.0.0.1:8765/startup-core.20261114.js",
+        "bytes": 607056
+      },
+      {
+        "name": "http://127.0.0.1:8765/v3311-main.js?v=3311",
+        "bytes": 7961
+      },
+      {
+        "name": "http://127.0.0.1:8765/v3311-plus.js?v=3311",
+        "bytes": 11033
+      },
+      {
+        "name": "http://127.0.0.1:8765/study-material/materialParser.js?v=3315",
+        "bytes": 2852
+      },
+      {
+        "name": "http://127.0.0.1:8765/study-material/materialStoreModel.js?v=3315",
+        "bytes": 10098
+      },
+      {
+        "name": "http://127.0.0.1:8765/study-material/questionBuilder.js?v=3315",
+        "bytes": 71296
+      },
+      {
+        "name": "http://127.0.0.1:8765/study-material/AddStudyMaterialPage.js?v=3315",
+        "bytes": 24534
+      },
+      {
+        "name": "http://127.0.0.1:8765/courseManager.js?v=3316-d756-catalog-2",
+        "bytes": 19948
+      },
+      {
+        "name": "http://127.0.0.1:8765/iep-meeting-pixi-scene.js?v=20261113-speaker-jiggle-v4",
+        "bytes": 12327
+      },
+      {
+        "name": "http://127.0.0.1:8765/d756-task2-meeting.js?v=20261113-iep-feedback-coach-v5",
+        "bytes": 165539
+      },
+      {
+        "name": "http://127.0.0.1:8765/study-ui-compat.js?v=stability-1",
+        "bytes": 12663
+      },
+      {
+        "name": "http://127.0.0.1:8765/d756-hands-on.js?v=20261113-floating-removed",
+        "bytes": 125000
+      },
+      {
+        "name": "http://127.0.0.1:8765/ui-compat.js?v=stability-1",
+        "bytes": 3440
+      },
+      {
+        "name": "http://127.0.0.1:8765/guardian-registry.js?v=stability-1",
+        "bytes": 11563
+      },
+      {
+        "name": "http://127.0.0.1:8765/majick-state-core.js?v=3322-recovery",
+        "bytes": 12167
+      },
+      {
+        "name": "http://127.0.0.1:8765/guardian-care-economy.js?v=3347-stations",
+        "bytes": 33843
+      },
+      {
+        "name": "http://127.0.0.1:8765/reward-core.js?v=342-aurelia-live",
+        "bytes": 86956
+      },
+      {
+        "name": "http://127.0.0.1:8765/learning-lab.js?v=342-guided-mastery",
+        "bytes": 41554
+      },
+      {
+        "name": "http://127.0.0.1:8765/learning-plan.js?v=3324",
+        "bytes": 9659
+      },
+      {
+        "name": "http://127.0.0.1:8765/d772-shared-oa-questions.js?v=342-multistep-1",
+        "bytes": 80618
+      },
+      {
+        "name": "http://127.0.0.1:8765/course-tutor.js?v=342-working-controls",
+        "bytes": 408172
+      },
+      {
+        "name": "http://127.0.0.1:8765/learn-mode.js?v=3400-product-flow",
+        "bytes": 96071
+      },
+      {
+        "name": "http://127.0.0.1:8765/d755-retake.js?v=3340-study-shelf-resume",
+        "bytes": 240738
+      },
+      {
+        "name": "http://127.0.0.1:8765/question-repair.js",
+        "bytes": 14595
+      },
+      {
+        "name": "http://127.0.0.1:8765/generated-question-engine.js?v=342-local-svg-1",
+        "bytes": 29768
+      },
+      {
+        "name": "http://127.0.0.1:8765/wgu-practice.js?v=342-question-whiteboard-worked",
+        "bytes": 61107
+      },
+      {
+        "name": "http://127.0.0.1:8765/app-recovery.js?v=3322",
+        "bytes": 2824
+      },
+      {
+        "name": "http://127.0.0.1:8765/magical-college-home.js?v=3337",
+        "bytes": 12781
+      },
+      {
+        "name": "http://127.0.0.1:8765/app-runtime.js?v=3402-s2-l2-graphs",
+        "bytes": 25761
+      },
+      {
+        "name": "http://127.0.0.1:8765/guardian-core.js?v=3400",
+        "bytes": 24017
+      },
+      {
+        "name": "http://127.0.0.1:8765/study-progress-bridge.js?v=342-scholar-answers",
+        "bytes": 15436
+      },
+      {
+        "name": "http://127.0.0.1:8765/milestone-particles.js?v=1",
+        "bytes": 4845
+      },
+      {
+        "name": "http://127.0.0.1:8765/room-transition.js?v=1",
+        "bytes": 1107
+      },
+      {
+        "name": "http://127.0.0.1:8765/guardian-life-main.js?v=3342",
+        "bytes": 13804
+      },
+      {
+        "name": "http://127.0.0.1:8765/campus-runtime.js?v=3361",
+        "bytes": 3175
+      },
+      {
+        "name": "http://127.0.0.1:8765/visual-evidence-gate.js?v=342-graph-evidence-1",
+        "bytes": 10445
+      },
+      {
+        "name": "http://127.0.0.1:8765/living-collegium.js?v=3361-shared-queue",
+        "bytes": 16601
+      },
+      {
+        "name": "http://127.0.0.1:8765/game-realm.js?v=20261108-realm-d756",
+        "bytes": 114054
+      },
+      {
+        "name": "http://127.0.0.1:8765/sanctuary-audit.js?v=3350",
+        "bytes": 6679
+      },
+      {
+        "name": "http://127.0.0.1:8765/collegium-atmosphere.js?v=20261113-music-gesture-fix",
+        "bytes": 8769
+      },
+      {
+        "name": "http://127.0.0.1:8765/d772-collegium.js?v=3361-shared-queue",
+        "bytes": 6808
+      },
+      {
+        "name": "http://127.0.0.1:8765/d772-instruction-depth.js?v=3361-shared-queue",
+        "bytes": 6554
+      },
+      {
+        "name": "http://127.0.0.1:8765/d772-hall-map.js?v=3361-shared-queue",
+        "bytes": 3407
+      },
+      {
+        "name": "http://127.0.0.1:8765/living-magic.js?v=3361-shared-queue",
+        "bytes": 4211
+      },
+      {
+        "name": "http://127.0.0.1:8765/focus-feedback.js?v=3363",
+        "bytes": 5358
+      },
+      {
+        "name": "http://127.0.0.1:8765/mobile-cleanup.js?v=3365",
+        "bytes": 2061
+      },
+      {
+        "name": "http://127.0.0.1:8765/classroom-library-life.js?v=3362",
+        "bytes": 2472
+      },
+      {
+        "name": "http://127.0.0.1:8765/d772-course-map.js?v=342-section3",
+        "bytes": 4734
+      },
+      {
+        "name": "http://127.0.0.1:8765/guardian-academic-presence.js?v=3366",
+        "bytes": 3566
+      },
+      {
+        "name": "http://127.0.0.1:8765/d772-section-readiness.js?v=3369",
+        "bytes": 2734
+      },
+      {
+        "name": "http://127.0.0.1:8765/section-intake-shortcuts.js?v=3371",
+        "bytes": 2425
+      },
+      {
+        "name": "http://127.0.0.1:8765/source-provenance.js?v=3372",
+        "bytes": 3281
+      },
+      {
+        "name": "http://127.0.0.1:8765/home-focus.js?v=3400",
+        "bytes": 4430
+      },
+      {
+        "name": "http://127.0.0.1:8765/duplicate-safe-hatch.js?v=3375",
+        "bytes": 8054
+      },
+      {
+        "name": "http://127.0.0.1:8765/course-learning-profiles.js?v=347",
+        "bytes": 7879
+      },
+      {
+        "name": "http://127.0.0.1:8765/product-core.js?v=3400",
+        "bytes": 11370
+      },
+      {
+        "name": "http://127.0.0.1:8765/adaptive-learning-core.js?v=342-targeted-skills-342-selected-material",
+        "bytes": 63243
+      },
+      {
+        "name": "http://127.0.0.1:8765/startup-save-bridge.20261114.js",
+        "bytes": 1481
+      },
+      {
+        "name": "http://127.0.0.1:8765/anchor-interactives.js?v=342-priority2-v1",
+        "bytes": 6741
+      },
+      {
+        "name": "http://127.0.0.1:8765/math-support.js?v=342-expanded-formula-workbench",
+        "bytes": 35563
+      },
+      {
+        "name": "http://127.0.0.1:8765/study-visual-anchors.js?v=342-visual-anchor-v1",
+        "bytes": 26505
+      },
+      {
+        "name": "http://127.0.0.1:8765/scholar-progression.js?v=342-progression-1",
+        "bytes": 6823
+      },
+      {
+        "name": "http://127.0.0.1:8765/scholar-wardrobe-studio.js?v=342-dressup-v1",
+        "bytes": 31926
+      },
+      {
+        "name": "http://127.0.0.1:8765/scholar-companion.js?v=342-stable-avatar-v2",
+        "bytes": 8812
+      },
+      {
+        "name": "http://127.0.0.1:8765/atelier-pixi-scene.js",
+        "bytes": 3954
+      },
+      {
+        "name": "http://127.0.0.1:8765/enchanted-atelier.js?v=342-functional-atelier-v2",
+        "bytes": 47542
+      },
+      {
+        "name": "http://127.0.0.1:8765/atelier-sprite-actions.js?v=342-activity-gated-1",
+        "bytes": 6609
+      },
+      {
+        "name": "http://127.0.0.1:8765/atelier-v2-approval-gate.js?v=342-approval-gate-1",
+        "bytes": 4863
+      },
+      {
+        "name": "http://127.0.0.1:8765/inline-lesson-practice.js?v=1",
+        "bytes": 8995
+      },
+      {
+        "name": "http://127.0.0.1:8765/teach-back.js?v=1",
+        "bytes": 15984
+      },
+      {
+        "name": "http://127.0.0.1:8765/learning-continuity.js?v=1",
+        "bytes": 24986
+      },
+      {
+        "name": "http://127.0.0.1:8765/inline-learning-tabs.js?v=1",
+        "bytes": 2262
+      },
+      {
+        "name": "http://127.0.0.1:8765/your-turn-practice.js?v=1",
+        "bytes": 9576
+      },
+      {
+        "name": "http://127.0.0.1:8765/animation-effects.css?v=1",
+        "bytes": 2661
+      },
+      {
+        "name": "http://127.0.0.1:8765/lesson-activity-bank.js?v=1",
+        "bytes": 33573
+      },
+      {
+        "name": "http://127.0.0.1:8765/solution-engine.js?v=2",
+        "bytes": 83752
+      },
+      {
+        "name": "http://127.0.0.1:8765/animation-effects.js?v=1",
+        "bytes": 4340
+      },
+      {
+        "name": "http://127.0.0.1:8765/probability-workshop.js?v=phase2-probability-1",
+        "bytes": 16549
+      },
+      {
+        "name": "http://127.0.0.1:8765/d772-historical-quiz-results.js?v=342-history-1",
+        "bytes": 9517
+      },
+      {
+        "name": "http://127.0.0.1:8765/d772-misrepresentation-lab.js?v=342-misrep-lab-1",
+        "bytes": 12829
+      },
+      {
+        "name": "http://127.0.0.1:8765/d772-preassessment-deep-practice.js?v=342-deep-1",
+        "bytes": 33110
+      },
+      {
+        "name": "http://127.0.0.1:8765/d772-preassessment-source.js?v=342-wgu-preassessment-source-1",
+        "bytes": 36206
+      },
+      {
+        "name": "http://127.0.0.1:8765/d772-preassessment-review.js?v=342-preassessment-repair-1",
+        "bytes": 24157
+      },
+      {
+        "name": "http://127.0.0.1:8765/d772-adaptive-mastery.js?v=342-adaptive-1",
+        "bytes": 13800
+      },
+      {
+        "name": "http://127.0.0.1:8765/collegium-commons.css?v=commons-1",
+        "bytes": 22308
+      },
+      {
+        "name": "http://127.0.0.1:8765/room-section-nav.css?v=1",
+        "bytes": 9562
+      },
+      {
+        "name": "http://127.0.0.1:8765/collegium-commons.js?v=commons-1",
+        "bytes": 12633
+      },
+      {
+        "name": "http://127.0.0.1:8765/readability-guard.css?v=342-contrast-2",
+        "bytes": 22438
+      },
+      {
+        "name": "http://127.0.0.1:8765/decorative-panel.js",
+        "bytes": 2443
+      },
+      {
+        "name": "http://127.0.0.1:8765/room-section-nav.js?v=1",
+        "bytes": 26355
+      },
+      {
+        "name": "http://127.0.0.1:8765/room-identities.css?v=1",
+        "bytes": 17567
+      },
+      {
+        "name": "http://127.0.0.1:8765/verified-milestone-ceremony.js",
+        "bytes": 3095
+      },
+      {
+        "name": "http://127.0.0.1:8765/room-identities.js?v=1",
+        "bytes": 3022
+      },
+      {
+        "name": "http://127.0.0.1:8765/connected-learning-path.css?v=1",
+        "bytes": 3375
+      },
+      {
+        "name": "http://127.0.0.1:8765/connected-learning-path.js?v=1",
+        "bytes": 9007
+      },
+      {
+        "name": "http://127.0.0.1:8765/screenshot-learning-repairs.css?v=1",
+        "bytes": 1591
+      },
+      {
+        "name": "http://127.0.0.1:8765/screenshot-learning-repairs.js?v=1",
+        "bytes": 2349
+      },
+      {
+        "name": "http://127.0.0.1:8765/aetheria-brand.css?v=1",
+        "bytes": 639
+      },
+      {
+        "name": "http://127.0.0.1:8765/aetheria-brand.js?v=1",
+        "bytes": 2628
+      },
+      {
+        "name": "http://127.0.0.1:8765/aetheria-parchment-contrast.css?v=1",
+        "bytes": 1161
+      },
+      {
+        "name": "http://127.0.0.1:8765/professors-repair-hands-on.css?v=1",
+        "bytes": 1490
+      },
+      {
+        "name": "http://127.0.0.1:8765/d772-oa-entry.js?v=1",
+        "bytes": 1152
+      },
+      {
+        "name": "http://127.0.0.1:8765/enchanted-collegium.css?v=20261115",
+        "bytes": 15927
+      },
+      {
+        "name": "http://127.0.0.1:8765/interaction-help.js?v=20261114",
+        "bytes": 9269
+      },
+      {
+        "name": "http://127.0.0.1:8765/universal-hands-on.js?v=20261113-council-entry",
+        "bytes": 28577
+      },
+      {
+        "name": "https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap",
+        "bytes": 0
+      },
+      {
+        "name": "http://127.0.0.1:8765/assets/familiars/canon/velora-guardian.webp",
+        "bytes": 209678
+      },
+      {
+        "name": "http://127.0.0.1:8765/assets/approved_sanctuary_backdrop.jpg",
+        "bytes": 84024
+      },
+      {
+        "name": "http://127.0.0.1:8765/assets/academy_hero.jpg",
+        "bytes": 253376
+      },
+      {
+        "name": "http://127.0.0.1:8765/assets/room_library.jpg",
+        "bytes": 52652
+      },
+      {
+        "name": "http://127.0.0.1:8765/assets/room_lecture.jpg",
+        "bytes": 52381
+      },
+      {
+        "name": "http://127.0.0.1:8765/assets/room_observatory.jpg",
+        "bytes": 52742
+      },
+      {
+        "name": "http://127.0.0.1:8765/assets/room_conservatory.jpg",
+        "bytes": 48461
+      },
+      {
+        "name": "http://127.0.0.1:8765/assets/room_archive.jpg",
+        "bytes": 48552
+      },
+      {
+        "name": "http://127.0.0.1:8765/assets/room_exam.jpg",
+        "bytes": 52114
+      },
+      {
+        "name": "http://127.0.0.1:8765/assets/majick_garden.jpg",
+        "bytes": 335305
+      },
+      {
+        "name": "http://127.0.0.1:8765/majick-ornate-panel.css",
+        "bytes": 1254
+      },
+      {
+        "name": "http://127.0.0.1:8765/assets/atelier/avatars/layer-body-warm-v2.webp",
+        "bytes": 92272
+      },
+      {
+        "name": "http://127.0.0.1:8765/assets/familiars/evolution_stages/velora-new-bond.webp?v=3317-clean",
+        "bytes": 185808
+      },
+      {
+        "name": "http://127.0.0.1:8765/assets/rooms/landscape-castle.webp",
+        "bytes": 987392
+      },
+      {
+        "name": "http://127.0.0.1:8765/assets/ancient-study-library-v1.png",
+        "bytes": 2826315
+      },
+      {
+        "name": "http://127.0.0.1:8765/health",
+        "bytes": 635
+      },
+      {
+        "name": "http://127.0.0.1:8765/assets/familiars/evolution_stages/velora-apprentice.webp",
+        "bytes": 177766
+      },
+      {
+        "name": "http://127.0.0.1:8765/assets/atelier/avatars/layer-dress-plum.webp",
+        "bytes": 49460
+      },
+      {
+        "name": "http://127.0.0.1:8765/assets/atelier/avatars/layer-hair-locs-v2.webp",
+        "bytes": 131392
+      },
+      {
+        "name": "http://127.0.0.1:8765/assets/atelier/avatars/layer-boots-plum.webp",
+        "bytes": 5410
+      },
+      {
+        "name": "http://127.0.0.1:8765/health",
+        "bytes": 635
+      },
+      {
+        "name": "http://127.0.0.1:8765/health",
+        "bytes": 635
+      },
+      {
+        "name": "http://127.0.0.1:8765/health",
+        "bytes": 635
+      },
+      {
+        "name": "http://127.0.0.1:8765/health",
+        "bytes": 635
+      }
+    ],
+    "errors": []
+  }
+]

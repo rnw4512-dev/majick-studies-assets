@@ -420,7 +420,7 @@ const _guideHTMLV3=guideHTML;guideHTML=function(){return _guideHTMLV3().replace(
 const _recordV3=record;record=function(q,chosen,correct,confidence,mode){let before=topicMastery(q.topicId).level;_recordV3(q,chosen,correct,confidence,mode);let after=topicMastery(q.topicId).level,p=prog();p.masteryRewarded=p.masteryRewarded||[];if(before!=='mastered'&&after==='mastered'&&!p.masteryRewarded.includes(q.topicId)){p.masteryRewarded.push(q.topicId);p.chests=(p.chests||0)+1;p.crystals=(p.crystals||0)+10;save();setTimeout(()=>rewardToast('🌟 Concept mastered! +10 💎 + chest','A constellation star reached mastery.'),120)}}
 const _renderV3=render;render=function(){_renderV3();let p=prog();document.body.classList.toggle('crystalGarden',(p.cosmetics||[]).includes('crystalGarden'));}
 
-render();
+// Render once after the legacy owners below have finished installing.
 
 ;
 
@@ -557,7 +557,7 @@ const _renderV4Base=render;
 render=function(){_renderV4Base();applyRealm();let pill=document.querySelector('.top .pill');if(pill){pill.textContent='Aetheria • V3.4.2';pill.classList.add('v4Badge')}injectPetCoach();setTimeout(aiStatusCheck,60)}
 // Initial legacy cosmetics from older Crystal Garden unlock.
 if((prog().cosmetics||[]).includes('crystalGarden')&&!S.legacy.realms.includes('roseNebula'))S.legacy.realms.push('roseNebula');
-legacySync();save();render();
+legacySync();save();
 
 ;
 
@@ -757,7 +757,7 @@ addHTML=function(){return `<div class="notice"><b>New-course safety rule:</b> bu
 
 /* initial known-good save, then render */
 try{localStorage.setItem(V5_GOOD_BACKUP,localStorage.getItem(LS)||JSON.stringify(S))}catch(_){ }
-save();render();
+save();
 
 
 /* ===== Moonlit Mastery V5.2 • Ascension Test Week ===== */
@@ -993,7 +993,7 @@ sideHTML=function(){return _sideV52Base().replace('Ascension Test Week','Guardia
 /* keep portable save version explicit */
 exportSave=function(){let payload={type:'MoonlitMasterySave',version:V52_VERSION,exportedAt:new Date().toISOString(),state:S};let b=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='Moonlit_Mastery_V5_2_Save_'+new Date().toISOString().slice(0,10)+'.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)};
 
-try{save();render()}catch(e){console.error('V5.2 initial boot',e)}
+try{save()}catch(e){console.error('V5.2 initial boot',e)}
 
 ;
 
@@ -1043,7 +1043,7 @@ injectPetCoach=function(){v523MountGuardian()};
 const _answerV523=answerQ;answerQ=function(chosen){let q=session?.current,wasOpen=!!session&&!session.answered,correct=!!(wasOpen&&q&&chosen===q.answer);_answerV523(chosen);if(wasOpen)setTimeout(()=>v523React(correct?'correct':'wrong'),80)};
 /* Add a direct motion setting to Control Room. */
 const _controlV523=controlHTML;controlHTML=function(){return _controlV523()+`<div class="ascPanel"><h3>🐾 Companion Motion</h3><p>The previous build could silently turn animation off when Windows reported reduced motion. This build uses your in-app choice instead.</p><label class="v5Toggle"><input type="checkbox" ${S.v523.motionOn?'checked':''} onchange="S.v523.motionOn=this.checked;save();render()"><span><b>Moving companions</b><small>Run-ins, hops, paw waves, habitat movement, and answer reactions.</small></span></label></div>`};
-try{v523ApplyMotionPref();save();render()}catch(e){console.error('V5.2.3 boot',e)}
+try{v523ApplyMotionPref();save()}catch(e){console.error('V5.2.3 boot',e)}
 
 ;
 
@@ -1062,7 +1062,7 @@ if(typeof companionsHTML==='function'){
   }
 }
 const _renderV524 = render; render=function(){ _renderV524(); let badge=document.querySelector('.top .pill'); if(badge) badge.textContent='Home Glow • V5.2.4'; document.body.classList.add('v524Starlight'); };
-try{ render(); }catch(e){ console.error('V5.2.4 boot',e); }
+// Startup render deferred until all core owners are installed.
 
 ;
 
@@ -1089,7 +1089,7 @@ v523EnhanceCompanions=function(){
   room.parentNode.insertBefore(cap,room.nextSibling);
 };
 const _renderV525=render;render=function(){_renderV525();let badge=document.querySelector('.top .pill');if(badge)badge.textContent='Whimsical Habitat • V5.2.5';setTimeout(()=>{if(S.screen==='companions')v523EnhanceCompanions()},0)};
-try{render()}catch(e){console.error('V5.2.5 boot',e)}
+// Startup render deferred until all core owners are installed.
 
 ;
 
@@ -1125,7 +1125,7 @@ function majickHomeHTML(){
 sideHTML=function(){const nav=[['home','⌂','Home'],['mission','📖','Scholar’s Study Hall'],['finalreview','🎓','Final Review'],['guide','📜','Study Guide'],['games','🎮','The Enchanted Arcade'],['companions','🐾','Companions'],['constellation','✦','Constellation'],['grimoire','📕','Mistake Grimoire'],['vault','🗝️','Magic Vault'],['trophies','🏆','Trophies'],['test','📝','OA Practice'],['analytics','📊','Analytics'],['strategy','🧠','Strategy Lab'],['examday','👑','Exam Day'],['control','⚙️','Control Room'],['sources','📚','Sources'],['add','➕','Add Class']];let pet=activePet(),d=petDef(pet);return `<div class="brand"><div class="brandmark">☾</div><div class="txt"><b>Majick<br>Studies</b><small>Dreamy Study Sanctuary</small></div></div><nav class="nav">${nav.map(([id,ic,l])=>`<button data-nav="${id}" class="${S.screen===id?'active':''}" onclick="navigate('${id}')"><span>${ic}</span> <span class="label">${l}</span></button>`).join('')}</nav><div class="sidefoot"><span class="moon">${d.emoji}</span><div class="copy"><b>${esc(pet.name)} • ${petStage(pet)}</b><small>${dayStreak()} day streak • ${esc(rankInfo().name)}</small><div class="rewardStrip" style="margin-top:9px"><span class="rewardChip">✨ ${prog().xp||0}</span><span class="rewardChip">💎 ${prog().crystals||0}</span><span class="rewardChip">🎁 ${prog().chests||0}</span></div></div></div>`}
 homeHTML=majickHomeHTML;
 const _majRender=render;render=function(){_majRender();document.title='Aetheria — V3.4.2';const h=document.querySelector('.titleline h1');if(h)h.textContent='Aetheria';const pill=document.querySelector('.top .pill');if(pill)pill.textContent='Aetheria • V3.4.2';document.body.classList.add('majickStudies')};
-try{render()}catch(e){console.error('Aetheria boot',e)}
+// Startup render deferred until all core owners are installed.
 
 ;
 
@@ -1166,7 +1166,7 @@ render=function(){
   try{_maj2Render();document.title='Aetheria — V3.4.2';const h=document.querySelector('.titleline h1');if(h)h.textContent='Aetheria';const pill=document.querySelector('.top .pill');if(pill)pill.textContent=MAJICK_V2;document.body.classList.add('majickStudies');}
   catch(err){console.error('Majick V2 render recovery',err);const app=document.getElementById('app');if(app)app.innerHTML=`<div style="min-height:100vh;background:#140b21;color:#f6eadf;display:grid;place-items:center;padding:30px"><div style="max-width:620px;background:#251431;border:1px solid #a67f70;border-radius:24px;padding:28px"><h2 style="font-family:Georgia,serif;color:#f5ddba">Aetheria Recovery</h2><p>The visual layer had a problem, but your progress remains stored.</p><button class="btn primary" onclick="session=null;S.screen='guide';save();location.reload()">Open Study Guide</button> <button class="btn secondary" onclick="location.reload()">Reload</button></div></div>`;}
 };
-try{render()}catch(e){console.error('Majick V2 boot',e)}
+// Startup render deferred until all core owners are installed.
 
 ;
 
@@ -1883,7 +1883,7 @@ function mcFeatureStatusHTML(){
   return `<div class="mcPanel"><h3>Living Campus feature map</h3><p>Cloud save, source vault, grounded AI question generation, office hours, adaptive study, planner, analytics, companions, room decorating, exam practice, and cross-course legacy are active in this build.</p></div>`;
 }
 
-try{mcState();render()}catch(e){console.error('Majick Campus boot',e)}
+try{mcState()}catch(e){console.error('Majick Campus boot',e)}
 
 ;
 
@@ -2124,7 +2124,7 @@ render=function(){
  const pill=document.querySelector('.top .pill');if(pill)pill.textContent='Aetheria • V3.4.2';
  masDecorLayers();setTimeout(()=>{if(S.screen==='companions')mcBindRoomDrag()},0);
 };
-try{masEnsurePetXP();save();render()}catch(e){console.error('Majick V3.2 boot',e)}
+try{masEnsurePetXP();save()}catch(e){console.error('Majick V3.2 boot',e)}
 
 ;
 
@@ -2450,6 +2450,7 @@ function phase4StudyState(){
 function phase4PushState(){const frame=document.getElementById('phase4SanctuaryFrame');if(!frame||!frame.contentWindow)return;const payload=phase4StudyState();if(payload)frame.contentWindow.postMessage({type:'MAJICK_STATE',payload},location.origin)}
 function phase4OpenFullscreen(){const frame=document.getElementById('phase4SanctuaryFrame');if(frame?.requestFullscreen)frame.requestFullscreen().catch(()=>{})}
 function phase4SanctuaryHTML(){
+ if(S.screen!=='companions')return `<section class="phase4Wrap" aria-label="Living Sanctuary"><h3>Living Sanctuary</h3><p>Your Guardians are ready when you visit.</p><button class="btn primary" onclick="navigate('companions')">Visit Sanctuary</button></section>`;
  const directFile=location.protocol==='file:';
  if(directFile){
    return `<section class="phase4Wrap" aria-label="Phase 4 Living Sanctuary"><div class="phase4Top"><div><b>✦ Phase 4 Living Sanctuary</b><br><span>Your Scholar’s Study Hall engine is safe. Phaser just needs the app's local web launcher.</span></div><div class="phase4Actions"><button class="btn primary" onclick="navigate('mission')">Continue Studying</button></div></div><div style="min-height:420px;display:grid;place-items:center;padding:36px;text-align:center;background:linear-gradient(180deg,#1a0c24,#2b1236);color:#f7e9f1"><div style="max-width:720px"><div style="font-size:54px;margin-bottom:12px">✦</div><h2 style="color:#f4d19a;margin:0 0 12px">The moving sanctuary needs the Majick launcher</h2><p style="font-size:18px;line-height:1.55">You opened Aetheria as a local file. Close this tab, go back to the extracted Aetheria folder, and double-click <b>1 - START AETHERIA.bat</b>. It will reopen the same app through localhost so Phaser can load Luna, Ember, Nova, and Mallow correctly.</p><p style="opacity:.8">Your study progress is not damaged.</p></div></div></section>`;
@@ -2536,7 +2537,6 @@ render=function(){lfEnsure();_lfRenderBase();document.title='Aetheria — V3.4.2
 /* First-run upgrade note + existing pet rewards are granted without resetting any XP. */
 try{
  lfEnsure();let F=lfEnsure();if(!F.v33Welcomed){F.v33Welcomed=true;(S.legacy.pets||[]).forEach(p=>lfAddMemory(p,`${p.name} became a Living Familiar in V3.3.`,'upgrade',true));save();setTimeout(()=>rewardToast('Living Familiars are awake ✦','Pets now walk, react, remember, grow friendships, evolve, and earn decor.'),500)}
- render();
 }catch(e){console.error('Living Familiars V3.3 boot',e)}
 
 ;
@@ -2597,7 +2597,7 @@ render=function(){
  const pill=document.querySelector('.top .pill');if(pill)pill.textContent='Aetheria • V3.4.2';
  document.body.classList.add('v334UnifiedFamiliars');
 };
-try{render()}catch(e){console.error('V3.3.4 unified familiar pass',e)}
+// Startup render deferred until all core owners are installed.
 
 ;
 
@@ -2621,7 +2621,7 @@ render=function(){
  const pill=document.querySelector('.top .pill');if(pill)pill.textContent='Aetheria • V3.4.2';
  document.body.classList.add('v335ApprovedRegistry');
 };
-try{render()}catch(e){console.error('V3.3.5 approved familiar registry',e)}
+// Startup render deferred until all core owners are installed.
 
 ;
 
@@ -2700,7 +2700,7 @@ const _v336ControlBase=controlHTML;
 controlHTML=function(){return _v336ControlBase()+v336ProgressHTML()};
 const _v336RenderBase=render;
 render=function(){_v336RenderBase();document.title='Aetheria — V3.4.2';const pill=document.querySelector('.top .pill');if(pill)pill.textContent='Aetheria • V3.4.2';document.body.classList.add('v336EvolutionCodex')};
-try{render()}catch(e){console.error('V3.3.7 familiar interactions',e)}
+// Startup render deferred until all core owners are installed.
 
 ;
 

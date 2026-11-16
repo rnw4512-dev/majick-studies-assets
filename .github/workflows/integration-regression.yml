@@ -2,7 +2,7 @@ name: Majick integration regression
 on:
   push:
     branches:
-      - integration/sanctuary-atelier-rewards-20261024
+      - main
   pull_request:
     paths:
       - current-site/**
@@ -29,6 +29,15 @@ jobs:
         run: |
           npm install --no-save @playwright/test
           npx playwright install --with-deps chromium
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install Python browser runner
+        run: python -m pip install playwright==1.56.0
+      - name: Verify startup isolation and durable question state
+        env:
+          CHROMIUM_PATH: /usr/bin/google-chrome
+        run: python -u tests/startup-learning-browser.py _site
       - name: Check JavaScript syntax
         run: |
           node --check current-site/pixi-sanctuary/prototype.js
