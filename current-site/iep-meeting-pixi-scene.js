@@ -166,5 +166,5 @@ async function sync({participants=[],speaker=0,mood='listening',active:isActive=
 
  }catch(e){if(current.dead)return;console.warn('Council Chamber Pixi scene fallback:',e);if(active===current){try{current.app?.destroy(true,{children:true,texture:false,textureSource:false})}catch(_){}active=null;stageFallback(host,speaker)}}
 }
-window.MajickIEPVisual={sync,dispose,inspect:()=>({applicationsCreated,sceneUpdates,active:!!active,ready:!!active?.ready,speaker:active?.latest?.speaker}),version:'1.1-council-speaking-cue'};
+window.MajickIEPVisual={sync,dispose,inspect:()=>({applicationsCreated,sceneUpdates,active:!!active,ready:!!active?.ready,speaker:active?.latest?.speaker,mood:active?.latest?.mood}),version:'1.2-council-expression-cues'};
 })();
