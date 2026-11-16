@@ -13,8 +13,10 @@ test('dialogue repaint reuses the Council canvas and closes it cleanly',async({p
  await expect(page.locator('#dmVisualStage canvas')).toHaveCount(1,{timeout:30000});
  expect(await page.evaluate(()=>document.querySelector('#dmVisualStage canvas')===window.__councilCanvas)).toBe(true);
  expect(await page.evaluate(()=>MajickIEPVisual.inspect().applicationsCreated)).toBe(await page.evaluate(()=>window.__councilApplications));
- await page.evaluate(()=>MajickIEPVisual.sync({participants:[{name:'Parent'},{name:'Student'},{name:'LEA'},{name:'Teacher'}],speaker:3}));
+ await page.evaluate(()=>MajickIEPVisual.sync({participants:[{name:'Parent'},{name:'Student'},{name:'LEA'},{name:'Teacher'}],speaker:3,mood:'concern'}));
  expect(await page.evaluate(()=>MajickIEPVisual.inspect().speaker)).toBe(3);
+ expect(await page.evaluate(()=>MajickIEPVisual.inspect().mood)).toBe('concern');
+ await expect(page.locator('.dmEmotionCue')).toHaveCount(1);
  expect(await page.evaluate(()=>document.querySelector('#dmVisualStage canvas')===window.__councilCanvas)).toBe(true);
  await page.locator('[data-action=close]').click();
  await expect(page.locator('#dmVisualStage')).toHaveCount(0);
