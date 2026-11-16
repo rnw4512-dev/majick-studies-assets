@@ -30,6 +30,20 @@ motionMedia.addEventListener('change',event=>{reduced=event.matches;if(reduced){
 const app=new PIXI.Application();
 try{await app.init({width:1200,height:700,backgroundAlpha:0,antialias:false,resolution:Math.min(devicePixelRatio||1,2),preference:'webgl',powerPreference:'low-power'})}catch(error){failure(error);return}
 room.append(app.canvas);
+// The existing app ticker is also the rendering lifecycle owner. Moving no
+// sprites is insufficient: a hidden WebGL scene must stop rendering entirely.
+let ownerVisible=true,roomVisible=true;
+function syncRendering(){
+ const visible=ownerVisible&&roomVisible&&!document.hidden;
+ if(visible&&!app.ticker.started)app.start();
+ else if(!visible&&app.ticker.started)app.stop();
+}
+const roomObserver=new IntersectionObserver(entries=>{roomVisible=entries[0]?.isIntersecting!==false;syncRendering()});
+roomObserver.observe(room);
+document.addEventListener('visibilitychange',syncRendering);
+window.addEventListener('pagehide',()=>{app.stop();roomObserver.disconnect()});
+window.addEventListener('pageshow',()=>{roomObserver.observe(room);syncRendering()});
+
 const world=new PIXI.Container(),objects=new PIXI.Container();app.stage.addChild(world);world.addChild(objects);objects.sortableChildren=true;
 const sparks=new PIXI.Container();world.addChildAt(sparks,0);
 // Clip only floating dust; the floor's constellation sigil stays visible.
@@ -234,6 +248,7 @@ async function applyState(payload){
 window.addEventListener('message',event=>{
  if(event.origin!==location.origin||event.source!==parent)return;
  const data=event.data;
+ if(data?.type==='MAJICK_ROOM_VISIBILITY'&&typeof data.visible==='boolean'){ownerVisible=data.visible;syncRendering();return;}
  if(data?.type==='MAJICK_STATE')applyState(data.payload);
  if(data?.type==='MAJICK_SANCTUARY_ROSTER_REQUEST_V3350')publish();
  if(data?.type==='MAJICK_PIXI_ACTION_RESULT'){

@@ -35,9 +35,16 @@ with sync_playwright() as pw:
   # Honest speed control uses the one existing ticker, preserves saved state.
   frame().locator('#walk-speed').select_option('0.5');assert inspect()['diagnostics']['walkSpeed']==.5
   frame().locator('#walk-speed').select_option('1.5');assert inspect()['diagnostics']['walkSpeed']==1.5
+  frame().locator('#room').scroll_into_view_if_needed();frame().wait_for_function('MajickPixiSanctuary.inspect().diagnostics.tickerStarted');
   ticks=inspect()['diagnostics']['ticks'];page.wait_for_timeout(1500);assert inspect()['diagnostics']['ticks']>ticks
   frame().locator('#toggle').click();positions=[(g['x'],g['y']) for g in inspect()['guardians']];page.wait_for_timeout(400);assert positions==[(g['x'],g['y']) for g in inspect()['guardians']]
   frame().locator('#toggle').click();frame().locator('#reset').click();assert inspect()['diagnostics']['spawns']==11
+  # A hidden room panel stops the actual Pixi render ticker, then resumes once.
+  page.evaluate('''()=>{MajickRoomSections.refresh();const f=document.querySelector('#phase4SanctuaryFrame'),panel=f.closest('.phase4Wrap');window.sanctuaryPanelId=panel.id;const buttons=[...document.querySelectorAll('#majickRoomSections button')];buttons.find(b=>b.getAttribute('aria-controls')!==panel.id)?.click()}''')
+  frame().wait_for_function('!MajickPixiSanctuary.inspect().diagnostics.tickerStarted')
+  hidden_ticks=inspect()['diagnostics']['ticks'];page.wait_for_timeout(350);assert inspect()['diagnostics']['ticks']==hidden_ticks
+  page.evaluate('''()=>[...document.querySelectorAll('#majickRoomSections button')].find(b=>b.getAttribute('aria-controls')===sanctuaryPanelId).click()''')
+  frame().locator('#room').scroll_into_view_if_needed();frame().wait_for_function('MajickPixiSanctuary.inspect().diagnostics.tickerStarted')
   # Selector repair: recognize actual primary iframe ID even without legacy CSS class.
   page.evaluate('document.querySelector("#phase4SanctuaryFrame").classList.remove("v3317SanctuaryFrame");MajickSanctuaryAudit.request(document.querySelector("#phase4SanctuaryFrame"))')
   page.wait_for_function('MajickSanctuaryAudit.status()[0]?.present===11')
@@ -59,7 +66,7 @@ with sync_playwright() as pw:
   page.unroute(pattern);page.once('dialog',lambda d:d.accept());page.get_by_role('button',name='Repair room',exact=True).click();ready()
   assert page.evaluate('JSON.stringify({pets:S.legacy.pets,progress:S.progress,account:S.majickAccount})')==before
   assert not errors,errors
-  print('PASS',width,'11 exact identities, stages, honest frame gaps, one ticker, pause/speed, shared wardrobe/avatar persistence, safe missing-art fallback, confirmed repair and route-source isolation',flush=True)
+  print('PASS',width,'11 exact identities, stages, honest frame gaps, one ticker, hidden render-loop stop/resume, pause/speed, shared wardrobe/avatar persistence, safe missing-art fallback, confirmed repair and route-source isolation',flush=True)
   (out/f'sanctuary-diagnostics-{width}.json').write_text(json.dumps(inspect(),indent=2)+'\n');ctx.close()
  browser.close()
 server.shutdown()

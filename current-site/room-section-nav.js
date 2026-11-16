@@ -5,7 +5,14 @@ const ROOM_NAMES={reasoning:'Scholar’s Trial Chamber',mission:'Scholar’s Stu
 // Preserve every academic renderer and form. The nonacademic rooms use one
 // visible section at a time; academic rooms keep their non-destructive jumps.
 const TABBED_ROOMS=new Set(['journal','grimoire','livinggrimoire','companions','guide','vault','analytics','addmaterial']);
-const selections=new Map();
+const selections=new Map(),sceneVisibility=new WeakMap();
+function syncPanelScene(panel){
+ panel.querySelectorAll('iframe.v3317SanctuaryFrame').forEach(frame=>{
+  const notify=()=>{const visible=!panel.classList.contains('majRoomInactive');if(sceneVisibility.get(frame)===visible)return;sceneVisibility.set(frame,visible);frame.contentWindow?.postMessage({type:'MAJICK_ROOM_VISIBILITY',visible},location.origin)};
+  if(!frame.dataset.roomVisibilityBound){frame.dataset.roomVisibilityBound='true';frame.addEventListener('load',()=>{sceneVisibility.delete(frame);notify()})}
+  notify();
+ });
+}
 let pending=false,updating=false;
 function refresh(){
  if(updating)return;updating=true;
@@ -51,7 +58,7 @@ function refresh(){
     el.classList.toggle('majRoomInactive',i!==active);
     el.classList.toggle('majRoomActive',i===active);
     el.dataset.majRoomPanel=String(i);
-    if(i!==active)el.setAttribute('inert','');else el.removeAttribute('inert');
+    if(i!==active)el.setAttribute('inert','');else el.removeAttribute('inert');syncPanelScene(el);
    });
   }else{
    nodes.forEach(el=>{el.classList.remove('majRoomInactive','majRoomActive');el.removeAttribute('inert');delete el.dataset.majRoomPanel});
@@ -75,7 +82,7 @@ function refresh(){
     button.classList.toggle('majRoomSelected',i===active);
     button.onclick=()=>{
      selections.set(key,label);
-     rows.forEach(({el:panel},j)=>{panel.classList.toggle('majRoomInactive',j!==i);panel.classList.toggle('majRoomActive',j===i);if(j!==i)panel.setAttribute('inert','');else panel.removeAttribute('inert')});
+     rows.forEach(({el:panel},j)=>{panel.classList.toggle('majRoomInactive',j!==i);panel.classList.toggle('majRoomActive',j===i);if(j!==i)panel.setAttribute('inert','');else panel.removeAttribute('inert');syncPanelScene(panel)});
      nav.querySelectorAll('button').forEach((b,j)=>{b.setAttribute('aria-pressed',String(j===i));b.classList.toggle('majRoomSelected',j===i)});
      nav.scrollIntoView({block:'start',behavior:'instant'});
     };
