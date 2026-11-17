@@ -58,7 +58,12 @@ function addText(P,text,size,color){
 async function sync({participants=[],speaker=0,mood='listening',active:isActive=true}={}){
  const host=document.getElementById('dmVisualStage');
  if(!host||!isActive){dispose();return}
- if(active?.host===host&&!active.dead){active.latest={participants,speaker,mood};active.update?.(active.latest);return}
+ if(active?.host===host&&!active.dead){
+  const prior=active.latest;
+  const unchanged=prior?.speaker===speaker&&prior?.mood===mood&&JSON.stringify(prior?.participants)===JSON.stringify(participants);
+  if(!unchanged){active.latest={participants,speaker,mood};active.update?.(active.latest);}
+  return;
+ }
  const request=++serial;dispose();
  const current={host,dead:false,ready:false,latest:{participants,speaker,mood}};
  active=current;
