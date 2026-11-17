@@ -879,13 +879,13 @@
     "assets/rooms/licenses/GPL-2.0.txt": "e6d6a009505e345fe949e1310334fcb0747f28dae2856759de102ab66b722cb4",
     "d772-oa-entry.js": "c22f97fc2c528409b54b5c4fe42d1cedfc1c861231c915b44ad0bac1e434f746",
     "d772-oa-focus.html": "987fe97e57c96c36ff2bf6dbe2b989e2677af7d326ec033d231fff96f8e01bfc",
-    "d756-task2-meeting.js": "ee14e8a579fd441aca3897bdf6cab7581c7d04ebdf35992b6e1c97cf93597a75",
+    "d756-task2-meeting.js": "80bcbaf850074b2e500cd7169086a778ca386547874791dbef41f1867ef9e867",
     "d756-council.css": "bf2f2b2e396556c04e934b708d23dd6da528f7ffddaf069a9e2992721d30e9e1",
     "interaction-help.js": "f057d0b8e96b381f0d8065feb8c03d10ae56fa7cef9169967e5384e0fc560a1d",
     "startup-core.20261114.js": "22a42c31d255c9d0c73602cee308cebf7e1fb78497d45b26551a6f05efb42ab5",
     "startup-save-bridge.20261114.js": "eaf5fe9ad81a250b471949dbfa243d9f9540b58d9fe2ff7cd6c1fd86c45ba379",
     "enchanted-collegium.css": "b9d7337641386f661e7eefec22378fc55d5301e8ae3ca5fdd2b7d9f48ad3d2e3",
-    "iep-meeting-pixi-scene.js": "6bc855cfcdbf20e822196efbc79b52399d33b1cd764dac5cd9ee5e89a14c346b",
+    "iep-meeting-pixi-scene.js": "ab64ccb2edb0b0222f256b470c0ad2bf9d58f42789fcf07b6e0d1a510d29595c",
     "assets/ancient-study-library-v1-820.webp": "15351da70008d234502c0201cec7a5bb44acddd2a287cf42d914d3447aae9a1f",
     "assets/ancient-study-library-v1.webp": "ab498f70b1d90490ea869a59fefa88616fb12b2833640418c28acf3ff4483bf8",
     "assets/game-observatory-v1-820.webp": "1bd95f6ad5a30bb3d06adae2467aac51586bf5149b821170648ef886582223fd",
@@ -895,6 +895,7 @@
     "assets/learn-classroom-v1-820.webp": "3ec70e4d4ba0881eec5358ac0a309204e290a7cd12590f9c9bafbef3e83fad38",
     "assets/learn-classroom-v1.webp": "15195fdf89e728654f5ce4697351335f37ac6b1efa744ff1465eeade97468771",
     "assets/learn-classroom-v2-820.webp": "ae0ab27cd8b92537c362d658f308dcb88b1bdec5f6d83b9444acf9b30c98d4f8",
-    "assets/learn-classroom-v2.webp": "a14726abd5bf3c3bb93e0bcb63a5b7bc4fd94a3940533db5aa602293a3c1bda0"
+    "assets/learn-classroom-v2.webp": "a14726abd5bf3c3bb93e0bcb63a5b7bc4fd94a3940533db5aa602293a3c1bda0",
+    "assets/iep-council/teacher.svg": "fd392f774895a5a6370ee90dd11f32f7dc628e6ca9c01c14229fa28feafa563f"
   }
 }
