@@ -147,7 +147,9 @@ with sync_playwright() as pw:
  assert failed_meeting['reward']['xp']==0
  assert page.evaluate('MajickStateCore.ensureAccount().xp')==before+38
  print('Calendar before next-day jump',page.evaluate('new Date().toString()'),flush=True)
- page.clock.fast_forward(86400000)
+ # Advance wall time explicitly: fast_forward runs timers but can leave Date unchanged in CI.
+ current_ms=page.evaluate('Date.now()')
+ page.clock.set_system_time(datetime.fromtimestamp((current_ms+86400000)/1000,timezone.utc))
  print('Calendar after next-day jump',page.evaluate('new Date().toString()'),flush=True)
  next_day_key=page.evaluate('(()=>{const d=new Date();return "d756:task2:meeting:repeat:"+d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")})()')
  assert page.evaluate('(key)=>!MajickStateCore.ensureAccount().rewardCore.ledger[key]',next_day_key),next_day_key
