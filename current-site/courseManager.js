@@ -37,11 +37,24 @@ const COURSE_CATALOG={
       literacy:'The ability to read, write, understand and use information to communicate and participate in society.',
       'reading brain':'A network of brain regions working together to connect written words, spoken language and meaning.',
       'systematic instruction':'Teaching skills in a planned sequence, building from easier concepts to more complex ones.',
-      'explicit instruction':'Direct explanation and modeling followed by guided practice, feedback and independent application.'
+      'explicit instruction':'Direct explanation and modeling followed by guided practice, feedback and independent application.',
+      MTSS:'Multi-tiered systems of support: a framework of increasingly targeted academic and behavioral supports guided by student data.',
+      phonology:'The sound patterns and relationships of speech sounds in a language.',
+      'sound-symbol':'The connection between letters or letter combinations and the sounds they represent.',
+      syllable:'A spoken word part organized around a vowel sound.',
+      morphology:'The structure of words and meaningful parts such as roots, prefixes and suffixes.',
+      syntax:'How words are arranged into phrases, clauses and sentences.',
+      semantics:'The meaning of words and phrases and their relationships.',
+      'systematic and cumulative':'Instruction in a deliberate order, with each new skill building on prior learning.',
+      diagnostic:'Instruction informed by ongoing assessment of a learner’s strengths and needs.'
     },
     questionBank:[
       {id:'d669-s1-l1-dyslexia-myth',topicId:'d669-s1-standards',section:'Section 1',prompt:'True or false: Dyslexia is a visual problem in which people see letters and words backward.',options:['True','False'],answer:'False',why:'Dyslexia is not explained by seeing letters backward. Reading instruction should teach sound–letter connections explicitly and systematically.',source:'User-provided D669 Lesson 1.1 guided practice'},
-      {id:'d669-s1-l1-discovery',topicId:'d669-s1-standards',section:'Section 1',prompt:'True or false: Discovery learning alone is the most effective way to teach beginning reading.',options:['True','False'],answer:'False',why:'Foundational skills benefit from systematic, explicit instruction with modeling, guided practice and feedback.',source:'User-provided D669 Lesson 1.1 guided practice'}
+      {id:'d669-s1-l1-discovery',topicId:'d669-s1-standards',section:'Section 1',prompt:'True or false: Discovery learning alone is the most effective way to teach beginning reading.',options:['True','False'],answer:'False',why:'Foundational skills benefit from systematic, explicit instruction with modeling, guided practice and feedback.',source:'User-provided D669 Lesson 1.1 guided practice'},
+      {id:'d669-s1-l2-sequence',topicId:'d669-s1-standards',section:'Section 1',prompt:'A teacher models a sound–letter pattern, practices it with the class, checks responses, and revisits it before introducing a harder pattern. Which teaching principle is illustrated?',options:['Systematic and cumulative','Discovery learning alone','Unplanned exposure','Reading level labels'],answer:'Systematic and cumulative',why:'The instruction follows a planned sequence and builds on earlier learning. Modeling and guided practice are also explicit teaching moves.',source:'Original Majick practice based on user-provided D669 Lesson 1.2'},
+      {id:'d669-s1-l2-diagnostic',topicId:'d669-s1-standards',section:'Section 1',prompt:'After a quick check, a teacher finds a student can blend sounds but struggles with vowel spellings. What is the most diagnostic next step?',options:['Teach and monitor the vowel pattern the student needs','Repeat every phonics skill for the whole class','Wait until the next annual test','Assign a harder book without support'],answer:'Teach and monitor the vowel pattern the student needs',why:'Diagnostic instruction uses current evidence to target a specific need and checks the response.',source:'Original Majick practice based on user-provided D669 Lesson 1.2'},
+      {id:'d669-s1-l2-materials',topicId:'d669-s1-standards',section:'Section 1',prompt:'A district spelling resource is evidence-aligned and accessible to students, while a fun free resource is not accessible. Which planning consideration most directly guides the choice?',options:['Selection of materials','Ignoring accessibility','Using one task for every student','Avoiding progress checks'],answer:'Selection of materials',why:'Choose materials for evidence alignment, accessibility, and fit for learners; differentiation is also relevant to access.',source:'Original Majick practice based on user-provided D669 Lesson 1.2'},
+      {id:'d669-s1-l2-mtss',topicId:'d669-s1-standards',section:'Section 1',prompt:'Several students continue to struggle after core reading instruction. The teacher checks which foundational skill is missing and plans added targeted support. Which framework organizes tiers of support?',options:['Multi-tiered systems of support (MTSS)','A fixed reading label','A one-time book choice','A spelling game alone'],answer:'Multi-tiered systems of support (MTSS)',why:'MTSS uses evidence to provide increasingly targeted instruction and monitor how students respond.',source:'Original Majick practice based on user-provided D669 Lesson 1.2'}
     ],misconceptionCatalog:[],
     preassessmentProfile:{priorityConcepts:['d669-s1-standards','d669-s2-reading','d669-s3-communication','d669-s4-genres','d669-s5-writing']},
     studySections:[
@@ -52,11 +65,18 @@ const COURSE_CATALOG={
            keyIdeas:['Literacy has shaped access to knowledge and participation in society; printing expanded access to written material.','Whole language emphasizes meaning and context. Balanced literacy combines some phonics with meaningful texts. Structured literacy explicitly and systematically teaches foundational skills and language structure.','Dyslexia is not a visual reversal problem or a lack of effort. Teach phonemic awareness and phonics directly, with a planned sequence and feedback.','Reading involves coordinated visual, language, sound, speech and motor processes; no single brain region teaches a child to read.'],
            reflection:['How was I taught to read?','Which assumptions about literacy instruction should I reconsider?'],
            visual:{src:'https://assets.wgu.edu/25076e90e604c9e34a82a472f0912c55',alt:'WGU Reading Brain figure with frontal, temporal, parietal and occipital lobes, Broca’s area, planum temporale and cerebellum.'},
-           references:['WGU D669 Lesson 1.1, user-provided text','Hiebert (2023), Thinking Through Research and the Science of Reading','Hougen and Smartt (2012), Fundamentals of Literacy Instruction and Assessment, Chapter 1','Schwartz (2023), How Reading Policy Evolved in 2023 and What’s Ahead']}]},
+           references:['WGU D669 Lesson 1.1, user-provided text','Hiebert (2023), Thinking Through Research and the Science of Reading','Hougen and Smartt (2012), Fundamentals of Literacy Instruction and Assessment, Chapter 1','Schwartz (2023), How Reading Policy Evolved in 2023 and What’s Ahead']},
+           {id:'d669-s1-l1-2',title:'Lesson 1.2: Instructional Considerations and Structured Literacy',
+            fourConsiderations:['Structured literacy','Selection of materials','Differentiation and high-leverage practices for all learners','Multi-tiered systems of support (MTSS)'],
+            elements:['Phonology','Sound-symbol connections','Syllables','Morphology','Syntax','Semantics'],
+            principles:['Systematic and cumulative','Explicit','Diagnostic'],
+            keyIdeas:['Plan clear goals, select accessible and evidence-aligned materials, differentiate from observations and data, and monitor progress.','Structured literacy combines six language elements with three evidence-based teaching principles.','The Ladder of Reading describes different amounts of explicit code-based instruction and practice that readers may need. The supplied text does not include the original layer positions or percentages; consult the source figure before completing its drag-and-drop activity.'],
+            guidedPractice:[{prompt:'Spelling-resource comparison: identify two of the four considerations used.',status:'Official answer key was not included in the supplied text.'},{prompt:'Match four classroom scenarios to the four considerations.',status:'Original answer options were not included in the supplied text.'},{prompt:'Complete the Ladder of Reading drag-and-drop.',status:'Use the figure on page 13; positions and percentages were not supplied.'}],
+            references:['WGU D669 Lesson 1.2, user-provided text','Hougen and Smartt (2012), Fundamentals of Literacy Instruction and Assessment, Pre-K–6, pages 12–16 and Figure 1.1']}]},
          {title:'Lesson 2: Literacy-Rich Classroom Environments',topics:['2.1 Literacy-Rich Classrooms','2.2 Multisensory Activities']}
        ],
        learningObjective:'Analyze reading instruction for alignment to a given content standard.',
-       summary:'Lesson 1.1: literacy history, research-based instruction, dyslexia myths and the reading brain.',
+       summary:'Lessons 1.1–1.2: literacy history, the reading brain, planning considerations and structured literacy.',
        concepts:['d669-s1-standards'],
        rows:[
          ['History of literacy','Reading and writing have shaped access to learning, information and civic participation. The printing press expanded access to books.','Reflect: Who had access to literacy, and how did that access change?'],
@@ -65,7 +85,13 @@ const COURSE_CATALOG={
          ['Structured literacy','Teach phonemic awareness, decoding, encoding and language structure through an explicit, systematic sequence with modeling, practice and feedback.','Phonology, orthography, morphology, syntax, semantics and discourse all contribute to reading.'],
          ['Dyslexia','Dyslexia is not caused by seeing letters backward or by a child failing to try. Explicit and systematic foundational reading instruction supports students with dyslexia.','Do not treat a visual reversal myth as a diagnosis.'],
          ['The reading brain','Visual processing, sound–letter mapping, speech and language comprehension work together. The WGU figure labels the frontal, temporal, parietal and occipital lobes, Broca’s area, planum temporale and cerebellum.','The figure is a learning aid; avoid assigning an entire reading skill to one lobe.'],
-         ['Reflect','How was I taught to read? Which beliefs about literacy instruction might I need to reconsider?','Use the two guided true-or-false questions to check the dyslexia and discovery-learning myths.']
+         ['Reflect','How was I taught to read? Which beliefs about literacy instruction might I need to reconsider?','Use the two guided true-or-false questions to check the dyslexia and discovery-learning myths.'],
+         ['Lesson 1.2 • Four planning considerations','Structured literacy; selection of materials; differentiation and high-leverage practices; and MTSS. Set goals, choose accessible evidence-aligned resources, respond to learner needs and check progress.','A colorful activity is not enough if it is inaccessible or does not teach the needed skill.'],
+         ['Lesson 1.2 • Six language elements','Phonology = sound patterns; sound-symbol = letters and sounds; syllables = vowel-centered word parts; morphology = meaningful word parts; syntax = sentence structure; semantics = meaning.','Try to name the specific language element being taught in any classroom example.'],
+         ['Lesson 1.2 • Three teaching principles','Systematic and cumulative = planned sequence building on prior learning; explicit = clear modeling, guided practice and feedback; diagnostic = ongoing checks that guide targeted teaching.','These principles describe how to teach the language elements.'],
+         ['Lesson 1.2 • Classroom decisions','Use assessment to identify a need, adjust materials and tasks, and provide additional support within MTSS when core instruction is not enough.','Differentiation can vary the task while preserving the learning goal.'],
+         ['Lesson 1.2 • Ladder of Reading','Different learners need different amounts of explicit phonics instruction and practice. Use the source figure on page 13 to complete the official drag-and-drop.','The pasted text omits the layer positions and percentages, so the app does not guess them.'],
+         ['Lesson 1.2 • Guided checks','Review the spelling-material comparison and four classroom scenarios from your course. Then try the original Majick questions for systematic, diagnostic, material and MTSS decisions.','The supplied copy omits some official answer choices; app-generated practice is labeled separately.']
        ],
        visual:{src:'https://assets.wgu.edu/25076e90e604c9e34a82a472f0912c55',alt:'WGU Reading Brain figure, showing labeled left-hemisphere regions associated with language and reading.'},
        practice:[
@@ -247,14 +273,16 @@ function ensure(){
       for(const row of template.studySections[0].rows){
         if(!present.has(row[0]))sectionOne.rows.push(clone(row));
       }
-      sectionOne.summary=sectionOne.summary||template.studySections[0].summary;
+      if(!sectionOne.summary||sectionOne.summary==='Lesson 1.1: literacy history, research-based instruction, dyslexia myths and the reading brain.') sectionOne.summary=template.studySections[0].summary;
       sectionOne.visual=sectionOne.visual||clone(template.studySections[0].visual);
       sectionOne.concepts=mergeUniqueRows(sectionOne.concepts,template.studySections[0].concepts);
       sectionOne.lessons=Array.isArray(sectionOne.lessons)?sectionOne.lessons:[];
       const first=sectionOne.lessons.find(row=>row?.title==='Lesson 1: Standards Alignment for Literacy');
       if(first){
         first.sublessons=Array.isArray(first.sublessons)?first.sublessons:[];
-        if(!first.sublessons.some(row=>row?.id==='d669-s1-l1-1'))first.sublessons.unshift(clone(template.studySections[0].lessons[0].sublessons[0]));
+        for(const sublesson of template.studySections[0].lessons[0].sublessons){
+          if(!first.sublessons.some(row=>row?.id===sublesson.id))first.sublessons.push(clone(sublesson));
+        }
       }
     }
     if(!d669.preassessmentProfile?.priorityConcepts?.length){
