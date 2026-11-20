@@ -50,7 +50,9 @@ const COURSE_CATALOG={
       'content standard':'The knowledge, skill or concept students are expected to learn at a grade level.',
       'performance standard':'The level or form of proficiency students must demonstrate for a content standard.',
       'unpacking a standard':'Identifying its content, required skill and expected performance to plan instruction and assessment.',
-      'Bloom’s Taxonomy':'A framework for thinking about the level of cognitive work a learning task requires.'
+      'Bloom’s Taxonomy':'A framework for thinking about the level of cognitive work a learning task requires.',
+      multisensory:'Instruction that deliberately combines senses and movement, such as seeing, hearing, touching and acting, to reinforce a learning goal.',
+      'literacy-rich environment':'A classroom with meaningful opportunities and materials for reading, writing, speaking and listening across the curriculum.'
     },
     questionBank:[
       {id:'d669-s1-l1-dyslexia-myth',topicId:'d669-s1-standards',section:'Section 1',prompt:'True or false: Dyslexia is a visual problem in which people see letters and words backward.',options:['True','False'],answer:'False',why:'Dyslexia is not explained by seeing letters backward. Reading instruction should teach sound–letter connections explicitly and systematically.',source:'User-provided D669 Lesson 1.1 guided practice'},
@@ -65,7 +67,13 @@ const COURSE_CATALOG={
       {id:'d669-s1-l4-progress',topicId:'d669-s1-standards',section:'Section 1',prompt:'A unit builds from identifying details to explaining a main idea with evidence. What should a teacher plan alongside that sequence?',options:['Checks of progress and adjustments to instruction','Only an end-of-year grade','A new unrelated text every day','One task regardless of student responses'],answer:'Checks of progress and adjustments to instruction',why:'Instructional coherence includes learning targets, evidence of progress and changes when students need additional support.',source:'Original Majick practice based on user-provided D669 Lesson 1.4'},
       {id:'d669-s1-l1-quiz-1',topicId:'d669-s1-standards',section:'Section 1',prompt:'Why is it important for elementary schools to recognize and address assumptions about literacy?',options:['Because literacy is not important for children','Because schools only teach math and science','To ensure all students receive an equitable education and have the opportunity to succeed'],answer:'To ensure all students receive an equitable education and have the opportunity to succeed',why:'Checking assumptions helps teachers choose instruction that gives every student access to literacy learning.',source:'User-provided WGU D669 Lesson 1 quiz, Question 1'},
       {id:'d669-s1-l1-quiz-2',topicId:'d669-s1-standards',section:'Section 1',prompt:'Why do teachers use standards when planning lessons?',options:['To make sure students learn skills and content needed.','To make lessons more fun.','To follow the school’s rules.'],answer:'To make sure students learn skills and content needed.',why:'Standards specify the skills and content to teach and help align lessons and assessment.',source:'User-provided WGU D669 Lesson 1 quiz, Question 2'},
-      {id:'d669-s1-l1-quiz-3',topicId:'d669-s1-standards',section:'Section 1',prompt:'Which of the following best describes the approach used in structured literacy?',options:['Relies primarily on students’ natural exposure to language and reading.','Encourages students to discover reading strategies on their own through exploration and play.','Focuses on explicit, systematic instruction in phonemic awareness, phonics, and other foundational skills.','Emphasizes the use of context and whole texts to teach reading.'],answer:'Focuses on explicit, systematic instruction in phonemic awareness, phonics, and other foundational skills.',why:'Structured literacy teaches the underlying language and print skills through an explicit, systematic sequence.',source:'User-provided WGU D669 Lesson 1 quiz, Question 3'}
+      {id:'d669-s1-l1-quiz-3',topicId:'d669-s1-standards',section:'Section 1',prompt:'Which of the following best describes the approach used in structured literacy?',options:['Relies primarily on students’ natural exposure to language and reading.','Encourages students to discover reading strategies on their own through exploration and play.','Focuses on explicit, systematic instruction in phonemic awareness, phonics, and other foundational skills.','Emphasizes the use of context and whole texts to teach reading.'],answer:'Focuses on explicit, systematic instruction in phonemic awareness, phonics, and other foundational skills.',why:'Structured literacy teaches the underlying language and print skills through an explicit, systematic sequence.',source:'User-provided WGU D669 Lesson 1 quiz, Question 3'},
+      {id:'d669-s1-l2-intro-1',topicId:'d669-s1-standards',section:'Section 1',prompt:'What is one of the goals of a literacy-rich environment?',options:['Encouraging competition among students in reading and writing','Providing digital literacy experiences only','Limiting reading activities to the language arts curriculum','Fostering the connection of letter-sound and letter-word within meaning contexts'],answer:'Fostering the connection of letter-sound and letter-word within meaning contexts',why:'A literacy-rich environment helps students connect print, sounds and meaning while reading and writing across contexts.',source:'User-provided WGU D669 Lesson 2 introduction guided practice'},
+      {id:'d669-s1-l2-intro-2',topicId:'d669-s1-standards',section:'Section 1',prompt:'Which of the following is NOT a component of a literacy-rich classroom environment?',options:['Labeling things and places throughout the classroom','Displays like anchor charts and word walls','Classroom libraries with fiction and nonfiction texts','Regular field trips to local libraries'],answer:'Regular field trips to local libraries',why:'A field trip can be valuable, but it is not a component of the classroom environment itself.',source:'User-provided WGU D669 Lesson 2 introduction guided practice'},
+      {id:'d669-s1-l2-rich-relevance',topicId:'d669-s1-standards',section:'Section 1',prompt:'A teacher chooses texts that match the literacy standard and connect to students’ experiences. Which RICH step is this?',options:['Relevance','Inclusive','Creative','Hands-on'],answer:'Relevance',why:'Relevance asks whether materials connect to both instructional standards and students.',source:'Original Majick practice based on user-provided D669 Lesson 2.1'},
+      {id:'d669-s1-l2-rich-inclusive',topicId:'d669-s1-standards',section:'Section 1',prompt:'A classroom library reflects the learners in the room and offers perspectives beyond their own. Which RICH step is this?',options:['Relevance','Inclusive','Creative','Hands-on'],answer:'Inclusive',why:'Inclusive materials represent learners and help them encounter new perspectives.',source:'Original Majick practice based on user-provided D669 Lesson 2.1'},
+      {id:'d669-s1-l2-rich-creative',topicId:'d669-s1-standards',section:'Section 1',prompt:'A writing-center task invites students to invent and explain different solutions to a story problem. Which RICH step is this?',options:['Relevance','Inclusive','Creative','Hands-on'],answer:'Creative',why:'Creative materials spark new ideas, critical thinking and problem solving.',source:'Original Majick practice based on user-provided D669 Lesson 2.1'},
+      {id:'d669-s1-l2-rich-hands-on',topicId:'d669-s1-standards',section:'Section 1',prompt:'Students use letter tiles while saying and writing the sounds they hear. Which RICH step is this?',options:['Relevance','Inclusive','Creative','Hands-on'],answer:'Hands-on',why:'The task provides multiple ways to interact with a clearly taught sound–symbol skill.',source:'Original Majick practice based on user-provided D669 Lesson 2.1'}
     ],misconceptionCatalog:[],
     preassessmentProfile:{priorityConcepts:['d669-s1-standards','d669-s2-reading','d669-s3-communication','d669-s4-genres','d669-s5-writing']},
     studySections:[
@@ -101,10 +109,22 @@ const COURSE_CATALOG={
             quizIds:['d669-s1-l1-quiz-1','d669-s1-l1-quiz-2','d669-s1-l1-quiz-3'],
             summaryGraphic:'https://assets.wgu.edu/ad2fd0841354e10ed300224283a4fb56',
             references:['WGU D669 Lesson 1 summary graphic and quiz, user-provided text']}]},
-         {title:'Lesson 2: Literacy-Rich Classroom Environments',topics:['2.1 Literacy-Rich Classrooms','2.2 Multisensory Activities']}
+         {title:'Lesson 2: Literacy-Rich Classroom Environments',topics:['2.1 Literacy-Rich Classrooms','2.2 Multisensory Activities'],
+          learningObjective:'Select appropriate curricular resources for elementary standards alignment.',
+          sublessons:[{id:'d669-s1-l2-intro',title:'Lesson 2: Introduction',
+            keyIdeas:['Create an engaging environment for reading, writing, speaking and listening with auditory, visual and hands-on experiences.','Develop enjoyment of books and opportunities to hear rich text read aloud, build background knowledge, vocabulary and syntax, and connect letters and words to meaning.','Adapt activities and materials so all students can participate.'],
+            quizIds:['d669-s1-l2-intro-1','d669-s1-l2-intro-2'],
+            references:['WGU D669 Lesson 2 introduction and two guided questions, user-provided text']},
+           {id:'d669-s1-l2-1',title:'Lesson 2.1: Literacy-Rich Classrooms',
+            keyIdeas:['Provide print throughout the classroom: labels, anchor charts, word walls, literacy stations, writing centers and book displays.','Build a diverse classroom library with fiction and nonfiction, multiple genres and accessible texts.','Use reading, writing and relevant vocabulary across subjects, with talk and collaboration alongside teacher-led small groups.'],
+            rich:{R:'Relevance: materials fit standards and students.',I:'Inclusive: learners are represented and encounter new perspectives.',C:'Creative: materials invite ideas and critical thinking.',H:'Hands-on: students can engage with resources in multiple ways.'},
+            reflection:['How could I arrange the room to support independent reading and writing?','What will help students talk and work together?','Which varied texts and interactive writing spaces could I add?'],
+            guidedPractice:'Plan a first-year teacher’s classroom setup that encourages reading and writing, and explain why each choice supports the goal.',
+            visual:{src:'https://assets.wgu.edu/cd1fa91f6107180a51d8ca3afecd1157',alt:'WGU RICH graphic: Relevance, Inclusive, Creative and Hands-on.'},
+            references:['WGU D669 Lesson 2.1, user-provided text','USBE Teaching and Learning (2023), Using Evidence Based Practices to Advance Learning']}]}
        ],
        learningObjective:'Analyze reading instruction for alignment to a given content standard.',
-       summary:'Lesson 1: literacy history, structured instruction, standards and coherent yearlong planning, followed by a three-question review.',
+       summary:'Lessons 1–2.1: align standards and build relevant, inclusive, creative and hands-on literacy environments.',
        concepts:['d669-s1-standards'],
        rows:[
          ['History of literacy','Reading and writing have shaped access to learning, information and civic participation. The printing press expanded access to books.','Reflect: Who had access to literacy, and how did that access change?'],
@@ -126,10 +146,15 @@ const COURSE_CATALOG={
          ['Lesson 1.4 • Seven planning questions','Prioritize standards; identify supporting standards; define content and application; set unit and lesson targets and assessments; sequence activities; select texts; measure progress and adjust instruction.','Use these questions when reviewing each unit across the school year.'],
          ['Lesson 1.4 • Align the activity','If the standard asks students to explain text organization, ask them to show how its sections connect. If it asks for main idea and details, require evidence for the idea.','A related activity is not necessarily evidence of the specific skill in the standard.'],
          ['Lesson 1 • Three takeaways','Align research-based literacy instruction and assessments to standards. Teach language foundations explicitly and systematically. Unpack standards to plan instruction across the year.','Use the three source quiz questions to check your understanding before Lesson 2.'],
-         ['Lesson 1 • Next steps','Lesson 2 turns these standards and skills into literacy-rich classroom environments and engaging learning experiences.','Keep the standard and the evidence of learning visible when choosing activities.']
+         ['Lesson 1 • Next steps','Lesson 2 turns these standards and skills into literacy-rich classroom environments and engaging learning experiences.','Keep the standard and the evidence of learning visible when choosing activities.'],
+         ['Lesson 2 • Literacy-rich environment','Provide meaningful reading, writing, speaking and listening across subjects. Connect letters and sounds to meaning; build enjoyment of texts, background knowledge, vocabulary and syntax.','Use auditory, visual and hands-on activities while adapting to learner needs.'],
+         ['Lesson 2.1 • Classroom setup','Use labels, anchor charts, word walls, literacy stations, writing centers and book displays. Model language, read aloud, and make room for discussion and small-group instruction.','A regular library field trip is valuable but is not a classroom setup component.'],
+         ['Lesson 2.1 • Libraries and subjects','Offer diverse fiction and nonfiction at accessible levels, across genres and cultures. Use texts and vocabulary in science, social studies and other subjects.','Ask whose experiences students see in the collection and what new perspectives they encounter.'],
+         ['Lesson 2.1 • RICH','R = Relevance to standards and students; I = Inclusive representation and perspectives; C = Creative ideas and thinking; H = Hands-on access to multisensory activities.','Use RICH to evaluate a classroom resource, then try the four original Majick matching questions.'],
+         ['Lesson 2.1 • Plan your space','Choose places for independent reading, shared talk and writing. Include varied books and interactive writing surfaces. Explain how each choice supports a literacy goal.','Reflect on access for English language learners and other students.']
        ],
        visual:{src:'https://assets.wgu.edu/25076e90e604c9e34a82a472f0912c55',alt:'WGU Reading Brain figure, showing labeled left-hemisphere regions associated with language and reading.'},
-       links:[{label:'New York State ELA standards',url:'https://www.nysed.gov/standards-instruction/english-language-arts'},{label:'U.S. Department of Education New York contacts',url:'https://www.ed.gov/about/contact-us/state-contacts/ny'}],
+       links:[{label:'New York State ELA standards',url:'https://www.nysed.gov/standards-instruction/english-language-arts'},{label:'U.S. Department of Education New York contacts',url:'https://www.ed.gov/about/contact-us/state-contacts/ny'},{label:'WGU RICH classroom graphic',url:'https://assets.wgu.edu/cd1fa91f6107180a51d8ca3afecd1157'},{label:'WGU RICH activity',url:'https://lrps.wgu.edu/provision/530024293'},{label:'USBE classroom video',url:'https://www.youtube.com/watch?v=zVqJSUYy9yA&t=3s'}],
        practice:[
          {question:'What is a key component of structured literacy instruction?',answer:'Integrating explicit, systematic teaching of decoding and encoding skills.'},
          {question:'How do standards help teachers keep lessons consistent throughout the school year?',answer:'By giving teachers a clear guide on what to teach and when.'}
@@ -309,7 +334,7 @@ function ensure(){
       for(const row of template.studySections[0].rows){
         if(!present.has(row[0]))sectionOne.rows.push(clone(row));
       }
-      if(!sectionOne.summary||sectionOne.summary.startsWith('Lesson 1.1:')||sectionOne.summary.startsWith('Lessons 1.1–')) sectionOne.summary=template.studySections[0].summary;
+      if(!sectionOne.summary||sectionOne.summary.startsWith('Lesson 1.1:')||sectionOne.summary.startsWith('Lessons 1.1–')||sectionOne.summary.startsWith('Lesson 1:')) sectionOne.summary=template.studySections[0].summary;
       sectionOne.visual=sectionOne.visual||clone(template.studySections[0].visual);
       sectionOne.links=mergeUniqueRows(sectionOne.links,template.studySections[0].links);
       sectionOne.concepts=mergeUniqueRows(sectionOne.concepts,template.studySections[0].concepts);
@@ -319,6 +344,14 @@ function ensure(){
         first.sublessons=Array.isArray(first.sublessons)?first.sublessons:[];
         for(const sublesson of template.studySections[0].lessons[0].sublessons){
           if(!first.sublessons.some(row=>row?.id===sublesson.id))first.sublessons.push(clone(sublesson));
+        }
+      }
+      const second=sectionOne.lessons.find(row=>row?.title==='Lesson 2: Literacy-Rich Classroom Environments');
+      if(second){
+        second.learningObjective=second.learningObjective||template.studySections[0].lessons[1].learningObjective;
+        second.sublessons=Array.isArray(second.sublessons)?second.sublessons:[];
+        for(const sublesson of template.studySections[0].lessons[1].sublessons){
+          if(!second.sublessons.some(row=>row?.id===sublesson.id))second.sublessons.push(clone(sublesson));
         }
       }
     }
