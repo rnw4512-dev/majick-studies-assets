@@ -22,6 +22,38 @@ const COURSE_CATALOG={
     preassessmentProfile:{priorityConcepts:['uploaded-notes']},
     studySections:[],sources:[],localGenerated:true,catalogSeed:true
   },
+  D669:{
+    id:'D669',
+    title:'Early Literacy Methods',
+    version:'majick-d669-2026-11',
+    concepts:[
+      {id:'d669-s1-standards',title:'Standards and Resources in Literacy',section:'Section 1',priority:'core'},
+      {id:'d669-s2-reading',title:'Foundations of Reading',section:'Section 2',priority:'core'},
+      {id:'d669-s3-communication',title:'Elements of Literacy',section:'Section 3',priority:'core'},
+      {id:'d669-s4-genres',title:'Features of Text Across Genres',section:'Section 4',priority:'core'},
+      {id:'d669-s5-writing',title:'Concepts and Structures in Writing',section:'Section 5',priority:'core'}
+    ],
+    glossary:{},questionBank:[],misconceptionCatalog:[],
+    preassessmentProfile:{priorityConcepts:['d669-s1-standards','d669-s2-reading','d669-s3-communication','d669-s4-genres','d669-s5-writing']},
+    studySections:[
+      {id:'d669-section-1',title:'Section 1: Analyzes Standards and Resources in Literacy',competency:'2068.1.1',
+       lessons:[
+         {title:'Lesson 1: Standards Alignment for Literacy',topics:['1.1 Introduction to Literacy Education','1.2 Instructional Considerations and Structured Literacy','1.3 Literacy Standards','1.4 Standards Across the School Year']},
+         {title:'Lesson 2: Literacy-Rich Classroom Environments',topics:['2.1 Literacy-Rich Classrooms','2.2 Multisensory Activities']}
+       ],
+       learningObjective:'Analyze reading instruction for alignment to a given content standard.',
+       practice:[
+         {question:'What is a key component of structured literacy instruction?',answer:'Integrating explicit, systematic teaching of decoding and encoding skills.'},
+         {question:'How do standards help teachers keep lessons consistent throughout the school year?',answer:'By giving teachers a clear guide on what to teach and when.'}
+       ]},
+      {id:'d669-section-2',title:'Section 2: Foundations of Reading',competency:'2068.1.2'},
+      {id:'d669-section-3',title:'Section 3: Analyzes Elements of Literacy',competency:'2068.1.3'},
+      {id:'d669-section-4',title:'Section 4: Describes Key Features of Texts Across Genres',competency:'2068.1.4'},
+      {id:'d669-section-5',title:'Section 5: Analyzes Concepts and Structures in Writing',competency:'2068.1.5'}
+    ],
+    sources:[{title:'WGU D669 course introduction and Section 1 materials',type:'user-provided',assessment:'objective'}],
+    localGenerated:true,catalogSeed:true
+  },
   D756:{
     id:'D756',
     title:'IEP Collaboration and Communication',
