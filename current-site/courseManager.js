@@ -33,15 +33,41 @@ const COURSE_CATALOG={
       {id:'d669-s4-genres',title:'Features of Text Across Genres',section:'Section 4',priority:'core'},
       {id:'d669-s5-writing',title:'Concepts and Structures in Writing',section:'Section 5',priority:'core'}
     ],
-    glossary:{},questionBank:[],misconceptionCatalog:[],
+    glossary:{
+      literacy:'The ability to read, write, understand and use information to communicate and participate in society.',
+      'reading brain':'A network of brain regions working together to connect written words, spoken language and meaning.',
+      'systematic instruction':'Teaching skills in a planned sequence, building from easier concepts to more complex ones.',
+      'explicit instruction':'Direct explanation and modeling followed by guided practice, feedback and independent application.'
+    },
+    questionBank:[
+      {id:'d669-s1-l1-dyslexia-myth',topicId:'d669-s1-standards',section:'Section 1',prompt:'True or false: Dyslexia is a visual problem in which people see letters and words backward.',options:['True','False'],answer:'False',why:'Dyslexia is not explained by seeing letters backward. Reading instruction should teach sound–letter connections explicitly and systematically.',source:'User-provided D669 Lesson 1.1 guided practice'},
+      {id:'d669-s1-l1-discovery',topicId:'d669-s1-standards',section:'Section 1',prompt:'True or false: Discovery learning alone is the most effective way to teach beginning reading.',options:['True','False'],answer:'False',why:'Foundational skills benefit from systematic, explicit instruction with modeling, guided practice and feedback.',source:'User-provided D669 Lesson 1.1 guided practice'}
+    ],misconceptionCatalog:[],
     preassessmentProfile:{priorityConcepts:['d669-s1-standards','d669-s2-reading','d669-s3-communication','d669-s4-genres','d669-s5-writing']},
     studySections:[
       {id:'d669-section-1',title:'Section 1: Analyzes Standards and Resources in Literacy',competency:'2068.1.1',
        lessons:[
-         {title:'Lesson 1: Standards Alignment for Literacy',topics:['1.1 Introduction to Literacy Education','1.2 Instructional Considerations and Structured Literacy','1.3 Literacy Standards','1.4 Standards Across the School Year']},
+         {title:'Lesson 1: Standards Alignment for Literacy',topics:['1.1 Introduction to Literacy Education','1.2 Instructional Considerations and Structured Literacy','1.3 Literacy Standards','1.4 Standards Across the School Year'],
+          sublessons:[{id:'d669-s1-l1-1',title:'Lesson 1.1: Introduction to Literacy Education',
+           keyIdeas:['Literacy has shaped access to knowledge and participation in society; printing expanded access to written material.','Whole language emphasizes meaning and context. Balanced literacy combines some phonics with meaningful texts. Structured literacy explicitly and systematically teaches foundational skills and language structure.','Dyslexia is not a visual reversal problem or a lack of effort. Teach phonemic awareness and phonics directly, with a planned sequence and feedback.','Reading involves coordinated visual, language, sound, speech and motor processes; no single brain region teaches a child to read.'],
+           reflection:['How was I taught to read?','Which assumptions about literacy instruction should I reconsider?'],
+           visual:{src:'https://assets.wgu.edu/25076e90e604c9e34a82a472f0912c55',alt:'WGU Reading Brain figure with frontal, temporal, parietal and occipital lobes, Broca’s area, planum temporale and cerebellum.'},
+           references:['WGU D669 Lesson 1.1, user-provided text','Hiebert (2023), Thinking Through Research and the Science of Reading','Hougen and Smartt (2012), Fundamentals of Literacy Instruction and Assessment, Chapter 1','Schwartz (2023), How Reading Policy Evolved in 2023 and What’s Ahead']}]},
          {title:'Lesson 2: Literacy-Rich Classroom Environments',topics:['2.1 Literacy-Rich Classrooms','2.2 Multisensory Activities']}
        ],
        learningObjective:'Analyze reading instruction for alignment to a given content standard.',
+       summary:'Lesson 1.1: literacy history, research-based instruction, dyslexia myths and the reading brain.',
+       concepts:['d669-s1-standards'],
+       rows:[
+         ['History of literacy','Reading and writing have shaped access to learning, information and civic participation. The printing press expanded access to books.','Reflect: Who had access to literacy, and how did that access change?'],
+         ['Rethinking assumptions','Reading is learned through instruction that connects spoken language, print and meaning. Literacy also includes interpreting digital and visual information.','Your experience as a reader may differ from what current research recommends for beginners.'],
+         ['Whole language and balanced literacy','Whole language stresses meaning and context. Balanced literacy mixes phonics with meaningful reading; the amount and sequence of explicit phonics can vary.','Compare these approaches with a clearly sequenced, explicit foundational-skills lesson.'],
+         ['Structured literacy','Teach phonemic awareness, decoding, encoding and language structure through an explicit, systematic sequence with modeling, practice and feedback.','Phonology, orthography, morphology, syntax, semantics and discourse all contribute to reading.'],
+         ['Dyslexia','Dyslexia is not caused by seeing letters backward or by a child failing to try. Explicit and systematic foundational reading instruction supports students with dyslexia.','Do not treat a visual reversal myth as a diagnosis.'],
+         ['The reading brain','Visual processing, sound–letter mapping, speech and language comprehension work together. The WGU figure labels the frontal, temporal, parietal and occipital lobes, Broca’s area, planum temporale and cerebellum.','The figure is a learning aid; avoid assigning an entire reading skill to one lobe.'],
+         ['Reflect','How was I taught to read? Which beliefs about literacy instruction might I need to reconsider?','Use the two guided true-or-false questions to check the dyslexia and discovery-learning myths.']
+       ],
+       visual:{src:'https://assets.wgu.edu/25076e90e604c9e34a82a472f0912c55',alt:'WGU Reading Brain figure, showing labeled left-hemisphere regions associated with language and reading.'},
        practice:[
          {question:'What is a key component of structured literacy instruction?',answer:'Integrating explicit, systematic teaching of decoding and encoding skills.'},
          {question:'How do standards help teachers keep lessons consistent throughout the school year?',answer:'By giving teachers a clear guide on what to teach and when.'}
@@ -199,6 +225,41 @@ function ensure(){
   // and without changing the user's active class.
   for(const [cid,template] of Object.entries(COURSE_CATALOG)){
     if(!S.courses[cid])S.courses[cid]=clone(template);
+  }
+  // Earlier D669 starters may already exist in local storage. Add only the
+  // missing official outline sections; keep learner notes and progress intact.
+  const d669=S.courses.D669;
+  if(d669){
+    const template=COURSE_CATALOG.D669;
+    d669.studySections=Array.isArray(d669.studySections)?d669.studySections:[];
+    const existing=new Set(d669.studySections.map(row=>String(row?.id||'')));
+    for(const section of template.studySections){
+      if(!existing.has(section.id))d669.studySections.push(clone(section));
+    }
+    d669.concepts=mergeUniqueRows(d669.concepts,template.concepts);
+    d669.sources=mergeUniqueRows(d669.sources,template.sources);
+    d669.questionBank=mergeUniqueRows(d669.questionBank,template.questionBank);
+    d669.glossary=Object.assign({},template.glossary,d669.glossary||{});
+    const sectionOne=d669.studySections.find(row=>row?.id==='d669-section-1');
+    if(sectionOne){
+      sectionOne.rows=Array.isArray(sectionOne.rows)?sectionOne.rows:[];
+      const present=new Set(sectionOne.rows.map(row=>String(row?.[0]||'')));
+      for(const row of template.studySections[0].rows){
+        if(!present.has(row[0]))sectionOne.rows.push(clone(row));
+      }
+      sectionOne.summary=sectionOne.summary||template.studySections[0].summary;
+      sectionOne.visual=sectionOne.visual||clone(template.studySections[0].visual);
+      sectionOne.concepts=mergeUniqueRows(sectionOne.concepts,template.studySections[0].concepts);
+      sectionOne.lessons=Array.isArray(sectionOne.lessons)?sectionOne.lessons:[];
+      const first=sectionOne.lessons.find(row=>row?.title==='Lesson 1: Standards Alignment for Literacy');
+      if(first){
+        first.sublessons=Array.isArray(first.sublessons)?first.sublessons:[];
+        if(!first.sublessons.some(row=>row?.id==='d669-s1-l1-1'))first.sublessons.unshift(clone(template.studySections[0].lessons[0].sublessons[0]));
+      }
+    }
+    if(!d669.preassessmentProfile?.priorityConcepts?.length){
+      d669.preassessmentProfile=clone(template.preassessmentProfile);
+    }
   }
   if(!S.courses?.[S.activeCourse]){
     S.activeCourse=S.courses?.D755?'D755':Object.keys(S.courses||{})[0]||'D755';
