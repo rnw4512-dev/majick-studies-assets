@@ -11,6 +11,13 @@
     return out;
   };
   const percent=(n,d)=>Math.round((Number(n||0)/Math.max(1,Number(d||0)))*100);
+  const COURSE_REALMS={
+    D669:{name:'Literacy',rune:'Sort literacy questions into their course sections.',oracle:'Find the reading clue: speech sounds, print, word meaning or comprehension.',hex:'Spot a mistaken claim about literacy instruction and explain the correction.',gauntlet:'Apply reading models and teaching decisions across fresh classroom cases.'},
+    D756:{name:'IEP Collaboration',rune:'Sort family, team and IEP scenarios into their course sections.',oracle:'Identify what an IEP collaboration scenario is asking before choosing a response.',hex:'Decide whether a proposed school-team response is appropriate, then repair the choice.',gauntlet:'Review collaboration decisions across IEP scenarios.'},
+    D755:{name:'Assessment',rune:'Sort assessment questions into their course sections.',oracle:'Identify the assessment purpose and evidence in each scenario.',hex:'Spot an assessment misconception and explain the correction.',gauntlet:'Apply assessment decisions across fresh cases.'},
+    D772:{name:'Statistics',rune:'Sort research, graphs and probability questions by course section.',oracle:'Identify the controlling statistical clue, then answer through it.',hex:'Judge a statistical claim and repair its misconception.',gauntlet:'Apply data and probability reasoning across sections.'}
+  };
+  function realmCourse(){return COURSE_REALMS[globalThis.S?.activeCourse]||{name:'Course',rune:'Sort questions by course section.',oracle:'Find the clue that controls each answer.',hex:'Find and correct a misconception.',gauntlet:'Apply this course’s concepts to fresh questions.'}}
 
   function categoryLabel(value){
     const raw=String(value??'').trim();
@@ -245,21 +252,21 @@
   const baseGamesHTML=typeof gamesHTML==='function'?gamesHTML:null;
   if(baseGamesHTML){
     gamesHTML=function(){
-      const g=guardian();
+      const g=guardian(),profile=realmCourse(),courseId=globalThis.S?.activeCourse||'';
       return '<div class="realmHub">'+
-        '<section class="realmHero"><div><small>THE MAJICK GAME REALM</small><h2>Train the skill, not just the answer.</h2><p>Featured trials now use different mechanics. Your active Guardian joins the run, and question repetition is suppressed until the pool needs to recycle.</p></div>'+
+        '<section class="realmHero"><div><small>THE MAJICK GAME REALM · '+E(courseId)+'</small><h2>'+E(profile.name)+' trials</h2><p>Each trial uses the active course’s questions. Switch classes to train different skills; your Guardian joins the run.</p></div>'+
         (g?'<div class="realmHeroGuardian" style="--guardian-accent:'+E(g.accent||'#b79ad9')+'">'+(g.image?'<img src="'+E(g.image)+'" alt="'+E(g.name)+'" style="filter:hue-rotate('+Number(g.hue||0)+'deg)">':'<span>'+E(g.icon||'✦')+'</span>')+'<div><small>ENTERING WITH</small><b>'+E(g.name)+'</b><em>'+E(g.personality||g.role||'Study Guardian')+'</em></div></div>':'')+
         '</section>'+
         (globalThis.S?.activeCourse==='D756'?'<p class="mhRealmReviewNote" role="note">D756 Game Realm uses its own IEP collaboration scenarios for review. These rounds do not grant independent mastery or duplicate XP.</p>':'')+
         realmProgressHTML()+
         '<div class="realmStats"><span>ᚱ '+E(bestText('runesort'))+' Rune Sort</span><span>◉ '+E(bestText('oraclelens'))+' Oracle Lens</span><span>♛ '+E(bestText('gauntlet'))+' Gauntlet</span><span>✧ '+E(bestText('constellation'))+' Constellation</span><span>⬡ '+E(bestText('hexbreaker'))+' Hex Breaker</span></div>'+
         '<div class="realmFeaturedGrid">'+
-          (globalThis.S?.activeCourse==='D756'?gameCard('ᚱ','IEP Rune Sort','Sort D756 family, team and IEP scenarios into their course sections. Review-only practice.','startRuneSort()','D756 TRIAL'):gameCard('ᚱ','Rune Sort','Sort D772 questions spanning research credibility, graphs and statistics, and probability when D772 is active.','startRuneSort()'))+
+          (buildRuneSort()?gameCard('ᚱ','Rune Sort',profile.rune,'startRuneSort()',courseId+' TRIAL'):'')+
           (globalThis.S?.activeCourse==='D755'?gameCard('✥','Assessment Sigil Sort','Sort D755 scenarios through Qualitative/Quantitative, Formal/Informal, Formative/Summative, Norm/Criterion, Screening/Monitoring, or Observation/Anecdotal gates.','startAssessmentSigilSort()','D755 TRIAL'):'')+
-          gameCard('◉','Oracle Lens',globalThis.S?.activeCourse==='D756'?'Identify what an IEP collaboration scenario is asking before choosing a response.':'Identify the controlling statistical clue first, then answer through that clue.','startOracleLens()')+
-          (globalThis.S?.activeCourse==='D772'?gameCard('♛','All-Section Review Gauntlet','Twelve D772 questions drawn equally from Sections 1, 2, and 3.','startD772SectionReview()','D772 REVIEW'):gameCard('♛','Guardian Gauntlet','A multi-round boss run with hearts, boss HP, combos, and one Guardian shield.','startGuardianGauntlet()'))+
+          gameCard('◉','Oracle Lens',profile.oracle,'startOracleLens()')+
+          (globalThis.S?.activeCourse==='D772'?gameCard('♛','All-Section Review Gauntlet','Twelve D772 questions drawn equally from Sections 1, 2, and 3.','startD772SectionReview()','D772 REVIEW'):gameCard('♛','Guardian Gauntlet',profile.gauntlet,'startGuardianGauntlet()'))+
           gameCard('✧','Memory Constellation','Match controlling clues to the correct answers and build a glowing constellation.','startMemoryConstellation()')+
-          gameCard('⬡','Hex Breaker',globalThis.S?.activeCourse==='D756'?'Decide whether a proposed school-team response is appropriate, then repair the choice.':'Judge a statistical claim, expose the misconception, and repair it with the correct concept.','startHexBreaker()')+
+          gameCard('⬡','Hex Breaker',profile.hex,'startHexBreaker()')+
         '</div>'+
         '<details class="realmClassic"><summary><span>Classic Trials</span><small>All previous Game Realm modes are still available</small></summary><div class="realmClassicBody">'+baseGamesHTML()+'</div></details>'+
       '</div>';
