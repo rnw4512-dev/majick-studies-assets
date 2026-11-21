@@ -882,11 +882,11 @@
     const q=session.current;
     return '<div class="qwrap realmMode realmOracle">'+realmScene('oraclelens')+guardianBanner(session.guardianMessage||'Find what actually controls the answer before you commit.')+
       '<div class="qtop"><span class="qbadge">◉ Oracle Lens</span><div class="realmMiniHUD"><span>Round '+session.round+'/'+session.limit+'</span><span>Clarity ✦ '+session.clarityStreak+'</span></div></div>'+trialProgress('oraclelens')+trialGuide('oraclelens')+
-      '<div class="card"><div class="tiny">'+E(q.section||'Mixed')+' • Difficulty '+Number(q.difficulty||1)+'</div><div class="question">'+E(q.prompt)+'</div>'+
+      '<div class="card"><div class="realmHowTo"><b>How to play</b><p>Read the classroom case. First tap the evidence that matters most. Then choose what the teacher should investigate or do. If the evidence is off, tap a different clue; this is practice.</p></div><div class="tiny">'+E(q.section||'Mixed')+' • Difficulty '+Number(q.difficulty||1)+'</div><div class="question">'+E(q.prompt)+'</div>'+
       realmVisibleChart(q)+
-      '<h3>1. Which clue should the Oracle focus on?</h3><div class="realmLensChoices">'+session.lenses.map(l=>'<button class="'+(session.lensChoice===l?(session.lensCorrect?'correct':'selected'):'')+'" '+(session.answered?'disabled':'')+' data-lens="'+E(l)+'" onclick="oracleChooseLens(this.dataset.lens)">'+E(l)+'</button>').join('')+'</div>'+
+      '<h3>1. Tap the strongest evidence</h3><div class="realmLensChoices">'+session.lenses.map(l=>'<button class="'+(session.lensChoice===l?(session.lensCorrect?'correct':'selected'):'')+'" '+(session.answered?'disabled':'')+' data-lens="'+E(l)+'" onclick="oracleChooseLens(this.dataset.lens)">'+E(l)+'</button>').join('')+'</div>'+
       (session.lensChoice?'<p class="'+(session.lensCorrect?'strong':'weak')+'">'+(session.lensCorrect?'✦ Lens aligned. Now answer through that clue.':'That clue is related, but another clue controls the answer more directly.')+'</p>':'')+
-      '<h3>2. Choose the best answer.</h3><div class="options">'+q.options.map(o=>'<button class="opt '+(session.answered?(o===q.answer?'correct':o===session.chosen?'wrong':''):'')+'" '+(!session.lensChoice||session.answered?'disabled':'')+' data-answer="'+E(o)+'" onclick="oracleAnswer(this.dataset.answer)">'+E(o)+'</button>').join('')+'</div>'+
+      '<h3>2. Choose your teaching decision</h3><div class="options">'+q.options.map(o=>'<button class="opt '+(session.answered?(o===q.answer?'correct':o===session.chosen?'wrong':''):'')+'" '+(!session.lensChoice||session.answered?'disabled':'')+' data-answer="'+E(o)+'" onclick="oracleAnswer(this.dataset.answer)">'+E(o)+'</button>').join('')+'</div>'+
       (session.answered?'<div class="realmOracleFeedback"><b class="'+(session.chosen===q.answer?'strong':'weak')+'">'+(session.chosen===q.answer?'✓ Correct':'Not quite')+'</b><p>'+E(q.why||q.distractorCoach||'Use the controlling clue to discriminate between close options.')+'</p><button class="btn violet" onclick="oracleNext()">Next lens →</button></div>':'')+
       '</div></div>';
   }
@@ -895,7 +895,13 @@
   /* ---------- Memory Constellation ---------- */
   function buildConstellation(){
     const pool=realmQuestionPool().filter(q=>q?.prompt&&q?.answer);
-    const chosen=shuffleCopy(pool).slice(0,6);
+    const seen=new Set(),chosen=[];
+    for(const q of shuffleCopy(pool)){
+      const answer=normalize(q.answer),clue=normalize(q.keyClue||q.prompt);
+      if(seen.has('a:'+answer)||seen.has('c:'+clue))continue;
+      seen.add('a:'+answer);seen.add('c:'+clue);chosen.push(q);
+      if(chosen.length===4)break;
+    }
     if(chosen.length<4)return null;
     const cards=[];
     chosen.forEach((q,i)=>{
@@ -903,7 +909,7 @@
       cards.push({id:'c'+i+'a',pair:i,kind:'clue',text:clue,qid:q.id,matched:false});
       cards.push({id:'c'+i+'b',pair:i,kind:'answer',text:String(q.answer),qid:q.id,matched:false});
     });
-    return shuffleCopy(cards);
+    return [...cards.filter(c=>c.kind==='clue'),...shuffleCopy(cards.filter(c=>c.kind==='answer'))];
   }
   function updateConstellationLinks(){
     if(!session||session.type!=='constellation'||typeof document==='undefined')return;
@@ -962,6 +968,8 @@
     if(!session||session.type!=='constellation'||session.finished||session.busy)return;
     const card=session.cards?.[i];
     if(!card||card.matched||session.open.includes(i)||session.open.length>=2)return;
+    if(session.open.length===0&&card.kind!=='clue')return;
+    if(session.open.length===1&&card.kind!=='answer')return;
     session.open.push(i);
     if(session.open.length===1){renderKeepScroll();return}
 
@@ -1020,7 +1028,7 @@
 
     const clue=a.kind==='clue'?a:b.kind==='clue'?b:a,selected=a.kind==='answer'?a:b;
     const q=realmQuestionPool().find(q=>q.id===clue.qid);
-    if(q){session.questionRepair={q,chosen:selected.text};window.MajickQuestionRepair.recordWrong(q,selected.text,{assisted:true,room:'game-realm-constellation'})}
+    if(q){window.MajickQuestionRepair?.recordWrong?.(q,selected.text,{assisted:true,room:'game-realm-constellation'});session.questionRepair=null}
     renderKeepScroll();
     setTimeout(()=>{
       if(session?.type==='constellation'){
@@ -1028,22 +1036,23 @@
         session.busy=false;
         renderKeepScroll();
       }
-    },3000);
+    },1200);
   };
   function constellationHTML(){
     const total=session.cards.length/2;
     if(session.finished)return realmResultHTML('Memory Constellation','constellation',session.matched,total,true,'You linked all '+total+' concept pairs in '+session.moves+' moves.');
     return '<div class="qwrap realmMode realmConstellation">'+realmScene('constellation')+guardianBanner(session.guardianMessage||'Find the clue that belongs with its answer. Matched stars will stay connected.')+
       '<div class="qtop"><span class="qbadge">✧ Memory Constellation</span><b>'+session.matched+'/'+total+' stars linked • '+session.moves+' moves</b></div>'+trialProgress('constellation')+trialGuide('constellation')+
-      '<div class="card"><p>Turn over two cards. Match a <b>CLUE</b> with its correct <b>ANSWER</b>. If they do not match, both cards stay open for about 3 seconds so you can read them.</p>'+
+      '<div class="card"><div class="realmHowTo"><b>Aim and link</b><p>1. Tap a clue on the left to aim. 2. Tap its answer on the right to send a light beam. Correct links glow; a miss shows the pair briefly so you can try again. All cards stay readable.</p></div><p role="status" aria-live="polite">'+(session.open.length===1?'Clue selected. Fire at an answer on the right.':session.busy?'That answer does not match. Try another after the beam fades.':'Choose a clue to begin.')+'</p>'+
       '<div class="realmConstellationWrap"><svg class="realmConstellationLinks" aria-hidden="true"></svg>'+
-      '<div class="realmConstellationGrid">'+session.cards.map((c,i)=>{
-        const open=session.open.includes(i)||c.matched;
+      '<div class="realmConstellationGrid realmAimColumns">'+['clue','answer'].map(kind=>'<div class="realmAimColumn"><h3>'+E(kind==='clue'?'CLUES · AIM':'ANSWERS · FIRE')+'</h3>'+session.cards.map((c,i)=>{
+        if(c.kind!==kind)return '';
+        const open=true;
         const burst=(session.burst||[]).includes(i);
-        return '<button class="realmStarCard '+(open?'open ':'')+(c.matched?'matched ':'')+(burst?'burst':'')+'" data-card-index="'+i+'" '+(c.matched?'disabled':'')+' onclick="constellationPick('+i+')" aria-label="'+E(open?c.text:'Hidden constellation card')+'">'+
+        return '<button class="realmStarCard '+(open?'open ':'')+(session.open.includes(i)?'aimed ':'')+(c.matched?'matched ':'')+(burst?'burst':'')+'" data-card-index="'+i+'" '+(c.matched?'disabled':'')+' onclick="constellationPick('+i+')" aria-label="'+E(c.kind+' '+c.text)+(session.open.includes(i)?', selected':'')+'">'+
           '<span class="realmStarFront">✦</span><span class="realmStarBack"><small>'+E(c.kind==='clue'?'CLUE':'ANSWER')+'</small><b>'+E(c.text)+'</b></span>'+
           '<span class="realmStarBurst" aria-hidden="true">✦ ✧ ✦</span></button>';
-      }).join('')+'</div></div></div></div>';
+      }).join('')+'</div>').join('')+'</div></div></div></div>';
   }
 
   /* ---------- Hex Breaker ---------- */
