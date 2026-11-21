@@ -58,6 +58,28 @@ const STARTERS={
       {title:'Probability',type:'probability',explain:'Probability ranges from 0 to 1. For equally likely outcomes, probability is favorable outcomes divided by total outcomes. The same probability can be written as a fraction, decimal, or percent.'},
       {title:'Correlation Is Not Causation',type:'scatter',explain:'Correlation means variables are associated. It does not prove that one caused the other. A lurking variable, reverse direction, coincidence, or study design can explain an association.'}
     ]
+  },
+  D669:{
+    vocab:[
+      ['science of reading','A developing body of research about how people learn to read and how instruction supports that learning.'],
+      ['Simple View of Reading','Reading comprehension depends on both word recognition and language comprehension.'],
+      ['phonological processor','Processes sounds in spoken language, including language input and output.'],
+      ['orthographic processor','Processes letters and written word patterns, including reading input and writing output.'],
+      ['meaning processor','Connects words with their possible meanings.'],
+      ['context processor','Uses sentences, text structure and background knowledge to interpret meaning.'],
+      ['phonemic awareness','The ability to identify and manipulate individual sounds in spoken words.'],
+      ['phonics','Instruction in the relationships between sounds and written letters or letter groups.'],
+      ['decoding','Using letter–sound correspondences to read a written word.'],
+      ['fluency','Accurate, automatic and expressive reading.'],
+      ['comprehension','Understanding and interpreting what a text means.'],
+      ['word analysis','Examining word parts and patterns to understand form and meaning.']
+    ],
+    lessons:[
+      {title:'Lesson 1 · The Science of Reading',type:'notes',explain:'Research across fields guides explicit, systematic reading instruction. It is an evolving evidence base, not a product or a single phonics drill. Teachers model, scaffold, check progress, and adjust instruction.'},
+      {title:'Lesson 1 · Simple View of Reading',type:'compare',explain:'Word recognition × language comprehension = reading comprehension. A student who understands a read-aloud but cannot read the print needs word-recognition assessment; a student who decodes accurately without understanding needs language and meaning support.'},
+      {title:'Lesson 1.2 · Four-Part Processor',type:'path',explain:'Orthographic processing handles print; phonological processing handles speech sounds. Their two-way print–sound connection supports phonics. Meaning activates possible meanings, while context and background knowledge help select the one that fits. The processors interact rather than acting as a strict four-step sequence.'},
+      {title:'Lesson 1 · Teach, Check, Transfer',type:'notes',explain:'For a learner who hears /sh/ but writes s, explicitly model sh as /sh/, guide blending in ship, then ask for an independent attempt with shop. Keep coached performance separate from independent evidence.'}
+    ]
   }
 };
 const FORMULAS=[
