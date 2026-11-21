@@ -105,6 +105,11 @@
     }
     if(session)session.questionRepair=correct?null:{q,chosen};
     if(session?.potionAssistedFor===q.id){window.MajickStudyProgress?.creditAnswer?.({key:'potion-assisted:'+String(S.activeCourse)+':'+String(q.id)+':'+session.round+':'+session.alchemyAttempt,course:S.activeCourse,qid:q.id,topicId:q.topicId||'',chosen,answer:q.answer,correct,assisted:true,source:'potion-guided-practice',difficulty:q.difficulty||1});guardianReact(correct?'correct':'miss',{mode,qid:q.id,assisted:true});return;}
+    if(mode==='oraclelens'&&globalThis.S?.activeCourse==='D669'){
+      window.MajickStudyProgress?.creditAnswer?.({key:'d669-oracle-guided:'+q.id+':'+Date.now(),course:'D669',qid:q.id,topicId:q.topicId||'',chosen,answer:q.answer,correct,assisted:true,source:'game-realm-oracle-guided',difficulty:q.difficulty||1});
+      guardianReact(correct?'correct':'miss',{mode,qid:q.id,assisted:true});
+      return;
+    }
     if(!correct)window.MajickQuestionRepair.recordWrong(q,chosen,{assisted:true,alreadyRecorded:true,room:'game-realm'});
     try{record?.(q,chosen,correct,'sure',mode);const memory=(prog()?.questionMemory||[]).slice().reverse().find(x=>x.id===q.id);if(memory)Object.assign(memory,{options:(q.options||[]).map(String),answer:String(q.answer),why:q.why||'',keyClue:q.keyClue||'',assisted:false,recallEligible:!/shown below|graph below|diagram below/i.test(q.prompt||'')});save?.();}catch(_){}
     try{window.MajickLearningContinuity?.skillResult(q,correct,true,'game-realm')}catch(_){}
@@ -248,6 +253,47 @@
     return '<button type="button" class="realmTrialCard" onclick="'+action+'"><span class="realmTrialIcon">'+icon+'</span><small>'+E(tag)+'</small><h3>'+E(title)+'</h3><p>'+E(desc)+'</p><b>Enter trial →</b></button>';
   }
 
+  // A course-owned sorting game. Its fixed, reviewed cases are practice, not OA questions.
+  const D669_PILLAR_CASES=[
+    {id:'sounds',prompt:'Without showing print, students move a counter for each sound in ship.',answer:'Phonemic awareness',why:'They manipulate individual speech sounds without letters.'},
+    {id:'tiles',prompt:'Students use sh and other letter tiles to spell and blend ship.',answer:'Phonics',why:'The task connects a written spelling with speech sounds.'},
+    {id:'reread',prompt:'After decoding a passage accurately, students reread it with smoother phrasing and expression.',answer:'Fluency',why:'Accurate, increasingly automatic reading with expression develops fluency.'},
+    {id:'meaning',prompt:'Students explain ecosystem, connect it to habitats, and use it in a new sentence.',answer:'Vocabulary',why:'The task deepens word meaning and use.'},
+    {id:'mainidea',prompt:'Students cite story details to explain the main idea.',answer:'Comprehension',why:'They construct and support the meaning of text.'}
+  ];
+  const D669_PILLARS=['Phonemic awareness','Phonics','Fluency','Vocabulary','Comprehension'];
+  const D669_DIAGNOSIS_CASES=[
+    {id:'d669-realm-sounds',course:'D669',section:'Section 2',topicId:'d669-s2-reading',difficulty:3,prompt:'A child can name printed letters but cannot blend /m/ /a/ /p/ when the teacher says the sounds aloud. What should the teacher investigate first?',options:['Phonemic blending with spoken sounds','Knowledge of story genres','Silent reading speed','Use of punctuation'],answer:'Phonemic blending with spoken sounds',keyClue:'The breakdown happens with spoken sounds before any print appears.',why:'Check phonemic blending without letters, then connect those sounds to print as appropriate.'},
+    {id:'d669-realm-print',course:'D669',section:'Section 2',topicId:'d669-s2-reading',difficulty:3,prompt:'A child explains a story heard aloud but cannot read its printed words independently. What should the teacher investigate first?',options:['Word recognition and decoding','Only verbal reasoning','Only background knowledge','Only listening comprehension'],answer:'Word recognition and decoding',keyClue:'Listening comprehension is a strength, while independent print reading breaks down.',why:'Compare word reading and decoding with listening comprehension to locate the likely need.'},
+    {id:'d669-realm-meaning',course:'D669',section:'Section 2',topicId:'d669-s2-reading',difficulty:3,prompt:'A child reads ecosystem accurately but cannot explain the word or use it in a sentence. What should the teacher develop next?',options:['Word meaning and use in context','Letter naming alone','Faster oral reading only','A picture guess instead of reading'],answer:'Word meaning and use in context',keyClue:'The printed word is read accurately, but its meaning and use are weak.',why:'Build lexical quality by linking pronunciation and spelling with meaning, word parts and usage.'},
+    {id:'d669-realm-inference',course:'D669',section:'Section 2',topicId:'d669-s2-reading',difficulty:3,prompt:'A child reads every word accurately but cannot infer why a character changes plans. What should the teacher investigate first?',options:['Language comprehension and verbal reasoning','Only phoneme segmentation','Only letter-sound correspondence','Only sight-word speed'],answer:'Language comprehension and verbal reasoning',keyClue:'Word reading is accurate; the difficulty emerges when reasoning about text meaning.',why:'Use discussion and text evidence to probe inference, language knowledge and relevant background knowledge.'}
+  ];
+  globalThis.startD669PillarSort=function(){
+    if(globalThis.S?.activeCourse!=='D669')return;
+    session={type:'d669pillars',items:shuffleCopy(D669_PILLAR_CASES),index:0,score:0,answered:false,finished:false};
+    S.screen='mission';render?.();
+  };
+  globalThis.chooseD669Pillar=function(choice){
+    if(session?.type!=='d669pillars'||session.answered||session.finished)return;
+    const item=session.items[session.index];
+    if(!D669_PILLARS.includes(choice))return;
+    session.choice=choice;session.answered=true;
+    if(choice===item.answer)session.score++;
+    guardianReact(choice===item.answer?'correct':'miss',{courseId:'D669',reviewOnly:true});
+    render?.();
+  };
+  globalThis.nextD669Pillar=function(){
+    if(session?.type!=='d669pillars'||!session.answered)return;
+    session.index++;session.answered=false;session.choice=null;
+    if(session.index>=session.items.length){session.finished=true;recordRealm('d669pillars',session.score,session.items.length,session.score===session.items.length)}
+    render?.();
+  };
+  function d669PillarHTML(){
+    if(session.finished)return '<div class="qwrap realmMode"><div class="card"><h2>Five Pillars complete</h2><p>'+session.score+'/'+session.items.length+' classroom activities sorted. Review any confusing distinction, then try a new independent question in Study Now.</p><button class="btn violet" onclick="session=null;navigate(\'games\')">Back to Game Realm</button></div></div>';
+    const item=session.items[session.index],ok=session.choice===item.answer;
+    return '<div class="qwrap realmMode"><div class="qtop"><span class="qbadge">D669 · Five Pillars</span><b>'+(session.index+1)+'/'+session.items.length+'</b></div>'+guardianBanner('Which skill is the teacher practicing most directly?')+'<div class="card"><h3>'+E(item.prompt)+'</h3><div class="realmPillarChoices">'+D669_PILLARS.map(p=>'<button type="button" class="btn" '+(session.answered?'disabled':'')+' onclick="chooseD669Pillar(\''+E(p)+'\')">'+E(p)+'</button>').join('')+'</div>'+(session.answered?'<div role="status" class="'+(ok?'strong':'weak')+'"><b>'+(ok?'Correct':'Try the distinction again')+'</b><p>'+E(item.answer)+': '+E(item.why)+'</p></div><button class="btn violet" onclick="nextD669Pillar()">'+(session.index+1<session.items.length?'Next case →':'See result →')+'</button>':'')+'</div></div>';
+  }
+
   /* New Game Realm hub, while preserving every classic game. */
   const baseGamesHTML=typeof gamesHTML==='function'?gamesHTML:null;
   if(baseGamesHTML){
@@ -261,6 +307,7 @@
         realmProgressHTML()+
         '<div class="realmStats"><span>ᚱ '+E(bestText('runesort'))+' Rune Sort</span><span>◉ '+E(bestText('oraclelens'))+' Oracle Lens</span><span>♛ '+E(bestText('gauntlet'))+' Gauntlet</span><span>✧ '+E(bestText('constellation'))+' Constellation</span><span>⬡ '+E(bestText('hexbreaker'))+' Hex Breaker</span></div>'+
         '<div class="realmFeaturedGrid">'+
+          (courseId==='D669'?gameCard('✦','Five Pillars Sort','Classify five classroom activities by the literacy skill they directly practice.','startD669PillarSort()','D669 PRACTICE'):'')+
           (buildRuneSort()?gameCard('ᚱ','Rune Sort',profile.rune,'startRuneSort()',courseId+' TRIAL'):'')+
           (globalThis.S?.activeCourse==='D755'?gameCard('✥','Assessment Sigil Sort','Sort D755 scenarios through Qualitative/Quantitative, Formal/Informal, Formative/Summative, Norm/Criterion, Screening/Monitoring, or Observation/Anecdotal gates.','startAssessmentSigilSort()','D755 TRIAL'):'')+
           gameCard('◉','Oracle Lens',profile.oracle,'startOracleLens()')+
@@ -705,6 +752,7 @@
   function realmQuestionPool(opts){
     const base=(typeof questionPool==='function'?questionPool(opts):[])||[];
     if(globalThis.S?.activeCourse==='D756')return globalThis.MajickHandsOnStudio?.realmQuestions?.()||[];
+    if(globalThis.S?.activeCourse==='D669')return [...base,...D669_DIAGNOSIS_CASES.filter(q=>!opts?.hard||q.difficulty>=4)];
     if(globalThis.S?.activeCourse!== 'D772')return base;
     const seen=new Set(),out=[];
     const generated=(globalThis.MajickGeneratedPractice?.batch?.(18,2)||[]).map(q=>({...q,section:q.learningPathLessonId?.startsWith('d772-s3')?'Section 3 · Probability':'Section 2 · Graphs and statistics'}));
@@ -788,7 +836,7 @@
 
   /* ---------- Oracle Lens ---------- */
   function nextOracle(){
-    const pool=realmQuestionPool().filter(q=>q?.prompt&&q?.options?.length>=2);
+    const pool=realmQuestionPool().filter(q=>q?.prompt&&q?.options?.length>=2&&(globalThis.S?.activeCourse!=='D669'||q.keyClue));
     const q=pickAdaptive(pool);if(!q)return false;
     const otherClues=shuffleCopy(pool.filter(x=>x.id!==q.id&&x.keyClue).map(x=>x.keyClue)).slice(0,2);
     const correctClue=q.keyClue||q.distractorCoach||('Focus on the exact task in: '+q.prompt);
@@ -798,7 +846,8 @@
     return true;
   }
   globalThis.startOracleLens=function(){
-    session={type:'oraclelens',opts:{label:'Oracle Lens'},round:0,limit:8,score:0,clarity:0,clarityStreak:0,bestClarityStreak:0,finished:false,questions:[]};
+    const limit=globalThis.S?.activeCourse==='D669'?D669_DIAGNOSIS_CASES.length:8;
+    session={type:'oraclelens',opts:{label:'Oracle Lens'},round:0,limit,score:0,clarity:0,clarityStreak:0,bestClarityStreak:0,finished:false,questions:[]};
     nextOracle();if(globalThis.S)S.screen='mission';render?.();
   };
   globalThis.oracleChooseLens=function(value){
@@ -824,7 +873,7 @@
     if(session.round>=session.limit){
       session.finished=true;
       session.recordOutcome=recordRealm('oraclelens',session.score,session.limit,session.score===session.limit);
-      if(session.score>=6){addReward('Oracle Lens cleared',15,1);guardianReact('concept',{mode:'oraclelens'})}
+      if(session.score>=Math.ceil(session.limit*.75)){addReward('Oracle Lens cleared',15,1);guardianReact('concept',{mode:'oraclelens'})}
     }else nextOracle();
     render?.();
   };
@@ -1209,6 +1258,7 @@
   const baseSessionHTML=typeof sessionHTML==='function'?sessionHTML:null;
   if(baseSessionHTML){
     const realmHTML=function(){
+      if(session?.type==='d669pillars')return d669PillarHTML();
       if(session?.type==='assessmentsigilsort')return assessmentSigilHTML();
       if(session?.type==='runesort')return runeSortHTML();
       if(session?.type==='oraclelens')return oracleHTML();
