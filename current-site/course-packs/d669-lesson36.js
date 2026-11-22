@@ -59,7 +59,7 @@
   "activities": [
     {
       "id": "wgu-gp",
-      "title": "Original WGU Guided Practice: Structured Phonics",
+      "title": "WGU Guided Practice — Adapted for Aetheria",
       "prompt": "Which element best describes a structured literacy lesson focused on phonics instruction?",
       "options": [
         "Incorporating sight word activities",
@@ -70,7 +70,7 @@
       "correct": 1,
       "explanation": "The course's correct answer is systematic teaching of letter–sound patterns and decoding strategies.",
       "provenance": {
-        "kind": "original_course_question",
+        "kind": "source_based_practice",
         "source_title": "WGU Lesson 3.6 user-provided guided practice",
         "source_url": "https://github.com/rnw4512-dev/majick-studies-assets/blob/main/course-content/D669/lesson-3-6-phonics.json",
         "source_status": "user_provided",
