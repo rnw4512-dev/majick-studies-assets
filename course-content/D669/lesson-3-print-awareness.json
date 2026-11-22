@@ -1,0 +1,183 @@
+{
+  "schema_version": "1.0",
+  "course_id": "D669",
+  "lesson_id": "3",
+  "section_id": "print-awareness",
+  "title": "Lesson 3 — Print Awareness / Concepts About Print",
+  "source": "User-supplied WGU D669 Lesson 3 Print Awareness section",
+  "source_status": "user_provided",
+  "review_status": "source_transcribed_not_independently_verified",
+  "learning_objective": "Explain literacy acquisition elements.",
+  "definition": "Print awareness (concepts about print) means understanding that print carries meaning, that written language represents spoken language, and that print is organized according to conventions such as directionality and spaces between words.",
+  "concepts_about_print": [
+    {
+      "id": "meaning",
+      "label": "Text has meaning",
+      "example": "Recognize that the words on a page, not just pictures, represent a story or information"
+    },
+    {
+      "id": "book-orientation",
+      "label": "Book orientation",
+      "example": "Identify front and back cover, title, author, and illustrator"
+    },
+    {
+      "id": "book-handling",
+      "label": "Book directionality and handling",
+      "example": "Hold and turn pages of a conventional English-language book"
+    },
+    {
+      "id": "text-directionality",
+      "label": "Text directionality",
+      "example": "Follow English print from left to right, top to bottom"
+    },
+    {
+      "id": "letters-words-sentences",
+      "label": "Knowledge of letters, words, and sentences",
+      "example": "Recognize letters, spaces between words, and sentence boundaries"
+    }
+  ],
+  "notes": [
+    "Print functions vary by context: books tell stories and menus list choices.",
+    "Some children enter school knowing print conventions; others benefit from explicit modeling and practice.",
+    "Print awareness and the alphabetic principle are related but distinct: alphabetic principle connects letters/graphemes with sounds/phonemes.",
+    "Ehri's phases of word-reading development are mentioned in the course video; video contents were not transcribed or independently verified.",
+    "Directionality and page-turning conventions described apply to English-language books and are not universal to all writing systems."
+  ],
+  "read_aloud": {
+    "before": [
+      "Select an appropriate illustrated book with visible print and book features",
+      "Introduce title, author, illustrator and roles",
+      "Model cover orientation and appropriate book handling",
+      "Preteach selected vocabulary"
+    ],
+    "during": [
+      "Track print with a finger or pointer",
+      "Highlight spaces, punctuation, capital letters and sentence boundaries",
+      "Discuss pictures and their connection to text",
+      "Invite questions and recognize letters/words",
+      "Ask students to predict what comes next"
+    ],
+    "after": [
+      "Review print concepts",
+      "Match letters or identify words in text",
+      "Invite children to handle and explore books",
+      "Discuss, summarize and reflect on the story"
+    ]
+  },
+  "resources": [
+    {
+      "title": "Print Awareness and the Alphabetic Principle",
+      "provider": "WGU",
+      "type": "video",
+      "duration": "2:24",
+      "url": "https://wgu.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=3669d5ae-7a12-4d65-a1b4-b3e2004cd421",
+      "focus": "Print concepts, alphabetic principle, Ehri's phases; connection to decoding and spelling"
+    },
+    {
+      "title": "Concepts About Print, Figure 2.10",
+      "provider": "WGU",
+      "type": "figure",
+      "url": "https://assets.wgu.edu/483484205d2c64d14efa3ad70453998e"
+    },
+    {
+      "title": "Becoming Aware of Print",
+      "provider": "Reading Rockets",
+      "type": "video",
+      "duration": "3:58",
+      "url": "https://www.youtube.com/watch?v=x1Vk2kLPDi0",
+      "published": "2014-05-09"
+    },
+    {
+      "title": "Becoming Aware of Print transcript",
+      "provider": "WGU-hosted resource",
+      "type": "transcript",
+      "url": "https://assets.wgu.edu/c4216ea2c83cd74efc6d6fac53c8d1f9"
+    }
+  ],
+  "reflection_questions": [
+    "How do print awareness and the alphabetic principle support a child's movement toward accurate decoding?",
+    "How does recognizing print as spoken language affect children's literacy development?",
+    "How can teachers strengthen children's print awareness during read-alouds?"
+  ],
+  "activity": {
+    "id": "D669-L3-PRINT-GP1",
+    "type": "categorize",
+    "prompt": "Choose the correct stage of reading for each teaching move.",
+    "categories": [
+      {
+        "id": "before",
+        "label": "Before reading"
+      },
+      {
+        "id": "during",
+        "label": "During reading"
+      },
+      {
+        "id": "after",
+        "label": "After reading"
+      }
+    ],
+    "items": [
+      {
+        "id": "a",
+        "prompt": "Introduce the story by stating the title, then the author's name and asking students, 'What does an author do?'",
+        "correct_category_id": "before",
+        "explanation": "This establishes context and introduces the author before the text begins."
+      },
+      {
+        "id": "b",
+        "prompt": "Select vocabulary words from the story you want to introduce.",
+        "correct_category_id": "before",
+        "explanation": "Preteaching selected vocabulary helps students approach the story with relevant word meanings."
+      },
+      {
+        "id": "c",
+        "prompt": "Briefly discuss the pictures on each page.",
+        "correct_category_id": "during",
+        "explanation": "Discussing illustrations while reading supports engagement and comprehension."
+      },
+      {
+        "id": "d",
+        "prompt": "Encourage students to guess or predict what will happen next.",
+        "correct_category_id": "during",
+        "explanation": "Predicting during reading engages students in meaning-making."
+      },
+      {
+        "id": "e",
+        "prompt": "Ask students to tell you if they liked the story and why.",
+        "correct_category_id": "after",
+        "explanation": "Personal reflection after reading can encourage discussion and demonstrate engagement."
+      },
+      {
+        "id": "f",
+        "prompt": "Summarize the story in a few brief points.",
+        "correct_category_id": "after",
+        "explanation": "Summarizing after the story reinforces its important ideas."
+      }
+    ],
+    "graded": false,
+    "game_compatibility": [
+      "learn-lab",
+      "trial-chamber"
+    ],
+    "alternate_interaction": "Accessible three-choice selection for each statement",
+    "mastery_policy": "Unassisted application/transfer cases required before independent mastery; this is an ungraded original course exercise."
+  },
+  "recommended_new_gameplay": [
+    {
+      "mode": "learn-lab",
+      "interaction": "Drag and sort six teacher actions into Before / During / After reading",
+      "fallback": "Keyboard-operable selection controls"
+    },
+    {
+      "mode": "oracle-lens",
+      "interaction": "Examine a classroom read-aloud and identify missing print-concept teaching moves",
+      "content_status": "new_scenario_required_review"
+    },
+    {
+      "mode": "starfall",
+      "interaction": "Identify concrete print conventions and directionality in short discrete-response prompts",
+      "content_status": "new_items_required_review"
+    }
+  ]
+}
