@@ -1,0 +1,202 @@
+{
+  "schema_version": "1.0",
+  "course_id": "D669",
+  "lesson_id": "3.6",
+  "section_id": "phonics",
+  "title": "Lesson 3.6 — Phonics, Structured Literacy, and Orthographic Mapping",
+  "source": "User-provided WGU D669 lesson and uploaded Orthographic Mapping transcript",
+  "source_status": "user_provided",
+  "review_status": "source_transcribed_not_independently_verified",
+  "overview": "Phonics teaches correspondences between phonemes (sounds) and graphemes (letters or letter patterns). Explicit, systematic, cumulative, diagnostic instruction supports decoding and spelling and increasingly complex word patterns.",
+  "learning_objective": "Explain phonics instruction and how systematic instruction helps students develop decoding skills.",
+  "concepts": [
+    {
+      "term": "Phonics",
+      "description": "How written letters and patterns correspond to speech sounds."
+    },
+    {
+      "term": "Structured literacy",
+      "description": "Explicit, systematic, cumulative, and diagnostic literacy instruction."
+    },
+    {
+      "term": "Alphabetic principle",
+      "description": "Understanding that graphemes represent phonemes."
+    },
+    {
+      "term": "Orthographic mapping",
+      "description": "Forming connections among a word's phonemes, graphemes and meaning for accurate automatic word recognition."
+    },
+    {
+      "term": "Multisyllabic decoding",
+      "description": "Breaking longer words into syllables and meaningful parts and checking the decoded result."
+    }
+  ],
+  "phonics_continuum": [
+    {
+      "phase": "Foundations",
+      "items": [
+        "letter–sound correspondence",
+        "CVC words",
+        "initial, medial and final sounds",
+        "CVC blending"
+      ]
+    },
+    {
+      "phase": "Developing complexity",
+      "items": [
+        "consonant blends",
+        "digraphs",
+        "complex vowel patterns"
+      ]
+    },
+    {
+      "phase": "Advanced",
+      "items": [
+        "trigraphs",
+        "silent letters",
+        "hard and soft c/g",
+        "six common syllable types",
+        "syllable division rules"
+      ]
+    }
+  ],
+  "structured_literacy_components": [
+    {
+      "id": "explicit",
+      "meaning": "Direct modeling and explanation"
+    },
+    {
+      "id": "systematic",
+      "meaning": "Planned progression from simpler to more complex skills"
+    },
+    {
+      "id": "cumulative",
+      "meaning": "Practice and review that builds on previous learning"
+    },
+    {
+      "id": "diagnostic",
+      "meaning": "Use checks and feedback to guide targeted instruction"
+    }
+  ],
+  "structured_lesson_sequence": [
+    "Review prior short-vowel learning with word cards",
+    "State objective for short vowel graphemes",
+    "Activate phonemic awareness orally",
+    "Explicitly model letter–sound correspondence and consonant clusters",
+    "Guide short-vowel practice and collect responses",
+    "Use decodable reading and spelling/dictation independently",
+    "Close with short vowel review"
+  ],
+  "developing_alphabetic_principle_patterns": [
+    "closed syllables",
+    "CCVC/CVCC words and consonant digraphs",
+    "beginning and ending blends",
+    "hard/soft c and g",
+    "silent-e (CVCe)",
+    "open syllables",
+    "predictable vowel teams",
+    "less predictable vowel teams",
+    "r-controlled vowels",
+    "diphthongs",
+    "consonant-le syllables",
+    "word-final spelling conventions"
+  ],
+  "multisyllabic_steps": [
+    {
+      "step": 1,
+      "action": "Box familiar suffixes"
+    },
+    {
+      "step": 2,
+      "action": "Circle familiar prefixes"
+    },
+    {
+      "step": 3,
+      "action": "Locate vowel graphemes"
+    },
+    {
+      "step": 4,
+      "action": "Apply syllable-type knowledge and division"
+    },
+    {
+      "step": 5,
+      "action": "Blend the whole word"
+    },
+    {
+      "step": 6,
+      "action": "Check meaning/context if needed"
+    }
+  ],
+  "original_guided_practice": [
+    {
+      "id": "D669-L3.6-GP1",
+      "type": "single_choice",
+      "prompt": "Which element of a structured literacy lesson focused on phonics instruction?",
+      "options": [
+        {
+          "id": "0",
+          "text": "Incorporating sight word activities"
+        },
+        {
+          "id": "1",
+          "text": "Teaching phoneme-grapheme relationships systematically"
+        },
+        {
+          "id": "2",
+          "text": "Using whole language approaches"
+        },
+        {
+          "id": "3",
+          "text": "Providing opportunities for independent reading"
+        }
+      ],
+      "correct_option_id": "1",
+      "feedback_correct": "Systematic instruction in letter–sound relationships, decoding, and spelling patterns is central to phonics instruction.",
+      "graded": false
+    }
+  ],
+  "orthographic_mapping_transcript": {
+    "source": "Uploaded WGU Orthographic Mapping transcript (2 pages)",
+    "document_status": "provided_by_user",
+    "pattern": "See printed word → connect graphemes to phonemes → read word",
+    "example_words": [
+      "comb",
+      "sheep",
+      "cough",
+      "fish",
+      "hats"
+    ],
+    "note": "This is a brief activity transcript, not a detailed discussion of orthographic mapping theory. Avoid claiming unsupported content or publishing the full transcript."
+  },
+  "resource_links": [
+    {
+      "title": "WGU Phonics video, 3:39",
+      "url": "https://wgu.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=276d93ce-1da0-4e82-9e5a-b3e2004cd3ae"
+    },
+    {
+      "title": "Figure 2.15 Continuum of Phonics",
+      "url": "https://assets.wgu.edu/4f2ca05e7ab10a58aad20ee925dacd17"
+    },
+    {
+      "title": "Figure 2.16 Developing Alphabetic Principle",
+      "url": "https://assets.wgu.edu/f5e6522b43804741a7c54b9ef9442cfa"
+    },
+    {
+      "title": "Figure 2.17 Reading Multisyllabic Words",
+      "url": "https://assets.wgu.edu/2b143916bb9db880f576450caf058824"
+    },
+    {
+      "title": "SPED Intervention Activity (WGU sign-in required)",
+      "url": "https://lrps.wgu.edu/provision/530027089"
+    },
+    {
+      "title": "UFLI Toolbox",
+      "url": "https://ufli.education.ufl.edu/foundations/toolbox/"
+    }
+  ],
+  "quality_notes": [
+    "The figure's grade labels describe a suggested progression, not fixed grade-level prerequisites.",
+    "The supplied text says 'medical sounds'; inferred intended label is medial sounds, but original wording is noted here.",
+    "The source phoneme strings for the lesson's oral examples are not used as audio prescriptions until verified."
+  ]
+}
