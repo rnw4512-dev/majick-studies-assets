@@ -58,6 +58,8 @@
     if(line){line.dataset.result=ok?'correct':'try';line.textContent=(ok?'✓ Correct. ':'Not quite. ')+item.explanation;}
     const k=key(pack.courseId,pack.id)+':'+item.id;
     selected[k]=idx;attempts[k]=(attempts[k]||0)+1;
+    // Observed practice only. Never claim independent mastery from immediate-feedback questions.
+    document.dispatchEvent(new CustomEvent('majick:sourced-practice',{detail:{courseId:pack.courseId,lessonId:pack.id,questionId:item.id,sourceUrl:item.provenance?.source_url||'',sourceType:item.provenance?.kind||'unknown',sourceTitle:item.provenance?.source_title||'',concept:item.concept||item.title||'Course practice',correct:ok,assisted:true,questionCount:pack.activities.length}}));
   });
   window.MajickCourseActivityPlayer={register,install,packs:PACKS};
   install();
