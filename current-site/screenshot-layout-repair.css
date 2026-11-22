@@ -1,0 +1,19 @@
+/* 2026-11-22 screenshot follow-up: avoid piled-up shell controls and horizontal overflow.
+   Presentation only; never touch course state, scroll position or question logic. */
+.top{height:auto!important;min-height:86px;display:flex;align-items:center;align-content:center;flex-wrap:wrap;column-gap:16px;row-gap:9px;padding:12px 22px!important}
+.top .titleline{display:flex;align-items:center;flex:0 1 auto;min-width:0;max-width:100%;flex-wrap:wrap;gap:8px}
+.top .titleline h1{line-height:1.2;min-width:0;overflow-wrap:anywhere}
+.top .pill{max-width:100%;white-space:normal;line-height:1.25}
+.top .courseSelect{flex:1 1 260px;min-width:220px;max-width:100%;width:auto}
+.top button,.top select{max-width:100%}
+.content,#content,.main{min-width:0}
+#content .majRoomArchitecture{max-width:100%}
+#content .majRoomBannerTitle{line-height:1.14;overflow-wrap:anywhere}
+.majickRoomSections{scrollbar-width:thin;overscroll-behavior-x:contain}
+.majickRoomSections button{white-space:normal;line-height:1.25;overflow-wrap:break-word;min-height:44px}
+.huStudyLaunch,.obs-shell,.cap-shelf{max-width:100%;min-width:0}
+.huStudyLaunch button,.obs-shell button,.cap-shelf button{max-width:100%}
+.huStudyLaunch button:focus-visible,.obs-shell button:focus-visible,.cap-shelf button:focus-visible{outline:3px solid #d5aa69;outline-offset:2px}
+@media(max-width:940px){.top{padding:11px 16px!important}.top .titleline{flex:1 1 220px}.top .courseSelect{flex:1 1 300px}.content{padding:15px}}
+@media(max-width:600px){.top{gap:8px;padding:10px 12px!important}.top .courseSelect{flex:1 1 100%;min-width:0}.top .titleline h1{font-size:1.25rem}.content{padding:10px}.majickRoomSections{position:relative;top:auto}}
+@media(prefers-reduced-motion:reduce){.top *,.majickRoomSections *{scroll-behavior:auto!important;transition:none!important}}
