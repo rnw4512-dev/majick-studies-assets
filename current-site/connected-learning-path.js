@@ -99,7 +99,7 @@ function render(){
  const details=document.createElement('details');details.className='majPathDisclosure';details.open=expanded;
  details.addEventListener('toggle',()=>{expanded=details.open});
  const summary=document.createElement('summary');summary.className='majPathSummary';
- summary.textContent='✦ '+cid+' · '+item.title+' · '+STAGES[idx];details.append(summary);
+ summary.textContent='✦ Learning Path · '+cid+' · '+item.title+' · '+STAGES[idx]+' · v3.4.3';details.append(summary);
  const body=document.createElement('div');body.className='majPathBody';details.append(body);
  const h=document.createElement('h2');h.textContent='Your Learning Path';body.append(h);
  const currentLine=document.createElement('p');currentLine.textContent=(state().courses?.[cid]?.title||cid)+' · Current topic: '+item.title;body.append(currentLine);
@@ -151,5 +151,5 @@ function init(){
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
 setInterval(checkContext,1200);
-window.MajickConnectedPath=Object.freeze({refresh:schedule,catalog:(id)=>catalog(String(id||course()).toUpperCase()),current:()=>current(course(),catalog(course()))});
+window.MajickConnectedPath=Object.freeze({VERSION:'3.4.3',refresh:schedule,catalog:(id)=>catalog(String(id||course()).toUpperCase()),current:()=>current(course(),catalog(course()))});
 })();
