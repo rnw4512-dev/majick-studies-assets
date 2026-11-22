@@ -60,6 +60,7 @@ function screen(){
  const lessons=activities.map(a=>'<button class="huCard" data-hu-open="'+safe(a.id)+'"><b>'+safe(a.title)+'</b><small>'+safe(a.section)+' · '+safe(a.concept)+'</small><span>'+status(a)+'</span></button>').join('');
  const catalogMissing=!activities.length;
  return '<section class="huStudio" aria-label="Hands-on Studio"><div class="huHead"><span>✦ THE MOONLIT COLLEGIUM</span><h2>Hands-on Studio</h2><p>Understand → Practice Together → Try With Support → Do It Independently → Apply It Somewhere New</p><p><b>'+safe(c)+' · '+safe(info())+'</b></p></div>'+
+ (window.MajickSpeakingPractice?.render?.()||'')+
  (c==='D756'?'<div class="huCouncil"><b>🎙 D756 · Mock IEP meeting</b><p>Lead an actual 20-minute rehearsal with a parent, student, general education teacher and school representative. Choose guided, independent, or challenging dialogue, and practice clarifying questions, stakeholder input, concerns and closing decisions.</p><button data-hu-council>Enter Council Chamber · Mock IEP OA Prep</button></div>':'')+
  (current?'<div class="huTop"><button data-hu-home>← All activities</button><button data-hu-review>Open existing lesson review</button></div><h3>'+safe(current.title)+'</h3><p class="huContext">'+safe(current.context)+'</p>'+
  (current.student?'<div class="huContext"><b>Student says:</b> '+safe(current.student)+'</div>':'')+
