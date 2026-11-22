@@ -131,7 +131,8 @@ function detectSourceClick(e){
 document.addEventListener('click',e=>{
  detectSourceClick(e);
  const b=e.target.closest('button');
- if(b?.id==='learnNextLesson'||b?.id==='learnPrevLesson'||b?.hasAttribute('data-nav')||b?.hasAttribute('data-learn-tab')||b?.hasAttribute('data-cap-answer'))setTimeout(schedule,30);
+ if(b?.id==='learnNextLesson'||b?.id==='learnPrevLesson'){setTimeout(()=>{const cid=course(),idx=Number(state().majickLearningLab?.[cid]?.lessonIndex)||0,which='lab:'+idx;if(catalog(cid).some(x=>x.id===which)){selections[cid]=which;save()}schedule()},60)}
+ if(b?.hasAttribute('data-nav')||b?.hasAttribute('data-learn-tab')||b?.hasAttribute('data-cap-answer'))setTimeout(schedule,30);
 });
 document.addEventListener('change',e=>{if(e.target?.matches?.('.courseSelect,[data-course],#majPathLessonSelect'))schedule()});
 document.addEventListener('majick:sourced-practice',e=>{const d=e.detail||{};if(d.courseId&&d.lessonId){selections[String(d.courseId).toUpperCase()]='pack:'+d.lessonId;save();schedule()}});
