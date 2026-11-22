@@ -13,3 +13,13 @@
 #majPathTeaching :is(h3,p,strong,span){color:#18372e!important;opacity:1!important;text-shadow:none!important}
 #majPathTeaching button{background:#235944!important;color:#fff!important}
 @media(max-width:600px){#majConnectedPath .majPathSummary{padding:10px 12px}#majConnectedPath .majPathBody{padding:0 10px 10px}}
+
+/* Course-aware learning path: short, readable location indicator and topic control. */
+#majConnectedPath .majPathSelectLabel{display:block;font-size:.85rem;font-weight:750;color:#173b31!important;margin:10px 0 5px}
+#majConnectedPath .majPathLessonSelect{display:block;width:100%;max-width:680px;min-height:44px;border:1px solid #7f8069;border-radius:10px;padding:9px 12px;background:#fffdf6!important;color:#193b30!important;font:inherit;font-weight:650}
+#majConnectedPath .majPathLessonSelect:focus-visible{outline:3px solid #346b54;outline-offset:2px}
+#majConnectedPath .majPathEvidence{background:#ebf2e6;border-left:4px solid #4b7960;border-radius:5px;padding:8px 10px;font-size:.85rem;color:#173b31!important}
+#majConnectedPath .majPathSteps{margin-top:12px}
+#majConnectedPath .majPathSummary{overflow-wrap:anywhere}
+#majConnectedPath .majPathActions button{min-height:43px}
+@media(max-width:600px){#majConnectedPath .majPathSteps{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}#majConnectedPath .majPathSteps li button{width:100%;font-size:.8rem!important;white-space:normal}}
