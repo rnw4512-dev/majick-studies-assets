@@ -1,8 +1,13 @@
 (()=>{
 'use strict';
-const VERSION='3.3.60';
+const VERSION='3.4.3';
 const ROOM_LABELS={
  home:{name:'Moonlit Collegium',detail:'Grand Hall • Academic Wing',sigil:'✦'},
+ mission:{name:'Scholar’s Study Hall',detail:'Study Realm • Learn, practice, and grow',sigil:'✦'},
+ guide:{name:'The Athenaeum',detail:'Instruction • Learn and explore',sigil:'☾'},
+ reasoning:{name:'Scholar’s Trial Chamber',detail:'OA Trials • Guided reasoning',sigil:'✧'},
+ test:{name:'Scholar’s Trial Chamber',detail:'Assessment practice • Explain and apply',sigil:'✧'},
+ 'hands-on':{name:'Hands-on Studio',detail:'Study Realm • Classroom scenarios',sigil:'✎'},
  learninglab:{name:'Candlelit Classroom',detail:'Learn Lab • instruction before practice',sigil:'☾'},
  livinggrimoire:{name:'Research Library',detail:'Grimoire Archives • notes, references & anchor charts',sigil:'❦'},
  games:{name:'Game Realm',detail:'Practice halls • Guardian trials',sigil:'✧'},
@@ -11,7 +16,7 @@ const ROOM_LABELS={
 let raf=0,lastRoom='';
 function room(){
  const s=window.S?.screen||document.body?.dataset?.majickRoom||'home';
- return ROOM_LABELS[s]?s:(s==='mission'?'games':'home');
+ return ROOM_LABELS[s]?s:'home';
 }
 function reduced(){
  return document.documentElement?.dataset?.majickReduceMotion==='true'||window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
