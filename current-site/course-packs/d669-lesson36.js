@@ -54,6 +54,10 @@
     {
       "title": "UFLI Toolbox",
       "url": "https://ufli.education.ufl.edu/foundations/toolbox/"
+    },
+    {
+      "title": "WGU Phonics video (caption-verified, 3:39; 12 lesson types)",
+      "url": "https://wgu.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=276d93ce-1da0-4e82-9e5a-b3e2004cd3ae"
     }
   ],
   "activities": [
@@ -201,6 +205,121 @@
         "source_url": "https://assets.wgu.edu/4f2ca05e7ab10a58aad20ee925dacd17",
         "source_status": "user_provided",
         "verification": "grounded_in_supplied_lesson_material",
+        "course_id": "D669",
+        "lesson_id": "3.6"
+      }
+    },
+    {
+      "id": "video-cvc",
+      "title": "Video Evidence: CVC Teaching",
+      "prompt": "A teacher is introducing consonant-vowel-consonant decoding. Which practice does the WGU video suggest?",
+      "options": [
+        "Use Elkonin boxes and blending drills",
+        "Begin with advanced morphology only",
+        "Skip segmenting spoken words"
+      ],
+      "correct": 0,
+      "explanation": "At 00:24–00:34, the instructor recommends CVC blending/segmenting, Elkonin boxes, and blending drills.",
+      "time": "00:24–00:34",
+      "provenance": {
+        "kind": "source_based_practice",
+        "source_title": "WGU Phonics video, embedded captions, 00:24–00:34",
+        "source_url": "https://wgu.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=276d93ce-1da0-4e82-9e5a-b3e2004cd3ae",
+        "source_status": "user_provided",
+        "verification": "caption_verified",
+        "source_locator": "00:24–00:34",
+        "course_id": "D669",
+        "lesson_id": "3.6"
+      }
+    },
+    {
+      "id": "video-scaffold",
+      "title": "Video Evidence: Guided Phonics Practice",
+      "prompt": "When teaching short vowels in CVC words, which lesson structure is recommended in the video?",
+      "options": [
+        "Unstructured guessing",
+        "I do, We do, You do with decodable texts and dictation",
+        "Silent independent reading without teacher modeling"
+      ],
+      "correct": 1,
+      "explanation": "At 00:44–00:56, the instructor describes visual and auditory discrimination, I do–We do–You do, decodable texts, and dictation.",
+      "time": "00:44–00:56",
+      "provenance": {
+        "kind": "source_based_practice",
+        "source_title": "WGU Phonics video, embedded captions, 00:44–00:56",
+        "source_url": "https://wgu.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=276d93ce-1da0-4e82-9e5a-b3e2004cd3ae",
+        "source_status": "user_provided",
+        "verification": "caption_verified",
+        "source_locator": "00:44–00:56",
+        "course_id": "D669",
+        "lesson_id": "3.6"
+      }
+    },
+    {
+      "id": "video-magic-e",
+      "title": "Video Evidence: Word Chains",
+      "prompt": "A teacher uses word transformations and word chains to introduce silent e. What phonics focus is being taught?",
+      "options": [
+        "Onset-rime recognition only",
+        "R-controlled vowels",
+        "VCe (magic-e) spelling pattern"
+      ],
+      "correct": 2,
+      "explanation": "At 01:32–01:48, the video names the VCe (magic-e) pattern and recommends silent-e transformations, word chains, and word building.",
+      "time": "01:32–01:48",
+      "provenance": {
+        "kind": "source_based_practice",
+        "source_title": "WGU Phonics video, embedded captions, 01:32–01:48",
+        "source_url": "https://wgu.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=276d93ce-1da0-4e82-9e5a-b3e2004cd3ae",
+        "source_status": "user_provided",
+        "verification": "caption_verified",
+        "source_locator": "01:32–01:48",
+        "course_id": "D669",
+        "lesson_id": "3.6"
+      }
+    },
+    {
+      "id": "video-r-vowels",
+      "title": "Video Evidence: R-Controlled Vowels",
+      "prompt": "Which activity does the instructor associate with teaching r-controlled vowel patterns?",
+      "options": [
+        "Sound mapping and fluency practice",
+        "Only logo recognition",
+        "Avoiding sound-to-print connections"
+      ],
+      "correct": 0,
+      "explanation": "At 02:07–02:31, the instructor lists ar, or, er, ir, ur and recommends sound mapping and fluency practice.",
+      "time": "02:07–02:31",
+      "provenance": {
+        "kind": "source_based_practice",
+        "source_title": "WGU Phonics video, embedded captions, 02:07–02:31",
+        "source_url": "https://wgu.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=276d93ce-1da0-4e82-9e5a-b3e2004cd3ae",
+        "source_status": "user_provided",
+        "verification": "caption_verified",
+        "source_locator": "02:07–02:31",
+        "course_id": "D669",
+        "lesson_id": "3.6"
+      }
+    },
+    {
+      "id": "video-transfer",
+      "title": "Video Evidence: Connected Text",
+      "prompt": "After students learn multiple phonics patterns, what does the WGU video's final lesson type emphasize?",
+      "options": [
+        "Stop all phonics review",
+        "Decodable connected reading with phonics review",
+        "Teach vocabulary without reading"
+      ],
+      "correct": 1,
+      "explanation": "At 03:26–03:35, the instructor explains integrating taught phonics skills into fluent reading through decodable connected text.",
+      "time": "03:26–03:35",
+      "provenance": {
+        "kind": "source_based_practice",
+        "source_title": "WGU Phonics video, embedded captions, 03:26–03:35",
+        "source_url": "https://wgu.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=276d93ce-1da0-4e82-9e5a-b3e2004cd3ae",
+        "source_status": "user_provided",
+        "verification": "caption_verified",
+        "source_locator": "03:26–03:35",
         "course_id": "D669",
         "lesson_id": "3.6"
       }
