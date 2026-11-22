@@ -1,0 +1,166 @@
+{
+  "schema_version": "1.0",
+  "course_id": "D669",
+  "lesson_id": "3",
+  "section_id": "alphabetic-principle",
+  "title": "Lesson 3 — Alphabetic Principle and Ehri’s Phases",
+  "source": "User-supplied WGU D669 Lesson 3 Alphabetic Principle section",
+  "source_status": "user_provided",
+  "review_status": "source_transcribed_not_independently_verified",
+  "learning_objective": "Explain literacy acquisition elements.",
+  "definition": "The alphabetic principle is understanding that letters and letter patterns (graphemes) represent sounds (phonemes) in spoken language.",
+  "four_parts": [
+    "Visual symbols represent speech sounds",
+    "Connection between speech and print",
+    "Speech can be translated into written code (encoding)",
+    "Written code can be translated into speech (decoding)"
+  ],
+  "ehri_phases": [
+    {
+      "id": "pre-alphabetic",
+      "label": "Pre-Alphabetic",
+      "approximate_course_grade": "Pre-K",
+      "features": [
+        "No letter-sound knowledge",
+        "Recognizes incidental visual features of words",
+        "Knows general print concepts"
+      ]
+    },
+    {
+      "id": "partial-alphabetic",
+      "label": "Partial Alphabetic",
+      "approximate_course_grade": "End of Kindergarten",
+      "features": [
+        "Some letter-sound correspondences",
+        "Early phonological and phonemic awareness: syllables, onset-rime, initial sound matching"
+      ]
+    },
+    {
+      "id": "full-alphabetic",
+      "label": "Full Alphabetic",
+      "approximate_course_grade": "End of Grade 1",
+      "features": [
+        "Some sight word recognition",
+        "Uses phoneme-grapheme correspondences",
+        "Basic phonemic awareness: segmenting and blending 3–4 phonemes"
+      ]
+    },
+    {
+      "id": "consolidated-alphabetic",
+      "label": "Consolidated Alphabetic",
+      "approximate_course_grade": "End of Grade 2",
+      "features": [
+        "Increasing automatic sight-word recognition",
+        "Uses orthographic mapping, word families, syllables, morphemes",
+        "Advanced phonemic awareness: deletion, substitution, phoneme reversal"
+      ]
+    }
+  ],
+  "grade_note": "Grade markers reflect the supplied WGU figure's approximations, not universal developmental deadlines; instruction and individual student progress vary.",
+  "study_distinctions": [
+    "Print awareness: understands meaning and organization of print",
+    "Alphabetic principle: knows graphemes represent phonemes",
+    "Decoding: transforms written word representations into spoken words",
+    "Encoding: transforms speech sounds into written representations",
+    "Phonics instruction explicitly teaches how spellings correspond to speech sounds"
+  ],
+  "guided_practice": [
+    {
+      "id": "D669-L3-ALPHA-GP1",
+      "type": "single_choice",
+      "prompt": "Which statement best describes the alphabetic principle?",
+      "options": [
+        {
+          "id": "0",
+          "text": "It is the understanding of the meaning of words in a text."
+        },
+        {
+          "id": "1",
+          "text": "It is the understanding that letters and letter patterns represent the sounds of spoken language."
+        },
+        {
+          "id": "2",
+          "text": "It is the ability to read quickly and with expression."
+        },
+        {
+          "id": "3",
+          "text": "It is the ability to recognize and name all the letters of the alphabet."
+        }
+      ],
+      "correct_option_id": "1",
+      "feedback_correct": "The alphabetic principle refers to understanding how letters and letter combinations correspond to sounds in spoken language.",
+      "graded": false,
+      "competency_tags": [
+        "alphabetic-principle",
+        "grapheme-phoneme-correspondence"
+      ],
+      "game_compatibility": [
+        "starfall",
+        "trial-chamber"
+      ],
+      "difficulty": "recall"
+    }
+  ],
+  "reflection_questions": [
+    "Why do students need a firm understanding of the alphabetic principle?",
+    "What alphabetic-principle-related skills do students learn across K–3?",
+    "What are examples of pre-alphabetic word recognition?",
+    "Why does mastery of the alphabetic principle matter for phonics, fluency, and comprehension?"
+  ],
+  "resources": [
+    {
+      "type": "figure",
+      "title": "Figure 2.11: The Alphabetic Principle",
+      "provider": "WGU",
+      "url": "https://assets.wgu.edu/f99b92506f9d431ea7cfca4272ae72bd"
+    },
+    {
+      "type": "textbook",
+      "title": "Fundamentals of Literacy Instruction & Assessment, Pre-K–6, pages 130–131",
+      "authors": "Hougen and Smartt",
+      "year": 2020,
+      "url": "https://lrps.wgu.edu/provision/450661731"
+    },
+    {
+      "type": "figure",
+      "title": "Figure 2.12: Ehri’s Phases of Word Development",
+      "provider": "WGU",
+      "url": "https://assets.wgu.edu/dec2ff9d1a6b0385850b7c785ba6304a"
+    },
+    {
+      "type": "video",
+      "title": "Science of Reading: The Difference Between Analytic and Synthetic Phonics Instruction",
+      "provider": "Amplify",
+      "published": "2022-06-30",
+      "duration": "45:45",
+      "assigned_segment": "17:00–22:00",
+      "url": "https://www.youtube.com/watch?v=HYklSgt-inM&t=1020s"
+    },
+    {
+      "type": "transcript",
+      "title": "WGU-hosted transcript of Amplify segment",
+      "url": "https://assets.wgu.edu/3cc6d99fbde7723bc3f1f76b4993d58c"
+    }
+  ],
+  "proposed_interactions": [
+    {
+      "game": "learn-lab",
+      "type": "ordering",
+      "prompt": "Put Ehri’s four phases in developmental order",
+      "source_status": "proposed_not_source_question"
+    },
+    {
+      "game": "oracle-lens",
+      "type": "scenario-diagnosis",
+      "prompt": "Examine a student's reading behavior and infer which phase best matches the evidence and what instruction might help next",
+      "source_status": "proposed_requires_review"
+    },
+    {
+      "game": "starfall",
+      "type": "single_choice",
+      "prompt": "Distinguish grapheme, phoneme, decoding, and encoding",
+      "source_status": "proposed_requires_review"
+    }
+  ],
+  "notes": "Original quiz answer is source keyed. New activities are design concepts, not verified course questions. File is course content only and is not yet wired into the live app."
+}
