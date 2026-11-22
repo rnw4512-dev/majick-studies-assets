@@ -1,0 +1,194 @@
+{
+  "schema_version": "1.0",
+  "course_id": "D669",
+  "lesson_id": "3.3",
+  "section_id": "phonological-awareness",
+  "title": "Lesson 3.3 — Phonological Awareness and Tolman's Hourglass",
+  "source": "User-provided WGU D669 Lesson 3.3 text and resource links",
+  "source_status": "user_provided",
+  "review_status": "source_transcribed_not_independently_verified",
+  "learning_objective": "Explain phonological awareness and its relationship to phonemic awareness, the alphabetic principle, and reading development.",
+  "concepts": [
+    {
+      "term": "phonological awareness",
+      "definition": "Recognizing and manipulating sound structures in spoken language, including words, syllables, rhyme/onset-rime and individual phonemes; can be taught without print.",
+      "examples": [
+        "Count words in a spoken sentence",
+        "Clap syllables in a spoken name",
+        "Recognize rhyming words"
+      ]
+    },
+    {
+      "term": "phonemic awareness",
+      "definition": "A subset of phonological awareness: hearing, identifying, blending, segmenting, and manipulating individual phonemes in spoken words.",
+      "examples": [
+        "Blend /c/ /a/ /t/ into cat",
+        "Segment ship into /sh/ /i/ /p/",
+        "Replace /m/ in mat with /s/ to say sat"
+      ]
+    },
+    {
+      "term": "phonics",
+      "definition": "Instruction in correspondences between written letters/letter patterns (graphemes) and speech sounds (phonemes).",
+      "examples": [
+        "Link the written letters sh with /sh/",
+        "Read a printed unfamiliar word using spelling-to-sound relationships"
+      ]
+    },
+    {
+      "term": "alphabetic principle",
+      "definition": "Understanding that graphemes represent phonemes; supports decoding and encoding."
+    },
+    {
+      "term": "phonological recoding",
+      "definition": "Using grapheme–phoneme correspondences to access a word's spoken form from its spelling; supports word learning and reading."
+    }
+  ],
+  "tolman_hourglass": {
+    "overview": "A visual model connecting broad phonological awareness to specific phoneme awareness and the alphabetic principle, then expanding into orthographic knowledge and fluent word recognition, spelling and comprehension.",
+    "teaching_message": "Instruction becomes increasingly precise about speech sounds and then integrates this knowledge with print. It highlights the need for systematic, developmentally appropriate teaching; no single stage represents an absolute age cutoff.",
+    "sequence": [
+      {
+        "order": 1,
+        "label": "Broad oral language / phonological awareness",
+        "examples": [
+          "word awareness",
+          "rhyming",
+          "syllable segmentation"
+        ]
+      },
+      {
+        "order": 2,
+        "label": "Precise phonemic awareness",
+        "examples": [
+          "phoneme identification",
+          "blending",
+          "segmenting",
+          "manipulation"
+        ]
+      },
+      {
+        "order": 3,
+        "label": "Link sounds with letters",
+        "examples": [
+          "alphabetic principle",
+          "grapheme–phoneme connection",
+          "phonics"
+        ]
+      },
+      {
+        "order": 4,
+        "label": "Apply to print / orthography",
+        "examples": [
+          "decoding",
+          "encoding",
+          "spelling patterns",
+          "automatic word recognition"
+        ]
+      }
+    ],
+    "note": "This is an instructional paraphrase of the supplied description, not a verbatim recreation of Tolman's diagram. Treat phonological and orthographic knowledge as interconnected, not necessarily a rigid one-way sequence."
+  },
+  "source_terms": [
+    {
+      "term": "Tolman's hourglass figure",
+      "supplied_definition": "a conceptual model that illustrates how broad, general knowledge is progressively filtered and refined into specific, goal-directed behavior through the stages of learning and decision-making",
+      "context_note": "In this literacy lesson, it is used for phonological-to-phonemic-to-orthographic skill connections."
+    },
+    {
+      "term": "phonological awareness",
+      "supplied_definition": "the ability to recognize and manipulate the sounds of spoken language, including words, syllables, and phonemes (individual speech sounds), without necessarily understanding the meaning of the words"
+    }
+  ],
+  "reflection_questions": [
+    "Why is phonological recoding important for reading and writing?",
+    "How does the alphabetic principle relate to phonemic awareness?",
+    "How do phonological and phonemic awareness prepare students for decoding?"
+  ],
+  "resources": [
+    {
+      "type": "video",
+      "title": "Introduction to the Tolman Hourglass Figure",
+      "author": "Carol Tolman",
+      "duration": "3:05",
+      "date": "2018-07-28",
+      "url": "https://www.youtube.com/watch?v=9uGm7r3JdyY"
+    },
+    {
+      "type": "transcript",
+      "title": "Introduction to the Tolman Hourglass Figure transcript",
+      "url": "https://assets.wgu.edu/4e0934fa86739580acd2f93f3aa2530a"
+    },
+    {
+      "type": "video",
+      "title": "Science of Reading: The Difference Between Analytic and Synthetic Phonics Instruction",
+      "provider": "Amplify",
+      "duration": "45:45",
+      "assigned_segment": "14:00–19:40",
+      "url": "https://www.youtube.com/watch?v=HYklSgt-inM&t=840s"
+    },
+    {
+      "type": "transcript",
+      "title": "Amplify assigned segment transcript",
+      "url": "https://assets.wgu.edu/224d66eb5c1210bc9fc079abe1059e01"
+    },
+    {
+      "type": "video",
+      "title": "Phonological & Phonemic Awareness",
+      "provider": "WGU",
+      "duration": "2:31",
+      "url": "https://wgu.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=c1d84ead-033f-42cd-849b-b3e2004cd379"
+    },
+    {
+      "type": "image",
+      "title": "WGU video illustration",
+      "url": "https://assets.wgu.edu/31881593320aba96df765d78a9fe6252"
+    },
+    {
+      "type": "book_chapter",
+      "title": "Phonological Awareness: A Critical Foundation for Beginning Reading, in Fundamentals of Literacy Instruction & Assessment, Pre-K–6, Chapter 7",
+      "authors": [
+        "Al Otaiba, S.",
+        "Ortiz, M.",
+        "Hougen, M. C."
+      ],
+      "editors": [
+        "Hougen, M. C.",
+        "Smartt, S. M."
+      ],
+      "year": 2012
+    }
+  ],
+  "original_guided_practice": [],
+  "proposed_practice_items": [
+    {
+      "id": "D669-L3.3-NEW1",
+      "type": "categorize",
+      "prompt": "Sort examples into phonological awareness, phonemic awareness, or phonics.",
+      "status": "new_author_created_requires_review",
+      "game_compatibility": [
+        "learn-lab",
+        "trial-chamber"
+      ]
+    },
+    {
+      "id": "D669-L3.3-NEW2",
+      "type": "ordering",
+      "prompt": "Arrange representative skills along Tolman's hourglass sequence.",
+      "status": "new_author_created_requires_review",
+      "game_compatibility": [
+        "learn-lab"
+      ]
+    },
+    {
+      "id": "D669-L3.3-NEW3",
+      "type": "scenario-diagnosis",
+      "prompt": "Use observations of a child's spoken-word sound skills and print skills to identify the most appropriate next instructional activity.",
+      "status": "new_author_created_requires_review",
+      "game_compatibility": [
+        "oracle-lens"
+      ]
+    }
+  ],
+  "notes": "No graded or guided-practice questions were supplied in this section. Do not invent original course answers. Video content has not been independently watched; resource descriptions are taken from the supplied course text. Integration with the live game requires future implementation."
+}
