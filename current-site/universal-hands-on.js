@@ -124,9 +124,9 @@ const install=()=>{
  const side=window.sideHTML;window.sideHTML=function(){let html=side.apply(this,arguments);return html.replace(/<button[^>]*data-nav="hands-on"[^>]*>[\s\S]*?<\/button>/g,'');};
  const learn=window.MajickLearningLab;
  if(learn&&typeof learn.render==='function'&&!learn.__huLaunchWrapped){
-  const base=learn.render;learn.render=function(){let html=base.apply(this,arguments);const launch='<div class="huStudyLaunch"><b>Hands-on Studio</b><p>Classroom scenarios with your site-wide response preference.</p><button type="button" data-hu-launch>Open hands-on practice</button></div>';return html.replace('</header>','</header>'+launch)};learn.__huLaunchWrapped=true;
+  const base=learn.render;learn.render=function(){let html=base.apply(this,arguments);const launch='<div class="huStudyLaunch"><b>Hands-on Studio</b><p>Classroom scenarios and OA questions live inside your Study Realm.</p>'+modePicker()+'<button type="button" data-hu-launch>Open hands-on scenarios</button></div>';return html.replace('</header>','</header>'+launch)};learn.__huLaunchWrapped=true;
  }
- document.addEventListener('click',e=>{if(e.target.closest('[data-hu-launch]'))window.navigate?.('hands-on')});
+ document.addEventListener('click',e=>{const b=e.target.closest('button');if(b?.hasAttribute('data-hu-launch'))window.navigate?.('hands-on');else if(b?.hasAttribute('data-hu-mode')&&!b.closest('.huStudio'))setMode(b.dataset.huMode)});
  const screenBase=window.screenHTML;window.screenHTML=function(){return appState()?.screen==='hands-on'?screen():screenBase.apply(this,arguments)};
  const renderBase=window.render;window.render=function(){const result=renderBase.apply(this,arguments);const floating=document.getElementById('majickHandsOnLaunch');if(floating)floating.style.display='none';return result};
  document.addEventListener('click',handler);
