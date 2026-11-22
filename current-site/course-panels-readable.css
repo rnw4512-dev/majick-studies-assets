@@ -1,0 +1,30 @@
+/* Scoped readability for restored sourced course cards only.
+   Do not modify global room themes, course state, progress, or rewards. */
+#content .cap-shelf{background:#fffaf2!important;color:#27213a!important}
+#content .cap-shelf .cap-heading h3,
+#content .cap-shelf .cap-heading p,
+#content .cap-shelf .cap-inside>p,
+#content .cap-shelf .cap-concept,
+#content .cap-shelf .cap-concept :is(p,strong),
+#content .cap-shelf .cap-question-body,
+#content .cap-shelf .cap-question-body>p,
+#content .cap-shelf .cap-activity>summary,
+#content .cap-shelf .cap-pack>summary,
+#content .cap-shelf .cap-source,
+#content .cap-shelf .cap-feedback,
+#content .cap-shelf .cap-resources,
+#content .cap-shelf .cap-resources strong{color:#29213b!important;opacity:1!important;text-shadow:none!important}
+#content .cap-shelf .cap-heading>span{color:#4b356b!important}
+#content .cap-shelf .cap-activity h4{color:#29213b!important}
+#content .cap-shelf .cap-concept{background:#f5effa!important}
+#content .cap-shelf .cap-activity{background:#fffdf8!important}
+#content .cap-shelf .cap-option{color:#27213b!important;background:#fff!important;border-color:#745e92!important}
+#content .cap-shelf .cap-option[aria-pressed=true]{background:#e7daf4!important}
+#content .cap-shelf .cap-source a,
+#content .cap-shelf .cap-resources a{color:#4c317f!important;text-decoration:underline!important;opacity:1!important}
+#content .cap-shelf .cap-feedback[data-result=correct]{color:#164b34!important;background:#e1f2e7!important}
+#content .cap-shelf .cap-feedback[data-result=try]{color:#633d14!important;background:#fff0db!important}
+#content .cap-shelf :is(textarea,input){color:#29213b!important;background:#fff!important}
+#content .cap-shelf [data-cap-save-written]{color:#fff!important;background:#554064!important}
+#content .cap-shelf :is(button,summary,a,textarea):focus-visible{outline:3px solid #624188!important;outline-offset:2px!important}
+@media(max-width:600px){#content .cap-shelf .cap-options{grid-template-columns:1fr!important}}
