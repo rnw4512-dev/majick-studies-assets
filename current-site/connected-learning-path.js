@@ -4,7 +4,7 @@ const $=s=>document.querySelector(s);
 function state(){return window.S||null}
 function course(){return String(state()?.activeCourse||'D772')}
 function rows(){return state()?.progress?.[course()]?.adaptiveSkills||{}}
-function pick(){const book=rows(),need=window.MajickLearningContinuity?.skillNeeds?.()||[];const match=need.find(r=>r.lessonId);return match?.lessonId||lessons.find(([id])=>!window.MajickLearningContinuity?.masteryStatus?.(id)?.certified)?.[0]||lessons[0][0]}
+function pick(){const book=rows(),need=window.MajickLearningContinuity?.skillNeeds?.()||[];const match=need.find(r=>r.lessonId&&String(r.lessonId).toLowerCase().startsWith(course().toLowerCase()+'-'));return match?.lessonId||lessons.find(([id])=>!window.MajickLearningContinuity?.masteryStatus?.(id)?.certified)?.[0]||lessons[0][0]}
 function route(){return String(state()?.screen||'home').toLowerCase()}
 function label(id){return lessons.find(x=>x[0]===id)?.[1]||id}
 function go(room){if(typeof window.navigate==='function')window.navigate(room);schedule()}
@@ -25,7 +25,7 @@ function showTeaching(id,mode='learn'){const root=$('#content');if(!root)return;
 let pathExpanded=false;
 function render(){
  const root=$('#content');if(!root||!state())return;
- const room=route();if(!['home','mission','guide','reasoning','games','test'].includes(room)){root.querySelector(':scope > #majConnectedPath')?.remove();root.querySelector(':scope > #majPathTeaching')?.remove();return;}
+ const room=route();if(course()!=='D772'||!['home','mission','guide','reasoning','games','test'].includes(room)){root.querySelector(':scope > #majConnectedPath')?.remove();root.querySelector(':scope > #majPathTeaching')?.remove();return;}
  let host=root.querySelector(':scope > #majConnectedPath');
  if(!host){host=document.createElement('section');host.id='majConnectedPath';host.setAttribute('aria-label','Learning path and practice stages');root.prepend(host)}
  const id=pick(),master=window.MajickLearningContinuity?.masteryStatus?.(id)||{},needs=window.MajickLearningContinuity?.skillNeeds?.()||[];
