@@ -81,7 +81,7 @@
     installed=true;
     const prev=window.MajickLearningLab.render;
     window.MajickLearningLab.render=function(){
-      const html=prev.apply(this,arguments),extension=render()+fgRender();
+      const html=prev.apply(this,arguments),extension=''; // Temporarily remove unreadable generated course and fluency panels from the live UI; keep source packs and progress data.
       return extension?html.replace('</header>','</header>'+extension):html;
     };
   }
