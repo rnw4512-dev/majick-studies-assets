@@ -25,7 +25,7 @@ function catalog(cid){
  packs.forEach(p=>add('pack:'+p.id,p.title,'source',p.summary,p.id));
  // Existing curriculum activities are lesson-level classroom application tasks.
  const tasks=(window.MajickLessonActivities?.tasks||[]).filter(t=>String(t.course||'').toUpperCase()===cid);
- tasks.forEach(t=>add('task:'+t.id,t.title,'task',t.objective,t.lessonId));
+ tasks.forEach(t=>{const code=String(t.lessonId||'').match(/-l(\d+)-(\d+)$/);const hasSource=code&&packs.some(p=>p.id==='lesson-'+Number(code[1])+'-'+Number(code[2]));if(!hasSource)add('task:'+t.id,t.title,'task',t.objective,t.lessonId)});
  // Lessons shown in the existing Learning Lab, including notes the user added.
  const model=window.MajickLearningLab;
  try{(model?.lessons?.(cid)||[]).forEach((l,i)=>add('lab:'+i,l.title||('Lesson '+(i+1)),'lab',l.source||'',i))}catch(_){}
