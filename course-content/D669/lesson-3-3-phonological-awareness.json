@@ -188,7 +188,65 @@
       "game_compatibility": [
         "oracle-lens"
       ]
+    },
+    {
+      "id": "D669-L3.3-NEW4",
+      "type": "categorize",
+      "prompt": "Sort oral tasks (syllables/rhyme/onset-rime versus individual-phoneme isolation/blending/segmentation/substitution) by awareness level.",
+      "status": "new_author_created_requires_review",
+      "game_compatibility": [
+        "learn-lab",
+        "trial-chamber"
+      ]
     }
   ],
-  "notes": "No graded or guided-practice questions were supplied in this section. Do not invent original course answers. Video content has not been independently watched; resource descriptions are taken from the supplied course text. Integration with the live game requires future implementation."
+  "notes": "No graded or guided-practice questions were supplied in this section. Do not invent original course answers. Video content has not been independently watched; resource descriptions are taken from the supplied course text. Integration with the live game requires future implementation.",
+  "video_analysis": {
+    "title": "Developing a Literacy Environment: Phonological & Phonemic Awareness",
+    "source": "User-uploaded WGU video MP4 with embedded English subtitles, matched to supplied Panopto link",
+    "source_url": "https://wgu.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=c1d84ead-033f-42cd-849b-b3e2004cd379",
+    "duration_seconds": 150.44,
+    "review_status": "verified_against_embedded_subtitles",
+    "summary": "The narrated video contrasts broad phonological awareness with phonemic awareness as the individual-phoneme subset. Illustrations include clapping spoken syllables, rhyme recognition, word awareness, onset-rime awareness, letter representation of phonemes, substituting a beginning phoneme, and isolating/blending/segmenting individual phonemes. It describes their roles in developing fluent reading.",
+    "timestamped_concepts": [
+      {
+        "time": "00:14",
+        "topic": "Phonological awareness",
+        "examples": [
+          "clap syllables in banana",
+          "recognize the rhyme in cat and hat",
+          "identify words in sentences",
+          "identify onset and rime"
+        ]
+      },
+      {
+        "time": "01:09",
+        "topic": "Phonemic awareness",
+        "examples": [
+          "identify individual speech sounds",
+          "44 English phonemes stated by narrator",
+          "letters or letter combinations represent phonemes"
+        ]
+      },
+      {
+        "time": "01:44",
+        "topic": "Phoneme manipulation",
+        "examples": [
+          "change first sound of bat to /p/ to make pat",
+          "isolate sounds",
+          "blend sounds",
+          "segment sounds",
+          "substitute sounds"
+        ]
+      },
+      {
+        "time": "02:20",
+        "topic": "Reading development",
+        "examples": [
+          "sound-awareness skills contribute toward fluent reading"
+        ]
+      }
+    ],
+    "note": "Summary/paraphrase only: do not publish the copyrighted video or reproduce its full subtitles in public repository. Video source and metadata attached as link; retain user uploaded media privately in conversation."
+  }
 }
