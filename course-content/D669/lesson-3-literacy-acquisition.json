@@ -1,0 +1,100 @@
+{
+  "schema_version": "1.0",
+  "course_id": "D669",
+  "lesson_id": "3",
+  "title": "Lesson 3 — Literacy Acquisition Elements",
+  "source": "User-supplied WGU Lesson 3 introduction, objective, and guided practice",
+  "source_status": "user_provided",
+  "review_status": "source_transcribed_not_independently_verified",
+  "graded": false,
+  "learning_objectives": [
+    "Explain literacy acquisition elements."
+  ],
+  "lesson_summary": "Effective literacy acquisition requires a comprehensive understanding and application of phonemic awareness, phonics, fluency, vocabulary, and comprehension strategies tailored to learners across age groups. The introduction connects lexical quality of words and oral language to language acquisition.",
+  "key_concepts": [
+    "lexical quality",
+    "oral language",
+    "phonemic awareness",
+    "phonics",
+    "fluency",
+    "vocabulary",
+    "comprehension strategies",
+    "decoding skills",
+    "diverse learners"
+  ],
+  "items": [
+    {
+      "id": "D669-L3-GP1",
+      "type": "single_choice",
+      "prompt": "Which of the following is a key element of literacy acquisition?",
+      "options": [
+        {
+          "id": "0",
+          "text": "Vocabulary building"
+        },
+        {
+          "id": "1",
+          "text": "Phonological Awareness"
+        },
+        {
+          "id": "2",
+          "text": "Decoding Skills"
+        },
+        {
+          "id": "3",
+          "text": "Writing Fluency"
+        }
+      ],
+      "correct_option_id": "2",
+      "feedback_correct": "Decoding skills involve the ability to identify written symbols into spoken sounds and language.",
+      "competency_tags": [
+        "decoding",
+        "literacy-acquisition"
+      ],
+      "game_compatibility": [
+        "starfall",
+        "trial-chamber"
+      ],
+      "difficulty": "recall",
+      "source_keyed_answer": true,
+      "assessment_quality_flag": "AMBIGUOUS: Vocabulary building, phonological awareness, and decoding are all plausible elements of literacy acquisition. Keep the original source answer for faithful transcription but do not use this item as a strict single-correct independent mastery assessment until rewritten or reviewed.",
+      "independent_mastery_eligible": false
+    },
+    {
+      "id": "D669-L3-GP2",
+      "type": "single_choice",
+      "prompt": "Which of the following is an essential aspect of literacy acquisition?",
+      "options": [
+        {
+          "id": "0",
+          "text": "Comprehension Strategies"
+        },
+        {
+          "id": "1",
+          "text": "Oral Presentation Skills"
+        },
+        {
+          "id": "2",
+          "text": "Grammar Proficiency"
+        },
+        {
+          "id": "3",
+          "text": "Spelling Accuracy"
+        }
+      ],
+      "correct_option_id": "0",
+      "feedback_correct": "Comprehension strategies are crucial for understanding and interpreting text, which is a fundamental part of literacy acquisition.",
+      "competency_tags": [
+        "reading-comprehension",
+        "literacy-acquisition"
+      ],
+      "game_compatibility": [
+        "starfall",
+        "trial-chamber"
+      ],
+      "difficulty": "recall",
+      "source_keyed_answer": true
+    }
+  ],
+  "notes": "Original questions faithfully transcribed. GP1 is multi-plausible; source specifies decoding but other listed skills are relevant. Build separate high-quality application and transfer cases (e.g. identify decoding errors vs comprehension challenges in student work) before Oracle Lens use. No automatic mastery claim from this ungraded self-check."
+}
