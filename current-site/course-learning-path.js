@@ -97,7 +97,7 @@ function render(){
  const idx=stage(),key=cid+'|'+room+'|'+item.id+'|'+idx+'|'+list.map(x=>x.id).join(',')+'|'+progressFor(cid,item);
  const host=root.querySelector(':scope > #majConnectedPath')||document.createElement('section');
  if(!host.isConnected){host.id='majConnectedPath';host.setAttribute('aria-label','Course and lesson learning path');root.prepend(host)}
- if(host.dataset.signature===key)return;
+ if(host.dataset.signature===key&&host.querySelector('.majPathSummary')?.textContent?.includes('Path v4.0'))return;
  const prior=host.querySelector('details');if(prior)expanded=prior.open;
  host.dataset.signature=key;host.replaceChildren();
  const details=document.createElement('details');details.className='majPathDisclosure';details.open=expanded;
@@ -149,7 +149,7 @@ function checkContext(){
 }
 function init(){
  const root=$('#content');if(root){
-  new MutationObserver(m=>{if(m.some(x=>[...x.addedNodes].some(n=>n.nodeType===1&&n.id!=='majConnectedPath'&&!n.closest?.('#majConnectedPath'))))schedule()}).observe(root,{childList:true});
+  new MutationObserver(m=>{if(m.some(x=>[...x.addedNodes].some(n=>n.nodeType===1&&n.id!=='majConnectedPath'&&!n.closest?.('#majConnectedPath'))) || (root.querySelector('#majConnectedPath')&&!root.querySelector('#majConnectedPath .majPathSummary')?.textContent?.includes('Path v4.0')))schedule()}).observe(root,{childList:true,subtree:true});
  }
  checkContext();schedule();
 }
