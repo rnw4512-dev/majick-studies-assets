@@ -21,7 +21,7 @@
   function render(){
     const packs=courses();
     if(!packs.length)return '';
-    return '<section class="cap-shelf" aria-label="Course lessons and interactive practice"><div class="cap-heading"><span>✦ COURSE MATERIAL • REUSABLE PRACTICE</span><h3>Lessons and hands-on checks</h3><p>Study the source material, then practice. These review activities do not award XP or count as independent mastery.</p></div>'+
+    return '<section class="cap-shelf" data-aeth-surface="paper" aria-label="Course lessons and interactive practice"><div class="cap-heading"><span>✦ COURSE MATERIAL • REUSABLE PRACTICE</span><h3>Lessons and hands-on checks</h3><p>Study the source material, then practice. These review activities do not award XP or count as independent mastery.</p></div>'+
       packs.map(p=>'<details class="cap-pack" data-cap-pack="'+esc(p.id)+'"><summary>'+esc(p.title)+' <span>Study + practice</span></summary><div class="cap-inside">'+
         (p.summary?'<p>'+esc(p.summary)+'</p>':'')+
         (p.concepts?.length?'<div class="cap-concepts">'+p.concepts.map(c=>'<div class="cap-concept"><strong>'+esc(c.term)+'</strong><p>'+esc(c.text)+'</p></div></details>').join('')+'</div>':'')+
