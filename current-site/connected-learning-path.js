@@ -2,7 +2,7 @@
 const lessons=[['d772-s1-l1','Sampling & populations'],['d772-s1-l2','Bias & sampling methods'],['d772-s1-l3','Misleading representations'],['d772-s1-l4','Statistical conclusions'],['d772-s2-l1','Types of data'],['d772-s2-l2','Graphs & displays'],['d772-s2-l3','Distributions'],['d772-s2-l4','Mean, median & variability'],['d772-s3-l1','Probability fundamentals'],['d772-s3-l2','Compound probability']];
 const $=s=>document.querySelector(s);
 function state(){return window.S||null}
-function course(){return String(state()?.activeCourse||'D772')}
+function course(){const chosen=document.querySelector('.courseSelect')?.value;return String(chosen||state()?.activeCourse||'').toUpperCase()}
 function rows(){return state()?.progress?.[course()]?.adaptiveSkills||{}}
 function pick(){const book=rows(),need=window.MajickLearningContinuity?.skillNeeds?.()||[];const match=need.find(r=>r.lessonId&&String(r.lessonId).toLowerCase().startsWith(course().toLowerCase()+'-'));return match?.lessonId||lessons.find(([id])=>!window.MajickLearningContinuity?.masteryStatus?.(id)?.certified)?.[0]||lessons[0][0]}
 function route(){return String(state()?.screen||'home').toLowerCase()}
@@ -23,9 +23,40 @@ const teaching={
 function showTeaching(id,mode='learn'){const root=$('#content');if(!root)return;let host=root.querySelector('#majPathTeaching');if(!host){host=document.createElement('section');host.id='majPathTeaching';host.className='majPathTeaching';const panel=root.querySelector('#majConnectedPath');panel?.after(host)}const [concept,steps,example]=teaching[id]||['Read the lesson objective and identify the given information.','Explain the method before calculating.','Use a fresh independent question after guidance.'];const title=document.createElement('h3');title.textContent=(mode==='reteach'?'Teach Me Again: ':mode==='review'?'Review: ':'Learn: ')+label(id);const p=document.createElement('p');p.textContent=mode==='reteach'?steps:concept;const detail=document.createElement('p');detail.textContent=mode==='reteach'?example:steps;const b=document.createElement('button');b.type='button';b.textContent='Show worked example';b.addEventListener('click',()=>{detail.textContent=example});host.replaceChildren(title,p,detail,b);host.scrollIntoView?.({block:'nearest',behavior:'auto'})}
 
 let pathExpanded=false;
+const D669_LESSONS=[
+ ['3.3','Phonological Awareness','Spoken words, syllables, rhyme, and Tolman’s Hourglass'],
+ ['3.4','Phonemic Awareness','Individual phonemes: isolation, blending, segmentation, manipulation'],
+ ['3.6','Phonics and Structured Literacy','Grapheme–phoneme relationships and decoding']
+];
+function d669Path(root){
+ let host=root.querySelector(':scope > #majConnectedPath');
+ if(!host){host=document.createElement('section');host.id='majConnectedPath';host.setAttribute('aria-label','D669 learning path');root.prepend(host)}
+ const old=host.querySelector('details');if(old)pathExpanded=old.open;
+ host.replaceChildren();
+ const detail=document.createElement('details');detail.className='majPathDisclosure';detail.open=pathExpanded;
+ detail.addEventListener('toggle',()=>{pathExpanded=detail.open});
+ const summary=document.createElement('summary');summary.className='majPathSummary';
+ summary.textContent='✦ D669 Learning Path · Early Literacy · Learn & practice';
+ detail.append(summary);
+ const panel=document.createElement('div');panel.className='majPathBody';detail.append(panel);
+ const title=document.createElement('h2');title.textContent='Your D669 Literacy Learning Path';panel.append(title);
+ const sub=document.createElement('p');sub.textContent='Study the WGU lesson and its resources, try cited practice, and apply the skill in a classroom scenario.';panel.append(sub);
+ const list=document.createElement('div');list.className='majPathActions';
+ D669_LESSONS.forEach(([id,name,description])=>{
+  const button=document.createElement('button');button.type='button';button.textContent='Lesson '+id+' · '+name;
+  button.title=description;
+  button.addEventListener('click',()=>{go('learninglab');setTimeout(()=>{const section=[...document.querySelectorAll('[data-cap-pack]')].find(el=>el.dataset.capPack==='lesson-'+id.replace('.','-'));if(section){section.open=true;section.scrollIntoView?.({behavior:'auto',block:'start'})}},160)});
+  list.append(button);
+ });panel.append(list);
+ const steps=document.createElement('p');steps.className='majPathNote';steps.textContent='Learn → Cited multiple-choice practice → Guided scenario → Fresh independent application. Guided answers and games do not count as certified mastery.';panel.append(steps);
+ const hands=document.createElement('button');hands.type='button';hands.textContent='Try a Hands-on classroom scenario';hands.addEventListener('click',()=>go('hands-on'));panel.append(hands);
+ host.append(detail);
+}
 function render(){
  const root=$('#content');if(!root||!state())return;
- const room=route();if(course()!=='D772'||!['home','mission','guide','reasoning','games','test'].includes(room)){root.querySelector(':scope > #majConnectedPath')?.remove();root.querySelector(':scope > #majPathTeaching')?.remove();return;}
+ const room=route(),cid=course();
+ if(cid==='D669'&&['home','mission','guide','reasoning','games','test','learninglab'].includes(room)){root.querySelector(':scope > #majPathTeaching')?.remove();d669Path(root);return;}
+ if(cid!=='D772'||!['home','mission','guide','reasoning','games','test'].includes(room)){root.querySelector(':scope > #majConnectedPath')?.remove();root.querySelector(':scope > #majPathTeaching')?.remove();return;}
  let host=root.querySelector(':scope > #majConnectedPath');
  if(!host){host=document.createElement('section');host.id='majConnectedPath';host.setAttribute('aria-label','Learning path and practice stages');root.prepend(host)}
  const id=pick(),master=window.MajickLearningContinuity?.masteryStatus?.(id)||{},needs=window.MajickLearningContinuity?.skillNeeds?.()||[];
@@ -50,7 +81,8 @@ function render(){
  const note=document.createElement('p');note.className='majPathNote';note.textContent='Guided work helps you learn. Only verified independent answers count toward mastery. Game rewards do not certify a skill.';body.append(note);
 }
 let scheduled=false;function schedule(){if(scheduled)return;scheduled=true;setTimeout(()=>{scheduled=false;render()},80)}
-document.addEventListener('click',e=>{if(e.target.closest('[data-nav],#majConnectedPath'))schedule()});
+document.addEventListener('click',e=>{if(e.target.closest('[data-nav],#majConnectedPath,.courseSelect'))schedule()});
+document.addEventListener('change',e=>{if(e.target?.matches?.('.courseSelect'))schedule()});
 const observer=new MutationObserver(m=>{if(m.some(x=>[...x.addedNodes].some(n=>n.nodeType===1&&!['majConnectedPath','majPathTeaching'].includes(n.id)&&!n.closest?.('#majConnectedPath,#majPathTeaching'))))schedule()});
 function init(){const root=$('#content');if(root)observer.observe(root,{childList:true});schedule()}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
