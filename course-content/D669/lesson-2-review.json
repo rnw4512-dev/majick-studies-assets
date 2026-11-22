@@ -1,0 +1,145 @@
+{
+  "schema_version": "1.0",
+  "course_id": "D669",
+  "lesson_id": "2",
+  "title": "Lesson 2 — Literacy Foundations Knowledge Check",
+  "source": "User-supplied WGU course review questions, November 21 2026",
+  "source_status": "user_provided",
+  "review_status": "source_transcribed_not_independently_verified",
+  "graded": false,
+  "items": [
+    {
+      "id": "D669-L2-Q1",
+      "type": "single_choice",
+      "prompt": "What is the first pillar of literacy according to the lesson?",
+      "options": [
+        {
+          "id": "0",
+          "text": "Phonemic awareness"
+        },
+        {
+          "id": "1",
+          "text": "Phonics"
+        },
+        {
+          "id": "2",
+          "text": "Fluency"
+        },
+        {
+          "id": "3",
+          "text": "Vocabulary"
+        }
+      ],
+      "correct_option_id": "0",
+      "feedback_correct": "Phonemic awareness is the first pillar, focusing on understanding the sounds in words.",
+      "competency_tags": [
+        "phonemic-awareness"
+      ],
+      "game_compatibility": [
+        "starfall",
+        "trial-chamber"
+      ],
+      "difficulty": "recall"
+    },
+    {
+      "id": "D669-L2-Q2",
+      "type": "single_choice",
+      "prompt": "What does Scarborough's Reading Rope represent?",
+      "options": [
+        {
+          "id": "0",
+          "text": "A tangled web of words"
+        },
+        {
+          "id": "1",
+          "text": "A ladder to success in reading"
+        },
+        {
+          "id": "2",
+          "text": "A narrow path to literacy"
+        },
+        {
+          "id": "3",
+          "text": "A big picture of how reading works"
+        }
+      ],
+      "correct_option_id": "3",
+      "feedback_correct": "Scarborough's Reading Rope is like a big picture of reading, showing how different skills are interconnected.",
+      "competency_tags": [
+        "scarborough-reading-rope"
+      ],
+      "game_compatibility": [
+        "starfall",
+        "trial-chamber"
+      ],
+      "difficulty": "recall"
+    },
+    {
+      "id": "D669-L2-Q3",
+      "type": "single_choice",
+      "prompt": "Which literacy approach emphasizes explicit instruction in the relationships between sounds and letters?",
+      "options": [
+        {
+          "id": "0",
+          "text": "Sight-word instruction"
+        },
+        {
+          "id": "1",
+          "text": "Structured literacy"
+        },
+        {
+          "id": "2",
+          "text": "Whole language"
+        },
+        {
+          "id": "3",
+          "text": "Balanced literacy"
+        }
+      ],
+      "correct_option_id": "1",
+      "feedback_correct": "Structured literacy is an evidence-based approach that emphasizes explicit instruction in phonics and other language structures.",
+      "competency_tags": [
+        "structured-literacy"
+      ],
+      "game_compatibility": [
+        "starfall",
+        "trial-chamber"
+      ],
+      "difficulty": "recall"
+    },
+    {
+      "id": "D669-L2-Q4",
+      "type": "single_choice",
+      "prompt": "What does phonemic awareness primarily focus on?",
+      "options": [
+        {
+          "id": "0",
+          "text": "Recognizing letter-sound relationships"
+        },
+        {
+          "id": "1",
+          "text": "Understanding word meanings"
+        },
+        {
+          "id": "2",
+          "text": "Reading smoothly and with expression"
+        },
+        {
+          "id": "3",
+          "text": "Manipulating individual sounds in words"
+        }
+      ],
+      "correct_option_id": "3",
+      "feedback_correct": "Phonemic awareness involves manipulating individual sounds in words.",
+      "competency_tags": [
+        "phonemic-awareness"
+      ],
+      "game_compatibility": [
+        "starfall",
+        "trial-chamber"
+      ],
+      "difficulty": "recall"
+    }
+  ],
+  "notes": "Use as an initial lesson checkpoint. Build separately reviewed application/transfer scenarios for Oracle Lens; these four recall questions alone do not support independent mastery claims."
+}
