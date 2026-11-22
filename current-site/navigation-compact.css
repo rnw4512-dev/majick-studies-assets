@@ -79,7 +79,8 @@ html{scroll-behavior:auto}
  .side .brand{margin-bottom:6px!important}
  .side .nav{display:flex!important;gap:5px!important;overflow-x:auto!important;overflow-y:hidden!important;max-height:none!important;padding:4px 0!important}
  .side .nav button{flex:0 0 auto!important;min-height:42px!important;padding:7px 10px!important}
- .side .sidefoot{display:none!important}
+ .side .sidefoot{display:grid!important;max-height:76px!important;overflow:hidden!important;margin:5px 0!important;padding:6px!important}
+ .side .unifiedFamiliarSide{grid-template-columns:48px minmax(0,1fr)!important}
  .main{height:auto!important;overflow:visible!important;min-height:0!important}
  .top{grid-template-columns:minmax(0,1fr)!important;gap:5px!important;padding:8px 12px!important;position:sticky!important}
  .top .titleline{display:flex!important;gap:6px!important}
