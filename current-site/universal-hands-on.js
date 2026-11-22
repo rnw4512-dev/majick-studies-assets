@@ -121,7 +121,7 @@ const install=()=>{
  if(!window.S && appState())window.S=appState();
  window.__huSidebarInstalled=true;
  // Hands-on lives inside the existing study realm, not as a second sidebar room.
- const side=window.sideHTML;window.sideHTML=function(){let html=side.apply(this,arguments);return html.replace(/<button[^>]*data-nav="hands-on"[^>]*>[\\s\\S]*?<\\/button>/g,'');};
+ const side=window.sideHTML;window.sideHTML=function(){let html=side.apply(this,arguments);return html.replace(/<button[^>]*data-nav="hands-on"[^>]*>[\s\S]*?<\/button>/g,'');};
  const learn=window.MajickLearningLab;
  if(learn&&typeof learn.render==='function'&&!learn.__huLaunchWrapped){
   const base=learn.render;learn.render=function(){let html=base.apply(this,arguments);const launch='<div class="huStudyLaunch"><b>Hands-on Studio</b><p>Classroom scenarios with your site-wide response preference.</p><button type="button" data-hu-launch>Open hands-on practice</button></div>';return html.replace('</header>','</header>'+launch)};learn.__huLaunchWrapped=true;
