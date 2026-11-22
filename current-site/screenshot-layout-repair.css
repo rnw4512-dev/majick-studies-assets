@@ -17,3 +17,18 @@
 @media(max-width:940px){.top{padding:11px 16px!important}.top .titleline{flex:1 1 220px}.top .courseSelect{flex:1 1 300px}.content{padding:15px}}
 @media(max-width:600px){.top{gap:8px;padding:10px 12px!important}.top .courseSelect{flex:1 1 100%;min-width:0}.top .titleline h1{font-size:1.25rem}.content{padding:10px}.majickRoomSections{position:relative;top:auto}}
 @media(prefers-reduced-motion:reduce){.top *,.majickRoomSections *{scroll-behavior:auto!important;transition:none!important}}
+
+/* WGU D669 source pack contrast: legacy dark-room text overrides had made light lesson panels unreadable. */
+#content .cap-shelf,#content .cap-shelf .cap-inside,#content .cap-shelf .cap-heading,#content .cap-shelf .cap-question-body,#content .cap-shelf .cap-activity,#content .cap-shelf .cap-concept{color:#29233d!important}
+#content .cap-shelf p,#content .cap-shelf h3,#content .cap-shelf h4,#content .cap-shelf strong,#content .cap-shelf small,#content .cap-shelf .cap-feedback,#content .cap-shelf .cap-source,#content .cap-shelf .cap-concept p{color:#29233d!important;opacity:1!important;text-shadow:none!important}
+#content .cap-shelf .cap-heading span{color:#513d69!important;opacity:1!important}
+#content .cap-shelf .cap-activity>summary,#content .cap-shelf .cap-pack>summary{color:#302442!important;text-shadow:none!important}
+#content .cap-shelf .cap-feedback{background:#ede7f5!important;border:1px solid #c8b7d6!important}
+#content .cap-shelf .cap-source a,#content .cap-shelf .cap-resources a{color:#513280!important;text-decoration:underline!important;opacity:1!important}
+#content .cap-shelf .cap-option{color:#211c34!important;background:#fff!important;border-color:#796393!important}
+#content .cap-shelf .cap-option[aria-pressed=true]{background:#e8def4!important;border-color:#4b3865!important}
+#content .cap-shelf .cap-written{color:#272136!important;background:#fff!important}
+#content .cap-shelf [data-cap-save-written]{color:#fff!important}
+#content .cap-shelf .cap-activity:not([open]){margin-bottom:7px}
+#content .cap-shelf .cap-question-body{padding:12px}
+@media(max-width:600px){#content .cap-shelf .cap-concepts{grid-template-columns:1fr}#content .cap-shelf .cap-options{grid-template-columns:1fr}}
