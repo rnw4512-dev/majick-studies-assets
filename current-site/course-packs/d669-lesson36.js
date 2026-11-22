@@ -1,4 +1,4 @@
-/* Reusable course activity pack — D669 Lesson 3.6 */
+/* Source-grounded reusable course activity pack. */
 (function(){'use strict';window.MajickCourseActivityPlayer?.register({
   "courseId": "D669",
   "id": "lesson-3-6",
@@ -68,7 +68,16 @@
         "Providing opportunities for independent reading"
       ],
       "correct": 1,
-      "explanation": "The course's correct answer is systematic teaching of letter–sound patterns and decoding strategies."
+      "explanation": "The course's correct answer is systematic teaching of letter–sound patterns and decoding strategies.",
+      "provenance": {
+        "kind": "original_course_question",
+        "source_title": "WGU Lesson 3.6 user-provided guided practice",
+        "source_url": "https://github.com/rnw4512-dev/majick-studies-assets/blob/main/course-content/D669/lesson-3-6-phonics.json",
+        "source_status": "user_provided",
+        "verification": "grounded_in_supplied_lesson_material",
+        "course_id": "D669",
+        "lesson_id": "3.6"
+      }
     },
     {
       "id": "explicit",
@@ -80,7 +89,16 @@
         "Unplanned exposure"
       ],
       "correct": 0,
-      "explanation": "The teacher directly explains and models the skill."
+      "explanation": "The teacher directly explains and models the skill.",
+      "provenance": {
+        "kind": "source_based_practice",
+        "source_title": "WGU Lesson 3.6: Phonics and structured literacy",
+        "source_url": "https://assets.wgu.edu/4f2ca05e7ab10a58aad20ee925dacd17",
+        "source_status": "user_provided",
+        "verification": "grounded_in_supplied_lesson_material",
+        "course_id": "D669",
+        "lesson_id": "3.6"
+      }
     },
     {
       "id": "diagnostic",
@@ -92,7 +110,16 @@
         "A spelling convention"
       ],
       "correct": 0,
-      "explanation": "The teacher uses evidence to adjust instruction."
+      "explanation": "The teacher uses evidence to adjust instruction.",
+      "provenance": {
+        "kind": "source_based_practice",
+        "source_title": "WGU Lesson 3.6: Phonics and structured literacy",
+        "source_url": "https://assets.wgu.edu/4f2ca05e7ab10a58aad20ee925dacd17",
+        "source_status": "user_provided",
+        "verification": "grounded_in_supplied_lesson_material",
+        "course_id": "D669",
+        "lesson_id": "3.6"
+      }
     },
     {
       "id": "cumulative",
@@ -104,7 +131,16 @@
         "Only independent reading"
       ],
       "correct": 0,
-      "explanation": "New learning builds on and revisits prior skills."
+      "explanation": "New learning builds on and revisits prior skills.",
+      "provenance": {
+        "kind": "source_based_practice",
+        "source_title": "WGU Lesson 3.6: Phonics and structured literacy",
+        "source_url": "https://assets.wgu.edu/4f2ca05e7ab10a58aad20ee925dacd17",
+        "source_status": "user_provided",
+        "verification": "grounded_in_supplied_lesson_material",
+        "course_id": "D669",
+        "lesson_id": "3.6"
+      }
     },
     {
       "id": "orthography",
@@ -116,7 +152,16 @@
         "Memorizing a logo"
       ],
       "correct": 0,
-      "explanation": "The transcript models connecting spelling to spoken sounds before saying the whole word."
+      "explanation": "The transcript models connecting spelling to spoken sounds before saying the whole word.",
+      "provenance": {
+        "kind": "source_based_practice",
+        "source_title": "User-uploaded Orthographic Mapping transcript (examples: comb, sheep, cough, fish, hats)",
+        "source_url": "https://github.com/rnw4512-dev/majick-studies-assets/blob/main/course-content/D669/lesson-3-6-phonics.json",
+        "source_status": "user_provided",
+        "verification": "grounded_in_supplied_lesson_material",
+        "course_id": "D669",
+        "lesson_id": "3.6"
+      }
     },
     {
       "id": "syllable",
@@ -128,7 +173,16 @@
         "Print orientation"
       ],
       "correct": 0,
-      "explanation": "Analyzing affixes, vowels and syllable structure supports decoding longer words."
+      "explanation": "Analyzing affixes, vowels and syllable structure supports decoding longer words.",
+      "provenance": {
+        "kind": "source_based_practice",
+        "source_title": "WGU Figure 2.17, Reading Multisyllabic Words",
+        "source_url": "https://assets.wgu.edu/2b143916bb9db880f576450caf058824",
+        "source_status": "user_provided",
+        "verification": "grounded_in_supplied_lesson_material",
+        "course_id": "D669",
+        "lesson_id": "3.6"
+      }
     },
     {
       "id": "phonemic-vs-phonics",
@@ -140,7 +194,17 @@
         "Read the letters sh as a sound"
       ],
       "correct": 2,
-      "explanation": "Phonics involves grapheme–phoneme relationships; the other activities can happen without print."
+      "explanation": "Phonics involves grapheme–phoneme relationships; the other activities can happen without print.",
+      "provenance": {
+        "kind": "source_based_practice",
+        "source_title": "WGU Lesson 3.6: Phonics and structured literacy",
+        "source_url": "https://assets.wgu.edu/4f2ca05e7ab10a58aad20ee925dacd17",
+        "source_status": "user_provided",
+        "verification": "grounded_in_supplied_lesson_material",
+        "course_id": "D669",
+        "lesson_id": "3.6"
+      }
     }
-  ]
+  ],
+  "provenance_policy": "Questions must trace to user-provided source or be blocked from scoring."
 });})();
