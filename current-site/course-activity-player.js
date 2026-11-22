@@ -34,13 +34,54 @@
   style.textContent+=' .cap-written-label{display:block;margin:10px 0}.cap-written{display:block;width:100%;box-sizing:border-box;margin-top:6px;padding:10px;background:white;color:#262138;min-height:90px;border:1px solid #8670a0;border-radius:8px;font:inherit}.cap-activity [data-cap-save-written]{padding:10px;border:1px solid #675184;background:#554064;color:white;border-radius:8px;cursor:pointer} .cap-source{font-size:.82rem;margin:8px 0 0;color:#4d4164}.cap-source a{font-weight:700;color:#523682;text-decoration:underline}.cap-option:disabled{opacity:.55;cursor:not-allowed}';
   style.textContent+=' .cap-activity{display:block;background:#fffdf9;border:1px solid #ddd2e7;border-radius:10px;margin:10px 0;padding:0;overflow:clip}.cap-activity>summary{padding:13px 16px;cursor:pointer;font-weight:750;color:#2f2443;list-style-position:inside}.cap-activity[open]>summary{border-bottom:1px solid #ded2e6;background:#f4edf8}.cap-question-body{padding:12px 16px}.cap-activity>summary:focus-visible{outline:3px solid #694b8b;outline-offset:-3px}';
   document.head.appendChild(style);
+
+  // D669 visual formative games; local fictional evidence, no reward owner.
+  const fluencyCases=[
+    {name:'Maya',prompt:'Reads at a suitable pace but substitutes words.',evidence:'Print: The house was near the river. | Reads: The horse was near the river.',options:['Accuracy','Rate','Prosody'],correct:0,why:'Word substitutions suggest an accuracy concern. Investigate decoding.'},
+    {name:'Leo',prompt:'Reads accurately but word by word, with long hesitations.',evidence:'Print: The little fox ran home. | Reads: The … little … fox … ran … home.',options:['Prosody only','Rate / automaticity','Accuracy'],correct:1,why:'Accurate but effortful word recognition suggests a need for automaticity practice.'},
+    {name:'Nia',prompt:'Reads accurately at an appropriate pace but ignores punctuation.',evidence:'“Stop!” cried the child. | Reads in a flat voice with no phrase breaks.',options:['Accuracy','Rate','Prosody'],correct:2,why:'Expression and phrasing are the concern.'}
+  ];
+  const phraseCases=[{words:['After','the','storm,','the','fox','returned','home.'],correct:[2,6]},{words:['Wait!','The','bridge','is','broken.'],correct:[0,4]},{words:['When','the','bell','rang,','we','packed','our','bags.'],correct:[3,7]}];
+  const labCases=[
+    {name:'Jordan',rates:[64,71,79,87,94],accuracy:[96,94,91,88,84],options:['Raise speed target','Analyze errors and provide targeted decoding instruction','End intervention'],correct:1,why:'Rate increased while accuracy declined. Examine errors before increasing speed.'},
+    {name:'Ari',rates:[45,47,48,49,50],accuracy:[97,98,98,99,99],options:['Provide supported repeated accurate reading','Teach only spelling','Require maximum speed'],correct:0,why:'Accuracy is strong but rate changes little. Supported repeated reading may strengthen automaticity.'},
+    {name:'Sam',rates:[55,62,70,76,82],accuracy:[91,93,95,96,98],options:['Stop monitoring immediately','Focus only on speed','Continue monitoring and check prosody and comprehension'],correct:2,why:'Both measures improve, but fluency and comprehension need additional evidence.'}
+  ];
+  const fgState={detective:0,prosody:0,lab:0,pauses:[]};
+  function fgChart(values,label,max){
+    const X=i=>48+i*65,Y=v=>139-v/max*105;
+    return '<figure style="margin:8px 0"><figcaption><strong>'+esc(label)+'</strong></figcaption><svg role="img" aria-label="'+esc(values.join(', '))+'" viewBox="0 0 340 170" style="width:100%;max-height:210px;background:#fff;border-radius:8px"><g stroke="#d9d0df">'+[0,.25,.5,.75,1].map(t=>'<path d="M48 '+Y(max*t)+' H310"/>').join('')+'</g><g fill="#352846" font-size="10">'+[0,.25,.5,.75,1].map(t=>'<text x="42" y="'+(Y(max*t)+3)+'" text-anchor="end">'+Math.round(max*t)+'</text>').join('')+values.map((v,i)=>'<text x="'+X(i)+'" y="158" text-anchor="middle">W'+(i+1)+'</text><text x="'+X(i)+'" y="'+(Y(v)-9)+'" text-anchor="middle">'+v+'</text>').join('')+'</g><polyline fill="none" stroke="#65438b" stroke-width="3" points="'+values.map((v,i)=>X(i)+','+Y(v)).join(' ')+'"/>'+values.map((v,i)=>'<circle cx="'+X(i)+'" cy="'+Y(v)+'" r="4" fill="#65438b"/>').join('')+'</svg></figure>';
+  }
+  function fgCard(type){
+    const i=fgState[type],c=(type==='detective'?fluencyCases:type==='prosody'?phraseCases:labCases)[i];
+    const options=(c.options||[]).map((o,j)=>'<button class="cap-option" type="button" data-fg-choice="'+j+'">'+esc(o)+'</button>').join('');
+    let body=type==='prosody'?'<p>Tap each word after which you would pause, including the end.</p><div class="cap-options" style="display:flex;flex-wrap:wrap">'+c.words.map((w,j)=>'<button type="button" class="cap-option" data-fg-pause="'+j+'" aria-pressed="'+fgState.pauses.includes(j)+'">'+esc(w)+(fgState.pauses.includes(j)?' /':'')+'</button>').join('')+'</div><button class="cap-option" data-fg-check type="button">Check phrasing</button>':type==='detective'?'<h4>Case: '+esc(c.name)+'</h4><p>'+esc(c.prompt)+'</p><p style="padding:12px;background:#f4edf8;border-radius:8px">'+esc(c.evidence)+'</p><p>Which fluency component needs investigation?</p><div class="cap-options">'+options+'</div>':'<h4>Student: '+esc(c.name)+'</h4><p>Fictional weekly progress data. Compare both measures.</p>'+fgChart(c.rates,'Words correct per minute',120)+fgChart(c.accuracy,'Accuracy (%)',100)+'<details><summary>Data table</summary><p>WCPM: '+c.rates.join(', ')+'<br>Accuracy (%): '+c.accuracy.join(', ')+'</p></details><p>Choose the next instructional step.</p><div class="cap-options">'+options+'</div>';
+    return '<div data-fg-game="'+type+'"><p>Case '+(i+1)+' of 3</p>'+body+'<p class="cap-feedback" role="status" aria-live="polite">Examine the evidence and respond.</p><button type="button" class="cap-option" data-fg-next>Next case ↗</button></div>';
+  }
+  function fgRender(){
+    if(window.S?.activeCourse!=='D669')return '';
+    return '<section class="cap-shelf" aria-label="Fluency visual games"><div class="cap-heading"><span>✦ D669 · FLUENCY QUESTS</span><h3>Reading investigation studio</h3><p>Three visual formative games. Fictional student data; no independent mastery or XP awarded.</p></div>'+[['detective','Fluency Detective'],['prosody','Prosody Challenge'],['lab','Reading Intervention Lab']].map(([t,n])=>'<details class="cap-pack"><summary>'+n+'</summary><div class="cap-inside">'+fgCard(t)+'</div></details>').join('')+'</section>';
+  }
+  document.addEventListener('click',e=>{
+    const b=e.target.closest('button'),g=b?.closest('[data-fg-game]');
+    if(!g||window.S?.activeCourse!=='D669')return;
+    const t=g.dataset.fgGame,i=fgState[t],c=(t==='detective'?fluencyCases:t==='prosody'?phraseCases:labCases)[i],line=g.querySelector('.cap-feedback');
+    if(b.hasAttribute('data-fg-next')){fgState[t]=(i+1)%3;if(t==='prosody')fgState.pauses=[];g.outerHTML=fgCard(t);return;}
+    if(b.hasAttribute('data-fg-pause')){const j=Number(b.dataset.fgPause),p=fgState.pauses;fgState.pauses=p.includes(j)?p.filter(x=>x!==j):p.concat(j);b.setAttribute('aria-pressed',String(fgState.pauses.includes(j)));b.textContent=c.words[j]+(fgState.pauses.includes(j)?' /':'');line.textContent='Check your phrasing when ready.';delete line.dataset.result;return;}
+    let ok,why;
+    if(b.hasAttribute('data-fg-choice')){ok=Number(b.dataset.fgChoice)===c.correct;why=c.why;g.querySelectorAll('[data-fg-choice]').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));}
+    else if(b.hasAttribute('data-fg-check')){ok=fgState.pauses.length===c.correct.length&&c.correct.every(j=>fgState.pauses.includes(j));why='Suggested phrasing: '+c.words.map((w,j)=>w+(c.correct.includes(j)?' /':'')).join(' ')+'. Punctuation guides natural phrase boundaries.';}
+    else return;
+    line.dataset.result=ok?'correct':'try';line.textContent=(ok?'Correct. ':'Try again. ')+why;
+  });
+
   let installed=false;
   function install(){
     if(installed||!window.MajickLearningLab||typeof window.MajickLearningLab.render!=='function')return;
     installed=true;
     const prev=window.MajickLearningLab.render;
     window.MajickLearningLab.render=function(){
-      const html=prev.apply(this,arguments),extension=render();
+      const html=prev.apply(this,arguments),extension=render()+fgRender();
       return extension?html.replace('</header>','</header>'+extension):html;
     };
   }
