@@ -198,5 +198,90 @@
     "The figure's grade labels describe a suggested progression, not fixed grade-level prerequisites.",
     "The supplied text says 'medical sounds'; inferred intended label is medial sounds, but original wording is noted here.",
     "The source phoneme strings for the lesson's oral examples are not used as audio prescriptions until verified."
-  ]
+  ],
+  "video_evidence": {
+    "title": "Developing a Literacy Environment: Phonics",
+    "source_type": "user_uploaded_wgu_video",
+    "filename": "Developing a Literacy Environment_ Phonics_default_514e6658.mp4",
+    "duration_seconds": 219.176667,
+    "evidence_method": "Extracted embedded English subtitle stream from user-uploaded MP4",
+    "review_status": "caption_verified",
+    "public_video_url": "https://wgu.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=276d93ce-1da0-4e82-9e5a-b3e2004cd3ae",
+    "overview": "Instructor describes 12 phonics lesson types that bridge phonological and orthographic processors through structured and systematic literacy instruction.",
+    "stages": [
+      {
+        "n": 1,
+        "time": "00:14",
+        "focus": "Letter–sound correspondence and CVC words",
+        "instruction": "Consonants, short vowels, blending, segmenting, Elkonin boxes and blending drills"
+      },
+      {
+        "n": 2,
+        "time": "00:36",
+        "focus": "Short vowels in CVC words",
+        "instruction": "Visual/auditory discrimination, I do–We do–You do, decodable texts and dictation"
+      },
+      {
+        "n": 3,
+        "time": "00:58",
+        "focus": "Consonant digraphs",
+        "instruction": "sh, ch, th, wh, ck; articulation, sound sorting and blending"
+      },
+      {
+        "n": 4,
+        "time": "01:21",
+        "focus": "Beginning and ending consonant blends",
+        "instruction": "Cluster decoding, oral drills and fluency practice"
+      },
+      {
+        "n": 5,
+        "time": "01:32",
+        "focus": "VCe or magic-e",
+        "instruction": "Silent-e transformations, word chains, word building"
+      },
+      {
+        "n": 6,
+        "time": "01:48",
+        "focus": "Long vowel teams",
+        "instruction": "ai, ay, ee, ea, oa, ow; compare, anchor charts, syllable division"
+      },
+      {
+        "n": 7,
+        "time": "02:07",
+        "focus": "R-controlled vowels",
+        "instruction": "ar, or, er, ir, ur; sound mapping and fluency practice"
+      },
+      {
+        "n": 8,
+        "time": "02:32",
+        "focus": "Diphthongs",
+        "instruction": "oi, oy, ou, ow; explicit teaching, dictation, comparison with vowel teams"
+      },
+      {
+        "n": 9,
+        "time": "02:48",
+        "focus": "Six syllable types",
+        "instruction": "Closed, open, VCe, vowel team, R-controlled, consonant-le; visual decoding supports"
+      },
+      {
+        "n": 10,
+        "time": "03:04",
+        "focus": "Syllable division and inflectional endings",
+        "instruction": "Introduce basic morphology, decoding and comprehension"
+      },
+      {
+        "n": 11,
+        "time": "03:14",
+        "focus": "Prefixes, roots and suffixes",
+        "instruction": "Fluency, vocabulary, syllabification with affixes"
+      },
+      {
+        "n": 12,
+        "time": "03:26",
+        "focus": "Integrating phonics and fluency",
+        "instruction": "Decodable connected text with cumulative phonics review"
+      }
+    ],
+    "scope_note": "This timeline is derived from user-supplied captions, not an independently reviewed textbook. Video remains outside the public GitHub repository."
+  }
 }
