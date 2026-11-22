@@ -1,0 +1,151 @@
+{
+  "schema_version": "1.0",
+  "course_id": "D669",
+  "lesson_id": "3.4",
+  "section_id": "phonemic-awareness",
+  "title": "Lesson 3.4 — Phonemic Awareness",
+  "source": "User-supplied WGU course lesson and guided practice, November 2026",
+  "source_status": "user_provided",
+  "review_status": "source_transcribed_not_independently_verified",
+  "graded": false,
+  "overview": "Phonemic awareness is a subset of phonological awareness involving individual speech sounds, without needing printed words. The supplied figure orders broad awareness skills and phoneme-level skills by increasing complexity.",
+  "progression": [
+    {
+      "scope": "broader phonological",
+      "skills": [
+        "word awareness",
+        "syllables",
+        "onset-rime",
+        "rhyme"
+      ]
+    },
+    {
+      "scope": "phonemic subset",
+      "skills": [
+        "isolation",
+        "blending",
+        "segmenting",
+        "addition",
+        "deletion",
+        "substitution"
+      ]
+    }
+  ],
+  "skills": [
+    {
+      "id": "isolation",
+      "description": "Identify an individual speech sound at the beginning, middle or end of a word.",
+      "course_example": "First sound in cat"
+    },
+    {
+      "id": "segmentation",
+      "description": "Break a spoken word into ordered phonemes.",
+      "course_example": "boat: /b/ /ō/ /t/"
+    },
+    {
+      "id": "blending",
+      "description": "Combine individual phonemes to make a whole word.",
+      "course_example": "/k/ /l/ /o/ /p/ becomes clop"
+    },
+    {
+      "id": "addition",
+      "description": "Add a phoneme to form another word.",
+      "course_example": "plan + final /t/ → plant"
+    },
+    {
+      "id": "deletion",
+      "description": "Remove a phoneme to form another word.",
+      "course_example": "ground without /g/ → round"
+    },
+    {
+      "id": "substitution",
+      "description": "Replace one phoneme with another.",
+      "course_example": "top: /t/ replaced by /h/ → hop"
+    }
+  ],
+  "instructional_note": "The supplied lesson recommends approximately 3 minutes of phonological-processor activation aligned to the day's phoneme-grapheme learning, followed by teacher modeling and letter connections. Treat duration as a lesson recommendation, not a universal requirement.",
+  "distinction_note": "The lesson's Science of Reading paragraph says phonemic awareness 'is the alphabetic principle'; these are related but distinct. Phonemic awareness concerns spoken phonemes; the alphabetic principle concerns their representation in print. Keep the source wording noted rather than teaching these as identical.",
+  "guided_practice": [
+    {
+      "id": "D669-L3.4-GP1",
+      "type": "multiple_select",
+      "prompt": "Select all the attributes of Phonemic Awareness from the list shown below:",
+      "options": [
+        {
+          "id": "isolation",
+          "text": "Isolation"
+        },
+        {
+          "id": "segmenting",
+          "text": "Segmenting"
+        },
+        {
+          "id": "blending",
+          "text": "Blending"
+        },
+        {
+          "id": "manipulation",
+          "text": "Addition/Deletion/Substitution"
+        },
+        {
+          "id": "word",
+          "text": "Word Awareness"
+        },
+        {
+          "id": "onset",
+          "text": "Onset rime"
+        },
+        {
+          "id": "syllable",
+          "text": "Syllable"
+        },
+        {
+          "id": "rhyme",
+          "text": "Rhyme"
+        }
+      ],
+      "correct_option_ids": [
+        "isolation",
+        "segmenting",
+        "blending",
+        "manipulation"
+      ],
+      "feedback_correct": "Isolation identifies individual sounds; segmenting separates phonemes; blending combines them; addition/deletion/substitution manipulate phonemes.",
+      "source_keyed_answer": true,
+      "game_compatibility": [
+        "learn-lab",
+        "trial-chamber"
+      ],
+      "independent_mastery_eligible": false
+    }
+  ],
+  "resources": [
+    {
+      "type": "figure",
+      "title": "Figure 2.13: Phonological and Phonemic Awareness",
+      "url": "https://assets.wgu.edu/a25bb92b698f8dfd4b0c86ff3a99a81e"
+    },
+    {
+      "type": "video",
+      "title": "Amplify: Science of Reading — Analytic vs Synthetic Phonics",
+      "assigned_segment": "21:27–23:41",
+      "url": "https://www.youtube.com/watch?v=HYklSgt-inM&t=1287s"
+    },
+    {
+      "type": "transcript",
+      "title": "Amplify video transcript",
+      "url": "https://assets.wgu.edu/4adf27cdac7d2236b1f78e14e16d5440"
+    },
+    {
+      "type": "book_chapter",
+      "title": "Basic Phonics, Chapter 8, Fundamentals of Literacy Instruction & Assessment, Pre-K–6",
+      "editors": "Hougen and Smartt",
+      "year": 2012
+    }
+  ],
+  "reflection_questions": [
+    "Do I understand phonemic awareness?",
+    "Does this change my view of how literacy should be taught?"
+  ],
+  "integration_note": "Canonical course pack preserves original multi-select question. Current live practice renderer supports single-choice; separate source-derived single-choice application drills may be used until renderer safely supports multiple-select."
+}
