@@ -1,4 +1,4 @@
-/* Lesson 3.4 source-based exercises. Register in the reusable Learning Lab engine. */
+/* Source-grounded reusable course activity pack. */
 (function(){'use strict';window.MajickCourseActivityPlayer?.register({
   "courseId": "D669",
   "id": "lesson-3-4",
@@ -55,7 +55,16 @@
         "Phonics"
       ],
       "correct": 0,
-      "explanation": "Blending individual spoken phonemes is phonemic awareness; it does not require print."
+      "explanation": "Blending individual spoken phonemes is phonemic awareness; it does not require print.",
+      "provenance": {
+        "kind": "source_based_practice",
+        "source_title": "WGU Lesson 3.4, Figure 2.13 and Table 2.2",
+        "source_url": "https://assets.wgu.edu/a25bb92b698f8dfd4b0c86ff3a99a81e",
+        "source_status": "user_provided",
+        "verification": "grounded_in_supplied_lesson_material",
+        "course_id": "D669",
+        "lesson_id": "3.4"
+      }
     },
     {
       "id": "isolate",
@@ -67,7 +76,16 @@
         "Deletion"
       ],
       "correct": 1,
-      "explanation": "Isolation means identifying one sound in a spoken word."
+      "explanation": "Isolation means identifying one sound in a spoken word.",
+      "provenance": {
+        "kind": "source_based_practice",
+        "source_title": "WGU Lesson 3.4, Figure 2.13 and Table 2.2",
+        "source_url": "https://assets.wgu.edu/a25bb92b698f8dfd4b0c86ff3a99a81e",
+        "source_status": "user_provided",
+        "verification": "grounded_in_supplied_lesson_material",
+        "course_id": "D669",
+        "lesson_id": "3.4"
+      }
     },
     {
       "id": "segment",
@@ -79,7 +97,16 @@
         "Substitution"
       ],
       "correct": 0,
-      "explanation": "Segmentation breaks a spoken word into its separate phonemes."
+      "explanation": "Segmentation breaks a spoken word into its separate phonemes.",
+      "provenance": {
+        "kind": "source_based_practice",
+        "source_title": "WGU Lesson 3.4, Figure 2.13 and Table 2.2",
+        "source_url": "https://assets.wgu.edu/a25bb92b698f8dfd4b0c86ff3a99a81e",
+        "source_status": "user_provided",
+        "verification": "grounded_in_supplied_lesson_material",
+        "course_id": "D669",
+        "lesson_id": "3.4"
+      }
     },
     {
       "id": "add",
@@ -91,7 +118,16 @@
         "Addition"
       ],
       "correct": 2,
-      "explanation": "Addition means inserting another phoneme to make a new word."
+      "explanation": "Addition means inserting another phoneme to make a new word.",
+      "provenance": {
+        "kind": "source_based_practice",
+        "source_title": "WGU Lesson 3.4, Figure 2.13 and Table 2.2",
+        "source_url": "https://assets.wgu.edu/a25bb92b698f8dfd4b0c86ff3a99a81e",
+        "source_status": "user_provided",
+        "verification": "grounded_in_supplied_lesson_material",
+        "course_id": "D669",
+        "lesson_id": "3.4"
+      }
     },
     {
       "id": "delete",
@@ -103,7 +139,16 @@
         "Onset-rime"
       ],
       "correct": 0,
-      "explanation": "Deletion removes a phoneme from the word."
+      "explanation": "Deletion removes a phoneme from the word.",
+      "provenance": {
+        "kind": "source_based_practice",
+        "source_title": "WGU Lesson 3.4, Figure 2.13 and Table 2.2",
+        "source_url": "https://assets.wgu.edu/a25bb92b698f8dfd4b0c86ff3a99a81e",
+        "source_status": "user_provided",
+        "verification": "grounded_in_supplied_lesson_material",
+        "course_id": "D669",
+        "lesson_id": "3.4"
+      }
     },
     {
       "id": "substitute",
@@ -115,7 +160,16 @@
         "Rhyme"
       ],
       "correct": 1,
-      "explanation": "Substitution replaces one spoken phoneme with another."
+      "explanation": "Substitution replaces one spoken phoneme with another.",
+      "provenance": {
+        "kind": "source_based_practice",
+        "source_title": "WGU Lesson 3.4, Figure 2.13 and Table 2.2",
+        "source_url": "https://assets.wgu.edu/a25bb92b698f8dfd4b0c86ff3a99a81e",
+        "source_status": "user_provided",
+        "verification": "grounded_in_supplied_lesson_material",
+        "course_id": "D669",
+        "lesson_id": "3.4"
+      }
     },
     {
       "id": "distinction",
@@ -127,7 +181,17 @@
         "Phonics"
       ],
       "correct": 1,
-      "explanation": "Syllable awareness is part of broad phonological awareness, not specifically phoneme-level awareness."
+      "explanation": "Syllable awareness is part of broad phonological awareness, not specifically phoneme-level awareness.",
+      "provenance": {
+        "kind": "source_based_practice",
+        "source_title": "WGU Lesson 3.4, Figure 2.13 and Table 2.2",
+        "source_url": "https://assets.wgu.edu/a25bb92b698f8dfd4b0c86ff3a99a81e",
+        "source_status": "user_provided",
+        "verification": "grounded_in_supplied_lesson_material",
+        "course_id": "D669",
+        "lesson_id": "3.4"
+      }
     }
-  ]
+  ],
+  "provenance_policy": "Questions must trace to user-provided source or be blocked from scoring."
 });})();
