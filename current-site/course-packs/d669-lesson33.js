@@ -1,4 +1,4 @@
-/* D669 lesson pack for the reusable Learning Lab player. */
+/* Source-grounded reusable course activity pack. */
 (function(){'use strict';window.MajickCourseActivityPlayer?.register({
   "courseId": "D669",
   "id": "lesson-3-3",
@@ -51,7 +51,16 @@
         "Print awareness"
       ],
       "correct": 0,
-      "explanation": "Clapping spoken syllables demonstrates phonological awareness. No printed letters are involved."
+      "explanation": "Clapping spoken syllables demonstrates phonological awareness. No printed letters are involved.",
+      "provenance": {
+        "kind": "source_based_practice",
+        "source_title": "WGU Lesson 3.3: Phonological & Phonemic Awareness",
+        "source_url": "https://wgu.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=c1d84ead-033f-42cd-849b-b3e2004cd379",
+        "source_status": "user_provided",
+        "verification": "grounded_in_supplied_lesson_material",
+        "course_id": "D669",
+        "lesson_id": "3.3"
+      }
     },
     {
       "id": "rhyme",
@@ -63,7 +72,16 @@
         "Vocabulary"
       ],
       "correct": 1,
-      "explanation": "Recognizing rhyme involves the sounds of spoken language, not print."
+      "explanation": "Recognizing rhyme involves the sounds of spoken language, not print.",
+      "provenance": {
+        "kind": "source_based_practice",
+        "source_title": "WGU Lesson 3.3: Phonological & Phonemic Awareness",
+        "source_url": "https://wgu.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=c1d84ead-033f-42cd-849b-b3e2004cd379",
+        "source_status": "user_provided",
+        "verification": "grounded_in_supplied_lesson_material",
+        "course_id": "D669",
+        "lesson_id": "3.3"
+      }
     },
     {
       "id": "replace",
@@ -75,7 +93,16 @@
         "Reading comprehension"
       ],
       "correct": 0,
-      "explanation": "Substituting an individual phoneme is phonemic awareness, a subset of phonological awareness."
+      "explanation": "Substituting an individual phoneme is phonemic awareness, a subset of phonological awareness.",
+      "provenance": {
+        "kind": "source_based_practice",
+        "source_title": "WGU Lesson 3.3: Phonological & Phonemic Awareness",
+        "source_url": "https://wgu.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=c1d84ead-033f-42cd-849b-b3e2004cd379",
+        "source_status": "user_provided",
+        "verification": "grounded_in_supplied_lesson_material",
+        "course_id": "D669",
+        "lesson_id": "3.3"
+      }
     },
     {
       "id": "blend",
@@ -87,7 +114,16 @@
         "Fluency"
       ],
       "correct": 1,
-      "explanation": "Blending individual spoken phonemes without print is phonemic awareness."
+      "explanation": "Blending individual spoken phonemes without print is phonemic awareness.",
+      "provenance": {
+        "kind": "source_based_practice",
+        "source_title": "WGU Lesson 3.3: Phonological & Phonemic Awareness",
+        "source_url": "https://wgu.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=c1d84ead-033f-42cd-849b-b3e2004cd379",
+        "source_status": "user_provided",
+        "verification": "grounded_in_supplied_lesson_material",
+        "course_id": "D669",
+        "lesson_id": "3.3"
+      }
     },
     {
       "id": "print",
@@ -99,7 +135,17 @@
         "Syllable awareness"
       ],
       "correct": 0,
-      "explanation": "Connecting the written letter pattern sh to a speech sound is phonics."
+      "explanation": "Connecting the written letter pattern sh to a speech sound is phonics.",
+      "provenance": {
+        "kind": "source_based_practice",
+        "source_title": "WGU Lesson 3.3: Phonological & Phonemic Awareness",
+        "source_url": "https://wgu.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=c1d84ead-033f-42cd-849b-b3e2004cd379",
+        "source_status": "user_provided",
+        "verification": "grounded_in_supplied_lesson_material",
+        "course_id": "D669",
+        "lesson_id": "3.3"
+      }
     }
-  ]
+  ],
+  "provenance_policy": "Questions must trace to user-provided source or be blocked from scoring."
 });})();
