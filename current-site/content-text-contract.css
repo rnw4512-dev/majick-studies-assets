@@ -1,0 +1,90 @@
+/* AETHERIA SITE-WIDE CONTENT TEXT CONTRACT, v1 — loaded LAST.
+   All future imported data, question packs and generated teaching content MUST
+   use a semantic data-aeth-surface="paper" or "dark" on their root wrapper.
+   This fixes inherited pale-on-pale text irrespective of which course supplies
+   the content. No changes to data, grading, XP, room state or student answers. */
+:root{
+ --aeth-ink:#29213b;--aeth-ink-muted:#51465d;
+ --aeth-paper:#fffdf7;--aeth-paper-soft:#f6f1fc;
+ --aeth-link:#4d347f;--aeth-focus:#7851a7;
+ --aeth-dark:#21182f;--aeth-ivory:#fff7e8;--aeth-dark-muted:#dfd3e6;
+}
+#content :is([data-aeth-surface="paper"],.cap-shelf,.obs-shell,#majConnectedPath,.majPathBody){
+ --aeth-content-ink:var(--aeth-ink);
+ --aeth-content-muted:var(--aeth-ink-muted);
+ color:var(--aeth-content-ink)!important;
+ color-scheme:light;
+ text-shadow:none!important;
+ opacity:1!important;
+}
+/* High-specificity type contract: existing decorative theme styles must not
+   override instructional prose, feedback or imported source labels. */
+#content :is([data-aeth-surface="paper"],.cap-shelf,.obs-shell,#majConnectedPath)
+ :is(p,li,dt,dd,label,legend,summary,blockquote,figcaption,caption,small,span,h1,h2,h3,h4,h5,h6,strong,b,em){
+ color:var(--aeth-content-ink)!important;
+ text-shadow:none!important;
+ opacity:1!important;
+}
+/* Course data is consistently wrapped in reusable learning blocks. */
+#content :is(.cap-heading,.cap-inside,.cap-concepts,.cap-concept,.cap-activity,.cap-question-body,.cap-feedback,.cap-source,.cap-resources,.cap-pack,.obs-skill,.obs-meter,.obs-break,.obs-header,.majPathHead,.majPathNote,.majPathEvidence)
+ :is(p,li,span,strong,small,b,em,h2,h3,h4,label,summary){
+ color:var(--aeth-ink)!important;
+ text-shadow:none!important;
+ opacity:1!important;
+}
+#content :is(.cap-shelf,.obs-shell) :is(.cap-heading,.cap-inside,.cap-pack,.cap-activity,.cap-question-body,.cap-concepts,.cap-concept,.obs-skill,.obs-meter,.obs-break){
+ color:var(--aeth-ink)!important;
+}
+#content .cap-heading h3,#content .cap-activity h4,#content .cap-pack>summary{
+ color:#352449!important;
+}
+#content .cap-heading>span,#content .obs-header>div>span,#content .obs-skill small,#content .obs-mini span{
+ color:var(--aeth-ink-muted)!important;
+}
+#content .cap-shelf{background:var(--aeth-paper)!important;border-color:#b9a5c9!important}
+#content .cap-pack,#content .cap-activity,#content .cap-question-body{background:#fff!important}
+#content .cap-concept{background:var(--aeth-paper-soft)!important;border-color:#d8cae6!important}
+#content .cap-feedback{background:#efebf6!important;color:var(--aeth-ink)!important;border:1px solid #d0c3e0!important}
+#content .cap-feedback[data-result="correct"]{background:#e2f4e9!important;color:#164b34!important;border-color:#7ab68e!important}
+#content .cap-feedback[data-result="try"]{background:#fff1df!important;color:#633d14!important;border-color:#caa465!important}
+#content .cap-shelf .cap-option{
+ background:#fff!important;color:#221a35!important;
+ border-color:#796393!important;opacity:1!important
+}
+#content .cap-shelf .cap-option[aria-pressed="true"]{background:#e8def4!important;color:#251d3a!important;border-color:#4e386b!important}
+#content :is(.cap-shelf,.obs-shell,#majConnectedPath) a:not(.button){
+ color:var(--aeth-link)!important;text-decoration:underline!important;
+ text-underline-offset:2px!important;opacity:1!important
+}
+#content :is(.cap-shelf,.obs-shell,#majConnectedPath) :is(input:not([type=checkbox]):not([type=radio]),textarea,select){
+ color:#211a32!important;background:#fffdfb!important;
+ border-color:#796393!important;opacity:1!important;
+}
+#content :is(.cap-shelf,.obs-shell,#majConnectedPath) :is(input,textarea,select,button,a,summary):focus-visible{
+ outline:3px solid var(--aeth-focus)!important;outline-offset:2px!important
+}
+#content .cap-shelf ::placeholder{color:#63586c!important;opacity:1!important}
+/* The dark Starfall game is intentionally NOT part of the paper contract. */
+#content .obs-shell .obs-game,#content .obs-shell .obs-game :is(h2,h3,h4,p,li,span,strong,small,b,em){
+ color:var(--aeth-ivory)!important;
+}
+#content .obs-shell .obs-game .obs-game-head :is(span,strong){color:#f9d89a!important}
+#content .obs-shell .obs-game .obs-game-feedback,
+#content .obs-shell .obs-game .obs-game-feedback :is(b,p,span,strong){color:#2a2040!important}
+#content .obs-shell .obs-game .obs-game-feedback a{color:#49347a!important}
+#content .obs-shell .obs-game button{color:#fff7e8!important;background:#56406e!important}
+#content .obs-shell .obs-break button{color:#fff7e8!important;background:#56406e!important}
+#content .obs-shell .obs-break button:disabled{opacity:.65!important}
+#content #majConnectedPath :is(button,.majPathSteps button){color:#173b31!important;background:#fffdf6!important}
+#content #majConnectedPath .majPathSteps .is-current button{background:#1b493c!important;color:#fff9ed!important}
+#content #majConnectedPath .majPathLessonSelect{color:#18382f!important;background:#fffdf6!important}
+/* Explicit dark surface contract for any future imported dark components.
+   Don't blanket override other components' interactive buttons. */
+#content [data-aeth-surface="dark"]{color:var(--aeth-ivory)!important;color-scheme:dark}
+#content [data-aeth-surface="dark"] :is(p,li,dt,dd,blockquote,figcaption,small,h1,h2,h3,h4,h5,h6,legend,label){
+ color:var(--aeth-ivory)!important;opacity:1!important
+}
+#content [data-aeth-surface="dark"] a{color:#ecd199!important}
+@media(prefers-reduced-motion:reduce){
+ #content :is([data-aeth-surface="paper"],[data-aeth-surface="dark"]) *{transition:none!important}
+}
