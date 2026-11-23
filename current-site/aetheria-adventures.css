@@ -113,3 +113,16 @@
  #aethAdventure .aeth-runes .aeth-target.right,#aethAdventure .aeth-runes .aeth-target.wrong{animation:none!important}
  #aethAdventure .aeth-runes .aeth-target:hover:not(:disabled){transform:none!important}
 }
+
+/* Guardian clue exploration, version 1.3. In the existing Sanctuary expedition only. */
+#aethAdventure .aeth-map-tile.blocked{background:linear-gradient(140deg,#51495c,#322e42)!important;border:2px solid #ada2b0;color:#e6dce6!important;box-shadow:inset 0 0 8px #08070e70}
+#aethAdventure .aeth-map-tile.clue:not(.collected){background:#b89b4670!important;border:2px solid #f0d091!important;color:#fff0c3!important;box-shadow:0 0 11px #f0c76c77}
+#aethAdventure .aeth-map-tile.clue.collected:not(.current){background:#326b537a!important;border-color:#81c79c!important;color:#efffe8!important}
+#aethAdventure .aeth-map-tile.current{z-index:1}
+#aethAdventure .aeth-clue-progress{display:flex;gap:8px;flex-wrap:wrap;margin:7px 0 12px}
+#aethAdventure .aeth-clue-progress span{display:inline-flex;align-items:center;gap:5px;border:1px solid #b4a3b6;background:#efe8f0;color:#554563;padding:6px 9px;border-radius:999px;font-weight:750;font-size:12px}
+#aethAdventure .aeth-clue-progress span.found{background:#dbefdf;color:#23563b;border-color:#77ad8c}
+#aethAdventure .aeth-movement-copy{flex:1;min-width:180px}
+#aethAdventure .aeth-movement-copy p{margin:0 0 7px;line-height:1.4}
+#aethAdventure .aeth-guardian-reaction{background:#f0e9f5;border-left:3px solid #8666a0;border-radius:6px;padding:8px 10px;color:#3b3048!important;font-size:13px!important}
+@media(max-width:640px){#aethAdventure .aeth-clue-progress span{font-size:11px}#aethAdventure .aeth-movement-copy{width:100%}}
