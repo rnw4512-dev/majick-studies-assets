@@ -18,6 +18,26 @@ function sourceRows(cid){
  const c=window.MajickCourseManager?.COURSE_CATALOG?.[cid]||state().courses?.[cid];
  return (c?.studySections||[]).flatMap((sec,si)=>(sec.lessons?.length?sec.lessons:[{title:sec.title,status:'outline only'}]).flatMap((l,li)=>(l.sublessons?.length?l.sublessons:[l]).map((sub,ti)=>({id:sub.id||'section-'+si+'-lesson-'+li+'-topic-'+ti,section:sec.title,lesson:l.title,sub,course:c}))));
 }
+
+const olderGames={"d669-s1-l1-1":["Instructional approach sorter",["Whole language","Balanced literacy","Structured literacy"],[["Explicitly teach sound–letter relationships in planned order",2],["Emphasize meaning and context",0],["Combine some phonics with meaningful texts",1]],["A child with dyslexia needs a planned foundational skills lesson. Which approach best matches?",2]],"d669-s1-l1-2":["Structured literacy laboratory",["Explicit","Systematic and cumulative","Diagnostic"],[["Teacher models how to blend",0],["New patterns build on previously taught ones",1],["Teacher adjusts instruction after analyzing errors",2]],["A teacher changes the next lesson after checking decoding errors. Which principle?",2]],"d669-s1-l1-3":["Standards decoder",["Skill","Content","Expected demonstration"],[["Blend",0],["Words with four or five phonemes",1],["Read the word by combining its sounds",2]],["In ‘identify the main idea’, what is ‘identify’?",0]],"d669-s1-l1-4":["Curriculum planner",["Goal","Instruction","Assessment"],[["Students will identify a main idea",0],["Model finding supporting details",1],["Students independently identify the main idea in a new passage",2]],["Which category is a new passage used to check mastery?",2]],"d669-s1-l2-1":["RICH classroom builder",["Relevance","Inclusive","Creative","Hands-on"],[["Texts match literacy goals",0],["Books represent varied communities",1],["Invite original story endings",2],["Students manipulate word tiles",3]],["A library includes books reflecting varied family experiences. Which RICH feature?",1]],"d669-s1-l2-2":["Sound mapping studio",["Auditory","Visual","Kinesthetic/tactile"],[["Hear /ch/ in a spoken word",0],["Compare printed words",1],["Trace letters in shaving cream",2]],["A learner traces ch while saying its sound. Which added modality is tracing?",2]],"d669-s2-l2-1":["Five pillars sorter",["Phonemic awareness","Phonics","Fluency","Vocabulary","Comprehension"],[["Blend spoken sounds without letters",0],["Match letters to sounds",1],["Repeated accurate reading",2],["Explore word meanings",3],["Identify a passage’s main idea",4]],["Students infer why a character acted from text evidence. Which pillar?",4]],"d669-s2-l2-2":["Reading rope builder",["Language comprehension","Word recognition"],[["Background knowledge",0],["Decoding",1],["Vocabulary",0],["Phonological awareness",1],["Verbal reasoning",0]],["A student understands read-alouds but struggles to decode print. Which strand needs investigation?",1]],"d669-s2-l2-3":["POSSUM word investigator",["Phonology","Orthography","Syntax","Semantics","Understanding","Morphology"],[["Speech sounds",0],["Written spelling",1],["Sentence structure",2],["Word meaning",3],["Meaning in context",4],["Meaningful word parts",5]],["Identify the prefix and root of replay. Which focus?",5]]};
+function olderGame(box,id){
+ const spec=olderGames[id];if(!spec)return;
+ const [title,options,items,transfer]=spec;
+ const panel=document.createElement('details');const header=document.createElement('summary');header.textContent=title+' · Interactive practice';panel.append(header);
+ const visual=document.createElement('div');visual.style.cssText='display:flex;flex-wrap:wrap;gap:8px;margin:10px 0';
+ options.forEach((o,i)=>{const tile=document.createElement('span');tile.textContent=o;tile.style.cssText='border:2px solid #79638c;border-radius:8px;padding:8px;background:#fff;color:#352846';visual.append(tile)});panel.append(visual);
+ let index=0;const prompt=document.createElement('p'),buttons=document.createElement('div'),feedback=document.createElement('p');feedback.setAttribute('role','status');panel.append(prompt,buttons,feedback);
+ const next=document.createElement('button');next.type='button';next.textContent='Next challenge';panel.append(next);
+ function draw(){const row=items[index];prompt.textContent='Challenge '+(index+1)+' of '+items.length+': '+row[0];buttons.replaceChildren();feedback.textContent='';next.disabled=true;options.forEach((o,i)=>{const b=document.createElement('button');b.type='button';b.textContent=o;b.addEventListener('click',()=>{const ok=i===row[1];feedback.textContent=ok?'Correct — '+row[0]+' matches '+o+'.':'Try again. Compare the clue with the lesson definitions.';next.disabled=!ok;});buttons.append(b)})}
+ next.addEventListener('click',()=>{index=(index+1)%items.length;draw()});draw();box.append(panel);
+ const independent=document.createElement('details'),h=document.createElement('summary');h.textContent='Independent transfer check (no hints)';independent.append(h);
+ const question=document.createElement('p');question.textContent=transfer[0];independent.append(question);
+ let selected=-1,submitted=false;const result=document.createElement('p');result.setAttribute('role','status');
+ const submit=document.createElement('button');submit.type='button';submit.textContent='Submit answer';submit.disabled=true;
+ const choices=options.map((o,i)=>{const b=document.createElement('button');b.type='button';b.textContent=o;b.setAttribute('aria-pressed','false');b.addEventListener('click',()=>{if(submitted)return;selected=i;choices.forEach((x,j)=>x.setAttribute('aria-pressed',String(j===i)));submit.disabled=false});independent.append(b);return b});
+ submit.addEventListener('click',()=>{if(submitted||selected<0)return;submitted=true;choices.forEach(b=>b.disabled=true);submit.disabled=true;result.textContent=(selected===transfer[1]?'Correct. ':'Incorrect. ' )+'Best answer: '+options[transfer[1]]+'. Review the lesson and attempt a fresh example later. This check does not certify mastery.'});independent.append(submit,result);box.append(independent);
+}
+
 function sourcePanel(body,item){
  const row=sourceRows(course()).find(r=>r.id===item.locator);if(!row)return;
  const sub=row.sub,box=document.createElement('section');box.className='majPathEvidence';box.style.padding='12px';
@@ -26,7 +46,7 @@ function sourcePanel(body,item){
  const ideas=[...(sub.keyIdeas||[]),...(sub.summary?[sub.summary]:[])];
  if(!ideas.length){line('p','Source material not yet supplied for this topic.');body.append(box);return}
  ideas.forEach(t=>line('p',t));
- if(sub.visual?.src){const a=line('a',sub.visual.alt||'Open source diagram');a.href=sub.visual.src;a.target='_blank';a.rel='noopener noreferrer'}
+ if(sub.visual?.src){const img=document.createElement('img');img.src=sub.visual.src;img.alt=sub.visual.alt||'Course diagram';img.loading='lazy';img.style.cssText='max-width:100%;height:auto;display:block;margin:10px auto';box.append(img);const a=line('a',sub.visual.alt||'Open source diagram');a.href=sub.visual.src;a.target='_blank';a.rel='noopener noreferrer'}
  const bank=row.course.questionBank||[],ids=new Set(sub.quizIds||[]);
  const qs=bank.filter(q=>ids.has(q.id));
  const guided=Array.isArray(sub.guidedPractice)?sub.guidedPractice:sub.guidedPractice?[sub.guidedPractice]:[];
@@ -34,6 +54,7 @@ function sourcePanel(body,item){
  if(qs.length){line('h4','Practice this exact topic');qs.forEach(q=>{const d=document.createElement('details');const h=document.createElement('summary');h.textContent=q.prompt;d.append(h);const feedback=document.createElement('p');feedback.setAttribute('role','status');(q.options||[]).forEach(o=>{const b=document.createElement('button');b.type='button';b.textContent=o;b.addEventListener('click',()=>{feedback.textContent=(o===q.answer?'Correct. ':'Try again. ')+(q.why||'Review the lesson.');});d.append(b)});d.append(feedback);box.append(d)});}
  else line('p','Topic-specific scored practice is not yet linked. Review the lesson and supplied activities above.');
  if(sub.id==='d669-s2-l3-7'){const b=line('button','Open fluency visual games');b.type='button';b.addEventListener('click',()=>{window.navigate?.('learninglab');setTimeout(()=>document.querySelector('[aria-label="Fluency visual games"]')?.scrollIntoView({block:'start'}),250)})}
+ olderGame(box,sub.id);
  line('p','These checks are formative; independent mastery and fresh transfer require separate evidence.');
  body.append(box);
 }
