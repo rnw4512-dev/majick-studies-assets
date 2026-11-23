@@ -455,6 +455,28 @@ function ensure(){
         }
       }
     }
+    // Reconcile all supplied lesson content, including existing local courses.
+    // Preserve learner-authored fields and never modify recorded attempts here.
+    for(const seedSection of template.studySections){
+      const savedSection=d669.studySections.find(x=>x?.id===seedSection.id);
+      if(!savedSection||!Array.isArray(seedSection.lessons))continue;
+      savedSection.lessons=Array.isArray(savedSection.lessons)?savedSection.lessons:[];
+      for(const seedLesson of seedSection.lessons){
+        const savedLesson=savedSection.lessons.find(x=>x?.title===seedLesson.title);
+        if(!savedLesson){savedSection.lessons.push(clone(seedLesson));continue;}
+        for(const [k,v] of Object.entries(seedLesson)){
+          if(k==='sublessons')continue;
+          if(savedLesson[k]==null||k==='status')savedLesson[k]=clone(v);
+        }
+        if(!Array.isArray(seedLesson.sublessons))continue;
+        savedLesson.sublessons=Array.isArray(savedLesson.sublessons)?savedLesson.sublessons:[];
+        for(const seedSub of seedLesson.sublessons){
+          const savedSub=savedLesson.sublessons.find(x=>x?.id===seedSub.id);
+          if(!savedSub)savedLesson.sublessons.push(clone(seedSub));
+          else for(const [k,v] of Object.entries(seedSub))if(savedSub[k]==null)savedSub[k]=clone(v);
+        }
+      }
+    }
     if(!d669.preassessmentProfile?.priorityConcepts?.length){
       d669.preassessmentProfile=clone(template.preassessmentProfile);
     }
