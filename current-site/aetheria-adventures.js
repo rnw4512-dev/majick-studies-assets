@@ -37,9 +37,10 @@ const entry=(id=course())=>journal[id]||(journal[id]={clears:{},chapters:{},guar
 function record(kind,key,id){
  const row=entry(id),group=kind==='guardian'?row.guardianTrails:kind==='game'?row.clears:row.chapters;
  if(group[key])return false;
- group[key]={at:Date.now()};save();
  const reward=window.MajickRewardCore?.award?.('adventure-fragment-earned',{key:'aetheria:adventure:'+kind+':'+id+':'+key,course:id,source:'aetheria-adventure'});
- if(reward?.eggFragments)try{window.MajickFragmentEarnings?.refresh?.()}catch(_){}
+ if(!reward||reward.rejected)return false;
+ group[key]={at:Date.now(),fragmentGranted:Number(reward.eggFragments||0)>0};save();
+ if(reward.eggFragments)try{window.MajickFragmentEarnings?.refresh?.()}catch(_){}
  return true;
 }
 function guardian(){
