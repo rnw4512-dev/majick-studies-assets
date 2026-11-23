@@ -215,7 +215,7 @@ function vocabQuestions(){
 }
 const VOCAB_LABELS={
  tiers:['Tier One','Tier Two','Tier Three'],
- plan:['Rich and Varied Language Experiences','Teach Individual Words','Teach Word-Learning Strategies','Foster Word Consciousness']
+ plan:['Provide Rich and Varied Language Experiences','Teach Individual Words','Teach Word-Learning Strategies','Foster Word Consciousness']
 };
 function vocabStart(){
  const q=vocabQuestions();if(q.length!==7)return;
