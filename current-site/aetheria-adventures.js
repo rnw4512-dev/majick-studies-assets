@@ -45,6 +45,7 @@ function record(kind,key,id){
  if(!reward||reward.rejected)return false;
  group[key]={at:Date.now(),fragmentGranted:Number(reward.eggFragments||0)>0};save();
  if(reward.eggFragments)try{window.MajickFragmentEarnings?.refresh?.()}catch(_){}
+ try{document.dispatchEvent(new CustomEvent('majick:adventure-first-clear',{detail:{kind,key,course:id,guardian:running?.guardianName||''}}))}catch(_){}
  return true;
 }
 function guardian(){
