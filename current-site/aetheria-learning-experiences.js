@@ -3,8 +3,8 @@
    core owns XP/fragments. These activities DO NOT write grades or grant currencies. */
 (()=>{'use strict';
 if(window.MajickLearningExperiences)return;
-const VERSION='1.3.0',KEY='aetheria-experiences-v1';
-let journal={version:1,memories:[],decor:'desk',playRuns:{}},session=null,deep=null,vocabRun=null,selectedSection=1,scheduled=false,lastRoom='';
+const VERSION='1.4.0',KEY='aetheria-experiences-v1';
+let journal={version:1,memories:[],decor:'desk',playRuns:{}},session=null,deep=null,vocabRun=null,compRun=null,selectedSection=1,scheduled=false,lastRoom='';
 try{const raw=JSON.parse(localStorage.getItem(KEY)||'{}');if(raw&&typeof raw==='object'&&!Array.isArray(raw)){journal={...journal,...raw};if(!Array.isArray(journal.memories))journal.memories=[]}}catch(_){}
 const E=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const course=()=>String(window.S?.activeCourse||'').toUpperCase();
@@ -120,7 +120,7 @@ function deepPool(cid,kind){
 function deepStart(kind){
  const cid=course(),pool=deepPool(cid,kind);
  if(!DEEP_MODES.some(m=>m.id===kind)||pool.length<3)return;
- session=null;vocabRun=null;
+ session=null;vocabRun=null;compRun=null;
  const runs=journal.playRuns||{},cycle=Number(runs[cid+':'+kind]||0);
  const ordered=shuffleDeterministically(pool,cycle);
  const items=ordered.slice(0,Math.min(4,ordered.length));
@@ -219,7 +219,7 @@ const VOCAB_LABELS={
 };
 function vocabStart(){
  const q=vocabQuestions();if(q.length!==7)return;
- session=null;deep=null;
+ session=null;deep=null;compRun=null;
  vocabRun={items:q,index:0,feedback:null,wrong:0,complete:false,firstClear:false};redraw();
 }
 function vocabChoose(label){
@@ -257,9 +257,54 @@ function vocabMarkup(){
  return s+'<p class="aeth-game-evidence">Ungraded guided practice · no XP, fragments or independent mastery</p></section>';
 }
 
+
+function comprehensionQuestions(){
+ const pack=sourcePacks('D669').find(p=>p.id==='lesson-3-9');if(!pack)return [];
+ return ['visualize','organizers','metacognition','summarize','answer','generate','structure','monitor'].map(id=>pack.activities.find(a=>a.id===id&&a._sourceVerified)).filter(Boolean)
+ .map(a=>({id:a.id,prompt:a.prompt,answer:String(a.options[a.correct]),reason:a.explanation,source:a.provenance.source_url}));
+}
+function compStart(){
+ const q=comprehensionQuestions();if(q.length!==8)return;
+ session=null;deep=null;vocabRun=null;
+ compRun={items:q,index:0,feedback:null,wrong:0,complete:false,firstClear:false};redraw();
+}
+function compChoose(label){
+ if(!compRun||compRun.complete||compRun.feedback)return;
+ const q=compRun.items[compRun.index],right=String(label)===q.answer;
+ compRun.feedback={right};if(!right)compRun.wrong++;redraw();
+}
+function compRetry(){if(!compRun?.feedback||compRun.feedback.right)return;compRun.feedback=null;redraw()}
+function compNext(){
+ if(!compRun?.feedback?.right)return;
+ compRun.index++;compRun.feedback=null;
+ if(compRun.index===compRun.items.length){
+  compRun.complete=true;
+  compRun.firstClear=addMemory('deep:D669:comprehension-3-9','Lesson 3.9 Comprehension Lab complete',
+   'Matched eight comprehension strategies, including the supplemental monitoring example. '+compRun.wrong+' guided repairs; no independent mastery claimed.');
+ }
+ redraw();
+}
+function compMarkup(){
+ if(!compRun)return '';
+ if(compRun.complete)return '<section class="aeth-deep-stage aeth-comp-game" role="status"><h3>✦ Comprehension Lab complete</h3><p>Eight comprehension strategies restored. '+compRun.wrong+' Guardian-assisted repairs. '+(compRun.firstClear?'A new Scholar Journal memory was recorded.':'Replay complete; no duplicate memory.')+'</p><button type="button" data-comp-start>Play again</button></section>';
+ const q=compRun.items[compRun.index],g=guardian();
+ const labels=['Metacognition','Monitoring Comprehension','Visualizing','Graphic and Semantic Organizers','Answering Questions','Generating Questions','Recognizing Story Structure','Summarizing'];
+ let h='<section class="aeth-deep-stage aeth-comp-game" aria-label="Comprehension strategy matching"><div class="aeth-mini-progress"><b>Lesson 3.9 · The Eight Comprehension Strategies</b><span>'+(compRun.index+1)+' / 8</span></div>';
+ h+='<div class="aeth-simple-view"><span>Decoding<br><small>Word Recognition</small></span><b>×</b><span>Language<br><small>Comprehension</small></span><b>=</b><span>Reading<br><small>Comprehension</small></span></div>';
+ h+='<h3>'+E(q.prompt)+'</h3><p>Choose the comprehension strategy. Drag a strategy to the target or tap it.</p>';
+ h+='<div class="aeth-comp-options" role="group" aria-label="Comprehension strategies">'+labels.map(t=>'<button type="button" data-comp-choice="'+E(t)+'"'+(compRun.feedback?' disabled':' draggable="true"')+'><span aria-hidden="true">✦</span>'+E(t)+'</button>').join('')+'</div>';
+ if(!compRun.feedback)h+='<div class="aeth-drop-target" data-comp-drop>✦ Drop the matching strategy here</div>';
+ if(compRun.feedback){
+  h+='<div class="aeth-mini-coach" role="status"><div class="aeth-mini-guardian"><span>'+E(g.icon)+'</span><b>'+E(g.name)+' · '+(compRun.feedback.right?'You restored the clue!':'Guided comprehension repair')+'</b></div><p>'+E(q.reason)+'</p>';
+  h+=compRun.feedback.right?'<button type="button" data-comp-next>Next strategy</button>':'<button type="button" data-comp-retry>Try again with Guardian help</button>';
+  h+='<a href="'+E(q.source)+'" target="_blank" rel="noopener noreferrer">Review WGU comprehension figure</a></div>';
+ }
+ h+='<p class="aeth-game-evidence">Seven matching examples came from the supplied guided practice. Monitoring Comprehension is an additional source-based activity. Ungraded; no XP or independent mastery.</p></section>';
+ return h;
+}
 function start(kind){
  if(!MODES.some(m=>m.id===kind))return;
- deep=null;vocabRun=null;
+ deep=null;vocabRun=null;compRun=null;
  const id=course(),items=activity(id,kind);if(items.length<3){session=null;redraw();return}
  session={kind,course:id,items,index:0,correct:0,firstTry:0,choice:null,assisted:false,feedback:null,complete:false,awarded:false};
  redraw();
@@ -295,12 +340,14 @@ function viewGame(){
  const count=journal.memories.filter(m=>m.course===id&&(m.key.startsWith('game:')||m.key.startsWith('deep:'))).length;
  let s='<section id="aethCourseGames" class="aeth-experience" data-experience-room="'+E(mode)+'" data-course="'+E(id)+'" aria-label="Course-specific interactive mini-games"><header><small>✦ COURSE GAME WORKSHOP · '+E(id)+'</small><h2>Play your course knowledge</h2><p>Real lesson concepts, interactive practice, and Guardian-guided repairs. No duplicate XP or mastery.</p></header>';
  s+=sectionOverview(id);
+ if(id==='D669'&&selectedSection===2)s+='<div class="aeth-comp-entry"><b>📘 Lesson 3.9 · Comprehension Lab</b><p>Explore the Simple View of Reading and match eight comprehension strategies. Practice monitoring and repairing confusing text.</p><button type="button" data-comp-start'+(comprehensionQuestions().length!==8?' disabled':'')+'>Open Comprehension Lab</button></div>';
  if(id==='D669'&&selectedSection===2)s+='<div class="aeth-vocab-entry"><b>📚 Lesson 3.8 · Vocabulary Lab</b><p>Sort three vocabulary tiers and match the four parts of Graves’s vocabulary plan.</p><button type="button" data-vocab-start'+(vocabQuestions().length!==7?' disabled':'')+'>Open Vocabulary Lab</button></div>';
  s+='<div class="aeth-mini-menu">'+MODES.map(m=>'<button type="button" data-exp-mode="'+m.id+'"'+((m.id==='match'?terms.length<3:p.length<3)?' disabled':'')+'><span>'+m.icon+'</span><b>'+E(m.title)+'</b><small>'+E(m.desc)+'</small></button>').join('')+'</div>';
  s+='<div class="aeth-mini-menu aeth-deep-menu">'+DEEP_MODES.map(m=>'<button type="button" data-deep-mode="'+m.id+'"'+(deepPool(id,m.id).length<3?' disabled':'')+'><span>'+m.icon+'</span><b>'+E(m.title)+'</b><small>'+E(m.desc)+'</small></button>').join('')+'</div>';
  s+='<p class="aeth-exp-summary">'+count+' game discoveries recorded in your Journal.'+(p.length<3?' This section has fewer than 3 available review questions. Its lessons remain visible above; more verified practice is needed to unlock additional games.':'')+'</p>';
  if(deep&&deep.course===id)s+=deepMarkup();
  if(vocabRun&&id==='D669'&&selectedSection===2)s+=vocabMarkup();
+ if(compRun&&id==='D669'&&selectedSection===2)s+=compMarkup();
  if(session&&session.course===id){
   const m=MODES.find(x=>x.id===session.kind);
   if(session.complete){s+='<div class="aeth-mini-result" role="status"><h3>✦ '+E(m?.title||'Challenge')+' complete!</h3><p>'+session.correct+'/'+session.items.length+' correct by completion. '+(session.assisted?'Guardian-guided repairs were used.':'All answers were correct on the first attempt.')+'</p><p>'+(session.awarded?'A new first-clear memory was added to your Scholar Journal.':'You can replay for practice; no duplicate rewards are created.')+'</p><button type="button" data-exp-mode="'+session.kind+'">Play again</button></div>'}
@@ -352,6 +399,19 @@ function redraw(){
 }
 
 
+
+document.addEventListener('dragstart',e=>{
+ const b=e.target?.closest?.('#aethCourseGames [data-comp-choice][draggable="true"]');
+ if(b&&!compRun?.feedback)e.dataTransfer?.setData?.('application/x-aetheria-comprehension',b.dataset.compChoice);
+});
+document.addEventListener('dragover',e=>{
+ if(e.target?.closest?.('#aethCourseGames [data-comp-drop]'))e.preventDefault();
+});
+document.addEventListener('drop',e=>{
+ if(!e.target?.closest?.('#aethCourseGames [data-comp-drop]'))return;
+ e.preventDefault();const label=e.dataTransfer?.getData?.('application/x-aetheria-comprehension')||'';
+ if(label)compChoose(label);
+});
 document.addEventListener('dragstart',e=>{
  const b=e.target?.closest?.('#aethCourseGames [data-vocab-choice][draggable="true"]');
  if(b&&!vocabRun?.feedback)e.dataTransfer?.setData?.('application/x-vocabulary-category',b.dataset.vocabChoice);
@@ -396,6 +456,10 @@ document.addEventListener('drop',e=>{
 });
 document.addEventListener('click',e=>{
  const btn=e.target?.closest?.('button');if(!btn||!btn.closest('.aeth-experience'))return;
+ if(btn.hasAttribute('data-comp-start')){compStart();return}
+ if(btn.hasAttribute('data-comp-choice')){compChoose(btn.dataset.compChoice);return}
+ if(btn.hasAttribute('data-comp-retry')){compRetry();return}
+ if(btn.hasAttribute('data-comp-next')){compNext();return}
  if(btn.hasAttribute('data-vocab-start')){vocabStart();return}
  if(btn.hasAttribute('data-vocab-choice')){vocabChoose(btn.dataset.vocabChoice);return}
  if(btn.hasAttribute('data-vocab-retry')){vocabRetry();return}
@@ -406,7 +470,7 @@ document.addEventListener('click',e=>{
  if(btn.hasAttribute('data-deep-check')){deepCheck();return}
  if(btn.hasAttribute('data-deep-retry')){deepRetry();return}
  if(btn.hasAttribute('data-deep-next')){deepNext();return}
- if(btn.hasAttribute('data-exp-section')){const n=Number(btn.dataset.expSection);if(course()==='D669'&&[1,2,3].includes(n)){selectedSection=n;session=null;deep=null;vocabRun=null;redraw()}return}
+ if(btn.hasAttribute('data-exp-section')){const n=Number(btn.dataset.expSection);if(course()==='D669'&&[1,2,3].includes(n)){selectedSection=n;session=null;deep=null;vocabRun=null;compRun=null;redraw()}return}
  if(btn.hasAttribute('data-exp-mode')){start(btn.dataset.expMode);return}
  if(btn.hasAttribute('data-exp-answer')){answer(Number(btn.dataset.expAnswer));return}
  if(btn.hasAttribute('data-exp-retry')){retryGuided();return}
@@ -439,8 +503,8 @@ document.addEventListener('majick:sourced-practice',e=>{
 function schedule(){if(scheduled)return;scheduled=true;setTimeout(()=>{scheduled=false;sync()},80)}
 if(window.MajickRenderQueue?.register)window.MajickRenderQueue.register('aetheria-experiences',schedule,105);
 document.addEventListener('DOMContentLoaded',schedule);
-document.addEventListener('change',e=>{if(e.target?.matches?.('.courseSelect')){session=null;deep=null;vocabRun=null;schedule()}});
+document.addEventListener('change',e=>{if(e.target?.matches?.('.courseSelect')){session=null;deep=null;vocabRun=null;compRun=null;schedule()}});
 window.addEventListener('pageshow',schedule);
-window.MajickLearningExperiences=Object.freeze({VERSION,refresh:schedule,courseGames:activity,deepPool,sectionRows,sectionQuestions,vocabQuestions,memories:()=>journal.memories.slice(),decorations:()=>decor.slice()});
+window.MajickLearningExperiences=Object.freeze({VERSION,refresh:schedule,courseGames:activity,deepPool,sectionRows,sectionQuestions,vocabQuestions,comprehensionQuestions,memories:()=>journal.memories.slice(),decorations:()=>decor.slice()});
 schedule();
 })();
