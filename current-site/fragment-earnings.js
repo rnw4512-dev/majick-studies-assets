@@ -16,7 +16,7 @@ function persist(){try{localStorage.setItem(STORE_KEY,JSON.stringify(data))}catc
 function receipt(type,key,course){
  const r=window.MajickRewardCore;
  if(!r||typeof r.award!=='function')return null;
- return r.award(type,{key,course,assisted:false,masteryEligible:false,independent:false,source:'study-and-play-fragments'});
+ return r.award(type,{key,course,source:'study-and-play-fragments'});
 }
 function refresh(){
  try{window.MajickStudyObservatory?.refresh?.()}catch(_){}
