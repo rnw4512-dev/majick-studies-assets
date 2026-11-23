@@ -99,3 +99,7 @@ html[data-aetheria-decor="botanical"] #aethAcademyDecor .aeth-decor-preview{back
 #aethCourseGames .aeth-section-lessons summary{cursor:pointer;font-weight:700;color:#3b2c4b!important}
 #aethCourseGames .aeth-section-lessons li{margin:5px 0;font-size:13px;line-height:1.5;color:#453a4d!important}
 @media(max-width:650px){#aethCourseGames .aeth-section-picker{padding:9px}#aethCourseGames .aeth-section-buttons{grid-template-columns:1fr}#aethCourseGames .aeth-section-buttons button{min-height:60px}}
+
+#aethCourseGames .aeth-section-pending{border:1px dashed #b18b63;padding:12px;background:#fbf0e2;border-radius:10px;color:#5b3b39}
+#aethCourseGames .aeth-section-pending b{color:#69432e!important}
+#aethCourseGames .aeth-section-pending p{margin:6px 0 0!important;color:#54414a!important}
