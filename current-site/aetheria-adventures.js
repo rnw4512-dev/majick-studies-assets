@@ -98,7 +98,7 @@ function moveGuardian(direction){
  const delta={left:[-1,0],right:[1,0],up:[0,-1],down:[0,1]}[direction];if(!delta)return false;
  const x=Math.max(0,Math.min(4,a.position.x+delta[0])),y=Math.max(0,Math.min(2,a.position.y+delta[1]));
  if(x===a.position.x&&y===a.position.y)return false;
- a.position={x,y};redraw(true);return true;
+ a.position={x,y};redraw(direction);return true;
 }
 function chooseStoryRoute(route){
  const a=running;if(!a||a.mode!=='story'||a.ended||a.locked||a.storyChoices[a.index])return;
@@ -192,7 +192,7 @@ function view(){
 }
 function redraw(restoreFocus=false){
  const el=document.getElementById('aethAdventure');
- if(el){const wrap=document.createElement('div');wrap.innerHTML=view();const next=wrap.firstElementChild;if(next){next.dataset.course=course();el.replaceWith(next);if(restoreFocus){const target=next.querySelector('[data-aeth-move="right"]');target?.focus?.({preventScroll:true})}}}else sync();
+ if(el){const wrap=document.createElement('div');wrap.innerHTML=view();const next=wrap.firstElementChild;if(next){next.dataset.course=course();el.replaceWith(next);if(restoreFocus){const target=next.querySelector('[data-aeth-move="'+restoreFocus+'"]');target?.focus?.({preventScroll:true})}}}else sync();
 }
 function sync(){
  const root=document.getElementById('content'),m=mode(),id=course();
