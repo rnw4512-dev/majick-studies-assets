@@ -4,10 +4,11 @@
 */
 (()=>{'use strict';
 if(window.MajickAetheriaAdventures)return;
-const KEY='aetheria-adventure-journal-v1',VERSION='1.0.0';
+const KEY='aetheria-adventure-journal-v1',VERSION='1.1.0';
+const CHAPTER_GATES=[600,1000,1600];
 const GATES={guardian:0,game:200,story:600};
 let journal={};try{const x=JSON.parse(localStorage.getItem(KEY)||'{}');if(x&&typeof x==='object'&&!Array.isArray(x))journal=x}catch(_){}
-let running=null,queued=false;
+let running=null,queued=false,selectedChapter=1;
 const E=x=>String(x??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
 const course=()=>String(window.S?.activeCourse||'').toUpperCase();
 const screen=()=>String(window.S?.screen||'').toLowerCase();
@@ -34,6 +35,9 @@ function courseStory(id){
  return custom[id]||{title:name+' — The Unfinished Grimoire',scenes:['The first page needs a concept from your current lesson.','A scholar has misunderstood a key idea; find the stronger explanation.','Resolve the final course challenge to restore this chapter.']};
 }
 const entry=(id=course())=>journal[id]||(journal[id]={clears:{},chapters:{},guardianTrails:{}});
+function unlockedChapter(){return CHAPTER_GATES.filter(n=>xp()>=n).length||1}
+function chapterComplete(id,n){return !!entry(id).chapters['chapter-'+n]}
+function chooseQuestions(id,m,chapter){const all=questions(id);if(m==='guardian')return all.slice(0,1);if(m==='story'){const start=(chapter-1)*3;return all.length>=3?Array.from({length:3},(_,i)=>all[(start+i)%all.length]):[]}return all.slice(0,3)}
 function record(kind,key,id){
  const row=entry(id),group=kind==='guardian'?row.guardianTrails:kind==='game'?row.clears:row.chapters;
  if(group[key])return false;
@@ -49,9 +53,9 @@ function guardian(){
 function mode(){const room=screen();return room==='companions'?'guardian':room==='games'?'game':room==='mission'?'story':null}
 function started(m,id){return running&&running.mode===m&&running.course===id}
 function begin(m){
- const id=course(),q=questions(id),g=guardian();
- if(xp()<GATES[m]||q.length<(m==='guardian'?1:3)||m==='guardian'&&!g)return;
- running={mode:m,course:id,questions:q.slice(0,m==='guardian'?1:3),index:0,score:0,choice:null,locked:false,ended:false,trail:'moon',guardianId:g?.petId||'',guardianName:g?.name||'',firstTryCorrect:0};
+ const id=course(),chapter=m==='story'?selectedChapter:1,q=chooseQuestions(id,m,chapter),g=guardian();
+ if(xp()<(m==='story'?CHAPTER_GATES[chapter-1]:GATES[m])||q.length<(m==='guardian'?1:3)||m==='guardian'&&!g)return;
+ running={mode:m,course:id,chapter,questions:q,index:0,score:0,choice:null,locked:false,ended:false,trail:'moon',guardianId:g?.petId||'',guardianName:g?.name||'',firstTryCorrect:0};
  redraw();
 }
 function answer(i){
@@ -78,8 +82,8 @@ function finish(){
  if(m==='guardian'){
   first=record('guardian',String(running.guardianId)+':'+running.trail,id);
   if(first)try{window.MajickGuardianCare?.performAction?.(running.guardianId,'play')}catch(_){}
- }else if(m==='game')first=record('game','rune-lantern:'+running.questions.map(q=>q.id).join('|'),id);
- else first=record('story','chapter-1',id);
+ }else if(m==='game')first=record('game','rune-lantern',id);
+ else first=record('story','chapter-'+running.chapter,id);
  running.firstClear=first;
 }
 function headline(m){
@@ -90,22 +94,23 @@ function headline(m){
 function description(m){
  if(m==='guardian')return 'Take a Guardian on a short course-linked expedition. First successful trail discovery earns a bond play and a fragment.';
  if(m==='game')return 'Aim at the correct glowing rune. Three consecutive course-based challenges light the lanterns.';
- return 'Follow a three-scene adventure using your current course knowledge. Finish perfectly to illuminate the chapter.';
+ return 'Advance through three illustrated chapters using your current course knowledge. Each chapter reveals more of the Collegium.';
 }
 function button(action,text,disabled=false){return '<button type="button" data-aeth-action="'+E(action)+'"'+(disabled?' disabled':'')+'>'+E(text)+'</button>'}
 function view(){
  const m=mode(),id=course();if(!m||!id)return '';
  const level=xp(),gate=GATES[m],unlocked=level>=gate,q=questions(id),g=guardian();
+ if(m==='story'&&selectedChapter>unlockedChapter())selectedChapter=unlockedChapter();
  const row=entry(id),completed=m==='guardian'?Object.keys(row.guardianTrails).length:m==='game'?Object.keys(row.clears).length:Object.keys(row.chapters).length;
  let h='<section id="aethAdventure" class="aeth-adventure" aria-label="Course-linked adventure" data-aeth-mode="'+m+'"><div class="aeth-adventure-head"><span class="aeth-glyph" aria-hidden="true">'+(m==='guardian'?'🐾':m==='game'?'✧':'📜')+'</span><div><small>MOONLIT COLLEGIUM • '+E(id)+' · SCHOLAR XP '+level.toLocaleString()+'</small><h2>'+E(headline(m))+'</h2><p>'+E(description(m))+'</p></div><span class="aeth-done">'+completed+' discovered</span></div>';
  if(!unlocked)h+='<div class="aeth-adventure-message"><b>Locked until '+gate+' lifetime Scholar XP</b><p>Earn '+(gate-level)+' more XP through your existing studies. Unlocking never spends your XP.</p></div>';
  else if(m==='guardian'&&!g)h+='<div class="aeth-adventure-message"><b>Meet your Guardian first</b><p>Hatch a Guardian in the existing Sanctuary to begin an expedition. No creature or egg will be created automatically.</p></div>';
  else if(q.length<(m==='guardian'?1:3))h+='<div class="aeth-adventure-message"><b>More course questions needed</b><p>Add supported course lessons or a question bank. This adventure will use those questions rather than invented curriculum content.</p></div>';
- else if(!started(m,id))h+='<div class="aeth-adventure-message"><b>'+(m==='guardian'?'Your companion: '+E(g.name):m==='story'?'Chapter One: The First Trial':'Three answer runes await')+'</b><p>Earn an Egg Fragment on a first perfect clear. This is game practice, not verified independent mastery, and grants no extra XP.</p>'+button('start','Begin adventure')+'</div>';
+ else if(!started(m,id))h+='<div class="aeth-adventure-message"><b>'+(m==='guardian'?'Your companion: '+E(g.name):m==='story'?'Chapter '+selectedChapter+': '+['The Lost Page','The Apprentice’s Dilemma','The Final Seal'][selectedChapter-1]:'Three answer runes await')+'</b><p>Earn an Egg Fragment on a first perfect clear. This is game practice, not verified independent mastery, and grants no extra XP.</p>'+button('start','Begin adventure')+'</div>';
  else{
  const a=running;
  if(a.ended){
-  h+='<div class="aeth-adventure-message" role="status"><b>'+(a.score===a.questions.length?'✦ Quest completed!':'The chapter needs another attempt')+'</b><p>'+a.score+' / '+a.questions.length+' correct. '+(a.firstClear?'First clear recorded; Egg Fragment added through the existing reward ledger.':a.score===a.questions.length?'Already explored; repeated clears do not grant duplicate fragments.':'Review the feedback and try a fresh round.')+'</p>'+button('restart','Play again')+'</div>';
+  h+='<div class="aeth-adventure-message" role="status"><b>'+(a.score===a.questions.length?'✦ Quest completed!':'The chapter needs another attempt')+'</b><p>'+a.score+' / '+a.questions.length+' correct. '+(a.firstClear?'First clear recorded; Egg Fragment added through the existing reward ledger.':a.score===a.questions.length?'Already explored; repeated clears do not grant duplicate fragments.':'Review the feedback and try again.')+'</p>'+button('restart','Play again')+(m==='story'&&a.score===a.questions.length&&a.chapter<3?button('chapter:'+String(a.chapter+1),'Next chapter',level<CHAPTER_GATES[a.chapter]):'')+'</div>';
  }else{
   const item=a.questions[a.index],story=courseStory(id);
   const intro=m==='guardian'?E(a.guardianName)+' explores the '+(a.trail==='moon'?'Moonlit':'Mosswood')+' trail. A glowing clue stands in your path.':m==='story'?story.scenes[a.index]:'Aim for the correct rune to light the lantern.';
@@ -120,7 +125,7 @@ function view(){
 }
 function redraw(){
  const el=document.getElementById('aethAdventure');
- if(el){const wrap=document.createElement('div');wrap.innerHTML=view();el.replaceWith(wrap.firstElementChild)}else sync();
+ if(el){const wrap=document.createElement('div');wrap.innerHTML=view();const next=wrap.firstElementChild;if(next){next.dataset.course=course();el.replaceWith(next)}}else sync();
 }
 function sync(){
  const root=document.getElementById('content'),m=mode(),id=course();
@@ -142,6 +147,7 @@ document.addEventListener('click',e=>{
  const act=b.dataset.aethAction||'';
  if(act==='start'||act==='restart'){begin(mode());return}
  if(act==='next'){advance();return}
+ if(act.startsWith('chapter:')){const n=Number(act.split(':')[1]);if(Number.isInteger(n)&&n>=1&&n<=3&&xp()>=CHAPTER_GATES[n-1]){selectedChapter=n;running=null;redraw()}return}
  if(act.startsWith('trail:')&&running&&!running.locked){running.trail=act.split(':')[1]==='moss'?'moss':'moon';redraw()}
 });
 function schedule(){if(queued)return;queued=true;setTimeout(()=>{queued=false;sync()},60)}
