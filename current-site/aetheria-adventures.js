@@ -38,7 +38,7 @@ function record(kind,key,id){
  const row=entry(id),group=kind==='guardian'?row.guardianTrails:kind==='game'?row.clears:row.chapters;
  if(group[key])return false;
  group[key]={at:Date.now()};save();
- const reward=window.MajickRewardCore?.award?.('adventure-fragment-earned',{key:'aetheria:adventure:'+kind+':'+id+':'+key,course:id,source:'aetheria-adventure',masteryEligible:false});
+ const reward=window.MajickRewardCore?.award?.('adventure-fragment-earned',{key:'aetheria:adventure:'+kind+':'+id+':'+key,course:id,source:'aetheria-adventure'});
  if(reward?.eggFragments)try{window.MajickFragmentEarnings?.refresh?.()}catch(_){}
  return true;
 }
