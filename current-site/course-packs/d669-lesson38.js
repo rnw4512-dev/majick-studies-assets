@@ -1,0 +1,33 @@
+/* D669 Lesson 3.8 vocabulary: user-supplied WGU materials, ungraded review.
+   Aetheria-authored activity options, except four matching pairs reproduced from supplied practice.
+   Do not treat supplementary questions as original WGU assessment items. */
+(function(){'use strict';window.MajickCourseActivityPlayer?.register({
+ courseId:'D669',id:'lesson-3-8',title:'Lesson 3.8 — Vocabulary',
+ summary:'Vocabulary and comprehension work together as readers connect decoded words with language knowledge to make meaning. Tier 1 words are basic conversational words; Tier 2 words occur widely across texts and benefit from targeted teaching; Tier 3 words are domain-specific. Graves (2006) describes four complementary parts of vocabulary instruction.',
+ concepts:[
+  {term:'Tier One',text:'Basic everyday words typically learned through conversation, such as book, happy, run, orange.'},
+  {term:'Tier Two',text:'High-frequency words that appear across many texts and are strong targets for direct instruction, such as hilarious, arrange, national, masterpiece.'},
+  {term:'Tier Three',text:'Domain-specific vocabulary often taught as needed, such as pterodactyl, electrolyte, molecule.'},
+  {term:'Provide Rich and Varied Language Experiences',text:'Read aloud; explore different genres, poetry and drama; hold discussions and encourage peer conversation.'},
+  {term:'Teach Individual Words',text:'Provide learner-friendly meanings and context; revisit important words in different situations.'},
+  {term:'Teach Word-Learning Strategies',text:'Use word parts (morphology), context clues, dictionaries and thesauruses to infer and verify meanings.'},
+  {term:'Foster Word Consciousness',text:'Build curiosity about language, word choice, origins and the power of words.'},
+  {term:'Word consciousness',text:'Developing a love for language and curiosity about learning new words.'},
+  {term:'Vocabulary and comprehension',text:'Word knowledge helps readers understand connected text, while comprehension provides context that develops word meaning.'}
+ ],
+ resources:[
+  {title:'WGU Vocabulary & Comprehension video (4:21)',url:'https://wgu.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=46d6b918-6520-4b8e-8a62-b3e2004f5ebd'},
+  {title:'Figure 2.19 — Three vocabulary tiers',url:'https://assets.wgu.edu/70b7d48f3a5a5346195937569b43d4b1'},
+  {title:'Figure 2.20 — Graves Four-Part Vocabulary Plan',url:'https://assets.wgu.edu/20dbbecf5b36fe8d67d9e2f5415b5506'}
+ ],
+ activities:[
+  {id:'tier-1',title:'Vocabulary Tier Cake — Basics',prompt:'Which vocabulary tier includes everyday conversational words such as book, happy, run and orange?',options:['Tier One','Tier Two','Tier Three'],correct:0,explanation:'Tier One contains basic, everyday vocabulary typically learned in conversation.',provenance:{kind:'source_based_practice',source_title:'WGU D669 Lesson 3.8 Figure 2.19, user-provided',source_url:'https://assets.wgu.edu/70b7d48f3a5a5346195937569b43d4b1'}},
+  {id:'tier-2',title:'Vocabulary Tier Cake — Across Texts',prompt:'A teacher selects arrange and masterpiece for targeted instruction across subjects. Which tier?',options:['Tier Three','Tier One','Tier Two'],correct:2,explanation:'Tier Two words occur across many kinds of text and are strong targets for targeted instruction.',provenance:{kind:'source_based_practice',source_title:'WGU D669 Lesson 3.8 Figure 2.19, user-provided',source_url:'https://assets.wgu.edu/70b7d48f3a5a5346195937569b43d4b1'}},
+  {id:'tier-3',title:'Vocabulary Tier Cake — Specialized',prompt:'Students encounter electrolyte in science. Which tier is the word in this context?',options:['Tier Two','Tier Three','Tier One'],correct:1,explanation:'Tier Three contains content-specific academic language often taught when the topic arises.',provenance:{kind:'source_based_practice',source_title:'WGU D669 Lesson 3.8 Figure 2.19, user-provided',source_url:'https://assets.wgu.edu/70b7d48f3a5a5346195937569b43d4b1'}},
+  {id:'graves-rich',title:'Four-Part Match — Language Experiences',prompt:'Creating a language-rich learning atmosphere, reading aloud, and encouraging elaborate discussions matches which part?',options:['Teach Individual Words','Provide Rich and Varied Language Experiences','Foster Word Consciousness','Teach Word-Learning Strategies'],correct:1,explanation:'Rich and varied language experiences include reading aloud and elaborate discussions.',provenance:{kind:'source_based_practice',source_title:'WGU D669 Lesson 3.8 Figure 2.20 and supplied guided practice',source_url:'https://assets.wgu.edu/20dbbecf5b36fe8d67d9e2f5415b5506'}},
+  {id:'graves-individual',title:'Four-Part Match — Individual Words',prompt:'Providing learner-friendly definitions and context, and revisiting words over time in different contexts matches which part?',options:['Foster Word Consciousness','Teach Word-Learning Strategies','Teach Individual Words','Provide Rich and Varied Language Experiences'],correct:2,explanation:'Direct teaching of individual words uses accessible definitions and repeated contextual encounters.',provenance:{kind:'source_based_practice',source_title:'WGU D669 Lesson 3.8 Figure 2.20 and supplied guided practice',source_url:'https://assets.wgu.edu/20dbbecf5b36fe8d67d9e2f5415b5506'}},
+  {id:'graves-strategies',title:'Four-Part Match — Strategies',prompt:'Teaching students to use a dictionary and infer meanings through context and word parts matches which part?',options:['Teach Word-Learning Strategies','Teach Individual Words','Provide Rich and Varied Language Experiences','Foster Word Consciousness'],correct:0,explanation:'Word-learning strategies include morphology, context clues, dictionaries and thesauruses.',provenance:{kind:'source_based_practice',source_title:'WGU D669 Lesson 3.8 Figure 2.20 and supplied guided practice',source_url:'https://assets.wgu.edu/20dbbecf5b36fe8d67d9e2f5415b5506'}},
+  {id:'graves-consciousness',title:'Four-Part Match — Word Curiosity',prompt:'Helping students develop a love for words and curiosity about origins matches which part?',options:['Teach Word-Learning Strategies','Foster Word Consciousness','Teach Individual Words','Provide Rich and Varied Language Experiences'],correct:1,explanation:'Word consciousness means interest in, love of and curiosity about language.',provenance:{kind:'source_based_practice',source_title:'WGU D669 Lesson 3.8 Figure 2.20 and supplied guided practice',source_url:'https://assets.wgu.edu/20dbbecf5b36fe8d67d9e2f5415b5506'}}
+ ],
+ provenance_policy:'Practice grounded in supplied Lesson 3.8; not official graded WGU questions.'
+});})();
