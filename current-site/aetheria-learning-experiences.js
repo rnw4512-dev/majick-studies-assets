@@ -3,7 +3,7 @@
    core owns XP/fragments. These activities DO NOT write grades or grant currencies. */
 (()=>{'use strict';
 if(window.MajickLearningExperiences)return;
-const VERSION='1.4.0',KEY='aetheria-experiences-v1';
+const VERSION='1.5.0',KEY='aetheria-experiences-v1';
 let journal={version:1,memories:[],decor:'desk',playRuns:{}},session=null,deep=null,vocabRun=null,compRun=null,selectedSection=1,scheduled=false,lastRoom='';
 try{const raw=JSON.parse(localStorage.getItem(KEY)||'{}');if(raw&&typeof raw==='object'&&!Array.isArray(raw)){journal={...journal,...raw};if(!Array.isArray(journal.memories))journal.memories=[]}}catch(_){}
 const E=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -44,6 +44,24 @@ function sectionOverview(id){
  s+=row.lessons.map(l=>'<details><summary>'+E(l.title)+'</summary>'+(l.ideas.length?'<ul>'+l.ideas.slice(0,4).map(x=>'<li>'+E(x)+'</li>').join('')+'</ul>':'<p>See the course Learning Path for the full topic content.</p>')+'</details>').join('');
  if(!row.lessons.length)s+='<div class="aeth-section-pending"><b>Section outline available — detailed lessons still needed</b><p>The course catalog identifies this as '+E(row.section?.title||'Section '+selectedSection)+'. Its lesson-by-lesson content has not been loaded, so the game will not invent questions or claim completion.</p></div>';
  return s+'</div></div></div>';
+}
+
+
+function videoLessonReview(){
+ if(course()!=='D669'||selectedSection!==2)return '';
+ const url='https://wgu.hosted.panopto.com/Panopto/Pages/Viewer.aspx?id=46d6b918-6520-4b8e-8a62-b3e2004f5ebd';
+ const highlights=[
+ ['0:02–0:44','Vocabulary','A word bank grows through conversation, reading and academic language. Choose which words need targeted teaching.'],
+ ['1:20–2:16','Graves’s Four-Part Plan','Rich language experiences → individual words → word-learning strategies (including morphology) → curiosity about words.'],
+ ['2:16–2:48','Simple View of Reading','Word recognition and language comprehension work together; knowing how to say printed words is not the same as understanding them.'],
+ ['2:48–3:24','Comprehension strategies','Monitoring, organizers, questioning and summarizing help readers check meaning and use vocabulary in context.']
+ ];
+ let h='<details class="aeth-video-lesson"><summary>🎬 Video review · Vocabulary & Comprehension (4:21)</summary><div class="aeth-video-lesson-body">';
+ h+='<p>Reviewed from the English captions in your uploaded WGU video. These notes add to, rather than replace, Lessons 3.8 and 3.9.</p>';
+ h+='<div class="aeth-video-connection"><div><b>Vocabulary</b><small>Understand words</small></div><span aria-hidden="true">＋</span><div><b>Comprehension strategies</b><small>Connect ideas</small></div><span aria-hidden="true">→</span><div><b>Meaning</b><small>Interpret the text</small></div></div>';
+ h+='<div class="aeth-video-highlights">'+highlights.map(([time,title,detail])=>'<article><small>'+E(time)+'</small><div><b>'+E(title)+'</b><p>'+E(detail)+'</p></div></article>').join('')+'</div>';
+ h+='<p><a href="'+E(url)+'" target="_blank" rel="noopener noreferrer">Open the WGU video</a> · Aetheria-authored video review questions appear in the existing lesson practice shelf and course games.</p></div></details>';
+ return h;
 }
 
 function sourcePacks(id){return Object.values(window.MajickCourseActivityPlayer?.packs||{}).filter(p=>String(p.courseId||'').toUpperCase()===id)}
@@ -340,6 +358,7 @@ function viewGame(){
  const count=journal.memories.filter(m=>m.course===id&&(m.key.startsWith('game:')||m.key.startsWith('deep:'))).length;
  let s='<section id="aethCourseGames" class="aeth-experience" data-experience-room="'+E(mode)+'" data-course="'+E(id)+'" aria-label="Course-specific interactive mini-games"><header><small>✦ COURSE GAME WORKSHOP · '+E(id)+'</small><h2>Play your course knowledge</h2><p>Real lesson concepts, interactive practice, and Guardian-guided repairs. No duplicate XP or mastery.</p></header>';
  s+=sectionOverview(id);
+ s+=videoLessonReview();
  if(id==='D669'&&selectedSection===2)s+='<div class="aeth-comp-entry"><b>📘 Lesson 3.9 · Comprehension Lab</b><p>Explore the Simple View of Reading and match eight comprehension strategies. Practice monitoring and repairing confusing text.</p><button type="button" data-comp-start'+(comprehensionQuestions().length!==8?' disabled':'')+'>Open Comprehension Lab</button></div>';
  if(id==='D669'&&selectedSection===2)s+='<div class="aeth-vocab-entry"><b>📚 Lesson 3.8 · Vocabulary Lab</b><p>Sort three vocabulary tiers and match the four parts of Graves’s vocabulary plan.</p><button type="button" data-vocab-start'+(vocabQuestions().length!==7?' disabled':'')+'>Open Vocabulary Lab</button></div>';
  s+='<div class="aeth-mini-menu">'+MODES.map(m=>'<button type="button" data-exp-mode="'+m.id+'"'+((m.id==='match'?terms.length<3:p.length<3)?' disabled':'')+'><span>'+m.icon+'</span><b>'+E(m.title)+'</b><small>'+E(m.desc)+'</small></button>').join('')+'</div>';
