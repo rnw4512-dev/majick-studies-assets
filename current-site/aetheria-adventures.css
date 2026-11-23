@@ -73,3 +73,43 @@
 #aethAdventure .aeth-adventure-pips span:is(.passed,.active){background:#453654;color:#f4d18a;border-color:#d1ad7a}
 #aethAdventure .aeth-trails button[aria-pressed="true"]{background:#275c47!important;color:#fff4d9!important;border-color:#bdac76!important}
 @media(max-width:640px){#aethAdventure .aeth-scene{min-height:126px}#aethAdventure .aeth-scene-symbol{font-size:46px}#aethAdventure .aeth-chapter-nav{display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}#aethAdventure .aeth-chapter-nav button{min-width:0;font-size:12px!important;padding:7px!important}}
+
+/* Interactive expedition grid, targeting, and branching-choice controls. */
+#aethAdventure .aeth-expedition-map{width:min(510px,100%);margin:12px auto 9px;padding:12px;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:5px;border-radius:13px;border:2px solid #a68661;background:linear-gradient(140deg,#203c39,#443c5c);box-shadow:inset 0 0 18px #080e1699;aspect-ratio:2.1/1}
+#aethAdventure .aeth-map-tile{min-width:0;min-height:28px;display:grid;place-items:center;border-radius:9px;background:#a5a4a11d;border:1px solid #ddd3ba29;color:#f7dfab;font-size:clamp(16px,2.4vw,26px)}
+#aethAdventure .aeth-map-tile.current{background:#d6c19a66;border:2px solid #ffdc97;box-shadow:0 0 12px #f7d19075;animation:aethStepGlow .42s ease-out}
+#aethAdventure .aeth-map-tile.destination:not(.current){background:#574477;border:1px solid #e2c48f;color:#f7d79a;text-shadow:0 0 9px #fff5cb}
+#aethAdventure .aeth-movement{display:flex;align-items:center;gap:15px;justify-content:space-between;flex-wrap:wrap;margin:0 0 12px}
+#aethAdventure .aeth-movement p{flex:1;min-width:175px;margin:0;color:#43384a!important;line-height:1.5}
+#aethAdventure .aeth-direction-controls{display:flex;gap:6px;align-items:center}
+#aethAdventure .aeth-direction-controls button{min-height:44px;min-width:44px;padding:8px!important;font-size:21px!important;background:#345747;color:#fff8e6!important;border-color:#c3ac7f}
+#aethAdventure .aeth-direction-controls button:hover{background:#476b56}
+#aethAdventure .aeth-story-decision{border:1px solid #bcb09e;background:#f5f0e8;padding:12px;border-radius:12px;margin:12px 0;color:#372c3c}
+#aethAdventure .aeth-story-decision h4{margin:0 0 10px;color:#342742!important;font-size:15px}
+#aethAdventure .aeth-story-choices{display:flex;gap:9px;flex-wrap:wrap}
+#aethAdventure .aeth-story-choices button{flex:1;min-width:170px;text-align:left;background:#fffdf6;color:#3a2c50!important;border:1px solid #a695b4}
+#aethAdventure .aeth-story-choices button[aria-pressed="true"]{background:#395d4c!important;color:#fff8e8!important;border-color:#ad9363!important;opacity:1}
+#aethAdventure .aeth-story-choices button:disabled:not([aria-pressed="true"]){background:#e6e0df!important;color:#625c68!important}
+#aethAdventure .aeth-story-decision p{margin:9px 0 0;color:#4a3b4c!important;font-size:13px}
+#aethAdventure .aeth-runes:has(.aeth-target){grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}
+#aethAdventure .aeth-runes .aeth-target{position:relative;justify-content:center;flex-direction:column;text-align:center;min-height:104px;overflow:hidden;background:radial-gradient(ellipse at center,#e6d6ff,#d4c4ea)!important;border:2px solid #8c6aa9!important;color:#302344!important;box-shadow:inset 0 0 14px #a98ad488,0 4px 10px #32254624;transition:transform .16s ease,box-shadow .16s ease,border-color .16s ease!important}
+#aethAdventure .aeth-runes .aeth-target span{font-size:33px;line-height:1.1;color:#6b4486!important;animation:aethPulseTarget 2.2s ease-in-out infinite}
+#aethAdventure .aeth-runes .aeth-target:hover:not(:disabled),#aethAdventure .aeth-runes .aeth-target:focus-visible{transform:scale(1.025);border-color:#48305e!important;box-shadow:0 0 0 3px #d1b07866,0 4px 18px #8162aa55}
+#aethAdventure .aeth-runes .aeth-target.right{border-color:#34815a!important;background:#ccebd5!important;color:#194329!important;animation:aethTargetHit .35s ease-out}
+#aethAdventure .aeth-runes .aeth-target.wrong{border-color:#ad5b64!important;background:#f4d6da!important;color:#6c2836!important;animation:aethTargetMiss .24s ease-out}
+#aethAdventure .aeth-target-note{font-size:13px;color:#443553!important;margin:10px 0 0}
+@keyframes aethPulseTarget{50%{transform:scale(1.12);filter:drop-shadow(0 0 5px #e2be7c)}}
+@keyframes aethStepGlow{50%{filter:brightness(1.26)}}
+@keyframes aethTargetHit{50%{transform:scale(1.04)}}
+@keyframes aethTargetMiss{25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+@media(max-width:640px){
+ #aethAdventure .aeth-expedition-map{width:100%;padding:7px;gap:3px;aspect-ratio:1.8/1}
+ #aethAdventure .aeth-direction-controls{width:100%;justify-content:center}
+ #aethAdventure .aeth-runes:has(.aeth-target){grid-template-columns:1fr;gap:9px}
+ #aethAdventure .aeth-runes .aeth-target{min-height:72px;flex-direction:row;justify-content:flex-start;text-align:left}
+}
+@media(prefers-reduced-motion:reduce){
+ #aethAdventure .aeth-runes .aeth-target span,#aethAdventure .aeth-map-tile.current,
+ #aethAdventure .aeth-runes .aeth-target.right,#aethAdventure .aeth-runes .aeth-target.wrong{animation:none!important}
+ #aethAdventure .aeth-runes .aeth-target:hover:not(:disabled){transform:none!important}
+}
