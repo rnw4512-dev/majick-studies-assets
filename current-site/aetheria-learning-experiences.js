@@ -42,6 +42,7 @@ function sectionOverview(id){
  s+=all.map(x=>'<button type="button" data-exp-section="'+x.n+'" aria-pressed="'+(x.n===selectedSection)+'"><b>Section '+x.n+'</b><small>'+E((x.data.section?.title||'').replace(/^Section \d+:?\s*/,''))+'</small><em>'+x.data.lessons.length+' topics · '+x.count+' practice questions</em></button>').join('');
  s+='</div><div class="aeth-section-outline"><h4>'+E(row.section?.title||'Section '+selectedSection)+'</h4><p>Open a topic for its existing course notes. The games below use the practice questions available for this section.</p><div class="aeth-section-lessons">';
  s+=row.lessons.map(l=>'<details><summary>'+E(l.title)+'</summary>'+(l.ideas.length?'<ul>'+l.ideas.slice(0,4).map(x=>'<li>'+E(x)+'</li>').join('')+'</ul>':'<p>See the course Learning Path for the full topic content.</p>')+'</details>').join('');
+ if(!row.lessons.length)s+='<div class="aeth-section-pending"><b>Section outline available — detailed lessons still needed</b><p>The course catalog identifies this as '+E(row.section?.title||'Section '+selectedSection)+'. Its lesson-by-lesson content has not been loaded, so the game will not invent questions or claim completion.</p></div>';
  return s+'</div></div></div>';
 }
 
