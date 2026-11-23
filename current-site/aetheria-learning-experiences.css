@@ -103,3 +103,17 @@ html[data-aetheria-decor="botanical"] #aethAcademyDecor .aeth-decor-preview{back
 #aethCourseGames .aeth-section-pending{border:1px dashed #b18b63;padding:12px;background:#fbf0e2;border-radius:10px;color:#5b3b39}
 #aethCourseGames .aeth-section-pending b{color:#69432e!important}
 #aethCourseGames .aeth-section-pending p{margin:6px 0 0!important;color:#54414a!important}
+
+/* Lesson 3.8 vocabulary lab — diagrammatic tier cake and Graves plan. */
+#aethCourseGames .aeth-vocab-entry{margin:12px 0;padding:13px 15px;border:1px solid #bea274;border-radius:14px;background:linear-gradient(110deg,#eee2d5,#e9ede4);color:#3b2d45}
+#aethCourseGames .aeth-vocab-entry b{color:#36253e!important}
+#aethCourseGames .aeth-vocab-entry p{font-size:13px;color:#4f4255!important;line-height:1.45;margin:7px 0}
+#aethCourseGames .aeth-vocab-entry button{background:#385746;color:#fff9e9!important;border-color:#275943}
+#aethCourseGames .aeth-vocab-visual{margin:13px auto 11px;max-width:420px;display:flex;flex-direction:column;gap:4px;align-items:center;justify-content:center;padding:12px;border-radius:14px;background:#30273f;color:#fff4dc}
+#aethCourseGames .aeth-vocab-visual span{display:grid;place-items:center;min-height:36px;padding:6px 12px;border:1px solid #e4c491;border-radius:7px;color:#281c32;font-size:12px;font-weight:800;text-align:center;background:#e8cee2}
+#aethCourseGames .aeth-vocab-visual span:first-child{width:51%;background:#eac8e6}
+#aethCourseGames .aeth-vocab-visual span:nth-child(2){width:72%;background:#dad5ee}
+#aethCourseGames .aeth-vocab-visual span:nth-child(3){width:96%;background:#e4dfb7}
+#aethCourseGames .aeth-vocab-visual span:nth-child(4){width:96%;background:#c9e2d6}
+#aethCourseGames .aeth-vocab-game .aeth-deep-options button{min-height:63px}
+@media(max-width:640px){#aethCourseGames .aeth-vocab-visual span{font-size:11px}#aethCourseGames .aeth-vocab-entry{padding:10px}}
