@@ -83,7 +83,7 @@
       p.realmRecords[id]=row;
       // One-time fragment eligibility is handled by the existing RewardCore ledger.
       // A game completion never asserts source-verified academic mastery.
-      if(row.last>=.75&&total>=3&&Number(row.plays)===1&&String(window.S?.activeCourse||'')!=='D756')try{document.dispatchEvent(new CustomEvent('majick:game-complete',{detail:{courseId:String(window.S?.activeCourse||''),gameId:String(id),score:Number(score),total:Number(total),firstClear:true}}))}catch(_){}
+      if(row.last>=.75&&previousBest<.75&&total>=3&&String(window.S?.activeCourse||'')!=='D756')try{document.dispatchEvent(new CustomEvent('majick:game-complete',{detail:{courseId:String(window.S?.activeCourse||''),gameId:String(id),score:Number(score),total:Number(total),firstClear:true}}))}catch(_){}
       try{window.MajickProductCore?.record?.('practice-complete',{course:window.S?.activeCourse||'',game:id,score,total,won})}catch(_){}
       save?.();
       return {previousBest,best:row.best,newBest:row.last>previousBest&&row.last>0,plays:row.plays,wins:row.wins};
