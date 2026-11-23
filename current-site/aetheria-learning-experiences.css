@@ -51,3 +51,34 @@ html[data-aetheria-decor="lamp"] #aethAcademyDecor .aeth-decor-preview{box-shado
 html[data-aetheria-decor="books"] #aethAcademyDecor .aeth-decor-preview{border-color:#c0a18a;background:linear-gradient(120deg,#342743,#2b4d3f)}
 html[data-aetheria-decor="window"] #aethAcademyDecor .aeth-decor-preview{background:radial-gradient(circle at 85% 15%,#d9deffbb 0 10px,transparent 11px),linear-gradient(120deg,#292745,#3c5266)}
 html[data-aetheria-decor="botanical"] #aethAcademyDecor .aeth-decor-preview{background:linear-gradient(120deg,#1d4039,#577759)}
+
+/* Deep learning games: real sound-stone assembly, logical ordering, and consequence scenes. */
+#aethCourseGames .aeth-deep-menu{margin-top:11px}
+#aethCourseGames .aeth-deep-menu button{background:linear-gradient(135deg,#fef8e9,#f1e7f5)!important;border-color:#c6a87d}
+#aethCourseGames .aeth-deep-stage{margin-top:15px;border:1px solid #bea984;border-radius:17px;background:linear-gradient(150deg,#fffdf7,#f4edf6);padding:18px;color:#382948;box-shadow:inset 0 0 0 3px #fff9e5}
+#aethCourseGames .aeth-deep-stage h3{font:bold clamp(17px,2.2vw,22px)/1.38 Georgia,serif;color:#362544!important;margin:12px 0}
+#aethCourseGames .aeth-deep-stage p{line-height:1.5;color:#51435a!important;font-size:14px}
+#aethCourseGames .aeth-word-forge{display:flex;justify-content:center;align-items:center;gap:25px;min-height:90px;border:1px solid #c4a575;border-radius:14px;background:radial-gradient(ellipse at 50% 20%,#8061ae70,transparent 68%),linear-gradient(125deg,#2b2d46,#345747);margin:13px 0;color:#fff0bc}
+#aethCourseGames .aeth-word-forge b{font:bold clamp(30px,5vw,43px)/1 Georgia,serif;color:#fff1c8!important;text-shadow:0 3px 12px #21132e}
+#aethCourseGames .aeth-word-forge span{font-size:24px;color:#f8d78f!important}
+#aethCourseGames .aeth-assembly{min-height:72px;padding:11px;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:8px;border:2px dashed #af93bd;border-radius:12px;background:#f2eafa;margin:11px 0}
+#aethCourseGames .aeth-assembly span:not(.aeth-empty-slot){display:flex;align-items:center;gap:6px;min-height:45px;padding:8px 12px;border:1px solid #977caf;background:#fdfaff;border-radius:9px;font-weight:750;color:#3b2c51}
+#aethCourseGames .aeth-assembly span small{background:#d6e9df;color:#235742;border-radius:99px;width:20px;height:20px;display:grid;place-items:center;font-size:11px}
+#aethCourseGames .aeth-empty-slot{font-size:13px;color:#685678}
+#aethCourseGames .aeth-deep-options{display:grid;grid-template-columns:repeat(auto-fit,minmax(135px,1fr));gap:9px}
+#aethCourseGames .aeth-deep-options button{display:flex;align-items:center;justify-content:flex-start;gap:9px;min-height:58px;background:#fffcf4!important;border:1px solid #bba489!important;text-align:left}
+#aethCourseGames .aeth-deep-options button span{font-size:22px;color:#88649c!important}
+#aethCourseGames .aeth-deep-options button.placed{background:#e5eddf!important;opacity:.58}
+#aethCourseGames .aeth-deep-actions{display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap;margin:11px 0}
+#aethCourseGames .aeth-deep-actions button:last-child{background:#3c5e4d;color:#fff8e8!important;border-color:#2a6046}
+#aethCourseGames .aeth-classroom-visual{display:grid;grid-template-columns:55px minmax(0,1fr);column-gap:10px;align-items:center;padding:11px;border:1px solid #d2b9a8;border-radius:12px;background:#f5eee6;margin:10px 0}
+#aethCourseGames .aeth-classroom-visual>span{grid-row:span 2;font-size:39px;text-align:center}
+#aethCourseGames .aeth-classroom-visual>b{font-size:12px;color:#422f4d!important}
+#aethCourseGames .aeth-classroom-visual>p{margin:2px 0!important;font-size:13px!important}
+#aethCourseGames .aeth-game-evidence{font-size:11px!important;margin-top:16px}
+@media(max-width:650px){
+ #aethCourseGames .aeth-deep-stage{padding:12px}
+ #aethCourseGames .aeth-deep-options{grid-template-columns:1fr 1fr}
+ #aethCourseGames .aeth-deep-options button{font-size:12px;min-height:55px}
+ #aethCourseGames .aeth-deep-actions button{flex:1}
+}
