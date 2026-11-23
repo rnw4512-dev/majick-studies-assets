@@ -63,7 +63,7 @@ const MODES=[
  {id:'classroom',title:'Classroom Decisions',icon:'🏫',desc:'Help a student by choosing the strongest instructional response.'}
 ];
 function activity(id,kind){
- const questions=sectionQuestions(id,selectedSection),terms=concepts(id);
+ const questions=sectionQuestions(id,selectedSection),terms=id==='D669'&&selectedSection!==2?[]:concepts(id);
  if(kind==='match'){
   const distinct=[],seen=new Set();
   for(const c of terms){const k=c.term.toLowerCase();if(!seen.has(k)){seen.add(k);distinct.push(c)}}
@@ -102,8 +102,8 @@ function shuffleDeterministically(rows,seed){
  return list;
 }
 function deepPool(cid,kind){
- if(cid==='D669'&&kind==='forge')return D669_FORGE;
- if(cid==='D669'&&kind==='sequence')return D669_SEQUENCE;
+ if(cid==='D669'&&kind==='forge')return selectedSection===2?D669_FORGE:[];
+ if(cid==='D669'&&kind==='sequence')return selectedSection===2?D669_SEQUENCE:[];
  if(kind==='scenario'){
   return sectionQuestions(cid,selectedSection).filter(q=>q.options.length>=2).map(q=>({
    id:q.id,title:q.lesson||'Classroom case',prompt:q.prompt,
@@ -239,13 +239,13 @@ function next(){
  redraw();
 }
 function viewGame(){
- const id=course(),mode=room(),p=sectionQuestions(id,selectedSection),terms=concepts(id);
+ const id=course(),mode=room(),p=sectionQuestions(id,selectedSection),terms=id==='D669'&&selectedSection!==2?[]:concepts(id);
  const count=journal.memories.filter(m=>m.course===id&&(m.key.startsWith('game:')||m.key.startsWith('deep:'))).length;
  let s='<section id="aethCourseGames" class="aeth-experience" data-experience-room="'+E(mode)+'" data-course="'+E(id)+'" aria-label="Course-specific interactive mini-games"><header><small>✦ COURSE GAME WORKSHOP · '+E(id)+'</small><h2>Play your course knowledge</h2><p>Real lesson concepts, interactive practice, and Guardian-guided repairs. No duplicate XP or mastery.</p></header>';
  s+=sectionOverview(id);
  s+='<div class="aeth-mini-menu">'+MODES.map(m=>'<button type="button" data-exp-mode="'+m.id+'"'+((m.id==='match'?terms.length<3:p.length<3)?' disabled':'')+'><span>'+m.icon+'</span><b>'+E(m.title)+'</b><small>'+E(m.desc)+'</small></button>').join('')+'</div>';
  s+='<div class="aeth-mini-menu aeth-deep-menu">'+DEEP_MODES.map(m=>'<button type="button" data-deep-mode="'+m.id+'"'+(deepPool(id,m.id).length<3?' disabled':'')+'><span>'+m.icon+'</span><b>'+E(m.title)+'</b><small>'+E(m.desc)+'</small></button>').join('')+'</div>';
- s+='<p class="aeth-exp-summary">'+count+' game discoveries recorded in your Journal.'+(p.length<3?' This course needs at least 3 verified practice questions for question-based games.':'')+'</p>';
+ s+='<p class="aeth-exp-summary">'+count+' game discoveries recorded in your Journal.'+(p.length<3?' This section has fewer than 3 available review questions. Its lessons remain visible above; more verified practice is needed to unlock additional games.':'')+'</p>';
  if(deep&&deep.course===id)s+=deepMarkup();
  if(session&&session.course===id){
   const m=MODES.find(x=>x.id===session.kind);
