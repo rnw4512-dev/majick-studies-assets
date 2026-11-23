@@ -126,3 +126,19 @@
 #aethAdventure .aeth-movement-copy p{margin:0 0 7px;line-height:1.4}
 #aethAdventure .aeth-guardian-reaction{background:#f0e9f5;border-left:3px solid #8666a0;border-radius:6px;padding:8px 10px;color:#3b3048!important;font-size:13px!important}
 @media(max-width:640px){#aethAdventure .aeth-clue-progress span{font-size:11px}#aethAdventure .aeth-movement-copy{width:100%}}
+
+/* Display the Guardian's existing evolution-stage portrait in its current map tile. */
+#aethAdventure .aeth-map-tile.current{overflow:visible;position:relative;isolation:isolate}
+#aethAdventure .aeth-guardian-picture{position:relative;z-index:2;display:grid;place-items:center;width:100%;height:100%;min-height:33px;pointer-events:none;transform-origin:center 80%}
+#aethAdventure .aeth-guardian-image{display:block;width:100%;height:100%;max-height:66px;object-fit:contain;object-position:center bottom;filter:drop-shadow(0 3px 3px #100c1d90);transform-origin:center 75%}
+#aethAdventure .aeth-guardian-fallback{font-size:clamp(19px,2.5vw,29px);line-height:1;text-shadow:0 2px 4px #0e0c16}
+#aethAdventure .aeth-guardian-picture[data-facing="left"] .aeth-guardian-image{scale:-1 1}
+#aethAdventure .aeth-guardian-picture[data-reaction="step"]{animation:aethPortraitHop .19s ease-out}
+#aethAdventure .aeth-guardian-picture[data-reaction="clue"]{animation:aethPortraitDiscover .34s ease-out}
+#aethAdventure .aeth-guardian-picture[data-reaction="obstacle"]{animation:aethPortraitBump .17s ease-out}
+#aethAdventure .aeth-guardian-picture[data-reaction="ready"]{animation:aethPortraitDiscover .34s ease-out}
+@keyframes aethPortraitHop{40%{transform:translateY(-6px)}}
+@keyframes aethPortraitDiscover{50%{transform:translateY(-8px) scale(1.08)}}
+@keyframes aethPortraitBump{35%{transform:translateX(4px) rotate(4deg)}75%{transform:translateX(-3px) rotate(-3deg)}}
+@media(max-width:640px){#aethAdventure .aeth-guardian-image{max-height:52px}}
+@media(prefers-reduced-motion:reduce){#aethAdventure .aeth-guardian-picture{animation:none!important}#aethAdventure .aeth-guardian-image{transition:none!important}}
