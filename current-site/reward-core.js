@@ -123,6 +123,7 @@ function guardianRewards({correct=true,hard=false,independent=false,delayed=fals
 }
 function baseFor(type,ctx){
  const d=Math.max(1,Math.min(5,Number(ctx.difficulty||3))),hard=ctx.hard===true||d>=4;
+ if(type==='study-fragment-earned'||type==='game-fragment-earned'||type==='starfall-fragment-earned')return {xp:0,crystals:0,masteryXp:0,eggFragments:1,lootChance:0,hard:false};
  if(type==='potion-recall-practice')return {xp:4,crystals:0,masteryXp:0,eggFragments:0,lootChance:0,hard:false};
  if(type==='d756-meeting-first-pass')return {xp:30,crystals:5,masteryXp:0,eggFragments:0,lootChance:0,hard:false};
  if(type==='d756-meeting-repeat-practice')return {xp:8,crystals:1,masteryXp:0,eggFragments:0,lootChance:0,hard:false};
