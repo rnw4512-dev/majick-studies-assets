@@ -117,3 +117,19 @@ html[data-aetheria-decor="botanical"] #aethAcademyDecor .aeth-decor-preview{back
 #aethCourseGames .aeth-vocab-visual span:nth-child(4){width:96%;background:#c9e2d6}
 #aethCourseGames .aeth-vocab-game .aeth-deep-options button{min-height:63px}
 @media(max-width:640px){#aethCourseGames .aeth-vocab-visual span{font-size:11px}#aethCourseGames .aeth-vocab-entry{padding:10px}}
+
+/* D669 Lesson 3.9 comprehension — Simple View and strategy matching. */
+#aethCourseGames .aeth-comp-entry{margin:12px 0;padding:13px 15px;border:1px solid #a795ba;border-radius:14px;background:linear-gradient(110deg,#e8e5f4,#e7f0ea);color:#362742}
+#aethCourseGames .aeth-comp-entry b{color:#332342!important}
+#aethCourseGames .aeth-comp-entry p{font-size:13px;line-height:1.48;margin:7px 0;color:#4e435a!important}
+#aethCourseGames .aeth-comp-entry button{background:#385746!important;color:#fff8e8!important;border-color:#2e5a43}
+#aethCourseGames .aeth-simple-view{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:7px;margin:13px 0;padding:15px 7px;border-radius:14px;background:#302842}
+#aethCourseGames .aeth-simple-view span{display:grid;align-content:center;justify-items:center;text-align:center;min-height:86px;width:clamp(95px,21%,140px);aspect-ratio:1;background:#f3dfdf;border:2px solid #f8efe5;border-radius:50%;font-size:13px;font-weight:800;color:#3b2737!important}
+#aethCourseGames .aeth-simple-view span:nth-of-type(2){background:#d7e7f7}
+#aethCourseGames .aeth-simple-view span:nth-of-type(3){background:#e6d8f0}
+#aethCourseGames .aeth-simple-view span small{font-size:11px;font-weight:550;color:#4c3954!important}
+#aethCourseGames .aeth-simple-view>b{font-size:25px;color:#fff2cc!important}
+#aethCourseGames .aeth-comp-options{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:12px 0}
+#aethCourseGames .aeth-comp-options button{min-height:64px;display:flex;align-items:center;gap:8px;text-align:left;background:#fffdf7!important}
+#aethCourseGames .aeth-comp-options button span{color:#82679c!important;font-size:20px}
+@media(max-width:640px){#aethCourseGames .aeth-simple-view{gap:3px}#aethCourseGames .aeth-simple-view span{width:90px;min-height:75px;font-size:11px}#aethCourseGames .aeth-simple-view>b{font-size:16px}#aethCourseGames .aeth-comp-options{grid-template-columns:1fr}}
