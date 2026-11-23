@@ -8,7 +8,7 @@ const KEY='aetheria-adventure-journal-v1',VERSION='1.1.0';
 const CHAPTER_GATES=[600,1000,1600];
 const GATES={guardian:0,game:200,story:600};
 let journal={};try{const x=JSON.parse(localStorage.getItem(KEY)||'{}');if(x&&typeof x==='object'&&!Array.isArray(x))journal=x}catch(_){}
-let running=null,queued=false,selectedChapter=1;
+let running=null,queued=false,selectedChapter=1,gameRotation={};
 const E=x=>String(x??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
 const course=()=>String(window.S?.activeCourse||'').toUpperCase();
 const screen=()=>String(window.S?.screen||'').toLowerCase();
@@ -37,7 +37,7 @@ function courseStory(id){
 const entry=(id=course())=>journal[id]||(journal[id]={clears:{},chapters:{},guardianTrails:{}});
 function unlockedChapter(){return CHAPTER_GATES.filter(n=>xp()>=n).length||1}
 function chapterComplete(id,n){return !!entry(id).chapters['chapter-'+n]}
-function chooseQuestions(id,m,chapter){const all=questions(id);if(m==='guardian')return all.slice(0,1);if(m==='story'){const start=(chapter-1)*3;return all.length>=3?Array.from({length:3},(_,i)=>all[(start+i)%all.length]):[]}return all.slice(0,3)}
+function chooseQuestions(id,m,chapter){const all=questions(id);if(m==='guardian')return all.slice(0,1);if(m==='story'){const start=(chapter-1)*3;return all.length>=3?Array.from({length:3},(_,i)=>all[(start+i)%all.length]):[]}const offset=(gameRotation[id]||0)%Math.max(1,all.length);gameRotation[id]=(gameRotation[id]||0)+3;return all.length>=3?Array.from({length:3},(_,i)=>all[(offset+i)%all.length]):[]}
 function record(kind,key,id){
  const row=entry(id),group=kind==='guardian'?row.guardianTrails:kind==='game'?row.clears:row.chapters;
  if(group[key])return false;
@@ -97,12 +97,30 @@ function description(m){
  return 'Advance through three illustrated chapters using your current course knowledge. Each chapter reveals more of the Collegium.';
 }
 function button(action,text,disabled=false){return '<button type="button" data-aeth-action="'+E(action)+'"'+(disabled?' disabled':'')+'>'+E(text)+'</button>'}
+
+function scene(m,chapter,trail,lit){
+ const variant=m==='guardian'?(trail==='moss'?'moss':'moon'):m==='game'?'runes':'library';
+ const name=m==='guardian'?(trail==='moss'?'Mosswood Trail':'Moonpath Trail'):m==='game'?'Lantern Array':'Enchanted Library';
+ let markup='<div class="aeth-scene" data-scene="'+variant+'" role="img" aria-label="'+E(name)+' illustrated using atmospheric decorative shapes">';
+ markup+='<div class="aeth-scene-glow"></div><div class="aeth-scene-arch" aria-hidden="true"></div><div class="aeth-scene-ground"></div><div class="aeth-scene-symbol" aria-hidden="true">'+(m==='guardian'?'♧':m==='game'?'✧':'✦')+'</div>';
+ if(m==='game')markup+='<div class="aeth-scene-lanterns" aria-label="'+lit+' of 3 lanterns lit">'+[0,1,2].map(i=>'<span class="'+(i<lit?'lit':'')+'">✧</span>').join('')+'</div>';
+ if(m==='story')markup+='<div class="aeth-scene-pages" aria-label="Story chapter progress">'+[1,2,3].map(i=>'<span class="'+(i<chapter?'lit':i===chapter?'active':'')+'">✦</span>').join('')+'</div>';
+ return markup+'<span class="aeth-scene-caption">'+E(name)+'</span></div>';
+}
+function storySelector(id){
+ const completed=entry(id).chapters;
+ return '<nav class="aeth-chapter-nav" aria-label="Story chapters">'+CHAPTER_GATES.map((threshold,i)=>{
+  const n=i+1,locked=xp()<threshold,done=!!completed['chapter-'+n];
+  return '<button type="button" data-aeth-action="chapter:'+n+'" aria-current="'+(selectedChapter===n?'step':'false')+'"'+(locked?' disabled':'')+' class="'+(selectedChapter===n?'selected ':'')+(done?'complete':'')+'"><span>Chapter '+n+'</span><small>'+(done?'✦ Completed':locked?'Unlock '+threshold+' XP':'Ready')+'</small></button>';
+ }).join('')+'</nav>';
+}
 function view(){
  const m=mode(),id=course();if(!m||!id)return '';
  const level=xp(),gate=GATES[m],unlocked=level>=gate,q=questions(id),g=guardian();
  if(m==='story'&&selectedChapter>unlockedChapter())selectedChapter=unlockedChapter();
  const row=entry(id),completed=m==='guardian'?Object.keys(row.guardianTrails).length:m==='game'?Object.keys(row.clears).length:Object.keys(row.chapters).length;
  let h='<section id="aethAdventure" class="aeth-adventure" aria-label="Course-linked adventure" data-aeth-mode="'+m+'"><div class="aeth-adventure-head"><span class="aeth-glyph" aria-hidden="true">'+(m==='guardian'?'🐾':m==='game'?'✧':'📜')+'</span><div><small>MOONLIT COLLEGIUM • '+E(id)+' · SCHOLAR XP '+level.toLocaleString()+'</small><h2>'+E(headline(m))+'</h2><p>'+E(description(m))+'</p></div><span class="aeth-done">'+completed+' discovered</span></div>';
+ if(m==='story'&&unlocked)h+=storySelector(id);
  if(!unlocked)h+='<div class="aeth-adventure-message"><b>Locked until '+gate+' lifetime Scholar XP</b><p>Earn '+(gate-level)+' more XP through your existing studies. Unlocking never spends your XP.</p></div>';
  else if(m==='guardian'&&!g)h+='<div class="aeth-adventure-message"><b>Meet your Guardian first</b><p>Hatch a Guardian in the existing Sanctuary to begin an expedition. No creature or egg will be created automatically.</p></div>';
  else if(q.length<(m==='guardian'?1:3))h+='<div class="aeth-adventure-message"><b>More course questions needed</b><p>Add supported course lessons or a question bank. This adventure will use those questions rather than invented curriculum content.</p></div>';
@@ -110,12 +128,15 @@ function view(){
  else{
  const a=running;
  if(a.ended){
+  h+=scene(m,a.chapter,a.trail,a.score);
   h+='<div class="aeth-adventure-message" role="status"><b>'+(a.score===a.questions.length?'✦ Quest completed!':'The chapter needs another attempt')+'</b><p>'+a.score+' / '+a.questions.length+' correct. '+(a.firstClear?'First clear recorded; Egg Fragment added through the existing reward ledger.':a.score===a.questions.length?'Already explored; repeated clears do not grant duplicate fragments.':'Review the feedback and try again.')+'</p>'+button('restart','Play again')+(m==='story'&&a.score===a.questions.length&&a.chapter<3?button('chapter:'+String(a.chapter+1),'Next chapter',level<CHAPTER_GATES[a.chapter]):'')+'</div>';
  }else{
   const item=a.questions[a.index],story=courseStory(id);
   const intro=m==='guardian'?E(a.guardianName)+' explores the '+(a.trail==='moon'?'Moonlit':'Mosswood')+' trail. A glowing clue stands in your path.':m==='story'?story.scenes[a.index]:'Aim for the correct rune to light the lantern.';
+  h+=scene(m,a.chapter,a.trail,a.score);
   h+='<div class="aeth-adventure-play"><div class="aeth-adventure-meta"><b>'+E(intro)+'</b><span>Challenge '+(a.index+1)+' / '+a.questions.length+'</span></div>';
-  if(m==='guardian'&&a.index===0&&!a.locked)h+='<div class="aeth-trails" aria-label="Choose a Guardian trail">'+button('trail:moon','☾ Moonlit trail')+button('trail:moss','❧ Mosswood trail')+'</div>';
+  if(m==='guardian'&&a.index===0&&!a.locked)h+='<div class="aeth-trails" aria-label="Choose a Guardian trail"><button type="button" data-aeth-action="trail:moon" aria-pressed="'+(a.trail==='moon')+'">☾ Moonlit trail</button><button type="button" data-aeth-action="trail:moss" aria-pressed="'+(a.trail==='moss')+'">❧ Mosswood trail</button></div>';
+  h+='<div class="aeth-adventure-pips" aria-label="'+a.score+' runes collected">'+a.questions.map((_,i)=>'<span class="'+(i<a.index?'passed':i===a.index?'active':'')+'" aria-hidden="true">'+(i<a.index?'✦':'✧')+'</span>').join('')+'</div>';
   h+='<h3>'+E(item.prompt)+'</h3><div class="aeth-runes" role="group" aria-label="Choose a rune answer">'+item.options.map((option,i)=>'<button type="button" data-aeth-answer="'+i+'"'+(a.locked?' disabled':'')+' class="'+(a.choice===i?(i===item.correct?'right':'wrong'):'')+'"><span aria-hidden="true">✧</span>'+E(option)+'</button>').join('')+'</div>';
   if(a.locked)h+='<div class="aeth-result" role="status"><b>'+(a.choice===item.correct?'Correct rune!':'That rune needs repair.')+'</b><p>'+E(item.explanation||'Review the course lesson, then try the next challenge.')+'</p>'+(item.source?'<a href="'+E(item.source)+'" target="_blank" rel="noopener noreferrer">Review the source lesson</a>':'<small>Existing course question bank practice</small>')+button('next',a.index+1===a.questions.length?'Complete quest':'Next challenge')+'</div>';
   h+='</div>';
