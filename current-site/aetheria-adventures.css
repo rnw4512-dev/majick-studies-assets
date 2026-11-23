@@ -48,3 +48,28 @@
  .aeth-adventure-meta span{display:block;margin-top:5px}
 }
 @media(prefers-reduced-motion:reduce){.aeth-adventure *{animation:none!important;transition:none!important}}
+
+/* Scene illustrations are pure CSS: no network images, no animation loop, no extra rooms. */
+#aethAdventure .aeth-scene{position:relative;overflow:hidden;min-height:150px;border:1px solid #ae9073;border-radius:12px;margin:14px 0 10px;isolation:isolate;background:radial-gradient(ellipse at 50% 25%,#e2b77744,transparent 36%),linear-gradient(145deg,#201b37,#4c395c 60%,#223c35)}
+#aethAdventure .aeth-scene[data-scene="moss"]{background:radial-gradient(ellipse at 60% 15%,#c5d59655,transparent 35%),linear-gradient(145deg,#193b35,#35634a 63%,#162b2d)}
+#aethAdventure .aeth-scene[data-scene="moon"]{background:radial-gradient(circle at 72% 24%,#dddef1aa 0 10px,transparent 12px),linear-gradient(145deg,#18243b,#3b3c65 62%,#1d373d)}
+#aethAdventure .aeth-scene[data-scene="runes"]{background:radial-gradient(circle at 50% 40%,#ae86d744,transparent 50%),linear-gradient(145deg,#241a41,#463368 68%,#1a2a42)}
+#aethAdventure .aeth-scene-glow{position:absolute;width:180px;height:180px;border-radius:50%;right:13%;top:-85px;background:#e8cfa84f;filter:blur(17px);pointer-events:none}
+#aethAdventure .aeth-scene-arch{position:absolute;width:33%;max-width:260px;height:132px;bottom:5px;left:33%;border:9px double #e7c78a88;border-bottom:0;border-radius:49% 49% 0 0;box-shadow:0 0 17px #d2b38122,inset 0 0 22px #c2ab8550}
+#aethAdventure .aeth-scene-ground{position:absolute;left:-6%;right:-6%;bottom:-40px;height:76px;border-radius:50%;background:linear-gradient(#8a877044,#0f2434bb);box-shadow:0 -7px 30px #8a8c7150}
+#aethAdventure .aeth-scene-symbol{position:absolute;left:50%;top:36%;transform:translate(-50%,-40%);font-size:59px;font-family:Georgia,serif;line-height:1;color:#ffe4a4;text-shadow:0 0 23px #f1ca73a0;pointer-events:none}
+#aethAdventure .aeth-scene-lanterns,#aethAdventure .aeth-scene-pages{position:absolute;top:12px;left:14px;display:flex;gap:9px}
+#aethAdventure .aeth-scene-lanterns span,#aethAdventure .aeth-scene-pages span{font-size:19px;color:#9f8cae;text-shadow:0 1px 7px #130e20}
+#aethAdventure .aeth-scene-lanterns span.lit,#aethAdventure .aeth-scene-pages span:is(.lit,.active){color:#ffe2a6;text-shadow:0 0 14px #ffd596}
+#aethAdventure .aeth-scene-caption{position:absolute;right:14px;bottom:11px;color:#fff1d5;font:bold 11px/1.2 Georgia,serif;letter-spacing:.07em;text-shadow:0 1px 6px #0009}
+#aethAdventure .aeth-chapter-nav{display:flex;gap:8px;flex-wrap:wrap;margin:15px 0 9px}
+#aethAdventure .aeth-chapter-nav button{display:grid;gap:2px;min-width:116px;text-align:left;background:#f7efe4;color:#3d3050!important;border:1px solid #b49aa3}
+#aethAdventure .aeth-chapter-nav button small{font-size:11px;color:#584a5d!important}
+#aethAdventure .aeth-chapter-nav button.selected{background:#3b3053;color:#fff2db!important;border-color:#c9a366}
+#aethAdventure .aeth-chapter-nav button.selected small{color:#ead6b4!important}
+#aethAdventure .aeth-chapter-nav button:disabled{background:#ebe6e1;color:#665f6f!important;opacity:.79}
+#aethAdventure .aeth-adventure-pips{display:flex;gap:10px;margin:11px 0 7px}
+#aethAdventure .aeth-adventure-pips span{width:33px;height:33px;display:grid;place-items:center;background:#ece2f2;color:#655172;border:1px solid #b7a5c2;border-radius:50%;font-size:18px}
+#aethAdventure .aeth-adventure-pips span:is(.passed,.active){background:#453654;color:#f4d18a;border-color:#d1ad7a}
+#aethAdventure .aeth-trails button[aria-pressed="true"]{background:#275c47!important;color:#fff4d9!important;border-color:#bdac76!important}
+@media(max-width:640px){#aethAdventure .aeth-scene{min-height:126px}#aethAdventure .aeth-scene-symbol{font-size:46px}#aethAdventure .aeth-chapter-nav{display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}#aethAdventure .aeth-chapter-nav button{min-width:0;font-size:12px!important;padding:7px!important}}
