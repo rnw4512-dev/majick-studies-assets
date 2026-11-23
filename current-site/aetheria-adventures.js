@@ -4,7 +4,7 @@
 */
 (()=>{'use strict';
 if(window.MajickAetheriaAdventures)return;
-const KEY='aetheria-adventure-journal-v1',VERSION='1.2.0';
+const KEY='aetheria-adventure-journal-v1',VERSION='1.3.0';
 const CHAPTER_GATES=[600,1000,1600];
 const GATES={guardian:0,game:200,story:600};
 let journal={};try{const x=JSON.parse(localStorage.getItem(KEY)||'{}');if(x&&typeof x==='object'&&!Array.isArray(x))journal=x}catch(_){}
@@ -55,12 +55,12 @@ function started(m,id){return running&&running.mode===m&&running.course===id}
 function begin(m){
  const id=course(),chapter=m==='story'?selectedChapter:1,q=chooseQuestions(id,m,chapter),g=guardian();
  if(xp()<(m==='story'?CHAPTER_GATES[chapter-1]:GATES[m])||q.length<(m==='guardian'?1:3)||m==='guardian'&&!g)return;
- running={mode:m,course:id,chapter,questions:q,index:0,score:0,choice:null,locked:false,ended:false,trail:'moon',guardianId:g?.petId||'',guardianName:g?.name||'',firstTryCorrect:0,position:{x:0,y:1},storyChoices:[],aiming:false,shot:null};
+ running={mode:m,course:id,chapter,questions:q,index:0,score:0,choice:null,locked:false,ended:false,trail:'moon',guardianId:g?.petId||'',guardianName:g?.name||'',guardianType:g?.species||g?.type||g?.name||'',firstTryCorrect:0,position:{x:0,y:1},clues:[],steps:0,explorationMessage:'',storyChoices:[],aiming:false,shot:null};
  redraw();
 }
 function answer(i){
  if(!running||running.ended||running.locked)return;
- if(running.mode==='guardian'&&!atLandmark(running))return;
+ if(running.mode==='guardian'&&(!atLandmark(running)||!allClues(running)))return;
  if(running.mode==='story'&&!running.storyChoices[running.index])return;
  if(running.mode==='game'&&running.aiming)return;
  const q=running.questions[running.index];if(!q||i<0||i>=q.options.length)return;
@@ -92,13 +92,36 @@ function finish(){
 }
 
 const LANDMARK={x:4,y:1};
+const TRAILS={
+ moon:{obstacles:[[2,1],[3,0]],clues:[[1,0],[3,2]],names:['Silverleaf Sigil','Moonstone Rubbing']},
+ moss:{obstacles:[[1,1],[2,0]],clues:[[0,2],[3,1]],names:['Mossbound Rune','Forest Echo']}
+};
+const tileId=(x,y)=>x+','+y;
+function trailMap(a){return TRAILS[a?.trail]||TRAILS.moon}
 function atLandmark(a){return !!a&&a.position?.x===LANDMARK.x&&a.position?.y===LANDMARK.y}
+function allClues(a){const clues=trailMap(a).clues;return !!a&&clues.every(([x,y])=>a.clues?.includes(tileId(x,y)))}
+function guardianReaction(a,event){
+ const type=String(a.guardianType||a.guardianName||'').toLowerCase(),name=a.guardianName||'Your Guardian';
+ const personality=/fox|solstice|kitsune|vesper/.test(type)?'flicks their tails with a knowing flourish':/dragon|cascade|water/.test(type)?'sends a cool shimmer across the path':/cat|velora/.test(type)?'perks up their ears and watches with bright eyes':/raven|rook/.test(type)?'tilts their head, considering the clue':/axolotl|prism/.test(type)?'wiggles with excitement':'glows with quiet curiosity';
+ if(event==='obstacle')return name+' '+personality+'. The ancient stone blocks that tile; try another route.';
+ if(event==='clue')return name+' '+personality+'. You recovered a collectible clue!';
+ if(event==='gate')return name+' '+personality+'. The final ward stays sealed until both clues are collected.';
+ if(event==='ready')return name+' '+personality+'. Both clues activate the gate. Your course challenge is ready.';
+ return name+' '+personality+'. The trail is unfolding.';
+}
 function moveGuardian(direction){
  const a=running;if(!a||a.mode!=='guardian'||a.ended||a.locked)return false;
  const delta={left:[-1,0],right:[1,0],up:[0,-1],down:[0,1]}[direction];if(!delta)return false;
  const x=Math.max(0,Math.min(4,a.position.x+delta[0])),y=Math.max(0,Math.min(2,a.position.y+delta[1]));
  if(x===a.position.x&&y===a.position.y)return false;
- a.position={x,y};redraw(direction);return true;
+ const trail=trailMap(a);
+ if(trail.obstacles.some(([ox,oy])=>x===ox&&y===oy)){a.explorationMessage=guardianReaction(a,'obstacle');redraw(direction);return false}
+ a.position={x,y};a.steps++;
+ const clue=trail.clues.find(([cx,cy])=>cx===x&&cy===y);
+ if(clue&&!a.clues.includes(tileId(x,y))){a.clues.push(tileId(x,y));a.explorationMessage=guardianReaction(a,'clue')}
+ else if(atLandmark(a))a.explorationMessage=guardianReaction(a,allClues(a)?'ready':'gate');
+ else a.explorationMessage=guardianReaction(a,'move');
+ redraw(direction);return true;
 }
 function chooseStoryRoute(route){
  const a=running;if(!a||a.mode!=='story'||a.ended||a.locked||a.storyChoices[a.index])return;
@@ -114,13 +137,17 @@ function branchingScene(a){
   :'You consulted the academy companion, who uncovered a different route through '+title+'. A new clue awaits.';
 }
 function movementScene(a){
- const p=a.position||{x:0,y:1};
+ const p=a.position||{x:0,y:1},trail=trailMap(a),found=a.clues.length;
  const tiles=Array.from({length:15},(_,i)=>{
   const x=i%5,y=Math.floor(i/5),here=x===p.x&&y===p.y,goal=x===4&&y===1;
-  return '<span class="aeth-map-tile'+(here?' current':'')+(goal?' destination':'')+'" aria-hidden="true">'+(here?'🐾':goal?'✧':'')+'</span>';
+  const obstacle=trail.obstacles.some(([ox,oy])=>ox===x&&oy===y);
+  const clue=trail.clues.some(([cx,cy])=>cx===x&&cy===y),collected=a.clues.includes(tileId(x,y));
+  return '<span class="aeth-map-tile'+(here?' current':'')+(goal?' destination':'')+(obstacle?' blocked':'')+(clue?' clue':'')+(collected?' collected':'')+'" aria-hidden="true">'+(here?'🐾':obstacle?'▦':goal?'✧':clue?(collected?'✓':'◆'):'')+'</span>';
  }).join('');
- return '<div class="aeth-expedition-map" role="img" aria-label="'+E(a.guardianName)+' at column '+(p.x+1)+' row '+(p.y+1)+' of five columns and three rows. The clue is at column five row two.">'+tiles+'</div>'+
- '<div class="aeth-movement"><p>'+(atLandmark(a)?'✦ You reached the glowing clue. Solve the course challenge to finish this trail.':'Move your Guardian to the glowing clue on the right. Use the arrow buttons, or focus this panel and use your keyboard arrows.')+'</p>'+
+ const instruction=atLandmark(a)&&allClues(a)?'✦ Both clues are collected and the gate is open. Solve the course challenge.':atLandmark(a)?'The final gate is sealed. Find both clues before solving the challenge.':'Explore around the blocked stones (▦), collect both glowing clues (◆), then reach the gate (✧).';
+ return '<div class="aeth-expedition-map" role="img" aria-label="'+E(a.guardianName)+' at column '+(p.x+1)+' row '+(p.y+1)+' of five columns and three rows. '+found+' of 2 clues collected. Stone tiles block movement. Destination at column five row two.">'+tiles+'</div>'+
+ '<div class="aeth-clue-progress" aria-label="Collected expedition clues">'+trail.clues.map(([x,y],i)=>'<span class="'+(a.clues.includes(tileId(x,y))?'found':'')+'">'+(a.clues.includes(tileId(x,y))?'✦':'◇')+' '+E(trail.names[i])+'</span>').join('')+'</div>'+
+ '<div class="aeth-movement"><div class="aeth-movement-copy"><p>'+E(instruction)+'</p><p class="aeth-guardian-reaction" role="status" aria-live="polite">'+E(a.explorationMessage||guardianReaction(a,'move'))+'</p></div>'+
  '<div class="aeth-direction-controls" role="group" aria-label="Move Guardian">'+
  '<button type="button" data-aeth-move="left" aria-label="Move left">←</button>'+
  '<button type="button" data-aeth-move="up" aria-label="Move up">↑</button>'+
@@ -181,7 +208,7 @@ function view(){
   if(m==='guardian')h+=movementScene(a);
   if(m==='story')h+='<div class="aeth-story-decision"><h4>How will you investigate this scene?</h4><div class="aeth-story-choices"><button type="button" data-aeth-route="evidence"'+(a.storyChoices[a.index]?' disabled':'')+' aria-pressed="'+(a.storyChoices[a.index]==='evidence')+'">🔎 Examine the evidence</button><button type="button" data-aeth-route="companion"'+(a.storyChoices[a.index]?' disabled':'')+' aria-pressed="'+(a.storyChoices[a.index]==='companion')+'">✦ Consult the companion</button></div><p>'+(a.storyChoices[a.index]==='evidence'?'You chose the evidence trail. The next scene will reveal an archive clue.':a.storyChoices[a.index]==='companion'?'You chose the companion trail. The next scene will reveal a different clue.':'Choose a route to reveal the next challenge. Your choice affects the story, not the correct academic answer.')+'</p></div>';
   h+='<div class="aeth-adventure-pips" aria-label="'+a.score+' runes collected">'+a.questions.map((_,i)=>'<span class="'+(i<a.index?'passed':i===a.index?'active':'')+'" aria-hidden="true">'+(i<a.index?'✦':'✧')+'</span>').join('')+'</div>';
-  const openQuestion=m==='guardian'?atLandmark(a):m==='story'?!!a.storyChoices[a.index]:true;
+  const openQuestion=m==='guardian'?(atLandmark(a)&&allClues(a)):m==='story'?!!a.storyChoices[a.index]:true;
   if(openQuestion)h+='<h3>'+E(item.prompt)+'</h3><div class="aeth-runes" role="group" aria-label="'+(m==='game'?'Aim at the answer targets':'Choose a rune answer')+'">'+item.options.map((option,i)=>'<button type="button" data-aeth-answer="'+i+'"'+(a.locked?' disabled':'')+' class="'+(m==='game'?'aeth-target ':'')+(a.choice===i?(i===item.correct?'right':'wrong'):'')+'"><span aria-hidden="true">'+(m==='game'?'◎':'✧')+'</span>'+E(option)+'</button>').join('')+'</div>';
   if(m==='game')h+='<p class="aeth-target-note" role="status">'+(a.locked?(a.shot==='hit'?'✦ Target hit! The lantern responds.':'The rune flickered. Read the feedback and aim again next challenge.'):'Tap or click a rune target, or use Tab and Enter to fire. The targeting pulse pauses for reduced motion.')+'</p>';
   if(a.locked)h+='<div class="aeth-result" role="status"><b>'+(a.choice===item.correct?'Correct rune!':'That rune needs repair.')+'</b><p>'+E(item.explanation||'Review the course lesson, then try the next challenge.')+'</p>'+(item.source?'<a href="'+E(item.source)+'" target="_blank" rel="noopener noreferrer">Review the source lesson</a>':'<small>Existing course question bank practice</small>')+button('next',a.index+1===a.questions.length?'Complete quest':'Next challenge')+'</div>';
@@ -217,7 +244,7 @@ document.addEventListener('click',e=>{
  if(act==='start'||act==='restart'){begin(mode());return}
  if(act==='next'){advance();return}
  if(act.startsWith('chapter:')){const n=Number(act.split(':')[1]);if(Number.isInteger(n)&&n>=1&&n<=3&&xp()>=CHAPTER_GATES[n-1]){selectedChapter=n;running=null;redraw()}return}
- if(act.startsWith('trail:')&&running&&!running.locked){running.trail=act.split(':')[1]==='moss'?'moss':'moon';redraw()}
+ if(act.startsWith('trail:')&&running&&!running.locked&&running.mode==='guardian'){running.trail=act.split(':')[1]==='moss'?'moss':'moon';running.position={x:0,y:1};running.clues=[];running.steps=0;running.explorationMessage='Trail changed. Collect both clues before reaching the gate.';redraw()}
 });
 document.addEventListener('keydown',e=>{
  const panel=e.target?.closest?.('#aethAdventure');
