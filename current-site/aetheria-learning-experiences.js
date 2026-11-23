@@ -90,7 +90,7 @@ function viewGame(){
   if(session.complete){s+='<div class="aeth-mini-result" role="status"><h3>✦ '+E(m?.title||'Challenge')+' complete!</h3><p>'+session.correct+'/'+session.items.length+' correct by completion. '+(session.assisted?'Guardian-guided repairs were used.':'All answers were correct on the first attempt.')+'</p><p>'+(session.awarded?'A new first-clear memory was added to your Scholar Journal.':'You can replay for practice; no duplicate rewards are created.')+'</p><button type="button" data-exp-mode="'+session.kind+'">Play again</button></div>'}
   else{
    const q=session.items[session.index],g=guardian(),feedback=session.feedback;
-   s+='<div class="aeth-mini-stage"><div class="aeth-mini-progress"><b>'+E(m?.title||'Game')+'</b><span>'+(session.index+1)+' / '+session.items.length+'</span></div><div class="aeth-mini-track"><i style="width:'+Math.round(100*session.index/session.items.length)+'%"></i></div><h3>'+E(q.prompt)+'</h3><div class="aeth-mini-answers" role="group" aria-label="Course answer options">'+q.options.map((o,i)=>'<button type="button" data-exp-answer="'+i+'"'+(feedback?' disabled':'')+' class="'+(feedback&&i===session.choice?(feedback.right?'right':'wrong'):'')+'"><span aria-hidden="true">'+(session.kind==='sort'?'◇':session.kind==='match'?'✦':'▣')+'</span>'+E(o)+'</button>').join('')+'</div>';
+   s+='<div class="aeth-mini-stage"><div class="aeth-mini-progress"><b>'+E(m?.title||'Game')+'</b><span>'+(session.index+1)+' / '+session.items.length+'</span></div><div class="aeth-mini-track"><i style="width:'+Math.round(100*session.index/session.items.length)+'%"></i></div><h3>'+E(q.prompt)+'</h3><div class="aeth-mini-answers" role="group" aria-label="Course answer options">'+q.options.map((o,i)=>'<button type="button" data-exp-answer="'+i+'"'+(session.kind!=='classroom'&&!feedback?' draggable="true"':'')+(feedback?' disabled':'')+' class="'+(feedback&&i===session.choice?(feedback.right?'right':'wrong'):'')+'"><span aria-hidden="true">'+(session.kind==='sort'?'◇':session.kind==='match'?'✦':'▣')+'</span>'+E(o)+'</button>').join('')+'</div>'+(session.kind!=='classroom'&&!feedback?'<div class="aeth-drop-target" data-exp-drop="true" aria-label="Drop the correct concept here">✦ Drag the correct answer here, or tap a card</div>':'');
    if(feedback){
     s+='<div class="aeth-mini-coach" role="status"><div class="aeth-mini-guardian"><span>'+E(g.icon)+'</span><b>'+E(g.name)+' · '+(feedback.right?'Great observation!':'Guided Repair')+'</b></div><p>'+E(feedback.explanation)+'</p>';
     if(q.source)s+='<a href="'+E(q.source)+'" target="_blank" rel="noopener noreferrer">Check the original lesson source</a>';
@@ -117,6 +117,7 @@ function viewJournal(){
 }
 function sync(){
  const root=document.getElementById('content'),r=room(),id=course();if(!root||!id)return;
+ document.documentElement.dataset.aetheriaDecor=journal.decor||'desk';
  const wanted=r==='games'?{key:'aethCourseGames',html:viewGame()}:r==='mission'?{key:'aethAcademyDecor',html:viewDecor()}:r==='journal'?{key:'aethJournalMemories',html:viewJournal()}:null;
  for(const key of ['aethCourseGames','aethAcademyDecor','aethJournalMemories'])if(key!==wanted?.key)document.getElementById(key)?.remove();
  if(!wanted){lastRoom=r;return}
@@ -133,6 +134,22 @@ function redraw(){
  const html=room()==='games'?viewGame():room()==='mission'?viewDecor():viewJournal();
  const holder=document.createElement('div');holder.innerHTML=html;if(holder.firstElementChild)target.replaceWith(holder.firstElementChild);
 }
+
+document.addEventListener('dragstart',e=>{
+ const b=e.target?.closest?.('#aethCourseGames button[draggable="true"][data-exp-answer]');
+ if(!b||!session||session.feedback)return;
+ e.dataTransfer?.setData?.('text/plain',String(b.dataset.expAnswer));
+ if(e.dataTransfer)e.dataTransfer.effectAllowed='move';
+});
+document.addEventListener('dragover',e=>{
+ if(e.target?.closest?.('#aethCourseGames [data-exp-drop]'))e.preventDefault();
+});
+document.addEventListener('drop',e=>{
+ if(!e.target?.closest?.('#aethCourseGames [data-exp-drop]'))return;
+ e.preventDefault();
+ const chosen=e.dataTransfer?.getData?.('text/plain')||'';
+ if(/^\d{1,2}$/.test(chosen))answer(Number(chosen));
+});
 document.addEventListener('click',e=>{
  const btn=e.target?.closest?.('button');if(!btn||!btn.closest('.aeth-experience'))return;
  if(btn.hasAttribute('data-exp-mode')){start(btn.dataset.expMode);return}
