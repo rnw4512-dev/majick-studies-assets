@@ -1,0 +1,45 @@
+/* Aetheria interactive course games + Scholar Journal + Study Hall decor.
+   Presentation only. No existing nav, grading or reward owners altered. */
+#aethCourseGames,#aethAcademyDecor,#aethJournalMemories{--aexp-ink:#33273f;--aexp-purple:#614571;--aexp-brass:#b39465;margin:16px 0;padding:19px;border:1px solid #b6a18a;border-radius:18px;background:radial-gradient(ellipse at 96% 2%,#ddc5af77,transparent 27%),linear-gradient(130deg,#fffaf2,#f4edf4);color:var(--aexp-ink)!important;box-shadow:0 7px 24px #3c2a4e17;isolation:isolate}
+.aeth-experience header small{font-size:10px;letter-spacing:.11em;font-weight:850;color:#654a70!important}
+.aeth-experience header h2{font:bold clamp(22px,2.5vw,30px)/1.2 Georgia,serif!important;color:#352541!important;margin:5px 0 7px}
+.aeth-experience header p{color:#504158!important;margin:0 0 15px;font-size:14px;line-height:1.45}
+.aeth-experience button{min-height:44px;padding:10px 12px;border:1px solid #8e719f;border-radius:12px;background:#f7f0fa;color:#302342!important;cursor:pointer;font:650 14px/1.35 Inter,Arial,sans-serif}
+.aeth-experience button:hover:not(:disabled){background:#e9dcf2!important;border-color:#654874}
+.aeth-experience button:focus-visible,.aeth-experience a:focus-visible{outline:3px solid #2a7960!important;outline-offset:2px}
+.aeth-experience button:disabled{opacity:.68;cursor:not-allowed}
+.aeth-mini-menu,.aeth-decor-choices{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.aeth-mini-menu button,.aeth-decor-choices button{display:grid;gap:5px;text-align:left;align-content:start;min-height:112px;background:#fffdfa!important}
+.aeth-mini-menu button span,.aeth-decor-choices button span{font-size:26px}
+.aeth-mini-menu button b,.aeth-decor-choices button b{color:#3a2d49!important}
+.aeth-mini-menu button small,.aeth-decor-choices button small{color:#65586e!important;font-size:11px;line-height:1.35}
+.aeth-exp-summary{font-size:12px;color:#594962!important;margin:10px 0 0}
+.aeth-mini-stage,.aeth-mini-result{margin-top:14px;padding:17px;border:1px solid #d4bdd1;border-radius:15px;background:#fffdfa}
+.aeth-mini-stage h3,.aeth-mini-result h3{font-size:clamp(17px,2vw,22px);line-height:1.42;margin:14px 0;color:#30213c!important}
+.aeth-mini-progress{display:flex;justify-content:space-between;align-items:center;gap:12px;color:#554160!important}
+.aeth-mini-track{height:7px;background:#eee5f0;border-radius:999px;margin:9px 0;overflow:hidden}
+.aeth-mini-track i{height:100%;display:block;background:linear-gradient(90deg,#436b58,#b9a06a);border-radius:inherit}
+.aeth-mini-answers{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.aeth-mini-answers button{min-height:65px;display:flex;align-items:center;gap:9px;text-align:left}
+.aeth-mini-answers button span{font-size:23px;color:#87629b!important}
+.aeth-mini-answers button.right{background:#d9f2e3!important;border-color:#36714d!important;color:#18432c!important}
+.aeth-mini-answers button.wrong{background:#f8e0e4!important;border-color:#bd6179!important;color:#6c3442!important}
+.aeth-mini-coach{margin-top:12px;padding:13px;background:#f3effa;border-left:4px solid #80639c;border-radius:10px}
+.aeth-mini-coach p{color:#413349!important;line-height:1.5;font-size:13px}
+.aeth-mini-guardian{display:flex;align-items:center;gap:10px;color:#3b2d47!important}
+.aeth-mini-guardian span{font-size:28px}
+.aeth-mini-coach a{display:block;margin-bottom:10px;text-decoration:underline;color:#513680!important;font-weight:750}
+.aeth-decor-preview{display:flex;align-items:center;gap:13px;padding:16px;background:radial-gradient(circle at 30% 20%,#d6b87555,transparent 55%),linear-gradient(120deg,#2d2744,#335546);border:1px solid #c6a574;border-radius:14px;color:#fff7e5}
+.aeth-decor-preview span{font-size:52px;line-height:1}
+.aeth-decor-preview b,.aeth-decor-preview small{display:block;color:#fff3d7!important}
+.aeth-decor-preview small{opacity:.87;margin-top:4px;font-size:12px}
+.aeth-decor-choices{grid-template-columns:repeat(auto-fit,minmax(155px,1fr));margin-top:12px}
+.aeth-decor-choices button[aria-pressed="true"]{border:2px solid #3a7860!important;background:#e0f0e7!important}
+.aeth-memory-list{display:grid;gap:9px}
+.aeth-memory-list article{display:flex;align-items:start;gap:12px;padding:13px;border:1px solid #dbc9b8;background:#fffdfa;border-radius:12px}
+.aeth-memory-list article>span{font-size:25px;color:#aa8a5c}
+.aeth-memory-list article b{color:#372843!important}
+.aeth-memory-list article small{display:block;font-size:11px;color:#675a6c!important;margin:4px 0}
+.aeth-memory-list article p{font-size:13px;line-height:1.45;margin:5px 0 0;color:#514655!important}
+@media(max-width:740px){.aeth-mini-menu{grid-template-columns:1fr}.aeth-mini-menu button{min-height:82px}.aeth-mini-answers{grid-template-columns:1fr}#aethCourseGames,#aethAcademyDecor,#aethJournalMemories{padding:12px}}
+@media(prefers-reduced-motion:reduce){.aeth-experience *{animation:none!important;transition:none!important;transform:none!important}}
