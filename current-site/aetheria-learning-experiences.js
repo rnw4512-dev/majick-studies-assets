@@ -158,7 +158,7 @@ document.addEventListener('click',e=>{
  if(btn.hasAttribute('data-exp-next')){next();return}
  if(btn.hasAttribute('data-exp-decor')){
   const choice=decor.find(d=>d.id===btn.dataset.expDecor);if(!choice||xp()<choice.xp)return;
-  journal.decor=choice.id;save();redraw();
+  journal.decor=choice.id;save();document.documentElement.dataset.aetheriaDecor=choice.id;redraw();
  }
 });
 
