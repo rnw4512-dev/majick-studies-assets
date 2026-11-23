@@ -116,8 +116,8 @@ function deepTile(index){
   deep.tiles=[index];
   const q=deep.items[deep.index],right=index===q.correct;
   deep.feedback={right,explanation:q.explanation||'Compare this decision to the source lesson.'};
-  if(!right){deep.repairs++;deep.usedCoach=true;deep.outcomes[deep.index]='The student attempts the task but the misconception remains. Your Guardian suggests revisiting the teaching evidence.'}
-  else{deep.outcomes[deep.index]='The student receives an appropriate response and can try the skill with clearer support.';if(!deep.usedCoach)deep.firstTry++}
+  if(!right){deep.repairs++;deep.usedCoach=true;deep.outcomes[deep.index]='The student applies this approach but still needs support with: '+q.prompt+' Your Guardian recommends reviewing the explanation and choosing a more targeted teaching response.'}
+  else{deep.outcomes[deep.index]='The student now has a clearer next step for: '+q.prompt+' The teaching response can be checked against the cited course explanation.';if(!deep.usedCoach)deep.firstTry++}
  }else{
   if(deep.tiles.includes(index))return false;
   deep.tiles.push(index);
@@ -163,7 +163,7 @@ function deepMarkup(){
   s+='<h3>'+E(q.title)+'</h3><p>'+E(q.prompt)+'</p><div class="aeth-classroom-visual"><span aria-hidden="true">🧒🏽</span><b>Student response</b><p>'+E(deep.outcomes[deep.index]||'Your student is waiting for a teaching decision. What would you do next?')+'</p></div>';
  }
  if(deep.kind!=='scenario')s+='<div class="aeth-assembly" aria-label="Assembled answer">'+(arr.length?arr.map((x,i)=>'<span><small>'+(i+1)+'</small>'+E(x)+'</span>').join(''):'<span class="aeth-empty-slot">Your selections appear here</span>')+'</div>';
- s+='<div class="aeth-deep-options" role="group" aria-label="'+(deep.kind==='forge'?'Phoneme stones':deep.kind==='sequence'?'Sequence tiles':'Classroom actions')+'">'+deep.optionOrder.map(t=>'<button type="button" data-deep-tile="'+t.id+'"'+(deep.feedback||deep.tiles.includes(t.id)?' disabled':'')+' class="'+(deep.tiles.includes(t.id)?'placed':'')+'"><span aria-hidden="true">'+(deep.kind==='forge'?'◈':deep.kind==='sequence'?'▣':'✦')+'</span>'+E(t.label)+'</button>').join('')+'</div>';
+ s+='<div class="aeth-deep-options" role="group" aria-label="'+(deep.kind==='forge'?'Phoneme stones':deep.kind==='sequence'?'Sequence tiles':'Classroom actions')+'">'+deep.optionOrder.map(t=>'<button type="button" data-deep-tile="'+t.id+'"'+(deep.kind!=='scenario'&&!deep.feedback?' draggable="true"':'')+(deep.feedback||deep.tiles.includes(t.id)?' disabled':'')+' class="'+(deep.tiles.includes(t.id)?'placed':'')+'"><span aria-hidden="true">'+(deep.kind==='forge'?'◈':deep.kind==='sequence'?'▣':'✦')+'</span>'+E(t.label)+'</button>').join('')+'</div>'+(deep.kind!=='scenario'&&!deep.feedback?'<div class="aeth-drop-target" data-deep-drop="true" aria-label="Drop a tile to append it to your sequence">✦ Drop the next tile here, or tap it above</div>':'');
  if(!deep.feedback&&deep.kind!=='scenario'){
   s+='<div class="aeth-deep-actions"><button type="button" data-deep-undo'+(!deep.tiles.length?' disabled':'')+'>Undo last</button><button type="button" data-deep-check'+(deep.tiles.length!==q.parts.length?' disabled':'')+'>Check my '+(deep.kind==='forge'?'word':'sequence')+'</button></div>';
  }
@@ -269,6 +269,21 @@ function redraw(){
  const holder=document.createElement('div');holder.innerHTML=html;if(holder.firstElementChild)target.replaceWith(holder.firstElementChild);
 }
 
+document.addEventListener('dragstart',e=>{
+ const tile=e.target?.closest?.('#aethCourseGames button[draggable="true"][data-deep-tile]');
+ if(!tile||!deep||deep.feedback||deep.completed)return;
+ e.dataTransfer?.setData?.('application/x-aetheria-tile',String(tile.dataset.deepTile));
+ if(e.dataTransfer)e.dataTransfer.effectAllowed='move';
+});
+document.addEventListener('dragover',e=>{
+ if(e.target?.closest?.('#aethCourseGames [data-deep-drop]'))e.preventDefault();
+});
+document.addEventListener('drop',e=>{
+ if(!e.target?.closest?.('#aethCourseGames [data-deep-drop]'))return;
+ e.preventDefault();
+ const tile=e.dataTransfer?.getData?.('application/x-aetheria-tile')||'';
+ if(/^\d{1,2}$/.test(tile))deepTile(Number(tile));
+});
 document.addEventListener('dragstart',e=>{
  const b=e.target?.closest?.('#aethCourseGames button[draggable="true"][data-exp-answer]');
  if(!b||!session||session.feedback)return;
