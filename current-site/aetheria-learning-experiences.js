@@ -3,8 +3,8 @@
    core owns XP/fragments. These activities DO NOT write grades or grant currencies. */
 (()=>{'use strict';
 if(window.MajickLearningExperiences)return;
-const VERSION='1.1.0',KEY='aetheria-experiences-v1';
-let journal={version:1,memories:[],decor:'desk',playRuns:{}},session=null,deep=null,scheduled=false,lastRoom='';
+const VERSION='1.2.0',KEY='aetheria-experiences-v1';
+let journal={version:1,memories:[],decor:'desk',playRuns:{}},session=null,deep=null,selectedSection=1,scheduled=false,lastRoom='';
 try{const raw=JSON.parse(localStorage.getItem(KEY)||'{}');if(raw&&typeof raw==='object'&&!Array.isArray(raw)){journal={...journal,...raw};if(!Array.isArray(journal.memories))journal.memories=[]}}catch(_){}
 const E=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const course=()=>String(window.S?.activeCourse||'').toUpperCase();
@@ -18,6 +18,33 @@ const decor=[
  {id:'window',title:'Celestial Window Seat',xp:1400,icon:'☾',message:'Study beside the night sky'},
  {id:'botanical',title:'Forest Scholar Nook',xp:3000,icon:'🌿',message:'Greenery and quiet magic'}
 ];
+
+function catalog(id){return window.MajickCourseManager?.COURSE_CATALOG?.[id]||window.S?.courses?.[id]||null}
+function sectionRows(id,n){
+ const c=catalog(id),sec=(c?.studySections||[]).find(x=>x.id===id.toLowerCase()+'-section-'+n);
+ if(!sec)return {section:null,lessons:[],questions:[]};
+ const lessons=(sec.lessons||[]).flatMap(l=>(l.sublessons?.length?l.sublessons:[l]).map(t=>({id:String(t.id||l.title),title:String(t.title||l.title),ideas:Array.isArray(t.keyIdeas)?t.keyIdeas:[]})));
+ const questions=(c?.questionBank||[]).filter(q=>q.section==='Section '+n&&Array.isArray(q.options)&&q.options.length>=2).map(q=>{
+ const index=q.options.findIndex(o=>String(o)===String(q.answer));
+ return {id:'catalog|'+q.id,lesson:'Section '+n,prompt:String(q.prompt||''),options:q.options.map(String),correct:index,explanation:String(q.why||''),source:'',title:'Course catalog review'}
+ }).filter(q=>q.prompt&&q.correct>=0);
+ return {section:sec,lessons,questions};
+}
+function sectionQuestions(id,n){
+ if(id!=='D669')return sourced(id);
+ const row=sectionRows(id,n),packs=n===2?sourced(id):[];
+ const seen=new Set();return [...row.questions,...packs].filter(q=>{if(seen.has(q.id))return false;seen.add(q.id);return true});
+}
+function sectionOverview(id){
+ if(id!=='D669')return '';
+ const row=sectionRows(id,selectedSection),all=[1,2,3].map(n=>({n,data:sectionRows(id,n),count:sectionQuestions(id,n).length}));
+ let s='<div class="aeth-section-picker"><h3>Study Sections 1–3</h3><div class="aeth-section-buttons" role="group" aria-label="D669 sections">';
+ s+=all.map(x=>'<button type="button" data-exp-section="'+x.n+'" aria-pressed="'+(x.n===selectedSection)+'"><b>Section '+x.n+'</b><small>'+E((x.data.section?.title||'').replace(/^Section \d+:?\s*/,''))+'</small><em>'+x.data.lessons.length+' topics · '+x.count+' practice questions</em></button>').join('');
+ s+='</div><div class="aeth-section-outline"><h4>'+E(row.section?.title||'Section '+selectedSection)+'</h4><p>Open a topic for its existing course notes. The games below use the practice questions available for this section.</p><div class="aeth-section-lessons">';
+ s+=row.lessons.map(l=>'<details><summary>'+E(l.title)+'</summary>'+(l.ideas.length?'<ul>'+l.ideas.slice(0,4).map(x=>'<li>'+E(x)+'</li>').join('')+'</ul>':'<p>See the course Learning Path for the full topic content.</p>')+'</details>').join('');
+ return s+'</div></div></div>';
+}
+
 function sourcePacks(id){return Object.values(window.MajickCourseActivityPlayer?.packs||{}).filter(p=>String(p.courseId||'').toUpperCase()===id)}
 function sourced(id){return sourcePacks(id).flatMap(p=>(p.activities||[]).filter(a=>a._sourceVerified&&Array.isArray(a.options)&&a.options.length>1&&Number.isInteger(a.correct)&&a.correct>=0&&a.correct<a.options.length).map(a=>({
  id:p.id+'|'+a.id,lesson:p.title,prompt:String(a.prompt||a.title||''),options:a.options.map(String),correct:a.correct,
@@ -36,7 +63,7 @@ const MODES=[
  {id:'classroom',title:'Classroom Decisions',icon:'🏫',desc:'Help a student by choosing the strongest instructional response.'}
 ];
 function activity(id,kind){
- const questions=sourced(id),terms=concepts(id);
+ const questions=sectionQuestions(id,selectedSection),terms=concepts(id);
  if(kind==='match'){
   const distinct=[],seen=new Set();
   for(const c of terms){const k=c.term.toLowerCase();if(!seen.has(k)){seen.add(k);distinct.push(c)}}
@@ -78,7 +105,7 @@ function deepPool(cid,kind){
  if(cid==='D669'&&kind==='forge')return D669_FORGE;
  if(cid==='D669'&&kind==='sequence')return D669_SEQUENCE;
  if(kind==='scenario'){
-  return sourced(cid).filter(q=>q.options.length>=2).map(q=>({
+  return sectionQuestions(cid,selectedSection).filter(q=>q.options.length>=2).map(q=>({
    id:q.id,title:q.lesson||'Classroom case',prompt:q.prompt,
    options:q.options,correct:q.correct,explanation:q.explanation,
    consequence:'The student needs a response based on the teaching evidence, not a guess.',
@@ -212,9 +239,10 @@ function next(){
  redraw();
 }
 function viewGame(){
- const id=course(),mode=room(),p=sourced(id),terms=concepts(id);
+ const id=course(),mode=room(),p=sectionQuestions(id,selectedSection),terms=concepts(id);
  const count=journal.memories.filter(m=>m.course===id&&(m.key.startsWith('game:')||m.key.startsWith('deep:'))).length;
  let s='<section id="aethCourseGames" class="aeth-experience" data-experience-room="'+E(mode)+'" data-course="'+E(id)+'" aria-label="Course-specific interactive mini-games"><header><small>✦ COURSE GAME WORKSHOP · '+E(id)+'</small><h2>Play your course knowledge</h2><p>Real lesson concepts, interactive practice, and Guardian-guided repairs. No duplicate XP or mastery.</p></header>';
+ s+=sectionOverview(id);
  s+='<div class="aeth-mini-menu">'+MODES.map(m=>'<button type="button" data-exp-mode="'+m.id+'"'+((m.id==='match'?terms.length<3:p.length<3)?' disabled':'')+'><span>'+m.icon+'</span><b>'+E(m.title)+'</b><small>'+E(m.desc)+'</small></button>').join('')+'</div>';
  s+='<div class="aeth-mini-menu aeth-deep-menu">'+DEEP_MODES.map(m=>'<button type="button" data-deep-mode="'+m.id+'"'+(deepPool(id,m.id).length<3?' disabled':'')+'><span>'+m.icon+'</span><b>'+E(m.title)+'</b><small>'+E(m.desc)+'</small></button>').join('')+'</div>';
  s+='<p class="aeth-exp-summary">'+count+' game discoveries recorded in your Journal.'+(p.length<3?' This course needs at least 3 verified practice questions for question-based games.':'')+'</p>';
@@ -307,6 +335,7 @@ document.addEventListener('click',e=>{
  if(btn.hasAttribute('data-deep-check')){deepCheck();return}
  if(btn.hasAttribute('data-deep-retry')){deepRetry();return}
  if(btn.hasAttribute('data-deep-next')){deepNext();return}
+ if(btn.hasAttribute('data-exp-section')){const n=Number(btn.dataset.expSection);if(course()==='D669'&&[1,2,3].includes(n)){selectedSection=n;session=null;deep=null;redraw()}return}
  if(btn.hasAttribute('data-exp-mode')){start(btn.dataset.expMode);return}
  if(btn.hasAttribute('data-exp-answer')){answer(Number(btn.dataset.expAnswer));return}
  if(btn.hasAttribute('data-exp-retry')){retryGuided();return}
@@ -341,6 +370,6 @@ if(window.MajickRenderQueue?.register)window.MajickRenderQueue.register('aetheri
 document.addEventListener('DOMContentLoaded',schedule);
 document.addEventListener('change',e=>{if(e.target?.matches?.('.courseSelect')){session=null;deep=null;schedule()}});
 window.addEventListener('pageshow',schedule);
-window.MajickLearningExperiences=Object.freeze({VERSION,refresh:schedule,courseGames:activity,deepPool,memories:()=>journal.memories.slice(),decorations:()=>decor.slice()});
+window.MajickLearningExperiences=Object.freeze({VERSION,refresh:schedule,courseGames:activity,deepPool,sectionRows,sectionQuestions,memories:()=>journal.memories.slice(),decorations:()=>decor.slice()});
 schedule();
 })();
