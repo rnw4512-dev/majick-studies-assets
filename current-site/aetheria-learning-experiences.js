@@ -58,7 +58,7 @@ function answer(index){
  const q=session.items[session.index];if(!q||index<0||index>=q.options.length)return;
  const right=index===q.correct;
  session.choice=index;session.feedback={right,explanation:q.explanation||'Return to the course reading and compare the options.'};
- if(right){session.correct++;session.firstTry++}
+ if(right){session.correct++;if(!session.assisted)session.firstTry++}
  else session.assisted=true;
  redraw();
 }
@@ -143,6 +143,19 @@ document.addEventListener('click',e=>{
   const choice=decor.find(d=>d.id===btn.dataset.expDecor);if(!choice||xp()<choice.xp)return;
   journal.decor=choice.id;save();redraw();
  }
+});
+
+document.addEventListener('majick:adventure-first-clear',e=>{
+ const d=e.detail||{},id=String(d.course||'').toUpperCase(),kind=String(d.kind||''),key=String(d.key||'');
+ if(!id||!['guardian','story','game'].includes(kind)||!key)return;
+ const title=kind==='guardian'?'Guardian expedition discovery':kind==='story'?'Story chapter restored':'Rune Lantern cleared';
+ const details=kind==='guardian'?String(d.guardian||'Your Guardian')+' explored the '+key.split(':').pop()+' trail and returned with a memory.':kind==='story'?'Completed '+key.replace(/^chapter-/,'chapter ')+' through course practice.':'Completed the interactive rune challenge.';
+ const memoryKey='adventure:'+kind+':'+id+':'+key;
+ if(!journal.memories.some(m=>m.key===memoryKey)){
+  journal.memories.unshift({key:memoryKey,title,details,course:id,date:new Date().toISOString()});
+  journal.memories=journal.memories.slice(0,80);save();
+ }
+ if(room()==='journal')redraw();
 });
 document.addEventListener('majick:sourced-practice',e=>{
  const d=e.detail||{};if(!d.correct||!d.courseId||!d.lessonId||!d.questionId)return;
