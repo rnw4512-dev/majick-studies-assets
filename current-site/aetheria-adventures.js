@@ -4,7 +4,7 @@
 */
 (()=>{'use strict';
 if(window.MajickAetheriaAdventures)return;
-const KEY='aetheria-adventure-journal-v1',VERSION='1.1.0';
+const KEY='aetheria-adventure-journal-v1',VERSION='1.2.0';
 const CHAPTER_GATES=[600,1000,1600];
 const GATES={guardian:0,game:200,story:600};
 let journal={};try{const x=JSON.parse(localStorage.getItem(KEY)||'{}');if(x&&typeof x==='object'&&!Array.isArray(x))journal=x}catch(_){}
@@ -55,20 +55,24 @@ function started(m,id){return running&&running.mode===m&&running.course===id}
 function begin(m){
  const id=course(),chapter=m==='story'?selectedChapter:1,q=chooseQuestions(id,m,chapter),g=guardian();
  if(xp()<(m==='story'?CHAPTER_GATES[chapter-1]:GATES[m])||q.length<(m==='guardian'?1:3)||m==='guardian'&&!g)return;
- running={mode:m,course:id,chapter,questions:q,index:0,score:0,choice:null,locked:false,ended:false,trail:'moon',guardianId:g?.petId||'',guardianName:g?.name||'',firstTryCorrect:0};
+ running={mode:m,course:id,chapter,questions:q,index:0,score:0,choice:null,locked:false,ended:false,trail:'moon',guardianId:g?.petId||'',guardianName:g?.name||'',firstTryCorrect:0,position:{x:0,y:1},storyChoices:[],aiming:false,shot:null};
  redraw();
 }
 function answer(i){
  if(!running||running.ended||running.locked)return;
+ if(running.mode==='guardian'&&!atLandmark(running))return;
+ if(running.mode==='story'&&!running.storyChoices[running.index])return;
+ if(running.mode==='game'&&running.aiming)return;
  const q=running.questions[running.index];if(!q||i<0||i>=q.options.length)return;
- running.choice=i;running.locked=true;
+ running.choice=i;running.locked=true;running.shot=i===q.correct?'hit':'miss';
  if(i===q.correct){running.score++;running.firstTryCorrect++}
  redraw();
 }
 function advance(){
  if(!running||!running.locked)return;
  running.index++;
- running.locked=false;running.choice=null;
+ running.locked=false;running.choice=null;running.shot=null;running.aiming=false;
+ if(running.mode==='guardian')running.position={x:0,y:1};
  if(running.index>=running.questions.length)finish();
  redraw();
 }
@@ -86,6 +90,44 @@ function finish(){
  else first=record('story','chapter-'+running.chapter,id);
  running.firstClear=first;
 }
+
+const LANDMARK={x:4,y:1};
+function atLandmark(a){return !!a&&a.position?.x===LANDMARK.x&&a.position?.y===LANDMARK.y}
+function moveGuardian(direction){
+ const a=running;if(!a||a.mode!=='guardian'||a.ended||a.locked)return false;
+ const delta={left:[-1,0],right:[1,0],up:[0,-1],down:[0,1]}[direction];if(!delta)return false;
+ const x=Math.max(0,Math.min(4,a.position.x+delta[0])),y=Math.max(0,Math.min(2,a.position.y+delta[1]));
+ if(x===a.position.x&&y===a.position.y)return false;
+ a.position={x,y};redraw(true);return true;
+}
+function chooseStoryRoute(route){
+ const a=running;if(!a||a.mode!=='story'||a.ended||a.locked||a.storyChoices[a.index])return;
+ if(route!=='evidence'&&route!=='companion')return;
+ a.storyChoices[a.index]=route;redraw();
+}
+function branchingScene(a){
+ const prior=a.storyChoices[a.index-1];
+ if(!prior)return '';
+ const title=window.S?.courses?.[a.course]?.title||a.course;
+ return prior==='evidence'
+  ?'You followed the evidence into a newly uncovered archive. A clue from '+title+' guides the next decision.'
+  :'You consulted the academy companion, who uncovered a different route through '+title+'. A new clue awaits.';
+}
+function movementScene(a){
+ const p=a.position||{x:0,y:1};
+ const tiles=Array.from({length:15},(_,i)=>{
+  const x=i%5,y=Math.floor(i/5),here=x===p.x&&y===p.y,goal=x===4&&y===1;
+  return '<span class="aeth-map-tile'+(here?' current':'')+(goal?' destination':'')+'" aria-hidden="true">'+(here?'🐾':goal?'✧':'')+'</span>';
+ }).join('');
+ return '<div class="aeth-expedition-map" role="img" aria-label="'+E(a.guardianName)+' at column '+(p.x+1)+' row '+(p.y+1)+' of five columns and three rows. The clue is at column five row two.">'+tiles+'</div>'+
+ '<div class="aeth-movement"><p>'+(atLandmark(a)?'✦ You reached the glowing clue. Solve the course challenge to finish this trail.':'Move your Guardian to the glowing clue on the right. Use the arrow buttons, or focus this panel and use your keyboard arrows.')+'</p>'+
+ '<div class="aeth-direction-controls" role="group" aria-label="Move Guardian">'+
+ '<button type="button" data-aeth-move="left" aria-label="Move left">←</button>'+
+ '<button type="button" data-aeth-move="up" aria-label="Move up">↑</button>'+
+ '<button type="button" data-aeth-move="down" aria-label="Move down">↓</button>'+
+ '<button type="button" data-aeth-move="right" aria-label="Move right">→</button></div></div>';
+}
+
 function headline(m){
  if(m==='guardian')return 'Guardian Moonpath Expedition';
  if(m==='game')return 'Rune Lantern Challenge';
@@ -132,21 +174,25 @@ function view(){
   h+='<div class="aeth-adventure-message" role="status"><b>'+(a.score===a.questions.length?'✦ Quest completed!':'The chapter needs another attempt')+'</b><p>'+a.score+' / '+a.questions.length+' correct. '+(a.firstClear?'First clear recorded; Egg Fragment added through the existing reward ledger.':a.score===a.questions.length?'Already explored; repeated clears do not grant duplicate fragments.':'Review the feedback and try again.')+'</p>'+button('restart','Play again')+(m==='story'&&a.score===a.questions.length&&a.chapter<3?button('chapter:'+String(a.chapter+1),'Next chapter',level<CHAPTER_GATES[a.chapter]):'')+'</div>';
  }else{
   const item=a.questions[a.index],story=courseStory(id);
-  const intro=m==='guardian'?E(a.guardianName)+' explores the '+(a.trail==='moon'?'Moonlit':'Mosswood')+' trail. A glowing clue stands in your path.':m==='story'?story.scenes[(a.chapter-1)*3+a.index]:'Aim for the correct rune to light the lantern.';
+  const intro=m==='guardian'?E(a.guardianName)+' explores the '+(a.trail==='moon'?'Moonlit':'Mosswood')+' trail. A glowing clue stands in your path.':m==='story'?story.scenes[(a.chapter-1)*3+a.index]+' '+branchingScene(a):'Aim at the answer rune to light the lantern. Each target is a course question.';
   h+=scene(m,a.chapter,a.trail,a.score);
   h+='<div class="aeth-adventure-play"><div class="aeth-adventure-meta"><b>'+E(intro)+'</b><span>Challenge '+(a.index+1)+' / '+a.questions.length+'</span></div>';
   if(m==='guardian'&&a.index===0&&!a.locked)h+='<div class="aeth-trails" aria-label="Choose a Guardian trail"><button type="button" data-aeth-action="trail:moon" aria-pressed="'+(a.trail==='moon')+'">☾ Moonlit trail</button><button type="button" data-aeth-action="trail:moss" aria-pressed="'+(a.trail==='moss')+'">❧ Mosswood trail</button></div>';
+  if(m==='guardian')h+=movementScene(a);
+  if(m==='story')h+='<div class="aeth-story-decision"><h4>How will you investigate this scene?</h4><div class="aeth-story-choices"><button type="button" data-aeth-route="evidence"'+(a.storyChoices[a.index]?' disabled':'')+' aria-pressed="'+(a.storyChoices[a.index]==='evidence')+'">🔎 Examine the evidence</button><button type="button" data-aeth-route="companion"'+(a.storyChoices[a.index]?' disabled':'')+' aria-pressed="'+(a.storyChoices[a.index]==='companion')+'">✦ Consult the companion</button></div><p>'+(a.storyChoices[a.index]==='evidence'?'You chose the evidence trail. The next scene will reveal an archive clue.':a.storyChoices[a.index]==='companion'?'You chose the companion trail. The next scene will reveal a different clue.':'Choose a route to reveal the next challenge. Your choice affects the story, not the correct academic answer.')+'</p></div>';
   h+='<div class="aeth-adventure-pips" aria-label="'+a.score+' runes collected">'+a.questions.map((_,i)=>'<span class="'+(i<a.index?'passed':i===a.index?'active':'')+'" aria-hidden="true">'+(i<a.index?'✦':'✧')+'</span>').join('')+'</div>';
-  h+='<h3>'+E(item.prompt)+'</h3><div class="aeth-runes" role="group" aria-label="Choose a rune answer">'+item.options.map((option,i)=>'<button type="button" data-aeth-answer="'+i+'"'+(a.locked?' disabled':'')+' class="'+(a.choice===i?(i===item.correct?'right':'wrong'):'')+'"><span aria-hidden="true">✧</span>'+E(option)+'</button>').join('')+'</div>';
+  const openQuestion=m==='guardian'?atLandmark(a):m==='story'?!!a.storyChoices[a.index]:true;
+  if(openQuestion)h+='<h3>'+E(item.prompt)+'</h3><div class="aeth-runes" role="group" aria-label="'+(m==='game'?'Aim at the answer targets':'Choose a rune answer')+'">'+item.options.map((option,i)=>'<button type="button" data-aeth-answer="'+i+'"'+(a.locked?' disabled':'')+' class="'+(m==='game'?'aeth-target ':'')+(a.choice===i?(i===item.correct?'right':'wrong'):'')+'"><span aria-hidden="true">'+(m==='game'?'◎':'✧')+'</span>'+E(option)+'</button>').join('')+'</div>';
+  if(m==='game')h+='<p class="aeth-target-note" role="status">'+(a.locked?(a.shot==='hit'?'✦ Target hit! The lantern responds.':'The rune flickered. Read the feedback and aim again next challenge.'):'Tap or click a rune target, or use Tab and Enter to fire. The targeting pulse pauses for reduced motion.')+'</p>';
   if(a.locked)h+='<div class="aeth-result" role="status"><b>'+(a.choice===item.correct?'Correct rune!':'That rune needs repair.')+'</b><p>'+E(item.explanation||'Review the course lesson, then try the next challenge.')+'</p>'+(item.source?'<a href="'+E(item.source)+'" target="_blank" rel="noopener noreferrer">Review the source lesson</a>':'<small>Existing course question bank practice</small>')+button('next',a.index+1===a.questions.length?'Complete quest':'Next challenge')+'</div>';
   h+='</div>';
  }
  }
  return h+'<p class="aeth-adventure-foot">XP unlocks activities; fragments come from the existing Guardian ledger. Guided game results do not change course mastery, OA readiness, or XP.</p></section>';
 }
-function redraw(){
+function redraw(restoreFocus=false){
  const el=document.getElementById('aethAdventure');
- if(el){const wrap=document.createElement('div');wrap.innerHTML=view();const next=wrap.firstElementChild;if(next){next.dataset.course=course();el.replaceWith(next)}}else sync();
+ if(el){const wrap=document.createElement('div');wrap.innerHTML=view();const next=wrap.firstElementChild;if(next){next.dataset.course=course();el.replaceWith(next);if(restoreFocus){const target=next.querySelector('[data-aeth-move="right"]');target?.focus?.({preventScroll:true})}}}else sync();
 }
 function sync(){
  const root=document.getElementById('content'),m=mode(),id=course();
@@ -164,12 +210,21 @@ function sync(){
 document.addEventListener('click',e=>{
  const el=e.target.closest('#aethAdventure');if(!el)return;
  const b=e.target.closest('button');if(!b)return;
+ if(b.hasAttribute('data-aeth-move')){moveGuardian(b.dataset.aethMove);return}
+ if(b.hasAttribute('data-aeth-route')){chooseStoryRoute(b.dataset.aethRoute);return}
  if(b.hasAttribute('data-aeth-answer')){answer(Number(b.dataset.aethAnswer));return}
  const act=b.dataset.aethAction||'';
  if(act==='start'||act==='restart'){begin(mode());return}
  if(act==='next'){advance();return}
  if(act.startsWith('chapter:')){const n=Number(act.split(':')[1]);if(Number.isInteger(n)&&n>=1&&n<=3&&xp()>=CHAPTER_GATES[n-1]){selectedChapter=n;running=null;redraw()}return}
  if(act.startsWith('trail:')&&running&&!running.locked){running.trail=act.split(':')[1]==='moss'?'moss':'moon';redraw()}
+});
+document.addEventListener('keydown',e=>{
+ const panel=e.target?.closest?.('#aethAdventure');
+ if(!panel||!running||running.mode!=='guardian'||e.altKey||e.ctrlKey||e.metaKey)return;
+ if(e.target?.matches?.('input,textarea,select,[contenteditable="true"]'))return;
+ const direction={ArrowLeft:'left',ArrowRight:'right',ArrowUp:'up',ArrowDown:'down'}[e.key];
+ if(direction){e.preventDefault();moveGuardian(direction)}
 });
 function schedule(){if(queued)return;queued=true;setTimeout(()=>{queued=false;sync()},60)}
 if(window.MajickRenderQueue?.register)window.MajickRenderQueue.register('aetheria-adventures',schedule,101);
