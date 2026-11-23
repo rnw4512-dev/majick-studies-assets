@@ -4,7 +4,7 @@
 */
 (()=>{'use strict';
 if(window.MajickAetheriaAdventures)return;
-const KEY='aetheria-adventure-journal-v1',VERSION='1.3.0';
+const KEY='aetheria-adventure-journal-v1',VERSION='1.4.0';
 const CHAPTER_GATES=[600,1000,1600];
 const GATES={guardian:0,game:200,story:600};
 let journal={};try{const x=JSON.parse(localStorage.getItem(KEY)||'{}');if(x&&typeof x==='object'&&!Array.isArray(x))journal=x}catch(_){}
@@ -50,12 +50,23 @@ function record(kind,key,id){
 function guardian(){
  try{const snap=window.MajickGuardianCare?.snapshot?.();return snap?.roster?.find(p=>p.petId===snap.focusPetId)||snap?.roster?.[0]||null}catch(_){return null}
 }
+function portraitFor(g){
+ if(!g)return {url:'',symbol:'🐾',hue:0};
+ const pet=(window.S?.legacy?.pets||[]).find(p=>p?.id===g.petId);
+ let meta=null;try{meta=pet?window.MajickGuardianCore?.meta?.(pet):null}catch(_){}
+ const type=meta?.type||g.type||g.sourceType||'';
+ const level=Number(meta?.level||pet?.level||1);
+ let raw='';try{raw=String(meta?.image||window.MajickGuardianRegistry?.stageImage?.(type,level)||'').trim()}catch(_){}
+ const safe=/^(?:https:\/\/[^\s"'<>]+|(?:\.\/)?assets\/[^\s"'<>]+)$/.test(raw)?raw:'';
+ const hue=Number(meta?.hue??g.hue??0);
+ return {url:safe,symbol:String(meta?.icon||g.icon||'🐾'),hue:Number.isFinite(hue)?Math.max(-180,Math.min(180,hue)):0};
+}
 function mode(){const room=screen();return room==='companions'?'guardian':room==='games'?'game':room==='mission'?'story':null}
 function started(m,id){return running&&running.mode===m&&running.course===id}
 function begin(m){
  const id=course(),chapter=m==='story'?selectedChapter:1,q=chooseQuestions(id,m,chapter),g=guardian();
  if(xp()<(m==='story'?CHAPTER_GATES[chapter-1]:GATES[m])||q.length<(m==='guardian'?1:3)||m==='guardian'&&!g)return;
- running={mode:m,course:id,chapter,questions:q,index:0,score:0,choice:null,locked:false,ended:false,trail:'moon',guardianId:g?.petId||'',guardianName:g?.name||'',guardianType:g?.species||g?.type||g?.name||'',firstTryCorrect:0,position:{x:0,y:1},clues:[],steps:0,explorationMessage:'',storyChoices:[],aiming:false,shot:null};
+ running={mode:m,course:id,chapter,questions:q,index:0,score:0,choice:null,locked:false,ended:false,trail:'moon',guardianId:g?.petId||'',guardianName:g?.name||'',guardianType:g?.species||g?.type||g?.name||'',firstTryCorrect:0,position:{x:0,y:1},portrait:portraitFor(g),lastMove:'idle',explorationEvent:'idle',clues:[],steps:0,explorationMessage:'',storyChoices:[],aiming:false,shot:null};
  redraw();
 }
 function answer(i){
@@ -115,11 +126,11 @@ function moveGuardian(direction){
  const x=Math.max(0,Math.min(4,a.position.x+delta[0])),y=Math.max(0,Math.min(2,a.position.y+delta[1]));
  if(x===a.position.x&&y===a.position.y)return false;
  const trail=trailMap(a);
- if(trail.obstacles.some(([ox,oy])=>x===ox&&y===oy)){a.explorationMessage=guardianReaction(a,'obstacle');redraw(direction);return false}
- a.position={x,y};a.steps++;
+ if(trail.obstacles.some(([ox,oy])=>x===ox&&y===oy)){a.explorationEvent='obstacle';a.explorationMessage=guardianReaction(a,'obstacle');redraw(direction);return false}
+ a.position={x,y};a.steps++;a.lastMove=direction;a.explorationEvent='step';
  const clue=trail.clues.find(([cx,cy])=>cx===x&&cy===y);
- if(clue&&!a.clues.includes(tileId(x,y))){a.clues.push(tileId(x,y));a.explorationMessage=guardianReaction(a,'clue')}
- else if(atLandmark(a))a.explorationMessage=guardianReaction(a,allClues(a)?'ready':'gate');
+ if(clue&&!a.clues.includes(tileId(x,y))){a.clues.push(tileId(x,y));a.explorationEvent='clue';a.explorationMessage=guardianReaction(a,'clue')}
+ else if(atLandmark(a)){a.explorationEvent=allClues(a)?'ready':'gate';a.explorationMessage=guardianReaction(a,allClues(a)?'ready':'gate')}
  else a.explorationMessage=guardianReaction(a,'move');
  redraw(direction);return true;
 }
@@ -136,13 +147,18 @@ function branchingScene(a){
   ?'You followed the evidence into a newly uncovered archive. A clue from '+title+' guides the next decision.'
   :'You consulted the academy companion, who uncovered a different route through '+title+'. A new clue awaits.';
 }
+function guardianPicture(a){
+ const p=a.portrait||{},event=E(a.explorationEvent||'idle');
+ const fallback='<span class="aeth-guardian-fallback" aria-hidden="true">'+E(p.symbol||'🐾')+'</span>';
+ return '<span class="aeth-guardian-picture" data-reaction="'+event+'" data-facing="'+(a.lastMove==='left'?'left':'right')+'" aria-hidden="true">'+(p.url?'<img class="aeth-guardian-image" src="'+E(p.url)+'" alt="" decoding="async" style="filter:hue-rotate('+Number(p.hue||0)+'deg)">':fallback)+'</span>';
+}
 function movementScene(a){
  const p=a.position||{x:0,y:1},trail=trailMap(a),found=a.clues.length;
  const tiles=Array.from({length:15},(_,i)=>{
   const x=i%5,y=Math.floor(i/5),here=x===p.x&&y===p.y,goal=x===4&&y===1;
   const obstacle=trail.obstacles.some(([ox,oy])=>ox===x&&oy===y);
   const clue=trail.clues.some(([cx,cy])=>cx===x&&cy===y),collected=a.clues.includes(tileId(x,y));
-  return '<span class="aeth-map-tile'+(here?' current':'')+(goal?' destination':'')+(obstacle?' blocked':'')+(clue?' clue':'')+(collected?' collected':'')+'" aria-hidden="true">'+(here?'🐾':obstacle?'▦':goal?'✧':clue?(collected?'✓':'◆'):'')+'</span>';
+  return '<span class="aeth-map-tile'+(here?' current':'')+(goal?' destination':'')+(obstacle?' blocked':'')+(clue?' clue':'')+(collected?' collected':'')+'" aria-hidden="true">'+(here?guardianPicture(a):obstacle?'▦':goal?'✧':clue?(collected?'✓':'◆'):'')+'</span>';
  }).join('');
  const instruction=atLandmark(a)&&allClues(a)?'✦ Both clues are collected and the gate is open. Solve the course challenge.':atLandmark(a)?'The final gate is sealed. Find both clues before solving the challenge.':'Explore around the blocked stones (▦), collect both glowing clues (◆), then reach the gate (✧).';
  return '<div class="aeth-expedition-map" role="img" aria-label="'+E(a.guardianName)+' at column '+(p.x+1)+' row '+(p.y+1)+' of five columns and three rows. '+found+' of 2 clues collected. Stone tiles block movement. Destination at column five row two.">'+tiles+'</div>'+
@@ -234,6 +250,11 @@ function sync(){
  else if(arch)arch.insertAdjacentElement('afterend',el);
  else root.prepend(el);
 }
+document.addEventListener('error',e=>{
+ const img=e.target;if(!img?.matches?.('#aethAdventure .aeth-guardian-image'))return;
+ const holder=img.closest('.aeth-guardian-picture');
+ if(holder){const span=document.createElement('span');span.className='aeth-guardian-fallback';span.setAttribute('aria-hidden','true');span.textContent=running?.portrait?.symbol||'🐾';holder.replaceChildren(span)}
+},true);
 document.addEventListener('click',e=>{
  const el=e.target.closest('#aethAdventure');if(!el)return;
  const b=e.target.closest('button');if(!b)return;
