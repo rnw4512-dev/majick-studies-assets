@@ -117,7 +117,7 @@ function deepTile(index){
   const q=deep.items[deep.index],right=index===q.correct;
   deep.feedback={right,explanation:q.explanation||'Compare this decision to the source lesson.'};
   if(!right){deep.repairs++;deep.usedCoach=true;deep.outcomes[deep.index]='The student attempts the task but the misconception remains. Your Guardian suggests revisiting the teaching evidence.'}
-  else{deep.outcomes[deep.index]='The student receives an appropriate response and can try the skill with clearer support.';deep.firstTry++}
+  else{deep.outcomes[deep.index]='The student receives an appropriate response and can try the skill with clearer support.';if(!deep.usedCoach)deep.firstTry++}
  }else{
   if(deep.tiles.includes(index))return false;
   deep.tiles.push(index);
