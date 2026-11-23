@@ -133,3 +133,21 @@ html[data-aetheria-decor="botanical"] #aethAcademyDecor .aeth-decor-preview{back
 #aethCourseGames .aeth-comp-options button{min-height:64px;display:flex;align-items:center;gap:8px;text-align:left;background:#fffdf7!important}
 #aethCourseGames .aeth-comp-options button span{color:#82679c!important;font-size:20px}
 @media(max-width:640px){#aethCourseGames .aeth-simple-view{gap:3px}#aethCourseGames .aeth-simple-view span{width:90px;min-height:75px;font-size:11px}#aethCourseGames .aeth-simple-view>b{font-size:16px}#aethCourseGames .aeth-comp-options{grid-template-columns:1fr}}
+
+/* Source-verified WGU uploaded video recap: lightweight visuals, no autoplay/video asset duplication. */
+#aethCourseGames .aeth-video-lesson{margin:12px 0;border:1px solid #9982ab;border-radius:12px;background:#f9f5ff;color:#372846}
+#aethCourseGames .aeth-video-lesson>summary{cursor:pointer;padding:13px 15px;font-weight:800;color:#3a2e4c;list-style-position:inside}
+#aethCourseGames .aeth-video-lesson-body{padding:0 14px 14px}
+#aethCourseGames .aeth-video-lesson-body>p{line-height:1.55;color:#514360;font-size:13px}
+#aethCourseGames .aeth-video-connection{display:flex;align-items:stretch;gap:7px;justify-content:center;flex-wrap:wrap;background:#332741;border-radius:12px;padding:10px}
+#aethCourseGames .aeth-video-connection div{flex:1;min-width:105px;background:#f8f1e6;border-radius:9px;padding:9px;display:grid;gap:5px;place-content:center;text-align:center}
+#aethCourseGames .aeth-video-connection b{font-size:12px;color:#39284c}
+#aethCourseGames .aeth-video-connection small{font-size:11px;color:#635568}
+#aethCourseGames .aeth-video-connection>span{align-self:center;color:#f9dda6;font-weight:900;font-size:19px}
+#aethCourseGames .aeth-video-highlights{display:grid;gap:7px;margin:10px 0}
+#aethCourseGames .aeth-video-highlights article{display:flex;gap:12px;border:1px solid #dfd3e4;background:#fffdfa;border-radius:9px;padding:10px}
+#aethCourseGames .aeth-video-highlights article>small{color:#385847;min-width:75px;font-weight:800;font-size:11px}
+#aethCourseGames .aeth-video-highlights article b{font-size:13px;color:#372944}
+#aethCourseGames .aeth-video-highlights article p{margin:4px 0 0;font-size:12px;line-height:1.5;color:#4e4456}
+#aethCourseGames .aeth-video-lesson a{color:#523b83;text-decoration:underline;font-weight:750}
+@media(max-width:600px){#aethCourseGames .aeth-video-highlights article{display:block}#aethCourseGames .aeth-video-highlights article>small{display:block;margin-bottom:5px}#aethCourseGames .aeth-video-connection>span{display:none}}
