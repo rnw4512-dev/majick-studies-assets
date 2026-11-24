@@ -39,7 +39,11 @@ async function solveMean(values,sum,count,mean){
   let state=await evalPage('({ready:document.readyState,title:document.title,head:document.body?.innerText?.slice(0,600),content:!!document.querySelector("#content"),engine:!!window.MajickSolutionEngine,bank:!!window.MajickLessonActivities,scripts:[...document.scripts].slice(-8).map(s=>s.src)})').catch(err=>'CDP:'+err.message);
   console.error('Browser diagnostic:',JSON.stringify(state));throw e;
  }
- assert.equal(await evalPage('window.MajickLessonActivities.tasks.length'),19);
+ const activityBank=await evalPage('window.MajickLessonActivities.tasks.map(t=>({id:t.id,course:t.course,cases:t.cases.length}))');
+ assert.equal(new Set(activityBank.map(t=>t.id)).size,activityBank.length,'Activity IDs must be unique');
+ for(const [course,min] of Object.entries({D772:11,D756:8,D669:3})) assert(activityBank.filter(t=>t.course===course).length>=min,'Missing activity coverage for '+course);
+ for(const id of ['d669-pa','d669-pm','d669-phonics']) assert(activityBank.some(t=>t.id===id&&t.course==='D669'&&t.cases>=3),'Missing D669 activity '+id);
+ assert(activityBank.every(t=>t.cases>=1),'Every activity requires practice cases');
 
 
  await action('if(!S.courses.D772)throw Error("D772 course unavailable");switchCourse("D772");navigate("mission")');
