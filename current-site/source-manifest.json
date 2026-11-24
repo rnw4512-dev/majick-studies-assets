@@ -408,7 +408,7 @@
     "adaptive-learning-core.css": "f984e356b6efa4d7608e1226aec5df13f024f702ea3a51b56d8c75a589a44646",
     "course-learning-profiles.js": "60d25988b6ae0ed1cab981ce99d2d8ed49fe9c8553b189df3d83103797bfe925",
     "course-learning-profiles.css": "f0f4f53b2c9422f0ed884d4688af1d8367e63851b367331f78b994b6548b5caa",
-    "reward-core.js": "460105aa757210258447ea63cc5be32d6a37224aa63c25fc0619cb6e76163446",
+    "reward-core.js": "b20a57ac812bf12e9f737dba52e49ebdb83e5712650b913c1f8d90ec1f815263",
     "reward-core.css": "344d36869c61af8c57e81c8d1431ceccbfa38060b1fd7ff159c5b688b1632dc6",
     "assets/rewards/reference-boards/cascade/cascade-collection-reference-board.webp": "1b4d05d2b5303afeec9d2b51713d3a1aef76754ff6c0e242724a165218f79b68",
     "assets/rewards/reference-boards/cascade/cascade-collection-reference-board-runtime.webp": "19a8202353e552f20173d109a6c7b61fcfe91420e5efa59de56bea771e745b1b",
@@ -1001,6 +1001,19 @@
     "assets/licensed/music/crystal-cave.ogg": "eead180e4240065bdec0c0d2503063047865ef4b13215931ad3713891b537083",
     "assets/licensed/music/crystal-mystery.ogg": "f8f3835bea148d8948954cb3ff453cf9b55b02cd1396c92617e78e0462ec886b",
     "assets/licensed/music/enchanted-festival.ogg": "62f89913214de1a2a6918b28b352b1f9cb66389c26a7e7ce5ec8daee95fe86de",
-    "course-question-policy.js": "743efa3ae9df47a26685bf31828aea0f66ec8c859a4a22f6a8082b7a629447b2"
+    "course-question-policy.js": "743efa3ae9df47a26685bf31828aea0f66ec8c859a4a22f6a8082b7a629447b2",
+    "assets/licensed/Bubbles/Bubble - Black.webp": "a51d4bff0208560f04fb8f93e6fe6d4ce8545a2ab000cce443009daf1c6bc0fb",
+    "assets/licensed/Bubbles/Bubble - Blue.webp": "57fbd18c17af46050a857df6d591b27e1a85d2d3726833f9e832d0917e503183",
+    "assets/licensed/Bubbles/Bubble - Green.webp": "0d9b1d9d7fe40001f532ca8e7b8be27cbdf0e382efbc7e800725bcf1f008e845",
+    "assets/licensed/Bubbles/Bubble - Orange.webp": "a8d875fdd2f5aa045732ab046184c5aac76330eec299a1afe88839f7e2e4542a",
+    "assets/licensed/Bubbles/Bubble - Purple.webp": "7e05c51841ea15a440efb9e7690044d76d7bdabde7aa018ab590c361f8781cfa",
+    "assets/licensed/Bubbles/Bubble - Red.webp": "9a3765273cf5bece7882469adc648af8879ccac6240d6b637759b99567599a87",
+    "assets/licensed/Bubbles/Bubble - White.webp": "fd1dc215ba2b82b78d31264926dd1cb53b1991b0182eab1264f78ec64aef8be1",
+    "assets/licensed/Bubbles/Bubble - Yellow.webp": "e38647f457263deab8fb56196aef93a424cd6aca7856f1019b2f4d5cb622a44e",
+    "assets/licensed/images/bag.webp": "36c5315d28b731b1cc0c03dd198d4e271d08ab1942305b9c5d919186a7f111c9",
+    "assets/licensed/images/herbal.webp": "f7a7f91df1e8eb56e589ebba4d2a6ade2b1577eb61ecefca6aa692543065752d",
+    "assets/licensed/images/pot.webp": "09edfe283849b33004977e093e5714b3fbcdb5f8867240622ed859fec06de9b8",
+    "assets/licensed/images/runestones.webp": "f64d154286f388541293b1a1589956fb114b3381557fbe36d1b1923f4f169367",
+    "assets/licensed/alchemy-credits.txt": "f4abb87d8abdb3d939bd1440fd2ce950eb90a578e55bf85fee90f2f32e3961cf"
   }
 }
