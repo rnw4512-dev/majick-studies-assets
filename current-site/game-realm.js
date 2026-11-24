@@ -307,6 +307,35 @@
   globalThis.nextScholarCase=function(){if(!investigationActive()||session.choice===null||session.finished)return;session.index++;session.clues=[];session.choice=null;if(session.index>=session.items.length)session.finished=true;render?.()};
   function scholarInvestigationHTML(){if(!investigationActive())return '<p>Return to the Game Realm to start an investigation for this course.</p>';if(session.finished)return '<section class="realmHero"><div><h2>Investigation complete</h2><p>Cases solved: '+session.score+'/'+session.items.length+'</p><p>Evidence-guided review; no independent mastery or additional XP.</p><button onclick="startScholarInvestigation()">Replay cases</button><button onclick="navigate(\'games\')">Return to Game Realm</button></div></section>';const [title,clues,options,answer,why]=session.items[session.index];return '<section class="realmHero" style="display:block"><small>✦ SCHOLAR INVESTIGATION · '+E(session.courseId)+' · CASE '+(session.index+1)+'/'+session.items.length+'</small><h2>'+E(title)+'</h2><p>Collect the three evidence cards to unlock your decision.</p><div role="status">Evidence '+session.clues.length+'/3 · Solved '+session.score+'</div><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,140px),1fr));gap:10px;margin:14px 0">'+clues.map((c,i)=>'<button style="min-height:95px;white-space:normal" onclick="inspectScholarClue('+i+')" aria-pressed="'+session.clues.includes(i)+'">'+(session.clues.includes(i)?E(c):'🔎 Inspect evidence '+(i+1))+'</button>').join('')+'</div>'+(session.clues.length===3?'<h3>Resolve the case</h3>'+options.map((o,i)=>'<button style="display:block;width:100%;margin:8px 0;white-space:normal" onclick="solveScholarCase('+i+')" '+(session.choice!==null?'disabled':'')+'>'+E(o)+'</button>').join(''):'')+(session.choice!==null?'<div role="status"><h3>'+(session.choice===answer?'✓ Case solved':'Review the evidence')+'</h3><p>Best answer: '+E(options[answer])+'</p><p>'+E(why)+'</p></div><button onclick="nextScholarCase()">Next case →</button>':'')+'<p><small>Guided investigation · original practice cases</small></p></section>'}
 
+
+  /* Communication Quest: original inline vector artwork, no external assets. */
+  const communicationCases=[
+    ['Students listen to a story and discuss predictions.',0],
+    ['Students complete a handwritten spelling exercise.',1],
+    ['Students create an interactive e-book using an educational app.',2],
+    ['Students verbally explain their reasoning to a partner.',0],
+    ['Students write a paragraph in notebooks.',1],
+    ['Students exchange written responses using an online classroom platform.',2]
+  ];
+  const communicationNames=['Oral','Print','Digital'];
+  const communicationWhy=['The primary activity involves speaking or listening.','The primary activity uses written language on paper.','The primary medium is digital technology, which can also carry spoken or written language.'];
+  function communicationActive(){return session?.type==='communicationquest'&&globalThis.S?.activeCourse==='D669'}
+  globalThis.startCommunicationQuest=function(){if(globalThis.S?.activeCourse!=='D669')return;session={type:'communicationquest',items:shuffleCopy(communicationCases),index:0,score:0,choice:null};S.screen='mission';render?.()};
+  globalThis.chooseCommunicationPortal=function(i){if(!communicationActive()||session.index>=session.items.length||session.choice!==null||!Number.isInteger(i)||i<0||i>2)return;session.choice=i;if(i===session.items[session.index][1])session.score++;render?.()};
+  globalThis.nextCommunicationPortal=function(){if(!communicationActive()||session.choice===null)return;session.index++;session.choice=null;render?.()};
+  function communicationArt(i){
+    const colors=['#c6a1ed','#8ed4ac','#8fc9f5'],c=colors[i];
+    const symbols=['<path d="M68 66h44v26H91l-12 12V92H68Z M91 48h39v27h-10l-10 9" fill="none" stroke-width="3" stroke-linejoin="round"/>','<path d="M64 60q18-8 36 5q18-13 36-5v36q-18-7-36 5q-18-12-36-5z M100 65v36 M72 72l19 2 M109 74l19-2 M72 82l19 2 M109 84l19-2" fill="none" stroke-width="3"/>','<rect x="78" y="48" width="44" height="60" rx="5" fill="none" stroke-width="3"/><path d="M85 58h30v36H85z M96 101h8" fill="none" stroke-width="2"/>'];
+    return '<svg viewBox="0 0 200 162" width="100%" aria-hidden="true" style="display:block"><rect width="200" height="162" rx="9" fill="#171c27"/><path d="M0 148h200M0 155h200M20 0v148M180 0v148" stroke="#595044" fill="none"/><path d="M39 143V65a61 61 0 0 1 122 0v78Z" fill="#292b35" stroke="#b89c60" stroke-width="3"/><path d="M49 138V65a51 51 0 0 1 102 0v73Z" fill="#243342" stroke="'+c+'" stroke-width="2"/><circle cx="100" cy="81" r="38" fill="'+c+'" opacity=".08"/><circle cx="100" cy="81" r="39" stroke="'+c+'" opacity=".45" fill="none" stroke-dasharray="2 5"/><g stroke="'+c+'">'+symbols[i]+'</g><path d="M100 8l5 7-5 7-5-7Z M30 123l3 5-3 5-3-5Z M170 123l3 5-3 5-3-5Z" fill="#e6c780"/><path d="M39 143h122l9 7H30Z" fill="#947a4e"/></svg>';
+  }
+  function communicationQuestHTML(){
+    if(!communicationActive())return '<p>Return to the D669 Game Realm.</p>';
+    const n=session.items.length;
+    if(session.index>=n)return '<section class="realmHero" style="display:block"><h2>Communication Quest complete</h2><p>Portals unlocked: '+session.score+'/'+n+'</p><p>Formative game score; no independent mastery or extra XP.</p><button onclick="startCommunicationQuest()">Play again</button> <button onclick="navigate(\'games\')">Return to Game Realm</button></section>';
+    const [prompt,answer]=session.items[session.index],chosen=session.choice;
+    return '<section class="realmHero" style="display:block;background:#202b2b;color:#f4ead5;padding:16px;border:1px solid #a68a55;border-radius:14px"><small style="color:#e6c780">D669 · COMMUNICATION QUEST · '+(session.index+1)+'/'+n+'</small><h2>Choose the communication portal</h2><p>Select the primary communication method. Some activities use more than one.</p><div role="status">Unlocked '+session.score+'/'+n+'</div><div style="height:6px;background:#423e40;border-radius:6px;margin:10px 0"><div style="height:100%;background:#e6c780;border-radius:6px;width:'+(session.index/n*100)+'%"></div></div><p style="background:#f5e9ce;color:#302b29;padding:16px;border-radius:8px;font-weight:600">'+E(prompt)+'</p><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,125px),1fr));gap:10px">'+communicationNames.map((name,i)=>'<button onclick="chooseCommunicationPortal('+i+')" '+(chosen!==null?'disabled':'')+' style="padding:6px;white-space:normal;background:#292e39;color:#fff5de;border:2px solid '+(chosen!==null&&i===answer?'#8ed4ac':chosen===i?'#e4a19c':'#a68a55')+';border-radius:10px;opacity:1">'+communicationArt(i)+'<strong>'+E(name)+'</strong>'+(chosen!==null&&i===answer?' · Correct':chosen===i?' · Your choice':'')+'</button>').join('')+'</div>'+(chosen!==null?'<div role="status" style="background:#f5e9ce;color:#302b29;padding:12px;border-radius:8px;margin-top:12px"><strong>'+(chosen===answer?'Portal unlocked!':'Review the correct portal: '+communicationNames[answer])+'</strong><p>'+E(communicationWhy[answer])+'</p></div><button style="margin-top:10px" onclick="nextCommunicationPortal()">Next challenge</button>':'')+'<p><small>Guided practice · no independent mastery credit</small></p><button onclick="navigate(\'games\')">Exit quest</button></section>';
+  }
+
   const baseGamesHTML=typeof gamesHTML==='function'?gamesHTML:null;
   if(baseGamesHTML){
     gamesHTML=function(){
@@ -320,6 +349,7 @@
         '<div class="realmStats"><span>ᚱ '+E(bestText('runesort'))+' Rune Sort</span><span>◉ '+E(bestText('oraclelens'))+' Oracle Lens</span><span>♛ '+E(bestText('gauntlet'))+' Gauntlet</span><span>✧ '+E(bestText('constellation'))+' Constellation</span><span>⬡ '+E(bestText('hexbreaker'))+' Hex Breaker</span></div>'+
         '<div class="realmFeaturedGrid">'+
           (investigationCases[courseId]?gameCard('🔎','Scholar Investigation','Collect evidence and solve course-specific cases.','startScholarInvestigation()',courseId+' INVESTIGATION'):'')+
+          (courseId==='D669'?gameCard('✦','Communication Quest','Unlock illustrated portals by classifying classroom communication.','startCommunicationQuest()','D669 SECTION 3'):'')+
           (courseId==='D669'?gameCard('✦','Five Pillars Sort','Classify five classroom activities by the literacy skill they directly practice.','startD669PillarSort()','D669 PRACTICE'):'')+
           (buildRuneSort()?gameCard('ᚱ','Rune Sort',profile.rune,'startRuneSort()',courseId+' TRIAL'):'')+
           (globalThis.S?.activeCourse==='D755'?gameCard('✥','Assessment Sigil Sort','Sort D755 scenarios through Qualitative/Quantitative, Formal/Informal, Formative/Summative, Norm/Criterion, Screening/Monitoring, or Observation/Anecdotal gates.','startAssessmentSigilSort()','D755 TRIAL'):'')+
@@ -1290,7 +1320,7 @@
       if(session?.type==='gauntlet')return gauntletHTML();
       return baseSessionHTML();
     };
-    sessionHTML=function(){if(session?.type==='scholarinvestigation')return scholarInvestigationHTML();const q=session?.current||session?.items?.[session.index]||session?.questionRepair?.q,r=q&&window.MajickLearningContinuity?.practiceRecovery?.(window.MajickQuestionRepair.normalize(q),false);if(r?.required&&!session?.answered)return window.MajickQuestionRepair.html(r.source,r.selected);const html=realmHTML()+potionToolsHTML();return (session?.answered||['runesort','constellation'].includes(session?.type))&&session.questionRepair?html+window.MajickQuestionRepair.html(session.questionRepair.q,session.questionRepair.chosen):html};
+    sessionHTML=function(){if(session?.type==='communicationquest')return communicationQuestHTML();if(session?.type==='scholarinvestigation')return scholarInvestigationHTML();const q=session?.current||session?.items?.[session.index]||session?.questionRepair?.q,r=q&&window.MajickLearningContinuity?.practiceRecovery?.(window.MajickQuestionRepair.normalize(q),false);if(r?.required&&!session?.answered)return window.MajickQuestionRepair.html(r.source,r.selected);const html=realmHTML()+potionToolsHTML();return (session?.answered||['runesort','constellation'].includes(session?.type))&&session.questionRepair?html+window.MajickQuestionRepair.html(session.questionRepair.q,session.questionRepair.chosen):html};
   }
 
   globalThis.MajickGameRealm={
