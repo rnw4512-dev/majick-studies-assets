@@ -1,0 +1,12 @@
+[
+  {
+    "path": "content-text-contract.css",
+    "sha256": "9fac6fbc19cd869c4942e34e53a964872fb7dc0b30d7dbdb24f22090cf463526",
+    "basis": "User screenshots: restored/scoped paper ink and WebKit painted text; preserve nested dark game surfaces; wrap complete section navigation labels."
+  },
+  {
+    "path": "index.html",
+    "sha256": "5e238c5ac8e5d23686a3691fc7ad15e2780fa9dc4c81c4731026e8601b3f6daf",
+    "basis": "Load the existing reusable content-text contract last; no component duplication or learning/save/reward code changes."
+  }
+]

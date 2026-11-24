@@ -44,6 +44,7 @@ jobs:
         run: |
           python -u tests/startup-learning-browser.py _site
           python -u tests/room-navigation-browser.py _site
+          python -u tests/parchment-readability-browser.py _site
           python -u tests/d669-content-browser.py _site
           python -u tests/approved-assets-browser.py _site
           python -u tests/room-interactions-browser.py _site

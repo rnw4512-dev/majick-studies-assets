@@ -9,7 +9,7 @@
  --aeth-link:#4d347f;--aeth-focus:#7851a7;
  --aeth-dark:#21182f;--aeth-ivory:#fff7e8;--aeth-dark-muted:#dfd3e6;
 }
-#content :is([data-aeth-surface="paper"],.cap-shelf,.obs-shell,#majConnectedPath,.majPathBody){
+#content :is([data-aeth-surface="paper"],.cap-shelf,.obs-shell,.aeth-adventure,:where(#majConnectedPath),.majPathBody){
  --aeth-content-ink:var(--aeth-ink);
  --aeth-content-muted:var(--aeth-ink-muted);
  color:var(--aeth-content-ink)!important;
@@ -19,9 +19,10 @@
 }
 /* High-specificity type contract: existing decorative theme styles must not
    override instructional prose, feedback or imported source labels. */
-#content :is([data-aeth-surface="paper"],.cap-shelf,.obs-shell,#majConnectedPath)
+#content :is([data-aeth-surface="paper"],.cap-shelf,.obs-shell,.aeth-adventure,:where(#majConnectedPath))
  :is(p,li,dt,dd,label,legend,summary,blockquote,figcaption,caption,small,span,h1,h2,h3,h4,h5,h6,strong,b,em){
  color:var(--aeth-content-ink)!important;
+ -webkit-text-fill-color:currentColor!important;
  text-shadow:none!important;
  opacity:1!important;
 }
@@ -52,15 +53,15 @@
  border-color:#796393!important;opacity:1!important
 }
 #content .cap-shelf .cap-option[aria-pressed="true"]{background:#e8def4!important;color:#251d3a!important;border-color:#4e386b!important}
-#content :is(.cap-shelf,.obs-shell,#majConnectedPath) a:not(.button){
+#content :is(.cap-shelf,.obs-shell,.aeth-adventure,:where(#majConnectedPath)) a:not(.button){
  color:var(--aeth-link)!important;text-decoration:underline!important;
  text-underline-offset:2px!important;opacity:1!important
 }
-#content :is(.cap-shelf,.obs-shell,#majConnectedPath) :is(input:not([type=checkbox]):not([type=radio]),textarea,select){
+#content :is(.cap-shelf,.obs-shell,.aeth-adventure,:where(#majConnectedPath)) :is(input:not([type=checkbox]):not([type=radio]),textarea,select){
  color:#211a32!important;background:#fffdfb!important;
  border-color:#796393!important;opacity:1!important;
 }
-#content :is(.cap-shelf,.obs-shell,#majConnectedPath) :is(input,textarea,select,button,a,summary):focus-visible{
+#content :is(.cap-shelf,.obs-shell,.aeth-adventure,:where(#majConnectedPath)) :is(input,textarea,select,button,a,summary):focus-visible{
  outline:3px solid var(--aeth-focus)!important;outline-offset:2px!important
 }
 #content .cap-shelf ::placeholder{color:#63586c!important;opacity:1!important}
@@ -80,11 +81,51 @@
 #content #majConnectedPath .majPathLessonSelect{color:#18382f!important;background:#fffdf6!important}
 /* Explicit dark surface contract for any future imported dark components.
    Don't blanket override other components' interactive buttons. */
-#content [data-aeth-surface="dark"]{color:var(--aeth-ivory)!important;color-scheme:dark}
+#content [data-aeth-surface="dark"]{--aeth-content-ink:var(--aeth-ivory);color:var(--aeth-ivory)!important;color-scheme:dark}
 #content [data-aeth-surface="dark"] :is(p,li,dt,dd,blockquote,figcaption,small,h1,h2,h3,h4,h5,h6,legend,label){
  color:var(--aeth-ivory)!important;opacity:1!important
 }
 #content [data-aeth-surface="dark"] a{color:#ecd199!important}
 @media(prefers-reduced-motion:reduce){
  #content :is([data-aeth-surface="paper"],[data-aeth-surface="dark"]) *{transition:none!important}
+}
+
+/* Actual reading surfaces, including WebKit paint inherited from dark themes. */
+html body.majickCampus #content :is(.obs-shell,.aeth-adventure) {
+ --aeth-content-ink:var(--aeth-ink);
+}
+html body.majickCampus #content :is(.obs-shell,.aeth-adventure)
+ :is(h1,h2,h3,h4,h5,h6,p,li,small,span,strong,b,em,label,summary) {
+ color:var(--aeth-content-ink)!important;
+ -webkit-text-fill-color:currentColor!important;
+ text-shadow:none!important;opacity:1!important;
+}
+#content .obs-shell .obs-game,
+#content .aeth-adventure :is(.aeth-scene,.aeth-glyph,button),
+#content .aeth-adventure .aeth-adventure-pips span:is(.passed,.active) {
+ --aeth-content-ink:var(--aeth-ivory);
+}
+#content .obs-shell .obs-game-feedback,
+#content .aeth-adventure :is(.aeth-runes,.aeth-trails,.aeth-chapter-nav) button {
+ --aeth-content-ink:var(--aeth-ink);
+}
+#content .aeth-adventure .aeth-chapter-nav button.selected {
+ --aeth-content-ink:var(--aeth-ivory);
+}
+#content .obs-shell .obs-step{opacity:1!important}
+/* Section navigation must retain whole labels at every width. */
+#content>.majickRoomSections{
+ display:flex!important;flex-wrap:wrap!important;align-items:stretch!important;
+ justify-content:flex-start!important;max-height:none!important;
+ overflow:visible!important;white-space:normal!important;scroll-snap-type:none!important;
+}
+#content>.majickRoomSections>strong{flex:0 0 100%!important;white-space:normal!important}
+#content>.majickRoomSections>button{
+ flex:1 1 11rem!important;min-width:0!important;max-width:100%!important;min-height:44px!important;
+ white-space:normal!important;overflow:visible!important;text-overflow:clip!important;
+ overflow-wrap:anywhere!important;background:#45304f!important;
+ color:#fff7e8!important;-webkit-text-fill-color:#fff7e8!important;
+}
+#content>.majickRoomSections>button:is(.majRoomSelected,[aria-pressed="true"]){
+ background:#f3dfbd!important;color:#302737!important;-webkit-text-fill-color:#302737!important;
 }

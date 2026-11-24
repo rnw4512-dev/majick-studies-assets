@@ -48,6 +48,7 @@ jobs:
         run: |
           python -u tests/startup-learning-browser.py _certified
           python -u tests/room-navigation-browser.py _certified
+          python -u tests/parchment-readability-browser.py _certified
           python -u tests/d669-content-browser.py _certified
           python -u tests/approved-assets-browser.py _certified
           python -u tests/room-interactions-browser.py _certified
@@ -65,6 +66,7 @@ jobs:
           path: |
             /tmp/aetheria-sanctuary-evidence
             /tmp/aetheria-learning-evidence
+            /tmp/aetheria-reading-evidence
             /tmp/aetheria-pages-test-server.log
           if-no-files-found: ignore
       - name: Verify app entry point and meeting assets
@@ -210,6 +212,7 @@ jobs:
         run: |
           python -u tests/startup-learning-browser.py _published_candidate/current-site
           python -u tests/room-navigation-browser.py _published_candidate/current-site
+          python -u tests/parchment-readability-browser.py _published_candidate/current-site
           python -u tests/d669-content-browser.py _published_candidate/current-site
           python -u tests/approved-assets-browser.py _published_candidate/current-site
           python -u tests/room-interactions-browser.py _published_candidate/current-site
