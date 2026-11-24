@@ -1,13 +1,16 @@
 {
   "verified": "2026-11-24",
-  "verification": "OpenGameArt primary-source records via web research connector (cached source text); icon archive LICENSE.txt corroborates CC0. Uploaded archive filenames/sizes match source records.",
+  "verification": "OpenGameArt primary-source records via web research connector (cached source text); icon archive LICENSE.txt corroborates CC0. Uploaded archive filenames/sizes match source records. Gems/crystals verified against cached source-page records; plants license is corroborated by the original archive ReadMe - Licence.txt (CC0 1.0, Nobiax/Yughues) and author store free-asset statement.",
   "changes": {
     "effects": "Original numbered frames centered in common canvas, scaled to <=176px, lossless WebP once-only animation, static poster for reduced motion.",
     "audio": "Original supplied Ogg sounds trimmed to <=1.25s with 300ms fade and Vorbis compression.",
     "textures": "Selected originals 461223114, 461223158, 461223198 resized to 128px WebP; faint paper overlays.",
     "models": "Original meshes rendered in Blender 4.3.2 with custom studio materials, transparent background and bust crop for humans; no mesh or equipped-avatar replacement.",
     "icons": "Original 32px transparent PNGs, unchanged.",
-    "rings": "Original ring meshes rendered to static 160px transparent WebP, modern studio lighting/material conversion; no geometry edits. Original reflection maps are not used in runtime derivatives."
+    "rings": "Original ring meshes rendered to static 160px transparent WebP, modern studio lighting/material conversion; no geometry edits. Original reflection maps are not used in runtime derivatives.",
+    "gems": "Four original meshes rendered at 160px with muted studio material colors and AgX lighting; static transparent WebP.",
+    "crystals": "Selected original bevelled meshes rendered at 160px with studio materials, used only as decorative progress end markers; no value changes.",
+    "plants": "Two original OBJ meshes rendered with matching original hand-painted TGA color/alpha textures to static transparent 160px WebP."
   },
   "assets": [
     {
@@ -345,12 +348,91 @@
       "author": "Clint Bellanger",
       "license": "CC-BY-3.0",
       "source": "https://opengameart.org/content/ring-set-precious-metals"
+    },
+    {
+      "path": "assets/licensed/gems/sapphire.webp",
+      "bytes": 1906,
+      "sha256": "ac94db62b93a9eb88f7767b11724e5b20ffbd9e41899fa78689befaa3e14bd95",
+      "author": "Clint Bellanger",
+      "license": "CC-BY-3.0",
+      "source": "https://opengameart.org/content/gems"
+    },
+    {
+      "path": "assets/licensed/gems/diamond.webp",
+      "bytes": 1638,
+      "sha256": "ca524c802e4b86ab3676778bcccfc3dd79522aad75b41b2def024a1c87037dfc",
+      "author": "Clint Bellanger",
+      "license": "CC-BY-3.0",
+      "source": "https://opengameart.org/content/gems"
+    },
+    {
+      "path": "assets/licensed/gems/ruby.webp",
+      "bytes": 1658,
+      "sha256": "d9d36a420c29cfdef3a8ba8a941eed4760330e760ea9d517db6b01e2e93befd3",
+      "author": "Clint Bellanger",
+      "license": "CC-BY-3.0",
+      "source": "https://opengameart.org/content/gems"
+    },
+    {
+      "path": "assets/licensed/gems/emerald.webp",
+      "bytes": 1778,
+      "sha256": "1a5e1da2af0a2fa6cd4990a4d38304af6217ed80b6cfe320335bb2de68ecb0b5",
+      "author": "Clint Bellanger",
+      "license": "CC-BY-3.0",
+      "source": "https://opengameart.org/content/gems"
+    },
+    {
+      "path": "assets/licensed/crystals/cluster-1.webp",
+      "bytes": 1830,
+      "sha256": "0e2db1497c35557103cd2653ba2386d3a78f7b41e69018dee2ae3e17f693b51e",
+      "author": "rubberduck",
+      "license": "CC0-1.0",
+      "source": "https://opengameart.org/content/simple-3d-crystals-unwrapped-simple-texture"
+    },
+    {
+      "path": "assets/licensed/crystals/cluster-4.webp",
+      "bytes": 1824,
+      "sha256": "d8e2a7788025eaa2b324ae2bf381cea32a70a9c933268475de95e915dbad9c2f",
+      "author": "rubberduck",
+      "license": "CC0-1.0",
+      "source": "https://opengameart.org/content/simple-3d-crystals-unwrapped-simple-texture"
+    },
+    {
+      "path": "assets/licensed/crystals/cluster-7.webp",
+      "bytes": 1626,
+      "sha256": "277d6527a1d2931603fac7a279f89467c5d15976a5b38588d4c2ff1e8954cd46",
+      "author": "rubberduck",
+      "license": "CC0-1.0",
+      "source": "https://opengameart.org/content/simple-3d-crystals-unwrapped-simple-texture"
+    },
+    {
+      "path": "assets/licensed/plants/flowers.webp",
+      "bytes": 8290,
+      "sha256": "de7267c63ce1b3a6d22dd1b772c8c0dc01fe4e83d3ab66860e69a0e4c3179e8d",
+      "author": "Nobiax / Yughues",
+      "license": "CC0-1.0",
+      "source": "https://opengameart.org/content/free-handpainted-plants-2"
+    },
+    {
+      "path": "assets/licensed/plants/shrub.webp",
+      "bytes": 6578,
+      "sha256": "a35eebf7f58f0892bb8bea621675d98ca609a60a5c5480bdbb284398f5b9af58",
+      "author": "Nobiax / Yughues",
+      "license": "CC0-1.0",
+      "source": "https://opengameart.org/content/free-handpainted-plants-2"
     }
   ],
   "pending": [
     {
       "name": "Blue-white Poof",
       "reason": "Source license CC0 verified (bonecandy, https://opengameart.org/content/poof-animation); original frame files / aetheria-replacement-poof.zip not present as downloadable attachments. Chat previews not substituted for originals."
+    },
+    {
+      "name": "Spell Book Pack",
+      "source": "https://opengameart.org/content/spell-book-pack-0",
+      "author": "piacenti; redheadstock for arcane-circle textures",
+      "license": "CC-BY-SA-3.0",
+      "reason": "Uploaded grimoir.zip exceeds the executor 32 MiB transfer limit. Original model and selected textures must be supplied in smaller uploads. No book files or derivatives integrated."
     }
   ],
   "excluded": [

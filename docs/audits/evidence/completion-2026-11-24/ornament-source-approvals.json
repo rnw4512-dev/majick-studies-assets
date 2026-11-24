@@ -1,0 +1,67 @@
+[
+  {
+    "path": "licensed-assets.css",
+    "sha256": "0519701a8ca5a4dcc7b1c7bd1765ec5da5b97dda31eb0f69281e14e6aa090aaf",
+    "basis": "Reviewed actual source meshes, muted renders, original plant texture/license, CSS-only room/progress ornaments and attribution. No new state or reward handlers. Uses visible Learn Lab lesson navigator and prevents its auto-margin grid shrinkage."
+  },
+  {
+    "path": "assets/IMMERSION-CREDITS.html",
+    "sha256": "9e8ec2d5a37b0d2ed9fad893da2ac27ab6b81c960e9771dd9373baef110dd3af",
+    "basis": "Reviewed actual source meshes, muted renders, original plant texture/license, CSS-only room/progress ornaments and attribution. No new state or reward handlers."
+  },
+  {
+    "path": "assets/licensed/asset-manifest.json",
+    "sha256": "ce7828e9888f7d7d80af383bf02468e1265677c8543653ead5af8ccf85b97a67",
+    "basis": "Reviewed actual source meshes, muted renders, original plant texture/license, CSS-only room/progress ornaments and attribution. No new state or reward handlers."
+  },
+  {
+    "path": "assets/licensed/plants/LICENSE.txt",
+    "sha256": "0ac3d60c32848e1d8a0884b985582ad99850e7d2f987a3c3a1c5fdc88e0f1438",
+    "basis": "Reviewed actual source meshes, muted renders, original plant texture/license, CSS-only room/progress ornaments and attribution. No new state or reward handlers."
+  },
+  {
+    "path": "assets/licensed/gems/diamond.webp",
+    "sha256": "ca524c802e4b86ab3676778bcccfc3dd79522aad75b41b2def024a1c87037dfc",
+    "basis": "Reviewed actual source meshes, muted renders, original plant texture/license, CSS-only room/progress ornaments and attribution. No new state or reward handlers."
+  },
+  {
+    "path": "assets/licensed/gems/emerald.webp",
+    "sha256": "1a5e1da2af0a2fa6cd4990a4d38304af6217ed80b6cfe320335bb2de68ecb0b5",
+    "basis": "Reviewed actual source meshes, muted renders, original plant texture/license, CSS-only room/progress ornaments and attribution. No new state or reward handlers."
+  },
+  {
+    "path": "assets/licensed/gems/ruby.webp",
+    "sha256": "d9d36a420c29cfdef3a8ba8a941eed4760330e760ea9d517db6b01e2e93befd3",
+    "basis": "Reviewed actual source meshes, muted renders, original plant texture/license, CSS-only room/progress ornaments and attribution. No new state or reward handlers."
+  },
+  {
+    "path": "assets/licensed/gems/sapphire.webp",
+    "sha256": "ac94db62b93a9eb88f7767b11724e5b20ffbd9e41899fa78689befaa3e14bd95",
+    "basis": "Reviewed actual source meshes, muted renders, original plant texture/license, CSS-only room/progress ornaments and attribution. No new state or reward handlers."
+  },
+  {
+    "path": "assets/licensed/crystals/cluster-1.webp",
+    "sha256": "0e2db1497c35557103cd2653ba2386d3a78f7b41e69018dee2ae3e17f693b51e",
+    "basis": "Reviewed actual source meshes, muted renders, original plant texture/license, CSS-only room/progress ornaments and attribution. No new state or reward handlers."
+  },
+  {
+    "path": "assets/licensed/crystals/cluster-4.webp",
+    "sha256": "d8e2a7788025eaa2b324ae2bf381cea32a70a9c933268475de95e915dbad9c2f",
+    "basis": "Reviewed actual source meshes, muted renders, original plant texture/license, CSS-only room/progress ornaments and attribution. No new state or reward handlers."
+  },
+  {
+    "path": "assets/licensed/crystals/cluster-7.webp",
+    "sha256": "277d6527a1d2931603fac7a279f89467c5d15976a5b38588d4c2ff1e8954cd46",
+    "basis": "Reviewed actual source meshes, muted renders, original plant texture/license, CSS-only room/progress ornaments and attribution. No new state or reward handlers."
+  },
+  {
+    "path": "assets/licensed/plants/flowers.webp",
+    "sha256": "de7267c63ce1b3a6d22dd1b772c8c0dc01fe4e83d3ab66860e69a0e4c3179e8d",
+    "basis": "Reviewed actual source meshes, muted renders, original plant texture/license, CSS-only room/progress ornaments and attribution. No new state or reward handlers."
+  },
+  {
+    "path": "assets/licensed/plants/shrub.webp",
+    "sha256": "a35eebf7f58f0892bb8bea621675d98ca609a60a5c5480bdbb284398f5b9af58",
+    "basis": "Reviewed actual source meshes, muted renders, original plant texture/license, CSS-only room/progress ornaments and attribution. No new state or reward handlers."
+  }
+]

@@ -7,3 +7,9 @@ Runtime derivatives are rendered transparent WebP portraits / bottles with studi
 
 - rings.blend: Ring Set - Precious Metals, Clint Bellanger, CC BY 3.0. https://opengameart.org/content/ring-set-precious-metals — https://creativecommons.org/licenses/by/3.0/
   Derived static previews use studio lighting and converted materials. Source geometry unchanged; original reflection maps not used. No endorsement implied. Reproduce with tools/asset-pipeline/render_rings.py.
+
+- gems.blend: Gems, Clint Bellanger, CC BY 3.0. https://opengameart.org/content/gems — https://creativecommons.org/licenses/by/3.0/
+- crystals.blend: simple 3d crystals, rubberduck, CC0. https://opengameart.org/content/simple-3d-crystals-unwrapped-simple-texture
+- plants/: Free HandPainted Plants 2, Nobiax / Yughues, CC0 1.0. https://opengameart.org/content/free-handpainted-plants-2. Original license retained alongside the selected OBJ/TGA pairs.
+
+Gem/crystal meshes use studio material conversions; gems have muted material colors. Plant previews preserve original painted color/alpha textures. Geometry unchanged; no endorsement implied. Reproduction: tools/asset-pipeline/render_gems_crystals.py and render_plants.py, using Blender --disable-autoexec --python-exit-code 1.

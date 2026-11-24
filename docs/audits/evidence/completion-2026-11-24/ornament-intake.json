@@ -1,0 +1,39 @@
+{
+  "files": [
+    {
+      "name": "gems.blend",
+      "bytes": 176128,
+      "sha256": "f6cecff450ba48cb5c1935c5e60060a01731f9e2b92c5e0293435cabcfd29885",
+      "author": "Clint Bellanger",
+      "source": "https://opengameart.org/content/gems",
+      "license": "CC-BY-3.0"
+    },
+    {
+      "name": "3d_crystals_new.zip",
+      "bytes": 4561938,
+      "sha256": "4d4cbeb76ce6d89b24162b8645be9c636ddd6d34c65fab1936e5af69a71b832e",
+      "author": "rubberduck",
+      "source": "https://opengameart.org/content/simple-3d-crystals-unwrapped-simple-texture",
+      "license": "CC0-1.0"
+    },
+    {
+      "name": "Yughues HandPainted Plants 2.7z",
+      "bytes": 3305932,
+      "sha256": "59f8707ddd57e809909e11fd1368a2137cef42258112d4d343b6c76cd4aee8b0",
+      "author": "Nobiax / Yughues",
+      "source": "https://opengameart.org/content/free-handpainted-plants-2",
+      "license": "CC0-1.0"
+    }
+  ],
+  "verification": "Gems and crystals: cached primary-source pages with matching supplied filenames. Plants: original archive ReadMe - Licence.txt explicitly names Nobiax/Yughues and CC0 1.0; author store free-asset statement corroborates. Exact plant source page could not be retrieved.",
+  "pending": {
+    "name": "grimoir.zip",
+    "reason": "download_file rejects transfer above 32 MiB; no original file inspected or hashed",
+    "source": "https://opengameart.org/content/spell-book-pack-0",
+    "sourcePageLicense": "CC-BY-SA-3.0",
+    "sourcePageCredits": [
+      "piacenti",
+      "redheadstock for arcane-circle textures"
+    ]
+  }
+}

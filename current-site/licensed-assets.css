@@ -26,3 +26,15 @@
 .wsRingGallery figure{min-width:0;overflow-wrap:anywhere}@media(max-width:900px){#wsOverlay .wsWindow{grid-template-columns:minmax(0,1fr);width:100%;min-width:0}#wsOverlay :is(.wsSidebar,.wsMain,.wsControls){min-width:0;max-width:100%}}
 
 #wsOverlay .wsControls .wsRingIntro{color:#513448!important;-webkit-text-fill-color:#513448!important}
+/* Original source meshes, rendered offline: shared heading ornaments and progress caps. */
+.learnLab .courseLessonNavigator>h3::after,.v3333MissionHead>h2::after,.majReasoningToolbar h2::after,.majArcaneVault>header h2::after,.v3327SanctuaryTitle h3::after,.majRecipeShelf:has(.majLootGrid)>h3::after{content:"";display:inline-block;vertical-align:middle;width:32px;height:32px;margin-left:8px;background:center/contain no-repeat;pointer-events:none}
+.v3333MissionHead>h2::after{background-image:url('./assets/licensed/gems/diamond.webp')}
+.majReasoningToolbar h2::after{background-image:url('./assets/licensed/gems/ruby.webp')}
+.majArcaneVault>header h2::after{background-image:url('./assets/licensed/gems/sapphire.webp')}
+.learnLab .courseLessonNavigator>h3::after{background-image:url('./assets/licensed/gems/emerald.webp')}
+.learnLab .courseLessonNavigator{width:100%;box-sizing:border-box}
+.v3327SanctuaryTitle h3::after{background-image:url('./assets/licensed/plants/flowers.webp')}
+.majRecipeShelf:has(.majLootGrid)>h3::after{background-image:url('./assets/licensed/plants/shrub.webp')}
+#content{--collegium-crystal:url('./assets/licensed/crystals/cluster-7.webp')}
+#content:has(.learnLab){--collegium-crystal:url('./assets/licensed/crystals/cluster-1.webp')}
+#content:has(.mjReasoningPage){--collegium-crystal:url('./assets/licensed/crystals/cluster-4.webp')}

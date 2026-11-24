@@ -1,5 +1,5 @@
 """Licensed source art stays lazy, finite, reduced-motion aware, and presentation only."""
-import os,sys,threading
+import os,sys,threading,json
 from pathlib import Path
 from functools import partial
 from http.server import ThreadingHTTPServer,SimpleHTTPRequestHandler
@@ -19,9 +19,8 @@ with sync_playwright() as pw:
   for mode in ['no-preference','reduce']:
    page.emulate_media(reduced_motion=mode)
    for kind in ['lesson','guardian','mastery','reward']:
-    page.evaluate('(kind)=>MajickAnimationEffects.play(kind)',kind)
-    # Capture the decoded finite effect atomically; it may expire between browser round trips.
-    art=page.wait_for_function('()=>{const img=document.querySelector(".majickFxLicensed");return img?.complete&&img.naturalWidth>0?{src:img.src}:false}').json_value()
+    # Observe the finite image lifecycle inside the same browser task that starts it.
+    art=page.evaluate("async kind=>{if(!MajickAnimationEffects.play(kind))throw Error('Effect did not start: '+kind);const img=document.querySelector('.majickFxLicensed');if(!img)throw Error('Missing licensed image');await img.decode();if(!img.isConnected||!img.naturalWidth)throw Error('Image expired before it decoded: '+kind);return {src:img.src}}",kind)
     assert ('-poster.webp' in art['src'])==(mode=='reduce')
     assert page.locator('.majickFxLayer').evaluate('(e)=>getComputedStyle(e).pointerEvents')=='none'
     page.wait_for_function('!document.querySelector(".majickFx")') if mode=='reduce' and kind=='guardian' else page.evaluate('MajickAnimationEffects.clear()')
@@ -46,6 +45,19 @@ with sync_playwright() as pw:
   assert page.locator('.majRecipe').count()==5
   backgrounds=page.locator('.majRecipe>span[aria-hidden=true]').evaluate_all('(els)=>els.map(e=>getComputedStyle(e).backgroundImage)')
   assert len(set(backgrounds))==5 and all('/models/potion-' in b for b in backgrounds)
+  assert '/gems/sapphire.webp' in page.locator('.majArcaneVault>header h2').evaluate('(e)=>getComputedStyle(e,"::after").backgroundImage')
+  page.evaluate("majickVaultTab('ingredients')")
+  assert '/plants/shrub.webp' in page.locator('.majRecipeShelf:has(.majLootGrid)>h3').evaluate('(e)=>getComputedStyle(e,"::after").backgroundImage')
+  before_ornaments=page.evaluate('JSON.stringify({progress:S.progress,legacy:S.legacy,account:S.majickAccount})')
+  ornaments=[a['path'] for a in json.loads((root/'assets/licensed/asset-manifest.json').read_text())['assets'] if any('/'+kind+'/' in a['path'] for kind in ['gems','crystals','plants']) and a['path'].endswith('.webp')]
+  assert len(ornaments)==9
+  for asset in ornaments:
+   assert page.evaluate('async path=>{const img=new Image();img.src=new URL(path,location.href);await img.decode();return img.naturalWidth===160&&img.naturalHeight===160}',asset)
+  assert page.evaluate('JSON.stringify({progress:S.progress,legacy:S.legacy,account:S.majickAccount})')==before_ornaments,'Room art changes study or reward state'
+  page.evaluate("S.activeCourse='D772';navigate('learninglab')")
+  navigator=page.locator('.courseLessonNavigator');navigator.wait_for(state='visible')
+  assert navigator.evaluate('(e)=>e.getBoundingClientRect().width>=160'),'Lesson navigator collapses to an unreadable column'
+  assert '/gems/emerald.webp' in navigator.locator('h3').first.evaluate('(e)=>getComputedStyle(e,"::after").backgroundImage')
   page.locator('.caAmbience').click();page.wait_for_function('MajickCollegiumAtmosphere.inspect().playing')
   for room in ['home','learninglab','livinggrimoire','games','companions']:
    page.wait_for_timeout(170);assert page.evaluate('(room)=>MajickCollegiumAtmosphere.micro("enter",room)',room)
