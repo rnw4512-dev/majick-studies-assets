@@ -38,3 +38,47 @@
 #content{--collegium-crystal:url('./assets/licensed/crystals/cluster-7.webp')}
 #content:has(.learnLab){--collegium-crystal:url('./assets/licensed/crystals/cluster-1.webp')}
 #content:has(.mjReasoningPage){--collegium-crystal:url('./assets/licensed/crystals/cluster-4.webp')}
+
+/* Downloaded objects form quiet still lifes on the existing three room ribbons.
+   Reading surfaces and all progress/control owners remain unchanged. */
+body.majickCampus #majickRoomRibbon{
+ position:relative;isolation:isolate;min-height:132px;box-sizing:border-box;padding:22px clamp(18px,3vw,34px);
+ border:1px solid #a88b59;border-bottom:5px solid #55402e;border-radius:13px;
+ background:radial-gradient(ellipse at 85% 30%,#89704f66,transparent 44%),linear-gradient(110deg,#211b2e,#2e3435 65%,#1a2927);
+ box-shadow:inset 0 0 0 4px #d3b8801c,inset 0 -14px 22px #0004,0 8px 13px #37263b26;
+}
+body.majickCampus #majickRoomRibbon>div{position:relative;z-index:1;max-width:calc(100% - 190px)}
+body.majickCampus #majickRoomRibbon::after{
+ content:"";position:absolute;right:12px;bottom:3px;width:190px;height:124px;pointer-events:none;
+ background:url('./assets/licensed/models/candle-holder.webp') 35% 90%/110px no-repeat,url('./assets/licensed/crystals/cluster-7.webp') 100% 100%/100px no-repeat,radial-gradient(ellipse at 58% 94%,#070b0dcc,transparent 65%) bottom/100% 22px no-repeat;
+ filter:drop-shadow(2px 4px 3px #0005);
+}
+body[data-majick-polish-room=learninglab] #majickRoomRibbon::after{background-image:url('./assets/licensed/models/candle-holder.webp'),url('./assets/licensed/models/potion-3.webp'),radial-gradient(ellipse at 58% 94%,#070b0dcc,transparent 65%)}
+body[data-majick-polish-room=reasoning] #majickRoomRibbon::after{background-image:url('./assets/licensed/crystals/cluster-4.webp'),url('./assets/licensed/gems/ruby.webp'),radial-gradient(ellipse at 58% 94%,#070b0dcc,transparent 65%)}
+/* Replace the abstract library arch with a tangible cabinet vignette. */
+#aethAdventure .aeth-scene[data-scene=library]{min-height:188px;background:radial-gradient(ellipse at 52% 15%,#c49c5e40,transparent 63%),repeating-linear-gradient(90deg,#1f2528 0 57px,#a389572e 58px 60px,#182023 61px 115px);box-shadow:inset 0 0 28px #050a0c99,inset 0 0 0 5px #bb985635}
+#aethAdventure .aeth-scene[data-scene=library] .aeth-scene-arch{left:calc(50% - 90px);bottom:22px;width:180px;max-width:none;height:150px;border:0;border-radius:0;box-shadow:none;background:url('./assets/licensed/models/candle-holder.webp') center bottom/150px no-repeat;filter:drop-shadow(4px 5px 4px #0008)}
+#aethAdventure .aeth-scene[data-scene=library] .aeth-scene-symbol{left:calc(50% + 80px);top:auto;bottom:19px;transform:none;width:110px;height:115px;font-size:0;background:url('./assets/licensed/crystals/cluster-7.webp') center bottom/contain no-repeat;filter:drop-shadow(3px 5px 3px #0008)}
+#aethAdventure .aeth-scene[data-scene=library] .aeth-scene-ground{left:0;right:0;bottom:0;height:24px;border-radius:0;background:linear-gradient(#98794e,#695039 30%,#322b28 35%,#4b3b2e 75%,#201d20);box-shadow:0 -3px 12px #0008}
+#aethAdventure .aeth-scene[data-scene=library] .aeth-scene-caption{bottom:6px;right:10px;background:#172321e8;padding:4px 7px;border-radius:3px}
+@media(max-width:640px){
+ body.majickCampus #majickRoomRibbon{min-height:116px;padding:16px 12px;gap:9px}
+ body.majickCampus #majickRoomRibbon>div{max-width:calc(100% - 100px)}
+ body.majickCampus #majickRoomRibbon::after{width:90px;height:92px;right:1px;background-size:75px,65px,100% 18px;background-position:0 90%,100% 100%,bottom}
+ body.majickCampus #majickRoomRibbon>.v3360RoomSigil{display:none}
+ #aethAdventure .aeth-scene[data-scene=library] .aeth-scene-symbol{left:calc(50% + 25px);width:90px}
+}
+/* The first-room acceptance pass passed; reuse the same ribbon in the other rooms. */
+body[data-majick-polish-room=companions] #majickRoomRibbon::after{background-image:url('./assets/licensed/plants/flowers.webp'),url('./assets/licensed/plants/shrub.webp'),radial-gradient(ellipse at 58% 94%,#070b0dcc,transparent 65%)}
+body[data-majick-polish-room=games] #majickRoomRibbon::after{background-image:url('./assets/licensed/rings/sapphire.webp'),url('./assets/licensed/crystals/cluster-4.webp'),radial-gradient(ellipse at 58% 94%,#070b0dcc,transparent 65%)}
+body:is([data-majick-polish-room=guide],[data-majick-polish-room=livinggrimoire]) #majickRoomRibbon::after{background-image:url('./assets/licensed/models/candle-holder.webp'),url('./assets/licensed/gems/emerald.webp'),radial-gradient(ellipse at 58% 94%,#070b0dcc,transparent 65%)}
+/* Replace decorative game-intro shapes; never cover the question/score/answer UI. */
+.realmSceneArt:is(.oracleArt,.gardenArt,.archiveArt,.arenaArt){
+ --scene-object-a:url('./assets/licensed/rings/sapphire.webp');--scene-object-b:url('./assets/licensed/crystals/cluster-1.webp');
+ background:var(--scene-object-a) 30% 40%/145px no-repeat,var(--scene-object-b) 85% 95%/115px no-repeat,radial-gradient(ellipse at 55% 94%,#05090cdd,transparent 64%) bottom/100% 25px no-repeat;
+ opacity:.94;filter:drop-shadow(3px 6px 4px #0006);border-bottom:3px double #a38b5b55;
+}
+.realmSceneArt:is(.oracleArt,.gardenArt,.archiveArt,.arenaArt)>*{display:none!important;animation:none!important}
+.realmSceneArt.gardenArt{--scene-object-a:url('./assets/licensed/plants/flowers.webp');--scene-object-b:url('./assets/licensed/plants/shrub.webp')}
+.realmSceneArt.archiveArt{--scene-object-a:url('./assets/licensed/models/candle-holder.webp');--scene-object-b:url('./assets/licensed/models/potion-2.webp')}
+.realmSceneArt.arenaArt{--scene-object-a:url('./assets/licensed/rings/ouroboros.webp');--scene-object-b:url('./assets/licensed/crystals/cluster-7.webp')}

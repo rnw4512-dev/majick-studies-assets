@@ -11,7 +11,8 @@
     "gems": "Four original meshes rendered at 160px with muted studio material colors and AgX lighting; static transparent WebP.",
     "crystals": "Selected original bevelled meshes rendered at 160px with studio materials, used only as decorative progress end markers; no value changes.",
     "plants": "Two original OBJ meshes rendered with matching original hand-painted TGA color/alpha textures to static transparent 160px WebP.",
-    "music": "Full tracks retained, converted to stereo 44.1kHz Vorbis quality 2 with loudnorm I=-22:TP=-2:LRA=9. No cutting, new arrangement or automatic playback."
+    "music": "Full tracks retained, converted to stereo 44.1kHz Vorbis quality 2 with loudnorm I=-22:TP=-2:LRA=9. No cutting, new arrangement or automatic playback.",
+    "rpgProp": "Original candle_holder_2 mesh rendered at 160px with antique brass material and transparent studio lighting; geometry unchanged. Static decorative WebP only."
   },
   "assets": [
     {
@@ -475,6 +476,14 @@
       "author": "Matthew Pablo",
       "license": "CC-BY-3.0",
       "source": "https://opengameart.org/content/enchanted-festival"
+    },
+    {
+      "path": "assets/licensed/models/candle-holder.webp",
+      "bytes": 2884,
+      "sha256": "3c703e7ee8410c213fa3ede4349f49f9590fa59c907c6779137bfa07ac361c12",
+      "author": "rubberduck",
+      "license": "CC0-1.0",
+      "source": "https://opengameart.org/content/50-fantasy-rpg-asset-models"
     }
   ],
   "pending": [

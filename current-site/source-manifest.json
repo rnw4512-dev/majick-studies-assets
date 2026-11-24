@@ -874,7 +874,7 @@
     "aetheria-parchment-contrast.css": "cd80387734dfeea9d40529f5b2a27c973cb4ae8cbcea8fa5adbe67d74daeb514",
     "professors-repair-hands-on.css": "87c890be55e58f01942f3b45567b4832a4639ef7bbd552065b8439e06660073e",
     "question-repair.js": "105e8147a7221c64c1964b79e5a6737181b2fc1b7b322d2b3c97f1e7f49cfe91",
-    "assets/IMMERSION-CREDITS.html": "012dc26b647aae4d3cd81177e8beea507bfb394443d4c4f547b257517265ec84",
+    "assets/IMMERSION-CREDITS.html": "16499a271c3805aefea167a86651540ead6952b2cfef8de9871c12c02a71b074",
     "assets/audio/dreams-become-real.ogg": "813ee68409500bf63125105c8edd81a3be36932d45cf2fa8c140d3980b6e8309",
     "assets/rooms/landscape-castle.webp": "d5cce4d47cdf578b76f3b30fe076678e75cb4ff97baf0b0d2d25487d9e104c8a",
     "assets/rooms/licenses/GPL-2.0.txt": "e6d6a009505e345fe949e1310334fcb0747f28dae2856759de102ab66b722cb4",
@@ -941,8 +941,8 @@
     "screenshot-layout-repair.css": "a37e06424902f71d97cb69f69086cddd47a3a19eb3e75c46d0004d41c6fca138",
     "speaking-practice.js": "8d03a54e745805fd6223340e71a53c5efd07ac0b865743f76d13530f209086fe",
     "study-observatory.js": "abfb7993c95f3ca4a616e38074078dc7d0429a1899e98b1513b3cab1147bf489",
-    "licensed-assets.css": "0519701a8ca5a4dcc7b1c7bd1765ec5da5b97dda31eb0f69281e14e6aa090aaf",
-    "assets/licensed/asset-manifest.json": "206093529780c6abd331720700049d1a754a0740e232fc91646ede433192cdc2",
+    "licensed-assets.css": "6988e2541661735bd1f9558e27610316342cb0f87374ed5bc0255669c7af6b9b",
+    "assets/licensed/asset-manifest.json": "8c1b7f851878007caf303adaa16a81a7ed87d240347a4c3463da054b9fca6f11",
     "assets/licensed/audio/magical_5.ogg": "68e002d48295accc10fb52a76516d932e64229e413572f9cbbff1654217721a9",
     "assets/licensed/audio/magical_1.ogg": "69176a57ce6ff396bd0997a86fce89b2a3f6d564c417050199be800da3d57d7d",
     "assets/licensed/audio/magical_3.ogg": "837005d481e75319e32150a90415d9c255061d660cd90bfc9f3e28d89e1b5f5b",
@@ -1001,6 +1001,7 @@
     "assets/licensed/music/crystal-cave.ogg": "eead180e4240065bdec0c0d2503063047865ef4b13215931ad3713891b537083",
     "assets/licensed/music/crystal-mystery.ogg": "f8f3835bea148d8948954cb3ff453cf9b55b02cd1396c92617e78e0462ec886b",
     "assets/licensed/music/enchanted-festival.ogg": "62f89913214de1a2a6918b28b352b1f9cb66389c26a7e7ce5ec8daee95fe86de",
-    "course-question-policy.js": "743efa3ae9df47a26685bf31828aea0f66ec8c859a4a22f6a8082b7a629447b2"
+    "course-question-policy.js": "743efa3ae9df47a26685bf31828aea0f66ec8c859a4a22f6a8082b7a629447b2",
+    "assets/licensed/models/candle-holder.webp": "3c703e7ee8410c213fa3ede4349f49f9590fa59c907c6779137bfa07ac361c12"
   }
 }
