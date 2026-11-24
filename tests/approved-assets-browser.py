@@ -13,6 +13,7 @@ with sync_playwright() as pw:
   context=browser.new_context(viewport={'width':width,'height':1000});page=context.new_page();errors=[];requests=[]
   page.on('pageerror',lambda e:errors.append(str(e)));page.on('request',lambda r:requests.append(r.url))
   page.goto(os.environ.get('MAJICK_URL',f'http://127.0.0.1:{server.server_port}/'));page.wait_for_function('!!window.MajickAnimationEffects && !!window.MajickWardrobeStudio');page.wait_for_timeout(500)
+  page.route('**/effects/nature-poster.webp*',lambda route:(page.wait_for_timeout(650),route.continue_()))
   assert not any('/assets/licensed/effects/' in u or '/assets/licensed/audio/' in u for u in requests),'Large decorative assets loaded before use'
   protected=page.evaluate('JSON.stringify({progress:S.progress,legacy:S.legacy,account:S.majickAccount})')
   for mode in ['no-preference','reduce']:
@@ -22,7 +23,7 @@ with sync_playwright() as pw:
     page.wait_for_function('()=>{const img=document.querySelector(".majickFxLicensed");return img?.complete&&img.naturalWidth>0}')
     art=page.locator('.majickFxLicensed');assert ('-poster.webp' in art.get_attribute('src'))==(mode=='reduce')
     assert page.locator('.majickFxLayer').evaluate('(e)=>getComputedStyle(e).pointerEvents')=='none'
-    page.evaluate('MajickAnimationEffects.clear()')
+    page.wait_for_function('!document.querySelector(".majickFx")') if mode=='reduce' and kind=='guardian' else page.evaluate('MajickAnimationEffects.clear()')
   assert page.evaluate('JSON.stringify({progress:S.progress,legacy:S.legacy,account:S.majickAccount})')==protected,'Art changes learner state'
   page.evaluate('MajickWardrobeStudio.open()');details=page.locator('.wsModelReference');details.locator('summary').click()
   for image in details.locator('img').all():assert image.evaluate('(e)=>e.complete&&e.naturalWidth>0') or image.wait_for(state='visible') is None

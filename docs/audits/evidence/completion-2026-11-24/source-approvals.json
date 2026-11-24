@@ -29,8 +29,8 @@
     },
     {
       "path": "animation-effects.js",
-      "sha256": "f793575aab900e6e0fc55ae52a5bf86c7f905834a91dd941f6f9d755761f79f9",
-      "basis": "Reviewed existing main history, completion diff and supplied asset provenance; see completion report."
+      "sha256": "c9805b5c0b7e87247a6b935cecd3ec2b9ef20ae9e7b8a8ef193a837001c2fc1a",
+      "basis": "Reviewed bounded image-load-aware acknowledgment timer; delayed-image browser regression."
     },
     {
       "path": "room-section-nav.js",

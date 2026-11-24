@@ -15,7 +15,7 @@ Authors, source-page licenses, transformations and output hashes are recorded in
 
 ## Local verification
 
-Canonical validator/build passed: 974 locked/actual files, zero errors; candidate release key `5c35c9a8ad3d62b6`. Existing Node release checks, D756 classifications and six manifest tests passed. At 390, 820 and 1366px, browser suites passed for:
+Canonical validator/build passed: 974 locked/actual files, zero errors; initial candidate release key `5c35c9a8ad3d62b6`; image-load timing repair candidate `3d45c5038ac9c891`. Existing Node release checks, D756 classifications and six manifest tests passed. At 390, 820 and 1366px, browser suites passed for:
 
 - Original startup/learning and Journal keyboard checks, transfer/resume and duplicate reward protection.
 - All 15 routes, stable navigation listeners and no horizontal overflow.
@@ -25,6 +25,10 @@ Canonical validator/build passed: 974 locked/actual files, zero errors; candidat
 - Existing Sanctuary, Alchemy, Commons and complete D756 Council script/scenario/UX/meeting suites.
 
 Six Playwright integration/lifecycle cases passed. Commons control-contrast checks found no failures. Source and compiled startup/Journal tests passed. Execution logs/screenshots remain under `/workspace/work/directive-*`; committed provenance and measurements are under `docs/audits/evidence/completion-2026-11-24/`. Live production verification remains required.
+
+## Additional timing repair
+
+Repeated final-media verification exposed a cold-image race: the 450ms reduced-motion overlay could expire before the poster decoded. The display timer now begins on image load/error, with a two-second bounded pending fallback and a stale-effect guard. The media regression deliberately delays the nature poster by 650ms and checks eventual automatic cleanup. Existing original effect/interaction tests remain unchanged. GitHub integration passed for `850cb4f`; the timing repair requires its own new run.
 
 ## Performance limits
 

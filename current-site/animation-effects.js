@@ -22,7 +22,8 @@ function play(type,{target=null,label=null}={}){
  const container=host();if(!container)return false;clear();
  const visual=document.createElement('div');visual.className='majickFx';
  const img=document.createElement('img');img.src='./assets/effects/'+cfg[0];img.alt='';img.decoding='async';visual.append(img);
- if(LICENSED[type]){const art=document.createElement('img');art.className='majickFxLicensed';art.alt='';art.decoding='async';art.src='./assets/licensed/effects/'+LICENSED[type]+(reduced()?'-poster':'')+'.webp?v='+encodeURIComponent(window.MAJICK_RELEASE||'source');visual.append(art);}
+ let licensedArt=null;
+ if(LICENSED[type]){const art=document.createElement('img');licensedArt=art;art.className='majickFxLicensed';art.alt='';art.decoding='async';art.src='./assets/licensed/effects/'+LICENSED[type]+(reduced()?'-poster':'')+'.webp?v='+encodeURIComponent(window.MAJICK_RELEASE||'source');visual.append(art);}
  const text=document.createElement('span');text.className='majickFxLabel';text.textContent=label==null?cfg[3]:String(label).slice(0,48);if(type!=='touch')visual.append(text);
  const bounds=target?.isConnected?target.getBoundingClientRect():null;
  if(bounds&&type==='touch')visual.style.setProperty('--fx-touch-size',Math.max(0,Math.min(36,bounds.width-8,bounds.height-8))+'px');
@@ -40,7 +41,11 @@ function play(type,{target=null,label=null}={}){
  }
  visual.style.setProperty('--fx-size',cfg[1]+'px');visual.style.setProperty('--fx-duration',cfg[2]+'ms');
  container.append(visual);active=visual;
- clock=setTimeout(clear,reduced()?450:cfg[2]+100);
+ const duration=reduced()?450:cfg[2]+100;
+ function expire(){if(active!==visual)return;if(clock!==null)clearTimeout(clock);clock=setTimeout(clear,duration)}
+ // Cold image decoding must not consume the short acknowledgment window.
+ // A failed or stalled request still releases the single overlay within a bounded interval.
+ if(licensedArt&&!licensedArt.complete){clock=setTimeout(clear,Math.max(2000,duration));licensedArt.onload=expire;licensedArt.onerror=expire}else expire();
  return true
 }
 function onEvent(e){const type=e.detail?.type;if(Object.hasOwn(TYPES,type))play(type,{target:e.detail?.target,label:e.detail?.label})}
