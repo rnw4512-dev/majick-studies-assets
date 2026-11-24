@@ -15,6 +15,7 @@ on:
 
 permissions:
   contents: read
+  actions: read
   pages: write
   id-token: write
 
@@ -93,6 +94,22 @@ jobs:
         uses: actions/upload-pages-artifact@v4
         with:
           path: _aetheria_pages
+      - name: Wait for the uploaded Pages artifact to become discoverable
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          for attempt in $(seq 1 20); do
+            artifact="$(gh api "repos/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}/artifacts" --jq '[.artifacts[] | select(.name == "github-pages" and .expired == false)] | length')"
+            if [ "$artifact" = "1" ]; then
+              echo 'The uploaded Pages artifact is discoverable.'
+              exit 0
+            fi
+            echo "Waiting for Pages artifact metadata (${attempt}/20)."
+            sleep 3
+          done
+          echo '::error::Uploaded Pages artifact did not become discoverable; refusing deployment.'
+          exit 1
       - name: Reject superseded main builds before deployment
         env:
           GH_TOKEN: ${{ github.token }}

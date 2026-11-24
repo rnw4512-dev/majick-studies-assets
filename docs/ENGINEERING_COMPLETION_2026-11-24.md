@@ -34,6 +34,10 @@ Repeated final-media verification exposed a cold-image race: the 450ms reduced-m
 
 Five alternating clean-context Chromium runs at 1366px, localhost, no throttling: median DOM ready 2020 to 1792ms; load 2403 to 2100ms; script CPU 826 to 772ms; total task CPU 2482 to 2269ms; heap 7.54 to 7.11MB. Render count stayed four; no iframe elements. Median transfer rose 8.86 to 9.21MB and observed long-task duration rose 1231 to 1363ms. These mixed results do not establish a universal speed improvement. Added bytes and long-task variability remain optimization work. Full observations/conditions are committed.
 
+## Hosted artifact visibility
+
+The `a9ebfd0` integration and complete publisher pre-deployment suites passed. Its deployment attempt reported no named Pages artifact while a subsequent API request showed the successfully uploaded `github-pages` artifact. The publisher now grants artifact-read access and waits up to 60 seconds for that same run’s nonexpired named artifact before its existing stale-main check and deployment. It fails closed if metadata stays unavailable; no test or approval gate is bypassed. A new run is required.
+
 ## Remaining asset blocker
 
 The replacement blue-white Poof source page and CC0 license were identified, but its original PNGs/replacement ZIP are absent from downloadable attachments. Inline previews cannot establish original frame bytes/order. No replacement Poof is claimed integrated. Existing effects remain functional; certification must distinguish this incomplete requirement.
