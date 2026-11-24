@@ -5,6 +5,7 @@ const COURSE_LABEL=()=>window.S?.activeCourse||'WGU';
 const E=v=>String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
 
 let audioCtx=null;
+let guardianGreetingClip=null;
 let lastReactionAt=0;
 const seenNodes=new WeakSet();
 
@@ -145,6 +146,8 @@ function toggleDebrief(){
 function toggleSound(){
   const s=settings();s.enabled=!s.enabled;saveState();
   if(s.enabled){unlockAudio();sound('hello',activePet()?.type)}
+  else if(guardianGreetingClip){guardianGreetingClip.pause();guardianGreetingClip.currentTime=0;}
+
   decorate();
 }
 function unlockAudio(){
@@ -180,6 +183,16 @@ function noise(ctx,start,duration,volume=.015){
 }
 function sound(kind,type){
   const s=settings();if(!s.enabled)return;
+  if(kind==='hello'&&s.guardian!==false&&String(type||activePet()?.type||'')==='luna'&&typeof Audio==='function'){
+    try{
+      if(!guardianGreetingClip){guardianGreetingClip=new Audio('assets/licensed/guardian-audio/meow.ogg');guardianGreetingClip.preload='none';}
+      if(!guardianGreetingClip.paused)return;
+      const v=Number(s.volume);guardianGreetingClip.volume=Number.isFinite(v)?Math.max(0,Math.min(1,v)):.58;
+      guardianGreetingClip.currentTime=0;
+      guardianGreetingClip.play().catch(()=>{});
+      return;
+    }catch(_){}
+  }
   const ctx=unlockAudio();if(!ctx)return;
   try{if(ctx.state==='suspended')ctx.resume?.()}catch(_){}
   const now=ctx.currentTime+.01,vol=Math.max(.1,Math.min(1,Number(s.volume)||.58));
