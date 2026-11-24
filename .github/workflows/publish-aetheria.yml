@@ -24,11 +24,8 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - name: Check out site content
         uses: actions/checkout@v4
@@ -94,14 +91,31 @@ jobs:
         uses: actions/upload-pages-artifact@v4
         with:
           path: _aetheria_pages
-      - name: Wait for the uploaded Pages artifact to become discoverable
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Check out the certified source revision
+        uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install production browser runner
+        run: python -m pip install playwright==1.56.0
+      - id: pages_artifact
+        name: Wait for the uploaded Pages artifact to become discoverable
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
           for attempt in $(seq 1 20); do
-            artifact="$(gh api "repos/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}/artifacts" --jq '[.artifacts[] | select(.name == "github-pages" and .expired == false)] | length')"
-            if [ "$artifact" = "1" ]; then
+            artifact="$(gh api "repos/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}/artifacts" --jq '[.artifacts[] | select(.name == "github-pages" and .expired == false)] | if length == 1 then .[0].id else empty end')"
+            if [[ "$artifact" =~ ^[0-9]+$ ]]; then
+              echo "artifact_id=$artifact" >> "$GITHUB_OUTPUT"
               echo 'The uploaded Pages artifact is discoverable.'
               exit 0
             fi
@@ -110,6 +124,23 @@ jobs:
           done
           echo '::error::Uploaded Pages artifact did not become discoverable; refusing deployment.'
           exit 1
+      - name: Download the completed build job's exact Pages artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh run download "$GITHUB_RUN_ID" --name github-pages --dir _artifact_download
+      - name: Verify certified artifact identity before deployment
+        run: |
+          mkdir -p _published_candidate
+          tar -xf _artifact_download/artifact.tar -C _published_candidate
+          python - <<'PYARTIFACT'
+          import json,os
+          from pathlib import Path
+          root=Path('_published_candidate/current-site')
+          assert json.loads((root/'deployment.json').read_text())['commit']==os.environ['GITHUB_SHA']
+          release=json.loads((root/'release.json').read_text())
+          assert release['build'] in (root/'index.html').read_text()
+          print('Certified artifact identity verified:',os.environ['GITHUB_SHA'],release['build'])
+          PYARTIFACT
       - name: Reject superseded main builds before deployment
         env:
           GH_TOKEN: ${{ github.token }}
@@ -118,7 +149,12 @@ jobs:
           test "$latest" = "$GITHUB_SHA" || { echo 'A newer main commit supersedes this build; refusing deployment.'; exit 1; }
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/github-script@v7
+        env:
+          CERTIFIED_ARTIFACT_ID: ${{ steps.pages_artifact.outputs.artifact_id }}
+        with:
+          script: |
+            await require('./pages-release/current/deploy-pages.cjs')({github,context,core,artifactId:process.env.CERTIFIED_ARTIFACT_ID})
       - name: Confirm live Pages routes return HTTP 200
         env:
           PAGES_URL: ${{ steps.deployment.outputs.page_url }}
@@ -149,7 +185,7 @@ jobs:
           import json,os,time,urllib.request
           from pathlib import Path
           base=os.environ['PAGES_URL'].rstrip('/')+'/'
-          expected=json.loads(Path('_certified/release.json').read_text())
+          expected=json.loads(Path('_published_candidate/current-site/release.json').read_text())
           for attempt in range(30):
               try:
                   def read(path):
@@ -172,8 +208,8 @@ jobs:
           CHROMIUM_PATH: /usr/bin/google-chrome
           MAJICK_URL: ${{ steps.deployment.outputs.page_url }}current-site/
         run: |
-          python -u tests/startup-learning-browser.py _certified
-          python -u tests/room-navigation-browser.py _certified
-          python -u tests/d669-content-browser.py _certified
-          python -u tests/approved-assets-browser.py _certified
-          python -u tests/room-interactions-browser.py _certified
+          python -u tests/startup-learning-browser.py _published_candidate/current-site
+          python -u tests/room-navigation-browser.py _published_candidate/current-site
+          python -u tests/d669-content-browser.py _published_candidate/current-site
+          python -u tests/approved-assets-browser.py _published_candidate/current-site
+          python -u tests/room-interactions-browser.py _published_candidate/current-site
