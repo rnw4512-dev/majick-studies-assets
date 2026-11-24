@@ -232,6 +232,7 @@ function award(type,ctx={}){
  try{window.MajickProductCore?.record?.('reward-earned',{type,xp,crystals,eggFragments:receipt.eggFragments,item:drop?.id||null})}catch(_){}
  return receipt;
 }
+function rewardDropArt(drop){const path=Object.prototype.hasOwnProperty.call(ITEM_ART,drop.id)?ITEM_ART[drop.id]:null;return path?'<img src="'+E(path)+'" alt="" width="48" height="48" decoding="async" style="width:48px;height:48px;object-fit:contain;vertical-align:middle">':cabinetArt(drop.id,drop.icon);}
 function receiptLines(x){
  const rows=[];if(x.xp)rows.push('+'+x.xp+' Scholar XP');if(x.crystals)rows.push('+'+x.crystals+' Moon Crystal'+(x.crystals===1?'':'s'));
  if(x.masteryXp)rows.push('+'+x.masteryXp+' Mastery XP');
@@ -248,7 +249,7 @@ function showReceipt(receipt){
  const rarity=receipt.drop?.rarity||'common';
  host.innerHTML='<section class="majRewardCard '+E(rarity)+'"><div class="majRewardStars">✦ ✧ ✦</div><small>'+E(receipt.type==='misconception-repaired'?'MISCONCEPTION BROKEN':'MAJICK REWARD')+'</small><h3>'+E(receipt.type==='correct-answer'?'Correct — the Collegium responds!':receipt.label.replace(/\b\w/g,m=>m.toUpperCase()))+'</h3>'+
  '<div class="majRewardLines">'+receiptLines(receipt).map(x=>'<span>'+E(x)+'</span>').join('')+'</div>'+
- (receipt.drop?'<div class="majRareDrop"><em>'+E(receipt.drop.rarity.toUpperCase())+'</em><b>'+E(receipt.drop.icon)+' '+E(receipt.drop.name)+(receipt.drop.qty>1?' × '+receipt.drop.qty:'')+'</b><span>Something fell from the spellbook.</span></div>':'')+
+ (receipt.drop?'<div class="majRareDrop"><em>'+E(receipt.drop.rarity.toUpperCase())+'</em><b>'+rewardDropArt(receipt.drop)+' '+E(receipt.drop.name)+(receipt.drop.qty>1?' × '+receipt.drop.qty:'')+'</b><span>Something fell from the spellbook.</span></div>':'')+
  '<footer><span>🥚 Egg fragments: <b>'+receipt.fragmentTotal+'/10</b></span>'+(receipt.conjuresReady?'<button data-maj-conjure>Conjure Egg ✦</button>':'')+'</footer></section>';
  document.body.appendChild(host);
  host.querySelector('[data-maj-conjure]')?.addEventListener('click',()=>showConjuring());
