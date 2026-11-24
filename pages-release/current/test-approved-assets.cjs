@@ -9,7 +9,8 @@ for(const name of ['light','nature','arcane','projectile']){
  const poster=fs.readFileSync(path.join(root,'assets/licensed/effects',name+'-poster.webp'));assert(!poster.includes(Buffer.from('ANIM')),'Poster must be static');
 }
 assert.equal(data.assets.filter(x=>x.path.includes('/milestones/')&&x.path.endsWith('.png')).length,8);
-assert.equal(data.assets.filter(x=>x.path.endsWith('.ogg')).length,5);
+assert.equal(data.assets.filter(x=>/\/audio\/magical_[1-5]\.ogg$/.test(x.path)).length,5);
+assert.equal(data.assets.filter(x=>x.path.includes('/music/')&&x.path.endsWith('.ogg')).length,6);
 assert.equal(data.assets.filter(x=>x.path.includes('/rings/')&&x.license==='CC-BY-3.0'&&x.author==='Clint Bellanger').length,10);
 assert.equal(data.assets.filter(x=>x.path.includes('/gems/')).length,4);
 assert.equal(data.assets.filter(x=>x.path.includes('/crystals/')).length,3);

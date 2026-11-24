@@ -110,8 +110,8 @@
     "campus-runtime.js": "9b6293f0932dfd75fa35bf2b0d32f8bbfb70369cbd10eea2386122062b255ebd",
     "classroom-library-life.css": "c8531b8bd6e72ad6db8429bd3781af4021abdd6cd222a814829c75a7cb763ab0",
     "classroom-library-life.js": "2f5c3b0778305969555e9efea408657fc8036640d09b5a7200eb49f857688f7c",
-    "collegium-atmosphere.css": "12aede315fc8deec0f8dc1f496435d8116548de9c633bfc49dc19a4758cd488b",
-    "collegium-atmosphere.js": "76f972efd11cd97387c5825abed7ee896761f58ddb46523a2ec4b34d2eedae96",
+    "collegium-atmosphere.css": "b009587a8cd91309877e07cd172ab11f8b32dc8d53977dd1c84d16174c2d28e0",
+    "collegium-atmosphere.js": "65b65a2e4da5838a37af0d03ff8f57407b04efdb8d801e66dc743f93510be87b",
     "course-tutor.css": "4e06f2f19d54129c4010a6e121c62fa3c41ceba1ef570ae2cc0736a15b8c3ec2",
     "course-tutor.js": "84e17d0b1b0e87fa580284c60f2830a562a12ce996679bb74507bcbdd21896b6",
     "courseManager.js": "1583b49ab05220930fd7eee384cd1f3c6d5073a2a11615d2b59435e7117101df",
@@ -874,7 +874,7 @@
     "aetheria-parchment-contrast.css": "cd80387734dfeea9d40529f5b2a27c973cb4ae8cbcea8fa5adbe67d74daeb514",
     "professors-repair-hands-on.css": "87c890be55e58f01942f3b45567b4832a4639ef7bbd552065b8439e06660073e",
     "question-repair.js": "105e8147a7221c64c1964b79e5a6737181b2fc1b7b322d2b3c97f1e7f49cfe91",
-    "assets/IMMERSION-CREDITS.html": "9e8ec2d5a37b0d2ed9fad893da2ac27ab6b81c960e9771dd9373baef110dd3af",
+    "assets/IMMERSION-CREDITS.html": "012dc26b647aae4d3cd81177e8beea507bfb394443d4c4f547b257517265ec84",
     "assets/audio/dreams-become-real.ogg": "813ee68409500bf63125105c8edd81a3be36932d45cf2fa8c140d3980b6e8309",
     "assets/rooms/landscape-castle.webp": "d5cce4d47cdf578b76f3b30fe076678e75cb4ff97baf0b0d2d25487d9e104c8a",
     "assets/rooms/licenses/GPL-2.0.txt": "e6d6a009505e345fe949e1310334fcb0747f28dae2856759de102ab66b722cb4",
@@ -942,7 +942,7 @@
     "speaking-practice.js": "8d03a54e745805fd6223340e71a53c5efd07ac0b865743f76d13530f209086fe",
     "study-observatory.js": "abfb7993c95f3ca4a616e38074078dc7d0429a1899e98b1513b3cab1147bf489",
     "licensed-assets.css": "0519701a8ca5a4dcc7b1c7bd1765ec5da5b97dda31eb0f69281e14e6aa090aaf",
-    "assets/licensed/asset-manifest.json": "ce7828e9888f7d7d80af383bf02468e1265677c8543653ead5af8ccf85b97a67",
+    "assets/licensed/asset-manifest.json": "206093529780c6abd331720700049d1a754a0740e232fc91646ede433192cdc2",
     "assets/licensed/audio/magical_5.ogg": "68e002d48295accc10fb52a76516d932e64229e413572f9cbbff1654217721a9",
     "assets/licensed/audio/magical_1.ogg": "69176a57ce6ff396bd0997a86fce89b2a3f6d564c417050199be800da3d57d7d",
     "assets/licensed/audio/magical_3.ogg": "837005d481e75319e32150a90415d9c255061d660cd90bfc9f3e28d89e1b5f5b",
@@ -994,6 +994,12 @@
     "assets/licensed/crystals/cluster-4.webp": "d8e2a7788025eaa2b324ae2bf381cea32a70a9c933268475de95e915dbad9c2f",
     "assets/licensed/crystals/cluster-7.webp": "277d6527a1d2931603fac7a279f89467c5d15976a5b38588d4c2ff1e8954cd46",
     "assets/licensed/plants/flowers.webp": "de7267c63ce1b3a6d22dd1b772c8c0dc01fe4e83d3ab66860e69a0e4c3179e8d",
-    "assets/licensed/plants/shrub.webp": "a35eebf7f58f0892bb8bea621675d98ca609a60a5c5480bdbb284398f5b9af58"
+    "assets/licensed/plants/shrub.webp": "a35eebf7f58f0892bb8bea621675d98ca609a60a5c5480bdbb284398f5b9af58",
+    "assets/licensed/music/dark-ambience.ogg": "8eb6d40b4abd66e452aa64d6dc5716a02916fe4cadf1774b001b93def4ffc881",
+    "assets/licensed/music/mystical-theme.ogg": "fab370823c19eecaf69b1ca35a138b2dfb8bf52dbe8a18f8d86bad78a23aaaf6",
+    "assets/licensed/music/enchanted-tiki.ogg": "0256eae3210a718ea020b091458ef8a5ba1ff16d17471df75a9d6e8665cd8d41",
+    "assets/licensed/music/crystal-cave.ogg": "eead180e4240065bdec0c0d2503063047865ef4b13215931ad3713891b537083",
+    "assets/licensed/music/crystal-mystery.ogg": "f8f3835bea148d8948954cb3ff453cf9b55b02cd1396c92617e78e0462ec886b",
+    "assets/licensed/music/enchanted-festival.ogg": "62f89913214de1a2a6918b28b352b1f9cb66389c26a7e7ce5ec8daee95fe86de"
   }
 }

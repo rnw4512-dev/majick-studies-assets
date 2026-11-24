@@ -2,12 +2,35 @@
  'use strict';
  const VERSION='3.3.64';
  const ROOMS={home:'College entrance',learninglab:'Candlelit classroom',livinggrimoire:'Working grimoire',games:'Game realm',mission:'Practice chamber',companions:'Guardian residence',journal:'Scholar Journal'};
+ const TRACKS=Object.freeze({
+   dreams:{title:'Dreams Become Real',artist:'Kevin MacLeod',path:'./assets/audio/dreams-become-real.ogg'},
+   'crystal-cave':{title:'Crystal Cave',artist:'The Cynic Project',path:'./assets/licensed/music/crystal-cave.ogg'},
+   'crystal-mystery':{title:'Crystal Cave + Mysterious Ambience',artist:'The Cynic Project · congusbongus',path:'./assets/licensed/music/crystal-mystery.ogg'},
+   'mystical-theme':{title:'Mystical Theme',artist:'Alexandr Zhelanov',path:'./assets/licensed/music/mystical-theme.ogg'},
+   'enchanted-tiki':{title:'Enchanted Tiki 86',artist:'The Cynic Project',path:'./assets/licensed/music/enchanted-tiki.ogg'},
+   'dark-ambience':{title:'Dark Ambience Loop',artist:'Iwan Gabovitch',path:'./assets/licensed/music/dark-ambience.ogg'},
+   'enchanted-festival':{title:'Enchanted Festival',artist:'Matthew Pablo',path:'./assets/licensed/music/enchanted-festival.ogg'}
+ });
+ let selectedTrack='dreams',loadedTrack=null;
  let ctx,enabled=false,lastRoom=null,music=null,error='',audioRequest=0,lastMicroAt=0;
  function room(){return Object.hasOwn(ROOMS,window.S?.screen)?window.S.screen:'home'}
  function volume(){const value=Number(window.S?.majickAccount?.guardianAudio?.musicVolume??.22);return Math.max(0,Math.min(.7,Number.isFinite(value)?value:.22))}
  const spellClips=new Map();
  function stop(){music?.pause();spellClips.forEach(a=>{a.pause();a.currentTime=0})}
- function recording(){if(!music){music=new window.Audio('./assets/audio/dreams-become-real.ogg');music.loop=true;music.preload='auto';music.addEventListener('error',()=>{enabled=false;error='Music file could not load. Check the audio asset and connection.';stop();decorate()});music.addEventListener('ended',()=>{if(enabled){enabled=false;decorate()}})}music.volume=volume();return music}
+ function recording(){
+   const source=TRACKS[selectedTrack].path+'?v='+encodeURIComponent(window.MAJICK_RELEASE||'source');
+   if(!music){music=new window.Audio(source);loadedTrack=selectedTrack;music.loop=true;music.preload='none';music.addEventListener('error',()=>{enabled=false;error='The selected music could not load. Try another track or check your connection.';stop();decorate()});music.addEventListener('ended',()=>{if(enabled){enabled=false;decorate()}})}
+   else if(loadedTrack!==selectedTrack){music.pause();music.preload='none';music.src=source;loadedTrack=selectedTrack}
+   music.volume=volume();return music;
+ }
+ async function selectTrack(id){
+   if(!Object.hasOwn(TRACKS,id))return false;
+   if(id===selectedTrack)return true;
+   const resume=enabled;audioRequest++;stop();selectedTrack=id;error='';
+   if(resume)return start();
+   decorate();return true;
+ }
+
  async function start(){
    if(enabled&&music&&!music.paused)return true;
    error='';enabled=true;const request=++audioRequest;
@@ -23,7 +46,8 @@
        catch(_){/* Music can play without Web Audio sound effects. */}
      }
      await playPromise;
-     if(!enabled||request!==audioRequest){stop();return false}
+     if(request!==audioRequest)return false;
+     if(!enabled){stop();return false}
    }catch(e){
      if(request!==audioRequest)return false;
      enabled=false;stop();
@@ -78,13 +102,15 @@
    const top=document.querySelector('.top');if(!top)return;
    const pill=top.querySelector('.pill');if(pill)pill.textContent='Guardian Room Check • V'+VERSION;
    let controls=top.querySelector('.caSoundControls');
-   if(!controls){controls=document.createElement('div');controls.className='caSoundControls';const button=document.createElement('button');button.type='button';button.className='caAmbience';button.addEventListener('click',toggle);controls.append(button);const options=document.createElement('details');options.className='caSoundOptions';const summary=document.createElement('summary');summary.textContent='Sound settings';options.append(summary);const label=document.createElement('label');label.textContent='Music volume ';const slider=document.createElement('input');slider.type='range';slider.min='0';slider.max='70';slider.step='1';slider.value=String(Math.round(volume()*100));slider.setAttribute('aria-label','Music volume');slider.addEventListener('input',()=>setVolume(Number(slider.value)/100));label.append(slider);options.append(label);const credit=document.createElement('a');credit.href='./assets/IMMERSION-CREDITS.html';credit.textContent='Music by Kevin MacLeod · Artist credits';options.append(credit);const note=document.createElement('p');note.className='caSoundStatus';note.setAttribute('role','status');options.append(note);controls.append(options);top.append(controls)}
+   if(!controls){controls=document.createElement('div');controls.className='caSoundControls';const button=document.createElement('button');button.type='button';button.className='caAmbience';button.addEventListener('click',toggle);controls.append(button);const options=document.createElement('details');options.className='caSoundOptions';const summary=document.createElement('summary');summary.textContent='Sound settings';options.append(summary);const label=document.createElement('label');label.textContent='Music volume ';const slider=document.createElement('input');slider.type='range';slider.min='0';slider.max='70';slider.step='1';slider.value=String(Math.round(volume()*100));slider.setAttribute('aria-label','Music volume');slider.addEventListener('input',()=>setVolume(Number(slider.value)/100));label.append(slider);options.append(label);const trackLabel=document.createElement('label');trackLabel.textContent='Music track ';const picker=document.createElement('select');picker.className='caTrackSelect';picker.setAttribute('aria-label','Music track');Object.entries(TRACKS).forEach(([id,track])=>{const option=document.createElement('option');option.value=id;option.textContent=track.title;picker.append(option)});picker.value=selectedTrack;picker.addEventListener('change',()=>selectTrack(picker.value));trackLabel.append(picker);options.append(trackLabel);const credit=document.createElement('a');credit.className='caMusicCredit';credit.href='./assets/IMMERSION-CREDITS.html';credit.textContent='Music by Kevin MacLeod · Artist credits';options.append(credit);const note=document.createElement('p');note.className='caSoundStatus';note.setAttribute('role','status');options.append(note);controls.append(options);top.append(controls)}
    const b=controls.querySelector('.caAmbience');
    if(enabled&&music?.paused){enabled=false;error=error||'Music stopped. Tap Enable music to restart it.'}
    b.textContent=(enabled?'♫ ':'♪ ')+ROOMS[r]+' · music '+(enabled?'on':'off');
    b.setAttribute('aria-label',(enabled?'Mute':'Enable')+' ethereal music');
    b.setAttribute('aria-pressed',String(enabled));
-   controls.querySelector('.caSoundStatus').textContent=error||(enabled?'Playing Dreams Become Real.':'Music is off. Enable it when you want an enchanted atmosphere.');
+   controls.querySelector('.caTrackSelect').value=selectedTrack;
+   controls.querySelector('.caMusicCredit').textContent='Music credits · '+TRACKS[selectedTrack].artist;
+   controls.querySelector('.caSoundStatus').textContent=error||(enabled?'Playing '+TRACKS[selectedTrack].title+'.':'Music is off. Choose a track, then enable music when you want it.');
    document.title='Majick Studies — V'+VERSION+' Collegium Atmospheres';
  }
  document.addEventListener('visibilitychange',()=>{stop();if(!document.hidden&&enabled)recording().play().catch(()=>{enabled=false;error='Tap Enable music to resume audio.';decorate()})});
@@ -109,5 +135,5 @@ if(renderQueue?.register){
  }
  setTimeout(decorate,120);
 }
- window.MajickCollegiumAtmosphere={VERSION,ROOMS,room,decorate,micro,start,stop:()=>{enabled=false;audioRequest++;stop();ctx?.suspend();decorate()},setVolume,inspect:()=>({enabled,playing:!!music&&!music.paused,volume:volume(),loaded:music?.readyState||0,error,spellClips:spellClips.size}),enabled:()=>enabled};
+ window.MajickCollegiumAtmosphere={VERSION,ROOMS,room,decorate,micro,start,selectTrack,stop:()=>{enabled=false;audioRequest++;stop();ctx?.suspend();decorate()},setVolume,inspect:()=>({enabled,playing:!!music&&!music.paused,volume:volume(),loaded:music?.readyState||0,error,spellClips:spellClips.size,track:selectedTrack,loadedTrack}),enabled:()=>enabled};
 })();
