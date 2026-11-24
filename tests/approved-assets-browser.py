@@ -20,8 +20,9 @@ with sync_playwright() as pw:
    page.emulate_media(reduced_motion=mode)
    for kind in ['lesson','guardian','mastery','reward']:
     page.evaluate('(kind)=>MajickAnimationEffects.play(kind)',kind)
-    page.wait_for_function('()=>{const img=document.querySelector(".majickFxLicensed");return img?.complete&&img.naturalWidth>0}')
-    art=page.locator('.majickFxLicensed');assert ('-poster.webp' in art.get_attribute('src'))==(mode=='reduce')
+    # Capture the decoded finite effect atomically; it may expire between browser round trips.
+    art=page.wait_for_function('()=>{const img=document.querySelector(".majickFxLicensed");return img?.complete&&img.naturalWidth>0?{src:img.src}:false}').json_value()
+    assert ('-poster.webp' in art['src'])==(mode=='reduce')
     assert page.locator('.majickFxLayer').evaluate('(e)=>getComputedStyle(e).pointerEvents')=='none'
     page.wait_for_function('!document.querySelector(".majickFx")') if mode=='reduce' and kind=='guardian' else page.evaluate('MajickAnimationEffects.clear()')
   assert page.evaluate('JSON.stringify({progress:S.progress,legacy:S.legacy,account:S.majickAccount})')==protected,'Art changes learner state'
@@ -29,6 +30,17 @@ with sync_playwright() as pw:
   for image in details.locator('img').all():assert image.evaluate('(e)=>e.complete&&e.naturalWidth>0') or image.wait_for(state='visible') is None
   page.wait_for_function('()=>[...document.querySelectorAll(".wsModelReference img")].every(i=>i.complete&&i.naturalWidth>0)')
   assert 'Clint Bellanger' in details.locator('img').first.get_attribute('alt')
+  before_rings=page.evaluate('JSON.stringify({progress:S.progress,legacy:S.legacy,account:S.majickAccount})')
+  page.locator('[data-section="Accessories"]').click()
+  rings=page.locator('.wsRingGallery img');assert rings.count()==10
+  assert page.locator('.wsRingIntro').evaluate('(e)=>getComputedStyle(e).webkitTextFillColor')=='rgb(81, 52, 72)'
+  for ring in rings.all():
+   ring.scroll_into_view_if_needed()
+   ring.evaluate('(e)=>e.decode()')
+   assert ring.evaluate('(e)=>e.naturalWidth==160&&e.naturalHeight==160')
+  assert page.evaluate('JSON.stringify({progress:S.progress,legacy:S.legacy,account:S.majickAccount})')==before_rings,'Ring previews alter learning or rewards'
+  assert page.locator('.wsRingGallery').evaluate('(e)=>e.scrollWidth<=e.clientWidth+1'),'Ring gallery overflows'
+  assert page.locator('.wsControls').evaluate('(e)=>{const r=e.getBoundingClientRect();return r.left>=-1&&r.right<=innerWidth+1}'),'Atelier controls exceed the viewport'
   page.evaluate('MajickWardrobeStudio.close()')
   page.evaluate("navigate('vault');majickVaultTab('potions')")
   assert page.locator('.majRecipe').count()==5

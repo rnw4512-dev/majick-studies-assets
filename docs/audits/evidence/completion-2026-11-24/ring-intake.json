@@ -1,0 +1,20 @@
+{
+  "source": "https://opengameart.org/content/ring-set-precious-metals",
+  "author": "Clint Bellanger",
+  "license": "CC-BY-3.0",
+  "verification": "Cached primary-source page record confirms ten ring meshes, CC BY 3.0 and matching archive filename/size. Original maps not used in derivatives.",
+  "files": [
+    {
+      "name": "rings_precious_metals.zip",
+      "bytes": 574108,
+      "sha256": "456715ebb123c9d16c7226c89bf404ff39b6ca8a2f325427783b84888bb33fc5"
+    },
+    {
+      "name": "rings.blend",
+      "bytes": 1296148,
+      "sha256": "9091402b8b2dd6bb1acf1d653257f51dd92a25d1c188bd53a9ea314a0f77e731"
+    }
+  ],
+  "runtimeBytes": 32666,
+  "runtimeDimensions": "160x160 transparent static WebP; ten images, lazy in Accessories only"
+}

@@ -47,3 +47,11 @@ The replacement blue-white Poof source page and CC0 license were identified, but
 No save schema, Guardian controller, scoring implementation or reward authority was replaced. Presentation/reference readers do not grant rewards. Existing replay, transaction, transfer and recovery suites passed. Required consolidation/release ancestors remain preserved; original workspace edits remain untouched.
 
 Revert the specific implementation commit recorded in Git history, explicitly approve deliberately restored source digests, rerun shared/browser gates and publish through the existing workflow. Do not reset learner localStorage or restore an entire old repository. See [release workflow](ENGINEERING_RELEASE_WORKFLOW.md) for review and rollback steps.
+
+## Supplemental precious-metal rings
+
+User-supplied `rings_precious_metals.zip`: ten actual Clint Bellanger meshes; source-page CC BY 3.0 verified and attributed. `tools/asset-pipeline/render_rings.py` converts original materials for current Blender studio rendering with saved scripts disabled. The existing Accessories section shows a lazy read-only gallery (32,666 runtime bytes total). No equipment, inventory, prices, rewards or save schema were added. Sources/provenance remain outside deployment. Initial ring candidate `e7198b4569b5e4ec`; mobile-sizing candidate `55c05ed7213eedce`; final contrast candidate `9fc6e861f7113cc0`: 984 source files, zero audit errors, full shared validator passed. Browser verification covers all ten decoded images, no gallery overflow and unchanged learning/reward state at 390/820/1366px.
+
+Ring before/after screenshots at 390, 820 and 1366px are execution artifacts under `/workspace/work/ring-screenshots/`. Review exposed an existing narrow-screen grid minimum that clipped the Atelier; the mobile track now uses `minmax(0,1fr)` and content columns can shrink. Browser coverage checks the controls’ viewport bounds as well as the gallery’s internal width.
+
+Public repair release independently verified before the supplemental ring push: commit `e319f37d3f67e5996f5df47bfccf7c4619874142`, build `3d45c5038ac9c891`, with matching public entry point, D669 JSON and licensed media. Hosted production browser checks are recorded by publishing run 45448300504. This does not claim the later ring supplement is deployed.

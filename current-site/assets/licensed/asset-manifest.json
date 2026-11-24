@@ -6,7 +6,8 @@
     "audio": "Original supplied Ogg sounds trimmed to <=1.25s with 300ms fade and Vorbis compression.",
     "textures": "Selected originals 461223114, 461223158, 461223198 resized to 128px WebP; faint paper overlays.",
     "models": "Original meshes rendered in Blender 4.3.2 with custom studio materials, transparent background and bust crop for humans; no mesh or equipped-avatar replacement.",
-    "icons": "Original 32px transparent PNGs, unchanged."
+    "icons": "Original 32px transparent PNGs, unchanged.",
+    "rings": "Original ring meshes rendered to static 160px transparent WebP, modern studio lighting/material conversion; no geometry edits. Original reflection maps are not used in runtime derivatives."
   },
   "assets": [
     {
@@ -264,6 +265,86 @@
       "author": "Mitch Featherston; submitted by Clint Bellanger",
       "license": "CC0-1.0",
       "source": "https://opengameart.org/content/100-seamless-textures"
+    },
+    {
+      "path": "assets/licensed/rings/diamond.webp",
+      "bytes": 3092,
+      "sha256": "12e1a87f27a2ef237d223bed80239bc7c33dd2d901a075f106308e50d5cd41f5",
+      "author": "Clint Bellanger",
+      "license": "CC-BY-3.0",
+      "source": "https://opengameart.org/content/ring-set-precious-metals"
+    },
+    {
+      "path": "assets/licensed/rings/emerald.webp",
+      "bytes": 3404,
+      "sha256": "682177ab7cf60202d935e97adf3942785aa5eda887c7cb09bf4e47e60b892982",
+      "author": "Clint Bellanger",
+      "license": "CC-BY-3.0",
+      "source": "https://opengameart.org/content/ring-set-precious-metals"
+    },
+    {
+      "path": "assets/licensed/rings/gold-band.webp",
+      "bytes": 4164,
+      "sha256": "fd2b22e13e54cca69bd0c5288b3a85e04ed47667399cdbecc8d8d0de09a35329",
+      "author": "Clint Bellanger",
+      "license": "CC-BY-3.0",
+      "source": "https://opengameart.org/content/ring-set-precious-metals"
+    },
+    {
+      "path": "assets/licensed/rings/gold-wrap.webp",
+      "bytes": 3420,
+      "sha256": "be517836ef29599b26e4bd12964fd3b181f5a10d3d8e72b4c585b3f75f2b120b",
+      "author": "Clint Bellanger",
+      "license": "CC-BY-3.0",
+      "source": "https://opengameart.org/content/ring-set-precious-metals"
+    },
+    {
+      "path": "assets/licensed/rings/ouroboros.webp",
+      "bytes": 4616,
+      "sha256": "f3a9515cf9aeea2af60fbe11c5dff3627af6aac78b1ff30de0675ee67051ffbb",
+      "author": "Clint Bellanger",
+      "license": "CC-BY-3.0",
+      "source": "https://opengameart.org/content/ring-set-precious-metals"
+    },
+    {
+      "path": "assets/licensed/rings/ruby.webp",
+      "bytes": 2996,
+      "sha256": "cb07ccfa8a4172a0d766da0a9f8b304ee1b77b23e6ee582ea4c19c7a728e2688",
+      "author": "Clint Bellanger",
+      "license": "CC-BY-3.0",
+      "source": "https://opengameart.org/content/ring-set-precious-metals"
+    },
+    {
+      "path": "assets/licensed/rings/sapphire.webp",
+      "bytes": 2610,
+      "sha256": "e7a833813702d66449b5371136f52c82703a7662238c98932e889ae5adf9f486",
+      "author": "Clint Bellanger",
+      "license": "CC-BY-3.0",
+      "source": "https://opengameart.org/content/ring-set-precious-metals"
+    },
+    {
+      "path": "assets/licensed/rings/silver-signet.webp",
+      "bytes": 2494,
+      "sha256": "55007474dbf8b0ea4f3ad3572d3575b392ae39f24d9b50b67f9f922e2ec9110c",
+      "author": "Clint Bellanger",
+      "license": "CC-BY-3.0",
+      "source": "https://opengameart.org/content/ring-set-precious-metals"
+    },
+    {
+      "path": "assets/licensed/rings/silver-band.webp",
+      "bytes": 3226,
+      "sha256": "1d17f75308d7eb96888d780adda7cba383bea06ce48acb6ebb3db452d7411307",
+      "author": "Clint Bellanger",
+      "license": "CC-BY-3.0",
+      "source": "https://opengameart.org/content/ring-set-precious-metals"
+    },
+    {
+      "path": "assets/licensed/rings/silver-celtic.webp",
+      "bytes": 2644,
+      "sha256": "b82c3c8b05f4acd6678bdf73e3c7760bdf2a2ab719d5e3bacf2364099c394f1e",
+      "author": "Clint Bellanger",
+      "license": "CC-BY-3.0",
+      "source": "https://opengameart.org/content/ring-set-precious-metals"
     }
   ],
   "pending": [

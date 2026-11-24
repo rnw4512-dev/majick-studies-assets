@@ -1,0 +1,72 @@
+[
+  {
+    "path": "scholar-wardrobe-studio.js",
+    "sha256": "013aaccbb7187c92ea435611252bfef899ed2ffcb40fa85ddc690f0644feecea",
+    "basis": "Reviewed ten actual ring mesh renders, source-page CC BY 3.0 attribution, read-only lazy Accessories gallery and responsive CSS."
+  },
+  {
+    "path": "licensed-assets.css",
+    "sha256": "f308e7c819d41922d8b5e474ea5669bed6cd3801bc8e336492f31407a070c6e1",
+    "basis": "Reviewed ten actual ring mesh renders, source-page CC BY 3.0 attribution, read-only lazy Accessories gallery and responsive CSS. Includes narrow-screen grid minimum sizing verified by viewport-bounds browser assertion."
+  },
+  {
+    "path": "assets/IMMERSION-CREDITS.html",
+    "sha256": "58a47bbf73ea684698391267def0a52671d652d37b5dc5adb0977bfb73f8e416",
+    "basis": "Reviewed ten actual ring mesh renders, source-page CC BY 3.0 attribution, read-only lazy Accessories gallery and responsive CSS."
+  },
+  {
+    "path": "assets/licensed/asset-manifest.json",
+    "sha256": "485cdaddd00dbb62122052ba5917766a3ec5f8c4b1fc4bda9641def3cad739dc",
+    "basis": "Reviewed ten actual ring mesh renders, source-page CC BY 3.0 attribution, read-only lazy Accessories gallery and responsive CSS."
+  },
+  {
+    "path": "assets/licensed/rings/diamond.webp",
+    "sha256": "12e1a87f27a2ef237d223bed80239bc7c33dd2d901a075f106308e50d5cd41f5",
+    "basis": "Reviewed ten actual ring mesh renders, source-page CC BY 3.0 attribution, read-only lazy Accessories gallery and responsive CSS."
+  },
+  {
+    "path": "assets/licensed/rings/emerald.webp",
+    "sha256": "682177ab7cf60202d935e97adf3942785aa5eda887c7cb09bf4e47e60b892982",
+    "basis": "Reviewed ten actual ring mesh renders, source-page CC BY 3.0 attribution, read-only lazy Accessories gallery and responsive CSS."
+  },
+  {
+    "path": "assets/licensed/rings/gold-band.webp",
+    "sha256": "fd2b22e13e54cca69bd0c5288b3a85e04ed47667399cdbecc8d8d0de09a35329",
+    "basis": "Reviewed ten actual ring mesh renders, source-page CC BY 3.0 attribution, read-only lazy Accessories gallery and responsive CSS."
+  },
+  {
+    "path": "assets/licensed/rings/gold-wrap.webp",
+    "sha256": "be517836ef29599b26e4bd12964fd3b181f5a10d3d8e72b4c585b3f75f2b120b",
+    "basis": "Reviewed ten actual ring mesh renders, source-page CC BY 3.0 attribution, read-only lazy Accessories gallery and responsive CSS."
+  },
+  {
+    "path": "assets/licensed/rings/ouroboros.webp",
+    "sha256": "f3a9515cf9aeea2af60fbe11c5dff3627af6aac78b1ff30de0675ee67051ffbb",
+    "basis": "Reviewed ten actual ring mesh renders, source-page CC BY 3.0 attribution, read-only lazy Accessories gallery and responsive CSS."
+  },
+  {
+    "path": "assets/licensed/rings/ruby.webp",
+    "sha256": "cb07ccfa8a4172a0d766da0a9f8b304ee1b77b23e6ee582ea4c19c7a728e2688",
+    "basis": "Reviewed ten actual ring mesh renders, source-page CC BY 3.0 attribution, read-only lazy Accessories gallery and responsive CSS."
+  },
+  {
+    "path": "assets/licensed/rings/sapphire.webp",
+    "sha256": "e7a833813702d66449b5371136f52c82703a7662238c98932e889ae5adf9f486",
+    "basis": "Reviewed ten actual ring mesh renders, source-page CC BY 3.0 attribution, read-only lazy Accessories gallery and responsive CSS."
+  },
+  {
+    "path": "assets/licensed/rings/silver-band.webp",
+    "sha256": "1d17f75308d7eb96888d780adda7cba383bea06ce48acb6ebb3db452d7411307",
+    "basis": "Reviewed ten actual ring mesh renders, source-page CC BY 3.0 attribution, read-only lazy Accessories gallery and responsive CSS."
+  },
+  {
+    "path": "assets/licensed/rings/silver-celtic.webp",
+    "sha256": "b82c3c8b05f4acd6678bdf73e3c7760bdf2a2ab719d5e3bacf2364099c394f1e",
+    "basis": "Reviewed ten actual ring mesh renders, source-page CC BY 3.0 attribution, read-only lazy Accessories gallery and responsive CSS."
+  },
+  {
+    "path": "assets/licensed/rings/silver-signet.webp",
+    "sha256": "55007474dbf8b0ea4f3ad3572d3575b392ae39f24d9b50b67f9f922e2ec9110c",
+    "basis": "Reviewed ten actual ring mesh renders, source-page CC BY 3.0 attribution, read-only lazy Accessories gallery and responsive CSS."
+  }
+]
