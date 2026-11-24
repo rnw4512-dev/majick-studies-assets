@@ -12,6 +12,7 @@ on:
         default: development
 permissions:
   contents: read
+  actions: read
   pages: write
   id-token: write
 jobs:
