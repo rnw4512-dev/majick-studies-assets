@@ -5,7 +5,8 @@
  let ctx,enabled=false,lastRoom=null,music=null,error='',audioRequest=0,lastMicroAt=0;
  function room(){return Object.hasOwn(ROOMS,window.S?.screen)?window.S.screen:'home'}
  function volume(){const value=Number(window.S?.majickAccount?.guardianAudio?.musicVolume??.22);return Math.max(0,Math.min(.7,Number.isFinite(value)?value:.22))}
- function stop(){music?.pause()}
+ const spellClips=new Map();
+ function stop(){music?.pause();spellClips.forEach(a=>{a.pause();a.currentTime=0})}
  function recording(){if(!music){music=new window.Audio('./assets/audio/dreams-become-real.ogg');music.loop=true;music.preload='auto';music.addEventListener('error',()=>{enabled=false;error='Music file could not load. Check the audio asset and connection.';stop();decorate()});music.addEventListener('ended',()=>{if(enabled){enabled=false;decorate()}})}music.volume=volume();return music}
  async function start(){
    if(enabled&&music&&!music.paused)return true;
@@ -46,6 +47,10 @@
    if(!enabled||document.hidden||!ctx||ctx.state!=='running')return false;
    const now=Date.now();if(now-lastMicroAt<160)return false;lastMicroAt=now;
    const r=Object.hasOwn(ROOMS,forcedRoom)?forcedRoom:room();
+   const preferences=window.MajickGuardianCore?.settings?.();
+   if(preferences?.enabled===false||preferences?.magic===false)return false;
+   const sample={home:1,learninglab:2,livinggrimoire:3,games:4,mission:2,companions:5}[r];
+   if(sample&&volume()>0){try{let clip=spellClips.get(sample);if(!clip){clip=new window.Audio('./assets/licensed/audio/magical_'+sample+'.ogg?v='+encodeURIComponent(window.MAJICK_RELEASE||'source'));clip.preload='none';spellClips.set(sample,clip)}clip.volume=Math.min(.18,volume()*.4);clip.currentTime=0;clip.play().catch(()=>{});return true}catch(_){/* Preserve synthesized fallback below. */}}
    if(r==='home'){ping(523.25,.12,.008,'sine',659.25);ping(783.99,.16,.006,'triangle',987.77,.07)}
    else if(r==='learninglab'){ping(kind==='chalk'?410:329.63,.11,.006,'triangle',kind==='chalk'?520:392)}
    else if(r==='livinggrimoire'){ping(220,.09,.005,'triangle',277.18);ping(329.63,.1,.004,'sine',392,.055)}
@@ -104,5 +109,5 @@ if(renderQueue?.register){
  }
  setTimeout(decorate,120);
 }
- window.MajickCollegiumAtmosphere={VERSION,ROOMS,room,decorate,micro,start,stop:()=>{enabled=false;audioRequest++;stop();ctx?.suspend();decorate()},setVolume,inspect:()=>({enabled,playing:!!music&&!music.paused,volume:volume(),loaded:music?.readyState||0,error}),enabled:()=>enabled};
+ window.MajickCollegiumAtmosphere={VERSION,ROOMS,room,decorate,micro,start,stop:()=>{enabled=false;audioRequest++;stop();ctx?.suspend();decorate()},setVolume,inspect:()=>({enabled,playing:!!music&&!music.paused,volume:volume(),loaded:music?.readyState||0,error,spellClips:spellClips.size}),enabled:()=>enabled};
 })();

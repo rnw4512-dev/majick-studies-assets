@@ -1,0 +1,22 @@
+/* Authored source art only. All ornaments are decorative and leave control labels intact. */
+.masJournalTabs [data-journal-tab]::before,.majCommonsEyebrow::before,.majCommonsCourse::before,.majRecipeShelf>h3::before,.v3341StudyGuardianPortrait::after{content:"";display:inline-block;width:20px;height:20px;margin-right:7px;vertical-align:middle;background:center/contain no-repeat;image-rendering:pixelated}
+.masJournalTabs [data-journal-tab=achievements]::before{background-image:url('./assets/licensed/milestones/star.png')}
+.masJournalTabs [data-journal-tab=recent]::before{background-image:url('./assets/licensed/milestones/book.png')}
+.masJournalTabs [data-journal-tab=goals]::before{background-image:url('./assets/licensed/milestones/briefcase.png')}
+.masJournalTabs [data-journal-tab=repairs]::before{background-image:url('./assets/licensed/milestones/hourglass.png')}
+.majCommonsEyebrow::before{background-image:url('./assets/licensed/milestones/house.png')}
+.majCommonsCourse::before{background-image:url('./assets/licensed/milestones/globe.png')}
+.majRecipeShelf>h3::before{background-image:url('./assets/licensed/milestones/bottle.png')}
+.v3341StudyGuardianPortrait::after{background-image:url('./assets/licensed/milestones/heart.png')}
+.majPathEvidence[data-source-document],.wsModelReference{background:linear-gradient(#fbf5e8f2,#fbf5e8f2),url('./assets/licensed/textures/parchment.webp');color:#302737;overflow-wrap:anywhere}
+.majPathEvidence[data-source-document] :is(p,li,summary,h3,strong,a){color:#302737!important;-webkit-text-fill-color:#302737!important}
+.wsModelReference{padding:8px;border-radius:7px;max-width:100%}.wsModelReference summary{cursor:pointer;min-height:32px}.wsModelReference img{max-width:45%;object-fit:contain}.wsModelReference a{display:block;color:#45304f}
+.majRecipe>span[aria-hidden=true]{font-size:0!important;background:center/contain no-repeat;display:block;width:64px;height:80px}
+.majRecipe:nth-of-type(5n+1)>span[aria-hidden=true]{background-image:url('./assets/licensed/models/potion-1.webp')}
+.majRecipe:nth-of-type(5n+2)>span[aria-hidden=true]{background-image:url('./assets/licensed/models/potion-2.webp')}
+.majRecipe:nth-of-type(5n+3)>span[aria-hidden=true]{background-image:url('./assets/licensed/models/potion-3.webp')}
+.majRecipe:nth-of-type(5n+4)>span[aria-hidden=true]{background-image:url('./assets/licensed/models/potion-4.webp')}
+.majRecipe:nth-of-type(5n)>span[aria-hidden=true]{background-image:url('./assets/licensed/models/potion-5.webp')}
+.wsModelReference{background-image:linear-gradient(#fbf5e8f2,#fbf5e8f2),url('./assets/licensed/textures/sage.webp')}
+#masScholarJournal .masJournalTabs{background-image:linear-gradient(#2b1e36f2,#2b1e36f2),url('./assets/licensed/textures/slate.webp')}
+.majPathEvidence[data-source-document] :focus-visible,.wsModelReference :focus-visible{outline:3px solid #315c58!important;outline-offset:3px}

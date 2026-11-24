@@ -1,0 +1,285 @@
+{
+  "verified": "2026-11-24",
+  "verification": "OpenGameArt primary-source records via web research connector (cached source text); icon archive LICENSE.txt corroborates CC0. Uploaded archive filenames/sizes match source records.",
+  "changes": {
+    "effects": "Original numbered frames centered in common canvas, scaled to <=176px, lossless WebP once-only animation, static poster for reduced motion.",
+    "audio": "Original supplied Ogg sounds trimmed to <=1.25s with 300ms fade and Vorbis compression.",
+    "textures": "Selected originals 461223114, 461223158, 461223198 resized to 128px WebP; faint paper overlays.",
+    "models": "Original meshes rendered in Blender 4.3.2 with custom studio materials, transparent background and bust crop for humans; no mesh or equipped-avatar replacement.",
+    "icons": "Original 32px transparent PNGs, unchanged."
+  },
+  "assets": [
+    {
+      "path": "assets/licensed/audio/magical_1.ogg",
+      "bytes": 17936,
+      "sha256": "69176a57ce6ff396bd0997a86fce89b2a3f6d564c417050199be800da3d57d7d",
+      "author": "JaggedStone",
+      "license": "CC0-1.0",
+      "source": "https://opengameart.org/content/magic-spell-sfx"
+    },
+    {
+      "path": "assets/licensed/audio/magical_2.ogg",
+      "bytes": 24234,
+      "sha256": "0ad1e800507e232ea3100e54ec7d6ffaa0bf8fd6045abaebdbd9724c0701dbdf",
+      "author": "JaggedStone",
+      "license": "CC0-1.0",
+      "source": "https://opengameart.org/content/magic-spell-sfx"
+    },
+    {
+      "path": "assets/licensed/audio/magical_3.ogg",
+      "bytes": 16792,
+      "sha256": "837005d481e75319e32150a90415d9c255061d660cd90bfc9f3e28d89e1b5f5b",
+      "author": "JaggedStone",
+      "license": "CC0-1.0",
+      "source": "https://opengameart.org/content/magic-spell-sfx"
+    },
+    {
+      "path": "assets/licensed/audio/magical_4.ogg",
+      "bytes": 20212,
+      "sha256": "23d4812c8c5b4fadc37df7a6bf7556dcbe10328908e5ed1829fe6fdd03d5fd79",
+      "author": "JaggedStone",
+      "license": "CC0-1.0",
+      "source": "https://opengameart.org/content/magic-spell-sfx"
+    },
+    {
+      "path": "assets/licensed/audio/magical_5.ogg",
+      "bytes": 18227,
+      "sha256": "68e002d48295accc10fb52a76516d932e64229e413572f9cbbff1654217721a9",
+      "author": "JaggedStone",
+      "license": "CC0-1.0",
+      "source": "https://opengameart.org/content/magic-spell-sfx"
+    },
+    {
+      "path": "assets/licensed/effects/arcane-poster.webp",
+      "bytes": 7054,
+      "sha256": "c63b80ed8a2dbc1a0c4c177cfc562fa285075f26793f7791dd8f61d54fa290d8",
+      "author": "Cethiel",
+      "license": "CC0-1.0",
+      "source": "https://opengameart.org/content/arcane-magic-effect"
+    },
+    {
+      "path": "assets/licensed/effects/arcane.webp",
+      "bytes": 91666,
+      "sha256": "1a2acaa4251546ead0bdfe7a159ae866bf8a0d915945260a2ea169837a03cbf3",
+      "author": "Cethiel",
+      "license": "CC0-1.0",
+      "source": "https://opengameart.org/content/arcane-magic-effect"
+    },
+    {
+      "path": "assets/licensed/effects/light-poster.webp",
+      "bytes": 3530,
+      "sha256": "3eeda2ce70dd13d9a781cec8e6794d84c5c5fef783ede174e23842dff0749491",
+      "author": "Cethiel",
+      "license": "CC0-1.0",
+      "source": "https://opengameart.org/content/light-magic-effect"
+    },
+    {
+      "path": "assets/licensed/effects/light.webp",
+      "bytes": 159202,
+      "sha256": "6ff70809307e9fe08394a36e0db1247c4646eee5d915f79fd225050c810a10e6",
+      "author": "Cethiel",
+      "license": "CC0-1.0",
+      "source": "https://opengameart.org/content/light-magic-effect"
+    },
+    {
+      "path": "assets/licensed/effects/nature-poster.webp",
+      "bytes": 11808,
+      "sha256": "fbb72e11f856db9ae959342db0ebffcf38ce247ae88c4317d6b417501739fd50",
+      "author": "Cethiel",
+      "license": "CC0-1.0",
+      "source": "https://opengameart.org/content/nature-magic-effect"
+    },
+    {
+      "path": "assets/licensed/effects/nature.webp",
+      "bytes": 167068,
+      "sha256": "8f25fb324c7b99b028a2bf143bf0991dc22c779db0785d4bf62896b0738ffe8b",
+      "author": "Cethiel",
+      "license": "CC0-1.0",
+      "source": "https://opengameart.org/content/nature-magic-effect"
+    },
+    {
+      "path": "assets/licensed/effects/projectile-poster.webp",
+      "bytes": 3380,
+      "sha256": "567cfc5a85c99b8c93dcc72e1b54dff5a63807508ae5033df5c3bf969393f762",
+      "author": "Cethiel",
+      "license": "CC0-1.0",
+      "source": "https://opengameart.org/content/pure-projectile-magic-effect"
+    },
+    {
+      "path": "assets/licensed/effects/projectile.webp",
+      "bytes": 154840,
+      "sha256": "24a413d510299b4227dc127cc223fd75e56ee4f1223d459039d25a10d6432920",
+      "author": "Cethiel",
+      "license": "CC0-1.0",
+      "source": "https://opengameart.org/content/pure-projectile-magic-effect"
+    },
+    {
+      "path": "assets/licensed/milestones/LICENSE.txt",
+      "bytes": 148,
+      "sha256": "d244e2449c6ff88a17beb4283f24775f78de68c6f5a54b667d1dac90982c1213",
+      "author": "Marcus Huang / onein8billion",
+      "license": "CC0-1.0",
+      "source": "https://opengameart.org/content/1-in-8-billion-%E2%80%93-free-life-simulator-life-milestone-icons-cc0-32x32"
+    },
+    {
+      "path": "assets/licensed/milestones/book.png",
+      "bytes": 166,
+      "sha256": "b81529b967edba42d83bca3ab346e0536eeee3a9f2078603c86a69703899cb2d",
+      "author": "Marcus Huang / onein8billion",
+      "license": "CC0-1.0",
+      "source": "https://opengameart.org/content/1-in-8-billion-%E2%80%93-free-life-simulator-life-milestone-icons-cc0-32x32"
+    },
+    {
+      "path": "assets/licensed/milestones/bottle.png",
+      "bytes": 221,
+      "sha256": "61710102e6706b4ac2eeda6475ab98740b14de0cbc722aa1ab7950dcd903b78b",
+      "author": "Marcus Huang / onein8billion",
+      "license": "CC0-1.0",
+      "source": "https://opengameart.org/content/1-in-8-billion-%E2%80%93-free-life-simulator-life-milestone-icons-cc0-32x32"
+    },
+    {
+      "path": "assets/licensed/milestones/briefcase.png",
+      "bytes": 165,
+      "sha256": "c8107b3315dcf82ac40155f4edf748a62073bfc7b5fd27a8197aecb6157b3945",
+      "author": "Marcus Huang / onein8billion",
+      "license": "CC0-1.0",
+      "source": "https://opengameart.org/content/1-in-8-billion-%E2%80%93-free-life-simulator-life-milestone-icons-cc0-32x32"
+    },
+    {
+      "path": "assets/licensed/milestones/globe.png",
+      "bytes": 355,
+      "sha256": "e830d82875b96293cd29bdc5adda96542235c0f8f6412e683762007c11ea931e",
+      "author": "Marcus Huang / onein8billion",
+      "license": "CC0-1.0",
+      "source": "https://opengameart.org/content/1-in-8-billion-%E2%80%93-free-life-simulator-life-milestone-icons-cc0-32x32"
+    },
+    {
+      "path": "assets/licensed/milestones/heart.png",
+      "bytes": 259,
+      "sha256": "30ad2c428440102af57a20c4db444a56ebe811047110124758cc8134104d24f5",
+      "author": "Marcus Huang / onein8billion",
+      "license": "CC0-1.0",
+      "source": "https://opengameart.org/content/1-in-8-billion-%E2%80%93-free-life-simulator-life-milestone-icons-cc0-32x32"
+    },
+    {
+      "path": "assets/licensed/milestones/hourglass.png",
+      "bytes": 291,
+      "sha256": "bdb5d7fac3ff160ae1d2dcd4af3d39f9d950fc7184bfd19d51287017fec267da",
+      "author": "Marcus Huang / onein8billion",
+      "license": "CC0-1.0",
+      "source": "https://opengameart.org/content/1-in-8-billion-%E2%80%93-free-life-simulator-life-milestone-icons-cc0-32x32"
+    },
+    {
+      "path": "assets/licensed/milestones/house.png",
+      "bytes": 271,
+      "sha256": "33e390485709a28de45062eaf4dfbd59611def628d6204ef88911af0c52f004d",
+      "author": "Marcus Huang / onein8billion",
+      "license": "CC0-1.0",
+      "source": "https://opengameart.org/content/1-in-8-billion-%E2%80%93-free-life-simulator-life-milestone-icons-cc0-32x32"
+    },
+    {
+      "path": "assets/licensed/milestones/star.png",
+      "bytes": 286,
+      "sha256": "74f7c6eafbbeabbd818fac276fc54a86472adfa9a1ea5730e56098db7b000fb1",
+      "author": "Marcus Huang / onein8billion",
+      "license": "CC0-1.0",
+      "source": "https://opengameart.org/content/1-in-8-billion-%E2%80%93-free-life-simulator-life-milestone-icons-cc0-32x32"
+    },
+    {
+      "path": "assets/licensed/models/human-female-study.webp",
+      "bytes": 3112,
+      "sha256": "f4f99f018b69a0ebf12536bb677b84203d94cbe9e4390260ad3f37c729fd9638",
+      "author": "Clint Bellanger",
+      "license": "CC-BY-3.0",
+      "source": "https://opengameart.org/content/base-human-models-low-poly"
+    },
+    {
+      "path": "assets/licensed/models/human-male-study.webp",
+      "bytes": 3132,
+      "sha256": "395e2119a4ef731b6bbf1659dd0edad5fdd098569c47327dd19dabff2d13ffad",
+      "author": "Clint Bellanger",
+      "license": "CC-BY-3.0",
+      "source": "https://opengameart.org/content/base-human-models-low-poly"
+    },
+    {
+      "path": "assets/licensed/models/potion-1.webp",
+      "bytes": 4418,
+      "sha256": "fa6e18afdf636d6fa0f7e59625989ad4b3d63b213e3295549aa91a78ad6e64f3",
+      "author": "yd",
+      "license": "CC0-1.0",
+      "source": "https://opengameart.org/content/potions-6"
+    },
+    {
+      "path": "assets/licensed/models/potion-2.webp",
+      "bytes": 5638,
+      "sha256": "058d05de3d8e5bae1aa70eae1632279ea4d733f9ef3b45ae86438cd8cde5a7bb",
+      "author": "yd",
+      "license": "CC0-1.0",
+      "source": "https://opengameart.org/content/potions-6"
+    },
+    {
+      "path": "assets/licensed/models/potion-3.webp",
+      "bytes": 6148,
+      "sha256": "3386698398a7a034fe13f35a1063fd4f9c37810e92b9cc8b264bd66fce3ed4ab",
+      "author": "yd",
+      "license": "CC0-1.0",
+      "source": "https://opengameart.org/content/potions-6"
+    },
+    {
+      "path": "assets/licensed/models/potion-4.webp",
+      "bytes": 5642,
+      "sha256": "37e435517cbb5b3856b1ed295cb7a837f8945b240150fa1e6f8d74781100965e",
+      "author": "yd",
+      "license": "CC0-1.0",
+      "source": "https://opengameart.org/content/potions-6"
+    },
+    {
+      "path": "assets/licensed/models/potion-5.webp",
+      "bytes": 6500,
+      "sha256": "a762634554314ac6cddde3b14833a91ea0b01b897fcf3f5a1eb2d656c352a06f",
+      "author": "yd",
+      "license": "CC0-1.0",
+      "source": "https://opengameart.org/content/potions-6"
+    },
+    {
+      "path": "assets/licensed/textures/parchment.webp",
+      "bytes": 4882,
+      "sha256": "9d051fcd10f9ea2b56f050ff5b4dd6c55661986fc6d71ec48f5a9225598cc2bb",
+      "author": "Mitch Featherston; submitted by Clint Bellanger",
+      "license": "CC0-1.0",
+      "source": "https://opengameart.org/content/100-seamless-textures"
+    },
+    {
+      "path": "assets/licensed/textures/sage.webp",
+      "bytes": 1802,
+      "sha256": "fb90d5cc98c2e30e330c6521b9af4bea91ba10a2c66db3ea133b60d7ff6aa821",
+      "author": "Mitch Featherston; submitted by Clint Bellanger",
+      "license": "CC0-1.0",
+      "source": "https://opengameart.org/content/100-seamless-textures"
+    },
+    {
+      "path": "assets/licensed/textures/slate.webp",
+      "bytes": 910,
+      "sha256": "2134074745a2a82954f72a845178fa0e6141ec281c412f26b5b851d93a17433b",
+      "author": "Mitch Featherston; submitted by Clint Bellanger",
+      "license": "CC0-1.0",
+      "source": "https://opengameart.org/content/100-seamless-textures"
+    }
+  ],
+  "pending": [
+    {
+      "name": "Blue-white Poof",
+      "reason": "Source license CC0 verified (bonecandy, https://opengameart.org/content/poof-animation); original frame files / aetheria-replacement-poof.zip not present as downloadable attachments. Chat previews not substituted for originals."
+    }
+  ],
+  "excluded": [
+    "Poof.png colorful spritesheet",
+    "potions_zip.zip superseded collection",
+    "WomanBody13.blend",
+    "WomanBody13.obj"
+  ],
+  "supplementalNotIntegrated": [
+    "female.blend by thehumbug (CC-BY-3.0); low-poly Clint Bellanger models prioritized"
+  ],
+  "duplicate": "Both supplied Pure Projectile ZIPs have identical SHA-256; integrated once."
+}

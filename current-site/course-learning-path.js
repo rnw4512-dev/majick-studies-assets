@@ -50,6 +50,7 @@ function anchorChart(box,sub){
 }
 
 function sourcePanel(body,item){
+ if(item.kind==='document'){const box=document.createElement('section');box.className='majPathEvidence';box.dataset.sourceDocument=item.locator.id;body.append(box);window.MajickCourseSourceReader.render(box,item.locator);return;}
  const row=sourceRows(course()).find(r=>r.id===item.locator);if(!row)return;
  const sub=row.sub,box=document.createElement('section');box.className='majPathEvidence';box.style.padding='12px';
  function line(tag,value){const el=document.createElement(tag);el.textContent=value;box.append(el);return el}
@@ -79,7 +80,8 @@ function catalog(cid){
   result.push({id,title,kind,detail:clean(detail),locator:loc});
  }
  const rows=sourceRows(cid);
- if(cid==='D669'&&rows.length){rows.forEach(r=>add('topic:'+r.id,r.section.replace(/:.*$/,'')+' · '+r.sub.title,'topic',r.sub.status||'',r.id));return result;}
+ if(cid==='D669'&&rows.length){rows.forEach(r=>add('topic:'+r.id,r.section.replace(/:.*$/,'')+' · '+r.sub.title,'topic',r.sub.status||'',r.id));}
+ (window.MajickCourseSources?.documents?.[cid]||[]).forEach(d=>add('document:'+d.id,'Supplied reference · '+d.title,'document',d.status,d));
  // Reuse authoritative, source-backed packs instead of hard-coding a course.
  const packs=Object.values(window.MajickCourseActivityPlayer?.packs||{}).filter(p=>String(p.courseId||'').toUpperCase()===cid);
  packs.forEach(p=>add('pack:'+p.id,p.title,'source',p.summary,p.id));
@@ -129,7 +131,7 @@ function progressFor(cid,item){
 }
 function navigateTo(item){
  if(!item)return;
- if(item.kind==='topic'){expanded=true;const host=$('#majConnectedPath');if(host)host.dataset.signature='';render();document.querySelector('#majConnectedPath details')?.setAttribute('open','');return;}else if(item.kind==='source'){
+ if(item.kind==='topic'||item.kind==='document'){expanded=true;const host=$('#majConnectedPath');if(host)host.dataset.signature='';render();document.querySelector('#majConnectedPath details')?.setAttribute('open','');return;}else if(item.kind==='source'){
   window.navigate?.('learninglab');
   setTimeout(()=>{
    const el=[...document.querySelectorAll('[data-cap-pack]')].find(x=>x.dataset.capPack===item.locator);
@@ -171,14 +173,14 @@ function render(){
  const label=document.createElement('label');label.className='majPathSelectLabel';label.textContent='Choose your lesson or topic';label.htmlFor='majPathLessonSelect';body.append(label);
  const select=document.createElement('select');select.id='majPathLessonSelect';select.className='majPathLessonSelect';
  list.forEach(o=>{const opt=document.createElement('option');opt.value=o.id;opt.textContent=o.title;opt.selected=o.id===item.id;select.append(opt)});
- select.addEventListener('change',()=>{selections[cid]=select.value;save();host.dataset.signature='';render()});body.append(select);if(item.kind==='topic')sourcePanel(body,item);
+ select.addEventListener('change',()=>{selections[cid]=select.value;save();host.dataset.signature='';render()});body.append(select);if(item.kind==='topic'||item.kind==='document')sourcePanel(body,item);
  const steps=document.createElement('ol');steps.className='majPathSteps';
  STAGES.forEach((name,i)=>{const li=document.createElement('li');if(idx===i)li.className='is-current';const button=document.createElement('button');button.type='button';button.textContent=(i+1)+'. '+name;button.setAttribute('aria-current',idx===i?'step':'false');button.addEventListener('click',()=>{if(i===0)navigateTo(current(cid,catalog(cid)));else window.navigate?.(i===1?'mission':i===2?'hands-on':'reasoning');schedule()});li.append(button);steps.append(li)});
  body.append(steps);
  const actions=document.createElement('div');actions.className='majPathActions';
  function button(text,fn){const b=document.createElement('button');b.type='button';b.textContent=text;b.addEventListener('click',fn);actions.append(b)}
  button('Open current topic',()=>navigateTo(current(cid,catalog(cid))));
- button('Practice this topic',()=>{const target=current(cid,catalog(cid));if(target?.kind==='source'||target?.kind==='topic')navigateTo(target);else window.navigate?.('mission')});
+ button('Practice this topic',()=>{const target=current(cid,catalog(cid));if(target?.kind==='source'||target?.kind==='topic'||target?.kind==='document')navigateTo(target);else window.navigate?.('mission')});
  button('Hands-on scenarios',()=>window.navigate?.('hands-on'));
  body.append(actions);
  const note=document.createElement('p');note.className='majPathNote';note.textContent='The path follows your course and selected topic. Practice counts are not WGU certification or verified independent mastery.';body.append(note);

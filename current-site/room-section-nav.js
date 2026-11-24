@@ -45,7 +45,9 @@ function refresh(){
   if(rows.length<2){old?.remove();nodes.forEach(el=>{el.classList.remove('majRoomInactive','majRoomActive');el.removeAttribute('inert')});return}
   let nav=old;
   if(!nav){nav=document.createElement('nav');nav.id='majickRoomSections';nav.className='majickRoomSections';nav.setAttribute('aria-label','Jump to page section');root.prepend(nav)}
-  const tabbed=TABBED_ROOMS.has(room);
+  // The Journal already owns its accessible tablist. Delayed memories must
+  // not turn the whole Journal into an inactive/inert outer panel.
+  const tabbed=TABBED_ROOMS.has(room)&&!(room==='journal'&&root.querySelector('#masScholarJournal .masJournalTabs'));
   const key=room+':'+(window.S?.activeCourse||'');
   const current=selections.get(key);
   // Care docks and other delayed panels can appear before the selected room.

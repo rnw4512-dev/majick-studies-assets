@@ -1,4 +1,4 @@
-name: Publish Majick Studies Current V3.4.2
+name: Certify Majick Studies Current V3.4.2 and publish canonically
 # Legacy, integrity-gated stable release workflow. Run manually for certification.
 # Routine main-branch publishing is owned by publish-aetheria.yml.
 on:
@@ -14,14 +14,8 @@ permissions:
   contents: read
   pages: write
   id-token: write
-concurrency:
-  group: majick-pages
-  cancel-in-progress: true
 jobs:
-  deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+  certify:
     runs-on: ubuntu-latest
     env:
       IMMERSION_QA_DIR: /tmp/majick-immersion-qa
@@ -33,6 +27,8 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '22'
+      - name: Shared canonical release validation
+        run: python pages-release/current/validate_release.py current-site _site
       - name: Check lessons, games, rewards, eggs and saved reload
         run: node pages-release/current/release-checks.cjs current-site
       - name: Validate imported D772 preassessment and targeted practice
@@ -107,98 +103,7 @@ jobs:
           test -s _site/index.html
           echo 'PASS rebuilt Majick Studies entry point exists'
 
-      - name: Configure GitHub Pages
-        uses: actions/configure-pages@v5
-
-      - name: Upload Pages artifact
-        id: pages_artifact
-        uses: actions/upload-pages-artifact@v4
-        with:
-          path: _site
-
-      - name: Request Pages OIDC token
-        id: pages_oidc
-        uses: actions/github-script@v8
-        with:
-          script: |
-            const token = await core.getIDToken()
-            core.setSecret(token)
-            core.setOutput('token', token)
-
-      - name: Create GitHub Pages deployment
-        id: deployment
-        shell: bash
-        env:
-          GH_TOKEN: ${{ github.token }}
-          OIDC_TOKEN: ${{ steps.pages_oidc.outputs.token }}
-          ARTIFACT_ID: ${{ steps.pages_artifact.outputs.artifact_id }}
-        run: |
-          set -euo pipefail
-          test -n "$ARTIFACT_ID"
-          test -n "$OIDC_TOKEN"
-          python - <<'PY'
-          import json,os,urllib.request
-          repo=os.environ['GITHUB_REPOSITORY']
-          token=os.environ['GH_TOKEN']
-          oidc=os.environ['OIDC_TOKEN']
-          artifact=int(os.environ['ARTIFACT_ID'])
-          sha=os.environ['GITHUB_SHA']
-          payload=json.dumps({
-              'artifact_id':artifact,
-              'pages_build_version':sha,
-              'oidc_token':oidc,
-          }).encode('utf-8')
-          req=urllib.request.Request(
-              f'https://api.github.com/repos/{repo}/pages/deployments',
-              data=payload,
-              method='POST',
-              headers={
-                  'Accept':'application/vnd.github+json',
-                  'Authorization':'Bearer '+token,
-                  'X-GitHub-Api-Version':'2026-03-10',
-                  'Content-Type':'application/json',
-              },
-          )
-          with urllib.request.urlopen(req,timeout=30) as r:
-              response=json.loads(r.read().decode('utf-8'))
-          page_url=response.get('page_url') or 'https://rnw4512-dev.github.io/majick-studies-assets/'
-          status_url=response.get('status_url') or ''
-          deploy_id=response.get('id') or sha
-          print('Created Pages deployment:',deploy_id)
-          print('Pages status URL:',status_url)
-          print('Pages URL:',page_url)
-          out=os.environ['GITHUB_OUTPUT']
-          with open(out,'a',encoding='utf-8') as fh:
-              fh.write('page_url='+page_url+'\n')
-              fh.write('status_url='+status_url+'\n')
-              fh.write('deployment_id='+str(deploy_id)+'\n')
-          PY
-
-      - name: Verify live current V3.4.2
-        timeout-minutes: 12
-        shell: bash
-        env:
-          LIVE_URL: ${{ steps.deployment.outputs.page_url }}
-        run: |
-          python - <<'PY'
-          import json,time,urllib.request,os
-          from pathlib import Path
-          expected=json.loads(Path('_site/release.json').read_text())
-          base=os.environ['LIVE_URL'].rstrip('/')+'/'
-          for attempt in range(120):
-              try:
-                  with urllib.request.urlopen(base+'release.json?check='+str(time.time()),timeout=10) as r:
-                      actual=json.load(r)
-                  assert actual==expected, (actual,expected)
-                  for page in ('index.html','sanctuary/index.html'):
-                      with urllib.request.urlopen(base+page+'?release='+expected['build'],timeout=10) as r:
-                          text=r.read().decode()
-                      assert expected['build'] in text
-                  print('Live current V3.4.2 verified:',actual)
-                  break
-              except Exception as e:
-                  print('Waiting for current publication:',e)
-                  time.sleep(5)
-          else:
-              raise SystemExit('Current V3.4.2 publication not verified')
-          PY
+  publish:
+    needs: certify
+    uses: ./.github/workflows/publish-aetheria.yml
+    secrets: inherit

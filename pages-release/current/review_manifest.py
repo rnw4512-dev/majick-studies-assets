@@ -1,35 +1,38 @@
-"""Audit all locked files. Updating requires explicit paths and expected SHA-256.
-Run from repository root. Never invoked automatically by publishing.
+"""Audit every canonical file; approve only explicit reviewed PATH=SHA256 pairs.
+Never auto-approve in CI. A review should include git diff / history, provenance
+for assets, applicable tests, and recording the exact approval in the commit.
 """
-import argparse, hashlib, json
+import argparse
+import json
+import os
 from pathlib import Path
-parser=argparse.ArgumentParser(description=__doc__)
-parser.add_argument("--approve", action="append", default=[], metavar="PATH=SHA256")
-args=parser.parse_args()
-root=Path("current-site")
-manifest=root/"source-manifest.json"
-data=json.loads(manifest.read_text())
-locked=data["files"]
-actual={}
-for p in sorted(root.rglob("*")):
-    if p.is_file() and p!=manifest:
-        actual[p.relative_to(root).as_posix()]=hashlib.sha256(p.read_bytes()).hexdigest()
+from source_integrity import DIGEST, audit, inventory
+
+parser = argparse.ArgumentParser(description=__doc__)
+parser.add_argument('--source', type=Path, default=Path('current-site'))
+parser.add_argument('--approve', action='append', default=[], metavar='PATH=SHA256')
+args = parser.parse_args()
+manifest = args.source / 'source-manifest.json'
+data = json.loads(manifest.read_text())
+actual, inventory_errors = inventory(args.source)
+if inventory_errors:
+    parser.error('\n'.join(inventory_errors))
+approved = {}
 for spec in args.approve:
-    name, sep, digest=spec.rpartition("=")
-    if not sep or actual.get(name)!=digest:
-        parser.error("Approval must match actual file bytes: "+spec)
-for spec in args.approve:
-    name, _, digest=spec.rpartition("=")
-    locked[name]=digest
-if args.approve:
-    manifest.write_text(json.dumps(data,indent=2)+"\n")
-errors=[]
-for name,digest in locked.items():
-    if actual.get(name)!=digest:
-        errors.append(f"{name}: expected {digest}; actual {actual.get(name,'MISSING')}")
-for name in sorted(actual.keys()-locked.keys()):
-    print(f"UNTRACKED: {name}={actual[name]}")
+    name, sep, digest = spec.rpartition('=')
+    if not sep or not DIGEST.fullmatch(digest) or actual.get(name) != digest:
+        parser.error('Approval must match actual file bytes: ' + spec)
+    approved[name] = digest
+if approved:
+    data['files'].update(approved)
+    temporary = manifest.with_suffix('.json.tmp')
+    try:
+        temporary.write_text(json.dumps(data, indent=2) + '\n')
+        os.replace(temporary, manifest)
+    finally:
+        temporary.unlink(missing_ok=True)
+_, errors = audit(args.source, data)
 for error in errors:
     print(error)
-print(f"Audited {len(locked)} locked files; {len(errors)} mismatches; {len(actual.keys()-locked.keys())} untracked files.")
+print(f'Audited {len(data["files"])} locked files; {len(actual)} actual files; {len(errors)} errors.')
 raise SystemExit(bool(errors))

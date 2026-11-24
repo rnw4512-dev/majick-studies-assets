@@ -28,8 +28,7 @@ jobs:
           node-version: '22'
       - name: Verify canonical source and current save compatibility
         run: |
-          node pages-release/current/release-checks.cjs current-site
-          python pages-release/current/build.py current-site _site
+          python pages-release/current/validate_release.py current-site _site
       - name: Install Playwright
         run: |
           npm install --no-save @playwright/test
@@ -45,6 +44,9 @@ jobs:
         run: |
           python -u tests/startup-learning-browser.py _site
           python -u tests/room-navigation-browser.py _site
+          python -u tests/d669-content-browser.py _site
+          python -u tests/approved-assets-browser.py _site
+          python -u tests/room-interactions-browser.py _site
       - name: Check JavaScript syntax
         run: |
           node --check current-site/pixi-sanctuary/prototype.js

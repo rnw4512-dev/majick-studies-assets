@@ -23,3 +23,7 @@
 #majConnectedPath .majPathSummary{overflow-wrap:anywhere}
 #majConnectedPath .majPathActions button{min-height:43px}
 @media(max-width:600px){#majConnectedPath .majPathSteps{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}#majConnectedPath .majPathSteps li button{width:100%;font-size:.8rem!important;white-space:normal}}
+/* Supplied references remain readable without expanding a page horizontally. */
+.majPathEvidence[data-source-document]{overflow-wrap:anywhere;max-width:100%;line-height:1.6}
+.majPathEvidence[data-source-document] details{padding:10px 0;border-top:1px solid #ab906a55}
+.majPathEvidence[data-source-document] summary{cursor:pointer;min-height:32px;font-weight:700}

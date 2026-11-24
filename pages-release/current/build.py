@@ -5,19 +5,16 @@ import hashlib,json,re,shutil,subprocess,sys
 source=Path(sys.argv[1]).resolve(); output=Path(sys.argv[2]).resolve()
 manifest=json.loads((source/"source-manifest.json").read_text())
 assert manifest["version"]=="3.4.2"
-mismatches=[]
-for name,digest in manifest["files"].items():
- p=source/name
- if not p.is_file(): mismatches.append(f"{name}: missing")
- elif hashlib.sha256(p.read_bytes()).hexdigest()!=digest: mismatches.append(f"{name}: checksum mismatch")
+from source_integrity import audit
+_, mismatches = audit(source, manifest)
 if mismatches:
  raise SystemExit("Unreviewed source changes (all mismatches):\n"+"\n".join(mismatches))
 assert len(list((source/"sanctuary/assets/motion").glob("*.png")))==33
 if output.exists(): shutil.rmtree(output)
 shutil.copytree(source,output)
 release=hashlib.sha256((source/"source-manifest.json").read_bytes()+Path(__file__).read_bytes()).hexdigest()[:16]
-# Stamp local code, stylesheet and HTML URLs, including dynamically created iframes.
-pattern=re.compile(r"""(?P<q>['"])(?P<url>[^'"\s<>]*\.(?:js|css|html)(?:\?[^'"\s<>]*)?)(?P=q)""")
+# Stamp local code, documents and static media, including dynamically created iframes.
+pattern=re.compile(r"""(?P<q>['"])(?P<url>[^'"\s<>]*\.(?:js|css|html|json|png|webp|jpg|jpeg|svg|ogg|mp3|woff2)(?:\?[^'"\s<>]*)?)(?P=q)""")
 for p in sorted(output.rglob("*")):
  if not p.is_file() or p.suffix not in (".html",".js",".css"): continue
  if p.name=="phaser.min.js": continue

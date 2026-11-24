@@ -11,6 +11,7 @@ on:
       - '.nojekyll'
       - '.github/workflows/publish-aetheria.yml'
   workflow_dispatch:
+  workflow_call:
 
 permissions:
   contents: read
@@ -19,7 +20,7 @@ permissions:
 
 concurrency:
   group: github-pages
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   deploy:
@@ -38,12 +39,8 @@ jobs:
           python-version: '3.11'
       - name: Audit release manifest before running expensive tests
         run: python pages-release/current/review_manifest.py
-      - name: Verify existing learning and save regressions
-        run: |
-          node pages-release/current/release-checks.cjs current-site
-          for suite in pages-release/current/test-*.cjs; do node "$suite" current-site; done
-          node --test tests/d756-question-classification.test.cjs
-          python pages-release/current/build.py current-site _certified
+      - name: Verify canonical source, learning and saves using the shared release gate
+        run: python pages-release/current/validate_release.py current-site _certified
       - name: Install browser runner
         run: python -m pip install playwright==1.56.0
       - name: Verify real learning, Journal, Council and Guardian flows before publishing
@@ -53,6 +50,9 @@ jobs:
         run: |
           python -u tests/startup-learning-browser.py _certified
           python -u tests/room-navigation-browser.py _certified
+          python -u tests/d669-content-browser.py _certified
+          python -u tests/approved-assets-browser.py _certified
+          python -u tests/room-interactions-browser.py _certified
           python -u tests/aetheria-sanctuary-browser.py _certified
           python -m http.server 8765 --directory _certified > /tmp/aetheria-pages-test-server.log 2>&1 &
           python -u tests/d756-full-script-browser.py
@@ -93,6 +93,12 @@ jobs:
         uses: actions/upload-pages-artifact@v4
         with:
           path: _aetheria_pages
+      - name: Reject superseded main builds before deployment
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          latest="$(gh api "repos/${GITHUB_REPOSITORY}/git/ref/heads/main" --jq '.object.sha')"
+          test "$latest" = "$GITHUB_SHA" || { echo 'A newer main commit supersedes this build; refusing deployment.'; exit 1; }
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
@@ -143,3 +149,14 @@ jobs:
           else:
               raise SystemExit('Exact production commit was not verified')
           PYVERIFY
+
+      - name: Verify production learning and room navigation
+        env:
+          CHROMIUM_PATH: /usr/bin/google-chrome
+          MAJICK_URL: ${{ steps.deployment.outputs.page_url }}current-site/
+        run: |
+          python -u tests/startup-learning-browser.py _certified
+          python -u tests/room-navigation-browser.py _certified
+          python -u tests/d669-content-browser.py _certified
+          python -u tests/approved-assets-browser.py _certified
+          python -u tests/room-interactions-browser.py _certified

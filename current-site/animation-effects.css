@@ -8,3 +8,6 @@
 
 /* Interaction feedback stays inside its control, including mobile size overrides. */
 .majickFx[data-fx-type="touch"]{--fx-size:var(--fx-touch-size,36px)!important;overflow:hidden;contain:paint;border-radius:50%}.majickFx[data-fx-type="touch"] img{filter:none}
+
+/* Original uploaded effects share this owner's finite lifecycle and cleanup. */
+.majickFx .majickFxLicensed{position:absolute;inset:0;opacity:.8;filter:none;animation:none!important;pointer-events:none}
