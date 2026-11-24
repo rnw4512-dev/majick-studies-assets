@@ -45,9 +45,11 @@ with sync_playwright() as pw:
   assert page.locator('.majRecipe').count()==5
   backgrounds=page.locator('.majRecipe>span[aria-hidden=true]').evaluate_all('(els)=>els.map(e=>getComputedStyle(e).backgroundImage)')
   assert len(set(backgrounds))==5 and all('/models/potion-' in b for b in backgrounds)
-  assert '/gems/sapphire.webp' in page.locator('.majArcaneVault>header h2').evaluate('(e)=>getComputedStyle(e,"::after").backgroundImage')
+  assert '/crystal-blue.webp' in page.locator('.majArcaneVault>header h2').evaluate('(e)=>getComputedStyle(e,"::after").backgroundImage')
   page.evaluate("majickVaultTab('ingredients')")
   assert '/plants/shrub.webp' in page.locator('.majRecipeShelf:has(.majLootGrid)>h3').evaluate('(e)=>getComputedStyle(e,"::after").backgroundImage')
+  for color in ['blue','green','red','violet','yellow']:
+   assert page.evaluate('async color=>{const img=new Image();img.src=new URL("assets/licensed/crystal-"+color+".webp",location.href);await img.decode();return img.naturalWidth>0&&img.naturalHeight>0}',color),'Crystal artwork failed to decode: '+color
   before_ornaments=page.evaluate('JSON.stringify({progress:S.progress,legacy:S.legacy,account:S.majickAccount})')
   ornaments=[a['path'] for a in json.loads((root/'assets/licensed/asset-manifest.json').read_text())['assets'] if any('/'+kind+'/' in a['path'] for kind in ['gems','crystals','plants']) and a['path'].endswith('.webp')]
   assert len(ornaments)==9
@@ -57,7 +59,7 @@ with sync_playwright() as pw:
   page.evaluate("S.activeCourse='D772';navigate('learninglab')")
   navigator=page.locator('.courseLessonNavigator');navigator.wait_for(state='visible')
   assert navigator.evaluate('(e)=>e.getBoundingClientRect().width>=160'),'Lesson navigator collapses to an unreadable column'
-  assert '/gems/emerald.webp' in navigator.locator('h3').first.evaluate('(e)=>getComputedStyle(e,"::after").backgroundImage')
+  assert '/crystal-green.webp' in navigator.locator('h3').first.evaluate('(e)=>getComputedStyle(e,"::after").backgroundImage')
   page.locator('.caAmbience').click();page.wait_for_function('MajickCollegiumAtmosphere.inspect().playing')
   for room in ['home','learninglab','livinggrimoire','games','companions']:
    page.wait_for_timeout(170);assert page.evaluate('(room)=>MajickCollegiumAtmosphere.micro("enter",room)',room)
