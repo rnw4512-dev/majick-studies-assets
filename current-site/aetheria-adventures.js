@@ -17,9 +17,9 @@ const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(journal))}catch(_){}
 function questions(id){
  const packs=Object.values(window.MajickCourseActivityPlayer?.packs||{}).filter(p=>String(p.courseId||'').toUpperCase()===id);
  const source=packs.flatMap(p=>(p.activities||[]).filter(a=>a._sourceVerified&&Array.isArray(a.options)&&a.options.length>=2&&Number.isInteger(a.correct)&&a.correct>=0&&a.correct<a.options.length).map(a=>({id:p.id+'|'+a.id,prompt:a.prompt,options:a.options,correct:a.correct,explanation:a.explanation,source:a.provenance?.source_url||'',title:p.title})));
- if(source.length)return source;
+ if(source.length)return source.filter(q=>!window.MajickCourseQuestionPolicy?.excluded(q));
  const bank=window.S?.courses?.[id]?.questionBank||[];
- return bank.filter(q=>Array.isArray(q.options)&&q.options.length>=2).map((q,i)=>{
+ return bank.filter(q=>!window.MajickCourseQuestionPolicy?.excluded(q)&&Array.isArray(q.options)&&q.options.length>=2).map((q,i)=>{
   const correct=Number.isInteger(q.answer)?q.answer:q.options.findIndex(o=>String(o)===String(q.answer));
   return {id:'bank|'+String(q.id||q.qid||i),prompt:q.prompt||q.question||q.stem,options:q.options,correct,explanation:q.why||q.explanation||'Review the lesson before trying another challenge.',source:'',title:window.S?.courses?.[id]?.title||id}
  }).filter(q=>q.prompt&&q.correct>=0&&q.correct<q.options.length);

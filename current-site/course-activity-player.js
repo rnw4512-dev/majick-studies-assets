@@ -10,6 +10,7 @@
   const showWriting=()=>pref()!=='choice';
   function register(pack){
     if(!pack||!pack.courseId||!pack.id||!Array.isArray(pack.activities))return;
+    pack.activities=pack.activities.filter(a=>!window.MajickCourseQuestionPolicy?.excluded(a));
     // Unsupported or unreferenced content is visible for audit but never scoreable.
     pack.activities.forEach(a=>{const p=a.provenance||{};a._sourceVerified=!!(p.source_title&&/^https:\/\//.test(String(p.source_url||''))&&['original_course_question','source_based_practice'].includes(p.kind));});
     PACKS[key(pack.courseId,pack.id)]=pack;

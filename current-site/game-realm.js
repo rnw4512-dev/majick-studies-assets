@@ -205,15 +205,14 @@
   }
   function realmProgressHTML(){
     const trials=[
-      ['runesort','ᚱ','Rune Sort'],
       ['oraclelens','◉','Oracle Lens'],
       ['gauntlet','♛','Gauntlet'],
       ['constellation','✧','Constellation'],
       ['hexbreaker','⬡','Hex Breaker']
     ];
     const cleared=trials.filter(([id])=>Number(realmRecord(id)?.wins||0)>0).length;
-    return '<section class="realmProgressMap"><div class="realmProgressHead"><div><small>REALM PATH</small><b>'+cleared+'/5 trials cleared</b></div><span>'+Math.round((cleared/5)*100)+'%</span></div>'+
-      '<div class="realmProgressTrack"><i style="width:'+((cleared/5)*100)+'%"></i></div>'+
+    return '<section class="realmProgressMap"><div class="realmProgressHead"><div><small>REALM PATH</small><b>'+cleared+'/'+trials.length+' trials cleared</b></div><span>'+Math.round((cleared/trials.length)*100)+'%</span></div>'+
+      '<div class="realmProgressTrack"><i style="width:'+((cleared/trials.length)*100)+'%"></i></div>'+
       '<div class="realmProgressNodes">'+trials.map(([id,icon,name])=>{
         const r=realmRecord(id),won=Number(r?.wins||0)>0,best=r?.plays?Math.round(Number(r.best||0)*100):0;
         return '<div class="'+(won?'cleared':'')+'"><span>'+icon+'</span><b>'+E(name)+'</b><small>'+(won?'CLEARED • '+best+'% BEST':r?.plays?best+'% BEST':'UNEXPLORED')+'</small></div>';
@@ -349,12 +348,11 @@
         '</section>'+
         (globalThis.S?.activeCourse==='D756'?'<p class="mhRealmReviewNote" role="note">D756 Game Realm uses its own IEP collaboration scenarios for review. These rounds do not grant independent mastery or duplicate XP.</p>':'')+
         realmProgressHTML()+
-        '<div class="realmStats"><span>ᚱ '+E(bestText('runesort'))+' Rune Sort</span><span>◉ '+E(bestText('oraclelens'))+' Oracle Lens</span><span>♛ '+E(bestText('gauntlet'))+' Gauntlet</span><span>✧ '+E(bestText('constellation'))+' Constellation</span><span>⬡ '+E(bestText('hexbreaker'))+' Hex Breaker</span></div>'+
+        '<div class="realmStats"><span>◉ '+E(bestText('oraclelens'))+' Oracle Lens</span><span>♛ '+E(bestText('gauntlet'))+' Gauntlet</span><span>✧ '+E(bestText('constellation'))+' Constellation</span><span>⬡ '+E(bestText('hexbreaker'))+' Hex Breaker</span></div>'+
         '<div class="realmFeaturedGrid">'+
           (investigationCases[courseId]?gameCard('🔎','Scholar Investigation','Collect evidence and solve course-specific cases.','startScholarInvestigation()',courseId+' INVESTIGATION'):'')+
           (courseId==='D669'?gameCard('✦','Communication Quest','Unlock illustrated portals by classifying classroom communication.','startCommunicationQuest()','D669 SECTION 3'):'')+
           (courseId==='D669'?gameCard('✦','Five Pillars Sort','Classify five classroom activities by the literacy skill they directly practice.','startD669PillarSort()','D669 PRACTICE'):'')+
-          (buildRuneSort()?gameCard('ᚱ','Rune Sort',profile.rune,'startRuneSort()',courseId+' TRIAL'):'')+
           (globalThis.S?.activeCourse==='D755'?gameCard('✥','Assessment Sigil Sort','Sort D755 scenarios through Qualitative/Quantitative, Formal/Informal, Formative/Summative, Norm/Criterion, Screening/Monitoring, or Observation/Anecdotal gates.','startAssessmentSigilSort()','D755 TRIAL'):'')+
           gameCard('◉','Oracle Lens',profile.oracle,'startOracleLens()')+
           (globalThis.S?.activeCourse==='D772'?gameCard('♛','All-Section Review Gauntlet','Twelve D772 questions drawn equally from Sections 1, 2, and 3.','startD772SectionReview()','D772 REVIEW'):gameCard('♛','Guardian Gauntlet',profile.gauntlet,'startGuardianGauntlet()'))+
@@ -814,71 +812,11 @@
     return out.sort((a,b)=>Number(['review-needed','reviewing','retry'].includes(gaps[b.learningPathLessonId]?.status))-Number(['review-needed','reviewing','retry'].includes(gaps[a.learningPathLessonId]?.status)));
   }
 
-  /* ---------- Rune Sort ---------- */
-  function buildRuneSort(){
-    const pool=realmQuestionPool().filter(q=>q?.prompt&&q?.section);
-    const groups=new Map();
-    pool.forEach(q=>{
-      const key=String(q.section||'').trim();if(!key)return;
-      if(!groups.has(key))groups.set(key,[]);
-      groups.get(key).push(q);
-    });
-    const eligible=[...groups.entries()].filter(([,rows])=>rows.length>=2);
-    let categories;
-    if(globalThis.S?.activeCourse==='D772'){
-      const sectionNumber=name=>['Data Collection','Bias & Credibility','Misrepresentation','Conclusions'].includes(name)?1:/^Section 2(?:\b|\\s| ·)/.test(name)?2:/^Section 3(?:\b|\\s| ·)/.test(name)?3:0;
-      const bySection=[1,2,3].map(n=>shuffleCopy(eligible.filter(([name])=>sectionNumber(name)===n)));
-      if(bySection.some(rows=>rows.length===0))return null;
-      categories=bySection.map(rows=>rows[0][0]);
-      const extras=shuffleCopy(eligible.filter(([name])=>!categories.includes(name))).slice(0,1);
-      categories.push(...extras.map(([name])=>name));
-    }else categories=shuffleCopy(eligible).slice(0,4).map(([name])=>name);
-    if(categories.length<2)return null;
-    const items=[];
-    categories.forEach(cat=>shuffleCopy(groups.get(cat)).slice(0,2).forEach(q=>items.push({id:q.id,prompt:q.prompt,section:cat,choice:null,ok:null,rewarded:false,attempts:0,tried:[]})));
-    return {categories,categoryLabels:Object.fromEntries(categories.map(c=>[c,categoryLabel(c)])),items:shuffleCopy(items).slice(0,8)};
-  }
-  globalThis.startRuneSort=function(){
-    const built=buildRuneSort();
-    if(!built){try{alert('Rune Sort needs at least two course sections with enough questions. Try another Realm for this course.')}catch(_){}return}
-    session={type:'runesort',opts:{label:'Rune Sort'},categories:built.categories,categoryLabels:built.categoryLabels||{},items:built.items,score:0,finished:false};
-    if(globalThis.S)S.screen='mission';render?.();
-  };
-  globalThis.runeSortPick=function(i,cat){
-    if(!session||session.type!=='runesort'||session.finished)return;
-    const x=session.items?.[i];if(!x)return;
-    x.choice=cat;x.ok=normalize(cat)===normalize(x.section);
-    if(!x.ok){const q={id:'rune-sort:'+x.id,courseId:window.S.activeCourse,lessonId:x.section,skill:'classify:'+x.section,prompt:'Classify the skill requested in: '+x.prompt,answer:session.categoryLabels?.[x.section]||categoryLabel(x.section),why:'The quantity or conclusion requested in “'+x.prompt+'” belongs to '+(session.categoryLabels?.[x.section]||categoryLabel(x.section))+'.'};session.questionRepair={q,chosen:session.categoryLabels?.[cat]||categoryLabel(cat)};window.MajickQuestionRepair.recordWrong(q,session.questionRepair.chosen,{assisted:true,room:'game-realm-rune-sort'})}else session.questionRepair=null;
-    x.attempts=Number(x.attempts||0)+1;
-    x.tried=Array.isArray(x.tried)?x.tried:[];
-    if(!x.ok&&!x.tried.includes(cat))x.tried.push(cat);
-    if(x.ok&&!x.rewarded){
-      x.rewarded=true;session.score++;guardianReact('correct',{mode:'runesort',qid:x.id});
-      session.guardianMessage=guardianLine(session.score>=3?'streak':'correct');
-    }else if(!x.ok) session.guardianMessage=guardianLine('miss');
-    render?.();
-  };
-  globalThis.finishRuneSort=function(){
-    if(!session||session.type!=='runesort')return;
-    session.finished=true;
-    const total=session.items.length,score=session.items.filter(x=>x.ok).length;
-    session.score=score;session.recordOutcome=recordRealm('runesort',score,total,score===total);
-    if(score>=Math.ceil(total*.75)){addReward('Rune Sort cleared',12,1);guardianReact('concept',{mode:'runesort'})}
-    render?.();
-  };
-  function runeSortHTML(){
-    if(session.finished)return realmResultHTML('Rune Sort','runesort',session.score,session.items.length,session.score===session.items.length,'You sorted '+session.score+' of '+session.items.length+' runes correctly.');
-    const done=session.items.filter(x=>x.ok).length;
-    return '<div class="qwrap realmMode realmRuneSort">'+realmScene('runesort')+guardianBanner(session.guardianMessage||'Sort the runes. I will react when the pattern clicks.')+
-      '<div class="qtop"><span class="qbadge">ᚱ Rune Sort</span><b>'+done+'/'+session.items.length+' locked</b></div>'+trialProgress('runesort')+trialGuide('runesort')+
-      '<div class="card"><div class="realmSortLegend"><small>SORT DESTINATIONS</small><div>'+session.categories.map(cat=>'<span><i>ᚱ</i>'+E(session.categoryLabels?.[cat]||categoryLabel(cat))+'</span>').join('')+'</div></div><p>Choose which course section each prompt belongs to. Correct runes lock into place.</p>'+
-      '<div class="realmSortBoard">'+session.items.map((x,i)=>'<article class="realmSortRune '+(x.ok?'locked':x.choice?'miss':'')+'"><b>'+E(x.prompt)+'</b><div class="realmSortChoices">'+session.categories.map(cat=>{
-          const tried=(x.tried||[]).includes(cat);
-          return '<button '+(x.ok||tried?'disabled':'')+' class="'+(tried?'tried':'')+'" data-cat="'+E(cat)+'" onclick="runeSortPick('+i+',this.dataset.cat)">'+E(session.categoryLabels?.[cat]||categoryLabel(cat))+(tried?' ✕':'')+'</button>';
-        }).join('')+'</div>'+(x.choice?'<small class="'+(x.ok?'strong':'weak')+'">'+(x.ok?'✓ Rune locked':'That destination is sealed for this rune. Try another.')+'</small>':'')+
-        (!x.ok&&Number(x.attempts||0)>=2?'<div class="realmRuneHint">✦ Hint: compare the prompt to the <b>'+E(session.categoryLabels?.[x.section]||categoryLabel(x.section))+'</b> concepts you have studied.</div>':'')+'</article>').join('')+'</div>'+
-      '<button class="btn violet" onclick="finishRuneSort()">Finish Rune Sort</button></div></div>';
-  }
+  /* Retired course-location activity: retain harmless legacy entry points. */
+  function buildRuneSort(){return null}
+  globalThis.startRuneSort=function(){session=null;if(globalThis.S)S.screen='games';render?.();return false};
+  globalThis.runeSortPick=globalThis.finishRuneSort=function(){return false};
+  function runeSortHTML(){return gamesHTML()}
 
   /* ---------- Oracle Lens ---------- */
   function nextOracle(){

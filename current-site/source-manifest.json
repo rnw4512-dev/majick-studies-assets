@@ -132,7 +132,7 @@
     "focus-feedback.css": "bf9ca907849ea30be24b9f8b0f986789d6013a6ddd8f01773abc3494a1ea1976",
     "focus-feedback.js": "1681cd12131e3168ceba9f76d6bf3831dc12eb047d7cdd782a747c3fc098a1d9",
     "game-realm.css": "04fd97ca587c2a2a0a87986cf8eefe64e283d7236007e785fc5792da7f5107cf",
-    "game-realm.js": "4f52179968d6bcdbc7e19aed133e5789e0b4f2d92893e88c6f4fbdef19295308",
+    "game-realm.js": "91c914a06058d3ccd6f6b25963f7bdec92c28a66a4c4a14f5f3dadf193c79f7c",
     "guardian-academic-presence.css": "48db71515dbed8ec6b6bdfae1063a82a8f63383178618a3ee69c570e90d03497",
     "guardian-academic-presence.js": "05b18b5f7099fdf05121837f0e2d4de74359088e7cdd07b0e01cd7adf2844cbf",
     "guardian-care-economy.css": "6d0d30eb4cb79d96189530480438f8678ae818e51d10bac108f6f5b17ae2db05",
@@ -144,7 +144,7 @@
     "guardian-registry.js": "00a6baa6d67cfc0e63b2e336a38baca04b6d8705058f824d70e12b8fe88c18bc",
     "home-focus.css": "cbb719eb8e78701717b4016388d511553f2785212d839815ed006651ae738b2b",
     "home-focus.js": "f421d4c5e5b4193d1005e5ce5cdbeb0e969a0cffb8ece49b9dd7c255a16ca794",
-    "index.html": "5e238c5ac8e5d23686a3691fc7ad15e2780fa9dc4c81c4731026e8601b3f6daf",
+    "index.html": "c51666cab9fbb56816b0d3021026be9dffde5ca18073408c4a55193da6247f5e",
     "learn-mode.css": "30181250c67efe7bd97c9276706a804a551e7904a2bb28160eeb0c193f35c002",
     "learn-mode.js": "0fe77e5b84d801270edb07bba57e412c5c23e21f29d7354ae3630ab936dd8c52",
     "learning-lab.css": "b9c2c4f2ae393b3d291155a258cd01388bb71cd49a46d0187f224b03222ac2df",
@@ -883,7 +883,7 @@
     "d756-task2-meeting.js": "80bcbaf850074b2e500cd7169086a778ca386547874791dbef41f1867ef9e867",
     "d756-council.css": "bf2f2b2e396556c04e934b708d23dd6da528f7ffddaf069a9e2992721d30e9e1",
     "interaction-help.js": "f057d0b8e96b381f0d8065feb8c03d10ae56fa7cef9169967e5384e0fc560a1d",
-    "startup-core.20261114.js": "22a42c31d255c9d0c73602cee308cebf7e1fb78497d45b26551a6f05efb42ab5",
+    "startup-core.20261114.js": "af477ef6a48e9941eae2e2de0ce88c1560ee60bcf8eca7fdb0cc036881cf4126",
     "startup-save-bridge.20261114.js": "eaf5fe9ad81a250b471949dbfa243d9f9540b58d9fe2ff7cd6c1fd86c45ba379",
     "enchanted-collegium.css": "b9d7337641386f661e7eefec22378fc55d5301e8ae3ca5fdd2b7d9f48ad3d2e3",
     "iep-meeting-pixi-scene.js": "ab64ccb2edb0b0222f256b470c0ad2bf9d58f42789fcf07b6e0d1a510d29595c",
@@ -902,7 +902,7 @@
     "assets/iep-council/parent.svg": "f70117b2a220f68a0782688b2acabe0582782758b6e8f6485b814edaf0169f8a",
     "assets/iep-council/lea.svg": "70b21638334c04979c4c2450005849d01f490c261b7c90ec443c58e7031af431",
     "aetheria-adventures.css": "d6e965afd4591bddc8c96322082b1a234223d186634c01f6066be593b02be658",
-    "aetheria-adventures.js": "4940284601bfd372910d7adeeaa6eba17edd77e72a801285edd0e2832f9feca1",
+    "aetheria-adventures.js": "1b5cab134a644f3c4bf84572775d1732dd9ac0d34ae486fa5fc20301e8e22e4f",
     "aetheria-learning-experiences.css": "9e5a23a85f56cc7896158966650ef656b07b1c83677da6e25c78c1e1022bfba3",
     "aetheria-learning-experiences.js": "0078272de58ba8a3c2cc655853d838f024523a6a5d23cfb7ce2cc7c095d902eb",
     "aetheria-visual-polish.css": "433ce05d90d26e6ec3750ee4da89111e006eb41837fc3bf6f490606126b40926",
@@ -917,7 +917,7 @@
     "assets/atelier/avatars/layer-hair-locs.webp": "7f674640a7729ac52e31de9936d7c22d5624527b8222a4ad1f5db5931ac96100",
     "assets/iep-council/ASSET-MANIFEST.md": "bc7e017e21f83338445fa4603b2937ea7507db33bde6778d2592656060da334d",
     "content-text-contract.css": "9fac6fbc19cd869c4942e34e53a964872fb7dc0b30d7dbdb24f22090cf463526",
-    "course-activity-player.js": "3b3c0bccbcdd4fa243f669d9efb8fd0dac95dedb0d82aa918977169b294a67e5",
+    "course-activity-player.js": "31310c638de9a9a180ab324d508692fb5958477b80ee29edc09033d007019615",
     "course-content/D669/lesson-2-review.json": "3a324ade2fd40118ba29f468e42b2cd4b954de45a8f0d6bec02fbb375d139c2e",
     "course-content/D669/lesson-3-3-phonological-awareness.json": "b899793e307107bbf782abcc9150f84f949b26cec96cc136a7d9d5159e5108eb",
     "course-content/D669/lesson-3-4-phonemic-awareness.json": "f888765799b3872face0c81a7b0eb6cffc86ff68e6f3fb6e95d660cacc56a170",
@@ -1000,6 +1000,7 @@
     "assets/licensed/music/enchanted-tiki.ogg": "0256eae3210a718ea020b091458ef8a5ba1ff16d17471df75a9d6e8665cd8d41",
     "assets/licensed/music/crystal-cave.ogg": "eead180e4240065bdec0c0d2503063047865ef4b13215931ad3713891b537083",
     "assets/licensed/music/crystal-mystery.ogg": "f8f3835bea148d8948954cb3ff453cf9b55b02cd1396c92617e78e0462ec886b",
-    "assets/licensed/music/enchanted-festival.ogg": "62f89913214de1a2a6918b28b352b1f9cb66389c26a7e7ce5ec8daee95fe86de"
+    "assets/licensed/music/enchanted-festival.ogg": "62f89913214de1a2a6918b28b352b1f9cb66389c26a7e7ce5ec8daee95fe86de",
+    "course-question-policy.js": "743efa3ae9df47a26685bf31828aea0f66ec8c859a4a22f6a8082b7a629447b2"
   }
 }
