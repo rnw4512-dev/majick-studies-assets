@@ -6,7 +6,7 @@ This record describes local verification. It does not certify deployment.
 ## Implemented
 
 - `pages-release/current/`: shared strict inventory validator; missing, modified, unregistered, unsafe paths and symlinks fail together. Only explicit exact-digest approvals modify the manifest. Six negative/atomicity tests cover the gate.
-- `.github/workflows/`: common validation, existing browser gates, D669/media/game coverage, one reusable publisher, stale-main protection and public-commit verification.
+- `.github/workflows/`: common validation, existing browser gates, D669/media/game coverage, read-only Atelier push audit, one reusable publisher, stale-main protection and public-commit verification.
 - `current-site/room-section-nav.js`: Journal retains its own tabs. The outer navigator previously made the canonical Journal inert when supplemental memories appeared first, preventing keyboard focus. The original ArrowRight assertion remains unchanged.
 - `current-site/course-packs/`, `course-content/`, `course-source-reader.js`, `course-learning-path.js`: extracted the unchanged D669 catalog, published seven supplied JSON references and exposed seven existing practice packs. References load on demand; learning/reward owners remain authoritative.
 - `current-site/assets/licensed/`, existing animation/audio/wardrobe adapters and `licensed-assets.css`: actual uploaded effects, icons, textures, five optional clips and lightweight approved potion/human mesh renders. Four finite animations have reduced-motion posters. Source models stay outside deployment in `asset-sources/approved/`; reproduction tools are in `tools/asset-pipeline/`.

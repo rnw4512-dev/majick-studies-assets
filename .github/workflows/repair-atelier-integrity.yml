@@ -1,4 +1,4 @@
-name: Recalculate Atelier sprite integration integrity
+name: Verify Atelier sprite integration integrity
 on:
   push:
     branches: [main]
@@ -16,45 +16,15 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write
-  actions: write
+  contents: read
 
 jobs:
-  repair-atelier-integrity:
+  verify-atelier-integrity:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Calculate SHA-256 from exact repository bytes
-        run: |
-          python3 - <<'PY'
-          import json, hashlib
-          from pathlib import Path
-          base=Path('current-site')
-          manifest_path=base/'source-manifest.json'
-          manifest=json.loads(manifest_path.read_text(encoding='utf-8'))
-          for relative in ('index.html','atelier-sprite-actions.js','assets/atelier/v2/sprites/sprite-audit.json','assets/atelier/v2/fitted/walk-manifest.json','assets/atelier/v2/fitted/walk-alignment.json','atelier-fit-review.html','atelier-v2-approval-gate.js','assets/atelier/v2/fitted/approval-registry.json','game-realm.js','course-tutor.js','d772-shared-oa-questions.js','assets/atelier/v3/sprite-registry.json'):
-              path=base/relative
-              assert path.is_file(), 'Missing: '+relative
-              digest=hashlib.sha256(path.read_bytes()).hexdigest()
-              manifest['files'][relative]=digest
-              print(relative,digest)
-          manifest_path.write_text(json.dumps(manifest,indent=2,ensure_ascii=False)+'\n',encoding='utf-8')
-          PY
-      - name: Commit manifest if necessary
-        id: integrity_commit
-        shell: bash
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add current-site/source-manifest.json
-          echo "changed=false" >> "$GITHUB_OUTPUT"
-          if ! git diff --cached --quiet; then
-            git commit -m "Calculate exact SHA-256 of Atelier integration"
-            git push
-            echo "changed=true" >> "$GITHUB_OUTPUT"
-          fi
-      - name: Trigger canonical Pages deployment only after an actual repair
-        if: steps.integrity_commit.outputs.changed == 'true'
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: gh workflow run publish-aetheria.yml --ref main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Audit reviewed source digests without rewriting approvals
+        run: python pages-release/current/review_manifest.py
