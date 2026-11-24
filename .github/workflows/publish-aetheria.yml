@@ -5,6 +5,8 @@ on:
     branches: [main]
     paths:
       - 'current-site/**'
+      - 'pages-release/current/**'
+      - 'tests/**'
       - 'index.html'
       - '.nojekyll'
       - '.github/workflows/publish-aetheria.yml'
@@ -34,6 +36,8 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
+      - name: Audit release manifest before running expensive tests
+        run: python pages-release/current/review_manifest.py
       - name: Verify existing learning and save regressions
         run: |
           node pages-release/current/release-checks.cjs current-site
