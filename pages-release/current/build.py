@@ -5,9 +5,13 @@ import hashlib,json,re,shutil,subprocess,sys
 source=Path(sys.argv[1]).resolve(); output=Path(sys.argv[2]).resolve()
 manifest=json.loads((source/"source-manifest.json").read_text())
 assert manifest["version"]=="3.4.2"
+mismatches=[]
 for name,digest in manifest["files"].items():
  p=source/name
- assert p.is_file() and hashlib.sha256(p.read_bytes()).hexdigest()==digest, "Unreviewed source change: "+name
+ if not p.is_file(): mismatches.append(f"{name}: missing")
+ elif hashlib.sha256(p.read_bytes()).hexdigest()!=digest: mismatches.append(f"{name}: checksum mismatch")
+if mismatches:
+ raise SystemExit("Unreviewed source changes (all mismatches):\n"+"\n".join(mismatches))
 assert len(list((source/"sanctuary/assets/motion").glob("*.png")))==33
 if output.exists(): shutil.rmtree(output)
 shutil.copytree(source,output)
