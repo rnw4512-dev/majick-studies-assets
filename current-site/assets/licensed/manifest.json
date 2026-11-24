@@ -1,0 +1,1325 @@
+{
+  "status": "prepared only; verify licenses before publishing",
+  "images": [
+    {
+      "original": "bag.png",
+      "output": "images/bag.webp",
+      "size": [
+        369,
+        325
+      ]
+    },
+    {
+      "original": "pot.png",
+      "output": "images/pot.webp",
+      "size": [
+        277,
+        281
+      ]
+    },
+    {
+      "original": "herbal.png",
+      "output": "images/herbal.webp",
+      "size": [
+        224,
+        363
+      ]
+    },
+    {
+      "original": "runestones.png",
+      "output": "images/runestones.webp",
+      "size": [
+        465,
+        155
+      ]
+    },
+    {
+      "original": "parchment_closes_an_open.png",
+      "output": "images/parchment_closes_an_open.webp",
+      "size": [
+        768,
+        468
+      ]
+    },
+    {
+      "original": "zarathustra_c20h25n30.png",
+      "output": "images/zarathustra_c20h25n30.webp",
+      "size": [
+        432,
+        768
+      ]
+    },
+    {
+      "original": "Alchemy tools.png",
+      "output": "images/alchemy-tools.webp",
+      "size": [
+        394,
+        250
+      ]
+    },
+    {
+      "original": "Alchemy tools (1).png",
+      "output": "images/alchemy-tools-(1).webp",
+      "size": [
+        394,
+        250
+      ]
+    },
+    {
+      "original": "Bubble - Black.png",
+      "output": "Bubbles/Bubble - Black.webp",
+      "size": [
+        322,
+        322
+      ]
+    },
+    {
+      "original": "Bubble - Blue.png",
+      "output": "Bubbles/Bubble - Blue.webp",
+      "size": [
+        322,
+        322
+      ]
+    },
+    {
+      "original": "Bubble - Green.png",
+      "output": "Bubbles/Bubble - Green.webp",
+      "size": [
+        322,
+        322
+      ]
+    },
+    {
+      "original": "Bubble - Yellow.png",
+      "output": "Bubbles/Bubble - Yellow.webp",
+      "size": [
+        322,
+        322
+      ]
+    },
+    {
+      "original": "Bubble - Orange.png",
+      "output": "Bubbles/Bubble - Orange.webp",
+      "size": [
+        322,
+        322
+      ]
+    },
+    {
+      "original": "Bubble - Purple.png",
+      "output": "Bubbles/Bubble - Purple.webp",
+      "size": [
+        322,
+        322
+      ]
+    },
+    {
+      "original": "Bubble - Red.png",
+      "output": "Bubbles/Bubble - Red.webp",
+      "size": [
+        322,
+        322
+      ]
+    },
+    {
+      "original": "Bubble - White.png",
+      "output": "Bubbles/Bubble - White.webp",
+      "size": [
+        322,
+        322
+      ]
+    },
+    {
+      "original": "Icons - Dark Magic/01.png",
+      "output": "icons_-_dark_magic/Icons - Dark Magic/01.webp",
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "original": "Icons - Dark Magic/02.png",
+      "output": "icons_-_dark_magic/Icons - Dark Magic/02.webp",
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "original": "Icons - Dark Magic/03.png",
+      "output": "icons_-_dark_magic/Icons - Dark Magic/03.webp",
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "original": "Icons - Dark Magic/04.png",
+      "output": "icons_-_dark_magic/Icons - Dark Magic/04.webp",
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "original": "Icons - Dark Magic/05.png",
+      "output": "icons_-_dark_magic/Icons - Dark Magic/05.webp",
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "original": "Icons - Dark Magic/06.png",
+      "output": "icons_-_dark_magic/Icons - Dark Magic/06.webp",
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "original": "Icons - Dark Magic/07.png",
+      "output": "icons_-_dark_magic/Icons - Dark Magic/07.webp",
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "original": "Icons - Dark Magic/08.png",
+      "output": "icons_-_dark_magic/Icons - Dark Magic/08.webp",
+      "size": [
+        128,
+        128
+      ]
+    },
+    {
+      "original": "Icons - Dark Magic/Preview.png",
+      "output": "icons_-_dark_magic/Icons - Dark Magic/Preview.webp",
+      "size": [
+        512,
+        256
+      ]
+    },
+    {
+      "original": "Wenrexa Assets GUI Dark Miko/Custom Big Buttons/Custom Buttons Active/Custom Button Active 1.png",
+      "output": "wenrexa_assets_gui_dark_miko/Wenrexa Assets GUI Dark Miko/Custom Big Buttons/Custom Buttons Active/Custom Button Active 1.webp",
+      "size": [
+        61,
+        61
+      ]
+    },
+    {
+      "original": "Wenrexa Assets GUI Dark Miko/Custom Big Buttons/Custom Buttons Active/Custom Button Active 2.png",
+      "output": "wenrexa_assets_gui_dark_miko/Wenrexa Assets GUI Dark Miko/Custom Big Buttons/Custom Buttons Active/Custom Button Active 2.webp",
+      "size": [
+        61,
+        61
+      ]
+    },
+    {
+      "original": "Wenrexa Assets GUI Dark Miko/Custom Big Buttons/Custom Buttons Active/Custom Button Active 3.png",
+      "output": "wenrexa_assets_gui_dark_miko/Wenrexa Assets GUI Dark Miko/Custom Big Buttons/Custom Buttons Active/Custom Button Active 3.webp",
+      "size": [
+        61,
+        61
+      ]
+    },
+    {
+      "original": "Wenrexa Assets GUI Dark Miko/Custom Big Buttons/Custom Buttons Active/Custom Button Active 4.png",
+      "output": "wenrexa_assets_gui_dark_miko/Wenrexa Assets GUI Dark Miko/Custom Big Buttons/Custom Buttons Active/Custom Button Active 4.webp",
+      "size": [
+        85,
+        85
+      ]
+    },
+    {
+      "original": "Wenrexa Assets GUI Dark Miko/Custom Big Buttons/Custom Buttons Disable/Custom Button Disable 1.png",
+      "output": "wenrexa_assets_gui_dark_miko/Wenrexa Assets GUI Dark Miko/Custom Big Buttons/Custom Buttons Disable/Custom Button Disable 1.webp",
+      "size": [
+        61,
+        61
+      ]
+    },
+    {
+      "original": "Wenrexa Assets GUI Dark Miko/Custom Big Buttons/Custom Buttons Disable/Custom Button Disable 2.png",
+      "output": "wenrexa_assets_gui_dark_miko/Wenrexa Assets GUI Dark Miko/Custom Big Buttons/Custom Buttons Disable/Custom Button Disable 2.webp",
+      "size": [
+        61,
+        61
+      ]
+    },
+    {
+      "original": "Wenrexa Assets GUI Dark Miko/Custom Big Buttons/Custom Buttons Disable/Custom Button Disable 3.png",
+      "output": "wenrexa_assets_gui_dark_miko/Wenrexa Assets GUI Dark Miko/Custom Big Buttons/Custom Buttons Disable/Custom Button Disable 3.webp",
+      "size": [
+        61,
+        61
+      ]
+    },
+    {
+      "original": "Wenrexa Assets GUI Dark Miko/Custom Big Buttons/Custom Buttons Disable/Custom Button Disable 4.png",
+      "output": "wenrexa_assets_gui_dark_miko/Wenrexa Assets GUI Dark Miko/Custom Big Buttons/Custom Buttons Disable/Custom Button Disable 4.webp",
+      "size": [
+        85,
+        85
+      ]
+    },
+    {
+      "original": "Wenrexa Assets GUI Dark Miko/Custom Big Buttons/Custom Buttons Hover/Custom Button Hover 1.png",
+      "output": "wenrexa_assets_gui_dark_miko/Wenrexa Assets GUI Dark Miko/Custom Big Buttons/Custom Buttons Hover/Custom Button Hover 1.webp",
+      "size": [
+        61,
+        61
+      ]
+    },
+    {
+      "original": "Wenrexa Assets GUI Dark Miko/Custom Big Buttons/Custom Buttons Hover/Custom Button Hover 2.png",
+      "output": "wenrexa_assets_gui_dark_miko/Wenrexa Assets GUI Dark Miko/Custom Big Buttons/Custom Buttons Hover/Custom Button Hover 2.webp",
+      "size": [
+        61,
+        61
+      ]
+    },
+    {
+      "original": "Wenrexa Assets GUI Dark Miko/Custom Big Buttons/Custom Buttons Hover/Custom Button Hover 3.png",
+      "output": "wenrexa_assets_gui_dark_miko/Wenrexa Assets GUI Dark Miko/Custom Big Buttons/Custom Buttons Hover/Custom Button Hover 3.webp",
+      "size": [
+        61,
+        61
+      ]
+    },
+    {
+      "original": "Wenrexa Assets GUI Dark Miko/Custom Big Buttons/Custom Buttons Hover/Custom Button Hover 4.png",
+      "output": "wenrexa_assets_gui_dark_miko/Wenrexa Assets GUI Dark Miko/Custom Big Buttons/Custom Buttons Hover/Custom Button Hover 4.webp",
+      "size": [
+        85,
+        85
+      ]
+    },
+    {
+      "original": "Wenrexa Assets GUI Dark Miko/Custom Big Buttons/Custom Buttons Normal/Custom Button Normal 1.png",
+      "output": "wenrexa_assets_gui_dark_miko/Wenrexa Assets GUI Dark Miko/Custom Big Buttons/Custom Buttons Normal/Custom Button Normal 1.webp",
+      "size": [
+        61,
+        61
+      ]
+    },
+    {
+      "original": "Wenrexa Assets GUI Dark Miko/Custom Big Buttons/Custom Buttons Normal/Custom Button Normal 2.png",
+      "output": "wenrexa_assets_gui_dark_miko/Wenrexa Assets GUI Dark Miko/Custom Big Buttons/Custom Buttons Normal/Custom Button Normal 2.webp",
+      "size": [
+        61,
+        61
+      ]
+    },
+    {
+      "original": "Wenrexa Assets GUI Dark Miko/Custom Big Buttons/Custom Buttons Normal/Custom Button Normal 3.png",
+      "output": "wenrexa_assets_gui_dark_miko/Wenrexa Assets GUI Dark Miko/Custom Big Buttons/Custom Buttons Normal/Custom Button Normal 3.webp",
+      "size": [
+        61,
+        61
+      ]
+    },
+    {
+      "original": "Wenrexa Assets GUI Dark Miko/Custom Big Buttons/Custom Buttons Normal/Custom Button Normal 4.png",
+      "output": "wenrexa_assets_gui_dark_miko/Wenrexa Assets GUI Dark Miko/Custom Big Buttons/Custom Buttons Normal/Custom Button Normal 4.webp",
+      "size": [
+        85,
+        85
+      ]
+    },
+    {
+      "original": "Wenrexa Assets GUI Dark Miko/Items/Item 1.png",
+      "output": "wenrexa_assets_gui_dark_miko/Wenrexa Assets GUI Dark Miko/Items/Item 1.webp",
+      "size": [
+        164,
+        164
+      ]
+    },
+    {
+      "original": "Wenrexa Assets GUI Dark Miko/Items/Item 2.png",
+      "output": "wenrexa_assets_gui_dark_miko/Wenrexa Assets GUI Dark Miko/Items/Item 2.webp",
+      "size": [
+        164,
+        164
+      ]
+    },
+    {
+      "original": "Wenrexa Assets GUI Dark Miko/Items/Item 3.png",
+      "output": "wenrexa_assets_gui_dark_miko/Wenrexa Assets GUI Dark Miko/Items/Item 3.webp",
+      "size": [
+        164,
+        164
+      ]
+    },
+    {
+      "original": "Wenrexa Assets GUI Dark Miko/Items/Item 4.png",
+      "output": "wenrexa_assets_gui_dark_miko/Wenrexa Assets GUI Dark Miko/Items/Item 4.webp",
+      "size": [
+        164,
+        164
+      ]
+    },
+    {
+      "original": "Wenrexa Assets GUI Dark Miko/Panels Gray/Panel 10.png",
+      "output": "wenrexa_assets_gui_dark_miko/Wenrexa Assets GUI Dark Miko/Panels Gray/Panel 10.webp",
+      "size": [
+        1307,
+        338
+      ]
+    },
+    {
+      "original": "Wenrexa Assets GUI Dark Miko/Panels Gray/Panel 11.png",
+      "output": "wenrexa_assets_gui_dark_miko/Wenrexa Assets GUI Dark Miko/Panels Gray/Panel 11.webp",
+      "size": [
+        930,
+        338
+      ]
+    },
+    {
+      "original": "Wenrexa Assets GUI Dark Miko/Panels Gray/Panel 12.png",
+      "output": "wenrexa_assets_gui_dark_miko/Wenrexa Assets GUI Dark Miko/Panels Gray/Panel 12.webp",
+      "size": [
+        930,
+        567
+      ]
+    },
+    {
+      "original": "Wenrexa Assets GUI Dark Miko/Panels Gray/Panel 1_.png",
+      "output": "wenrexa_assets_gui_dark_miko/Wenrexa Assets GUI Dark Miko/Panels Gray/Panel 1_.webp",
+      "size": [
+        455,
+        153
+      ]
+    },
+    {
+      "original": "Wenrexa Assets GUI Dark Miko/Panels Gray/Panel 2_.png",
+      "output": "wenrexa_assets_gui_dark_miko/Wenrexa Assets GUI Dark Miko/Panels Gray/Panel 2_.webp",
+      "size": [
+        355,
+        153
+      ]
+    },
+    {
+      "original": "Wenrexa Assets GUI Dark Miko/Panels Gray/Panel 3_.png",
+      "output": "wenrexa_assets_gui_dark_miko/Wenrexa Assets GUI Dark Miko/Panels Gray/Panel 3_.webp",
+      "size": [
+        255,
+        153
+      ]
+    },
+    {
+      "original": "Wenrexa Assets GUI Dark Miko/Panels Gray/Panel 4_.png",
+      "output": "wenrexa_assets_gui_dark_miko/Wenrexa Assets GUI Dark Miko/Panels Gray/Panel 4_.webp",
+      "size": [
+        181,
+        153
+      ]
+    },
+    {
+      "original": "Wenrexa Assets GUI Dark Miko/Panels Gray/Panel 5_.png",
+      "output": "wenrexa_assets_gui_dark_miko/Wenrexa Assets GUI Dark Miko/Panels Gray/Panel 5_.webp",
+      "size": [
+        455,
+        298
+      ]
+    },
+    {
+      "original": "Wenrexa Assets GUI Dark Miko/Panels Gray/Panel 6_.png",
+      "output": "wenrexa_assets_gui_dark_miko/Wenrexa Assets GUI Dark Miko/Panels Gray/Panel 6_.webp",
+      "size": [
+        355,
+        298
+      ]
+    },
+    {
+      "original": "Wenrexa Assets GUI Dark Miko/Panels Gray/Panel 7_.png",
+      "output": "wenrexa_assets_gui_dark_miko/Wenrexa Assets GUI Dark Miko/Panels Gray/Panel 7_.webp",
+      "size": [
+        255,
+        298
+      ]
+    },
+    {
+      "original": "Wenrexa Assets GUI Dark Miko/Panels Gray/Panel 8_.png",
+      "output": "wenrexa_assets_gui_dark_miko/Wenrexa Assets GUI Dark Miko/Panels Gray/Panel 8_.webp",
+      "size": [
+        181,
+        298
+      ]
+    },
+    {
+      "original": "Wenrexa Assets GUI Dark Miko/Panels Gray/Panel 9.png",
+      "output": "wenrexa_assets_gui_dark_miko/Wenrexa Assets GUI Dark Miko/Panels Gray/Panel 9.webp",
+      "size": [
+        1307,
+        567
+      ]
+    },
+    {
+      "original": "Wenrexa Assets GUI Dark Miko/Panels Green/Panel 1.png",
+      "output": "wenrexa_assets_gui_dark_miko/Wenrexa Assets GUI Dark Miko/Panels Green/Panel 1.webp",
+      "size": [
+        455,
+        153
+      ]
+    },
+    {
+      "original": "Wenrexa Assets GUI Dark Miko/Panels Green/Panel 10.png",
+      "output": "wenrexa_assets_gui_dark_miko/Wenrexa Assets GUI Dark Miko/Panels Green/Panel 10.webp",
+      "size": [
+        1307,
+        338
+      ]
+    },
+    {
+      "original": "Wenrexa Assets GUI Dark Miko/Panels Green/Panel 11.png",
+      "output": "wenrexa_assets_gui_dark_miko/Wenrexa Assets GUI Dark Miko/Panels Green/Panel 11.webp",
+      "size": [
+        930,
+        338
+      ]
+    },
+    {
+      "original": "Wenrexa Assets GUI Dark Miko/Panels Green/Panel 12.png",
+      "output": "wenrexa_assets_gui_dark_miko/Wenrexa Assets GUI Dark Miko/Panels Green/Panel 12.webp",
+      "size": [
+        930,
+        567
+      ]
+    },
+    {
+      "original": "Wenrexa Assets GUI Dark Miko/Panels Green/Panel 2.png",
+      "output": "wenrexa_assets_gui_dark_miko/Wenrexa Assets GUI Dark Miko/Panels Green/Panel 2.webp",
+      "size": [
+        355,
+        153
+      ]
+    },
+    {
+      "original": "Wenrexa Assets GUI Dark Miko/Panels Green/Panel 3.png",
+      "output": "wenrexa_assets_gui_dark_miko/Wenrexa Assets GUI Dark Miko/Panels Green/Panel 3.webp",
+      "size": [
+        255,
+        153
+      ]
+    },
+    {
+      "original": "Wenrexa Assets GUI Dark Miko/Panels Green/Panel 4.png",
+      "output": "wenrexa_assets_gui_dark_miko/Wenrexa Assets GUI Dark Miko/Panels Green/Panel 4.webp",
+      "size": [
+        181,
+        153
+      ]
+    },
+    {
+      "original": "Wenrexa Assets GUI Dark Miko/Panels Green/Panel 5.png",
+      "output": "wenrexa_assets_gui_dark_miko/Wenrexa Assets GUI Dark Miko/Panels Green/Panel 5.webp",
+      "size": [
+        455,
+        298
+      ]
+    },
+    {
+      "original": "Wenrexa Assets GUI Dark Miko/Panels Green/Panel 6.png",
+      "output": "wenrexa_assets_gui_dark_miko/Wenrexa Assets GUI Dark Miko/Panels Green/Panel 6.webp",
+      "size": [
+        355,
+        298
+      ]
+    },
+    {
+      "original": "Wenrexa Assets GUI Dark Miko/Panels Green/Panel 7.png",
+      "output": "wenrexa_assets_gui_dark_miko/Wenrexa Assets GUI Dark Miko/Panels Green/Panel 7.webp",
+      "size": [
+        255,
+        298
+      ]
+    },
+    {
+      "original": "Wenrexa Assets GUI Dark Miko/Panels Green/Panel 8.png",
+      "output": "wenrexa_assets_gui_dark_miko/Wenrexa Assets GUI Dark Miko/Panels Green/Panel 8.webp",
+      "size": [
+        181,
+        298
+      ]
+    },
+    {
+      "original": "Wenrexa Assets GUI Dark Miko/Panels Green/Panel 9.png",
+      "output": "wenrexa_assets_gui_dark_miko/Wenrexa Assets GUI Dark Miko/Panels Green/Panel 9.webp",
+      "size": [
+        1307,
+        567
+      ]
+    },
+    {
+      "original": "Wenrexa Assets GUI Dark Miko/ProgressBar Blue/V1/Background Bar.png",
+      "output": "wenrexa_assets_gui_dark_miko/Wenrexa Assets GUI Dark Miko/ProgressBar Blue/V1/Background Bar.webp",
+      "size": [
+        422,
+        37
+      ]
+    },
+    {
+      "original": "Wenrexa Assets GUI Dark Miko/ProgressBar Blue/V1/Background Static.png",
+      "output": "wenrexa_assets_gui_dark_miko/Wenrexa Assets GUI Dark Miko/ProgressBar Blue/V1/Background Static.webp",
+      "size": [
+        444,
+        37
+      ]
+    },
+    {
+      "original": "Wenrexa Assets GUI Dark Miko/ProgressBar Blue/V1/Foreground.png",
+      "output": "wenrexa_assets_gui_dark_miko/Wenrexa Assets GUI Dark Miko/ProgressBar Blue/V1/Foreground.webp",
+      "size": [
+        448,
+        41
+      ]
+    },
+    {
+      "original": "Wenrexa Assets GUI Dark Miko/ProgressBar Blue/V2/Background Bar.png",
+      "output": "wenrexa_assets_gui_dark_miko/Wenrexa Assets GUI Dark Miko/ProgressBar Blue/V2/Background Bar.webp",
+      "size": [
+        258,
+        37
+      ]
+    },
+    {
+      "original": "Wenrexa Assets GUI Dark Miko/ProgressBar Blue/V2/Background Static.png",
+      "output": "wenrexa_assets_gui_dark_miko/Wenrexa Assets GUI Dark Miko/ProgressBar Blue/V2/Background Static.webp",
+      "size": [
+        280,
+        37
+      ]
+    },
+    {
+      "original": "Wenrexa Assets GUI Dark Miko/ProgressBar Blue/V2/Foreground.png",
+      "output": "wenrexa_assets_gui_dark_miko/Wenrexa Assets GUI Dark Miko/ProgressBar Blue/V2/Foreground.webp",
+      "size": [
+        284,
+        41
+      ]
+    },
+    {
+      "original": "Wenrexa Assets GUI Dark Miko/ProgressBar Blue/V3/Background Bar.png",
+      "output": "wenrexa_assets_gui_dark_miko/Wenrexa Assets GUI Dark Miko/ProgressBar Blue/V3/Background Bar.webp",
+      "size": [
+        177,
+        37
+      ]
+    },
+    {
+      "original": "Wenrexa Assets GUI Dark Miko/ProgressBar Blue/V3/Background Static.png",
+      "output": "wenrexa_assets_gui_dark_miko/Wenrexa Assets GUI Dark Miko/ProgressBar Blue/V3/Background Static.webp",
+      "size": [
+        199,
+        37
+      ]
+    },
+    {
+      "original": "Wenrexa Assets GUI Dark Miko/ProgressBar Blue/V3/Foreground.png",
+      "output": "wenrexa_assets_gui_dark_miko/Wenrexa Assets GUI Dark Miko/ProgressBar Blue/V3/Foreground.webp",
+      "size": [
+        203,
+        41
+      ]
+    },
+    {
+      "original": "Wenrexa Assets GUI Dark Miko/ProgressBar Blue/V4/Background Bar.png",
+      "output": "wenrexa_assets_gui_dark_miko/Wenrexa Assets GUI Dark Miko/ProgressBar Blue/V4/Background Bar.webp",
+      "size": [
+        121,
+        37
+      ]
+    },
+    {
+      "original": "Wenrexa Assets GUI Dark Miko/ProgressBar Blue/V4/Background Static.png",
+      "output": "wenrexa_assets_gui_dark_miko/Wenrexa Assets GUI Dark Miko/ProgressBar Blue/V4/Background Static.webp",
+      "size": [
+        143,
+        37
+      ]
+    },
+    {
+      "original": "Wenrexa Assets GUI Dark Miko/ProgressBar Blue/V4/Foreground.png",
+      "output": "wenrexa_assets_gui_dark_miko/Wenrexa Assets GUI Dark Miko/ProgressBar Blue/V4/Foreground.webp",
+      "size": [
+        147,
+        41
+      ]
+    },
+    {
+      "original": "Wenrexa Assets GUI Dark Miko/ProgressBar Green/V1/Background Bar.png",
+      "output": "wenrexa_assets_gui_dark_miko/Wenrexa Assets GUI Dark Miko/ProgressBar Green/V1/Background Bar.webp",
+      "size": [
+        422,
+        37
+      ]
+    },
+    {
+      "original": "Wenrexa Assets GUI Dark Miko/ProgressBar Green/V1/Background Static.png",
+      "output": "wenrexa_assets_gui_dark_miko/Wenrexa Assets GUI Dark Miko/ProgressBar Green/V1/Background Static.webp",
+      "size": [
+        444,
+        37
+      ]
+    },
+    {
+      "original": "Wenrexa Assets GUI Dark Miko/ProgressBar Green/V1/Foreground.png",
+      "output": "wenrexa_assets_gui_dark_miko/Wenrexa Assets GUI Dark Miko/ProgressBar Green/V1/Foreground.webp",
+      "size": [
+        448,
+        41
+      ]
+    },
+    {
+      "original": "Wenrexa Assets GUI Dark Miko/ProgressBar Green/V2/Background Bar.png",
+      "output": "wenrexa_assets_gui_dark_miko/Wenrexa Assets GUI Dark Miko/ProgressBar Green/V2/Background Bar.webp",
+      "size": [
+        258,
+        37
+      ]
+    },
+    {
+      "original": "Wenrexa Assets GUI Dark Miko/ProgressBar Green/V2/Background Static.png",
+      "output": "wenrexa_assets_gui_dark_miko/Wenrexa Assets GUI Dark Miko/ProgressBar Green/V2/Background Static.webp",
+      "size": [
+        280,
+        37
+      ]
+    },
+    {
+      "original": "Wenrexa Assets GUI Dark Miko/ProgressBar Green/V2/Foreground.png",
+      "output": "wenrexa_assets_gui_dark_miko/Wenrexa Assets GUI Dark Miko/ProgressBar Green/V2/Foreground.webp",
+      "size": [
+        284,
+        41
+      ]
+    },
+    {
+      "original": "Wenrexa Assets GUI Dark Miko/ProgressBar Green/V3/Background Bar.png",
+      "output": "wenrexa_assets_gui_dark_miko/Wenrexa Assets GUI Dark Miko/ProgressBar Green/V3/Background Bar.webp",
+      "size": [
+        177,
+        37
+      ]
+    },
+    {
+      "original": "Wenrexa Assets GUI Dark Miko/ProgressBar Green/V3/Background Static.png",
+      "output": "wenrexa_assets_gui_dark_miko/Wenrexa Assets GUI Dark Miko/ProgressBar Green/V3/Background Static.webp",
+      "size": [
+        199,
+        37
+      ]
+    },
+    {
+      "original": "Wenrexa Assets GUI Dark Miko/ProgressBar Green/V3/Foreground.png",
+      "output": "wenrexa_assets_gui_dark_miko/Wenrexa Assets GUI Dark Miko/ProgressBar Green/V3/Foreground.webp",
+      "size": [
+        203,
+        41
+      ]
+    },
+    {
+      "original": "Wenrexa Assets GUI Dark Miko/ProgressBar Green/V4/Background Bar.png",
+      "output": "wenrexa_assets_gui_dark_miko/Wenrexa Assets GUI Dark Miko/ProgressBar Green/V4/Background Bar.webp",
+      "size": [
+        121,
+        37
+      ]
+    },
+    {
+      "original": "Wenrexa Assets GUI Dark Miko/ProgressBar Green/V4/Background Static.png",
+      "output": "wenrexa_assets_gui_dark_miko/Wenrexa Assets GUI Dark Miko/ProgressBar Green/V4/Background Static.webp",
+      "size": [
+        143,
+        37
+      ]
+    },
+    {
+      "original": "Wenrexa Assets GUI Dark Miko/ProgressBar Green/V4/Foreground.png",
+      "output": "wenrexa_assets_gui_dark_miko/Wenrexa Assets GUI Dark Miko/ProgressBar Green/V4/Foreground.webp",
+      "size": [
+        147,
+        41
+      ]
+    },
+    {
+      "original": "Wenrexa Assets GUI Dark Miko/ProgressBar Light Blue/V1/Background Bar.png",
+      "output": "wenrexa_assets_gui_dark_miko/Wenrexa Assets GUI Dark Miko/ProgressBar Light Blue/V1/Background Bar.webp",
+      "size": [
+        422,
+        37
+      ]
+    },
+    {
+      "original": "Wenrexa Assets GUI Dark Miko/ProgressBar Light Blue/V1/Background Static.png",
+      "output": "wenrexa_assets_gui_dark_miko/Wenrexa Assets GUI Dark Miko/ProgressBar Light Blue/V1/Background Static.webp",
+      "size": [
+        444,
+        37
+      ]
+    },
+    {
+      "original": "Wenrexa Assets GUI Dark Miko/ProgressBar Light Blue/V1/Foreground.png",
+      "output": "wenrexa_assets_gui_dark_miko/Wenrexa Assets GUI Dark Miko/ProgressBar Light Blue/V1/Foreground.webp",
+      "size": [
+        448,
+        41
+      ]
+    },
+    {
+      "original": "Wenrexa Assets GUI Dark Miko/ProgressBar Light Blue/V2/Background Bar.png",
+      "output": "wenrexa_assets_gui_dark_miko/Wenrexa Assets GUI Dark Miko/ProgressBar Light Blue/V2/Background Bar.webp",
+      "size": [
+        258,
+        37
+      ]
+    },
+    {
+      "original": "Wenrexa Assets GUI Dark Miko/ProgressBar Light Blue/V2/Background Static.png",
+      "output": "wenrexa_assets_gui_dark_miko/Wenrexa Assets GUI Dark Miko/ProgressBar Light Blue/V2/Background Static.webp",
+      "size": [
+        280,
+        37
+      ]
+    },
+    {
+      "original": "Wenrexa Assets GUI Dark Miko/ProgressBar Light Blue/V2/Foreground.png",
+      "output": "wenrexa_assets_gui_dark_miko/Wenrexa Assets GUI Dark Miko/ProgressBar Light Blue/V2/Foreground.webp",
+      "size": [
+        284,
+        41
+      ]
+    },
+    {
+      "original": "Wenrexa Assets GUI Dark Miko/ProgressBar Light Blue/V3/Background Bar.png",
+      "output": "wenrexa_assets_gui_dark_miko/Wenrexa Assets GUI Dark Miko/ProgressBar Light Blue/V3/Background Bar.webp",
+      "size": [
+        177,
+        37
+      ]
+    },
+    {
+      "original": "Wenrexa Assets GUI Dark Miko/ProgressBar Light Blue/V3/Background Static.png",
+      "output": "wenrexa_assets_gui_dark_miko/Wenrexa Assets GUI Dark Miko/ProgressBar Light Blue/V3/Background Static.webp",
+      "size": [
+        199,
+        37
+      ]
+    },
+    {
+      "original": "Wenrexa Assets GUI Dark Miko/ProgressBar Light Blue/V3/Foreground.png",
+      "output": "wenrexa_assets_gui_dark_miko/Wenrexa Assets GUI Dark Miko/ProgressBar Light Blue/V3/Foreground.webp",
+      "size": [
+        203,
+        41
+      ]
+    },
+    {
+      "original": "Wenrexa Assets GUI Dark Miko/ProgressBar Light Blue/V4/Background Bar.png",
+      "output": "wenrexa_assets_gui_dark_miko/Wenrexa Assets GUI Dark Miko/ProgressBar Light Blue/V4/Background Bar.webp",
+      "size": [
+        121,
+        37
+      ]
+    },
+    {
+      "original": "Wenrexa Assets GUI Dark Miko/ProgressBar Light Blue/V4/Background Static.png",
+      "output": "wenrexa_assets_gui_dark_miko/Wenrexa Assets GUI Dark Miko/ProgressBar Light Blue/V4/Background Static.webp",
+      "size": [
+        143,
+        37
+      ]
+    },
+    {
+      "original": "Wenrexa Assets GUI Dark Miko/ProgressBar Light Blue/V4/Foreground.png",
+      "output": "wenrexa_assets_gui_dark_miko/Wenrexa Assets GUI Dark Miko/ProgressBar Light Blue/V4/Foreground.webp",
+      "size": [
+        147,
+        41
+      ]
+    },
+    {
+      "original": "Wenrexa Assets GUI Dark Miko/ProgressBar Red/V1/Background Bar.png",
+      "output": "wenrexa_assets_gui_dark_miko/Wenrexa Assets GUI Dark Miko/ProgressBar Red/V1/Background Bar.webp",
+      "size": [
+        422,
+        37
+      ]
+    },
+    {
+      "original": "Wenrexa Assets GUI Dark Miko/ProgressBar Red/V1/Background Static.png",
+      "output": "wenrexa_assets_gui_dark_miko/Wenrexa Assets GUI Dark Miko/ProgressBar Red/V1/Background Static.webp",
+      "size": [
+        444,
+        37
+      ]
+    },
+    {
+      "original": "Wenrexa Assets GUI Dark Miko/ProgressBar Red/V1/Foreground.png",
+      "output": "wenrexa_assets_gui_dark_miko/Wenrexa Assets GUI Dark Miko/ProgressBar Red/V1/Foreground.webp",
+      "size": [
+        448,
+        41
+      ]
+    },
+    {
+      "original": "Wenrexa Assets GUI Dark Miko/ProgressBar Red/V2/Background Bar.png",
+      "output": "wenrexa_assets_gui_dark_miko/Wenrexa Assets GUI Dark Miko/ProgressBar Red/V2/Background Bar.webp",
+      "size": [
+        258,
+        37
+      ]
+    },
+    {
+      "original": "Wenrexa Assets GUI Dark Miko/ProgressBar Red/V2/Background Static.png",
+      "output": "wenrexa_assets_gui_dark_miko/Wenrexa Assets GUI Dark Miko/ProgressBar Red/V2/Background Static.webp",
+      "size": [
+        280,
+        37
+      ]
+    },
+    {
+      "original": "Wenrexa Assets GUI Dark Miko/ProgressBar Red/V2/Foreground.png",
+      "output": "wenrexa_assets_gui_dark_miko/Wenrexa Assets GUI Dark Miko/ProgressBar Red/V2/Foreground.webp",
+      "size": [
+        284,
+        41
+      ]
+    },
+    {
+      "original": "Wenrexa Assets GUI Dark Miko/ProgressBar Red/V3/Background Bar.png",
+      "output": "wenrexa_assets_gui_dark_miko/Wenrexa Assets GUI Dark Miko/ProgressBar Red/V3/Background Bar.webp",
+      "size": [
+        177,
+        37
+      ]
+    },
+    {
+      "original": "Wenrexa Assets GUI Dark Miko/ProgressBar Red/V3/Background Static.png",
+      "output": "wenrexa_assets_gui_dark_miko/Wenrexa Assets GUI Dark Miko/ProgressBar Red/V3/Background Static.webp",
+      "size": [
+        199,
+        37
+      ]
+    },
+    {
+      "original": "Wenrexa Assets GUI Dark Miko/ProgressBar Red/V3/Foreground.png",
+      "output": "wenrexa_assets_gui_dark_miko/Wenrexa Assets GUI Dark Miko/ProgressBar Red/V3/Foreground.webp",
+      "size": [
+        203,
+        41
+      ]
+    },
+    {
+      "original": "Wenrexa Assets GUI Dark Miko/ProgressBar Red/V4/Background Bar.png",
+      "output": "wenrexa_assets_gui_dark_miko/Wenrexa Assets GUI Dark Miko/ProgressBar Red/V4/Background Bar.webp",
+      "size": [
+        121,
+        37
+      ]
+    },
+    {
+      "original": "Wenrexa Assets GUI Dark Miko/ProgressBar Red/V4/Background Static.png",
+      "output": "wenrexa_assets_gui_dark_miko/Wenrexa Assets GUI Dark Miko/ProgressBar Red/V4/Background Static.webp",
+      "size": [
+        143,
+        37
+      ]
+    },
+    {
+      "original": "Wenrexa Assets GUI Dark Miko/ProgressBar Red/V4/Foreground.png",
+      "output": "wenrexa_assets_gui_dark_miko/Wenrexa Assets GUI Dark Miko/ProgressBar Red/V4/Foreground.webp",
+      "size": [
+        147,
+        41
+      ]
+    },
+    {
+      "original": "Wenrexa Assets GUI Dark Miko/Standart Button V1/Standart Button Active/Standart Button Active 1.png",
+      "output": "wenrexa_assets_gui_dark_miko/Wenrexa Assets GUI Dark Miko/Standart Button V1/Standart Button Active/Standart Button Active 1.webp",
+      "size": [
+        69,
+        45
+      ]
+    },
+    {
+      "original": "Wenrexa Assets GUI Dark Miko/Standart Button V1/Standart Button Active/Standart Button Active 2.png",
+      "output": "wenrexa_assets_gui_dark_miko/Wenrexa Assets GUI Dark Miko/Standart Button V1/Standart Button Active/Standart Button Active 2.webp",
+      "size": [
+        89,
+        45
+      ]
+    },
+    {
+      "original": "Wenrexa Assets GUI Dark Miko/Standart Button V1/Standart Button Active/Standart Button Active 3.png",
+      "output": "wenrexa_assets_gui_dark_miko/Wenrexa Assets GUI Dark Miko/Standart Button V1/Standart Button Active/Standart Button Active 3.webp",
+      "size": [
+        123,
+        45
+      ]
+    },
+    {
+      "original": "Wenrexa Assets GUI Dark Miko/Standart Button V1/Standart Button Active/Standart Button Active 4.png",
+      "output": "wenrexa_assets_gui_dark_miko/Wenrexa Assets GUI Dark Miko/Standart Button V1/Standart Button Active/Standart Button Active 4.webp",
+      "size": [
+        162,
+        45
+      ]
+    },
+    {
+      "original": "Wenrexa Assets GUI Dark Miko/Standart Button V1/Standart Button Active/Standart Button Active 5.png",
+      "output": "wenrexa_assets_gui_dark_miko/Wenrexa Assets GUI Dark Miko/Standart Button V1/Standart Button Active/Standart Button Active 5.webp",
+      "size": [
+        194,
+        45
+      ]
+    },
+    {
+      "original": "Wenrexa Assets GUI Dark Miko/Standart Button V1/Standart Button Active/Standart Button Active 6.png",
+      "output": "wenrexa_assets_gui_dark_miko/Wenrexa Assets GUI Dark Miko/Standart Button V1/Standart Button Active/Standart Button Active 6.webp",
+      "size": [
+        248,
+        45
+      ]
+    },
+    {
+      "original": "Wenrexa Assets GUI Dark Miko/Standart Button V1/Standart Button Disable/Standart Button Disable 1.png",
+      "output": "wenrexa_assets_gui_dark_miko/Wenrexa Assets GUI Dark Miko/Standart Button V1/Standart Button Disable/Standart Button Disable 1.webp",
+      "size": [
+        69,
+        45
+      ]
+    },
+    {
+      "original": "Wenrexa Assets GUI Dark Miko/Standart Button V1/Standart Button Disable/Standart Button Disable 2.png",
+      "output": "wenrexa_assets_gui_dark_miko/Wenrexa Assets GUI Dark Miko/Standart Button V1/Standart Button Disable/Standart Button Disable 2.webp",
+      "size": [
+        89,
+        45
+      ]
+    },
+    {
+      "original": "Wenrexa Assets GUI Dark Miko/Standart Button V1/Standart Button Disable/Standart Button Disable 3.png",
+      "output": "wenrexa_assets_gui_dark_miko/Wenrexa Assets GUI Dark Miko/Standart Button V1/Standart Button Disable/Standart Button Disable 3.webp",
+      "size": [
+        123,
+        45
+      ]
+    },
+    {
+      "original": "Wenrexa Assets GUI Dark Miko/Standart Button V1/Standart Button Disable/Standart Button Disable 4.png",
+      "output": "wenrexa_assets_gui_dark_miko/Wenrexa Assets GUI Dark Miko/Standart Button V1/Standart Button Disable/Standart Button Disable 4.webp",
+      "size": [
+        162,
+        45
+      ]
+    },
+    {
+      "original": "Wenrexa Assets GUI Dark Miko/Standart Button V1/Standart Button Disable/Standart Button Disable 5.png",
+      "output": "wenrexa_assets_gui_dark_miko/Wenrexa Assets GUI Dark Miko/Standart Button V1/Standart Button Disable/Standart Button Disable 5.webp",
+      "size": [
+        194,
+        45
+      ]
+    },
+    {
+      "original": "Wenrexa Assets GUI Dark Miko/Standart Button V1/Standart Button Disable/Standart Button Disable 6.png",
+      "output": "wenrexa_assets_gui_dark_miko/Wenrexa Assets GUI Dark Miko/Standart Button V1/Standart Button Disable/Standart Button Disable 6.webp",
+      "size": [
+        248,
+        45
+      ]
+    },
+    {
+      "original": "Wenrexa Assets GUI Dark Miko/Standart Button V1/Standart Button Hover/Standart Button Hover 1.png",
+      "output": "wenrexa_assets_gui_dark_miko/Wenrexa Assets GUI Dark Miko/Standart Button V1/Standart Button Hover/Standart Button Hover 1.webp",
+      "size": [
+        69,
+        45
+      ]
+    },
+    {
+      "original": "Wenrexa Assets GUI Dark Miko/Standart Button V1/Standart Button Hover/Standart Button Hover 2.png",
+      "output": "wenrexa_assets_gui_dark_miko/Wenrexa Assets GUI Dark Miko/Standart Button V1/Standart Button Hover/Standart Button Hover 2.webp",
+      "size": [
+        89,
+        45
+      ]
+    },
+    {
+      "original": "Wenrexa Assets GUI Dark Miko/Standart Button V1/Standart Button Hover/Standart Button Hover 3.png",
+      "output": "wenrexa_assets_gui_dark_miko/Wenrexa Assets GUI Dark Miko/Standart Button V1/Standart Button Hover/Standart Button Hover 3.webp",
+      "size": [
+        123,
+        45
+      ]
+    },
+    {
+      "original": "Wenrexa Assets GUI Dark Miko/Standart Button V1/Standart Button Hover/Standart Button Hover 4.png",
+      "output": "wenrexa_assets_gui_dark_miko/Wenrexa Assets GUI Dark Miko/Standart Button V1/Standart Button Hover/Standart Button Hover 4.webp",
+      "size": [
+        162,
+        45
+      ]
+    },
+    {
+      "original": "Wenrexa Assets GUI Dark Miko/Standart Button V1/Standart Button Hover/Standart Button Hover 5.png",
+      "output": "wenrexa_assets_gui_dark_miko/Wenrexa Assets GUI Dark Miko/Standart Button V1/Standart Button Hover/Standart Button Hover 5.webp",
+      "size": [
+        194,
+        45
+      ]
+    },
+    {
+      "original": "Wenrexa Assets GUI Dark Miko/Standart Button V1/Standart Button Hover/Standart Button Hover 6.png",
+      "output": "wenrexa_assets_gui_dark_miko/Wenrexa Assets GUI Dark Miko/Standart Button V1/Standart Button Hover/Standart Button Hover 6.webp",
+      "size": [
+        248,
+        45
+      ]
+    },
+    {
+      "original": "Wenrexa Assets GUI Dark Miko/Standart Button V1/Standart Button Normal/Standart Button Normal 1.png",
+      "output": "wenrexa_assets_gui_dark_miko/Wenrexa Assets GUI Dark Miko/Standart Button V1/Standart Button Normal/Standart Button Normal 1.webp",
+      "size": [
+        69,
+        45
+      ]
+    },
+    {
+      "original": "Wenrexa Assets GUI Dark Miko/Standart Button V1/Standart Button Normal/Standart Button Normal 2.png",
+      "output": "wenrexa_assets_gui_dark_miko/Wenrexa Assets GUI Dark Miko/Standart Button V1/Standart Button Normal/Standart Button Normal 2.webp",
+      "size": [
+        89,
+        45
+      ]
+    },
+    {
+      "original": "Wenrexa Assets GUI Dark Miko/Standart Button V1/Standart Button Normal/Standart Button Normal 3.png",
+      "output": "wenrexa_assets_gui_dark_miko/Wenrexa Assets GUI Dark Miko/Standart Button V1/Standart Button Normal/Standart Button Normal 3.webp",
+      "size": [
+        123,
+        45
+      ]
+    },
+    {
+      "original": "Wenrexa Assets GUI Dark Miko/Standart Button V1/Standart Button Normal/Standart Button Normal 4.png",
+      "output": "wenrexa_assets_gui_dark_miko/Wenrexa Assets GUI Dark Miko/Standart Button V1/Standart Button Normal/Standart Button Normal 4.webp",
+      "size": [
+        162,
+        45
+      ]
+    },
+    {
+      "original": "Wenrexa Assets GUI Dark Miko/Standart Button V1/Standart Button Normal/Standart Button Normal 5.png",
+      "output": "wenrexa_assets_gui_dark_miko/Wenrexa Assets GUI Dark Miko/Standart Button V1/Standart Button Normal/Standart Button Normal 5.webp",
+      "size": [
+        194,
+        45
+      ]
+    },
+    {
+      "original": "Wenrexa Assets GUI Dark Miko/Standart Button V1/Standart Button Normal/Standart Button Normal 6.png",
+      "output": "wenrexa_assets_gui_dark_miko/Wenrexa Assets GUI Dark Miko/Standart Button V1/Standart Button Normal/Standart Button Normal 6.webp",
+      "size": [
+        248,
+        45
+      ]
+    },
+    {
+      "original": "Wenrexa Assets GUI Dark Miko/Standart Button V2/Standart Button Active/Standart Button Active 1.png",
+      "output": "wenrexa_assets_gui_dark_miko/Wenrexa Assets GUI Dark Miko/Standart Button V2/Standart Button Active/Standart Button Active 1.webp",
+      "size": [
+        69,
+        45
+      ]
+    },
+    {
+      "original": "Wenrexa Assets GUI Dark Miko/Standart Button V2/Standart Button Active/Standart Button Active 2.png",
+      "output": "wenrexa_assets_gui_dark_miko/Wenrexa Assets GUI Dark Miko/Standart Button V2/Standart Button Active/Standart Button Active 2.webp",
+      "size": [
+        89,
+        45
+      ]
+    },
+    {
+      "original": "Wenrexa Assets GUI Dark Miko/Standart Button V2/Standart Button Active/Standart Button Active 3.png",
+      "output": "wenrexa_assets_gui_dark_miko/Wenrexa Assets GUI Dark Miko/Standart Button V2/Standart Button Active/Standart Button Active 3.webp",
+      "size": [
+        123,
+        45
+      ]
+    },
+    {
+      "original": "Wenrexa Assets GUI Dark Miko/Standart Button V2/Standart Button Active/Standart Button Active 4.png",
+      "output": "wenrexa_assets_gui_dark_miko/Wenrexa Assets GUI Dark Miko/Standart Button V2/Standart Button Active/Standart Button Active 4.webp",
+      "size": [
+        162,
+        45
+      ]
+    },
+    {
+      "original": "Wenrexa Assets GUI Dark Miko/Standart Button V2/Standart Button Active/Standart Button Active 5.png",
+      "output": "wenrexa_assets_gui_dark_miko/Wenrexa Assets GUI Dark Miko/Standart Button V2/Standart Button Active/Standart Button Active 5.webp",
+      "size": [
+        194,
+        45
+      ]
+    },
+    {
+      "original": "Wenrexa Assets GUI Dark Miko/Standart Button V2/Standart Button Active/Standart Button Active 6.png",
+      "output": "wenrexa_assets_gui_dark_miko/Wenrexa Assets GUI Dark Miko/Standart Button V2/Standart Button Active/Standart Button Active 6.webp",
+      "size": [
+        248,
+        45
+      ]
+    },
+    {
+      "original": "Wenrexa Assets GUI Dark Miko/Standart Button V2/Standart Button Disable/Standart Button Disable 1.png",
+      "output": "wenrexa_assets_gui_dark_miko/Wenrexa Assets GUI Dark Miko/Standart Button V2/Standart Button Disable/Standart Button Disable 1.webp",
+      "size": [
+        69,
+        45
+      ]
+    },
+    {
+      "original": "Wenrexa Assets GUI Dark Miko/Standart Button V2/Standart Button Disable/Standart Button Disable 2.png",
+      "output": "wenrexa_assets_gui_dark_miko/Wenrexa Assets GUI Dark Miko/Standart Button V2/Standart Button Disable/Standart Button Disable 2.webp",
+      "size": [
+        89,
+        45
+      ]
+    },
+    {
+      "original": "Wenrexa Assets GUI Dark Miko/Standart Button V2/Standart Button Disable/Standart Button Disable 3.png",
+      "output": "wenrexa_assets_gui_dark_miko/Wenrexa Assets GUI Dark Miko/Standart Button V2/Standart Button Disable/Standart Button Disable 3.webp",
+      "size": [
+        123,
+        45
+      ]
+    },
+    {
+      "original": "Wenrexa Assets GUI Dark Miko/Standart Button V2/Standart Button Disable/Standart Button Disable 4.png",
+      "output": "wenrexa_assets_gui_dark_miko/Wenrexa Assets GUI Dark Miko/Standart Button V2/Standart Button Disable/Standart Button Disable 4.webp",
+      "size": [
+        162,
+        45
+      ]
+    },
+    {
+      "original": "Wenrexa Assets GUI Dark Miko/Standart Button V2/Standart Button Disable/Standart Button Disable 5.png",
+      "output": "wenrexa_assets_gui_dark_miko/Wenrexa Assets GUI Dark Miko/Standart Button V2/Standart Button Disable/Standart Button Disable 5.webp",
+      "size": [
+        194,
+        45
+      ]
+    },
+    {
+      "original": "Wenrexa Assets GUI Dark Miko/Standart Button V2/Standart Button Disable/Standart Button Disable 6.png",
+      "output": "wenrexa_assets_gui_dark_miko/Wenrexa Assets GUI Dark Miko/Standart Button V2/Standart Button Disable/Standart Button Disable 6.webp",
+      "size": [
+        248,
+        45
+      ]
+    },
+    {
+      "original": "Wenrexa Assets GUI Dark Miko/Standart Button V2/Standart Button Hover/Standart Button Hover 1.png",
+      "output": "wenrexa_assets_gui_dark_miko/Wenrexa Assets GUI Dark Miko/Standart Button V2/Standart Button Hover/Standart Button Hover 1.webp",
+      "size": [
+        69,
+        45
+      ]
+    },
+    {
+      "original": "Wenrexa Assets GUI Dark Miko/Standart Button V2/Standart Button Hover/Standart Button Hover 2.png",
+      "output": "wenrexa_assets_gui_dark_miko/Wenrexa Assets GUI Dark Miko/Standart Button V2/Standart Button Hover/Standart Button Hover 2.webp",
+      "size": [
+        89,
+        45
+      ]
+    },
+    {
+      "original": "Wenrexa Assets GUI Dark Miko/Standart Button V2/Standart Button Hover/Standart Button Hover 3.png",
+      "output": "wenrexa_assets_gui_dark_miko/Wenrexa Assets GUI Dark Miko/Standart Button V2/Standart Button Hover/Standart Button Hover 3.webp",
+      "size": [
+        123,
+        45
+      ]
+    },
+    {
+      "original": "Wenrexa Assets GUI Dark Miko/Standart Button V2/Standart Button Hover/Standart Button Hover 4.png",
+      "output": "wenrexa_assets_gui_dark_miko/Wenrexa Assets GUI Dark Miko/Standart Button V2/Standart Button Hover/Standart Button Hover 4.webp",
+      "size": [
+        162,
+        45
+      ]
+    },
+    {
+      "original": "Wenrexa Assets GUI Dark Miko/Standart Button V2/Standart Button Hover/Standart Button Hover 5.png",
+      "output": "wenrexa_assets_gui_dark_miko/Wenrexa Assets GUI Dark Miko/Standart Button V2/Standart Button Hover/Standart Button Hover 5.webp",
+      "size": [
+        194,
+        45
+      ]
+    },
+    {
+      "original": "Wenrexa Assets GUI Dark Miko/Standart Button V2/Standart Button Hover/Standart Button Hover 6.png",
+      "output": "wenrexa_assets_gui_dark_miko/Wenrexa Assets GUI Dark Miko/Standart Button V2/Standart Button Hover/Standart Button Hover 6.webp",
+      "size": [
+        248,
+        45
+      ]
+    },
+    {
+      "original": "Wenrexa Assets GUI Dark Miko/Standart Button V2/Standart Button Normal/Standart Button Normal 1.png",
+      "output": "wenrexa_assets_gui_dark_miko/Wenrexa Assets GUI Dark Miko/Standart Button V2/Standart Button Normal/Standart Button Normal 1.webp",
+      "size": [
+        69,
+        45
+      ]
+    },
+    {
+      "original": "Wenrexa Assets GUI Dark Miko/Standart Button V2/Standart Button Normal/Standart Button Normal 2.png",
+      "output": "wenrexa_assets_gui_dark_miko/Wenrexa Assets GUI Dark Miko/Standart Button V2/Standart Button Normal/Standart Button Normal 2.webp",
+      "size": [
+        89,
+        45
+      ]
+    },
+    {
+      "original": "Wenrexa Assets GUI Dark Miko/Standart Button V2/Standart Button Normal/Standart Button Normal 3.png",
+      "output": "wenrexa_assets_gui_dark_miko/Wenrexa Assets GUI Dark Miko/Standart Button V2/Standart Button Normal/Standart Button Normal 3.webp",
+      "size": [
+        123,
+        45
+      ]
+    },
+    {
+      "original": "Wenrexa Assets GUI Dark Miko/Standart Button V2/Standart Button Normal/Standart Button Normal 4.png",
+      "output": "wenrexa_assets_gui_dark_miko/Wenrexa Assets GUI Dark Miko/Standart Button V2/Standart Button Normal/Standart Button Normal 4.webp",
+      "size": [
+        162,
+        45
+      ]
+    },
+    {
+      "original": "Wenrexa Assets GUI Dark Miko/Standart Button V2/Standart Button Normal/Standart Button Normal 5.png",
+      "output": "wenrexa_assets_gui_dark_miko/Wenrexa Assets GUI Dark Miko/Standart Button V2/Standart Button Normal/Standart Button Normal 5.webp",
+      "size": [
+        194,
+        45
+      ]
+    },
+    {
+      "original": "Wenrexa Assets GUI Dark Miko/Standart Button V2/Standart Button Normal/Standart Button Normal 6.png",
+      "output": "wenrexa_assets_gui_dark_miko/Wenrexa Assets GUI Dark Miko/Standart Button V2/Standart Button Normal/Standart Button Normal 6.webp",
+      "size": [
+        248,
+        45
+      ]
+    }
+  ]
+}
