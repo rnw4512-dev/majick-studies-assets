@@ -72,7 +72,10 @@ with sync_playwright() as pw:
   assert icons.evaluate_all('(els)=>els.every(e=>e.getAttribute("aria-hidden")==="true"&&getComputedStyle(e).backgroundImage!=="none")')
   for card in cards.all():
    card.scroll_into_view_if_needed()
-   assert card.locator('h3').inner_text().strip(),'Icon replaced its game label'
+   card.locator('h3').scroll_into_view_if_needed()
+   # content-visibility:auto resumes painting after the scroll frame.
+   label=card.locator('h3').evaluate('(e)=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(()=>resolve(e.innerText))))')
+   assert label.strip(),'Icon replaced its game label: '+card.evaluate('(e)=>JSON.stringify({html:e.outerHTML,styles:[e.querySelector("h3"),e,e.parentElement,e.parentElement.parentElement].map(n=>({display:getComputedStyle(n).display,visibility:getComputedStyle(n).visibility,cv:getComputedStyle(n).contentVisibility,rect:n.getBoundingClientRect().toJSON()})),scrollY})')
   assert page.evaluate('document.documentElement.scrollWidth<=innerWidth+2'),'App-wide icons introduce overflow'
   page.locator('.caAmbience').click();page.wait_for_function('MajickCollegiumAtmosphere.inspect().playing')
   for room in ['home','learninglab','livinggrimoire','games','companions']:
