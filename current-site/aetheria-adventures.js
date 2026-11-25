@@ -17,12 +17,13 @@ const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(journal))}catch(_){}
 function questions(id){
  const packs=Object.values(window.MajickCourseActivityPlayer?.packs||{}).filter(p=>String(p.courseId||'').toUpperCase()===id);
  const source=packs.flatMap(p=>(p.activities||[]).filter(a=>a._sourceVerified&&Array.isArray(a.options)&&a.options.length>=2&&Number.isInteger(a.correct)&&a.correct>=0&&a.correct<a.options.length).map(a=>({id:p.id+'|'+a.id,prompt:a.prompt,options:a.options,correct:a.correct,explanation:a.explanation,source:a.provenance?.source_url||'',title:p.title})));
- if(source.length)return source.filter(q=>!window.MajickCourseQuestionPolicy?.excluded(q));
+
  const bank=window.S?.courses?.[id]?.questionBank||[];
- return bank.filter(q=>!window.MajickCourseQuestionPolicy?.excluded(q)&&Array.isArray(q.options)&&q.options.length>=2).map((q,i)=>{
+ const additional=bank.filter(q=>!window.MajickCourseQuestionPolicy?.excluded(q)&&Array.isArray(q.options)&&q.options.length>=2).map((q,i)=>{
   const correct=Number.isInteger(q.answer)?q.answer:q.options.findIndex(o=>String(o)===String(q.answer));
   return {id:'bank|'+String(q.id||q.qid||i),prompt:q.prompt||q.question||q.stem,options:q.options,correct,explanation:q.why||q.explanation||'Review the lesson before trying another challenge.',source:'',title:window.S?.courses?.[id]?.title||id}
  }).filter(q=>q.prompt&&q.correct>=0&&q.correct<q.options.length);
+ const seen=new Set();return [...source,...additional].filter(q=>{const key=questionKey(q);if(!key||seen.has(key)||window.MajickCourseQuestionPolicy?.excluded(q))return false;seen.add(key);return true});
 }
 function courseStory(id){
  const name=window.S?.courses?.[id]?.title||id;
@@ -37,7 +38,16 @@ function courseStory(id){
 const entry=(id=course())=>journal[id]||(journal[id]={clears:{},chapters:{},guardianTrails:{}});
 function unlockedChapter(){return CHAPTER_GATES.filter(n=>xp()>=n).length||1}
 function chapterComplete(id,n){return !!entry(id).chapters['chapter-'+n]}
-function chooseQuestions(id,m,chapter){const all=questions(id);if(m==='guardian')return all.slice(0,1);if(m==='story'){const start=(chapter-1)*3;return all.length>=3?Array.from({length:3},(_,i)=>all[(start+i)%all.length]):[]}const offset=(gameRotation[id]||0)%Math.max(1,all.length);gameRotation[id]=(gameRotation[id]||0)+3;return all.length>=3?Array.from({length:3},(_,i)=>all[(offset+i)%all.length]):[]}
+function questionKey(q){return String(q.prompt||'').normalize('NFKC').trim().toLowerCase().replace(/\s+/g,' ')}
+function chooseQuestions(id,m,chapter){
+ const all=questions(id),count=m==='guardian'?1:3;if(all.length<count)return [];
+ const row=entry(id);const history=Array.isArray(row.questionRotation)?row.questionRotation:[];const eligible=new Set(all.map(questionKey));
+ const used=[...new Set(history.filter(k=>eligible.has(k)))];
+ const picked=[];const blocked=new Set();
+ function pick(pool){const candidates=pool.filter(q=>!blocked.has(questionKey(q)));if(!candidates.length)return false;const q=candidates[Math.floor(Math.random()*candidates.length)];picked.push(q);blocked.add(questionKey(q));return true}
+ while(picked.length<count){if(!pick(all.filter(q=>!used.includes(questionKey(q))))){used.length=0;if(!pick(all))break}used.push(questionKey(picked[picked.length-1]));}
+ row.questionRotation=[...new Set(used)];save();return picked;
+}
 function record(kind,key,id){
  const row=entry(id),group=kind==='guardian'?row.guardianTrails:kind==='game'?row.clears:row.chapters;
  if(group[key])return false;

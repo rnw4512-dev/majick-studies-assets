@@ -1,0 +1,28 @@
+name: Uploaded asset hash audit
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'current-site/assets/licensed/**'
+      - '.github/workflows/asset-hash-audit.yml'
+permissions:
+  contents: read
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Report unapproved asset digests without approving them
+        run: |
+          python - <<'PY'
+          import hashlib, json
+          from pathlib import Path
+          root = Path('current-site')
+          approved = json.loads((root / 'source-manifest.json').read_text())['files']
+          for p in sorted((root / 'assets/licensed').rglob('*')):
+              if p.is_file():
+                  name = p.relative_to(root).as_posix()
+                  digest = hashlib.sha256(p.read_bytes()).hexdigest()
+                  if approved.get(name) != digest:
+                      print(f'{name}={digest}')
+          PY

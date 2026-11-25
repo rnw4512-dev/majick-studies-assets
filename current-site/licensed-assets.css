@@ -1,6 +1,6 @@
 /* Authored source art only. All ornaments are decorative and leave control labels intact. */
 .masJournalTabs [data-journal-tab]::before,.majCommonsEyebrow::before,.majCommonsCourse::before,.majRecipeShelf>h3::before,.v3341StudyGuardianPortrait::after{content:"";display:inline-block;width:20px;height:20px;margin-right:7px;vertical-align:middle;background:center/contain no-repeat;image-rendering:pixelated}
-.masJournalTabs [data-journal-tab=achievements]::before{background-image:url('./assets/licensed/milestones/star.png')}
+.masJournalTabs [data-journal-tab=achievements]::before{background-image:url('./assets/licensed/crystal-yellow.webp')}
 .masJournalTabs [data-journal-tab=recent]::before{background-image:url('./assets/licensed/milestones/book.png')}
 .masJournalTabs [data-journal-tab=goals]::before{background-image:url('./assets/licensed/milestones/briefcase.png')}
 .masJournalTabs [data-journal-tab=repairs]::before{background-image:url('./assets/licensed/milestones/hourglass.png')}
@@ -28,10 +28,10 @@
 #wsOverlay .wsControls .wsRingIntro{color:#513448!important;-webkit-text-fill-color:#513448!important}
 /* Original source meshes, rendered offline: shared heading ornaments and progress caps. */
 .learnLab .courseLessonNavigator>h3::after,.v3333MissionHead>h2::after,.majReasoningToolbar h2::after,.majArcaneVault>header h2::after,.v3327SanctuaryTitle h3::after,.majRecipeShelf:has(.majLootGrid)>h3::after{content:"";display:inline-block;vertical-align:middle;width:32px;height:32px;margin-left:8px;background:center/contain no-repeat;pointer-events:none}
-.v3333MissionHead>h2::after{background-image:url('./assets/licensed/gems/diamond.webp')}
-.majReasoningToolbar h2::after{background-image:url('./assets/licensed/gems/ruby.webp')}
-.majArcaneVault>header h2::after{background-image:url('./assets/licensed/gems/sapphire.webp')}
-.learnLab .courseLessonNavigator>h3::after{background-image:url('./assets/licensed/gems/emerald.webp')}
+.v3333MissionHead>h2::after{background-image:url('./assets/licensed/crystal-red.webp')}
+.majReasoningToolbar h2::after{background-image:url('./assets/licensed/crystal-violet.webp')}
+.majArcaneVault>header h2::after{background-image:url('./assets/licensed/crystal-blue.webp')}
+.learnLab .courseLessonNavigator>h3::after{background-image:url('./assets/licensed/crystal-green.webp')}
 .learnLab .courseLessonNavigator{width:100%;box-sizing:border-box}
 .v3327SanctuaryTitle h3::after{background-image:url('./assets/licensed/plants/flowers.webp')}
 .majRecipeShelf:has(.majLootGrid)>h3::after{background-image:url('./assets/licensed/plants/shrub.webp')}
@@ -98,3 +98,5 @@ body:is([data-majick-polish-room=guide],[data-majick-polish-room=livinggrimoire]
 .majRecipe:nth-of-type(5n+3)>span[aria-hidden=true]{background-image:url('./assets/licensed/potions/red.webp')}
 .majRecipe:nth-of-type(5n+4)>span[aria-hidden=true]{background-image:url('./assets/licensed/potions/green.webp')}
 .majRecipe:nth-of-type(5n)>span[aria-hidden=true]{background-image:url('./assets/licensed/potions/orange.webp')}
+/* Full-color crystal art uses smooth scaling; existing labels and click targets stay intact. */
+.masJournalTabs [data-journal-tab=achievements]::before{image-rendering:auto}

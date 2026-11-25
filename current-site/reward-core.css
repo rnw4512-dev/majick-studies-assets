@@ -45,3 +45,6 @@ button.majVaultItemArt{width:100%;border:0;border-bottom:1px solid #ffffff12;bor
 .majRewardReceipt.isCompact h3{font-size:17px;margin:0 0 7px}.majRewardReceipt.isCompact .majRewardLines{gap:5px;font-size:14px}
 @keyframes majXpGlow{from{opacity:.75;transform:translateY(3px)}to{opacity:1;transform:translateY(0)}}
 @media(prefers-reduced-motion:reduce){.majRewardReceipt.isCompact .majRewardCard{animation:none}}
+
+/* Reserve real artwork space without changing inventory state. */
+.majLootGrid>span{grid-template-columns:64px minmax(0,1fr);column-gap:12px;min-width:0}.majLootGrid>span>i{display:grid;place-items:center;width:64px;min-height:64px}.majLootGrid>span>i>img{max-width:100%;object-fit:contain}.majLootGrid>span>b,.majLootGrid>span>small{min-width:0;overflow-wrap:anywhere}@media(max-width:480px){.majLootGrid{grid-template-columns:1fr}}
