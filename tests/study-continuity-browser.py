@@ -49,7 +49,7 @@ with sync_playwright() as pw:
   assert len(result)==3 and len({q['id'] for q in result})==3 and all(q['skill']=='d669-realm-sounds' for q in result),result
   page.evaluate("navigate('games');startGuardianGauntlet()")
   page.locator('.realmGauntlet .question').wait_for(state='visible');assert page.evaluate('!!session.current&&MajickGameRealm.realmQuestionPool().some(q=>q.id===session.current.id)')
-  page.evaluate('session.current=null;render()');assert page.get_by_text('Practice questions are not available yet',exact=True).is_visible()
+  page.evaluate('session.current=null;render()');assert page.get_by_role('heading',name='Practice questions are not available yet',exact=True).is_visible()
   assert not errors,errors
   print('PASS',width,'same-skill fresh cases, nonrepeating course rounds, readable feedback, saved game/answer counts, backup/import/reload and safe Gauntlet',flush=True);context.close()
  browser.close()
