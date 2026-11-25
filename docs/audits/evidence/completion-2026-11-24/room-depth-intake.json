@@ -1,0 +1,12 @@
+{
+  "source": "asset-sources/approved/fantasy-rpg-models.blend",
+  "sha256": "74398dfee0beae3771b68263b63a331fe8bb74c13ecd9ef33fc7dcd527b0f2bc",
+  "sourcePage": "https://opengameart.org/content/50-fantasy-rpg-asset-models",
+  "author": "rubberduck",
+  "license": "CC0-1.0",
+  "verification": "Cached primary-source page inspected 2026-11-24; selected candle_holder_2 only. Source Blender scripts disabled during inspection/render.",
+  "output": "current-site/assets/licensed/models/candle-holder.webp",
+  "outputSha256": "3c703e7ee8410c213fa3ede4349f49f9590fa59c907c6779137bfa07ac361c12",
+  "bytes": 2884,
+  "scope": "Existing shared room ribbons and static library vignette; four existing game introductions reuse previously approved models/plants. No state/logic changes."
+}

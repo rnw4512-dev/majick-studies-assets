@@ -44,6 +44,8 @@ async function solveMean(values,sum,count,mean){
  for(const [course,min] of Object.entries({D772:11,D756:8,D669:3})) assert(activityBank.filter(t=>t.course===course).length>=min,'Missing activity coverage for '+course);
  for(const id of ['d669-pa','d669-pm','d669-phonics']) assert(activityBank.some(t=>t.id===id&&t.course==='D669'&&t.cases>=3),'Missing D669 activity '+id);
  assert(activityBank.every(t=>t.cases>=1),'Every activity requires practice cases');
+ const originalIds=['d772-data','d772-bias','d772-mislead','d772-conclusion','d772-types','d772-graphs','d772-distribution','d772-stats','d772-probability','d772-relationships','d772-applications','d756-team','d756-responsive','d756-collaboration','d756-culture','d756-iep-team','d756-plaafp','d756-services','d756-transition'];
+ for(const id of originalIds)assert(activityBank.some(t=>t.id===id),"Missing original activity "+id);
 
 
  await action('if(!S.courses.D772)throw Error("D772 course unavailable");switchCourse("D772");navigate("mission")');

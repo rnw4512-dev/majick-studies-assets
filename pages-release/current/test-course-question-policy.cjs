@@ -11,3 +11,10 @@ const before=JSON.parse(JSON.stringify(state));assert(clean(state));assert(!clea
 assert.equal(state.progress.D669.xp,130);assert.equal(state.progress.D669.crystals,7);assert.deepEqual(state.legacy,before.legacy);assert.deepEqual(state.majickAccount,before.majickAccount);assert.equal(state.progress.D669.notes,before.progress.D669.notes);assert.deepEqual(state.progress.D669.realmRecords,{oraclelens:{wins:1}});assert.deepEqual(state.progress.D669.answers,[{qid:'real'}]);assert.equal(state.progress.D772.answers.length,1);assert(!state.progress.D669.adaptiveSkills['Section 1']);assert.equal(state.progress.D669.adaptiveSkills.mixed.attempts.length,1);assert(state.progress.D669.adaptiveSkills.mixed.reconstructionBySkill.real);
 window.S=before;let writes=0;window.MajickSaveSafety={write(){writes++;throw Error('quota')}};assert.equal(run(),false);assert(before.progress.D669.realmRecords.runesort);window.MajickSaveSafety.write=()=>{writes++};assert(run());assert(!before.progress.D669.realmRecords.runesort);assert.equal(run(),false);assert.equal(writes,2);
 console.log('PASS course-location retirement, course-scoped cleanup, protected subject progress, idempotence and failed-save retry');
+const policy=window.MajickCourseQuestionPolicy;
+const examples=[{id:'one',skill:'blending'},{id:'two',skill:'blending'},{id:'three',skill:'blending'}];
+assert.deepEqual(Array.from(policy.leastSeen(examples,[{qid:'one'},{qid:'two'}]),q=>q.id),['three']);
+assert.deepEqual(Array.from(policy.leastSeen(examples,[{qid:'one'},{qid:'two'},{qid:'three'},{qid:'one'}]),q=>q.id),['two','three']);
+assert.equal(policy.skillKey({rotationSkill:'phonemic-blending',topicId:'reading'}),'phonemic-blending');
+assert.equal(policy.skillKey({skill:'median',topicId:'statistics'}),'median');
+console.log('PASS same-skill least-seen selection derives fairness from existing history');

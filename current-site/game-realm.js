@@ -136,7 +136,13 @@
     else return null; // End this round instead of recycling an already-played question.
     const recent=new Set((prog().answers||[]).slice(-20).map(a=>a.qid));
     const lessRecent=pool.filter(q=>!recent.has(q.id));
-    return originalPick(lessRecent.length?lessRecent:pool);
+    const candidates=lessRecent.length?lessRecent:pool;
+    const chosen=originalPick(candidates);if(!chosen||session?.questionRepair||['repair','reconstruct'].includes(session?.type))return chosen;
+    const policy=globalThis.MajickCourseQuestionPolicy;if(!policy?.leastSeen)return chosen;
+    // Keep the adaptive skill choice; vary the example within that same skill.
+    const sameSkill=pool.filter(q=>policy.skillKey(q)===policy.skillKey(chosen));
+    const freshSkill=policy.leastSeen(sameSkill,prog().answers||[]);
+    return freshSkill.some(q=>q.id===chosen.id)?chosen:(originalPick(freshSkill)||chosen);
   };
 
   /* Moon Crystal Words readability + correct crossing-off behavior. */
@@ -252,7 +258,7 @@
     '</section>';
   }
   function gameCard(icon,title,desc,action,tag='NEW TRIAL'){
-    return '<button type="button" class="realmTrialCard" onclick="'+action+'"><span class="realmTrialIcon">'+icon+'</span><small>'+E(tag)+'</small><h3>'+E(title)+'</h3><p>'+E(desc)+'</p><b>Enter trial →</b></button>';
+    return '<button type="button" class="realmTrialCard" onclick="'+action+'"><span class="realmTrialIcon" aria-hidden="true">'+icon+'</span><small>'+E(tag)+'</small><h3>'+E(title)+'</h3><p>'+E(desc)+'</p><b>Enter trial →</b></button>';
   }
 
   // A course-owned sorting game. Its fixed, reviewed cases are practice, not OA questions.
@@ -270,6 +276,25 @@
     {id:'d669-realm-meaning',course:'D669',section:'Section 2',topicId:'d669-s2-reading',difficulty:3,prompt:'A child reads ecosystem accurately but cannot explain the word or use it in a sentence. What should the teacher develop next?',options:['Word meaning and use in context','Letter naming alone','Faster oral reading only','A picture guess instead of reading'],answer:'Word meaning and use in context',keyClue:'The printed word is read accurately, but its meaning and use are weak.',why:'Build lexical quality by linking pronunciation and spelling with meaning, word parts and usage.'},
     {id:'d669-realm-inference',course:'D669',section:'Section 2',topicId:'d669-s2-reading',difficulty:3,prompt:'A child reads every word accurately but cannot infer why a character changes plans. What should the teacher investigate first?',options:['Language comprehension and verbal reasoning','Only phoneme segmentation','Only letter-sound correspondence','Only sight-word speed'],answer:'Language comprehension and verbal reasoning',keyClue:'Word reading is accurate; the difficulty emerges when reasoning about text meaning.',why:'Use discussion and text evidence to probe inference, language knowledge and relevant background knowledge.'}
   ];
+  // Original transfer examples: the same four reading skills, new classroom cases.
+  const D669_CASE_VARIANTS={
+    'd669-realm-sounds':[
+      'A student correctly names letter cards but cannot combine the spoken sounds /s/ /ŭ/ /n/ without print. What should the teacher investigate first?',
+      'A learner identifies printed letters but cannot orally blend /h/ /ŏ/ /p/ into a word. What should the teacher investigate first?'],
+    'd669-realm-print':[
+      'After a teacher reads a passage aloud, a learner explains it accurately. When reading the same passage independently, the learner substitutes many words. What should the teacher investigate first?',
+      'A student understands a spoken story and answers questions about it, but struggles to identify its words in print. What should the teacher investigate first?'],
+    'd669-realm-meaning':[
+      'A student pronounces migrate accurately but cannot explain what it means in a science passage. What should the teacher develop next?',
+      'A learner reads shelter correctly but cannot connect it to its meaning or use it in a sentence. What should the teacher develop next?'],
+    'd669-realm-inference':[
+      'A student decodes the sentences accurately but cannot explain why a character hides a letter. What should the teacher investigate first?',
+      'A learner reads a story accurately but cannot use its details to infer why the character refuses an invitation. What should the teacher investigate first?']
+  };
+  for(const original of D669_DIAGNOSIS_CASES.slice()){
+    original.rotationSkill=original.id;
+    for(const [i,prompt] of (D669_CASE_VARIANTS[original.id]||[]).entries())D669_DIAGNOSIS_CASES.push({...original,id:original.id+'-transfer-'+(i+1),prompt,source:'Original Aetheria practice aligned with supplied D669 reading foundations'});
+  }
   globalThis.startD669PillarSort=function(){
     if(globalThis.S?.activeCourse!=='D669')return;
     session={type:'d669pillars',items:shuffleCopy(D669_PILLAR_CASES),index:0,score:0,answered:false,finished:false};
@@ -821,8 +846,9 @@
   /* ---------- Oracle Lens ---------- */
   function nextOracle(){
     const pool=realmQuestionPool().filter(q=>q?.prompt&&q?.options?.length>=2&&(globalThis.S?.activeCourse!=='D669'||q.keyClue));
-    const q=pickAdaptive(pool);if(!q)return false;
-    const otherClues=shuffleCopy(pool.filter(x=>x.id!==q.id&&x.keyClue).map(x=>x.keyClue)).slice(0,2);
+    const remaining=globalThis.S?.activeCourse==='D669'?pool.filter(q=>!session.questions.some(id=>D669_DIAGNOSIS_CASES.find(x=>x.id===id)?.rotationSkill===q.rotationSkill)):pool;
+    const q=pickAdaptive(remaining);if(!q)return false;
+    const otherClues=shuffleCopy([...new Set(pool.filter(x=>x.id!==q.id&&x.keyClue&&normalize(x.keyClue)!==normalize(q.keyClue)).map(x=>x.keyClue))]).slice(0,2);
     const correctClue=q.keyClue||q.distractorCoach||('Focus on the exact task in: '+q.prompt);
     const lenses=shuffleCopy([correctClue,...otherClues]).slice(0,3);
     while(lenses.length<3)lenses.push('A related detail that does not control the answer.');
@@ -830,7 +856,7 @@
     return true;
   }
   globalThis.startOracleLens=function(){
-    const limit=globalThis.S?.activeCourse==='D669'?D669_DIAGNOSIS_CASES.length:8;
+    const limit=globalThis.S?.activeCourse==='D669'?4:8;
     session={type:'oraclelens',opts:{label:'Oracle Lens'},round:0,limit,score:0,clarity:0,clarityStreak:0,bestClarityStreak:0,finished:false,questions:[]};
     nextOracle();if(globalThis.S)S.screen='mission';render?.();
   };
@@ -1132,7 +1158,10 @@
     if(session?.reviewMode&&Array.isArray(session.reviewQueue)&&session.reviewQueue.length){
       q=session.reviewQueue.shift();
     }else{
-      const pool=realmQuestionPool({hard:true}).filter(q=>q?.prompt&&q?.options?.length>=2);
+      const hard=realmQuestionPool({hard:true}).filter(q=>q?.prompt&&q?.options?.length>=2);
+      // Some supplied course banks have no difficulty metadata. Keep their
+      // real questions playable rather than rendering an undefined item.
+      const pool=hard.length?hard:realmQuestionPool().filter(q=>q?.prompt&&q?.options?.length>=2);
       if(!pool.length)return false;
       q=pickAdaptive(pool);
     }
@@ -1205,6 +1234,7 @@
     render?.();
   };
   function gauntletHTML(){
+    if(!session?.current)return '<div class="qwrap realmMode"><section class="card"><h2>Practice questions are not available yet</h2><p>No answer has been scored. Return to the Arcade and choose another activity.</p><button class="btn primary" onclick="session=null;navigate(\'games\')">Back to the Arcade</button></section></div>';
     if(session.finished)return realmResultHTML(session.reviewMode?'D772 All-Section Review':'Guardian Gauntlet','gauntlet',session.score,Math.max(1,session.round),session.won,session.reviewMode?('Balanced Sections 1–3 review complete • '+session.score+'/'+session.round+' correct'):(session.won?(session.guardianName+' helped you break the boss ward.'):'The boss ward held this time. Your run still added practice data.'));
     const q=session.current,phase=bossPhase(session.bossHP),evidence=gauntletEvidence(q);
     return '<div class="qwrap realmMode realmGauntlet '+phase.className+'">'+realmScene('gauntlet')+guardianBanner(session.guardianMessage||(session.shieldUsed?'The shield is spent. I am still with you.':'I can absorb one missed answer for you this run.'))+

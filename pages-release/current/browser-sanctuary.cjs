@@ -24,6 +24,8 @@ async function run(){
  await ev('document.querySelector(".v3327CampusSanctuary .v3327TextBtn").click()');await waitFor('S.screen==="companions"');
  await waitFor('!!document.querySelector(".v3317SanctuaryFrame")');
  await ev('document.querySelector("[onclick^=majickTogglePixiSanctuary]").click()');
+ // Exercise the visible room: Chromium suspends offscreen iframe animation frames.
+ await ev('document.querySelector(".v3317SanctuaryFrame").scrollIntoView({block:"center"})');
  await waitFor('!!document.querySelector(".v3317SanctuaryFrame").contentWindow.majickPhaserGame?.scene?.getScene("Game")');
  await ev('v3321PushFurnitureState()');
  await waitFor('!!document.querySelector(".v3317SanctuaryFrame").contentWindow.majickPhaserGame.scene.getScene("Game").v3321FurnitureButton?.active');

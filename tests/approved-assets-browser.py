@@ -43,11 +43,17 @@ with sync_playwright() as pw:
   page.evaluate('MajickWardrobeStudio.close()')
   page.evaluate("navigate('vault');majickVaultTab('potions')")
   assert page.locator('.majRecipe').count()==5
-  backgrounds=page.locator('.majRecipe>span[aria-hidden=true]').evaluate_all('(els)=>els.map(e=>getComputedStyle(e).backgroundImage)')
-  assert len(set(backgrounds))==5 and all('/models/potion-' in b for b in backgrounds)
-  assert '/crystal-blue.webp' in page.locator('.majArcaneVault>header h2').evaluate('(e)=>getComputedStyle(e,"::after").backgroundImage')
+  bottle_images=page.locator('.majRecipe>span[aria-hidden=true]>img');assert bottle_images.count()==5
+  for image in bottle_images.all():
+   image.scroll_into_view_if_needed();image.evaluate('(e)=>e.decode()')
+   assert image.evaluate('(e)=>e.naturalWidth===192&&e.naturalHeight===192')
+  bottles=page.locator('.majRecipe>span[aria-hidden=true]>img').evaluate_all('(els)=>els.map(e=>e.src)')
+  assert len(set(bottles))==5 and all('/potions/'+color+'.webp' in url for color,url in zip(['purple','aqua','red','green','orange'],bottles)),bottles
+  assert page.locator('.majRecipe>span[aria-hidden=true]').evaluate_all('(els)=>els.every(e=>getComputedStyle(e).backgroundImage==="none")'),'Duplicate bottle backgrounds'
+  assert '/images/bag.webp' in page.locator('.majArcaneVault>header h2').evaluate('(e)=>getComputedStyle(e,"::after").backgroundImage')
   page.evaluate("majickVaultTab('ingredients')")
-  assert '/plants/shrub.webp' in page.locator('.majRecipeShelf:has(.majLootGrid)>h3').evaluate('(e)=>getComputedStyle(e,"::after").backgroundImage')
+  cabinet_heading=page.locator('.majRecipeShelf:has(.majLootGrid)>h3');assert '/images/herbal.webp' in cabinet_heading.locator('img').get_attribute('src')
+  assert cabinet_heading.evaluate('(e)=>getComputedStyle(e,"::after").content')=='none'
   for color in ['blue','green','red','violet','yellow']:
    assert page.evaluate('async color=>{const img=new Image();img.src=new URL("assets/licensed/crystal-"+color+".webp",location.href);await img.decode();return img.naturalWidth>0&&img.naturalHeight>0}',color),'Crystal artwork failed to decode: '+color
   before_ornaments=page.evaluate('JSON.stringify({progress:S.progress,legacy:S.legacy,account:S.majickAccount})')
@@ -59,7 +65,18 @@ with sync_playwright() as pw:
   page.evaluate("S.activeCourse='D772';navigate('learninglab')")
   navigator=page.locator('.courseLessonNavigator');navigator.wait_for(state='visible')
   assert navigator.evaluate('(e)=>e.getBoundingClientRect().width>=160'),'Lesson navigator collapses to an unreadable column'
-  assert '/crystal-green.webp' in navigator.locator('h3').first.evaluate('(e)=>getComputedStyle(e,"::after").backgroundImage')
+  assert '/skill-03.webp' in navigator.locator('h3').first.evaluate('(e)=>getComputedStyle(e,"::after").backgroundImage')
+  page.evaluate("navigate('games')")
+  cards=page.locator('.realmTrialCard');assert cards.count()>=4
+  icons=cards.locator('.realmTrialIcon');assert icons.count()==cards.count()
+  assert icons.evaluate_all('(els)=>els.every(e=>e.getAttribute("aria-hidden")==="true"&&getComputedStyle(e).backgroundImage!=="none")')
+  for card in cards.all():
+   card.scroll_into_view_if_needed()
+   card.locator('h3').scroll_into_view_if_needed()
+   # content-visibility:auto resumes painting after the scroll frame.
+   label=card.locator('h3').evaluate('(e)=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(()=>resolve(e.innerText))))')
+   assert label.strip(),'Icon replaced its game label: '+card.evaluate('(e)=>JSON.stringify({html:e.outerHTML,styles:[e.querySelector("h3"),e,e.parentElement,e.parentElement.parentElement].map(n=>({display:getComputedStyle(n).display,visibility:getComputedStyle(n).visibility,cv:getComputedStyle(n).contentVisibility,rect:n.getBoundingClientRect().toJSON()})),scrollY})')
+  assert page.evaluate('document.documentElement.scrollWidth<=innerWidth+2'),'App-wide icons introduce overflow'
   page.locator('.caAmbience').click();page.wait_for_function('MajickCollegiumAtmosphere.inspect().playing')
   for room in ['home','learninglab','livinggrimoire','games','companions']:
    page.wait_for_timeout(170);assert page.evaluate('(room)=>MajickCollegiumAtmosphere.micro("enter",room)',room)

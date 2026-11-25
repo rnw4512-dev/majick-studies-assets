@@ -13,3 +13,9 @@ Runtime derivatives are rendered transparent WebP portraits / bottles with studi
 - plants/: Free HandPainted Plants 2, Nobiax / Yughues, CC0 1.0. https://opengameart.org/content/free-handpainted-plants-2. Original license retained alongside the selected OBJ/TGA pairs.
 
 Gem/crystal meshes use studio material conversions; gems have muted material colors. Plant previews preserve original painted color/alpha textures. Geometry unchanged; no endorsement implied. Reproduction: tools/asset-pipeline/render_gems_crystals.py and render_plants.py, using Blender --disable-autoexec --python-exit-code 1.
+
+- fantasy-rpg-models.blend: 50 Fantasy RPG Asset Models, rubberduck, CC0. https://opengameart.org/content/50-fantasy-rpg-asset-models
+  Only candle_holder_2 is rendered for the reading-room still life. Antique brass derivative material, studio lighting, unchanged mesh. Reproduce with Blender --background --disable-autoexec fantasy-rpg-models.blend --python-exit-code 1 --python tools/asset-pipeline/render_rpg_prop.py -- OUTPUT; convert transparent PNG to WebP quality 90 using Pillow. Raw source is not published.
+
+- owlish-potion/: Potion Bottle, OwlishMedia, CC0. https://opengameart.org/content/potion-bottle-0
+  Original FBX and selected original color/emission textures from the user's Potion_1.zip. Five static 192px bottle renders use original alpha and painted texture colors, unchanged geometry. Reproduce: blender --background --disable-autoexec --python-exit-code 1 --python tools/asset-pipeline/render_uploaded_potion.py -- asset-sources/approved/owlish-potion OUTPUT; encode PNG outputs to WebP quality 90. Raw models/textures are outside the published app.

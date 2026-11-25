@@ -14,7 +14,10 @@ async function contrast(page,selector,label){
  const loc=page.locator(selector).filter({visible:true}).first();
  assert(await loc.count(),'Required visible surface missing: '+label);
  await loc.evaluate(e=>e.scrollIntoView({block:'center'}));await page.waitForTimeout(100);
- const items=await page.evaluate(selector=>{
+ await page.evaluate(()=>document.fonts.ready);
+ let items,shot,stable=false;
+ for(let attempt=0;attempt<3&&!stable;attempt++){
+ items=await page.evaluate(selector=>{
   const root=[...document.querySelectorAll(selector)].find(e=>e.checkVisibility());
   const walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT),items=[];let n;
   while(n=walker.nextNode()){
@@ -25,11 +28,20 @@ async function contrast(page,selector,label){
    if(!rects.length)continue;
    let opacity=1;for(let e=el;e;e=e.parentElement)opacity*=+getComputedStyle(e).opacity;
    items.push({text:n.textContent.trim().slice(0,75),color:s.webkitTextFillColor||s.color,size:parseFloat(s.fontSize),weight:parseFloat(s.fontWeight),opacity,rects,disabled:!!el.closest(':disabled')});
-  }return items;
+  }
+  // Capture geometry and suppress glyph paint in one browser task. Lazy room
+  // renders may replace a node between tasks; detect that before using pixels.
+  const painted=[...document.querySelectorAll('#content,#content *')].map(e=>({e,style:e.getAttribute('style')}));
+  window.__polishPaint={painted,nodes:[...root.querySelectorAll('*')],root,geometry:JSON.stringify(root.getBoundingClientRect()),scroll:[scrollX,scrollY]};
+  for(const {e} of painted){e.style.setProperty('color','transparent','important');e.style.setProperty('-webkit-text-fill-color','transparent','important');e.style.setProperty('text-shadow','none','important')}
+    window.__polishPaint.observer=new MutationObserver(()=>{window.__polishPaint.changed=true});
+  window.__polishPaint.observer.observe(document.querySelector('#content'),{childList:true,subtree:true,characterData:true});
+  return items;
  },selector);
- // Remove only glyph paint, retaining the actual composited backgrounds and layout.
- await page.evaluate(()=>{document.querySelectorAll('#content,#content *').forEach(e=>{e.dataset.polishOriginal=e.getAttribute('style')||'';e.style.setProperty('color','transparent','important');e.style.setProperty('-webkit-text-fill-color','transparent','important');e.style.setProperty('text-shadow','none','important')})});
- let shot;try{shot=PNG.sync.read(await page.screenshot())}finally{await page.evaluate(()=>{document.querySelectorAll('[data-polish-original]').forEach(e=>{e.setAttribute('style',e.dataset.polishOriginal);delete e.dataset.polishOriginal})})}
+ try{shot=PNG.sync.read(await page.screenshot())}finally{stable=await page.evaluate(()=>{const p=window.__polishPaint;p.observer.disconnect();const stable=!p.changed&&p.root.isConnected&&p.nodes.every(e=>e.isConnected)&&p.geometry===JSON.stringify(p.root.getBoundingClientRect())&&p.scroll[0]===scrollX&&p.scroll[1]===scrollY;for(const {e,style} of p.painted){if(style===null)e.removeAttribute('style');else e.setAttribute('style',style)}delete window.__polishPaint;return stable})}
+ if(!stable)await page.waitForTimeout(150);
+ }
+ assert(stable,'Reading surface changed while sampling contrast: '+label);
  let minimum=Infinity,count=0;const failures=[];
  for(const item of items){
   if(item.disabled)continue; // Inactive controls are exempt; tested separately for visible disabled styling.
@@ -57,8 +69,11 @@ async function contrast(page,selector,label){
   await page.route('**/enchanted-collegium.css*',r=>r.abort());
   await page.goto(url);await page.waitForFunction(()=>typeof navigate==='function'&&typeof switchCourse==='function');
   await page.waitForTimeout(1000);await page.evaluate(()=>switchCourse('D772'));await go(page,'reasoning');
-  const snapshot=()=>page.evaluate(()=>({state:JSON.stringify(S),controls:document.querySelectorAll('#content button,#content input,#content select').length,progress:[...document.querySelectorAll('#content progress')].map(e=>[e.value,e.max,e.getAttribute('aria-label')])}));
-  const before=await snapshot();await page.unroute('**/enchanted-collegium.css*');await page.addStyleTag({url:url+'/enchanted-collegium.css'});const after=await snapshot();
+  await page.unroute('**/enchanted-collegium.css*');
+  const stylesheet=await (await page.request.get(url+'/enchanted-collegium.css')).text();
+  // Fetch before sampling, then apply and compare atomically. Unrelated lazy room
+  // renders must not land between the two sides of a CSS-only state assertion.
+  const [before,after]=await page.evaluate(css=>{const snapshot=()=>({state:JSON.stringify(S),controls:document.querySelectorAll('#content button,#content input,#content select').length,progress:[...document.querySelectorAll('#content progress')].map(e=>[e.value,e.max,e.getAttribute('aria-label')])});const before=snapshot(),style=document.createElement('style');style.textContent=css;document.head.append(style);return [before,snapshot()]},stylesheet);
   assert.deepEqual(after,before,'Stylesheet must not change state, controls, or progress values');report.checks.push('CSS application preserves complete S state, control count and progress value/max/label');
   for(const width of widths){
    await page.setViewportSize({width,height:1000});

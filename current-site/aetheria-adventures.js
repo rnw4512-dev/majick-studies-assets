@@ -87,6 +87,7 @@ function answer(i){
  if(running.mode==='game'&&running.aiming)return;
  const q=running.questions[running.index];if(!q||i<0||i>=q.options.length)return;
  running.choice=i;running.locked=true;running.shot=i===q.correct?'hit':'miss';
+ document.dispatchEvent(new CustomEvent('majick:guided-practice',{detail:{courseId:course(),questionId:q.id,correct:i===q.correct,origin:'adventure:'+running.mode}}));
  if(i===q.correct){running.score++;running.firstTryCorrect++}
  redraw();
 }
@@ -290,6 +291,7 @@ if(window.MajickRenderQueue?.register)window.MajickRenderQueue.register('aetheri
 document.addEventListener('DOMContentLoaded',schedule);
 document.addEventListener('change',e=>{if(e.target?.matches?.('.courseSelect')){running=null;schedule()}});
 window.addEventListener('pageshow',schedule);
-window.MajickAetheriaAdventures=Object.freeze({VERSION,refresh:schedule,unlocks:GATES,questions,courseStory,progress:(id)=>({...entry(String(id||course()).toUpperCase())})});
+document.addEventListener('majick:save-restored',()=>{try{journal=JSON.parse(localStorage.getItem(KEY)||'{}');running=null;schedule()}catch(_){}});
+window.MajickAetheriaAdventures=Object.freeze({VERSION,exportState:()=>JSON.parse(JSON.stringify(journal)),refresh:schedule,unlocks:GATES,questions,courseStory,progress:(id)=>({...entry(String(id||course()).toUpperCase())})});
 schedule();
 })();

@@ -1,0 +1,93 @@
+{
+  "source": "https://opengameart.org/content/potion-bottle-0",
+  "author": "OwlishMedia",
+  "license": "CC0-1.0",
+  "verification": "Cached primary-source page inspected 2026-11-24: Potion_1.zip, eight color variants, CC0. Selected five original albedo alpha/emission pairs retained. No external document instructions executed.",
+  "files": [
+    {
+      "path": "/workspace/attachments/7886545f-db52-4ba4-8089-33fac5448d7f/Potion_1.zip",
+      "bytes": 18817333,
+      "sha256": "7a4f7366f0b7f8f60bade3a9354457b3a32583091518bdfa04fd2395e5a150e4"
+    },
+    {
+      "path": "asset-sources/approved/owlish-potion/Potion_1.fbx",
+      "bytes": 31600,
+      "sha256": "a3f0a15536a4496293cd59a4322a759e5c477b44ce32bf36d283f22f90521895"
+    },
+    {
+      "path": "asset-sources/approved/owlish-potion/tex/Potion_1_Potion1_Aqua_AlbedoTransparency.png",
+      "bytes": 1804181,
+      "sha256": "bf2b9a0be14016e2db89dec49b1fca9001c4531bbdf2c2edc4eb2182c0457efd"
+    },
+    {
+      "path": "asset-sources/approved/owlish-potion/tex/Potion_1_Potion1_Aqua_Emission.png",
+      "bytes": 17862,
+      "sha256": "65fc6349ebcbeda6e5a671d3c5eabb573de6fd565ee72737746d2c396518e269"
+    },
+    {
+      "path": "asset-sources/approved/owlish-potion/tex/Potion_1_Potion1_Green_AlbedoTransparency.png",
+      "bytes": 1807704,
+      "sha256": "f08fa306cea5c0b02c68a29737e53ae1fb74c3f9c26396cda3fa956362a812ee"
+    },
+    {
+      "path": "asset-sources/approved/owlish-potion/tex/Potion_1_Potion1_Green_Emission.png",
+      "bytes": 17874,
+      "sha256": "2b1560e1bd05dea1e19be4b8756d67c1baa816cde572b98537edcd7fd8aa9a50"
+    },
+    {
+      "path": "asset-sources/approved/owlish-potion/tex/Potion_1_Potion1_Orange_AlbedoTransparency.png",
+      "bytes": 1805080,
+      "sha256": "204fbc6de19cf98195d09b058146dd03d3969c2a45b98272e56e3d988c305de1"
+    },
+    {
+      "path": "asset-sources/approved/owlish-potion/tex/Potion_1_Potion1_Orange_Emission.png",
+      "bytes": 17874,
+      "sha256": "c16f070ea328b79ed19409a89be365f5de07398106463a1e70ddce9f90782b52"
+    },
+    {
+      "path": "asset-sources/approved/owlish-potion/tex/Potion_1_Potion1_Purple_AlbedoTransparency.png",
+      "bytes": 1810692,
+      "sha256": "3da01f765e378dd29c8e0ce512910d6bb3c17616efdc6ac23ecbec7f97fd640a"
+    },
+    {
+      "path": "asset-sources/approved/owlish-potion/tex/Potion_1_Potion1_Purple_Emission.png",
+      "bytes": 17859,
+      "sha256": "fd9f9085a2e4defa82ad236afecec35986c6a6b9270aa9dba145233f7b8431ce"
+    },
+    {
+      "path": "asset-sources/approved/owlish-potion/tex/Potion_1_Potion1_Red_AlbedoTransparency.png",
+      "bytes": 1800228,
+      "sha256": "f5282ad35a2b291179286ab4485077bdced2f2a721fa9fbc22dfda15304e2c74"
+    },
+    {
+      "path": "asset-sources/approved/owlish-potion/tex/Potion_1_Potion1_Red_Emission.png",
+      "bytes": 17820,
+      "sha256": "5a3670cb491dce09665e9789fc7b298843dc1a9cd6c6ee991217b0df3e2e7cd2"
+    },
+    {
+      "path": "current-site/assets/licensed/potions/aqua.webp",
+      "bytes": 8670,
+      "sha256": "e21390882219df686f1eb0d34124186ec732bdd370977f354efd2cff9fe4a509"
+    },
+    {
+      "path": "current-site/assets/licensed/potions/green.webp",
+      "bytes": 8934,
+      "sha256": "879668fcae92cf64176d0019a6d9c551a1b621e37a3fac810d2c0938995cdec7"
+    },
+    {
+      "path": "current-site/assets/licensed/potions/orange.webp",
+      "bytes": 8848,
+      "sha256": "51c5a668211e7cb7ef74aebc068332ba1f7bf5390fc8fc1d18df9ccfcc1e6977"
+    },
+    {
+      "path": "current-site/assets/licensed/potions/purple.webp",
+      "bytes": 8878,
+      "sha256": "c1d27543d804eabce2918d477a85164057f998d26aae0129bcb3ac4c41b4454c"
+    },
+    {
+      "path": "current-site/assets/licensed/potions/red.webp",
+      "bytes": 9276,
+      "sha256": "a67740142c6b10e1e245dcc706ac4aa3cc52a3edad774838d87345392a88229f"
+    }
+  ]
+}

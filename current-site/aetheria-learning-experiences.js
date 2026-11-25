@@ -33,7 +33,7 @@ function sectionRows(id,n){
 function sectionQuestions(id,n){
  if(id!=='D669')return sourced(id);
  const row=sectionRows(id,n),packs=n===2?sourced(id):[];
- const seen=new Set();return [...row.questions,...packs].filter(q=>{if(seen.has(q.id))return false;seen.add(q.id);return true});
+ const seen=new Set();return [...row.questions,...packs].filter(q=>{if(window.MajickCourseQuestionPolicy?.excluded(q))return false;const key=String(q.prompt).trim().toLowerCase().replace(/\s+/g,' ')+'|'+JSON.stringify(q.options.map(String).sort());if(seen.has(key))return false;seen.add(key);return true});
 }
 function sectionOverview(id){
  if(id!=='D669')return '';
@@ -81,17 +81,19 @@ const MODES=[
  {id:'match',title:'Phonics Matching',icon:'🔤',desc:'Connect a course concept with its correct meaning.'},
  {id:'classroom',title:'Classroom Decisions',icon:'🏫',desc:'Help a student by choosing the strongest instructional response.'}
 ];
+function roundKey(id,kind){return id+':'+kind+':section-'+selectedSection}
+function roundItems(rows,cycle,count){const size=Math.min(count,rows.length);if(!size)return [];const offset=(Math.max(0,Number(cycle)||0)*size)%rows.length;return Array.from({length:size},(_,i)=>rows[(offset+i)%rows.length])}
 function activity(id,kind){
- const questions=sectionQuestions(id,selectedSection),terms=id==='D669'&&selectedSection!==2?[]:concepts(id);
+ const questions=sectionQuestions(id,selectedSection),terms=id==='D669'&&selectedSection!==2?[]:concepts(id),cycle=Number(journal.playRuns?.[roundKey(id,kind)]||0);
  if(kind==='match'){
   const distinct=[],seen=new Set();
   for(const c of terms){const k=c.term.toLowerCase();if(!seen.has(k)){seen.add(k);distinct.push(c)}}
   if(distinct.length<3)return [];
-  const selected=distinct.slice(0,5);
+  const selected=roundItems(distinct,cycle,5);
   return selected.map((x,i)=>({id:'concept|'+x.term,prompt:'Match this meaning to its course concept: '+x.text,options:selected.map(z=>z.term),correct:i,explanation:x.term+' — '+x.text,source:'',title:x.lesson}));
  }
- if(kind==='sort')return questions.slice(0,5).map(q=>({...q,prompt:'Sort this classroom clue: '+q.prompt}));
- return questions.slice(0,5);
+ if(kind==='sort')return roundItems(questions,cycle,5).map(q=>({...q,prompt:'Sort this classroom clue: '+q.prompt}));
+ return roundItems(questions,cycle,5);
 }
 
 /* Original supplemental practice derived from the D669 sourced lesson examples.
@@ -140,8 +142,7 @@ function deepStart(kind){
  if(!DEEP_MODES.some(m=>m.id===kind)||pool.length<3)return;
  session=null;vocabRun=null;compRun=null;
  const runs=journal.playRuns||{},cycle=Number(runs[cid+':'+kind]||0);
- const ordered=shuffleDeterministically(pool,cycle);
- const items=ordered.slice(0,Math.min(4,ordered.length));
+ const items=roundItems(pool,cycle,4);
  journal.playRuns={...runs,[cid+':'+kind]:cycle+1};save();
  deep={kind,course:cid,items,index:0,tiles:[],feedback:null,repairs:0,completed:false,firstTry:0,outcomes:[],turn:0,usedCoach:false,
     optionOrder:[],stage:'choose'};
@@ -161,6 +162,7 @@ function deepTile(index){
  if(deep.kind==='scenario'){
   deep.tiles=[index];
   const q=deep.items[deep.index],right=index===q.correct;
+  document.dispatchEvent(new CustomEvent('majick:guided-practice',{detail:{courseId:deep.course,questionId:'deep:'+deep.kind+':'+q.id,correct:right,origin:'course-game:'+deep.kind}}));
   deep.feedback={right,explanation:q.explanation||'Compare this decision to the source lesson.'};
   if(!right){deep.repairs++;deep.usedCoach=true;deep.outcomes[deep.index]='The student applies this approach but still needs support with: '+q.prompt+' Your Guardian recommends reviewing the explanation and choosing a more targeted teaching response.'}
   else{deep.outcomes[deep.index]='The student now has a clearer next step for: '+q.prompt+' The teaching response can be checked against the cited course explanation.';if(!deep.usedCoach)deep.firstTry++}
@@ -177,6 +179,7 @@ function deepCheck(){
  if(deep.tiles.length!==needed)return;
  const solution=q.parts,selected=deep.tiles.map(i=>deep.optionOrder.find(x=>x.id===i)?.label);
  const right=selected.every((v,i)=>v===solution[i]);
+ document.dispatchEvent(new CustomEvent('majick:guided-practice',{detail:{courseId:deep.course,questionId:'deep:'+deep.kind+':'+q.id,correct:right,origin:'course-game:'+deep.kind}}));
  deep.feedback={right,explanation:right?q.tip:'Compare the arrangement carefully. '+q.tip};
  if(right&&!deep.usedCoach)deep.firstTry++;
  if(!right){deep.repairs++;deep.usedCoach=true}
@@ -243,6 +246,7 @@ function vocabStart(){
 function vocabChoose(label){
  if(!vocabRun||vocabRun.complete||vocabRun.feedback)return;
  const q=vocabRun.items[vocabRun.index],right=String(label)===q.answer;
+ document.dispatchEvent(new CustomEvent('majick:guided-practice',{detail:{courseId:course(),questionId:'lesson-3-8|'+q.id,correct:right,origin:'course-game:vocab'}}));
  vocabRun.feedback={right};
  if(!right)vocabRun.wrong++;
  redraw();
@@ -289,6 +293,7 @@ function compStart(){
 function compChoose(label){
  if(!compRun||compRun.complete||compRun.feedback)return;
  const q=compRun.items[compRun.index],right=String(label)===q.answer;
+ document.dispatchEvent(new CustomEvent('majick:guided-practice',{detail:{courseId:course(),questionId:'lesson-3-9|'+q.id,correct:right,origin:'course-game:comp'}}));
  compRun.feedback={right};if(!right)compRun.wrong++;redraw();
 }
 function compRetry(){if(!compRun?.feedback||compRun.feedback.right)return;compRun.feedback=null;redraw()}
@@ -324,6 +329,7 @@ function start(kind){
  if(!MODES.some(m=>m.id===kind))return;
  deep=null;vocabRun=null;compRun=null;
  const id=course(),items=activity(id,kind);if(items.length<3){session=null;redraw();return}
+ const key=roundKey(id,kind);journal.playRuns={...journal.playRuns,[key]:Number(journal.playRuns?.[key]||0)+1};save();
  session={kind,course:id,items,index:0,correct:0,firstTry:0,choice:null,assisted:false,feedback:null,complete:false,awarded:false};
  redraw();
 }
@@ -331,6 +337,7 @@ function answer(index){
  if(!session||session.complete||session.feedback||!Number.isInteger(index))return;
  const q=session.items[session.index];if(!q||index<0||index>=q.options.length)return;
  const right=index===q.correct;
+ document.dispatchEvent(new CustomEvent('majick:guided-practice',{detail:{courseId:session.course,questionId:q.id,correct:right,origin:'course-game:'+session.kind}}));
  session.choice=index;session.feedback={right,explanation:q.explanation||'Return to the course reading and compare the options.'};
  if(right){session.correct++;if(!session.assisted)session.firstTry++}
  else session.assisted=true;
@@ -361,8 +368,8 @@ function viewGame(){
  s+=videoLessonReview();
  if(id==='D669'&&selectedSection===2)s+='<div class="aeth-comp-entry"><b>📘 Lesson 3.9 · Comprehension Lab</b><p>Explore the Simple View of Reading and match eight comprehension strategies. Practice monitoring and repairing confusing text.</p><button type="button" data-comp-start'+(comprehensionQuestions().length!==8?' disabled':'')+'>Open Comprehension Lab</button></div>';
  if(id==='D669'&&selectedSection===2)s+='<div class="aeth-vocab-entry"><b>📚 Lesson 3.8 · Vocabulary Lab</b><p>Sort three vocabulary tiers and match the four parts of Graves’s vocabulary plan.</p><button type="button" data-vocab-start'+(vocabQuestions().length!==7?' disabled':'')+'>Open Vocabulary Lab</button></div>';
- s+='<div class="aeth-mini-menu">'+MODES.map(m=>'<button type="button" data-exp-mode="'+m.id+'"'+((m.id==='match'?terms.length<3:p.length<3)?' disabled':'')+'><span>'+m.icon+'</span><b>'+E(m.title)+'</b><small>'+E(m.desc)+'</small></button>').join('')+'</div>';
- s+='<div class="aeth-mini-menu aeth-deep-menu">'+DEEP_MODES.map(m=>'<button type="button" data-deep-mode="'+m.id+'"'+(deepPool(id,m.id).length<3?' disabled':'')+'><span>'+m.icon+'</span><b>'+E(m.title)+'</b><small>'+E(m.desc)+'</small></button>').join('')+'</div>';
+ s+='<div class="aeth-mini-menu">'+MODES.map(m=>'<button type="button" data-exp-mode="'+m.id+'"'+((m.id==='match'?terms.length<3:p.length<3)?' disabled':'')+'><span aria-hidden="true">'+m.icon+'</span><b>'+E(m.title)+'</b><small>'+E(m.desc)+'</small></button>').join('')+'</div>';
+ s+='<div class="aeth-mini-menu aeth-deep-menu">'+DEEP_MODES.map(m=>'<button type="button" data-deep-mode="'+m.id+'"'+(deepPool(id,m.id).length<3?' disabled':'')+'><span aria-hidden="true">'+m.icon+'</span><b>'+E(m.title)+'</b><small>'+E(m.desc)+'</small></button>').join('')+'</div>';
  s+='<p class="aeth-exp-summary">'+count+' game discoveries recorded in your Journal.'+(p.length<3?' This section has fewer than 3 available review questions. Its lessons remain visible above; more verified practice is needed to unlock additional games.':'')+'</p>';
  if(deep&&deep.course===id)s+=deepMarkup();
  if(vocabRun&&id==='D669'&&selectedSection===2)s+=vocabMarkup();
@@ -524,6 +531,7 @@ if(window.MajickRenderQueue?.register)window.MajickRenderQueue.register('aetheri
 document.addEventListener('DOMContentLoaded',schedule);
 document.addEventListener('change',e=>{if(e.target?.matches?.('.courseSelect')){session=null;deep=null;vocabRun=null;compRun=null;schedule()}});
 window.addEventListener('pageshow',schedule);
-window.MajickLearningExperiences=Object.freeze({VERSION,refresh:schedule,courseGames:activity,deepPool,sectionRows,sectionQuestions,vocabQuestions,comprehensionQuestions,memories:()=>journal.memories.slice(),decorations:()=>decor.slice()});
+document.addEventListener('majick:save-restored',()=>{try{journal=JSON.parse(localStorage.getItem(KEY)||'{"version":1,"memories":[],"playRuns":{}}');if(!Array.isArray(journal.memories))journal.memories=[];session=deep=vocabRun=compRun=null;schedule()}catch(_){}});
+window.MajickLearningExperiences=Object.freeze({VERSION,exportState:()=>JSON.parse(JSON.stringify(journal)),refresh:schedule,courseGames:activity,deepPool,sectionRows,sectionQuestions,vocabQuestions,comprehensionQuestions,memories:()=>journal.memories.slice(),decorations:()=>decor.slice()});
 schedule();
 })();

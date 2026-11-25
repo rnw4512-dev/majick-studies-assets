@@ -39,5 +39,129 @@
 #content:has(.learnLab){--collegium-crystal:url('./assets/licensed/crystals/cluster-1.webp')}
 #content:has(.mjReasoningPage){--collegium-crystal:url('./assets/licensed/crystals/cluster-4.webp')}
 
+/* Downloaded objects form quiet still lifes on the existing three room ribbons.
+   Reading surfaces and all progress/control owners remain unchanged. */
+body.majickCampus #majickRoomRibbon{
+ position:relative;isolation:isolate;min-height:132px;box-sizing:border-box;padding:22px clamp(18px,3vw,34px);
+ border:1px solid #a88b59;border-bottom:5px solid #55402e;border-radius:13px;
+ background:radial-gradient(ellipse at 85% 30%,#89704f66,transparent 44%),linear-gradient(110deg,#211b2e,#2e3435 65%,#1a2927);
+ box-shadow:inset 0 0 0 4px #d3b8801c,inset 0 -14px 22px #0004,0 8px 13px #37263b26;
+}
+body.majickCampus #majickRoomRibbon>div{position:relative;z-index:1;max-width:calc(100% - 190px)}
+body.majickCampus #majickRoomRibbon::after{
+ content:"";position:absolute;right:12px;bottom:3px;width:190px;height:124px;pointer-events:none;
+ background:url('./assets/licensed/models/candle-holder.webp') 35% 90%/110px no-repeat,url('./assets/licensed/crystals/cluster-7.webp') 100% 100%/100px no-repeat,radial-gradient(ellipse at 58% 94%,#070b0dcc,transparent 65%) bottom/100% 22px no-repeat;
+ filter:drop-shadow(2px 4px 3px #0005);
+}
+body[data-majick-polish-room=learninglab] #majickRoomRibbon::after{background-image:url('./assets/licensed/models/candle-holder.webp'),url('./assets/licensed/potions/green.webp'),radial-gradient(ellipse at 58% 94%,#070b0dcc,transparent 65%)}
+body[data-majick-polish-room=reasoning] #majickRoomRibbon::after{background-image:url('./assets/licensed/crystals/cluster-4.webp'),url('./assets/licensed/gems/ruby.webp'),radial-gradient(ellipse at 58% 94%,#070b0dcc,transparent 65%)}
+/* Replace the abstract library arch with a tangible cabinet vignette. */
+#aethAdventure .aeth-scene[data-scene=library]{min-height:188px;background:radial-gradient(ellipse at 52% 15%,#c49c5e40,transparent 63%),repeating-linear-gradient(90deg,#1f2528 0 57px,#a389572e 58px 60px,#182023 61px 115px);box-shadow:inset 0 0 28px #050a0c99,inset 0 0 0 5px #bb985635}
+#aethAdventure .aeth-scene[data-scene=library] .aeth-scene-arch{left:calc(50% - 90px);bottom:22px;width:180px;max-width:none;height:150px;border:0;border-radius:0;box-shadow:none;background:url('./assets/licensed/models/candle-holder.webp') center bottom/150px no-repeat;filter:drop-shadow(4px 5px 4px #0008)}
+#aethAdventure .aeth-scene[data-scene=library] .aeth-scene-symbol{left:calc(50% + 80px);top:auto;bottom:19px;transform:none;width:110px;height:115px;font-size:0;background:url('./assets/licensed/crystals/cluster-7.webp') center bottom/contain no-repeat;filter:drop-shadow(3px 5px 3px #0008)}
+#aethAdventure .aeth-scene[data-scene=library] .aeth-scene-ground{left:0;right:0;bottom:0;height:24px;border-radius:0;background:linear-gradient(#98794e,#695039 30%,#322b28 35%,#4b3b2e 75%,#201d20);box-shadow:0 -3px 12px #0008}
+#aethAdventure .aeth-scene[data-scene=library] .aeth-scene-caption{bottom:6px;right:10px;background:#172321e8;padding:4px 7px;border-radius:3px}
+@media(max-width:640px){
+ body.majickCampus #majickRoomRibbon{min-height:116px;padding:16px 12px;gap:9px}
+ body.majickCampus #majickRoomRibbon>div{max-width:calc(100% - 100px)}
+ body.majickCampus #majickRoomRibbon::after{width:90px;height:92px;right:1px;background-size:75px,65px,100% 18px;background-position:0 90%,100% 100%,bottom}
+ body.majickCampus #majickRoomRibbon>.v3360RoomSigil{display:none}
+ #aethAdventure .aeth-scene[data-scene=library] .aeth-scene-symbol{left:calc(50% + 25px);width:90px}
+}
+/* The first-room acceptance pass passed; reuse the same ribbon in the other rooms. */
+body[data-majick-polish-room=companions] #majickRoomRibbon::after{background-image:url('./assets/licensed/plants/flowers.webp'),url('./assets/licensed/plants/shrub.webp'),radial-gradient(ellipse at 58% 94%,#070b0dcc,transparent 65%)}
+body[data-majick-polish-room=games] #majickRoomRibbon::after{background-image:url('./assets/licensed/rings/sapphire.webp'),url('./assets/licensed/crystals/cluster-4.webp'),radial-gradient(ellipse at 58% 94%,#070b0dcc,transparent 65%)}
+body:is([data-majick-polish-room=guide],[data-majick-polish-room=livinggrimoire]) #majickRoomRibbon::after{background-image:url('./assets/licensed/models/candle-holder.webp'),url('./assets/licensed/gems/emerald.webp'),radial-gradient(ellipse at 58% 94%,#070b0dcc,transparent 65%)}
+/* Replace decorative game-intro shapes; never cover the question/score/answer UI. */
+.realmSceneArt:is(.oracleArt,.gardenArt,.archiveArt,.arenaArt){
+ --scene-object-a:url('./assets/licensed/rings/sapphire.webp');--scene-object-b:url('./assets/licensed/crystals/cluster-1.webp');
+ background:var(--scene-object-a) 30% 40%/145px no-repeat,var(--scene-object-b) 85% 95%/115px no-repeat,radial-gradient(ellipse at 55% 94%,#05090cdd,transparent 64%) bottom/100% 25px no-repeat;
+ opacity:.94;filter:drop-shadow(3px 6px 4px #0006);border-bottom:3px double #a38b5b55;
+}
+.realmSceneArt:is(.oracleArt,.gardenArt,.archiveArt,.arenaArt)>*{display:none!important;animation:none!important}
+.realmSceneArt.gardenArt{--scene-object-a:url('./assets/licensed/plants/flowers.webp');--scene-object-b:url('./assets/licensed/plants/shrub.webp')}
+.realmSceneArt.archiveArt{--scene-object-a:url('./assets/licensed/models/candle-holder.webp');--scene-object-b:url('./assets/licensed/potions/purple.webp')}
+.realmSceneArt.arenaArt{--scene-object-a:url('./assets/licensed/rings/ouroboros.webp');--scene-object-b:url('./assets/licensed/crystals/cluster-7.webp')}
+
+/* Fit the complete brewing dialog inside the viewport, including its padding. */
+#majCozyBrewing.majCozyShade{box-sizing:border-box;padding:12px}
+#majCozyBrewing .majCozyModal{box-sizing:border-box;max-width:100%;max-height:calc(100vh - 24px);max-height:calc(100dvh - 24px);min-height:0;overscroll-behavior:contain;scrollbar-gutter:stable;padding:24px}
+#majCozyBrewing .majCozyClose{width:44px;height:44px;display:grid;place-items:center;z-index:4}
+#majCozyBrewing .majCozyModal>small,#majCozyBrewing .majCozyModal>h2{padding-right:40px}
+#majCozyBrewing .majCozyActions button{min-height:44px}
+#majCozyBrewing img.cozyGlassVessel{object-fit:contain;width:72%;height:90%;margin-top:0;animation:none}
+@media(max-width:640px){#majCozyBrewing .majCozyModal{padding:18px 14px}#majCozyBrewing .majCozyScene{min-height:160px;aspect-ratio:8/5}}
+#majCozyBrewing .majCozyActions button:first-child{background:#65417e;color:#fff9ed}
+/* Original hand-painted bottle colors, matched to the existing recipe order. */
+.majRecipe:nth-of-type(5n+1)>span[aria-hidden=true]{background-image:url('./assets/licensed/potions/purple.webp')}
+.majRecipe:nth-of-type(5n+2)>span[aria-hidden=true]{background-image:url('./assets/licensed/potions/aqua.webp')}
+.majRecipe:nth-of-type(5n+3)>span[aria-hidden=true]{background-image:url('./assets/licensed/potions/red.webp')}
+.majRecipe:nth-of-type(5n+4)>span[aria-hidden=true]{background-image:url('./assets/licensed/potions/green.webp')}
+.majRecipe:nth-of-type(5n)>span[aria-hidden=true]{background-image:url('./assets/licensed/potions/orange.webp')}
 /* Full-color crystal art uses smooth scaling; existing labels and click targets stay intact. */
 .masJournalTabs [data-journal-tab=achievements]::before{image-rendering:auto}
+
+/* App-wide icon use follows existing semantic controls and never replaces labels. */
+.learnLab .courseLessonNavigator>h3::after{background-image:url('./assets/licensed/skill-03.webp');border-radius:7px;filter:saturate(.65)}
+.majReasoningToolbar h2::after{background-image:url('./assets/licensed/skill-11.webp');border-radius:7px;filter:saturate(.65)}
+.majArcaneVault>header h2::after{background-image:url('./assets/licensed/images/bag.webp');width:42px;height:42px}
+.majCommonsCourse::before{background-image:url('./assets/licensed/skill-03.webp');image-rendering:auto;border-radius:4px}
+.masJournalTabs [data-journal-tab=recent]::before{background-image:url('./assets/rewards/solstice/items/astronomy-book-stack.webp');image-rendering:auto}
+.masJournalTabs [data-journal-tab=goals]::before{background-image:url('./assets/licensed/skill-08.webp');image-rendering:auto;border-radius:4px}
+.masJournalTabs [data-journal-tab=repairs]::before{background-image:url('./assets/licensed/skill-14.webp');image-rendering:auto;border-radius:4px}
+.majRecipeShelf>h3::before{background-image:url('./assets/licensed/potions/purple.webp');image-rendering:auto;width:28px;height:28px}
+.majRecipe>span[aria-hidden=true]:has(>img){background-image:none!important}
+.majRecipe>span[aria-hidden=true]>img{display:block;max-width:100%;height:80px!important;width:64px!important;object-fit:contain}
+.learnTabs button{display:inline-flex;align-items:center;justify-content:center;gap:6px}
+.learnTabs button::before{content:"";flex:0 0 22px;width:22px;height:22px;border-radius:4px;background:center/contain no-repeat;pointer-events:none;filter:saturate(.65)}
+.learnTabs [data-learn-tab=learn]::before,.learnTabs [data-learn-tab=mastery]::before{background-image:url('./assets/licensed/skill-03.webp')}
+.learnTabs [data-learn-tab=vocab]::before,.learnTabs [data-learn-tab=notes]::before{background-image:url('./assets/rewards/solstice/items/astronomy-book-stack.webp')}
+.learnTabs [data-learn-tab=game]::before{background-image:url('./assets/licensed/skill-15.webp')}
+.learnTabs [data-learn-tab=practice]::before{background-image:url('./assets/licensed/skill-11.webp')}
+.learnTabs [data-learn-tab=tools]::before{background-image:url('./assets/licensed/images/runestones.webp')}
+.obs-header .obs-medallion{font-size:0!important;background:url('./assets/licensed/skill-08.webp') center/60% no-repeat,linear-gradient(135deg,#ece0cb,#a58bb0);filter:saturate(.65)}
+body[data-majick-polish-room=mission] #majickRoomRibbon::after{background-image:url('./assets/rewards/solstice/items/astronomy-book-stack.webp'),url('./assets/licensed/crystals/cluster-7.webp'),radial-gradient(ellipse at 58% 94%,#070b0dcc,transparent 65%)}
+.majRoomArchitecture[data-room-key=mission] .majRoomEmblem,.majRoomArchitecture[data-room-key=guide] .majRoomEmblem{font-size:0;background:url('./assets/rewards/solstice/items/astronomy-book-stack.webp') center/contain no-repeat;min-width:48px;min-height:48px;filter:drop-shadow(1px 3px 2px #0004)}
+.majRoomArchitecture[data-room-key=games] .majRoomEmblem{font-size:0;background:url('./assets/licensed/images/runestones.webp') center/contain no-repeat;min-width:48px;min-height:48px}
+.realmTrialCard .realmTrialIcon{font-size:0!important;display:inline-block;width:54px;height:54px;border-radius:10px;background:url('./assets/licensed/skill-11.webp') center/cover no-repeat;filter:saturate(.65);box-shadow:0 3px 7px #130c2433;pointer-events:none}
+.realmTrialCard[onclick^="startScholarInvestigation"] .realmTrialIcon{background-image:url('./assets/licensed/skill-17.webp')}
+.realmTrialCard[onclick^="startCommunicationQuest"] .realmTrialIcon{background-image:url('./assets/rewards/solstice/items/astronomy-book-stack.webp');background-size:contain}
+.realmTrialCard[onclick^="startD669PillarSort"] .realmTrialIcon,.realmTrialCard[onclick^="startAssessmentSigilSort"] .realmTrialIcon{background-image:url('./assets/licensed/images/runestones.webp');background-size:contain}
+.realmTrialCard[onclick^="startGuardianGauntlet"] .realmTrialIcon,.realmTrialCard[onclick^="startD772SectionReview"] .realmTrialIcon{background-image:url('./assets/licensed/skill-06.webp')}
+.realmTrialCard[onclick^="startMemoryConstellation"] .realmTrialIcon{background-image:url('./assets/licensed/skill-16.webp')}
+.realmTrialCard[onclick^="startHexBreaker"] .realmTrialIcon{background-image:url('./assets/licensed/skill-14.webp')}
+/* The active teaching flow uses the existing classroom tab controls. */
+.classroomTabs [data-classroom-tab]{display:inline-flex;align-items:center;justify-content:center;gap:6px}
+.classroomTabs [data-classroom-tab]::before{content:"";display:inline-block;flex:0 0 20px;width:20px;height:20px;border-radius:4px;background:center/contain no-repeat;pointer-events:none;filter:saturate(.65)}
+.classroomTabs :is([data-classroom-tab=opening],[data-classroom-tab=example])::before{background-image:url('./assets/rewards/solstice/items/astronomy-book-stack.webp')}
+.classroomTabs [data-classroom-tab=teach]::before{background-image:url('./assets/licensed/skill-03.webp')}
+.classroomTabs [data-classroom-tab=visual]::before{background-image:url('./assets/licensed/crystal-blue.webp')}
+.classroomTabs :is([data-classroom-tab=turn],[data-classroom-tab=workshop])::before{background-image:url('./assets/licensed/skill-11.webp')}
+.classroomTabs [data-classroom-tab=review]::before{background-image:url('./assets/licensed/skill-14.webp')}
+
+/* Keep one visible room identity where the older ornamental banner repeats it. */
+#content:has(#majickRoomRibbon)>.majRoomArchitecture:is([data-room-key=mission],[data-room-key=guide],[data-room-key=games]){display:none}
+body:is([data-majick-polish-room=journal],[data-majick-polish-room=addmaterial]) #majickRoomRibbon::after{background-image:url('./assets/rewards/solstice/items/astronomy-book-stack.webp'),url('./assets/licensed/models/candle-holder.webp'),radial-gradient(ellipse at 58% 94%,#070b0dcc,transparent 65%)}
+body[data-majick-polish-room=vault] #majickRoomRibbon::after{background-image:url('./assets/licensed/images/bag.webp'),url('./assets/licensed/crystal-violet.webp'),radial-gradient(ellipse at 58% 94%,#070b0dcc,transparent 65%)}
+body[data-majick-polish-room=trophies] #majickRoomRibbon::after{background-image:url('./assets/licensed/rings/gold-wrap.webp'),url('./assets/licensed/crystal-yellow.webp'),radial-gradient(ellipse at 58% 94%,#070b0dcc,transparent 65%)}
+body[data-majick-polish-room=focus] #majickRoomRibbon::after{background-image:url('./assets/licensed/plants/flowers.webp'),url('./assets/licensed/crystal-blue.webp'),radial-gradient(ellipse at 58% 94%,#070b0dcc,transparent 65%)}
+body[data-majick-polish-room=constellation] #majickRoomRibbon::after{background-image:url('./assets/licensed/crystal-blue.webp'),url('./assets/licensed/gems/sapphire.webp'),radial-gradient(ellipse at 58% 94%,#070b0dcc,transparent 65%)}
+/* The older course-game tiles use the same approved icon family. */
+#aethCourseGames :is([data-exp-mode],[data-deep-mode])>span{font-size:0!important;display:block;width:42px;height:42px;border-radius:8px;background:center/contain no-repeat;filter:saturate(.65);pointer-events:none}
+#aethCourseGames [data-exp-mode=sort]>span{background-image:url('./assets/licensed/images/runestones.webp')}
+#aethCourseGames [data-exp-mode=match]>span{background-image:url('./assets/rewards/solstice/items/astronomy-book-stack.webp')}
+#aethCourseGames :is([data-exp-mode=classroom],[data-deep-mode=scenario])>span{background-image:url('./assets/licensed/skill-03.webp')}
+#aethCourseGames [data-deep-mode=forge]>span{background-image:url('./assets/licensed/crystal-violet.webp')}
+#aethCourseGames [data-deep-mode=sequence]>span{background-image:url('./assets/licensed/skill-15.webp')}
+/* One illustration per cabinet heading, with distinguishable ingredient art. */
+.majRecipeShelf>h3:has(>img)::before,.majRecipeShelf>h3:has(>img)::after{content:none!important}
+.majLootGrid>[data-ingredient=moonpetal]>i>img{filter:hue-rotate(30deg) saturate(.35) brightness(1.25)}
+/* Existing shop controls retain their prices, disabled states and ownership. */
+.shopItem:has(button[onclick^="buyShop("])>div:first-child{font-size:0!important;width:50px;height:50px;background:center/contain no-repeat;filter:saturate(.65);pointer-events:none}
+.shopItem:has(button[onclick="buyShop('streakShield')"])>div:first-child{background-image:url('./assets/licensed/skill-06.webp')}
+.shopItem:has(button[onclick="buyShop('clueCharm')"])>div:first-child,.shopItem:has(button[onclick="buyShop('oracleTicket')"])>div:first-child{background-image:url('./assets/licensed/skill-11.webp')}
+.shopItem:has(button[onclick="buyShop('sparkleAura')"])>div:first-child{background-image:url('./assets/licensed/crystal-yellow.webp')}
+.shopItem:has(button[onclick="buyShop('crystalGarden')"])>div:first-child{background-image:url('./assets/licensed/plants/flowers.webp')}
+.shopItem:has(button[onclick="buyShop('bossShield')"])>div:first-child{background-image:url('./assets/licensed/skill-21.webp')}
+.shopItem:has(button[onclick="buyShop('lunaTiara')"])>div:first-child{background-image:url('./assets/atelier/v2/fitted/accessories/headpiece.webp')}
+.shopItem:has(button[onclick="buyShop('ribbonBurst')"])>div:first-child{background-image:url('./assets/effects/celebrations/celebration-starburst.svg')}
