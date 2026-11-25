@@ -3781,5 +3781,300 @@
       "sha256": "8a17ce7985731a0f9de781956b1891ad55c3c654c12c8cb8735a083892cdc841"
     }
   ],
-  "handoffLimit": "Supplied attachment ends mid-link in section 8; no absent instructions inferred."
+  "handoffLimit": "Supplied attachment ends mid-link in section 8; no absent instructions inferred.",
+  "D669": {
+    "practiceQuestions": 78,
+    "concepts": 5,
+    "sources": [
+      {
+        "title": "WGU D669 course introduction and Section 1 materials",
+        "type": "user-provided",
+        "assessment": "objective"
+      },
+      {
+        "title": "WGU D669 Section 2 Lesson 1 and supplied video transcripts",
+        "type": "user-provided",
+        "assessment": "guided; original simulations supplemental"
+      },
+      {
+        "title": "WGU D669 Section 2 Lessons 2.1\u20132.3 and oral language materials",
+        "type": "user-provided",
+        "assessment": "guided; partial lesson"
+      }
+    ],
+    "sections": [
+      {
+        "id": "d669-section-1",
+        "title": "Section 1: Analyzes Standards and Resources in Literacy",
+        "competency": "2068.1.1",
+        "lessons": [
+          {
+            "title": "Lesson 1: Standards Alignment for Literacy",
+            "topics": [
+              "1.1 Introduction to Literacy Education",
+              "1.2 Instructional Considerations and Structured Literacy",
+              "1.3 Literacy Standards",
+              "1.4 Standards Across the School Year"
+            ],
+            "sublessons": [
+              {
+                "id": "d669-s1-l1-1",
+                "title": "Lesson 1.1: Introduction to Literacy Education"
+              },
+              {
+                "id": "d669-s1-l1-2",
+                "title": "Lesson 1.2: Instructional Considerations and Structured Literacy"
+              },
+              {
+                "id": "d669-s1-l1-3",
+                "title": "Lesson 1.3: Literacy Standards"
+              },
+              {
+                "id": "d669-s1-l1-4",
+                "title": "Lesson 1.4: Standards Across the School Year"
+              },
+              {
+                "id": "d669-s1-l1-review",
+                "title": "Lesson 1: Summary and Quiz"
+              }
+            ]
+          },
+          {
+            "title": "Lesson 2: Literacy-Rich Classroom Environments",
+            "topics": [
+              "2.1 Literacy-Rich Classrooms",
+              "2.2 Multisensory Activities"
+            ],
+            "sublessons": [
+              {
+                "id": "d669-s1-l2-intro",
+                "title": "Lesson 2: Introduction"
+              },
+              {
+                "id": "d669-s1-l2-1",
+                "title": "Lesson 2.1: Literacy-Rich Classrooms"
+              },
+              {
+                "id": "d669-s1-l2-2",
+                "title": "Lesson 2.2: Multisensory Strategies"
+              },
+              {
+                "id": "d669-s1-l2-review",
+                "title": "Lesson 2: Summary"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "d669-section-2",
+        "title": "Section 2: Analyzes the Role of Phonics",
+        "competency": "2068.1.2",
+        "lessons": [
+          {
+            "title": "Lesson 1: The Science of Reading Timeline",
+            "topics": [
+              "Evidence base for reading instruction",
+              "Simple View of Reading: word recognition \u00d7 language comprehension",
+              "Four-part processor: phonological, orthographic, meaning, context",
+              "Explicit structured literacy"
+            ],
+            "sublessons": []
+          },
+          {
+            "title": "Lesson 2: Five Pillars of Literacy",
+            "topics": [
+              "Phonemic awareness",
+              "Phonics",
+              "Fluency",
+              "Vocabulary",
+              "Comprehension"
+            ],
+            "sublessons": [
+              {
+                "id": "d669-s2-l2-1",
+                "title": "Lesson 2.1: Five Pillars of Literacy"
+              },
+              {
+                "id": "d669-s2-l2-2",
+                "title": "Lesson 2.2: Scarborough\u2019s Reading Rope"
+              },
+              {
+                "id": "d669-s2-l2-3",
+                "title": "Lesson 2.3: Lexical Quality, POSSUM and Oral Language"
+              },
+              {
+                "id": "d669-s2-phonics-detail",
+                "title": "Phonics, Structured Literacy and Alphabetic Principle"
+              }
+            ]
+          },
+          {
+            "title": "Lesson 3: Literacy Acquisition Elements",
+            "topics": [
+              "Motivation",
+              "Engagement",
+              "Environmental, cultural, and social factors"
+            ],
+            "sublessons": [
+              {
+                "id": "d669-s2-l3-7",
+                "title": "Lesson 3.7: Fluency"
+              },
+              {
+                "id": "d669-s2-l3-8",
+                "title": "Lesson 3.8: Vocabulary"
+              },
+              {
+                "id": "d669-s2-l3-9",
+                "title": "Lesson 3.9: Comprehension"
+              },
+              {
+                "id": "d669-s2-l3-10",
+                "title": "Lesson 3.10: Writing"
+              },
+              {
+                "id": "d669-s2-l3-review",
+                "title": "Lesson 3 Summary: Literacy Acquisition Elements"
+              },
+              {
+                "id": "d669-s2-l3-quiz",
+                "title": "Lesson 3: Quiz (WGU ungraded)"
+              },
+              {
+                "id": "d669-s2-summary",
+                "title": "Section 2: Summary \u2014 Analyzes the Role of Phonics"
+              },
+              {
+                "id": "d669-s2-test",
+                "title": "Section 2: Test (WGU ungraded)"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "d669-section-3",
+        "title": "Section 3: Analyzes Elements of Literacy",
+        "competency": "2068.1.3",
+        "lessons": [
+          {
+            "title": "Section 3: Introduction",
+            "sublessons": [
+              {
+                "id": "d669-s3-intro",
+                "title": "Section 3: Introduction"
+              }
+            ]
+          },
+          {
+            "title": "Lesson 1: Oral, Print, and Digital Communication",
+            "topics": [
+              "Lesson 1: Introduction",
+              "Lesson 1.1: Oral Communication Skills",
+              "Lesson 1.2: Print Communication Skills",
+              "Lesson 1.3: Digital Communication Skills",
+              "Lesson 1: Summary",
+              "Lesson 1: Quiz"
+            ],
+            "sublessons": [
+              {
+                "id": "d669-s3-l1-intro",
+                "title": "Lesson 1: Introduction"
+              },
+              {
+                "id": "d669-s3-l1-1",
+                "title": "Lesson 1.1: Oral Communication Skills"
+              },
+              {
+                "id": "d669-s3-l1-2",
+                "title": "Lesson 1.2: Print Communication Skills"
+              },
+              {
+                "id": "d669-s3-l1-3",
+                "title": "Lesson 1.3: Digital Communication Skills"
+              },
+              {
+                "id": "d669-s3-l1-review",
+                "title": "Lesson 1: Summary"
+              },
+              {
+                "id": "d669-s3-l1-quiz",
+                "title": "Lesson 1: Quiz"
+              }
+            ]
+          },
+          {
+            "title": "Lesson 2: Speaking and Listening Skills",
+            "sublessons": []
+          },
+          {
+            "title": "Lesson 3: Healthy Learning and Literacy Development",
+            "sublessons": []
+          },
+          {
+            "title": "Section 3: Summary",
+            "sublessons": []
+          }
+        ]
+      },
+      {
+        "id": "d669-section-4",
+        "title": "Section 4: Describes Key Features of Texts Across Genres",
+        "competency": "2068.1.4",
+        "lessons": []
+      },
+      {
+        "id": "d669-section-5",
+        "title": "Section 5: Analyzes Concepts and Structures in Writing",
+        "competency": "2068.1.5",
+        "lessons": []
+      }
+    ],
+    "documents": [
+      {
+        "path": "current-site/course-content/D669/lesson-2-review.json",
+        "title": "Lesson 2 \u2014 Literacy Foundations Knowledge Check",
+        "lesson": "2",
+        "reviewStatus": "source_transcribed_not_independently_verified"
+      },
+      {
+        "path": "current-site/course-content/D669/lesson-3-3-phonological-awareness.json",
+        "title": "Lesson 3.3 \u2014 Phonological Awareness and Tolman's Hourglass",
+        "lesson": "3.3",
+        "reviewStatus": "source_transcribed_not_independently_verified"
+      },
+      {
+        "path": "current-site/course-content/D669/lesson-3-4-phonemic-awareness.json",
+        "title": "Lesson 3.4 \u2014 Phonemic Awareness",
+        "lesson": "3.4",
+        "reviewStatus": "source_transcribed_not_independently_verified"
+      },
+      {
+        "path": "current-site/course-content/D669/lesson-3-6-phonics.json",
+        "title": "Lesson 3.6 \u2014 Phonics, Structured Literacy, and Orthographic Mapping",
+        "lesson": "3.6",
+        "reviewStatus": "source_transcribed_not_independently_verified"
+      },
+      {
+        "path": "current-site/course-content/D669/lesson-3-alphabetic-principle.json",
+        "title": "Lesson 3 \u2014 Alphabetic Principle and Ehri\u2019s Phases",
+        "lesson": "3",
+        "reviewStatus": "source_transcribed_not_independently_verified"
+      },
+      {
+        "path": "current-site/course-content/D669/lesson-3-literacy-acquisition.json",
+        "title": "Lesson 3 \u2014 Literacy Acquisition Elements",
+        "lesson": "3",
+        "reviewStatus": "source_transcribed_not_independently_verified"
+      },
+      {
+        "path": "current-site/course-content/D669/lesson-3-print-awareness.json",
+        "title": "Lesson 3 \u2014 Print Awareness / Concepts About Print",
+        "lesson": "3",
+        "reviewStatus": "source_transcribed_not_independently_verified"
+      }
+    ],
+    "coverageLimit": "Seven supplied raw source documents are integrated; full original source-text coverage of all five catalog sections is not established. The 78 questions include authored aligned practice, not a claim of 78 official assessment items. Preserve source_transcribed_not_independently_verified status. Missing original course text must not be invented."
+  }
 }
