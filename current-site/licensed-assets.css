@@ -53,7 +53,7 @@ body.majickCampus #majickRoomRibbon::after{
  background:url('./assets/licensed/models/candle-holder.webp') 35% 90%/110px no-repeat,url('./assets/licensed/crystals/cluster-7.webp') 100% 100%/100px no-repeat,radial-gradient(ellipse at 58% 94%,#070b0dcc,transparent 65%) bottom/100% 22px no-repeat;
  filter:drop-shadow(2px 4px 3px #0005);
 }
-body[data-majick-polish-room=learninglab] #majickRoomRibbon::after{background-image:url('./assets/licensed/models/candle-holder.webp'),url('./assets/licensed/models/potion-3.webp'),radial-gradient(ellipse at 58% 94%,#070b0dcc,transparent 65%)}
+body[data-majick-polish-room=learninglab] #majickRoomRibbon::after{background-image:url('./assets/licensed/models/candle-holder.webp'),url('./assets/licensed/potions/green.webp'),radial-gradient(ellipse at 58% 94%,#070b0dcc,transparent 65%)}
 body[data-majick-polish-room=reasoning] #majickRoomRibbon::after{background-image:url('./assets/licensed/crystals/cluster-4.webp'),url('./assets/licensed/gems/ruby.webp'),radial-gradient(ellipse at 58% 94%,#070b0dcc,transparent 65%)}
 /* Replace the abstract library arch with a tangible cabinet vignette. */
 #aethAdventure .aeth-scene[data-scene=library]{min-height:188px;background:radial-gradient(ellipse at 52% 15%,#c49c5e40,transparent 63%),repeating-linear-gradient(90deg,#1f2528 0 57px,#a389572e 58px 60px,#182023 61px 115px);box-shadow:inset 0 0 28px #050a0c99,inset 0 0 0 5px #bb985635}
@@ -80,5 +80,21 @@ body:is([data-majick-polish-room=guide],[data-majick-polish-room=livinggrimoire]
 }
 .realmSceneArt:is(.oracleArt,.gardenArt,.archiveArt,.arenaArt)>*{display:none!important;animation:none!important}
 .realmSceneArt.gardenArt{--scene-object-a:url('./assets/licensed/plants/flowers.webp');--scene-object-b:url('./assets/licensed/plants/shrub.webp')}
-.realmSceneArt.archiveArt{--scene-object-a:url('./assets/licensed/models/candle-holder.webp');--scene-object-b:url('./assets/licensed/models/potion-2.webp')}
+.realmSceneArt.archiveArt{--scene-object-a:url('./assets/licensed/models/candle-holder.webp');--scene-object-b:url('./assets/licensed/potions/purple.webp')}
 .realmSceneArt.arenaArt{--scene-object-a:url('./assets/licensed/rings/ouroboros.webp');--scene-object-b:url('./assets/licensed/crystals/cluster-7.webp')}
+
+/* Fit the complete brewing dialog inside the viewport, including its padding. */
+#majCozyBrewing.majCozyShade{box-sizing:border-box;padding:12px}
+#majCozyBrewing .majCozyModal{box-sizing:border-box;max-width:100%;max-height:calc(100vh - 24px);max-height:calc(100dvh - 24px);min-height:0;overscroll-behavior:contain;scrollbar-gutter:stable;padding:24px}
+#majCozyBrewing .majCozyClose{width:44px;height:44px;display:grid;place-items:center;z-index:4}
+#majCozyBrewing .majCozyModal>small,#majCozyBrewing .majCozyModal>h2{padding-right:40px}
+#majCozyBrewing .majCozyActions button{min-height:44px}
+#majCozyBrewing img.cozyGlassVessel{object-fit:contain;width:72%;height:90%;margin-top:0;animation:none}
+@media(max-width:640px){#majCozyBrewing .majCozyModal{padding:18px 14px}#majCozyBrewing .majCozyScene{min-height:160px;aspect-ratio:8/5}}
+#majCozyBrewing .majCozyActions button:first-child{background:#65417e;color:#fff9ed}
+/* Original hand-painted bottle colors, matched to the existing recipe order. */
+.majRecipe:nth-of-type(5n+1)>span[aria-hidden=true]{background-image:url('./assets/licensed/potions/purple.webp')}
+.majRecipe:nth-of-type(5n+2)>span[aria-hidden=true]{background-image:url('./assets/licensed/potions/aqua.webp')}
+.majRecipe:nth-of-type(5n+3)>span[aria-hidden=true]{background-image:url('./assets/licensed/potions/red.webp')}
+.majRecipe:nth-of-type(5n+4)>span[aria-hidden=true]{background-image:url('./assets/licensed/potions/green.webp')}
+.majRecipe:nth-of-type(5n)>span[aria-hidden=true]{background-image:url('./assets/licensed/potions/orange.webp')}

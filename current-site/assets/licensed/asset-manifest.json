@@ -12,7 +12,8 @@
     "crystals": "Selected original bevelled meshes rendered at 160px with studio materials, used only as decorative progress end markers; no value changes.",
     "plants": "Two original OBJ meshes rendered with matching original hand-painted TGA color/alpha textures to static transparent 160px WebP.",
     "music": "Full tracks retained, converted to stereo 44.1kHz Vorbis quality 2 with loudnorm I=-22:TP=-2:LRA=9. No cutting, new arrangement or automatic playback.",
-    "rpgProp": "Original candle_holder_2 mesh rendered at 160px with antique brass material and transparent studio lighting; geometry unchanged. Static decorative WebP only."
+    "rpgProp": "Original candle_holder_2 mesh rendered at 160px with antique brass material and transparent studio lighting; geometry unchanged. Static decorative WebP only.",
+    "paintedPotions": "OwlishMedia original FBX meshes rendered at 192px with supplied albedo alpha and emission textures, studio lighting and AgX. Five static transparent WebP colors; unchanged geometry."
   },
   "assets": [
     {
@@ -484,6 +485,46 @@
       "author": "rubberduck",
       "license": "CC0-1.0",
       "source": "https://opengameart.org/content/50-fantasy-rpg-asset-models"
+    },
+    {
+      "path": "assets/licensed/potions/aqua.webp",
+      "bytes": 8670,
+      "sha256": "e21390882219df686f1eb0d34124186ec732bdd370977f354efd2cff9fe4a509",
+      "author": "OwlishMedia",
+      "license": "CC0-1.0",
+      "source": "https://opengameart.org/content/potion-bottle-0"
+    },
+    {
+      "path": "assets/licensed/potions/green.webp",
+      "bytes": 8934,
+      "sha256": "879668fcae92cf64176d0019a6d9c551a1b621e37a3fac810d2c0938995cdec7",
+      "author": "OwlishMedia",
+      "license": "CC0-1.0",
+      "source": "https://opengameart.org/content/potion-bottle-0"
+    },
+    {
+      "path": "assets/licensed/potions/orange.webp",
+      "bytes": 8848,
+      "sha256": "51c5a668211e7cb7ef74aebc068332ba1f7bf5390fc8fc1d18df9ccfcc1e6977",
+      "author": "OwlishMedia",
+      "license": "CC0-1.0",
+      "source": "https://opengameart.org/content/potion-bottle-0"
+    },
+    {
+      "path": "assets/licensed/potions/purple.webp",
+      "bytes": 8878,
+      "sha256": "c1d27543d804eabce2918d477a85164057f998d26aae0129bcb3ac4c41b4454c",
+      "author": "OwlishMedia",
+      "license": "CC0-1.0",
+      "source": "https://opengameart.org/content/potion-bottle-0"
+    },
+    {
+      "path": "assets/licensed/potions/red.webp",
+      "bytes": 9276,
+      "sha256": "a67740142c6b10e1e245dcc706ac4aa3cc52a3edad774838d87345392a88229f",
+      "author": "OwlishMedia",
+      "license": "CC0-1.0",
+      "source": "https://opengameart.org/content/potion-bottle-0"
     }
   ],
   "pending": [

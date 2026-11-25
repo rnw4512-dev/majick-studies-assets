@@ -1,7 +1,7 @@
 name: Aetheria alchemy acceptance
 on:
   pull_request:
-    paths: ['current-site/**', 'tests/aetheria-alchemy-browser.py', '.github/workflows/aetheria-alchemy.yml']
+    paths: ['current-site/**', 'tests/aetheria-alchemy-browser.py', 'tests/brewing-dialog-browser.py', '.github/workflows/aetheria-alchemy.yml']
   workflow_dispatch:
 permissions:
   contents: read
@@ -23,7 +23,9 @@ jobs:
         env:
           CHROMIUM_PATH: /usr/bin/google-chrome
           RECOVERY_EVIDENCE: alchemy-evidence
-        run: python -u tests/aetheria-alchemy-browser.py _site
+        run: |
+          python -u tests/aetheria-alchemy-browser.py _site
+          python -u tests/brewing-dialog-browser.py _site
       - uses: actions/upload-artifact@v4
         if: always()
         with:
