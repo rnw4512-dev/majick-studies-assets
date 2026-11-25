@@ -77,6 +77,17 @@ with sync_playwright() as pw:
    label=card.locator('h3').evaluate('(e)=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(()=>resolve(e.innerText))))')
    assert label.strip(),'Icon replaced its game label: '+card.evaluate('(e)=>JSON.stringify({html:e.outerHTML,styles:[e.querySelector("h3"),e,e.parentElement,e.parentElement.parentElement].map(n=>({display:getComputedStyle(n).display,visibility:getComputedStyle(n).visibility,cv:getComputedStyle(n).contentVisibility,rect:n.getBoundingClientRect().toJSON()})),scrollY})')
   assert page.evaluate('document.documentElement.scrollWidth<=innerWidth+2'),'App-wide icons introduce overflow'
+  page.evaluate("navigate('vault')")
+  page.get_by_role('tab',name='Shop & Chests',exact=True).click()
+  shop=page.locator(':is(.shopItem,.v3311ShopItem,.v3312ShopItem):has(button[onclick^=\"buyShop(\"])');assert shop.count()==8,'Active shop card variant was not covered'
+  for item in shop.all():
+   item.scroll_into_view_if_needed()
+   icon=item.locator(':scope>:is(div,span)').first
+   icon.scroll_into_view_if_needed()
+   icon.evaluate('(e)=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)))')
+   art=icon.evaluate('(e)=>({image:getComputedStyle(e).backgroundImage,size:getComputedStyle(e).fontSize,width:e.getBoundingClientRect().width,height:e.getBoundingClientRect().height})')
+   assert art['image']!='none' and art['size']=='0px' and art['width']>=40 and art['height']>=40,art
+   assert item.locator('h3').text_content().strip()
   page.locator('.caAmbience').click();page.wait_for_function('MajickCollegiumAtmosphere.inspect().playing')
   for room in ['home','learninglab','livinggrimoire','games','companions']:
    page.wait_for_timeout(170);assert page.evaluate('(room)=>MajickCollegiumAtmosphere.micro("enter",room)',room)
