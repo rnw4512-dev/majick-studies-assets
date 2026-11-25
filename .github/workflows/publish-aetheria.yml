@@ -51,6 +51,7 @@ jobs:
           python -u tests/parchment-readability-browser.py _certified
           python -u tests/course-question-policy-browser.py _certified
           python -u tests/d669-content-browser.py _certified
+          python -u tests/study-continuity-browser.py _certified
           python -u tests/approved-assets-browser.py _certified
           python -u tests/optional-music-browser.py _certified
           python -u tests/room-interactions-browser.py _certified
@@ -217,6 +218,7 @@ jobs:
           python -u tests/parchment-readability-browser.py _published_candidate/current-site
           python -u tests/course-question-policy-browser.py _published_candidate/current-site
           python -u tests/d669-content-browser.py _published_candidate/current-site
+          python -u tests/study-continuity-browser.py _published_candidate/current-site
           python -u tests/approved-assets-browser.py _published_candidate/current-site
           python -u tests/optional-music-browser.py _published_candidate/current-site
           python -u tests/room-interactions-browser.py _published_candidate/current-site

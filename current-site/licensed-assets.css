@@ -146,3 +146,22 @@ body[data-majick-polish-room=vault] #majickRoomRibbon::after{background-image:ur
 body[data-majick-polish-room=trophies] #majickRoomRibbon::after{background-image:url('./assets/licensed/rings/gold-wrap.webp'),url('./assets/licensed/crystal-yellow.webp'),radial-gradient(ellipse at 58% 94%,#070b0dcc,transparent 65%)}
 body[data-majick-polish-room=focus] #majickRoomRibbon::after{background-image:url('./assets/licensed/plants/flowers.webp'),url('./assets/licensed/crystal-blue.webp'),radial-gradient(ellipse at 58% 94%,#070b0dcc,transparent 65%)}
 body[data-majick-polish-room=constellation] #majickRoomRibbon::after{background-image:url('./assets/licensed/crystal-blue.webp'),url('./assets/licensed/gems/sapphire.webp'),radial-gradient(ellipse at 58% 94%,#070b0dcc,transparent 65%)}
+/* The older course-game tiles use the same approved icon family. */
+#aethCourseGames :is([data-exp-mode],[data-deep-mode])>span{font-size:0!important;display:block;width:42px;height:42px;border-radius:8px;background:center/contain no-repeat;filter:saturate(.65);pointer-events:none}
+#aethCourseGames [data-exp-mode=sort]>span{background-image:url('./assets/licensed/images/runestones.webp')}
+#aethCourseGames [data-exp-mode=match]>span{background-image:url('./assets/rewards/solstice/items/astronomy-book-stack.webp')}
+#aethCourseGames :is([data-exp-mode=classroom],[data-deep-mode=scenario])>span{background-image:url('./assets/licensed/skill-03.webp')}
+#aethCourseGames [data-deep-mode=forge]>span{background-image:url('./assets/licensed/crystal-violet.webp')}
+#aethCourseGames [data-deep-mode=sequence]>span{background-image:url('./assets/licensed/skill-15.webp')}
+/* One illustration per cabinet heading, with distinguishable ingredient art. */
+.majRecipeShelf>h3:has(>img)::before,.majRecipeShelf>h3:has(>img)::after{content:none!important}
+.majLootGrid>[data-ingredient=moonpetal]>i>img{filter:hue-rotate(30deg) saturate(.35) brightness(1.25)}
+/* Existing shop controls retain their prices, disabled states and ownership. */
+.shopItem:has(button[onclick^="buyShop("])>div:first-child{font-size:0!important;width:50px;height:50px;background:center/contain no-repeat;filter:saturate(.65);pointer-events:none}
+.shopItem:has(button[onclick="buyShop('streakShield')"])>div:first-child{background-image:url('./assets/licensed/skill-06.webp')}
+.shopItem:has(button[onclick="buyShop('clueCharm')"])>div:first-child,.shopItem:has(button[onclick="buyShop('oracleTicket')"])>div:first-child{background-image:url('./assets/licensed/skill-11.webp')}
+.shopItem:has(button[onclick="buyShop('sparkleAura')"])>div:first-child{background-image:url('./assets/licensed/crystal-yellow.webp')}
+.shopItem:has(button[onclick="buyShop('crystalGarden')"])>div:first-child{background-image:url('./assets/licensed/plants/flowers.webp')}
+.shopItem:has(button[onclick="buyShop('bossShield')"])>div:first-child{background-image:url('./assets/licensed/skill-21.webp')}
+.shopItem:has(button[onclick="buyShop('lunaTiara')"])>div:first-child{background-image:url('./assets/atelier/v2/fitted/accessories/headpiece.webp')}
+.shopItem:has(button[onclick="buyShop('ribbonBurst')"])>div:first-child{background-image:url('./assets/effects/celebrations/celebration-starburst.svg')}

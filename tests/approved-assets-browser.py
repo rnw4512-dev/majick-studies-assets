@@ -52,7 +52,8 @@ with sync_playwright() as pw:
   assert page.locator('.majRecipe>span[aria-hidden=true]').evaluate_all('(els)=>els.every(e=>getComputedStyle(e).backgroundImage==="none")'),'Duplicate bottle backgrounds'
   assert '/images/bag.webp' in page.locator('.majArcaneVault>header h2').evaluate('(e)=>getComputedStyle(e,"::after").backgroundImage')
   page.evaluate("majickVaultTab('ingredients')")
-  assert '/plants/shrub.webp' in page.locator('.majRecipeShelf:has(.majLootGrid)>h3').evaluate('(e)=>getComputedStyle(e,"::after").backgroundImage')
+  cabinet_heading=page.locator('.majRecipeShelf:has(.majLootGrid)>h3');assert '/images/herbal.webp' in cabinet_heading.locator('img').get_attribute('src')
+  assert cabinet_heading.evaluate('(e)=>getComputedStyle(e,"::after").content')=='none'
   for color in ['blue','green','red','violet','yellow']:
    assert page.evaluate('async color=>{const img=new Image();img.src=new URL("assets/licensed/crystal-"+color+".webp",location.href);await img.decode();return img.naturalWidth>0&&img.naturalHeight>0}',color),'Crystal artwork failed to decode: '+color
   before_ornaments=page.evaluate('JSON.stringify({progress:S.progress,legacy:S.legacy,account:S.majickAccount})')

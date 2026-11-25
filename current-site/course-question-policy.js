@@ -38,6 +38,14 @@ function clean(state){
  }
  return changed;
 }
+/* Fairness is derived from existing answer history, never a second progress ledger. */
+function leastSeen(pool,answers=[]){
+ if(!Array.isArray(pool)||!pool.length)return [];
+ const counts=new Map();for(const a of answers||[]){const id=String(a?.qid??a?.id??'');if(id)counts.set(id,(counts.get(id)||0)+1)}
+ const count=q=>counts.get(String(q.id||''))||0,min=Math.min(...pool.map(count));
+ return pool.filter(q=>count(q)===min);
+}
+function skillKey(q){return String(q?.rotationSkill||q?.skill||q?.learningPathLessonId||q?.topicId||q?.lessonId||q?.section||'course')}
 const processed=new WeakSet();
 function run(){
  const state=window.S;if(!state||processed.has(state)||!window.MajickSaveSafety)return false;
@@ -48,7 +56,7 @@ function run(){
  state.courses=candidate.courses;state.progress=candidate.progress;processed.add(state);
  queueMicrotask(()=>window.render?.());return true;
 }
-window.MajickCourseQuestionPolicy={excluded,clean,run};
+window.MajickCourseQuestionPolicy={excluded,clean,run,leastSeen,skillKey};
 if(typeof document!=='undefined')document.addEventListener('DOMContentLoaded',()=>{
  window.MajickRenderQueue?.register?.('course-question-policy',run,1);run();
 },{once:true});

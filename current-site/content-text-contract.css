@@ -129,3 +129,12 @@ html body.majickCampus #content :is(.obs-shell,.aeth-adventure)
 #content>.majickRoomSections>button:is(.majRoomSelected,[aria-pressed="true"]){
  background:#f3dfbd!important;color:#302737!important;-webkit-text-fill-color:#302737!important;
 }
+
+/* The existing course mini-games are paper reading surfaces as well. */
+html body.majickCampus #content :is(#aethCourseGames,#aethAcademyDecor,#aethJournalMemories){--aeth-content-ink:var(--aeth-ink)}
+html body.majickCampus #content :is(#aethCourseGames,#aethAcademyDecor,#aethJournalMemories) :is(h2,h3,h4,p,li,small,span,strong,b,em,label,summary){color:var(--aeth-content-ink)!important;-webkit-text-fill-color:currentColor!important;text-shadow:none!important;opacity:1!important}
+#content #aethAcademyDecor .aeth-decor-preview,#content #aethCourseGames .aeth-word-forge{--aeth-content-ink:var(--aeth-ivory)}
+#content #aethCourseGames .aeth-deep-actions button:last-child{--aeth-content-ink:var(--aeth-ivory)}
+#content #aethCourseGames .aeth-mini-answers button.right{color:#18432c!important;-webkit-text-fill-color:currentColor!important}
+#content #aethCourseGames .aeth-mini-answers button.wrong{color:#6c3442!important;-webkit-text-fill-color:currentColor!important}
+#content #aethCourseGames .aeth-mini-answers button:disabled{opacity:1!important}

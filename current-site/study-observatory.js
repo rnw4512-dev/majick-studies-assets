@@ -10,7 +10,8 @@ const currentCourse=()=>String(window.S?.activeCourse||'D669');
 const rows=course=>store[course]||(store[course]={lessons:{},spent:0,history:[],milestones:[]});
 const allPacks=()=>Object.values(window.MajickCourseActivityPlayer?.packs||{});
 const lessonsFor=course=>allPacks().filter(p=>p.courseId===course);
-const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(store))}catch(_){}};
+let saveProblem='';
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(store));saveProblem=''}catch(_){saveProblem='Recent practice could not be saved in this browser. Keep this page open and download a backup.'}};
 const distinctCorrect=course=>Object.values(rows(course).lessons).reduce((total,l)=>total+Object.values(l.questions||{}).filter(q=>q.firstCorrect).length,0);
 const earned=course=>Math.floor(distinctCorrect(course)/5);
 const tickets=course=>Math.max(0,earned(course)-Number(rows(course).spent||0));
@@ -37,11 +38,24 @@ function record(e){
  refresh();
 }
 function summary(course){
- const packs=lessonsFor(course),r=rows(course),answered=allHistory(course),count=answered.length;
- return {course,questions:count,correct:answered.filter(a=>a.correct).length,uniqueCorrect:distinctCorrect(course),tickets:tickets(course),spent:r.spent||0,scenarios:(r.scenarios||[]).length,scenarioCorrect:(r.scenarios||[]).filter(x=>x.correct).length,skills:packs.map(p=>{
+ const packs=lessonsFor(course),r=rows(course),answered=allHistory(course).filter(a=>a.kind!=='guided-game'),count=answered.length;
+ const recorded=(window.S?.progress?.[course]?.answers||[]).filter(a=>a&&typeof a==='object'),guided=Object.values(r.guided||{}),unique=new Set();let sourceAttempts=0,sourceCorrect=0;
+ for(const [lesson,l]of Object.entries(r.lessons))for(const [id,q]of Object.entries(l.questions||{})){sourceAttempts+=Number(q.tries||0);sourceCorrect+=Number(q.correct||0);if(q.firstCorrect)unique.add(lesson+'|'+id)}
+ for(const a of recorded)if(a.correct&&(a.qid||a.id))unique.add(String(a.qid||a.id));
+ for(const [id,q]of Object.entries(r.guided||{}))if(q.correct)unique.add(id.replace(/^(?:bank|catalog)\|/,''));
+ const guidedAttempts=guided.reduce((n,q)=>n+Number(q.tries||0),0),guidedCorrect=guided.reduce((n,q)=>n+Number(q.correct||0),0);
+ const memories=(window.MajickLearningExperiences?.memories?.()||[]).filter(m=>m.course===course&&/^(?:game|deep|adventure):/.test(m.key||''));
+ const adventure=window.MajickAetheriaAdventures?.progress?.(course)||{},discoveries=new Set(memories.map(m=>m.key));
+ for(const [kind,group]of [['game',adventure.clears],['story',adventure.chapters],['guardian',adventure.guardianTrails]])for(const key of Object.keys(group||{}))discoveries.add('adventure:'+kind+':'+course+':'+key);
+ return {course,allPracticeCount:recorded.length+sourceAttempts+guidedAttempts,allPracticeCorrect:recorded.filter(a=>a.correct).length+sourceCorrect+guidedCorrect,allPracticeUniqueCorrect:unique.size,recordedAnswers:recorded.length,guidedAttempts,sourceAttempts,savedDiscoveries:discoveries.size,questions:count,correct:answered.filter(a=>a.correct).length,uniqueCorrect:distinctCorrect(course),tickets:tickets(course),spent:r.spent||0,scenarios:(r.scenarios||[]).length,scenarioCorrect:(r.scenarios||[]).filter(x=>x.correct).length,skills:packs.map(p=>{
    const l=r.lessons[p.id]||{},q=l.questions||{},recent=l.recent||[],unique=Object.values(q).filter(x=>x.firstCorrect).length;
    return {id:p.id,title:p.title,total:p.activities.filter(a=>a._sourceVerified).length,unique,accuracy:ratio(recent.filter(Boolean).length,recent.length),attempts:recent.length,trend:recent.slice(-12)};
  })};
+}
+function recordGuided(e){
+ const d=e?.detail||{},course=String(d.courseId||''),id=String(d.questionId||'');if(!course||!id)return;
+ const r=rows(course);r.guided=r.guided||{};const q=r.guided[id]||(r.guided[id]={tries:0,correct:0,origin:String(d.origin||'guided-game')});q.tries++;if(d.correct)q.correct++;
+ save();refresh();
 }
 function spark(vals){
  if(!vals.length)return '<span class="obs-muted">No attempts yet</span>';
@@ -69,11 +83,13 @@ function gameHTML(course){
 function render(){
  const course=currentCourse(),s=summary(course),packs=lessonsFor(course);
  if(!packs.length)return '';
- const answered=s.questions,acc=ratio(s.correct,answered),studyWidth=Math.min(100,ratio(s.uniqueCorrect,packs.reduce((x,p)=>x+p.activities.filter(a=>a._sourceVerified).length,0)));
+ const answered=s.allPracticeCount,acc=ratio(s.allPracticeCorrect,answered),studyWidth=Math.min(100,ratio(s.uniqueCorrect,packs.reduce((x,p)=>x+p.activities.filter(a=>a._sourceVerified).length,0)));
  const eggFragments=Math.max(0,Number(window.MajickRewardCore?.inspect?.()?.eggFragments||0));
  return '<section class="obs-shell" aria-label="Learning Observatory progress">'+
  '<div class="obs-header"><div><span>✦ LEARNING OBSERVATORY • '+esc(course)+'</span><h3>Watch your skills grow</h3><p>Real practice. Visible growth. A little magic along the way.</p></div><div class="obs-medallion" aria-hidden="true">✧</div></div>'+
- '<div class="obs-kpis"><div><b>'+s.uniqueCorrect+'</b><small>Unique questions solved</small></div><div><b>'+answered+'</b><small>Sourced practice checks</small></div><div><b>'+acc+'%</b><small>Practice accuracy</small></div><div><b>'+s.tickets+'</b><small>Starfall passes earned</small></div><div class="obs-fragments"><b>🥚 '+eggFragments+'</b><small>Egg Fragments · 10 to conjure an egg</small></div></div>'+
+ '<div class="obs-kpis"><div><b>'+s.allPracticeUniqueCorrect+'</b><small>Unique practice questions</small></div><div><b>'+answered+'</b><small>Saved practice answers</small></div><div><b>'+acc+'%</b><small>Practice accuracy</small></div><div><b>'+s.tickets+'</b><small>Starfall passes earned</small></div><div class="obs-fragments"><b>🥚 '+eggFragments+'</b><small>Egg Fragments · 10 to conjure an egg</small></div></div>'+
+ '<p class="obs-progress-note">Saved game discoveries: <b>'+s.savedDiscoveries+'</b> · guided game answers: <b>'+s.guidedAttempts+'</b> · source-linked checks: <b>'+s.sourceAttempts+'</b>. Guided practice is not independent mastery.</p>'+
+ '<div class="obs-save-summary" role="status"><p>'+esc(saveProblem||'Your study progress is stored in this browser. Download a backup to keep a copy or move it to another device.')+'</p><button type="button" data-obs-backup>Download progress backup</button></div>'+
  '<p class="obs-scenario-metric">Hands-on scenario checks: <b>'+s.scenarios+'</b> · correct <b>'+s.scenarioCorrect+'</b> · tracked separately from sourced OA practice.</p>'+
  '<div class="obs-meter"><div><b>Source-based skill coverage</b><span>'+studyWidth+'%</span></div><div class="obs-track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="'+studyWidth+'" aria-label="Unique source questions solved"><i style="width:'+studyWidth+'%"></i></div><p>Each question counts once toward coverage. Retry practice helps learning, but never creates duplicate rewards.</p></div>'+
  '<h4 class="obs-subhead">Skill growth by lesson</h4><div class="obs-skills">'+s.skills.map(l=>'<div class="obs-skill"><div><b>'+esc(l.title)+'</b><small>'+l.unique+' / '+l.total+' distinct questions answered correctly</small></div><div class="obs-mini"><div class="obs-track"><i style="width:'+ratio(l.unique,l.total)+'%"></i></div><span>'+l.accuracy+'% recent accuracy</span></div>'+spark(l.trend)+'</div>').join('')+'</div>'+
@@ -101,8 +117,11 @@ function playGame(){
  document.querySelector('.obs-game')?.scrollIntoView?.({block:'nearest',behavior:'smooth'});
 }
 document.addEventListener('majick:sourced-practice',record);
+document.addEventListener('majick:guided-practice',recordGuided);
+document.addEventListener('majick:save-restored',()=>{try{const next=JSON.parse(localStorage.getItem(KEY)||'{}');for(const k of Object.keys(store))delete store[k];for(const k of Object.keys(next))if(k!=='__proto__')store[k]=next[k];play=null;saveProblem='';refresh()}catch(_){saveProblem='The restored study record could not be opened.'}});
 document.addEventListener('majick:hands-on-practice',recordScenario);
 document.addEventListener('click',e=>{
+ if(e.target.closest?.('[data-obs-backup]')){window.MajickSaveSafety?.download?.();return;}
  const b=e.target.closest('button');if(!b||!b.closest('.obs-shell'))return;
  if(b.hasAttribute('data-obs-play')){playGame();return;}
  if(b.hasAttribute('data-obs-close')){play=null;refresh();return;}
@@ -121,5 +140,5 @@ function install(){
  return true;
 }
 if(!install())document.addEventListener('DOMContentLoaded',install,{once:true});
-window.MajickStudyObservatory={render,summary,record,refresh,tickets};
+window.MajickStudyObservatory={exportState:()=>JSON.parse(JSON.stringify(store)),render,summary,record,refresh,tickets};
 })();
