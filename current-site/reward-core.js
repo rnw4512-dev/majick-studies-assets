@@ -8,7 +8,7 @@ const RARITIES=[
  {id:'arcane',label:'Arcane',weight:6},
  {id:'celestial',label:'Celestial',weight:1}
 ];
-const CABINET_ART={"moonpetal":"plants/flowers.webp","silver-sage":"plants/shrub.webp","crystal-nectar":"crystals/cluster-1.webp","clarity-potion":"models/potion-1.webp","recall-draught":"models/potion-2.webp","moonfocus-elixir":"models/potion-3.webp","crystal-sight-potion":"models/potion-4.webp","starlight-tonic":"models/potion-5.webp"};
+const CABINET_ART={"dream-lavender":"plants/flowers.webp","star-moss":"plants/shrub.webp","moonpetal":"plants/flowers.webp","silver-sage":"plants/shrub.webp","crystal-nectar":"crystals/cluster-1.webp","clarity-potion":"models/potion-1.webp","recall-draught":"models/potion-2.webp","moonfocus-elixir":"models/potion-3.webp","crystal-sight-potion":"models/potion-4.webp","starlight-tonic":"models/potion-5.webp"};
 function cabinetArt(id,icon){const path=CABINET_ART[id];return path?'<img src="assets/licensed/'+path+'" alt="" loading="lazy" decoding="async" width="64" height="64" style="width:64px;height:64px;object-fit:contain;vertical-align:middle">':E(icon||'✦');}
 const INGREDIENTS=[
  {id:'moonpetal',name:'Moonpetal',icon:'❀',rarity:'common'},
@@ -232,7 +232,7 @@ function award(type,ctx={}){
  try{window.MajickProductCore?.record?.('reward-earned',{type,xp,crystals,eggFragments:receipt.eggFragments,item:drop?.id||null})}catch(_){}
  return receipt;
 }
-function rewardDropArt(drop){const path=Object.prototype.hasOwnProperty.call(ITEM_ART,drop.id)?ITEM_ART[drop.id]:null;return path?'<img src="'+E(path)+'" alt="" width="48" height="48" decoding="async" style="width:48px;height:48px;object-fit:contain;vertical-align:middle">':cabinetArt(drop.id,drop.icon);}
+function rewardDropArt(drop){const path=Object.prototype.hasOwnProperty.call(ITEM_ART,drop.id)?ITEM_ART[drop.id]:(typeof drop.image==='string' && /^assets\/rewards\/[a-z0-9/-]+\.webp$/i.test(drop.image)?drop.image:null);return path?'<img src="'+E(path)+'" alt="" width="48" height="48" decoding="async" style="width:48px;height:48px;object-fit:contain;vertical-align:middle">':cabinetArt(drop.id,drop.icon);}
 function receiptLines(x){
  const rows=[];if(x.xp)rows.push('+'+x.xp+' Scholar XP');if(x.crystals)rows.push('+'+x.crystals+' Moon Crystal'+(x.crystals===1?'':'s'));
  if(x.masteryXp)rows.push('+'+x.masteryXp+' Mastery XP');
