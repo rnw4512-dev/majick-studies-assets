@@ -81,6 +81,8 @@ with sync_playwright() as pw:
   shop=page.locator(':is(.shopItem,.v3311ShopItem,.v3312ShopItem):has(button[onclick^=\"buyShop(\"])');assert shop.count()==8,'Active shop card variant was not covered'
   for item in shop.all():
    icon=item.locator(':scope>:is(div,span)').first
+   icon.scroll_into_view_if_needed()
+   icon.evaluate('(e)=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)))')
    art=icon.evaluate('(e)=>({image:getComputedStyle(e).backgroundImage,size:getComputedStyle(e).fontSize,width:e.getBoundingClientRect().width,height:e.getBoundingClientRect().height})')
    assert art['image']!='none' and art['size']=='0px' and art['width']>=40 and art['height']>=40,art
    assert item.locator('h3').text_content().strip()
