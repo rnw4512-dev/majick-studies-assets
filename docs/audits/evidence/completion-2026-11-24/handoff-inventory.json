@@ -1,0 +1,3785 @@
+{
+  "branch": "visual/downloaded-asset-depth-20261124",
+  "reviewedMain": "1525418f9e33b92ed96b29f668a0c926cdad9436",
+  "handoffReferences": [
+    {
+      "path": "current-site",
+      "exists": true,
+      "kind": "directory"
+    },
+    {
+      "path": "current-site/index.html",
+      "exists": true,
+      "kind": "file"
+    },
+    {
+      "path": "current-site/PROJECT_PROGRESS.md",
+      "exists": true,
+      "kind": "file"
+    },
+    {
+      "path": "current-site/app-progress.json",
+      "exists": true,
+      "kind": "file"
+    },
+    {
+      "path": "current-site/assets",
+      "exists": true,
+      "kind": "directory"
+    },
+    {
+      "path": "current-site/assets/rooms",
+      "exists": true,
+      "kind": "directory"
+    },
+    {
+      "path": "current-site/assets/familiars",
+      "exists": true,
+      "kind": "directory"
+    },
+    {
+      "path": "current-site/assets/iep-council",
+      "exists": true,
+      "kind": "directory"
+    },
+    {
+      "path": "current-site/assets/atelier",
+      "exists": true,
+      "kind": "directory"
+    },
+    {
+      "path": "current-site/assets/effects",
+      "exists": true,
+      "kind": "directory"
+    },
+    {
+      "path": "current-site/assets/rewards",
+      "exists": true,
+      "kind": "directory"
+    },
+    {
+      "path": "current-site/assets/ui",
+      "exists": true,
+      "kind": "directory"
+    },
+    {
+      "path": "current-site/assets/audio",
+      "exists": true,
+      "kind": "directory"
+    },
+    {
+      "path": "current-site/assets/licensed",
+      "exists": true,
+      "kind": "directory"
+    },
+    {
+      "path": "current-site/assets/IMMERSION-CREDITS.html",
+      "exists": true,
+      "kind": "file"
+    },
+    {
+      "path": "current-site/assets/ancient-study-library-v1.webp",
+      "exists": true,
+      "kind": "file"
+    },
+    {
+      "path": "current-site/assets/ancient-study-library-v1-820.webp",
+      "exists": true,
+      "kind": "file"
+    },
+    {
+      "path": "current-site/assets/learn-classroom-v1.webp",
+      "exists": true,
+      "kind": "file"
+    },
+    {
+      "path": "current-site/assets/learn-classroom-v2.webp",
+      "exists": true,
+      "kind": "file"
+    },
+    {
+      "path": "current-site/assets/learn-classroom-v2-820.webp",
+      "exists": true,
+      "kind": "file"
+    },
+    {
+      "path": "current-site/assets/game-observatory-v1.webp",
+      "exists": true,
+      "kind": "file"
+    },
+    {
+      "path": "current-site/assets/game-observatory-v1-820.webp",
+      "exists": true,
+      "kind": "file"
+    },
+    {
+      "path": "current-site/assets/guardian-dorm-v1.webp",
+      "exists": true,
+      "kind": "file"
+    },
+    {
+      "path": "current-site/assets/guardian-dorm-v1-820.webp",
+      "exists": true,
+      "kind": "file"
+    },
+    {
+      "path": "current-site/assets/approved_sanctuary_backdrop.jpg",
+      "exists": true,
+      "kind": "file"
+    },
+    {
+      "path": "current-site/assets/academy_hero.jpg",
+      "exists": true,
+      "kind": "file"
+    },
+    {
+      "path": "current-site/assets/room_archive.jpg",
+      "exists": true,
+      "kind": "file"
+    },
+    {
+      "path": "current-site/assets/room_exam.jpg",
+      "exists": true,
+      "kind": "file"
+    },
+    {
+      "path": "current-site/assets/room_library.jpg",
+      "exists": true,
+      "kind": "file"
+    },
+    {
+      "path": "current-site/assets/room_lecture.jpg",
+      "exists": true,
+      "kind": "file"
+    },
+    {
+      "path": "current-site/assets/room_observatory.jpg",
+      "exists": true,
+      "kind": "file"
+    },
+    {
+      "path": "current-site/assets/room_conservatory.jpg",
+      "exists": true,
+      "kind": "file"
+    },
+    {
+      "path": "current-site/assets/majick_cosmos.jpg",
+      "exists": true,
+      "kind": "file"
+    },
+    {
+      "path": "current-site/assets/majick_garden.jpg",
+      "exists": true,
+      "kind": "file"
+    },
+    {
+      "path": "current-site/assets/majick_library.jpg",
+      "exists": true,
+      "kind": "file"
+    },
+    {
+      "path": "current-site/assets/majick_music.jpg",
+      "exists": true,
+      "kind": "file"
+    },
+    {
+      "path": "current-site/app-runtime.js",
+      "exists": true,
+      "kind": "file"
+    },
+    {
+      "path": "current-site/app-recovery.js",
+      "exists": true,
+      "kind": "file"
+    },
+    {
+      "path": "current-site/startup-core.20261114.js",
+      "exists": true,
+      "kind": "file"
+    },
+    {
+      "path": "current-site/startup-save-bridge.20261114.js",
+      "exists": true,
+      "kind": "file"
+    },
+    {
+      "path": "current-site/majick-state-core.js",
+      "exists": true,
+      "kind": "file"
+    },
+    {
+      "path": "current-site/save-safety.js",
+      "exists": true,
+      "kind": "file"
+    },
+    {
+      "path": "current-site/service-worker.js",
+      "exists": true,
+      "kind": "file"
+    },
+    {
+      "path": "current-site/manifest.webmanifest",
+      "exists": true,
+      "kind": "file"
+    },
+    {
+      "path": "current-site/campus-runtime.js",
+      "exists": true,
+      "kind": "file"
+    },
+    {
+      "path": "current-site/product-core.js",
+      "exists": true,
+      "kind": "file"
+    },
+    {
+      "path": "current-site/room-identities.js",
+      "exists": true,
+      "kind": "file"
+    },
+    {
+      "path": "current-site/room-identities.css",
+      "exists": true,
+      "kind": "file"
+    },
+    {
+      "path": "current-site/room-transition.js",
+      "exists": true,
+      "kind": "file"
+    },
+    {
+      "path": "current-site/room-section-nav.js",
+      "exists": true,
+      "kind": "file"
+    },
+    {
+      "path": "current-site/room-section-nav.css",
+      "exists": true,
+      "kind": "file"
+    },
+    {
+      "path": "current-site/collegium-atmosphere.js",
+      "exists": true,
+      "kind": "file"
+    },
+    {
+      "path": "current-site/collegium-atmosphere.css",
+      "exists": true,
+      "kind": "file"
+    },
+    {
+      "path": "current-site/living-collegium.js",
+      "exists": true,
+      "kind": "file"
+    },
+    {
+      "path": "current-site/living-collegium.css",
+      "exists": true,
+      "kind": "file"
+    },
+    {
+      "path": "current-site/classroom-library-life.js",
+      "exists": true,
+      "kind": "file"
+    },
+    {
+      "path": "current-site/classroom-library-life.css",
+      "exists": true,
+      "kind": "file"
+    },
+    {
+      "path": "current-site/aetheria-visual-polish.css",
+      "exists": true,
+      "kind": "file"
+    },
+    {
+      "path": "current-site/licensed-assets.css",
+      "exists": true,
+      "kind": "file"
+    },
+    {
+      "path": "current-site/decorative-panel.js",
+      "exists": true,
+      "kind": "file"
+    },
+    {
+      "path": "current-site/magical-college-home.js",
+      "exists": true,
+      "kind": "file"
+    },
+    {
+      "path": "current-site/course-content",
+      "exists": true,
+      "kind": "directory"
+    },
+    {
+      "path": "current-site/course-packs",
+      "exists": true,
+      "kind": "directory"
+    },
+    {
+      "path": "current-site/study-material",
+      "exists": true,
+      "kind": "directory"
+    },
+    {
+      "path": "current-site/lesson-visuals",
+      "exists": true,
+      "kind": "directory"
+    },
+    {
+      "path": "current-site/coverage",
+      "exists": true,
+      "kind": "directory"
+    },
+    {
+      "path": "current-site/source-manifest.json",
+      "exists": true,
+      "kind": "file"
+    },
+    {
+      "path": "current-site/courseManager.js",
+      "exists": true,
+      "kind": "file"
+    },
+    {
+      "path": "current-site/course-learning-path.js",
+      "exists": true,
+      "kind": "file"
+    },
+    {
+      "path": "current-site/connected-learning-path.js",
+      "exists": true,
+      "kind": "file"
+    },
+    {
+      "path": "current-site/course-learning-profiles.js",
+      "exists": true,
+      "kind": "file"
+    },
+    {
+      "path": "current-site/course-source-reader.js",
+      "exists": true,
+      "kind": "file"
+    },
+    {
+      "path": "current-site/course-activity-player.js",
+      "exists": true,
+      "kind": "file"
+    },
+    {
+      "path": "current-site/course-question-policy.js",
+      "exists": true,
+      "kind": "file"
+    },
+    {
+      "path": "current-site/source-provenance.js",
+      "exists": true,
+      "kind": "file"
+    },
+    {
+      "path": "current-site/section-intake-shortcuts.js",
+      "exists": true,
+      "kind": "file"
+    },
+    {
+      "path": "current-site/learning-continuity.js",
+      "exists": true,
+      "kind": "file"
+    },
+    {
+      "path": "current-site/study-progress-bridge.js",
+      "exists": true,
+      "kind": "file"
+    },
+    {
+      "path": "current-site/lesson-activity-bank.js",
+      "exists": true,
+      "kind": "file"
+    },
+    {
+      "path": "current-site/learning-lab.js",
+      "exists": true,
+      "kind": "file"
+    },
+    {
+      "path": "current-site/learning-lab.css",
+      "exists": true,
+      "kind": "file"
+    },
+    {
+      "path": "current-site/learn-mode.js",
+      "exists": true,
+      "kind": "file"
+    },
+    {
+      "path": "current-site/learn-mode.css",
+      "exists": true,
+      "kind": "file"
+    },
+    {
+      "path": "current-site/study-visual-anchors.js",
+      "exists": true,
+      "kind": "file"
+    },
+    {
+      "path": "current-site/anchor-interactives.js",
+      "exists": true,
+      "kind": "file"
+    },
+    {
+      "path": "current-site/embedded-practice.js",
+      "exists": true,
+      "kind": "file"
+    },
+    {
+      "path": "current-site/inline-lesson-practice.js",
+      "exists": true,
+      "kind": "file"
+    },
+    {
+      "path": "current-site/universal-hands-on.js",
+      "exists": true,
+      "kind": "file"
+    },
+    {
+      "path": "current-site/manipulatives.js",
+      "exists": true,
+      "kind": "file"
+    },
+    {
+      "path": "current-site/teach-back.js",
+      "exists": true,
+      "kind": "file"
+    },
+    {
+      "path": "current-site/course-tutor.js",
+      "exists": true,
+      "kind": "file"
+    },
+    {
+      "path": "current-site/learning-plan.js",
+      "exists": true,
+      "kind": "file"
+    },
+    {
+      "path": "current-site/study-observatory.js",
+      "exists": true,
+      "kind": "file"
+    },
+    {
+      "path": "current-site/game-realm.js",
+      "exists": true,
+      "kind": "file"
+    }
+  ],
+  "assetDirectories": [
+    {
+      "path": "current-site/assets",
+      "exists": true,
+      "files": 646,
+      "bytes": 111554177
+    },
+    {
+      "path": "current-site/assets/rooms",
+      "exists": true,
+      "files": 12,
+      "bytes": 1020304
+    },
+    {
+      "path": "current-site/assets/familiars",
+      "exists": true,
+      "files": 82,
+      "bytes": 9919126
+    },
+    {
+      "path": "current-site/assets/iep-council",
+      "exists": true,
+      "files": 5,
+      "bytes": 15076
+    },
+    {
+      "path": "current-site/assets/atelier",
+      "exists": true,
+      "files": 287,
+      "bytes": 47606625
+    },
+    {
+      "path": "current-site/assets/effects",
+      "exists": true,
+      "files": 5,
+      "bytes": 2850
+    },
+    {
+      "path": "current-site/assets/rewards",
+      "exists": true,
+      "files": 90,
+      "bytes": 9887872
+    },
+    {
+      "path": "current-site/assets/ui",
+      "exists": true,
+      "files": 1,
+      "bytes": 623
+    },
+    {
+      "path": "current-site/assets/audio",
+      "exists": true,
+      "files": 1,
+      "bytes": 3598224
+    },
+    {
+      "path": "current-site/assets/licensed",
+      "exists": true,
+      "files": 126,
+      "bytes": 7100284
+    }
+  ],
+  "outsideRuntime": [
+    {
+      "path": "asset-sources",
+      "files": 23,
+      "bytes": 20724920,
+      "runtimePublished": false
+    },
+    {
+      "path": "asset-review",
+      "files": 88,
+      "bytes": 955408,
+      "runtimePublished": false
+    }
+  ],
+  "assets": [
+    {
+      "path": "current-site/assets/IMMERSION-CREDITS.html",
+      "bytes": 7325,
+      "sha256": "07e965245c50cb8dd54b405f31b77fd2aac577214e4c4cdcbd187b9b12f37b93"
+    },
+    {
+      "path": "current-site/assets/academy_hero.jpg",
+      "bytes": 253076,
+      "sha256": "d8bf97204e8886747bd527341d8e8056b40dcd840619ed943e70d63d47681a55"
+    },
+    {
+      "path": "current-site/assets/ancient-study-library-v1-820.webp",
+      "bytes": 524704,
+      "sha256": "15351da70008d234502c0201cec7a5bb44acddd2a287cf42d914d3447aae9a1f"
+    },
+    {
+      "path": "current-site/assets/ancient-study-library-v1.png",
+      "bytes": 2826015,
+      "sha256": "85244e085292a40e4e73e4ddb2c4b5f40722733abd8fc64851c1e637994fbbfe"
+    },
+    {
+      "path": "current-site/assets/ancient-study-library-v1.webp",
+      "bytes": 2231428,
+      "sha256": "ab498f70b1d90490ea869a59fefa88616fb12b2833640418c28acf3ff4483bf8"
+    },
+    {
+      "path": "current-site/assets/approved_sanctuary_backdrop.jpg",
+      "bytes": 83724,
+      "sha256": "122878f7f87e40b720f26994f154dd1d8409bd70c4fcc0d2922e4e4f65e28779"
+    },
+    {
+      "path": "current-site/assets/atelier/avatars/README.md",
+      "bytes": 2676,
+      "sha256": "85c665df748989cb8808f255c012fe7afc8f9863661519270727adb24e4ad6d1"
+    },
+    {
+      "path": "current-site/assets/atelier/avatars/activity-plum-locs-warm-companion-v1.webp",
+      "bytes": 398344,
+      "sha256": "9b165a71632bc444c4c77010234e17cf524f67aecaaded4e6832f0d6f125794a"
+    },
+    {
+      "path": "current-site/assets/atelier/avatars/activity-plum-locs-warm-playing-v1.webp",
+      "bytes": 362416,
+      "sha256": "2415d42e5d2804a3d0965cafd0be78875a80a8c415fca611148c0e1e2afab85a"
+    },
+    {
+      "path": "current-site/assets/atelier/avatars/activity-plum-locs-warm-sleeping-v1.webp",
+      "bytes": 280404,
+      "sha256": "f7a3d2da71d597a3fef56717b6f43c0545bedff9cccf9ce224b0b1a538a5b5d5"
+    },
+    {
+      "path": "current-site/assets/atelier/avatars/activity-plum-locs-warm-studying-v1.webp",
+      "bytes": 403644,
+      "sha256": "6962c5728b4db606f357711c500d674a88b7bb8447aa301d600fa989b35e26ca"
+    },
+    {
+      "path": "current-site/assets/atelier/avatars/activity-plum-locs-warm-talking-v1.webp",
+      "bytes": 257100,
+      "sha256": "feb55706def5718dca31bf0e6d7332521d0b1bae2eea12a48413d46e27b96183"
+    },
+    {
+      "path": "current-site/assets/atelier/avatars/activity-plum-locs-warm-walking-v1.webp",
+      "bytes": 277444,
+      "sha256": "daefc65a00f4caa9e05602aec8596b63cf8e5fab2908be237f75947f340724c3"
+    },
+    {
+      "path": "current-site/assets/atelier/avatars/layer-body-deep-v2.webp",
+      "bytes": 81772,
+      "sha256": "8e60236fc1fcf7a00716e140a85111dd6b5e5a59bcf014278ffca213b203b4af"
+    },
+    {
+      "path": "current-site/assets/atelier/avatars/layer-body-deep.webp",
+      "bytes": 33196,
+      "sha256": "d14b00da575341cc510e92fa2985def94564052e71755a103e59460fb59bd0b1"
+    },
+    {
+      "path": "current-site/assets/atelier/avatars/layer-body-warm-v2.webp",
+      "bytes": 91972,
+      "sha256": "90b51e362abf1de85e116d1840fc38cfe58036b50c2e0307a55dbe2ffdc89aa6"
+    },
+    {
+      "path": "current-site/assets/atelier/avatars/layer-body-warm.webp",
+      "bytes": 38180,
+      "sha256": "0ed3650bd7064de397a6bb37a3844bbaa7a91efd252b19521dd0af2d79d4f6b2"
+    },
+    {
+      "path": "current-site/assets/atelier/avatars/layer-boots-plum.webp",
+      "bytes": 5110,
+      "sha256": "279e2748ae7784e08fefb643dc3700be87fefe824975cc8e6fd518240617272a"
+    },
+    {
+      "path": "current-site/assets/atelier/avatars/layer-dress-emerald-v1.webp",
+      "bytes": 252910,
+      "sha256": "c866a6836ac0521f8bfab5c7cfcb2644efa4e4cedb92bce2360b899aa7f387e1"
+    },
+    {
+      "path": "current-site/assets/atelier/avatars/layer-dress-midnight.webp",
+      "bytes": 36088,
+      "sha256": "a7ecc7a7919fce3c5f4792b8f29b4f59eee0881f2bbe8366846f457aeacabb3e"
+    },
+    {
+      "path": "current-site/assets/atelier/avatars/layer-dress-plum.webp",
+      "bytes": 49160,
+      "sha256": "ea780a7f1f63756a8778a67db663650102f82ac5a83e0d9b1e59a675361d8cda"
+    },
+    {
+      "path": "current-site/assets/atelier/avatars/layer-dress-silver-v1.webp",
+      "bytes": 324152,
+      "sha256": "f3f3baf201c9479571e4dd80ca18a42edd8b30d65edf0b789e84f03db13c53ac"
+    },
+    {
+      "path": "current-site/assets/atelier/avatars/layer-face-glam.webp",
+      "bytes": 5734,
+      "sha256": "0b3d7442afc3e4d12d558a80c46536c6822fc917c6e3ea12dd1aabd83a7ef387"
+    },
+    {
+      "path": "current-site/assets/atelier/avatars/layer-hair-afro-v2.webp",
+      "bytes": 100982,
+      "sha256": "6d1856de8ee11f93980e24b417d76e74d3672eee9084d0cec587b26c5050c0cf"
+    },
+    {
+      "path": "current-site/assets/atelier/avatars/layer-hair-afro.webp",
+      "bytes": 9890,
+      "sha256": "c6c6325ba1c98a7bb4834a2ed5e3752c3d9e509f26e16f4dd2c35bd3ea753dca"
+    },
+    {
+      "path": "current-site/assets/atelier/avatars/layer-hair-braids-v2.webp",
+      "bytes": 115108,
+      "sha256": "e2bed0067f7de361335fa9e1a0bce1308d6c222f6924c89aa9a6f63fa645e714"
+    },
+    {
+      "path": "current-site/assets/atelier/avatars/layer-hair-braids.webp",
+      "bytes": 16860,
+      "sha256": "dc11482f67cc3db707471fff3989e3f501fcebbb5181ed14cf216fc4a46915be"
+    },
+    {
+      "path": "current-site/assets/atelier/avatars/layer-hair-curls-v1.webp",
+      "bytes": 156236,
+      "sha256": "8df8ddf5fe4cdba58351be04df7604f5f28099448997a65db92f37c424a2427d"
+    },
+    {
+      "path": "current-site/assets/atelier/avatars/layer-hair-locs-v2.webp",
+      "bytes": 131092,
+      "sha256": "a2b78a8df4cca4cf3bd2a78309c7dbfb7ad6297263376e7fab7b07870a084e31"
+    },
+    {
+      "path": "current-site/assets/atelier/avatars/layer-hair-locs.webp",
+      "bytes": 32370,
+      "sha256": "7f674640a7729ac52e31de9936d7c22d5624527b8222a4ad1f5db5931ac96100"
+    },
+    {
+      "path": "current-site/assets/atelier/avatars/layer-hair-twists-v1.webp",
+      "bytes": 133638,
+      "sha256": "56a057ceabb0532a70cab5b66be16637854adc6e991fcb41bd925e360f5a3cff"
+    },
+    {
+      "path": "current-site/assets/atelier/avatars/layer-hair-twists-v2.webp",
+      "bytes": 113892,
+      "sha256": "b7f33a1ca59564d07c14d49c0acffc79b04a5adba9cb27494cfc7dd9d7a29dba"
+    },
+    {
+      "path": "current-site/assets/atelier/avatars/layer-hair-waves-v1.webp",
+      "bytes": 147118,
+      "sha256": "d86efd957a150257f00215ab0e5e3f7ba242b0315b7f4f3bf8909a5ce02039ca"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/README.md",
+      "bytes": 938,
+      "sha256": "a2ae7ef130aea72091b77827c66d42cf97d042302d9182a1b49068ac341a2d06"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/accessories/book_bag.webp",
+      "bytes": 286078,
+      "sha256": "d5990dcdf3ce06ffd6901ab2441bc9c15d32fd9321f1ed1085c0cc5053556ece"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/accessories/bracelet_gold.webp",
+      "bytes": 211596,
+      "sha256": "cecd2eb1dbb4421fe628c4075760aaf3c305f5a18d5e7f6faeab341e121c7e8d"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/accessories/bracelet_stack.webp",
+      "bytes": 372072,
+      "sha256": "bea685cd08e974354c2cd7feacccae6cda72bb7651524b4b1dd371496c2c6620"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/accessories/earring_left.webp",
+      "bytes": 97022,
+      "sha256": "cc0a1af776715f8758682b9a68a18a619a2163d62ff54a97c94c8e0297f9e615"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/accessories/earring_right.webp",
+      "bytes": 95430,
+      "sha256": "70fd8599220a595deb25c6eaa22c176be732a44a1db27c6385378dc229b7d6b5"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/accessories/headpiece.webp",
+      "bytes": 250120,
+      "sha256": "c7c429705320b847ea32d72e0d4bb2292a64593ef2d660c174a0775ba3f67866"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/accessories/necklace.webp",
+      "bytes": 274546,
+      "sha256": "03c97427e1da385e07ca16feb1336d207da52df4652baa4fbaf2eb7ff37c8d03"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/accessories/ring_gem.webp",
+      "bytes": 152426,
+      "sha256": "66926d34ced6f2a02feae09c5acfb893eb3d156401c62c4c5dbd08b5c95120b1"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/accessories/ring_moon.webp",
+      "bytes": 227886,
+      "sha256": "3c68f23c73b08ccee77928c21335e8dc6ea21e8d0c4b5dd81332fdd26999757b"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/accessories/ring_star.webp",
+      "bytes": 166322,
+      "sha256": "edbd375fad4726003e32419b5f6320b91679b3de0cd6cf44952c44213a0db70d"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/accessories/skirt_overlay.webp",
+      "bytes": 343736,
+      "sha256": "c0b3515caaffe49c4c388cbb33bd98e5cd9e621c8b6cb46601d0a6876c8ca151"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/approval-registry.json",
+      "bytes": 6506,
+      "sha256": "28fccf84473cdfdc6238f0fed59858926cf418d9db1b4f823b61026a6514b01c"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/body/back_idle.webp",
+      "bytes": 142634,
+      "sha256": "acc3d6911bcc99dc4e336f4aba225877564eba732704349d1a8170bba76ef0d2"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/body/back_step_left.webp",
+      "bytes": 125428,
+      "sha256": "86f3a85ee4a2bce63924c2ba029dd917223699edf2ac4f231c19eefbe3b3d9c9"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/body/back_step_right.webp",
+      "bytes": 144790,
+      "sha256": "63d2de66951810c26b40132a362b48b3655e84c3552b1cf1dd3a3341d99d86c6"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/body/front_idle.webp",
+      "bytes": 148566,
+      "sha256": "e5524bb02934ae0e8100feff632bfa4f69e0aae5db60ef850350b509e4aa8e9b"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/body/front_step_left.webp",
+      "bytes": 133442,
+      "sha256": "25b39e42b9255e442d285a7376934e7ddadcc15437f2f4951178096e10020a88"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/body/front_step_right.webp",
+      "bytes": 137642,
+      "sha256": "f9d7fc422ec7a5611fedf4ea3f90bde0e44cefb5d3d80c410931f2ebcfd2411b"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/body/side_left_idle.webp",
+      "bytes": 91262,
+      "sha256": "b613a183f422fbdbff561507fa585a956b6915a0628820c40757b6973ba4e783"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/body/side_left_walk.webp",
+      "bytes": 124468,
+      "sha256": "f197049ffdf25daac96a7c96fcba53c9e9f09f95f9123e497753f1083f57513e"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/body/side_right_walk.webp",
+      "bytes": 135876,
+      "sha256": "97f9df0016785f042c34cf9c22df0f476f1d041bf12e1f8037604adf60c079c6"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/body/threequarter_left_forward.webp",
+      "bytes": 148714,
+      "sha256": "0f20b3942ea75b031d1f35c8c1c593e37ec319834a81e0f5ae2be98ecd92648e"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/body/threequarter_left_step.webp",
+      "bytes": 141652,
+      "sha256": "e53e081425368909eae4c462f94f0d0a82b0228f271b4a8a2d54cf68421eaab1"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/body/threequarter_left_walk.webp",
+      "bytes": 149588,
+      "sha256": "f0f5e45a111f8a40d55e543cc88ea00265066dbac097b634009ce63b544f4e58"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/companions/aurelia_sit_idle.webp",
+      "bytes": 221998,
+      "sha256": "c4d0e37e324f568b4117c08f387ce297146e5721f81de540221d5a0f03d5be16"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/companions/aurelia_sleep.webp",
+      "bytes": 243780,
+      "sha256": "5324ea7643776e1659d85b8b04a77aebcc0be87af1ca45dfc7052af43f879597"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/companions/aurelia_walk_1.webp",
+      "bytes": 252376,
+      "sha256": "7b19cbf0a7f24d7f4801709fc7bae74974693e31c65a8c2760da91f53ef83180"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/companions/aurelia_walk_2.webp",
+      "bytes": 251400,
+      "sha256": "0eba7de766b84fd56f54f26f03cb049d008efa37d8788708437a08a1d83c7cc2"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/companions/cascade_sit_idle.webp",
+      "bytes": 274480,
+      "sha256": "f2e7793f0886441121978c99e3798e51dc0f3a3bca67935fc4ba16d6b665d8e2"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/companions/cascade_sleep.webp",
+      "bytes": 253652,
+      "sha256": "377d08b020e1f08916660189df287fc7d22e064fbc719b3ae5dae13b3d649168"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/companions/cascade_walk_1.webp",
+      "bytes": 306056,
+      "sha256": "850fa6606f7399bd2997a9968cc744ea15c25192b9934eea04302b3adc50d58a"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/companions/cascade_walk_2.webp",
+      "bytes": 306120,
+      "sha256": "746431fb461bf1319a9bd790806c75a165ae97f23a16c3e118c69f2194bf2031"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/companions/solstice_sit_idle.webp",
+      "bytes": 242626,
+      "sha256": "1bf82b98efb630729fcf2f68b9df4b744c4e0ce89c91ad11053472c4d6c9d576"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/companions/solstice_sleep.webp",
+      "bytes": 188534,
+      "sha256": "2c4a671882b808815704b04ab215f82763607b3e254615a0aec57e6d749ad277"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/companions/solstice_walk_1.webp",
+      "bytes": 267012,
+      "sha256": "e1f0cc1e0fce68d845a5bf3e835ee1f7f007fa7ac9a252091ff27d6937ab9db3"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/companions/solstice_walk_2.webp",
+      "bytes": 254416,
+      "sha256": "95ed96c72a334af40101107b417c4ac036c708de026217bdec94810913c5f832"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/companions/velora_sit_idle.webp",
+      "bytes": 295216,
+      "sha256": "5af0e242583a984f5e0bd35d08b5378ea8b55f0e77c183554d5a34ab1673c136"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/companions/velora_sleep.webp",
+      "bytes": 220970,
+      "sha256": "0fa0a91387cdaa7a688894faff686d1b5c8899310a95680322d566a8527710a9"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/companions/velora_walk_1.webp",
+      "bytes": 244318,
+      "sha256": "41ba81e1729170db5e585dbfa66e023afd4957103e35bfa5b95ed4d912d08bcb"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/companions/velora_walk_2.webp",
+      "bytes": 256940,
+      "sha256": "0b640df8977b7151ebb0e66a994c89d2e1473d38e240741410e0473832eab606"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/contact-sheets/afro_full.png",
+      "bytes": 891592,
+      "sha256": "65294ef9c97b537d5169e2ee84c9781efc91d39728bd9affc45b275cb87739ee"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/contact-sheets/locs.png",
+      "bytes": 893464,
+      "sha256": "a301d18e4fa56d109321527c3cb5c7ad4aa63e104d8070fdd6778370fa40e3c4"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/contact-sheets/locs_beaded.png",
+      "bytes": 897923,
+      "sha256": "330ccce7a44ce89a61cc1eba9a5cdac0b5a5e68605d6ef46c56b19254bbfd415"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/contact-sheets/updo_twist.png",
+      "bytes": 885381,
+      "sha256": "a4107afdf64af496a2e6100e60664c3b61e3d0e539b6f68e7f7d6aa778eb77a9"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/hair/afro_full/back_idle.webp",
+      "bytes": 552,
+      "sha256": "9bc4f82f63c4ba542f9c85ad4f571e6151bb3ed74868ea666d3933c59ca38fe4"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/hair/afro_full/back_step_left.webp",
+      "bytes": 548,
+      "sha256": "618a26ac72e980051377624fecfb8a4309f296dc9aac0d4328987c2715f17263"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/hair/afro_full/back_step_right.webp",
+      "bytes": 552,
+      "sha256": "ba95b1d6fd1fc59f0377c4332130d168c53ad49035b11a47fd79c42e6c328701"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/hair/afro_full/front_idle.webp",
+      "bytes": 682,
+      "sha256": "d30f5800e002f35b9d73b110b4429dce3f97710509abf8462f9479796a43b09c"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/hair/afro_full/front_step_left.webp",
+      "bytes": 674,
+      "sha256": "0e151f092e792a4d4ae00a4951b882c05aec488e40f42a376dc150c6e64d861e"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/hair/afro_full/front_step_right.webp",
+      "bytes": 674,
+      "sha256": "ace7c072766253eec31ff9ed2a39d54339d44726cf3f101df92af5dcf36c1f0a"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/hair/afro_full/side_left_idle.webp",
+      "bytes": 656,
+      "sha256": "93fda43a61b6f605cf2f9327bace10044a78bbd1820af9899933481feca684dc"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/hair/afro_full/side_left_walk.webp",
+      "bytes": 658,
+      "sha256": "e0d7e36fae2ed818350e80688153b5bc2af9eeb5e2f917d8e7fd4a8e4c74f82e"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/hair/afro_full/side_right_walk.webp",
+      "bytes": 656,
+      "sha256": "9b3b988ae4c25eccdcd8a770bacfff2dae09e9caf58fe3948886d8d61c867a2b"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/hair/afro_full/threequarter_left_forward.webp",
+      "bytes": 690,
+      "sha256": "408383a3c5bdd55df25c2d7a88acbffaf2b1c082e25e2a9ed1e5dfbce3d14dab"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/hair/afro_full/threequarter_left_step.webp",
+      "bytes": 690,
+      "sha256": "0b254f318d3b729637e4f842fb7598d04855c11ee6051711b671a14901275f1e"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/hair/afro_full/threequarter_left_walk.webp",
+      "bytes": 688,
+      "sha256": "05806fbc6921cb83cbf5eae3f2e6b9a253c1ada84044cfc067f41dfaff650af7"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/hair/locs/back_idle.webp",
+      "bytes": 868,
+      "sha256": "57b4965f0790fdc90ebacaf17ce665437929cdfe4ce38435f1e6262399b463c0"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/hair/locs/back_step_left.webp",
+      "bytes": 866,
+      "sha256": "2570b7d7a417f80229e9e818dab5eb8dc11eca732a827718ae761e10e4aa97f6"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/hair/locs/back_step_right.webp",
+      "bytes": 868,
+      "sha256": "01b7466170b725bd9e90c26a282ceb938afed13f29fd908951d20205c35dcba4"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/hair/locs/front_idle.webp",
+      "bytes": 1320,
+      "sha256": "b47c5725e94f16484094d954a2b32217208b20f06d851b4ce284ef57c3c47e97"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/hair/locs/front_step_left.webp",
+      "bytes": 1314,
+      "sha256": "f2e8443aa6503e8973f02ba7bc1584f86d83600def0df748cb6449de218d8405"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/hair/locs/front_step_right.webp",
+      "bytes": 1314,
+      "sha256": "1275c580cce90c294faa2c66ea2c1ad10ab681e6036352d42ad571bb63413807"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/hair/locs/side_left_idle.webp",
+      "bytes": 596,
+      "sha256": "70982a4049c97753ccad17389ceae379cdbd854817115f6d08de9b82345248c1"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/hair/locs/side_left_walk.webp",
+      "bytes": 600,
+      "sha256": "246f42a4abeaf31db40e69cd37d5e1489d7059a211ff77d716a7481940f9b496"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/hair/locs/side_right_walk.webp",
+      "bytes": 596,
+      "sha256": "adee12219d5c8d4fc39bbbbe7156a70c7160c1c1d88403531f7529f1ed1d5d3f"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/hair/locs/threequarter_left_forward.webp",
+      "bytes": 1320,
+      "sha256": "4b5aefcbdc24f74fd9f8f217944e4ea867279996a503410b3f7ece48db46ac39"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/hair/locs/threequarter_left_step.webp",
+      "bytes": 1320,
+      "sha256": "cf6534b99126a20c77862c45c17a6a122b313106c9e54e6a6246a96fe1d65189"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/hair/locs/threequarter_left_walk.webp",
+      "bytes": 1314,
+      "sha256": "1518f6deedbfe97553beb9b0d82d31fdde65cb36ecf4b26ed673381bccc2f77f"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/hair/locs_beaded/back_idle.webp",
+      "bytes": 996,
+      "sha256": "db29efccc3b47fc65a61dd4a0cb1858a2d00663304769c3482f948095597ee9f"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/hair/locs_beaded/back_step_left.webp",
+      "bytes": 978,
+      "sha256": "621a617281f406c7bde0f69d64f2c712cb027414fdc21124ac120a215507cf89"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/hair/locs_beaded/back_step_right.webp",
+      "bytes": 978,
+      "sha256": "863efbf54bdeadc57def088b45ace9fd43dfee0b43f676132d790b550f2de95b"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/hair/locs_beaded/front_idle.webp",
+      "bytes": 1564,
+      "sha256": "c9578000e462603a0e0b700f2bd3b98eaa418348170260983101b04addce4c4c"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/hair/locs_beaded/front_step_left.webp",
+      "bytes": 1564,
+      "sha256": "30a6dd077f7300daedc958e91dade72643c2694dc5c4dfd8b7438e73f2c271ce"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/hair/locs_beaded/front_step_right.webp",
+      "bytes": 1564,
+      "sha256": "71ad4f3c0b7efe813798776f8628b5a1d6cff1a19dc7849fb06128e2dc7669cb"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/hair/locs_beaded/side_left_idle.webp",
+      "bytes": 732,
+      "sha256": "680be463b094907d544915115ef4c95a51cf3f96277760dc31756c5924d696a8"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/hair/locs_beaded/side_left_walk.webp",
+      "bytes": 732,
+      "sha256": "186435604847bb919254d893ca3c2e6caef3b37a9245e09b0e0ade7e73a53a89"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/hair/locs_beaded/side_right_walk.webp",
+      "bytes": 732,
+      "sha256": "0f10dcb72728221bf93e631a8ec1a6efc12cea2cc588b7756720074e050e57ad"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/hair/locs_beaded/threequarter_left_forward.webp",
+      "bytes": 1564,
+      "sha256": "977993ad8441f187dc55ccf3c0ab6e824861d4ccf442a8ab9748278f3a77c15c"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/hair/locs_beaded/threequarter_left_step.webp",
+      "bytes": 1564,
+      "sha256": "ad72a1c66b421fe9302268f0a2db64858f6a4b4b1aa596152216acbbb0b52f98"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/hair/locs_beaded/threequarter_left_walk.webp",
+      "bytes": 1560,
+      "sha256": "c8bc7a2f94eb8b12f774bcffa1d3b2ee457b4c260595d7feab13b05be59ddae5"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/hair/updo_twist/back_idle.webp",
+      "bytes": 380,
+      "sha256": "b299d35ee613377b61aadf6aee479ec5ea84e48eac879492f823d6133f52cfa0"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/hair/updo_twist/back_step_left.webp",
+      "bytes": 382,
+      "sha256": "db9a5dc44a8adcbd457badbc2410d27de3168ae5895acb97be6fddf015812cf7"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/hair/updo_twist/back_step_right.webp",
+      "bytes": 376,
+      "sha256": "59957edd6a02fa1f191985b4bb1268e183c804d39862af942350fe0e3e222dc5"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/hair/updo_twist/front_idle.webp",
+      "bytes": 378,
+      "sha256": "34e868246020ea310f69b8861578c241d55ed1cb4c9250a6b53c8816cd145386"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/hair/updo_twist/front_step_left.webp",
+      "bytes": 374,
+      "sha256": "e21bc294017bfe242dc216b5e006b46d18b11561dc24e2e0b1b887c4032b9f38"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/hair/updo_twist/front_step_right.webp",
+      "bytes": 374,
+      "sha256": "1207c033f574b942c45f553f396e98ad94baba9b3cb3f0f8410a5347f1c0ac21"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/hair/updo_twist/side_left_idle.webp",
+      "bytes": 368,
+      "sha256": "8c4bebc2580bcf3df5e9f0b1f120874be5f95d43e98d8d6ca188eecc6674ca73"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/hair/updo_twist/side_left_walk.webp",
+      "bytes": 366,
+      "sha256": "c7fcb0245ff947ff30411968a62e75357e013cbf6ec04cd215a2cdc2531de68e"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/hair/updo_twist/side_right_walk.webp",
+      "bytes": 368,
+      "sha256": "5467f16767d9f37128ffd207c09734c3ba872fedd0d8281099d66c56fb4ef60e"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/hair/updo_twist/threequarter_left_forward.webp",
+      "bytes": 382,
+      "sha256": "a9c7e73a51f4519e43656119572c8f8f40ba99ad9e44588596da88a244378c71"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/hair/updo_twist/threequarter_left_step.webp",
+      "bytes": 382,
+      "sha256": "12eba16ac57dfd63329b992e2a3ba70f2c2bdb29ce94cd493aaacf396dfc92b6"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/hair/updo_twist/threequarter_left_walk.webp",
+      "bytes": 384,
+      "sha256": "6921673faf389168149954a2cbe7307a3be776016d158efe20c8bbe040b91ef0"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/hair-alignment-audit.json",
+      "bytes": 18285,
+      "sha256": "b00c11e04f3f7e6f06a03678737f0ff18adba9e564a988ff2c1ef84f1d3e67db"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/outfits/midnight_velvet/back_idle.webp",
+      "bytes": 262790,
+      "sha256": "0a058e615be7d062b518d7ae501b15308b9202c9d599d2db499aa2a12b4348d4"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/outfits/midnight_velvet/back_step_left.webp",
+      "bytes": 258186,
+      "sha256": "ecf45ca2d6d74c09c3efe9dc8b345ef5473058fc7fee727ef6bcf8fe6e6e937e"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/outfits/midnight_velvet/back_step_right.webp",
+      "bytes": 322514,
+      "sha256": "cb688091bd6ae19bb596a029996a7aa961ba4d3a9a4fedb626d3dbcf403f6ff6"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/outfits/midnight_velvet/front_idle.webp",
+      "bytes": 275260,
+      "sha256": "669c68c520686d7fa1212373f686bfaf5c157f85afd8228d2a58436d4a46eba8"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/outfits/midnight_velvet/front_step_left.webp",
+      "bytes": 272600,
+      "sha256": "db98dea388bbb056cfc1bc642ca042c770d604adca2966ef31b917164bda2568"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/outfits/midnight_velvet/front_step_right.webp",
+      "bytes": 293542,
+      "sha256": "843adeb6cc339f20c5217de0d6048698aceab803a03b8cf9eb075d708a8dc3bb"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/outfits/midnight_velvet/side_left_idle.webp",
+      "bytes": 78894,
+      "sha256": "e8d9548a27225fe36c4fed10492d829ad25348b1dfd82acac618de8fad836b0e"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/outfits/midnight_velvet/side_left_walk.webp",
+      "bytes": 270934,
+      "sha256": "a3571991d0467ba6f520e02514c1b759ab2c3aacf1993755a4f3e0e4747f7f3c"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/outfits/midnight_velvet/side_right_walk.webp",
+      "bytes": 274680,
+      "sha256": "614609241cd8fc72e0205062e8010580b20deb4b07f7aae1b156b013a3ef54df"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/outfits/midnight_velvet/threequarter_left_forward.webp",
+      "bytes": 298542,
+      "sha256": "3d76b56d2c1e16f11ddb34e0a8be6f7d52929484db91d5707ab4403e2e47d8e7"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/outfits/midnight_velvet/threequarter_left_step.webp",
+      "bytes": 283028,
+      "sha256": "8f53359f95f86ba9101fc00278684b90d6368f01a600975893c7ed2821ce3efa"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/outfits/midnight_velvet/threequarter_left_walk.webp",
+      "bytes": 326634,
+      "sha256": "bad18b6a9faea7b073b7ea42dc20ff221a93e07eeb1f10ce13e5651ecd56ee05"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/poses/feeding_pets.webp",
+      "bytes": 544104,
+      "sha256": "437f71152b2943e9501d704b2b0f81f2d087bce169ee7ff5324fe6669797efc1"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/poses/playing.webp",
+      "bytes": 574582,
+      "sha256": "5ab965d27b59b28212b2ccbdc0072329fbc6bde6b2caf3cc7cb5d97d96ad35c9"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/poses/sleeping.webp",
+      "bytes": 486404,
+      "sha256": "c00ecc59136b3d8a63fdcfaa45395c167087cf37132f4e041d0c5742b2a4df6b"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/poses/standing.webp",
+      "bytes": 399586,
+      "sha256": "33fce072956bb937c6bd5dbabd90678d181b3020f64e9a2a24001c798e03fca1"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/poses/studying_read.webp",
+      "bytes": 451682,
+      "sha256": "25b80008c9d0320a43d0db24116d63fd09f094a0e1d1c8267a549bb0b1db6642"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/poses/writing.webp",
+      "bytes": 400612,
+      "sha256": "206f668c02ae6082cfcfd6e6247ac8002d813c1fee5c3550e2340bfa729a0b24"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/previews/afro_full/back_idle.webp",
+      "bytes": 78134,
+      "sha256": "5db1020f72da99b81e25e57fff2a7cb66e9a2eeead2fdd5e5c43bede177129dd"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/previews/afro_full/back_step_left.webp",
+      "bytes": 82192,
+      "sha256": "a1818171ed4e36a89200db4a8cea2cdcd93dcb3b0722341ae7c88c4e3dfc2975"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/previews/afro_full/back_step_right.webp",
+      "bytes": 90278,
+      "sha256": "1ab3bec59d2e7b3264bb3bb5fdb8091a03018a93c87cc0792d5f24dd08f1f60a"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/previews/afro_full/front_idle.webp",
+      "bytes": 82012,
+      "sha256": "188f2e636af062ba4d0973abcf02fbb665a1fb3d01e393a50bbe341d178e8ba1"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/previews/afro_full/front_step_left.webp",
+      "bytes": 84600,
+      "sha256": "136f299ffc75dac75444a3000a220a02778fbd5f9b4ca9cf05ea3eed1a226955"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/previews/afro_full/front_step_right.webp",
+      "bytes": 87676,
+      "sha256": "4076fdfa54ed2fd414c8b8dd0711bb40006a15d0afa551d7e6d6cafa031042aa"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/previews/afro_full/side_left_idle.webp",
+      "bytes": 47372,
+      "sha256": "255d738753257c1ea3e7569c7b3cec0fd20d24d4b7469de741c83a2047f0d567"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/previews/afro_full/side_left_walk.webp",
+      "bytes": 82616,
+      "sha256": "04a8aa1426e856d30c3e180bd1d7bac080396302dbceb3a228caddd3a4fa8bbd"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/previews/afro_full/side_right_walk.webp",
+      "bytes": 85468,
+      "sha256": "910afb76ee3639b66338f8a3d5fc3a303171f8911f1fe7f3c597589221a4e160"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/previews/afro_full/threequarter_left_forward.webp",
+      "bytes": 90626,
+      "sha256": "3cf54066a184c092f3ef40055ee1b13c11131cf6417009267d54ddafa72814ba"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/previews/afro_full/threequarter_left_step.webp",
+      "bytes": 83554,
+      "sha256": "37b4ca3eb5d7ee35b6242d48454b74b61cbc81e4cb005c6229866c2581cd8087"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/previews/afro_full/threequarter_left_walk.webp",
+      "bytes": 97092,
+      "sha256": "237a731fb96217394dbd9ef7a8ca980daebad47b9c8dd702fa2e413b67c242ac"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/previews/back_idle.webp",
+      "bytes": 78334,
+      "sha256": "1080c8194a261d610723450864d41b3cc89b11ce3e8ccc5062def221779ecc4a"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/previews/back_step_left.webp",
+      "bytes": 80190,
+      "sha256": "6278e10e12f5563633c4c804aae4106fa2314b50744322121ba4d0d94708f810"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/previews/back_step_right.webp",
+      "bytes": 88604,
+      "sha256": "548e7f704e39b972f7a30c5d32ef8dd6407d95f533e98a97e7c356655e21b6e3"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/previews/front_idle.webp",
+      "bytes": 84122,
+      "sha256": "1dfd83bf6d9ed9c1fe533a26f7004f0f184655a2b4a83af753890dbfcc2c443d"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/previews/front_step_left.webp",
+      "bytes": 86588,
+      "sha256": "fcc84b0311e163990f6bb49b28b2ba86f516829934323b92b3f47c723223e55d"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/previews/front_step_right.webp",
+      "bytes": 88850,
+      "sha256": "2ca2eda7b488710d7f05063fcd427f5441374f0cfd3b0abe56a8445216a39ce2"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/previews/locs/back_idle.webp",
+      "bytes": 79826,
+      "sha256": "e852610c95b30e9f49954be71852ee6d0ff60fe73e4cbc08777fc28fbc465259"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/previews/locs/back_step_left.webp",
+      "bytes": 82286,
+      "sha256": "fbc093e0032e313cfa42aac8bf10f4727b070e49bab1a5146d68af190e0d3247"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/previews/locs/back_step_right.webp",
+      "bytes": 91306,
+      "sha256": "2d96b58a8d548d51bc880d1d5f5f63d262b1dd25f3cf63e801cd442eced740a7"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/previews/locs/front_idle.webp",
+      "bytes": 83988,
+      "sha256": "4a8d7b2ca99efa18c3546634c74bd8d37645a4c60f0a7dd413e0696d8072e992"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/previews/locs/front_step_left.webp",
+      "bytes": 86502,
+      "sha256": "22438b764c64f2791989f731f12cc88797d44d29fb08a6deb4ea710ffbb3c611"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/previews/locs/front_step_right.webp",
+      "bytes": 88624,
+      "sha256": "8c8a9a36760e052860617e1d22903135ac742d64c1ee587da23b7cc185982a9b"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/previews/locs/side_left_idle.webp",
+      "bytes": 48660,
+      "sha256": "61288dd9c53347245b872a19d8b32c47c414a5dabb714c1e58aaea8189d6261a"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/previews/locs/side_left_walk.webp",
+      "bytes": 82878,
+      "sha256": "4795c49a133bce9f928768f330818e6c85a98edb89df889314706d70271cfeba"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/previews/locs/side_right_walk.webp",
+      "bytes": 85544,
+      "sha256": "ef4e8968df235a60e7106dc68b73472dde546c1c178c7633464f0f8d8a8b792f"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/previews/locs/threequarter_left_forward.webp",
+      "bytes": 91980,
+      "sha256": "6c3e3660644f719c06d5240a9debfe0f05f5e877bd98118ac5c86c52d1bb32c3"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/previews/locs/threequarter_left_step.webp",
+      "bytes": 86004,
+      "sha256": "b13de7798fd742d26675e82bdc0884245ebc22d94588b58e3e8871bc2c4b1b91"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/previews/locs/threequarter_left_walk.webp",
+      "bytes": 97694,
+      "sha256": "9fafa9b6a27c724fae7f1c87bdb9cfea83548623d40c28c64cdb6ee4cf0f4660"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/previews/locs_beaded/back_idle.webp",
+      "bytes": 80340,
+      "sha256": "2b5fef1fbc07d271654327363c8b7b4554974d7f9fbca9d4b162592d5fa69122"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/previews/locs_beaded/back_step_left.webp",
+      "bytes": 83028,
+      "sha256": "f0ef1354b24ba0b8575a9d3d336558d2260cccc024778bab864e500f1f7217cb"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/previews/locs_beaded/back_step_right.webp",
+      "bytes": 91678,
+      "sha256": "8bdf91725df21e1da6a0a7ec22daa85d98491a4ef0d8e525823396fc2bb68396"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/previews/locs_beaded/front_idle.webp",
+      "bytes": 84836,
+      "sha256": "b988f34ad9541515ce2478db5cc848f8b029b6c106f10f85c0aaae99a1eacdb5"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/previews/locs_beaded/front_step_left.webp",
+      "bytes": 87268,
+      "sha256": "0bc2638da8bb6e5423c255c3af3f462199a1f1fdad1632d21d0785c031da30f5"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/previews/locs_beaded/front_step_right.webp",
+      "bytes": 89622,
+      "sha256": "4c5fd7a57b789f9e04b3515b8775011d23b8f05eab4702afe78e5f505486d03a"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/previews/locs_beaded/side_left_idle.webp",
+      "bytes": 48974,
+      "sha256": "3d60a4b4b0b78c114588bb8e4098bb7c8b834be5139332ac3cff7e76696d9102"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/previews/locs_beaded/side_left_walk.webp",
+      "bytes": 83226,
+      "sha256": "791a410c5a9bb72b630f19a96932f7c837f3c2f652042755fce53538b8831100"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/previews/locs_beaded/side_right_walk.webp",
+      "bytes": 86008,
+      "sha256": "eb0f29efb6ae28a0880e06f5db4b50473fe18809298562c266789b753dcdd77c"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/previews/locs_beaded/threequarter_left_forward.webp",
+      "bytes": 92866,
+      "sha256": "444b480aea3384a3b1bb6fc972267ecc4eee102a0c92ff6abe4a9fb8ca7dee15"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/previews/locs_beaded/threequarter_left_step.webp",
+      "bytes": 86534,
+      "sha256": "cdfefcefe484da1d3faa2e478647baa77343e89f6186c116a276eb15211e4a23"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/previews/locs_beaded/threequarter_left_walk.webp",
+      "bytes": 98604,
+      "sha256": "b4c458b85005324ac2915f189cc213bae17424eeda0a37d8b6cc27535219a2c1"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/previews/side_left_idle.webp",
+      "bytes": 46804,
+      "sha256": "75bcb1969f7c577a3da6a786253886ebeba30c6dbdf8881eb37deee54f1bdc28"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/previews/side_left_walk.webp",
+      "bytes": 80288,
+      "sha256": "980e2e6dbef31c280fc08beca546cdff6c55385d0863e50c4004b7154a06a0ab"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/previews/side_right_walk.webp",
+      "bytes": 83636,
+      "sha256": "0b4202ca3222ca66f9ae5bb0f2c4c65953370cdfdc1aa44e58c949658eecef33"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/previews/threequarter_left_forward.webp",
+      "bytes": 90216,
+      "sha256": "02e29809b1003fe776b8f89d9ad22fb792c8f4819bd91bdef1834f38e49b1924"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/previews/threequarter_left_step.webp",
+      "bytes": 85548,
+      "sha256": "52ba6749b5d1fcf62c08f991887c0c5988a6c13870f3e45925b604d94dede54d"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/previews/threequarter_left_walk.webp",
+      "bytes": 97456,
+      "sha256": "f440775ee46c0458c794641fa9976a71ba438c2f953c4b3ed4e8d564e3c0018e"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/previews/updo_twist/back_idle.webp",
+      "bytes": 79750,
+      "sha256": "67470852ac9d831999e5770b3c0094519b02140682e21ab83db3c1591a498688"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/previews/updo_twist/back_step_left.webp",
+      "bytes": 82780,
+      "sha256": "e00ef31ba7346bf42f82696211cd10a4063c7a6cc34aad8af2cfae0321727511"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/previews/updo_twist/back_step_right.webp",
+      "bytes": 91844,
+      "sha256": "7e1d7d14d72ddf26c9c21f041f8c83d6fdace5978284dd5ad8bf55c516a2a1ab"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/previews/updo_twist/front_idle.webp",
+      "bytes": 82490,
+      "sha256": "4d530a01c92ae0c6f168e2c3eb2d6f3c77a0b30f6d6de67009087451910e1d14"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/previews/updo_twist/front_step_left.webp",
+      "bytes": 85174,
+      "sha256": "ba61c0cf5c7c5dc5981f8d12b6b015cb4e37f03729805b121e670a3fac8588ef"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/previews/updo_twist/front_step_right.webp",
+      "bytes": 88134,
+      "sha256": "3bb09083b55833f857c11076aa939c23b9ba718b6de1e1587cea2a25570783c7"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/previews/updo_twist/side_left_idle.webp",
+      "bytes": 48004,
+      "sha256": "eed62698e913d8ca5d869b8d9b75cbf956677f2d32b4425655ea28e54f2befae"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/previews/updo_twist/side_left_walk.webp",
+      "bytes": 82324,
+      "sha256": "45402c6d3194ec16a8e7aa0e5fa4812cb8555fcdfea82a38df0a8db7ad727b3c"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/previews/updo_twist/side_right_walk.webp",
+      "bytes": 85098,
+      "sha256": "39f4de338d4cddbad6ef297000bf3f16da147434f2e4f4f0e35ada44b7f55654"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/previews/updo_twist/threequarter_left_forward.webp",
+      "bytes": 91444,
+      "sha256": "07ebb360d88caca04316a3d54b8071c0f62966283218bae542bac56be4769e0a"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/previews/updo_twist/threequarter_left_step.webp",
+      "bytes": 84192,
+      "sha256": "9a47b88b89a6386096d28f974e2901f04570ba76a988784041948bf6e3ec326a"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/previews/updo_twist/threequarter_left_walk.webp",
+      "bytes": 97530,
+      "sha256": "6dda3e9e3d57f78f407a2a249e14431a4f5ec749f508bfa42dbe576f5eda9f78"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/production-status.json",
+      "bytes": 10684,
+      "sha256": "eeb648eacd00352db7679d53c0db6e40958b7a52a778c2ac4723e880f258b115"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/visual-qa-report.json",
+      "bytes": 15266,
+      "sha256": "a760e647b9924c16765dfeeb9be1a12195b6f3dabc0dab88dad40215187811bd"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/walk-alignment.json",
+      "bytes": 6984,
+      "sha256": "a137acf2cb123910dcab714a6750526cd631fda0cc0e68f294bf52cd4446f480"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/walk-manifest.json",
+      "bytes": 9134,
+      "sha256": "139b473309ab619f0a2aba26620472ab817931baf41a1f16de77f02d3f308f40"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/fitted/walk-measurements.json",
+      "bytes": 3379,
+      "sha256": "67f8488d6dcf317e6c0704e2d26cf72f2e22f3900e42e94b7f0fb449396fa6f5"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/sprites/accessories/book_bag.webp",
+      "bytes": 285526,
+      "sha256": "a5446d6979049e70ee465e74f3a57c7620c382627f63dd4bf229d548d965ea23"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/sprites/accessories/bracelet_gold.webp",
+      "bytes": 211396,
+      "sha256": "dce30aa7abaef9d082f1f0d3213c0ce6463589db01b6b11481d8b657955efefd"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/sprites/accessories/bracelet_stack.webp",
+      "bytes": 371276,
+      "sha256": "379892202a3ba7410067a5d0a0d6d995ce73507824125c5f992a09240e13d808"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/sprites/accessories/earring_left.webp",
+      "bytes": 96658,
+      "sha256": "5ae6a3dcc8a08efccebabe2e3aa606b6b66f3077ab59d1d8c3b32b72837c1c3f"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/sprites/accessories/earring_right.webp",
+      "bytes": 94890,
+      "sha256": "8808c4c29212ad30df1ebb818b3fc61e70076e4a105d41986c1615add07033c6"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/sprites/accessories/headpiece.webp",
+      "bytes": 249476,
+      "sha256": "cfeb758e848424209a99f2daa8316a7dfc7202e0abfd7001ec76304ece2330dc"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/sprites/accessories/necklace.webp",
+      "bytes": 273994,
+      "sha256": "4c5e3fb59f39ec33367c9a8a3b0377388a45bd1f354256e5150f08fad6930dbd"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/sprites/accessories/ring_gem.webp",
+      "bytes": 151892,
+      "sha256": "393ade3e6a59b69f99be8662c26dda348b8d725df4f7ceb87b19930b23752c96"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/sprites/accessories/ring_moon.webp",
+      "bytes": 226172,
+      "sha256": "37498eb927a115837d8fb67a034f42a04be2980671018256b3af6e8507f2feb9"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/sprites/accessories/ring_star.webp",
+      "bytes": 165786,
+      "sha256": "18bd4fba8e96dd41264b7dc0a6ffe0e19f702894d82e31f31c8cd26bf9b1be15"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/sprites/accessories/skirt_overlay.webp",
+      "bytes": 343020,
+      "sha256": "4f5a0762e41e992811c56cba4b451531d545a790debd6e66bb6bf212a314778d"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/sprites/body/back_idle.webp",
+      "bytes": 142772,
+      "sha256": "615851bd634aeff63d451220f327ae8b0a8d018630c59eb0d940a104c89382b9"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/sprites/body/back_step_left.webp",
+      "bytes": 125502,
+      "sha256": "05095b55cc41c2118e297cb3633104c456900d398d6dc6244a88e50425994da5"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/sprites/body/back_step_right.webp",
+      "bytes": 144878,
+      "sha256": "6ba99793851d763c0e176abd3493a4c1183ceab46e27b90ff810ff40f0d4a6e5"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/sprites/body/front_idle.webp",
+      "bytes": 148762,
+      "sha256": "a363b2bc802d4ef2d27228e26bbd63e432e5303177b029b3e2b3a7d2a4d149bc"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/sprites/body/front_step_left.webp",
+      "bytes": 133444,
+      "sha256": "48dc7ae12f1659d2930095f314f0a94acf6e512ed99734b33ca996a77e95ba79"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/sprites/body/front_step_right.webp",
+      "bytes": 137582,
+      "sha256": "5dbbc54d62316fdb7681d6a50fc38855bf08a86af55843515d9e27a0ec8d0516"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/sprites/body/side_left_idle.webp",
+      "bytes": 91322,
+      "sha256": "b43570343d90dfadd3858104d67ee26d67139ff67a59163f8fe5600bdaaef9f2"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/sprites/body/side_left_walk.webp",
+      "bytes": 124436,
+      "sha256": "fff760e2e9e98c7be86329b275b3585787da2c8c31635b8eaf9a7adadaf4e1ff"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/sprites/body/side_right_walk.webp",
+      "bytes": 135858,
+      "sha256": "074555d8bf592422677e4bb9756f9f42e74e7d174a2b747f3f69dacaba5d11b2"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/sprites/body/threequarter_left_forward.webp",
+      "bytes": 148726,
+      "sha256": "30e214e69c915f3d33e097215b17dade8b019c2b32a909dfb061ce42a70c72cc"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/sprites/body/threequarter_left_step.webp",
+      "bytes": 141746,
+      "sha256": "9f6bfb360dcf5f78ebb7ed0b5b71980fc951e9127a33133dff505cca7d45e59b"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/sprites/body/threequarter_left_walk.webp",
+      "bytes": 149240,
+      "sha256": "e0f3768a8bd3201004d2b8f10c9a9cc6464ee7509fecf92441e11314684cb3c1"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/sprites/companions/aurelia_sit_idle.webp",
+      "bytes": 221344,
+      "sha256": "d1a34c83b14b56673d87c70de0b8361d70fb99eada7095f123088e58a20384a2"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/sprites/companions/aurelia_sleep.webp",
+      "bytes": 243158,
+      "sha256": "0d50c7d425542098807ed9e2324011554b3c4cf1cf739a9dfca33afafa7bed29"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/sprites/companions/aurelia_walk_1.webp",
+      "bytes": 251876,
+      "sha256": "89b2bffa64fc5e34a22c62c8687d1adee212dfa7f7c28783753ddee72bd9efc0"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/sprites/companions/aurelia_walk_2.webp",
+      "bytes": 250744,
+      "sha256": "b07bb0344bd0a2f6c3abee5187dd17281040ff5e7b9cec6e0953509611554dcc"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/sprites/companions/cascade_sit_idle.webp",
+      "bytes": 274440,
+      "sha256": "033ddf2f2bc4c7b8dc07dd7328b3730c1cd7340528918e8a83c12177f76d545b"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/sprites/companions/cascade_sleep.webp",
+      "bytes": 253350,
+      "sha256": "566726b532b230971ac3334624ac44e17ad54486e8678ca2279c2f9ba2bbbef0"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/sprites/companions/cascade_walk_1.webp",
+      "bytes": 305586,
+      "sha256": "8e631584bf356b8b6a0415f5215f0d6d964a5645567b61fbf08e1668fa6a65fb"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/sprites/companions/cascade_walk_2.webp",
+      "bytes": 305286,
+      "sha256": "1d8efb7d5033e43c0b44c708f4f662f467898ed0265bb233b1b51e95a87f2b5a"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/sprites/companions/solstice_sit_idle.webp",
+      "bytes": 241726,
+      "sha256": "eef8ea5f6888c4da9841d3c7bc8caf81c2eae7f00e756b76b7022f6d1247e82a"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/sprites/companions/solstice_sleep.webp",
+      "bytes": 187672,
+      "sha256": "2b63f01bb0dabefa09c21b1fa36605af6d4d108b3da0d36db9ea2531ab9f2ba3"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/sprites/companions/solstice_walk_1.webp",
+      "bytes": 266570,
+      "sha256": "b7f16f9dc3038ca43a7f16a75fe8b8b4c31e0597db067cc69a50d4a1dc12e065"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/sprites/companions/solstice_walk_2.webp",
+      "bytes": 253860,
+      "sha256": "7117f79449bae96e19883f010d2ce4f35a773f9c782e5a8a7ce6dcdaa0abccfa"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/sprites/companions/velora_sit_idle.webp",
+      "bytes": 293794,
+      "sha256": "00b2f65659a7e6e410ab8729dc0bf87ffe131f29643bfd57fd5f9bef01b2f396"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/sprites/companions/velora_sleep.webp",
+      "bytes": 220438,
+      "sha256": "5c1d0f727b03f5d340f44a15a628038b6cd2d8749fe94c9c7895e006e64f9b55"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/sprites/companions/velora_walk_1.webp",
+      "bytes": 244070,
+      "sha256": "faf711df4e8ed6f469751892acc9cd75439663e5f7f207f30f612f1ba4e2d1b6"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/sprites/companions/velora_walk_2.webp",
+      "bytes": 256536,
+      "sha256": "1e424e524af61dd17389a287acd4fec2a6843a35cf07d8b0f9618be306318435"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/sprites/hair/afro_full_back.webp",
+      "bytes": 156756,
+      "sha256": "358a3742fd389d592a390781e981d89c36b1801d3322f9ebf1c9e8d39fceb9ef"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/sprites/hair/afro_full_back_alt.webp",
+      "bytes": 316242,
+      "sha256": "c3fc484c946604438c7d41d126059ec0542360a2b9696251adefda340f440ae4"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/sprites/hair/afro_full_back_threequarter.webp",
+      "bytes": 157084,
+      "sha256": "2ca832f3cd510964cb41958259b3cedbf9d71bbe8d609e30d7def33bfcf8d100"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/sprites/hair/afro_full_front.webp",
+      "bytes": 292502,
+      "sha256": "e6ad1a480939e317db16105145f724b7b26436cdbaed6bae55bdc1341d8f0841"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/sprites/hair/afro_full_front_threequarter.webp",
+      "bytes": 173420,
+      "sha256": "4596e176fb339047ce22b615382733c061984ca30ca3a586a0d5e7264e49015b"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/sprites/hair/afro_full_side.webp",
+      "bytes": 214374,
+      "sha256": "63417ebef2c4d5b940125f1922728528ba76af838c9ed66011743dbb0d1fd6dc"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/sprites/hair/locs_beaded_back.webp",
+      "bytes": 205572,
+      "sha256": "2ec47bf3a02b8a5730922c90a69ee2db968e0b2c95486f1a411f587cce5f9d62"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/sprites/hair/locs_beaded_back_alt.webp",
+      "bytes": 341278,
+      "sha256": "0cabff170989520cee9226e8a1bf8374c3b7d613abf91d0bb0432049141c7dc7"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/sprites/hair/locs_beaded_back_threequarter.webp",
+      "bytes": 172920,
+      "sha256": "3566e73407d9bc1c0cdf75773651a8dacd707987f827a5cba71d137ab38cc389"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/sprites/hair/locs_beaded_front.webp",
+      "bytes": 340616,
+      "sha256": "87df549ff156da6ea80cc641cd25afbd99870aea75f696d3d0ed4dfb10e0b091"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/sprites/hair/locs_beaded_front_threequarter.webp",
+      "bytes": 199708,
+      "sha256": "d339c2c1c49ecd2c9e6e7f130993fc338ef39c293c3c960bc249473091a2530a"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/sprites/hair/locs_beaded_side.webp",
+      "bytes": 221634,
+      "sha256": "88f480075bcf1cf8314c13ff0b7f01bfd3e547fdf953c24a76879562a36f6f5d"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/sprites/hair/locs_loose_back.webp",
+      "bytes": 194958,
+      "sha256": "0bfdb23a555c5167ad8532fc08089e64fc8ec54e8ce88d3b941e4ec8d5e7f5ec"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/sprites/hair/locs_loose_back_alt.webp",
+      "bytes": 329222,
+      "sha256": "51d9541073a0712ee31fdaf0fd37d1b834673f9588f503550cb63e022310ad1a"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/sprites/hair/locs_loose_back_threequarter.webp",
+      "bytes": 177436,
+      "sha256": "b5852619bd2ecc231a1415171586b278131830adc6b10bb0d16fedb806f29927"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/sprites/hair/locs_loose_front.webp",
+      "bytes": 330198,
+      "sha256": "a4f126856e363ba04cb0647063980206d934548d2bf831f309b482be69274f02"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/sprites/hair/locs_loose_front_threequarter.webp",
+      "bytes": 199350,
+      "sha256": "ac3b4707f4e62d2a6aacf9da7a8a4fbdfaaef4375c06659b433d478ff7d8fdbe"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/sprites/hair/locs_loose_side.webp",
+      "bytes": 224186,
+      "sha256": "43045844ec8dd868ae66aee080fdaca7a926cbf3b7327bb7f0a2fa9b96520548"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/sprites/hair/updo_twist_back.webp",
+      "bytes": 170542,
+      "sha256": "2a6706326ba6fafa0768db3f3aa0816b721b55408ff4a044688c84acc99ad87c"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/sprites/hair/updo_twist_back_alt.webp",
+      "bytes": 327706,
+      "sha256": "89ea0352b7a37814b4d346015484a88d2cf7c7c28075d9952d7e56e0cce91931"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/sprites/hair/updo_twist_back_threequarter.webp",
+      "bytes": 172866,
+      "sha256": "8365ae1b3ec42e1c9c97fe2102095d225ad51b1897ce14f8f5bfb5d207d8445c"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/sprites/hair/updo_twist_front.webp",
+      "bytes": 297298,
+      "sha256": "585dc4faa9f345dc81d40f21b8643aaffa2b028d17e7d6c3591c477b45981006"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/sprites/hair/updo_twist_front_threequarter.webp",
+      "bytes": 196220,
+      "sha256": "f852acdd40c26ff45497b476c50dd3fa2cfbdf5d26fbec776df8e930c7a31f16"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/sprites/hair/updo_twist_side.webp",
+      "bytes": 230964,
+      "sha256": "6e2901c18442c16dad927843577715f65b1b9ec03505d09c55ce63acb3d61f95"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/sprites/outfits/midnight_velvet/back_idle.webp",
+      "bytes": 374070,
+      "sha256": "0679d59c946b65fbf496fa2ec366be134ac9dbd83dc0fba26196eaac1adf2d48"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/sprites/outfits/midnight_velvet/back_step_left.webp",
+      "bytes": 365006,
+      "sha256": "e4c169a44ce659ae4eb4bb2fce9f3e1a84d259d8e3ea13cff807dde5162c7eb9"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/sprites/outfits/midnight_velvet/back_step_right.webp",
+      "bytes": 373510,
+      "sha256": "158f84cadea23904f6023866949c0f17766fe3aef4aee6a2bc4a0abf7d5675be"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/sprites/outfits/midnight_velvet/front_idle.webp",
+      "bytes": 360510,
+      "sha256": "5b4d561aade7c3dc203bd35819685b56903dc5e3afd386ded6c978560f8de83c"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/sprites/outfits/midnight_velvet/front_step_left.webp",
+      "bytes": 371538,
+      "sha256": "2fa72b66c2a6dbe4ba0748d35eb2477d05a59c5e2748f358fb655b3c22dbdbc7"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/sprites/outfits/midnight_velvet/front_step_right.webp",
+      "bytes": 358090,
+      "sha256": "5841dc7b4e5d74e042c8ae610c0292286d01e20d3d3fb5ad632021016b5a2cfd"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/sprites/outfits/midnight_velvet/side_left_idle.webp",
+      "bytes": 269626,
+      "sha256": "8d03b7f205dc0dee8b0ff5502d8bd3d73a787e7cff21ad8a5b2a9a94ce6f50bb"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/sprites/outfits/midnight_velvet/side_left_walk.webp",
+      "bytes": 299284,
+      "sha256": "92ad874d02624d675719494c4f15b9db7e4717070aebf96cf9207d34906f4c8c"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/sprites/outfits/midnight_velvet/side_right_walk.webp",
+      "bytes": 303024,
+      "sha256": "34b3b8d3fc35f372ec056225d30d0c63b6f57017b9ed3a1d01399bbfd584e922"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/sprites/outfits/midnight_velvet/threequarter_left_forward.webp",
+      "bytes": 330876,
+      "sha256": "d78994b9eb1cdf6dd01180b7b23c155436236b7565f95a1704b49e8e2b4eb33a"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/sprites/outfits/midnight_velvet/threequarter_left_step.webp",
+      "bytes": 359360,
+      "sha256": "dbfd1a718ea6cc6a5748e51afacc2b3d586d13b65f3d15136a09deb3f157fb98"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/sprites/outfits/midnight_velvet/threequarter_left_walk.webp",
+      "bytes": 367128,
+      "sha256": "5f6423ccc69c8af64e519bd94065688379fb80dd97d325f5e224462d9e364ac0"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/sprites/poses/feeding_pets.webp",
+      "bytes": 540142,
+      "sha256": "3f407a37282db881665850aae05d0986edc1189db81fe78642bcf09ba446ee07"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/sprites/poses/playing.webp",
+      "bytes": 569308,
+      "sha256": "2828dc3dfe3b4869546c44109f2d37fc1824bf4330e3884767ae69cbadcd9045"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/sprites/poses/sleeping.webp",
+      "bytes": 483660,
+      "sha256": "a8308989156c908a1fac170c1c13cc031a869e9c68f947b6a024d14596366b97"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/sprites/poses/standing.webp",
+      "bytes": 397232,
+      "sha256": "18e7a49425b545010f947d298d6b84aa7c35c6614044b52d3b9805691f31e4fd"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/sprites/poses/studying_read.webp",
+      "bytes": 444484,
+      "sha256": "0b3c3755759f936acd86d66e1bfbdecf6e3e69be8150b03aadb30baa9c5dfd03"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/sprites/poses/writing.webp",
+      "bytes": 399172,
+      "sha256": "9b0003acac0b198aedd4864f05bbcdd07df66cf6c013734077c8893ddbc179c2"
+    },
+    {
+      "path": "current-site/assets/atelier/v2/sprites/sprite-audit.json",
+      "bytes": 31978,
+      "sha256": "81eed51d29232d02865cf7c6bbd8bec6e43c559ddc98395b37e72a4c6ef06dec"
+    },
+    {
+      "path": "current-site/assets/atelier/v3/sprite-registry.json",
+      "bytes": 9629,
+      "sha256": "ae716a28e90d2699cfdd3cad01fea009d361ecf86b074493c0ffc808a4b7278f"
+    },
+    {
+      "path": "current-site/assets/audio/dreams-become-real.ogg",
+      "bytes": 3598224,
+      "sha256": "813ee68409500bf63125105c8edd81a3be36932d45cf2fa8c140d3980b6e8309"
+    },
+    {
+      "path": "current-site/assets/boxplot-exercise.svg",
+      "bytes": 2438,
+      "sha256": "617c9eddef0699fec10c4c7fb5b27a4c68281aeead6350865b6722c42795bed8"
+    },
+    {
+      "path": "current-site/assets/boxplot-heights.svg",
+      "bytes": 2568,
+      "sha256": "7939d0a74fffe127e905fe3a13e4bc93db43ae9188eae7ce265d71e3e12c831a"
+    },
+    {
+      "path": "current-site/assets/boxplot-phones.svg",
+      "bytes": 2606,
+      "sha256": "3ed42e541d8e8039d2b270f4b76ec634918e02db245e085e38088ea05d7ef727"
+    },
+    {
+      "path": "current-site/assets/effects/celebrations/celebration-constellation-ring.svg",
+      "bytes": 603,
+      "sha256": "ae1302a0bd672e6df21f9827957262982db2ba6add4665df2f6b70033b45f6e3"
+    },
+    {
+      "path": "current-site/assets/effects/celebrations/celebration-starburst.svg",
+      "bytes": 396,
+      "sha256": "ef1d59a84c7f49296e1e0c004263b2770deafff1c0eaf4b8c5eb6e7ddfd847da"
+    },
+    {
+      "path": "current-site/assets/effects/celebrations/course-complete-sigil.svg",
+      "bytes": 912,
+      "sha256": "5bb72f7c3da585d477527f057c9c42930abd859db8681edaac3616ed130ca1a6"
+    },
+    {
+      "path": "current-site/assets/effects/celebrations/lesson-complete-seal.svg",
+      "bytes": 665,
+      "sha256": "66d0d723db2bda1149c79bd1aa03e2c9be22df891ed9a5f842bf44cecf922ddf"
+    },
+    {
+      "path": "current-site/assets/effects/guardians/guardian-heart-sigil.svg",
+      "bytes": 274,
+      "sha256": "aef9ed713e6a52b117c1de6d60f8fcbf1a7da9d8e9014932cfc44d58c351213f"
+    },
+    {
+      "path": "current-site/assets/familiars/approved_registry/manifest.json",
+      "bytes": 1501,
+      "sha256": "b4e80a2ae289094e058a918b0ff5a1dd97624e412935d853154c3eac78007877"
+    },
+    {
+      "path": "current-site/assets/familiars/canon/aurelia-guardian.webp",
+      "bytes": 107656,
+      "sha256": "8abba538a98c5c3f1d9da92d0dae8acdbb4a0608b64dc554bec025f2c1e8e9ec"
+    },
+    {
+      "path": "current-site/assets/familiars/canon/briar-guardian.webp",
+      "bytes": 166408,
+      "sha256": "61e7618c973f6ddce3f1bfdc09116d72e23725e7001c515cf4cd35961bcd3058"
+    },
+    {
+      "path": "current-site/assets/familiars/canon/cascade-guardian.webp",
+      "bytes": 181926,
+      "sha256": "d9e133a86a0937ebf150738a6a10f2fbee50f8e4eb72b0a9f970d0071c0448ff"
+    },
+    {
+      "path": "current-site/assets/familiars/canon/prism-guardian.webp",
+      "bytes": 214780,
+      "sha256": "956a9722625523534ddf1029c606061f22a4e48680b61ba4cb3fcf1879b7a9d6"
+    },
+    {
+      "path": "current-site/assets/familiars/canon/rook-guardian.webp",
+      "bytes": 182868,
+      "sha256": "c88c1119b3236a47a5cee3c6a231ef4e3237fcdb0bab2884490ee970ed658cef"
+    },
+    {
+      "path": "current-site/assets/familiars/canon/solara-guardian.webp",
+      "bytes": 212694,
+      "sha256": "f6366f7bde99fd960f731d092b9a2254a07bef7dd06436ee645cedd45f3e8737"
+    },
+    {
+      "path": "current-site/assets/familiars/canon/solstice-guardian.webp",
+      "bytes": 159632,
+      "sha256": "ba95acf399bf893dd71653865cffbc8b4cae3b56d23a095e785fecd3aab5a3af"
+    },
+    {
+      "path": "current-site/assets/familiars/canon/velora-guardian.webp",
+      "bytes": 209378,
+      "sha256": "f4ac573309abdaf887eecdf021662cce8108a701c6b299ffd5bf1709e6bfd924"
+    },
+    {
+      "path": "current-site/assets/familiars/canon/vesper-guardian.webp",
+      "bytes": 194978,
+      "sha256": "6ce6ef8c4024c0df60c0d1639e8301a83d7e254b30f83e01214eae1a6e1fa2ac"
+    },
+    {
+      "path": "current-site/assets/familiars/canon/zephyr-guardian.webp",
+      "bytes": 218716,
+      "sha256": "d8f68d551f3f84954861a7c07a107d993678bc0ebfa8579e9c2df7a955b2678d"
+    },
+    {
+      "path": "current-site/assets/familiars/evolution_banners/aurelia-evolution.webp",
+      "bytes": 249392,
+      "sha256": "643f96c3ac2389c7549ea46f160c9618034474fd231e3a37baa27b0828f34234"
+    },
+    {
+      "path": "current-site/assets/familiars/evolution_banners/briar-evolution.webp",
+      "bytes": 262574,
+      "sha256": "8c7116ae1dd7a68917d2030e8bafa87b5752f3f7574fe4cef196cf34cab33ef8"
+    },
+    {
+      "path": "current-site/assets/familiars/evolution_banners/cascade-evolution.webp",
+      "bytes": 304852,
+      "sha256": "6e0f85c8e3f83a1f596fc1054516cdb49f508a4797a54ed9b57681bf4886a415"
+    },
+    {
+      "path": "current-site/assets/familiars/evolution_banners/prism-evolution.webp",
+      "bytes": 219224,
+      "sha256": "f87b41106c12e4c5cb42733bea8864c768a2846d01e64e0cafb9030508a93c1a"
+    },
+    {
+      "path": "current-site/assets/familiars/evolution_banners/rook-evolution.webp",
+      "bytes": 296988,
+      "sha256": "84a13f7d14b19be617e50238d792572b6db27c5e3061fc6f5f6efbd371d2090b"
+    },
+    {
+      "path": "current-site/assets/familiars/evolution_banners/solara-evolution.webp",
+      "bytes": 257268,
+      "sha256": "f398caaa275030e914a1945d7bd5a47b9d99db1e5af454f0d4e0ffe7e8c1b80b"
+    },
+    {
+      "path": "current-site/assets/familiars/evolution_banners/solstice-evolution.webp",
+      "bytes": 301234,
+      "sha256": "8ced1c8b4a2fdd5c7c44a044a62a5fd9d373a6c14e663a017702e88c28feef30"
+    },
+    {
+      "path": "current-site/assets/familiars/evolution_banners/velora-evolution.webp",
+      "bytes": 316204,
+      "sha256": "ada519ab04a3f879272af7e87c73378ae66c5a49ae63fa03e89c3413d289e32c"
+    },
+    {
+      "path": "current-site/assets/familiars/evolution_banners/vesper-evolution.webp",
+      "bytes": 292546,
+      "sha256": "5dba6fe16634d9f5f3490b3a997a52321564eec3302e02d43cb92b6fcaf8d071"
+    },
+    {
+      "path": "current-site/assets/familiars/evolution_banners/zephyr-evolution.webp",
+      "bytes": 231504,
+      "sha256": "c5b4965c9fca6cb1bc32958bd4a4882961470cb8ed535e70f6c97704f4ebc9e6"
+    },
+    {
+      "path": "current-site/assets/familiars/evolution_manifest.json",
+      "bytes": 9699,
+      "sha256": "8bc098aed33ed42474b1bba866823294da924c180e4bbd4f2fe25b11b8118a86"
+    },
+    {
+      "path": "current-site/assets/familiars/evolution_stages/aurelia-apprentice.webp",
+      "bytes": 134536,
+      "sha256": "eb7c9a832949162c7fbae0bb4be38a8e043a870f323e60021c789ec460e9849c"
+    },
+    {
+      "path": "current-site/assets/familiars/evolution_stages/aurelia-ascendant.webp",
+      "bytes": 143488,
+      "sha256": "3a07603167dcd98d5c8bd58e366bf0067b16fe2392713fd81b8d5c8269f45e7f"
+    },
+    {
+      "path": "current-site/assets/familiars/evolution_stages/aurelia-celestial.webp",
+      "bytes": 149690,
+      "sha256": "bd061cf0db12609cb1bfb30e8f31e52cf68ab09cec6169c63aa76649a9382451"
+    },
+    {
+      "path": "current-site/assets/familiars/evolution_stages/aurelia-guardian.webp",
+      "bytes": 142018,
+      "sha256": "6f466993cb934a216145b8c643845eed12a3f05cdbc3ba23d3c4b756715b6b76"
+    },
+    {
+      "path": "current-site/assets/familiars/evolution_stages/aurelia-new-bond.webp",
+      "bytes": 133862,
+      "sha256": "14384fb2a0ec862c877bd712f0d6683b038c76ea883d7ea14c88de3f883b47f0"
+    },
+    {
+      "path": "current-site/assets/familiars/evolution_stages/briar-apprentice.webp",
+      "bytes": 46680,
+      "sha256": "d443790e6d0e972310ad18be697dd2ebd29c1a44b5e9a87df546e0df68d09e95"
+    },
+    {
+      "path": "current-site/assets/familiars/evolution_stages/briar-ascendant.webp",
+      "bytes": 57266,
+      "sha256": "6a520891344dac5b83e10bc030da400c9a9cae62e66641999864423a4937c551"
+    },
+    {
+      "path": "current-site/assets/familiars/evolution_stages/briar-celestial.webp",
+      "bytes": 62442,
+      "sha256": "91989223a2a9ecd520f4ecba7be1711d8b28a98a035d0b9168b754b8779bf876"
+    },
+    {
+      "path": "current-site/assets/familiars/evolution_stages/briar-guardian.webp",
+      "bytes": 48126,
+      "sha256": "283b1ae8008074209f7abb509644540e0528f100e443b3f8a15542c7927bd477"
+    },
+    {
+      "path": "current-site/assets/familiars/evolution_stages/briar-new-bond.webp",
+      "bytes": 46094,
+      "sha256": "7a58e6db7dd163bd9ecc4afb1954c7331f721cedef47b52ee995f3e12f1c4a5a"
+    },
+    {
+      "path": "current-site/assets/familiars/evolution_stages/cascade-apprentice.webp",
+      "bytes": 177420,
+      "sha256": "7bf3f4c6f6142cbad6929a2609ad020aecfbcc5468444dafb062bedb1fff8b9f"
+    },
+    {
+      "path": "current-site/assets/familiars/evolution_stages/cascade-ascendant.webp",
+      "bytes": 202812,
+      "sha256": "b69bba768edfe265d6ea00cc3953d278719ca373832f2fe9874f31f810a10a51"
+    },
+    {
+      "path": "current-site/assets/familiars/evolution_stages/cascade-celestial.webp",
+      "bytes": 204330,
+      "sha256": "908d86d5b88135821744049452de47d886363fba7d03fb03422c93106e8fffa6"
+    },
+    {
+      "path": "current-site/assets/familiars/evolution_stages/cascade-guardian.webp",
+      "bytes": 189802,
+      "sha256": "2d52bf4e5aa59166c08cb6460550df988100104ecc46f7f41eace20165a7f769"
+    },
+    {
+      "path": "current-site/assets/familiars/evolution_stages/cascade-new-bond.webp",
+      "bytes": 162984,
+      "sha256": "c607e811a51da5d0981a29a871b6079658199aaa84bae1dc680b23b91fb2e6d1"
+    },
+    {
+      "path": "current-site/assets/familiars/evolution_stages/prism-apprentice.webp",
+      "bytes": 41374,
+      "sha256": "5e771081fb92932c454dde5f83e4a3b750ea29c1f4b4019532ebbf6e1f96ad1d"
+    },
+    {
+      "path": "current-site/assets/familiars/evolution_stages/prism-ascendant.webp",
+      "bytes": 48354,
+      "sha256": "6ed861de467a95f719fb52e0e2d122162552fa90a0b40fadf1ff319b3ef1a6d6"
+    },
+    {
+      "path": "current-site/assets/familiars/evolution_stages/prism-celestial.webp",
+      "bytes": 57062,
+      "sha256": "bb88b7ff0c913d933ed1ccc0624f5696161c12b98abc3842cf20ee7d7046a934"
+    },
+    {
+      "path": "current-site/assets/familiars/evolution_stages/prism-guardian.webp",
+      "bytes": 43600,
+      "sha256": "0b980e05ad43bb87c5b1af4435cd342bf572dff3b6a6298487e9bd3aa5ce9429"
+    },
+    {
+      "path": "current-site/assets/familiars/evolution_stages/prism-new-bond.webp",
+      "bytes": 38246,
+      "sha256": "37b07301a09e919c1d70f99cb965dd3d82cc1a966440c299376ba63968bde57c"
+    },
+    {
+      "path": "current-site/assets/familiars/evolution_stages/rook-apprentice.webp",
+      "bytes": 49788,
+      "sha256": "8065ffe09df6f09b7c1f88ad2315767ac5de0a08049b2aa767b6f1d04dea15cd"
+    },
+    {
+      "path": "current-site/assets/familiars/evolution_stages/rook-ascendant.webp",
+      "bytes": 64086,
+      "sha256": "68ccb668d9d888e939c4690da9e4a4f76bf7e5f6af6ba38c19ceeab3f8b9b358"
+    },
+    {
+      "path": "current-site/assets/familiars/evolution_stages/rook-celestial.webp",
+      "bytes": 63786,
+      "sha256": "af3287b6cde5957d2997a167210728cc0a09df6a45aef9f037147f2c37fa278c"
+    },
+    {
+      "path": "current-site/assets/familiars/evolution_stages/rook-guardian.webp",
+      "bytes": 58216,
+      "sha256": "729cd57a81b66173acb6deff576139ba08a60b99778a4f7df894ba7e7855b2e7"
+    },
+    {
+      "path": "current-site/assets/familiars/evolution_stages/rook-new-bond.webp",
+      "bytes": 54820,
+      "sha256": "c8b40318b93fa52335c385f6dca1e8dfe926d6f16441e801c39946912e3b8f98"
+    },
+    {
+      "path": "current-site/assets/familiars/evolution_stages/solara-apprentice.webp",
+      "bytes": 43462,
+      "sha256": "2a317a5317640863bfe7fee0add0e9d89016b441b1314410e564b85387da8be3"
+    },
+    {
+      "path": "current-site/assets/familiars/evolution_stages/solara-ascendant.webp",
+      "bytes": 52244,
+      "sha256": "705673a507fdfe8fd82273c31486b9a620b49383bbbedd3642351124867c4a8a"
+    },
+    {
+      "path": "current-site/assets/familiars/evolution_stages/solara-celestial.webp",
+      "bytes": 56978,
+      "sha256": "f6e169c5d7aba542df54e4fe006ae581c36ee4aa4a4e1095c1fc84f89153af5a"
+    },
+    {
+      "path": "current-site/assets/familiars/evolution_stages/solara-guardian.webp",
+      "bytes": 45368,
+      "sha256": "563c48cdcb1fe66896c86aa98ac2ecad15fa4d0d862204c15370753a35983005"
+    },
+    {
+      "path": "current-site/assets/familiars/evolution_stages/solara-new-bond.webp",
+      "bytes": 42874,
+      "sha256": "69780a66adde610376b169fa98cc551c0115bb94dbdc9eef1304e0d6e90fed68"
+    },
+    {
+      "path": "current-site/assets/familiars/evolution_stages/solstice-apprentice.webp",
+      "bytes": 176024,
+      "sha256": "8fb3018394afb870959c678526c67227a9a29d4cfd457a1c53d35e9a81702c61"
+    },
+    {
+      "path": "current-site/assets/familiars/evolution_stages/solstice-ascendant.webp",
+      "bytes": 180008,
+      "sha256": "aefcdb99d005dbb567dc969681197ea5897d7f4f180c0256799d2d33715def01"
+    },
+    {
+      "path": "current-site/assets/familiars/evolution_stages/solstice-celestial.webp",
+      "bytes": 179608,
+      "sha256": "dcdabcd9962c989ec339b8982a74aee55c5f25160f063dee34f78b0c1ef11e95"
+    },
+    {
+      "path": "current-site/assets/familiars/evolution_stages/solstice-guardian.webp",
+      "bytes": 182540,
+      "sha256": "40d5cf716cee632a5064b15a2af94eea59a4da2a1dfb1978f005fcf5c762e5ee"
+    },
+    {
+      "path": "current-site/assets/familiars/evolution_stages/solstice-new-bond.webp",
+      "bytes": 161500,
+      "sha256": "58f27d7e31ae4ded06272d9c9f7a196201cb80472a20dc0ac5faf1da1859fe08"
+    },
+    {
+      "path": "current-site/assets/familiars/evolution_stages/velora-apprentice.webp",
+      "bytes": 177466,
+      "sha256": "7f5053344e0256e8aebafdfe5bbe8b33b7ba0685a25ac97ade094720bdc879d5"
+    },
+    {
+      "path": "current-site/assets/familiars/evolution_stages/velora-ascendant.webp",
+      "bytes": 193610,
+      "sha256": "e8cb375abc28f9f5ae0703c0ee9fdac57821380ec2b3e6d5b3132e842a607bea"
+    },
+    {
+      "path": "current-site/assets/familiars/evolution_stages/velora-celestial.webp",
+      "bytes": 206088,
+      "sha256": "c74c3628289e111adda36a31018623126021ddd99c839fec8d71fd81638ea596"
+    },
+    {
+      "path": "current-site/assets/familiars/evolution_stages/velora-guardian.webp",
+      "bytes": 177092,
+      "sha256": "d01e1c2fc5d5e85264fc2150f29fea13c34b7add6bc5be739f654d445234062a"
+    },
+    {
+      "path": "current-site/assets/familiars/evolution_stages/velora-new-bond.webp",
+      "bytes": 185508,
+      "sha256": "100387577d36383147fa5198adb4b837141dade7541502021c8654f90db9386a"
+    },
+    {
+      "path": "current-site/assets/familiars/evolution_stages/vesper-apprentice.webp",
+      "bytes": 55008,
+      "sha256": "b8eadae3dc013fdf9284c8bb08d15bede0af723742fed7e4288080e472e4b5be"
+    },
+    {
+      "path": "current-site/assets/familiars/evolution_stages/vesper-ascendant.webp",
+      "bytes": 60690,
+      "sha256": "a2ac701c09494ba8db5c9e9f4474c90b0066e84ef0d8196e5faa0012053385d8"
+    },
+    {
+      "path": "current-site/assets/familiars/evolution_stages/vesper-celestial.webp",
+      "bytes": 66012,
+      "sha256": "8ff45feb94152a7fdc912ea983facdc34684cf9cfce28e5fe000e973bbf05896"
+    },
+    {
+      "path": "current-site/assets/familiars/evolution_stages/vesper-guardian.webp",
+      "bytes": 54542,
+      "sha256": "e534eda15cc13f4c0400af5f0a168d8cbf6721cb54c8d167a23c9e943b186b1d"
+    },
+    {
+      "path": "current-site/assets/familiars/evolution_stages/vesper-new-bond.webp",
+      "bytes": 51110,
+      "sha256": "89707e24cbb5cba7e8a3ecd40b890c1de30c2e7a29d60fa341f41631c45ffff0"
+    },
+    {
+      "path": "current-site/assets/familiars/evolution_stages/zephyr-apprentice.webp",
+      "bytes": 41290,
+      "sha256": "40d087b219b667e9811237fb12be785ed5176d95f3b995f3d49403db47ac5543"
+    },
+    {
+      "path": "current-site/assets/familiars/evolution_stages/zephyr-ascendant.webp",
+      "bytes": 45016,
+      "sha256": "5b3d3e1054416216c03447c257ebaec87bcb64670b3b3897a765ae84b8777af6"
+    },
+    {
+      "path": "current-site/assets/familiars/evolution_stages/zephyr-celestial.webp",
+      "bytes": 52754,
+      "sha256": "d81898754c051c6a755d1469274d992865d0de5b73c42716fb79d275d3e3e0d7"
+    },
+    {
+      "path": "current-site/assets/familiars/evolution_stages/zephyr-guardian.webp",
+      "bytes": 41472,
+      "sha256": "0cb82a8856d788875ebc59183234ab0390aca1446574ade0e5ee0a20ca098914"
+    },
+    {
+      "path": "current-site/assets/familiars/evolution_stages/zephyr-new-bond.webp",
+      "bytes": 35940,
+      "sha256": "6d74013af2528d1debe9e48f4c9773f61587475d494b47e3cff53b7eb91daba0"
+    },
+    {
+      "path": "current-site/assets/familiars/icons/aurelia-icon.webp",
+      "bytes": 21018,
+      "sha256": "1a977a9c746011c7831368f8d2ae8ea1a5b08b50339e04c26d2ddd42d9803028"
+    },
+    {
+      "path": "current-site/assets/familiars/icons/briar-icon.webp",
+      "bytes": 40096,
+      "sha256": "2e1689f8ea6ca0a80c17095d1b371a81aa166a0e20043fde2d4c45f6aedb0a33"
+    },
+    {
+      "path": "current-site/assets/familiars/icons/cascade-icon.webp",
+      "bytes": 34314,
+      "sha256": "3f26df7daf209438a4b7d8027223f79ae8b760444dfb3771b5cab8b3b621d905"
+    },
+    {
+      "path": "current-site/assets/familiars/icons/prism-icon.webp",
+      "bytes": 36638,
+      "sha256": "511c323781b89b8fc0e386226074caf2394e0b32b64a92c22a4d3b3f0904a45d"
+    },
+    {
+      "path": "current-site/assets/familiars/icons/rook-icon.webp",
+      "bytes": 31178,
+      "sha256": "f9a0b5812d91c7cbe9a4f5836b0bea107d4f4d666f55c9ceb04032b28589d43a"
+    },
+    {
+      "path": "current-site/assets/familiars/icons/solara-icon.webp",
+      "bytes": 39226,
+      "sha256": "355eec2244058ed2a3355c9c3c272c84799abb1fbfb244b6060dcc420b93a652"
+    },
+    {
+      "path": "current-site/assets/familiars/icons/solstice-icon.webp",
+      "bytes": 28240,
+      "sha256": "65020bff990b53e861d99303e873b74bf35cfeb1c7b6f0adbf85fe61e084001c"
+    },
+    {
+      "path": "current-site/assets/familiars/icons/velora-icon.webp",
+      "bytes": 36514,
+      "sha256": "c8c0e9c3d3f3b39b69c16162cf1d265946686c83e274b99b4a73d843740c5680"
+    },
+    {
+      "path": "current-site/assets/familiars/icons/vesper-icon.webp",
+      "bytes": 33550,
+      "sha256": "87db44d111403c416aac63ccaebdcd3c361d2bb06203b2bb7a5c526135d27a5d"
+    },
+    {
+      "path": "current-site/assets/familiars/icons/zephyr-icon.webp",
+      "bytes": 41244,
+      "sha256": "74f3453c9fb6d9e34514c86465f67fad97e4da206c87f0609970a975561a37c0"
+    },
+    {
+      "path": "current-site/assets/game-observatory-v1-820.webp",
+      "bytes": 519450,
+      "sha256": "1bd95f6ad5a30bb3d06adae2467aac51586bf5149b821170648ef886582223fd"
+    },
+    {
+      "path": "current-site/assets/game-observatory-v1.png",
+      "bytes": 2944385,
+      "sha256": "6bd6a73d5ca81ee7194a11438ae422d64065cee7c2671e22c7c9ba0b71efba64"
+    },
+    {
+      "path": "current-site/assets/game-observatory-v1.webp",
+      "bytes": 2299476,
+      "sha256": "e4057ed6217bb925134790190069325347aa3683ab83d1882bf9bbac9cc8da3f"
+    },
+    {
+      "path": "current-site/assets/guardian-dorm-v1-820.webp",
+      "bytes": 369326,
+      "sha256": "176a37181924ccdc0f934903c8d0a58c856737c8e283d777ff9020258f7ac8e7"
+    },
+    {
+      "path": "current-site/assets/guardian-dorm-v1.png",
+      "bytes": 2341414,
+      "sha256": "f89fd6d4e47b102078d388977a406d954306d0efc4e445f9fe6ecacb53fdf38b"
+    },
+    {
+      "path": "current-site/assets/guardian-dorm-v1.webp",
+      "bytes": 1854636,
+      "sha256": "2275ad02397df2e4d286a766979999f8de5aa2b616c030085051df73246d448b"
+    },
+    {
+      "path": "current-site/assets/iep-council/ASSET-MANIFEST.md",
+      "bytes": 2386,
+      "sha256": "bc7e017e21f83338445fa4603b2937ea7507db33bde6778d2592656060da334d"
+    },
+    {
+      "path": "current-site/assets/iep-council/lea.svg",
+      "bytes": 3199,
+      "sha256": "70b21638334c04979c4c2450005849d01f490c261b7c90ec443c58e7031af431"
+    },
+    {
+      "path": "current-site/assets/iep-council/parent.svg",
+      "bytes": 2983,
+      "sha256": "f70117b2a220f68a0782688b2acabe0582782758b6e8f6485b814edaf0169f8a"
+    },
+    {
+      "path": "current-site/assets/iep-council/student.svg",
+      "bytes": 3207,
+      "sha256": "4df6d0a608f5367ef624c963756c216346a68b7ff4f31015d236b9d195f6c00f"
+    },
+    {
+      "path": "current-site/assets/iep-council/teacher.svg",
+      "bytes": 3301,
+      "sha256": "3f02a696673d0b2941edded0a1b0129fdba08d424e15a6da0c56ae06d8cc33a3"
+    },
+    {
+      "path": "current-site/assets/learn-classroom-v1-820.webp",
+      "bytes": 578992,
+      "sha256": "3ec70e4d4ba0881eec5358ac0a309204e290a7cd12590f9c9bafbef3e83fad38"
+    },
+    {
+      "path": "current-site/assets/learn-classroom-v1.png",
+      "bytes": 2804493,
+      "sha256": "1b8c5f294309515ab2c7305833cb95610300791ac310c11dbbb91646385cb7ab"
+    },
+    {
+      "path": "current-site/assets/learn-classroom-v1.webp",
+      "bytes": 2193378,
+      "sha256": "15195fdf89e728654f5ce4697351335f37ac6b1efa744ff1465eeade97468771"
+    },
+    {
+      "path": "current-site/assets/learn-classroom-v2-820.webp",
+      "bytes": 586858,
+      "sha256": "ae0ab27cd8b92537c362d658f308dcb88b1bdec5f6d83b9444acf9b30c98d4f8"
+    },
+    {
+      "path": "current-site/assets/learn-classroom-v2.png",
+      "bytes": 2731635,
+      "sha256": "cb2e2fce819815ffebce1ed126536829e731e849be37e438b3bcc07f6a205951"
+    },
+    {
+      "path": "current-site/assets/learn-classroom-v2.webp",
+      "bytes": 2163088,
+      "sha256": "a14726abd5bf3c3bb93e0bcb63a5b7bc4fd94a3940533db5aa602293a3c1bda0"
+    },
+    {
+      "path": "current-site/assets/licensed/Bubbles/Bubble - Black.webp",
+      "bytes": 27234,
+      "sha256": "a51d4bff0208560f04fb8f93e6fe6d4ce8545a2ab000cce443009daf1c6bc0fb"
+    },
+    {
+      "path": "current-site/assets/licensed/Bubbles/Bubble - Blue.webp",
+      "bytes": 37632,
+      "sha256": "57fbd18c17af46050a857df6d591b27e1a85d2d3726833f9e832d0917e503183"
+    },
+    {
+      "path": "current-site/assets/licensed/Bubbles/Bubble - Green.webp",
+      "bytes": 40480,
+      "sha256": "0d9b1d9d7fe40001f532ca8e7b8be27cbdf0e382efbc7e800725bcf1f008e845"
+    },
+    {
+      "path": "current-site/assets/licensed/Bubbles/Bubble - Orange.webp",
+      "bytes": 37726,
+      "sha256": "a8d875fdd2f5aa045732ab046184c5aac76330eec299a1afe88839f7e2e4542a"
+    },
+    {
+      "path": "current-site/assets/licensed/Bubbles/Bubble - Purple.webp",
+      "bytes": 37568,
+      "sha256": "7e05c51841ea15a440efb9e7690044d76d7bdabde7aa018ab590c361f8781cfa"
+    },
+    {
+      "path": "current-site/assets/licensed/Bubbles/Bubble - Red.webp",
+      "bytes": 32718,
+      "sha256": "9a3765273cf5bece7882469adc648af8879ccac6240d6b637759b99567599a87"
+    },
+    {
+      "path": "current-site/assets/licensed/Bubbles/Bubble - White.webp",
+      "bytes": 16076,
+      "sha256": "fd1dc215ba2b82b78d31264926dd1cb53b1991b0182eab1264f78ec64aef8be1"
+    },
+    {
+      "path": "current-site/assets/licensed/Bubbles/Bubble - Yellow.webp",
+      "bytes": 35914,
+      "sha256": "e38647f457263deab8fb56196aef93a424cd6aca7856f1019b2f4d5cb622a44e"
+    },
+    {
+      "path": "current-site/assets/licensed/alchemy-credits.txt",
+      "bytes": 302,
+      "sha256": "f4abb87d8abdb3d939bd1440fd2ce950eb90a578e55bf85fee90f2f32e3961cf"
+    },
+    {
+      "path": "current-site/assets/licensed/asset-manifest.json",
+      "bytes": 24125,
+      "sha256": "b35bc31796bfe91d209d6104efc78d609817a660b1a21219e9dc3b82fe3bd7fd"
+    },
+    {
+      "path": "current-site/assets/licensed/audio/magical_1.ogg",
+      "bytes": 17936,
+      "sha256": "69176a57ce6ff396bd0997a86fce89b2a3f6d564c417050199be800da3d57d7d"
+    },
+    {
+      "path": "current-site/assets/licensed/audio/magical_2.ogg",
+      "bytes": 24234,
+      "sha256": "0ad1e800507e232ea3100e54ec7d6ffaa0bf8fd6045abaebdbd9724c0701dbdf"
+    },
+    {
+      "path": "current-site/assets/licensed/audio/magical_3.ogg",
+      "bytes": 16792,
+      "sha256": "837005d481e75319e32150a90415d9c255061d660cd90bfc9f3e28d89e1b5f5b"
+    },
+    {
+      "path": "current-site/assets/licensed/audio/magical_4.ogg",
+      "bytes": 20212,
+      "sha256": "23d4812c8c5b4fadc37df7a6bf7556dcbe10328908e5ed1829fe6fdd03d5fd79"
+    },
+    {
+      "path": "current-site/assets/licensed/audio/magical_5.ogg",
+      "bytes": 18227,
+      "sha256": "68e002d48295accc10fb52a76516d932e64229e413572f9cbbff1654217721a9"
+    },
+    {
+      "path": "current-site/assets/licensed/crystal-blue.webp",
+      "bytes": 14380,
+      "sha256": "f1ad5a2edcdb0d142cde6c4c724da673b38e6568f6c686058a24dc2e31e45a45"
+    },
+    {
+      "path": "current-site/assets/licensed/crystal-green.webp",
+      "bytes": 17236,
+      "sha256": "15b668a43ddbc350fc449cc1a1441e9e2938acda6ad1490aab7ee61b911021f5"
+    },
+    {
+      "path": "current-site/assets/licensed/crystal-red.webp",
+      "bytes": 15210,
+      "sha256": "7fcc56dabaaab7fc86ef7aae31e1cab3b4f7019926d59b58fc80ba27eb8be9b2"
+    },
+    {
+      "path": "current-site/assets/licensed/crystal-violet.webp",
+      "bytes": 17344,
+      "sha256": "7d9f04eb87f3a1c01cd21d61d58027e35c26b319cadf12e334a7ab579a265b16"
+    },
+    {
+      "path": "current-site/assets/licensed/crystal-yellow.webp",
+      "bytes": 17080,
+      "sha256": "7634b6374ba0d823a0c83c1249240521f0525810ea5e561c7e4c1362ddc4ad9b"
+    },
+    {
+      "path": "current-site/assets/licensed/crystals/cluster-1.webp",
+      "bytes": 1830,
+      "sha256": "0e2db1497c35557103cd2653ba2386d3a78f7b41e69018dee2ae3e17f693b51e"
+    },
+    {
+      "path": "current-site/assets/licensed/crystals/cluster-4.webp",
+      "bytes": 1824,
+      "sha256": "d8e2a7788025eaa2b324ae2bf381cea32a70a9c933268475de95e915dbad9c2f"
+    },
+    {
+      "path": "current-site/assets/licensed/crystals/cluster-7.webp",
+      "bytes": 1626,
+      "sha256": "277d6527a1d2931603fac7a279f89467c5d15976a5b38588d4c2ff1e8954cd46"
+    },
+    {
+      "path": "current-site/assets/licensed/crystals-skills-credits.txt",
+      "bytes": 250,
+      "sha256": "8f287f2b7e958b01f876ccb7df5a488dcb29edb31fdeb159b910c28a6ea449f4"
+    },
+    {
+      "path": "current-site/assets/licensed/effects/arcane-poster.webp",
+      "bytes": 7054,
+      "sha256": "c63b80ed8a2dbc1a0c4c177cfc562fa285075f26793f7791dd8f61d54fa290d8"
+    },
+    {
+      "path": "current-site/assets/licensed/effects/arcane.webp",
+      "bytes": 91666,
+      "sha256": "1a2acaa4251546ead0bdfe7a159ae866bf8a0d915945260a2ea169837a03cbf3"
+    },
+    {
+      "path": "current-site/assets/licensed/effects/light-poster.webp",
+      "bytes": 3530,
+      "sha256": "3eeda2ce70dd13d9a781cec8e6794d84c5c5fef783ede174e23842dff0749491"
+    },
+    {
+      "path": "current-site/assets/licensed/effects/light.webp",
+      "bytes": 159202,
+      "sha256": "6ff70809307e9fe08394a36e0db1247c4646eee5d915f79fd225050c810a10e6"
+    },
+    {
+      "path": "current-site/assets/licensed/effects/nature-poster.webp",
+      "bytes": 11808,
+      "sha256": "fbb72e11f856db9ae959342db0ebffcf38ce247ae88c4317d6b417501739fd50"
+    },
+    {
+      "path": "current-site/assets/licensed/effects/nature.webp",
+      "bytes": 167068,
+      "sha256": "8f25fb324c7b99b028a2bf143bf0991dc22c779db0785d4bf62896b0738ffe8b"
+    },
+    {
+      "path": "current-site/assets/licensed/effects/projectile-poster.webp",
+      "bytes": 3380,
+      "sha256": "567cfc5a85c99b8c93dcc72e1b54dff5a63807508ae5033df5c3bf969393f762"
+    },
+    {
+      "path": "current-site/assets/licensed/effects/projectile.webp",
+      "bytes": 154840,
+      "sha256": "24a413d510299b4227dc127cc223fd75e56ee4f1223d459039d25a10d6432920"
+    },
+    {
+      "path": "current-site/assets/licensed/fantasy-icons/icon-01.webp",
+      "bytes": 55266,
+      "sha256": "16a12bc5bd22b06cdd0ee8fe45f4d0ed092456e5de3b93f393403b48ec9781eb"
+    },
+    {
+      "path": "current-site/assets/licensed/fantasy-icons/icon-02.webp",
+      "bytes": 42668,
+      "sha256": "02e38e00b8ef82df2e2b6a4d0c8b11d642b5b862bfb076616d0159b9fd0e784e"
+    },
+    {
+      "path": "current-site/assets/licensed/fantasy-icons/icon-03.webp",
+      "bytes": 69820,
+      "sha256": "3d5045645723d98d88763970a780cb9f6931ed14a4bfb483efdd04070ed3cde2"
+    },
+    {
+      "path": "current-site/assets/licensed/fantasy-icons/icon-04.webp",
+      "bytes": 28330,
+      "sha256": "c3c8c4783490732c455777af3b12ec56aff6f8903e998081361b12b0cbc75741"
+    },
+    {
+      "path": "current-site/assets/licensed/fantasy-icons/icon-05.webp",
+      "bytes": 17674,
+      "sha256": "2bf474b54decf655e217409107ea478a957fa1de5bddba47600ec9f9a9518306"
+    },
+    {
+      "path": "current-site/assets/licensed/fantasy-icons/icon-06.webp",
+      "bytes": 24994,
+      "sha256": "a5130533d1ab84098af563373597e2f2fcf27160b5719387228b792ce7f1b969"
+    },
+    {
+      "path": "current-site/assets/licensed/fantasy-icons/icon-07.webp",
+      "bytes": 28584,
+      "sha256": "c29f07a8d6b09a547475f6ee27a2162bfa6625be15ea45ef0c518852d5fa916a"
+    },
+    {
+      "path": "current-site/assets/licensed/fantasy-icons/icon-08.webp",
+      "bytes": 34030,
+      "sha256": "3890a09969933c0e8a276d36769daf5f13deb20576b1deaebc1ae2d9f17a82df"
+    },
+    {
+      "path": "current-site/assets/licensed/fantasy-icons/icon-09.webp",
+      "bytes": 18924,
+      "sha256": "33b21313acad77db6353b82c569ec07720f8e90ae3a73d67109b6c7859950316"
+    },
+    {
+      "path": "current-site/assets/licensed/fantasy-icons/icon-10.webp",
+      "bytes": 12782,
+      "sha256": "a4c913048d5d502b1a3d2216e55f71db2de4289e90dea92cd6898bc6bfd3538b"
+    },
+    {
+      "path": "current-site/assets/licensed/gems/diamond.webp",
+      "bytes": 1638,
+      "sha256": "ca524c802e4b86ab3676778bcccfc3dd79522aad75b41b2def024a1c87037dfc"
+    },
+    {
+      "path": "current-site/assets/licensed/gems/emerald.webp",
+      "bytes": 1778,
+      "sha256": "1a5e1da2af0a2fa6cd4990a4d38304af6217ed80b6cfe320335bb2de68ecb0b5"
+    },
+    {
+      "path": "current-site/assets/licensed/gems/ruby.webp",
+      "bytes": 1658,
+      "sha256": "d9d36a420c29cfdef3a8ba8a941eed4760330e760ea9d517db6b01e2e93befd3"
+    },
+    {
+      "path": "current-site/assets/licensed/gems/sapphire.webp",
+      "bytes": 1906,
+      "sha256": "ac94db62b93a9eb88f7767b11724e5b20ffbd9e41899fa78689befaa3e14bd95"
+    },
+    {
+      "path": "current-site/assets/licensed/guardian-audio/baa.ogg",
+      "bytes": 26815,
+      "sha256": "fa1d93557ecf93531895f2ef0ebe8ee13f0eabb9309f9b84a37e7efd27e88678"
+    },
+    {
+      "path": "current-site/assets/licensed/guardian-audio/bark.ogg",
+      "bytes": 6838,
+      "sha256": "63b3bf366bc9be26f8f29be2460ae60f8efe898347a00c570552a2ffd5467f59"
+    },
+    {
+      "path": "current-site/assets/licensed/guardian-audio/bleat.ogg",
+      "bytes": 14825,
+      "sha256": "7d983b765cd1178183e803208b96537438f53d8ba4ddfd3207987246645ae5ca"
+    },
+    {
+      "path": "current-site/assets/licensed/guardian-audio/meow.ogg",
+      "bytes": 19648,
+      "sha256": "f9adc65bb9b0697b6302c1a8e5728602583f812aaed7750113e61df059903158"
+    },
+    {
+      "path": "current-site/assets/licensed/guardian-audio/moo.ogg",
+      "bytes": 29382,
+      "sha256": "30879e42370585ad66f669516f647209da9fb8443d0adc90980e7400861fe9f8"
+    },
+    {
+      "path": "current-site/assets/licensed/guardian-audio/mwa.ogg",
+      "bytes": 33331,
+      "sha256": "ad3d8ffa82edcd304f195db15995288ac7b1bc2e4ba72589e5bdc94da2d1f002"
+    },
+    {
+      "path": "current-site/assets/licensed/guardian-audio/peeps.ogg",
+      "bytes": 12304,
+      "sha256": "c6fc95a107a279031d2571a1596ecde67c76a0db937ba757d38eaa83d23c5f72"
+    },
+    {
+      "path": "current-site/assets/licensed/guardian-audio/squeal.ogg",
+      "bytes": 19666,
+      "sha256": "d6bc2dbd13accc6d211ad390505392563cc18883805f1e6011fe96b4cd0c940a"
+    },
+    {
+      "path": "current-site/assets/licensed/guardian-audio/whinny.ogg",
+      "bytes": 37170,
+      "sha256": "1f54076eadffaee9fa1ef9e541a7dab05e5d1b800cef47bca0591ff9bb7bd522"
+    },
+    {
+      "path": "current-site/assets/licensed/guardian-inventory-credits.txt",
+      "bytes": 343,
+      "sha256": "2a6ce477efcc6e85644ba3def5c7e3a0962d43235b93a20f3b9c4f03f9796cdb"
+    },
+    {
+      "path": "current-site/assets/licensed/images/bag.webp",
+      "bytes": 112064,
+      "sha256": "36c5315d28b731b1cc0c03dd198d4e271d08ab1942305b9c5d919186a7f111c9"
+    },
+    {
+      "path": "current-site/assets/licensed/images/herbal.webp",
+      "bytes": 72686,
+      "sha256": "f7a7f91df1e8eb56e589ebba4d2a6ade2b1577eb61ecefca6aa692543065752d"
+    },
+    {
+      "path": "current-site/assets/licensed/images/pot.webp",
+      "bytes": 50120,
+      "sha256": "09edfe283849b33004977e093e5714b3fbcdb5f8867240622ed859fec06de9b8"
+    },
+    {
+      "path": "current-site/assets/licensed/images/runestones.webp",
+      "bytes": 23578,
+      "sha256": "f64d154286f388541293b1a1589956fb114b3381557fbe36d1b1923f4f169367"
+    },
+    {
+      "path": "current-site/assets/licensed/milestones/LICENSE.txt",
+      "bytes": 148,
+      "sha256": "d244e2449c6ff88a17beb4283f24775f78de68c6f5a54b667d1dac90982c1213"
+    },
+    {
+      "path": "current-site/assets/licensed/milestones/book.png",
+      "bytes": 166,
+      "sha256": "b81529b967edba42d83bca3ab346e0536eeee3a9f2078603c86a69703899cb2d"
+    },
+    {
+      "path": "current-site/assets/licensed/milestones/bottle.png",
+      "bytes": 221,
+      "sha256": "61710102e6706b4ac2eeda6475ab98740b14de0cbc722aa1ab7950dcd903b78b"
+    },
+    {
+      "path": "current-site/assets/licensed/milestones/briefcase.png",
+      "bytes": 165,
+      "sha256": "c8107b3315dcf82ac40155f4edf748a62073bfc7b5fd27a8197aecb6157b3945"
+    },
+    {
+      "path": "current-site/assets/licensed/milestones/globe.png",
+      "bytes": 355,
+      "sha256": "e830d82875b96293cd29bdc5adda96542235c0f8f6412e683762007c11ea931e"
+    },
+    {
+      "path": "current-site/assets/licensed/milestones/heart.png",
+      "bytes": 259,
+      "sha256": "30ad2c428440102af57a20c4db444a56ebe811047110124758cc8134104d24f5"
+    },
+    {
+      "path": "current-site/assets/licensed/milestones/hourglass.png",
+      "bytes": 291,
+      "sha256": "bdb5d7fac3ff160ae1d2dcd4af3d39f9d950fc7184bfd19d51287017fec267da"
+    },
+    {
+      "path": "current-site/assets/licensed/milestones/house.png",
+      "bytes": 271,
+      "sha256": "33e390485709a28de45062eaf4dfbd59611def628d6204ef88911af0c52f004d"
+    },
+    {
+      "path": "current-site/assets/licensed/milestones/star.png",
+      "bytes": 286,
+      "sha256": "74f7c6eafbbeabbd818fac276fc54a86472adfa9a1ea5730e56098db7b000fb1"
+    },
+    {
+      "path": "current-site/assets/licensed/models/candle-holder.webp",
+      "bytes": 2884,
+      "sha256": "3c703e7ee8410c213fa3ede4349f49f9590fa59c907c6779137bfa07ac361c12"
+    },
+    {
+      "path": "current-site/assets/licensed/models/human-female-study.webp",
+      "bytes": 3112,
+      "sha256": "f4f99f018b69a0ebf12536bb677b84203d94cbe9e4390260ad3f37c729fd9638"
+    },
+    {
+      "path": "current-site/assets/licensed/models/human-male-study.webp",
+      "bytes": 3132,
+      "sha256": "395e2119a4ef731b6bbf1659dd0edad5fdd098569c47327dd19dabff2d13ffad"
+    },
+    {
+      "path": "current-site/assets/licensed/models/potion-1.webp",
+      "bytes": 4418,
+      "sha256": "fa6e18afdf636d6fa0f7e59625989ad4b3d63b213e3295549aa91a78ad6e64f3"
+    },
+    {
+      "path": "current-site/assets/licensed/models/potion-2.webp",
+      "bytes": 5638,
+      "sha256": "058d05de3d8e5bae1aa70eae1632279ea4d733f9ef3b45ae86438cd8cde5a7bb"
+    },
+    {
+      "path": "current-site/assets/licensed/models/potion-3.webp",
+      "bytes": 6148,
+      "sha256": "3386698398a7a034fe13f35a1063fd4f9c37810e92b9cc8b264bd66fce3ed4ab"
+    },
+    {
+      "path": "current-site/assets/licensed/models/potion-4.webp",
+      "bytes": 5642,
+      "sha256": "37e435517cbb5b3856b1ed295cb7a837f8945b240150fa1e6f8d74781100965e"
+    },
+    {
+      "path": "current-site/assets/licensed/models/potion-5.webp",
+      "bytes": 6500,
+      "sha256": "a762634554314ac6cddde3b14833a91ea0b01b897fcf3f5a1eb2d656c352a06f"
+    },
+    {
+      "path": "current-site/assets/licensed/music/crystal-cave.ogg",
+      "bytes": 375558,
+      "sha256": "eead180e4240065bdec0c0d2503063047865ef4b13215931ad3713891b537083"
+    },
+    {
+      "path": "current-site/assets/licensed/music/crystal-mystery.ogg",
+      "bytes": 688117,
+      "sha256": "f8f3835bea148d8948954cb3ff453cf9b55b02cd1396c92617e78e0462ec886b"
+    },
+    {
+      "path": "current-site/assets/licensed/music/dark-ambience.ogg",
+      "bytes": 386133,
+      "sha256": "8eb6d40b4abd66e452aa64d6dc5716a02916fe4cadf1774b001b93def4ffc881"
+    },
+    {
+      "path": "current-site/assets/licensed/music/enchanted-festival.ogg",
+      "bytes": 1223623,
+      "sha256": "62f89913214de1a2a6918b28b352b1f9cb66389c26a7e7ce5ec8daee95fe86de"
+    },
+    {
+      "path": "current-site/assets/licensed/music/enchanted-tiki.ogg",
+      "bytes": 1241685,
+      "sha256": "0256eae3210a718ea020b091458ef8a5ba1ff16d17471df75a9d6e8665cd8d41"
+    },
+    {
+      "path": "current-site/assets/licensed/music/mystical-theme.ogg",
+      "bytes": 1030977,
+      "sha256": "fab370823c19eecaf69b1ca35a138b2dfb8bf52dbe8a18f8d86bad78a23aaaf6"
+    },
+    {
+      "path": "current-site/assets/licensed/plants/LICENSE.txt",
+      "bytes": 905,
+      "sha256": "0ac3d60c32848e1d8a0884b985582ad99850e7d2f987a3c3a1c5fdc88e0f1438"
+    },
+    {
+      "path": "current-site/assets/licensed/plants/flowers.webp",
+      "bytes": 8290,
+      "sha256": "de7267c63ce1b3a6d22dd1b772c8c0dc01fe4e83d3ab66860e69a0e4c3179e8d"
+    },
+    {
+      "path": "current-site/assets/licensed/plants/shrub.webp",
+      "bytes": 6578,
+      "sha256": "a35eebf7f58f0892bb8bea621675d98ca609a60a5c5480bdbb284398f5b9af58"
+    },
+    {
+      "path": "current-site/assets/licensed/potions/aqua.webp",
+      "bytes": 8670,
+      "sha256": "e21390882219df686f1eb0d34124186ec732bdd370977f354efd2cff9fe4a509"
+    },
+    {
+      "path": "current-site/assets/licensed/potions/green.webp",
+      "bytes": 8934,
+      "sha256": "879668fcae92cf64176d0019a6d9c551a1b621e37a3fac810d2c0938995cdec7"
+    },
+    {
+      "path": "current-site/assets/licensed/potions/orange.webp",
+      "bytes": 8848,
+      "sha256": "51c5a668211e7cb7ef74aebc068332ba1f7bf5390fc8fc1d18df9ccfcc1e6977"
+    },
+    {
+      "path": "current-site/assets/licensed/potions/purple.webp",
+      "bytes": 8878,
+      "sha256": "c1d27543d804eabce2918d477a85164057f998d26aae0129bcb3ac4c41b4454c"
+    },
+    {
+      "path": "current-site/assets/licensed/potions/red.webp",
+      "bytes": 9276,
+      "sha256": "a67740142c6b10e1e245dcc706ac4aa3cc52a3edad774838d87345392a88229f"
+    },
+    {
+      "path": "current-site/assets/licensed/rings/diamond.webp",
+      "bytes": 3092,
+      "sha256": "12e1a87f27a2ef237d223bed80239bc7c33dd2d901a075f106308e50d5cd41f5"
+    },
+    {
+      "path": "current-site/assets/licensed/rings/emerald.webp",
+      "bytes": 3404,
+      "sha256": "682177ab7cf60202d935e97adf3942785aa5eda887c7cb09bf4e47e60b892982"
+    },
+    {
+      "path": "current-site/assets/licensed/rings/gold-band.webp",
+      "bytes": 4164,
+      "sha256": "fd2b22e13e54cca69bd0c5288b3a85e04ed47667399cdbecc8d8d0de09a35329"
+    },
+    {
+      "path": "current-site/assets/licensed/rings/gold-wrap.webp",
+      "bytes": 3420,
+      "sha256": "be517836ef29599b26e4bd12964fd3b181f5a10d3d8e72b4c585b3f75f2b120b"
+    },
+    {
+      "path": "current-site/assets/licensed/rings/ouroboros.webp",
+      "bytes": 4616,
+      "sha256": "f3a9515cf9aeea2af60fbe11c5dff3627af6aac78b1ff30de0675ee67051ffbb"
+    },
+    {
+      "path": "current-site/assets/licensed/rings/ruby.webp",
+      "bytes": 2996,
+      "sha256": "cb07ccfa8a4172a0d766da0a9f8b304ee1b77b23e6ee582ea4c19c7a728e2688"
+    },
+    {
+      "path": "current-site/assets/licensed/rings/sapphire.webp",
+      "bytes": 2610,
+      "sha256": "e7a833813702d66449b5371136f52c82703a7662238c98932e889ae5adf9f486"
+    },
+    {
+      "path": "current-site/assets/licensed/rings/silver-band.webp",
+      "bytes": 3226,
+      "sha256": "1d17f75308d7eb96888d780adda7cba383bea06ce48acb6ebb3db452d7411307"
+    },
+    {
+      "path": "current-site/assets/licensed/rings/silver-celtic.webp",
+      "bytes": 2644,
+      "sha256": "b82c3c8b05f4acd6678bdf73e3c7760bdf2a2ab719d5e3bacf2364099c394f1e"
+    },
+    {
+      "path": "current-site/assets/licensed/rings/silver-signet.webp",
+      "bytes": 2494,
+      "sha256": "55007474dbf8b0ea4f3ad3572d3575b392ae39f24d9b50b67f9f922e2ec9110c"
+    },
+    {
+      "path": "current-site/assets/licensed/skill-01.webp",
+      "bytes": 5198,
+      "sha256": "8021bb5c177ca4bca74228ccd2996193b60747c5b1664fc1a8ccd76086edc78d"
+    },
+    {
+      "path": "current-site/assets/licensed/skill-02.webp",
+      "bytes": 5406,
+      "sha256": "5ca395592cbf4325141c6e731fc0028b885dac5da964051d22bb0699e42f9559"
+    },
+    {
+      "path": "current-site/assets/licensed/skill-03.webp",
+      "bytes": 4932,
+      "sha256": "8474cba7c8f62cb643d45251b1f9a4781039fd050352049a17b872c38882c3ee"
+    },
+    {
+      "path": "current-site/assets/licensed/skill-04.webp",
+      "bytes": 6628,
+      "sha256": "1614c32fe491d78095762aaea77a374288ca4bbdbfa6b22dd46ff3ade104a0ce"
+    },
+    {
+      "path": "current-site/assets/licensed/skill-05.webp",
+      "bytes": 2604,
+      "sha256": "4363e1ac3b750cbbd045edf2f370dd2f7f2879b3e0363e2eb49b96c2e97f83c4"
+    },
+    {
+      "path": "current-site/assets/licensed/skill-06.webp",
+      "bytes": 7158,
+      "sha256": "5fb228cbb894dbf3cd2232e6f48d0d78715553d92eaf174ab0c5469f093bb8b3"
+    },
+    {
+      "path": "current-site/assets/licensed/skill-07.webp",
+      "bytes": 8280,
+      "sha256": "316e87806d5770baab6868328757608f9f59d0fa342d0f51290c3e0fa568f0c4"
+    },
+    {
+      "path": "current-site/assets/licensed/skill-08.webp",
+      "bytes": 7914,
+      "sha256": "c45f201ede2cf8ca80e0c6244068977191351bb082c06cd5e57267bd8aa33367"
+    },
+    {
+      "path": "current-site/assets/licensed/skill-09.webp",
+      "bytes": 7244,
+      "sha256": "f69b77dd20fa20333f4be82291e8f121d8d8adfa98a17666278e883c62124585"
+    },
+    {
+      "path": "current-site/assets/licensed/skill-10.webp",
+      "bytes": 8988,
+      "sha256": "1bf4b2cadcad5c77da61ddb8334ee0a695196cb40341f9b8b3c147edb92ca8dd"
+    },
+    {
+      "path": "current-site/assets/licensed/skill-11.webp",
+      "bytes": 8546,
+      "sha256": "6602e6d953d67a75bfe6037ecf53898b611a1daa1871ab635734fd82fce7077c"
+    },
+    {
+      "path": "current-site/assets/licensed/skill-12.webp",
+      "bytes": 7798,
+      "sha256": "e2c64973360315966c00a2bbaa9784db44d40a8bbf485c1baa4029429dae2f73"
+    },
+    {
+      "path": "current-site/assets/licensed/skill-13.webp",
+      "bytes": 4680,
+      "sha256": "d434581b0d2f1fa2a6eca772a4abdbc2e1bc033642954a7f12ec4231a9e82d9e"
+    },
+    {
+      "path": "current-site/assets/licensed/skill-14.webp",
+      "bytes": 6826,
+      "sha256": "b597cfb7af8e4cf70fe43d988c9b89b3b2060feb65513d2bb864b0b967216ff3"
+    },
+    {
+      "path": "current-site/assets/licensed/skill-15.webp",
+      "bytes": 4632,
+      "sha256": "29b4f5cfa14f3e8e98a3e82cb4ec9fcf48ef507d9e80e3acaf6f9165ba2387d9"
+    },
+    {
+      "path": "current-site/assets/licensed/skill-16.webp",
+      "bytes": 9710,
+      "sha256": "25f6e2fe21377d4b77b6f6e7cd3f408f559185641b3956fd3bb8fcc96bf39cea"
+    },
+    {
+      "path": "current-site/assets/licensed/skill-17.webp",
+      "bytes": 6128,
+      "sha256": "dbb0dafd185cf31a226aa2636cbd44e54d7d34cbb899fb198df73102018bcee3"
+    },
+    {
+      "path": "current-site/assets/licensed/skill-18.webp",
+      "bytes": 5346,
+      "sha256": "c9963dba346a180d27a3647e45572d14f2381914e93fcded0219ef85e31cf060"
+    },
+    {
+      "path": "current-site/assets/licensed/skill-19.webp",
+      "bytes": 4960,
+      "sha256": "e7ef35309c50190bbe76703b4d502464460dd0d3cbe774ae77203048fecf1b0b"
+    },
+    {
+      "path": "current-site/assets/licensed/skill-20.webp",
+      "bytes": 5974,
+      "sha256": "4201572141e103322721d8ce5cc12b7160cb0e380278d0bbfca4f45b9153fd78"
+    },
+    {
+      "path": "current-site/assets/licensed/skill-21.webp",
+      "bytes": 6316,
+      "sha256": "d92b7bc88c299749d213c7b1c0b7bb491312294310bf90aa1003503e5d7950ea"
+    },
+    {
+      "path": "current-site/assets/licensed/skill-22.webp",
+      "bytes": 7322,
+      "sha256": "441bf62bfef9930a91f680c2faa45bbac8d6b9c321654ec04b33fbf6c290f962"
+    },
+    {
+      "path": "current-site/assets/licensed/textures/parchment.webp",
+      "bytes": 4882,
+      "sha256": "9d051fcd10f9ea2b56f050ff5b4dd6c55661986fc6d71ec48f5a9225598cc2bb"
+    },
+    {
+      "path": "current-site/assets/licensed/textures/sage.webp",
+      "bytes": 1802,
+      "sha256": "fb90d5cc98c2e30e330c6521b9af4bea91ba10a2c66db3ea133b60d7ff6aa821"
+    },
+    {
+      "path": "current-site/assets/licensed/textures/slate.webp",
+      "bytes": 910,
+      "sha256": "2134074745a2a82954f72a845178fa0e6141ec281c412f26b5b851d93a17433b"
+    },
+    {
+      "path": "current-site/assets/majick_cosmos.jpg",
+      "bytes": 303175,
+      "sha256": "90d4febdbe642faf9d51d17e7aa76aa6dd54fae70f113d8e68011ab35c087e27"
+    },
+    {
+      "path": "current-site/assets/majick_garden.jpg",
+      "bytes": 335005,
+      "sha256": "b0b2ffab7e4d7e8608d9a72dc67e5f3eae33eb398d891e14d64cebdd352bf390"
+    },
+    {
+      "path": "current-site/assets/majick_library.jpg",
+      "bytes": 306131,
+      "sha256": "24eca1a1c8c03722be728965c8f1bf9347a8721c0785bc8e8ab6ae6ddf5be785"
+    },
+    {
+      "path": "current-site/assets/majick_music.jpg",
+      "bytes": 237030,
+      "sha256": "81889137770dde44840943464f9769f9811f5bfb9985dbab2f8cb9c674c5d96c"
+    },
+    {
+      "path": "current-site/assets/majick_reference.png",
+      "bytes": 3007847,
+      "sha256": "26b2444a772e53a7cf5dae2fe378e2be43cb62e6fa0af052b820e8a708a72a58"
+    },
+    {
+      "path": "current-site/assets/pet_celestial.png",
+      "bytes": 108033,
+      "sha256": "0bb7071ab24a40da22621e3a579c1b71585d8eff0e472e0509537e2ea0e3215c"
+    },
+    {
+      "path": "current-site/assets/pet_emberdragon.png",
+      "bytes": 121946,
+      "sha256": "1424b922676fab4eb0a5493ecde58e1fe939a7735fd8cae12fa2d9ec22499f58"
+    },
+    {
+      "path": "current-site/assets/pet_luna.png",
+      "bytes": 142751,
+      "sha256": "9f5691d478f4cd98e4856a8bd07e9b5cc399a0419db78120da17cc9b24b04d71"
+    },
+    {
+      "path": "current-site/assets/pet_mallow.png",
+      "bytes": 99156,
+      "sha256": "85b960cd439499c586d9152c5171b8a17357661ee24691ea78463ad5fb8fb375"
+    },
+    {
+      "path": "current-site/assets/pet_novafox.png",
+      "bytes": 116002,
+      "sha256": "47c592632bb8ffef36cb185305b1357cac0b1d8961d08a2fcfb7f02cce4d731b"
+    },
+    {
+      "path": "current-site/assets/rewards/aurelia/collection-manifest.json",
+      "bytes": 46462,
+      "sha256": "5a5cf1b374b7fe3d173266912d7b235512aef9753658bf8bcd06cafac3acac85"
+    },
+    {
+      "path": "current-site/assets/rewards/aurelia/items/arched-bookcase.webp",
+      "bytes": 102560,
+      "sha256": "0ffea31ca75a8c39920eb6d4eb8305200b64ab4443863499e2aabbcda4e60fe4"
+    },
+    {
+      "path": "current-site/assets/rewards/aurelia/items/bunny-ear-reading-chair.webp",
+      "bytes": 98742,
+      "sha256": "e7873448ea61b248961dcee359aa1e767311918c1a4bdef097c6ec6405b53255"
+    },
+    {
+      "path": "current-site/assets/rewards/aurelia/items/bunny-toy-trunk.webp",
+      "bytes": 63354,
+      "sha256": "c3cafaaa8e0e6951b9ea99d24ad20d770d8bada56f2403653bd0ef3f56c97dc0"
+    },
+    {
+      "path": "current-site/assets/rewards/aurelia/items/burrow-hammock.webp",
+      "bytes": 80204,
+      "sha256": "74e4a3e875509467b540955324d28d6682570da265a94f9fa073546cc2652f9b"
+    },
+    {
+      "path": "current-site/assets/rewards/aurelia/items/celestial-rabbit-dream-altar.webp",
+      "bytes": 79300,
+      "sha256": "d2537499d34ae793e966f89820ccb54d07ec162d0db9bcd84835ee045cce1361"
+    },
+    {
+      "path": "current-site/assets/rewards/aurelia/items/feather-lantern.webp",
+      "bytes": 66444,
+      "sha256": "7a930a649971e5d3fae784bc405e3f58761644ddcdb165a04cc0c4409d79e1f2"
+    },
+    {
+      "path": "current-site/assets/rewards/aurelia/items/feather-play-wand.webp",
+      "bytes": 100114,
+      "sha256": "ddef86bed10da763f1749c3e5b93ebb69098ef1eb0b1ccab8a759285895bf86e"
+    },
+    {
+      "path": "current-site/assets/rewards/aurelia/items/feeding-and-water-station.webp",
+      "bytes": 59514,
+      "sha256": "7406acbfec1f41f4d45a8c8e10d368e0d2130949652bd36ff877b49bdbe940bf"
+    },
+    {
+      "path": "current-site/assets/rewards/aurelia/items/flowering-sage-planter.webp",
+      "bytes": 86506,
+      "sha256": "34c168e82b480b132b8531d07006e4355bf5e802a647109128261d9556a26e3d"
+    },
+    {
+      "path": "current-site/assets/rewards/aurelia/items/hopping-stones.webp",
+      "bytes": 73752,
+      "sha256": "f5517699249d9e56cfc25fb9bd35ee5e754b6f26278a8253dfe8fe2370f4dfdb"
+    },
+    {
+      "path": "current-site/assets/rewards/aurelia/items/potion-apothecary.webp",
+      "bytes": 95376,
+      "sha256": "a2699a81475ce95f21dba82aaaa9e40ba9edbfb0f984f28bbfb7c2ea53684c61"
+    },
+    {
+      "path": "current-site/assets/rewards/aurelia/items/quilted-ruby-canopy-bed.webp",
+      "bytes": 96470,
+      "sha256": "5f192cfb781cc6ee77c2d6618bee5b59dfe64f3602f57034741c47be5b8f8f53"
+    },
+    {
+      "path": "current-site/assets/rewards/aurelia/items/rose-and-star-mobile.webp",
+      "bytes": 126926,
+      "sha256": "d30847ad71b5213b8f26a3074df67bbd3d351997797d9b685adca9decf28c055"
+    },
+    {
+      "path": "current-site/assets/rewards/aurelia/items/rose-crystal-lamp.webp",
+      "bytes": 84140,
+      "sha256": "bf4abe8bf415d82f75f2f0f720f5872f41efc7c96b88f7e837404455e96895df"
+    },
+    {
+      "path": "current-site/assets/rewards/aurelia/items/rose-heart-arcane-orb.webp",
+      "bytes": 94166,
+      "sha256": "70ea8d0e6cab979b9a16103115bdae002d065e0c4f97002f17399912949bdfd4"
+    },
+    {
+      "path": "current-site/assets/rewards/aurelia/items/rose-tea-table.webp",
+      "bytes": 96924,
+      "sha256": "adbc5464837ccde37049b62eace9d50884c4955c0662469e491213b97885b9da"
+    },
+    {
+      "path": "current-site/assets/rewards/aurelia/items/ruby-rose-circlet.webp",
+      "bytes": 81576,
+      "sha256": "1b2f34c29c0ab654a935ac7a20f4a9719f1fe55ac84e63b6482c2d679c97605b"
+    },
+    {
+      "path": "current-site/assets/rewards/aurelia/items/rune-play-ball.webp",
+      "bytes": 79258,
+      "sha256": "7f80f5a3c9fba9940a322910d0f427bc64886ed2c9821904fb2dd059ec2f78af"
+    },
+    {
+      "path": "current-site/assets/rewards/aurelia/items/sage-moon-collar.webp",
+      "bytes": 49456,
+      "sha256": "9fdf7ea05d697278c0d07df99fc4976e88f2e888765349482d8b37052acdacfa"
+    },
+    {
+      "path": "current-site/assets/rewards/aurelia/items/scholar-glasses.webp",
+      "bytes": 57084,
+      "sha256": "7979175c578dfbad17dac7b242dd0ea1b78592c4e28cb6d510539d69b0056a75"
+    },
+    {
+      "path": "current-site/assets/rewards/aurelia/items/scholar-satchel.webp",
+      "bytes": 66234,
+      "sha256": "825914e83e37053b27c8b6786eaf7987a99c3832b43bde174d7eeee8c41a6838"
+    },
+    {
+      "path": "current-site/assets/rewards/aurelia/items/scholar-writing-desk.webp",
+      "bytes": 78012,
+      "sha256": "493dcb5b4b0193ff07e943d432e97e425e62d41eba4b63f7291e569067c3ca13"
+    },
+    {
+      "path": "current-site/assets/rewards/aurelia/items/treat-puzzle-carousel.webp",
+      "bytes": 63286,
+      "sha256": "e3f9675b47ac0ad0ae75667f3e6f565bd91cf5e92cf6a640c5248a8d549f1f4d"
+    },
+    {
+      "path": "current-site/assets/rewards/aurelia/items/velvet-footstool.webp",
+      "bytes": 69318,
+      "sha256": "3c66b787f305b924921da24c8e251306fd4ce0aa0c9d7e0403420cec601178b3"
+    },
+    {
+      "path": "current-site/assets/rewards/aurelia/items/wing-and-petal-cloak.webp",
+      "bytes": 63458,
+      "sha256": "0b60612b292e1ce3d094dfa5b25bcffd69e65dee1d3b22e723f1b288d11725d4"
+    },
+    {
+      "path": "current-site/assets/rewards/aurelia/items/wing-embroidered-rug.webp",
+      "bytes": 67206,
+      "sha256": "d9bdaf012e1fa5530960ae15d827e3aa5430da9291e416bc21a4dafa27d19f53"
+    },
+    {
+      "path": "current-site/assets/rewards/aurelia/items/wing-framed-moon-mirror.webp",
+      "bytes": 112240,
+      "sha256": "c055e91e93d0fded99fc78fd9b3e7e904d73f79a13f5046c7571758270fe6ed9"
+    },
+    {
+      "path": "current-site/assets/rewards/aurelia/items/wingback-reading-chaise.webp",
+      "bytes": 73686,
+      "sha256": "86bfa9fe28b359e961597839e75fbd9e77f887381ff36cb6543d1eb094742857"
+    },
+    {
+      "path": "current-site/assets/rewards/items/canopy-bed-curtains.webp",
+      "bytes": 81896,
+      "sha256": "08c3712154936dc45334b264068bc678f093cf2c0e9007cfafc6652902e680db"
+    },
+    {
+      "path": "current-site/assets/rewards/items/celestial-dice-charm.webp",
+      "bytes": 53872,
+      "sha256": "d33d9f985d33abc9dd6ca6439cec464c3757a90cef3432700e24a635b0daa7a0"
+    },
+    {
+      "path": "current-site/assets/rewards/items/constellation-rug.webp",
+      "bytes": 71616,
+      "sha256": "0d5bcd278de93001d8894444eec7d07ebc3fda37b1aa2e3bec7cca72109bb255"
+    },
+    {
+      "path": "current-site/assets/rewards/items/crystal-lamp.webp",
+      "bytes": 55872,
+      "sha256": "f3112a9ff08d3cca74a4cdb21e786dd026f5e59dc9bfae6215e6e935b13d9314"
+    },
+    {
+      "path": "current-site/assets/rewards/items/enchanted-fireplace.webp",
+      "bytes": 78268,
+      "sha256": "6df74ca78147fce9e4ac827dfd812d7963d4d4bb9fc566b8ad064b45bc997cdf"
+    },
+    {
+      "path": "current-site/assets/rewards/items/fortune-seer-monocle.webp",
+      "bytes": 43424,
+      "sha256": "0bde37961261892876fb780e7177579d6c6ae31e59f5899ee739aa4e68752439"
+    },
+    {
+      "path": "current-site/assets/rewards/items/guardian-toy-chest.webp",
+      "bytes": 86710,
+      "sha256": "d44a4260f57c4ab051f5fe9ef819766dcb07776deef6c8fd1c506b5b73fdfc56"
+    },
+    {
+      "path": "current-site/assets/rewards/items/memory-moon-brooch.webp",
+      "bytes": 50670,
+      "sha256": "1f5b163a9a06a57ff4c1c52b267852fccdc6e646dc3c0084aeb4f1d21b8beb53"
+    },
+    {
+      "path": "current-site/assets/rewards/items/moon-phase-wall-hanging.webp",
+      "bytes": 82306,
+      "sha256": "6b82658f21d63644f8a9415b65428c83dccb05f17ed828f17177e108606f8e0f"
+    },
+    {
+      "path": "current-site/assets/rewards/items/moonflower-planter.webp",
+      "bytes": 118412,
+      "sha256": "8f18cbeac37571d0bed29c4ef83845461d5e85b381e01b77798133ee7c1151b2"
+    },
+    {
+      "path": "current-site/assets/rewards/items/potion-shelf.webp",
+      "bytes": 74482,
+      "sha256": "3270d8569f2ab9f000f280066483797a116bb39bc6ec8ee48e58cc36ed52e1d1"
+    },
+    {
+      "path": "current-site/assets/rewards/items/probability-scholar-cape.webp",
+      "bytes": 61516,
+      "sha256": "e396e711fb9bc9652315aaf1de662dc3f3bff371706188639d17e2bb4eb61bde"
+    },
+    {
+      "path": "current-site/assets/rewards/items/scholar-rune-circlet.webp",
+      "bytes": 58154,
+      "sha256": "96ea9ac63ed0be6e0102e08d2f6ef49e1934ab981140b45efd3383ba30f1664d"
+    },
+    {
+      "path": "current-site/assets/rewards/items/star-cartographer-glasses.webp",
+      "bytes": 38850,
+      "sha256": "03d1eb91208ec14d46841bf33b19e9dbe678a0d545a59ef4b1afd68dd742f7ee"
+    },
+    {
+      "path": "current-site/assets/rewards/items/velvet-study-chair.webp",
+      "bytes": 68132,
+      "sha256": "3057edacc502c62fb7022117b8ba0b0b3ce7ea5bde4c4901606c93bba84af52c"
+    },
+    {
+      "path": "current-site/assets/rewards/reference-boards/aurelia/aurelia-collection-reference-board-runtime.webp",
+      "bytes": 135462,
+      "sha256": "64e99f0e1cf9d712a754687f51d7aa6912e8bdd2719c66fd14ebbd1f79f27f8e"
+    },
+    {
+      "path": "current-site/assets/rewards/reference-boards/aurelia/aurelia-collection-reference-board.webp",
+      "bytes": 661640,
+      "sha256": "f6f6e692d5d5bf1ea0b2c56b5cb224e5ff283c5de89664a06f1fa04fcae2caa1"
+    },
+    {
+      "path": "current-site/assets/rewards/reference-boards/aurelia/reference-manifest.json",
+      "bytes": 4901,
+      "sha256": "d5f3a4238f6f119702896b4ad45782d4ed28b1e1d4a44a843079ea030cf28351"
+    },
+    {
+      "path": "current-site/assets/rewards/reference-boards/cascade/cascade-collection-reference-board-runtime.webp",
+      "bytes": 321322,
+      "sha256": "19a8202353e552f20173d109a6c7b61fcfe91420e5efa59de56bea771e745b1b"
+    },
+    {
+      "path": "current-site/assets/rewards/reference-boards/cascade/cascade-collection-reference-board.webp",
+      "bytes": 895826,
+      "sha256": "1b4d05d2b5303afeec9d2b51713d3a1aef76754ff6c0e242724a165218f79b68"
+    },
+    {
+      "path": "current-site/assets/rewards/reference-boards/rook/reference-manifest.json",
+      "bytes": 4535,
+      "sha256": "413ecd65cd9c65ab375ba619b5a9e20d7604eaa70006097d4de41d7b10c8c60a"
+    },
+    {
+      "path": "current-site/assets/rewards/reference-boards/rook/rook-collection-reference-board-runtime.webp",
+      "bytes": 143456,
+      "sha256": "0631021bbfc352b1be387cc1444f232e9e102b6156f334800dc687560ed50ea6"
+    },
+    {
+      "path": "current-site/assets/rewards/reference-boards/rook/rook-collection-reference-board.webp",
+      "bytes": 635232,
+      "sha256": "502735fe838adb02704d9b833991613efc0dfce10fbd796b55c946babf46e339"
+    },
+    {
+      "path": "current-site/assets/rewards/reference-boards/solstice/reference-manifest.json",
+      "bytes": 5651,
+      "sha256": "953fe66e6a108a358251e232aea66b75aafc14e67846bc372c02793f6a0e3cc3"
+    },
+    {
+      "path": "current-site/assets/rewards/reference-boards/solstice/solstice-collection-reference-board-runtime.webp",
+      "bytes": 156238,
+      "sha256": "c9eb1ee5caa631a4d16fc5dd6b78da3d8100a2a3ad015f25483fccafd666738c"
+    },
+    {
+      "path": "current-site/assets/rewards/reference-boards/solstice/solstice-collection-reference-board.webp",
+      "bytes": 578540,
+      "sha256": "a7ce3b72ff7437af8dca4d509ce80e0fc015c7f2ed4453bce4b0107b2667f908"
+    },
+    {
+      "path": "current-site/assets/rewards/solstice/collection-manifest.json",
+      "bytes": 55321,
+      "sha256": "98073d06cad3d99d02f46d1cd7d9b1b85c5d6ba8f0d790843fee1902984c1315"
+    },
+    {
+      "path": "current-site/assets/rewards/solstice/items/amber-canopy-bed.webp",
+      "bytes": 74836,
+      "sha256": "c0fd2f6f6b4886e023c69eeb5561ed089a101d35e1728ce14523ff5ecd64b5d6"
+    },
+    {
+      "path": "current-site/assets/rewards/solstice/items/astral-doorway.webp",
+      "bytes": 98808,
+      "sha256": "25dd37470378f70dad2776fa39fcbf6556180f942a8abf5bd7521143ba2d081f"
+    },
+    {
+      "path": "current-site/assets/rewards/solstice/items/astronomy-book-stack.webp",
+      "bytes": 112198,
+      "sha256": "b13cb2f56c1b18d68b0f57002c528a1aa0d38270b25ef5be4fa659ecdf104450"
+    },
+    {
+      "path": "current-site/assets/rewards/solstice/items/astronomy-bookshelf.webp",
+      "bytes": 92312,
+      "sha256": "9fe9930a36e65ffa490b1a79ded5a60a91ef9915a9bf34c3fb207697c58baa58"
+    },
+    {
+      "path": "current-site/assets/rewards/solstice/items/celestial-fox-gateway.webp",
+      "bytes": 85874,
+      "sha256": "0725796155f9817fc3438699151197dfbd6b6774b56209fc8027797c91d187ae"
+    },
+    {
+      "path": "current-site/assets/rewards/solstice/items/constellation-rug.webp",
+      "bytes": 76146,
+      "sha256": "2c227b8ae8fb93147f12b4c1cf0534f07a4c08f56530409befce835d3204e281"
+    },
+    {
+      "path": "current-site/assets/rewards/solstice/items/cosmic-orbit-puzzle.webp",
+      "bytes": 140278,
+      "sha256": "e44679122c0ebfab5889dded3c4fd11ba82cc0c10148f3c2f04f7663cdd639f8"
+    },
+    {
+      "path": "current-site/assets/rewards/solstice/items/crescent-lantern.webp",
+      "bytes": 67756,
+      "sha256": "0c30a448fe8fb00083e45f4e50d2b85a3e7cc648f5bc8a8cfc832bbd174ddb14"
+    },
+    {
+      "path": "current-site/assets/rewards/solstice/items/exploration-chest.webp",
+      "bytes": 73432,
+      "sha256": "d60937520f9a001e796636d343dc330c5256f7491ff4de2cd3d1a02d396dd287"
+    },
+    {
+      "path": "current-site/assets/rewards/solstice/items/explorer-satchel.webp",
+      "bytes": 68606,
+      "sha256": "7dec0be90fc35b0e2b329d002fddc15a4d138f955a833cd27ed5b446c4383ded"
+    },
+    {
+      "path": "current-site/assets/rewards/solstice/items/explorer-telescope.webp",
+      "bytes": 92386,
+      "sha256": "681a613a3d099b4a3f0b9644f66314a9fa19ee45e268465186de83bf0114b5e1"
+    },
+    {
+      "path": "current-site/assets/rewards/solstice/items/fox-ear-reading-chair.webp",
+      "bytes": 66424,
+      "sha256": "edbd18bfe0cfd5fd0a4608968ca971b650c8dfc459edbcbedb8d18c6b36e36dc"
+    },
+    {
+      "path": "current-site/assets/rewards/solstice/items/fox-star-den.webp",
+      "bytes": 86180,
+      "sha256": "217cc1c1b714d7db0297c82d070cae4b75396271493b7f81b631b7c93e007d1b"
+    },
+    {
+      "path": "current-site/assets/rewards/solstice/items/galaxy-cape.webp",
+      "bytes": 68620,
+      "sha256": "e1bf49440d9ac3085e7166e0af123e5c08da0f26fbb617f215f9d746299338ef"
+    },
+    {
+      "path": "current-site/assets/rewards/solstice/items/galaxy-folding-screen.webp",
+      "bytes": 73352,
+      "sha256": "63e20385b0cb78349c6d0c1725ae0cc26a03f5f6523c5cfcd7fab5a0ba33a8e1"
+    },
+    {
+      "path": "current-site/assets/rewards/solstice/items/galaxy-vanity.webp",
+      "bytes": 66474,
+      "sha256": "acc43a3b73a6b24c7b0c1ed32701a663b71588c0dd2884e25f247af6d337a4be"
+    },
+    {
+      "path": "current-site/assets/rewards/solstice/items/moon-collar.webp",
+      "bytes": 67402,
+      "sha256": "9544788d6de281ae1b936b95e75a9f44a895a54a0b24ccd2513bc94cf9230a21"
+    },
+    {
+      "path": "current-site/assets/rewards/solstice/items/moon-writing-desk.webp",
+      "bytes": 83122,
+      "sha256": "5213b3be0113c38a12766114135fcc161f8a333d4fd1e40f578303b1d09fdc40"
+    },
+    {
+      "path": "current-site/assets/rewards/solstice/items/nebula-bowl.webp",
+      "bytes": 83270,
+      "sha256": "3e43d62cf412da2ce31ab4aaf689ed1a6d6d3e9630cb4009794c2c062fe1541a"
+    },
+    {
+      "path": "current-site/assets/rewards/solstice/items/nebula-wand.webp",
+      "bytes": 85712,
+      "sha256": "b005e1d1e3ac35c89f7d6eb5c113468a8538266d2bd35bf311df46c2e8b12bcf"
+    },
+    {
+      "path": "current-site/assets/rewards/solstice/items/orbit-bracelet.webp",
+      "bytes": 84004,
+      "sha256": "001e9ba7c9df2c9811e2d78eb9b1f1032c0ed20aed47d3ef309958b22458c8a7"
+    },
+    {
+      "path": "current-site/assets/rewards/solstice/items/orbit-play-ball.webp",
+      "bytes": 110568,
+      "sha256": "83d59d04ccd7f08ec808323aaf4e498b354548287b5648db9cd5f9d49cad0dde"
+    },
+    {
+      "path": "current-site/assets/rewards/solstice/items/planet-climbing-tower.webp",
+      "bytes": 102972,
+      "sha256": "430e4f096ec99b9641e41cb2e377142ccc8ed46204f51fd29053c4195a1284a1"
+    },
+    {
+      "path": "current-site/assets/rewards/solstice/items/planet-mobile.webp",
+      "bytes": 92936,
+      "sha256": "fe11235e9cb7ee25f4e639d077871bbab832e2f276bbe29b2e91fea01c05c66f"
+    },
+    {
+      "path": "current-site/assets/rewards/solstice/items/reading-chaise.webp",
+      "bytes": 86892,
+      "sha256": "f1382674669b68fca7b11ea982ef030cb310ebd727667be313ae1aaf6ad92b6f"
+    },
+    {
+      "path": "current-site/assets/rewards/solstice/items/solar-circlet.webp",
+      "bytes": 85800,
+      "sha256": "c433ab8c2a55d5d37a6e7e44f151160b6da6ecdbc44dd4d94ec753bf4d7d84eb"
+    },
+    {
+      "path": "current-site/assets/rewards/solstice/items/solar-orrery.webp",
+      "bytes": 129154,
+      "sha256": "8f433a001ebb578d3909aa27dbdf1ddf69e3b22d3d8e66748f7f36aa21908a24"
+    },
+    {
+      "path": "current-site/assets/rewards/solstice/items/star-charm-rack.webp",
+      "bytes": 104166,
+      "sha256": "3ac6ff62f30c4999e7152952f89c62de6e0f7ee5bf242023c6b085bbfc6b3b04"
+    },
+    {
+      "path": "current-site/assets/rewards/solstice/items/star-glasses.webp",
+      "bytes": 45984,
+      "sha256": "2a5362a205cd1f41738d173259d17ec3d45aaec5d5a18c468ba029e24b8cd2a2"
+    },
+    {
+      "path": "current-site/assets/rewards/solstice/items/star-perch-tree.webp",
+      "bytes": 122818,
+      "sha256": "88f42fd96cdc7913cb03f77325f85d8d087a75f05f09c2ad5b520ebdcb904a4c"
+    },
+    {
+      "path": "current-site/assets/rewards/solstice/items/star-pouf.webp",
+      "bytes": 63792,
+      "sha256": "05fa2b7c82bc31872f85ced37f7081eeb5f73d27d27f9206700f310bf4450f67"
+    },
+    {
+      "path": "current-site/assets/rewards/solstice/items/starlight-hammock.webp",
+      "bytes": 67146,
+      "sha256": "78ca2851a92d7c76fbe1fa415ed15fe16682a3d8a01184fc6a13ca1dd178be15"
+    },
+    {
+      "path": "current-site/assets/rewards/solstice/items/starlight-tea-table.webp",
+      "bytes": 83698,
+      "sha256": "bad2a1aff8ba674c0f4d6c1517142df6e7a3d31fd966e4f793a6f1041b5f061f"
+    },
+    {
+      "path": "current-site/assets/rewards/solstice/items/sun-globe-lamp.webp",
+      "bytes": 110682,
+      "sha256": "4d6f3fc4e2e31d1b7dbf75bcfa665b7c0f80be8752962ec35e11d5268a0d5dad"
+    },
+    {
+      "path": "current-site/assets/room_archive.jpg",
+      "bytes": 48252,
+      "sha256": "f2a8ce005f542e137a89a57f27e66935f6689a0348cb7f7fd8bdfa5e84a37737"
+    },
+    {
+      "path": "current-site/assets/room_conservatory.jpg",
+      "bytes": 48161,
+      "sha256": "f18c6f64ccfec320ee29c5fa2a4a06db7b279fa2d3d6fa3edc8dbacd59c1e5fc"
+    },
+    {
+      "path": "current-site/assets/room_exam.jpg",
+      "bytes": 51814,
+      "sha256": "6bb9826055bf1d4f4262b21581a56812962f980b5895a48a1c5ce2f1e5a58e03"
+    },
+    {
+      "path": "current-site/assets/room_lecture.jpg",
+      "bytes": 52081,
+      "sha256": "ac9b0faa4364a4d59e6272ba063ce23a64befe97f602686af23743b7432c2021"
+    },
+    {
+      "path": "current-site/assets/room_library.jpg",
+      "bytes": 52352,
+      "sha256": "a77f136536d5a13d20eb12ff984368a42a4450ecf3fe529a9c49db36ee18d694"
+    },
+    {
+      "path": "current-site/assets/room_observatory.jpg",
+      "bytes": 52442,
+      "sha256": "43c12eec3a7b9df8431690c18e577a028663460d838a6cb2ac6ff8696696d530"
+    },
+    {
+      "path": "current-site/assets/rooms/alchemy.svg",
+      "bytes": 1301,
+      "sha256": "4662fe21e0f9c7703629a4125415972258e7284c4aee6e4e24bbeff29f6b92eb"
+    },
+    {
+      "path": "current-site/assets/rooms/arcade.svg",
+      "bytes": 1042,
+      "sha256": "d5110ad45c0cbde858297fa83f9468c67e48fc230f63b47b80edea1cb4d06f3c"
+    },
+    {
+      "path": "current-site/assets/rooms/atelier.svg",
+      "bytes": 1289,
+      "sha256": "f8c17d3f026137c782539b1a29ff57a0b78041db02008c8ce7ff5f769fcc60a5"
+    },
+    {
+      "path": "current-site/assets/rooms/boutique.svg",
+      "bytes": 1262,
+      "sha256": "7d9825aa030bdee44645a0899c80bed47cb952be5aeaaaeb24b88951f2975055"
+    },
+    {
+      "path": "current-site/assets/rooms/collegium-hall.svg",
+      "bytes": 2424,
+      "sha256": "130568cafaa3c97c5fb7cb766f320e48b12355b535b4b3d63f118b1314a282a0"
+    },
+    {
+      "path": "current-site/assets/rooms/conservatory.svg",
+      "bytes": 1192,
+      "sha256": "3b8f72b7c3ac7d7e7f53d5d51d1a111a826bf956715297057da56ae5e07fcca6"
+    },
+    {
+      "path": "current-site/assets/rooms/landscape-castle.webp",
+      "bytes": 987092,
+      "sha256": "d5cce4d47cdf578b76f3b30fe076678e75cb4ff97baf0b0d2d25487d9e104c8a"
+    },
+    {
+      "path": "current-site/assets/rooms/library.svg",
+      "bytes": 2542,
+      "sha256": "567bafc8249d5e9765f5515660d09789a67878b4fb068f6c96e3899213016a2c"
+    },
+    {
+      "path": "current-site/assets/rooms/licenses/GPL-2.0.txt",
+      "bytes": 18011,
+      "sha256": "e6d6a009505e345fe949e1310334fcb0747f28dae2856759de102ab66b722cb4"
+    },
+    {
+      "path": "current-site/assets/rooms/observatory.svg",
+      "bytes": 1447,
+      "sha256": "2f437e8a49e53c5fc065f8ef256c394a9f39683d257b5eefe9a3f5678e399d7b"
+    },
+    {
+      "path": "current-site/assets/rooms/potions.svg",
+      "bytes": 1687,
+      "sha256": "f4c891b48ebc18738ef78cbe551d596fef9898a503e1e3c49b848d22323bbed7"
+    },
+    {
+      "path": "current-site/assets/rooms/trial.svg",
+      "bytes": 1015,
+      "sha256": "dff04255639b841be5622d8d478d86bfc552bcfa6cee1336c7bc5c29d06fe726"
+    },
+    {
+      "path": "current-site/assets/ui/collegium-nine-slice.svg",
+      "bytes": 623,
+      "sha256": "8a17ce7985731a0f9de781956b1891ad55c3c654c12c8cb8735a083892cdc841"
+    }
+  ],
+  "handoffLimit": "Supplied attachment ends mid-link in section 8; no absent instructions inferred."
+}

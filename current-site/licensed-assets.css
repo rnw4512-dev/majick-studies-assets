@@ -100,3 +100,49 @@ body:is([data-majick-polish-room=guide],[data-majick-polish-room=livinggrimoire]
 .majRecipe:nth-of-type(5n)>span[aria-hidden=true]{background-image:url('./assets/licensed/potions/orange.webp')}
 /* Full-color crystal art uses smooth scaling; existing labels and click targets stay intact. */
 .masJournalTabs [data-journal-tab=achievements]::before{image-rendering:auto}
+
+/* App-wide icon use follows existing semantic controls and never replaces labels. */
+.learnLab .courseLessonNavigator>h3::after{background-image:url('./assets/licensed/skill-03.webp');border-radius:7px;filter:saturate(.65)}
+.majReasoningToolbar h2::after{background-image:url('./assets/licensed/skill-11.webp');border-radius:7px;filter:saturate(.65)}
+.majArcaneVault>header h2::after{background-image:url('./assets/licensed/images/bag.webp');width:42px;height:42px}
+.majCommonsCourse::before{background-image:url('./assets/licensed/skill-03.webp');image-rendering:auto;border-radius:4px}
+.masJournalTabs [data-journal-tab=recent]::before{background-image:url('./assets/rewards/solstice/items/astronomy-book-stack.webp');image-rendering:auto}
+.masJournalTabs [data-journal-tab=goals]::before{background-image:url('./assets/licensed/skill-08.webp');image-rendering:auto;border-radius:4px}
+.masJournalTabs [data-journal-tab=repairs]::before{background-image:url('./assets/licensed/skill-14.webp');image-rendering:auto;border-radius:4px}
+.majRecipeShelf>h3::before{background-image:url('./assets/licensed/potions/purple.webp');image-rendering:auto;width:28px;height:28px}
+.majRecipe>span[aria-hidden=true]:has(>img){background-image:none!important}
+.majRecipe>span[aria-hidden=true]>img{display:block;max-width:100%;height:80px!important;width:64px!important;object-fit:contain}
+.learnTabs button{display:inline-flex;align-items:center;justify-content:center;gap:6px}
+.learnTabs button::before{content:"";flex:0 0 22px;width:22px;height:22px;border-radius:4px;background:center/contain no-repeat;pointer-events:none;filter:saturate(.65)}
+.learnTabs [data-learn-tab=learn]::before,.learnTabs [data-learn-tab=mastery]::before{background-image:url('./assets/licensed/skill-03.webp')}
+.learnTabs [data-learn-tab=vocab]::before,.learnTabs [data-learn-tab=notes]::before{background-image:url('./assets/rewards/solstice/items/astronomy-book-stack.webp')}
+.learnTabs [data-learn-tab=game]::before{background-image:url('./assets/licensed/skill-15.webp')}
+.learnTabs [data-learn-tab=practice]::before{background-image:url('./assets/licensed/skill-11.webp')}
+.learnTabs [data-learn-tab=tools]::before{background-image:url('./assets/licensed/images/runestones.webp')}
+.obs-header .obs-medallion{font-size:0!important;background:url('./assets/licensed/skill-08.webp') center/60% no-repeat,linear-gradient(135deg,#ece0cb,#a58bb0);filter:saturate(.65)}
+body[data-majick-polish-room=mission] #majickRoomRibbon::after{background-image:url('./assets/rewards/solstice/items/astronomy-book-stack.webp'),url('./assets/licensed/crystals/cluster-7.webp'),radial-gradient(ellipse at 58% 94%,#070b0dcc,transparent 65%)}
+.majRoomArchitecture[data-room-key=mission] .majRoomEmblem,.majRoomArchitecture[data-room-key=guide] .majRoomEmblem{font-size:0;background:url('./assets/rewards/solstice/items/astronomy-book-stack.webp') center/contain no-repeat;min-width:48px;min-height:48px;filter:drop-shadow(1px 3px 2px #0004)}
+.majRoomArchitecture[data-room-key=games] .majRoomEmblem{font-size:0;background:url('./assets/licensed/images/runestones.webp') center/contain no-repeat;min-width:48px;min-height:48px}
+.realmTrialCard .realmTrialIcon{font-size:0!important;display:inline-block;width:54px;height:54px;border-radius:10px;background:url('./assets/licensed/skill-11.webp') center/cover no-repeat;filter:saturate(.65);box-shadow:0 3px 7px #130c2433;pointer-events:none}
+.realmTrialCard[onclick^="startScholarInvestigation"] .realmTrialIcon{background-image:url('./assets/licensed/skill-17.webp')}
+.realmTrialCard[onclick^="startCommunicationQuest"] .realmTrialIcon{background-image:url('./assets/rewards/solstice/items/astronomy-book-stack.webp');background-size:contain}
+.realmTrialCard[onclick^="startD669PillarSort"] .realmTrialIcon,.realmTrialCard[onclick^="startAssessmentSigilSort"] .realmTrialIcon{background-image:url('./assets/licensed/images/runestones.webp');background-size:contain}
+.realmTrialCard[onclick^="startGuardianGauntlet"] .realmTrialIcon,.realmTrialCard[onclick^="startD772SectionReview"] .realmTrialIcon{background-image:url('./assets/licensed/skill-06.webp')}
+.realmTrialCard[onclick^="startMemoryConstellation"] .realmTrialIcon{background-image:url('./assets/licensed/skill-16.webp')}
+.realmTrialCard[onclick^="startHexBreaker"] .realmTrialIcon{background-image:url('./assets/licensed/skill-14.webp')}
+/* The active teaching flow uses the existing classroom tab controls. */
+.classroomTabs [data-classroom-tab]{display:inline-flex;align-items:center;justify-content:center;gap:6px}
+.classroomTabs [data-classroom-tab]::before{content:"";display:inline-block;flex:0 0 20px;width:20px;height:20px;border-radius:4px;background:center/contain no-repeat;pointer-events:none;filter:saturate(.65)}
+.classroomTabs :is([data-classroom-tab=opening],[data-classroom-tab=example])::before{background-image:url('./assets/rewards/solstice/items/astronomy-book-stack.webp')}
+.classroomTabs [data-classroom-tab=teach]::before{background-image:url('./assets/licensed/skill-03.webp')}
+.classroomTabs [data-classroom-tab=visual]::before{background-image:url('./assets/licensed/crystal-blue.webp')}
+.classroomTabs :is([data-classroom-tab=turn],[data-classroom-tab=workshop])::before{background-image:url('./assets/licensed/skill-11.webp')}
+.classroomTabs [data-classroom-tab=review]::before{background-image:url('./assets/licensed/skill-14.webp')}
+
+/* Keep one visible room identity where the older ornamental banner repeats it. */
+#content:has(#majickRoomRibbon)>.majRoomArchitecture:is([data-room-key=mission],[data-room-key=guide],[data-room-key=games]){display:none}
+body:is([data-majick-polish-room=journal],[data-majick-polish-room=addmaterial]) #majickRoomRibbon::after{background-image:url('./assets/rewards/solstice/items/astronomy-book-stack.webp'),url('./assets/licensed/models/candle-holder.webp'),radial-gradient(ellipse at 58% 94%,#070b0dcc,transparent 65%)}
+body[data-majick-polish-room=vault] #majickRoomRibbon::after{background-image:url('./assets/licensed/images/bag.webp'),url('./assets/licensed/crystal-violet.webp'),radial-gradient(ellipse at 58% 94%,#070b0dcc,transparent 65%)}
+body[data-majick-polish-room=trophies] #majickRoomRibbon::after{background-image:url('./assets/licensed/rings/gold-wrap.webp'),url('./assets/licensed/crystal-yellow.webp'),radial-gradient(ellipse at 58% 94%,#070b0dcc,transparent 65%)}
+body[data-majick-polish-room=focus] #majickRoomRibbon::after{background-image:url('./assets/licensed/plants/flowers.webp'),url('./assets/licensed/crystal-blue.webp'),radial-gradient(ellipse at 58% 94%,#070b0dcc,transparent 65%)}
+body[data-majick-polish-room=constellation] #majickRoomRibbon::after{background-image:url('./assets/licensed/crystal-blue.webp'),url('./assets/licensed/gems/sapphire.webp'),radial-gradient(ellipse at 58% 94%,#070b0dcc,transparent 65%)}

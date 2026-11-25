@@ -4,14 +4,21 @@ const VERSION='3.4.3';
 const ROOM_LABELS={
  home:{name:'Moonlit Collegium',detail:'Grand Hall • Academic Wing',sigil:'✦'},
  mission:{name:'Scholar’s Study Hall',detail:'Study Realm • Learn, practice, and grow',sigil:'✦'},
- guide:{name:'The Athenaeum',detail:'Instruction • Learn and explore',sigil:'☾'},
+ guide:{name:'Study Guide',detail:'Reference library • course review',sigil:'☾'},
  reasoning:{name:'Scholar’s Trial Chamber',detail:'OA Trials • Guided reasoning',sigil:'✧'},
  test:{name:'Scholar’s Trial Chamber',detail:'Assessment practice • Explain and apply',sigil:'✧'},
  'hands-on':{name:'Hands-on Studio',detail:'Study Realm • Classroom scenarios',sigil:'✎'},
  learninglab:{name:'Candlelit Classroom',detail:'Learn Lab • instruction before practice',sigil:'☾'},
  livinggrimoire:{name:'Research Library',detail:'Grimoire Archives • notes, references & anchor charts',sigil:'❦'},
- games:{name:'Game Realm',detail:'Practice halls • Guardian trials',sigil:'✧'},
- companions:{name:'Guardian Residence',detail:'Sanctuary Dormitory • care, rest & play',sigil:'◇'}
+ games:{name:'The Enchanted Arcade',detail:'Practice halls • Guardian trials',sigil:'✧'},
+ companions:{name:'Guardian Residence',detail:'Sanctuary Dormitory • care, rest & play',sigil:'◇'},
+ journal:{name:'The Scholar’s Chronicle',detail:'Study journal • notes, goals & reflection',sigil:'❦'},
+ addmaterial:{name:'Notes Forge',detail:'Study material • your course references',sigil:'✎'},
+ focus:{name:'Focus Tools',detail:'Quiet study • timers & reading comfort',sigil:'☾'},
+ constellation:{name:'Celestial Atlas',detail:'Constellation • your scholarly journey',sigil:'✧'},
+ vault:{name:'Magic Vault',detail:'Collected artifacts • potions & ingredients',sigil:'◇'},
+ trophies:{name:'Trophy Gallery',detail:'Earned achievements • your existing collection',sigil:'✦'},
+ control:{name:'College Settings',detail:'Sound • reading comfort • preferences',sigil:'✧'}
 };
 let raf=0,lastRoom='';
 function room(){

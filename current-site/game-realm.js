@@ -252,7 +252,7 @@
     '</section>';
   }
   function gameCard(icon,title,desc,action,tag='NEW TRIAL'){
-    return '<button type="button" class="realmTrialCard" onclick="'+action+'"><span class="realmTrialIcon">'+icon+'</span><small>'+E(tag)+'</small><h3>'+E(title)+'</h3><p>'+E(desc)+'</p><b>Enter trial →</b></button>';
+    return '<button type="button" class="realmTrialCard" onclick="'+action+'"><span class="realmTrialIcon" aria-hidden="true">'+icon+'</span><small>'+E(tag)+'</small><h3>'+E(title)+'</h3><p>'+E(desc)+'</p><b>Enter trial →</b></button>';
   }
 
   // A course-owned sorting game. Its fixed, reviewed cases are practice, not OA questions.

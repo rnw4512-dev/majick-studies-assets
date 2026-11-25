@@ -57,8 +57,11 @@ async function contrast(page,selector,label){
   await page.route('**/enchanted-collegium.css*',r=>r.abort());
   await page.goto(url);await page.waitForFunction(()=>typeof navigate==='function'&&typeof switchCourse==='function');
   await page.waitForTimeout(1000);await page.evaluate(()=>switchCourse('D772'));await go(page,'reasoning');
-  const snapshot=()=>page.evaluate(()=>({state:JSON.stringify(S),controls:document.querySelectorAll('#content button,#content input,#content select').length,progress:[...document.querySelectorAll('#content progress')].map(e=>[e.value,e.max,e.getAttribute('aria-label')])}));
-  const before=await snapshot();await page.unroute('**/enchanted-collegium.css*');await page.addStyleTag({url:url+'/enchanted-collegium.css'});const after=await snapshot();
+  await page.unroute('**/enchanted-collegium.css*');
+  const stylesheet=await (await page.request.get(url+'/enchanted-collegium.css')).text();
+  // Fetch before sampling, then apply and compare atomically. Unrelated lazy room
+  // renders must not land between the two sides of a CSS-only state assertion.
+  const [before,after]=await page.evaluate(css=>{const snapshot=()=>({state:JSON.stringify(S),controls:document.querySelectorAll('#content button,#content input,#content select').length,progress:[...document.querySelectorAll('#content progress')].map(e=>[e.value,e.max,e.getAttribute('aria-label')])});const before=snapshot(),style=document.createElement('style');style.textContent=css;document.head.append(style);return [before,snapshot()]},stylesheet);
   assert.deepEqual(after,before,'Stylesheet must not change state, controls, or progress values');report.checks.push('CSS application preserves complete S state, control count and progress value/max/label');
   for(const width of widths){
    await page.setViewportSize({width,height:1000});

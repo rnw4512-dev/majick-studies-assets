@@ -30,7 +30,12 @@ function mark(){
 function compactRepeatedHeadings(root){
  if(!root)return;
  const seen=new Map();
+ root.querySelectorAll('.v3365RepeatedHeading').forEach(h=>h.classList.remove('v3365RepeatedHeading'));
+ root.querySelectorAll('.v3365RepeatedBlock').forEach(h=>h.classList.remove('v3365RepeatedBlock'));
  root.querySelectorAll('[data-majick-heading-key]').forEach(h=>{
+   // Repeated words on distinct controls are still their accessible labels.
+   if(h.closest('button,a,[role=button],[role=tab],[hidden],[aria-hidden=true]'))return;
+   if(!h.getClientRects().length)return;
    const key=h.dataset.majickHeadingKey;
    if(!key||key.length<5)return;
    if(seen.has(key)){
