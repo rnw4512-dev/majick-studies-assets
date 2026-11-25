@@ -78,8 +78,10 @@ with sync_playwright() as pw:
    assert label.strip(),'Icon replaced its game label: '+card.evaluate('(e)=>JSON.stringify({html:e.outerHTML,styles:[e.querySelector("h3"),e,e.parentElement,e.parentElement.parentElement].map(n=>({display:getComputedStyle(n).display,visibility:getComputedStyle(n).visibility,cv:getComputedStyle(n).contentVisibility,rect:n.getBoundingClientRect().toJSON()})),scrollY})')
   assert page.evaluate('document.documentElement.scrollWidth<=innerWidth+2'),'App-wide icons introduce overflow'
   page.evaluate("navigate('vault')")
+  page.get_by_role('tab',name='Shop & Chests',exact=True).click()
   shop=page.locator(':is(.shopItem,.v3311ShopItem,.v3312ShopItem):has(button[onclick^=\"buyShop(\"])');assert shop.count()==8,'Active shop card variant was not covered'
   for item in shop.all():
+   item.scroll_into_view_if_needed()
    icon=item.locator(':scope>:is(div,span)').first
    icon.scroll_into_view_if_needed()
    icon.evaluate('(e)=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)))')
