@@ -732,7 +732,7 @@ function patch(){
  window.MajickLearningLab.bind=function(){
    baseBind();
    document.querySelector('[data-adaptive-tab="adaptive"]')?.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();showAdaptive()});
-   setTimeout(()=>{if(window.S?.screen==='learninglab')showAdaptive()},180);
+   setTimeout(()=>{if(window.S?.screen==='learninglab'&&!document.querySelector('.learnPanel[data-panel="practice"]:not([hidden])'))showAdaptive()},180);
  };
  window.MajickLearningLab.__sharedAdaptive=true;
 }

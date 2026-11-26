@@ -87,7 +87,36 @@ with sync_playwright() as pw:
   page.wait_for_selector('#majPathLessonSelect')
   assert select.input_value()=='topic:d669-s3-l3-1','Same-context redraw lost the selected source topic'
   assert page.locator('#majConnectedPath .majPathAnchor img').count()==5
-  assert evidence()==before,'Supplied review/SEL topic practice must preserve academic evidence and balances'
+  select.select_option('topic:d669-s4-l1-4')
+  path=page.locator('#majConnectedPath')
+  assert path.locator('.majPathAnchor strong').all_text_contents()==[
+   'Personification','Simile','Metaphor','Onomatopoeia','Rhyme','Alliteration'
+  ]
+  assert path.locator('textarea').count()==6
+  assert [group.locator('form').count() for group in path.locator('.majPathFormative').all()]==[6,9]
+  select.select_option('topic:d669-s4-l1-review')
+  path.get_by_role('button',name='Practice this topic',exact=True).click()
+  review=path.locator('.majPathFormative')
+  assert review.get_attribute('open') is not None
+  assert review.locator('form').count()==3
+  for form,answer in zip(review.locator('form').all(),['Character dialogue','All of the above','Metaphor']):
+   reveal=form.get_by_role('button',name='Show Answer')
+   assert reveal.is_disabled()
+   form.get_by_role('radio',name=answer,exact=True).check()
+   form.get_by_role('button',name='Submit',exact=True).click()
+   assert form.get_by_role('status').inner_text()=='Correct.'
+   reveal.click()
+   assert form.get_by_role('status').inner_text().startswith(answer+' — ')
+  assert evidence()==before,'Supplied formative practice must preserve academic evidence and balances'
+  select.select_option('topic:d669-s4-l1-4')
+  path.get_by_role('button',name='Practice this topic',exact=True).click()
+  page.get_by_text('Practice: Lesson 1.4: Poetry',exact=True).wait_for()
+  assert page.evaluate("""()=> {
+   const bank=S.courses.D669.questionBank.filter(q=>q.lessonId==='d669-s4-l1-4');
+   return bank.length===4 && new Set(bank.map(q=>q.id)).size===4 &&
+    bank.every(q=>q.official===false&&q.options.includes(q.answer));
+  }""")
+
   page.evaluate("S.courses.D669.userNotes='Preserved D669 course notes';switchCourse('D772');switchCourse('D669')")
   assert page.evaluate('S.courses.D669.userNotes')=='Preserved D669 course notes'
   assert not errors,errors

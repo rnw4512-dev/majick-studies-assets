@@ -49,12 +49,73 @@ anchorCharts['d669-s3-competency-self-check']=[['assets/licensed/images/runeston
 anchorCharts['d669-s4-intro']=[['assets/rewards/solstice/items/astronomy-book-stack.webp','Fiction','Often characters, plot and setting.'],['assets/licensed/crystal-blue.webp','Nonfiction','Facts, information and logical organization.'],['assets/licensed/rings/ouroboros.webp','Poetry','May use rhythm, rhyme and expressive language.']];
 anchorCharts['d669-s4-l1-intro']=anchorCharts['d669-s4-intro'];
 function anchorChart(box,sub){
- const rows=anchorCharts[sub.id]||(sub.keyIdeas||[]).map((t,i)=>['📘','Key idea '+(i+1),t]);if(!rows.length)return;
+ const rows=sub.anchorRows||anchorCharts[sub.id]||(sub.keyIdeas||[]).map((t,i)=>['📘','Key idea '+(i+1),t]);if(!rows.length)return;
  const figure=document.createElement('figure');figure.className='majPathAnchor';figure.style.cssText='margin:12px 0;padding:14px;border:1px solid #ae9abb;border-radius:14px;background:#fffaf0;color:#30233f';
  const title=document.createElement('figcaption');title.textContent='Study anchor chart · '+sub.title;title.style.cssText='font-weight:800;font-size:1.08rem;margin-bottom:10px';figure.append(title);
  const grid=document.createElement('div');grid.style.cssText='display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,155px),1fr));gap:9px';
  rows.forEach(([pic,label,detail],i)=>{const tile=document.createElement('div');tile.style.cssText='padding:12px;border:1px solid #b6a4c4;border-radius:10px;background:'+['#e6efe5','#f2e8f5','#f8efd9','#e5edf7'][i%4]+';color:#30233f';const icon=document.createElement('span');icon.setAttribute('aria-hidden','true');icon.style.cssText='display:block;min-height:46px';const art=document.createElement('img');art.src=pic.startsWith('assets/')?pic:chartArtwork[pic]||'assets/rewards/solstice/items/astronomy-book-stack.webp';art.alt='';art.width=40;art.height=40;art.loading='lazy';art.decoding='async';art.style.cssText='display:block;object-fit:contain;margin-bottom:6px';icon.append(art);const h=document.createElement('strong');h.textContent=label;const p=document.createElement('p');p.textContent=detail;p.style.margin='6px 0 0';tile.append(icon,h,p);grid.append(tile)});figure.append(grid);
  const foot=document.createElement('p');foot.textContent='Simplified Aetheria study aid based on supplied WGU lesson material.';foot.style.cssText='font-size:.8rem;margin:10px 0 0';figure.append(foot);box.append(figure);
+}
+
+function formativeGroup(box,group){
+ const details=document.createElement('details');
+ details.className='majPathFormative';
+ const title=document.createElement('summary');
+ title.textContent=group.title;
+ details.append(title);
+ group.questions.forEach(q=>{
+  const form=document.createElement('form');
+  const field=document.createElement('fieldset');
+  const prompt=document.createElement('legend');
+  prompt.textContent=q.prompt;
+  field.append(prompt);
+  const options=q.options||group.options;
+  options.forEach(option=>{
+   const label=document.createElement('label');
+   label.style.display='block';
+   const input=document.createElement('input');
+   input.type='radio';input.name='answer';input.value=option;input.required=true;
+   label.append(input,' '+option);
+   field.append(label);
+  });
+  const submit=document.createElement('button');
+  submit.type='submit';submit.textContent='Submit';
+  const reveal=document.createElement('button');
+  reveal.type='button';reveal.textContent='Show Answer';reveal.disabled=true;
+  const feedback=document.createElement('p');
+  feedback.setAttribute('role','status');
+  form.addEventListener('change',()=>{reveal.disabled=true;feedback.textContent=''});
+  form.addEventListener('submit',event=>{
+   event.preventDefault();
+   feedback.textContent=new FormData(form).get('answer')===q.answer?'Correct.':'Incorrect. Try again or show the answer.';
+   reveal.disabled=false;
+  });
+  reveal.addEventListener('click',()=>{feedback.textContent=q.why?q.answer+' — '+q.why:q.answer;});
+  field.append(submit,reveal,feedback);
+  form.append(field);
+  details.append(form);
+ });
+ box.append(details);
+}
+
+function poetryWorksheet(box,terms){
+ const details=document.createElement('details');
+ const title=document.createElement('summary');
+ title.textContent='Poetry Elements worksheet';
+ details.append(title);
+ const directions=document.createElement('p');
+ directions.textContent='Find one example of each device in a reading. Record the title, the line or phrase, and the effect it creates. Entries are temporary; copy your notes before leaving.';
+ details.append(directions);
+ terms.forEach(term=>{
+  const label=document.createElement('label');
+  label.style.display='block';
+  const entry=document.createElement('textarea');
+  entry.rows=2;
+  entry.style.cssText='display:block;width:100%;box-sizing:border-box';
+  label.append(term,entry);
+  details.append(label);
+ });
+ box.append(details);
 }
 
 function sourcePanel(body,item){
@@ -65,8 +126,10 @@ function sourcePanel(body,item){
  line('h3',row.section+' · '+sub.title);
  const ideas=[...(sub.keyIdeas||[]),...(sub.summary?[sub.summary]:[])];
  if(!ideas.length){line('p','Source material not yet supplied for this topic.');body.append(box);return}
- anchorChart(box,sub);const detail=document.createElement('details');const heading=document.createElement('summary');heading.textContent='Detailed lesson notes';detail.append(heading);ideas.forEach(t=>{const p=document.createElement('p');p.textContent=t;detail.append(p)});box.append(detail);
+ if(!sub.formativeGroups||sub.anchorRows)anchorChart(box,sub);const detail=document.createElement('details');const heading=document.createElement('summary');heading.textContent='Detailed lesson notes';detail.append(heading);ideas.forEach(t=>{const p=document.createElement('p');p.textContent=t;detail.append(p)});box.append(detail);
  if(sub.visual?.src){const img=document.createElement('img');img.src=sub.visual.src;img.alt=sub.visual.alt||'Course diagram';img.loading='lazy';img.style.cssText='max-width:100%;height:auto;display:block;margin:10px auto';box.append(img);const a=line('a',sub.visual.alt||'Open source diagram');a.href=sub.visual.src;a.target='_blank';a.rel='noopener noreferrer'}
+ if(sub.worksheetTerms&&sub.anchorRows?.length)poetryWorksheet(box,sub.anchorRows.map(([,term])=>term));
+ (sub.formativeGroups||[]).forEach(group=>formativeGroup(box,group));
  const bank=row.course.questionBank||[],ids=new Set(sub.quizIds||[]);
  const qs=bank.filter(q=>ids.has(q.id));
  const guided=Array.isArray(sub.guidedPractice)?sub.guidedPractice:sub.guidedPractice?[sub.guidedPractice]:[];
@@ -75,7 +138,7 @@ function sourcePanel(body,item){
  const references=suppliedReferences.map((ref,i)=>typeof ref==='string'?{title:'Open supplied lesson reference '+(i+1),url:ref}:ref).filter(ref=>ref&&/^https?:\/\//.test(ref.url||''));
  if(references.length){line('h4','Supplied lesson references');references.forEach(ref=>{const a=line('a',ref.title||'Open supplied lesson reference');a.href=ref.url;a.target='_blank';a.rel='noopener noreferrer';a.style.cssText='display:block;min-height:44px;box-sizing:border-box;padding:8px 0;overflow-wrap:anywhere;text-decoration:underline;color:#3b3050!important;-webkit-text-fill-color:#3b3050!important'})}
  if(qs.length){line('h4','Practice this exact topic');qs.forEach(q=>{const d=document.createElement('details');const h=document.createElement('summary');h.textContent=q.prompt;d.append(h);const feedback=document.createElement('p');feedback.setAttribute('role','status');(q.options||[]).forEach(o=>{const b=document.createElement('button');b.type='button';b.textContent=o;b.addEventListener('click',()=>{feedback.textContent=(o===q.answer?'Correct. ':'Try again. ')+(q.why||'Review the lesson.');});d.append(b)});d.append(feedback);box.append(d)});}
- else line('p','Topic-specific scored practice is not yet linked. Review the lesson and supplied activities above.');
+ else if(!sub.formativeGroups?.length)line('p','Topic-specific scored practice is not yet linked. Review the lesson and supplied activities above.');
  if(sub.id==='d669-s2-l3-7'){const b=line('button','Open fluency visual games');b.type='button';b.addEventListener('click',()=>{window.navigate?.('learninglab');setTimeout(()=>document.querySelector('[aria-label="Fluency visual games"]')?.scrollIntoView({block:'start'}),250)})}
  olderGame(box,sub.id);
  line('p','These checks are formative; independent mastery and fresh transfer require separate evidence.');
@@ -185,13 +248,19 @@ function practiceTopic(item){
  const section=String(row.section).match(/Section\s+(\d+)/i)?.[1],lesson=String(row.lesson).match(/Lesson\s+(\d+)/i)?.[1];
  const lessonId=section&&lesson?cid.toLowerCase()+'-s'+section+'-l'+lesson:'';
  const ids=new Set(row.sub.quizIds||[]);
+ if(!ids.size&&row.sub.formativeGroups?.length){
+  navigateTo(item);
+  const review=document.querySelector('#majConnectedPath .majPathFormative');
+  if(review){review.open=true;review.querySelector('summary')?.focus();}
+  return;
+ }
  const keys=q=>[q.learningPathLessonId,q.lessonId,q.topicId,q.conceptId].map(v=>String(v??''));
  let matched=bank.filter(q=>ids.has(q.id)||keys(q).includes(row.id)||String(q.id||'').startsWith(row.id+'-'));
  if(!matched.length&&lessonId)matched=bank.filter(q=>keys(q).includes(lessonId)||String(q.id||'').startsWith(lessonId+'-'));
  const exact=matched.length>0;
  if(!exact&&section)matched=bank.filter(q=>String(q.section||q.sectionId||'').match(/(?:section[\s_-]*|(?:^|[-_])s)(\d+)/i)?.[1]===section);
- window.navigate?.('learninglab');
- setTimeout(()=>{window.MajickLearningLab?.showTab?.('practice',matched.map(q=>String(q.id||q.qid)));const panel=document.getElementById('learnPractice');if(panel){const note=document.createElement('p');note.textContent=exact?'Practice: '+row.sub.title:'Section '+section+' review — exact-topic questions are not linked yet.';panel.prepend(note);panel.scrollIntoView?.({block:'start',behavior:'auto'})}},250);
+ if(screen()!=='learninglab')window.navigate?.('learninglab');
+ setTimeout(()=>{if(screen()!=='learninglab'||course()!==cid)return;window.MajickLearningLab?.showTab?.('practice',matched.map(q=>String(q.id||q.qid)));const panel=document.getElementById('learnPractice');if(panel){const note=document.createElement('p');note.textContent=exact?'Practice: '+row.sub.title:'Section '+section+' review — exact-topic questions are not linked yet.';panel.prepend(note);panel.scrollIntoView?.({block:'start',behavior:'auto'})}},250);
 }
 function navigateTo(item){
  if(!item)return;
