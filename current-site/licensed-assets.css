@@ -200,3 +200,14 @@ body[data-majick-polish-room=constellation] #majickRoomRibbon::after{background-
 #content[data-majick-room=home] .aetheriaCastleArrival .majRoomEmblem{display:none}
 #content .majRoomBannerTitle{line-height:1.2!important;letter-spacing:.025em!important;overflow-wrap:break-word}
 #content .majRoomBannerSub{line-height:1.5!important;letter-spacing:.10em!important}
+
+
+/* Uploaded painterly spell artwork integration */
+.side .nav button[data-nav=constellation]>span:first-child:not(.label){background-image:url('./assets/imported-artwork/spell-icons/runes-blue-1.webp')!important}
+.side .nav button[data-nav=reasoning]>span:first-child:not(.label){background-image:url('./assets/imported-artwork/spell-icons/runes-orange-1.webp')!important}
+.side .nav button[data-nav=games]>span:first-child:not(.label){background-image:url('./assets/imported-artwork/spell-icons/runes-royal-1.webp')!important}
+#aethAdventure .aeth-runes button>span[aria-hidden=true]{background-image:url('./assets/imported-artwork/spell-icons/runes-blue-2.webp')!important}
+#aethAdventure .aeth-runes .aeth-target>span[aria-hidden=true]{background-image:url('./assets/imported-artwork/spell-icons/runes-magenta-1.webp')!important}
+#content[data-majick-room=game] .majRoomEmblem{background-image:url('./assets/imported-artwork/spell-icons/runes-royal-2.webp')!important}
+#content[data-majick-room=learninglab] .majRoomEmblem{background-image:url('./assets/imported-artwork/spell-icons/runes-magenta-2.webp')!important}
+#content[data-majick-room=sanctuary] .majRoomEmblem{background-image:url('./assets/imported-artwork/spell-icons/leaf-jade-1.webp')!important}
