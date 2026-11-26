@@ -1,6 +1,21 @@
 /* Visual-only owner: no learning, reward, guardian or save state mutations. */
 (()=>{'use strict';if(window.MajickAnimationEffects)return;
+
+// Personal artwork stays in this browser; never included in Scholar saves or uploaded.
+const personal=(()=>{
+ let assets=Object.create(null);
+ const db=()=>new Promise((ok,no)=>{const q=indexedDB.open('aetheria-personal-artwork',1);q.onupgradeneeded=()=>q.result.createObjectStore('packs');q.onsuccess=()=>ok(q.result);q.onerror=()=>no(q.error)});
+ const valid=pack=>{if(pack?.format!=='aetheria-personal-artwork-v1'||!pack.assets||typeof pack.assets!=='object')throw Error('Choose the Aetheria artwork JSON.');const entries=Object.entries(pack.assets);if(!entries.length||entries.length>200)throw Error('Invalid artwork count.');const clean=Object.create(null);for(const [k,v] of entries){if(!/^(loot|ui|pet|fx)\/[a-z0-9_-]+$/i.test(k)||typeof v!=='string'||v.length>2000000||!/^data:image\/webp;base64,[A-Za-z0-9+/=]+$/.test(v))throw Error('Invalid artwork: '+k);clean[k]=v;}return clean;};
+ async function load(){const d=await db();try{const stored=await new Promise((ok,no)=>{const q=d.transaction('packs').objectStore('packs').get('active');q.onsuccess=()=>ok(q.result);q.onerror=()=>no(q.error)});if(stored)assets=valid(stored);}finally{d.close()}}
+ async function install(file){if(!file||file.size>12000000)throw Error('Choose an artwork JSON under 12 MB.');const pack=JSON.parse(await file.text()),clean=valid(pack),d=await db();try{await new Promise((ok,no)=>{const tx=d.transaction('packs','readwrite');tx.objectStore('packs').put({format:pack.format,assets:clean},'active');tx.oncomplete=ok;tx.onerror=()=>no(tx.error);tx.onabort=()=>no(tx.error)});assets=clean;}finally{d.close()}return Object.keys(assets).length}
+ function choose(){const input=document.createElement('input');input.type='file';input.accept='.json,application/json';input.onchange=async()=>{try{const n=await install(input.files[0]);window.rewardToast?.('Personal artwork installed',n+' visuals saved on this device.');window.render?.();alert(n+' artwork files installed. They remain on this device.')}catch(e){alert('Artwork not installed: '+e.message)}};input.click()}
+ load().catch(()=>{});
+ return Object.freeze({get:k=>assets[k]||null,count:()=>Object.keys(assets).length,choose,install});
+})();
+window.MajickPersonalArtwork=personal;
+
 const TYPES=Object.freeze({
+ repair:['celebrations/celebration-starburst.svg',200,1500,'Reasoning repaired'],
  touch:['celebrations/celebration-starburst.svg',54,420,''],
  success:['celebrations/celebration-starburst.svg',145,750,'Correct'],
  mastery:['celebrations/celebration-constellation-ring.svg',230,1250,'Mastery earned'],
@@ -12,6 +27,7 @@ const TYPES=Object.freeze({
  match:['celebrations/celebration-starburst.svg',125,650,'Match'],
  sanctuary:['celebrations/celebration-starburst.svg',170,850,'Placed']
 });
+const PERSONAL_FX={mastery:'magic-sigil-web',course:'magic-sigil-web',egg:'magic-sigil-web',reward:'magic-sigil-web',guardian:'regrowth',sanctuary:'regrowth',repair:'regrowth'};
 const LICENSED={success:'light',mastery:'arcane',lesson:'light',course:'arcane',guardian:'nature',reward:'projectile',match:'light',sanctuary:'nature'};
 let layer=null,active=null,clock=null;let last={type:null,at:0};const reduced=()=>document.documentElement?.dataset?.majickReduceMotion==='true'||window.matchMedia?.('(prefers-reduced-motion: reduce)').matches===true;
 function clear(){if(clock!==null)clearTimeout(clock);clock=null;active?.remove();active=null}
@@ -23,7 +39,7 @@ function play(type,{target=null,label=null}={}){
  const visual=document.createElement('div');visual.className='majickFx';
  const img=document.createElement('img');img.src='./assets/effects/'+cfg[0];img.alt='';img.decoding='async';visual.append(img);
  let licensedArt=null;
- if(LICENSED[type]){const art=document.createElement('img');licensedArt=art;art.className='majickFxLicensed';art.alt='';art.decoding='async';art.src='./assets/licensed/effects/'+LICENSED[type]+(reduced()?'-poster':'')+'.webp?v='+encodeURIComponent(window.MAJICK_RELEASE||'source');visual.append(art);}
+ if(LICENSED[type]||PERSONAL_FX[type]){const art=document.createElement('img');licensedArt=art;art.className='majickFxLicensed';art.alt='';art.decoding='async';const local=PERSONAL_FX[type]&&personal.get('fx/'+PERSONAL_FX[type]+(reduced()?'-poster':''));if(local||LICENSED[type]){art.src=local||('./assets/licensed/effects/'+LICENSED[type]+(reduced()?'-poster':'')+'.webp?v='+encodeURIComponent(window.MAJICK_RELEASE||'source'));visual.append(art);}else licensedArt=null;}
  const text=document.createElement('span');text.className='majickFxLabel';text.textContent=label==null?cfg[3]:String(label).slice(0,48);if(type!=='touch')visual.append(text);
  const bounds=target?.isConnected?target.getBoundingClientRect():null;
  if(bounds&&type==='touch')visual.style.setProperty('--fx-touch-size',Math.max(0,Math.min(36,bounds.width-8,bounds.height-8))+'px');
@@ -62,5 +78,5 @@ function glimmer(event){
 }
 document.addEventListener('pointerdown',glimmer,{passive:true});
 document.addEventListener('focusin',glimmer);
-window.MajickAnimationEffects=Object.freeze({play,clear,types:Object.keys(TYPES),version:'1.1-kenney-rewards'});
+window.MajickAnimationEffects=Object.freeze({play,clear,types:Object.keys(TYPES),version:'1.2-personal-artwork'});
 })();
