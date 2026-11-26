@@ -10,7 +10,7 @@
  --aeth-glow-shadow:0 14px 32px rgba(47,33,70,.13);
 }
 @media (min-width:701px){
- .side{background:linear-gradient(160deg,rgba(255,253,249,.97),rgba(245,237,247,.96) 55%,rgba(237,243,236,.94))!important;border-right:1px solid rgba(113,85,127,.22)!important}
+ .side{background:linear-gradient(160deg,#150c22,#281638 55%,#20142e)!important;border-right:1px solid rgba(211,175,112,.45)!important}
  .side::before{content:"";display:block;position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--aeth-forest),var(--aeth-brass),#845778);opacity:.88;pointer-events:none}
 }
 .side .brandmark{
@@ -24,18 +24,18 @@
  transition:background-color .18s ease,border-color .18s ease,box-shadow .18s ease!important
 }
 .side .nav button:hover{
- background:rgba(99,70,111,.09)!important;
- border-color:rgba(109,78,119,.16)!important;
+ background:rgba(173,128,198,.20)!important;
+ border-color:rgba(213,175,112,.38)!important;
  transform:none!important
 }
 .side .nav button.active{
- background:linear-gradient(95deg,rgba(231,218,241,.94),rgba(247,238,226,.94))!important;
- border-color:rgba(119,85,143,.24)!important;
- box-shadow:inset 3px 0 0 #72568d,0 3px 9px rgba(66,46,90,.065)!important
+ background:linear-gradient(95deg,#513261,#342043)!important;
+ border-color:rgba(218,182,120,.65)!important;
+ box-shadow:inset 3px 0 0 #d7b473,0 3px 9px rgba(66,46,90,.065)!important
 }
 .side .nav button:focus-visible{outline:3px solid #825db0!important;outline-offset:1px}
 .top{
- background:rgba(254,251,247,.94)!important;
+ background:linear-gradient(120deg,#170d25,#2e1b3e)!important;
  border-bottom:1px solid rgba(123,91,137,.19)!important;
  box-shadow:0 4px 14px rgba(47,36,64,.05);
 }
@@ -168,3 +168,10 @@
   transition:none!important;transform:none!important
  }
 }
+
+/* Restore the dark chrome on all viewports; keep parchment only for reading surfaces. */
+body #app .side,body #app .main>.top{background:linear-gradient(145deg,#150c22,#291638)!important;color:#f7e4be!important;border-color:#74577e!important}
+body #app .side .nav button,body #app .side .nav button .label,body #app .side .brand b,body #app .main>.top h1,body #app .main>.top .titleline{color:#f5dca5!important;-webkit-text-fill-color:#f5dca5!important;text-shadow:none!important}
+body #app .side .brand small,body #app .main>.top .pill{color:#e8d7ef!important;-webkit-text-fill-color:#e8d7ef!important}
+body #app .side .nav button.active{background:linear-gradient(95deg,#513261,#342043)!important;border-color:#d5b577!important}
+body #app .main>.top .courseSelect{background:#21132f!important;color:#fff2d5!important;-webkit-text-fill-color:#fff2d5!important}
