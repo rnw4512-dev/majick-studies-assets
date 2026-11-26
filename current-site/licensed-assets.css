@@ -211,3 +211,19 @@ body[data-majick-polish-room=constellation] #majickRoomRibbon::after{background-
 #content[data-majick-room=game] .majRoomEmblem{background-image:url('./assets/imported-artwork/spell-icons/runes-royal-2.webp')!important}
 #content[data-majick-room=learninglab] .majRoomEmblem{background-image:url('./assets/imported-artwork/spell-icons/runes-magenta-2.webp')!important}
 #content[data-majick-room=sanctuary] .majRoomEmblem{background-image:url('./assets/imported-artwork/spell-icons/leaf-jade-1.webp')!important}
+
+
+/* Whole-course quest: compact, consistent illustrations; no replacement of room backgrounds. */
+#learnPractice .wholeQuestMeter{display:flex;align-items:center;flex-wrap:wrap;gap:9px;padding:10px 12px;border:1px solid #b49b70;border-radius:10px;background:#f5eddc!important;color:#244438!important;font-weight:700}
+#learnPractice .wholeQuestMeter progress{flex:1;min-width:100px;height:12px;accent-color:#38654c}
+#learnPractice .wholeQuestResult{padding:18px;border:1px solid #b49b70;border-radius:14px;background:#f7efdf!important;color:#243b32!important}
+#learnPractice .wholeQuestResult :is(p,h3,summary,strong){color:#243b32!important;-webkit-text-fill-color:#243b32!important}
+#learnPractice :is(#wholeGuided,#wholeHands,#wholeIndependent){display:inline-flex;align-items:center;gap:7px;min-height:44px}
+#learnPractice :is(#wholeGuided,#wholeHands,#wholeIndependent)::before{content:"";display:inline-block;width:26px;height:26px;flex:none;background:center/contain no-repeat}
+#learnPractice #wholeGuided::before{background-image:url("./assets/licensed/milestones/book.png")}
+#learnPractice #wholeHands::before{background-image:url("./assets/licensed/images/runestones.webp")}
+#learnPractice #wholeIndependent::before{background-image:url("./assets/licensed/milestones/star.png")}
+#learnPractice #wholeLength{min-height:44px;max-width:100%;padding:6px 10px;background:#fffaf0!important;color:#243b32!important;border:1px solid #937b55;border-radius:8px}
+#learnPractice details>summary{cursor:pointer;min-height:36px;padding:8px 0}
+#learnPractice .wholeQuestResult>img{float:right;margin:0 0 8px 12px;object-fit:contain}
+@media(max-width:480px){#learnPractice .wholeQuestMeter{gap:6px}#learnPractice .wholeQuestMeter progress{flex-basis:100%}}
