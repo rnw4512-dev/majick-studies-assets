@@ -91,6 +91,26 @@ with sync_playwright() as pw:
       stage.locator('[data-deep-next]').click()
     assert page.locator('.aeth-mini-result' if basic else '.aeth-deep-stage[role="status"]').is_visible(),(section,mode)
     assert page.evaluate('JSON.stringify({progress:S.progress,legacy:S.legacy,account:S.majickAccount})')==protected_game
+  # Verify the compact workshop navigation using actual browser controls.
+  page.locator('[data-exp-section="3"]').click()
+  outline=page.locator('#aethCourseGames details.aeth-section-outline').first
+  assert outline.get_attribute('open') is None
+  outline.locator(':scope > summary').click()
+  assert outline.get_attribute('open') is not None
+  assert outline.locator('.aeth-section-lessons').evaluate("(el)=>getComputedStyle(el).overflowY")=='visible'
+  outline.locator(':scope > summary').click()
+  help_panel=page.locator('#aethCourseGames details').filter(has=page.get_by_text('How to play the six games',exact=True))
+  help_panel.locator(':scope > summary').click()
+  assert help_panel.get_attribute('open') is not None
+  before_exit=page.evaluate('JSON.stringify({progress:S.progress,legacy:S.legacy,account:S.majickAccount})')
+  for mode in ['sort','forge']:
+   attr='exp' if mode=='sort' else 'deep'
+   page.locator(f'[data-{attr}-mode="{mode}"]').first.click()
+   page.locator('[data-exp-exit]').click()
+   assert not page.locator('#aethCourseGames .aeth-mini-stage,#aethCourseGames .aeth-deep-stage').count()
+   assert page.locator('[data-exp-section="3"]').get_attribute('aria-pressed')=='true'
+   assert page.evaluate('JSON.stringify({progress:S.progress,legacy:S.legacy,account:S.majickAccount})')==before_exit
+  print('PASS',width,'collapsible lesson notes, no nested scrollbar, instructions and safe game exit',flush=True)
   assert not errors,errors
   print('PASS',width,'same-skill fresh cases, nonrepeating course rounds, readable feedback, saved game/answer counts, backup/import/reload and safe Gauntlet',flush=True);context.close()
  browser.close()
