@@ -3,7 +3,7 @@ import os,sys,threading
 from pathlib import Path
 from functools import partial
 from http.server import ThreadingHTTPServer,SimpleHTTPRequestHandler
-from playwright.sync_api import sync_playwright
+from playwright.sync_api import expect,sync_playwright
 class Quiet(SimpleHTTPRequestHandler):
  def log_message(self,*args):pass
 root=Path(sys.argv[1] if len(sys.argv)>1 else 'current-site').resolve()
@@ -108,7 +108,7 @@ with sync_playwright() as pw:
    form.get_by_role('button',name='Submit',exact=True).click()
    assert form.get_by_role('status').inner_text()=='Correct.'
    reveal.click()
-   assert form.get_by_role('status').inner_text().startswith(answer+' — ')
+   expect(form.get_by_role('status')).to_contain_text(answer+' — ')
   assert evidence()==before,'Supplied formative practice must preserve academic evidence and balances'
   select.select_option('topic:d669-s4-l1-4')
   path.get_by_role('button',name='Practice this topic',exact=True).click()

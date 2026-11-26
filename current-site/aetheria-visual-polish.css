@@ -189,7 +189,7 @@ body #app .main>.top .courseSelect{background:#21132f!important;color:#fff2d5!im
  border-color:#74577e!important;
 }
 #content #majConnectedPath .majPathSummary,
-#content #majConnectedPath > details > .majPathActions button{
+#content #majConnectedPath > .majPathActions button{
  background:#382744!important;
  color:#fff2d5!important;
  border-color:#9579a0!important;

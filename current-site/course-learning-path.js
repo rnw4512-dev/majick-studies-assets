@@ -57,13 +57,17 @@ function anchorChart(box,sub){
  const foot=document.createElement('p');foot.textContent='Simplified Aetheria study aid based on supplied WGU lesson material.';foot.style.cssText='font-size:.8rem;margin:10px 0 0';figure.append(foot);box.append(figure);
 }
 
+const formativeResponses=new WeakMap();
 function formativeGroup(box,group){
  const details=document.createElement('details');
  details.className='majPathFormative';
  const title=document.createElement('summary');
  title.textContent=group.title;
  details.append(title);
+ details.open=group.questions.some(q=>formativeResponses.get(q)?.answer!=null);
  group.questions.forEach(q=>{
+  const response=formativeResponses.get(q)||{answer:null,submitted:false,shown:false};
+  formativeResponses.set(q,response);
   const form=document.createElement('form');
   const field=document.createElement('fieldset');
   const prompt=document.createElement('legend');
@@ -75,6 +79,7 @@ function formativeGroup(box,group){
    label.style.display='block';
    const input=document.createElement('input');
    input.type='radio';input.name='answer';input.value=option;input.required=true;
+   input.checked=response.answer===option;
    label.append(input,' '+option);
    field.append(label);
   });
@@ -84,13 +89,23 @@ function formativeGroup(box,group){
   reveal.type='button';reveal.textContent='Show Answer';reveal.disabled=true;
   const feedback=document.createElement('p');
   feedback.setAttribute('role','status');
-  form.addEventListener('change',()=>{reveal.disabled=true;feedback.textContent=''});
+  function updateFeedback(){
+   reveal.disabled=!response.submitted;
+   if(response.shown)feedback.textContent=q.why?q.answer+' — '+q.why:q.answer;
+   else if(response.submitted)feedback.textContent=response.answer===q.answer?'Correct.':'Incorrect. Try again or show the answer.';
+   else feedback.textContent='';
+  }
+  form.addEventListener('change',()=>{
+   response.answer=new FormData(form).get('answer');response.submitted=false;response.shown=false;
+   updateFeedback();
+  });
   form.addEventListener('submit',event=>{
    event.preventDefault();
-   feedback.textContent=new FormData(form).get('answer')===q.answer?'Correct.':'Incorrect. Try again or show the answer.';
-   reveal.disabled=false;
+   response.answer=new FormData(form).get('answer');response.submitted=true;response.shown=false;
+   updateFeedback();
   });
-  reveal.addEventListener('click',()=>{feedback.textContent=q.why?q.answer+' — '+q.why:q.answer;});
+  reveal.addEventListener('click',()=>{response.shown=true;updateFeedback();});
+  updateFeedback();
   field.append(submit,reveal,feedback);
   form.append(field);
   details.append(form);
