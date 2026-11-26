@@ -212,8 +212,11 @@ function checkContext(){
  if(sig!==lastContext){lastContext=sig;schedule()}
 }
 function init(){
- const root=$('#content');if(root){
+ const queue=window.MajickRenderQueue;
+ if(queue?.register){queue.register('course-learning-path',schedule,115);queue.schedule()}
+ else{const root=$('#content');if(root){
   new MutationObserver(m=>{if(m.some(x=>[...x.addedNodes].some(n=>n.nodeType===1&&n.id!=='majConnectedPath'&&!n.closest?.('#majConnectedPath'))) || (root.querySelector('#majConnectedPath')&&!root.querySelector('#majConnectedPath .majPathSummary')?.textContent?.includes('Path v4.0')))schedule()}).observe(root,{childList:true,subtree:true});
+ }
  }
  checkContext();schedule();
 }

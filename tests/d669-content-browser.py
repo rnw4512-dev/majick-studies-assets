@@ -71,6 +71,10 @@ with sync_playwright() as pw:
     item=panel.locator('details').filter(has=page.get_by_text(q['prompt'],exact=True));item.locator('summary').click()
     item.get_by_role('button',name=q['answer'],exact=True).click();assert item.get_by_role('status').inner_text().startswith('Correct.')
    assert page.evaluate('document.documentElement.scrollWidth<=innerWidth+2'),(width,topic)
+  page.evaluate('render();render()')
+  page.wait_for_selector('#majPathLessonSelect')
+  assert select.input_value()=='topic:d669-s3-l3-1','Same-context redraw lost the selected source topic'
+  assert page.locator('#majConnectedPath .majPathAnchor img').count()==5
   assert evidence()==before,'Supplied review/SEL topic practice must preserve academic evidence and balances'
   page.evaluate("S.courses.D669.userNotes='Preserved D669 course notes';switchCourse('D772');switchCourse('D669')")
   assert page.evaluate('S.courses.D669.userNotes')=='Preserved D669 course notes'
