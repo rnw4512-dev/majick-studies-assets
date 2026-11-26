@@ -1,0 +1,94 @@
+name: Import Aetheria artwork
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'aetheria-artwork-upload.zip'
+      - 'aetheria-spell-assets.zip'
+  workflow_dispatch:
+permissions:
+  contents: write
+  actions: write
+concurrency:
+  group: aetheria-artwork-import
+  cancel-in-progress: false
+jobs:
+  import:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - run: python -m pip install Pillow==11.3.0
+      - name: Validate and import artwork
+        run: |
+          python - <<'PY'
+          import hashlib, json, zipfile, io, re
+          from pathlib import Path, PurePosixPath
+          from PIL import Image
+          root = Path('current-site')
+          manifest = root / 'source-manifest.json'
+          data = json.loads(manifest.read_text())
+          archives = [p for p in map(Path, ['aetheria-spell-assets.zip','aetheria-artwork-upload.zip']) if p.is_file()]
+          if not archives:
+              print('No artwork ZIP supplied')
+              raise SystemExit(0)
+          pending = {}
+          for archive in archives:
+              folder = 'spell-icons' if archive.name == 'aetheria-spell-assets.zip' else 'moon-gui'
+              with zipfile.ZipFile(archive) as z:
+                  entries = z.infolist()
+                  if len(entries) > 1000 or sum(i.file_size for i in entries) > 100_000_000:
+                      raise ValueError('Archive exceeds import limits')
+                  credits = False
+                  count = 0
+                  for item in entries:
+                      if item.is_dir(): continue
+                      p = PurePosixPath(item.filename)
+                      if p.is_absolute() or '..' in p.parts or chr(92) in item.filename or any(not re.fullmatch(r'[A-Za-z0-9_. -]+', part) for part in p.parts):
+                          raise ValueError('Unsafe path: '+item.filename)
+                      if item.file_size > 8_000_000: raise ValueError('Oversized file')
+                      payload = z.read(item)
+                      suffix = p.suffix.lower()
+                      if suffix in {'.png','.webp'}:
+                          with Image.open(io.BytesIO(payload)) as im:
+                              if im.format not in {'PNG','WEBP'} or im.width*im.height > 4_194_304:
+                                  raise ValueError('Invalid image: '+str(p))
+                              im.load()
+                              out = io.BytesIO()
+                              im.convert('RGBA').save(out, 'WEBP', lossless=True)
+                              payload = out.getvalue()
+                          p = p.with_suffix('.webp')
+                          count += 1
+                      elif suffix in {'.txt','.md','.json'}:
+                          decoded = payload.decode('utf-8')
+                          if re.search(r'credit|license|attribution|readme',p.name,re.I) and re.search(r'creativecommons|CC.BY|Creative Commons',decoded,re.I):
+                              credits = True
+                      else: raise ValueError('Unsupported file: '+str(p))
+                      target = root / 'assets' / 'imported-artwork' / folder / p
+                      if target in pending and pending[target] != payload: raise ValueError('Duplicate target')
+                      if target.exists() and target.read_bytes() != payload: raise ValueError('Refusing overwrite: '+str(target))
+                      pending[target] = payload
+                  if not credits or not count: raise ValueError('Archive must include images and attribution/license text')
+                  print(folder, count, 'images validated')
+          for target,payload in pending.items():
+              target.parent.mkdir(parents=True,exist_ok=True)
+              target.write_bytes(payload)
+              data['files'][target.relative_to(root).as_posix()] = hashlib.sha256(payload).hexdigest()
+          manifest.write_text(json.dumps(data,indent=2,ensure_ascii=False)+'\n')
+          PY
+      - name: Commit and request certified publication
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add current-site/source-manifest.json
+          if test -d current-site/assets/imported-artwork; then git add current-site/assets/imported-artwork; fi
+          for f in aetheria-spell-assets.zip aetheria-artwork-upload.zip; do
+            if test -f "$f"; then git rm -- "$f"; fi
+          done
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m "Import validated Aetheria artwork and integrity hashes"
+          git push origin HEAD:main
+          gh workflow run publish-aetheria.yml --ref main
