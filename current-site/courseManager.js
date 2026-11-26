@@ -260,6 +260,24 @@ function ensure(){
         }
       }
     }
+    // Canonical source order: reorder existing objects, never replace progress records.
+    const bySource=(rows,seed,key)=>{
+      if(!Array.isArray(rows)||!Array.isArray(seed))return;
+      const rank=new Map(seed.map((row,i)=>[key(row),i]));
+      const unknown=Number.MAX_SAFE_INTEGER;
+      rows.sort((a,b)=>(rank.get(key(a))??unknown)-(rank.get(key(b))??unknown));
+    };
+    bySource(d669.studySections,template.studySections,row=>row?.id);
+    bySource(d669.concepts,template.concepts,row=>row?.id);
+    for(const section of d669.studySections){
+      const seed=template.studySections.find(row=>row.id===section.id);
+      if(!seed)continue;
+      bySource(section.lessons,seed.lessons,row=>row?.title);
+      for(const lesson of section.lessons||[]){
+        const seedLesson=seed.lessons?.find(row=>row.title===lesson.title);
+        if(seedLesson)bySource(lesson.sublessons,seedLesson.sublessons,row=>row?.id);
+      }
+    }
     if(!d669.preassessmentProfile?.priorityConcepts?.length){
       d669.preassessmentProfile=clone(template.preassessmentProfile);
     }
