@@ -346,10 +346,24 @@ function renderPractice(){
  const past=window.S?.progress?.[courseId]?.answers||[];
  const latest=new Map(past.filter(x=>x.qid||x.id).map(x=>[String(x.qid||x.id),x]));
  const guidedSeen=new Set(Object.keys(pstate().wholeCourseGuidedSeen||{}));
- function controls(){return '<div class="learnStepHeader"><div><span>ALL SECTIONS • '+E(courseId)+'</span><h3>Whole Course Practice</h3><small>'+bank.length+' usable questions · '+order.length+' groups</small></div></div><div style="display:flex;gap:8px;flex-wrap:wrap;margin:8px 0"><button type="button" class="btn primary" id="wholeGuided">Guided</button><button type="button" class="btn" id="wholeHands">Hands-on scenarios</button><button type="button" class="btn" id="wholeIndependent">Independent</button></div><details><summary>Course coverage</summary><p>'+order.map(s=>E(s)+': '+groups.get(s).length+' questions').join(' · ')+'</p>'+(missing.length?'<p>Missing scored questions: '+E(missing.join(', '))+'.</p>':'')+'<p>Questions rotate across available sections, prioritizing missed and unseen items. Visual-dependent items without verified visuals are omitted.</p></details>'}
- function bindModes(){box.querySelector('#wholeGuided')?.addEventListener('click',()=>{state.retry=false;state.assisted=true;state.answered=false;if(!available().length)state.used.clear();q=pick();draw()});box.querySelector('#wholeIndependent')?.addEventListener('click',()=>{state.retry=true;state.assisted=false;state.answered=false;q=pick();draw()});box.querySelector('#wholeHands')?.addEventListener('click',()=>navigate('hands-on'))}
+ function controls(){return '<div class="learnStepHeader"><div><span>ALL SECTIONS • '+E(courseId)+'</span><h3>Whole Course Practice</h3><small>'+bank.length+' usable questions · '+order.length+' groups</small></div></div><div style="display:flex;gap:8px;flex-wrap:wrap;margin:8px 0"><button type="button" class="btn primary" id="wholeGuided">Guided</button><button type="button" class="btn" id="wholeHands">Hands-on scenarios</button><button type="button" class="btn" id="wholeIndependent">Independent</button></div><label style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:10px 0">Session length <select id="wholeLength">'+[[5,'Quick Quest · 5'],[10,'Daily Adventure · 10'],[20,'Mastery Challenge · 20'],[0,'Full Course Review']].map(([n,t])=>'<option value="'+n+'" '+(state.limit===n?'selected':'')+'>'+t+'</option>').join('')+'</select></label><details><summary>Course coverage</summary><p>'+order.map(s=>E(s)+': '+groups.get(s).length+' questions').join(' · ')+'</p>'+(missing.length?'<p>Missing scored questions: '+E(missing.join(', '))+'.</p>':'')+'<p>Questions rotate across available sections, prioritizing missed and unseen items. Visual-dependent items without verified visuals are omitted.</p></details>'}
+ function bindModes(){
+  const restart=(independent)=>{state.retry=independent;state.assisted=!independent;state.answered=false;state.results=[];state.used.clear();seenSections.clear();q=pick();draw()};
+  box.querySelector('#wholeGuided')?.addEventListener('click',()=>restart(false));
+  box.querySelector('#wholeIndependent')?.addEventListener('click',()=>restart(true));
+  box.querySelector('#wholeHands')?.addEventListener('click',()=>navigate('hands-on'));
+  box.querySelector('#wholeLength')?.addEventListener('change',e=>{state.limit=Number(e.target.value);restart(state.retry)});
+ }
+ function sessionReport(){
+  const rows=state.results,correct=rows.filter(x=>x.correct).length,by=new Map();
+  for(const x of rows){const s=by.get(x.section)||{n:0,ok:0};s.n++;s.ok+=Number(x.correct);by.set(x.section,s)}
+  const weak=[...by].filter(([,s])=>s.ok<s.n).sort((a,b)=>a[1].ok/a[1].n-b[1].ok/b[1].n);
+  return '<article class="wholeQuestResult"><img src="assets/licensed/milestones/star.png" alt="" width="56" height="56"><h3>Quest complete</h3><p><strong>'+correct+' / '+rows.length+' correct</strong> · '+(state.retry?'Independent':'Guided')+' practice</p><p>'+ (weak.length?'Strengthen '+E(weak[0][0])+' next.':'Great work. Continue with fresh questions or another learning challenge.')+'</p><details><summary>Results by section</summary>'+[...by].map(([name,s])=>'<p>'+E(name)+' · '+s.ok+'/'+s.n+' correct</p>').join('')+'</details><p>Independent correct answers use the existing reward ledger. Guided checks do not prove independent mastery.</p></article>';
+ }
+ function advance(){state.answered=false;q=(state.limit>0&&state.results.length>=state.limit)?null:pick();draw()}
+
  if(!bank.length){box.innerHTML='<div class="learnEmpty"><h3>No guided questions yet</h3><p>Add notes and forge questions for this class first.</p><button class="btn primary" id="practiceAddNotes">Add Study Material</button></div>';document.getElementById('practiceAddNotes')?.addEventListener('click',()=>navigate('addmaterial'));return}
- const state={assisted:true,retry:false,answered:false,used:new Set()};
+ const state={assisted:true,retry:false,answered:false,used:new Set(),limit:10,results:[]};
  const saved=pstate();saved.guidedPractice=saved.guidedPractice||{assistedAttempts:0,assistedCorrect:0,independentAttempts:0,independentCorrect:0};
  const metrics=saved.guidedPractice;
  const idOf=q=>String(q.id||q.qid||q.prompt);
@@ -363,16 +377,16 @@ function renderPractice(){
   return String(q.options[Number(choice)])===String(q.answer);
  }
  function draw(){
-  if(!q){box.innerHTML=controls()+'<p>No fresh eligible questions remain in this session. Choose Guided to review or reopen practice later.</p>';bindModes();return;}
+  if(!q){box.innerHTML=controls()+(state.results.length?sessionReport():'<p>No fresh eligible questions remain. Choose Guided to review.</p>');bindModes();return;}
   const independent=state.retry&&!state.assisted;
-  box.innerHTML=controls()+'<p><b>'+E(sectionOf(q))+'</b> · '+(independent?'Independent practice':'Guided practice')+'</p>'+
-   '<article class="guidedQuestion"><p><strong>Assisted:</strong> '+metrics.assistedCorrect+'/'+metrics.assistedAttempts+' correct · <strong>Independent retries:</strong> '+metrics.independentCorrect+'/'+metrics.independentAttempts+' correct</p><div role="status" aria-live="polite" style="margin-bottom:12px;padding:12px;border:1px solid currentColor;border-radius:10px"><b>'+(independent?'✦ Independent Retry — no hints':'☾ Assisted Practice — not independent mastery')+'</b><p style="margin:6px 0 0">'+(independent?'Fresh question, no revealed answer. An independently correct response is recorded in your existing course progress.':'Use this question to learn. Even a correct answer here does not count as independent mastery.')+'</p></div><h3>'+E(q.prompt)+'</h3><div>'+q.options.map((o,i)=>'<button class="guidedOption" type="button" data-guide-index="'+i+'" '+(state.answered?'disabled':'')+'>'+E(o)+'</button>').join('')+'</div><div id="guidedFeedback" role="status" aria-live="polite"></div><div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:14px"><button type="button" class="btn primary" id="guideRetry">Retry independently with a NEW question</button><button type="button" class="btn" id="guideMore">More assisted practice</button></div></article>'+
+  box.innerHTML=controls()+'<p class="wholeQuestMeter"><img src="assets/licensed/milestones/book.png" alt="" width="28" height="28"> Quest progress '+state.results.length+' / '+(state.limit||bank.length)+' <progress max="'+(state.limit||bank.length)+'" value="'+state.results.length+'"></progress></p><p><b>'+E(sectionOf(q))+'</b> · '+(independent?'Independent practice':'Guided practice')+'</p>'+
+   '<article class="guidedQuestion"><p><strong>Assisted:</strong> '+metrics.assistedCorrect+'/'+metrics.assistedAttempts+' correct · <strong>Independent retries:</strong> '+metrics.independentCorrect+'/'+metrics.independentAttempts+' correct</p><div role="status" aria-live="polite" style="margin-bottom:12px;padding:12px;border:1px solid currentColor;border-radius:10px"><b>'+(independent?'✦ Independent Retry — no hints':'☾ Assisted Practice — not independent mastery')+'</b><p style="margin:6px 0 0">'+(independent?'Fresh question, no revealed answer. An independently correct response is recorded in your existing course progress.':'Use this question to learn. Even a correct answer here does not count as independent mastery.')+'</p></div><h3>'+E(q.prompt)+'</h3><div>'+q.options.map((o,i)=>'<button class="guidedOption" type="button" data-guide-index="'+i+'" '+(state.answered?'disabled':'')+'>'+E(o)+'</button>').join('')+'</div><div id="guidedFeedback" role="status" aria-live="polite"></div><div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:14px"><button type="button" class="btn primary" id="wholeNext" disabled>Continue quest →</button></div></article>'+
    '<div class="independentCall"><span>STEP 5 • PROVE IT</span><b>Build lasting independent mastery</b><p>Correct independent retries join the existing course answer history; mastery still requires repeated evidence.</p><button class="btn primary" id="goIndependent">Start Study Now</button></div>';
   bindModes();
   box.querySelectorAll('[data-guide-index]').forEach(btn=>btn.addEventListener('click',()=>{
    if(state.answered)return;
    const choice=Number(btn.dataset.guideIndex),ok=isCorrect(choice),wasIndependent=state.retry&&!state.assisted;
-   state.answered=true;box.querySelectorAll('[data-guide-index]').forEach(b=>b.disabled=true);
+   state.answered=true;state.results.push({section:sectionOf(q),correct:ok,qid:idOf(q)});box.querySelector('#wholeNext').disabled=false;box.querySelectorAll('[data-guide-index]').forEach(b=>b.disabled=true);
    if(wasIndependent){metrics.independentAttempts++;if(ok)metrics.independentCorrect++;}
    else{metrics.assistedAttempts++;if(ok)metrics.assistedCorrect++;guidedSeen.add(idOf(q));saved.wholeCourseGuidedSeen=saved.wholeCourseGuidedSeen||{};saved.wholeCourseGuidedSeen[idOf(q)]=true;}
    latest.set(idOf(q),{correct:ok});persist();
@@ -387,6 +401,7 @@ function renderPractice(){
    const f=box.querySelector('#guidedFeedback');
    if(f)f.innerHTML='<div class="'+(ok?'guideRight':'guideWrong')+'"><b>'+(wasIndependent?(ok?'✓ Independent correct — recorded':'Independent attempt recorded — review needed'):(ok?'✓ Assisted correct — practice only':'Assisted practice — try again after review'))+'</b><p>'+E(q.why||q.rationale||(ok?'You chose the correct answer.':'Review the question and the strategy.'))+'</p><small>'+(wasIndependent?'This attempt was unassisted. One correct answer alone does not establish mastery.':'No independent mastery credit was granted for this coached question.')+'</small></div>';
   }));
+  box.querySelector('#wholeNext')?.addEventListener('click',advance);
   box.querySelector('#guideRetry')?.addEventListener('click',()=>{state.retry=true;state.assisted=false;state.answered=false;q=pick();draw()});
   box.querySelector('#guideMore')?.addEventListener('click',()=>{state.retry=false;state.assisted=true;state.answered=false;if(!canRetry())state.used.clear();q=pick();draw()});
   box.querySelector('#goIndependent')?.addEventListener('click',()=>navigate('mission'));
