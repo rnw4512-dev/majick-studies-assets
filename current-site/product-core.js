@@ -96,6 +96,8 @@ function firstIncomplete(){
 }
 function nextAction(){
  const d=ensure(),n=firstIncomplete();
+ const rec=window.MajickCourseLearningPath?.recommendation?.(course()),target=rec?.next||rec?.weak||rec?.review;
+ if(target)return {label:rec.next?'Continue learning':rec.weak?'Strengthen a weak skill':'Review due skill',route:'learninglab',stage:'learn',detail:target.title,adaptive:true};
  if(!d)return {label:'Enter the Collegium',route:'home',stage:'entered'};
  if(!n)return {label:'Daily loop complete',route:'companions',stage:'complete',detail:'Rest in your dorm or choose the next lesson.'};
  const map={
@@ -126,6 +128,7 @@ function snapshot(){
 }
 function goNext(){
  const n=nextAction();
+ if(n.adaptive&&window.MajickCourseLearningPath?.openRecommended?.(course()))return;
  if(n.stage==='entered')record('enter-college');
  if(n.stage==='learn')record('learn-start',{lessonId:ensure()?.lessonId});
  try{window.navigate?.(n.route)}catch(_){}
