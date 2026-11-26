@@ -172,6 +172,30 @@
 /* Restore the dark chrome on all viewports; keep parchment only for reading surfaces. */
 body #app .side,body #app .main>.top{background:linear-gradient(145deg,#150c22,#291638)!important;color:#f7e4be!important;border-color:#74577e!important}
 body #app .side .nav button,body #app .side .nav button .label,body #app .side .brand b,body #app .main>.top h1,body #app .main>.top .titleline{color:#f5dca5!important;-webkit-text-fill-color:#f5dca5!important;text-shadow:none!important}
-body #app .side .brand small,body #app .main>.top .pill{color:#e8d7ef!important;-webkit-text-fill-color:#e8d7ef!important}
+body #app .side .brand small{color:#e8d7ef!important;-webkit-text-fill-color:#e8d7ef!important}
+body #app .main>.top .pill{
+ background:#382347!important;
+ border:1px solid #74577e!important;
+ color:#fff2d5!important;
+ -webkit-text-fill-color:#fff2d5!important;
+}
+#app .side .nav,#app .main{scrollbar-color:#9876a8 #21142f}
 body #app .side .nav button.active{background:linear-gradient(95deg,#513261,#342043)!important;border-color:#d5b577!important}
 body #app .main>.top .courseSelect{background:#21132f!important;color:#fff2d5!important;-webkit-text-fill-color:#fff2d5!important}
+
+#app .main > .top{height:auto!important;min-height:82px!important}
+#content #majConnectedPath{
+ background:#271832!important;
+ border-color:#74577e!important;
+}
+#content #majConnectedPath .majPathSummary,
+#content #majConnectedPath > details > .majPathActions button{
+ background:#382744!important;
+ color:#fff2d5!important;
+ border-color:#9579a0!important;
+}
+#content #majConnectedPath .majPathBody{
+ background:#f7f0dd;
+ padding-top:10px;
+ border-radius:0 0 12px 12px;
+}

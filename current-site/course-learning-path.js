@@ -362,7 +362,19 @@ function init(){
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
 setInterval(checkContext,1200);
-function openItem(itemId,id){const cid=String(id||course()).toUpperCase(),target=catalog(cid).find(x=>x.id===itemId);if(!target)return false;selections[cid]=target.id;manualChoice[cid]=true;expanded=true;save();if(screen()!=='learninglab')window.navigate?.('learninglab');setTimeout(()=>{render();navigateTo(target)},180);return true}
+function openItem(itemId,id,focus=false){
+ const cid=String(id||course()).toUpperCase();
+ const target=catalog(cid).find(item=>item.id===itemId);
+ if(!target)return false;
+ selections[cid]=target.id;manualChoice[cid]=true;expanded=true;save();
+ if(screen()!=='learninglab')window.navigate?.('learninglab');
+ setTimeout(()=>{
+  if(course()!==cid||screen()!=='learninglab')return;
+  render();navigateTo(target);
+  if(focus)$('#majPathLessonSelect')?.focus();
+ },180);
+ return true;
+}
 window.MajickCourseLearningPath=Object.freeze({VERSION,openItem,openRecommended:(id)=>{const cid=String(id||course()).toUpperCase(),rec=recommendation(cid),target=rec.next||rec.weak||rec.review;if(!target)return false;selections[cid]=target.id;manualChoice[cid]=true;expanded=true;if(screen()==='home')window.navigate?.('learninglab');setTimeout(()=>{render();navigateTo(target)},180);return true},recommendation:(id)=>recommendation(String(id||course()).toUpperCase()),refresh:schedule,catalog:(id)=>catalog(String(id||course()).toUpperCase()),current:()=>current(course(),catalog(course()))});
 window.MajickConnectedPath=window.MajickCourseLearningPath;
 })();

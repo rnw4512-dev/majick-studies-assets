@@ -14,6 +14,27 @@ with sync_playwright() as pw:
  for width in [390,820,1366]:
   ctx=browser.new_context(ignore_https_errors=os.environ.get('BROWSER_IGNORE_HTTPS_ERRORS')=='1',viewport={'width':width,'height':1000});page=ctx.new_page();errors=[];page.on('pageerror',lambda e:errors.append(str(e)))
   page.goto(url);page.wait_for_function('!!window.MajickYourTurn && !!window.MajickUniversalHandsOn');page.wait_for_timeout(600)
+  original=page.evaluate('S.activeCourse')
+  page.locator('.courseSelect').select_option('D669')
+  page.locator('[data-d772-oa-focus]').wait_for(state='detached')
+  page.locator('.courseSelect').select_option('D772')
+  page.locator('[data-d772-oa-focus]').wait_for(state='attached')
+  page.locator('.courseSelect').select_option(original)
+  page.evaluate("navigate('home');navigate('mission')")
+  back=page.locator('.top .titleline > #majickBackButton')
+  back.wait_for()
+  assert back.evaluate("""button=> {
+   const a=button.getBoundingClientRect();
+   return [...button.closest('.top').querySelectorAll('h1,.pill,.courseSelect,.caSoundControls')].every(item=>{
+    const b=item.getBoundingClientRect();
+    return a.right<=b.left+1||b.right<=a.left+1||a.bottom<=b.top+1||b.bottom<=a.top+1;
+   });
+  }"""),(width,'Back overlaps header')
+  assert page.locator('.top .pill').evaluate("(item)=>getComputedStyle(item).backgroundColor==='rgb(56, 35, 71)'")
+  back.click()
+  page.wait_for_function("S.screen==='home'")
+  if width>700:
+   assert page.locator('.side .nav').evaluate("(nav)=>getComputedStyle(nav).overflowY==='auto'")
   routes=page.locator('.nav [data-nav]').evaluate_all('(buttons)=>[...new Set(buttons.map(b=>b.dataset.nav))]')
   for route in routes:
    button=page.locator(f'.nav [data-nav="{route}"]').first

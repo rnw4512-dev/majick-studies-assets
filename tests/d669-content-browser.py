@@ -87,14 +87,16 @@ with sync_playwright() as pw:
   page.wait_for_selector('#majPathLessonSelect')
   assert select.input_value()=='topic:d669-s3-l3-1','Same-context redraw lost the selected source topic'
   assert page.locator('#majConnectedPath .majPathAnchor img').count()==5
-  select.select_option('topic:d669-s4-l1-4')
+  page.locator('[data-cap-topic="d669-s4-l1-4"]').click()
+  page.wait_for_function("document.querySelector('#majPathLessonSelect')?.value==='topic:d669-s4-l1-4'")
   path=page.locator('#majConnectedPath')
   assert path.locator('.majPathAnchor strong').all_text_contents()==[
    'Personification','Simile','Metaphor','Onomatopoeia','Rhyme','Alliteration'
   ]
   assert path.locator('textarea').count()==6
   assert [group.locator('form').count() for group in path.locator('.majPathFormative').all()]==[6,9]
-  select.select_option('topic:d669-s4-l1-review')
+  page.locator('[data-cap-topic="d669-s4-l1-review"]').click()
+  page.wait_for_function("document.querySelector('#majPathLessonSelect')?.value==='topic:d669-s4-l1-review'")
   path.get_by_role('button',name='Practice this topic',exact=True).click()
   review=path.locator('.majPathFormative')
   assert review.get_attribute('open') is not None

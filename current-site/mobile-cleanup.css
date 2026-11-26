@@ -69,8 +69,8 @@
   .v3362Bookmark{right:6px!important;transform:scale(.9);transform-origin:top right}
 }
 
-/* Reuse Home's compact navigation for every learning room on small screens. */
-@media(max-width:1000px){
+/* Keep the horizontal navigation in the single-column layout. */
+@media(max-width:700px){
  body .side{position:relative!important;height:auto!important;min-height:0!important;padding:8px!important}
  body .side :is(.brand,.sidefoot){display:none!important}
  body .side .nav{display:flex!important;height:72px!important;max-height:72px!important;align-items:stretch!important;overflow-x:auto!important;overflow-y:hidden!important;gap:6px;padding-bottom:4px}

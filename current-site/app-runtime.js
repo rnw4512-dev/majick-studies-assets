@@ -136,7 +136,7 @@ function ensureBackStyles(){
   if(document.getElementById('v3329BackStyles'))return;
   const style=document.createElement('style');
   style.id='v3329BackStyles';
-  style.textContent='#majickBackButton{position:fixed;z-index:95;top:70px;left:268px;display:inline-flex;align-items:center;gap:7px;cursor:pointer;border:1px solid rgba(198,160,214,.34);border-radius:999px;background:rgba(20,12,28,.94);color:#eadff0;padding:8px 12px;font:750 11px/1 Arial,sans-serif;box-shadow:0 12px 30px rgba(3,1,8,.28);backdrop-filter:blur(10px)}#majickBackButton:hover,#majickBackButton:focus-visible{border-color:#c09bd2;background:#2a1934;outline:none;box-shadow:0 0 0 2px rgba(192,155,210,.15),0 12px 30px rgba(3,1,8,.28)}#majickBackButton span{color:#d6b66e}@media(max-width:900px){#majickBackButton{left:14px;top:66px;padding:7px 10px}}';
+  style.textContent='#majickBackButton{flex:0 0 auto;min-height:36px;display:inline-flex;align-items:center;gap:7px;cursor:pointer;border:1px solid rgba(198,160,214,.34);border-radius:999px;background:rgba(20,12,28,.94);color:#eadff0;padding:8px 12px;font:750 11px/1 Arial,sans-serif;box-shadow:0 12px 30px rgba(3,1,8,.28);backdrop-filter:blur(10px)}#majickBackButton:hover,#majickBackButton:focus-visible{border-color:#c09bd2;background:#2a1934;outline:none;box-shadow:0 0 0 2px rgba(192,155,210,.15),0 12px 30px rgba(3,1,8,.28)}#majickBackButton span{color:#d6b66e}';
   document.head.appendChild(style);
 }
 function ensureBackButton(){
@@ -149,14 +149,15 @@ function ensureBackButton(){
   // IMPORTANT: do not rewrite an existing Back button.
   // This function is called from a MutationObserver; mutating the existing
   // button here would trigger the observer again and create an infinite loop.
-  if(existing)return existing;
+  const header=document.querySelector('#app .main > .top .titleline');
+  if(existing||!header)return existing;
   const btn=document.createElement('button');
   btn.id='majickBackButton';
   btn.type='button';
   btn.setAttribute('aria-label','Go back');
   btn.innerHTML='<span>←</span> Back';
   btn.onclick=window.majickBack;
-  document.body.appendChild(btn);
+  header.appendChild(btn);
   return btn;
 }
 window.addEventListener('keydown',ev=>{
