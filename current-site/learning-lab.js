@@ -253,12 +253,12 @@ function render(){
       '<section class="learnPanel" data-panel="mastery" hidden><div id="learnMastery"></div></section>'+
     '</div></section>';
 }
-function showTab(name){
+function showTab(name,skill=null){
   document.querySelectorAll('.learnPanel').forEach(p=>p.hidden=p.dataset.panel!==name);
   document.querySelectorAll('[data-learn-tab]').forEach(b=>b.classList.toggle('active',b.dataset.learnTab===name));
   if(name==='vocab')renderVocab();
   if(name==='game')renderGame();
-  if(name==='practice')renderPractice();
+  if(name==='practice')renderPractice(skill);
   if(name==='tools')renderTools();
   if(name==='notes')renderNotes();
   if(name==='mastery')renderMastery();
@@ -328,9 +328,9 @@ function renderGame(){
     setTimeout(nextGameRound,550);
   }));
 }
-function renderPractice(){
+function renderPractice(skill=null){
  const box=document.getElementById('learnPractice');if(!box)return;
- const bank=(cobj().questionBank||[]).filter(q=>Array.isArray(q.options)&&q.options.length>=2&&(Number.isInteger(q.answer)?q.answer>=0&&q.answer<q.options.length:q.options.includes(q.answer))&&(!window.MajickVisualEvidence||window.MajickVisualEvidence.evidence(q).ok));
+ const bank=(cobj().questionBank||[]).filter(q=>(!skill||String(q.learningPathLessonId||q.lessonId||q.topicId||q.conceptId||q.sectionId||q.section||'')===String(skill))&&Array.isArray(q.options)&&q.options.length>=2&&(Number.isInteger(q.answer)?q.answer>=0&&q.answer<q.options.length:q.options.includes(q.answer))&&(!window.MajickVisualEvidence||window.MajickVisualEvidence.evidence(q).ok));
  const courseId=cid(),course=cobj(),sectionOf=q=>{
   const raw=String(q.section||q.sectionId||q.learningPathLessonId||q.topicId||q.id||'');
   const match=raw.match(/(?:section[\s_-]*|(?:^|[-_])s)(\d+)/i);
