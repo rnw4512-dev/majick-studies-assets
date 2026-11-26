@@ -164,3 +164,12 @@
 html[data-majick-reduce-motion="true"] .aetheriaCastleFairy{animation:none!important}
 
 #content .aetheriaCastleCopy{position:relative;display:flex;flex-direction:column;gap:8px;max-width:min(100%,620px);padding:18px 22px;background:#24132ff2!important;border:1px solid #bea16d88;border-left:3px solid #dfbf80;border-radius:5px 16px 16px 5px;box-shadow:0 4px 25px #12091b44;text-align:left;box-sizing:border-box}
+
+/* Shared collegiate framing; retain real text and existing interaction targets. */
+#content[data-majick-room] .majCommonsWelcome{border:1px solid #c8a461!important;box-shadow:inset 0 0 0 3px #d7b77922,0 8px 24px #160d2455!important;border-radius:12px!important;padding:clamp(16px,2.4vw,30px)!important}
+#content[data-majick-room] .majCommonsWelcome h2{line-height:1.24!important;letter-spacing:.035em!important;margin-block:8px 12px!important}
+#content[data-majick-room] .majickRoomSections{gap:8px!important;padding:10px!important;border-color:#b99862!important}
+#content[data-majick-room] .majickRoomSections button{min-height:44px;white-space:normal;line-height:1.35;letter-spacing:.01em;border-radius:8px!important}
+#content[data-majick-room] .majickRoomSections button[aria-selected=true]{box-shadow:inset 0 0 0 2px #ad844e!important}
+#content[data-majick-room=home] .aetheriaCastleArrival .aetheriaCastleCopy{background:linear-gradient(105deg,#21132cf5,#291937dc)!important;border:1px solid #d2ad69!important;box-shadow:inset 0 0 0 3px #d2ad6924,0 8px 24px #12091b66!important;border-radius:12px!important}
+@media(max-width:600px){#content[data-majick-room] .majickRoomSections{gap:6px!important;padding:7px!important}#content[data-majick-room=home] .aetheriaCastleArrival .aetheriaCastleCopy{padding:14px!important}}
