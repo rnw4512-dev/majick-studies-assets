@@ -49,6 +49,26 @@ with sync_playwright() as pw:
    assert page.evaluate('MajickFragmentEarnings.balance()')==fragments,'Replaying a source answer must not duplicate fragments'
    page.locator('#majConnectedPath>details').evaluate('(e)=>e.open=true')
   assert evidence()==before,'Guided source checks must preserve academic evidence, XP and crystals'
+  page.evaluate("navigate('learninglab')")
+  page.wait_for_function('Array.from(document.querySelector("#majPathLessonSelect")?.options||[]).some(o=>o.value==="topic:d669-s3-l3-1")')
+  for topic in ['d669-s3-l2-review','d669-s3-l3-intro','d669-s3-l3-1']:
+   page.locator('#majConnectedPath>details').evaluate('(e)=>e.open=true');select.select_option('topic:'+topic)
+   panel=page.locator('#majConnectedPath .majPathEvidence').filter(has=page.locator('h3')).first
+   data=page.evaluate('(id)=>{const c=MajickCourseSources.D669,sub=c.studySections.flatMap(s=>s.lessons||[]).flatMap(l=>l.sublessons||[l]).find(t=>t.id===id);return {title:sub.title,questions:c.questionBank.filter(q=>(sub.quizIds||[]).includes(q.id)&&q.id.startsWith("d669-s3-supplied-20261126-"))}}',topic)
+   try:
+    page.wait_for_function('(title)=>[...document.querySelectorAll("#majConnectedPath .majPathEvidence h3")].some(e=>e.textContent.includes(title))',arg=data['title'])
+   except Exception:
+    print('TOPIC DIAGNOSTIC',width,topic,data['title'],page.locator('#majConnectedPath').inner_text()[:1800],flush=True);raise
+   art=panel.locator('.majPathAnchor img');assert art.count()>0
+   for img in art.all():
+    img.scroll_into_view_if_needed();assert img.evaluate('async e=>{await e.decode();return e.naturalWidth>0&&e.alt===""&&e.parentElement.getAttribute("aria-hidden")==="true"}')
+   if topic=='d669-s3-l3-1':
+    assert art.count()==5 and 'Supplied correct choices (ungraded)' in panel.inner_text()
+   for q in data['questions']:
+    item=panel.locator('details').filter(has=page.get_by_text(q['prompt'],exact=True));item.locator('summary').click()
+    item.get_by_role('button',name=q['answer'],exact=True).click();assert item.get_by_role('status').inner_text().startswith('Correct.')
+   assert page.evaluate('document.documentElement.scrollWidth<=innerWidth+2'),(width,topic)
+  assert evidence()==before,'Supplied review/SEL topic practice must preserve academic evidence and balances'
   page.evaluate("S.courses.D669.userNotes='Preserved D669 course notes';switchCourse('D772');switchCourse('D669')")
   assert page.evaluate('S.courses.D669.userNotes')=='Preserved D669 course notes'
   assert not errors,errors

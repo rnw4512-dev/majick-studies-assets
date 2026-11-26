@@ -12,6 +12,8 @@ async function waitFor(expression){for(let n=0;n<100;n++){try{if(await evalPage(
 async function action(statement){return evalPage('(()=>{'+statement+';return true})()')}
 async function click(selector){
  await action('document.querySelector('+JSON.stringify(selector)+').scrollIntoView({block:"center",behavior:"instant"})');
+ // Let content-visibility and scroll anchoring settle before a physical pointer press.
+ await evalPage('new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(()=>resolve(true))))');
  if(selector==='[data-prob-next]'){const detail=await evalPage('(()=>{const e=document.querySelector("[data-prob-next]");if(!e)return {found:false};const r=e.getBoundingClientRect(),h=document.elementFromPoint(r.x+r.width/2,r.y+r.height/2);return {disabled:e.disabled,rect:{x:r.x,y:r.y,w:r.width,h:r.height},hit:h?.outerHTML.slice(0,300),button:e.outerHTML.slice(0,300),screen:S.screen,history:!!document.querySelector("#mjD772WguHistory")}})()');console.log('PROBABILITY NEXT HIT TEST',JSON.stringify(detail))}
  if(selector==='[data-prob-form] button[type=submit]'){const d=await evalPage('(()=>{const e=document.querySelector("[data-prob-form] button[type=submit]");if(!e)return {missing:true};const r=e.getBoundingClientRect(),hit=document.elementFromPoint(r.x+r.width/2,r.y+r.height/2);return {disabled:e.disabled,hit:hit?.outerHTML.slice(0,300),rect:{x:r.x,y:r.y,w:r.width,h:r.height},screen:S.screen}})()');console.log('PROBABILITY SUBMIT HIT',JSON.stringify(d))}
  // Delayed campus rendering may move a valid control after the first scroll.
