@@ -40,10 +40,10 @@ function sectionOverview(id){
  const row=sectionRows(id,selectedSection),all=[1,2,3].map(n=>({n,data:sectionRows(id,n),count:sectionQuestions(id,n).length}));
  let s='<div class="aeth-section-picker"><h3>Study Sections 1–3</h3><div class="aeth-section-buttons" role="group" aria-label="D669 sections">';
  s+=all.map(x=>'<button type="button" data-exp-section="'+x.n+'" aria-pressed="'+(x.n===selectedSection)+'"><b>Section '+x.n+'</b><small>'+E((x.data.section?.title||'').replace(/^Section \d+:?\s*/,''))+'</small><em>'+x.data.lessons.length+' topics · '+x.count+' practice questions</em></button>').join('');
- s+='</div><div class="aeth-section-outline"><h4>'+E(row.section?.title||'Section '+selectedSection)+'</h4><p>Open a topic for its existing course notes. The games below use the practice questions available for this section.</p><div class="aeth-section-lessons">';
+ s+='</div><details class="aeth-section-outline"><summary><b>Show lesson notes · </b>'+E(row.section?.title||'Section '+selectedSection)+'</summary><p>Open a topic for its existing course notes. The games below use the practice questions available for this section.</p><div class="aeth-section-lessons" style="max-height:none;overflow:visible">';
  s+=row.lessons.map(l=>'<details><summary>'+E(l.title)+'</summary>'+(l.ideas.length?'<ul>'+l.ideas.slice(0,4).map(x=>'<li>'+E(x)+'</li>').join('')+'</ul>':'<p>See the course Learning Path for the full topic content.</p>')+'</details>').join('');
  if(!row.lessons.length)s+='<div class="aeth-section-pending"><b>Section outline available — detailed lessons still needed</b><p>The course catalog identifies this as '+E(row.section?.title||'Section '+selectedSection)+'. Its lesson-by-lesson content has not been loaded, so the game will not invent questions or claim completion.</p></div>';
- return s+'</div></div></div>';
+ return s+'</div></details></div>';
 }
 
 
@@ -366,12 +366,14 @@ function viewGame(){
  const count=journal.memories.filter(m=>m.course===id&&(m.key.startsWith('game:')||m.key.startsWith('deep:'))).length;
  let s='<section id="aethCourseGames" class="aeth-experience" data-experience-room="'+E(mode)+'" data-course="'+E(id)+'" aria-label="Course-specific interactive mini-games"><header><small>✦ COURSE GAME WORKSHOP · '+E(id)+'</small><h2>Play your course knowledge</h2><p>Real lesson concepts, interactive practice, and Guardian-guided repairs. No duplicate XP or mastery.</p></header>';
  s+=sectionOverview(id);
+ s+='<details class="aeth-section-outline"><summary><b>How to play the six games</b></summary><p>Choose a section, then a game. Sorting and matching: tap or drag an answer. Classroom Decisions and Quest: choose an instructional response. Forge: assemble sounds in order. Sequence: arrange steps, then check. Read feedback and retry or continue. Practice does not award independent mastery.</p></details>';
  s+=videoLessonReview();
  if(id==='D669'&&selectedSection===2)s+='<div class="aeth-comp-entry"><b>📘 Lesson 3.9 · Comprehension Lab</b><p>Explore the Simple View of Reading and match eight comprehension strategies. Practice monitoring and repairing confusing text.</p><button type="button" data-comp-start'+(comprehensionQuestions().length!==8?' disabled':'')+'>Open Comprehension Lab</button></div>';
  if(id==='D669'&&selectedSection===2)s+='<div class="aeth-vocab-entry"><b>📚 Lesson 3.8 · Vocabulary Lab</b><p>Sort three vocabulary tiers and match the four parts of Graves’s vocabulary plan.</p><button type="button" data-vocab-start'+(vocabQuestions().length!==7?' disabled':'')+'>Open Vocabulary Lab</button></div>';
  s+='<div class="aeth-mini-menu">'+MODES.map(m=>'<button type="button" data-exp-mode="'+m.id+'"'+((m.id==='match'?terms.length<3:p.length<3)?' disabled':'')+'><span aria-hidden="true">'+m.icon+'</span><b>'+E(m.title)+'</b><small>'+E(m.desc)+'</small></button>').join('')+'</div>';
  s+='<div class="aeth-mini-menu aeth-deep-menu">'+DEEP_MODES.map(m=>'<button type="button" data-deep-mode="'+m.id+'"'+(deepPool(id,m.id).length<3?' disabled':'')+'><span aria-hidden="true">'+m.icon+'</span><b>'+E(m.title)+'</b><small>'+E(m.desc)+'</small></button>').join('')+'</div>';
  s+='<p class="aeth-exp-summary">'+count+' game discoveries recorded in your Journal.'+(p.length<3?' This section has fewer than 3 available review questions. Its lessons remain visible above; more verified practice is needed to unlock additional games.':'')+'</p>';
+ if(session||deep||vocabRun||compRun)s+='<div class="aeth-exp-summary"><button type="button" data-exp-exit>← Back to game selection</button></div>';
  if(deep&&deep.course===id)s+=deepMarkup();
  if(vocabRun&&id==='D669'&&selectedSection===2)s+=vocabMarkup();
  if(compRun&&id==='D669'&&selectedSection===2)s+=compMarkup();
@@ -499,6 +501,7 @@ document.addEventListener('click',e=>{
  if(btn.hasAttribute('data-deep-retry')){deepRetry();return}
  if(btn.hasAttribute('data-deep-next')){deepNext();return}
  if(btn.hasAttribute('data-exp-section')){const n=Number(btn.dataset.expSection);if(course()==='D669'&&[1,2,3].includes(n)){selectedSection=n;session=null;deep=null;vocabRun=null;compRun=null;redraw()}return}
+ if(btn.hasAttribute('data-exp-exit')){session=deep=vocabRun=compRun=null;redraw();revealGame('.aeth-mini-menu');return}
  if(btn.hasAttribute('data-exp-mode')){start(btn.dataset.expMode);return}
  if(btn.hasAttribute('data-exp-answer')){answer(Number(btn.dataset.expAnswer));return}
  if(btn.hasAttribute('data-exp-retry')){retryGuided();return}
