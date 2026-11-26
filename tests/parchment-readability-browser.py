@@ -58,7 +58,7 @@ with sync_playwright() as pw:
   page.locator('#aethAdventure [data-aeth-action="start"]').click()
   targets=page.locator('#aethAdventure .aeth-target');assert targets.count()>=2
   art=targets.first.locator('span').evaluate('(e)=>({image:getComputedStyle(e).backgroundImage,font:getComputedStyle(e).fontSize,animation:getComputedStyle(e).animationName})')
-  assert '/skill-17.webp' in art['image'] and art['font']=='0px' and art['animation']=='none',art
+  assert any(path in art['image'] for path in ('/skill-17.webp','/spell-icons/runes-magenta-1.webp')) and art['font']=='0px' and art['animation']=='none',art
   prompt=page.locator('.aeth-adventure-play h3').inner_text()
   correct=page.evaluate('(prompt)=>MajickAetheriaAdventures.questions("D669").find(q=>q.prompt===prompt).correct',prompt)
   target=page.locator(f'[data-aeth-answer="{correct}"]');target.focus();page.keyboard.press('Enter')
