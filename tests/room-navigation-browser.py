@@ -29,6 +29,16 @@ with sync_playwright() as pw:
     assert page.locator(f'.nav [data-nav=\"{route}\"] .label').inner_text().strip()
    assert page.locator('#content').inner_text().strip(),(width,route,'empty room')
    assert page.evaluate('document.documentElement.scrollWidth<=innerWidth+2'),(width,route,'horizontal overflow')
+  # Shared navigation must preserve the selected course and protected academic data.
+  original_course=page.evaluate('S.courseId || S.activeCourse || null')
+  protected=page.evaluate('JSON.stringify({progress:S.progress,legacy:S.legacy,account:S.majickAccount})')
+  for route in routes:
+   page.evaluate('(route)=>navigate(route)',route)
+   page.wait_for_timeout(100)
+   assert page.evaluate('S.screen')==route,(width,route)
+   assert page.evaluate('S.courseId || S.activeCourse || null')==original_course,(width,route,'course changed')
+   assert page.evaluate('JSON.stringify({progress:S.progress,legacy:S.legacy,account:S.majickAccount})')==protected,(width,route,'navigation changed protected academic state')
+  print(f'PASS {width}: shared room navigation preserves course and protected academic state',flush=True)
   page.evaluate("navigate('home')");page.wait_for_timeout(300)
   client=ctx.new_cdp_session(page)
   def listeners():
