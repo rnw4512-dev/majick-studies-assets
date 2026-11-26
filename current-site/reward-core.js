@@ -539,7 +539,7 @@ function cozyDraw(){
 }
 window.majCozyMotion=()=>{cozyMotion=!cozyMotion;cozyDraw()};
 window.majCozyClose=cozyClose;
-function brewCue(kind){document.dispatchEvent(new CustomEvent('majick:brew-stage',{detail:{kind,recipe:cozyRecipe,stage:cozyStage}}));if(cozySound&&!window.MajickCollegiumAtmosphere?.enabled?.())cozyChime()}
+function brewCue(kind){if(typeof CustomEvent==='function'&&typeof document?.dispatchEvent==='function')document.dispatchEvent(new CustomEvent('majick:brew-stage',{detail:{kind,recipe:cozyRecipe,stage:cozyStage}}));if(cozySound&&!window.MajickCollegiumAtmosphere?.enabled?.())cozyChime()}
 window.majCozyQuick=()=>{if(cozyStage===1&&!cozyCommitted){cozyStirs=3;cozyStage=2;cozyDraw();brewCue('stir')}};
 window.majCozyNext=()=>{
  if(!cozyRecipe||cozyCommitted||cozyStage===3)return;
