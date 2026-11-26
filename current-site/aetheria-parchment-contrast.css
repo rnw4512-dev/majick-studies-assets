@@ -6,3 +6,10 @@
 #content :is(.majPathTeaching,#majPathTeaching) button{color:#fff!important}
 /* Gold remains decorative; never use pale gold for copy on a light card. */
 #content :is(.card,.paper,.parchment)[style*="background:#fff"] :is(p,li,small){color:#213d34}
+
+/* Keep academy chrome dark even when reading-comfort mode changes the paper. */
+#app .side,#app .main>.top{background:linear-gradient(135deg,#160e20,#30203b)!important;color:#f5e6c8!important}
+#app .side .brand,#app .side .brand .txt,#app .side .nav button,#app .side .nav button .label,#app .main>.top .titleline,#app .main>.top h1{color:#f3dca9!important;text-shadow:none!important}
+#app .side .brand small{color:#ddcce6!important}
+#app .side .nav button.active{background:linear-gradient(135deg,#503352,#2c203c)!important;color:#fff0d5!important;border-color:#d8b77b!important}
+#app .main>.top .courseSelect{background:#241a32!important;color:#fff4e6!important;border-color:#725a78!important}
