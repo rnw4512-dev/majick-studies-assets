@@ -94,6 +94,9 @@ with sync_playwright() as pw:
    'Personification','Simile','Metaphor','Onomatopoeia','Rhyme','Alliteration'
   ]
   assert path.locator('textarea').count()==6
+  path.get_by_text('Poetry Elements worksheet',exact=True).click()
+  draft=path.get_by_role('textbox',name='Personification',exact=True)
+  draft.fill('The wind whispered through the trees.')
   assert [group.locator('form').count() for group in path.locator('.majPathFormative').all()]==[6,9]
   page.locator('[data-cap-topic="d669-s4-l1-review"]').click()
   page.wait_for_function("document.querySelector('#majPathLessonSelect')?.value==='topic:d669-s4-l1-review'")
@@ -108,9 +111,17 @@ with sync_playwright() as pw:
    form.get_by_role('button',name='Submit',exact=True).click()
    assert form.get_by_role('status').inner_text()=='Correct.'
    reveal.click()
-   expect(form.get_by_role('status')).to_contain_text(answer+' — ')
+   expect(form.get_by_role('status')).to_contain_text(answer+' - ')
+  # Force the learning path to redraw after the answers have been revealed.
+  path.get_by_role('button',name='Practice this topic',exact=True).click()
+  page.evaluate('AetheriaBrand.refresh()')
+  for form,answer in zip(review.locator('form').all(),['Character dialogue','All of the above','Metaphor']):
+   expect(form.get_by_role('radio',name=answer,exact=True)).to_be_checked()
+   expect(form.get_by_role('status')).to_contain_text(answer+' - ')
   assert evidence()==before,'Supplied formative practice must preserve academic evidence and balances'
   select.select_option('topic:d669-s4-l1-4')
+  expect(draft).to_be_visible()
+  expect(draft).to_have_value('The wind whispered through the trees.')
   path.get_by_role('button',name='Practice this topic',exact=True).click()
   page.get_by_text('Practice: Lesson 1.4: Poetry',exact=True).wait_for()
   assert page.evaluate("""()=> {

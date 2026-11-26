@@ -91,7 +91,7 @@ function formativeGroup(box,group){
   feedback.setAttribute('role','status');
   function updateFeedback(){
    reveal.disabled=!response.submitted;
-   if(response.shown)feedback.textContent=q.why?q.answer+' — '+q.why:q.answer;
+   if(response.shown)feedback.textContent=q.why?q.answer+' - '+q.why:q.answer;
    else if(response.submitted)feedback.textContent=response.answer===q.answer?'Correct.':'Incorrect. Try again or show the answer.';
    else feedback.textContent='';
   }
@@ -113,19 +113,28 @@ function formativeGroup(box,group){
  box.append(details);
 }
 
-function poetryWorksheet(box,terms){
+const poetryDrafts=new WeakMap();
+function poetryWorksheet(box,lesson){
+ const entries=poetryDrafts.get(lesson)||new Map();
+ poetryDrafts.set(lesson,entries);
  const details=document.createElement('details');
+ details.open=entries.size>0;
  const title=document.createElement('summary');
  title.textContent='Poetry Elements worksheet';
  details.append(title);
  const directions=document.createElement('p');
- directions.textContent='Find one example of each device in a reading. Record the title, the line or phrase, and the effect it creates. Entries are temporary; copy your notes before leaving.';
+ directions.textContent='Find one example of each device in a reading. Record the title, the line or phrase, and the effect it creates. Copy your notes before closing or reloading this page.';
  details.append(directions);
- terms.forEach(term=>{
+ lesson.anchorRows.forEach(([,term])=>{
   const label=document.createElement('label');
   label.style.display='block';
   const entry=document.createElement('textarea');
   entry.rows=2;
+  entry.value=entries.get(term)||'';
+  entry.addEventListener('input',()=>{
+   if(entry.value)entries.set(term,entry.value);
+   else entries.delete(term);
+  });
   entry.style.cssText='display:block;width:100%;box-sizing:border-box';
   label.append(term,entry);
   details.append(label);
@@ -143,7 +152,7 @@ function sourcePanel(body,item){
  if(!ideas.length){line('p','Source material not yet supplied for this topic.');body.append(box);return}
  if(!sub.formativeGroups||sub.anchorRows)anchorChart(box,sub);const detail=document.createElement('details');const heading=document.createElement('summary');heading.textContent='Detailed lesson notes';detail.append(heading);ideas.forEach(t=>{const p=document.createElement('p');p.textContent=t;detail.append(p)});box.append(detail);
  if(sub.visual?.src){const img=document.createElement('img');img.src=sub.visual.src;img.alt=sub.visual.alt||'Course diagram';img.loading='lazy';img.style.cssText='max-width:100%;height:auto;display:block;margin:10px auto';box.append(img);const a=line('a',sub.visual.alt||'Open source diagram');a.href=sub.visual.src;a.target='_blank';a.rel='noopener noreferrer'}
- if(sub.worksheetTerms&&sub.anchorRows?.length)poetryWorksheet(box,sub.anchorRows.map(([,term])=>term));
+ if(sub.worksheetTerms&&sub.anchorRows?.length)poetryWorksheet(box,sub);
  (sub.formativeGroups||[]).forEach(group=>formativeGroup(box,group));
  const bank=row.course.questionBank||[],ids=new Set(sub.quizIds||[]);
  const qs=bank.filter(q=>ids.has(q.id));
