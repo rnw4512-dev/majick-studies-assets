@@ -24,8 +24,19 @@
  function write(value){
   try{validate(value);value.saveSchemaVersion=SCHEMA;const raw=JSON.stringify(value),prior=localStorage.getItem(KEY);
    // Save current state first. A full quota must not make an older snapshot replace it.
-   localStorage.setItem(KEY,raw);let backupOk=true;
-   if(prior&&prior!==raw){try{parse(prior);localStorage.setItem(PREVIOUS,prior)}catch(_){backupOk=false}}
+   let backupOk=true;
+   try{localStorage.setItem(KEY,raw)}catch(error){
+    if(error?.name!=='QuotaExceededError'&&error?.code!==22&&error?.code!==1014)throw error;
+    // Only release redundant snapshots after validating the existing primary save.
+    // Never remove the current save, recovery pin, or separate study records.
+    if(!prior)throw error;parse(prior);
+    for(const k of [PREVIOUS,KEY+'__session_backup',KEY+'__known_good',KEY+'__good_backup']){
+      const copy=localStorage.getItem(k);
+      if(copy===prior)localStorage.removeItem(k);
+    }
+    localStorage.setItem(KEY,raw);backupOk=false;
+   }
+   if(backupOk&&prior&&prior!==raw){try{parse(prior);localStorage.setItem(PREVIOUS,prior)}catch(_){backupOk=false}}
    const at=Date.now();try{localStorage.setItem(META,JSON.stringify({schema:SCHEMA,at,backupOk,release:window.MAJICK_RELEASE||'3.4.2'}))}catch(_){}
    notify(true,backupOk?'Saved in this browser.':'Saved; recovery snapshot unavailable. Download a backup.');return {ok:true,backupOk,at};
   }catch(error){notify(false,'Progress is not saved: '+error.message);throw error;}
