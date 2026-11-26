@@ -31,13 +31,27 @@ with sync_playwright() as pw:
    assert page.evaluate('document.documentElement.scrollWidth<=innerWidth+2'),(width,route,'horizontal overflow')
   # Shared navigation must preserve the selected course and protected academic data.
   original_course=page.evaluate('S.courseId || S.activeCourse || null')
-  protected=page.evaluate('JSON.stringify({progress:S.progress,legacy:S.legacy,account:S.majickAccount})')
+  # The per-course return bookmark is intentionally updated by navigation.
+  def academic_state():
+   return page.evaluate('()=>{const account={...S.majickAccount};delete account.studyReturn;const progress=JSON.parse(JSON.stringify(S.progress));if(progress[S.activeCourse]?.adaptiveLearning)delete progress[S.activeCourse].adaptiveLearning.lastVisit;return JSON.parse(JSON.stringify({progress,legacy:S.legacy,account}))}')
+  active_course=page.evaluate('S.activeCourse')
+  bookmarks=page.evaluate('S.majickAccount.studyReturn||{}')
+  last_visit=page.evaluate('Number(S.progress[S.activeCourse]?.adaptiveLearning?.lastVisit||0)')
+  protected=academic_state()
   for route in routes:
    page.evaluate('(route)=>navigate(route)',route)
    page.wait_for_timeout(100)
    assert page.evaluate('S.screen')==route,(width,route)
    assert page.evaluate('S.courseId || S.activeCourse || null')==original_course,(width,route,'course changed')
-   assert page.evaluate('JSON.stringify({progress:S.progress,legacy:S.legacy,account:S.majickAccount})')==protected,(width,route,'navigation changed protected academic state')
+   assert page.evaluate('S.activeCourse')==active_course,(width,route,'active course changed')
+   if route in ['learninglab','mission','livinggrimoire']:
+    page.wait_for_function('(x)=>S.majickAccount.studyReturn?.[x.course]===x.route',arg={'course':active_course,'route':route})
+    bookmarks[active_course]=route
+   assert page.evaluate('S.majickAccount.studyReturn||{}')==bookmarks,(width,route,'wrong course bookmark changed')
+   visit=page.evaluate('Number(S.progress[S.activeCourse]?.adaptiveLearning?.lastVisit||0)')
+   assert last_visit<=visit<=page.evaluate('Date.now()'),(width,route,'invalid study-visit timestamp')
+   last_visit=visit
+   assert academic_state()==protected,(width,route,'navigation changed protected academic state')
   print(f'PASS {width}: shared room navigation preserves course and protected academic state',flush=True)
   page.evaluate("navigate('home')");page.wait_for_timeout(300)
   client=ctx.new_cdp_session(page)

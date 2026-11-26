@@ -1,0 +1,17 @@
+'use strict';
+const fs=require('fs'),path=require('path'),vm=require('vm'),crypto=require('crypto'),assert=require('assert/strict');
+const ctx={window:{}};vm.runInNewContext(fs.readFileSync(path.join(process.argv[2]||'current-site','course-packs/d669-course.js'),'utf8'),ctx);
+const c=JSON.parse(JSON.stringify(ctx.window.MajickCourseSources.D669)),audit=JSON.parse(fs.readFileSync(path.join(__dirname,'../../docs/audits/evidence/d669-representation-20261126.json'))),ids=new Set(audit.priorQuestionIds),prior=c.questionBank.filter(q=>ids.has(q.id));
+assert.equal(prior.length,106);assert.equal(crypto.createHash('sha256').update(JSON.stringify(prior.map(q=>Object.fromEntries(audit.protectedAnswerFields.filter(k=>Object.hasOwn(q,k)).map(k=>[k,q[k]]))))).digest('hex'),audit.priorAnswerIdentitySha256);
+assert.equal(new Set(c.questionBank.map(q=>q.id)).size,c.questionBank.length);
+const q=c.questionBank.filter(q=>audit.newQuestionIds.includes(q.id));assert.equal(q.length,5);q.forEach(row=>{assert(row.options.includes(row.answer));assert.equal(row.assessment,'ungraded');assert.equal(row.sourceVerification,'source_transcribed_not_independently_verified')});
+assert.equal(q[0].answer,'Mirrors');assert.equal(q[3].answer,'Supportive reading communities.');
+const section=c.studySections.find(s=>s.title.startsWith('Section 3:')),lesson=section.lessons.find(l=>l.title.startsWith('Lesson 3:'));assert.equal(lesson.sublessons.length,5);
+const rep=lesson.sublessons.find(l=>l.id==='d669-s3-l3-2'),data=rep.representationData;
+assert.deepEqual(data.groups.map(g=>[g.group,g.by.count,g.by.percent,g.about.count,g.about.percent]),[['Black/African',454,14.2,505,15.8],['Asian',586,18.3,381,11.9],['Latinx',379,11.8,291,9.1],['Indigenous',63,2,68,2.1],['Arab',39,1.2,31,.97],['Pacific Islander',4,.12,6,.19]]);
+assert.equal(data.totalBooks,3203);assert.equal(data.year,2023);assert.equal(data.updated,'2024-04-01');assert.equal(rep.provenance.independentlyVerified,false);
+assert(rep.references.some(r=>r.url==='https://www.youtube.com/watch?v=_AAu58SNSyc'));assert(rep.references.some(r=>/936bf782/.test(r.url)));
+const self=section.lessons.find(l=>l.id==='d669-s3-competency-self-check');assert.equal(self.guidedPractice[0].assessment,'ungraded');assert.equal(self.guidedPractice[0].type,'reflection');assert.match(self.guidedPractice[0].modelResponse,/vocabulary growth and reading comprehension/);assert.match(q[4].answer,/record and share their spoken responses/);
+assert.match(c.glossary['cultural intelligence'],/respect and adaptability/);
+assert.equal(section.lessons.find(l=>l.title==='Section 3: Summary').status,'Awaiting source content');
+console.log('PASS D669 representation, exact supplied CCBC by/about data, mirror/review answers, optional source links and all 106 prior answer identities preserved');

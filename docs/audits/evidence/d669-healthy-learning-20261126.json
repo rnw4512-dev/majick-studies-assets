@@ -120,5 +120,30 @@
   "sourceStatus": "user-provided transcription, not independently verified",
   "coverage": "Lesson 2 supplied review plus Lesson 3 introduction and 3.1 excerpt only; later content remains unsupplied",
   "multiSelectHandling": "All three supplied correct responses retained in an ungraded guided-reference activity; no new multi-select scoring engine.",
-  "priorBankSha256": "1c31c21131d95996b6b7d9ad95fd52ee61fc7bb90112a69cd583e900f7b3d926"
+  "priorBankSha256": "1c31c21131d95996b6b7d9ad95fd52ee61fc7bb90112a69cd583e900f7b3d926",
+  "protectedAnswerFields": [
+    "id",
+    "topicId",
+    "section",
+    "prompt",
+    "options",
+    "answer",
+    "difficulty",
+    "format",
+    "skill",
+    "learningPathLessonId",
+    "lessonId"
+  ],
+  "priorAnswerIdentitySha256": "dbeb61a1b42250ea2d53f92a1610b770add8161ebfac067b9675b864ccc1c9b4",
+  "reviewedRationaleCorrections": {
+    "commit": "c9429e33cc9d5ae7054d242f620e2156279f0747",
+    "questionIds": [
+      "d669-s3-l1-3-transfer-1",
+      "d669-s3-l2-1-transfer-1"
+    ],
+    "fields": [
+      "why"
+    ],
+    "note": "Keep reviewed formative-assessment and morphology rationale corrections; saved answer identity is unchanged. Full-file changes remain protected by the source manifest."
+  }
 }

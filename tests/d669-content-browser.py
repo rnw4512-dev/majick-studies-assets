@@ -9,6 +9,7 @@ class Quiet(SimpleHTTPRequestHandler):
 root=Path(sys.argv[1] if len(sys.argv)>1 else 'current-site').resolve()
 server=ThreadingHTTPServer(('127.0.0.1',0),partial(Quiet,directory=str(root)));threading.Thread(target=server.serve_forever,daemon=True).start()
 url=os.environ.get('MAJICK_URL',f'http://127.0.0.1:{server.server_port}/')
+evidence_dir=Path(os.environ.get('RECOVERY_EVIDENCE','/tmp/aetheria-learning-evidence'))/'source-topics';evidence_dir.mkdir(parents=True,exist_ok=True)
 with sync_playwright() as pw:
  browser=pw.chromium.launch(executable_path=os.environ.get('CHROMIUM_PATH','/usr/bin/chromium'),args=['--no-sandbox'])
  for width in [390,820,1366]:
@@ -54,12 +55,12 @@ with sync_playwright() as pw:
    page.wait_for_function('Array.from(document.querySelector("#majPathLessonSelect")?.options||[]).some(o=>o.value==="topic:d669-s3-l3-1")')
   except Exception:
    print('CATALOG DIAGNOSTIC',width,page.evaluate('({course:S.activeCourse,selectors:[...document.querySelectorAll(".courseSelect")].map(e=>e.value),options:[...document.querySelectorAll("#majPathLessonSelect option")].map(e=>e.value)})'),flush=True);raise
-  for topic in ['d669-s3-l2-review','d669-s3-l3-intro','d669-s3-l3-1']:
+  for topic in ['d669-s3-l2-review','d669-s3-l3-intro','d669-s3-l3-1','d669-s3-l3-2','d669-s3-l3-summary','d669-s3-l3-review','d669-s3-competency-self-check','d669-s4-intro','d669-s4-l1-intro']:
    page.locator('#majConnectedPath>details').evaluate('(e)=>e.open=true');select.select_option('topic:'+topic)
    panel=page.locator('#majConnectedPath .majPathEvidence').filter(has=page.locator('h3')).first
-   data=page.evaluate('(id)=>{const c=MajickCourseSources.D669,sub=c.studySections.flatMap(s=>s.lessons||[]).flatMap(l=>l.sublessons||[l]).find(t=>t.id===id);return {title:sub.title,questions:c.questionBank.filter(q=>(sub.quizIds||[]).includes(q.id)&&q.id.startsWith("d669-s3-supplied-20261126-"))}}',topic)
+   data=page.evaluate('(id)=>{const c=MajickCourseSources.D669,sub=c.studySections.flatMap(s=>s.lessons||[]).flatMap(l=>l.sublessons||[l]).find(t=>t.id===id);return {title:sub.title,questions:c.questionBank.filter(q=>(sub.quizIds||[]).includes(q.id)&&(q.id.startsWith("d669-s3-supplied-20261126-")||q.id.startsWith("d669-s3-representation-20261126-")||q.id.startsWith("d669-s3-competency-20261126-")||q.id.startsWith("d669-s4-supplied-20261126-")))}}',topic)
    try:
-    page.wait_for_function('(title)=>[...document.querySelectorAll("#majConnectedPath .majPathEvidence h3")].some(e=>e.textContent.includes(title))',arg=data['title'])
+    page.wait_for_function('(title)=>[...document.querySelectorAll("#majConnectedPath .majPathEvidence h3")].some(e=>e.textContent.replace(/[—–]/g,"-").includes(title.replace(/[—–]/g,"-")))',arg=data['title'])
    except Exception:
     print('TOPIC DIAGNOSTIC',width,topic,data['title'],page.locator('#majConnectedPath').inner_text()[:1800],flush=True);raise
    art=panel.locator('.majPathAnchor img');assert art.count()>0
@@ -67,10 +68,21 @@ with sync_playwright() as pw:
     img.scroll_into_view_if_needed();assert img.evaluate('async e=>{await e.decode();return e.naturalWidth>0&&e.alt===""&&e.parentElement.getAttribute("aria-hidden")==="true"}')
    if topic=='d669-s3-l3-1':
     assert art.count()==5 and 'Supplied correct choices (ungraded)' in panel.inner_text()
+   if topic=='d669-s3-l3-2':
+    assert art.count()==4 and panel.locator('iframe').count()==0
+    video=panel.locator('a').filter(has_text='Mirrors, Windows and Sliding Glass Doors');assert video.get_attribute('href')=='https://www.youtube.com/watch?v=_AAu58SNSyc' and 'Reading Rockets' in video.inner_text()
+    transcript=panel.locator('a[href*="936bf782"]');assert transcript.get_attribute('target')=='_blank' and 'transcript' in transcript.inner_text()
+    panel.locator('details').first.locator('summary').click()
+    notes=panel.inner_text();assert 'books by: 454 (14.2%); books about: 505 (15.8%)' in notes and 'books by: 4 (0.12%); books about: 6 (0.19%)' in notes
+   if topic=='d669-s3-competency-self-check':
+    assert 'Supplied model explanation (ungraded)' in panel.inner_text() and 'real-time feedback' in panel.inner_text()
+   if topic in ['d669-s3-l3-2','d669-s4-l1-intro']:
+    panel.locator('.majPathAnchor').screenshot(path=str(evidence_dir/f'{topic}-{width}.png'))
    for q in data['questions']:
     item=panel.locator('details').filter(has=page.get_by_text(q['prompt'],exact=True));item.locator('summary').click()
     item.get_by_role('button',name=q['answer'],exact=True).click();assert item.get_by_role('status').inner_text().startswith('Correct.')
    assert page.evaluate('document.documentElement.scrollWidth<=innerWidth+2'),(width,topic)
+  select.select_option('topic:d669-s3-l3-1')
   page.evaluate('render();render()')
   page.wait_for_selector('#majPathLessonSelect')
   assert select.input_value()=='topic:d669-s3-l3-1','Same-context redraw lost the selected source topic'
