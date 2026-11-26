@@ -50,6 +50,47 @@ with sync_playwright() as pw:
   page.evaluate("navigate('games');startGuardianGauntlet()")
   page.locator('.realmGauntlet .question').wait_for(state='visible');assert page.evaluate('!!session.current&&MajickGameRealm.realmQuestionPool().some(q=>q.id===session.current.id)')
   page.evaluate('session.current=null;render()');assert page.get_by_role('heading',name='Practice questions are not available yet',exact=True).is_visible()
+  # Complete every workshop mode in each section without awarding mastery or currency.
+  page.evaluate("navigate('games')")
+  for section in [1,2,3]:
+   page.locator(f'[data-exp-section="{section}"]').click()
+   for mode in ['sort','match','classroom','forge','sequence','scenario']:
+    basic=mode in ['sort','match','classroom']
+    attr='exp' if basic else 'deep'
+    button=page.locator(f'[data-{attr}-mode="{mode}"]').first
+    assert button.is_enabled(),(width,section,mode)
+    protected_game=page.evaluate('JSON.stringify({progress:S.progress,legacy:S.legacy,account:S.majickAccount})')
+    rows=page.evaluate("(mode)=>MajickLearningExperiences."+("courseGames" if basic else "deepPool")+"('D669',mode)",mode)
+    button.click()
+    stage=page.locator('.aeth-mini-stage' if basic else '.aeth-deep-stage')
+    for _ in range(5):
+     if basic and page.locator('.aeth-mini-result').count():break
+     if not basic and stage.get_attribute('role')=='status':break
+     if basic:
+      prompt=stage.locator('h3').inner_text()
+      # Matching and sorting rotate through the same underlying section bank.
+      candidates=page.evaluate("(mode)=>MajickLearningExperiences.courseGames('D669',mode)",mode)
+      q=next((q for q in rows+candidates if q['prompt']==prompt),None)
+      assert q is not None,(mode,prompt)
+      options=stage.locator('[data-exp-answer]').all_inner_texts()
+      # Match by answer text because the concept subset can rotate.
+      answer=q['options'][q['correct']]
+      idx=next(i for i,t in enumerate(options) if t.strip().endswith(answer))
+      stage.locator(f'[data-exp-answer="{idx}"]').click()
+      stage.locator('[data-exp-next]').click()
+     elif mode=='scenario':
+      prompt=stage.locator('h3').inner_text()
+      q=next(q for q in rows if q['prompt']==prompt)
+      stage.locator(f'[data-deep-tile="{q["correct"]}"]').click()
+      stage.locator('[data-deep-next]').click()
+     else:
+      prompt=stage.locator('h3').inner_text()
+      q=next(q for q in rows if q.get('clue',q.get('title'))==prompt)
+      for i in range(len(q['parts'])):stage.locator(f'[data-deep-tile="{i}"]').click()
+      stage.locator('[data-deep-check]').click()
+      stage.locator('[data-deep-next]').click()
+    assert page.locator('.aeth-mini-result' if basic else '.aeth-deep-stage[role="status"]').is_visible(),(section,mode)
+    assert page.evaluate('JSON.stringify({progress:S.progress,legacy:S.legacy,account:S.majickAccount})')==protected_game
   assert not errors,errors
   print('PASS',width,'same-skill fresh cases, nonrepeating course rounds, readable feedback, saved game/answer counts, backup/import/reload and safe Gauntlet',flush=True);context.close()
  browser.close()
