@@ -12,11 +12,6 @@
 .majPathEvidence[data-source-document] :is(p,li,summary,h3,strong,a){color:#302737!important;-webkit-text-fill-color:#302737!important}
 .wsModelReference{padding:8px;border-radius:7px;max-width:100%}.wsModelReference summary{cursor:pointer;min-height:32px}.wsModelReference img{max-width:45%;object-fit:contain}.wsModelReference a{display:block;color:#45304f}
 .majRecipe>span[aria-hidden=true]{font-size:0!important;background:center/contain no-repeat;display:block;width:64px;height:80px}
-.majRecipe:nth-of-type(5n+1)>span[aria-hidden=true]{background-image:url('./assets/licensed/models/potion-1.webp')}
-.majRecipe:nth-of-type(5n+2)>span[aria-hidden=true]{background-image:url('./assets/licensed/models/potion-2.webp')}
-.majRecipe:nth-of-type(5n+3)>span[aria-hidden=true]{background-image:url('./assets/licensed/models/potion-3.webp')}
-.majRecipe:nth-of-type(5n+4)>span[aria-hidden=true]{background-image:url('./assets/licensed/models/potion-4.webp')}
-.majRecipe:nth-of-type(5n)>span[aria-hidden=true]{background-image:url('./assets/licensed/models/potion-5.webp')}
 .wsModelReference{background-image:linear-gradient(#fbf5e8f2,#fbf5e8f2),url('./assets/licensed/textures/sage.webp')}
 #masScholarJournal .masJournalTabs{background-image:linear-gradient(#2b1e36f2,#2b1e36f2),url('./assets/licensed/textures/slate.webp')}
 .majPathEvidence[data-source-document] :focus-visible,.wsModelReference :focus-visible{outline:3px solid #315c58!important;outline-offset:3px}
@@ -93,11 +88,6 @@ body:is([data-majick-polish-room=guide],[data-majick-polish-room=livinggrimoire]
 @media(max-width:640px){#majCozyBrewing .majCozyModal{padding:18px 14px}#majCozyBrewing .majCozyScene{min-height:160px;aspect-ratio:8/5}}
 #majCozyBrewing .majCozyActions button:first-child{background:#65417e;color:#fff9ed}
 /* Original hand-painted bottle colors, matched to the existing recipe order. */
-.majRecipe:nth-of-type(5n+1)>span[aria-hidden=true]{background-image:url('./assets/licensed/potions/purple.webp')}
-.majRecipe:nth-of-type(5n+2)>span[aria-hidden=true]{background-image:url('./assets/licensed/potions/aqua.webp')}
-.majRecipe:nth-of-type(5n+3)>span[aria-hidden=true]{background-image:url('./assets/licensed/potions/red.webp')}
-.majRecipe:nth-of-type(5n+4)>span[aria-hidden=true]{background-image:url('./assets/licensed/potions/green.webp')}
-.majRecipe:nth-of-type(5n)>span[aria-hidden=true]{background-image:url('./assets/licensed/potions/orange.webp')}
 /* Full-color crystal art uses smooth scaling; existing labels and click targets stay intact. */
 .masJournalTabs [data-journal-tab=achievements]::before{image-rendering:auto}
 
@@ -227,3 +217,16 @@ body[data-majick-polish-room=constellation] #majickRoomRibbon::after{background-
 #learnPractice details>summary{cursor:pointer;min-height:36px;padding:8px 0}
 #learnPractice .wholeQuestResult>img{float:right;margin:0 0 8px 12px;object-fit:contain}
 @media(max-width:480px){#learnPractice .wholeQuestMeter{gap:6px}#learnPractice .wholeQuestMeter progress{flex-basis:100%}}
+
+/* Potion identity belongs to cabinetArt(recipe.id), never row position. */
+.majRecipe>span[aria-hidden=true]{background-image:none!important}
+.majRecipe>span[aria-hidden=true]>img{display:block;width:64px!important;height:80px!important;object-fit:contain;image-rendering:auto}
+#majCozyBrewing .majCozyModal{background-image:radial-gradient(ellipse at 50% 35%,#55346de8,#1a1029f5 72%),url('./assets/licensed/textures/slate.webp')}
+#majCozyBrewing .majCozyScene{border-radius:12px;background:radial-gradient(ellipse at 50% 70%,#c4a07522,transparent 70%);border-bottom:1px solid #a88b5955}
+.huStudio .huCard{position:relative;padding-left:48px!important;min-height:70px}
+.huStudio .huCard::before{content:"";position:absolute;left:10px;top:14px;width:29px;height:29px;background:url('./assets/licensed/milestones/book.png') center/contain no-repeat;pointer-events:none}
+.huStudio .huCard[data-hu-open="d669-features"]::before,.huStudio .huCard[data-hu-open="d669-genres"]::before{background-image:url('./assets/rewards/solstice/items/astronomy-book-stack.webp')}
+.huStudio .huCard[data-hu-open="d669-rich"]::before{background-image:url('./assets/licensed/plants/flowers.webp')}
+.huStudio .huCard[data-hu-open="d669-oral"]::before{background-image:url('./assets/licensed/milestones/globe.png')}
+body[data-majick-polish-room=hands-on] #majickRoomRibbon::after{background-image:url('./assets/licensed/milestones/book.png'),url('./assets/licensed/images/runestones.webp'),radial-gradient(ellipse at 58% 94%,#070b0dcc,transparent 65%)}
+body[data-majick-polish-room=vault] #majickRoomRibbon::after{background-image:url('./assets/licensed/images/bag.webp'),url('./assets/licensed/potions/purple.webp'),radial-gradient(ellipse at 58% 94%,#070b0dcc,transparent 65%)}
