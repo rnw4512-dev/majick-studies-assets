@@ -33,6 +33,8 @@ function play(type,{target=null,label=null}={}){
   const count=type==='touch'?3:type==='course'?22:type==='lesson'?13:type==='guardian'?9:5;
   for(let i=0;i<count;i++){
    const star=document.createElement('i');star.className='majickFxParticle';
+   // Kenney Particle Pack, star_05, CC0; resized to 32px WebP.
+   if(type!=='touch'){star.style.background='transparent url("data:image/webp;base64,UklGRtIBAABXRUJQVlA4WAoAAAAQAAAAHwAAHwAAQUxQSCoBAAANuS5E9D80lCNJciRJi/nn9/D1TB0kwIoAk/iH2HskCej+R0zABHzK/+tnv4H8B8wy/wEe42/84lcQOzs42xLMXnBkdqKdEcHBfA/oqzEFa+kXxtXEFglQiMhLCgKzQAQuF81cpk5QIytXM+l8U1M1+NIuuMEcDvOTvX92ew7m4BvSAhPnY59Vagb5QJvszDyZOkeNxkwwZ9uxJ4PMa5m92UwgYhi4xdmWdloAediBBG4UlpenQ9CDIwMw95zxnNd8tOjwtsGO9ez5g+fsOc+81y5sy4wuVrM6Ju9q1HQW47myY+Y7JDMc3Trz8YKUqzbYkdhZn3puxwtlrABziLphuWIsOOniGNIVwCSLjDS56mxCIpTFjlfYBJw3QEiuy6NmvCl/q8k/LH8dVlA4IIIAAABQBQCdASogACAAPo08l0elI6IhMAwAoBGJaQAA8HT6rEWOW3xa5s6IOt+oqWbsrgpCEwAA/v72V/5AxJgBtVyB7+RKZzXhzx5v92Abs+aoeuiK77Zjt9FtAkjJssQblCZcaTOJ5K7YxkXTqymTkIygthtkT+ykslrSUfRZ+TstqAAA") center/contain no-repeat';star.style.width='18px';star.style.height='18px';star.style.borderRadius='0';star.style.filter='drop-shadow(0 0 3px #f2cf8e)';}
    star.style.setProperty('--angle',(i*360/count)+'deg');
    star.style.setProperty('--dist',(type==='touch'?18:type==='course'?100:70)+(i%3)*8+'px');
    star.style.setProperty('--delay',(i%4)*45+'ms');
@@ -60,5 +62,5 @@ function glimmer(event){
 }
 document.addEventListener('pointerdown',glimmer,{passive:true});
 document.addEventListener('focusin',glimmer);
-window.MajickAnimationEffects=Object.freeze({play,clear,types:Object.keys(TYPES),version:'1.0'});
+window.MajickAnimationEffects=Object.freeze({play,clear,types:Object.keys(TYPES),version:'1.1-kenney-rewards'});
 })();
