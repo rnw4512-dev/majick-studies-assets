@@ -21,7 +21,7 @@
    const source=TRACKS[selectedTrack].path+'?v='+encodeURIComponent(window.MAJICK_RELEASE||'source');
    if(!music){music=new window.Audio(source);loadedTrack=selectedTrack;music.loop=true;music.preload='none';music.addEventListener('error',()=>{enabled=false;error='The selected music could not load. Try another track or check your connection.';stop();decorate()});music.addEventListener('ended',()=>{if(enabled){enabled=false;decorate()}})}
    else if(loadedTrack!==selectedTrack){music.pause();music.preload='none';music.src=source;loadedTrack=selectedTrack}
-   music.volume=volume();return music;
+   music.volume=volume()*(window.speechSynthesis?.speaking?0.18:1);return music;
  }
  async function selectTrack(id){
    if(!Object.hasOwn(TRACKS,id))return false;
@@ -83,6 +83,26 @@
    else if(r==='companions'){ping(329.63,.13,.006,'sine',493.88)}
    return true;
  }
+ const cueKeys=new Map();
+ function eventCue(kind,key){
+   if(!enabled||document.hidden||!ctx||ctx.state!=='running'||volume()<=0)return;
+   const settings=window.MajickGuardianCore?.settings?.();if(settings?.enabled===false||settings?.magic===false)return;
+   if(window.speechSynthesis?.speaking)return;
+   if(key){if(cueKeys.has(key))return;cueKeys.set(key,Date.now());if(cueKeys.size>300)cueKeys.delete(cueKeys.keys().next().value)}
+   const v=Math.min(.025,volume()*.07);
+   if(kind==='correct'){ping(659.25,.12,v,'sine');ping(880,.16,v*.8,'sine',null,.09)}
+   else if(kind==='incorrect'){ping(392,.18,v*.5,'sine',349.23)}
+   else if(kind==='mastery'||kind==='course'){[523.25,659.25,783.99,1046.5].forEach((f,i)=>ping(f,.25,v*.65,'sine',null,i*.095))}
+   else if(kind==='ingredient'){ping(330,.10,v*.65,'triangle',220)}
+   else if(kind==='stir'){ping(180,.18,v*.45,'sine',360)}
+   else if(kind==='bottle'){ping(523.25,.15,v,'sine',783.99);ping(1046.5,.2,v*.6,'sine',null,.12)}
+ }
+ document.addEventListener('majick:verified-study-answer',e=>{const d=e.detail||{};if(d.historical)return;eventCue(d.correct?'correct':'incorrect',d.key?'answer:'+d.key:null)});
+ document.addEventListener('majick:celebrate',e=>{const d=e.detail||{};if(d.verified)eventCue(d.type,d.key?'celebrate:'+d.key:null)});
+ document.addEventListener('majick:brew-stage',e=>{const d=e.detail||{};eventCue(d.kind)});
+ function speechVolume(){if(music)music.volume=volume()*(window.speechSynthesis?.speaking?.valueOf()?0.18:1)}
+ document.addEventListener('visibilitychange',speechVolume);
+ setInterval(()=>{if(enabled&&music&&!music.paused)speechVolume()},300);
  function decorate(){
    const r=room();
    if(lastRoom&&lastRoom!==r&&enabled)micro('enter',r);
@@ -117,7 +137,7 @@
  document.addEventListener('click',ev=>{
    if(!enabled)return;
    const t=ev.target?.closest?.('.v3358Door,.v3354LessonTabs button,[data-v3338-begin],[data-v3338-phase],.realmTrialCard');
-   if(!t){const control=ev.target?.closest?.('button,summary,[role=button]');if(control&&!control.disabled&&!control.closest('.caSoundControls'))micro('touch');return}
+   if(!t)return;
    if(t.matches?.('.v3354LessonTabs button'))micro('page','livinggrimoire');
    else if(t.matches?.('[data-v3338-begin],[data-v3338-phase]'))micro('chalk','learninglab');
    else if(t.matches?.('.v3358Door'))micro('bell','home');
