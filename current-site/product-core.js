@@ -159,16 +159,13 @@ function openMemoryReview(){
  setTimeout(()=>window.MajickAdaptiveLearning?.show?.(),120);
 }
 function loopHtml(){
- const s=snapshot(),d=s.daily;
- const items=STAGES.map(stage=>{
-   const done=!!d?.stages?.[stage.key],current=s.next.stage===stage.key;
-   return '<li class="'+(done?'done ':'')+(current?'current':'')+'"><i>'+(done?'✓':stage.label==='Guardian'?'◆':'✦')+'</i><span>'+escape(stage.label)+'</span></li>';
- }).join('');
- return '<section id="v3400DailyLoop" class="v3400DailyLoop">'+
-  '<header><div><small>DAILY STUDY LOOP</small><h3>'+escape(s.next.label)+'</h3><p>'+escape(s.next.detail||'')+'</p></div><b>'+s.progress.done+'/'+s.progress.total+'</b></header>'+
-  '<ol>'+items+'</ol>'+
-  '<div class="v3400LoopActions"><button class="v34Button primary" type="button" data-v3400-next>'+escape(s.next.stage==='complete'?'Visit Dormitory':s.next.label)+'</button><span>'+escape(d?.lessonTitle||s.lesson?.title||s.course)+'</span></div>'+
- reviewHtml()+'</section>';
+ const s=snapshot(),d=s.daily,rec=window.MajickCourseLearningPath?.recommendation?.(course());
+ const evidence=rec?.evidence||[],proficient=evidence.filter(x=>x.mastered||x.proficient).length;
+ const items=STAGES.map(stage=>'<li class="'+(d?.stages?.[stage.key]?'done ':'')+(s.next.stage===stage.key?'current':'')+'"><i>'+(d?.stages?.[stage.key]?'✓':'✦')+'</i><span>'+escape(stage.label)+'</span></li>').join('');
+ return '<section id="v3400DailyLoop" class="v3400DailyLoop aethFocusedStudy"><header><div><small>YOUR SCHOLAR JOURNEY · '+escape(s.course)+'</small><h3>Ready to continue?</h3><p>'+escape(s.content?.selectedLesson?.title||s.course)+'</p></div><img src="assets/licensed/milestones/book.png" alt="" width="52" height="52"></header>'+
+ '<div class="aethNextStudy"><small>RECOMMENDED NEXT STEP</small><h4>'+escape(s.next.detail||s.next.label)+'</h4><button class="v34Button primary" type="button" data-v3400-next>'+escape(s.next.label)+' →</button></div>'+
+ '<div class="aethStudyChoices"><button type="button" class="v34Button" data-study-choice="weak" '+(rec?.weak?'':'disabled')+'><b>Strengthen weak skills</b><small>'+escape(rec?.weak?.title||'No weak topic identified yet')+'</small></button><button type="button" class="v34Button" data-study-choice="review" '+(rec?.review?'':'disabled')+'><b>Memory quest</b><small>'+Number(rec?.reviewCount||0)+' skills due for review</small></button><button type="button" class="v34Button" data-study-choice="practice"><b>Whole course practice</b><small>Guided · hands-on · independent</small></button></div>'+
+ '<details><summary>Progress and daily milestones</summary><p>'+proficient+' of '+evidence.length+' tracked skills proficient or mastered</p><ol>'+items+'</ol>'+reviewHtml()+'</details></section>';
 }
 function decorateHome(){
  if(window.S?.screen!=='home')return;
@@ -180,7 +177,11 @@ function decorateHome(){
  if(doors.id==='v3377CampusDoors')doors.insertAdjacentElement('beforebegin',el);else doors.insertAdjacentElement('afterend',el);
  el.querySelector('[data-v3400-next]')?.addEventListener('click',goNext);
  el.querySelector('[data-v3400-memory]')?.addEventListener('click',openMemoryReview);
- const memory=el.querySelector('.v3400MemoryQuest');if(memory)el.insertAdjacentElement('afterend',memory);
+ el.querySelectorAll('[data-study-choice]').forEach(b=>b.addEventListener('click',()=>{
+ const kind=b.dataset.studyChoice,path=window.MajickCourseLearningPath,rec=path?.recommendation?.(course());
+ if(kind!=='practice'&&rec?.[kind]&&path?.openItem?.(rec[kind].id,course()))return;
+ window.navigate?.('learninglab');setTimeout(()=>window.MajickLearningLab?.showTab?.('practice'),200);
+ }));
  if(!ensure()?.stages?.entered)record('enter-college',{screen:'home'});
 }
 function dormStoryHtml(){
