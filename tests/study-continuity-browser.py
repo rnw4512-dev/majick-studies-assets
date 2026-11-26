@@ -79,7 +79,7 @@ with sync_playwright() as pw:
       stage.locator(f'[data-exp-answer="{idx}"]').click()
       stage.locator('[data-exp-next]').click()
      elif mode=='scenario':
-      prompt=stage.locator('h3').inner_text()
+      prompt=stage.locator(':scope > p').first.inner_text()
       q=next(q for q in rows if q['prompt']==prompt)
       stage.locator(f'[data-deep-tile="{q["correct"]}"]').click()
       stage.locator('[data-deep-next]').click()
