@@ -1,0 +1,656 @@
+{
+  "explosion-magenta-1.png": {
+    "file": "explosion-magenta-1.webp",
+    "width": 128,
+    "height": 128,
+    "bytes": 20650
+  },
+  "explosion-magenta-2.png": {
+    "file": "explosion-magenta-2.webp",
+    "width": 128,
+    "height": 128,
+    "bytes": 23992
+  },
+  "explosion-magenta-3.png": {
+    "file": "explosion-magenta-3.webp",
+    "width": 128,
+    "height": 128,
+    "bytes": 22074
+  },
+  "explosion-orange-1.png": {
+    "file": "explosion-orange-1.webp",
+    "width": 128,
+    "height": 128,
+    "bytes": 16824
+  },
+  "explosion-orange-2.png": {
+    "file": "explosion-orange-2.webp",
+    "width": 128,
+    "height": 128,
+    "bytes": 21438
+  },
+  "explosion-orange-3.png": {
+    "file": "explosion-orange-3.webp",
+    "width": 128,
+    "height": 128,
+    "bytes": 23010
+  },
+  "explosion-red-1.png": {
+    "file": "explosion-red-1.webp",
+    "width": 128,
+    "height": 128,
+    "bytes": 16332
+  },
+  "explosion-red-2.png": {
+    "file": "explosion-red-2.webp",
+    "width": 128,
+    "height": 128,
+    "bytes": 21704
+  },
+  "explosion-red-3.png": {
+    "file": "explosion-red-3.webp",
+    "width": 128,
+    "height": 128,
+    "bytes": 23924
+  },
+  "explosion-royal-1.png": {
+    "file": "explosion-royal-1.webp",
+    "width": 128,
+    "height": 128,
+    "bytes": 21138
+  },
+  "explosion-royal-2.png": {
+    "file": "explosion-royal-2.webp",
+    "width": 128,
+    "height": 128,
+    "bytes": 26392
+  },
+  "explosion-royal-3.png": {
+    "file": "explosion-royal-3.webp",
+    "width": 128,
+    "height": 128,
+    "bytes": 27772
+  },
+  "explosion-sky-1.png": {
+    "file": "explosion-sky-1.webp",
+    "width": 128,
+    "height": 128,
+    "bytes": 18532
+  },
+  "explosion-sky-2.png": {
+    "file": "explosion-sky-2.webp",
+    "width": 128,
+    "height": 128,
+    "bytes": 22216
+  },
+  "explosion-sky-3.png": {
+    "file": "explosion-sky-3.webp",
+    "width": 128,
+    "height": 128,
+    "bytes": 22618
+  },
+  "frame-0-acid.png": {
+    "file": "frame-0-acid.webp",
+    "width": 128,
+    "height": 128,
+    "bytes": 3748
+  },
+  "frame-0-blue.png": {
+    "file": "frame-0-blue.webp",
+    "width": 128,
+    "height": 128,
+    "bytes": 4536
+  },
+  "frame-0-eerie.png": {
+    "file": "frame-0-eerie.webp",
+    "width": 128,
+    "height": 128,
+    "bytes": 4742
+  },
+  "frame-0-grey.png": {
+    "file": "frame-0-grey.webp",
+    "width": 128,
+    "height": 128,
+    "bytes": 1812
+  },
+  "frame-0-jade.png": {
+    "file": "frame-0-jade.webp",
+    "width": 128,
+    "height": 128,
+    "bytes": 3028
+  },
+  "frame-0-magenta.png": {
+    "file": "frame-0-magenta.webp",
+    "width": 128,
+    "height": 128,
+    "bytes": 1956
+  },
+  "frame-0-orange.png": {
+    "file": "frame-0-orange.webp",
+    "width": 128,
+    "height": 128,
+    "bytes": 3362
+  },
+  "frame-0-red.png": {
+    "file": "frame-0-red.webp",
+    "width": 128,
+    "height": 128,
+    "bytes": 3226
+  },
+  "frame-0-royal.png": {
+    "file": "frame-0-royal.webp",
+    "width": 128,
+    "height": 128,
+    "bytes": 4824
+  },
+  "frame-0-sky.png": {
+    "file": "frame-0-sky.webp",
+    "width": 128,
+    "height": 128,
+    "bytes": 3608
+  },
+  "frame-1-acid.png": {
+    "file": "frame-1-acid.webp",
+    "width": 128,
+    "height": 128,
+    "bytes": 5810
+  },
+  "frame-1-blue.png": {
+    "file": "frame-1-blue.webp",
+    "width": 128,
+    "height": 128,
+    "bytes": 6218
+  },
+  "frame-1-grey.png": {
+    "file": "frame-1-grey.webp",
+    "width": 128,
+    "height": 128,
+    "bytes": 2650
+  },
+  "frame-2-grey.png": {
+    "file": "frame-2-grey.webp",
+    "width": 128,
+    "height": 128,
+    "bytes": 2462
+  },
+  "frame-2-magenta.png": {
+    "file": "frame-2-magenta.webp",
+    "width": 128,
+    "height": 128,
+    "bytes": 3332
+  },
+  "frame-2-orange.png": {
+    "file": "frame-2-orange.webp",
+    "width": 128,
+    "height": 128,
+    "bytes": 4576
+  },
+  "frame-3-grey.png": {
+    "file": "frame-3-grey.webp",
+    "width": 128,
+    "height": 128,
+    "bytes": 4824
+  },
+  "frame-3-jade.png": {
+    "file": "frame-3-jade.webp",
+    "width": 128,
+    "height": 128,
+    "bytes": 8950
+  },
+  "frame-3-red.png": {
+    "file": "frame-3-red.webp",
+    "width": 128,
+    "height": 128,
+    "bytes": 8090
+  },
+  "frame-4-grey.png": {
+    "file": "frame-4-grey.webp",
+    "width": 128,
+    "height": 128,
+    "bytes": 5266
+  },
+  "frame-4-royal.png": {
+    "file": "frame-4-royal.webp",
+    "width": 128,
+    "height": 128,
+    "bytes": 11498
+  },
+  "frame-4-sky.png": {
+    "file": "frame-4-sky.webp",
+    "width": 128,
+    "height": 128,
+    "bytes": 10510
+  },
+  "frame-5-grey.png": {
+    "file": "frame-5-grey.webp",
+    "width": 128,
+    "height": 128,
+    "bytes": 2582
+  },
+  "frame-5-magenta.png": {
+    "file": "frame-5-magenta.webp",
+    "width": 128,
+    "height": 128,
+    "bytes": 5538
+  },
+  "frame-5-orange.png": {
+    "file": "frame-5-orange.webp",
+    "width": 128,
+    "height": 128,
+    "bytes": 5648
+  },
+  "frame-6-grey.png": {
+    "file": "frame-6-grey.webp",
+    "width": 128,
+    "height": 128,
+    "bytes": 5562
+  },
+  "frame-6-royal.png": {
+    "file": "frame-6-royal.webp",
+    "width": 128,
+    "height": 128,
+    "bytes": 10350
+  },
+  "frame-6-sky.png": {
+    "file": "frame-6-sky.webp",
+    "width": 128,
+    "height": 128,
+    "bytes": 11652
+  },
+  "frame-7-blue.png": {
+    "file": "frame-7-blue.webp",
+    "width": 128,
+    "height": 128,
+    "bytes": 10756
+  },
+  "frame-7-eerie.png": {
+    "file": "frame-7-eerie.webp",
+    "width": 128,
+    "height": 128,
+    "bytes": 11410
+  },
+  "frame-7-grey.png": {
+    "file": "frame-7-grey.webp",
+    "width": 128,
+    "height": 128,
+    "bytes": 5444
+  },
+  "frame-8-acid.png": {
+    "file": "frame-8-acid.webp",
+    "width": 128,
+    "height": 128,
+    "bytes": 6208
+  },
+  "frame-8-eerie.png": {
+    "file": "frame-8-eerie.webp",
+    "width": 128,
+    "height": 128,
+    "bytes": 6360
+  },
+  "frame-8-grey.png": {
+    "file": "frame-8-grey.webp",
+    "width": 128,
+    "height": 128,
+    "bytes": 3310
+  },
+  "frame-9-grey.png": {
+    "file": "frame-9-grey.webp",
+    "width": 128,
+    "height": 128,
+    "bytes": 5312
+  },
+  "frame-9-jade.png": {
+    "file": "frame-9-jade.webp",
+    "width": 128,
+    "height": 128,
+    "bytes": 10046
+  },
+  "frame-9-red.png": {
+    "file": "frame-9-red.webp",
+    "width": 128,
+    "height": 128,
+    "bytes": 9752
+  },
+  "horror-acid-1.png": {
+    "file": "horror-acid-1.webp",
+    "width": 128,
+    "height": 128,
+    "bytes": 15684
+  },
+  "horror-acid-2.png": {
+    "file": "horror-acid-2.webp",
+    "width": 128,
+    "height": 128,
+    "bytes": 18370
+  },
+  "horror-acid-3.png": {
+    "file": "horror-acid-3.webp",
+    "width": 128,
+    "height": 128,
+    "bytes": 21730
+  },
+  "horror-eerie-1.png": {
+    "file": "horror-eerie-1.webp",
+    "width": 128,
+    "height": 128,
+    "bytes": 18094
+  },
+  "horror-eerie-2.png": {
+    "file": "horror-eerie-2.webp",
+    "width": 128,
+    "height": 128,
+    "bytes": 20892
+  },
+  "horror-eerie-3.png": {
+    "file": "horror-eerie-3.webp",
+    "width": 128,
+    "height": 128,
+    "bytes": 25248
+  },
+  "horror-red-1.png": {
+    "file": "horror-red-1.webp",
+    "width": 128,
+    "height": 128,
+    "bytes": 15722
+  },
+  "horror-red-2.png": {
+    "file": "horror-red-2.webp",
+    "width": 128,
+    "height": 128,
+    "bytes": 18440
+  },
+  "horror-red-3.png": {
+    "file": "horror-red-3.webp",
+    "width": 128,
+    "height": 128,
+    "bytes": 23404
+  },
+  "leaf-acid-1.png": {
+    "file": "leaf-acid-1.webp",
+    "width": 128,
+    "height": 128,
+    "bytes": 17268
+  },
+  "leaf-acid-2.png": {
+    "file": "leaf-acid-2.webp",
+    "width": 128,
+    "height": 128,
+    "bytes": 24838
+  },
+  "leaf-acid-3.png": {
+    "file": "leaf-acid-3.webp",
+    "width": 128,
+    "height": 128,
+    "bytes": 29070
+  },
+  "leaf-jade-1.png": {
+    "file": "leaf-jade-1.webp",
+    "width": 128,
+    "height": 128,
+    "bytes": 16620
+  },
+  "leaf-jade-2.png": {
+    "file": "leaf-jade-2.webp",
+    "width": 128,
+    "height": 128,
+    "bytes": 24258
+  },
+  "leaf-jade-3.png": {
+    "file": "leaf-jade-3.webp",
+    "width": 128,
+    "height": 128,
+    "bytes": 27130
+  },
+  "leaf-orange-1.png": {
+    "file": "leaf-orange-1.webp",
+    "width": 128,
+    "height": 128,
+    "bytes": 15002
+  },
+  "leaf-orange-2.png": {
+    "file": "leaf-orange-2.webp",
+    "width": 128,
+    "height": 128,
+    "bytes": 22760
+  },
+  "leaf-orange-3.png": {
+    "file": "leaf-orange-3.webp",
+    "width": 128,
+    "height": 128,
+    "bytes": 28032
+  },
+  "leaf-royal-1.png": {
+    "file": "leaf-royal-1.webp",
+    "width": 128,
+    "height": 128,
+    "bytes": 19868
+  },
+  "leaf-royal-2.png": {
+    "file": "leaf-royal-2.webp",
+    "width": 128,
+    "height": 128,
+    "bytes": 27928
+  },
+  "leaf-royal-3.png": {
+    "file": "leaf-royal-3.webp",
+    "width": 128,
+    "height": 128,
+    "bytes": 30050
+  },
+  "runes-blue-1.png": {
+    "file": "runes-blue-1.webp",
+    "width": 128,
+    "height": 128,
+    "bytes": 25328
+  },
+  "runes-blue-2.png": {
+    "file": "runes-blue-2.webp",
+    "width": 128,
+    "height": 128,
+    "bytes": 31462
+  },
+  "runes-blue-3.png": {
+    "file": "runes-blue-3.webp",
+    "width": 128,
+    "height": 128,
+    "bytes": 31784
+  },
+  "runes-magenta-1.png": {
+    "file": "runes-magenta-1.webp",
+    "width": 128,
+    "height": 128,
+    "bytes": 17508
+  },
+  "runes-magenta-2.png": {
+    "file": "runes-magenta-2.webp",
+    "width": 128,
+    "height": 128,
+    "bytes": 23670
+  },
+  "runes-magenta-3.png": {
+    "file": "runes-magenta-3.webp",
+    "width": 128,
+    "height": 128,
+    "bytes": 26510
+  },
+  "runes-orange-1.png": {
+    "file": "runes-orange-1.webp",
+    "width": 128,
+    "height": 128,
+    "bytes": 18610
+  },
+  "runes-orange-2.png": {
+    "file": "runes-orange-2.webp",
+    "width": 128,
+    "height": 128,
+    "bytes": 24686
+  },
+  "runes-orange-3.png": {
+    "file": "runes-orange-3.webp",
+    "width": 128,
+    "height": 128,
+    "bytes": 29722
+  },
+  "runes-royal-1.png": {
+    "file": "runes-royal-1.webp",
+    "width": 128,
+    "height": 128,
+    "bytes": 23878
+  },
+  "runes-royal-2.png": {
+    "file": "runes-royal-2.webp",
+    "width": 128,
+    "height": 128,
+    "bytes": 29902
+  },
+  "runes-royal-3.png": {
+    "file": "runes-royal-3.webp",
+    "width": 128,
+    "height": 128,
+    "bytes": 34704
+  },
+  "wild-acid-1.png": {
+    "file": "wild-acid-1.webp",
+    "width": 128,
+    "height": 128,
+    "bytes": 18486
+  },
+  "wild-acid-2.png": {
+    "file": "wild-acid-2.webp",
+    "width": 128,
+    "height": 128,
+    "bytes": 21236
+  },
+  "wild-acid-3.png": {
+    "file": "wild-acid-3.webp",
+    "width": 128,
+    "height": 128,
+    "bytes": 23654
+  },
+  "wild-eerie-1.png": {
+    "file": "wild-eerie-1.webp",
+    "width": 128,
+    "height": 128,
+    "bytes": 20212
+  },
+  "wild-eerie-2.png": {
+    "file": "wild-eerie-2.webp",
+    "width": 128,
+    "height": 128,
+    "bytes": 22232
+  },
+  "wild-eerie-3.png": {
+    "file": "wild-eerie-3.webp",
+    "width": 128,
+    "height": 128,
+    "bytes": 22728
+  },
+  "wild-jade-1.png": {
+    "file": "wild-jade-1.webp",
+    "width": 128,
+    "height": 128,
+    "bytes": 19814
+  },
+  "wild-jade-2.png": {
+    "file": "wild-jade-2.webp",
+    "width": 128,
+    "height": 128,
+    "bytes": 21596
+  },
+  "wild-jade-3.png": {
+    "file": "wild-jade-3.webp",
+    "width": 128,
+    "height": 128,
+    "bytes": 22370
+  },
+  "wild-orange-1.png": {
+    "file": "wild-orange-1.webp",
+    "width": 128,
+    "height": 128,
+    "bytes": 17074
+  },
+  "wild-orange-2.png": {
+    "file": "wild-orange-2.webp",
+    "width": 128,
+    "height": 128,
+    "bytes": 19476
+  },
+  "wild-orange-3.png": {
+    "file": "wild-orange-3.webp",
+    "width": 128,
+    "height": 128,
+    "bytes": 21736
+  },
+  "wind-blue-1.png": {
+    "file": "wind-blue-1.webp",
+    "width": 128,
+    "height": 128,
+    "bytes": 14244
+  },
+  "wind-blue-2.png": {
+    "file": "wind-blue-2.webp",
+    "width": 128,
+    "height": 128,
+    "bytes": 20346
+  },
+  "wind-blue-3.png": {
+    "file": "wind-blue-3.webp",
+    "width": 128,
+    "height": 128,
+    "bytes": 23796
+  },
+  "wind-magenta-1.png": {
+    "file": "wind-magenta-1.webp",
+    "width": 128,
+    "height": 128,
+    "bytes": 13354
+  },
+  "wind-magenta-2.png": {
+    "file": "wind-magenta-2.webp",
+    "width": 128,
+    "height": 128,
+    "bytes": 18676
+  },
+  "wind-magenta-3.png": {
+    "file": "wind-magenta-3.webp",
+    "width": 128,
+    "height": 128,
+    "bytes": 22450
+  },
+  "wind-red-1.png": {
+    "file": "wind-red-1.webp",
+    "width": 128,
+    "height": 128,
+    "bytes": 11648
+  },
+  "wind-red-2.png": {
+    "file": "wind-red-2.webp",
+    "width": 128,
+    "height": 128,
+    "bytes": 17444
+  },
+  "wind-red-3.png": {
+    "file": "wind-red-3.webp",
+    "width": 128,
+    "height": 128,
+    "bytes": 22242
+  },
+  "wind-sky-1.png": {
+    "file": "wind-sky-1.webp",
+    "width": 128,
+    "height": 128,
+    "bytes": 11844
+  },
+  "wind-sky-2.png": {
+    "file": "wind-sky-2.webp",
+    "width": 128,
+    "height": 128,
+    "bytes": 16854
+  },
+  "wind-sky-3.png": {
+    "file": "wind-sky-3.webp",
+    "width": 128,
+    "height": 128,
+    "bytes": 21034
+  }
+}
