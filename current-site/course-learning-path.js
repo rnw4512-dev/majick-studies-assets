@@ -91,7 +91,7 @@ function catalog(cid){
   result.push({id,title,kind,detail:clean(detail),locator:loc});
  }
  const rows=sourceRows(cid);
- if(cid==='D669'&&rows.length){rows.forEach(r=>add('topic:'+r.id,r.section.replace(/:.*$/,'')+' · '+r.sub.title,'topic',r.sub.status||'',r.id));}
+ if(rows.length){rows.forEach(r=>add('topic:'+r.id,r.section.replace(/:.*$/,'')+' · '+r.sub.title,'topic',r.sub.status||'',r.id));}
  (window.MajickCourseSources?.documents?.[cid]||[]).forEach(d=>add('document:'+d.id,'Supplied reference · '+d.title,'document',d.status,d));
  // Reuse authoritative, source-backed packs instead of hard-coding a course.
  const packs=Object.values(window.MajickCourseActivityPlayer?.packs||{}).filter(p=>String(p.courseId||'').toUpperCase()===cid);
@@ -102,6 +102,12 @@ function catalog(cid){
  // Lessons shown in the existing Learning Lab, including notes the user added.
  const model=window.MajickLearningLab;
  try{(model?.lessons?.(cid)||[]).forEach((l,i)=>add('lab:'+i,l.title||('Lesson '+(i+1)),'lab',l.source||'',i))}catch(_){}
+ // When structured topics are absent, derive practice groups from the existing bank.
+ if(!rows.length){
+ const model=state().courses?.[cid]||window.MajickCourseManager?.COURSE_CATALOG?.[cid]||{};
+ const groups=new Map();for(const q of model.questionBank||[]){const key=q.learningPathLessonId||q.lessonId||q.topicId||q.conceptId||q.sectionId||q.section;if(!key)continue;const k=String(key);if(!groups.has(k))groups.set(k,model.concepts?.find(x=>x.id===k)?.title||q.lessonTitle||q.section||k.replace(/[-_]/g,' '))}
+ for(const [id,title] of groups)add('skill:'+id,title,'skill','Course question bank',id);
+ }
  // When a course has no authored lesson catalog, use a transparent course overview.
  if(!result.length){
   const c=state().courses?.[cid];
@@ -114,9 +120,9 @@ function topicEvidence(cid,items){
  const answers=state().progress?.[cid]?.answers||[],ledger=state().majickAccount?.rewardCore?.ledger||{};
  const rowMap=new Map(rows.map(r=>[r.id,r])),byTopic=new Map();
  for(const a of answers){const id=String(a.qid||a.id||'');if(id){if(!byTopic.has(id))byTopic.set(id,[]);byTopic.get(id).push(a)}}
- return items.filter(x=>x.kind==='topic').map(item=>{
+ return items.filter(x=>x.kind==='topic'||x.kind==='skill').map(item=>{
   const row=rowMap.get(item.locator),sub=row?.sub||{},ids=new Set(sub.quizIds||[]);
-  for(const q of bank)if(q.learningPathLessonId===item.locator||q.lessonId===item.locator||q.topicId===item.locator)ids.add(q.id||q.qid);
+  for(const q of bank)if(q.learningPathLessonId===item.locator||q.lessonId===item.locator||q.topicId===item.locator||q.conceptId===item.locator||q.sectionId===item.locator||q.section===item.locator)ids.add(q.id||q.qid);
   const records=[...ids].flatMap(id=>byTopic.get(String(id))||[]).sort((a,b)=>(Number(a.at)||0)-(Number(b.at)||0));
   const independent=records.filter(a=>a.assisted===false),latest=new Map(independent.map(a=>[String(a.qid||a.id),a]));
   const hits=[...latest.values()].filter(a=>a.correct).length,total=latest.size,rate=total?hits/total:0;
@@ -124,14 +130,18 @@ function topicEvidence(cid,items){
   const proficient=total>=3&&rate>=.8;
   const weak=total>0&&rate<.8;
   const supplied=Boolean(sub.keyIdeas?.length||sub.summary||ids.size);
-  return {item,mastered,proficient,weak,supplied,total,hits,available:ids.size};
+  const lastCorrect=Math.max(0,...independent.filter(a=>a.correct).map(a=>Number(a.at)||0));
+  const scheduled=(state().progress?.[cid]?.spacedQueue||[]).filter(x=>[item.locator,'adaptive:'+item.locator].includes(x.topicId)).map(x=>Number(x.dueAt)).filter(Number.isFinite);
+  const dueAt=scheduled.length?Math.min(...scheduled):lastCorrect?lastCorrect+2*86400000:0;
+  return {item,mastered,proficient,weak,supplied,total,hits,available:ids.size,dueAt};
  });
 }
 function recommendation(cid,items=catalog(cid)){
  const evidence=topicEvidence(cid,items),usable=evidence.filter(x=>x.supplied);
  const next=usable.find(x=>!x.mastered&&!x.proficient);
  const weak=usable.filter(x=>x.weak&&!x.mastered).sort((a,b)=>a.hits/a.total-b.hits/b.total)[0];
- return {next:next?.item||null,weak:weak?.item||null,review:usable.find(x=>x.mastered||x.proficient)?.item||null,evidence};
+ const due=usable.filter(x=>(x.mastered||x.proficient)&&x.dueAt>0&&x.dueAt<=Date.now()).sort((a,b)=>a.dueAt-b.dueAt);
+ return {next:next?.item||null,weak:weak?.item||null,review:due[0]?.item||null,reviewCount:due.length,evidence};
 }
 let manualChoice={};
 function current(cid,items){
@@ -169,6 +179,7 @@ function progressFor(cid,item){
 }
 function navigateTo(item){
  if(!item)return;
+ if(item.kind==='skill'){window.navigate?.('learninglab');setTimeout(()=>window.MajickLearningLab?.showTab?.('practice',item.locator),180);return;}
  if(item.kind==='topic'||item.kind==='document'){expanded=true;const host=$('#majConnectedPath');if(host)host.dataset.signature='';render();document.querySelector('#majConnectedPath details')?.setAttribute('open','');return;}else if(item.kind==='source'){
   window.navigate?.('learninglab');
   setTimeout(()=>{
@@ -226,7 +237,7 @@ function render(){
  if(rec.evidence.length){
   const quick=document.createElement('div');quick.className='majPathActions';quick.style.padding='8px 16px';
   const addQuick=(label,target)=>{if(!target)return;const b=document.createElement('button');b.type='button';b.textContent=label;b.addEventListener('click',()=>{selections[cid]=target.id;manualChoice[cid]=true;expanded=true;save();host.dataset.signature='';render();navigateTo(target)});quick.append(b)};
-  addQuick('Continue learning',rec.next);addQuick('Strengthen weak skill',rec.weak);addQuick('Review previous learning',rec.review);
+  addQuick('Continue learning',rec.next);addQuick('Strengthen weak skill',rec.weak);addQuick('Review due ('+rec.reviewCount+')',rec.review);
   const all=document.createElement('button');all.type='button';all.textContent='Whole course practice';all.addEventListener('click',()=>{window.navigate?.('learninglab');setTimeout(()=>window.MajickLearningLab?.showTab?.('practice'),200)});quick.append(all);
   host.append(quick);
  }
@@ -266,6 +277,6 @@ function init(){
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
 setInterval(checkContext,1200);
-window.MajickCourseLearningPath=Object.freeze({VERSION,recommendation:(id)=>recommendation(String(id||course()).toUpperCase()),refresh:schedule,catalog:(id)=>catalog(String(id||course()).toUpperCase()),current:()=>current(course(),catalog(course()))});
+window.MajickCourseLearningPath=Object.freeze({VERSION,openRecommended:(id)=>{const cid=String(id||course()).toUpperCase(),rec=recommendation(cid),target=rec.next||rec.weak||rec.review;if(!target)return false;selections[cid]=target.id;manualChoice[cid]=true;expanded=true;if(screen()==='home')window.navigate?.('learninglab');setTimeout(()=>{render();navigateTo(target)},180);return true},recommendation:(id)=>recommendation(String(id||course()).toUpperCase()),refresh:schedule,catalog:(id)=>catalog(String(id||course()).toUpperCase()),current:()=>current(course(),catalog(course()))});
 window.MajickConnectedPath=window.MajickCourseLearningPath;
 })();
