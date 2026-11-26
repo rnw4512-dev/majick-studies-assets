@@ -177,6 +177,22 @@ function progressFor(cid,item){
  const answers=(courseProgress?.answers||[]).length;
  return answers?answers+' recorded course answers (not lesson-specific mastery)':'No scored lesson evidence yet';
 }
+function practiceTopic(item){
+ if(!item)return;
+ const cid=course(),model=state().courses?.[cid]||window.MajickCourseManager?.COURSE_CATALOG?.[cid],bank=model?.questionBank||[];
+ if(item.kind!=='topic'){if(item.kind==='skill'){window.navigate?.('learninglab');setTimeout(()=>window.MajickLearningLab?.showTab?.('practice',item.locator),200)}else navigateTo(item);return}
+ const row=sourceRows(cid).find(r=>r.id===item.locator);if(!row)return;
+ const section=String(row.section).match(/Section\s+(\d+)/i)?.[1],lesson=String(row.lesson).match(/Lesson\s+(\d+)/i)?.[1];
+ const lessonId=section&&lesson?cid.toLowerCase()+'-s'+section+'-l'+lesson:'';
+ const ids=new Set(row.sub.quizIds||[]);
+ const keys=q=>[q.learningPathLessonId,q.lessonId,q.topicId,q.conceptId].map(v=>String(v??''));
+ let matched=bank.filter(q=>ids.has(q.id)||keys(q).includes(row.id)||String(q.id||'').startsWith(row.id+'-'));
+ if(!matched.length&&lessonId)matched=bank.filter(q=>keys(q).includes(lessonId)||String(q.id||'').startsWith(lessonId+'-'));
+ const exact=matched.length>0;
+ if(!exact&&section)matched=bank.filter(q=>String(q.section||q.sectionId||'').match(/(?:section[\s_-]*|(?:^|[-_])s)(\d+)/i)?.[1]===section);
+ window.navigate?.('learninglab');
+ setTimeout(()=>{window.MajickLearningLab?.showTab?.('practice',matched.map(q=>String(q.id||q.qid)));const panel=document.getElementById('learnPractice');if(panel){const note=document.createElement('p');note.textContent=exact?'Practice: '+row.sub.title:'Section '+section+' review — exact-topic questions are not linked yet.';panel.prepend(note);panel.scrollIntoView?.({block:'start',behavior:'auto'})}},250);
+}
 function navigateTo(item){
  if(!item)return;
  if(item.kind==='skill'){window.navigate?.('learninglab');setTimeout(()=>window.MajickLearningLab?.showTab?.('practice',item.locator),180);return;}
@@ -224,12 +240,12 @@ function render(){
  list.forEach(o=>{const opt=document.createElement('option');opt.value=o.id;opt.textContent=o.title;opt.selected=o.id===item.id;select.append(opt)});
  select.addEventListener('change',()=>{selections[cid]=select.value;manualChoice[cid]=true;save();host.dataset.signature='';render()});body.append(select);if(item.kind==='topic'||item.kind==='document')sourcePanel(body,item);
  const steps=document.createElement('ol');steps.className='majPathSteps';
- STAGES.forEach((name,i)=>{const li=document.createElement('li');if(idx===i)li.className='is-current';const button=document.createElement('button');button.type='button';button.textContent=(i+1)+'. '+name;button.setAttribute('aria-current',idx===i?'step':'false');button.addEventListener('click',()=>{if(i===0)navigateTo(current(cid,catalog(cid)));else window.navigate?.(i===1?'mission':i===2?'hands-on':'reasoning');schedule()});li.append(button);steps.append(li)});
+ STAGES.forEach((name,i)=>{const li=document.createElement('li');if(idx===i)li.className='is-current';const button=document.createElement('button');button.type='button';button.textContent=(i+1)+'. '+name;button.setAttribute('aria-current',idx===i?'step':'false');button.addEventListener('click',()=>{if(i===0)navigateTo(current(cid,catalog(cid)));else if(i===1)practiceTopic(current(cid,catalog(cid)));else window.navigate?.(i===2?'hands-on':'reasoning');schedule()});li.append(button);steps.append(li)});
  body.append(steps);
  const actions=document.createElement('div');actions.className='majPathActions';
  function button(text,fn){const b=document.createElement('button');b.type='button';b.textContent=text;b.addEventListener('click',fn);actions.append(b)}
  button('Open current topic',()=>navigateTo(current(cid,catalog(cid))));
- button('Practice this topic',()=>{const target=current(cid,catalog(cid));if(target?.kind==='source'||target?.kind==='topic'||target?.kind==='document')navigateTo(target);else window.navigate?.('mission')});
+ button('Practice this topic',()=>practiceTopic(current(cid,catalog(cid))));
  button('Hands-on scenarios',()=>window.navigate?.('hands-on'));
  body.append(actions);
  const note=document.createElement('p');note.className='majPathNote';note.textContent='The path follows your course and selected topic. Practice counts are not WGU certification or verified independent mastery.';body.append(note);
