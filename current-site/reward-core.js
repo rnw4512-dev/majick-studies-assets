@@ -222,7 +222,7 @@ function award(type,ctx={}){
  };
  r.ledger[key]={type,at:receipt.at,receipt};r.lastReceipt=receipt;
  save();pushRewardState();showReceipt(receipt);
- if(type==='misconception-repaired')document.dispatchEvent(new CustomEvent('majick:repair-confirmed',{detail:{key,verified:true}}));
+ if(type==='misconception-repaired')if(typeof CustomEvent==='function'&&typeof document?.dispatchEvent==='function')document.dispatchEvent(new CustomEvent('majick:repair-confirmed',{detail:{key,verified:true}}));
  if(['concept-mastered','lesson-mastered','competency-mastered','oa-competency-ready','course-passed'].includes(type)){
    if(typeof document!=='undefined'&&typeof CustomEvent==='function')document.dispatchEvent(new CustomEvent('majick:celebrate',{detail:{type:type==='course-passed'?'course':'mastery',key,course:ctx.course||window.S?.activeCourse||'',verified:true}}));
  }
