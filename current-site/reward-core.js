@@ -222,6 +222,7 @@ function award(type,ctx={}){
  };
  r.ledger[key]={type,at:receipt.at,receipt};r.lastReceipt=receipt;
  save();pushRewardState();showReceipt(receipt);
+ if(type==='misconception-repaired')document.dispatchEvent(new CustomEvent('majick:repair-confirmed',{detail:{key,verified:true}}));
  if(['concept-mastered','lesson-mastered','competency-mastered','oa-competency-ready','course-passed'].includes(type)){
    if(typeof document!=='undefined'&&typeof CustomEvent==='function')document.dispatchEvent(new CustomEvent('majick:celebrate',{detail:{type:type==='course-passed'?'course':'mastery',key,course:ctx.course||window.S?.activeCourse||'',verified:true}}));
  }
@@ -538,14 +539,15 @@ function cozyDraw(){
 }
 window.majCozyMotion=()=>{cozyMotion=!cozyMotion;cozyDraw()};
 window.majCozyClose=cozyClose;
-window.majCozyQuick=()=>{if(cozyStage===1&&!cozyCommitted){cozyStirs=3;cozyStage=2;cozyChime();cozyDraw()}};
+function brewCue(kind){document.dispatchEvent(new CustomEvent('majick:brew-stage',{detail:{kind,recipe:cozyRecipe,stage:cozyStage}}));if(cozySound&&!window.MajickCollegiumAtmosphere?.enabled?.())cozyChime()}
+window.majCozyQuick=()=>{if(cozyStage===1&&!cozyCommitted){cozyStirs=3;cozyStage=2;cozyDraw();brewCue('stir')}};
 window.majCozyNext=()=>{
  if(!cozyRecipe||cozyCommitted||cozyStage===3)return;
- cozyChime();
+ const kind=cozyStage===0?'ingredient':cozyStage===1?'stir':'bottle';
  if(cozyStage===0)cozyStage=1;
  else if(cozyStage===1){cozyStirs++;if(cozyStirs>=3)cozyStage=2}
  else if(cozyStage===2){cozyCommitted=true;const result=craft(cozyRecipe,{key:cozyTransaction});if(!result.ok){window.rewardToast?.('Brewing not committed',result.message);cozyClose();return}cozyDiscover(result.recipe);cozyStage=3;window.rewardToast?.('⚗ Potion crafted',result.recipe.name)}
- cozyDraw();
+ cozyDraw();brewCue(kind);
 };
 window.majickCraftPotion=id=>{
  const rec=RECIPES.find(x=>x.id===id),inv=inventory();
