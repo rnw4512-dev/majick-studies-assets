@@ -28,7 +28,7 @@ const TYPES=Object.freeze({
  sanctuary:['celebrations/celebration-starburst.svg',170,850,'Placed']
 });
 const PERSONAL_FX={mastery:'magic-sigil-web',course:'magic-sigil-web',egg:'magic-sigil-web',reward:'magic-sigil-web',guardian:'regrowth',sanctuary:'regrowth',repair:'regrowth'};
-const LICENSED={success:'light',mastery:'arcane',lesson:'light',course:'arcane',guardian:'nature',reward:'projectile',match:'light',sanctuary:'nature'};
+const LICENSED={repair:'nature',egg:'arcane',success:'light',mastery:'arcane',lesson:'light',course:'arcane',guardian:'nature',reward:'projectile',match:'light',sanctuary:'nature'};
 let layer=null,active=null,clock=null;let last={type:null,at:0};const reduced=()=>document.documentElement?.dataset?.majickReduceMotion==='true'||window.matchMedia?.('(prefers-reduced-motion: reduce)').matches===true;
 function clear(){if(clock!==null)clearTimeout(clock);clock=null;active?.remove();active=null}
 function host(){if(!document.body)return null;if(layer?.isConnected)return layer;layer=document.createElement('div');layer.className='majickFxLayer';layer.setAttribute('aria-hidden','true');document.body.append(layer);return layer}
@@ -78,5 +78,5 @@ function glimmer(event){
 }
 document.addEventListener('pointerdown',glimmer,{passive:true});
 document.addEventListener('focusin',glimmer);
-window.MajickAnimationEffects=Object.freeze({play,clear,types:Object.keys(TYPES),version:'1.2-personal-artwork'});
+window.MajickAnimationEffects=Object.freeze({play,clear,types:Object.keys(TYPES),version:'1.3-automatic-artwork'});
 })();
