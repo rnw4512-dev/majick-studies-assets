@@ -35,6 +35,20 @@ with sync_playwright() as pw:
   page.wait_for_function("S.screen==='home'")
   if width>700:
    assert page.locator('.side .nav').evaluate("(nav)=>getComputedStyle(nav).overflowY==='auto'")
+  primary=page.locator('.side .nav button[data-nav]').evaluate_all(
+   "(buttons)=>buttons.slice(0,3).map(button=>[button.dataset.nav,button.querySelector('.label').textContent])"
+  )
+  assert primary==[['home','Home'],['companions','Guardian Sanctuary'],['vault','Magic Vault']],(width,primary)
+  page.get_by_role('button',name='Guardian Sanctuary',exact=True).click()
+  page.locator('.phase4Wrap:not(.majRoomInactive) #phase4SanctuaryFrame').wait_for(state='attached')
+  other_tab=page.locator('#majickRoomSections button[aria-pressed="false"]').first
+  other_tab.wait_for()
+  other_tab.click()
+  page.get_by_role('button',name='Magic Vault',exact=True).click()
+  page.wait_for_function("S.screen==='vault'")
+  assert page.get_by_role('tablist',name='Magic Vault sections').is_visible()
+  page.get_by_role('button',name='Guardian Sanctuary',exact=True).click()
+  page.locator('.phase4Wrap:not(.majRoomInactive) #phase4SanctuaryFrame').wait_for(state='attached')
   routes=page.locator('.nav [data-nav]').evaluate_all('(buttons)=>[...new Set(buttons.map(b=>b.dataset.nav))]')
   for route in routes:
    button=page.locator(f'.nav [data-nav="{route}"]').first

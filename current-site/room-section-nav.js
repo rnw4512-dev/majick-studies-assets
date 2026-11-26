@@ -6,6 +6,12 @@ const ROOM_NAMES={reasoning:'Scholar’s Trial Chamber',mission:'Scholar’s Stu
 // visible section at a time; academic rooms keep their non-destructive jumps.
 const TABBED_ROOMS=new Set(['journal','grimoire','livinggrimoire','companions','guide','vault','analytics','addmaterial']);
 const selections=new Map(),sceneVisibility=new WeakMap();
+document.addEventListener('click',event=>{
+ if(event.target.closest?.('.side .nav button[data-nav="companions"]')){
+  selections.set('companions:'+(window.S?.activeCourse||''),'Sanctuary');
+  schedule();
+ }
+},{capture:true});
 function syncPanelScene(panel){
  panel.querySelectorAll('iframe.v3317SanctuaryFrame').forEach(frame=>{
   const notify=()=>{const visible=!panel.classList.contains('majRoomInactive');if(sceneVisibility.get(frame)===visible)return;sceneVisibility.set(frame,visible);frame.contentWindow?.postMessage({type:'MAJICK_ROOM_VISIBILITY',visible},location.origin)};

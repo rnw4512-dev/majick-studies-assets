@@ -2624,7 +2624,7 @@ lfDetailedRoster=function(){
 masDetailedRoster=lfDetailedRoster;
 
 sideHTML=function(){
- const nav=[['home','⌂','Home'],['mission','▤','Scholar’s Study Hall'],['journal','▧','My Journal'],['guide','▥','Study Guide'],['focus','◐','Focus Tools'],['games','◇','The Enchanted Arcade'],['companions','♧','Companions'],['constellation','✦','Constellation'],['vault','◆','Magic Vault'],['trophies','♕','Trophies'],['control','⚙','Settings']];
+ const nav=[['home','⌂','Home'],['companions','♧','Guardian Sanctuary'],['vault','◆','Magic Vault'],['mission','▤','Scholar’s Study Hall'],['journal','▧','My Journal'],['guide','▥','Study Guide'],['focus','◐','Focus Tools'],['games','◇','The Enchanted Arcade'],['constellation','✦','Constellation'],['trophies','♕','Trophies'],['control','⚙','Settings']];
  let p=activePet(),u=v334Identity(p);
  return `<div class="brand"><div class="brandmark">☾</div><div class="txt"><b>Majick<br>Studies</b><small>Discipline creates a more magical tomorrow</small></div></div><nav class="nav">${nav.map(([id,ic,l])=>`<button data-nav="${id}" class="${S.screen===id?'active':''}" onclick="navigate('${id}')"><span>${ic}</span><span class="label">${l}</span></button>`).join('')}</nav><div class="sidefoot unifiedFamiliarSide" data-pet-type="${esc(p.type)}" style="${v334Theme(p)}">${v334Portrait(p,'sidebar')}<div class="copy"><b>${esc(p.name)} • Level ${masPetLevel(p)}</b><small>${esc(u.title)} • ${masPetStage(p)} • ${dayStreak()} day streak</small><span class="familiarRole">${u.sigil} ${esc(u.role)}</span><div class="rewardStrip" style="margin-top:9px"><span class="rewardChip">✦ ${prog().xp||0}</span><span class="rewardChip">◆ ${prog().crystals||0}</span><span class="rewardChip">♕ ${prog().chests||0}</span></div></div></div>`;
 };
