@@ -184,3 +184,19 @@ body[data-majick-polish-room=constellation] #majickRoomRibbon::after{background-
 .side .nav button[data-nav=trophies]>span:first-child:not(.label){background-image:url('./assets/licensed/rings/gold-wrap.webp')}
 #aethAdventure .aeth-runes button>span[aria-hidden=true]{display:block;flex:0 0 30px;width:30px;height:30px;font-size:0!important;background:url('./assets/licensed/images/runestones.webp') center/contain no-repeat;animation:none!important;pointer-events:none}
 #aethAdventure .aeth-runes .aeth-target>span[aria-hidden=true]{flex-basis:38px;width:38px;height:38px;background-image:url('./assets/licensed/skill-17.webp');filter:saturate(.65)}
+
+/* Approved Moonlit Collegium visual direction: stable shared navigation geometry. */
+@media(min-width:701px){
+ body .side .nav button[data-nav]{display:grid!important;grid-template-columns:36px minmax(0,1fr)!important;align-items:center!important;justify-items:start!important;gap:12px!important;min-height:54px!important;height:auto!important;padding:9px 12px!important;text-align:left!important;white-space:normal!important;border-radius:9px!important;box-sizing:border-box!important}
+ body .side .nav button[data-nav]>.label{position:static!important;display:block!important;min-width:0!important;width:auto!important;margin:0!important;transform:none!important;font:600 15px/1.35 Georgia,serif!important;letter-spacing:.015em!important;white-space:normal!important;overflow-wrap:break-word!important;color:#f8e9cf!important}
+ body .side .nav button[data-nav]>span:first-child:not(.label){position:static!important;display:block!important;width:32px!important;height:32px!important;margin:0!important;transform:none!important;background-size:contain!important;filter:drop-shadow(0 2px 3px #10091c99)!important}
+ body .side .nav button[data-nav].active{border:1px solid #cba766!important;box-shadow:inset 0 0 0 2px #cba76625,inset 3px 0 #e8c57c!important;background:linear-gradient(100deg,#56305c,#291b3b)!important}
+}
+#content .majRoomArchitecture .majRoomEmblem{font-size:0!important;width:48px;height:48px;background:url('./assets/rewards/solstice/items/astronomy-book-stack.webp') center/contain no-repeat;margin-inline:auto;filter:drop-shadow(0 2px 5px #170c20)}
+#content[data-majick-room=reasoning] .majRoomEmblem{background-image:url('./assets/licensed/skill-17.webp')}
+#content[data-majick-room=learninglab] .majRoomEmblem{background-image:url('./assets/licensed/skill-03.webp')}
+#content[data-majick-room=game] .majRoomEmblem{background-image:url('./assets/licensed/images/runestones.webp')}
+#content[data-majick-room=analytics] .majRoomEmblem{background-image:url('./assets/licensed/milestones/star.png')}
+#content[data-majick-room=home] .aetheriaCastleArrival .majRoomEmblem{display:none}
+#content .majRoomBannerTitle{line-height:1.2!important;letter-spacing:.025em!important;overflow-wrap:break-word}
+#content .majRoomBannerSub{line-height:1.5!important;letter-spacing:.10em!important}
