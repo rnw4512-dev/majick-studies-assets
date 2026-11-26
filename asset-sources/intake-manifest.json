@@ -1,0 +1,43 @@
+{
+  "format": "aetheria-asset-intake-v1",
+  "files": {
+    "forest/SOURCE-README.txt": "9ffe850ae8e013a51a00ed644c766c1fd576c0e6fdb59393ee6a0fa4f6f72abc",
+    "forest/forest-demo.webp": "ca683bab23a407558b42a1e0e4c2e92887753b0725da90662e65410945becd9f",
+    "forest/moonwell.webp": "d45e522b3a2dcd3fc0314151eb46220c69aee93c309cd8a8b1daf6868de8d656",
+    "forest/toadstools.webp": "c4065f6565a2d682845f43e290afa952831a7146d8e4cdfa72ea2ec0b3a8ab07",
+    "forest/treehouse.webp": "1e26880fe610ff2ca9cd4b943395c1d332ffe12b8134788a02df75bee6e825bc",
+    "ingredients/LICENSE.txt": "b20ffa5df1cec7efc7256f275439d07b2deaddfad6a183cdd195f6faba723e81",
+    "ingredients/amethyst-shard.webp": "a19a1f71fca2fcb7f52a5f14d3b264cc0c1879851df643e0d91243d9b997d68e",
+    "ingredients/emerald-shard.webp": "8c9f5f8db3a878d8d408a0f07026f644aca491475bdf32a84299a7c45148b10b",
+    "ingredients/glowcap.webp": "592cbe541151c18b3aa1f66e06e0090e8d60bf90ee253f51244f9b090e0e1e9a",
+    "ingredients/ruby-crystal.webp": "92423770b73bb28ee242f2c6b4cfb20e9ae24fd7af97d2c077fbcf3cac66d62d",
+    "ingredients/sapphire-shard.webp": "0977a55d23874fd73195cd0f2bffb757953d12edaa3779e177a4972f547895f0",
+    "ingredients/spotted-toadstool.webp": "d02569812dbd0b48761f1a0659e683bbe244c760af1abdfe141d2776a1dec497",
+    "music/01_Title_Overture.ogg": "ced5ffa2659b68029fce871946f7e58d61f180b52c7f5734759bdf4c68c6c216",
+    "music/02_Main_Menu.ogg": "888c66272615fd463c43e7609ef80ecfa1e4cbc1778119d7a1877e76e72a9342",
+    "music/03_Hub_Town_Day.ogg": "697987cb5505dbb03923df5691b9acfb312a2ea4452f893be2caf3231603a18b",
+    "music/04_Hub_Town_Night.ogg": "14b90c39ce92588dbaa9054ff059e3c8f9f7c2f3b1708fd75305337261655af7",
+    "music/05_Field_Exploration.ogg": "0b3e7fda67e6a9f6b824cb18198fcc4e891d8aba6e7af95506ca14d73bcc199d",
+    "music/06_Sacred_Meadow.ogg": "3c41df6b81b3c07cb984e813199aaa53ef5731c53435b1e59cd97096af84dd5c",
+    "music/07_Merchant_Shop.ogg": "1ee0684ceed5ff829609c0c20c91c8df663753e651ea7fcfc77b9a27f298a00e",
+    "music/08_Tavern_Rest.ogg": "b9bbc682467a9ca84e512c5d5bf5718272bae3a3cafe30cafa0c65dd349a74cc",
+    "music/09_Dungeon_Upper.ogg": "492f7993e897e35e4b7b0f00ed7a8c28f0dcc4564386bff4d1036b57a79afeca",
+    "music/10_Dungeon_Abyss.ogg": "bfd285b493a3f0a75584ea87dee06e07079f57d5e186dfded1b1d70de5a6b1e0",
+    "music/11_Puzzle_Sanctum.ogg": "2556e3e70373c38e0ac69636274f042bfc06e2363119f3e4732b9bdaf16bf806",
+    "music/12_Stealth_Infiltration.ogg": "f0dcd08f6834c258ec49dc2d1aaaff8fd3e4fd5f8d982a19102276bdb2c3baaf",
+    "music/13_High_Speed_Chase.ogg": "85ce81941efa7a1b3760295eab53f7e976b9a1506f5fb25ce8dbebf38aa32830",
+    "music/14_Skirmish_Battle.ogg": "3e1c2c8c342b7425fcd53055483e2af3170f9d1d4ed64f2eb04beb7f574655f4",
+    "music/15_Elite_Encounter.ogg": "e6b9a55543b7d80bd86a32ffa77fcb2f482ea5b7197a7ea8a571e1c79302e737",
+    "music/16_Mid_Boss.ogg": "acc4153a7ed331612907946b75f15ed5c9d3eb8b10ecdd5debce42c83624bb24",
+    "music/17_Final_Boss.ogg": "568372ee5f22ed76bf601da40d17c3832fb12b960646f935309e7ece95d5c405",
+    "music/18_Sorrow_Cutscene.ogg": "192df9c9ee5a0b346abd8b53b5e050d8fceda2c4573e68217caeea4dd9b19e2e",
+    "music/19_Victory_Fanfare.ogg": "e93112ca406e83a4f0b9fea49f855093b2bae850ab9e314028ff5b6f1cb6507e",
+    "music/20_Ending_Credits.ogg": "11bc905bd7cf064a8ce9db97f43d8277e1e49b967b1ec14d8ef9680f98ae35a4"
+  },
+  "sources": {
+    "forest": "https://the-asset-man.itch.io/fairy-forest-pack",
+    "music": "https://breathinghuman.itch.io/arcane-academy-20-magic-school-bgm",
+    "ingredients": "https://brosure.itch.io/alchemists-cabinet-hand-painted-herbs-reagents-pot"
+  },
+  "publication_note": "Verify forest preview and soundtrack distribution rights before publishing; ingredient license prohibits redistribution as standalone assets."
+}
