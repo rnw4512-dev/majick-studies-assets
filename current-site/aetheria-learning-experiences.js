@@ -3,7 +3,7 @@
    core owns XP/fragments. These activities DO NOT write grades or grant currencies. */
 (()=>{'use strict';
 if(window.MajickLearningExperiences)return;
-const VERSION='1.5.0',KEY='aetheria-experiences-v1';
+const VERSION='1.5.1',KEY='aetheria-experiences-v1';
 let journal={version:1,memories:[],decor:'desk',playRuns:{}},session=null,deep=null,vocabRun=null,compRun=null,selectedSection=1,scheduled=false,lastRoom='';
 try{const raw=JSON.parse(localStorage.getItem(KEY)||'{}');if(raw&&typeof raw==='object'&&!Array.isArray(raw)){journal={...journal,...raw};if(!Array.isArray(journal.memories))journal.memories=[]}}catch(_){}
 const E=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -70,6 +70,7 @@ function sourced(id){return sourcePacks(id).flatMap(p=>(p.activities||[]).filter
  explanation:String(a.explanation||''),source:a.provenance?.source_url||'',title:a.title||''
 }))).filter(a=>a.prompt)}
 function concepts(id){return sourcePacks(id).flatMap(p=>(p.concepts||[]).filter(c=>c.term&&c.text).map(c=>({term:String(c.term),text:String(c.text),lesson:p.title})))}
+function gameTerms(id){if(id!=='D669'||selectedSection===2)return concepts(id);const rows=sectionQuestions(id,selectedSection),seen=new Set();return rows.filter(q=>{const a=q.options[q.correct];if(seen.has(a))return false;seen.add(a);return true}).map(q=>({term:q.options[q.correct],text:q.prompt,lesson:q.title,question:true}));}
 function guardian(){try{const c=window.MajickGuardianCore,pet=c?.activePet?.(),meta=pet?c?.meta?.(pet):null;return {name:meta?.name||'Your Guardian',icon:meta?.icon||'✦',image:meta?.image||''}}catch(_){return{name:'Your Guardian',icon:'✦',image:''}}}
 function addMemory(id,title,details){
  const key=String(id);if(journal.memories.some(m=>m.key===key))return false;
@@ -77,20 +78,20 @@ function addMemory(id,title,details){
  journal.memories=journal.memories.slice(0,80);save();return true;
 }
 const MODES=[
- {id:'sort',title:'Sound Sorting',icon:'🧩',desc:'Sort each classroom clue into the matching sound or literacy concept.'},
- {id:'match',title:'Phonics Matching',icon:'🔤',desc:'Connect a course concept with its correct meaning.'},
+ {id:'sort',title:'Sound Sorting',icon:'◆',desc:'Sort each classroom clue into the matching sound or literacy concept.'},
+ {id:'match',title:'Concept Matching',icon:'🔤',desc:'Connect a course concept with its correct meaning.'},
  {id:'classroom',title:'Classroom Decisions',icon:'🏫',desc:'Help a student by choosing the strongest instructional response.'}
 ];
 function roundKey(id,kind){return id+':'+kind+':section-'+selectedSection}
 function roundItems(rows,cycle,count){const size=Math.min(count,rows.length);if(!size)return [];const offset=(Math.max(0,Number(cycle)||0)*size)%rows.length;return Array.from({length:size},(_,i)=>rows[(offset+i)%rows.length])}
 function activity(id,kind){
- const questions=sectionQuestions(id,selectedSection),terms=id==='D669'&&selectedSection!==2?[]:concepts(id),cycle=Number(journal.playRuns?.[roundKey(id,kind)]||0);
+ const questions=sectionQuestions(id,selectedSection),terms=gameTerms(id),cycle=Number(journal.playRuns?.[roundKey(id,kind)]||0);
  if(kind==='match'){
   const distinct=[],seen=new Set();
   for(const c of terms){const k=c.term.toLowerCase();if(!seen.has(k)){seen.add(k);distinct.push(c)}}
   if(distinct.length<3)return [];
   const selected=roundItems(distinct,cycle,5);
-  return selected.map((x,i)=>({id:'concept|'+x.term,prompt:'Match this meaning to its course concept: '+x.text,options:selected.map(z=>z.term),correct:i,explanation:x.term+' — '+x.text,source:'',title:x.lesson}));
+  return selected.map((x,i)=>({id:'concept|'+x.term,prompt:(x.question?'Match the classroom clue: ':'Match this meaning to its course concept: ')+x.text,options:selected.map(z=>z.term),correct:i,explanation:x.term+' — '+x.text,source:'',title:x.lesson}));
  }
  if(kind==='sort')return roundItems(questions,cycle,5).map(q=>({...q,prompt:'Sort this classroom clue: '+q.prompt}));
  return roundItems(questions,cycle,5);
@@ -99,8 +100,8 @@ function activity(id,kind){
 /* Original supplemental practice derived from the D669 sourced lesson examples.
    These are learning manipulatives, not WGU assessment items or official grading. */
 const DEEP_MODES=[
- {id:'forge',title:'Phoneme Forge',icon:'🔮',desc:'Build spoken words by arranging phoneme stones.'},
- {id:'sequence',title:'Spell Sequence',icon:'🪄',desc:'Arrange teaching and decoding steps in the right order.'},
+ {id:'forge',title:'Phoneme Forge',icon:'🔮',desc:'Arrange phoneme stones. Section 2 skill review, available from any section.'},
+ {id:'sequence',title:'Spell Sequence',icon:'✦',desc:'Arrange teaching and decoding steps. Section 2 skill review, available from any section.'},
  {id:'scenario',title:'Classroom Quest',icon:'🎭',desc:'Make teaching decisions and see how the student responds.'}
 ];
 const D669_FORGE=[
@@ -123,8 +124,8 @@ function shuffleDeterministically(rows,seed){
  return list;
 }
 function deepPool(cid,kind){
- if(cid==='D669'&&kind==='forge')return selectedSection===2?D669_FORGE:[];
- if(cid==='D669'&&kind==='sequence')return selectedSection===2?D669_SEQUENCE:[];
+ if(cid==='D669'&&kind==='forge')return D669_FORGE;
+ if(cid==='D669'&&kind==='sequence')return D669_SEQUENCE;
  if(kind==='scenario'){
   return sectionQuestions(cid,selectedSection).filter(q=>q.options.length>=2).map(q=>({
    id:q.id,title:q.lesson||'Classroom case',prompt:q.prompt,
@@ -146,7 +147,7 @@ function deepStart(kind){
  journal.playRuns={...runs,[cid+':'+kind]:cycle+1};save();
  deep={kind,course:cid,items,index:0,tiles:[],feedback:null,repairs:0,completed:false,firstTry:0,outcomes:[],turn:0,usedCoach:false,
     optionOrder:[],stage:'choose'};
- deepReset();redraw();
+ deepReset();redraw();revealGame('.aeth-deep-stage');
 }
 function deepReset(){
  if(!deep||deep.completed)return;
@@ -331,7 +332,7 @@ function start(kind){
  const id=course(),items=activity(id,kind);if(items.length<3){session=null;redraw();return}
  const key=roundKey(id,kind);journal.playRuns={...journal.playRuns,[key]:Number(journal.playRuns?.[key]||0)+1};save();
  session={kind,course:id,items,index:0,correct:0,firstTry:0,choice:null,assisted:false,feedback:null,complete:false,awarded:false};
- redraw();
+ redraw();revealGame('.aeth-mini-stage');
 }
 function answer(index){
  if(!session||session.complete||session.feedback||!Number.isInteger(index))return;
@@ -361,7 +362,7 @@ function next(){
  redraw();
 }
 function viewGame(){
- const id=course(),mode=room(),p=sectionQuestions(id,selectedSection),terms=id==='D669'&&selectedSection!==2?[]:concepts(id);
+ const id=course(),mode=room(),p=sectionQuestions(id,selectedSection),terms=gameTerms(id);
  const count=journal.memories.filter(m=>m.course===id&&(m.key.startsWith('game:')||m.key.startsWith('deep:'))).length;
  let s='<section id="aethCourseGames" class="aeth-experience" data-experience-room="'+E(mode)+'" data-course="'+E(id)+'" aria-label="Course-specific interactive mini-games"><header><small>✦ COURSE GAME WORKSHOP · '+E(id)+'</small><h2>Play your course knowledge</h2><p>Real lesson concepts, interactive practice, and Guardian-guided repairs. No duplicate XP or mastery.</p></header>';
  s+=sectionOverview(id);
@@ -417,6 +418,7 @@ function sync(){
  const legacy=root.querySelector(':scope > #aethAdventure')||root.querySelector(':scope > .majRoomArchitecture');
  if(legacy)legacy.insertAdjacentElement('afterend',panel);else root.prepend(panel);lastRoom=r;
 }
+function revealGame(selector){const panel=document.querySelector('#aethCourseGames '+selector);if(panel){panel.setAttribute('tabindex','-1');panel.focus({preventScroll:true});panel.scrollIntoView({block:'center',behavior:'auto'});}}
 function redraw(){
  const target=document.getElementById('aethCourseGames')||document.getElementById('aethAcademyDecor')||document.getElementById('aethJournalMemories');
  if(!target){sync();return}
