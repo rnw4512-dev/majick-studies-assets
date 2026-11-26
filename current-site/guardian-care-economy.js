@@ -545,7 +545,7 @@ function toastFromResult(r){
 
 window.majickSelectCareGuardian=function(petId){selectCarePet(petId)};
 window.majickFocusEgg=function(eggId){
-  if(incubatingEggs().find(e=>e.id===eggId&&Number(e.progress||0)>=Number(e.goal||1))){window.MajickCelestialIncubator?.show?.();return}
+  if(incubatingEggs().find(e=>e.id===eggId&&Number(e.progress||0)>=Number(e.goal||1))){window.MajickCelestialIncubator?.show?.(eggId);return}
   const ok=focusEgg(eggId);
   if(ok){try{rewardToast('🥚 Incubator focus changed','Correct study answers will now grow this egg.')}catch(_){}}
   broadcastState();

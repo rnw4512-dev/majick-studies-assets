@@ -157,10 +157,11 @@ body[data-majick-polish-room=constellation] #majickRoomRibbon::after{background-
 :is(.shopItem,.v3311ShopItem,.v3312ShopItem):has(button[onclick="buyShop('ribbonBurst')"])>:is(div,span):first-child{background-image:url('./assets/effects/celebrations/celebration-starburst.svg')}
 
 /* Downloaded artwork on the existing navigation and rune-answer controls. */
-.side .nav button:is([data-nav=home],[data-nav=mission],[data-nav=reasoning],[data-nav=journal],[data-nav=learninglab],[data-nav=addmaterial],[data-nav=livinggrimoire],[data-nav=guide],[data-nav=focus],[data-nav=games],[data-nav=companions],[data-nav=constellation],[data-nav=vault],[data-nav=trophies])>span:first-child:not(.label){display:block;flex:0 0 28px;width:28px;height:28px;font-size:0!important;background:center/contain no-repeat;filter:saturate(.7);pointer-events:none}
+.side .nav button:is([data-nav=home],[data-nav=mission],[data-nav=reasoning],[data-nav=probability],[data-nav=journal],[data-nav=learninglab],[data-nav=addmaterial],[data-nav=livinggrimoire],[data-nav=guide],[data-nav=focus],[data-nav=games],[data-nav=companions],[data-nav=constellation],[data-nav=vault],[data-nav=trophies])>span:first-child:not(.label){display:block;flex:0 0 28px;width:28px;height:28px;font-size:0!important;background:center/contain no-repeat;filter:saturate(.7);pointer-events:none}
 .side .nav button[data-nav=home]>span:first-child:not(.label){background-image:url('./assets/licensed/milestones/house.png')}
 .side .nav button[data-nav=mission]>span:first-child:not(.label){background-image:url('./assets/rewards/solstice/items/astronomy-book-stack.webp')}
 .side .nav button[data-nav=reasoning]>span:first-child:not(.label){background-image:url('./assets/licensed/skill-17.webp')}
+.side .nav button[data-nav=probability]>span:first-child:not(.label){background-image:url('./assets/rewards/items/celestial-dice-charm.webp')}
 .side .nav button[data-nav=journal]>span:first-child:not(.label){background-image:url('./assets/licensed/skill-08.webp')}
 .side .nav button[data-nav=learninglab]>span:first-child:not(.label){background-image:url('./assets/licensed/skill-03.webp')}
 .side .nav button[data-nav=addmaterial]>span:first-child:not(.label){background-image:url('./assets/rewards/solstice/items/astronomy-book-stack.webp')}

@@ -98,6 +98,7 @@ if(previousNavigate&&!previousNavigate.__v3329Navigation){
   const majickNavigate=function(route){
     const current=window.S?.screen||null;
     const next=String(route||'');
+    if(next==='probability'&&window.S?.activeCourse!=='D772')return;
     if(!suppressNavHistory&&current&&next&&current!==next){
       const stack=readNavStack();
       if(stack[stack.length-1]!==current)stack.push(current);

@@ -232,10 +232,12 @@ function queueHatch(egg){
   egg.progress=Math.max(Number(egg.progress||0),Math.max(1,Number(egg.goal||1)));
   save();showHatch();
 }
-function showHatch(){
+function showHatch(id){
   if(typeof document?.getElementById!=='function')return;
   if(document.getElementById('majCelestialHatch'))return;
-  const egg=readyEggs()[0];if(!egg)return;
+  const ready=readyEggs();
+  const egg=id?ready.find(candidate=>candidate.id===id):ready[0];
+  if(!egg)return;
   const meta=window.MajickGuardianCare?.canon?.(egg.type)||{};
   const host=document.createElement('div');host.id='majCelestialHatch';host.className='majHatchBackdrop';
   host.innerHTML='<section class="majHatchDialog" role="dialog" aria-modal="true" aria-labelledby="majHatchTitle" tabindex="-1">'+
