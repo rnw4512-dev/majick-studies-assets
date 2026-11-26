@@ -49,8 +49,11 @@ with sync_playwright() as pw:
    assert page.evaluate('MajickFragmentEarnings.balance()')==fragments,'Replaying a source answer must not duplicate fragments'
    page.locator('#majConnectedPath>details').evaluate('(e)=>e.open=true')
   assert evidence()==before,'Guided source checks must preserve academic evidence, XP and crystals'
-  page.evaluate("navigate('learninglab')")
-  page.wait_for_function('Array.from(document.querySelector("#majPathLessonSelect")?.options||[]).some(o=>o.value==="topic:d669-s3-l3-1")')
+  page.evaluate("switchCourse('D669');navigate('learninglab')")
+  try:
+   page.wait_for_function('Array.from(document.querySelector("#majPathLessonSelect")?.options||[]).some(o=>o.value==="topic:d669-s3-l3-1")')
+  except Exception:
+   print('CATALOG DIAGNOSTIC',width,page.evaluate('({course:S.activeCourse,selectors:[...document.querySelectorAll(".courseSelect")].map(e=>e.value),options:[...document.querySelectorAll("#majPathLessonSelect option")].map(e=>e.value)})'),flush=True);raise
   for topic in ['d669-s3-l2-review','d669-s3-l3-intro','d669-s3-l3-1']:
    page.locator('#majConnectedPath>details').evaluate('(e)=>e.open=true');select.select_option('topic:'+topic)
    panel=page.locator('#majConnectedPath .majPathEvidence').filter(has=page.locator('h3')).first
