@@ -109,15 +109,41 @@ function catalog(cid){
  }
  return result;
 }
+function topicEvidence(cid,items){
+ const rows=sourceRows(cid),bank=state().courses?.[cid]?.questionBank||window.MajickCourseManager?.COURSE_CATALOG?.[cid]?.questionBank||[];
+ const answers=state().progress?.[cid]?.answers||[],ledger=state().majickAccount?.rewardCore?.ledger||{};
+ const rowMap=new Map(rows.map(r=>[r.id,r])),byTopic=new Map();
+ for(const a of answers){const id=String(a.qid||a.id||'');if(id){if(!byTopic.has(id))byTopic.set(id,[]);byTopic.get(id).push(a)}}
+ return items.filter(x=>x.kind==='topic').map(item=>{
+  const row=rowMap.get(item.locator),sub=row?.sub||{},ids=new Set(sub.quizIds||[]);
+  for(const q of bank)if(q.learningPathLessonId===item.locator||q.lessonId===item.locator||q.topicId===item.locator)ids.add(q.id||q.qid);
+  const records=[...ids].flatMap(id=>byTopic.get(String(id))||[]).sort((a,b)=>(Number(a.at)||0)-(Number(b.at)||0));
+  const independent=records.filter(a=>a.assisted===false),latest=new Map(independent.map(a=>[String(a.qid||a.id),a]));
+  const hits=[...latest.values()].filter(a=>a.correct).length,total=latest.size,rate=total?hits/total:0;
+  const mastered=Boolean(ledger['concept:'+cid+':'+item.locator]||ledger['lesson:'+cid+':'+item.locator]);
+  const proficient=total>=3&&rate>=.8;
+  const weak=total>0&&rate<.8;
+  const supplied=Boolean(sub.keyIdeas?.length||sub.summary||ids.size);
+  return {item,mastered,proficient,weak,supplied,total,hits,available:ids.size};
+ });
+}
+function recommendation(cid,items=catalog(cid)){
+ const evidence=topicEvidence(cid,items),usable=evidence.filter(x=>x.supplied);
+ const next=usable.find(x=>!x.mastered&&!x.proficient);
+ const weak=usable.filter(x=>x.weak&&!x.mastered).sort((a,b)=>a.hits/a.total-b.hits/b.total)[0];
+ return {next:next?.item||null,weak:weak?.item||null,review:usable.find(x=>x.mastered||x.proficient)?.item||null,evidence};
+}
+let manualChoice={};
 function current(cid,items){
  if(!items.length)return null;
- const explicit=selections[cid],found=items.find(x=>x.id===explicit);
- if(found)return found;
- // Respect Learning Lab's previously saved lesson cursor when it exists.
- const labIndex=Number(state().majickLearningLab?.[cid]?.lessonIndex);
- if(screen()==='learninglab'&&Number.isInteger(labIndex)&&labIndex>0){
-  const match=items.find(x=>x.id==='lab:'+labIndex);if(match)return match;
+ const rec=recommendation(cid,items),found=items.find(x=>x.id===selections[cid]);
+ if(rec.evidence.length){
+  if(manualChoice[cid]&&found)return found;
+  return rec.next||rec.review||found||items[0];
  }
+ if(found)return found;
+ const labIndex=Number(state().majickLearningLab?.[cid]?.lessonIndex);
+ if(screen()==='learninglab'&&Number.isInteger(labIndex)&&labIndex>0){const match=items.find(x=>x.id==='lab:'+labIndex);if(match)return match}
  return items[0];
 }
 function stage(){
@@ -131,6 +157,7 @@ function stage(){
  return COURSE_STAGE[room]??0;
 }
 function progressFor(cid,item){
+ const evidence=topicEvidence(cid,[item]).find(Boolean);if(evidence)return (evidence.mastered?'Mastered':evidence.proficient?'Proficient · review later':evidence.weak?'Needs reinforcement':evidence.total?'Developing':'No independent evidence yet')+' · '+evidence.hits+'/'+evidence.total+' distinct independent questions correct';
  const p=window.MajickStudyObservatory;
  if(item?.kind==='source'&&p?.summary){
   try{const summary=p.summary(cid),row=summary.skills?.find(x=>x.id===item.locator);
@@ -184,7 +211,7 @@ function render(){
  const label=document.createElement('label');label.className='majPathSelectLabel';label.textContent='Choose your lesson or topic';label.htmlFor='majPathLessonSelect';body.append(label);
  const select=document.createElement('select');select.id='majPathLessonSelect';select.className='majPathLessonSelect';
  list.forEach(o=>{const opt=document.createElement('option');opt.value=o.id;opt.textContent=o.title;opt.selected=o.id===item.id;select.append(opt)});
- select.addEventListener('change',()=>{selections[cid]=select.value;save();host.dataset.signature='';render()});body.append(select);if(item.kind==='topic'||item.kind==='document')sourcePanel(body,item);
+ select.addEventListener('change',()=>{selections[cid]=select.value;manualChoice[cid]=true;save();host.dataset.signature='';render()});body.append(select);if(item.kind==='topic'||item.kind==='document')sourcePanel(body,item);
  const steps=document.createElement('ol');steps.className='majPathSteps';
  STAGES.forEach((name,i)=>{const li=document.createElement('li');if(idx===i)li.className='is-current';const button=document.createElement('button');button.type='button';button.textContent=(i+1)+'. '+name;button.setAttribute('aria-current',idx===i?'step':'false');button.addEventListener('click',()=>{if(i===0)navigateTo(current(cid,catalog(cid)));else window.navigate?.(i===1?'mission':i===2?'hands-on':'reasoning');schedule()});li.append(button);steps.append(li)});
  body.append(steps);
@@ -195,6 +222,14 @@ function render(){
  button('Hands-on scenarios',()=>window.navigate?.('hands-on'));
  body.append(actions);
  const note=document.createElement('p');note.className='majPathNote';note.textContent='The path follows your course and selected topic. Practice counts are not WGU certification or verified independent mastery.';body.append(note);
+ const rec=recommendation(cid,list);
+ if(rec.evidence.length){
+  const quick=document.createElement('div');quick.className='majPathActions';quick.style.padding='8px 16px';
+  const addQuick=(label,target)=>{if(!target)return;const b=document.createElement('button');b.type='button';b.textContent=label;b.addEventListener('click',()=>{selections[cid]=target.id;manualChoice[cid]=true;expanded=true;save();host.dataset.signature='';render();navigateTo(target)});quick.append(b)};
+  addQuick('Continue learning',rec.next);addQuick('Strengthen weak skill',rec.weak);addQuick('Review previous learning',rec.review);
+  const all=document.createElement('button');all.type='button';all.textContent='Whole course practice';all.addEventListener('click',()=>{window.navigate?.('learninglab');setTimeout(()=>window.MajickLearningLab?.showTab?.('practice'),200)});quick.append(all);
+  host.append(quick);
+ }
  host.append(details);
 }
 function schedule(){if(pending)return;pending=true;setTimeout(()=>{pending=false;render()},80)}
@@ -213,6 +248,7 @@ document.addEventListener('click',e=>{
 document.addEventListener('change',e=>{if(e.target?.matches?.('.courseSelect,[data-course],#majPathLessonSelect'))schedule()});
 document.addEventListener('majick:sourced-practice',e=>{const d=e.detail||{};if(d.courseId&&d.lessonId){selections[String(d.courseId).toUpperCase()]='pack:'+d.lessonId;save();schedule()}});
 document.addEventListener('majick:hands-on-practice',schedule);
+document.addEventListener('majick:verified-study-answer',()=>{manualChoice[course()]=false;schedule()});
 let lastContext='';
 function checkContext(){
  const cid=course(),room=screen(),idx=Number(state().majickLearningLab?.[cid]?.lessonIndex)||0;
@@ -230,6 +266,6 @@ function init(){
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
 setInterval(checkContext,1200);
-window.MajickCourseLearningPath=Object.freeze({VERSION,refresh:schedule,catalog:(id)=>catalog(String(id||course()).toUpperCase()),current:()=>current(course(),catalog(course()))});
+window.MajickCourseLearningPath=Object.freeze({VERSION,recommendation:(id)=>recommendation(String(id||course()).toUpperCase()),refresh:schedule,catalog:(id)=>catalog(String(id||course()).toUpperCase()),current:()=>current(course(),catalog(course()))});
 window.MajickConnectedPath=window.MajickCourseLearningPath;
 })();
