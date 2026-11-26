@@ -24,7 +24,8 @@ async function contrast(page,selector,label){
    const el=n.parentElement;if(!n.textContent.trim()||el.closest('[hidden],svg,option,script,style'))continue;
    const s=getComputedStyle(el);if(s.visibility!=='visible'||!el.checkVisibility())continue;
    const range=document.createRange();range.selectNode(n);
-   const rects=[...range.getClientRects()].filter(r=>r.width>4&&r.height>4&&r.x>0&&r.y>100&&r.right<innerWidth&&r.bottom<innerHeight).filter(r=>{const hit=document.elementFromPoint(r.x+r.width/2,r.y+r.height/2);return hit&&(hit===el||el.contains(hit))}).map(r=>({x:r.x,y:r.y,w:r.width,h:r.height}));
+   const exposed=(r,f)=>{const hit=document.elementFromPoint(r.x+r.width*f,r.y+r.height/2);return hit&&(hit===el||el.contains(hit))};
+   const rects=[...range.getClientRects()].filter(r=>r.width>4&&r.height>4&&r.x>0&&r.y>100&&r.right<innerWidth&&r.bottom<innerHeight).filter(r=>exposed(r,.5)).map(r=>({x:r.x,y:r.y,w:r.width,h:r.height,fractions:[.15,.5,.85].filter(f=>exposed(r,f))}));
    if(!rects.length)continue;
    let opacity=1;for(let e=el;e;e=e.parentElement)opacity*=+getComputedStyle(e).opacity;
    items.push({text:n.textContent.trim().slice(0,75),color:s.webkitTextFillColor||s.color,size:parseFloat(s.fontSize),weight:parseFloat(s.fontWeight),opacity,rects,disabled:!!el.closest(':disabled')});
@@ -48,14 +49,14 @@ async function contrast(page,selector,label){
   const rgba=item.color.match(/[\d.]+/g)?.map(Number);if(!rgba)continue;
   const alpha=(rgba[3]??1)*item.opacity,required=item.size>=24||(item.size>=18.66&&item.weight>=700)?3:4.5;
   let worst=Infinity;
-  for(const r of item.rects)for(const fraction of [.15,.5,.85]){
+  for(const r of item.rects)for(const fraction of r.fractions){
    const x=Math.floor(r.x+r.w*fraction),y=Math.floor(r.y+r.h*.5),i=(y*shot.width+x)*4,bg=[...shot.data.subarray(i,i+3)];
    const fg=rgba.slice(0,3).map((v,j)=>v*alpha+bg[j]*(1-alpha));worst=Math.min(worst,ratio(fg,bg));
   }
   minimum=Math.min(minimum,worst);count++;
   if(worst+.01<required)failures.push({text:item.text,ratio:+worst.toFixed(2),required});
  }
- report.contrast.push({label,count,minimum:+minimum.toFixed(2),failures});
+ report.contrast.push({label,count,minimum:+minimum.toFixed(2),occludedSamples:items.reduce((n,item)=>n+item.rects.reduce((m,r)=>m+3-r.fractions.length,0),0),failures});
  assert(count>0,'No contrast samples: '+label);
  assert.equal(failures.length,0,'Contrast: '+label+' '+JSON.stringify(failures));
 }
@@ -75,6 +76,17 @@ async function contrast(page,selector,label){
   // renders must not land between the two sides of a CSS-only state assertion.
   const [before,after]=await page.evaluate(css=>{const snapshot=()=>({state:JSON.stringify(S),controls:document.querySelectorAll('#content button,#content input,#content select').length,progress:[...document.querySelectorAll('#content progress')].map(e=>[e.value,e.max,e.getAttribute('aria-label')])});const before=snapshot(),style=document.createElement('style');style.textContent=css;document.head.append(style);return [before,snapshot()]},stylesheet);
   assert.deepEqual(after,before,'Stylesheet must not change state, controls, or progress values');report.checks.push('CSS application preserves complete S state, control count and progress value/max/label');
+  // An overlapping floating control is not the background of the text beneath
+  // it. Exercise that boundary, then prove real low-contrast copy still fails.
+  await page.evaluate(()=>{const root=document.createElement('div');root.id='polishContrastFixture';root.style.cssText='position:fixed;left:20px;top:200px;width:260px;height:24px;background:#fff!important;z-index:100000';const text=document.createElement('span');text.textContent='Clear reading stays on paper';text.style.cssText='color:#222!important;-webkit-text-fill-color:#222!important;font:14px/20px monospace!important;white-space:nowrap';const cover=document.createElement('div');cover.style.cssText='position:absolute;right:0;top:0;width:40%;height:100%;background:#000;z-index:2';root.append(text,cover);document.querySelector('#content').append(root)});
+  try{
+   await contrast(page,'#polishContrastFixture','partially covered reading fixture');
+   assert(report.contrast.at(-1).occludedSamples>0,'Fixture must exercise an actually covered sample');
+   await page.evaluate(()=>{const e=document.querySelector('#polishContrastFixture');e.lastElementChild.remove();e.firstElementChild.style.setProperty('color','#eee','important');e.firstElementChild.style.setProperty('-webkit-text-fill-color','#eee','important')});
+   await assert.rejects(()=>contrast(page,'#polishContrastFixture','deliberately unreadable fixture'),/Contrast:/);
+   report.contrast.pop(); // The expected negative case is not an app failure.
+  }finally{await page.evaluate(()=>document.querySelector('#polishContrastFixture')?.remove())}
+  report.checks.push('Contrast sampler excludes covered pixels and still rejects genuinely low-contrast text');
   for(const width of widths){
    await page.setViewportSize({width,height:1000});
    for(const room of rooms){

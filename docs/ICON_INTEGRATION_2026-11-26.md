@@ -17,3 +17,9 @@ Verification completed locally:
 The focused PR and established Pages publisher are the release path. Do not infer production from these local checks: verify the merged source SHA, build key, asset URLs and actual production navigation after publishing. The earlier artwork/shop release is separate; a new publishing run is needed for these sidebar/rune additions.
 
 Recovery: revert this focused merge using mainline parent 1, then publish through the normal workflow. Existing labels remain usable if artwork fails to load. Preserve all browser saves, earned rewards, inventory, course separation and source data; never clear browser storage to repair an icon. Highest-priority follow-up is the publisher's exact-commit verification and real production icon/navigation check.
+
+## Visible-pixel contrast certification
+
+The contrast sampler previously checked only the center of each text rectangle, then sampled three points. An edge sample could land on a separate floating control instead of the reading surface and report its background as a text-contrast failure. The sampler now hit-tests every point and measures only the exposed reading pixels; it retains the 4.5:1/3:1 thresholds and the center-visible text requirement. It records occluded-sample counts for review.
+
+Two explicit fixtures protect the check: a dark overlay covering the edge of an otherwise readable white reading surface must not cause a false failure, while genuinely low-contrast visible text must still be rejected. Local verification passed 14 acceptance checks and 17 rendered samples, including the overlay fixture (15.91:1, one covered sample), and rejected the deliberate unreadable fixture. No runtime style, learning data, source ownership, rewards, save handling or app dependency changes in this test-only follow-up. The app candidate remains `3d3f2e1d81a1f93c`; final GitHub/production status must still be verified separately.
