@@ -66,6 +66,7 @@ function decorate(){
  ensureMagicLayer();
  ensureRoomRibbon(r);
  markHeavySections();
+ document.querySelectorAll('.side .nav button[data-nav]>span:first-child:not(.label)').forEach(icon=>{if(icon.getAttribute('aria-hidden')!=='true')icon.setAttribute('aria-hidden','true')});
  if(lastRoom!==r){
   document.body.classList.remove('v3360RoomPulse');
   if(!reduced()){

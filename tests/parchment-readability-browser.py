@@ -41,6 +41,9 @@ with sync_playwright() as pw:
   adventure.locator('[data-aeth-action="start"]').click()
   for index in range(3):
    page.locator('[data-aeth-route="evidence"]').click()
+   rune=page.locator('.aeth-runes button>span[aria-hidden=true]').first
+   art=rune.evaluate('(e)=>({image:getComputedStyle(e).backgroundImage,font:getComputedStyle(e).fontSize,animation:getComputedStyle(e).animationName})')
+   assert art['image']!='none' and art['font']=='0px' and art['animation']=='none',art
    prompt=page.locator('.aeth-adventure-play h3').inner_text()
    correct=page.evaluate(r'''prompt=>{const norm=s=>s.replace(/[—–]/g,'-').replace(/\s+/g,' ').trim();const q=MajickAetheriaAdventures.questions('D669').find(q=>norm(q.prompt)===norm(prompt));if(!q)throw Error('Displayed question missing from its source');return q.correct}''',prompt)
    page.locator(f'[data-aeth-answer="{correct}"]').click()
@@ -51,6 +54,18 @@ with sync_playwright() as pw:
   assert page.evaluate('JSON.stringify(S.progress)')==protected,'Story practice altered academic progress'
   assert page.evaluate('MajickStateCore.ensureAccount().xpHighWater')==xp,'Story practice added XP'
   message.scroll_into_view_if_needed();page.screenshot(path=str(evidence/f'quest-{width}.png'))
+  page.evaluate("navigate('games')")
+  page.locator('#aethAdventure [data-aeth-action="start"]').click()
+  targets=page.locator('#aethAdventure .aeth-target');assert targets.count()>=2
+  art=targets.first.locator('span').evaluate('(e)=>({image:getComputedStyle(e).backgroundImage,font:getComputedStyle(e).fontSize,animation:getComputedStyle(e).animationName})')
+  assert '/skill-17.webp' in art['image'] and art['font']=='0px' and art['animation']=='none',art
+  prompt=page.locator('.aeth-adventure-play h3').inner_text()
+  correct=page.evaluate('(prompt)=>MajickAetheriaAdventures.questions("D669").find(q=>q.prompt===prompt).correct',prompt)
+  target=page.locator(f'[data-aeth-answer="{correct}"]');target.focus();page.keyboard.press('Enter')
+  assert 'Correct rune!' in page.locator('.aeth-result').inner_text()
+  assert page.evaluate('JSON.stringify(S.progress)')==protected,'Rune artwork changed academic progress'
+  assert page.evaluate('MajickStateCore.ensureAccount().xpHighWater')==xp,'Rune artwork changed XP'
+  page.locator('.aeth-result').scroll_into_view_if_needed();page.screenshot(path=str(evidence/f'rune-art-{width}.png'))
   page.evaluate("navigate('learninglab')")
   obs=page.locator('.obs-shell');obs.wait_for(state='visible');page.wait_for_timeout(700)
   contrast(obs.locator('.obs-header :is(h3,p,span),.obs-kpis :is(b,small),.obs-scenario-metric,.obs-meter p,.obs-fragment-note,.obs-disclaimer'),paper)

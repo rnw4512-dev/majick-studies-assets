@@ -21,6 +21,12 @@ with sync_playwright() as pw:
    else:page.evaluate('(route)=>navigate(route)',route)
    page.wait_for_timeout(180)
    assert page.evaluate('S.screen')==route,(width,route,page.evaluate('S.screen'))
+   if route!='control':
+    icon=page.locator(f'.nav [data-nav=\"{route}\"]>span:first-child').first
+    page.wait_for_function('(route)=>[...document.querySelectorAll(".nav button[data-nav]")].find(e=>e.dataset.nav===route)?.firstElementChild?.getAttribute("aria-hidden")==="true"',arg=route)
+    art=icon.evaluate('async e=>{const image=getComputedStyle(e).backgroundImage,img=new Image();img.src=image.slice(5,-2);await img.decode();return {image,font:getComputedStyle(e).fontSize,hidden:e.getAttribute("aria-hidden"),loaded:img.naturalWidth>0}}')
+    assert art['image']!='none' and art['font']=='0px' and art['hidden']=='true' and art['loaded'],(route,art)
+    assert page.locator(f'.nav [data-nav=\"{route}\"] .label').inner_text().strip()
    assert page.locator('#content').inner_text().strip(),(width,route,'empty room')
    assert page.evaluate('document.documentElement.scrollWidth<=innerWidth+2'),(width,route,'horizontal overflow')
   page.evaluate("navigate('home')");page.wait_for_timeout(300)

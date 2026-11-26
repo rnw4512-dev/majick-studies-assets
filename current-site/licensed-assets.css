@@ -165,3 +165,22 @@ body[data-majick-polish-room=constellation] #majickRoomRibbon::after{background-
 :is(.shopItem,.v3311ShopItem,.v3312ShopItem):has(button[onclick="buyShop('bossShield')"])>:is(div,span):first-child{background-image:url('./assets/licensed/skill-21.webp')}
 :is(.shopItem,.v3311ShopItem,.v3312ShopItem):has(button[onclick="buyShop('lunaTiara')"])>:is(div,span):first-child{background-image:url('./assets/atelier/v2/fitted/accessories/headpiece.webp')}
 :is(.shopItem,.v3311ShopItem,.v3312ShopItem):has(button[onclick="buyShop('ribbonBurst')"])>:is(div,span):first-child{background-image:url('./assets/effects/celebrations/celebration-starburst.svg')}
+
+/* Downloaded artwork on the existing navigation and rune-answer controls. */
+.side .nav button:is([data-nav=home],[data-nav=mission],[data-nav=reasoning],[data-nav=journal],[data-nav=learninglab],[data-nav=addmaterial],[data-nav=livinggrimoire],[data-nav=guide],[data-nav=focus],[data-nav=games],[data-nav=companions],[data-nav=constellation],[data-nav=vault],[data-nav=trophies])>span:first-child:not(.label){display:block;flex:0 0 28px;width:28px;height:28px;font-size:0!important;background:center/contain no-repeat;filter:saturate(.7);pointer-events:none}
+.side .nav button[data-nav=home]>span:first-child:not(.label){background-image:url('./assets/licensed/milestones/house.png')}
+.side .nav button[data-nav=mission]>span:first-child:not(.label){background-image:url('./assets/rewards/solstice/items/astronomy-book-stack.webp')}
+.side .nav button[data-nav=reasoning]>span:first-child:not(.label){background-image:url('./assets/licensed/skill-17.webp')}
+.side .nav button[data-nav=journal]>span:first-child:not(.label){background-image:url('./assets/licensed/skill-08.webp')}
+.side .nav button[data-nav=learninglab]>span:first-child:not(.label){background-image:url('./assets/licensed/skill-03.webp')}
+.side .nav button[data-nav=addmaterial]>span:first-child:not(.label){background-image:url('./assets/rewards/solstice/items/astronomy-book-stack.webp')}
+.side .nav button[data-nav=livinggrimoire]>span:first-child:not(.label){background-image:url('./assets/rewards/solstice/items/astronomy-book-stack.webp')}
+.side .nav button[data-nav=guide]>span:first-child:not(.label){background-image:url('./assets/rewards/solstice/items/astronomy-book-stack.webp')}
+.side .nav button[data-nav=focus]>span:first-child:not(.label){background-image:url('./assets/licensed/milestones/hourglass.png')}
+.side .nav button[data-nav=games]>span:first-child:not(.label){background-image:url('./assets/licensed/images/runestones.webp')}
+.side .nav button[data-nav=companions]>span:first-child:not(.label){background-image:url('./assets/licensed/milestones/heart.png')}
+.side .nav button[data-nav=constellation]>span:first-child:not(.label){background-image:url('./assets/licensed/milestones/star.png')}
+.side .nav button[data-nav=vault]>span:first-child:not(.label){background-image:url('./assets/licensed/images/bag.webp')}
+.side .nav button[data-nav=trophies]>span:first-child:not(.label){background-image:url('./assets/licensed/rings/gold-wrap.webp')}
+#aethAdventure .aeth-runes button>span[aria-hidden=true]{display:block;flex:0 0 30px;width:30px;height:30px;font-size:0!important;background:url('./assets/licensed/images/runestones.webp') center/contain no-repeat;animation:none!important;pointer-events:none}
+#aethAdventure .aeth-runes .aeth-target>span[aria-hidden=true]{flex-basis:38px;width:38px;height:38px;background-image:url('./assets/licensed/skill-17.webp');filter:saturate(.65)}
