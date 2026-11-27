@@ -39,3 +39,10 @@ html[data-majick-focus=true] #content.majQuestionFirst>.majQuestionPrimary{order
 #content.majQuestionFirst .wholePracticeSettings>summary:focus-visible{outline:3px solid #d5aa69}
 #content.majQuestionFirst .wholePracticeMode{margin:4px 0 8px;font-size:.85rem;font-weight:600;color:#f2d797!important}
 @media(max-width:600px){#content.majQuestionFirst .guidedQuestion{padding:10px!important}}
+
+#content.majQuestionFirst .wholeRuneChoices,#content.majQuestionFirst .wholeAnswerChoices{display:grid;gap:10px;grid-template-columns:1fr}
+#content.majQuestionFirst .wholeRuneChoices{grid-template-columns:repeat(2,minmax(0,1fr))}
+#content.majQuestionFirst .wholeRuneChoices .wholeRuneCorrect{border-color:#8bdfb1!important;background:#224c37!important}
+#content.majQuestionFirst .wholeRewardLine{color:#f3d894!important;font-weight:700}
+#content.majQuestionFirst .learnLab>#courseLessonNavigator{order:3}
+@media(max-width:600px){#content.majQuestionFirst .wholeRuneChoices{grid-template-columns:1fr}}

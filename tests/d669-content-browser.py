@@ -145,7 +145,7 @@ with sync_playwright() as pw:
   expect(question.locator('#guidedFeedback')).not_to_be_empty()
   question.locator('#wholeNext').click()
   expect(question.locator('h3')).to_be_visible()
-  settings.locator('summary').click()
+  settings.locator(':scope > summary').click()
   expect(settings.locator('#wholeIndependent')).to_be_visible()
   page.evaluate("S.courses.D669.userNotes='Preserved D669 course notes';switchCourse('D772');switchCourse('D669')")
   assert page.evaluate('S.courses.D669.userNotes')=='Preserved D669 course notes'

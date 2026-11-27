@@ -3835,7 +3835,7 @@ MajickLearningLab.bind=function(){
   const bindingCourse=cid();
   setTimeout(()=>hydrate(bindingCourse).then(()=>{
     if(cid()!==bindingCourse||window.S?.screen!=='learninglab')return;
-    show('tutor',true);
+    if(document.querySelector('.learnPanel:not([hidden])')?.dataset.panel==='learn'&&!document.querySelector('.learnLab')?.dataset.explicitTab)show('tutor',true);
   }),30);
 };
 const baseRefresh=MajickLearningLab.refresh;
