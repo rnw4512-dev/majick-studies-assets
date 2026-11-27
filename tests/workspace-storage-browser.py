@@ -32,6 +32,23 @@ read_checkpoint = """key => new Promise((resolve, reject) => {
 })"""
 
 
+# Compare durable earned values and ledger receipts, not just aggregate counts.
+reward_snapshot = """() => {
+ const a=S.majickAccount,r=a.rewardCore;
+ return {xp:a.xp,crystals:a.crystals,chests:a.chests,
+         xpHighWater:a.xpHighWater,masteryXp:r.masteryXp,
+         eggFragments:r.eggFragments,ledger:r.ledger};
+}"""
+
+
+def checkpoint_rewards(item):
+    a = json.loads(item['raw'])['majickAccount']
+    r = a['rewardCore']
+    return dict(xp=a['xp'], crystals=a['crystals'], chests=a['chests'],
+                xpHighWater=a['xpHighWater'], masteryXp=r['masteryXp'],
+                eggFragments=r['eggFragments'], ledger=r['ledger'])
+
+
 def ready(page):
     page.wait_for_function("!!window.MajickWorkspaceReady")
     page.evaluate('MajickSaveSafety.flush()')
@@ -72,7 +89,19 @@ with sync_playwright() as p:
          MajickSaveSafety.records.setItem(key,JSON.stringify([{id:'complete-council-attempt'}]));
          save();return MajickSaveSafety.flush();
         }""")
+        # Award through the real reward owner. These fixed-key reward types
+        # do not alter the existing Guardian/egg comparison fixture.
+        page.evaluate("""()=>{
+         MajickRewardCore.award('d756-meeting-first-pass',{key:'fixture-earned-council'});
+         MajickRewardCore.award('study-fragment-earned',{key:'fixture-earned-fragment'});
+         return MajickSaveSafety.flush();
+        }""")
+        earned = page.evaluate(reward_snapshot)
+        assert earned['ledger']['fixture-earned-council']['receipt']['xp'] == 30
+        assert earned['ledger']['fixture-earned-council']['receipt']['crystals'] == 5
+        assert earned['ledger']['fixture-earned-fragment']['receipt']['eggFragments'] == 1
         latest = page.evaluate(read_checkpoint, 'primary-workspace-v2')
+        assert checkpoint_rewards(latest) == earned
         assert latest['revision'] >= 2
         assert 'complete-council-attempt' in latest['browserData']['majick-d756-task2-rehearsal-v1-history']
         assert page.evaluate('MajickSaveSafety.status().ok') is True
@@ -95,9 +124,20 @@ with sync_playwright() as p:
         assert page.locator('#majickSaveFailure').count() == 0
         assert page.evaluate("JSON.stringify({pets:S.legacy.pets,eggs:S.legacy.eggs})")==world
         assert page.evaluate(read_checkpoint, 'previous-workspace')['revision'] < page.evaluate(read_checkpoint, 'primary-workspace-v2')['revision']
+        assert page.evaluate(reward_snapshot) == earned
+        # Closing the page and opening a new one in the same isolated profile
+        # must preserve the authoritative checkpoint, including receipts.
         other = ctx.new_page()
         other.goto(url)
         ready(other)
+        assert other.evaluate(reward_snapshot) == earned
+        other.evaluate("""()=>{
+         MajickRewardCore.award('d756-meeting-first-pass',{key:'fixture-earned-council'});
+         MajickRewardCore.award('study-fragment-earned',{key:'fixture-earned-fragment'});
+         save();return MajickSaveSafety.flush();
+        }""")
+        assert other.evaluate(reward_snapshot) == earned
+        assert checkpoint_rewards(other.evaluate(read_checkpoint, 'primary-workspace-v2')) == earned
         page.evaluate("""()=>{S.testWorkspaceMarker='stale-tab';save();return MajickSaveSafety.flush()}""")
         assert page.evaluate("MajickSaveSafety.status().message.includes('another tab')")
         assert 'stale-tab' not in other.evaluate(read_checkpoint, 'primary-workspace-v2')['raw']
@@ -121,7 +161,9 @@ with sync_playwright() as p:
          return MajickSaveSafety.flush();
         }""")
         assert other.evaluate("MajickSaveSafety.status().ok") is True
-        assert 'offline-latest' in other.evaluate(read_checkpoint, 'primary-workspace-v2')['raw']
+        offline_checkpoint = other.evaluate(read_checkpoint, 'primary-workspace-v2')
+        assert 'offline-latest' in offline_checkpoint['raw']
+        assert checkpoint_rewards(offline_checkpoint) == earned
         assert other.locator('#majickSaveFailure').count() == 0
         ctx.set_offline(False)
         other.on('dialog', lambda dialog: dialog.accept())
@@ -135,6 +177,7 @@ with sync_playwright() as p:
         restored = other.evaluate(read_checkpoint, 'primary-workspace-v2')
         assert 'restored-backup' in restored['raw']
         assert 'imported-attempt' in restored['browserData']['majick-d756-task2-rehearsal-v1-history']
+        assert checkpoint_rewards(restored) == earned
         last_good = other.evaluate(read_checkpoint, 'previous-workspace')
         page.close()
         other.evaluate("""()=>new Promise((resolve,reject)=>{
@@ -160,6 +203,6 @@ with sync_playwright() as p:
         assert blocked.locator('#majickSaveFailure').is_visible()
         assert 'database is unavailable' in blocked.locator('#majickSaveFailure').inner_text()
         assert blocked.evaluate("localStorage.getItem('moonlit_learning_v1')") == legacy
-        print('PASS saved Vault, exact Guardian and egg recovery, quota, Council, stale tabs, failed writes, offline retry, verified import, corrupted checkpoint recovery and blocked database', flush=True)
+        print('PASS exact reward ledger, XP, crystals, fragment recovery and duplicate prevention; saved Vault, exact Guardian and egg recovery, quota, Council, stale tabs, failed writes, offline retry, verified import, corrupted checkpoint recovery and blocked database', flush=True)
     browser.close()
 server.shutdown()

@@ -1,3 +1,9 @@
+## Takeover batch 1 — exact earned-reward regression (2026-11-27)
+
+- Extended `tests/workspace-storage-browser.py` with actual reward-owner awards using fixed synthetic transaction keys, exact XP/crystals/chests/mastery/fragment/ledger comparison against committed IndexedDB data, reload/new-page checks, duplicate award replay, offline retry and import checks.
+- No runtime/schema or protected asset edits. Existing Pages workflow runs this test pre-deploy and against production; new CI outcome pending. Existing test's separate-tab check remains intact (new-page test does not establish full browser process restart).
+- If CI fails, inspect exact failing assertion before changing any runtime code; distinguish startup normalization from lost progress. Do not loosen ledger/balance checks to obtain a green build.
+
 # 2026-11-27 — ChatGPT takeover after Codex usage limit
 
 Baseline: main and production commit `8c1ba448c8614b5dd7572fc03c1430054711dafc`.
