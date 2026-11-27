@@ -31,10 +31,10 @@ const writing=c.studySections.find(s=>s.id==='d669-section-5');
 assert.equal(writing.competency,'2068.1.5');
 assert.equal(writing.lessons.length,3);
 const writingSubs=writing.lessons.flatMap(l=>l.sublessons||[]);
-for(const id of ['d669-s5-l1-1','d669-s5-l1-2','d669-s5-l2-1','d669-s5-l3-1']){
+for(const id of ['d669-s5-l1-1','d669-s5-l1-2','d669-s5-l2-1','d669-s5-l3-1','d669-s5-l3-3','d669-s5-l3-4','d669-s5-competency-review']){
  const lesson=writingSubs.find(s=>s.id===id);assert(lesson&&lesson.keyIdeas.length&&lesson.quizIds.length);
  for(const qid of lesson.quizIds){const q=c.questionBank.find(q=>q.id===qid);assert(q&&q.lessonId===id&&q.official===false&&q.options[q.correctIndex]===q.answer);}
 }
 for(const lesson of writingSubs)for(const group of lesson.formativeGroups||[])for(const question of group.questions)assert((question.options||group.options).includes(question.answer));
-assert.match(writing.lessons[2].status,/Partial source/);
+assert.match(writing.lessons[2].status,/Lesson 3\.2 numbering not separately supplied/);
 console.log('PASS supplied Section 4/Lesson 1 introductions, narrative/expository answers, one-lesson boundary and all 111 earlier answer identities preserved');

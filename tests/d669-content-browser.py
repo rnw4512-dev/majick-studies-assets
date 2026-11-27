@@ -126,7 +126,8 @@ with sync_playwright() as pw:
   page.get_by_text('Practice: Lesson 1.4: Poetry',exact=True).wait_for()
   assert page.evaluate("""()=> {
    const bank=S.courses.D669.questionBank.filter(q=>q.lessonId==='d669-s4-l1-4');
-   return bank.length===4 && new Set(bank.map(q=>q.id)).size===4 &&
+   const required=['d669-s4-l1-4-comparison','d669-s4-l1-4-sound','d669-s4-l1-4-tone','d669-s4-l1-4-form'];
+   return required.every(id=>bank.some(q=>q.id===id)) && new Set(bank.map(q=>q.id)).size===bank.length &&
     bank.every(q=>q.official===false&&q.options.includes(q.answer));
   }""")
 
