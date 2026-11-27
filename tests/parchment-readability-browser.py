@@ -22,6 +22,8 @@ def contrast(locator,backgrounds):
    paper=luminance(bg);ratio=(max(ink,paper)+.05)/(min(ink,paper)+.05)
    assert ratio>=4.5,(el.inner_text()[:90],color,round(ratio,2),bg)
 paper=[[255,248,237],[248,240,245],[237,243,233],[255,253,250]]
+def correct_for_prompt(page,prompt):
+ return page.evaluate(r'''prompt=>{const norm=s=>s.replace(/[—–]/g,'-').replace(/\s+/g,' ').trim();const q=MajickAetheriaAdventures.questions('D669').find(q=>norm(q.prompt)===norm(prompt));if(!q)throw Error('Displayed question missing from its source');return q.correct}''',prompt)
 with sync_playwright() as pw:
  browser=pw.chromium.launch(executable_path=os.environ.get('CHROMIUM_PATH','/usr/bin/chromium'),args=['--no-sandbox'])
  for width in [390,820,1366]:
@@ -45,7 +47,7 @@ with sync_playwright() as pw:
    art=rune.evaluate('(e)=>({image:getComputedStyle(e).backgroundImage,font:getComputedStyle(e).fontSize,animation:getComputedStyle(e).animationName})')
    assert art['image']!='none' and art['font']=='0px' and art['animation']=='none',art
    prompt=page.locator('.aeth-adventure-play h3').inner_text()
-   correct=page.evaluate(r'''prompt=>{const norm=s=>s.replace(/[—–]/g,'-').replace(/\s+/g,' ').trim();const q=MajickAetheriaAdventures.questions('D669').find(q=>norm(q.prompt)===norm(prompt));if(!q)throw Error('Displayed question missing from its source');return q.correct}''',prompt)
+   correct=correct_for_prompt(page,prompt)
    page.locator(f'[data-aeth-answer="{correct}"]').click()
    contrast(page.locator('.aeth-result :is(b,p,small)'),paper)
    page.locator('[data-aeth-action="next"]').click()
@@ -60,7 +62,7 @@ with sync_playwright() as pw:
   art=targets.first.locator('span').evaluate('(e)=>({image:getComputedStyle(e).backgroundImage,font:getComputedStyle(e).fontSize,animation:getComputedStyle(e).animationName})')
   assert any(path in art['image'] for path in ('/skill-17.webp','/spell-icons/runes-magenta-1.webp')) and art['font']=='0px' and art['animation']=='none',art
   prompt=page.locator('.aeth-adventure-play h3').inner_text()
-  correct=page.evaluate('(prompt)=>MajickAetheriaAdventures.questions("D669").find(q=>q.prompt===prompt).correct',prompt)
+  correct=correct_for_prompt(page,prompt)
   target=page.locator(f'[data-aeth-answer="{correct}"]');target.focus();page.keyboard.press('Enter')
   assert 'Correct rune!' in page.locator('.aeth-result').inner_text()
   assert page.evaluate('JSON.stringify(S.progress)')==protected,'Rune artwork changed academic progress'
