@@ -3,7 +3,7 @@ import os,sys,threading
 from pathlib import Path
 from functools import partial
 from http.server import ThreadingHTTPServer,SimpleHTTPRequestHandler
-from playwright.sync_api import sync_playwright
+from playwright.sync_api import expect,sync_playwright
 class Quiet(SimpleHTTPRequestHandler):
  def log_message(self,*args):pass
 root=Path(sys.argv[1] if len(sys.argv)>1 else 'current-site').resolve()
@@ -48,6 +48,22 @@ with sync_playwright() as pw:
   assert page.evaluate('qaMusicPlayers[0].volume')==.12
   page.locator('.caAmbience').click()
   assert protected()==before,'Audio changes study progress, XP or reward inventory'
+  if width==820:
+   personal=page.locator('.caSoundOptions input[type=file]')
+   personal.set_input_files({
+    'name':'Personal audio fixture.ogg','mimeType':'audio/ogg',
+    'buffer':(root/'assets/audio/dreams-become-real.ogg').read_bytes(),
+   })
+   expect(picker.locator('option[value=personal]')).to_have_count(1)
+   assert page.evaluate("MajickCollegiumAtmosphere.inspect().track==='personal'&&!MajickCollegiumAtmosphere.inspect().playing")
+   page.locator('.caAmbience').click()
+   page.wait_for_function("MajickCollegiumAtmosphere.inspect().playing&&MajickCollegiumAtmosphere.inspect().loadedTrack==='personal'")
+   assert page.evaluate('qaMusicPlayers.length')==1
+   page.evaluate('window.MajickSaveSafety?.flush?.()')
+   page.reload()
+   expect(page.locator('.caTrackSelect option[value=personal]')).to_have_count(1)
+   assert page.evaluate('!MajickCollegiumAtmosphere.inspect().playing')
+   print('PASS personal audio remains on the device, survives reload and uses the one opt-in player',flush=True)
   assert not errors,errors
   print(f'PASS optional music {width}: seven choices, six uploaded tracks decode/play, no pre-opt-in download, one player, rapid-switch safety, mute/zero-volume and preserved learning/rewards',flush=True)
   context.close()

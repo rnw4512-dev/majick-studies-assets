@@ -11,20 +11,46 @@
    'dark-ambience':{title:'Dark Ambience Loop',artist:'Iwan Gabovitch',path:'./assets/licensed/music/dark-ambience.ogg'},
    'enchanted-festival':{title:'Enchanted Festival',artist:'Matthew Pablo',path:'./assets/licensed/music/enchanted-festival.ogg'}
  });
- let selectedTrack='dreams',loadedTrack=null;
+ let selectedTrack='dreams',loadedTrack=null,personalTrack=null,personalLoaded=false;
+ function track(id){return id==='personal'?personalTrack:TRACKS[id]}
+ function attachPersonal(file){
+   if(personalTrack)URL.revokeObjectURL(personalTrack.path);
+   personalTrack={title:file.name.replace(/\.[^.]+$/,''),artist:'Personal audio',path:URL.createObjectURL(file)};
+ }
+ async function choosePersonal(file){
+   if(!file)return;
+   if(file.size>24*1024*1024||!(/^(audio\/)/i.test(file.type)||/\.(mp3|ogg|wav|m4a)$/i.test(file.name))){
+     error='Choose an audio file under 24 MB.';decorate();return;
+   }
+   try{await window.MajickPersonalArtwork.storeMusic(file);}
+   catch(_){error='This browser could not store the audio file.';decorate();return;}
+   if(selectedTrack==='personal')loadedTrack=null;
+   attachPersonal(file);
+   if(selectedTrack==='personal'){
+    const resume=enabled;stop();enabled=false;
+    if(resume)await start();else decorate();
+   }else await selectTrack('personal');
+ }
+ function loadPersonal(){
+   if(personalLoaded||!window.MajickPersonalArtwork?.readMusic)return;
+   personalLoaded=true;
+   window.MajickPersonalArtwork.readMusic().then(file=>{
+    if(file&&!personalTrack){attachPersonal(file);decorate();}
+   }).catch(()=>{});
+ }
  let ctx,enabled=false,lastRoom=null,music=null,error='',audioRequest=0,lastMicroAt=0;
  function room(){return Object.hasOwn(ROOMS,window.S?.screen)?window.S.screen:'home'}
  function volume(){const value=Number(window.S?.majickAccount?.guardianAudio?.musicVolume??.22);return Math.max(0,Math.min(.7,Number.isFinite(value)?value:.22))}
  const spellClips=new Map();
  function stop(){music?.pause();spellClips.forEach(a=>{a.pause();a.currentTime=0})}
  function recording(){
-   const source=TRACKS[selectedTrack].path+'?v='+encodeURIComponent(window.MAJICK_RELEASE||'source');
+   const source=track(selectedTrack).path+(selectedTrack==='personal'?'':'?v='+encodeURIComponent(window.MAJICK_RELEASE||'source'));
    if(!music){music=new window.Audio(source);loadedTrack=selectedTrack;music.loop=true;music.preload='none';music.addEventListener('error',()=>{enabled=false;error='The selected music could not load. Try another track or check your connection.';stop();decorate()});music.addEventListener('ended',()=>{if(enabled){enabled=false;decorate()}})}
    else if(loadedTrack!==selectedTrack){music.pause();music.preload='none';music.src=source;loadedTrack=selectedTrack}
    music.volume=volume()*(window.speechSynthesis?.speaking?0.18:1);return music;
  }
  async function selectTrack(id){
-   if(!Object.hasOwn(TRACKS,id))return false;
+   if(!track(id))return false;
    if(id===selectedTrack)return true;
    const resume=enabled;audioRequest++;stop();selectedTrack=id;error='';
    if(resume)return start();
@@ -105,6 +131,7 @@
  document.addEventListener('majick:repair-confirmed',e=>{const d=e.detail||{};if(d.verified)eventCue('repair',d.key?'repair:'+d.key:null)});
  document.addEventListener('majick:brew-stage',e=>{const d=e.detail||{};eventCue(d.kind)});
  function speechVolume(){if(music)music.volume=volume()*(window.speechSynthesis?.speaking?0.18:1)}
+ document.addEventListener('majick:workspace-ready',loadPersonal,{once:true});
  document.addEventListener('visibilitychange',speechVolume);
  setInterval(()=>{if(enabled&&music&&!music.paused)speechVolume()},300);
  function decorate(){
@@ -123,18 +150,25 @@
      content.classList.toggle('ancientLibraryRoom',libraryRoom);
    }
 
+   loadPersonal();
    const top=document.querySelector('.top');if(!top)return;
    const pill=top.querySelector('.pill');if(pill)pill.textContent='Guardian Room Check • V'+VERSION;
    let controls=top.querySelector('.caSoundControls');
-   if(!controls){controls=document.createElement('div');controls.className='caSoundControls';const button=document.createElement('button');button.type='button';button.className='caAmbience';button.addEventListener('click',toggle);controls.append(button);const options=document.createElement('details');options.className='caSoundOptions';const summary=document.createElement('summary');summary.textContent='Sound settings';options.append(summary);const label=document.createElement('label');label.textContent='Music volume ';const slider=document.createElement('input');slider.type='range';slider.min='0';slider.max='70';slider.step='1';slider.value=String(Math.round(volume()*100));slider.setAttribute('aria-label','Music volume');slider.addEventListener('input',()=>setVolume(Number(slider.value)/100));label.append(slider);options.append(label);const trackLabel=document.createElement('label');trackLabel.textContent='Music track ';const picker=document.createElement('select');picker.className='caTrackSelect';picker.setAttribute('aria-label','Music track');Object.entries(TRACKS).forEach(([id,track])=>{const option=document.createElement('option');option.value=id;option.textContent=track.title;picker.append(option)});picker.value=selectedTrack;picker.addEventListener('change',()=>selectTrack(picker.value));trackLabel.append(picker);options.append(trackLabel);const credit=document.createElement('a');credit.className='caMusicCredit';credit.href='./assets/IMMERSION-CREDITS.html';credit.textContent='Music by Kevin MacLeod · Artist credits';options.append(credit);const note=document.createElement('p');note.className='caSoundStatus';note.setAttribute('role','status');options.append(note);controls.append(options);top.append(controls)}
+   if(!controls){controls=document.createElement('div');controls.className='caSoundControls';const button=document.createElement('button');button.type='button';button.className='caAmbience';button.addEventListener('click',toggle);controls.append(button);const options=document.createElement('details');options.className='caSoundOptions';const summary=document.createElement('summary');summary.textContent='Sound settings';options.append(summary);const label=document.createElement('label');label.textContent='Music volume ';const slider=document.createElement('input');slider.type='range';slider.min='0';slider.max='70';slider.step='1';slider.value=String(Math.round(volume()*100));slider.setAttribute('aria-label','Music volume');slider.addEventListener('input',()=>setVolume(Number(slider.value)/100));label.append(slider);options.append(label);const trackLabel=document.createElement('label');trackLabel.textContent='Music track ';const picker=document.createElement('select');picker.className='caTrackSelect';picker.setAttribute('aria-label','Music track');Object.entries(TRACKS).forEach(([id,track])=>{const option=document.createElement('option');option.value=id;option.textContent=track.title;picker.append(option)});picker.value=selectedTrack;picker.addEventListener('change',()=>selectTrack(picker.value));trackLabel.append(picker);options.append(trackLabel);const personalLabel=document.createElement('label');personalLabel.textContent='Add personal music from this device ';const file=document.createElement('input');file.type='file';file.accept='audio/*,.mp3,.ogg,.wav,.m4a';file.addEventListener('change',()=>{choosePersonal(file.files[0]);file.value=''});personalLabel.append(file);options.append(personalLabel);const credit=document.createElement('a');credit.className='caMusicCredit';credit.href='./assets/IMMERSION-CREDITS.html';credit.textContent='Music by Kevin MacLeod · Artist credits';options.append(credit);const note=document.createElement('p');note.className='caSoundStatus';note.setAttribute('role','status');options.append(note);controls.append(options);top.append(controls)}
    const b=controls.querySelector('.caAmbience');
    if(enabled&&music?.paused){enabled=false;error=error||'Music stopped. Tap Enable music to restart it.'}
    b.textContent=(enabled?'♫ ':'♪ ')+ROOMS[r]+' · music '+(enabled?'on':'off');
    b.setAttribute('aria-label',(enabled?'Mute':'Enable')+' ethereal music');
    b.setAttribute('aria-pressed',String(enabled));
-   controls.querySelector('.caTrackSelect').value=selectedTrack;
-   controls.querySelector('.caMusicCredit').textContent='Music credits · '+TRACKS[selectedTrack].artist;
-   controls.querySelector('.caSoundStatus').textContent=error||(enabled?'Playing '+TRACKS[selectedTrack].title+'.':'Music is off. Choose a track, then enable music when you want it.');
+   const picker=controls.querySelector('.caTrackSelect');
+   if(personalTrack){
+    let option=picker.querySelector('option[value="personal"]');
+    if(!option){option=document.createElement('option');option.value='personal';picker.append(option);}
+    option.textContent=personalTrack.title+' (this device)';
+   }
+   picker.value=selectedTrack;
+   controls.querySelector('.caMusicCredit').textContent=selectedTrack==='personal'?'Built-in music credits':'Music credits · '+track(selectedTrack).artist;
+   controls.querySelector('.caSoundStatus').textContent=error||(enabled?'Playing '+track(selectedTrack).title+'.':'Music is off. Choose a track, then enable music when you want it.');
    document.title='Majick Studies — V'+VERSION+' Collegium Atmospheres';
  }
  document.addEventListener('visibilitychange',()=>{stop();if(!document.hidden&&enabled)recording().play().catch(()=>{enabled=false;error='Tap Enable music to resume audio.';decorate()})});

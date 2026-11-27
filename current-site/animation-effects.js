@@ -9,8 +9,29 @@ const personal=(()=>{
  async function load(){const d=await db();try{const stored=await new Promise((ok,no)=>{const q=d.transaction('packs').objectStore('packs').get('active');q.onsuccess=()=>ok(q.result);q.onerror=()=>no(q.error)});if(stored)assets=valid(stored);}finally{d.close()}}
  async function install(file){if(!file||file.size>12000000)throw Error('Choose an artwork JSON under 12 MB.');const pack=JSON.parse(await file.text()),clean=valid(pack),d=await db();try{await new Promise((ok,no)=>{const tx=d.transaction('packs','readwrite');tx.objectStore('packs').put({format:pack.format,assets:clean},'active');tx.oncomplete=ok;tx.onerror=()=>no(tx.error);tx.onabort=()=>no(tx.error)});assets=clean;}finally{d.close()}return Object.keys(assets).length}
  function choose(){const input=document.createElement('input');input.type='file';input.accept='.json,application/json';input.onchange=async()=>{try{const n=await install(input.files[0]);window.rewardToast?.('Personal artwork installed',n+' visuals saved on this device.');window.render?.();alert(n+' artwork files installed. They remain on this device.')}catch(e){alert('Artwork not installed: '+e.message)}};input.click()}
+ async function readMusic(){
+  const connection=await db();
+  try{
+   return await new Promise((resolve,reject)=>{
+    const request=connection.transaction('packs').objectStore('packs').get('personal-music');
+    request.onsuccess=()=>resolve(request.result||null);
+    request.onerror=()=>reject(request.error);
+   });
+  }finally{connection.close();}
+ }
+ async function storeMusic(file){
+  const connection=await db();
+  try{
+   await new Promise((resolve,reject)=>{
+    const transaction=connection.transaction('packs','readwrite');
+    transaction.objectStore('packs').put(file,'personal-music');
+    transaction.oncomplete=resolve;
+    transaction.onabort=()=>reject(transaction.error);
+   });
+  }finally{connection.close();}
+ }
  load().catch(()=>{});
- return Object.freeze({get:k=>assets[k]||null,count:()=>Object.keys(assets).length,choose,install});
+ return Object.freeze({get:k=>assets[k]||null,count:()=>Object.keys(assets).length,choose,install,readMusic,storeMusic});
 })();
 window.MajickPersonalArtwork=personal;
 
