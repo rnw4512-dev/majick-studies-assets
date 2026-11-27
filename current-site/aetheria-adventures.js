@@ -7,13 +7,13 @@ if(window.MajickAetheriaAdventures)return;
 const KEY='aetheria-adventure-journal-v1',VERSION='1.4.0';
 const CHAPTER_GATES=[600,1000,1600];
 const GATES={guardian:0,game:200,story:600};
-let journal={};try{const x=JSON.parse(localStorage.getItem(KEY)||'{}');if(x&&typeof x==='object'&&!Array.isArray(x))journal=x}catch(_){}
+let journal={};try{const x=JSON.parse((window.MajickSaveSafety?.records||localStorage).getItem(KEY)||'{}');if(x&&typeof x==='object'&&!Array.isArray(x))journal=x}catch(_){}
 let running=null,queued=false,selectedChapter=1,gameRotation={};
 const E=x=>String(x??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
 const course=()=>String(window.S?.activeCourse||'').toUpperCase();
 const screen=()=>String(window.S?.screen||'').toLowerCase();
 const xp=()=>Math.max(0,Number(window.MajickScholarProgression?.current?.()?.xp??window.MajickStateCore?.ensureAccount?.()?.xpHighWater??window.S?.majickAccount?.xpHighWater??0));
-const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(journal))}catch(_){}};
+const save=()=>{try{(window.MajickSaveSafety?.records||localStorage).setItem(KEY,JSON.stringify(journal))}catch(_){}};
 function questions(id){
  const packs=Object.values(window.MajickCourseActivityPlayer?.packs||{}).filter(p=>String(p.courseId||'').toUpperCase()===id);
  const source=packs.flatMap(p=>(p.activities||[]).filter(a=>a._sourceVerified&&Array.isArray(a.options)&&a.options.length>=2&&Number.isInteger(a.correct)&&a.correct>=0&&a.correct<a.options.length).map(a=>({id:p.id+'|'+a.id,prompt:a.prompt,options:a.options,correct:a.correct,explanation:a.explanation,source:a.provenance?.source_url||'',title:p.title})));
@@ -288,10 +288,10 @@ document.addEventListener('keydown',e=>{
 });
 function schedule(){if(queued)return;queued=true;setTimeout(()=>{queued=false;sync()},60)}
 if(window.MajickRenderQueue?.register)window.MajickRenderQueue.register('aetheria-adventures',schedule,101);
-document.addEventListener('DOMContentLoaded',schedule);
+document.addEventListener('majick:workspace-ready',schedule);
 document.addEventListener('change',e=>{if(e.target?.matches?.('.courseSelect')){running=null;schedule()}});
 window.addEventListener('pageshow',schedule);
-document.addEventListener('majick:save-restored',()=>{try{journal=JSON.parse(localStorage.getItem(KEY)||'{}');running=null;schedule()}catch(_){}});
+document.addEventListener('majick:save-restored',()=>{try{journal=JSON.parse((window.MajickSaveSafety?.records||localStorage).getItem(KEY)||'{}');running=null;schedule()}catch(_){}});
 window.MajickAetheriaAdventures=Object.freeze({VERSION,exportState:()=>JSON.parse(JSON.stringify(journal)),refresh:schedule,unlocks:GATES,questions,courseStory,progress:(id)=>({...entry(String(id||course()).toUpperCase())})});
 schedule();
 })();

@@ -101,7 +101,7 @@ function refresh(){
 }
 function schedule(){if(pending)return;pending=true;setTimeout(()=>{pending=false;refresh()},85)}
 if(window.MajickRenderQueue?.register)window.MajickRenderQueue.register('room-section-shortcuts',schedule,97);
-document.addEventListener('DOMContentLoaded',()=>{schedule()});
+document.addEventListener('majick:workspace-ready',()=>{schedule()});
 // Reasoning Workshop is its own Study Realm destination. It shares the
 // Solution Engine and course data, but never mounts Study Hall content.
 // Keep the round with the existing course save owner, including full question
@@ -248,9 +248,9 @@ function renderMixedExam(panel,focusTarget){
    // course-scoped review log for missed skills and instructor feedback.
    try{
     const key='majick-d772-mixed-exam-review-v1';
-    const rows=JSON.parse(localStorage.getItem(key)||'[]');
+    const rows=JSON.parse((window.MajickSaveSafety?.records||localStorage).getItem(key)||'[]');
     rows.push({id:q.id,lessonId:q.lessonId,skill:q.skill||q.lessonId,revision:q.revision||'original',correct:state.selected===q.answer,at:Date.now()});
-    localStorage.setItem(key,JSON.stringify(rows.slice(-300)));
+    (window.MajickSaveSafety?.records||localStorage).setItem(key,JSON.stringify(rows.slice(-300)));
    }catch(_){}
    renderMixedExam(panel,'feedback');
   };actions.append(submit);
@@ -344,7 +344,7 @@ function installReasoningRoute(){
  window.navigate=routed;
 }
 if(window.MajickRenderQueue?.register)window.MajickRenderQueue.register('reasoning-dedicated-room',()=>{installReasoningRoute();installReasoningEntry();if(window.S?.screen==='reasoning')renderReasoning()},98);
-document.addEventListener('DOMContentLoaded',()=>{installReasoningRoute();installReasoningEntry()});
+document.addEventListener('majick:workspace-ready',()=>{installReasoningRoute();installReasoningEntry()});
 installReasoningRoute();
 
 window.MajickRoomSections=Object.freeze({refresh,schedule});

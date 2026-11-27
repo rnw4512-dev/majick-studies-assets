@@ -5,12 +5,12 @@
 if(window.MajickLearningExperiences)return;
 const VERSION='1.5.1',KEY='aetheria-experiences-v1';
 let journal={version:1,memories:[],decor:'desk',playRuns:{}},session=null,deep=null,vocabRun=null,compRun=null,selectedSection=1,scheduled=false,lastRoom='';
-try{const raw=JSON.parse(localStorage.getItem(KEY)||'{}');if(raw&&typeof raw==='object'&&!Array.isArray(raw)){journal={...journal,...raw};if(!Array.isArray(journal.memories))journal.memories=[]}}catch(_){}
+try{const raw=JSON.parse((window.MajickSaveSafety?.records||localStorage).getItem(KEY)||'{}');if(raw&&typeof raw==='object'&&!Array.isArray(raw)){journal={...journal,...raw};if(!Array.isArray(journal.memories))journal.memories=[]}}catch(_){}
 const E=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const course=()=>String(window.S?.activeCourse||'').toUpperCase();
 const room=()=>String(window.S?.screen||'').toLowerCase();
 const xp=()=>Math.max(0,Number(window.MajickScholarProgression?.current?.()?.xp??window.MajickStateCore?.ensureAccount?.()?.xpHighWater??window.S?.majickAccount?.xpHighWater??0));
-const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(journal))}catch(_){}};
+const save=()=>{try{(window.MajickSaveSafety?.records||localStorage).setItem(KEY,JSON.stringify(journal))}catch(_){}};
 const decor=[
  {id:'desk',title:'The Scholar Desk',xp:0,icon:'📖',message:'Your dependable study corner'},
  {id:'lamp',title:'Moonlit Reading Lamp',xp:200,icon:'🕯',message:'Warm lamplight for deep study'},
@@ -533,10 +533,10 @@ document.addEventListener('majick:sourced-practice',e=>{
 });
 function schedule(){if(scheduled)return;scheduled=true;setTimeout(()=>{scheduled=false;sync()},80)}
 if(window.MajickRenderQueue?.register)window.MajickRenderQueue.register('aetheria-experiences',schedule,105);
-document.addEventListener('DOMContentLoaded',schedule);
+document.addEventListener('majick:workspace-ready',schedule);
 document.addEventListener('change',e=>{if(e.target?.matches?.('.courseSelect')){session=null;deep=null;vocabRun=null;compRun=null;schedule()}});
 window.addEventListener('pageshow',schedule);
-document.addEventListener('majick:save-restored',()=>{try{journal=JSON.parse(localStorage.getItem(KEY)||'{"version":1,"memories":[],"playRuns":{}}');if(!Array.isArray(journal.memories))journal.memories=[];session=deep=vocabRun=compRun=null;schedule()}catch(_){}});
+document.addEventListener('majick:save-restored',()=>{try{journal=JSON.parse((window.MajickSaveSafety?.records||localStorage).getItem(KEY)||'{"version":1,"memories":[],"playRuns":{}}');if(!Array.isArray(journal.memories))journal.memories=[];session=deep=vocabRun=compRun=null;schedule()}catch(_){}});
 window.MajickLearningExperiences=Object.freeze({VERSION,exportState:()=>JSON.parse(JSON.stringify(journal)),refresh:schedule,courseGames:activity,deepPool,sectionRows,sectionQuestions,vocabQuestions,comprehensionQuestions,memories:()=>journal.memories.slice(),decorations:()=>decor.slice()});
 schedule();
 })();

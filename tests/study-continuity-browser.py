@@ -33,7 +33,7 @@ with sync_playwright() as pw:
   stats=page.evaluate("MajickStudyObservatory.summary('D669')");assert stats['guidedAttempts']==6 and stats['allPracticeCount']==6 and stats['allPracticeUniqueCorrect']==5,stats
   assert stats['uniqueCorrect']==0 and stats['tickets']==0,'Guided games create sourced credit/passes'
   assert stats['savedDiscoveries']>=1
-  page.reload();page.wait_for_function('!!window.MajickLearningExperiences&&!!window.MajickStudyObservatory');page.evaluate("switchCourse('D669');navigate('games')")
+  page.evaluate('window.MajickSaveSafety?.flush?.()');page.reload();page.wait_for_function('!!window.MajickLearningExperiences&&!!window.MajickStudyObservatory');page.evaluate("switchCourse('D669');navigate('games')")
   assert page.evaluate("MajickStudyObservatory.summary('D669').guidedAttempts")==6
   page.locator('[data-exp-mode="sort"]').first.click();second=page.locator('.aeth-mini-stage h3').inner_text();assert second!=first,'Every round reuses the first question'
   assert any(second.endswith(q['prompt']) for q in pool),'Rotation left the selected section/skill pool'
@@ -44,7 +44,7 @@ with sync_playwright() as pw:
   page.evaluate("navigate('games')");page.locator('[data-exp-mode="sort"]').first.click();prompt=page.locator('.aeth-mini-stage h3').inner_text();q=next(q for q in pool if prompt.endswith(q['prompt']));page.locator(f'[data-exp-answer="{q["correct"]}"]').click();assert page.evaluate("MajickStudyObservatory.summary('D669').guidedAttempts")==7
   page.on('dialog',lambda d:d.accept());page.evaluate("navigate('control')");page.locator('.v338SavePanel input[type=file]').set_input_files({'name':'study-backup.json','mimeType':'application/json','buffer':json.dumps(payload).encode()});page.wait_for_timeout(100)
   assert page.evaluate("MajickStudyObservatory.summary('D669').guidedAttempts")==6,'Imported storage does not refresh its active owner'
-  page.reload();page.wait_for_function('!!window.MajickStudyObservatory&&!!window.MajickGameRealm');assert page.evaluate("MajickStudyObservatory.summary('D669').allPracticeCount")==7
+  page.evaluate('window.MajickSaveSafety?.flush?.()');page.reload();page.wait_for_function('!!window.MajickStudyObservatory&&!!window.MajickGameRealm');assert page.evaluate("MajickStudyObservatory.summary('D669').allPracticeCount")==7
   result=page.evaluate("""()=>{switchCourse('D669');session=null;S.progress.D669.answers=[];const pool=MajickGameRealm.realmQuestionPool().filter(q=>q.rotationSkill==='d669-realm-sounds');const picked=[];for(let i=0;i<pool.length;i++){const q=pickAdaptive(pool);if(!q)throw Error('No same-skill example');picked.push({id:q.id,skill:q.rotationSkill,prompt:q.prompt});S.progress.D669.answers.push({qid:q.id,topicId:q.topicId,correct:true,assisted:true})}return picked}""")
   assert len(result)==3 and len({q['id'] for q in result})==3 and all(q['skill']=='d669-realm-sounds' for q in result),result
   page.evaluate("navigate('games');startGuardianGauntlet()")

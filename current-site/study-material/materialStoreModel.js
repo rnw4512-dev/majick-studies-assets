@@ -20,11 +20,16 @@ function openDb(){
   });
 }
 function fallbackRead(){
-  try{return JSON.parse(localStorage.getItem(FALLBACK)||'[]')}
+  try{return JSON.parse((window.MajickSaveSafety?.records||localStorage).getItem(FALLBACK)||'[]')}
   catch(_){return[]}
 }
-function fallbackWrite(rows){
-  localStorage.setItem(FALLBACK,JSON.stringify(rows.slice(-35)));
+async function fallbackWrite(rows){
+  const owner=window.MajickSaveSafety;
+  (owner?.records||localStorage).setItem(FALLBACK,JSON.stringify(rows));
+  if(owner?.records){
+    await owner.flush();
+    if(owner.status().ok===false)throw Error('Study material could not be saved in this browser');
+  }
 }
 
 async function save(record){
@@ -45,7 +50,7 @@ async function save(record){
   }catch(_){
     const rows=fallbackRead().filter(x=>x.id!==row.id);
     rows.push(row);
-    fallbackWrite(rows);
+    await fallbackWrite(rows);
     return row;
   }
 }
@@ -61,6 +66,8 @@ async function get(id){
       req.onerror=()=>reject(req.error);
     });
     db.close();
+    const recovered=fallbackRead().find(x=>x.id===id);
+    if(recovered&&(!row||String(recovered.updatedAt||'')>String(row.updatedAt||'')))return recovered;
     return row;
   }catch(_){
     return fallbackRead().find(x=>x.id===id)||null;
@@ -78,9 +85,13 @@ async function list(courseId){
       req.onerror=()=>reject(req.error);
     });
     db.close();
-  }catch(_){
-    rows=fallbackRead();
+  }catch(_){}
+  const combined=new Map(rows.map(row=>[row.id,row]));
+  for(const row of fallbackRead()){
+    const prior=combined.get(row.id);
+    if(!prior||String(row.updatedAt||'')>String(prior.updatedAt||''))combined.set(row.id,row);
   }
+  rows=[...combined.values()];
   if(courseId)rows=rows.filter(x=>x.courseId===courseId);
   return rows.sort((a,b)=>String(b.createdAt||'').localeCompare(String(a.createdAt||'')));
 }
@@ -98,9 +109,11 @@ async function remove(id){
       tx.onerror=()=>reject(tx.error);
     });
     db.close();
-  }catch(_){
-    fallbackWrite(fallbackRead().filter(x=>x.id!==id));
+  }catch(error){
+    if(!fallbackRead().some(row=>row.id===id))throw error;
   }
+  const fallback=fallbackRead();
+  if(fallback.some(row=>row.id===id))await fallbackWrite(fallback.filter(row=>row.id!==id));
 }
 
 async function migrateCourseId(fromCourseId,toCourseId){

@@ -29,7 +29,7 @@ with sync_playwright() as pw:
         room.locator(".dmMockGuide details > summary").click()
         room.locator('[data-mock-model]').click()
         assert len(room.locator("#dmAnswer").input_value()) > 40
-        state = page.evaluate('JSON.parse(localStorage.getItem("majick-d756-task2-rehearsal-v1"))')
+        state = page.evaluate('JSON.parse((MajickSaveSafety.records||localStorage).getItem("majick-d756-task2-rehearsal-v1"))')
         assert state["fullMock"] is True and state["mode"] == "guided"
         assert state["assistedStage"] is True
         room.locator('[data-action="submit"]').click()
@@ -49,7 +49,7 @@ with sync_playwright() as pw:
         feedback_ink = room.locator(".dmCoachDetails > ul:not(.dmCoachEvidence) li").first.evaluate("(el)=>getComputedStyle(el).color")
         assert feedback_ink in ("rgb(48, 37, 56)", "rgb(40, 29, 48)", "rgb(53, 40, 62)"), feedback_ink
         assert room.locator('[data-action=guide-next]').is_visible()
-        state = page.evaluate('JSON.parse(localStorage.getItem("majick-d756-task2-rehearsal-v1"))')
+        state = page.evaluate('JSON.parse((MajickSaveSafety.records||localStorage).getItem("majick-d756-task2-rehearsal-v1"))')
         assert state["records"][-1]["assisted"] is True
         # Rewrite practice is not a new stakeholder turn or a new reward.
         original_count = len(state["records"])
@@ -58,16 +58,16 @@ with sync_playwright() as pw:
         assert "does not" in room.locator(".dmRevisionBox").inner_text()
         room.locator("#dmRevision").fill("Thank you for joining us today. We will review Angela's strengths, learning needs, measurable goals, transition plans, and invite Elena's concerns.")
         room.locator('[data-action=revision-submit]').click()
-        checked = page.evaluate('JSON.parse(localStorage.getItem("majick-d756-task2-rehearsal-v1"))')
+        checked = page.evaluate('JSON.parse((MajickSaveSafety.records||localStorage).getItem("majick-d756-task2-rehearsal-v1"))')
         assert len(checked["records"]) == original_count
         assert checked["records"][-1]["answer"] == original_answer
         assert checked["records"][-1].get("revisions"), "Practice rewrite not retained"
         room.locator('[data-action=feedback-dismiss]').click()
         room.locator('[data-action=undo-turn]').click()
-        undone = page.evaluate('JSON.parse(localStorage.getItem("majick-d756-task2-rehearsal-v1"))')
+        undone = page.evaluate('JSON.parse((MajickSaveSafety.records||localStorage).getItem("majick-d756-task2-rehearsal-v1"))')
         assert len(undone["records"]) == original_count - 1, "Undo created another response"
         room.locator('[data-action=redo-turn]').click()
-        redone = page.evaluate('JSON.parse(localStorage.getItem("majick-d756-task2-rehearsal-v1"))')
+        redone = page.evaluate('JSON.parse((MajickSaveSafety.records||localStorage).getItem("majick-d756-task2-rehearsal-v1"))')
         assert len(redone["records"]) == original_count
         assert redone["records"][-1]["answer"] == original_answer
         # After a question to Elena and her reply, the full mock must advance to agenda 2.
@@ -76,7 +76,7 @@ with sync_playwright() as pw:
             room.locator('[data-action=feedback-dismiss]').click()
             room.locator("#dmAnswer").fill("Thank you, Elena. We will collect classroom work samples, check which supports help Angela begin writing, and share the evidence with the family.")
             room.locator('[data-action=submit]').click()
-            advanced = page.evaluate('JSON.parse(localStorage.getItem("majick-d756-task2-rehearsal-v1"))')
+            advanced = page.evaluate('JSON.parse((MajickSaveSafety.records||localStorage).getItem("majick-d756-task2-rehearsal-v1"))')
             assert advanced["step"] == 1, f"Full mock failed to advance after stakeholder reply: {advanced['step']}"
             assert not advanced.get("pending"), "Full mock kept chaining the same stakeholder follow-up"
             assert advanced["records"][-1]["stage"] == 0

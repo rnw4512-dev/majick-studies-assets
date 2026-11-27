@@ -384,7 +384,7 @@ function init(){
  }
  checkContext();schedule();
 }
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
+if(document.readyState==='loading')document.addEventListener('majick:workspace-ready',init);else init();
 setInterval(checkContext,1200);
 function openItem(itemId,id,focus=false){
  const cid=String(id||course()).toUpperCase();

@@ -118,5 +118,5 @@
   });
   window.MajickCourseActivityPlayer={register,install,packs:PACKS};
   install();
-  document.addEventListener('DOMContentLoaded',install,{once:true});
+  document.addEventListener('majick:workspace-ready',install,{once:true});
 })();

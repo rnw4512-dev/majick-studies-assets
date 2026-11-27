@@ -26,7 +26,7 @@ function v338ShouldUseBundledProgress(current){
 // Do not persist a partially initialized state or let quota failures abort the core script.
 let majickCoreReady=false;
 let S=loadState(); let session=null, timerHandle=null;
-function loadState(){try{let x=MajickSaveSafety.read();if(!x){x=defaultState();try{const old=JSON.parse(localStorage.getItem('wguExpeditionV6State')||'null');const op=old?.progress?.PMFC;if(op){const np=x.progress.PMFC;np.answers=(op.attempts||[]).map(a=>({qid:a.questionId||'',topicId:a.conceptId||'',chosen:a.choice||'',answer:'',correct:Boolean(a.ok),confidence:a.confidence===4?'certain':a.confidence===3?'sure':a.confidence===2?'50':'guess',mode:a.mode||'legacy',difficulty:a.difficulty||1,format:a.dimension||'mc',at:a.at||Date.now()}));np.streak=(op.studyDays||[]).length?1:0;}}catch(_){}} if(!x.courses?.PMFC)x.courses={PMFC:BUILTIN,...(x.courses||{})}; else x.courses.PMFC=BUILTIN; x.progress=x.progress||{}; Object.keys(x.courses).forEach(id=>x.progress[id]=x.progress[id]||{answers:[],explanations:[],repair:[],streak:0,lastDay:'',bossWins:0,xp:0,crystals:0,charms:[]}); return x;}catch(e){window.majickSaveLoadBlocked=true;return defaultState()}}
+function loadState(){try{let x=MajickSaveSafety.read();if(!x){x=defaultState();try{const old=JSON.parse(localStorage.getItem('wguExpeditionV6State')||'null');const op=old?.progress?.PMFC;if(op){const np=x.progress.PMFC;np.answers=(op.attempts||[]).map(a=>({qid:a.questionId||'',topicId:a.conceptId||'',chosen:a.choice||'',answer:'',correct:Boolean(a.ok),confidence:a.confidence===4?'certain':a.confidence===3?'sure':a.confidence===2?'50':'guess',mode:a.mode||'legacy',difficulty:a.difficulty||1,format:a.dimension||'mc',at:a.at||Date.now()}));np.streak=(op.studyDays||[]).length?1:0;}}catch(_){}} if(!x.courses?.PMFC&&!x.courses?.D755)x.courses={PMFC:BUILTIN,...(x.courses||{})}; x.progress=x.progress||{}; Object.keys(x.courses).forEach(id=>x.progress[id]=x.progress[id]||{answers:[],explanations:[],repair:[],streak:0,lastDay:'',bossWins:0,xp:0,crystals:0,charms:[]}); return x;}catch(e){window.majickSaveLoadBlocked=true;return defaultState()}}
 function save(){if(!majickCoreReady)return;if(window.majickSaveLoadBlocked)throw Error('Saved data needs recovery. Import a backup before saving.');MajickSaveSafety.write(S)}
 function course(){return S.courses[S.activeCourse]||BUILTIN} function prog(){return S.progress[S.activeCourse]}
 function esc(s=''){return String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
@@ -948,7 +948,10 @@ function v52SaveBadge(ok=true){
   clearTimeout(v52SaveBadge.t);v52SaveBadge.t=setTimeout(()=>b.classList.remove('show'),850);
 }
 const _saveV52Base=save;
-save=function(){try{_saveV52Base();S.v52.lastSaveAt=Date.now();v52SaveBadge(true)}catch(e){console.error('V5.2 save failed',e);v52SaveBadge(false);throw e}};
+save=function(){const result=_saveV52Base();S.v52.lastSaveAt=Date.now();return result};
+window.addEventListener('majick-save-status',event=>{
+  if(typeof event.detail?.ok==='boolean')v52SaveBadge(event.detail.ok);
+});
 
 /* effect layer always stays inside the study canvas */
 function v52EffectLayer(){let x=document.getElementById('v52EffectLayer');if(!x){x=document.createElement('div');x.id='v52EffectLayer';x.className='v52EffectLayer';document.body.appendChild(x)}return x}

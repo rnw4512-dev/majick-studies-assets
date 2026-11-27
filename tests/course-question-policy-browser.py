@@ -34,7 +34,7 @@ with sync_playwright() as pw:
   path_text=' '.join(page.locator('.realmProgressHead').text_content().split())
   assert '/4 trials cleared' in path_text,path_text
   assert page.evaluate('startRuneSort()===false&&runeSortPick(0,"Section 1")===false&&finishRuneSort()===false')
-  page.reload();page.wait_for_function('!!window.S&&!!window.MajickCourseQuestionPolicy')
+  page.evaluate('window.MajickSaveSafety?.flush?.()');page.reload();page.wait_for_function('!!window.S&&!!window.MajickCourseQuestionPolicy')
   assert page.evaluate('!S.progress.D669.realmRecords.runesort&&!S.progress.D772.realmRecords.runesort&&!S.courses.D669.questionBank.some(MajickCourseQuestionPolicy.excluded)')
   assert not errors,errors
   print('PASS',width,'retired activity, study pool, saved cleanup, legacy handlers and protected state')

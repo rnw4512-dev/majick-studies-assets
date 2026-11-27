@@ -52,7 +52,7 @@ with sync_playwright() as pw:
   panel.locator('[data-number]').fill('10');assert panel.locator('.mjtFeedback').count()==0
   panel.locator('[data-check]').click();assert panel.locator('.mjtFeedback').get_attribute('data-status')=='correct'
   panel.locator('[data-next]').click();panel.locator('[data-number]').fill('15.6')
-  page.reload();page.wait_for_function('!!window.MajickYourTurn');mount(page)
+  page.evaluate('window.MajickSaveSafety?.flush?.()');page.reload();page.wait_for_function('!!window.MajickYourTurn');mount(page)
   assert 'fifth score' in panel.locator('.mjtQuestion').inner_text()
   assert panel.locator('[data-number]').input_value()=='15.6'
   panel.locator('[data-q="0"]').click();assert panel.locator('[data-number]').input_value()=='12'
@@ -63,7 +63,7 @@ with sync_playwright() as pw:
    page.evaluate('''()=>{const outer=document.createElement('section');outer.id='learnInlinePractice';document.querySelector('#content').append(outer);MajickInlineLessonPractice.mount(null,{id:'vocabulary-regression',title:'Mean and median',explain:'The mean is the sum of the scores divided by their count.'},0)}''')
   vocabulary();vocab=page.locator('.mliVocabularyPanel');vocab.locator('[data-term="0"]').click();vocab.locator('[data-definition="0"]').click()
   assert vocab.locator('[data-term="0"]').is_disabled()
-  page.reload();page.wait_for_function('!!window.MajickInlineLessonPractice');mount(page);vocabulary()
+  page.evaluate('window.MajickSaveSafety?.flush?.()');page.reload();page.wait_for_function('!!window.MajickInlineLessonPractice');mount(page);vocabulary()
   assert vocab.locator('[data-term="0"]').is_disabled(),'Vocabulary draft lost on reload'
   # Complete a real reconstruction through the existing evaluation pipeline.
   page.evaluate('''()=>{const c=MajickLearningContinuity,trio=MajickD772SharedQuestions.practiceQuestions().filter(q=>q.skill==='weighted-mean'),q=trio[0];c.practiceAnswer(q,false,false,'wrong');c.practiceAnswer(q,false,false,'wrong',{attemptId:'journal-second-miss'});for(const step of MajickSolutionEngine.reconstructionPlan(q)){const values=step.regions?step.regions.map(r=>r.selected):step.fields?step.fields.map(f=>String(f.value)):[step.answer];if(!c.reconstructionCheck(q,values).ok)throw Error('Repair failed')}window.journalTransfer=trio[1]}''')

@@ -276,5 +276,5 @@ function install(){
   document.documentElement.dataset.majickStateCore='5';
   return true;
 }
-if(!install())window.addEventListener('DOMContentLoaded',install,{once:true});
+if(!install())window.addEventListener('majick:workspace-ready',install,{once:true});
 })();

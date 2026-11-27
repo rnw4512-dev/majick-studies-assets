@@ -149,5 +149,5 @@ function needsSync(){
 function sync(){if(window.S?.screen==='home')attach()}
 window.MajickCollegiumCommons={attach,sync,select:n=>{if(TABS.some(t=>t[0]===n))navigateTab(n)},tabs:TABS.map(x=>x[0])};
 if(window.MajickRenderQueue?.register){window.MajickRenderQueue.register('collegium-commons-home',sync,98);window.MajickRenderQueue.schedule()}
-document.addEventListener('DOMContentLoaded',()=>{sync();const host=document.querySelector('#app')||document.body;const observer=new MutationObserver(()=>{if(window.S?.screen==='home'&&!updating&&needsSync())queueMicrotask(sync)});observer.observe(host,{childList:true,subtree:true})});
+document.addEventListener('majick:workspace-ready',()=>{sync();const host=document.querySelector('#app')||document.body;const observer=new MutationObserver(()=>{if(window.S?.screen==='home'&&!updating&&needsSync())queueMicrotask(sync)});observer.observe(host,{childList:true,subtree:true})});
 })();

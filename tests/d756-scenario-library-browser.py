@@ -45,7 +45,7 @@ with sync_playwright() as pw:
    room.locator("[data-action=close]").click()
    # Start a fresh session without preserving a running one.
    page.evaluate(f'localStorage.removeItem("{KEY}")')
-   page.reload()
+   page.evaluate('window.MajickSaveSafety?.flush?.()');page.reload()
    page.wait_for_function("!!window.MajickD756Meeting && !!window.MajickRewardCore")
    page.evaluate('switchCourse("D756");navigate("mission");studyRealmSwitch("practice")')
   assert not errors,errors

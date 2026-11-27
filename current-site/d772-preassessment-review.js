@@ -359,5 +359,5 @@ document.addEventListener('change',event=>{
  requestAnimationFrame(clean); // also covers queued course-panel reconciliation
 },false);
 if(window.MajickRenderQueue?.register){window.MajickRenderQueue.register('d772-preassessment-review',render,81);window.MajickRenderQueue.schedule()}
-else{document.addEventListener('DOMContentLoaded',render);setInterval(render,1500)}
+else{document.addEventListener('majick:workspace-ready',render);setInterval(render,1500)}
 })();

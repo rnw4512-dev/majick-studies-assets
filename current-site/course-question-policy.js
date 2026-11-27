@@ -57,7 +57,7 @@ function run(){
  queueMicrotask(()=>window.render?.());return true;
 }
 window.MajickCourseQuestionPolicy={excluded,clean,run,leastSeen,skillKey};
-if(typeof document!=='undefined')document.addEventListener('DOMContentLoaded',()=>{
+if(typeof document!=='undefined')document.addEventListener('majick:workspace-ready',()=>{
  window.MajickRenderQueue?.register?.('course-question-policy',run,1);run();
 },{once:true});
 })();

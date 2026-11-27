@@ -17,6 +17,6 @@ function fix(){
  }
  }finally{running=false}
 }
-let timer;const obs=new MutationObserver(()=>{clearTimeout(timer);timer=setTimeout(fix,150)});function init(){obs.observe(document.body,{subtree:true,childList:true,characterData:false});fix()}if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
+let timer;const obs=new MutationObserver(()=>{clearTimeout(timer);timer=setTimeout(fix,150)});function init(){obs.observe(document.body,{subtree:true,childList:true,characterData:false});fix()}if(document.readyState==='loading')document.addEventListener('majick:workspace-ready',init);else init();
 window.MajickScreenshotRepairs={refresh:fix};
 })();

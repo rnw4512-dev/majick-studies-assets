@@ -86,7 +86,7 @@ with sync_playwright() as pw:
   page.evaluate('(id)=>{MajickCelestialIncubator.complete(id);MajickCelestialIncubator.complete(id)}',egg['id']);assert page.evaluate('S.legacy.pets.length')==pets_before+1
   assert page.evaluate('(id)=>S.legacy.pets.filter(p=>p.sourceEggId===id).length',egg['id'])==1
   # Main + Council/replay backup, real download, import and recovery; preserve later reward/transaction data.
-  page.evaluate('document.getElementById("majCelestialHatch")?.remove();localStorage.setItem("majick-d756-task2-rehearsal-v1",JSON.stringify({mode:"guided",profile:"angela",records:[],draft:"saved council draft"}));localStorage.setItem("majick-d756-task2-rehearsal-v1-replay",JSON.stringify({active:false,records:[{answer:"original replay evidence"}]}));navigate("control")')
+  page.evaluate('document.getElementById("majCelestialHatch")?.remove();(MajickSaveSafety.records||localStorage).setItem("majick-d756-task2-rehearsal-v1",JSON.stringify({mode:"guided",profile:"angela",records:[],draft:"saved council draft"}));(MajickSaveSafety.records||localStorage).setItem("majick-d756-task2-rehearsal-v1-replay",JSON.stringify({active:false,records:[{answer:"original replay evidence"}]}));navigate("control")')
   with page.expect_download() as download:page.evaluate('exportSave()')
   file=download.value.path();payload=json.loads(Path(file).read_text());assert payload['browserData']['majick-d756-task2-rehearsal-v1-replay'];assert payload['state']['majickAccount']['rewardCore']['alchemyTransactions']
   page.evaluate('MajickRewardCore.craft("clarity-potion",{key:"later-than-backup"})');after_later=inv();wallet_after=page.evaluate('MajickRewardCore.inspect().xp')
@@ -94,15 +94,22 @@ with sync_playwright() as pw:
   page.on('dialog',accept_dialog)
   page.locator('.v338SavePanel input[type=file]').set_input_files({'name':'backup.json','mimeType':'application/json','buffer':json.dumps(payload).encode()});page.wait_for_timeout(150)
   assert inv()==after_later and page.evaluate('MajickRewardCore.inspect().xp')==wallet_after
-  assert page.evaluate('JSON.parse(localStorage.getItem("majick-d756-task2-rehearsal-v1")).draft')=='saved council draft'
+  assert page.evaluate('JSON.parse((MajickSaveSafety.records||localStorage).getItem("majick-d756-task2-rehearsal-v1")).draft')=='saved council draft'
   page.evaluate('MajickSaveSafety.restorePrevious()');page.wait_for_timeout(100);assert inv()==after_later
   page.evaluate('navigate("control")');page.locator('.v338SavePanel input[type=file]').set_input_files({'name':'older-egg-backup.json','mimeType':'application/json','buffer':json.dumps(pre_hatch_backup).encode()});page.wait_for_timeout(100)
   assert page.evaluate('(id)=>S.legacy.pets.filter(p=>p.sourceEggId===id).length',egg['id'])==1
   assert page.evaluate('(id)=>!S.legacy.eggs.some(e=>e.id===id)',egg['id'])
-  saved_inventory=inv();page.reload();page.wait_for_function('!!window.MajickRewardCore');assert inv()==saved_inventory
+  saved_inventory=inv();page.evaluate('window.MajickSaveSafety?.flush?.()');page.reload();page.wait_for_function('!!window.MajickRewardCore');assert inv()==saved_inventory
   # Repeated same transactions after actual reload and older imported snapshots do not mint inventory.
   assert page.evaluate('MajickRewardCore.craft("clarity-potion",{key:"same-craft-invocation"}).replayed');assert inv()==saved_inventory
-  future=page.evaluate('(()=>{const k=MajickSaveSafety.keys.KEY,old=localStorage.getItem(k),x=JSON.parse(old);x.saveSchemaVersion=999;const raw=JSON.stringify(x);localStorage.setItem(k,raw);let blocked=false;try{MajickSaveSafety.read()}catch(e){blocked=true}const kept=localStorage.getItem(k)===raw;localStorage.setItem(k,old);return {blocked,kept}})()');assert future=={'blocked':True,'kept':True}
+  future=page.evaluate("""()=>{
+    const payload=MajickSaveSafety.exportPayload(S);
+    payload.state.saveSchemaVersion=999;
+    const before=JSON.stringify(S);
+    let blocked=false;
+    try{MajickSaveSafety.preview(payload)}catch(e){blocked=e.code==='MAJICK_NEWER_SAVE_SCHEMA';}
+    return {blocked,kept:before===JSON.stringify(S)};
+  }""");assert future=={'blocked':True,'kept':True}
   # Failed local persistence must roll back a brewing transaction, not silently spend resources.
   fail=page.evaluate('(()=>{const before=JSON.stringify(MajickRewardCore.inventory()),original=window.save;window.save=()=>{throw Error("quota-test")};const result=MajickRewardCore.craft("clarity-potion",{key:"failed-save"});window.save=original;return {ok:result.ok,unchanged:before===JSON.stringify(MajickRewardCore.inventory()),message:result.message}})()');assert not fail['ok'] and fail['unchanged'],fail
   refunded=page.evaluate('(()=>{const r=MajickStateCore.ensureAccount().rewardCore,before={...r.potions};r.legacyInstantChargesMigrated=false;r.activeEffects={...(r.activeEffects||{}),clarity:1,recall:1,crystalSight:1};MajickRewardCore.inspect();const first={...r.potions};MajickRewardCore.inspect();return {before,first,after:{...r.potions}}})()');assert refunded['first']==refunded['after'];assert all(refunded['first'][k]==refunded['before'].get(k,0)+1 for k in ['clarity-potion','recall-draught','crystal-sight-potion'])

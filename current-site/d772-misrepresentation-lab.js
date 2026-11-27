@@ -81,5 +81,5 @@ function render(){
 }
 window.MajickD772MisrepresentationLab={problem,state,render};
 if(window.MajickRenderQueue?.register){window.MajickRenderQueue.register('d772-misrepresentation-lab',render,79);window.MajickRenderQueue.schedule()}
-else{document.addEventListener('DOMContentLoaded',render);setInterval(render,1200)}
+else{document.addEventListener('majick:workspace-ready',render);setInterval(render,1200)}
 })();

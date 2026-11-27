@@ -121,7 +121,7 @@ with sync_playwright() as pw:
  start('angela','guided');submit('Elena, what ideas would you share about the supports we can coordinate for this meeting?')
  click('back');elapsed=saved()['elapsed'];page.clock.fast_forward(60000)
  assert saved()['elapsed']==elapsed
- page.reload();page.wait_for_function('!!window.MajickD756Meeting');page.evaluate('switchCourse("D756");MajickD756Meeting.open()');click('resume')
+ page.evaluate('window.MajickSaveSafety?.flush?.()');page.reload();page.wait_for_function('!!window.MajickD756Meeting');page.evaluate('switchCourse("D756");MajickD756Meeting.open()');click('resume')
  assert saved()['records'];print('PASS reload resume and paused clock')
  # Failed/incomplete practice has no reward, and unrelated course state stays intact.
  baseline=page.evaluate('JSON.stringify(S.progress.D772,(k,v)=>["xp","crystals","chests"].includes(k)?undefined:v)')
@@ -135,7 +135,7 @@ with sync_playwright() as pw:
  assert page.evaluate('JSON.stringify(S.progress.D772,(k,v)=>["xp","crystals","chests"].includes(k)?undefined:v)')==baseline
  print('PASS complete meetings in three scenarios/modes, live shared XP +30/+8/0, profile-switch first-award protection, unrelated D772 state')
  # History, repeat duplicate across reload, independent mastery separation.
- page.reload();page.wait_for_function('!!window.MajickD756Meeting');page.evaluate('switchCourse("D756");MajickD756Meeting.open()')
+ page.evaluate('window.MajickSaveSafety?.flush?.()');page.reload();page.wait_for_function('!!window.MajickD756Meeting');page.evaluate('switchCourse("D756");MajickD756Meeting.open()')
  assert 'already granted' in room.inner_text()
  click('reset');room.locator('summary',has_text='Previous attempts').click();room.locator('[data-history]').first.click()
  assert room.get_by_text('Previous attempt transcript',exact=True).is_visible()

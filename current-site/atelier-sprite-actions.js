@@ -105,5 +105,5 @@ function start(){
    if(mode!=='idle'&&!compatible()){++revision;mode='idle';original();renderControls()}
  });
 }
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});else start();
+if(document.readyState==='loading')document.addEventListener('majick:workspace-ready',start,{once:true});else start();
 })();

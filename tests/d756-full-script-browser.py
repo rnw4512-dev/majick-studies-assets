@@ -39,7 +39,7 @@ with sync_playwright() as pw:
   room.locator('[data-action=close]').click()
   # The original Independent rehearsal hides any prepared teacher script.
   page.evaluate(f'localStorage.removeItem("{KEY}")')
-  page.reload()
+  page.evaluate('window.MajickSaveSafety?.flush?.()');page.reload()
   page.wait_for_function('!!window.MajickD756Meeting')
   page.evaluate('switchCourse("D756");MajickD756Meeting.openScenario("standard","angela","independent")')
   room=page.locator('#d756MeetingRoom')

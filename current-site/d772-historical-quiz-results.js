@@ -85,5 +85,5 @@ function render(){
 }
 window.MajickD772QuizHistory={source:SOURCE,seed:ROWS,records,ensure,render};
 if(window.MajickRenderQueue?.register){window.MajickRenderQueue.register('d772-historical-quiz-results',render,78);window.MajickRenderQueue.schedule()}
-else{document.addEventListener('DOMContentLoaded',render);setInterval(render,1200)}
+else{document.addEventListener('majick:workspace-ready',render);setInterval(render,1200)}
 })();

@@ -14,5 +14,5 @@ function apply(){if(busy)return;busy=true;try{
  const h=root.querySelector('header .brand, .topbar .brand');if(h&&h.getAttribute('aria-label')!=='Aetheria - Moonlit Collegium')h.setAttribute('aria-label','Aetheria - Moonlit Collegium');
  }finally{busy=false}}
 let timer;function start(){apply();new MutationObserver(()=>{clearTimeout(timer);timer=setTimeout(apply,90)}).observe(document.body,{childList:true,subtree:true,characterData:true,attributes:true,attributeFilter:attr})}
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});else start();window.AetheriaBrand={refresh:apply};
+if(document.readyState==='loading')document.addEventListener('majick:workspace-ready',start,{once:true});else start();window.AetheriaBrand={refresh:apply};
 })();

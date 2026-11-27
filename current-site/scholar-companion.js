@@ -82,5 +82,5 @@ function start(){
  setInterval(()=>refresh(),2500);
 }
 window.MajickScholarCompanion={refresh,react,version:'3.4.2-companion-2'};
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});else start();
+if(document.readyState==='loading')document.addEventListener('majick:workspace-ready',start,{once:true});else start();
 })();

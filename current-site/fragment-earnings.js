@@ -9,10 +9,12 @@
 if(window.MajickFragmentEarnings)return;
 const STORE_KEY='majick-fragment-study-evidence-v1';
 let data={};
-try{const stored=JSON.parse(localStorage.getItem(STORE_KEY)||'{}');if(stored&&typeof stored==='object'&&!Array.isArray(stored))data=stored}catch(_){}
+function restoreRecords(){try{const stored=JSON.parse((window.MajickSaveSafety?.records||localStorage).getItem(STORE_KEY)||'{}');if(stored&&typeof stored==='object'&&!Array.isArray(stored))data=stored}catch(_){}}
+restoreRecords();
+document.addEventListener('majick:save-restored',restoreRecords);
 const str=x=>String(x??'').trim();
 const valid=x=>/^[A-Z0-9_-]{2,32}$/i.test(x);
-function persist(){try{localStorage.setItem(STORE_KEY,JSON.stringify(data))}catch(_){}}
+function persist(){try{(window.MajickSaveSafety?.records||localStorage).setItem(STORE_KEY,JSON.stringify(data))}catch(_){}}
 function receipt(type,key,course){
  const r=window.MajickRewardCore;
  if(!r||typeof r.award!=='function')return null;

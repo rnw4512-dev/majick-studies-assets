@@ -52,7 +52,7 @@ with sync_playwright() as pw:
   page.evaluate('window.postMessage({type:"MAJICK_OPEN_ROUTE",route:"mission"},location.origin)');page.wait_for_timeout(100);assert page.evaluate('S.screen')=='companions'
   assert page.evaluate('JSON.stringify({pets:S.legacy.pets,progress:S.progress,account:S.majickAccount})')==before
   page.wait_for_function('document.querySelector("#phase4SanctuaryFrame").clientHeight>700');assert frame().evaluate('document.querySelector("#room").getBoundingClientRect().bottom<=innerHeight');page.locator('.majSanctuaryScholar').screenshot(path=str(out/f'sanctuary-scholar-{width}.png'));frame().locator('#room').scroll_into_view_if_needed();page.screenshot(path=str(out/f'sanctuary-after-{width}.png'));frame().locator('#room').screenshot(path=str(out/f'sanctuary-floor-{width}.png'))
-  page.reload();page.wait_for_selector('#phase4SanctuaryFrame',state='attached');ready();assert page.evaluate('MajickAtelier.player().hair')==4;assert page.evaluate('MajickAtelier.player().robe')==2;assert page.evaluate('MajickAtelier.player().savedScholarLooks.some(l=>l.name==="Sanctuary Recovery")')
+  page.evaluate('window.MajickSaveSafety?.flush?.()');page.reload();page.wait_for_selector('#phase4SanctuaryFrame',state='attached');ready();assert page.evaluate('MajickAtelier.player().hair')==4;assert page.evaluate('MajickAtelier.player().robe')==2;assert page.evaluate('MajickAtelier.player().savedScholarLooks.some(l=>l.name==="Sanctuary Recovery")')
   assert page.evaluate('JSON.stringify({pets:S.legacy.pets,progress:S.progress,account:S.majickAccount})')==before
   # Force one missing texture in a test-only context. Identity stays saved and visibly labeled.
   pattern='**/sanctuary/assets/evolutions/velora/new-bond/walk.webp*'

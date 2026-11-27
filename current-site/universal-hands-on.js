@@ -37,7 +37,10 @@ D755:[
 const safe=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const key='majick-universal-hands-on-v1';
 const appState=()=>typeof S!=='undefined'?S:window.S;
-let saved={};try{saved=JSON.parse(localStorage.getItem(key)||'{}')||{}}catch(_){}
+let saved={};
+function restoreRecords(){try{saved=JSON.parse((window.MajickSaveSafety?.records||localStorage).getItem(key)||'{}')||{}}catch(_){}}
+restoreRecords();
+document.addEventListener('majick:save-restored',restoreRecords);
 let selected=null,phase=0,draft={},feedback='';
 const MODE_KEY='majick-sitewide-response-mode-v1';
 const MODES=['choice','writing','both'];
@@ -67,7 +70,7 @@ function sourceBasedActivities(){
 }
 const list=()=>catalog[courseId()]||sourceBasedActivities();
 const state=()=>saved[courseId()]||(saved[courseId()]={});
-function persist(){try{localStorage.setItem(key,JSON.stringify(saved))}catch(_){}}
+function persist(){try{(window.MajickSaveSafety?.records||localStorage).setItem(key,JSON.stringify(saved))}catch(_){}}
 function item(){return list().find(x=>x.id===selected)||null}
 function info(){const c=appState()?.courses?.[courseId()];return (c?.title||courseId())}
 function status(i){const st=state()[i.id]||{};return st.independentSubmitted?'Independent attempt saved':st.stageCompleted>=1?'Guided work saved':'Not started'}
@@ -142,5 +145,5 @@ const install=()=>{
 };
 window.MajickUniversalHandsOn={stages,install,screen,open,get responseMode(){return responseMode},setResponseMode:setMode};
 window.MajickStudyPreferences={get responseMode(){return responseMode},setResponseMode:setMode};
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',install,{once:true});else install();
+if(document.readyState==='loading')document.addEventListener('majick:workspace-ready',install,{once:true});else install();
 })();

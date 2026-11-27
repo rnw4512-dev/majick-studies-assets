@@ -46,6 +46,7 @@ jobs:
           CHROMIUM_PATH: /usr/bin/google-chrome
           RECOVERY_EVIDENCE: /tmp/aetheria-sanctuary-evidence
         run: |
+          python -u tests/workspace-storage-browser.py _certified
           python -u tests/startup-learning-browser.py _certified
           python -u tests/room-navigation-browser.py _certified
           python -u tests/parchment-readability-browser.py _certified
@@ -213,6 +214,7 @@ jobs:
           CHROMIUM_PATH: /usr/bin/google-chrome
           MAJICK_URL: ${{ steps.deployment.outputs.page_url }}current-site/
         run: |
+          python -u tests/workspace-storage-browser.py _published_candidate/current-site
           python -u tests/startup-learning-browser.py _published_candidate/current-site
           python -u tests/room-navigation-browser.py _published_candidate/current-site
           python -u tests/parchment-readability-browser.py _published_candidate/current-site

@@ -82,5 +82,5 @@ function render(){
  select.addEventListener('change',()=>{s.topic=select.value;save();draw()});draw();
 }
 window.MajickD772AdaptiveMastery={version:'1.0',topics,state,cycle,bank,pick,answer,next,submitTeach,reset,render};
-if(window.MajickRenderQueue?.register){window.MajickRenderQueue.register('d772-adaptive-mastery',render,82);window.MajickRenderQueue.schedule()}else{document.addEventListener('DOMContentLoaded',render);setInterval(render,1400)}
+if(window.MajickRenderQueue?.register){window.MajickRenderQueue.register('d772-adaptive-mastery',render,82);window.MajickRenderQueue.schedule()}else{document.addEventListener('majick:workspace-ready',render);setInterval(render,1400)}
 })();

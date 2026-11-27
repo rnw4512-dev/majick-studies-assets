@@ -7,6 +7,7 @@ function majickShowSaveStatus(detail){
  const node=document.getElementById('majickSaveSafetyStatus');if(node)node.textContent=detail.message;
  let banner=document.getElementById('majickSaveFailure');
  if(detail.ok){banner?.remove();return;}
+ if(detail.ok===null)return;
  if(!banner){banner=document.createElement('div');banner.id='majickSaveFailure';banner.setAttribute('role','alert');banner.style.cssText='position:fixed;bottom:16px;left:16px;right:16px;z-index:9999;padding:14px;background:#381e2a;color:#fff;border:2px solid #e5b47c;border-radius:12px';document.body.appendChild(banner);}
  banner.replaceChildren();
  const message=document.createElement('p');message.textContent=detail.message+' Your current workspace is still in memory. Download a backup before closing this tab.';message.style.margin='0 0 8px';

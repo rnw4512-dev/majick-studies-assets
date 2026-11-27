@@ -5,13 +5,13 @@
 if(window.MajickStudyObservatory)return;
 const KEY='majick-learning-observatory-v1';
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const store=(()=>{try{const v=JSON.parse(localStorage.getItem(KEY)||'{}');return v&&typeof v==='object'?v:{}}catch(_){return {}}})();
+const store=(()=>{try{const v=JSON.parse((window.MajickSaveSafety?.records||localStorage).getItem(KEY)||'{}');return v&&typeof v==='object'?v:{}}catch(_){return {}}})();
 const currentCourse=()=>String(window.S?.activeCourse||'D669');
 const rows=course=>store[course]||(store[course]={lessons:{},spent:0,history:[],milestones:[]});
 const allPacks=()=>Object.values(window.MajickCourseActivityPlayer?.packs||{});
 const lessonsFor=course=>allPacks().filter(p=>p.courseId===course);
 let saveProblem='';
-const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(store));saveProblem=''}catch(_){saveProblem='Recent practice could not be saved in this browser. Keep this page open and download a backup.'}};
+const save=()=>{try{(window.MajickSaveSafety?.records||localStorage).setItem(KEY,JSON.stringify(store));saveProblem=''}catch(_){saveProblem='Recent practice could not be saved in this browser. Keep this page open and download a backup.'}};
 const distinctCorrect=course=>Object.values(rows(course).lessons).reduce((total,l)=>total+Object.values(l.questions||{}).filter(q=>q.firstCorrect).length,0);
 const earned=course=>Math.floor(distinctCorrect(course)/5);
 const tickets=course=>Math.max(0,earned(course)-Number(rows(course).spent||0));
@@ -118,7 +118,7 @@ function playGame(){
 }
 document.addEventListener('majick:sourced-practice',record);
 document.addEventListener('majick:guided-practice',recordGuided);
-document.addEventListener('majick:save-restored',()=>{try{const next=JSON.parse(localStorage.getItem(KEY)||'{}');for(const k of Object.keys(store))delete store[k];for(const k of Object.keys(next))if(k!=='__proto__')store[k]=next[k];play=null;saveProblem='';refresh()}catch(_){saveProblem='The restored study record could not be opened.'}});
+document.addEventListener('majick:save-restored',()=>{try{const next=JSON.parse((window.MajickSaveSafety?.records||localStorage).getItem(KEY)||'{}');for(const k of Object.keys(store))delete store[k];for(const k of Object.keys(next))if(k!=='__proto__')store[k]=next[k];play=null;saveProblem='';refresh()}catch(_){saveProblem='The restored study record could not be opened.'}});
 document.addEventListener('majick:hands-on-practice',recordScenario);
 document.addEventListener('click',e=>{
  if(e.target.closest?.('[data-obs-backup]')){window.MajickSaveSafety?.download?.();return;}
@@ -139,6 +139,6 @@ function install(){
  lab.__observatoryWrapped=true;
  return true;
 }
-if(!install())document.addEventListener('DOMContentLoaded',install,{once:true});
+if(!install())document.addEventListener('majick:workspace-ready',install,{once:true});
 window.MajickStudyObservatory={exportState:()=>JSON.parse(JSON.stringify(store)),render,summary,record,refresh,tickets};
 })();
