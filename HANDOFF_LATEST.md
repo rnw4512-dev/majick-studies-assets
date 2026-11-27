@@ -1,3 +1,7 @@
+## Takeover batch — D669 OA and Section 5 Lesson 1 (2026-11-27)
+- Added 22 original supplemental questions to existing D669 course pack, with Section 1 standards and multisensory repair, Section 2 orthography and morphology, communication/genre review, and Section 5 writing and spelling. Added lesson 1.1/1.2 notes and quiz IDs; lessons 2 and 3 await source material. No personal assessment report, student-specific links or raw transcript published. No historical rewards granted.
+- JavaScript evaluation, unique question IDs, answer index checks and manifest hash verification passed in takeover tooling. Browser/release gates pending. Check actual Section 5 lesson UI and question selection in CI. Historical personal assessment import, native material portable backup and prepared browser restart commit 64a48d7d0e0e96e210605d4c55cf235144555bbf remain separate pending work; rebase that test-only commit rather than reset main.
+
 ## Takeover batch 1 — exact earned-reward regression (2026-11-27)
 
 - Extended `tests/workspace-storage-browser.py` with actual reward-owner awards using fixed synthetic transaction keys, exact XP/crystals/chests/mastery/fragment/ledger comparison against committed IndexedDB data, reload/new-page checks, duplicate award replay, offline retry and import checks.
