@@ -1,7 +1,7 @@
 /* One local save-safety owner. Academic/world state stays in the existing S object. */
 (()=>{'use strict';
  const KEY='moonlit_learning_v1',PREVIOUS=KEY+'__recovery_previous',PIN=KEY+'__before_restore',META=KEY+'__safety_meta',BAD=KEY+'__unreadable';
- const SCHEMA=1;let adapter=null;let status={ok:true,message:'Local save ready',at:0};
+ const SCHEMA=1;let adapter=null;let writeGeneration=0,writeQueue=Promise.resolve();let status={ok:true,message:'Local save ready',at:0};
  const escape=v=>String(v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
  const object=x=>x&&typeof x==='object'&&!Array.isArray(x);
  function validate(x){
@@ -22,7 +22,7 @@
   }catch(error){notify(false,error.message);throw error;}
  }
  function write(value){
-  try{validate(value);value.saveSchemaVersion=SCHEMA;const raw=JSON.stringify(value),prior=localStorage.getItem(KEY);
+  const generation=++writeGeneration;let raw;try{validate(value);value.saveSchemaVersion=SCHEMA;raw=JSON.stringify(value);const prior=localStorage.getItem(KEY);
    // Save current state first. A full quota must not make an older snapshot replace it.
    let backupOk=true;
    try{localStorage.setItem(KEY,raw)}catch(error){
@@ -37,9 +37,21 @@
     localStorage.setItem(KEY,raw);backupOk=false;
    }
    if(backupOk&&prior&&prior!==raw){try{parse(prior);localStorage.setItem(PREVIOUS,prior)}catch(_){backupOk=false}}
+   // A newer successful local save must supersede an older overflow checkpoint.
+   writeQueue=writeQueue.catch(()=>{}).then(async()=>{if(await archive.get('primary-workspace'))await archive.put('primary-workspace',null)}).catch(()=>{});
    const at=Date.now();try{localStorage.setItem(META,JSON.stringify({schema:SCHEMA,at,backupOk,release:window.MAJICK_RELEASE||'3.4.2'}))}catch(_){}
    notify(true,backupOk?'Saved in this browser.':'Saved; recovery snapshot unavailable. Download a backup.');cloud.schedule();return {ok:true,backupOk,at};
-  }catch(error){notify(false,'Progress is not saved locally: '+error.message);cloud.schedule();throw error;}
+  }catch(error){
+   if(!raw||!(error?.name==='QuotaExceededError'||error?.code===22||error?.code===1014)){notify(false,'Progress is not saved locally: '+error.message);throw error;}
+   const payload=JSON.stringify({raw,browserData:auxiliary(),at:Date.now()});
+   notify(false,'Browser storage full. Saving complete workspace to IndexedDB…');
+   writeQueue=writeQueue.catch(()=>{}).then(async()=>{
+    await archive.put('primary-workspace',payload);
+    if(await archive.get('primary-workspace')!==payload)throw Error('IndexedDB read-back mismatch');
+    if(generation===writeGeneration)notify(true,'Complete workspace verified in IndexedDB.');
+   }).catch(e=>{if(generation===writeGeneration)notify(false,'IndexedDB save failed: '+e.message);});
+   cloud.schedule();return {ok:false,pending:true,at:Date.now()};
+  }
  }
  function summary(x){validate(x);return {courses:Object.keys(x.courses).length,answers:Object.values(x.progress).reduce((n,p)=>n+(p.answers||[]).length,0),guardians:(x.legacy?.pets||[]).length,eggs:(x.legacy?.eggs||[]).length};}
  function preview(payload){if(payload?.schemaVersion>SCHEMA)throw Error('Backup schema is newer than this app.');return migrate(payload?.state||payload);}
@@ -60,7 +72,7 @@
  function download(){const blob=new Blob([JSON.stringify(exportPayload(adapter.get()),null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='Majick_Studies_Backup_'+new Date().toISOString().slice(0,10)+'.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);}
  function replace(x,browserData=null){const beforeState=JSON.parse(JSON.stringify(adapter.get())),candidate=protectEarned(migrate(x),beforeState),beforeAux=auxiliary(),incoming=validateAux(browserData);localStorage.setItem(PIN,JSON.stringify(beforeState));localStorage.setItem(AUX,JSON.stringify(beforeAux));write(candidate);try{for(const [k,v] of Object.entries(incoming||{}))localStorage.setItem(k,v);}catch(error){write(beforeState);for(const [k,v] of Object.entries(beforeAux))localStorage.setItem(k,v);throw error;}adapter.set(candidate);document.dispatchEvent?.(new CustomEvent('majick:save-restored'));adapter.refresh();}
  async function importFile(event){const file=event.target.files?.[0];if(!file)return;try{const payload=JSON.parse(await file.text()),x=preview(payload),info=summary(x);validateAux(payload.browserData);if(!confirm('Replace the open save with '+info.courses+' courses, '+info.answers+' answers, '+info.guardians+' Guardians and '+info.eggs+' eggs? Your current save will be retained as a recovery copy; later earned rewards and alchemy transactions remain protected.'))return;replace(x,payload.browserData);alert('Backup restored. Your previous save is retained.')}catch(error){alert('Backup was not imported: '+error.message)}finally{event.target.value='';}}
- async function restorePrevious(){try{const raw=localStorage.getItem(PIN)||localStorage.getItem(PREVIOUS)||await archive.get(PREVIOUS)||await archive.get(KEY+'__good_backup')||await archive.get(KEY+'__session_backup')||await archive.get(KEY+'__known_good');if(!raw)throw Error('No recovery snapshot is available yet.');const x=parse(raw),info=summary(x);if(!confirm('Restore a browser snapshot with '+info.answers+' answers, '+info.guardians+' Guardians and '+info.eggs+' eggs? The open save will be retained.'))return;const extra=localStorage.getItem(AUX);replace(x,extra?JSON.parse(extra):null)}catch(error){alert('Recovery was not applied: '+error.message)}}
+ async function restorePrevious(){try{const overflow=await archive.get('primary-workspace').catch(()=>null);if(overflow){const p=JSON.parse(overflow);parse(p.raw);validateAux(p.browserData);if(confirm('Recover the complete workspace saved to IndexedDB? Download your current backup first if needed.')){adapter.set(migrate(parse(p.raw)));document.dispatchEvent?.(new CustomEvent('majick:save-restored'));adapter.refresh();notify(true,'Recovered verified IndexedDB workspace.');return;}}const raw=localStorage.getItem(PIN)||localStorage.getItem(PREVIOUS)||await archive.get(PREVIOUS)||await archive.get(KEY+'__good_backup')||await archive.get(KEY+'__session_backup')||await archive.get(KEY+'__known_good');if(!raw)throw Error('No recovery snapshot is available yet.');const x=parse(raw),info=summary(x);if(!confirm('Restore a browser snapshot with '+info.answers+' answers, '+info.guardians+' Guardians and '+info.eggs+' eggs? The open save will be retained.'))return;const extra=localStorage.getItem(AUX);replace(x,extra?JSON.parse(extra):null)}catch(error){alert('Recovery was not applied: '+error.message)}}
  function panel(){let meta={};try{meta=JSON.parse(localStorage.getItem(META)||'{}')}catch(_){}return '<section class="v338SavePanel"><h3>Progress safety</h3><p>Your course and world state use the main save; this backup also includes game discoveries, guided practice, Observatory records and Council attempts. Download a backup before changing devices.</p><p role="status" id="majickSaveSafetyStatus">'+(status.ok?'':'⚠ ')+escape(status.message)+(meta.at?' Last saved: '+new Date(meta.at).toLocaleString():'')+'</p><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn primary" onclick="save()">Save now</button><button class="btn violet" onclick="MajickSaveSafety.download()">Download backup</button><label class="btn ghost">Import backup<input type="file" accept=".json,application/json" onchange="MajickSaveSafety.importFile(event)"></label><button class="btn ghost" onclick="MajickSaveSafety.restorePrevious()">Restore recovery copy</button></div><p>Local save protection is active. Cloud backup can be connected below.</p></section>'+cloud.panel();}
 
  /* Aetheria private cloud checkpoint. No service-role credentials; no automatic remote overwrite. */
