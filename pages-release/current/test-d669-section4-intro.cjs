@@ -26,5 +26,15 @@ const qs=c.questionBank.filter(q=>audit.newQuestionIds.includes(q.id));assert.eq
 assert.equal(c.questionBank.filter(q=>q.id.startsWith('d669-depth-20261126-')).length,10);
 assert.match(c.questionBank.find(q=>q.id==='d669-s3-l1-3-transfer-1').why,/Formative assessment/);
 assert.match(c.questionBank.find(q=>q.id==='d669-s3-l2-1-transfer-1').why,/Morphology/);
-assert.equal(c.studySections.find(s=>s.id==='d669-section-5').lessons,undefined);
+// Section 5 was previously an empty boundary; supplied material now populates it.
+const writing=c.studySections.find(s=>s.id==='d669-section-5');
+assert.equal(writing.competency,'2068.1.5');
+assert.equal(writing.lessons.length,3);
+const writingSubs=writing.lessons.flatMap(l=>l.sublessons||[]);
+for(const id of ['d669-s5-l1-1','d669-s5-l1-2','d669-s5-l2-1','d669-s5-l3-1']){
+ const lesson=writingSubs.find(s=>s.id===id);assert(lesson&&lesson.keyIdeas.length&&lesson.quizIds.length);
+ for(const qid of lesson.quizIds){const q=c.questionBank.find(q=>q.id===qid);assert(q&&q.lessonId===id&&q.official===false&&q.options[q.correctIndex]===q.answer);}
+}
+for(const lesson of writingSubs)for(const group of lesson.formativeGroups||[])for(const question of group.questions)assert((question.options||group.options).includes(question.answer));
+assert.match(writing.lessons[2].status,/Partial source/);
 console.log('PASS supplied Section 4/Lesson 1 introductions, narrative/expository answers, one-lesson boundary and all 111 earlier answer identities preserved');
