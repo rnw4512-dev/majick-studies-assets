@@ -8,8 +8,6 @@ with sync_playwright() as pw:
  for width in (390,820,1366):
   ctx=browser.new_context(viewport={'width':width,'height':850})
   page=ctx.new_page()
-  # Reset only this synthetic fixture after pagehide has persisted the previous rehearsal.
-  page.add_init_script("if(window===top)localStorage.removeItem('majick-d756-task2-rehearsal-v1')")
   errors=[]
   page.on('pageerror',lambda err: errors.append(str(err)))
   page.goto(URL)
@@ -29,16 +27,15 @@ with sync_playwright() as pw:
   script.locator('[data-action=use-full-script]').click()
   response=room.locator('#dmAnswer').input_value()
   assert len(response.split())>85,response
-  assert page.evaluate(f'JSON.parse(localStorage.getItem("{KEY}")).assistedStage') is True
+  assert page.evaluate(f'JSON.parse((MajickSaveSafety.records||localStorage).getItem("{KEY}")).assistedStage') is True
   room.locator('[data-action=submit]').click()
-  rec=page.evaluate(f'JSON.parse(localStorage.getItem("{KEY}")).records.slice(-1)[0]')
+  rec=page.evaluate(f'JSON.parse((MajickSaveSafety.records||localStorage).getItem("{KEY}")).records.slice(-1)[0]')
   assert rec['assisted'] is True
   assert rec['answer'].startswith('Good afternoon')
   after=page.evaluate('({xp:MajickStateCore.ensureAccount().xp,crystals:MajickStateCore.ensureAccount().crystals})')
   assert initial==after,(initial,after)
   room.locator('[data-action=close]').click()
   # The original Independent rehearsal hides any prepared teacher script.
-  page.evaluate(f'localStorage.removeItem("{KEY}")')
   page.evaluate('window.MajickSaveSafety?.flush?.()');page.reload()
   page.wait_for_function('!!window.MajickD756Meeting')
   page.evaluate('switchCourse("D756");MajickD756Meeting.openScenario("standard","angela","independent")')

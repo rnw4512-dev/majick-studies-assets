@@ -27,7 +27,7 @@ with sync_playwright() as pw:
   if assisting:
    click('repair');room.locator('#dmRepairAnswer').fill(text);click('repair-submit')
   else:room.locator('#dmAnswer').fill(text);click('submit')
- def saved():return page.evaluate('(key)=>JSON.parse(localStorage.getItem(key))',KEY)
+ def saved():return page.evaluate('(key)=>JSON.parse((MajickSaveSafety.records||localStorage).getItem(key))',KEY)
  def start(profile,mode):
   if room.locator('[data-action=reset]').count():click('reset')
   if room.locator('#dmAnswer').count():click('finish');click('reset')
@@ -157,16 +157,16 @@ with sync_playwright() as pw:
  assert tomorrow['reward']['xp']==8,{'reward':tomorrow['reward'],'now':page.evaluate('new Date().toString()'),'ledger':page.evaluate('Object.keys(MajickStateCore.ensureAccount().rewardCore.ledger).filter(k=>k.startsWith("d756:task2:meeting:"))')}
  assert page.evaluate('MajickStateCore.ensureAccount().xp')==before+46
  print('PASS completed short attempt earns zero; next calendar day repeat earns eight XP')
- original=page.evaluate('(key)=>localStorage.getItem(key)',KEY)
- original_history=page.evaluate('(key)=>localStorage.getItem(key+"-history")',KEY)
+ original=page.evaluate('(key)=>(MajickSaveSafety.records||localStorage).getItem(key)',KEY)
+ original_history=page.evaluate('(key)=>(MajickSaveSafety.records||localStorage).getItem(key+"-history")',KEY)
  original_xp=page.evaluate('MajickStateCore.ensureAccount().xp')
  choices=room.locator('[data-replay-choice]');choices.nth(0).check();choices.nth(1).check();click('replay-start')
  for n in range(2):
   room.locator('#dmReplayAnswer').fill('I hear your concern and respect the student voice. We will review the evidence together and assign the counselor a follow-up next week about issue '+str(n)+'.')
   click('replay-submit');click('replay-next')
  click('replay-exit')
- assert page.evaluate('(key)=>localStorage.getItem(key)',KEY)==original
- assert page.evaluate('(key)=>localStorage.getItem(key+"-history")',KEY)==original_history
+ assert page.evaluate('(key)=>(MajickSaveSafety.records||localStorage).getItem(key)',KEY)==original
+ assert page.evaluate('(key)=>(MajickSaveSafety.records||localStorage).getItem(key+"-history")',KEY)==original_history
  assert page.evaluate('MajickStateCore.ensureAccount().xp')==original_xp
  print('PASS two-exchange Replay Chamber preserves original evidence and grants zero XP')
  assisted_only=complete('angela','guided',True,True)

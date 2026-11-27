@@ -36,7 +36,7 @@ with sync_playwright() as pw:
   assert room.locator("[data-action=dictate]").count()==1
   box=room.locator("#dmAnswer")
   box.focus()
-  assert page.evaluate(f'JSON.parse(localStorage.getItem("{KEY}")).pacing')=="typing"
+  assert page.evaluate(f'JSON.parse((MajickSaveSafety.records||localStorage).getItem("{KEY}")).pacing')=="typing"
   assert page.evaluate('document.querySelector("#d756MeetingRoom .dmPanel").getBoundingClientRect().top >= 0')
   # The close action remains onscreen even when the conversation scrolls to the bottom.
   room.locator(".dmBody").evaluate("(el)=>el.scrollTop=el.scrollHeight")
@@ -46,9 +46,9 @@ with sync_playwright() as pw:
   room.locator(".dmChoices details > summary").click()
   room.locator("[data-response-choice='0']").click()
   assert len(box.input_value())>35
-  assert page.evaluate(f'JSON.parse(localStorage.getItem("{KEY}")).assistedStage') is True
+  assert page.evaluate(f'JSON.parse((MajickSaveSafety.records||localStorage).getItem("{KEY}")).assistedStage') is True
   room.locator("[data-action=submit]").click()
-  attempt=page.evaluate(f'JSON.parse(localStorage.getItem("{KEY}"))')
+  attempt=page.evaluate(f'JSON.parse((MajickSaveSafety.records||localStorage).getItem("{KEY}"))')
   assert attempt["records"][-1]["assisted"] is True
   assert "independent" not in (attempt.get("reward") or {}).get("status",""),"A modeled answer must not be treated as independent"
   end=page.evaluate("({xp:MajickStateCore.ensureAccount().xp,crystals:MajickStateCore.ensureAccount().crystals})")
@@ -74,14 +74,14 @@ with sync_playwright() as pw:
   room.locator("[data-action=start]").click()
   room.locator("#dmAnswer").fill("Angela, you are lazy about writing and need to try harder.")
   room.locator("[data-action=submit]").click()
-  state=page.evaluate(f'JSON.parse(localStorage.getItem("{KEY}"))')
+  state=page.evaluate(f'JSON.parse((MajickSaveSafety.records||localStorage).getItem("{KEY}"))')
   assert state["toneOpen"] is True
   assert state["pending"]["kind"]=="respect-repair"
   assert state["records"][-1]["professionalToneFlag"]=="blaming-label"
   assert "blamed" in room.locator(".dmPrompt").inner_text().lower()
   room.locator("#dmAnswer").fill("Angela, I am sorry that sounded blaming. I hear your concern and want us to make a supportive writing plan together that respects your preferences.")
   room.locator("[data-action=submit]").click()
-  state=page.evaluate(f'JSON.parse(localStorage.getItem("{KEY}"))')
+  state=page.evaluate(f'JSON.parse((MajickSaveSafety.records||localStorage).getItem("{KEY}"))')
   assert state["toneOpen"] is False,"Respectful repair must be recognized"
   assert not js_errors,js_errors
   print(f"PASS D756 course study, responsive Council UX, knowledge check, no duplicate reward, {width}px")

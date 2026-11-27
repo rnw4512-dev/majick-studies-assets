@@ -11,8 +11,6 @@ with sync_playwright() as pw:
  for width in (390,820,1366):
   ctx=browser.new_context(viewport={"width":width,"height":880})
   page=ctx.new_page()
-  # Reset only this synthetic fixture after pagehide has persisted the previous rehearsal.
-  page.add_init_script("if(window===top)localStorage.removeItem('majick-d756-task2-rehearsal-v1')")
   errors=[]
   page.on("pageerror",lambda error:errors.append(str(error)))
   page.goto(URL)
@@ -41,10 +39,9 @@ with sync_playwright() as pw:
    buttons.first.click()
    answer=room.locator("#dmAnswer").input_value()
    assert len(answer.split())>=50,(case,answer)
-   assert page.evaluate(f'JSON.parse(localStorage.getItem("{KEY}")).assistedStage') is True
+   assert page.evaluate(f'JSON.parse((MajickSaveSafety.records||localStorage).getItem("{KEY}")).assistedStage') is True
    room.locator("[data-action=close]").click()
-   # Start a fresh session without preserving a running one.
-   page.evaluate(f'localStorage.removeItem("{KEY}")')
+   # Reopen the saved workspace, then start the next scenario through its normal launcher.
    page.evaluate('window.MajickSaveSafety?.flush?.()');page.reload()
    page.wait_for_function("!!window.MajickD756Meeting && !!window.MajickRewardCore")
    page.evaluate('switchCourse("D756");navigate("mission");studyRealmSwitch("practice")')
