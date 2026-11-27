@@ -72,11 +72,21 @@ with sync_playwright() as p:
          MajickSaveSafety.records.setItem(key,JSON.stringify([{id:'complete-council-attempt'}]));
          save();return MajickSaveSafety.flush();
         }""")
-        latest = page.evaluate(read_checkpoint, 'primary-workspace')
+        latest = page.evaluate(read_checkpoint, 'primary-workspace-v2')
         assert latest['revision'] >= 2
         assert 'complete-council-attempt' in latest['browserData']['majick-d756-task2-rehearsal-v1-history']
         assert page.evaluate('MajickSaveSafety.status().ok') is True
         assert page.evaluate("localStorage.getItem('moonlit_learning_v1')") == legacy
+        page.evaluate("""()=>new Promise((resolve,reject)=>{
+         const request=indexedDB.open('aetheria-recovery-v1',1);
+         request.onerror=()=>reject(request.error);
+         request.onsuccess=()=>{
+          const db=request.result,tx=db.transaction('snapshots','readwrite');
+          tx.objectStore('snapshots').put(null,'primary-workspace');
+          tx.oncomplete=()=>{db.close();resolve()};
+          tx.onabort=()=>reject(tx.error);
+         };
+        })""")
         page.reload()
         ready(page)
         page.get_by_role('tablist', name='Magic Vault sections').wait_for()
@@ -84,14 +94,14 @@ with sync_playwright() as p:
         assert page.evaluate("MajickSaveSafety.records.getItem('majick-d756-task2-rehearsal-v1-history').includes('complete-council-attempt')")
         assert page.locator('#majickSaveFailure').count() == 0
         assert page.evaluate("JSON.stringify({pets:S.legacy.pets,eggs:S.legacy.eggs})")==world
-        assert page.evaluate(read_checkpoint, 'previous-workspace')['revision'] < page.evaluate(read_checkpoint, 'primary-workspace')['revision']
+        assert page.evaluate(read_checkpoint, 'previous-workspace')['revision'] < page.evaluate(read_checkpoint, 'primary-workspace-v2')['revision']
         other = ctx.new_page()
         other.goto(url)
         ready(other)
         page.evaluate("""()=>{S.testWorkspaceMarker='stale-tab';save();return MajickSaveSafety.flush()}""")
         assert page.evaluate("MajickSaveSafety.status().message.includes('another tab')")
-        assert 'stale-tab' not in other.evaluate(read_checkpoint, 'primary-workspace')['raw']
-        before = other.evaluate(read_checkpoint, 'primary-workspace')
+        assert 'stale-tab' not in other.evaluate(read_checkpoint, 'primary-workspace-v2')['raw']
+        before = other.evaluate(read_checkpoint, 'primary-workspace-v2')
         other.evaluate("""()=>{
          window.originalWorkspaceTransaction=IDBDatabase.prototype.transaction;
          IDBDatabase.prototype.transaction=function(store,mode,...rest){
@@ -103,7 +113,7 @@ with sync_playwright() as p:
         }""")
         assert other.evaluate("MajickSaveSafety.status().ok") is False
         assert other.locator('#majickSaveFailure').is_visible()
-        assert other.evaluate(read_checkpoint, 'primary-workspace') == before
+        assert other.evaluate(read_checkpoint, 'primary-workspace-v2') == before
         ctx.set_offline(True)
         other.evaluate("""()=>{
          IDBDatabase.prototype.transaction=originalWorkspaceTransaction;
@@ -111,7 +121,7 @@ with sync_playwright() as p:
          return MajickSaveSafety.flush();
         }""")
         assert other.evaluate("MajickSaveSafety.status().ok") is True
-        assert 'offline-latest' in other.evaluate(read_checkpoint, 'primary-workspace')['raw']
+        assert 'offline-latest' in other.evaluate(read_checkpoint, 'primary-workspace-v2')['raw']
         assert other.locator('#majickSaveFailure').count() == 0
         ctx.set_offline(False)
         other.on('dialog', lambda dialog: dialog.accept())
@@ -122,7 +132,7 @@ with sync_playwright() as p:
          await MajickSaveSafety.importFile({target:{files:[new File([JSON.stringify(payload)],'fixture.json')]}});
          await MajickSaveSafety.flush();
         }""")
-        restored = other.evaluate(read_checkpoint, 'primary-workspace')
+        restored = other.evaluate(read_checkpoint, 'primary-workspace-v2')
         assert 'restored-backup' in restored['raw']
         assert 'imported-attempt' in restored['browserData']['majick-d756-task2-rehearsal-v1-history']
         last_good = other.evaluate(read_checkpoint, 'previous-workspace')
@@ -132,7 +142,7 @@ with sync_playwright() as p:
          open.onerror=()=>reject(open.error);
          open.onsuccess=()=>{
           const db=open.result,tx=db.transaction('snapshots','readwrite');
-          tx.objectStore('snapshots').put('synthetic invalid checkpoint','primary-workspace');
+          tx.objectStore('snapshots').put('synthetic invalid checkpoint','primary-workspace-v2');
           tx.oncomplete=()=>{db.close();resolve()};
           tx.onabort=()=>reject(tx.error);
          };
@@ -140,7 +150,7 @@ with sync_playwright() as p:
         other.reload()
         ready(other)
         assert other.evaluate('S.testWorkspaceMarker') == json.loads(last_good['raw'])['testWorkspaceMarker']
-        assert other.evaluate(read_checkpoint, 'primary-workspace')['revision'] > last_good['revision']
+        assert other.evaluate(read_checkpoint, 'primary-workspace-v2')['revision'] > last_good['revision']
         ctx.add_init_script("""Object.defineProperty(window,'indexedDB',{configurable:true,value:{
          open(){throw new DOMException('Synthetic database block','SecurityError');}
         }});""")

@@ -2,7 +2,7 @@
 (()=>{'use strict';
  const KEY='moonlit_learning_v1',PREVIOUS=KEY+'__recovery_previous',PIN=KEY+'__before_restore',META=KEY+'__safety_meta',BAD=KEY+'__unreadable';
  const SCHEMA=1;let adapter=null;let writeGeneration=0,writeQueue=Promise.resolve();
- const WORKSPACE='primary-workspace',WORKSPACE_PREVIOUS='previous-workspace',WORKSPACE_PIN='pinned-workspace';
+ const LEGACY_WORKSPACE='primary-workspace',WORKSPACE='primary-workspace-v2',WORKSPACE_PREVIOUS='previous-workspace',WORKSPACE_PIN='pinned-workspace';
  let durable=false,initialized=false,preparedState=null,preparedError=null,revision=0,revisionFloor=0,queuedState=null,scheduled=false;
  let records=Object.create(null),legacyConflict=null;let status={ok:true,message:'Local save ready',at:0};
  const escape=v=>String(v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -35,10 +35,10 @@
   }catch(_){return null;}
  }
  async function prepare(){
-  let latest,previous,timer;
+  let latest,previous,overflow,timer;
   try{
    const deadline=new Promise((_,reject)=>{timer=setTimeout(()=>reject(Error('Recovery database did not respond')),4000)});
-   [latest,previous]=await Promise.race([Promise.all([archive.get(WORKSPACE),archive.get(WORKSPACE_PREVIOUS)]),deadline]);
+   [latest,previous,overflow]=await Promise.race([Promise.all([archive.get(WORKSPACE),archive.get(WORKSPACE_PREVIOUS),archive.get(LEGACY_WORKSPACE)]),deadline]);
    durable=true;
   }catch(_){}finally{clearTimeout(timer)}
   let legacy=null,legacyError;
@@ -46,28 +46,28 @@
   records=localRecords();
   let legacyMeta=null;
   try{legacyMeta=JSON.parse(localStorage.getItem(META)||'null')}catch(_){}
-  const current=checkpoint(latest),lastGood=checkpoint(previous);
+  const current=checkpoint(latest),lastGood=checkpoint(previous),transitional=checkpoint(overflow);
   revision=current?.revision||0;
-  revisionFloor=Math.max(revision,lastGood?.revision||0);
-  const verified=current||lastGood;
+  revisionFloor=Math.max(revision,lastGood?.revision||0,transitional?.revision||0);
+  const verified=current||lastGood||transitional;
   if(verified){
    preparedState=migrate(parse(verified.raw));
    records=Object.assign(Object.create(null),records,verified.browserData);
    if(legacy&&(legacyMeta?.legacyDivergence||!legacyMeta?.workspaceRevision&&legacyMeta?.at>verified.at))
     legacyConflict={state:legacy,browserData:{...localRecords()}};
    notify(true,'Workspace recovered from this browser.');
-  }else if(typeof latest==='string'){
+  }else if(typeof overflow==='string'){
    // The previous quota-only implementation stored an unversioned full workspace.
    try{
-    const overflow=JSON.parse(latest),recovered=migrate(parse(overflow.raw));
-    if(!legacy||!Number.isFinite(legacyMeta?.at)||legacyMeta.at<=overflow.at){
-     records=Object.assign(Object.create(null),records,validateAux(overflow.browserData));
+    const priorOverflow=JSON.parse(overflow),recovered=migrate(parse(priorOverflow.raw));
+    if(!legacy||!Number.isFinite(legacyMeta?.at)||legacyMeta.at<=priorOverflow.at){
+     records=Object.assign(Object.create(null),records,validateAux(priorOverflow.browserData));
      preparedState=recovered;
     }
    }catch(_){}
   }
   preparedState??=legacy;
-  if(latest!=null&&!preparedState&&!legacyError){
+  if((latest!=null||overflow!=null)&&!preparedState&&!legacyError){
    legacyError=Error('The workspace checkpoint could not be read. Its original copy is preserved.');
    notify(false,legacyError.message);
   }
