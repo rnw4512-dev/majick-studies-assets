@@ -1,0 +1,83 @@
+[
+  {
+    "file": "boots-onyx.glb",
+    "bytes": 118988,
+    "triangles": 2882,
+    "vertices": 1790,
+    "joints": 65,
+    "sha256": "33e387641e07929a9a4a9bef7bf50071f1c7d024c1c235d6742b39f749282ec2",
+    "validation": "binary structure, indices, finite positions, original bind matrices, normalized weights and embedded images passed"
+  },
+  {
+    "file": "dress-amethyst.glb",
+    "bytes": 149780,
+    "triangles": 3942,
+    "vertices": 2308,
+    "joints": 65,
+    "sha256": "4bcc96a7618838e0969b204e91ecead7d3d4b66e20674b636ce7f87bfcfb56ed",
+    "validation": "binary structure, indices, finite positions, original bind matrices, normalized weights and embedded images passed"
+  },
+  {
+    "file": "female-base.glb",
+    "bytes": 1654184,
+    "triangles": 15060,
+    "vertices": 8844,
+    "joints": 65,
+    "sha256": "0529b3700c13755408a56d58b526b128819106f4d4fbcf66eb5f0800c2de8cb6",
+    "validation": "binary structure, indices, finite positions, original bind matrices, normalized weights and embedded images passed"
+  },
+  {
+    "file": "hair-box-braids.glb",
+    "bytes": 682744,
+    "triangles": 23292,
+    "vertices": 11842,
+    "joints": 65,
+    "sha256": "65c37b09208905a586dbe10813b45d60fa1a46be8322228de3b176be85cfe9c7",
+    "validation": "binary structure, indices, finite positions, original bind matrices, normalized weights and embedded images passed"
+  },
+  {
+    "file": "hair-double-puffs.glb",
+    "bytes": 281792,
+    "triangles": 8828,
+    "vertices": 4702,
+    "joints": 65,
+    "sha256": "c91a28ad92d4a11a51d6095f75c2d94524bb7d4461becd289ee592fc613e2347",
+    "validation": "binary structure, indices, finite positions, original bind matrices, normalized weights and embedded images passed"
+  },
+  {
+    "file": "hair-locs.glb",
+    "bytes": 518540,
+    "triangles": 17488,
+    "vertices": 8902,
+    "joints": 65,
+    "sha256": "9d3d78f6fa5ac658222345290980bf2a98c05c86ceca2d5b7388fe45941ac380",
+    "validation": "binary structure, indices, finite positions, original bind matrices, normalized weights and embedded images passed"
+  },
+  {
+    "file": "robe-forest.glb",
+    "bytes": 160528,
+    "triangles": 4326,
+    "vertices": 2500,
+    "joints": 65,
+    "sha256": "a672919e288086d22c99f0132c81bf2fe5a8f5ac2445d668076640b85973bb3b",
+    "validation": "binary structure, indices, finite positions, original bind matrices, normalized weights and embedded images passed"
+  },
+  {
+    "file": "scholar-preview.glb",
+    "bytes": 2382132,
+    "triangles": 39372,
+    "vertices": 21844,
+    "joints": 65,
+    "sha256": "69e5fe1e6736112bb1c4dbab9d6962218d1f2010dbb997b6ad07ebc5d6f4b837",
+    "validation": "binary structure, indices, finite positions, original bind matrices, normalized weights and embedded images passed"
+  },
+  {
+    "file": "shoes-onyx.glb",
+    "bytes": 100460,
+    "triangles": 2356,
+    "vertices": 1464,
+    "joints": 65,
+    "sha256": "f015309c75416a7e7ae4d486aec612d2391378fb7efdbf86d1b37879e1152a50",
+    "validation": "binary structure, indices, finite positions, original bind matrices, normalized weights and embedded images passed"
+  }
+]
