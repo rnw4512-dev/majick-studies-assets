@@ -22,6 +22,14 @@ with sync_playwright() as pw:
   def inv():return page.evaluate('MajickRewardCore.inventory()')
   page.evaluate('MajickRewardCore.inspect();navigate("vault");majickVaultTab("potions")')
   protected=page.evaluate('JSON.stringify({d755:S.progress.D755,d756:S.progress.D756},(k,v)=>["xp","crystals","chests"].includes(k)?undefined:v)')
+  # Shared reward owner rejects wrong answers and preserves exact tier amounts.
+  before_reward=page.evaluate('MajickRewardCore.inspect()')
+  page.evaluate('MajickRewardCore.award("learning-effort",{key:"wrong-fixture",correct:false})')
+  after_wrong=page.evaluate('MajickRewardCore.inspect()')
+  assert (before_reward['xp'],before_reward['crystals'])==(after_wrong['xp'],after_wrong['crystals'])
+  for level,xp,gems in [(1,10,2),(2,15,2),(3,20,3),(4,25,4),(5,30,5)]:
+   preview=page.evaluate('(d)=>MajickRewardCore.rewardPreview("correct-answer",{difficulty:d,independent:true})',level)
+   assert (preview['xp'],preview['crystals'])==(xp,gems)
   initial=inv();assert not page.evaluate('MajickRewardCore.craft("clarity-potion",{key:"insufficient"}).ok');assert inv()==initial
   assert not page.evaluate('MajickRewardCore.conjureEgg({type:"vesper"},"insufficient")');assert inv()==initial
   page.locator('[onclick="majickClaimPotionTestKit()"]').click();kit=inv();assert not page.evaluate('MajickRewardCore.claimPotionTestKit()');assert inv()==kit

@@ -8,7 +8,7 @@ const RARITIES=[
  {id:'arcane',label:'Arcane',weight:6},
  {id:'celestial',label:'Celestial',weight:1}
 ];
-const CABINET_ART={"dream-lavender":"plants/flowers.webp","star-moss":"plants/shrub.webp","moonpetal":"plants/flowers.webp","silver-sage":"images/herbal.webp","celestial-dew":"crystal-blue.webp","crystal-nectar":"crystals/cluster-1.webp","clarity-potion":"potions/purple.webp","recall-draught":"potions/aqua.webp","moonfocus-elixir":"potions/red.webp","crystal-sight-potion":"potions/green.webp","starlight-tonic":"potions/orange.webp"};
+const CABINET_ART={"dream-lavender":"plants/flowers.webp","star-moss":"plants/shrub.webp","moonpetal":"plants/flowers.webp","silver-sage":"images/herbal.webp","celestial-dew":"crystal-blue.webp","crystal-nectar":"crystals/cluster-1.webp","ember-root":"gems/ruby.webp","voidberry":"gems/sapphire.webp","sunstone-dust":"crystal-yellow.webp","aether-thread":"crystals/cluster-7.webp","clarity-potion":"potions/purple.webp","recall-draught":"potions/aqua.webp","moonfocus-elixir":"potions/red.webp","crystal-sight-potion":"potions/green.webp","starlight-tonic":"potions/orange.webp"};
 function cabinetArt(id,icon){const path=CABINET_ART[id];return path?'<img src="assets/licensed/'+path+'" alt="" loading="lazy" decoding="async" width="64" height="64" style="width:64px;height:64px;object-fit:contain;vertical-align:middle">':E(icon||'✦');}
 const INGREDIENTS=[
  {id:'moonpetal',name:'Moonpetal',icon:'❀',rarity:'common'},
@@ -126,21 +126,21 @@ function guardianRewards({correct=true,hard=false,independent=false,delayed=fals
 function baseFor(type,ctx){
  const d=Math.max(1,Math.min(5,Number(ctx.difficulty||3))),hard=ctx.hard===true||d>=4;
  if(type==='study-fragment-earned'||type==='game-fragment-earned'||type==='starfall-fragment-earned'||type==='adventure-fragment-earned')return {xp:0,crystals:0,masteryXp:0,eggFragments:1,lootChance:0,hard:false};
- if(type==='guided-learning-correct')return {xp:3+d,crystals:1,masteryXp:0,eggFragments:0,lootChance:0,hard:false};
- if(type==='learning-effort')return {xp:2,crystals:1,masteryXp:0,eggFragments:0,lootChance:0,hard:false};
+ if(type==='guided-learning-correct')return {xp:8,crystals:1,masteryXp:0,eggFragments:0,lootChance:0,hard:false};
+ if(type==='learning-effort')return {xp:0,crystals:0,masteryXp:0,eggFragments:0,lootChance:0,hard:false};
  if(type==='brain-break-correct')return {xp:5,crystals:1,masteryXp:0,eggFragments:0,lootChance:0,hard:false};
  if(type==='whole-course-complete')return {xp:15,crystals:3,masteryXp:0,eggFragments:0,lootChance:0,hard:false};
  if(type==='potion-recall-practice')return {xp:4,crystals:0,masteryXp:0,eggFragments:0,lootChance:0,hard:false};
  if(type==='d756-meeting-first-pass')return {xp:30,crystals:5,masteryXp:0,eggFragments:0,lootChance:0,hard:false};
  if(type==='d756-meeting-repeat-practice')return {xp:8,crystals:1,masteryXp:0,eggFragments:0,lootChance:0,hard:false};
  if(type==='correct-answer'){
-   const xp=8+d*3,crystals=hard?2:1;
+   const level=Math.round(d),xp=ctx.independent===true&&ctx.assisted!==true?[0,10,15,20,25,30][level]:ctx.support==='substantial'?3:ctx.support==='hint'?5:8,crystals=ctx.independent===true&&ctx.assisted!==true?[0,2,2,3,4,5][level]:1;
    return {xp,crystals,masteryXp:0,eggFragments:0,lootChance:.045,hard};
  }
  if(type==='independent-correct')return {xp:5,crystals:0,masteryXp:5,eggFragments:0,lootChance:.09,hard};
  if(type==='delayed-recall')return {xp:8,crystals:1,masteryXp:8,eggFragments:ctx.firstDelayedForLesson?1:0,lootChance:.16,hard:true,extraMoonlight:1};
  if(type==='mixed-transfer-success')return {xp:8,crystals:1,masteryXp:6,eggFragments:0,lootChance:.13,hard:true};
- if(type==='misconception-repaired')return {xp:20,crystals:3,masteryXp:10,eggFragments:1,lootChance:1,hard:true,bondBonus:3,forcedIngredient:true};
+ if(type==='misconception-repaired')return {xp:35,crystals:5,masteryXp:10,eggFragments:1,lootChance:1,hard:true,bondBonus:3,forcedIngredient:true};
  if(type==='micro-skill-mastered')return {xp:12,crystals:1,masteryXp:5,eggFragments:0,lootChance:.18,hard:false,chest:0};
  if(type==='concept-mastered')return {xp:30,crystals:4,masteryXp:15,eggFragments:1,lootChance:1,hard:true,chest:1,minimumRarity:'enchanted'};
  if(type==='lesson-mastered')return {xp:45,crystals:6,masteryXp:20,eggFragments:2,lootChance:1,hard:true,chest:1,minimumRarity:'rare'};
@@ -198,11 +198,12 @@ function updateEffects(){
 function award(type,ctx={}){
  const a=account();if(!a)return null;const r=a.rewardCore,key=rewardKey(type,ctx);
  if(r.ledger[key])return r.ledger[key].receipt||null;
+ if(ctx.correct===false||type==='learning-effort')return {key,type,xp:0,crystals:0,masteryXp:0,eggFragments:0,rejected:'incorrect-answer'};
  const cfg=baseFor(type,ctx),independent=ctx.independent===true||type==='independent-correct',delayed=ctx.delayed===true||type==='delayed-recall',transfer=ctx.transfer===true||type==='mixed-transfer-success';
  if(ctx.assisted===true||ctx.independent===false||ctx.masteryEligible===false){if(['concept-mastered','lesson-mastered','competency-mastered','oa-competency-ready','course-passed','misconception-repaired','delayed-recall'].includes(type))return {key,type,xp:0,crystals:0,masteryXp:0,eggFragments:0,rejected:'assisted-or-ineligible'};cfg.eggFragments=0;cfg.masteryXp=0;}
  const beforeXp=Math.max(Number(a.xp||0),Number(a.xpHighWater||0));
  let xp=Number(cfg.xp||0),crystals=Number(cfg.crystals||0);
- if(type==='correct-answer'&&independent){xp+=5;cfg.masteryXp=Number(cfg.masteryXp||0)+5}
+ if(type==='correct-answer'&&independent){cfg.masteryXp=Number(cfg.masteryXp||0)+5}
  if(type==='correct-answer'&&delayed){xp+=8;cfg.masteryXp=Number(cfg.masteryXp||0)+8}
  if(type==='correct-answer'&&transfer){xp+=8;crystals+=1;cfg.masteryXp=Number(cfg.masteryXp||0)+6}
  a.xp=beforeXp+xp;
@@ -226,6 +227,7 @@ function award(type,ctx={}){
  };
  r.ledger[key]={type,at:receipt.at,receipt};r.lastReceipt=receipt;
  save();pushRewardState();showReceipt(receipt);
+ if(['correct-answer','guided-learning-correct','brain-break-correct','whole-course-complete'].includes(type))try{window.MajickAnimationEffects?.play?.(type==='whole-course-complete'?'lesson':'reward',{label:'+'+xp+' XP · +'+crystals+' gems'})}catch(_){}
  if(type==='misconception-repaired')if(typeof CustomEvent==='function'&&typeof document?.dispatchEvent==='function')document.dispatchEvent(new CustomEvent('majick:repair-confirmed',{detail:{key,verified:true}}));
  if(['concept-mastered','lesson-mastered','competency-mastered','oa-competency-ready','course-passed'].includes(type)){
    if(typeof document!=='undefined'&&typeof CustomEvent==='function')document.dispatchEvent(new CustomEvent('majick:celebrate',{detail:{type:type==='course-passed'?'course':'mastery',key,course:ctx.course||window.S?.activeCourse||'',verified:true}}));
@@ -279,9 +281,9 @@ function eggMystery(type,key){
 let alchemySequence=0;
 function alchemyKey(kind){return kind+':'+Date.now()+':'+(++alchemySequence)}
 function alchemyTransaction(key,kind,mutate){const a=account(),r=a?.rewardCore,st=state();if(!a||!st||!r)return {ok:false,message:'Scholar save is unavailable.'};r.alchemyTransactions=r.alchemyTransactions||{};if(r.alchemyTransactions[key])return {...r.alchemyTransactions[key],replayed:true};
- const before={reward:JSON.parse(JSON.stringify(r)),eggs:JSON.parse(JSON.stringify(st.legacy?.eggs||[])),incubator:JSON.parse(JSON.stringify(a.guardianIncubator||null))};
+ const before={reward:JSON.parse(JSON.stringify(r)),eggs:JSON.parse(JSON.stringify(st.legacy?.eggs||[])),incubator:JSON.parse(JSON.stringify(a.guardianIncubator||null)),crystals:a.crystals};
  try{const result=mutate(a,r,st);if(!result?.ok)return result||{ok:false,message:'Nothing was changed.'};const receipt={...result,key,kind,at:Date.now()};r.alchemyTransactions[key]=receipt;r.lastAlchemyTransaction=receipt;if(typeof window.save!=='function')throw Error('Local save is unavailable.');window.save();if(window.MajickSaveSafety?.status?.().ok===false)throw Error(window.MajickSaveSafety.status().message);return receipt;
- }catch(error){for(const name of Object.keys(r))delete r[name];Object.assign(r,before.reward);st.legacy=st.legacy||{};st.legacy.eggs=before.eggs;if(before.incubator)a.guardianIncubator=before.incubator;else delete a.guardianIncubator;return {ok:false,message:'Nothing was spent: '+error.message};}}
+ }catch(error){for(const name of Object.keys(r))delete r[name];Object.assign(r,before.reward);a.crystals=before.crystals;st.legacy=st.legacy||{};st.legacy.eggs=before.eggs;if(before.incubator)a.guardianIncubator=before.incubator;else delete a.guardianIncubator;return {ok:false,message:'Nothing was spent: '+error.message};}}
 function alchemyNotice(message){window.rewardToast?.('Alchemy Ledger',message);return {ok:false,message};}
 function potionInfo(id){return {
  'clarity-potion':{where:'Unanswered Oracle Lens or Guardian Gauntlet round',duration:'Current question',effect:'Displays and highlights an authored clue or explanation. This answer becomes assisted practice.'},
@@ -371,6 +373,23 @@ document.addEventListener('click',ev=>{
  if(b.dataset.equipItem){const id=b.dataset.equipItem,select=document.querySelector('[data-equip-target="'+id+'"]');equipReward(id,select?.value)}
  if(b.dataset.unequipItem)equipReward(b.dataset.unequipItem,b.dataset.petId,true);
 });
+const MARKET_PRICES={common:5,enchanted:12,rare:25,arcane:45,celestial:90};
+function buyIngredient(id,key){
+ const item=INGREDIENTS.find(x=>x.id===id);if(!item)return {ok:false,message:'Unknown ingredient.'};
+ const price=MARKET_PRICES[item.rarity];
+ const result=alchemyTransaction(key||alchemyKey('market:'+id),'market-ingredient',(a,r)=>{
+  if(Number(a.crystals||0)<price)return {ok:false,message:'Not enough Moon Crystals.'};
+  a.crystals=Number(a.crystals||0)-price;r.ingredients[id]=Number(r.ingredients[id]||0)+1;
+  return {ok:true,item:id,price,message:item.name+' purchased for '+price+' Moon Crystals.'};
+ });
+ if(result.ok&&!result.replayed){pushRewardState();refreshVault();try{window.MajickAnimationEffects?.play?.('reward',{label:item.name+' purchased'})}catch(_){}}
+ return result;
+}
+function marketHTML(){
+ const balance=Number(account()?.crystals||0);
+ return '<section class="majRecipeShelf" aria-label="Ingredient marketplace"><h3>Ingredient Marketplace</h3><p><img src="assets/licensed/crystal-violet.webp" width="24" height="24" alt=""> '+balance+' Moon Crystals available. Purchases add one ingredient to the existing cabinet.</p><div class="majLootGrid">'+INGREDIENTS.map(it=>'<article class="majRecipe"><span>'+cabinetArt(it.id,it.icon)+'</span><div><b>'+E(it.name)+'</b><p>'+E(rarityLabel(it.rarity))+' · '+MARKET_PRICES[it.rarity]+' gems</p><button type="button" data-market-ingredient="'+E(it.id)+'" '+(balance<MARKET_PRICES[it.rarity]?'disabled':'')+'>Buy 1</button></div></article>').join('')+'</div><p id="majMarketStatus" role="status"></p></section>';
+}
+document.addEventListener('click',ev=>{const b=ev.target.closest?.('[data-market-ingredient]');if(!b||b.disabled)return;const item=INGREDIENTS.find(x=>x.id===b.dataset.marketIngredient);if(!item)return;const result=buyIngredient(item.id);const status=document.getElementById('majMarketStatus');if(status)status.textContent=result.message||'';});
 function vaultPanelHTML(){
  const inv=inventory(),r=account()?.rewardCore||{},owned=new Set([...inv.collectibles,...inv.blueprints]);
  const ingredients=Object.entries(inv.ingredients).filter(([,n])=>Number(n)>0);
@@ -394,7 +413,7 @@ function vaultPanelHTML(){
  panel('ingredients')+'<div class="majRecipeShelf"><h3><img src="assets/licensed/images/herbal.webp" alt="" width="40" height="40" style="object-fit:contain;vertical-align:middle" loading="lazy"> Ingredient Cabinet</h3><div class="majLootGrid">'+(ingredients.length?ingredients.map(([id,n])=>{const it=INGREDIENTS.find(x=>x.id===id)||{};return '<span data-ingredient="'+E(id)+'" class="'+E(it.rarity||'common')+'"><i aria-hidden="true">'+cabinetArt(id,it.icon)+'</i><b>'+E(it.name||id)+'</b><small>'+E(rarityLabel(it.rarity||'common'))+' • '+Number(n)+' owned</small></span>'}).join(''):'<p class="majVaultEmpty">Your cabinet is waiting for its first discovery. Study treasure can reveal magical ingredients.</p>')+'</div></div>'+'</section>'+
  panel('eggs')+'<div class="majVaultEggProgress"><label for="majVaultEggMeter">Next egg • '+Math.min(10,inv.eggFragments)+'/10 fragments</label><progress id="majVaultEggMeter" value="'+Math.min(10,inv.eggFragments)+'" max="10"></progress><p>Earn fragments through mastery and learning milestones.</p></div>'+incubator+'</section>'+
  panel('recent')+'<div class="majRecipeShelf"><h3>Recent Discoveries</h3>'+(recent.length?recent.map(x=>'<div class="majVaultRecent"><b>'+E(x.drop?x.drop.name:'Celestial Egg Fragments')+'</b><span>'+E(x.label||x.type.replace(/-/g,' '))+(x.drop?' • '+E(rarityLabel(x.drop.rarity)):' • +'+x.eggFragments+' fragments')+'</span></div>').join(''):'<p class="majVaultEmpty">New treasures and egg fragments will appear here as you earn them.</p>')+'</div>'+ '</section>'+
- panel('shop')+vaultLegacyHTML+'</section></section>';
+ panel('shop')+marketHTML()+vaultLegacyHTML+'</section></section>';
 }
 window.majickVaultFilter=(key,value)=>{
  const allowed={collection:['all','solstice','aurelia','shared'],status:['all','owned','locked'],kind:['all','furniture','decor','toy','accessory'],rarity:['all',...RARITIES.map(x=>x.id)]};
@@ -415,12 +434,12 @@ function inventory(){
 }
 function claimPotionTestKit(){const r=account()?.rewardCore;if(!r||r.potionTestKitClaimed){alchemyNotice('The one-time brewing kit was already collected.');return false;}const result=alchemyTransaction('alchemy:kit:v1','brewing-kit',(a,r)=>{const kit={'moonpetal':6,'silver-sage':4,'star-moss':6,'dream-lavender':3,'celestial-dew':2,'crystal-nectar':2,'sunstone-dust':2};for(const [id,n] of Object.entries(kit))r.ingredients[id]=Number(r.ingredients[id]||0)+n;r.potionTestKitClaimed=true;return {ok:true,message:'One-time ingredients for all five recipes added.'};});if(!result.ok){alchemyNotice(result.message);return false;}refreshVault();return true;}
 window.majickClaimPotionTestKit=claimPotionTestKit;
-function craft(id,ctx={}){const rec=RECIPES.find(x=>x.id===id);if(!rec)return {ok:false,message:'Unknown recipe.'};const result=alchemyTransaction(ctx.key||alchemyKey('craft:'+id),'craft-potion',(a,r)=>{for(const [k,n] of Object.entries(rec.cost))if(Number(r.ingredients[k]||0)<n)return {ok:false,message:'You need '+n+' '+ingredientName(k)+'; own '+Number(r.ingredients[k]||0)+'.'};for(const [k,n] of Object.entries(rec.cost))r.ingredients[k]-=n;r.potions[id]=Number(r.potions[id]||0)+1;r.discoveredRecipes=r.discoveredRecipes||{};r.discoveredRecipes[id]=r.discoveredRecipes[id]||Date.now();return {ok:true,recipe:rec,count:r.potions[id],message:rec.name+' bottled; recipe ingredients spent once.'};});if(result.ok&&!result.replayed)refreshVault();return result;}
+function craft(id,ctx={}){const rec=RECIPES.find(x=>x.id===id);if(!rec)return {ok:false,message:'Unknown recipe.'};const result=alchemyTransaction(ctx.key||alchemyKey('craft:'+id),'craft-potion',(a,r)=>{for(const [k,n] of Object.entries(rec.cost))if(Number(r.ingredients[k]||0)<n)return {ok:false,message:'You need '+n+' '+ingredientName(k)+'; own '+Number(r.ingredients[k]||0)+'.'};for(const [k,n] of Object.entries(rec.cost))r.ingredients[k]-=n;r.potions[id]=Number(r.potions[id]||0)+1;r.discoveredRecipes=r.discoveredRecipes||{};r.discoveredRecipes[id]=r.discoveredRecipes[id]||Date.now();return {ok:true,recipe:rec,count:r.potions[id],message:rec.name+' bottled; recipe ingredients spent once.'};});if(result.ok&&!result.replayed){refreshVault();try{window.MajickAnimationEffects?.play?.('reward',{label:rec.name+' brewed'})}catch(_){}}return result;}
 function usePotion(id){const a=account(),r=a?.rewardCore,info=potionInfo(id);if(!r||!info||Number(r.potions[id]||0)<1)return false;let prepared=null,applied=null;
  if(id==='moonfocus-elixir'){if(!activePet()||Number(r.activeEffects?.moonfocus||0)>0){alchemyNotice('Choose an owned Guardian, and finish existing Moonfocus charges first. Nothing was consumed.');return false;}}
  else if(id==='starlight-tonic'){if(!focusedEgg()||Number(r.activeEffects?.starlightTonic||0)>0){alchemyNotice('Focus an incubating egg, and finish existing Starlight charges first. Nothing was consumed.');return false;}}
  else{prepared=window.MajickGameRealm?.preparePotion?.(id);if(!prepared?.ok){alchemyNotice(prepared?.message||'Open an unanswered Oracle Lens or Guardian Gauntlet question. Nothing was consumed.');return false;}}
- const tx=alchemyKey('use:'+id),result=alchemyTransaction(tx,'use-potion',(a,r)=>{if(prepared&&id!=='recall-draught'){applied=window.MajickGameRealm.applyPotion(id,prepared);if(!applied?.ok)return {ok:false,message:applied?.message||'The learning effect could not be applied.'};}r.potions[id]--;const fx=updateEffects();if(id==='moonfocus-elixir')fx.moonfocus=5;else if(id==='starlight-tonic')fx.starlightTonic=3;else if(id==='recall-draught')r.activeRecall={question:prepared.question,course:state().activeCourse,answered:false,rewardKey:prepared.rewardKey,at:Date.now()};return {ok:true,potion:id,message:info.effect,duration:info.duration,question:prepared?.question||null,hint:prepared?.text||null};});if(!result.ok){applied?.undo?.();alchemyNotice(result.message);return false;}if(id==='recall-draught')showRecall();return true;
+ const tx=alchemyKey('use:'+id),result=alchemyTransaction(tx,'use-potion',(a,r)=>{if(prepared&&id!=='recall-draught'){applied=window.MajickGameRealm.applyPotion(id,prepared);if(!applied?.ok)return {ok:false,message:applied?.message||'The learning effect could not be applied.'};}r.potions[id]--;const fx=updateEffects();if(id==='moonfocus-elixir')fx.moonfocus=5;else if(id==='starlight-tonic')fx.starlightTonic=3;else if(id==='recall-draught')r.activeRecall={question:prepared.question,course:state().activeCourse,answered:false,rewardKey:prepared.rewardKey,at:Date.now()};return {ok:true,potion:id,message:info.effect,duration:info.duration,question:prepared?.question||null,hint:prepared?.text||null};});if(!result.ok){applied?.undo?.();alchemyNotice(result.message);return false;}if(id==='recall-draught')showRecall();try{window.MajickAnimationEffects?.play?.('reward',{label:RECIPES.find(x=>x.id===id)?.name+' activated'})}catch(_){}return true;
 }
 function rewardPreview(type,ctx={}){const x=baseFor(type,ctx);return {...x,type};}
 function patchLegacyGameRewards(){
@@ -435,7 +454,7 @@ function patchLegacyGameRewards(){
  };fn.__majickRewardCore=true;window.grantMoonlight=fn;
 }
 function inspect(){const a=account(),r=a?.rewardCore;return {version:VERSION,xp:a?.xp||0,crystals:a?.crystals||0,chests:a?.chests||0,eggFragments:r?.eggFragments||0,ingredients:{...(r?.ingredients||{})},collectibles:[...(r?.collectibles||[])],blueprints:[...(r?.blueprints||[])],stats:{...(r?.stats||{})},lastReceipt:r?.lastReceipt||null}}
-window.MajickRewardCore={VERSION,RARITIES,INGREDIENTS,TREASURES,RECIPES,award,rewardPreview,inventory,claimPotionTestKit,craft,usePotion,showConjuring,conjureEgg,vaultPanelHTML,patchVault,inspect,patchLegacyGameRewards,potionInfo,alchemyLedgerHTML,showRecall,submitRecall,placeReward,equipReward,pushRewardState,ITEM_ART};
+window.MajickRewardCore={VERSION,RARITIES,INGREDIENTS,TREASURES,RECIPES,award,rewardPreview,inventory,buyIngredient,claimPotionTestKit,craft,usePotion,showConjuring,conjureEgg,vaultPanelHTML,patchVault,inspect,patchLegacyGameRewards,potionInfo,alchemyLedgerHTML,showRecall,submitRecall,placeReward,equipReward,pushRewardState,ITEM_ART};
 window.majickConjureEgg=()=>showConjuring();
 
 // Cozy Alchemy is a presentation layer. Inventory is changed only by craft(), never by animation.

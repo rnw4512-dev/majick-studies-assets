@@ -128,6 +128,8 @@ function creditAnswer(evt={}){
       difficulty:Number(evt.difficulty||3),
       hard:Number(evt.difficulty||3)>=4,
       independent:evt.assisted!==true,
+      assisted:evt.assisted===true,
+      support:evt.support,
       delayed:/retrieve|delayed|sweep/.test(String(evt.source||'')),
       transfer:evt.transfer===true||/mix|transfer/.test(String(evt.source||'')),
       correct:!!evt.correct

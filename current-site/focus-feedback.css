@@ -46,3 +46,5 @@ html[data-majick-focus=true] #content.majQuestionFirst>.majQuestionPrimary{order
 #content.majQuestionFirst .wholeRewardLine{color:#f3d894!important;font-weight:700}
 #content.majQuestionFirst .learnLab>#courseLessonNavigator{order:3}
 @media(max-width:600px){#content.majQuestionFirst .wholeRuneChoices{grid-template-columns:1fr}}
+
+#majArcaneVault [data-market-ingredient]{min-height:44px;border:1px solid #aa8b56;background:#39264d;color:#fff4e4;border-radius:8px;padding:8px 14px}#majArcaneVault [data-market-ingredient]:disabled{opacity:.55}#majArcaneVault #majMarketStatus{font-weight:700}
