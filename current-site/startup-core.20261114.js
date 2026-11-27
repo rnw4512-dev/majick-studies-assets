@@ -23,15 +23,17 @@ function v338ShouldUseBundledProgress(current){
   }catch(_e){return !current}
 }
 
+// Do not persist a partially initialized state or let quota failures abort the core script.
+let majickCoreReady=false;
 let S=loadState(); let session=null, timerHandle=null;
 function loadState(){try{let x=MajickSaveSafety.read();if(!x){x=defaultState();try{const old=JSON.parse(localStorage.getItem('wguExpeditionV6State')||'null');const op=old?.progress?.PMFC;if(op){const np=x.progress.PMFC;np.answers=(op.attempts||[]).map(a=>({qid:a.questionId||'',topicId:a.conceptId||'',chosen:a.choice||'',answer:'',correct:Boolean(a.ok),confidence:a.confidence===4?'certain':a.confidence===3?'sure':a.confidence===2?'50':'guess',mode:a.mode||'legacy',difficulty:a.difficulty||1,format:a.dimension||'mc',at:a.at||Date.now()}));np.streak=(op.studyDays||[]).length?1:0;}}catch(_){}} if(!x.courses?.PMFC)x.courses={PMFC:BUILTIN,...(x.courses||{})}; else x.courses.PMFC=BUILTIN; x.progress=x.progress||{}; Object.keys(x.courses).forEach(id=>x.progress[id]=x.progress[id]||{answers:[],explanations:[],repair:[],streak:0,lastDay:'',bossWins:0,xp:0,crystals:0,charms:[]}); return x;}catch(e){window.majickSaveLoadBlocked=true;return defaultState()}}
-function save(){if(window.majickSaveLoadBlocked)throw Error('Saved data needs recovery. Import a backup before saving.');MajickSaveSafety.write(S)}
+function save(){if(!majickCoreReady)return;if(window.majickSaveLoadBlocked)throw Error('Saved data needs recovery. Import a backup before saving.');MajickSaveSafety.write(S)}
 function course(){return S.courses[S.activeCourse]||BUILTIN} function prog(){return S.progress[S.activeCourse]}
 function esc(s=''){return String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
 function pct(n){return Math.round((n||0)*100)}
-function navigate(screen){if(screen==='probability'&&S.activeCourse!=='D772')return;const previous=S.screen;clearTimer();S.screen=screen;save();render();if(previous!==screen)window.MajickRoomTransition?.play?.()}
+function navigate(screen){if(screen==='probability'&&S.activeCourse!=='D772')return;const previous=S.screen;clearTimer();S.screen=screen;try{save()}catch(error){console.warn('Room navigation continued in memory; save failed',error)}render();if(previous!==screen)window.MajickRoomTransition?.play?.()}
 function clearTimer(){if(timerHandle){clearInterval(timerHandle);timerHandle=null}}
-function render(){try{if(S.screen==='probability'&&S.activeCourse!=='D772')S.screen='home';const c=course();document.getElementById('app').innerHTML=`<aside class="side">${sideHTML()}</aside><main class="main"><header class="top"><div class="titleline"><span style="font-size:25px">☾</span><div><h1>Moonlit Learning Expedition</h1><span class="pill">Eternal Study Realm • V3.0</span></div></div><select class="courseSelect" onchange="switchCourse(this.value)">${Object.values(S.courses).map(x=>`<option value="${esc(x.id)}" ${x.id===S.activeCourse?'selected':''}>${esc(x.id)} • ${esc(x.title)}</option>`).join('')}</select></header><div class="content" id="content">${screenHTML()}</div></main>`;bind();}catch(e){console.error(e);document.getElementById('app').innerHTML=`<main class="main"><div class="content"><div class="error"><h2>The app caught an error instead of going blank.</h2><p>${esc(e.message)}</p><button class="btn dark" onclick="resetUI()">Return Home</button></div></div></main>`}}
+function render(){if(!majickCoreReady)return;try{if(S.screen==='probability'&&S.activeCourse!=='D772')S.screen='home';const c=course();document.getElementById('app').innerHTML=`<aside class="side">${sideHTML()}</aside><main class="main"><header class="top"><div class="titleline"><span style="font-size:25px">☾</span><div><h1>Moonlit Learning Expedition</h1><span class="pill">Eternal Study Realm • V3.0</span></div></div><select class="courseSelect" onchange="switchCourse(this.value)">${Object.values(S.courses).map(x=>`<option value="${esc(x.id)}" ${x.id===S.activeCourse?'selected':''}>${esc(x.id)} • ${esc(x.title)}</option>`).join('')}</select></header><div class="content" id="content">${screenHTML()}</div></main>`;bind();}catch(e){console.error(e);document.getElementById('app').innerHTML=`<main class="main"><div class="content"><div class="error"><h2>The app caught an error instead of going blank.</h2><p>${esc(e.message)}</p><button class="btn dark" onclick="resetUI()">Return Home</button></div></div></main>`}}
 function campusPrimaryNav(homeIcon,studyIcon){
  const nav=[['home',homeIcon,'Home'],['companions','♧','Guardian Sanctuary'],['vault','◆','Magic Vault'],['mission',studyIcon,'Scholar’s Study Hall']];
  if(S.activeCourse==='D772')nav.push(['probability','🎲','Probability Workshop']);
@@ -761,7 +763,7 @@ const _addHTMLV5Base=addHTML;
 addHTML=function(){return `<div class="notice"><b>New-course safety rule:</b> build or import the course first, then check <b>Control Room → Course Readiness</b>. A starter pack is useful for learning vocabulary, but should not be treated as OA-ready until it has enough concepts, plausible multiple-choice items, and hard scenarios.</div>`+_addHTMLV5Base()}
 
 /* initial known-good save, then render */
-try{localStorage.setItem(V5_GOOD_BACKUP,localStorage.getItem(LS)||JSON.stringify(S))}catch(_){ }
+// Recovery snapshots belong to the save owner; never overwrite a good copy during boot.
 save();
 
 
@@ -921,7 +923,7 @@ exportSave=function(){let payload={type:'MoonlitMasterySave',version:ASC_VERSION
 /* tag current course progress explicitly for separation */
 for(const [cid,p] of Object.entries(S.progress||{}))p.courseId=cid;
 try{save()}catch(_){ }
-setTimeout(()=>{try{render()}catch(e){console.error('Ascension initial render',e)}},0);
+// The final core boot performs the initial render after every Guardian constant is initialized.
 
 
 ;
@@ -2959,4 +2961,7 @@ render=function(){
  document.querySelectorAll('.lfNote').forEach(p=>{if(p.textContent.includes('Six unique companions are already approved visually'))p.textContent='Six additional unique guardians are in the game roster with exact portrait art now; their Phaser movement sets can come later.'});
  v338RewriteVisibleNames();
 };
+// All lexical declarations and render wrappers are initialized before any persistent boot write.
+majickCoreReady=true;
+try{save()}catch(e){console.warn('Initial save failed; workspace remains available for backup',e)}
 try{render()}catch(e){console.error('V3.3.8 canon guardian boot',e)}

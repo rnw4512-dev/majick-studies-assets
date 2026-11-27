@@ -1,0 +1,16 @@
+'use strict';
+const fs=require('node:fs'),path=require('node:path'),vm=require('node:vm'),assert=require('node:assert/strict');
+const root=process.argv[2]||'current-site',source=fs.readFileSync(path.join(root,'startup-core.20261114.js'),'utf8'),bridge=fs.readFileSync(path.join(root,'startup-save-bridge.20261114.js'),'utf8');
+new vm.Script(source);new vm.Script(bridge);
+const save=source.match(/^function save\(\)\{[^\n]+\}/m)[0],nav=source.match(/^function navigate\(screen\)\{[^\n]+\}/m)[0];
+let writes=0,renders=0,fail=true;const state={activeCourse:'D669',screen:'companions',progress:{D669:{answers:[{qid:'keep'}]}},legacy:{pets:[{id:'keep-pet'}]}};
+const ctx=vm.createContext({window:{},S:state,majickCoreReady:false,MajickSaveSafety:{write(){writes++;if(fail)throw Object.assign(Error('quota'),{name:'QuotaExceededError'})}},console:{warn(){}},clearTimer(){},render(){renders++}});
+vm.runInContext(save+'\n'+nav,ctx);
+vm.runInContext('save();save();',ctx);assert.equal(writes,0,'No incomplete boot writes');
+ctx.majickCoreReady=true;assert.throws(()=>vm.runInContext('save()',ctx),/quota/);assert.equal(writes,1);
+vm.runInContext("navigate('home')",ctx);assert.equal(renders,1);assert.equal(state.screen,'home');assert.equal(state.progress.D669.answers[0].qid,'keep');assert.equal(state.legacy.pets[0].id,'keep-pet');
+fail=false;vm.runInContext("navigate('companions')",ctx);assert.equal(renders,2);assert.equal(state.screen,'companions');
+assert(source.indexOf('majickCoreReady=true;')>source.indexOf('let _lfEnsuring=false;'));
+assert.match(source,/function render\(\)\{if\(!majickCoreReady\)return;/);
+assert.match(bridge,/Download current backup/);assert.match(bridge,/MajickSaveSafety\.download\(\)/);
+console.log('PASS boot save isolation, quota navigation, retained state, Guardian initialization order and emergency backup action');
