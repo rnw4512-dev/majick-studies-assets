@@ -44,3 +44,11 @@
 .v3333Mission::before{animation:majickQuietRoomGlimmer 34s ease-in-out infinite!important}
 @keyframes majickQuietRoomGlimmer{0%,76%,100%{opacity:.16}84%{opacity:.48}90%{opacity:.22}}
 @media(prefers-reduced-motion:reduce){.learnLab::before,.v3333Mission::before{animation:none!important}}
+
+/* Living academy: actual vault artwork, no moving question text or controls. */
+.majVaultItem:not(.isLocked) .majVaultItemArt img,.majMarketItem img,.majRecipe>span img{transition:transform .25s ease,filter .25s ease}
+.majVaultItem:not(.isLocked):is(:hover,:focus-within) .majVaultItemArt img,.majMarketItem:is(:hover,:focus-within) img,.majRecipe:is(:hover,:focus-within)>span img{transform:translateY(-4px);filter:drop-shadow(0 0 12px #d5b17b)}
+.majVaultItem.celestial:not(.isLocked) .majVaultItemArt img{animation:collegiumTreasureGlow 5s ease-in-out infinite}
+@keyframes collegiumTreasureGlow{50%{transform:translateY(-4px);filter:drop-shadow(0 0 14px #eccd83)}}
+@media(prefers-reduced-motion:reduce){.majVaultItem .majVaultItemArt img,.majMarketItem img,.majRecipe>span img{animation:none!important;transition:none!important;transform:none!important}}
+html[data-majick-reduce-motion="true"] :is(.majVaultItem .majVaultItemArt img,.majMarketItem img,.majRecipe>span img,.learnLab::before,.v3333Mission::before){animation:none!important;transition:none!important;transform:none!important}

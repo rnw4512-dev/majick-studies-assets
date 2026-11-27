@@ -222,12 +222,12 @@ function award(type,ctx={}){
  else if(type==='misconception-repaired')gr=guardianRewards({correct:false,hard:false,independent:true,delayed:false,eggMoonlight:0,bondBonus:Number(cfg.bondBonus||0)});
  const drop=treasureDrop(key,cfg,{...ctx,independent,delayed,transfer});
  const receipt={
-   key,type,label:type.replace(/-/g,' '),xp,crystals,masteryXp:Number(cfg.masteryXp||0),chests:Number(cfg.chest||0),eggFragments:Number(cfg.eggFragments||0),
+   key,type,label:type.replace(/-/g,' '),difficulty:Math.max(1,Math.min(5,Number(ctx.difficulty)||1)),independent,source:ctx.source||'',course:ctx.course||state()?.activeCourse||'',xp,crystals,masteryXp:Number(cfg.masteryXp||0),chests:Number(cfg.chest||0),eggFragments:Number(cfg.eggFragments||0),
    guardian:gr.guardian,egg:gr.egg,drop,fragmentTotal:r.eggFragments,conjuresReady:Math.floor(r.eggFragments/10),milestoneChest,chests:Number(cfg.chest||0)+milestoneChest,at:Date.now()
  };
  r.ledger[key]={type,at:receipt.at,receipt};r.lastReceipt=receipt;
  save();pushRewardState();showReceipt(receipt);
- if(['correct-answer','guided-learning-correct','brain-break-correct','whole-course-complete'].includes(type))try{window.MajickAnimationEffects?.play?.(type==='whole-course-complete'?'lesson':'reward',{label:'+'+xp+' XP · +'+crystals+' gems'})}catch(_){}
+ if(['correct-answer','guided-learning-correct','brain-break-correct','whole-course-complete'].includes(type))try{window.MajickAnimationEffects?.play?.(type==='whole-course-complete'?'lesson':receipt.independent&&receipt.difficulty>=4?'mastery':'success',{label:'+'+xp+' XP · +'+crystals+' gems'})}catch(_){}
  if(type==='misconception-repaired')if(typeof CustomEvent==='function'&&typeof document?.dispatchEvent==='function')document.dispatchEvent(new CustomEvent('majick:repair-confirmed',{detail:{key,verified:true}}));
  if(['concept-mastered','lesson-mastered','competency-mastered','oa-competency-ready','course-passed'].includes(type)){
    if(typeof document!=='undefined'&&typeof CustomEvent==='function')document.dispatchEvent(new CustomEvent('majick:celebrate',{detail:{type:type==='course-passed'?'course':'mastery',key,course:ctx.course||window.S?.activeCourse||'',verified:true}}));
@@ -251,22 +251,36 @@ function receiptLines(x){
 }
 const BUILTIN_REWARD_ART=Object.freeze({'loot/10_broken_relic':'assets/licensed/images/runestones.webp','loot/14_boss_trophy':'assets/licensed/crystal-yellow.webp','loot/04_open_chest':'assets/rewards/items/guardian-toy-chest.webp','loot/06_rare_loot_bag':'assets/licensed/images/bag.webp','loot/16_soul_coin':'assets/licensed/crystal-violet.webp','loot/15_quest_token':'assets/licensed/images/runestones.webp','ui/icon_gem':'assets/licensed/crystal-blue.webp'});
 function personalRewardArt(key,size=48){const src=window.MajickPersonalArtwork?.get?.(key)||BUILTIN_REWARD_ART[key];return src?'<img src="'+E(src)+'" alt="" width="'+size+'" height="'+size+'" decoding="async" style="object-fit:contain;vertical-align:middle;max-width:100%">':'';}
+let rewardReceiptTimer=null,displayedReceipts=[];
 function showReceipt(receipt){
- if(typeof document==='undefined')return;
- document.getElementById('majRewardReceipt')?.remove();
- const host=document.createElement('div');host.id='majRewardReceipt';host.className='majRewardReceipt '+(receipt.drop?'hasDrop':!receipt.eggFragments?'isCompact':'');host.setAttribute('role','status');host.setAttribute('aria-live','polite');host.setAttribute('aria-atomic','true');
+ if(typeof document==='undefined'||!receipt||receipt.rejected||!(receipt.xp||receipt.crystals||receipt.eggFragments||receipt.chests||receipt.drop||receipt.guardian||receipt.egg))return;
+ const previous=document.getElementById('majRewardReceipt');
+ if(!previous)displayedReceipts=[];
+ if(displayedReceipts.some(x=>x.key===receipt.key))return;
+ displayedReceipts.push(receipt);
+ // Combine simultaneous verified rewards rather than discarding the first payout.
+ const recent=displayedReceipts.slice(-8);
+ const total=key=>recent.reduce((n,x)=>n+Number(x[key]||0),0);
+ const earned=recent.filter(x=>x.drop).map(x=>x.drop);
+ const latest=receipt;
+ receipt={...latest,xp:total('xp'),crystals:total('crystals'),masteryXp:total('masteryXp'),eggFragments:total('eggFragments'),chests:total('chests'),drop:earned.at(-1)||null};
+ if(rewardReceiptTimer!==null)clearTimeout(rewardReceiptTimer);
+ previous?.remove();
+ const host=document.createElement('div');host.id='majRewardReceipt';host.className='majRewardReceipt '+(receipt.drop?'hasDrop':!receipt.eggFragments?'isCompact':'');host.dataset.difficulty=String(latest.difficulty||1);host.dataset.rewardTier=receipt.chests||receipt.eggFragments||receipt.drop?'treasure':latest.independent&&latest.difficulty>=4?'hard':'standard';host.setAttribute('role','status');host.setAttribute('aria-live','polite');host.setAttribute('aria-atomic','true');
  const rarity=receipt.drop?.rarity||'common';
  host.innerHTML='<section class="majRewardCard '+E(rarity)+'"><div class="majRewardStars">✦ ✧ ✦</div><small>'+E(receipt.type==='misconception-repaired'?'MISCONCEPTION BROKEN':'MAJICK REWARD')+'</small><h3>'+E(receipt.type==='correct-answer'?'Correct — the Collegium responds!':receipt.label.replace(/\b\w/g,m=>m.toUpperCase()))+'</h3>'+
  '<div class="majRewardLines">'+receiptLines(receipt).map(x=>'<span>'+E(x)+'</span>').join('')+'</div>'+
+ '<div class="majRewardLootArt">'+(receipt.chests?'<figure>'+personalRewardArt('loot/04_open_chest',54)+'<figcaption>+'+receipt.chests+' chest'+(receipt.chests===1?'':'s')+'</figcaption></figure>':'')+(receipt.eggFragments?'<figure>'+personalRewardArt('loot/16_soul_coin',54)+'<figcaption>+'+receipt.eggFragments+' fragment'+(receipt.eggFragments===1?'':'s')+'</figcaption></figure>':'')+earned.map(drop=>'<figure>'+rewardDropArt(drop)+'<figcaption>'+E(drop.name)+(drop.qty>1?' × '+drop.qty:'')+'</figcaption></figure>').join('')+'</div>'+
  (receipt.drop?'<div class="majRareDrop"><em>'+E(receipt.drop.rarity.toUpperCase())+'</em><b>'+rewardDropArt(receipt.drop)+' '+E(receipt.drop.name)+(receipt.drop.qty>1?' × '+receipt.drop.qty:'')+'</b><span>Something fell from the spellbook.</span></div>':'')+
- '<footer><span>🥚 Egg fragments: <b>'+receipt.fragmentTotal+'/10</b></span>'+(receipt.conjuresReady?'<button data-maj-conjure>Conjure Egg ✦</button>':'')+'</footer></section>';
+ '<footer><span>Egg fragments: <b>'+receipt.fragmentTotal+'/10</b></span>'+(receipt.conjuresReady?'<button data-maj-conjure>Conjure Egg ✦</button>':'')+'<button type="button" data-maj-reward-dismiss aria-label="Dismiss reward celebration">Dismiss</button></footer></section>';
  document.body.appendChild(host);
  const stars=host.querySelector('.majRewardStars');
  const artKey=receipt.type==='misconception-repaired'?'loot/10_broken_relic':receipt.type==='course-passed'?'loot/14_boss_trophy':receipt.chest||receipt.chests?'loot/04_open_chest':receipt.drop?'loot/06_rare_loot_bag':receipt.eggFragments?'loot/16_soul_coin':'loot/15_quest_token';
  const art=personalRewardArt(artKey,56);if(art&&stars)stars.innerHTML=art;
  const crystalRow=[...host.querySelectorAll('.majRewardLines span')].find(el=>el.textContent.includes('Moon Crystal'));if(crystalRow)crystalRow.insertAdjacentHTML('afterbegin',personalRewardArt('ui/icon_gem',20));
  host.querySelector('[data-maj-conjure]')?.addEventListener('click',()=>showConjuring());
- setTimeout(()=>{if(document.body.contains(host))host.remove()},receipt.drop||receipt.eggFragments?5200:3000);
+ host.querySelector('[data-maj-reward-dismiss]')?.addEventListener('click',()=>{host.remove();displayedReceipts=[]});
+ rewardReceiptTimer=setTimeout(()=>{if(document.body.contains(host)){host.remove();displayedReceipts=[]}},receipt.drop||receipt.eggFragments||receipt.chests?5500:3400);
 }
 function availableEggTypes(){
  const st=state(),owned=new Set((st?.legacy?.pets||[]).map(p=>window.MajickGuardianRegistry?.getFor?.(p)?.type||String(p.type||''))),eggs=new Set((st?.legacy?.eggs||[]).map(e=>window.MajickGuardianRegistry?.getFor?.(e)?.type||String(e.type||'')));
@@ -306,7 +320,7 @@ function showConjuring(){
  document.body.appendChild(host);const eggArt=''; // Preserve the mystery shell; a dragon-specific icon would misrepresent other species.if(eggArt){const preview=host.querySelector('.majMysteryEgg');if(preview){preview.innerHTML=eggArt;preview.setAttribute('aria-label','Decorative mystery egg illustration');}}host.querySelector('[data-close]').onclick=()=>host.remove();
  host.querySelector('[data-seal]').onclick=()=>{const button=host.querySelector('[data-seal]');if(button.disabled)return;button.disabled=true;const egg=conjureEgg(m,key);if(egg){host.remove();window.MajickAnimationEffects?.play?.('egg',{label:'Egg bond sealed'});}else{button.disabled=false;alchemyNotice('No fragments were spent. Check your saved inventory and egg roster.');}};
 }
-function conjureEgg(m,key){if(!m||!key)return null;const result=alchemyTransaction('conjure:'+key,'egg-bond',(a,r,st)=>{if(r.eggFragments<10)return {ok:false,message:'Ten fragments are required.'};const allowed=(window.MajickGuardianRegistry?.all?.()||[]).map(x=>x.type);if(!allowed.includes(m.type))return {ok:false,message:'No approved Guardian species matches this egg.'};st.legacy=st.legacy||{};st.legacy.eggs=Array.isArray(st.legacy.eggs)?st.legacy.eggs:[];if(st.legacy.eggs.some(e=>(window.MajickGuardianRegistry?.getFor?.(e)?.type||e.type)===m.type))return {ok:false,message:'This species already has an incubating egg.'};r.eggFragments-=10;r.eggsConjured++;const egg={id:'earned_'+Date.now()+'_'+r.eggsConjured+'_'+hash(key),type:m.type,progress:0,goal:28,source:'celestial-fragments',createdAt:Date.now(),mystery:{color:m.color,aura:m.aura,pattern:m.pattern,constellationMark:m.mark}};st.legacy.eggs.push(egg);a.guardianIncubator=a.guardianIncubator||{version:'3.4.10',focusEggId:null};a.guardianIncubator.focusEggId=egg.id;a.guardianIncubator.lastFocusAt=Date.now();return {ok:true,eggId:egg.id,type:egg.type,fragmentsSpent:10,message:'Ten fragments sealed into one saved egg.'};});if(!result.ok)return null;const egg=state().legacy.eggs.find(e=>e.id===result.eggId)||{id:result.eggId,type:result.type,alreadyCommitted:true};if(!result.replayed){document.getElementById('majRewardReceipt')?.remove();pushRewardState();window.rewardToast?.('Celestial Egg discovered','Open Sanctuary to care for your focused egg.');window.render?.();}return egg;}
+function conjureEgg(m,key){if(!m||!key)return null;const result=alchemyTransaction('conjure:'+key,'egg-bond',(a,r,st)=>{if(r.eggFragments<10)return {ok:false,message:'Ten fragments are required.'};const allowed=(window.MajickGuardianRegistry?.all?.()||[]).map(x=>x.type);if(!allowed.includes(m.type))return {ok:false,message:'No approved Guardian species matches this egg.'};st.legacy=st.legacy||{};st.legacy.eggs=Array.isArray(st.legacy.eggs)?st.legacy.eggs:[];if(st.legacy.eggs.some(e=>(window.MajickGuardianRegistry?.getFor?.(e)?.type||e.type)===m.type))return {ok:false,message:'This species already has an incubating egg.'};r.eggFragments-=10;r.eggsConjured++;const egg={id:'earned_'+Date.now()+'_'+r.eggsConjured+'_'+hash(key),type:m.type,progress:0,goal:28,source:'celestial-fragments',createdAt:Date.now(),mystery:{color:m.color,aura:m.aura,pattern:m.pattern,constellationMark:m.mark}};st.legacy.eggs.push(egg);a.guardianIncubator=a.guardianIncubator||{version:'3.4.10',focusEggId:null};a.guardianIncubator.focusEggId=egg.id;a.guardianIncubator.lastFocusAt=Date.now();return {ok:true,eggId:egg.id,type:egg.type,fragmentsSpent:10,message:'Ten fragments sealed into one saved egg.'};});if(!result.ok)return null;const egg=state().legacy.eggs.find(e=>e.id===result.eggId)||{id:result.eggId,type:result.type,alreadyCommitted:true};if(!result.replayed){document.getElementById('majRewardReceipt')?.remove();pushRewardState();window.rewardToast?.('Celestial Egg discovered','Open Sanctuary to care for your focused egg.');window.render?.();try{window.MajickAnimationEffects?.play?.('egg',{label:'Celestial egg conjured'})}catch(_){}}return egg;}
 
 function rarityLabel(id){return RARITIES.find(x=>x.id===id)?.label||id}
 function ingredientName(id){return INGREDIENTS.find(x=>x.id===id)?.name||id}
@@ -387,7 +401,7 @@ function buyIngredient(id,key){
 }
 function marketHTML(){
  const balance=Number(account()?.crystals||0);
- return '<section class="majRecipeShelf" aria-label="Ingredient marketplace"><h3>Ingredient Marketplace</h3><p><img src="assets/licensed/crystal-violet.webp" width="24" height="24" alt=""> '+balance+' Moon Crystals available. Purchases add one ingredient to the existing cabinet.</p><div class="majLootGrid">'+INGREDIENTS.map(it=>'<article class="majRecipe"><span>'+cabinetArt(it.id,it.icon)+'</span><div><b>'+E(it.name)+'</b><p>'+E(rarityLabel(it.rarity))+' · '+MARKET_PRICES[it.rarity]+' gems</p><button type="button" data-market-ingredient="'+E(it.id)+'" '+(balance<MARKET_PRICES[it.rarity]?'disabled':'')+'>Buy 1</button></div></article>').join('')+'</div><p id="majMarketStatus" role="status"></p></section>';
+ return '<section class="majRecipeShelf" aria-label="Ingredient marketplace"><h3>Ingredient Marketplace</h3><p><img src="assets/licensed/crystal-violet.webp" width="24" height="24" alt=""> '+balance+' Moon Crystals available. Purchases add one ingredient to the existing cabinet.</p><div class="majLootGrid">'+INGREDIENTS.map(it=>'<article class="majMarketItem"><span>'+cabinetArt(it.id,it.icon)+'</span><div><b>'+E(it.name)+'</b><p>'+E(rarityLabel(it.rarity))+' · '+MARKET_PRICES[it.rarity]+' gems</p><button type="button" data-market-ingredient="'+E(it.id)+'" '+(balance<MARKET_PRICES[it.rarity]?'disabled':'')+'>Buy 1</button></div></article>').join('')+'</div><p id="majMarketStatus" role="status"></p></section>';
 }
 document.addEventListener('click',ev=>{const b=ev.target.closest?.('[data-market-ingredient]');if(!b||b.disabled)return;const item=INGREDIENTS.find(x=>x.id===b.dataset.marketIngredient);if(!item)return;const result=buyIngredient(item.id);const status=document.getElementById('majMarketStatus');if(status)status.textContent=result.message||'';});
 function vaultPanelHTML(){

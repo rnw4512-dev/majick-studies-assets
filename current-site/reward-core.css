@@ -48,3 +48,15 @@ button.majVaultItemArt{width:100%;border:0;border-bottom:1px solid #ffffff12;bor
 
 /* Reserve real artwork space without changing inventory state. */
 .majLootGrid>span{grid-template-columns:64px minmax(0,1fr);column-gap:12px;min-width:0}.majLootGrid>span>i{display:grid;place-items:center;width:64px;min-height:64px}.majLootGrid>span>i>img{max-width:100%;object-fit:contain}.majLootGrid>span>b,.majLootGrid>span>small{min-width:0;overflow-wrap:anywhere}@media(max-width:480px){.majLootGrid{grid-template-columns:1fr}}
+
+/* One reward receipt owner; readable, nonblocking, magical feedback. */
+.majRewardReceipt{inset:auto 12px 16px auto;display:block;padding:0;max-width:calc(100vw - 24px);z-index:1400;pointer-events:none}
+.majRewardCard{width:min(380px,calc(100vw - 24px));box-sizing:border-box;padding:14px 16px;border-color:#c9a967;pointer-events:none;max-height:min(70vh,580px);overflow:auto;animation:majRewardRise .28s ease-out}
+.majRewardCard button{pointer-events:auto}.majRewardCard>small{font-size:11px}.majRewardCard h3{font-size:18px}.majRewardLines span{font-size:14px;font-weight:750;color:#fff3da;background:#231632;border-color:#806241}.majRewardCard footer{font-size:12px;flex-wrap:wrap}.majRareDrop em,.majRareDrop span{font-size:12px}
+.majRewardLootArt{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}.majRewardLootArt:empty{display:none}.majRewardLootArt figure{margin:8px 0 0;text-align:center;min-width:64px;max-width:120px}.majRewardLootArt figcaption{font-size:12px;color:#ffe7b0}.majRewardStars img,.majRewardLootArt img{filter:drop-shadow(0 0 9px #eac581);animation:majRewardFloat 2s ease-in-out infinite}
+.majRewardReceipt[data-reward-tier="hard"] .majRewardCard,.majRewardReceipt[data-reward-tier="treasure"] .majRewardCard{background:radial-gradient(ellipse at top,#51316a,#21122e 70%);border-color:#e7c475;box-shadow:0 0 28px #c7a26577,0 12px 40px #080511aa}
+@keyframes majRewardFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px);filter:drop-shadow(0 0 15px #eecf91)}}
+.majMarketItem{display:grid;grid-template-columns:64px minmax(0,1fr);align-items:center;gap:12px;padding:12px;border:1px solid #72577e;border-radius:12px;background:#23152f}.majMarketItem p{margin:4px 0;color:#e6d4ee}.majMarketItem b{color:#ffe6b0}.majMarketItem img{filter:drop-shadow(0 0 6px #b792d5)}.majMarketItem button{cursor:pointer}.majMarketItem button:disabled{cursor:not-allowed}
+@media(max-width:640px){.majRewardReceipt{bottom:8px;right:8px}.majRewardCard{max-height:46vh;width:min(350px,calc(100vw - 16px))}.majRewardLines{grid-template-columns:repeat(2,minmax(0,1fr))}.majRewardCard footer{flex-direction:row}.majRewardStars img{max-height:36px}}
+@media(prefers-reduced-motion:reduce){.majRewardCard,.majRewardStars img,.majRewardLootArt img{animation:none!important}}
+html[data-majick-reduce-motion="true"] :is(.majRewardCard,.majRewardStars img,.majRewardLootArt img,.majMysteryEgg){animation:none!important}

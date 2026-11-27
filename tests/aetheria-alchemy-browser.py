@@ -30,6 +30,10 @@ with sync_playwright() as pw:
   for level,xp,gems in [(1,10,2),(2,15,2),(3,20,3),(4,25,4),(5,30,5)]:
    preview=page.evaluate('(d)=>MajickRewardCore.rewardPreview("correct-answer",{difficulty:d,independent:true})',level)
    assert (preview['xp'],preview['crystals'])==(xp,gems)
+  assert page.locator('.majRecipe').count()==5
+  page.evaluate('majickVaultTab("shop")')
+  assert page.locator('.majMarketItem').count()==10
+  page.evaluate('majickVaultTab("potions")')
   initial=inv();assert not page.evaluate('MajickRewardCore.craft("clarity-potion",{key:"insufficient"}).ok');assert inv()==initial
   assert not page.evaluate('MajickRewardCore.conjureEgg({type:"vesper"},"insufficient")');assert inv()==initial
   page.locator('[onclick="majickClaimPotionTestKit()"]').click();kit=inv();assert not page.evaluate('MajickRewardCore.claimPotionTestKit()');assert inv()==kit
