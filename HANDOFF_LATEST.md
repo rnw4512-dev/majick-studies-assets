@@ -1,3 +1,17 @@
+# 2026-11-27 — ChatGPT takeover after Codex usage limit
+
+Baseline: main and production commit `8c1ba448c8614b5dd7572fc03c1430054711dafc`.
+- Pages run https://github.com/rnw4512-dev/majick-studies-assets/actions/runs/46050602156 succeeded, including exact deployed-source identity and production browser verification.
+- Integration run https://github.com/rnw4512-dev/majick-studies-assets/actions/runs/46050602217 succeeded. The earlier handoff's integration run 46045373189 is not the combined-release run.
+- Inspected the actual publish workflow: its production stage sets MAJICK_URL to the live current-site route and runs workspace-storage-browser.py, startup, room navigation, readability, course question policy, D669 content, continuity, approved assets, optional music, and room interactions. All passed in the deploy job. Storage test uses isolated fixtures, simulates quota exhaustion, compares exact Guardian/egg state, reloads, checks Council history, stale tabs, failed writes, offline persistence, import, corrupt checkpoint fallback and blocked database. Full offline page startup and exact real user progress are not established.
+- Codex reported median local desktop startup 4.79s -> 3.97s (3 paired runs), chest sound CC0 listing https://opengameart.org/content/open-chest-sfx and local play-once/mute tests. These measurements are reported by Codex, not independently reproduced during takeover.
+- Existing save owner now uses primary-workspace-v2, previous-workspace and pinned-workspace in aetheria-recovery-v1; preserve this design and legacy recovery copies. No required account. No MTSS access.
+- Remaining: user acceptance with their own intact browser profile; explicit exact XP/crystals/reward ledger and browser reopen test expansion; investigate optional cloud readback comparison (currently counts only), full offline startup, assets upload/mapping (not certified by this log), measured live performance. Do not confuse these with completed local-first storage release.
+- Next development priority: add targeted regression coverage for exact earned reward persistence and auxiliary records without changing production save schema; no unrelated redesign. Inspect latest main before editing. Keep all changes and test evidence in this handoff.
+- Takeover log only: no runtime edits at this point. No personal browser data touched.
+
+---
+
 # Majick Studies — Current V3.4.2
 
 ## Shared teaching and magical immersion · 2026-10-30
