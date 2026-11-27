@@ -131,6 +131,22 @@ with sync_playwright() as pw:
     bank.every(q=>q.official===false&&q.options.includes(q.answer));
   }""")
 
+  # Question-first layout and native disclosure must preserve live answer handlers.
+  question = page.locator('#learnPractice .guidedQuestion')
+  expect(question).to_be_visible()
+  page.wait_for_function("document.querySelector('#content')?.classList.contains('majQuestionFirst')")
+  settings = page.locator('#learnPractice .wholePracticeSettings')
+  expect(settings).to_be_visible()
+  assert settings.get_attribute('open') is None
+  assert question.bounding_box()['y'] < settings.bounding_box()['y']
+  assert question.bounding_box()['y'] < page.locator('#majConnectedPath').bounding_box()['y']
+  option = question.locator('[data-guide-index]').first
+  option.click()
+  expect(question.locator('#guidedFeedback')).not_to_be_empty()
+  question.locator('#wholeNext').click()
+  expect(question.locator('h3')).to_be_visible()
+  settings.locator('summary').click()
+  expect(settings.locator('#wholeIndependent')).to_be_visible()
   page.evaluate("S.courses.D669.userNotes='Preserved D669 course notes';switchCourse('D772');switchCourse('D669')")
   assert page.evaluate('S.courses.D669.userNotes')=='Preserved D669 course notes'
   assert not errors,errors

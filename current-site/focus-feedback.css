@@ -17,3 +17,25 @@ html[data-majick-focus=true] .v3356ArchiveIndex.v3363FocusCollapsed .v3356Archiv
 @media(prefers-reduced-motion:reduce){.v3363ArcaneState.loading .v3363StateSigil,.v3363SuccessMoment:before,.v3363SectionMoment:before{animation:none!important}}
 html[data-majick-reduce-motion=true] :is(.v3363ArcaneState.loading .v3363StateSigil,.v3363SuccessMoment:before,.v3363SectionMoment:before){animation:none!important}
 @media(max-width:640px){.v3363GuardianNod{width:100%;box-sizing:border-box}.v3363ArchiveToggle{width:100%}}
+
+/* Active question first: existing resources and navigation stay mounted and accessible. */
+html[data-majick-focus=true] #content.majQuestionFirst{display:flex!important;flex-direction:column!important;align-items:stretch;gap:10px}
+html[data-majick-focus=true] #content.majQuestionFirst>.majQuestionPrimary{order:-10;min-width:0;width:100%;max-width:100%}
+#content.majQuestionFirst .learnLab{display:flex!important;flex-direction:column!important;gap:8px!important}
+#content.majQuestionFirst .learnLab .learnPanels{order:-5}
+#content.majQuestionFirst .learnLab .learnTabs{order:-4;margin:0!important}
+#content.majQuestionFirst .learnLab .majQuestionSecondary{order:2}
+#content.majQuestionFirst .majMixedExam{display:flex;flex-direction:column}
+#content.majQuestionFirst .majMixedExam>.majQuestionSecondary{order:5}
+#content.majQuestionFirst :is(.guidedQuestion>h3,.v3333Prompt,.qwrap .question,.majExamPrompt){scroll-margin-top:16px}
+#content.majQuestionFirst .wholeQuestMeter{margin:4px 0!important}
+#content.majQuestionFirst .guidedQuestion{background:#30213f!important;color:#faf1ff!important;border:1px solid #876e9b!important;padding:14px!important}
+#content.majQuestionFirst .guidedQuestion>h3{color:#faf1ff!important;margin:0 0 12px}
+#content.majQuestionFirst .guidedQuestion .guidedOption{background:#412d54!important;color:#fff5ff!important;border-color:#9679ac!important;min-height:44px;white-space:normal}
+#content.majQuestionFirst .guidedQuestion .guideRight{background:#173c2c!important;color:#e5ffed!important;padding:10px;border-radius:8px}
+#content.majQuestionFirst .guidedQuestion .guideWrong{background:#482a28!important;color:#fff0e2!important;padding:10px;border-radius:8px}
+#content.majQuestionFirst .wholePracticeSettings{margin:10px 0;border:1px solid #8c709d;border-radius:8px;padding:8px;background:#30213f;color:#faf1ff}
+#content.majQuestionFirst .wholePracticeSettings>summary{cursor:pointer;font-weight:700;min-height:32px;color:#faf1ff}
+#content.majQuestionFirst .wholePracticeSettings>summary:focus-visible{outline:3px solid #d5aa69}
+#content.majQuestionFirst .wholePracticeMode{margin:4px 0 8px;font-size:.85rem;font-weight:600;color:#f2d797!important}
+@media(max-width:600px){#content.majQuestionFirst .guidedQuestion{padding:10px!important}}

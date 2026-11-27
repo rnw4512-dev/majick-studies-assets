@@ -1,3 +1,6 @@
+## Question-first focus layout
+- Existing focus owner prioritizes active guided, Study Now and Trial prompts with scoped layout order; retains all original DOM and handlers. Learning Lab question and feedback now precede native expandable settings/statistics. Next question scroll and focus on prompt change. Deep-purple guided styling. D669 browser test covers question before settings and learning path, selection, feedback, next, expansion at 390/820/1366. JS syntax and manifest hashes verified; full browser and Pages results pending. Other modes and all optional resource disclosures need further certification.
+
 ## Avatar upload — registered canonical assets
 - User uploaded all 14 prototype files to Atelier v3 root in 3dbaaf5. Both workflows stopped at manifest review (14 unregistered files). Moved existing blobs without changing bytes to assets/atelier/v3/scholar-3d/ and registered exact SHA-256 values reported by manifest review. Existing sprite registry untouched. No renderer change; fitting, clipping, animations, saved looks integration, egg mapping and VFX remain pending. Full release verification pending.
 
