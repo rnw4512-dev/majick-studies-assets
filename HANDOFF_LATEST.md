@@ -1,3 +1,9 @@
+## GitHub Pages reward regression gate repair
+
+- The shared release gate failed in run 46084546233 because the isolated reward test omitted the runtime's existing `state()` dependency. Added that dependency to the test fixture and asserted that an implicit course is recorded on the receipt. The existing replay and balance assertions still run.
+- The shared release gate and canonical build `071861fdcf716311` passed locally. GitHub Pages performs its browser and production checks after the release commit reaches main.
+- If the shared gate fails again, run `node pages-release/current/test-six-enhancements.cjs current-site` and inspect the failed dependency or assertion. The fixture change can be reverted independently of the runtime and learner records.
+
 ## Living academy reward receipt / marketplace regression repair
 - Fixed the failed five-recipe selector contract by separating marketplace item markup from `.majRecipe`. Added actual art to chest/fragment/drop receipt, readable XP and gem counts, difficulty-tiered spell reactions, combined nearby ledger receipts, dismiss button, nonblocking corner presentation, reduced-motion styling, vault artwork hover/rare glows, and egg conjure spell. Existing reward authority remains unchanged; no reference artwork. Standing design principle recorded in DESIGN_DIRECTION.md. Tests pending; app-wide coverage audit, distinct egg artwork, room-specific atmosphere, upgrades and Observatory analytics remain incomplete.
 
