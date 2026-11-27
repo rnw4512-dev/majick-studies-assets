@@ -18,6 +18,7 @@
    window.MajickRewardCore?.patchVault();
    window.render?.();
   }
+  window.MajickSaveSafety.activate();
   window.MajickWorkspaceReady=true;
   document.dispatchEvent(new Event('majick:workspace-ready',{bubbles:true}));
  }catch(error){

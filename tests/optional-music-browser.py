@@ -14,7 +14,7 @@ with sync_playwright() as pw:
  for width in [390,820,1366]:
   context=browser.new_context(viewport={'width':width,'height':1000});page=context.new_page();errors=[];requests=[]
   page.on('pageerror',lambda e:errors.append(str(e)));page.on('request',lambda r:requests.append(r.url))
-  page.add_init_script("""(()=>{const Native=window.Audio;window.qaMusicPlayers=[];function Audio(src){const audio=new Native(src);if(String(src).includes('/music/')||String(src).includes('dreams-become-real'))qaMusicPlayers.push(audio);return audio}Audio.prototype=Native.prototype;Object.setPrototypeOf(Audio,Native);window.Audio=Audio})()""")
+  page.add_init_script("""(()=>{const Native=window.Audio;window.qaMusicPlayers=[];window.qaChest=null;function Audio(src){const audio=new Native(src);if(String(src).includes('open-chest.ogg')){window.qaChest={audio,plays:0};const play=audio.play.bind(audio);audio.play=()=>{qaChest.plays++;return play()}}if(String(src).includes('/music/')||String(src).includes('dreams-become-real'))qaMusicPlayers.push(audio);return audio}Audio.prototype=Native.prototype;Object.setPrototypeOf(Audio,Native);window.Audio=Audio})()""")
   page.goto(os.environ.get('MAJICK_URL',f'http://127.0.0.1:{server.server_port}/'))
   page.wait_for_function('!!window.MajickCollegiumAtmosphere?.selectTrack&&!!window.MajickRewardCore');page.wait_for_timeout(600)
   def protected():return page.evaluate('JSON.stringify({progress:S.progress,xp:S.majickAccount.xpHighWater,rewards:MajickRewardCore.inspect()})')
@@ -64,6 +64,24 @@ with sync_playwright() as pw:
    expect(page.locator('.caTrackSelect option[value=personal]')).to_have_count(1)
    assert page.evaluate('!MajickCollegiumAtmosphere.inspect().playing')
    print('PASS personal audio remains on the device, survives reload and uses the one opt-in player',flush=True)
+  if width==1366:
+   page.locator('.side').get_by_role('button',name='Magic Vault',exact=True).click()
+   page.get_by_role('tab',name='Shop & Chests').click()
+   chest=page.locator('#majVault-panel-shop button[onclick="openChest()"]').first
+   page.evaluate("""()=>{
+    S.sound=true;S.v5.settings.sounds=true;
+    const settings=MajickGuardianCore.settings();
+    settings.enabled=true;settings.magic=true;settings.volume=.4;
+    S.majickAccount.chests=2;prog().chests=2;render();
+   }""")
+   assert page.evaluate('qaChest===null')
+   chest.click()
+   page.wait_for_function('qaChest?.plays===1&&qaChest.audio.readyState>=2')
+   assert page.evaluate('prog().chests===1')
+   page.evaluate('MajickGuardianCore.settings().magic=false')
+   chest.click()
+   assert page.evaluate('prog().chests===0&&qaChest.plays===1')
+   print('PASS chest audio starts once after a successful open and respects magic-sound mute',flush=True)
   assert not errors,errors
   print(f'PASS optional music {width}: seven choices, six uploaded tracks decode/play, no pre-opt-in download, one player, rapid-switch safety, mute/zero-volume and preserved learning/rewards',flush=True)
   context.close()

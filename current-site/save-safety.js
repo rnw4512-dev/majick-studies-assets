@@ -3,7 +3,7 @@
  const KEY='moonlit_learning_v1',PREVIOUS=KEY+'__recovery_previous',PIN=KEY+'__before_restore',META=KEY+'__safety_meta',BAD=KEY+'__unreadable';
  const SCHEMA=1;let adapter=null;let writeGeneration=0,writeQueue=Promise.resolve();
  const LEGACY_WORKSPACE='primary-workspace',WORKSPACE='primary-workspace-v2',WORKSPACE_PREVIOUS='previous-workspace',WORKSPACE_PIN='pinned-workspace';
- let durable=false,initialized=false,preparedState=null,preparedError=null,revision=0,revisionFloor=0,queuedState=null,scheduled=false;
+ let durable=false,booting=false,initialized=false,preparedState=null,preparedError=null,revision=0,revisionFloor=0,queuedState=null,scheduled=false;
  let records=Object.create(null),legacyConflict=null;let status={ok:true,message:'Local save ready',at:0};
  const escape=v=>String(v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
  const object=x=>x&&typeof x==='object'&&!Array.isArray(x);
@@ -16,11 +16,12 @@
   return x;
  }
  function parse(raw){return validate(JSON.parse(raw))}
+ function parseWorkspace(raw){const state=parse(raw);state.saveSchemaVersion=SCHEMA;return state;}
  function migrate(value){const x=JSON.parse(JSON.stringify(validate(value)));x.saveSchemaVersion=SCHEMA;return x;}
  function notify(ok,message){status={ok,message,at:Date.now()};try{window.dispatchEvent(new CustomEvent('majick-save-status',{detail:{...status}}))}catch(_){}return status;}
  function readLegacy(){
-  let raw;try{raw=localStorage.getItem(KEY);if(raw){try{return migrate(parse(raw))}catch(error){if(error.code==='MAJICK_NEWER_SAVE_SCHEMA')throw error;try{localStorage.setItem(BAD,raw)}catch(_){} }}
-   for(const key of [PREVIOUS,PIN,KEY+'__good_backup',KEY+'__session_backup']){const backup=localStorage.getItem(key);if(!backup)continue;try{const recovered=migrate(parse(backup));notify(true,'Recovered a validated browser snapshot.');return recovered}catch(_){}}
+  let raw;try{raw=localStorage.getItem(KEY);if(raw){try{return parseWorkspace(raw)}catch(error){if(error.code==='MAJICK_NEWER_SAVE_SCHEMA')throw error;try{localStorage.setItem(BAD,raw)}catch(_){} }}
+   for(const key of [PREVIOUS,PIN,KEY+'__good_backup',KEY+'__session_backup']){const backup=localStorage.getItem(key);if(!backup)continue;try{const recovered=parseWorkspace(backup);notify(true,'Recovered a validated browser snapshot.');return recovered}catch(_){}}
    if(raw){notify(false,'The saved data could not be read. Its original copy has been retained for recovery.');throw Error(status.message)}return null;
   }catch(error){notify(false,error.message);throw error;}
  }
@@ -39,7 +40,7 @@
   try{
    const deadline=new Promise((_,reject)=>{timer=setTimeout(()=>reject(Error('Recovery database did not respond')),4000)});
    [latest,previous,overflow]=await Promise.race([Promise.all([archive.get(WORKSPACE),archive.get(WORKSPACE_PREVIOUS),archive.get(LEGACY_WORKSPACE)]),deadline]);
-   durable=true;
+   durable=true;booting=true;
   }catch(_){}finally{clearTimeout(timer)}
   let legacy=null,legacyError;
   try{legacy=readLegacy()}catch(error){legacyError=error;}
@@ -51,7 +52,7 @@
   revisionFloor=Math.max(revision,lastGood?.revision||0,transitional?.revision||0);
   const verified=current||lastGood||transitional;
   if(verified){
-   preparedState=migrate(parse(verified.raw));
+   preparedState=parseWorkspace(verified.raw);
    records=Object.assign(Object.create(null),records,verified.browserData);
    if(legacy&&(legacyMeta?.legacyDivergence||!legacyMeta?.workspaceRevision&&legacyMeta?.at>verified.at))
     legacyConflict={state:legacy,browserData:{...localRecords()}};
@@ -59,7 +60,7 @@
   }else if(typeof overflow==='string'){
    // The previous quota-only implementation stored an unversioned full workspace.
    try{
-    const priorOverflow=JSON.parse(overflow),recovered=migrate(parse(priorOverflow.raw));
+    const priorOverflow=JSON.parse(overflow),recovered=parseWorkspace(priorOverflow.raw);
     if(!legacy||!Number.isFinite(legacyMeta?.at)||legacyMeta.at<=priorOverflow.at){
      records=Object.assign(Object.create(null),records,validateAux(priorOverflow.browserData));
      preparedState=recovered;
@@ -77,6 +78,7 @@
  }
  function queueWorkspace(value){
   queuedState=value;
+  if(booting)return {ok:false,pending:true,at:Date.now()};
   writeGeneration++;
   if(!scheduled){
    let requested;
@@ -94,6 +96,10 @@
    });
   }
   return {ok:false,pending:true,at:Date.now()};
+ }
+ function activate(){
+  booting=false;
+  if(queuedState&&!preparedError)queueWorkspace(queuedState);
  }
  async function persistWorkspace(raw,browserData,pin){
   const confirmed=await archive.commit(raw,browserData,revision,revisionFloor,pin);
@@ -278,5 +284,5 @@
   return {panel,signIn,push,restore,disconnect,schedule};
  })();
 
- window.MajickSaveSafety={cloud,prepare,records:recordStorage,flush:()=>writeQueue,read,write,validate,migrate,summary,preview,exportPayload,download,importFile,restorePrevious,restoreLegacyConflict,panel,attach:a=>{adapter=a;window.exportSave=download},status:()=>({...status}),keys:{KEY,PREVIOUS,PIN,META,BAD}};
+ window.MajickSaveSafety={cloud,prepare,activate,records:recordStorage,flush:()=>writeQueue,read,write,validate,migrate,summary,preview,exportPayload,download,importFile,restorePrevious,restoreLegacyConflict,panel,attach:a=>{adapter=a;window.exportSave=download},status:()=>({...status}),keys:{KEY,PREVIOUS,PIN,META,BAD}};
 })();

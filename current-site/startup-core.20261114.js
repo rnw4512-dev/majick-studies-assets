@@ -367,6 +367,7 @@ function openChest(tier='common'){
   ledger.opening=false;
   save();
   transformationBurst();
+  window.MajickGuardianCore?.sound?.('chest');
   rewardToast('🎁 '+reward.t+(egg?' • 🥚 Guardian Egg!':''),egg?'Egg added to your Sanctuary incubator.':'Crystal Chest opened!');
   render();
  }finally{ledger.opening=false}
@@ -544,7 +545,7 @@ screenHTML=function(){let map={companions:companionHTML,trophies:trophiesHTML};r
 const _vaultHTMLV4Base=vaultHTML;
 vaultHTML=function(){return _vaultHTMLV4Base()+realmGalleryHTML()+`<div class="sectionTitle"><div><h2>Companion Collection</h2><p>Pets, eggs, and accessories remain part of your legacy across classes.</p></div><button class="btn violet" onclick="navigate('companions')">🥚 Open Sanctuary</button></div>`}
 const _openChestV4Base=openChest;
-openChest=function(){let p=prog();if(!(p.chests>0))return _openChestV4Base();p.chests--;let L=S.legacy,roll=Math.random(),text='';if(roll<.22){let n=10+Math.floor(Math.random()*9);p.crystals+=n;text=`💎 +${n} crystals`}else if(roll<.38){p.inventory.streakShield=(p.inventory.streakShield||0)+1;text='🛡️ Streak Shield'}else if(roll<.53){p.inventory.clueCharm=(p.inventory.clueCharm||0)+1;text='🔎 Clue Charm'}else if(roll<.68){let acc=rand(V4_ACCESSORIES.filter(a=>!L.accessories.includes(a))||V4_ACCESSORIES);if(acc&&!L.accessories.includes(acc)){L.accessories.push(acc);text=`${acc} accessory`}else{p.crystals+=14;text='💎 +14 crystals'}}else if(roll<.84){L.eggs.push(makeEgg('chest'));text='🥚 Guardian Egg'}else{let locked=Object.keys(V4_REALMS).filter(id=>!L.realms.includes(id));if(locked.length){let id=rand(locked);L.realms.push(id);text=`${V4_REALMS[id].icon} ${V4_REALMS[id].name}`}else{p.crystals+=18;text='💎 +18 crystals'}}legacySync();save();transformationBurst();rewardToast('🎁 '+text,'Crystal Chest opened!');render()}
+openChest=function(){let p=prog();if(!(p.chests>0))return _openChestV4Base();p.chests--;let L=S.legacy,roll=Math.random(),text='';if(roll<.22){let n=10+Math.floor(Math.random()*9);p.crystals+=n;text=`💎 +${n} crystals`}else if(roll<.38){p.inventory.streakShield=(p.inventory.streakShield||0)+1;text='🛡️ Streak Shield'}else if(roll<.53){p.inventory.clueCharm=(p.inventory.clueCharm||0)+1;text='🔎 Clue Charm'}else if(roll<.68){let acc=rand(V4_ACCESSORIES.filter(a=>!L.accessories.includes(a))||V4_ACCESSORIES);if(acc&&!L.accessories.includes(acc)){L.accessories.push(acc);text=`${acc} accessory`}else{p.crystals+=14;text='💎 +14 crystals'}}else if(roll<.84){L.eggs.push(makeEgg('chest'));text='🥚 Guardian Egg'}else{let locked=Object.keys(V4_REALMS).filter(id=>!L.realms.includes(id));if(locked.length){let id=rand(locked);L.realms.push(id);text=`${V4_REALMS[id].icon} ${V4_REALMS[id].name}`}else{p.crystals+=18;text='💎 +18 crystals'}}legacySync();save();transformationBurst();window.MajickGuardianCore?.sound?.('chest');rewardToast('🎁 '+text,'Crystal Chest opened!');render()}
 const _buyShopV4Base=buyShop;
 buyShop=function(id){_buyShopV4Base(id);legacySync();save()}
 const _switchCourseV4Base=switchCourse;
