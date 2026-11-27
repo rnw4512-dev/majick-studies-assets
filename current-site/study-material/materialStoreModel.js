@@ -74,7 +74,7 @@ async function get(id){
   }
 }
 
-async function list(courseId){
+async function list(courseId,strict=false){
   let rows=[];
   try{
     const db=await openDb();
@@ -85,9 +85,11 @@ async function list(courseId){
       req.onerror=()=>reject(req.error);
     });
     db.close();
-  }catch(_){}
+  }catch(error){if(strict)throw Error('Imported study material database could not be read: '+error.message);}
   const combined=new Map(rows.map(row=>[row.id,row]));
-  for(const row of fallbackRead()){
+  const fallback=strict?JSON.parse((window.MajickSaveSafety?.records||localStorage).getItem(FALLBACK)||'[]'):fallbackRead();
+  if(!Array.isArray(fallback))throw Error('Invalid imported study materials');
+  for(const row of fallback){
     const prior=combined.get(row.id);
     if(!prior||String(row.updatedAt||'')>String(prior.updatedAt||''))combined.set(row.id,row);
   }
@@ -317,6 +319,7 @@ window.MajickMaterialStore={
   save,
   get,
   list,
+  exportBackup:()=>list(null,true),
   remove,
   setActive,
   newRecord,

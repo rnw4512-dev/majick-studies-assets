@@ -204,5 +204,43 @@ with sync_playwright() as p:
         assert 'database is unavailable' in blocked.locator('#majickSaveFailure').inner_text()
         assert blocked.evaluate("localStorage.getItem('moonlit_learning_v1')") == legacy
         print('PASS exact reward ledger, XP, crystals, fragment recovery and duplicate prevention; saved Vault, exact Guardian and egg recovery, quota, Council, stale tabs, failed writes, offline retry, verified import, corrupted checkpoint recovery and blocked database', flush=True)
+    # Verify native imported notes and fallback records in a portable download,
+    # including an inactive source and generated content, in a fresh profile.
+    with browser.new_context(accept_downloads=True) as source_ctx:
+        source = source_ctx.new_page()
+        source.goto(url)
+        ready(source)
+        source_rows = source.evaluate("""async()=>{
+         const store=MajickMaterialStore;
+         const native=store.newRecord({courseId:'D669',sectionId:'d669-section-5',sourceName:'Fixture writing notes',text:'Exact source text: café and phonemes',outputs:{summary:'Fixture summary'},generated:{practiceQuestions:[]},provenance:{notes:'Fixture provenance'}});
+         native.id='fixture-native-portable';native.active=false;
+         const saved=await store.save(native);
+         const fallback={...store.newRecord({courseId:'D772',text:'Fallback source text'}),id:'fixture-fallback-portable'};
+         MajickSaveSafety.records.setItem('majick-study-materials-v1',JSON.stringify([fallback]));
+         await MajickSaveSafety.flush();
+         return [saved,fallback];
+        }""")
+        with source.expect_download() as download_info:
+            source.evaluate("()=>{MajickSaveSafety.download()}")
+        payload = json.loads(download_info.value.path().read_text())
+        actual = {row['id']:row for row in json.loads(payload['browserData']['majick-study-materials-v1'])}
+        for row in source_rows:
+            assert actual[row['id']] == row
+        with browser.new_context() as target_ctx:
+            target = target_ctx.new_page()
+            target.goto(url)
+            ready(target)
+            target.on('dialog', lambda dialog: dialog.accept())
+            target.evaluate("""async payload=>{
+             await MajickSaveSafety.importFile({target:{files:[new File([JSON.stringify(payload)],'fixture.json')]}});
+             await MajickSaveSafety.flush();
+            }""", payload)
+            target.reload()
+            ready(target)
+            recovered = target.evaluate("MajickMaterialStore.list()")
+            recovered_by_id = {row['id']:row for row in recovered}
+            for row in source_rows:
+                assert recovered_by_id[row['id']] == row
+        print('PASS complete portable imported study material backup, native plus fallback, cross-profile restore and reload', flush=True)
     browser.close()
 server.shutdown()
