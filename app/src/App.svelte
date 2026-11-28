@@ -2,15 +2,19 @@
   import { onMount, tick } from 'svelte'
   import { rooms, roomFromHash, roomLink, type RoomId } from './core/router'
   import RoomNavigation from './ui/RoomNavigation.svelte'
+  import StorageCheck from './ui/StorageCheck.svelte'
   import PortalArrow from './ui/PortalArrow.svelte'
   let current = $state<RoomId>(roomFromHash(window.location.hash))
+  let checkingStorage = $state(window.location.hash === '#/storage-check')
   let heading: HTMLHeadingElement
   let motion = $state(true)
   let room = $derived(rooms.find(item => item.id === current) ?? rooms[0])
   onMount(() => {
     const update = async () => {
       const next = roomFromHash(window.location.hash)
-      if (next === current) return
+      const check = window.location.hash === '#/storage-check'
+      if (next === current && check === checkingStorage) return
+      checkingStorage = check
       current = next
       await tick()
       heading?.focus()
@@ -31,10 +35,12 @@
     <main id="main-content">
       <header class="room-heading">
         <p class="eyebrow">Moonlit Collegium · Development preview</p>
-        <h1 id="main-heading" tabindex="-1" bind:this={heading}>{room.name}</h1>
-        <p>{room.description}</p>
+        <h1 id="main-heading" tabindex="-1" bind:this={heading}>{checkingStorage ? 'Storage safety check' : room.name}</h1>
+        <p>{checkingStorage ? 'Metadata-only diagnostic for the parallel rebuild.' : room.description}</p>
       </header>
-      {#if current === 'home'}
+      {#if checkingStorage}
+        <StorageCheck/>
+      {:else if current === 'home'}
         <section class="welcome" aria-labelledby="welcome-heading">
           <div class="moon-window" aria-hidden="true"><span>☾</span><i>✧</i><b>✦</b></div>
           <div><p class="eyebrow">Where knowledge awakens magic</p><h2 id="welcome-heading">Welcome, Scholar.</h2>
@@ -47,7 +53,7 @@
       {:else}
         <section class="paper" aria-labelledby="stage-heading"><h2 id="stage-heading">Room foundation</h2><p>The navigation for this room is available. Its learning activities, approved artwork and saved progression have not yet been migrated.</p><a class="portal" href={roomLink('home')}>Return to Collegium <PortalArrow/></a></section>
       {/if}
-      <aside class="notice"><strong>Your existing learning is protected.</strong> This preview does not read or write learner saves. <a href="https://rnw4512-dev.github.io/majick-studies-assets/current-site/">Open the existing application</a>.</aside>
+      <aside class="notice"><strong>Your existing learning is protected.</strong> This preview does not read or write learner save values. <a href="#/storage-check">Storage safety check</a>. <a href="https://rnw4512-dev.github.io/majick-studies-assets/current-site/">Open the existing application</a>.</aside>
     </main>
   </div>
 </div>
