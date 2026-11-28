@@ -13,7 +13,7 @@ test('backup practice exports, previews, cancels, restores and retains',async({p
   backup.workspace.state.rewards.xp=8
   const file={name:'test.json',mimeType:'application/json',buffer:Buffer.from(JSON.stringify(backup))}
   await page.getByLabel('Choose a backup to preview').setInputFiles(file)
-  await expect(page.getByText('8 XP · 3 crystals · 0 fragments')).toBeVisible()
+  await expect(page.getByText('8 XP · 3 crystals · 0 chests · 0 fragments')).toBeVisible()
   await expect(page.getByRole('button',{name:'Restore selected backup'})).toBeDisabled()
   await page.getByRole('button',{name:'Cancel',exact:true}).click()
   await expect(page.getByText('Demo recovery checkpoints retained: 0')).toBeVisible()

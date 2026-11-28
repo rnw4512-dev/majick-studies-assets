@@ -30,7 +30,7 @@
       <p>{error}</p>
     {:else if result}
       {@const summary = result}
-      <p>{summary.xp} XP · {summary.crystals} crystals · {summary.fragments} fragments · {summary.receipts} reward receipts</p>
+      <p>{summary.xp} XP · {summary.crystals} crystals · {summary.chests} chests · {summary.fragments} fragments · {summary.receipts} reward receipts</p>
       <p>{summary.progressRecords} course progress records · {summary.guardians} Guardians · {summary.eggs} eggs</p>
       {#if summary.courses.length}<p>Courses: {summary.courses.join(', ')}</p>{/if}
       {#if summary.canDeferMaterials}

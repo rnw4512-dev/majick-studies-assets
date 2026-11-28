@@ -4,16 +4,16 @@
   import { LocalWorkspaceStore, MemoryBackend } from '../core/local-workspace'
 
   const store = new LocalWorkspaceStore(new MemoryBackend(), 'synthetic-import-preview')
-  const sample = (xp: number, crystals: number, fragments: number) => JSON.stringify({
+  const sample = (xp: number, crystals: number, chests: number, fragments: number) => JSON.stringify({
     courses: { D772: { id: 'D772' } },
     progress: { D772: { answers: [], xp, crystals } },
-    majickAccount: { xp, crystals, rewardCore: { eggFragments: fragments, ledger: { 'demo-receipt': true } } }
+    majickAccount: { xp, crystals, chests, rewardCore: { eggFragments: fragments, ledger: { 'demo-receipt': true } } }
   })
   const start = store.initialize().then(workspace => previewLegacyFixture({
     snapshots: {},
     local: {
-      moonlit_learning_v1: sample(1234, 26, 4),
-      moonlit_learning_v1__known_good: sample(980, 18, 2)
+      moonlit_learning_v1: sample(1234, 26, 3, 4),
+      moonlit_learning_v1__known_good: sample(980, 18, 0, 2)
     }
   }, workspace))
 
@@ -35,7 +35,7 @@
     busy = true
     try {
       const { state } = await preview.apply(store, selected, confirmed, async backup => { recoveryCopy = backup }, deferMaterials)
-      result = `Practice import applied. ${state.rewards.xp} XP, ${state.rewards.crystals} crystals, ${state.rewards.fragments} fragments. ${recoveryCopy ? 'A practice recovery copy is held in memory.' : ''}`
+      result = `Practice import applied. ${state.rewards.xp} XP, ${state.rewards.crystals} crystals, ${state.rewards.chests} chests, ${state.rewards.fragments} fragments. ${recoveryCopy ? 'A practice recovery copy is held in memory.' : ''}`
       confirmed = false
     } catch (error) {
       result = error instanceof Error ? error.message : 'Could not apply the practice copy.'
@@ -55,7 +55,7 @@
         <label class="candidate">
           <input type="radio" name="practice-source" value={candidate.id} checked={selected === candidate.id} onchange={() => select(candidate.id)}/>
           <span><strong>{candidate.id.endsWith('__known_good') ? 'Known-good backup' : 'Main save'}</strong>{candidate.id === preview.suggested ? ' (suggested)' : ''}<br/>
-          {candidate.xp} XP · {candidate.crystals} crystals · {candidate.fragments} fragments · {candidate.receipts} reward {candidate.receipts === 1 ? 'receipt' : 'receipts'}</span>
+          {candidate.xp} XP · {candidate.crystals} crystals · {candidate.chests} chests · {candidate.fragments} fragments · {candidate.receipts} reward {candidate.receipts === 1 ? 'receipt' : 'receipts'}</span>
         </label>
       {/each}
     </fieldset>

@@ -10,7 +10,7 @@ describe('portable workspace backups',()=>{
     w.state.guardians={velora:{stage:'apprentice'}}
     w.state.eggs={one:{moonlight:27}}
     w.state.extensions={historical:{nested:[1,'keep']}}
-    w.state.rewards={xp:90,crystals:3,fragments:2,receipts:{one:true}}
+    w.state.rewards={xp:90,crystals:3, chests: 0,fragments:2,receipts:{one:true}}
     w.state.progress={d772:{guided:3,independent:7}}
     expect(parseBackup(exportBackup(w,at),owner)).toEqual(w)
     expect(backupSummary(w).guardians).toBe(1)

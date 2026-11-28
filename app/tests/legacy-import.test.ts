@@ -94,7 +94,7 @@ describe('synthetic legacy importer', () => {
       [council]: '[{"id":"current"}]',
       'majick-sanctuary-renderer': 'pixi', 'majick-sitewide-response-mode-v1': 'writing'
     } }, before)
-    expect(preview.summaries).toEqual([{ id: pin, courses: ['D772'], progressRecords: 1, guardians: 1, eggs: 1, oversized: false, canDeferMaterials: false, xp: 4, crystals: 0, fragments: 0, receipts: 1 }])
+    expect(preview.summaries).toEqual([{ id: pin, courses: ['D772'], progressRecords: 1, guardians: 1, eggs: 1, oversized: false, canDeferMaterials: false, xp: 4, crystals: 0, chests: 0, fragments: 0, receipts: 1 }])
     const restored = await preview.apply(store, pin, true, async () => {})
     expect(restored.state.extensions.legacyImportV1).toMatchObject({
       auxiliary: { [council]: [{ id: 'pinned' }] },
@@ -114,10 +114,10 @@ describe('synthetic legacy importer', () => {
     value.legacy.xp = 1234
     value.legacy.crystals = 92
     const preview = previewLegacyFixture({ snapshots: {}, local: { [primary]: JSON.stringify(value) } }, before)
-    expect(preview.summaries[0]).toMatchObject({ xp: 1250, crystals: 0, fragments: 8, receipts: 2 })
+    expect(preview.summaries[0]).toMatchObject({ xp: 1250, crystals: 0, chests: 0, fragments: 8, receipts: 2 })
     const applied = await preview.apply(store, primary, true, async () => {})
     expect(applied.state.rewards).toEqual({
-      xp: 1250, crystals: 0, fragments: 8, receipts: { 'receipt-1': true, 'interactive-1': true }
+      xp: 1250, crystals: 0, chests: 0, fragments: 8, receipts: { 'receipt-1': true, 'interactive-1': true }
     })
   })
 
@@ -163,4 +163,22 @@ describe('synthetic legacy importer', () => {
     await expect(preview.apply(store, primary, true, retain)).rejects.toMatchObject({ code: 'conflict' })
     expect(retain).not.toHaveBeenCalled()
   })
+})
+
+it('uses the shared account chest balance including zero, otherwise the largest course mirror', async () => {
+  const { store, before } = await fixtureDestination()
+  const value = {
+    courses: { D772: {}, D756: {} },
+    progress: { D772: { chests: 4 }, D756: { chests: 9 } },
+    legacy: { chests: 12 },
+    majickAccount: { chests: 0 }
+  }
+  const preview = (state: object) => previewLegacyFixture({
+    snapshots: {}, local: { [primary]: JSON.stringify(state) }
+  }, before)
+  expect(preview(value).summaries[0].chests).toBe(0)
+  expect(preview({ ...value, majickAccount: { chests: 2 } }).summaries[0].chests).toBe(2)
+  const fallback = preview({ ...value, majickAccount: {} })
+  expect(fallback.summaries[0].chests).toBe(9)
+  expect((await fallback.apply(store, primary, true, async () => {})).state.rewards.chests).toBe(9)
 })

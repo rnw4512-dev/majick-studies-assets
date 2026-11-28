@@ -25,7 +25,7 @@ export function parseBackup(text: string, owner: string): Workspace {
 }
 export function backupSummary(workspace: Workspace) {
   const s = workspace.state
-  return { updatedAt: workspace.updatedAt, xp: s.rewards.xp, crystals: s.rewards.crystals, fragments: s.rewards.fragments,
+  return { updatedAt: workspace.updatedAt, xp: s.rewards.xp, crystals: s.rewards.crystals, chests: s.rewards.chests, fragments: s.rewards.fragments,
     guardians: Object.keys(s.guardians).length, eggs: Object.keys(s.eggs).length, courses: Object.keys(s.courses).length }
 }
 export function backupReminderDue(lastExport: string | null, now = Date.now()): boolean {

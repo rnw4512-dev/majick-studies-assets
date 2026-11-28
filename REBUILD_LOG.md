@@ -214,3 +214,7 @@ Local verification passed: zero Svelte errors or warnings, 33 unit tests, 24 Pla
 Added a browser-only file review for standard MajickStudiesSave version 1 exports. It uses the same mapping as synthetic import and returns only a summary to the preview. It has no apply action or destination storage access. Tested with fictional exports only. The owner's attached backup was left unopened. Claude review and separate approval still precede any real import.
 
 PR #305 merged as 9f5bd48. The wallet, known-good and size-limit fixes and the read-only file preview were rebased onto merged main for follow-up review. The file preview continues to use synthetic test data. No actual migration or deployment was performed.
+
+## 2026-11-28 — Shared chest balance
+
+PR #306 merged as e2507f6 after Claude approved the three importer fixes. The workspace now validates chests as a non-negative safe integer. Existing version 1 checkpoints without the field read as zero without a schema bump. The legacy importer takes the account balance, including zero, or the highest valid course balance when the account value is absent. Practice import, read-only file review and backup review show chests. Tests use synthetic data only. Real import remains pending independent review and separate owner authorization.

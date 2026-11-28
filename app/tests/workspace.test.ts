@@ -6,7 +6,7 @@ const clock = () => at
 describe('versioned workspace', () => {
   it('validates a realistic synthetic checkpoint and preserves extensions', () => {
     const w = newWorkspace('test-owner', at)
-    w.state.rewards = {xp: 140, crystals: 20, fragments: 7, receipts: {'d772:answer:1':true}}
+    w.state.rewards = {xp: 140, crystals: 20, chests: 0, fragments: 7, receipts: {'d772:answer:1':true}}
     w.state.guardians = {velora:{stage:'apprentice'}}
     w.state.eggs = {egg1:{moonlight:25}}
     w.state.progress = {D772:{guided:3,independent:2}}
@@ -77,4 +77,15 @@ describe('local save adapter', () => {
     await expect(store.initialize()).rejects.toThrow('unreadable')
     expect(data.get(LOCAL_KEY_PREFIX+'test-owner')).toBe('broken')
   })
+})
+
+it('defaults an omitted version 1 chest balance and rejects invalid explicit balances', () => {
+  const checkpoint = newWorkspace('test-owner', at)
+  const legacy: unknown = JSON.parse(JSON.stringify(checkpoint, (key, value) => key === 'chests' ? undefined : value))
+  expect(validateWorkspace(legacy, 'test-owner').state.rewards.chests).toBe(0)
+  for (const chests of [-1, 1.5, null, '4', Number.MAX_SAFE_INTEGER + 1]) {
+    const rewards = { ...checkpoint.state.rewards, chests }
+    const invalid = { ...checkpoint, state: { ...checkpoint.state, rewards } }
+    expect(() => validateWorkspace(invalid, 'test-owner')).toThrow('Invalid rewards')
+  }
 })
