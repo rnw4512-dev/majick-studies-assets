@@ -171,6 +171,32 @@ function parseRecords(records: Readonly<Record<string, unknown>>, allow: (key: s
   return parsed
 }
 
+export function mapLegacyBackup(raw: string, browserData: Record<string, unknown>, owner: string, at: string) {
+  const unreadable: string[] = []
+  const records = parseRecords(browserData, auxiliary, unreadable)
+  if (unreadable.length) throw new WorkspaceError('invalid', 'This backup contains unreadable study or progress records.')
+  return mapCandidate(raw, records, {}, newWorkspace(owner, at))
+}
+
+export function summarizeLegacyWorkspace(workspace: Workspace) {
+  const { state } = workspace
+  const oversized = exceedsBackupLimit(workspace)
+  const progressOnly = oversized ? withoutImportedMaterials(workspace) : undefined
+  return {
+    oversized,
+    canDeferMaterials: progressOnly !== undefined && !exceedsBackupLimit(progressOnly),
+    courses: Object.keys(state.courses).sort(),
+    progressRecords: Object.keys(state.progress).length,
+    guardians: Object.keys(state.guardians).length,
+    eggs: Object.keys(state.eggs).length,
+    xp: state.rewards.xp,
+    crystals: state.rewards.crystals,
+    chests: state.rewards.chests,
+    fragments: state.rewards.fragments,
+    receipts: Object.keys(state.rewards.receipts).length
+  }
+}
+
 export function previewLegacyFixture(fixture: LegacyFixture, destination: Workspace) {
   const before = validateWorkspace(destination, destination.owner)
   const unreadable: string[] = []
@@ -250,25 +276,7 @@ export function previewLegacyFixture(fixture: LegacyFixture, destination: Worksp
   return {
     suggested,
     candidates,
-    summaries: [...options].map(([id, workspace]) => {
-      const { state } = workspace
-      const oversized = exceedsBackupLimit(workspace)
-      const progressOnly = oversized ? withoutImportedMaterials(workspace) : undefined
-      return {
-        id,
-        oversized,
-        canDeferMaterials: progressOnly !== undefined && !exceedsBackupLimit(progressOnly),
-        courses: Object.keys(state.courses),
-        progressRecords: Object.keys(state.progress).length,
-        guardians: Object.keys(state.guardians).length,
-        eggs: Object.keys(state.eggs).length,
-        xp: state.rewards.xp,
-        crystals: state.rewards.crystals,
-        chests: state.rewards.chests,
-        fragments: state.rewards.fragments,
-        receipts: Object.keys(state.rewards.receipts).length
-      }
-    }),
+    summaries: [...options].map(([id, workspace]) => ({ id, ...summarizeLegacyWorkspace(workspace) })),
     conflict: candidates.length > 1 || (isObject(meta) && meta.legacyDivergence === true),
     unreadable,
     async apply(store: LocalWorkspaceStore, selected: string, confirmed: boolean, retain: (backup: string) => Promise<void>, deferMaterials = false) {
