@@ -202,3 +202,15 @@ Owner approved Vitest 4 after Claude tested the exact pins. Commit dfefbab pins 
 Committed the source mapping first in 6337ed4. Verified that b1471a9 added the identical hand-coded collegium-nine-slice.svg blob and recorded the owner's confirmation. The explosion, wind, runes, frame, leaf, horror and wild effect groups still await individual origin and license confirmation.
 
 Added an unwired importer exercised only with synthetic JSON and an in-memory workspace. It follows modern and local recovery precedence, previews distinct choices, preserves chosen evidence and safe unknown fields, excludes known credential fields, and requires explicit confirmation, destination checkpoint retention and atomic revision checking. No browser source adapter, real-data read or migration, legacy edit, database change, or deployment. PMFC fallback, separate materials, feature-specific reward normalization, actual device coverage and independent review remain before production migration.
+
+## 2026-11-28 — Legacy wallet, recovery coverage and practice preview
+
+Claude independently approved the synthetic-only checkpoint in PR #305 and reported eleven additional adversarial fixture tests passing. The follow-up imports the persisted shared XP high-water balance, authoritative crystals, current egg fragments and distinct reward receipt IDs. It shows all four in the synthetic practice preview, adds local and archived known-good fallback, and provides an explicit progress-only choice when standalone study materials are the reason a save exceeds the backup limit. Historical one-off balance repairs are not replayed. Added fixture and browser coverage. The preview uses bundled fictional saves and a fresh in-memory destination. Real import still requires Claude's review and separate owner authorization.
+
+Local verification passed: zero Svelte errors or warnings, 33 unit tests, 24 Playwright tests using system Chromium, production build, and zero npm audit findings. The reviewed names-only checker remains the foundation artifact from run 46180417079. Owner uses Windows and Chrome. Use the regular profile and the existing site for the diagnostic, and review the report before sharing. PR #305 was still open as a draft at verification, so this work is staged on a separate local follow-up branch.
+
+### Local legacy backup review
+
+Added a browser-only file review for standard MajickStudiesSave version 1 exports. It uses the same mapping as synthetic import and returns only a summary to the preview. It has no apply action or destination storage access. Tested with fictional exports only. The owner's attached backup was left unopened. Claude review and separate approval still precede any real import.
+
+PR #305 merged as 9f5bd48. The wallet, known-good and size-limit fixes and the read-only file preview were rebased onto merged main for follow-up review. The file preview continues to use synthetic test data. No actual migration or deployment was performed.

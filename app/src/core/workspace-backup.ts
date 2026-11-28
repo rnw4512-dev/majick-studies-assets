@@ -2,16 +2,19 @@ import { validateWorkspace, WorkspaceError, type Workspace } from './workspace'
 import type { LocalWorkspaceStore } from './local-workspace'
 export const BACKUP_FORMAT = 'aetheria-workspace-backup'
 export const MAX_BACKUP_BYTES = 20 * 1024 * 1024
+export class BackupSizeError extends WorkspaceError {
+  constructor() { super('invalid', 'Backup exceeds supported size') }
+}
 export const REMINDER_DAYS = 7
 export function exportBackup(workspace: Workspace, at = new Date().toISOString()): string {
   const checked = validateWorkspace(workspace, workspace.owner)
   if (!Number.isFinite(Date.parse(at))) throw new WorkspaceError('invalid','Invalid export timestamp')
   const text = JSON.stringify({ format: BACKUP_FORMAT, version: 1, exportedAt: at, workspace: checked }, null, 2)
-  if (new TextEncoder().encode(text).length > MAX_BACKUP_BYTES) throw new WorkspaceError('invalid','Backup exceeds supported size')
+  if (new TextEncoder().encode(text).length > MAX_BACKUP_BYTES) throw new BackupSizeError()
   return text
 }
 export function parseBackup(text: string, owner: string): Workspace {
-  if (new TextEncoder().encode(text).length > MAX_BACKUP_BYTES) throw new WorkspaceError('invalid','Backup exceeds supported size')
+  if (new TextEncoder().encode(text).length > MAX_BACKUP_BYTES) throw new BackupSizeError()
   let value: unknown
   try { value = JSON.parse(text) } catch { throw new WorkspaceError('invalid','This file is not valid backup JSON') }
   if (!value || typeof value !== 'object' || Array.isArray(value)) throw new WorkspaceError('invalid','Invalid backup file')

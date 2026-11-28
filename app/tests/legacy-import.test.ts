@@ -94,12 +94,59 @@ describe('synthetic legacy importer', () => {
       [council]: '[{"id":"current"}]',
       'majick-sanctuary-renderer': 'pixi', 'majick-sitewide-response-mode-v1': 'writing'
     } }, before)
-    expect(preview.summaries).toEqual([{ id: pin, courses: ['D772'], progressRecords: 1, guardians: 1, eggs: 1 }])
+    expect(preview.summaries).toEqual([{ id: pin, courses: ['D772'], progressRecords: 1, guardians: 1, eggs: 1, oversized: false, canDeferMaterials: false, xp: 4, crystals: 0, fragments: 0, receipts: 1 }])
     const restored = await preview.apply(store, pin, true, async () => {})
     expect(restored.state.extensions.legacyImportV1).toMatchObject({
       auxiliary: { [council]: [{ id: 'pinned' }] },
       standalone: { 'majick-sanctuary-renderer': 'pixi', 'majick-sitewide-response-mode-v1': 'writing' }
     })
+  })
+
+  it('takes one shared wallet, preserves zero crystals, and deduplicates receipt IDs', async () => {
+    const { store, before } = await fixtureDestination()
+    const value = JSON.parse(legacy(1200))
+    value.majickAccount.xp = 1234
+    value.majickAccount.xpHighWater = 1250
+    value.majickAccount.crystals = 0
+    value.majickAccount.rewardCore.eggFragments = 8
+    value.progress.D772.crystals = 91
+    value.progress.D772.interactiveRewardLedger = { 'receipt-1': 123, 'interactive-1': 456 }
+    value.legacy.xp = 1234
+    value.legacy.crystals = 92
+    const preview = previewLegacyFixture({ snapshots: {}, local: { [primary]: JSON.stringify(value) } }, before)
+    expect(preview.summaries[0]).toMatchObject({ xp: 1250, crystals: 0, fragments: 8, receipts: 2 })
+    const applied = await preview.apply(store, primary, true, async () => {})
+    expect(applied.state.rewards).toEqual({
+      xp: 1250, crystals: 0, fragments: 8, receipts: { 'receipt-1': true, 'interactive-1': true }
+    })
+  })
+
+  it('uses known-good when it is the only available copy and prefers a valid session backup', async () => {
+    const { before } = await fixtureDestination()
+    const known = primary + '__known_good'
+    const session = primary + '__session_backup'
+    const local = { [known]: legacy(1234) }
+    expect(previewLegacyFixture({ snapshots: {}, local }, before).suggested).toBe(known)
+    expect(previewLegacyFixture({ snapshots: {}, local: { ...local, [session]: legacy(99) } }, before).suggested).toBe(session)
+    expect(previewLegacyFixture({ snapshots: local, local: {} }, before).suggested).toBe('archive:' + known)
+  })
+
+  it('requires a separate choice before leaving oversized study materials in the source', async () => {
+    const { store, before } = await fixtureDestination()
+    const key = 'majick-study-materials-v1'
+    const material = JSON.stringify([{ id: 'synthetic', courseId: 'D772', text: 'x'.repeat(20 * 1024 * 1024) }])
+    const local = Object.freeze({ [primary]: legacy(1234), [key]: material })
+    const preview = previewLegacyFixture({ snapshots: {}, local }, before)
+    expect(preview.summaries[0]).toMatchObject({ oversized: true, canDeferMaterials: true })
+    const retain = vi.fn(async () => {})
+    await expect(preview.apply(store, primary, true, retain)).rejects.toThrow('over 20 MB with study materials')
+    expect(retain).not.toHaveBeenCalled()
+    expect(await store.read()).toEqual(before)
+    const applied = await preview.apply(store, primary, true, retain, true)
+    expect(applied.state.rewards.xp).toBe(1234)
+    expect(applied.state.extensions.legacyImportV1).toMatchObject({ auxiliary: {}, deferredMaterials: true })
+    expect(local[key]).toBe(material)
+    expect(retain).toHaveBeenCalledTimes(1)
   })
 
   it('preserves the destination on failed retention or concurrent changes', async () => {
