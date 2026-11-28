@@ -3,12 +3,15 @@ on:
   push:
     branches: [main]
     paths: ['app/**', '.github/workflows/aetheria-next-check.yml']
+  pull_request:
+    paths: ['app/**', '.github/workflows/aetheria-next-check.yml']
   workflow_dispatch:
 permissions:
   contents: read
 jobs:
   foundation:
-    runs-on: ubuntu-latest
+    # Pinned: ubuntu-latest (26.04) is not supported by Playwright 1.56.
+    runs-on: ubuntu-24.04
     timeout-minutes: 10
     defaults:
       run:
@@ -18,16 +21,10 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Resolve pinned dependencies
-        run: |
-          if test -f package-lock.json; then npm ci; else npm install --no-audit --no-fund; fi
-      - name: Recover generated lockfile for review
-        run: |
-          if ! git ls-files --error-unmatch package-lock.json >/dev/null 2>&1; then
-            echo AETHERIA_LOCKFILE_BEGIN
-            base64 -w 76 package-lock.json
-            echo AETHERIA_LOCKFILE_END
-          fi
+          cache: npm
+          cache-dependency-path: app/package-lock.json
+      - name: Install exact locked dependencies
+        run: npm ci
       - name: Typecheck, unit test and build
         run: |
           npm run check
@@ -35,12 +32,5 @@ jobs:
           npm run build
       - name: Test responsive shell
         run: |
-          npx playwright install chromium
+          npx playwright install --with-deps chromium
           npm run test:browser
-      - name: Preserve generated dependency lockfile
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: aetheria-next-lockfile
-          path: app/package-lock.json
-          retention-days: 1
