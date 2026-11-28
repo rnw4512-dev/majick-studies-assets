@@ -1,3 +1,41 @@
+# Aetheria handoff for regular ChatGPT
+
+Continue the existing Majick Studies project in `rnw4512-dev/majick-studies-assets`. The production app is Aetheria, served by GitHub Pages from the canonical `current-site/` source. Read this handoff and the repository's existing release and recovery guidance before editing.
+
+- [Live Aetheria](https://rnw4512-dev.github.io/majick-studies-assets/current-site/)
+- [Live deployment identity](https://rnw4512-dev.github.io/majick-studies-assets/current-site/deployment.json)
+- [GitHub repository](https://github.com/rnw4512-dev/majick-studies-assets)
+- [Assessment, save-and-resume and Observatory release](https://github.com/rnw4512-dev/majick-studies-assets/commit/c324ac79fea92682dd679d8ffd7a95ebe806bfb5)
+- [Replay-safe trial rewards and Moonweave Cushion release](https://github.com/rnw4512-dev/majick-studies-assets/commit/469ce8a6c51ab429055ecbe597d86a4292df2f38)
+- [Successful Pages deployment and production browser checks](https://github.com/rnw4512-dev/majick-studies-assets/actions/runs/46088547630)
+- [Trial and cushion browser regression](https://github.com/rnw4512-dev/majick-studies-assets/blob/469ce8a/tests/trial-cushion-browser.py)
+- [Application change and recovery instructions](https://github.com/rnw4512-dev/majick-studies-assets/blob/main/APP_CHANGE_AND_RECOVERY_RULE.md)
+
+## Where to use it
+
+- **The Athenaeum → Whole Course Practice** opens the 50-question assessment. Returning to the course resumes the saved question, feedback, or Rune Match round. The Learning Observatory shows assessment scores, section results, and the resume control.
+- **Enchanted Arcade** contains the trials. Completion bonuses use the shared reward ledger. Per-answer rewards continue to follow the existing study policy.
+- **Magic Vault → Potion Workshop** offers the Moonweave Cushion for 2 Star Moss and 2 Moonpetal. After crafting it, choose a Guardian in the Sanctuary and use the cushion as a resting spot. Pixi and Phaser share the placement and saved rest assignment.
+
+## Verified on production
+
+Chromium completed each remaining trial twice against live commit `469ce8a`, reloading between attempts in the same isolated profile. The harness chose correct answers through the existing game handlers. The first completion produced the expected receipt and the second retained the original receipt without issuing a new completion award.
+
+| Trial | Course | Score on both runs | One-time completion bonus |
+|---|---|---:|---|
+| Oracle Lens | D669 | 4/4 | 15 XP, 1 Moon Crystal |
+| Hex Breaker | D669 | 8/8 | 18 XP, 1 Moon Crystal |
+| Guardian Gauntlet victory | D669 | 6/6 | 24 XP, 2 Moon Crystals |
+| Guardian Gauntlet All-Section Review | D772 | 12/12 | 14 XP, 1 Moon Crystal |
+
+The earlier Memory Constellation browser test verified replay, receipt dismissal, and unchanged XP, crystals, and fragments on replay. The same test verified the cushion's exact ingredient debit, storage and placement, rest in both renderers, and persistence after reload. These checks cover trial completion rewards and the tested roles and routes. Other individual learning activity variants are tracked separately.
+
+## Recovery and continuation
+
+Keep existing saves, reward ledger keys, ingredients, Guardian identities, and protected movement assets. For a reward issue, inspect `current-site/game-realm.js` and `current-site/reward-core.js`. Compare the saved `trial-completion:<course>:<type>` receipt before troubleshooting a replay. For a missing cushion, check Workshop ownership and then the shared Sanctuary room's stored status. Publish app changes through the existing Pages workflow and confirm production against the deployment identity above.
+
+---
+
 ## Trial completion rewards and Moonweave Cushion
 
 - Oracle Lens, Memory Constellation, Hex Breaker, and both Guardian Gauntlet completion awards use the shared reward ledger. The first eligible result per course and reward type pays the existing XP and crystal amounts. Replays and repeated completion handlers preserve the receipt and balances. D756 source-review trials keep their previous reward boundary.
