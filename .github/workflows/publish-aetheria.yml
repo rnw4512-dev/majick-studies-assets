@@ -59,6 +59,7 @@ jobs:
           python -u tests/room-interactions-browser.py _certified
           python -u tests/aetheria-sanctuary-browser.py _certified
           python -u tests/brewing-dialog-browser.py _certified
+          python -u tests/trial-cushion-browser.py _certified
           python -m http.server 8765 --directory _certified > /tmp/aetheria-pages-test-server.log 2>&1 &
           python -u tests/d756-full-script-browser.py
           python -u tests/d756-scenario-library-browser.py

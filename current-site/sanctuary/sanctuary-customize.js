@@ -90,11 +90,13 @@ function bedOccupant(scene,item,bedIndex){
 function isPlaced(scene,id){return !scene.v3321FurnitureState?.stored?.includes(id)}
 
 Game.prototype.v3321EnsureFurnitureState=function(incoming){
-  const ids=manifestObjects(this).map(o=>o.id);
+  const objects=manifestObjects(this);
+  const crafted=new Set(objects.filter(o=>o.unlockRequirement==='craft').map(o=>o.id));
+  const ids=objects.filter(o=>!crafted.has(o.id)).map(o=>o.id);
   const local=readLocal();
   const raw=(incoming&&typeof incoming==='object')?incoming:
     (this.v3321FurnitureState&&typeof this.v3321FurnitureState==='object'?this.v3321FurnitureState:local||{});
-  const owned=unique([...(raw.owned||[]),...ids]);
+  const owned=unique([...(raw.owned||[]).filter(id=>this.v3321ParentSynced||!crafted.has(id)),...ids]);
   const stored=unique(raw.stored||[]).filter(id=>owned.includes(id));
   this.v3321FurnitureState={
     schemaVersion:1,version:VERSION,owned,stored,positions:{...(raw.positions||{})},
@@ -117,7 +119,13 @@ Game.prototype.v3321ApplyFurnitureVisibility=function(){
   const stored=new Set(state.stored);
   for(const item of (this.decorItems||[])){
     const id=objectId(item);
-    if(!state.owned.includes(id))continue;
+    if(!state.owned.includes(id)){
+      if(objectMeta(item)?.unlockRequirement==='craft'){
+        item.setVisible?.(false);
+        if(item.input)item.input.enabled=false;
+      }
+      continue;
+    }
     const pos=state.positions?.[id];
     if(pos&&Number.isFinite(pos.x)&&Number.isFinite(pos.y)){item.x=pos.x;item.y=pos.y}
     const placed=!stored.has(id);

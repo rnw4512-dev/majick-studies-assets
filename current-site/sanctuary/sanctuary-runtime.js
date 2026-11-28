@@ -282,6 +282,7 @@ Game.prototype.createDecor=function(){
 
     item.setData('objectId',obj.id);
     item.setData('manifestObject',obj);
+    if(obj.unlockRequirement==='craft')item.setVisible(false);
     item.setData('blocksWalking',!!obj.blocksWalking);
 
     // Match the clickable/drag target to the visible furniture instead of

@@ -220,7 +220,9 @@ async function initializeFurniture(){
     try{furnitureManifest=await furnitureLoading}finally{furnitureLoading=null}
   }
   const room=furnitureAccountState();if(!room)return;
-  const owned=[...new Set([...(room.owned||[]),...furnitureManifest.map(o=>o.id)])];
+  const blueprints=window.MajickStateCore.ensureAccount().rewardCore?.blueprints||[];
+  const available=furnitureManifest.filter(o=>o.unlockRequirement!=='craft'||blueprints.includes(o.id));
+  const owned=[...new Set([...(room.owned||[]),...available.map(o=>o.id)])];
   if(JSON.stringify(owned)!==JSON.stringify(room.owned)){room.owned=owned;save()}
   window.v3321PushFurnitureState();window.phase4PushState?.();
 }

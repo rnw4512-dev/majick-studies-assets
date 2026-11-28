@@ -1547,6 +1547,19 @@
       }
     },
     {
+      "id": "moonweave-cushion",
+      "filename": "../../../assets/rewards/solstice/items/star-pouf.webp",
+      "displayName": "Moonweave Cushion",
+      "category": "guardian",
+      "interaction": "assign-rest",
+      "unlockRequirement": "craft",
+      "blocksWalking": false,
+      "enabled": true,
+      "preload": true,
+      "phaser": {"textureKey": "obj-moonweave-cushion", "interactive": true},
+      "placement": {"x": 1240, "y": 810, "width": 165}
+    },
+    {
       "id": "guardian-nest",
       "filename": "guardian-nest.webp",
       "displayName": "Guardian Nest",

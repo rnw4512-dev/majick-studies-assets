@@ -89,16 +89,12 @@
       return {previousBest,best:row.best,newBest:row.last>previousBest&&row.last>0,plays:row.plays,wins:row.wins};
     }catch(_){return null}
   }
-  function addReward(label,xp=0,cr=0){
-    if(globalThis.S?.activeCourse==='D756')return; // D756 source-review games cannot duplicate earned mastery/rewards.
-    try{
-      const p=prog();
-      p.xp=Number(p.xp||0)+Number(xp||0);
-      p.crystals=Number(p.crystals||0)+Number(cr||0);
-      try{window.MajickProductCore?.record?.('reward-earned',{course:window.S?.activeCourse||'',label,xp:Number(xp||0),crystals:Number(cr||0)})}catch(_){}
-      save?.();
-      if(typeof rewardToast==='function')rewardToast('✨ '+xp+' XP'+(cr?' • 💎 '+cr:''),label);
-    }catch(_){}
+  function awardTrialCompletion(id){
+    const course=globalThis.S?.activeCourse;
+    if(!course||course==='D756')return;
+    return window.MajickRewardCore?.award?.('trial-'+id,{
+      key:'trial-completion:'+course+':'+id,course,source:'game-realm',independent:false,masteryEligible:false
+    });
   }
   function recordAnswer(q,chosen,correct,mode){
     if(globalThis.S?.activeCourse==='D756'){
@@ -879,11 +875,11 @@
     render?.();
   };
   globalThis.oracleNext=function(){
-    if(!session||session.type!=='oraclelens')return;
+    if(!session||session.type!=='oraclelens'||session.finished||!session.answered)return;
     if(session.round>=session.limit){
       session.finished=true;
       session.recordOutcome=recordRealm('oraclelens',session.score,session.limit,session.score===session.limit);
-      if(session.score>=Math.ceil(session.limit*.75)){addReward('Oracle Lens cleared',15,1);guardianReact('concept',{mode:'oraclelens'})}
+      if(session.score>=Math.ceil(session.limit*.75)){awardTrialCompletion('oracle-lens');guardianReact('concept',{mode:'oraclelens'})}
     }else nextOracle();
     render?.();
   };
@@ -1005,7 +1001,7 @@
         const total=session.cards.length/2;
         const efficiency=Math.max(1,total*2-session.moves+total);
         session.recordOutcome=recordRealm('constellation',efficiency,total*2,true);
-        addReward('Memory Constellation completed',16,1);
+        awardTrialCompletion('memory-constellation');
         guardianReact('concept',{mode:'constellation'});
         session.completing=true;
       }
@@ -1114,11 +1110,11 @@
     render?.();
   };
   globalThis.hexNext=function(){
-    if(!session||session.type!=='hexbreaker')return;
+    if(!session||session.type!=='hexbreaker'||session.finished||!session.answered)return;
     if(session.round>=session.limit){
       session.finished=true;
       session.recordOutcome=recordRealm('hexbreaker',session.score,session.limit,session.score===session.limit);
-      if(session.score>=6){addReward('Hex Breaker cleared',18,1);guardianReact('concept',{mode:'hexbreaker'})}
+      if(session.score>=6){awardTrialCompletion('hex-breaker');guardianReact('concept',{mode:'hexbreaker'})}
     }else nextHex();
     render?.();
   };
@@ -1206,8 +1202,8 @@
     if(session.reviewMode){
       session.bossHP=Math.max(0,Math.round(100*(session.limit-session.round)/session.limit));
     }
-    if(!session.reviewMode&&session.bossHP<=0){session.finished=true;session.won=true;session.recordOutcome=recordRealm('gauntlet',session.score,session.round,true);addReward('Guardian Gauntlet victory',24,2);guardianReact('mastery',{mode:'gauntlet'})}
-    else if((!session.reviewMode&&session.playerHP<=0)||session.round>=session.limit){session.finished=true;session.won=session.reviewMode?(session.score>=7):(session.bossHP<=0);session.recordOutcome=recordRealm('gauntlet',session.score,session.round,session.won);if(session.score>=7)addReward('Guardian Gauntlet run',14,1)}
+    if(!session.reviewMode&&session.bossHP<=0){session.finished=true;session.won=true;session.recordOutcome=recordRealm('gauntlet',session.score,session.round,true);awardTrialCompletion('gauntlet-victory');guardianReact('mastery',{mode:'gauntlet'})}
+    else if((!session.reviewMode&&session.playerHP<=0)||session.round>=session.limit){session.finished=true;session.won=session.reviewMode?(session.score>=7):(session.bossHP<=0);session.recordOutcome=recordRealm('gauntlet',session.score,session.round,session.won);if(session.score>=7)awardTrialCompletion('gauntlet-run')}
     render?.();
   };
   globalThis.gauntletNext=function(){

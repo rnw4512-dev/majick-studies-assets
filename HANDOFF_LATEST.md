@@ -1,3 +1,11 @@
+## Trial completion rewards and Moonweave Cushion
+
+- Oracle Lens, Memory Constellation, Hex Breaker, and both Guardian Gauntlet completion awards use the shared reward ledger. The first eligible result per course and reward type pays the existing XP and crystal amounts. Replays and repeated completion handlers preserve the receipt and balances. D756 source-review trials keep their previous reward boundary.
+- The Magic Vault’s potion workshop also offers the Moonweave Cushion for two Star Moss and two Moonpetal. Crafting grants one cushion and uses the existing alchemy transaction. It appears as a resting spot in both Sanctuary renderers. Choose a Guardian, use the cushion, or store and place it with the existing furniture controls.
+- The cushion uses the approved Solstice pouf artwork. Its ownership, layout and Guardian rest assignment use the existing save records. The reward receipt is positioned above the cloud status button so it can be dismissed.
+- Local Chromium verified a full Memory Constellation replay after reload, both Sanctuary rest handlers, the exact ingredient debit, storage and restoration. The release gate also checks all five trial receipt types.
+- If the furnishing fails to appear, refresh the Sanctuary and check that the workshop shows it as crafted. Confirm that the shared room marks it as placed. If the reward receipt fails to appear, inspect the existing ledger for the activity and course key before replaying. Roll back through the canonical release workflow. Keep existing reward, ingredient, layout, and Guardian data.
+
 ## Whole-course assessment, adaptive practice and Sanctuary upgrades
 
 - Repository `rnw4512-dev/majick-studies-assets`. The GitHub Pages repair on main uses `3286bd9` for the reward-runner state fixture and `f0ccda7` for the cabinet asset locator. Both retain the original assertions. The integration workflow for those fixes passed in run 46085454209. The public Pages deployment manifest returned f0ccda7 after the deploy step of run 46085454219.

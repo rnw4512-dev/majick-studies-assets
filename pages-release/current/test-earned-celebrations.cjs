@@ -23,7 +23,7 @@ const context = vm.createContext({
   showReceipt(receipt) { receipts.push(receipt.key); },
   window: { MajickAnimationEffects: { play(type, options) { effects.push({ type, label: options.label }); } } },
 });
-vm.runInContext(code.slice(code.indexOf('function baseFor('), code.indexOf('function rarityRank(')), context);
+vm.runInContext(code.slice(code.indexOf('const TRIAL_REWARDS='), code.indexOf('function rarityRank(')), context);
 vm.runInContext(code.slice(code.indexOf('function rewardKey('), code.indexOf('function receiptLines(')), context);
 
 for (const [type, effect, options] of [
@@ -39,6 +39,11 @@ for (const [type, effect, options] of [
   ['starfall-fragment-earned', 'reward', {}],
   ['adventure-fragment-earned', 'reward', {}],
   ['potion-recall-practice', 'reward', { assisted: true }],
+  ['trial-oracle-lens', 'reward', {}],
+  ['trial-memory-constellation', 'reward', {}],
+  ['trial-hex-breaker', 'reward', {}],
+  ['trial-gauntlet-victory', 'reward', {}],
+  ['trial-gauntlet-run', 'reward', {}],
   ['boss-victory', 'reward', {}],
   ['endurance-test', 'reward', {}],
   ['streak-10', 'reward', {}],

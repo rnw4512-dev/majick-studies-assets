@@ -62,3 +62,5 @@ button.majVaultItemArt{width:100%;border:0;border-bottom:1px solid #ffffff12;bor
 html[data-majick-reduce-motion="true"] :is(.majRewardCard,.majRewardStars img,.majRewardLootArt img,.majMysteryEgg){animation:none!important}
 
 .majCozyProgress{text-align:center;font-weight:650;color:#ffecbd;min-height:1.5em}
+
+body:has(#aetheriaCloudGlobal) .majRewardReceipt{bottom:64px}

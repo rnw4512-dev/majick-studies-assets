@@ -107,6 +107,7 @@ class Preloader extends Phaser.Scene
         // Local academy art keeps the room feeling like a real magical college.
         this.load.image('academy-sanctuary-bg', '../assets/guardian-dorm-v1.webp');
         // V3.3.14 MANIFEST OBJECTS START
+        this.load.image('obj-moonweave-cushion', '../assets/rewards/solstice/items/star-pouf.webp');
         this.load.json('majick-object-manifest', './assets/objects/objects-manifest.json?v=3314');
         this.load.json('majick-evolution-manifest', './assets/evolutions/evolution-manifest.json?v=3315');
         this.load.image('obj-arcane-stacks', './assets/runtime-objects/enchanted-bookstack.webp?v=3317-fast');

@@ -246,11 +246,15 @@ function bestToy(pet){
   const ids=CATALOG.filter(x=>x.kind==='toy'||x.kind==='comfort').map(x=>x.id);
   return ids.find(owns)||'starter-ribbon-toy';
 }
+function cushionPlaced(){
+  const room=window.MajickSanctuaryState?.room?.();
+  return room?.owned?.includes('moonweave-cushion')&&!room.stored?.includes('moonweave-cushion');
+}
 function assignedBed(pet){
   try{
     const beds=S?.v3311?.sanctuaryState?.bedAssignments||{};
     const found=Object.entries(beds).find(([,guardian])=>guardian===pet.id||guardian===pet.type);
-    if(found)return found[0];
+    if(found&&(found[0]!=='moonweave-cushion'||cushionPlaced()))return found[0];
   }catch(_){}
   const idx=Math.max(0,ownedPets().findIndex(p=>p.id===pet.id));
   if(idx===0)return 'bed-west';
@@ -307,6 +311,7 @@ function performAction(target,action,opts={}){
     r.favoriteBonus=favoriteBonus;
   }else if(action==='sleep'){
     const bed=opts.objectId||assignedBed(pet);
+    if(bed==='moonweave-cushion'&&!cushionPlaced())return {ok:false,message:'Place the Moonweave Cushion before using it.'};
     S.v3311=S.v3311||{};
     S.v3311.sanctuaryState=S.v3311.sanctuaryState||{bedAssignments:{}};
     S.v3311.sanctuaryState.bedAssignments=S.v3311.sanctuaryState.bedAssignments||{};
