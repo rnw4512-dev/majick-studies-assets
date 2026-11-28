@@ -47,5 +47,73 @@ with sync_playwright() as pw:
   assert not errors,errors
   print(f'PASS interactions {width}: 6 communication decisions, 2 evidence-gated investigations, constellation pair, Oracle lens/answer, guided boundaries and no console errors',flush=True)
   context.close()
+
+ # Full reward boundaries for practice-only Arcade activities, including wrong
+ # answers, corrected choices, replay, and course separation.
+ context=browser.new_context(viewport={'width':1180,'height':1000},reduced_motion='reduce')
+ page=context.new_page()
+ page.goto(os.environ.get('MAJICK_URL',f'http://127.0.0.1:{server.server_port}/'))
+ page.wait_for_function('!!window.MajickRewardCore&&!!window.MajickFragmentEarnings&&!!window.startScholarInvestigation')
+ snapshot="""()=>{const a=MajickStateCore.ensureAccount(),r=a.rewardCore;
+ return {xp:a.xp,crystals:a.crystals,chests:a.chests,mastery:r.masteryXp,
+ fragments:r.eggFragments,ledger:r.ledger}}"""
+ for course in ['D669','D772','D755','D756']:
+  page.evaluate("course=>{switchCourse(course);navigate('games')}",course)
+  before=page.evaluate(snapshot)
+  for attempt in range(2):
+   page.evaluate('startScholarInvestigation()')
+   for i in range(2):
+    page.evaluate("()=>{inspectScholarClue(0);inspectScholarClue(1);inspectScholarClue(2)}")
+    answer=page.evaluate('session.items[session.index][3]')
+    choice=(answer+1)%3 if i==0 and attempt==0 else answer
+    page.locator('[onclick="solveScholarCase('+str(choice)+')"]').click()
+    page.locator('[onclick="nextScholarCase()"]').click()
+   assert page.evaluate('session.finished')
+   assert page.evaluate('session.score')==(1 if attempt==0 else 2)
+   assert page.evaluate(snapshot)==before,(course,'investigation',attempt)
+  print('PASS',course,'investigation wrong/correct/replay without account rewards',flush=True)
+ page.evaluate("switchCourse('D669');navigate('games')")
+ before=page.evaluate(snapshot)
+ for attempt in range(2):
+  page.evaluate('startCommunicationQuest()')
+  for i in range(6):
+   answer=page.evaluate('session.items[session.index][1]')
+   choice=(answer+1)%3 if i==0 and attempt==0 else answer
+   page.locator('[onclick="chooseCommunicationPortal('+str(choice)+')"]').click()
+   page.locator('[onclick="nextCommunicationPortal()"]').click()
+  assert page.evaluate('session.score')==(5 if attempt==0 else 6)
+  assert page.evaluate(snapshot)==before,('communication',attempt)
+ # Five Pillars Sort: fail first, qualify second, then replay after reload.
+ key='fragment:game:D669:d669pillars'
+ for attempt in range(3):
+  if attempt==2:
+   page.evaluate('MajickSaveSafety.flush()')
+   page.reload(wait_until='domcontentloaded')
+   page.wait_for_function('!!window.MajickRewardCore&&!!window.startD669PillarSort')
+   page.evaluate("switchCourse('D669');navigate('games')")
+  page.evaluate('startD669PillarSort()')
+  count=page.evaluate('session.items.length')
+  for i in range(count):
+   page.evaluate("""good=>{
+     const right=session.items[session.index].answer;
+     const choices=[...document.querySelectorAll('.realmPillarChoices button')].map(b=>b.textContent);
+     chooseD669Pillar(good?right:choices.find(c=>c!==right));nextD669Pillar();
+   }""",attempt!=0)
+  assert page.evaluate('session.finished')
+  assert page.evaluate('session.score')==(0 if attempt==0 else count)
+  state=page.evaluate(snapshot)
+  if attempt==0:
+   assert state==before,'failed pillar sort earned a reward'
+  else:
+   assert state['xp']==before['xp'] and state['crystals']==before['crystals'] and state['mastery']==before['mastery']
+   assert state['fragments']==before['fragments']+1
+   receipt=state['ledger'][key]['receipt']
+   assert (receipt['xp'],receipt['crystals'],receipt['masteryXp'],receipt['eggFragments'])==(0,0,0,1)
+   if attempt==1:
+    earned=state
+   else:
+    assert state==earned,'pillar replay changed reward ledger'
+ print('PASS communication and Five Pillars failure, first clear and persisted replay',flush=True)
+ context.close()
  browser.close()
 server.shutdown()
