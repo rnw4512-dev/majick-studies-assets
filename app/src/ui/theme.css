@@ -38,11 +38,8 @@ main{min-width:0;width:100%;max-width:1200px;margin:0 auto;padding:clamp(14px,3v
 .moon-window i,.moon-window b{position:absolute;color:#eed9a7;font-style:normal}
 .moon-window i{top:18%;right:18%}.moon-window b{bottom:22%;left:16%}
 .portal{display:inline-flex;align-items:center;gap:16px;padding:10px 15px;min-height:44px;background:var(--forest);color:#fff5dc;border:1px solid var(--gold);border-radius:8px;text-decoration:none;font-weight:650}
-.portal-arrow{position:relative;color:var(--gold);font-size:1.35rem;text-shadow:0 0 8px #d4a95d;display:inline-block;flex-shrink:0;transition:transform .2s}
+.portal-arrow{position:relative;color:var(--gold);font-size:1.35rem;text-shadow:0 0 8px #d4a95d;display:inline-block;flex-shrink:0}
 .arrow-spark{font-size:.65rem;position:absolute;right:-3px;top:-4px;opacity:.7}
-:is(.portal,.room-card):is(:hover,:focus-visible) .portal-arrow{transform:translateX(3px)}
-:is(.portal,.room-card):is(:hover,:focus-visible) .arrow-spark{animation:twinkle .7s ease-out}
-@keyframes twinkle{0%{opacity:.4;transform:scale(.7)}50%{opacity:1;transform:scale(1.5)}100%{opacity:.7;transform:scale(1)}}
 .room-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
 .room-card{display:grid;grid-template-columns:32px minmax(0,1fr) 24px;align-items:center;gap:10px;min-height:86px;padding:13px;text-decoration:none;border:1px solid #87694a;border-radius:10px;background:#362547}
 .room-card:hover{background:#463158;border-color:var(--gold)}
@@ -54,5 +51,3 @@ main{min-width:0;width:100%;max-width:1200px;margin:0 auto;padding:clamp(14px,3v
 .notice{margin-top:24px;border-top:1px solid var(--line);padding:14px 0;color:#e0d0e3;font-size:.88rem}
 .notice a{color:var(--gold)}
 @media(max-width:700px){.school-layout{grid-template-columns:minmax(0,1fr)}.room-nav{padding:10px 14px;border-right:0;border-bottom:1px solid var(--line)}.nav-toggle{display:flex;justify-content:space-between;width:100%}.room-nav ul{display:none}.room-nav ul.expanded{display:grid;margin-top:8px}.room-grid{grid-template-columns:1fr}.motion-toggle{margin-left:0}.welcome{grid-template-columns:1fr}.moon-window{max-width:92px;aspect-ratio:1;justify-self:start}.moon-window span{font-size:42px}}
-@media(prefers-reduced-motion:reduce){.portal-arrow,.arrow-spark{animation:none;transition:none}}
-.still .portal-arrow,.still .arrow-spark{animation:none;transition:none}

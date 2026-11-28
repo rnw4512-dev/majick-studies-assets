@@ -35,3 +35,6 @@ This audit made no database, auth, storage, or legacy-site mutations. No new dep
 - Free plan lacks managed automatic backups; local Export/Import is the primary safety net and MUST ship before cloud sync is enabled. Gentle regular export reminder, no interruption during study.
 - Two free projects already in use. Never create a third project. No plan upgrades.
 - Step 3a is only a schema and local adapter prototype with synthetic data. No production DB writes, migrations, authentication setup, real learner import or deployment.
+
+## Backup review follow-ups (required before cloud activation)
+Keep same-owner restore strict. During sign-in implement a separate explicit previewed adoption of guest/pre-sign-in backup into authenticated owner: validate original owner and content, show source/destination, retain existing destination, require consent, preserve receipts, reset cloud sync lineage only through reviewed reconciliation. Never silently reinterpret a foreign account backup. Durable vault retention, retrieval and persistent reminder remain required. Vault is append-only for now; later add explicit user-selected deletion of old checkpoints with confirmation, never automatic pruning. Personal media remains separate. User authorized Magic Stage 1 after approved backup prototype; this does not waive real backup integration before enabling cloud.

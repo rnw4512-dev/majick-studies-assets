@@ -1,5 +1,6 @@
 <script lang="ts">
   import { onMount, tick } from 'svelte'
+  import { installMagic } from './ui/magic/interaction'
   import { rooms, roomFromHash, roomLink, type RoomId } from './core/router'
   import RoomNavigation from './ui/RoomNavigation.svelte'
   import BackupPreview from './ui/BackupPreview.svelte'
@@ -10,8 +11,12 @@
   let checkingBackup = $state(window.location.hash === '#/backup-preview')
   let heading: HTMLHeadingElement
   let motion = $state(true)
+  let school: HTMLDivElement
+  let magic: ReturnType<typeof installMagic> | undefined
+  $effect(() => { motion; magic?.update() })
   let room = $derived(rooms.find(item => item.id === current) ?? rooms[0])
   onMount(() => {
+    magic = installMagic(school)
     const update = async () => {
       const next = roomFromHash(window.location.hash)
       const check = window.location.hash === '#/storage-check'
@@ -24,10 +29,10 @@
       heading?.focus()
     }
     window.addEventListener('hashchange', update)
-    return () => window.removeEventListener('hashchange', update)
+    return () => { window.removeEventListener('hashchange', update); magic?.destroy() }
   })
 </script>
-<div class="school" class:still={!motion}>
+<div class="school" class:still={!motion} bind:this={school}>
   <a class="skip" href="#main-heading" onclick={(event) => {event.preventDefault(); heading?.focus()}}>Skip to room content</a>
   <header class="masthead">
     <a class="brand" href={roomLink('home')}><span class="seal" aria-hidden="true">☾</span><span>Aetheria<small>Moonlit Collegium</small></span></a>
@@ -35,7 +40,7 @@
     <button class="motion-toggle" aria-pressed={!motion} onclick={() => motion = !motion}>Reduce motion: {motion ? 'Off' : 'On'}</button>
   </header>
   <div class="school-layout">
-    <RoomNavigation {current}/>
+    <RoomNavigation current={checkingStorage || checkingBackup ? null : current}/>
     <main id="main-content">
       <header class="room-heading">
         <p class="eyebrow">Moonlit Collegium · Development preview</p>

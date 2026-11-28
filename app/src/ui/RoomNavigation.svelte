@@ -1,6 +1,6 @@
 <script lang="ts">
   import { rooms, roomLink, type RoomId } from '../core/router'
-  let { current }: { current: RoomId } = $props()
+  let { current }: { current: RoomId | null } = $props()
   let expanded = $state(false)
 </script>
 <nav class="room-nav" aria-label="School rooms">

@@ -1,0 +1,33 @@
+/* One shared effects layer. Original CSS light and spark art. */
+.school{--magic-gold:#ffe3a4;--magic-glow:#f4bd6570}
+.school :where(button:not(:disabled),a[href],input[type=file]:not(:disabled)):is(:hover,:focus-visible){
+  box-shadow:0 0 0 1px var(--magic-gold),0 0 15px var(--magic-glow);
+}
+.school :where(button:not(:disabled),a[href],input[type=file]:not(:disabled)):not([aria-disabled=true]):is(:hover,:focus-visible){
+  animation:magic-shimmer 650ms ease-out;
+}
+@keyframes magic-shimmer{
+  0%{box-shadow:0 0 0 1px var(--magic-gold),0 0 7px var(--magic-glow)}
+  50%{box-shadow:0 0 0 2px var(--magic-gold),0 0 21px var(--magic-glow)}
+  100%{box-shadow:0 0 0 1px var(--magic-gold),0 0 15px var(--magic-glow)}
+}
+.school :where(a,button):focus-visible{outline:3px solid #ffdc91;outline-offset:3px}
+.school .paper :where(a,button,input):focus-visible{outline-color:#6b3b92}
+.school input[type=file]::file-selector-button{
+  font:inherit;font-weight:650;color:#fff5dc;background:#24483b;border:1px solid #92703e;
+  border-radius:7px;padding:9px 12px;margin-right:8px;min-height:44px;cursor:pointer;
+}
+.school input[type=file]:disabled::file-selector-button{opacity:.65;cursor:not-allowed}
+.school :where(.portal,.room-card):is(:hover,:focus-visible) .portal-arrow{transform:translateX(3px)}
+.school :where(.portal,.room-card):is(:hover,:focus-visible) .arrow-spark{animation:magic-twinkle 650ms ease-out}
+.portal-arrow{transition:transform 180ms ease-out}
+@keyframes magic-twinkle{0%,100%{opacity:.7;transform:scale(1)}50%{opacity:1;transform:scale(1.4)}}
+.magic-sparks{position:fixed;inset:0;overflow:clip;pointer-events:none;z-index:100;contain:strict}
+.magic-spark{position:absolute;width:9px;height:9px;background:#ffdd9a;clip-path:polygon(50% 0,62% 38%,100% 50%,62% 62%,50% 100%,38% 62%,0 50%,38% 38%);pointer-events:none}
+.school:is(.still,.magic-paused) :is(button,a,input[type=file],.portal-arrow,.arrow-spark){animation:none;transition:none}
+.school:is(.still,.magic-paused) .portal-arrow{transform:none}
+.school:is(.still,.magic-paused) .magic-sparks{display:none}
+@media(prefers-reduced-motion:reduce){
+  .school :is(button,a,input[type=file],.portal-arrow,.arrow-spark):is(:hover,:focus-visible),.school :is(.portal,.room-card):is(:hover,:focus-visible) :is(.portal-arrow,.arrow-spark){animation:none;transition:none;transform:none}
+  .school .magic-sparks{display:none}
+}
