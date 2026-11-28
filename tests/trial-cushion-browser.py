@@ -108,4 +108,75 @@ with sync_playwright() as pw:
     page.wait_for_function('!!window.MajickRewardCore')
     assert page.evaluate("MajickRewardCore.inventory().blueprints.filter(id=>id==='moonweave-cushion').length") == 1
     print('PASS exact craft cost, Pixi rest, same furnishing in Phaser, storage, and reload', flush=True)
+
+    # Each trial gets a clean profile, but its replay uses the same saved profile.
+    # Observe actual receipt nodes, not generic per-answer reward animations.
+    cases = [
+        ('D669', 'oracle-lens', 'startOracleLens', 4, 15, 1),
+        ('D669', 'hex-breaker', 'startHexBreaker', 8, 18, 1),
+        ('D669', 'gauntlet-victory', 'startGuardianGauntlet', None, 24, 2),
+        ('D772', 'gauntlet-run', 'startD772SectionReview', 12, 14, 1),
+    ]
+    for course, kind, starter, target, xp, crystals in cases:
+        trial = browser.new_page(reduced_motion='reduce', viewport={'width': 1180, 'height': 950})
+        key = f'trial-completion:{course}:{kind}'
+        first = None
+        for attempt in range(2):
+            trial.goto(url, wait_until='domcontentloaded') if attempt == 0 else trial.reload(wait_until='domcontentloaded')
+            trial.wait_for_function('!!window.MajickRewardCore && !!window.MajickGameRealm')
+            trial.evaluate("course=>{switchCourse(course);navigate('games')}", course)
+            if attempt:
+                trial.wait_for_function("key=>!!S.majickAccount.rewardCore.ledger[key]", arg=key)
+            else:
+                assert trial.evaluate("key=>!!S.majickAccount.rewardCore.ledger[key]", key) is False
+            trial.evaluate("""kind=>{
+                window.trialReceiptCount=0;
+                const heading=('trial '+kind.replace(/-/g,' ')).replace(/\\b\\w/g,c=>c.toUpperCase());
+                const observer=new MutationObserver(records=>{
+                    for(const record of records)for(const node of record.addedNodes){
+                        if(node.nodeType===1&&node.id==='majRewardReceipt'&&
+                            node.querySelector('h3')?.textContent===heading)window.trialReceiptCount++;
+                    }
+                });
+                observer.observe(document.body,{childList:true,subtree:true});
+                window.trialReceiptObserver=observer;
+            }""", kind)
+            trial.evaluate(f'{starter}()')
+            for _ in range(12):
+                if trial.evaluate('session.finished'):
+                    break
+                trial.evaluate("""kind=>{
+                    const answer=session.current.answer;
+                    if(kind==='oracle-lens'){
+                        oracleChooseLens(session.correctLens);oracleAnswer(answer);oracleNext();
+                    }else if(kind==='hex-breaker'){
+                        hexJudge(session.claimValid?'valid':'hexed');hexRepair(answer);hexNext();
+                    }else{
+                        gauntletAnswer(answer);if(!session.finished)gauntletNext();
+                    }
+                }""", kind)
+            result = trial.evaluate('({finished:session.finished,score:session.score,round:session.round,won:session.won})')
+            assert result['finished'] and result['score'] == result['round'], (kind, result)
+            if target is not None:
+                assert result['score'] == target, (kind, result)
+            if kind.startswith('gauntlet'):
+                assert result['won'], (kind, result)
+            # Only the completion ledger entry is compared; question-level awards
+            # may legitimately change the total account balance on either run.
+            receipt = trial.evaluate("key=>S.majickAccount.rewardCore.ledger[key].receipt", key)
+            assert (receipt['key'], receipt['type'], receipt['course'], receipt['source']) == (
+                key, 'trial-'+kind, course, 'game-realm')
+            assert (receipt['xp'], receipt['crystals'], receipt['masteryXp'], receipt['eggFragments'],
+                    receipt['independent']) == (xp, crystals, 0, 0, False), receipt
+            assert trial.evaluate("key=>Object.keys(S.majickAccount.rewardCore.ledger).filter(k=>k===key).length", key) == 1
+            assert trial.evaluate('window.trialReceiptCount') == (1 if attempt == 0 else 0), kind
+            if attempt == 0:
+                first = receipt
+                expect(trial.locator('#majRewardReceipt')).to_be_visible()
+                trial.locator('[data-maj-reward-dismiss]').click()
+                trial.evaluate('MajickSaveSafety.flush()')
+            else:
+                assert receipt == first, (kind, receipt, first)
+        print(f'PASS {course} {kind}: exact completion receipt and one celebration across reload/replay', flush=True)
+        trial.context.close()
     browser.close()
