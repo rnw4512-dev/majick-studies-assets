@@ -19,6 +19,31 @@ for(const width of [390,820,1366]){
         const expected=room==='home'?artwork[room]:artwork[room]+(width<=820?'-820':'')+'.webp'
         expect(await img.evaluate((el:HTMLImageElement)=>el.currentSrc)).toContain(expected)
       }
+      if(!room.endsWith('preview') && room!=='storage-check'){
+        const stage=page.locator('.room-stage')
+        const portrait=stage.locator('.scene-portrait img')
+        await expect.poll(()=>portrait.evaluate((img:HTMLImageElement)=>img.complete&&img.naturalWidth>0)).toBe(true)
+        const area=await stage.evaluate(el=>{
+          const b=el.getBoundingClientRect()
+          const plaque=el.querySelector('.scene-plaque')!.getBoundingClientRect()
+          const clip=(r:DOMRect)=>Math.max(0,Math.min(r.right,innerWidth)-Math.max(0,r.left))*Math.max(0,Math.min(r.bottom,innerHeight)-Math.max(0,r.top))
+          // Sample actual topmost hit-tested elements in the unobstructed artwork area.
+          // The decorative scene is pointer-events:none, so the stage itself should receive hits.
+          let clear=0,total=0
+          for(let y=Math.max(b.top,0)+20;y<Math.min(b.bottom,innerHeight)-20;y+=25){
+            for(let x=Math.max(b.left,0)+20;x<Math.min(b.right,innerWidth)-20;x+=25){
+              total++
+              if(document.elementFromPoint(x,y)===el)clear++
+            }
+          }
+          return {height:b.height,top:b.top,visible:clip(b),uncovered:clip(b)-clip(plaque),clear:clear/Math.max(total,1),animations:el.getAnimations({subtree:true}).length}
+        })
+        expect(area.top).toBeLessThan(150)
+        expect(area.height).toBeGreaterThanOrEqual(900*(width<=700?.35:.54))
+        expect(area.uncovered/area.visible).toBeGreaterThan(.65)
+        expect(area.clear).toBeGreaterThan(.60)
+        expect(area.animations).toBe(0)
+      }
       expect(await scene.evaluate(el=>el.getAnimations({subtree:true}).length)).toBe(0)
       expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true)
     }
@@ -27,7 +52,7 @@ for(const width of [390,820,1366]){
     await expect.poll(()=>portrait.evaluate((img:HTMLImageElement)=>img.complete&&img.naturalWidth>0)).toBe(true)
     expect(await portrait.evaluate((el:HTMLImageElement)=>el.currentSrc)).toContain('fairy-hatch-forest.webp')
     expect((await portrait.boundingBox())?.height).toBeGreaterThan(250)
-    const ratio=await page.locator('.welcome-copy').evaluate(el=>{
+    const ratio=await page.locator('.scene-plaque').evaluate(el=>{
       const s=getComputedStyle(el)
       const parse=(v:string)=>v.match(/[\d.]+/g)!.map(Number)
       const [r,g,b,a=1]=parse(s.backgroundColor)
