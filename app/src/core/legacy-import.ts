@@ -1,14 +1,16 @@
 import type { LocalWorkspaceStore } from './local-workspace'
-import { exportBackup, restoreBackup } from './workspace-backup'
-import { newWorkspace, validateWorkspace, WorkspaceError, type Json, type JsonObject, type Workspace } from './workspace'
+import { BackupSizeError, exportBackup, restoreBackup } from './workspace-backup'
+import { newWorkspace, validateWorkspace, WorkspaceError, type Json, type JsonObject, type Workspace, type WorkspaceState } from './workspace'
 
 const durableKeys = ['primary-workspace-v2', 'previous-workspace', 'primary-workspace']
+const knownGood = 'moonlit_learning_v1__known_good'
+const materialKey = 'majick-study-materials-v1'
 const pin = 'moonlit_learning_v1__before_restore'
 const localKeys = ['moonlit_learning_v1', 'moonlit_learning_v1__recovery_previous',
-  pin, 'moonlit_learning_v1__good_backup', 'moonlit_learning_v1__session_backup']
+  pin, 'moonlit_learning_v1__good_backup', 'moonlit_learning_v1__session_backup', knownGood]
 const auxiliaryKeys = new Set([
   'majick-learning-observatory-v1', 'majick-fragment-study-evidence-v1', 'majick-universal-hands-on-v1',
-  'majick-d772-mixed-exam-review-v1', 'majick-study-materials-v1', 'aetheria-experiences-v1', 'aetheria-adventure-journal-v1'
+  'majick-d772-mixed-exam-review-v1', materialKey, 'aetheria-experiences-v1', 'aetheria-adventure-journal-v1'
 ])
 const preservedKeys = new Set([
   'majick-reward-sanctuary-v3411', 'majick-sanctuary-furniture-v1', 'majick-sanctuary-layout-v2',
@@ -52,6 +54,67 @@ function mapRoster(value: Json | undefined): JsonObject {
   return roster
 }
 
+function balance(value: Json | undefined): number | undefined {
+  if (typeof value !== 'number' && (typeof value !== 'string' || !value.trim())) return undefined
+  const number = Number(value)
+  return Number.isSafeInteger(number) && number >= 0 ? number : undefined
+}
+
+function mapRewards(legacy: JsonObject, progress: JsonObject, world: JsonObject | null | undefined): WorkspaceState['rewards'] {
+  const account = isObject(legacy.majickAccount) ? legacy.majickAccount : {}
+  const rewardCore = isObject(account.rewardCore) ? account.rewardCore : {}
+  const merge = isObject(account.progressMergeV3323) ? account.progressMergeV3323 : {}
+  const recovery = isObject(account.balanceRecoveryV3322) ? account.balanceRecoveryV3322 : {}
+  const restored = isObject(recovery.restoredTo) ? recovery.restoredTo : {}
+  const courses = Object.values(progress).filter(isObject)
+  const xp = [account.xp, account.xpHighWater, account.lifetimeXpHighWater,
+    merge.mergedXp, restored.xp, legacy.xp, legacy.totalXp, world?.xp, world?.totalXp]
+    .reduce<number>((best, value) => Math.max(best, balance(value) ?? 0), 0)
+  const courseXp = courses.reduce((best, row) => Math.max(best, balance(row.xp) ?? 0), xp)
+  const courseCrystals = courses.map(row => balance(row.crystals)).filter(value => value !== undefined)
+  const crystals = balance(account.crystals) ?? (courseCrystals.length
+    ? courseCrystals.reduce((best, value) => Math.max(best, value), 0)
+    : balance(world?.crystals) ?? 0)
+
+  const receipts = new Set<string>()
+  if (isObject(rewardCore.ledger)) {
+    for (const [id, entry] of Object.entries(rewardCore.ledger)) if (id && entry) receipts.add(id)
+  }
+  for (const course of courses) {
+    if (!isObject(course.interactiveRewardLedger)) continue
+    for (const [id, entry] of Object.entries(course.interactiveRewardLedger)) if (id && entry) receipts.add(id)
+  }
+  const chestLedger = account.chestEggLedger
+  if (isObject(chestLedger) && Array.isArray(chestLedger.receipts)) {
+    for (const entry of chestLedger.receipts) {
+      if (isObject(entry) && typeof entry.id === 'string' && entry.id) receipts.add(entry.id)
+    }
+  }
+  return {
+    xp: courseXp, crystals, fragments: balance(rewardCore.eggFragments) ?? 0,
+    receipts: Object.fromEntries([...receipts].map(id => [id, true]))
+  }
+}
+
+function exceedsBackupLimit(workspace: Workspace): boolean {
+  try { exportBackup(workspace, workspace.updatedAt); return false }
+  catch (error) {
+    if (error instanceof BackupSizeError) return true
+    throw error
+  }
+}
+
+function withoutImportedMaterials(workspace: Workspace): Workspace | undefined {
+  const extension = workspace.state.extensions.legacyImportV1
+  if (!isObject(extension) || !isObject(extension.auxiliary) || !Object.hasOwn(extension.auxiliary, materialKey)) return
+  const { [materialKey]: _deferred, ...auxiliary } = extension.auxiliary
+  return {
+    ...workspace,
+    state: { ...workspace.state, extensions: { ...workspace.state.extensions,
+      legacyImportV1: { ...extension, auxiliary, deferredMaterials: true } } }
+  }
+}
+
 function mapCandidate(raw: string, aux: JsonObject, standalone: JsonObject, destination: Workspace): Workspace {
   const legacy = scrub(JSON.parse(raw))
   if (!isObject(legacy) || !isObject(legacy.courses) || !isObject(legacy.progress))
@@ -68,6 +131,7 @@ function mapCandidate(raw: string, aux: JsonObject, standalone: JsonObject, dest
   const world = legacy.legacy
   if (world != null && !isObject(world)) throw new WorkspaceError('invalid', 'Invalid legacy world')
   const workspace = newWorkspace(destination.owner, destination.updatedAt)
+  workspace.state.rewards = mapRewards(legacy, progress, world)
   workspace.state.courses = courses
   workspace.state.progress = progress
   workspace.state.guardians = mapRoster(world?.pets)
@@ -176,29 +240,57 @@ export function previewLegacyFixture(fixture: LegacyFixture, destination: Worksp
     if (noModern && options.has('primary-workspace') &&
       (typeof localAt !== 'number' || localAt <= at || !preferred)) suggested = 'primary-workspace'
   }
+  const archivedKnownGood = fixture.snapshots[knownGood]
+  if (archivedKnownGood !== undefined)
+    inspect('archive:' + knownGood, () => add('archive:' + knownGood, archivedKnownGood, aux))
+  suggested ??= options.keys().next().value ?? null
   const candidates = [...options.keys()]
   return {
     suggested,
     candidates,
-    summaries: [...options].map(([id, { state }]) => ({
-      id,
-      courses: Object.keys(state.courses),
-      progressRecords: Object.keys(state.progress).length,
-      guardians: Object.keys(state.guardians).length,
-      eggs: Object.keys(state.eggs).length
-    })),
+    summaries: [...options].map(([id, workspace]) => {
+      const { state } = workspace
+      const oversized = exceedsBackupLimit(workspace)
+      const progressOnly = oversized ? withoutImportedMaterials(workspace) : undefined
+      return {
+        id,
+        oversized,
+        canDeferMaterials: progressOnly !== undefined && !exceedsBackupLimit(progressOnly),
+        courses: Object.keys(state.courses),
+        progressRecords: Object.keys(state.progress).length,
+        guardians: Object.keys(state.guardians).length,
+        eggs: Object.keys(state.eggs).length,
+        xp: state.rewards.xp,
+        crystals: state.rewards.crystals,
+        fragments: state.rewards.fragments,
+        receipts: Object.keys(state.rewards.receipts).length
+      }
+    }),
     conflict: candidates.length > 1 || (isObject(meta) && meta.legacyDivergence === true),
     unreadable,
-    async apply(store: LocalWorkspaceStore, selected: string, confirmed: boolean, retain: (backup: string) => Promise<void>) {
-      const incoming = options.get(selected)
+    async apply(store: LocalWorkspaceStore, selected: string, confirmed: boolean, retain: (backup: string) => Promise<void>, deferMaterials = false) {
+      let incoming = options.get(selected)
       if (!confirmed || !incoming) throw new WorkspaceError('invalid', 'Select and confirm a reviewed candidate')
       const current = await store.read()
       if (!current || current.owner !== before.owner || current.cloudRevision !== null)
         throw new WorkspaceError('conflict', 'A matching local workspace is required')
+      if (deferMaterials) {
+        const progressOnly = exceedsBackupLimit(incoming) ? withoutImportedMaterials(incoming) : undefined
+        if (!progressOnly) throw new WorkspaceError('invalid', 'This copy does not need a separate study materials transfer.')
+        incoming = progressOnly
+      }
       if (stateKey(incoming) === stateKey(current)) return current
       if (current.localRevision !== before.localRevision || stateKey(current) !== stateKey(before))
         throw new WorkspaceError('conflict', 'Destination changed. Review the import again.')
-      return restoreBackup(store, before.owner, exportBackup(incoming), before.localRevision, retain)
+      if (exceedsBackupLimit(current))
+        throw new WorkspaceError('invalid', 'Your current workspace is too large to back up safely. Nothing was changed.')
+      if (exceedsBackupLimit(incoming)) {
+        const progressOnly = withoutImportedMaterials(incoming)
+        if (progressOnly && !exceedsBackupLimit(progressOnly))
+          throw new WorkspaceError('invalid', 'This copy is over 20 MB with study materials. Review and confirm importing progress while leaving those materials in the original app.')
+        throw new WorkspaceError('invalid', 'This progress copy is over 20 MB and cannot be imported safely. Nothing was changed.')
+      }
+      return restoreBackup(store, before.owner, exportBackup(incoming, incoming.updatedAt), before.localRevision, retain)
     }
   }
 }
