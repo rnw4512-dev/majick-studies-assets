@@ -93,7 +93,7 @@ function parseRecords(records: Readonly<Record<string, unknown>>, allow: (key: s
     try {
       if (typeof value !== 'string') throw new Error('Invalid record')
       const choices = key === 'majick-sanctuary-renderer' ? ['pixi', 'phaser']
-        : key === 'majick-sitewide-response-mode-v1' ? ['choice', 'written'] : undefined
+        : key === 'majick-sitewide-response-mode-v1' ? ['choice', 'writing', 'both'] : undefined
       if (choices) {
         if (!choices.includes(value)) throw new Error('Invalid preference')
         parsed[key] = value

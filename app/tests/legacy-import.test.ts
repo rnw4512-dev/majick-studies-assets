@@ -92,13 +92,13 @@ describe('synthetic legacy importer', () => {
       [pin]: legacy(4),
       [pin + '__council']: JSON.stringify({ [council]: '[{"id":"pinned"}]' }),
       [council]: '[{"id":"current"}]',
-      'majick-sanctuary-renderer': 'pixi'
+      'majick-sanctuary-renderer': 'pixi', 'majick-sitewide-response-mode-v1': 'writing'
     } }, before)
     expect(preview.summaries).toEqual([{ id: pin, courses: ['D772'], progressRecords: 1, guardians: 1, eggs: 1 }])
     const restored = await preview.apply(store, pin, true, async () => {})
     expect(restored.state.extensions.legacyImportV1).toMatchObject({
       auxiliary: { [council]: [{ id: 'pinned' }] },
-      standalone: { 'majick-sanctuary-renderer': 'pixi' }
+      standalone: { 'majick-sanctuary-renderer': 'pixi', 'majick-sitewide-response-mode-v1': 'writing' }
     })
   })
 
