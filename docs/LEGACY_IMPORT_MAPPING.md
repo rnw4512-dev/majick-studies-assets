@@ -24,6 +24,6 @@ Use the frozen source inventory for exact key names, owner modules and database 
 
 ## Synthetic checkpoint
 
-Fixture coverage starts with modern checkpoint precedence, local workspace recovery, auxiliary overlay, materially different copies, version validation and known credential exclusions. No source adapter is registered. No real browser or database reads are part of this checkpoint. Historical quota envelopes, pinned Council pairing, PMFC, separate materials, device metadata and feature-specific wallet normalization remain before release.
+Fixture coverage starts with modern checkpoint precedence, local workspace recovery, auxiliary overlay, materially different copies, version validation and known credential exclusions. No source adapter is registered. No real browser or database reads are part of this checkpoint. PMFC, separate materials, device metadata and feature-specific wallet normalization remain before release.
 
 Preview binds reviewed candidates to the destination owner and exact revision. Applying an approved selection retains the destination checkpoint before replacement and uses atomic compare-and-swap. Stale previews, failed retention and cloud-linked destinations block replacement. A retry of the same mapped state is a no-op, and a changed destination requires renewed review. The previous legacy workspace stays available at its original source. Before any live use, review the mapping with Claude and obtain explicit approval for the device/browser and actual import.
