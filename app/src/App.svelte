@@ -31,6 +31,7 @@
       current = next
       await tick()
       heading?.focus()
+      if (!check && !backup) magic?.poof(heading)
     }
     window.addEventListener('hashchange', update)
     return () => { window.removeEventListener('hashchange', update); magic?.destroy() }

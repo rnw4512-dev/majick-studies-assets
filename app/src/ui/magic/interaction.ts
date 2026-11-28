@@ -46,12 +46,31 @@ export function installMagic(root: HTMLElement) {
       animation.onfinish=()=>remove(particle)
     }
   }
+  // A single bounded portal poof shares the spark lifetime/cleanup owner.
+  // Future verified reward events may use the same primitive after receipt integration.
+  function poof(target: HTMLElement | undefined) {
+    if (!target || !allowed()) return
+    const rect = target.getBoundingClientRect()
+    if (rect.bottom<=0 || rect.top>=innerHeight || rect.right<=0 || rect.left>=innerWidth) return
+    if (active.size>=SPARK_LIMIT) remove(active.keys().next().value!)
+    const particle=document.createElement('span')
+    particle.className='magic-poof'
+    particle.style.left=Math.max(0,Math.min(innerWidth,rect.left+rect.width/2))+'px'
+    particle.style.top=Math.max(0,Math.min(innerHeight,rect.top+Math.min(rect.height/2,110)))+'px'
+    layer.append(particle)
+    const animation=particle.animate([
+      {transform:'translate(-50%,-50%) scale(.45)',opacity:.65},
+      {transform:'translate(-50%,-50%) scale(2.1)',opacity:0}
+    ],{duration:SPARK_LIFETIME,easing:'ease-out'})
+    active.set(particle,animation)
+    animation.onfinish=()=>remove(particle)
+  }
   // Capture before navigation or a control removes itself. No preventDefault.
   root.addEventListener('click',activate,true)
   preference.addEventListener('change',refresh)
   document.addEventListener('visibilitychange',refresh)
   refresh()
-  return {update:refresh,destroy(){
+  return {update:refresh,poof,destroy(){
     root.removeEventListener('click',activate,true)
     preference.removeEventListener('change',refresh)
     document.removeEventListener('visibilitychange',refresh)

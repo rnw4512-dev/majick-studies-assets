@@ -1,4 +1,5 @@
 <script lang="ts">
+  import AmbientScene from './AmbientScene.svelte'
   import { sceneFor, sceneUrl, type SceneId } from './scene-config'
   let { room, portrait = false }: { room: SceneId; portrait?: boolean } = $props()
   let scene = $derived(sceneFor(room))
@@ -9,6 +10,7 @@
     <img src={sceneUrl(scene.file)} alt="" decoding="async" fetchpriority={room === 'home' ? 'high' : 'auto'}/>
   </picture>
   <div class="college-scene-light"></div>
+  {#if portrait}<AmbientScene {room}/>{/if}
 </div>
 <style>
   .college-scene{position:fixed;inset:0;z-index:-2;pointer-events:none;overflow:hidden;background:#2d2041}

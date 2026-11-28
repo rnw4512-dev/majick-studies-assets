@@ -31,3 +31,23 @@
   .school :is(button,a,input[type=file],.portal-arrow,.arrow-spark):is(:hover,:focus-visible),.school :is(.portal,.room-card):is(:hover,:focus-visible) :is(.portal-arrow,.arrow-spark){animation:none;transition:none;transform:none}
   .school .magic-sparks{display:none}
 }
+
+/* Stage 2: original authored light geometry. Only the foreground portrait has ambience. */
+.ambient-scene{position:absolute;inset:0;overflow:hidden;pointer-events:none;contain:layout paint;z-index:1}
+.ambient-scene>*{position:absolute;left:var(--x);top:var(--y);pointer-events:none}
+.ambient-firefly{width:5px;height:5px;border-radius:50%;background:#fff4b3;box-shadow:0 0 7px 3px #e9c45cb3,0 0 17px 6px #dfae4a50;opacity:.65;animation:ambient-firefly var(--duration) ease-in-out var(--delay) infinite}
+@keyframes ambient-firefly{0%,100%{transform:translate(0,0);opacity:.35}45%{transform:translate(var(--dx),var(--dy));opacity:1}75%{transform:translate(calc(var(--dx)*.5),8px);opacity:.55}}
+.ambient-wisp{width:clamp(44px,8vw,95px);height:22px;border-radius:50%;background:radial-gradient(ellipse,#e0c7ff64,transparent 72%);opacity:.55;animation:ambient-wisp 14s ease-in-out var(--delay) infinite}
+@keyframes ambient-wisp{0%,100%{transform:translate(-20px,0) rotate(-8deg);opacity:.35}50%{transform:translate(35px,-17px) rotate(6deg);opacity:.72}}
+.ambient-lantern{width:clamp(55px,12vw,130px);height:clamp(55px,12vw,130px);border-radius:50%;transform:translate(-50%,-50%);background:radial-gradient(circle,#ffd58b38,#f7b44b13 36%,transparent 70%);animation:ambient-lantern 5s ease-in-out infinite}
+@keyframes ambient-lantern{0%,100%{opacity:.65}50%{opacity:1}}
+.ambient-candle{width:14px;height:53px;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;animation:ambient-float 7s ease-in-out var(--delay) infinite}
+.ambient-wax{width:12px;height:29px;border-radius:3px 3px 4px 4px;background:linear-gradient(90deg,#9974af,#f1dfc5 45%,#bd9fbb);border:1px solid #dbc7a4;box-shadow:0 0 9px #ffe0a43a}
+.ambient-wick{width:2px;height:4px;background:#4a2d30}
+.ambient-flame{width:10px;height:17px;border-radius:65% 40% 55% 45%;background:radial-gradient(ellipse at 50% 70%,#fff9db 12%,#ffdc8b 50%,#d98b42 80%);box-shadow:0 0 8px 3px #ffcf8266,0 0 21px 6px #e5a04e40;transform-origin:bottom center;animation:ambient-flame 3s ease-in-out var(--delay) infinite}
+@keyframes ambient-flame{0%,100%{transform:scale(.92,1);opacity:.9}40%{transform:scale(1.05,.94);opacity:.82}70%{transform:scale(.96,1.08);opacity:1}}
+.ambient-quill{width:clamp(20px,3vw,34px);height:auto;filter:drop-shadow(0 0 5px #ddbd8f55);animation:ambient-float 9s ease-in-out var(--delay) infinite}
+@keyframes ambient-float{0%,100%{transform:translateY(0) rotate(-5deg)}50%{transform:translateY(-12px) rotate(5deg)}}
+.school:is(.still,.magic-paused) .ambient-motion{animation:none}
+@media(prefers-reduced-motion:reduce){.school .ambient-motion{animation:none}.school .portal-arrow{transition:none}}
+.magic-poof{position:absolute;width:54px;height:54px;border-radius:50%;background:radial-gradient(circle,#fff0bd88 0%,#c8a2ef55 28%,#e3ba7930 43%,transparent 72%);pointer-events:none}
