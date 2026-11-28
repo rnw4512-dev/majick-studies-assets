@@ -4,7 +4,7 @@
   let busy = $state(false)
   let message = $state('')
   let selected = $state(false)
-  let output: HTMLTextAreaElement
+  let output = $state<HTMLTextAreaElement>()
   const expectedOrigin = 'https://rnw4512-dev.github.io'
   let correctOrigin = $derived(window.location.origin === expectedOrigin)
   async function scan() {

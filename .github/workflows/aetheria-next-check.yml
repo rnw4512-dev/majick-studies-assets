@@ -34,3 +34,10 @@ jobs:
         run: |
           npx playwright install --with-deps chromium
           npm run test:browser
+      - name: Retain reviewed console checker
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: aetheria-storage-console
+          path: app/dist/storage-check-console.js
+          retention-days: 7
