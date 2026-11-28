@@ -1,5 +1,6 @@
 <script lang="ts">
   import { onMount, tick } from 'svelte'
+  import RoomScene from './ui/magic/RoomScene.svelte'
   import { installMagic } from './ui/magic/interaction'
   import { rooms, roomFromHash, roomLink, type RoomId } from './core/router'
   import RoomNavigation from './ui/RoomNavigation.svelte'
@@ -33,6 +34,7 @@
   })
 </script>
 <div class="school" class:still={!motion} bind:this={school}>
+  <RoomScene room={checkingStorage || checkingBackup ? 'utility' : current}/>
   <a class="skip" href="#main-heading" onclick={(event) => {event.preventDefault(); heading?.focus()}}>Skip to room content</a>
   <header class="masthead">
     <a class="brand" href={roomLink('home')}><span class="seal" aria-hidden="true">☾</span><span>Aetheria<small>Moonlit Collegium</small></span></a>
@@ -53,7 +55,7 @@
         <StorageCheck/>
       {:else if current === 'home'}
         <section class="welcome" aria-labelledby="welcome-heading">
-          <div class="moon-window" aria-hidden="true"><span>☾</span><i>✧</i><b>✦</b></div>
+          <div class="castle-portrait" aria-hidden="true"><img src={import.meta.env.BASE_URL + 'assets/scenes/landscape-castle.webp'} alt="" fetchpriority="high"/><div class="castle-tint"></div></div>
           <div><p class="eyebrow">Where knowledge awakens magic</p><h2 id="welcome-heading">Welcome, Scholar.</h2>
           <p>Explore the new school navigation. Your courses, rewards and Guardians remain in the original application until migration is tested.</p>
           <a class="portal" href={roomLink('learn')}>Explore Learning Lab <PortalArrow/></a></div>
@@ -64,7 +66,7 @@
       {:else}
         <section class="paper" aria-labelledby="stage-heading"><h2 id="stage-heading">Room foundation</h2><p>The navigation for this room is available. Its learning activities, approved artwork and saved progression have not yet been migrated.</p><a class="portal" href={roomLink('home')}>Return to Collegium <PortalArrow/></a></section>
       {/if}
-      <aside class="notice"><strong>Your existing learning is protected.</strong> This preview does not read or write learner save values. <a href="#/storage-check">Storage safety check</a>. <a href="#/backup-preview">Backup practice</a>. <a href="https://rnw4512-dev.github.io/majick-studies-assets/current-site/">Open the existing application</a>.</aside>
+      <aside class="notice"><strong>Your existing learning is protected.</strong> This preview does not read or write learner save values. <a href="#/storage-check">Storage safety check</a>. <a href="#/backup-preview">Backup practice</a>. <a href="https://rnw4512-dev.github.io/majick-studies-assets/current-site/">Open the existing application</a>. <a href={import.meta.env.BASE_URL + 'assets/scenes/ASSET_RECORD.md'}>Scene artwork credits</a>.</aside>
     </main>
   </div>
 </div>
