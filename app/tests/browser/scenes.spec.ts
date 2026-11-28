@@ -69,7 +69,7 @@ for(const width of [390,820,1366]){
     const nav=page.locator('.room-nav')
     await expect(nav).toBeVisible()
     const glass=await nav.evaluate(el=>{
-      const parse=(v:string)=>v.match(/[\\d.]+/g)!.map(Number)
+      const parse=(v:string)=>v.match(/[\d.]+/g)!.map(Number)
       const lum=(rgb:number[])=>rgb.map(x=>x/255).map(x=>x<=.04045?x/12.92:((x+.055)/1.055)**2.4).reduce((v,x,i)=>v+x*[.2126,.7152,.0722][i],0)
       const composite=(rgba:number[],under:number[])=>rgba.slice(0,3).map((x,i)=>x*(rgba[3]??1)+under[i]*(1-(rgba[3]??1)))
       const style=getComputedStyle(el)
