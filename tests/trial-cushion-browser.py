@@ -264,4 +264,40 @@ with sync_playwright() as pw:
             assert restored == before, (course, kind, 'review rewards after reload')
         print(f'PASS {course} {kind}: no ineligible completion reward or receipt after reload', flush=True)
         trial.context.close()
+
+    # Exercise the real shared reward owner through the study bridge and direct
+    # conflicting flags. Correct guided practice earns its existing base rate,
+    # never independent, delayed or transfer mastery.
+    policy = browser.new_page(reduced_motion='reduce')
+    policy.goto(url, wait_until='domcontentloaded')
+    policy.wait_for_function('!!window.MajickRewardCore && !!window.MajickStudyProgress')
+    policy.evaluate("switchCourse('D669')")
+    policy.evaluate("""()=>{
+        const core=MajickRewardCore, r=S.majickAccount.rewardCore;
+        const snapshot=()=>({xp:core.inspect().xp,crystals:core.inspect().crystals,
+            mastery:r.masteryXp,fragments:r.eggFragments,keys:Object.keys(r.ledger).length});
+        const check=(ok,label)=>{if(!ok)throw Error(label)};
+        const start=snapshot();
+        const wrong=core.award('correct-answer',{key:'boundary-wrong',correct:false,independent:true});
+        check(wrong.rejected&&JSON.stringify(snapshot())===JSON.stringify(start),'wrong answer changed rewards');
+        for(const type of ['independent-correct','mixed-transfer-success','delayed-recall','concept-mastered']){
+            const result=core.award(type,{key:'boundary-rejected:'+type,assisted:true,independent:true});
+            check(result.rejected&&JSON.stringify(snapshot())===JSON.stringify(start),'assisted milestone: '+type);
+        }
+        for(const [support,xp] of [['guided',8],['hint',5],['substantial',3]]){
+            const key='boundary-guided:'+support,before=snapshot();
+            const context={key,correct:true,assisted:true,independent:true,delayed:true,transfer:true,support,difficulty:5};
+            const receipt=core.award('correct-answer',context),after=snapshot();
+            check(receipt.xp===xp&&receipt.crystals===1&&receipt.masteryXp===0&&!receipt.independent,'guided receipt '+support);
+            check(after.xp-before.xp===xp&&after.crystals-before.crystals===1&&after.mastery===before.mastery&&after.fragments===before.fragments,'guided balance '+support);
+            check(JSON.stringify(core.award('correct-answer',context))===JSON.stringify(receipt)&&JSON.stringify(snapshot())===JSON.stringify(after),'duplicate guided receipt');
+        }
+        const before=snapshot();
+        MajickStudyProgress.creditAnswer({key:'boundary-bridge-transfer',course:'D669',qid:'boundary-synthetic',correct:true,assisted:true,source:'guided-transfer',difficulty:5});
+        const receipt=r.ledger['study:boundary-bridge-transfer'].receipt;
+        check(receipt.xp===8&&receipt.crystals===1&&receipt.masteryXp===0&&!receipt.independent,'bridge transfer leaked mastery');
+        check(snapshot().mastery===before.mastery,'bridge mastery changed');
+    }""")
+    policy.context.close()
+    print('PASS wrong, assisted, conflicting flags, guided rates and duplicate study rewards', flush=True)
     browser.close()

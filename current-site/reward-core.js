@@ -240,8 +240,9 @@ function award(type,ctx={}){
  const a=account();if(!a)return null;const r=a.rewardCore,key=rewardKey(type,ctx);
  if(r.ledger[key])return r.ledger[key].receipt||null;
  if(ctx.correct===false||type==='learning-effort')return {key,type,xp:0,crystals:0,masteryXp:0,eggFragments:0,rejected:'incorrect-answer'};
- const cfg=baseFor(type,ctx),independent=ctx.independent===true||type==='independent-correct',delayed=ctx.delayed===true||type==='delayed-recall',transfer=ctx.transfer===true||type==='mixed-transfer-success';
- if(ctx.assisted===true||ctx.independent===false||ctx.masteryEligible===false){if(['micro-skill-mastered','concept-mastered','lesson-mastered','competency-mastered','oa-competency-ready','course-passed','misconception-repaired','delayed-recall'].includes(type))return {key,type,xp:0,crystals:0,masteryXp:0,eggFragments:0,rejected:'assisted-or-ineligible'};cfg.eggFragments=0;cfg.masteryXp=0;}
+ const ineligible=ctx.assisted===true||ctx.independent===false||ctx.masteryEligible===false;
+ const cfg=baseFor(type,ineligible?{...ctx,independent:false}:ctx),independent=!ineligible&&(ctx.independent===true||type==='independent-correct'),delayed=!ineligible&&(ctx.delayed===true||type==='delayed-recall'),transfer=!ineligible&&(ctx.transfer===true||type==='mixed-transfer-success');
+ if(ineligible){if(['independent-correct','mixed-transfer-success','micro-skill-mastered','concept-mastered','lesson-mastered','competency-mastered','oa-competency-ready','course-passed','misconception-repaired','delayed-recall'].includes(type))return {key,type,xp:0,crystals:0,masteryXp:0,eggFragments:0,rejected:'assisted-or-ineligible'};cfg.eggFragments=0;cfg.masteryXp=0;}
  const beforeXp=Math.max(Number(a.xp||0),Number(a.xpHighWater||0));
  let xp=Number(cfg.xp||0),crystals=Number(cfg.crystals||0);
  if(type==='correct-answer'&&independent){cfg.masteryXp=Number(cfg.masteryXp||0)+5}
