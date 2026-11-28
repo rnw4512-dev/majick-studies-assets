@@ -1,0 +1,109 @@
+{
+  "assets": [
+    {
+      "room": "home",
+      "file": "house.png",
+      "original": "current-site/assets/licensed/milestones/house.png",
+      "gitBlob": "05edc146f234fd51154333bd1bf55436fe98fcc8",
+      "author": "Marcus Huang / onein8billion",
+      "license": "CC0-1.0",
+      "source": "https://opengameart.org/content/1-in-8-billion-%E2%80%93-free-life-simulator-life-milestone-icons-cc0-32x32",
+      "adaptation": "Exact copy of existing runtime derivative; no further image modification"
+    },
+    {
+      "room": "study",
+      "file": "book.png",
+      "original": "current-site/assets/licensed/milestones/book.png",
+      "gitBlob": "db02259c304846063325680169e3e0901df4086e",
+      "author": "Marcus Huang / onein8billion",
+      "license": "CC0-1.0",
+      "source": "https://opengameart.org/content/1-in-8-billion-%E2%80%93-free-life-simulator-life-milestone-icons-cc0-32x32",
+      "adaptation": "Exact copy of existing runtime derivative; no further image modification"
+    },
+    {
+      "room": "learn",
+      "file": "skill-03.webp",
+      "original": "current-site/assets/licensed/skill-03.webp",
+      "gitBlob": "4ffa475980667d4684e3aa6824904a3c04395573",
+      "author": "Kutejnikov",
+      "license": "CC0-1.0",
+      "source": "https://opengameart.org/content/22-skill-icons",
+      "adaptation": "Exact copy of existing runtime derivative; no further image modification"
+    },
+    {
+      "room": "trials",
+      "file": "skill-17.webp",
+      "original": "current-site/assets/licensed/skill-17.webp",
+      "gitBlob": "fd185de61c205f0137e9c2df03af980f75ab7496",
+      "author": "Kutejnikov",
+      "license": "CC0-1.0",
+      "source": "https://opengameart.org/content/22-skill-icons",
+      "adaptation": "Exact copy of existing runtime derivative; no further image modification"
+    },
+    {
+      "room": "games",
+      "file": "cluster-1.webp",
+      "original": "current-site/assets/licensed/crystals/cluster-1.webp",
+      "gitBlob": "085a3ebad539a270ff9262881168dbcbc47ce47f",
+      "author": "rubberduck",
+      "license": "CC0-1.0",
+      "source": "https://opengameart.org/content/simple-3d-crystals-unwrapped-simple-texture",
+      "adaptation": "Exact copy of existing runtime derivative; no further image modification"
+    },
+    {
+      "room": "sanctuary",
+      "file": "heart.png",
+      "original": "current-site/assets/licensed/milestones/heart.png",
+      "gitBlob": "a86e535ca5f6d3c31dcde0794fedc33a637c0818",
+      "author": "Marcus Huang / onein8billion",
+      "license": "CC0-1.0",
+      "source": "https://opengameart.org/content/1-in-8-billion-%E2%80%93-free-life-simulator-life-milestone-icons-cc0-32x32",
+      "adaptation": "Exact copy of existing runtime derivative; no further image modification"
+    },
+    {
+      "room": "atelier",
+      "file": "purple.webp",
+      "original": "current-site/assets/licensed/potions/purple.webp",
+      "gitBlob": "cd3d1bb0057abd11698f0c1f0ffd2713d4da3624",
+      "author": "OwlishMedia",
+      "license": "CC0-1.0",
+      "source": "https://opengameart.org/content/potion-bottle-0",
+      "adaptation": "Exact copy of existing runtime derivative; no further image modification"
+    },
+    {
+      "room": "journal",
+      "file": "skill-08.webp",
+      "original": "current-site/assets/licensed/skill-08.webp",
+      "gitBlob": "3a9fdfdcfa303f1b9f8c85d96c8d68637dd8dc13",
+      "author": "Kutejnikov",
+      "license": "CC0-1.0",
+      "source": "https://opengameart.org/content/22-skill-icons",
+      "adaptation": "Exact copy of existing runtime derivative; no further image modification"
+    },
+    {
+      "room": "council",
+      "file": "briefcase.png",
+      "original": "current-site/assets/licensed/milestones/briefcase.png",
+      "gitBlob": "01b60c76f920eeee4b491f529f0626d05fa7f917",
+      "author": "Marcus Huang / onein8billion",
+      "license": "CC0-1.0",
+      "source": "https://opengameart.org/content/1-in-8-billion-%E2%80%93-free-life-simulator-life-milestone-icons-cc0-32x32",
+      "adaptation": "Exact copy of existing runtime derivative; no further image modification"
+    },
+    {
+      "room": "observatory",
+      "file": "star.png",
+      "original": "current-site/assets/licensed/milestones/star.png",
+      "gitBlob": "84d9770c5ea77a8023b650a7467862910b1de9e0",
+      "author": "Marcus Huang / onein8billion",
+      "license": "CC0-1.0",
+      "source": "https://opengameart.org/content/1-in-8-billion-%E2%80%93-free-life-simulator-life-milestone-icons-cc0-32x32",
+      "adaptation": "Exact copy of existing runtime derivative; no further image modification"
+    }
+  ],
+  "fallback": {
+    "file": "fallback.svg",
+    "author": "Original Aetheria vector artwork authored by ChatGPT in this checkpoint",
+    "source": "Original SVG geometry, no references"
+  }
+}

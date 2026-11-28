@@ -22,8 +22,7 @@ p{max-width:68ch}
 .school-layout{display:grid;grid-template-columns:clamp(215px,22vw,260px) minmax(0,1fr);min-height:calc(100vh - 78px)}
 .room-nav{padding:18px 12px;background:rgba(23,14,35,.35);backdrop-filter:blur(7px);border-right:1px solid var(--line)}
 .room-nav ul{list-style:none;padding:0;margin:0;display:grid;gap:5px}
-.room-nav a{display:flex;gap:12px;align-items:center;min-height:44px;padding:8px 11px;text-decoration:none;border:1px solid transparent;border-radius:8px;font-size:.94rem;background:rgba(33,20,46,.79);color:#f8eedc}
-.room-nav a span{color:var(--gold);width:20px;text-align:center;flex-shrink:0}
+.room-nav a{display:flex;gap:10px;overflow-wrap:anywhere;align-items:center;min-height:44px;padding:8px 11px;text-decoration:none;border:1px solid transparent;border-radius:8px;font-size:.94rem;background:rgba(33,20,46,.79);color:#f8eedc}
 .room-nav a:hover,.room-nav a[aria-current=page]{border-color:var(--gold);background:#4a305d}
 .room-nav a[aria-current=page]{box-shadow:inset 3px 0 var(--gold)}
 .nav-toggle{display:none}
@@ -47,11 +46,10 @@ main{min-width:0;width:100%;max-width:1200px;margin:0 auto;padding:clamp(14px,3v
 .portal-arrow{position:relative;color:var(--gold);font-size:1.35rem;text-shadow:0 0 8px #d4a95d;display:inline-block;flex-shrink:0}
 .arrow-spark{font-size:.65rem;position:absolute;right:-3px;top:-4px;opacity:.7}
 .room-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
-.room-card{display:grid;grid-template-columns:32px minmax(0,1fr) 24px;align-items:center;gap:10px;min-height:86px;padding:13px;text-decoration:none;border:1px solid #87694a;border-radius:10px;background:#30203be8}
+.room-card{display:grid;grid-template-columns:42px minmax(0,1fr) 24px;align-items:center;gap:10px;min-height:86px;padding:13px;text-decoration:none;border:1px solid #87694a;border-radius:10px;background:#30203be8}
 .room-card:hover{background:#463158;border-color:var(--gold)}
 .room-card strong,.room-card small{display:block;overflow-wrap:anywhere}
 .room-card strong{color:#f7dca4}.room-card small{color:#e2d5e4;font-size:.82rem;margin-top:3px}
-.room-glyph{color:var(--gold);font-size:1.5rem;text-align:center}
 .paper{background:var(--paper);color:var(--ink);border:1px solid #b99d65;border-radius:12px;padding:clamp(16px,3vw,28px);color-scheme:light}
 .paper :focus-visible{outline-color:#6b3b92}
 .notice{margin-top:24px;border:1px solid var(--line);border-radius:10px;background:#21142fed;padding:14px;color:#e0d0e3;font-size:.88rem}

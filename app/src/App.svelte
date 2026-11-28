@@ -3,6 +3,7 @@
   import RoomScene from './ui/magic/RoomScene.svelte'
   import { installMagic } from './ui/magic/interaction'
   import { rooms, roomFromHash, roomLink, type RoomId } from './core/router'
+  import RoomIcon from './ui/RoomIcon.svelte'
   import RoomNavigation from './ui/RoomNavigation.svelte'
   import BackupPreview from './ui/BackupPreview.svelte'
   import StorageCheck from './ui/StorageCheck.svelte'
@@ -67,13 +68,13 @@
             <a class="portal" href={roomLink('learn')}>Explore Learning Lab <PortalArrow/></a>
           </section>
           <section aria-labelledby="rooms-heading"><h2 id="rooms-heading" class="section-heading">Explore the Collegium</h2>
-            <div class="room-grid">{#each rooms.slice(1) as item}<a class="room-card" href={roomLink(item.id)}><span class="room-glyph" aria-hidden="true">{item.glyph}</span><span><strong>{item.name}</strong><small>{item.description}</small></span><PortalArrow/></a>{/each}</div>
+            <div class="room-grid">{#each rooms.slice(1) as item}<a class="room-card" href={roomLink(item.id)}><RoomIcon room={item.id}/><span><strong>{item.name}</strong><small>{item.description}</small></span><PortalArrow/></a>{/each}</div>
           </section>
         {:else}
           <section class="room-intro" aria-labelledby="stage-heading"><h2 id="stage-heading">Room foundation</h2><p>{room.description} The learning activities and saved progression have not yet been migrated.</p><a class="portal" href={roomLink('home')}>Return to Collegium <PortalArrow/></a></section>
         {/if}
       {/if}
-      <aside class="notice"><strong>Your existing learning is protected.</strong> This preview does not read or write learner save values. <a href="#/storage-check">Storage safety check</a>. <a href="#/backup-preview">Backup practice</a>. <a href="https://rnw4512-dev.github.io/majick-studies-assets/current-site/">Open the existing application</a>. <a href={import.meta.env.BASE_URL + 'assets/scenes/ASSET_RECORD.md'}>Scene artwork credits</a>.</aside>
+      <aside class="notice"><strong>Your existing learning is protected.</strong> This preview does not read or write learner save values. <a href="#/storage-check">Storage safety check</a>. <a href="#/backup-preview">Backup practice</a>. <a href="https://rnw4512-dev.github.io/majick-studies-assets/current-site/">Open the existing application</a>. <a href={import.meta.env.BASE_URL + 'assets/scenes/ASSET_RECORD.md'}>Scene artwork credits</a>. <a href={import.meta.env.BASE_URL + 'assets/room-icons/CREDITS.md'}>Room icon credits</a>.</aside>
     </main>
   </div>
 </div>

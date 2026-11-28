@@ -1,0 +1,17 @@
+# Room icon credits
+
+Exact copies of credited existing Aetheria assets. No reference photos or new downloads. See manifest.json for Git blob identity and source URL for each.
+
+- home: house.png — Marcus Huang / onein8billion, CC0-1.0, https://opengameart.org/content/1-in-8-billion-%E2%80%93-free-life-simulator-life-milestone-icons-cc0-32x32. Original: current-site/assets/licensed/milestones/house.png. Existing runtime derivative unchanged.
+- study: book.png — Marcus Huang / onein8billion, CC0-1.0, https://opengameart.org/content/1-in-8-billion-%E2%80%93-free-life-simulator-life-milestone-icons-cc0-32x32. Original: current-site/assets/licensed/milestones/book.png. Existing runtime derivative unchanged.
+- learn: skill-03.webp — Kutejnikov, CC0-1.0, https://opengameart.org/content/22-skill-icons. Original: current-site/assets/licensed/skill-03.webp. Existing runtime derivative unchanged.
+- trials: skill-17.webp — Kutejnikov, CC0-1.0, https://opengameart.org/content/22-skill-icons. Original: current-site/assets/licensed/skill-17.webp. Existing runtime derivative unchanged.
+- games: cluster-1.webp — rubberduck, CC0-1.0, https://opengameart.org/content/simple-3d-crystals-unwrapped-simple-texture. Original: current-site/assets/licensed/crystals/cluster-1.webp. Existing runtime derivative unchanged.
+- sanctuary: heart.png — Marcus Huang / onein8billion, CC0-1.0, https://opengameart.org/content/1-in-8-billion-%E2%80%93-free-life-simulator-life-milestone-icons-cc0-32x32. Original: current-site/assets/licensed/milestones/heart.png. Existing runtime derivative unchanged.
+- atelier: purple.webp — OwlishMedia, CC0-1.0, https://opengameart.org/content/potion-bottle-0. Original: current-site/assets/licensed/potions/purple.webp. Existing runtime derivative unchanged.
+- journal: skill-08.webp — Kutejnikov, CC0-1.0, https://opengameart.org/content/22-skill-icons. Original: current-site/assets/licensed/skill-08.webp. Existing runtime derivative unchanged.
+- council: briefcase.png — Marcus Huang / onein8billion, CC0-1.0, https://opengameart.org/content/1-in-8-billion-%E2%80%93-free-life-simulator-life-milestone-icons-cc0-32x32. Original: current-site/assets/licensed/milestones/briefcase.png. Existing runtime derivative unchanged.
+- observatory: star.png — Marcus Huang / onein8billion, CC0-1.0, https://opengameart.org/content/1-in-8-billion-%E2%80%93-free-life-simulator-life-milestone-icons-cc0-32x32. Original: current-site/assets/licensed/milestones/star.png. Existing runtime derivative unchanged.
+- fallback.svg: original Aetheria vector geometry by ChatGPT; no external source.
+
+Legacy mapping consulted: current-site/licensed-assets.css and docs/ICON_INTEGRATION_2026-11-26.md. Study uses credited book rather than Solstice astronomy-book-stack (creator/license not established in collection manifest). Trials uses prior credited skill-17; games use verified crystal rather than runestones or unconfirmed runes; Observatory uses prior star. These are intentional interim selections, not claims that all legacy art is verified. The existing spell-icons LICENSE identifies Painterly Spell Icons Part 3, J. W. Bjerk, CC BY 3.0, but user specifically requires provenance confirmation for runes/leaf groups before shipping; no such files copied here. Fantasy-icons specific mapping/attribution must be verified before future use. Credits for unchanged original files remain in legacy app.
