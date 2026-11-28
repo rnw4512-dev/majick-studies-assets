@@ -179,4 +179,89 @@ with sync_playwright() as pw:
                 assert receipt == first, (kind, receipt, first)
         print(f'PASS {course} {kind}: exact completion receipt and one celebration across reload/replay', flush=True)
         trial.context.close()
+
+    # Below-threshold attempts must not create a completion receipt, even
+    # though correct individual answers may earn their ordinary rewards.
+    boundary_cases = [
+        ('D669', 'startOracleLens', 'oracle-lens', 2, 4),
+        ('D669', 'startHexBreaker', 'hex-breaker', 5, 8),
+        ('D669', 'startGuardianGauntlet', 'gauntlet-victory', 0, None),
+        ('D772', 'startD772SectionReview', 'gauntlet-run', 6, 12),
+        ('D756', 'startOracleLens', 'oracle-lens', None, 8),
+        ('D756', 'startHexBreaker', 'hex-breaker', None, 8),
+        ('D756', 'startGuardianGauntlet', 'gauntlet-victory', None, None),
+        ('D756', 'startMemoryConstellation', 'memory-constellation', None, None),
+    ]
+    for course, starter, kind, correct_limit, rounds in boundary_cases:
+        trial = browser.new_page(reduced_motion='reduce', viewport={'width': 1180, 'height': 950})
+        trial.goto(url, wait_until='domcontentloaded')
+        trial.wait_for_function('!!window.MajickRewardCore && !!window.MajickGameRealm')
+        trial.evaluate("course=>{switchCourse(course);navigate('games')}", course)
+        snapshot = """()=>{const s=MajickRewardCore.inspect(),r=S.majickAccount.rewardCore;
+            return {xp:s.xp,crystals:s.crystals,chests:s.chests,fragments:s.eggFragments,
+                    mastery:r.masteryXp,ledger:r.ledger}}"""
+        before = trial.evaluate(snapshot)
+        trial.evaluate("""()=>{
+            window.trialBoundaryReceipts=[];
+            new MutationObserver(records=>{
+                for(const record of records)for(const node of record.addedNodes){
+                    if(node.nodeType===1&&node.id==='majRewardReceipt'){
+                        const title=node.querySelector('h3')?.textContent||'';
+                        if(title.startsWith('Trial '))window.trialBoundaryReceipts.push(title);
+                    }
+                }
+            }).observe(document.body,{childList:true,subtree:true});
+        }""")
+        trial.evaluate(f'{starter}()')
+        if kind == 'memory-constellation':
+            pairs = trial.evaluate("""session.cards.flatMap((card,i)=>card.kind==='clue'?
+                [[i,session.cards.findIndex(other=>other.kind==='answer'&&other.pair===card.pair)]]:[])""")
+            assert len(pairs) >= 4
+            for clue, answer in pairs:
+                trial.locator(f'[data-card-index="{clue}"]').evaluate('button=>button.click()')
+                trial.locator(f'[data-card-index="{answer}"]').evaluate('button=>button.click()')
+            trial.wait_for_function('session.finished')
+            assert trial.evaluate('session.score') == len(pairs)
+        else:
+            for _ in range(12):
+                if trial.evaluate('session.finished'):
+                    break
+                trial.evaluate("""limit=>{
+                    const q=session.current;
+                    const correct=limit===null||session.round<=limit;
+                    const answer=correct?q.answer:q.options.find(o=>o!==q.answer);
+                    if(answer===undefined)throw Error('Missing distractor');
+                    if(session.type==='oraclelens'){
+                        oracleChooseLens(session.correctLens);oracleAnswer(answer);oracleNext();
+                    }else if(session.type==='hexbreaker'){
+                        const valid=correct?session.claimValid:!session.claimValid;
+                        hexJudge(valid?'valid':'hexed');hexRepair(answer);hexNext();
+                    }else{
+                        gauntletAnswer(answer);if(!session.finished)gauntletNext();
+                    }
+                }""", correct_limit)
+            result = trial.evaluate('({finished:session.finished,score:session.score,round:session.round,won:session.won})')
+            assert result['finished'], (course, kind, result)
+            if rounds is not None:
+                assert result['round'] == rounds, (course, kind, result)
+            assert result['score'] == (result['round'] if correct_limit is None else correct_limit), result
+            if kind.startswith('gauntlet'):
+                assert result['won'] == (correct_limit is None), result
+        after = trial.evaluate(snapshot)
+        prefix = f'trial-completion:{course}:'
+        assert {k:v for k,v in after['ledger'].items() if k.startswith(prefix)} == {
+            k:v for k,v in before['ledger'].items() if k.startswith(prefix)}, (course, kind)
+        assert trial.evaluate('window.trialBoundaryReceipts') == [], (course, kind)
+        if course == 'D756':
+            assert after == before, (course, kind, 'review must not award account rewards or mastery')
+        trial.evaluate('MajickSaveSafety.flush()')
+        trial.reload(wait_until='domcontentloaded')
+        trial.wait_for_function('!!window.MajickRewardCore && !!window.MajickGameRealm')
+        restored = trial.evaluate(snapshot)
+        assert {k:v for k,v in restored['ledger'].items() if k.startswith(prefix)} == {
+            k:v for k,v in before['ledger'].items() if k.startswith(prefix)}, (course, kind, 'reload')
+        if course == 'D756':
+            assert restored == before, (course, kind, 'review rewards after reload')
+        print(f'PASS {course} {kind}: no ineligible completion reward or receipt after reload', flush=True)
+        trial.context.close()
     browser.close()
