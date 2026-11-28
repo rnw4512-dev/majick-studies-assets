@@ -79,7 +79,7 @@
         {@const summary = backupSummary(item.value)}
         <section>
           <h3>{item.label}</h3>
-          <p>{summary.xp} XP · {summary.crystals} crystals · {summary.fragments} fragments</p>
+          <p>{summary.xp} XP · {summary.crystals} crystals · {summary.chests} chests · {summary.fragments} fragments</p>
           <p>{summary.guardians} Guardians · {summary.eggs} eggs · {summary.courses} courses</p>
           <p>Saved: {summary.updatedAt}</p>
         </section>

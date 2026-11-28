@@ -76,6 +76,8 @@ function mapRewards(legacy: JsonObject, progress: JsonObject, world: JsonObject 
     ? courseCrystals.reduce((best, value) => Math.max(best, value), 0)
     : balance(world?.crystals) ?? 0)
 
+  const chests = balance(account.chests) ?? courses.reduce((best, row) => Math.max(best, balance(row.chests) ?? 0), 0)
+
   const receipts = new Set<string>()
   if (isObject(rewardCore.ledger)) {
     for (const [id, entry] of Object.entries(rewardCore.ledger)) if (id && entry) receipts.add(id)
@@ -91,7 +93,7 @@ function mapRewards(legacy: JsonObject, progress: JsonObject, world: JsonObject 
     }
   }
   return {
-    xp: courseXp, crystals, fragments: balance(rewardCore.eggFragments) ?? 0,
+    xp: courseXp, crystals, chests, fragments: balance(rewardCore.eggFragments) ?? 0,
     receipts: Object.fromEntries([...receipts].map(id => [id, true]))
   }
 }
@@ -262,6 +264,7 @@ export function previewLegacyFixture(fixture: LegacyFixture, destination: Worksp
         eggs: Object.keys(state.eggs).length,
         xp: state.rewards.xp,
         crystals: state.rewards.crystals,
+        chests: state.rewards.chests,
         fragments: state.rewards.fragments,
         receipts: Object.keys(state.rewards.receipts).length
       }

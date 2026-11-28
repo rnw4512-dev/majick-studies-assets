@@ -5,7 +5,7 @@ export const WORKSPACE_VERSION = 1
 export interface WorkspaceState {
   courses: JsonObject
   progress: JsonObject
-  rewards: { xp: number; crystals: number; fragments: number; receipts: Record<string, true> }
+  rewards: { xp: number; crystals: number; chests: number; fragments: number; receipts: Record<string, true> }
   guardians: JsonObject
   eggs: JsonObject
   inventory: JsonObject
@@ -76,14 +76,17 @@ export function validateWorkspace(value: unknown, owner: string): Workspace {
   for (const section of sections) if (!object(state[section])) invalid('Invalid state section: ' + section)
   const rewards = state.rewards
   if (!object(rewards) || !integer(rewards.xp) || !integer(rewards.crystals) ||
-      !integer(rewards.fragments) || !object(rewards.receipts) ||
+      (Object.hasOwn(rewards, 'chests') && !integer(rewards.chests)) || !integer(rewards.fragments) || !object(rewards.receipts) ||
       Object.values(rewards.receipts).some(x => x !== true)) return invalid('Invalid rewards or receipts')
-  return structuredClone(value) as unknown as Workspace
+  const workspace = structuredClone(value) as unknown as Workspace
+  // Version 1 checkpoints written before chest support omit this balance.
+  workspace.state.rewards.chests ??= 0
+  return workspace
 }
 export function newWorkspace(owner: string, at: string): Workspace {
   return validateWorkspace({ schemaVersion: 1, owner, localRevision: 0, cloudRevision: null,
     acknowledgedLocalRevision: 0, updatedAt: at,
-    state: { courses: {}, progress: {}, rewards: { xp: 0, crystals: 0, fragments: 0, receipts: {} },
+    state: { courses: {}, progress: {}, rewards: { xp: 0, crystals: 0, chests: 0, fragments: 0, receipts: {} },
       guardians: {}, eggs: {}, inventory: {}, sanctuary: {}, journal: {}, settings: {}, materials: {}, extensions: {} }
   }, owner)
 }
