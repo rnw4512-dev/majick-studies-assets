@@ -194,6 +194,81 @@ with sync_playwright() as pw:
    assert page.evaluate("key=>MajickLearningExperiences.memories().filter(m=>m.key===key).length",memory)==1
   button('[data-exp-exit]').click()
  print('PASS all eight D669 workshop activities: wrong, repair, correct, replay, journal uniqueness and no currency or mastery',flush=True)
+
+ # Adventure first-clear rewards: use an isolated fictitious profile, not
+ # the learner's save. Unlock via the existing account high-water values.
+ context.close()
+ context=browser.new_context(viewport={'width':1180,'height':1000},reduced_motion='reduce')
+ page=context.new_page()
+ page.goto(os.environ.get('MAJICK_URL',f'http://127.0.0.1:{server.server_port}/'))
+ page.wait_for_function('!!window.MajickAetheriaAdventures&&!!window.MajickRewardCore&&!!window.MajickGuardianCare')
+ page.evaluate("""()=>{
+  switchCourse('D669');const a=MajickStateCore.ensureAccount();
+  a.xp=2000;a.xpHighWater=2000;a.lifetimeXpHighWater=2000;
+  S.legacy.pets=[{id:'adventure-test-pet',type:'moon-cat',name:'Velora'}];
+  S.legacy.activePetId='adventure-test-pet';MajickGuardianCare.ensure();save();
+  navigate('games');
+ }""")
+ pool=page.evaluate("MajickAetheriaAdventures.questions('D669')")
+ answers={q['prompt']:q['correct'] for q in pool}
+ panel=page.locator('#aethAdventure')
+ def adventure_click(action):
+  panel.locator(f'[data-aeth-action="{action}"]').first.click()
+ def adventure_answer(good):
+  prompt=panel.locator('.aeth-adventure-play h3').inner_text()
+  right=answers[prompt]
+  options=panel.locator('[data-aeth-answer]')
+  index=right if good else (right+1)%options.count()
+  panel.locator(f'[data-aeth-answer="{index}"]').click()
+  adventure_click('next')
+ def assert_adventure(before,key,earned):
+  after=page.evaluate(snapshot)
+  assert (after['xp'],after['crystals'],after['mastery'])==(before['xp'],before['crystals'],before['mastery'])
+  assert after['fragments']==before['fragments']+int(earned),(key,after,before)
+  if earned:
+   receipt=after['ledger'][key]['receipt']
+   assert (receipt['xp'],receipt['crystals'],receipt['masteryXp'],receipt['eggFragments'])==(0,0,0,1)
+  else:
+   assert after['ledger']==before['ledger'],key
+  return after
+ def reopen(room):
+  page.evaluate('MajickSaveSafety.flush()')
+  page.reload(wait_until='domcontentloaded')
+  page.wait_for_function('!!window.MajickAetheriaAdventures&&!!window.MajickRewardCore')
+  page.evaluate("room=>{switchCourse('D669');navigate(room)}",room)
+  panel.wait_for()
+ for mode,room,keys in [('game','games',['rune-lantern']),('story','mission',['chapter-1','chapter-2','chapter-3']),('guardian','companions',['adventure-test-pet:moon','adventure-test-pet:moss'])]:
+  page.evaluate('room=>navigate(room)',room)
+  panel.wait_for()
+  for item in keys:
+   key='aetheria:adventure:'+mode+':D669:'+item
+   before=page.evaluate(snapshot)
+   for attempt in range(3):
+    if attempt==2:
+     reopen(room)
+    if mode=='story':
+     adventure_click('chapter:'+item.split('-')[-1])
+    action='restart' if panel.locator('[data-aeth-action="restart"]').count() else 'start'
+    adventure_click(action)
+    if mode=='guardian':
+     trail=item.split(':')[-1]
+     adventure_click('trail:'+trail)
+     assert panel.locator('[data-aeth-answer]').count()==0
+     route=['up','right','down','down','right','right','right','up'] if trail=='moon' else ['down','right','right','right','up','right']
+     for direction in route:
+      panel.locator(f'[data-aeth-move="{direction}"]').click()
+     assert panel.locator('[data-aeth-answer]').count()>0
+    for i in range(1 if mode=='guardian' else 3):
+     if mode=='story':
+      panel.locator('[data-aeth-route="evidence"]').click()
+     adventure_answer(attempt!=0 or i!=0)
+    if attempt==0:
+     assert_adventure(before,key,False)
+    elif attempt==1:
+     first=assert_adventure(before,key,True)
+    else:
+     assert_adventure(first,key,False)
+   print('PASS adventure',mode,item,'failure, exact first-clear fragment and reload replay',flush=True)
  context.close()
  browser.close()
 server.shutdown()
