@@ -212,3 +212,5 @@ Local verification passed: zero Svelte errors or warnings, 33 unit tests, 24 Pla
 ### Local legacy backup review
 
 Added a browser-only file review for standard MajickStudiesSave version 1 exports. It uses the same mapping as synthetic import and returns only a summary to the preview. It has no apply action or destination storage access. Tested with fictional exports only. The owner's attached backup was left unopened. Claude review and separate approval still precede any real import.
+
+PR #305 merged as 9f5bd48. The wallet, known-good and size-limit fixes and the read-only file preview were rebased onto merged main for follow-up review. The file preview continues to use synthetic test data. No actual migration or deployment was performed.
