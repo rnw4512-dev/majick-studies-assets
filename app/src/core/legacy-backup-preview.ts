@@ -1,10 +1,31 @@
-import { previewLegacyFixture } from './legacy-import'
-import { newWorkspace } from './workspace'
+import { mapLegacyBackup, summarizeLegacyWorkspace } from './legacy-import'
+import { BackupSizeError, exportBackup } from './workspace-backup'
 
 export const MAX_LEGACY_PREVIEW_BYTES = 64 * 1024 * 1024
+export const LEGACY_CONVERSION_OWNER = 'legacy-backup-conversion'
+const MATERIALS_KEY = 'majick-study-materials-v1'
+const UNKNOWN_DATE = '1970-01-01T00:00:00.000Z'
 
 function record(value: unknown): value is Record<string, unknown> {
   return value !== null && typeof value === 'object' && !Array.isArray(value)
+}
+
+function materialIndex(raw: unknown) {
+  if (typeof raw !== 'string') throw new Error('Study materials in this backup are unreadable.')
+  let rows: unknown
+  try { rows = JSON.parse(raw) }
+  catch { throw new Error('Study materials in this backup are unreadable.') }
+  if (!Array.isArray(rows)) throw new Error('Study materials in this backup are unreadable.')
+  const ids = new Set<string>()
+  return rows.map((row: unknown) => {
+    if (!record(row) || typeof row.id !== 'string' || !row.id || ids.has(row.id) ||
+      typeof row.courseId !== 'string' || typeof row.text !== 'string') {
+      throw new Error('This backup has an invalid or duplicate study-material row.')
+    }
+    ids.add(row.id)
+    const title = typeof row.sourceName === 'string' ? row.sourceName : typeof row.title === 'string' ? row.title : ''
+    return { id: row.id, title }
+  })
 }
 
 export async function reviewLegacyBackup(file: Pick<File, 'size' | 'text'>) {
@@ -25,13 +46,26 @@ export async function reviewLegacyBackup(file: Pick<File, 'size' | 'text'>) {
   if (payload.schemaVersion !== 1 || !record(state) || (browserData != null && !record(browserData))) {
     throw new Error('This Aetheria backup is incomplete or uses an unsupported format.')
   }
-  const preview = previewLegacyFixture({
-    snapshots: { 'primary-workspace-v2': JSON.stringify({
-      format: 1, revision: 1, raw: JSON.stringify(state), browserData: browserData ?? {}
-    }) },
-    local: {}
-  }, newWorkspace('local-backup-preview', new Date().toISOString()))
-  const summary = preview.summaries[0]
-  if (!summary) throw new Error('This backup does not contain a readable progress copy.')
-  return summary
+  const exportedAt = typeof payload.exportedAt === 'string' && Number.isFinite(Date.parse(payload.exportedAt))
+    ? payload.exportedAt : null
+  const at = exportedAt ?? UNKNOWN_DATE
+  const auxiliary = browserData ?? {}
+  const materialRows = Object.hasOwn(auxiliary, MATERIALS_KEY) ? materialIndex(auxiliary[MATERIALS_KEY]) : null
+  const workspace = mapLegacyBackup(JSON.stringify(state), auxiliary, LEGACY_CONVERSION_OWNER, at)
+  const summary = summarizeLegacyWorkspace(workspace)
+  return {
+    summary,
+    exportedAt,
+    materialRows,
+    convert(confirmed: boolean) {
+      if (!confirmed) throw new Error('Confirm which file to convert first.')
+      try { return exportBackup(workspace, at) }
+      catch (error) {
+        if (error instanceof BackupSizeError) {
+          throw new Error('The converted backup would be over 20 MB with all its data. Keep the original file. No backup was created.')
+        }
+        throw error
+      }
+    }
+  }
 }

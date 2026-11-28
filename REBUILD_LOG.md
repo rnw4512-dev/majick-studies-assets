@@ -218,3 +218,7 @@ PR #305 merged as 9f5bd48. The wallet, known-good and size-limit fixes and the r
 ## 2026-11-28 — Shared chest balance
 
 PR #306 merged as e2507f6 after Claude approved the three importer fixes. The workspace now validates chests as a non-negative safe integer. Existing version 1 checkpoints without the field read as zero without a schema bump. The legacy importer takes the account balance, including zero, or the highest valid course balance when the account value is absent. Practice import, read-only file review and backup review show chests. Tests use synthetic data only. Real import remains pending independent review and separate owner authorization.
+
+## 2026-11-28 — Compare legacy backup files and convert the selected copy
+
+After PR #307 merged, added a browser-local comparison of up to three exported legacy backup files. It displays wallet, receipt and progress totals, file export timestamps, and material presence, counts, IDs and titles. Added an explicit file selection and confirmation before downloading a deterministic version 1 workspace backup. The selected file's sanitized material rows are preserved; oversized outputs are blocked. The portable conversion owner is reserved for later binding in an independently reviewed restore step. The feature does not access destination storage or upload selected files. Verification uses fictional exports only; no actual backup was opened or restored.
