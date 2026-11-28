@@ -114,6 +114,86 @@ with sync_playwright() as pw:
    else:
     assert state==earned,'pillar replay changed reward ledger'
  print('PASS communication and Five Pillars failure, first clear and persisted replay',flush=True)
+
+ # Workshop games deliberately award journal memories, not currency. Use
+ # public content pools to select answers through the real workshop buttons.
+ page.evaluate("switchCourse('D669');navigate('games')")
+ workshop=page.locator('#aethCourseGames')
+ workshop.wait_for()
+ workshop.locator('[data-exp-section="2"]').click()
+ before=page.evaluate(snapshot)
+ def button(selector):
+  return workshop.locator(selector).first
+ def choose_label(selector,label):
+  choice=workshop.locator(selector).filter(has_text=label)
+  # Match the data attribute exactly, not a substring of a related option.
+  choice=workshop.locator(selector).evaluate_all("(buttons,label)=>buttons.find(b=>Object.values(b.dataset).includes(label))?.dataset",label)
+  assert choice is not None,(selector,label)
+  attr=next(k for k,v in choice.items() if v==label)
+  css='data-'+''.join('-'+c.lower() if c.isupper() else c for c in attr)
+  workshop.locator(f'[{css}]').evaluate_all("(buttons,label)=>buttons.find(b=>Object.values(b.dataset).includes(label)).click()",label)
+ for mode in ['sort','match','classroom']:
+  for attempt in range(2):
+   rows=page.evaluate("mode=>MajickLearningExperiences.courseGames('D669',mode)",mode)
+   assert len(rows)>=3
+   button(f'[data-exp-mode="{mode}"]').click()
+   for i,row in enumerate(rows):
+    answer=row['correct']
+    if i==0 and attempt==0:
+     button(f'[data-exp-answer="{(answer+1)%len(row["options"])}"]').click()
+     button('[data-exp-retry]').click()
+    button(f'[data-exp-answer="{answer}"]').click()
+    button('[data-exp-next]').click()
+   assert workshop.locator('.aeth-mini-result').count()==1
+   assert page.evaluate(snapshot)==before,(mode,attempt)
+   memories=page.evaluate("mode=>MajickLearningExperiences.memories().filter(m=>m.key==='game:D669:'+mode)",mode)
+   assert len(memories)==1
+  button('[data-exp-exit]').click()
+ for mode in ['forge','sequence','scenario']:
+  for attempt in range(2):
+   rows=page.evaluate("mode=>{const e=MajickLearningExperiences,p=e.deepPool('D669',mode),n=Math.min(4,p.length),cycle=e.exportState().playRuns?.['D669:'+mode]||0;return Array.from({length:n},(_,i)=>p[(cycle*n+i)%p.length])}",mode)
+   assert len(rows)>=3
+   button(f'[data-deep-mode="{mode}"]').click()
+   for i,row in enumerate(rows):
+    if mode=='scenario':
+     answer=row['correct']
+     if i==0 and attempt==0:
+      button(f'[data-deep-tile="{(answer+1)%len(row["options"])}"]').click()
+      button('[data-deep-retry]').click()
+     button(f'[data-deep-tile="{answer}"]').click()
+    else:
+     parts=row['parts']
+     if i==0 and attempt==0:
+      for index in reversed(range(len(parts))):
+       button(f'[data-deep-tile="{index}"]').click()
+      button('[data-deep-check]').click()
+      button('[data-deep-retry]').click()
+     for index in range(len(parts)):
+      button(f'[data-deep-tile="{index}"]').click()
+     button('[data-deep-check]').click()
+    button('[data-deep-next]').click()
+   assert workshop.locator('[aria-label="Completed interactive game"]').count()==1
+   assert page.evaluate(snapshot)==before,(mode,attempt)
+   assert page.evaluate("mode=>MajickLearningExperiences.memories().filter(m=>m.key==='deep:D669:'+mode).length",mode)==1
+  button('[data-exp-exit]').click()
+ for mode,method in [('vocab','vocabQuestions'),('comp','comprehensionQuestions')]:
+  rows=page.evaluate("method=>MajickLearningExperiences[method]()",method)
+  assert len(rows)==(7 if mode=='vocab' else 8)
+  for attempt in range(2):
+   button(f'[data-{mode}-start]').click()
+   for i,row in enumerate(rows):
+    selector=f'[data-{mode}-choice]'
+    if i==0 and attempt==0:
+     labels=workshop.locator(selector).evaluate_all("(buttons,mode)=>buttons.map(b=>b.dataset[mode+'Choice'])",mode)
+     choose_label(selector,next(label for label in labels if label!=row['answer']))
+     button(f'[data-{mode}-retry]').click()
+    choose_label(selector,row['answer'])
+    button(f'[data-{mode}-next]').click()
+   assert page.evaluate(snapshot)==before,(mode,attempt)
+   memory='deep:D669:vocabulary-3-8' if mode=='vocab' else 'deep:D669:comprehension-3-9'
+   assert page.evaluate("key=>MajickLearningExperiences.memories().filter(m=>m.key===key).length",memory)==1
+  button('[data-exp-exit]').click()
+ print('PASS all eight D669 workshop activities: wrong, repair, correct, replay, journal uniqueness and no currency or mastery',flush=True)
  context.close()
  browser.close()
 server.shutdown()
