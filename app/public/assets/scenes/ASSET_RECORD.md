@@ -17,3 +17,6 @@ Castle retired from Home; file, original credit and GPL license retained. The fo
 - collegium-nine-slice.svg ← ui/collegium-nine-slice.svg; Git blob 130e3737e8e019aafb245c6a61711026e6e2b364; provenance pending user confirmation or original repo history verification.
 
 Pending also: learn-classroom-v1, explosion-*, wind-*, runes-*, frame-*, leaf-*. Existing licensed manifest credits unchanged. Do not use text-bearing room_library.jpg, room_archive.jpg, room_lecture.jpg, room_observatory.jpg or majick_library.jpg as scene backgrounds. No original files edited; no reference photo used.
+
+## Living magic refinement
+Original CSS/SVG fireflies, wisps, moonbeam, localized light halos, floating candles, quills and motes authored by ChatGPT in app/src/ui/magic/AmbientScene.svelte and magic.css. No reference photos, external downloads or imported effect sprites. Source confirmation requested previously and still pending for listed legacy paintings/effects; no answer received. All painting-bound coordinates are provisional review estimates until actual screenshot calibration. Shipping remains blocked on provenance.

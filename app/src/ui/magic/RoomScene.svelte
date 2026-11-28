@@ -1,16 +1,31 @@
 <script lang="ts">
+  import { coverRect, type CoverRect } from './cover-geometry'
   import AmbientScene from './AmbientScene.svelte'
   import { sceneFor, sceneUrl, type SceneId } from './scene-config'
   let { room, portrait = false }: { room: SceneId; portrait?: boolean } = $props()
   let scene = $derived(sceneFor(room))
+  let image = $state<HTMLImageElement>()
+  let cover = $state<CoverRect|null>(null)
+  function measure() {
+    if (!portrait || !image) return
+    cover = coverRect(image.clientWidth,image.clientHeight,image.naturalWidth,image.naturalHeight,getComputedStyle(image).objectPosition)
+  }
+  $effect(() => {
+    if (!portrait || !image) return
+    const observer = new ResizeObserver(measure)
+    observer.observe(image)
+    window.addEventListener('resize',measure)
+    measure()
+    return () => {observer.disconnect();window.removeEventListener('resize',measure)}
+  })
 </script>
 <div class="college-scene" class:scene-portrait={portrait} data-scene={room} aria-hidden="true" style:--scene-focal={scene.focal} style:--scene-mobile-focal={scene.mobileFocal}>
   <picture>
     {#if scene.compact}<source media="(max-width: 820px)" srcset={sceneUrl(scene.compact)}/>{/if}
-    <img src={sceneUrl(scene.file)} alt="" decoding="async" fetchpriority={room === 'home' ? 'high' : 'auto'}/>
+    <img bind:this={image} onload={measure} src={sceneUrl(scene.file)} alt="" decoding="async" fetchpriority={room === 'home' ? 'high' : 'auto'}/>
   </picture>
   <div class="college-scene-light"></div>
-  {#if portrait}<AmbientScene {room}/>{/if}
+  {#if portrait}<AmbientScene {room} {cover}/>{/if}
 </div>
 <style>
   .college-scene{position:fixed;inset:0;z-index:-2;pointer-events:none;overflow:hidden;background:#2d2041}
