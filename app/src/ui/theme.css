@@ -28,17 +28,15 @@ p{max-width:68ch}
 .room-nav a[aria-current=page]{box-shadow:inset 3px 0 var(--gold)}
 .nav-toggle{display:none}
 main{min-width:0;width:100%;max-width:1200px;margin:0 auto;padding:clamp(14px,3vw,32px)}
-.room-heading{margin-bottom:20px;padding:14px 18px;border-radius:12px;background:#20142ee8;border:1px solid #87694a80}
+.room-heading{margin-bottom:20px;padding:10px 16px;border-radius:12px;background:#20142ee8;border:1px solid var(--gold)}
 .room-heading h1{color:var(--gold)}
 .room-heading p{margin:8px 0}
 .eyebrow{font-size:.73rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);font-weight:700}
 .school{position:relative;isolation:isolate;min-height:100vh}
-.welcome{position:relative;display:grid;grid-template-columns:1fr;align-items:end;min-height:clamp(300px,43vw,470px);overflow:hidden;padding:clamp(20px,4vw,40px);border:1px solid var(--gold);border-radius:18px;margin-bottom:26px;background:#30233f;box-shadow:0 12px 45px #12091c80}
-.welcome>div:not(.castle-portrait){position:relative;z-index:1;max-width:620px;text-shadow:0 2px 5px #160a22}
+.welcome{position:relative;display:grid;grid-template-columns:1fr;align-items:end;min-height:clamp(350px,43vw,510px);overflow:hidden;padding:clamp(14px,3vw,32px);border:1px solid var(--gold);border-radius:18px;margin-bottom:26px;background:#30233f;box-shadow:0 12px 45px #12091c80}
+.welcome-copy{position:relative;z-index:1;max-width:620px;padding:clamp(16px,2.8vw,28px);border:12px solid #d9b876;border-image:url('../public/assets/scenes/collegium-nine-slice.svg') 24 stretch;background:#21142ee8;background-clip:padding-box;color:#fff0dc;border-radius:12px;box-shadow:0 8px 28px #170b26a0}
+.welcome-copy h2{color:var(--gold);overflow-wrap:anywhere}
 .welcome h2{font-size:clamp(1.8rem,4vw,3.4rem)}
-.castle-portrait{position:absolute;inset:0;pointer-events:none}
-.castle-portrait img{width:100%;height:100%;display:block;object-fit:cover;object-position:center 45%}
-.castle-tint{position:absolute;inset:0;background:linear-gradient(0deg,#190e29f2 0%,#30204dc9 35%,#573d7940 75%),radial-gradient(ellipse at center,transparent 35%,#2a143b91)}
 .portal{display:inline-flex;align-items:center;gap:16px;padding:10px 15px;min-height:44px;background:var(--forest);color:#fff5dc;border:1px solid var(--gold);border-radius:8px;text-decoration:none;font-weight:650}
 .portal-arrow{position:relative;color:var(--gold);font-size:1.35rem;text-shadow:0 0 8px #d4a95d;display:inline-block;flex-shrink:0}
 .arrow-spark{font-size:.65rem;position:absolute;right:-3px;top:-4px;opacity:.7}

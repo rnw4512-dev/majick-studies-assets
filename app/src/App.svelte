@@ -55,8 +55,8 @@
         <StorageCheck/>
       {:else if current === 'home'}
         <section class="welcome" aria-labelledby="welcome-heading">
-          <div class="castle-portrait" aria-hidden="true"><img src={import.meta.env.BASE_URL + 'assets/scenes/landscape-castle.webp'} alt="" fetchpriority="high"/><div class="castle-tint"></div></div>
-          <div><p class="eyebrow">Where knowledge awakens magic</p><h2 id="welcome-heading">Welcome, Scholar.</h2>
+          <RoomScene room="home" portrait={true}/>
+          <div class="welcome-copy"><p class="eyebrow">Where knowledge awakens magic</p><h2 id="welcome-heading">Welcome home, Scholar.</h2>
           <p>Explore the new school navigation. Your courses, rewards and Guardians remain in the original application until migration is tested.</p>
           <a class="portal" href={roomLink('learn')}>Explore Learning Lab <PortalArrow/></a></div>
         </section>
