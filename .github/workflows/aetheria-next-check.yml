@@ -1,0 +1,39 @@
+name: Aetheria rebuild foundation checks
+on:
+  push:
+    branches: [main]
+    paths: ['app/**', '.github/workflows/aetheria-next-check.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  foundation:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: app
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Resolve pinned dependencies
+        run: |
+          if test -f package-lock.json; then npm ci; else npm install --no-audit --no-fund; fi
+      - name: Typecheck, unit test and build
+        run: |
+          npm run check
+          npm test
+          npm run build
+      - name: Test responsive shell
+        run: |
+          npx playwright install chromium
+          npm run test:browser
+      - name: Preserve generated dependency lockfile
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: aetheria-next-lockfile
+          path: app/package-lock.json
+          retention-days: 1
