@@ -13,6 +13,16 @@ function apply(){if(busy)return;busy=true;try{
  const brand=root.querySelector('.brand .txt b');if(brand){if(brand.textContent!=='Aetheria')brand.textContent='Aetheria';const sub=root.querySelector('.brand .txt small');if(sub&&sub.textContent!=='Where Knowledge Awakens Magic')sub.textContent='Where Knowledge Awakens Magic'}
  const h=root.querySelector('header .brand, .topbar .brand');if(h&&h.getAttribute('aria-label')!=='Aetheria - Moonlit Collegium')h.setAttribute('aria-label','Aetheria - Moonlit Collegium');
  }finally{busy=false}}
-let timer;function start(){apply();new MutationObserver(()=>{clearTimeout(timer);timer=setTimeout(apply,90)}).observe(document.body,{childList:true,subtree:true,characterData:true,attributes:true,attributeFilter:attr})}
-if(document.readyState==='loading')document.addEventListener('majick:workspace-ready',start,{once:true});else start();window.AetheriaBrand={refresh:apply};
+let timer,observer;
+const observed={childList:true,subtree:true,characterData:true,attributes:true,attributeFilter:attr};
+const ignored='script,style,canvas,svg,[aria-hidden="true"],.majRewardStars,.realmConstellationFinale';
+function relevant(record){
+ const node=record.target.nodeType===1?record.target:record.target.parentElement;
+ if(!node||node.closest(ignored))return false;
+ if(record.type!=='childList')return true;
+ return [...record.addedNodes].some(n=>n.nodeType===3?!!n.nodeValue?.trim():n.nodeType===1&&!n.matches(ignored));
+}
+function flush(){observer?.disconnect();try{apply()}finally{const root=document.querySelector('#app')||document.body;observer?.observe(root,observed)}}
+function start(){if(observer)return;observer=new MutationObserver(records=>{if(!records.some(relevant))return;clearTimeout(timer);timer=setTimeout(flush,90)});flush()}
+if(document.readyState==='loading')document.addEventListener('majick:workspace-ready',start,{once:true});else start();window.AetheriaBrand={refresh:flush};
 })();

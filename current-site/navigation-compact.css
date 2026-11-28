@@ -7,13 +7,13 @@ html{scroll-behavior:auto}
 .app{grid-template-columns:clamp(218px,20vw,280px) minmax(0,1fr)!important}
 .main{min-width:0!important;scroll-padding-top:var(--aeth-scroll-inset)!important}
 .top{height:auto!important;min-height:var(--aeth-nav-height)!important;max-height:none!important;padding:9px 18px!important;display:grid!important;grid-template-columns:minmax(180px,.65fr) minmax(250px,1.2fr) auto!important;gap:10px 16px!important;align-items:center!important;align-content:center!important;position:sticky!important;top:0!important;z-index:40!important}
-.top .titleline{min-width:0!important;max-width:100%!important;gap:5px 9px!important;flex-wrap:wrap!important}
-.top .titleline h1{font-size:clamp(20px,1.8vw,27px)!important;line-height:1.05!important;margin:0!important}
+.top .titleline{display:flex;align-items:center;min-width:0!important;max-width:100%!important;gap:5px 9px!important;flex-wrap:wrap!important}
+.top .titleline h1{font-size:clamp(20px,1.8vw,27px)!important;line-height:1.05!important;margin:0!important;min-width:0;overflow-wrap:anywhere}
 .top .pill{font-size:11px!important;line-height:1.1!important;padding:4px 9px!important;max-width:100%!important;white-space:normal!important}
 .top .courseSelect{width:100%!important;min-width:0!important;max-width:none!important;min-height:44px!important;padding:9px 12px!important;font-size:clamp(14px,1.35vw,19px)!important;box-sizing:border-box!important}
-.top :is(button,select){min-height:40px}
+.top :is(button,select){min-height:40px;max-width:100%}
 .top> :not(.titleline):not(.courseSelect){min-width:0}
-.content{padding:12px 18px 28px!important;max-width:1360px!important}
+.content{padding:12px 18px 28px!important;max-width:1360px!important;min-width:0}
 .side{padding:15px 12px 12px!important}
 .side .brand{margin:0 3px 12px!important;gap:8px!important}
 .side .brandmark{width:44px!important;height:44px!important;flex:0 0 44px!important}
@@ -28,7 +28,7 @@ html{scroll-behavior:auto}
 .side .sidefoot small{font-size:11px!important}
 #content{min-width:0!important}
 #content[data-majick-room]:not([data-majick-room="home"])>.majRoomArchitecture{
- min-height:86px!important;max-height:130px!important;padding:10px 16px!important;margin:0 0 12px!important;
+ min-height:86px!important;max-height:none!important;max-width:100%;padding:10px 16px!important;margin:0 0 12px!important;
  display:grid!important;grid-template-columns:auto minmax(0,1fr)!important;grid-template-rows:auto auto!important;
  column-gap:13px!important;align-content:center!important;justify-content:start!important;text-align:left!important;
  border-bottom-width:3px!important
@@ -38,25 +38,32 @@ html{scroll-behavior:auto}
  grid-row:1/span 2!important;grid-column:1!important;align-self:center!important;font-size:25px!important;margin:0!important
 }
 #content[data-majick-room]:not([data-majick-room="home"])>.majRoomArchitecture .majRoomBannerTitle{
- grid-column:2!important;font-size:clamp(19px,2.5vw,29px)!important;line-height:1.1!important;letter-spacing:.015em!important
+ grid-column:2!important;font-size:clamp(19px,2.5vw,29px)!important;line-height:1.1!important;letter-spacing:.015em!important;overflow-wrap:anywhere
 }
 #content[data-majick-room]:not([data-majick-room="home"])>.majRoomArchitecture .majRoomBannerSub{
  grid-column:2!important;margin:2px 0 0!important;letter-spacing:.055em!important;font-size:10px!important;line-height:1.3!important
 }
-/* Single lightweight room-jump ribbon; no vertical sticky stack. */
-#content .majickRoomSections{
+/* Room navigation: wrap full labels, never truncate or add an inner scrollbar. */
+#content>.majickRoomSections{
  position:relative!important;top:auto!important;z-index:5!important;margin:0 0 10px!important;
- padding:6px 8px!important;min-height:44px!important;max-height:100px!important;gap:6px!important;
- border-radius:10px!important;flex-wrap:nowrap!important;overflow-x:auto!important;overflow-y:hidden!important;
- scroll-snap-type:x proximity!important
+ padding:6px 8px!important;min-height:44px!important;max-height:none!important;gap:6px!important;
+ border-radius:10px!important;display:flex!important;flex-wrap:wrap!important;
+ align-items:stretch!important;justify-content:flex-start!important;overflow:visible!important;
+ white-space:normal!important;scroll-snap-type:none!important
 }
-#content .majickRoomSections strong{font-size:11px!important;white-space:nowrap!important;margin-right:3px!important}
-#content .majickRoomSections button{
- min-height:36px!important;padding:6px 10px!important;max-width:225px!important;
- font-size:13px!important;white-space:nowrap!important;text-overflow:ellipsis!important;
- overflow:hidden!important;scroll-snap-align:start!important
+#content>.majickRoomSections>strong{flex:0 0 100%!important;white-space:normal!important;font-size:11px!important;margin-right:3px!important}
+#content>.majickRoomSections>button{
+ flex:1 1 11rem!important;min-width:0!important;max-width:100%!important;min-height:44px!important;
+ padding:6px 10px!important;font-size:13px!important;line-height:1.25;white-space:normal!important;
+ overflow:visible!important;text-overflow:clip!important;overflow-wrap:anywhere!important
 }
 #content .majickRoomSections button:focus-visible{outline:3px solid #eac583!important;outline-offset:-3px!important}
+.huStudyLaunch,.obs-shell,.cap-shelf{max-width:100%;min-width:0}
+.huStudyLaunch button,.obs-shell button,.cap-shelf button{max-width:100%}
+.huStudyLaunch button:focus-visible{outline:3px solid #d5aa69;outline-offset:2px}
+#content .cap-shelf .cap-activity:not([open]){margin-bottom:7px}
+#content .cap-shelf .cap-question-body{padding:12px}
+@media(max-width:600px){#content .cap-shelf :is(.cap-concepts,.cap-options){grid-template-columns:1fr}}
 #majConnectedPath{margin:0 0 10px!important}
 #majConnectedPath .majPathSummary{padding:9px 12px!important;min-height:40px!important;font-size:.91rem!important}
 #majConnectedPath .majPathBody{padding:0 12px 12px!important}
@@ -89,6 +96,5 @@ html{scroll-behavior:auto}
  .content{padding:8px 10px 24px!important}
  #content[data-majick-room]:not([data-majick-room="home"])>.majRoomArchitecture{min-height:78px!important;max-height:none!important;padding:10px!important}
  #content[data-majick-room]:not([data-majick-room="home"])>.majRoomArchitecture .majRoomBannerTitle{font-size:21px!important}
- #content .majickRoomSections{max-height:52px!important}
 }
 @media(prefers-reduced-motion:reduce){#content .majickRoomSections{scroll-behavior:auto!important}.side .nav button,.top *{transition:none!important;animation:none!important}}

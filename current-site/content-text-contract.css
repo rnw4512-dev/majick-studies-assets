@@ -113,23 +113,12 @@ html body.majickCampus #content :is(.obs-shell,.aeth-adventure)
  --aeth-content-ink:var(--aeth-ivory);
 }
 #content .obs-shell .obs-step{opacity:1!important}
-/* Section navigation must retain whole labels at every width. */
-#content>.majickRoomSections{
- display:flex!important;flex-wrap:wrap!important;align-items:stretch!important;
- justify-content:flex-start!important;max-height:none!important;
- overflow:visible!important;white-space:normal!important;scroll-snap-type:none!important;
-}
-#content>.majickRoomSections>strong{flex:0 0 100%!important;white-space:normal!important}
-#content>.majickRoomSections>button{
- flex:1 1 11rem!important;min-width:0!important;max-width:100%!important;min-height:44px!important;
- white-space:normal!important;overflow:visible!important;text-overflow:clip!important;
- overflow-wrap:anywhere!important;background:#45304f!important;
- color:#fff7e8!important;-webkit-text-fill-color:#fff7e8!important;
-}
+/* Navigation colors belong to the text contract; geometry is in navigation-compact.css. */
+#content>.majickRoomSections>button{background:#45304f!important;color:#fff7e8!important;-webkit-text-fill-color:#fff7e8!important}
 #content>.majickRoomSections>button:is(.majRoomSelected,[aria-pressed="true"]){
  background:#f3dfbd!important;color:#302737!important;-webkit-text-fill-color:#302737!important;
 }
-
+#content .cap-shelf [data-cap-save-written]{color:#fff!important}
 /* The existing course mini-games are paper reading surfaces as well. */
 html body.majickCampus #content :is(#aethCourseGames,#aethAcademyDecor,#aethJournalMemories){--aeth-content-ink:var(--aeth-ink)}
 html body.majickCampus #content :is(#aethCourseGames,#aethAcademyDecor,#aethJournalMemories) :is(h2,h3,h4,p,li,small,span,strong,b,em,label,summary){color:var(--aeth-content-ink)!important;-webkit-text-fill-color:currentColor!important;text-shadow:none!important;opacity:1!important}
