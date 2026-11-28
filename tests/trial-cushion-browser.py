@@ -312,4 +312,53 @@ with sync_playwright() as pw:
     assert routing.evaluate('session.reviewMode && session.limit===12 && session.round===1 && session.reviewQueue.length===11')
     routing.context.close()
     print('PASS D772 result Play again preserves balanced twelve-question review', flush=True)
+
+    # All six Assessment Sigil families share a single first-clear fragment
+    # entitlement. Each correct classification may still receive answer XP.
+    sigil = browser.new_page(reduced_motion='reduce')
+    sigil.goto(url, wait_until='domcontentloaded')
+    sigil.wait_for_function('!!window.MajickRewardCore && !!window.MajickFragmentEarnings && !!window.startAssessmentSigilSort')
+    sigil.evaluate("switchCourse('D755');navigate('games')")
+    fragment_key = 'fragment:game:D755:assessmentsigilsort'
+    snap = """()=>{const a=MajickRewardCore.inspect(),r=S.majickAccount.rewardCore;
+       return {xp:a.xp,crystals:a.crystals,fragments:a.eggFragments,ledger:r.ledger}}"""
+    original = sigil.evaluate(snap)
+    first = None
+    families = ['data','administration','purpose','monitoring','comparison','evidence']
+    for family, good in [('data',False)]+[(family,True) for family in families]:
+        sigil.evaluate("family=>{startAssessmentSigilSort();chooseAssessmentSigilFamily(family)}",family)
+        total = sigil.evaluate('session.items.length')
+        assert total >= 3,(family,total)
+        for _ in range(total):
+            before_answer = sigil.evaluate(snap)
+            sigil.evaluate("""good=>{
+                const q=session.items[session.index];
+                const choices=[...document.querySelectorAll('.assessmentSigilGates button b')].map(b=>b.textContent);
+                answerAssessmentSigil(good?q.sigilAnswer:choices.find(c=>c!==q.sigilAnswer));
+            }""",good)
+            assert sigil.evaluate('session.answered')
+            if not good:
+                after_answer = sigil.evaluate(snap)
+                assert (after_answer['xp'],after_answer['crystals']) == (before_answer['xp'],before_answer['crystals'])
+            sigil.evaluate('nextAssessmentSigil()')
+        assert sigil.evaluate('session.finished')
+        assert sigil.evaluate('session.score') == (total if good else 0)
+        after = sigil.evaluate(snap)
+        assert not any(k.startswith('trial-completion:D755:assessmentsigilsort') for k in after['ledger'])
+        if not good:
+            assert after == original, 'failed sigil sort awarded currency or fragments'
+        else:
+            receipt = after['ledger'][fragment_key]['receipt']
+            assert (receipt['xp'],receipt['crystals'],receipt['masteryXp'],receipt['eggFragments']) == (0,0,0,1)
+            if first is None:
+                first = receipt
+                sigil.evaluate('MajickSaveSafety.flush()')
+                sigil.reload(wait_until='domcontentloaded')
+                sigil.wait_for_function('!!window.MajickRewardCore && !!window.startAssessmentSigilSort')
+                sigil.evaluate("switchCourse('D755');navigate('games')")
+            else:
+                assert receipt == first, (family,'duplicate first-clear fragment')
+            assert after['fragments'] == original['fragments']+1
+    sigil.context.close()
+    print('PASS six D755 sigil families, incorrect answers, shared first-clear fragment and reload',flush=True)
     browser.close()
