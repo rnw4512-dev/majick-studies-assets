@@ -62,3 +62,15 @@ Files: app/package.json, .gitignore, index.html, vite.config.ts, vitest.config.t
 Verification: local Node 22.16/npm 10.9 available, but npm registry DNS failed (EAI_AGAIN); therefore cannot generate genuine lockfile or run local build/tests in this environment. Exact direct dependency versions pinned; separate read-only public-repository CI check added, with no deployment or paid services. CI must generate lockfile, typecheck, unit tests, build, browser smoke tests at 390/820/1366; archive lockfile for recovery. Do not mark step complete before checks pass and generated lockfile is committed. No storage migration, cloud, production deployment or switchover.
 
 NEXT: finish Phase 1 Step 1 by inspecting foundation workflow results, fixing any failures and committing genuine generated package-lock.json; repeat npm ci and checks. Only after passing proceed to legacy storage inventory. Local recovery: cd app; npm install; npm run check; npm test; npm run build; npx playwright install chromium; npm run test:browser. Rollback only this scaffold commit if necessary; never reset legacy storage or current-site.
+
+## 2026-11-28 — Phase 1 Step 1 certification correction
+
+Claude independently tested a copy of commit 6d1d0ac without editing the repository. User reports npm install, Vitest 2/2, build (~32 KB JS, 5.7 KB CSS), and browser 3/3 at 390/820/1366 all passed, with legacy save untouched. Typecheck failed on PortalArrow.svelte; Claude verified adding an empty TypeScript script block yields zero errors. GitHub run 46151332543 also failed at typecheck. Applied that exact fix.
+
+Recovered the genuine npm-generated package-lock.json artifact from run 46151332543 (artifact 15265683410; lockfile v3, 137 package entries, matching the pinned package.json). The file is available in the assistant's execution container; GitHub connector requires text input, so added a temporary conditional CI log export of the generated public dependency lockfile to allow exact transfer into the repository. No credential or learner data is printed. Once lockfile is committed, use npm ci and remove the temporary export step. Certification is still outstanding until the committed lockfile and all GitHub checks pass.
+
+Legacy freeze: Pages run 46150328401 for 8e5d86a failed at real learning/Journal/Council/Guardian browser verification, so that cleanup was not deployed. Do not repair or modify current-site/ under this rebuild. Existing live version remains prior to that failed release.
+
+Only one AI edits the repo at a time. Claude tests/reviews only unless user explicitly changes that rule. This correction touched PortalArrow.svelte, the isolated foundation-check workflow and this log only; no production deployment or legacy save access.
+
+NEXT: retrieve exact generated lockfile from CI output, commit app/package-lock.json, enforce npm ci, verify green foundation workflow, then mark Step 1 complete. Next phase thereafter is Phase 1 Step 2 — read-only inventory of every localStorage, sessionStorage and IndexedDB key in current-site/, including dynamic keys. Inventory only; do not build importer.

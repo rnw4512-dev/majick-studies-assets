@@ -21,6 +21,13 @@ jobs:
       - name: Resolve pinned dependencies
         run: |
           if test -f package-lock.json; then npm ci; else npm install --no-audit --no-fund; fi
+      - name: Recover generated lockfile for review
+        run: |
+          if ! git ls-files --error-unmatch package-lock.json >/dev/null 2>&1; then
+            echo AETHERIA_LOCKFILE_BEGIN
+            base64 -w 76 package-lock.json
+            echo AETHERIA_LOCKFILE_END
+          fi
       - name: Typecheck, unit test and build
         run: |
           npm run check
