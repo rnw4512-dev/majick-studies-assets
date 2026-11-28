@@ -34,7 +34,7 @@ main{min-width:0;width:100%;max-width:1200px;margin:0 auto;padding:clamp(14px,3v
 .eyebrow{font-size:.73rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);font-weight:700}
 .school{position:relative;isolation:isolate;min-height:100vh}
 .welcome{position:relative;display:grid;grid-template-columns:1fr;align-items:end;min-height:clamp(350px,43vw,510px);overflow:hidden;padding:clamp(14px,3vw,32px);border:1px solid var(--gold);border-radius:18px;margin-bottom:26px;background:#30233f;box-shadow:0 12px 45px #12091c80}
-.welcome-copy{position:relative;z-index:1;max-width:620px;padding:clamp(16px,2.8vw,28px);border:12px solid #d9b876;border-image:url('../public/assets/scenes/collegium-nine-slice.svg') 24 stretch;background:#21142ee8;background-clip:padding-box;color:#fff0dc;border-radius:12px;box-shadow:0 8px 28px #170b26a0}
+.welcome-copy{position:relative;z-index:1;max-width:620px;padding:clamp(16px,2.8vw,28px);border:12px solid #d9b876;border-image:url('/assets/scenes/collegium-nine-slice.svg') 24 stretch;background:#21142ee8;background-clip:padding-box;color:#fff0dc;border-radius:12px;box-shadow:0 8px 28px #170b26a0}
 .welcome-copy h2{color:var(--gold);overflow-wrap:anywhere}
 .welcome h2{font-size:clamp(1.8rem,4vw,3.4rem)}
 .portal{display:inline-flex;align-items:center;gap:16px;padding:10px 15px;min-height:44px;background:var(--forest);color:#fff5dc;border:1px solid var(--gold);border-radius:8px;text-decoration:none;font-weight:650}
@@ -50,4 +50,15 @@ main{min-width:0;width:100%;max-width:1200px;margin:0 auto;padding:clamp(14px,3v
 .paper :focus-visible{outline-color:#6b3b92}
 .notice{margin-top:24px;border:1px solid var(--line);border-radius:10px;background:#21142fed;padding:14px;color:#e0d0e3;font-size:.88rem}
 .notice a{color:var(--gold)}
-@media(max-width:700px){.school-layout{grid-template-columns:minmax(0,1fr)}.room-nav{padding:10px 14px;border-right:0;border-bottom:1px solid var(--line)}.nav-toggle{display:flex;justify-content:space-between;width:100%}.room-nav ul{display:none}.room-nav ul.expanded{display:grid;margin-top:8px}.room-grid{grid-template-columns:1fr}.motion-toggle{margin-left:0}.welcome{grid-template-columns:1fr}
+@media(max-width:700px){
+  .school-layout{grid-template-columns:minmax(0,1fr)}
+  .room-nav{padding:10px 14px;border-right:0;border-bottom:1px solid var(--line)}
+  .nav-toggle{display:flex;justify-content:space-between;width:100%}
+  .room-nav ul{display:none}
+  .room-nav ul.expanded{display:grid;margin-top:8px}
+  .room-grid{grid-template-columns:1fr}
+  .motion-toggle{margin-left:0}
+  .welcome{grid-template-columns:1fr;min-height:460px;padding:12px}
+  .welcome-copy{padding:12px;border-width:9px}
+  .welcome-copy .portal{max-width:100%;gap:8px}
+}
