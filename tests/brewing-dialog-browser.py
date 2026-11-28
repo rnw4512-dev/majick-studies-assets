@@ -28,16 +28,35 @@ with sync_playwright() as pw:
   page.keyboard.press('Escape');assert page.get_by_role('dialog').count()==0;assert craft.evaluate('(e)=>e===document.activeElement');assert inventory()==original
   craft.click();page.get_by_role('button',name=re.compile('Add all ingredients')).click();page.get_by_role('button',name='Quick mix',exact=True).click()
   assert inventory()==original,'Ingredients spent before confirmation'
+  assert dialog.get_by_role('status').inner_text()=='Ready to bottle.'
   dialog.screenshot(path=str(out/f'ready-{width}.png'))
   page.get_by_role('button',name=re.compile('Bottle potion')).click()
   bottle=page.locator('.majCozyScene img.cozyGlassVessel');page.wait_for_function('!!document.querySelector(".majCozyScene img.cozyGlassVessel")?.naturalWidth')
   assert bottle.get_attribute('src').endswith('/potions/purple.webp')
+  assert 'Potion saved.' in dialog.get_by_role('status').inner_text()
   assert bottle.evaluate('(e)=>e.naturalWidth===192&&e.naturalHeight===192')
   assert page.locator('.majCozyPixiLayer').count()<=1
   dialog.screenshot(path=str(out/f'bottled-{width}.png'))
   assert protected()==study,'Visual workflow changed academic progress or Guardians'
   after=inventory();page.evaluate('majCozyNext()');assert inventory()==after,'Repeated finish spent ingredients twice'
   page.get_by_role('button',name='Return to workshop',exact=True).click();assert page.get_by_role('dialog').count()==0
+  if width==820:
+   page.evaluate("S.majickAccount.crystals=100;save();navigate('vault')")
+   page.get_by_role('tab',name='Shop & Chests',exact=True).click()
+   upgrade=page.locator('.majCareShopGrid article').filter(has=page.get_by_role('heading',name='Starlight Sanctuary Upgrade'))
+   upgrade.get_by_role('button',name='Unlock').click()
+   assert upgrade.get_by_role('button',name='Owned').is_disabled()
+   assert page.evaluate('S.majickAccount.crystals')==25
+   assert page.evaluate("MajickGuardianCare.buy('sanctuary-upgrade-token').ok") is False
+   assert page.evaluate('S.majickAccount.crystals')==25
+   page.evaluate('MajickSaveSafety.flush()');page.reload(wait_until='domcontentloaded')
+   page.wait_for_function("!!window.MajickGuardianCare && typeof window.phase4SanctuaryHTML==='function'")
+   page.evaluate("navigate('companions')")
+   arch=page.locator('section[data-sanctuary-starlight] .majSanctuaryStarlight')
+   assert 'Starlight Arch' in arch.text_content(), repr(arch.text_content())
+   assert arch.locator('span').evaluate("el=>getComputedStyle(el).animationName")=='none'
+   assert page.evaluate('S.majickAccount.crystals')==25
+   print('PASS permanent Sanctuary upgrade, one crystal debit and saved reduced-motion arch',flush=True)
   assert not errors,errors
   print('PASS',width,'dialog fit, focus loop, Escape/cancel, painted bottle, single renderer, protected learning and idempotent confirmation',flush=True)
   context.close()

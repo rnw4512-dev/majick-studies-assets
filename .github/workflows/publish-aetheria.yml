@@ -52,11 +52,13 @@ jobs:
           python -u tests/parchment-readability-browser.py _certified
           python -u tests/course-question-policy-browser.py _certified
           python -u tests/d669-content-browser.py _certified
+          python -u tests/whole-course-assessment-browser.py _certified
           python -u tests/study-continuity-browser.py _certified
           python -u tests/approved-assets-browser.py _certified
           python -u tests/optional-music-browser.py _certified
           python -u tests/room-interactions-browser.py _certified
           python -u tests/aetheria-sanctuary-browser.py _certified
+          python -u tests/brewing-dialog-browser.py _certified
           python -m http.server 8765 --directory _certified > /tmp/aetheria-pages-test-server.log 2>&1 &
           python -u tests/d756-full-script-browser.py
           python -u tests/d756-scenario-library-browser.py

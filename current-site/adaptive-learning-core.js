@@ -128,7 +128,10 @@ function current(){
  }
  return {lesson,concept,li};
 }
-function bank(){return Array.isArray(course().questionBank)?course().questionBank.filter(q=>Array.isArray(q.options)&&q.options.length>=2):[]}
+function bank(){
+ const questions=window.MajickLearningLab?.practiceBank?.(cid())||(course().questionBank||[]).filter(q=>Array.isArray(q.options)&&q.options.length>=2);
+ return questions.map(q=>Number.isInteger(q.answer)?{...q,answer:q.options[q.answer]}:q);
+}
 function normId(v){return String(v||'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')}
 function microDefs(){
  const c=current().concept,key=normId(c?.id||c?.title),map=MICRO_SKILLS[cid()]||{};
@@ -140,14 +143,20 @@ function microState(){
  const obj=st.microSkills[key];for(const [id] of microDefs())obj[id]=obj[id]||{attempts:0,correct:0,support:0,lastAt:0};
  return obj;
 }
-function creditMicro(ids,correct,{support=false}={}){
+function creditMicro(ids,correct,{support=false,questionId=null}={}){
  const ms=microState(),arr=Array.isArray(ids)?ids:[ids],at=Date.now(),conceptId=current().concept.id;
  arr.filter(Boolean).forEach(id=>{
    if(!ms[id])ms[id]={attempts:0,correct:0,support:0,lastAt:0};
-   const before=ms[id].attempts>=2&&(ms[id].correct/ms[id].attempts)>=.85;
-   ms[id].attempts++;if(correct)ms[id].correct++;if(support)ms[id].support++;ms[id].lastAt=at;
-   const after=ms[id].attempts>=2&&(ms[id].correct/ms[id].attempts)>=.85;
-   if(!before&&after)try{window.MajickRewardCore?.award?.('micro-skill-mastered',{key:'micro:'+cid()+':'+conceptId+':'+id,course:cid(),conceptId,microSkill:id})}catch(_){}
+   const row=ms[id];
+   row.attempts++;if(correct)row.correct++;if(support)row.support++;row.lastAt=at;
+   if(support||!questionId)return;
+   row.independentEvidence=Array.isArray(row.independentEvidence)?row.independentEvidence:[];
+   if(row.independentEvidence.some(x=>x.id===questionId))return;
+   row.independentEvidence.push({id:questionId,correct});
+   const evidence=row.independentEvidence;
+   if(evidence.length>=2&&evidence.filter(x=>x.correct).length/evidence.length>=.85){
+    try{window.MajickRewardCore?.award?.('micro-skill-mastered',{key:'micro:'+cid()+':'+conceptId+':'+id,course:cid(),conceptId,microSkill:id,independent:true})}catch(_){}
+   }
  });
  save();
 }
@@ -285,7 +294,7 @@ function record(q,choice,source,{assisted=false,transfer=false}={}){
  if(window.MajickStudyProgress?.creditAnswer){
    window.MajickStudyProgress.creditAnswer({key:cid()+':'+source+':'+(q.id||q.qid)+':'+at,course:cid(),source,qid:q.id||q.qid,topicId,correct:ok,difficulty:source==='adaptive-mastery'?5:source==='adaptive-mix'?4:3,chosen:choice,answer:q.answer,at,assisted,transfer});
  }else progress().answers.push({qid:q.id||q.qid,topicId,correct:ok,chosen:choice,answer:q.answer,source,assisted,transfer,at});
- const mids=inferMicro(q,choice,ok);creditMicro(mids,ok,{support:assisted});
+ const mids=inferMicro(q,choice,ok);creditMicro(mids,ok,{support:assisted,questionId:String(q.id||q.qid||'')});
  let misconception=null;
  if(!ok){
    const tag=inferError(q,choice);misconception=rememberMisconception(q,choice);
@@ -705,13 +714,13 @@ function bindAdaptive(root){
  }));
  root.querySelectorAll('[data-v347-word]').forEach(b=>b.addEventListener('click',()=>b.classList.toggle('selected')));
  root.querySelector('[data-v347-unlock]')?.addEventListener('click',()=>{
-   const q=ensureQuestion(state().step===8?'mix':'turn',state().step===8),k=q?.id||q?.qid;if(!k)return;state().noMath[k].unlocked=true;creditMicro(['recognize','select'],true);save();renderAdaptive();
+   const q=ensureQuestion(state().step===8?'mix':'turn',state().step===8),k=q?.id||q?.qid;if(!k)return;state().noMath[k].unlocked=true;creditMicro(['recognize','select'],true,{support:true});save();renderAdaptive();
  });
  root.querySelector('[data-v347-show-error]')?.addEventListener('click',()=>{const p=root.querySelector('[data-v347-error]');if(p)p.hidden=false});
  root.querySelectorAll('[data-v349-compare]').forEach(b=>b.addEventListener('click',()=>{const out=root.querySelector('[data-v349-compare-out]');if(out)out.textContent=compareWorkedAnswer(b.dataset.v349Compare)}));
  root.querySelector('[data-v349-branch]')?.addEventListener('click',()=>{const b=diagnosticBranch();if(!b)return;state().branches[current().concept.id]={...b,at:Date.now()};state().step=b.to;save();renderAdaptive()});
  root.querySelectorAll('[data-v349-confidence]').forEach(b=>b.addEventListener('click',()=>recordConfidence(b.dataset.v349Confidence)));
- root.querySelectorAll('[data-v349-explain]').forEach(b=>b.addEventListener('click',()=>{const out=root.querySelector('[data-v349-explain-out]'),ok=b.dataset.v349Explain==='correct';if(out)out.innerHTML=ok?'<b>✓ Yes — that explains the reasoning.</b>':'<b>Not quite. Choose the explanation tied to the actual relationship in the problem.</b>';creditMicro('interpret',ok);save()}));
+ root.querySelectorAll('[data-v349-explain]').forEach(b=>b.addEventListener('click',()=>{const out=root.querySelector('[data-v349-explain-out]'),ok=b.dataset.v349Explain==='correct';if(out)out.innerHTML=ok?'<b>✓ Yes — that explains the reasoning.</b>':'<b>Not quite. Choose the explanation tied to the actual relationship in the problem.</b>';creditMicro('interpret',ok,{support:true});save()}));
  root.querySelectorAll('[data-v349-recovery]').forEach(b=>b.addEventListener('click',()=>{if(b.dataset.v349Recovery==='check'){state().step=9}else{state().step=Math.max(2,Number(state().step||2))}save();renderAdaptive()}));
  root.querySelectorAll('[data-v349-sweep]').forEach(b=>b.addEventListener('click',()=>{
    const sw=memorySweep(),q=byId(b.dataset.v349Sweep),ok=String(b.dataset.value)===String(q?.answer);sw.answers[b.dataset.v349Sweep]={choice:b.dataset.value,correct:ok,at:Date.now()};

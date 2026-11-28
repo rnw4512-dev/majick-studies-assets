@@ -200,7 +200,7 @@ function award(type,ctx={}){
  if(r.ledger[key])return r.ledger[key].receipt||null;
  if(ctx.correct===false||type==='learning-effort')return {key,type,xp:0,crystals:0,masteryXp:0,eggFragments:0,rejected:'incorrect-answer'};
  const cfg=baseFor(type,ctx),independent=ctx.independent===true||type==='independent-correct',delayed=ctx.delayed===true||type==='delayed-recall',transfer=ctx.transfer===true||type==='mixed-transfer-success';
- if(ctx.assisted===true||ctx.independent===false||ctx.masteryEligible===false){if(['concept-mastered','lesson-mastered','competency-mastered','oa-competency-ready','course-passed','misconception-repaired','delayed-recall'].includes(type))return {key,type,xp:0,crystals:0,masteryXp:0,eggFragments:0,rejected:'assisted-or-ineligible'};cfg.eggFragments=0;cfg.masteryXp=0;}
+ if(ctx.assisted===true||ctx.independent===false||ctx.masteryEligible===false){if(['micro-skill-mastered','concept-mastered','lesson-mastered','competency-mastered','oa-competency-ready','course-passed','misconception-repaired','delayed-recall'].includes(type))return {key,type,xp:0,crystals:0,masteryXp:0,eggFragments:0,rejected:'assisted-or-ineligible'};cfg.eggFragments=0;cfg.masteryXp=0;}
  const beforeXp=Math.max(Number(a.xp||0),Number(a.xpHighWater||0));
  let xp=Number(cfg.xp||0),crystals=Number(cfg.crystals||0);
  if(type==='correct-answer'&&independent){cfg.masteryXp=Number(cfg.masteryXp||0)+5}
@@ -235,6 +235,12 @@ function award(type,ctx={}){
  // Emit visual-only feedback only after the authoritative one-time ledger write.
  const milestone={'micro-skill-mastered':'success','concept-mastered':'mastery','lesson-mastered':'lesson','competency-mastered':'mastery','oa-competency-ready':'mastery','course-passed':'course','misconception-repaired':'guardian'}[type];
  if(milestone)try{window.MajickAnimationEffects?.play?.(type==='misconception-repaired'?'repair':milestone,{label:type==='course-passed'?'Course completed':type==='lesson-mastered'?'Lesson mastered':type==='misconception-repaired'?'Reasoning repaired':receipt.label})}catch(_){}
+ if(!milestone&&!['correct-answer','guided-learning-correct','brain-break-correct','whole-course-complete'].includes(type)&&
+    (receipt.xp||receipt.crystals||receipt.eggFragments||receipt.chests||receipt.drop)){
+   const label=receipt.eggFragments?'+'+receipt.eggFragments+' egg '+(receipt.eggFragments===1?'fragment':'fragments'):
+    type.startsWith('d756-meeting-')?'Meeting practice complete':'Reward earned';
+   try{window.MajickAnimationEffects?.play?.('reward',{label})}catch(_){}
+ }
 
  try{window.MajickProductCore?.record?.('reward-earned',{type,xp,crystals,eggFragments:receipt.eggFragments,item:drop?.id||null})}catch(_){}
  return receipt;
@@ -570,8 +576,9 @@ function cozyDraw(){
  const previousAction=box.contains(document.activeElement)?document.activeElement.getAttribute('onclick'):null;
  const look=cozyLooks[rec.id]||cozyLooks['clarity-potion'];
  const labels=['Add ingredients','Stir the potion','Bottle your potion','Potion crafted!'];
+ const status=cozyStage===3?'Potion saved. '+Number(inventory().potions[rec.id]||0)+' in inventory.':cozyStage===2?'Ready to bottle.':cozyStage===1?cozyStirs+' of 3 stirs complete.':'Ingredients ready to add.';
  const actions=cozyStage===0?'<button onclick="majCozyNext()">Add all ingredients ✦</button>':cozyStage===1?'<button onclick="majCozyNext()">Stir ✨ '+cozyStirs+'/3</button><button onclick="majCozyQuick()">Quick mix</button>':cozyStage===2?'<button onclick="majCozyNext()">Bottle potion ⚗</button>':'<button onclick="majCozyClose()">Return to workshop</button>';
- box.innerHTML='<div class="majCozyModal" style="--potion-color:'+look[0]+';--potion-glow:'+look[1]+';--bottle-shape:'+look[2]+'" role="dialog" aria-modal="true" aria-labelledby="majCozyTitle"><button class="majCozyClose" aria-label="Close brewing workshop" onclick="majCozyClose()">×</button><small>THE MOONLIT CAULDRON • '+E(labels[cozyStage])+'</small><h2 id="majCozyTitle">'+E(rec.name)+'</h2><button type="button" onclick="majCozySound()" aria-pressed="'+cozySound+'">'+(cozySound?'♫ Cozy sound on':'♪ Cozy sound off')+'</button><button type="button" class="majCozyMotion" onclick="majCozyMotion()" aria-pressed="'+cozyMotion+'">'+(cozyMotion?'Pause animations':'Play animations')+'</button><p>'+E(potionInfo(rec.id)?.effect||rec.effect)+'</p><p>'+Object.entries(rec.cost).map(([k,n])=>cabinetArt(k,INGREDIENTS.find(x=>x.id===k)?.icon)+' '+E(ingredientName(k))+': '+n+' required / '+Number(inventory().ingredients[k]||0)+' owned').join(' · ')+'</p><div class="majCozyScene" data-brew-stage="'+cozyStage+'" data-motion="'+(cozyMotion?'on':'off')+'">'+cozyFallbackMarkup(look)+'</div><p style="text-align:center">'+(cozyStage===3?'Your potion has been saved to inventory. '+cozyGuardian()+'':cozyStage===1?'Stir three times, or use Quick mix.':cozyStage===2?'The mixture is glowing. Ready to bottle!':'Review the recipe costs below. Ingredients are spent only when you confirm Bottle potion; closing beforehand spends nothing.')+'</p><div class="majCozyActions">'+actions+'</div></div>';
+ box.innerHTML='<div class="majCozyModal" style="--potion-color:'+look[0]+';--potion-glow:'+look[1]+';--bottle-shape:'+look[2]+'" role="dialog" aria-modal="true" aria-labelledby="majCozyTitle"><button class="majCozyClose" aria-label="Close brewing workshop" onclick="majCozyClose()">×</button><small>THE MOONLIT CAULDRON • '+E(labels[cozyStage])+'</small><h2 id="majCozyTitle">'+E(rec.name)+'</h2><button type="button" onclick="majCozySound()" aria-pressed="'+cozySound+'">'+(cozySound?'♫ Cozy sound on':'♪ Cozy sound off')+'</button><button type="button" class="majCozyMotion" onclick="majCozyMotion()" aria-pressed="'+cozyMotion+'">'+(cozyMotion?'Pause animations':'Play animations')+'</button><p>'+E(potionInfo(rec.id)?.effect||rec.effect)+'</p><p>'+Object.entries(rec.cost).map(([k,n])=>cabinetArt(k,INGREDIENTS.find(x=>x.id===k)?.icon)+' '+E(ingredientName(k))+': '+n+' required / '+Number(inventory().ingredients[k]||0)+' owned').join(' · ')+'</p><div class="majCozyScene" data-brew-stage="'+cozyStage+'" data-motion="'+(cozyMotion?'on':'off')+'">'+cozyFallbackMarkup(look)+'</div><p class="majCozyProgress" role="status" aria-live="polite">'+E(status)+'</p><p style="text-align:center">'+(cozyStage===3?'Your potion has been saved to inventory. '+cozyGuardian()+'':cozyStage===1?'Stir three times, or use Quick mix.':cozyStage===2?'The mixture is glowing. Ready to bottle!':'Review the recipe costs below. Ingredients are spent only when you confirm Bottle potion; closing beforehand spends nothing.')+'</p><div class="majCozyActions">'+actions+'</div></div>';
  if(previousScene){box.querySelector('.majCozyScene').replaceWith(previousScene);previousScene.dataset.brewStage=String(cozyStage);previousScene.dataset.motion=cozyMotion?'on':'off';previousScene.querySelector('.majCozyFallbackArt')?.remove();previousScene.insertAdjacentHTML('afterbegin',cozyFallbackMarkup(look));}
  cozyPixi?.update?.();cozyMountPixi();
  if(previousAction){const next=[...box.querySelectorAll('button')].find(b=>b.getAttribute('onclick')===previousAction)||box.querySelector('.majCozyActions button');next?.focus({preventScroll:true})}
@@ -585,7 +592,7 @@ window.majCozyNext=()=>{
  const kind=cozyStage===0?'ingredient':cozyStage===1?'stir':'bottle';
  if(cozyStage===0)cozyStage=1;
  else if(cozyStage===1){cozyStirs++;if(cozyStirs>=3)cozyStage=2}
- else if(cozyStage===2){cozyCommitted=true;const result=craft(cozyRecipe,{key:cozyTransaction});if(!result.ok){window.rewardToast?.('Brewing not committed',result.message);cozyClose();return}cozyDiscover(result.recipe);cozyStage=3;window.rewardToast?.('⚗ Potion crafted',result.recipe.name)}
+ else if(cozyStage===2){cozyCommitted=true;const result=craft(cozyRecipe,{key:cozyTransaction});if(!result.ok){window.rewardToast?.('Brewing not committed',result.message);cozyClose();return}cozyDiscover(result.recipe);cozyStage=3;window.rewardToast?.('⚗ Potion crafted',result.recipe.name);window.MajickAnimationEffects?.play?.('reward',{label:result.recipe.name+' crafted'})}
  cozyDraw();brewCue(kind);
 };
 window.majickCraftPotion=id=>{
@@ -594,7 +601,7 @@ window.majickCraftPotion=id=>{
  const missing=Object.entries(rec.cost).filter(([k,n])=>Number(inv.ingredients[k]||0)<n);
  if(missing.length){window.rewardToast?.('Missing ingredients','Earn more ingredients by studying.');return {ok:false,message:'Missing ingredients'}}
  if(document.getElementById('majCozyBrewing'))return {ok:false,message:'Brewing already open'};
- cozyRecipe=id;cozyTransaction=alchemyKey('brew:'+id);cozyStage=0;cozyStirs=0;cozyCommitted=false;
+ cozyRecipe=id;cozyTransaction=alchemyKey('brew:'+id);if(document.documentElement.dataset.majickReduceMotion==='true')cozyMotion=false;cozyStage=0;cozyStirs=0;cozyCommitted=false;
  const overlay=document.createElement('div');overlay.id='majCozyBrewing';overlay.className='majCozyShade';cozyReturnFocus=document.activeElement;
  overlay.addEventListener('keydown',event=>{if(event.key==='Escape'){event.preventDefault();cozyClose();return}if(event.key!=='Tab')return;const buttons=[...overlay.querySelectorAll('button:not(:disabled)')].filter(b=>b.getClientRects().length);const first=buttons[0],last=buttons.at(-1);if(event.shiftKey&&document.activeElement===first){event.preventDefault();last?.focus()}else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first?.focus()}});
  document.body.appendChild(overlay);cozyDraw();overlay.querySelector('.majCozyClose')?.focus({preventScroll:true});return {ok:true,pending:true};

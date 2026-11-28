@@ -262,9 +262,12 @@ function sanctuaryMarkup(context){
   }
   let phaser=false;try{phaser=localStorage.getItem('majick-sanctuary-renderer')==='phaser'}catch(_){}
   const q='?v=3.4.2&context='+encodeURIComponent(context||'app');
-  return '<section class="phase4Wrap v3317Phase" aria-label="Living Sanctuary">'+
+  const starlight=Array.isArray(window.S?.majickAccount?.guardianOwned)&&window.S.majickAccount.guardianOwned.includes('sanctuary-upgrade-token');
+
+  return '<section class="phase4Wrap v3317Phase" aria-label="Living Sanctuary"'+(starlight?' data-sanctuary-starlight':'')+'>'+
     '<div class="phase4Top"><div><b>✦ Living Sanctuary • V3.4.2</b><br><span>Protected Guardian movement • personalized nooks • furniture storage</span></div>'+
     '<div class="phase4Actions"><button class="btn ghost" type="button" onclick="majickTogglePixiSanctuary(this)" aria-pressed="'+String(phaser)+'">'+(phaser?'Return to PixiJS Sanctuary':'Use original Sanctuary (Phaser)')+'</button><button class="btn ghost" onclick="phase4OpenFullscreen()">Full Sanctuary</button><button class="btn primary" onclick="navigate(\'addmaterial\')">Add Study Material</button></div></div>'+
+    (starlight?'<div class="majSanctuaryStarlight"><span aria-hidden="true">✦ ⋆ ✧ ⋆ ✦</span> Starlight Arch</div>':'')+
     '<iframe id="phase4SanctuaryFrame" class="phase4Frame v3317SanctuaryFrame" src="'+(phaser?'sanctuary/index.html':'pixi-sanctuary/index.html')+q+'" title="Majick Studies Living Sanctuary" loading="'+(context==='home'?'lazy':'eager')+'" allow="fullscreen" onload="setTimeout(()=>{v3317PushGuardianLevels();v3321PushFurnitureState();window.phase4PushState?.();},120)"></iframe>'+
     '<div class="phase4Help">Personal Guardian nooks • feeding + play zones • store/place owned furniture • Cozy Dorm layout preset.</div>'+
   '</section>';

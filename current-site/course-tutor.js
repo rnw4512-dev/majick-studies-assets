@@ -3420,15 +3420,22 @@ function statusClass(status){return norm(status).replace(/\s+/g,'-')}
 function renderCourseNavigator(){
  const host=document.getElementById('courseLessonNavigator');if(!host)return;
  const id=cid(),secs=sections(id),active=selectedLesson(id),sec=secs.find(x=>sectionUnits(x).some(l=>l.id===active?.id))||secs[0];
- if(!sec){host.innerHTML='<h3>Course lessons</h3><p>Add your course notes in Study Material to build this course’s lessons.</p>';return}
+ const practiceButton='<button type="button" id="hubWholeCourse">Whole Course Practice</button>';
+ const openPractice=()=>MajickLearningLab.showTab('practice');
+ if(!sec){
+  host.innerHTML='<h3>Course lessons</h3><p>Add your course notes in Study Material to build this course’s lessons.</p>'+practiceButton;
+  host.querySelector('#hubWholeCourse').onclick=openPractice;
+  return;
+ }
  const units=sectionUnits(sec);
- host.innerHTML='<small>LEARNING HUB · '+E(id)+'</small><h3>Choose your section and lesson</h3><p>Teach → Visuals → Worked Example → Your Turn. Your saved progress stays with each lesson.</p><nav aria-label="Course sections">'+secs.map((x,i)=>'<button type="button" data-hub-section="'+E(x.id)+'" aria-pressed="'+String(x.id===sec.id)+'">Section '+(i+1)+'</button>').join('')+'</nav><h4>'+E(sec.title)+'</h4><div class="hubLessonRows">'+sec.lessons.map(l=>'<button type="button" data-hub-lesson="'+E(l.id)+'" aria-pressed="'+String(l.id===active?.id||(l.sublessons||[]).some(x=>x.id===active?.id))+'">'+E(l.number?'Lesson '+l.number+': '+l.title:l.title)+'</button>').join('')+'</div><label for="hubLessonSelect">All lessons, focused units and quizzes in this section</label><select id="hubLessonSelect">'+units.map(l=>'<option value="'+E(l.id)+'" '+(l.id===active?.id?'selected':'')+'>'+E(lessonNumberLabel(l)+' · '+l.title)+(officialD772Content(l,id)?'':' · notes needed')+'</option>').join('')+'</select><div class="hubNavigatorActions"><button type="button" id="hubOpenLesson">Open selected lesson →</button><button type="button" id="hubFullPath">View full course outline</button></div>';
+ host.innerHTML='<small>LEARNING HUB · '+E(id)+'</small><h3>Choose your section and lesson</h3><p>Teach → Visuals → Worked Example → Your Turn. Your saved progress stays with each lesson.</p><nav aria-label="Course sections">'+secs.map((x,i)=>'<button type="button" data-hub-section="'+E(x.id)+'" aria-pressed="'+String(x.id===sec.id)+'">Section '+(i+1)+'</button>').join('')+'</nav><h4>'+E(sec.title)+'</h4><div class="hubLessonRows">'+sec.lessons.map(l=>'<button type="button" data-hub-lesson="'+E(l.id)+'" aria-pressed="'+String(l.id===active?.id||(l.sublessons||[]).some(x=>x.id===active?.id))+'">'+E(l.number?'Lesson '+l.number+': '+l.title:l.title)+'</button>').join('')+'</div><label for="hubLessonSelect">All lessons, focused units and quizzes in this section</label><select id="hubLessonSelect">'+units.map(l=>'<option value="'+E(l.id)+'" '+(l.id===active?.id?'selected':'')+'>'+E(lessonNumberLabel(l)+' · '+l.title)+(officialD772Content(l,id)?'':' · notes needed')+'</option>').join('')+'</select><div class="hubNavigatorActions"><button type="button" id="hubOpenLesson">Open selected lesson →</button><button type="button" id="hubFullPath">View full course outline</button>'+practiceButton+'</div>';
  const choose=lessonId=>{tutorState(id).practiceFocus=null;tutorState(id).selectedLesson=lessonId;try{save()}catch(_){}show('tutor')};
  host.querySelectorAll('[data-hub-section]').forEach(b=>b.onclick=()=>choose(secs.find(x=>x.id===b.dataset.hubSection).lessons[0].id));
  host.querySelectorAll('[data-hub-lesson]').forEach(b=>b.onclick=()=>choose(b.dataset.hubLesson));
  host.querySelector('#hubOpenLesson').onclick=()=>choose(host.querySelector('select').value);
  host.querySelector('#hubLessonSelect').onchange=()=>choose(host.querySelector('select').value);
  host.querySelector('#hubFullPath').onclick=()=>show('path');
+ host.querySelector('#hubWholeCourse').onclick=openPractice;
  if(id==='D772'){const practice=document.createElement('div');practice.className='hubSkillShortcuts';practice.innerHTML='<b>Extra help · choose a skill</b>'+[['mean','Mean','d772-s2-l4-1'],['median','Median','d772-s2-l4-1'],['ratio','Ratios & Rates','d772-s2-l4-ratios'],['probability','Probability','d772-s3-review']].map(([skill,label,lesson])=>'<button type="button" data-skill="'+skill+'" data-lesson="'+lesson+'">'+label+'</button>').join('');host.append(practice);practice.querySelectorAll('button').forEach(b=>b.onclick=()=>{tutorState(id).selectedLesson=b.dataset.lesson;tutorState(id).practiceFocus=b.dataset.skill;try{save()}catch(_){}show('tutor');document.querySelector('[data-classroom-tab="turn"]')?.click()})}
 }
 function questionVisualHtml(q){

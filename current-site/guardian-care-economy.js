@@ -30,7 +30,7 @@ const CATALOG=[
   {id:'strategy-rune-tokens',name:'Strategy Rune Tokens',icon:'♟',cost:22,kind:'toy',desc:'A set of moving rune pieces. Rook gets a favorite-item bond bonus.'},
   {id:'sunburst-ball',name:'Sunburst Ball',icon:'☀',cost:18,kind:'toy',desc:'A warm glowing ball that Solara loves to nudge around the Sanctuary.'},
   {id:'guardian-bell-collar',name:'Celestial Bell Collar',icon:'✦',cost:28,kind:'accessory',desc:'A collectible Guardian accessory for the dress-up system.'},
-  {id:'sanctuary-upgrade-token',name:'Sanctuary Expansion Seal',icon:'⌂',cost:75,kind:'future',disabled:true,desc:'Reserved for future dorm-room expansion.'}
+  {id:'sanctuary-upgrade-token',name:'Starlight Sanctuary Upgrade',icon:'✧',cost:75,kind:'upgrade',desc:'Permanently lights the Sanctuary entrance with a starlight arch. Works with either Sanctuary renderer.'}
 ];
 
 const DEFAULT_NEEDS={hunger:82,hydration:86,energy:84,fun:78,grooming:86,affection:82,bond:0};
@@ -394,7 +394,10 @@ function buy(id){
   else addOwned(it.id);
 
   saveCare();
-  try{glitterBurst?.(36)}catch(_){}
+  try{
+    if(it.kind==='upgrade')window.MajickAnimationEffects?.play?.('sanctuary',{label:'Starlight Sanctuary unlocked'});
+    else glitterBurst?.(36);
+  }catch(_){}
   try{rewardToast(it.icon+' '+it.name+' acquired!','-'+it.cost+' ◆ • Your studying paid for this.')}catch(_){}
   return {ok:true,item:it,balance:crystalBalance(),snapshot:snapshot()};
 }

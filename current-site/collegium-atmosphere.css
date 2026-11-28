@@ -113,3 +113,16 @@ body[data-majick-room=home] .v3377DoorGrid button *{color:#44302f!important;opac
 @media(max-width:820px){:root{--room-art-guardian-dorm-v1:url('./assets/guardian-dorm-v1-820.webp');--room-art-ancient-study-library-v1:url('./assets/ancient-study-library-v1-820.webp');--room-art-learn-classroom-v1:url('./assets/learn-classroom-v1-820.webp');--room-art-learn-classroom-v2:url('./assets/learn-classroom-v2-820.webp');--room-art-game-observatory-v1:url('./assets/game-observatory-v1-820.webp');}}
 
 .caSoundOptions .caTrackSelect{display:block;width:240px;max-width:100%;min-width:0;min-height:44px;margin-top:5px;padding:8px;box-sizing:border-box;border:1px solid #c7a66b;border-radius:8px;background:#21182f!important;color:#fff7e8!important;-webkit-text-fill-color:#fff7e8!important;font:14px/1.4 system-ui,sans-serif}.caSoundOptions .caMusicCredit{max-width:240px;overflow-wrap:anywhere}.caTrackSelect:focus-visible{outline:3px solid #eac583;outline-offset:2px}
+
+/* Ambient room light stays behind interactive content. */
+body[data-majick-room="vault"]{--room-light:radial-gradient(ellipse at 75% 8%,#7a58ae45,transparent 47%),radial-gradient(ellipse at 7% 19%,#b3824d25,transparent 44%)}
+body[data-majick-room="games"]{--room-light:radial-gradient(ellipse at 72% 4%,#536bb64a,transparent 44%),radial-gradient(ellipse at 16% 15%,#a8668742,transparent 42%)}
+.phase4Wrap[data-sanctuary-starlight]{border-color:#ad94d8;box-shadow:0 0 28px #ad94d850}
+.majSanctuaryStarlight{padding:8px 14px;text-align:center;color:#fff3ce;background:linear-gradient(90deg,#18122c,#514071,#18122c);border-block:1px solid #ad94d8;font:600 .9rem/1.4 system-ui}
+.majSanctuaryStarlight span{display:inline-block;color:#ffe9ad;margin-inline-end:.45rem}
+@media(prefers-reduced-motion:no-preference){
+ html:not([data-majick-reduce-motion="true"]) body:is([data-majick-room="vault"],[data-majick-room="games"]) .content:before{animation:majRoomLight 14s ease-in-out infinite alternate}
+ html:not([data-majick-reduce-motion="true"]) .majSanctuaryStarlight span{animation:majArchLight 4s ease-in-out infinite alternate}
+}
+@keyframes majRoomLight{from{opacity:.64}to{opacity:1}}
+@keyframes majArchLight{from{text-shadow:0 0 3px #f4da97;opacity:.76}to{text-shadow:0 0 12px #ffe9ad;opacity:1}}

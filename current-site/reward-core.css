@@ -60,3 +60,5 @@ button.majVaultItemArt{width:100%;border:0;border-bottom:1px solid #ffffff12;bor
 @media(max-width:640px){.majRewardReceipt{bottom:8px;right:8px}.majRewardCard{max-height:46vh;width:min(350px,calc(100vw - 16px))}.majRewardLines{grid-template-columns:repeat(2,minmax(0,1fr))}.majRewardCard footer{flex-direction:row}.majRewardStars img{max-height:36px}}
 @media(prefers-reduced-motion:reduce){.majRewardCard,.majRewardStars img,.majRewardLootArt img{animation:none!important}}
 html[data-majick-reduce-motion="true"] :is(.majRewardCard,.majRewardStars img,.majRewardLootArt img,.majMysteryEgg){animation:none!important}
+
+.majCozyProgress{text-align:center;font-weight:650;color:#ffecbd;min-height:1.5em}

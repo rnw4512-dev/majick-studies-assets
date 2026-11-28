@@ -266,7 +266,14 @@ function completeHatch(id){
   const dialog=document.querySelector('#majCelestialHatch .majHatchDialog');
   if(dialog)dialog.innerHTML='<div class="majHatchStars" aria-hidden="true">✦ · ⋆ · ✧ · ✦</div><div class="majHatchReveal" aria-hidden="true">'+String(meta.icon||'✦').replace(/[&<>]/g,'')+'</div><h2>'+String(pet.name).replace(/[&<>]/g,'')+' has hatched!</h2><p>A new Guardian has awakened in your Sanctuary.</p><button type="button" id="majHatchContinue">Welcome '+String(pet.name).replace(/[&<>]/g,'')+'</button>';
   if(dialog)window.MajickMilestoneParticles?.play?.('hatch',dialog.querySelector('.majHatchReveal'));
-  document.getElementById('majHatchContinue').onclick=()=>{document.getElementById('majCelestialHatch')?.remove();try{window.render?.()}catch(_){};setTimeout(showHatch,250)};
+  document.getElementById('majHatchContinue').onclick=()=>{
+    document.getElementById('majCelestialHatch')?.remove();
+    const assessment=document.querySelector('.learnPanel[data-panel="practice"]:not([hidden]) #learnPractice');
+    if(assessment?.dataset.practiceMounted){
+      assessment.querySelector('#wholeNext:not(:disabled), #wholeBreakSkip, [data-guide-index]:not(:disabled)')?.focus({preventScroll:true});
+    }else try{window.render?.()}catch(_){}
+    setTimeout(showHatch,250);
+  };
   try{window.MajickGuardianCare?.broadcastState?.();window.glitterBurst?.(80)}catch(_){}
 }
 window.MajickCelestialIncubator={queue:queueHatch,show:showHatch,complete:completeHatch,readyEggs};

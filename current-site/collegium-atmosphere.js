@@ -1,7 +1,7 @@
 (()=>{
  'use strict';
  const VERSION='3.3.64';
- const ROOMS={home:'College entrance',learninglab:'Candlelit classroom',livinggrimoire:'Working grimoire',games:'Game realm',mission:'Practice chamber',companions:'Guardian residence',journal:'Scholar Journal'};
+ const ROOMS={home:'College entrance',learninglab:'Candlelit classroom',livinggrimoire:'Working grimoire',games:'Game realm',mission:'Practice chamber',companions:'Guardian residence',journal:'Scholar Journal',vault:'Moon Crystal Vault'};
  const TRACKS=Object.freeze({
    dreams:{title:'Dreams Become Real',artist:'Kevin MacLeod',path:'./assets/audio/dreams-become-real.ogg'},
    'crystal-cave':{title:'Crystal Cave',artist:'The Cynic Project',path:'./assets/licensed/music/crystal-cave.ogg'},
