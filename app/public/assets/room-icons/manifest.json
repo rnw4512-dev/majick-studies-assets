@@ -1,109 +1,111 @@
 {
+  "collection": "22 skill icons",
   "assets": [
     {
       "room": "home",
-      "file": "house.png",
-      "original": "current-site/assets/licensed/milestones/house.png",
-      "gitBlob": "05edc146f234fd51154333bd1bf55436fe98fcc8",
-      "author": "Marcus Huang / onein8billion",
+      "file": "skill-10.webp",
+      "original": "current-site/assets/licensed/skill-10.webp",
+      "gitBlob": "60b0512c215354647faddce7f252578213ec95d6",
+      "author": "Kutejnikov",
       "license": "CC0-1.0",
-      "source": "https://opengameart.org/content/1-in-8-billion-%E2%80%93-free-life-simulator-life-milestone-icons-cc0-32x32",
-      "adaptation": "Exact copy of existing runtime derivative; no further image modification"
+      "source": "https://opengameart.org/content/22-skill-icons",
+      "adaptation": "Existing cropped lossless WebP derivative copied byte-for-byte; CSS frame only"
     },
     {
       "room": "study",
-      "file": "book.png",
-      "original": "current-site/assets/licensed/milestones/book.png",
-      "gitBlob": "db02259c304846063325680169e3e0901df4086e",
-      "author": "Marcus Huang / onein8billion",
-      "license": "CC0-1.0",
-      "source": "https://opengameart.org/content/1-in-8-billion-%E2%80%93-free-life-simulator-life-milestone-icons-cc0-32x32",
-      "adaptation": "Exact copy of existing runtime derivative; no further image modification"
-    },
-    {
-      "room": "learn",
       "file": "skill-03.webp",
       "original": "current-site/assets/licensed/skill-03.webp",
       "gitBlob": "4ffa475980667d4684e3aa6824904a3c04395573",
       "author": "Kutejnikov",
       "license": "CC0-1.0",
       "source": "https://opengameart.org/content/22-skill-icons",
-      "adaptation": "Exact copy of existing runtime derivative; no further image modification"
+      "adaptation": "Existing cropped lossless WebP derivative copied byte-for-byte; CSS frame only"
     },
     {
-      "room": "trials",
-      "file": "skill-17.webp",
-      "original": "current-site/assets/licensed/skill-17.webp",
-      "gitBlob": "fd185de61c205f0137e9c2df03af980f75ab7496",
+      "room": "learn",
+      "file": "skill-15.webp",
+      "original": "current-site/assets/licensed/skill-15.webp",
+      "gitBlob": "15d7481fe3fcbd32fa3d824fa6ff935f2ae9ba1d",
       "author": "Kutejnikov",
       "license": "CC0-1.0",
       "source": "https://opengameart.org/content/22-skill-icons",
-      "adaptation": "Exact copy of existing runtime derivative; no further image modification"
+      "adaptation": "Existing cropped lossless WebP derivative copied byte-for-byte; CSS frame only"
+    },
+    {
+      "room": "trials",
+      "file": "skill-07.webp",
+      "original": "current-site/assets/licensed/skill-07.webp",
+      "gitBlob": "cf26e6d95d991436ffb8f8483f54d36c0f11fc3c",
+      "author": "Kutejnikov",
+      "license": "CC0-1.0",
+      "source": "https://opengameart.org/content/22-skill-icons",
+      "adaptation": "Existing cropped lossless WebP derivative copied byte-for-byte; CSS frame only"
     },
     {
       "room": "games",
-      "file": "cluster-1.webp",
-      "original": "current-site/assets/licensed/crystals/cluster-1.webp",
-      "gitBlob": "085a3ebad539a270ff9262881168dbcbc47ce47f",
-      "author": "rubberduck",
+      "file": "skill-04.webp",
+      "original": "current-site/assets/licensed/skill-04.webp",
+      "gitBlob": "f48c9e1dc4875eeac00adf27c073b2efe3818838",
+      "author": "Kutejnikov",
       "license": "CC0-1.0",
-      "source": "https://opengameart.org/content/simple-3d-crystals-unwrapped-simple-texture",
-      "adaptation": "Exact copy of existing runtime derivative; no further image modification"
+      "source": "https://opengameart.org/content/22-skill-icons",
+      "adaptation": "Existing cropped lossless WebP derivative copied byte-for-byte; CSS frame only"
     },
     {
       "room": "sanctuary",
-      "file": "heart.png",
-      "original": "current-site/assets/licensed/milestones/heart.png",
-      "gitBlob": "a86e535ca5f6d3c31dcde0794fedc33a637c0818",
-      "author": "Marcus Huang / onein8billion",
+      "file": "skill-06.webp",
+      "original": "current-site/assets/licensed/skill-06.webp",
+      "gitBlob": "8e24df21e23e7ba1b5a55ce80ad639efb2c247ac",
+      "author": "Kutejnikov",
       "license": "CC0-1.0",
-      "source": "https://opengameart.org/content/1-in-8-billion-%E2%80%93-free-life-simulator-life-milestone-icons-cc0-32x32",
-      "adaptation": "Exact copy of existing runtime derivative; no further image modification"
+      "source": "https://opengameart.org/content/22-skill-icons",
+      "adaptation": "Existing cropped lossless WebP derivative copied byte-for-byte; CSS frame only"
     },
     {
       "room": "atelier",
-      "file": "purple.webp",
-      "original": "current-site/assets/licensed/potions/purple.webp",
-      "gitBlob": "cd3d1bb0057abd11698f0c1f0ffd2713d4da3624",
-      "author": "OwlishMedia",
+      "file": "skill-14.webp",
+      "original": "current-site/assets/licensed/skill-14.webp",
+      "gitBlob": "f8406a11816eec7e3df0c8f21279da4e80424867",
+      "author": "Kutejnikov",
       "license": "CC0-1.0",
-      "source": "https://opengameart.org/content/potion-bottle-0",
-      "adaptation": "Exact copy of existing runtime derivative; no further image modification"
+      "source": "https://opengameart.org/content/22-skill-icons",
+      "adaptation": "Existing cropped lossless WebP derivative copied byte-for-byte; CSS frame only"
     },
     {
       "room": "journal",
+      "file": "skill-16.webp",
+      "original": "current-site/assets/licensed/skill-16.webp",
+      "gitBlob": "8baeb3a8af38bddf4c2aa3720319cf9c06da612e",
+      "author": "Kutejnikov",
+      "license": "CC0-1.0",
+      "source": "https://opengameart.org/content/22-skill-icons",
+      "adaptation": "Existing cropped lossless WebP derivative copied byte-for-byte; CSS frame only"
+    },
+    {
+      "room": "council",
+      "file": "skill-18.webp",
+      "original": "current-site/assets/licensed/skill-18.webp",
+      "gitBlob": "4d313ec3509bc73f0df961e2e5e21e7030d38bd1",
+      "author": "Kutejnikov",
+      "license": "CC0-1.0",
+      "source": "https://opengameart.org/content/22-skill-icons",
+      "adaptation": "Existing cropped lossless WebP derivative copied byte-for-byte; CSS frame only"
+    },
+    {
+      "room": "observatory",
       "file": "skill-08.webp",
       "original": "current-site/assets/licensed/skill-08.webp",
       "gitBlob": "3a9fdfdcfa303f1b9f8c85d96c8d68637dd8dc13",
       "author": "Kutejnikov",
       "license": "CC0-1.0",
       "source": "https://opengameart.org/content/22-skill-icons",
-      "adaptation": "Exact copy of existing runtime derivative; no further image modification"
-    },
-    {
-      "room": "council",
-      "file": "briefcase.png",
-      "original": "current-site/assets/licensed/milestones/briefcase.png",
-      "gitBlob": "01b60c76f920eeee4b491f529f0626d05fa7f917",
-      "author": "Marcus Huang / onein8billion",
-      "license": "CC0-1.0",
-      "source": "https://opengameart.org/content/1-in-8-billion-%E2%80%93-free-life-simulator-life-milestone-icons-cc0-32x32",
-      "adaptation": "Exact copy of existing runtime derivative; no further image modification"
-    },
-    {
-      "room": "observatory",
-      "file": "star.png",
-      "original": "current-site/assets/licensed/milestones/star.png",
-      "gitBlob": "84d9770c5ea77a8023b650a7467862910b1de9e0",
-      "author": "Marcus Huang / onein8billion",
-      "license": "CC0-1.0",
-      "source": "https://opengameart.org/content/1-in-8-billion-%E2%80%93-free-life-simulator-life-milestone-icons-cc0-32x32",
-      "adaptation": "Exact copy of existing runtime derivative; no further image modification"
+      "adaptation": "Existing cropped lossless WebP derivative copied byte-for-byte; CSS frame only"
     }
   ],
   "fallback": {
     "file": "fallback.svg",
-    "author": "Original Aetheria vector artwork authored by ChatGPT in this checkpoint",
-    "source": "Original SVG geometry, no references"
+    "author": "Original Aetheria vector artwork authored by ChatGPT",
+    "source": "Original SVG geometry, no references",
+    "use": "Load-error fallback only"
   }
 }
