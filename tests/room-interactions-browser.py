@@ -54,7 +54,7 @@ with sync_playwright() as pw:
  page=context.new_page()
  page.goto(os.environ.get('MAJICK_URL',f'http://127.0.0.1:{server.server_port}/'))
  page.wait_for_function('!!window.MajickRewardCore&&!!window.MajickFragmentEarnings&&!!window.startScholarInvestigation')
- snapshot="""()=>{const a=MajickStateCore.ensureAccount(),r=a.rewardCore;
+ snapshot="""()=>{MajickRewardCore.inspect();const a=MajickStateCore.ensureAccount(),r=a.rewardCore;
  return {xp:a.xp,crystals:a.crystals,chests:a.chests,mastery:r.masteryXp,
  fragments:r.eggFragments,ledger:r.ledger}}"""
  for course in ['D669','D772','D755','D756']:
@@ -125,13 +125,8 @@ with sync_playwright() as pw:
  def button(selector):
   return workshop.locator(selector).first
  def choose_label(selector,label):
-  choice=workshop.locator(selector).filter(has_text=label)
   # Match the data attribute exactly, not a substring of a related option.
-  choice=workshop.locator(selector).evaluate_all("(buttons,label)=>buttons.find(b=>Object.values(b.dataset).includes(label))?.dataset",label)
-  assert choice is not None,(selector,label)
-  attr=next(k for k,v in choice.items() if v==label)
-  css='data-'+''.join('-'+c.lower() if c.isupper() else c for c in attr)
-  workshop.locator(f'[{css}]').evaluate_all("(buttons,label)=>buttons.find(b=>Object.values(b.dataset).includes(label)).click()",label)
+  workshop.locator(selector).evaluate_all("(buttons,label)=>{const b=buttons.find(b=>Object.values(b.dataset).includes(label));if(!b)throw Error('Missing choice: '+label);b.click()}",label)
  for mode in ['sort','match','classroom']:
   for attempt in range(2):
    rows=page.evaluate("mode=>MajickLearningExperiences.courseGames('D669',mode)",mode)
