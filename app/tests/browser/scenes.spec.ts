@@ -23,6 +23,9 @@ for(const width of [390,820,1366]){
         const stage=page.locator('.room-stage')
         const portrait=stage.locator('.scene-portrait img')
         await expect.poll(()=>portrait.evaluate((img:HTMLImageElement)=>img.complete&&img.naturalWidth>0)).toBe(true)
+        await expect(portrait).toHaveCSS('filter','brightness(1.12) contrast(1.18) saturate(1.3)')
+        const lighting=await stage.locator('.college-scene-light').evaluate(el=>getComputedStyle(el).backgroundImage)
+        expect(lighting).not.toContain('rgba(39, 19, 57, 0.3)')
         const area=await stage.evaluate(el=>{
           const b=el.getBoundingClientRect()
           const plaque=el.querySelector('.scene-plaque')!.getBoundingClientRect()
@@ -44,6 +47,7 @@ for(const width of [390,820,1366]){
         expect(area.clear).toBeGreaterThan(.60)
         expect(area.animations).toBe(0)
       }
+      await expect(img).toHaveCSS('filter','none')
       expect(await scene.evaluate(el=>el.getAnimations({subtree:true}).length)).toBe(0)
       expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true)
     }
@@ -61,6 +65,24 @@ for(const width of [390,820,1366]){
       return (lum(parse(s.color).slice(0,3))+.05)/(lum(background)+.05)
     })
     expect(ratio).toBeGreaterThanOrEqual(4.5)
+    if(width<=700)await page.getByRole('button',{name:'School rooms'}).click()
+    const nav=page.locator('.room-nav')
+    await expect(nav).toBeVisible()
+    const glass=await nav.evaluate(el=>{
+      const parse=(v:string)=>v.match(/[\\d.]+/g)!.map(Number)
+      const lum=(rgb:number[])=>rgb.map(x=>x/255).map(x=>x<=.04045?x/12.92:((x+.055)/1.055)**2.4).reduce((v,x,i)=>v+x*[.2126,.7152,.0722][i],0)
+      const composite=(rgba:number[],under:number[])=>rgba.slice(0,3).map((x,i)=>x*(rgba[3]??1)+under[i]*(1-(rgba[3]??1)))
+      const style=getComputedStyle(el)
+      const bg=parse(style.backgroundColor)
+      const link=el.querySelector('a:not([aria-current])')!
+      const ls=getComputedStyle(link)
+      const worst=composite(parse(ls.backgroundColor),composite(bg,[255,255,255]))
+      return {alpha:bg[3],blur:style.backdropFilter,contrast:(lum(parse(ls.color).slice(0,3))+.05)/(lum(worst)+.05)}
+    })
+    expect(glass.alpha).toBeLessThan(.5)
+    expect(glass.blur).toContain('blur')
+    expect(glass.contrast).toBeGreaterThanOrEqual(4.5)
+    if(width<=700)await page.getByRole('button',{name:'School rooms'}).click()
     await page.getByRole('link',{name:'Explore Learning Lab'}).click()
     await expect(page.getByRole('heading',{level:1})).toHaveText('Learning Lab')
   })

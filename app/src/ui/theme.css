@@ -20,9 +20,9 @@ p{max-width:68ch}
 .motion-toggle,.nav-toggle{min-height:44px;color:#fff0d6;background:#38294c;border:1px solid #ad936e;border-radius:9px;padding:8px 13px}
 .motion-toggle{margin-left:auto}
 .school-layout{display:grid;grid-template-columns:clamp(215px,22vw,260px) minmax(0,1fr);min-height:calc(100vh - 78px)}
-.room-nav{padding:18px 12px;background:rgba(23,14,35,.66);backdrop-filter:blur(9px);border-right:1px solid var(--line)}
+.room-nav{padding:18px 12px;background:rgba(23,14,35,.35);backdrop-filter:blur(7px);border-right:1px solid var(--line)}
 .room-nav ul{list-style:none;padding:0;margin:0;display:grid;gap:5px}
-.room-nav a{display:flex;gap:12px;align-items:center;min-height:44px;padding:8px 11px;text-decoration:none;border:1px solid transparent;border-radius:8px;font-size:.94rem;background:#21142ed9;color:#f8eedc}
+.room-nav a{display:flex;gap:12px;align-items:center;min-height:44px;padding:8px 11px;text-decoration:none;border:1px solid transparent;border-radius:8px;font-size:.94rem;background:rgba(33,20,46,.79);color:#f8eedc}
 .room-nav a span{color:var(--gold);width:20px;text-align:center;flex-shrink:0}
 .room-nav a:hover,.room-nav a[aria-current=page]{border-color:var(--gold);background:#4a305d}
 .room-nav a[aria-current=page]{box-shadow:inset 3px 0 var(--gold)}

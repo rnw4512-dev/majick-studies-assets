@@ -10,7 +10,7 @@
   let current = $state<RoomId>(roomFromHash(window.location.hash))
   let checkingStorage = $state(window.location.hash === '#/storage-check')
   let checkingBackup = $state(window.location.hash === '#/backup-preview')
-  let heading: HTMLHeadingElement
+  let heading = $state<HTMLHeadingElement>()
   let motion = $state(true)
   let menuOpen = $state(false)
   let school: HTMLDivElement
