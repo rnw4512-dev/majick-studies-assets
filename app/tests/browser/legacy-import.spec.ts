@@ -24,3 +24,19 @@ test('synthetic import compares balances, requires confirmation and leaves brows
   await expect(page.getByRole('status')).toContainText('980 XP, 18 crystals, 2 fragments')
   expect(await page.evaluate(() => localStorage.getItem('moonlit_learning_v1'))).toBe('legacy sentinel')
 })
+
+test('reviewing a legacy backup displays its summary without writing to storage', async ({ page }) => {
+  await page.goto('/#/import-preview')
+  const before = await page.evaluate(() => JSON.stringify([Object.entries(localStorage), Object.entries(sessionStorage)]))
+  const payload = {
+    type: 'MajickStudiesSave', schemaVersion: 1,
+    state: { courses: { D772: {} }, progress: { D772: { answers: [], xp: 4242 } } }
+  }
+  await page.getByLabel('Choose a legacy backup file').setInputFiles({
+    name: 'synthetic-backup.json', mimeType: 'application/json', buffer: Buffer.from(JSON.stringify(payload))
+  })
+  const review = page.getByRole('region', { name: 'Review an Aetheria backup' })
+  await expect(review.getByText('4242 XP · 0 crystals · 0 fragments · 0 reward receipts')).toBeVisible()
+  await expect(review.getByText('Courses: D772')).toBeVisible()
+  expect(await page.evaluate(() => JSON.stringify([Object.entries(localStorage), Object.entries(sessionStorage)]))).toBe(before)
+})

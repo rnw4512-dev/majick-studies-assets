@@ -1,4 +1,5 @@
 <script lang="ts">
+  import LegacyBackupReview from './LegacyBackupReview.svelte'
   import { previewLegacyFixture } from '../core/legacy-import'
   import { LocalWorkspaceStore, MemoryBackend } from '../core/local-workspace'
 
@@ -71,6 +72,8 @@
     <p role="status">The practice saves could not be prepared.</p>
   {/await}
 </section>
+
+<LegacyBackupReview/>
 
 <style>
   fieldset { border: 1px solid currentColor; margin-block: 1rem; padding: .75rem 1rem; }
