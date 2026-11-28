@@ -30,6 +30,13 @@ Chromium completed each remaining trial twice against live commit `469ce8a`, rel
 
 The earlier Memory Constellation browser test verified replay, receipt dismissal, and unchanged XP, crystals, and fragments on replay. The same test verified the cushion's exact ingredient debit, storage and placement, rest in both renderers, and persistence after reload. These checks cover trial completion rewards and the tested roles and routes. Other individual learning activity variants are tracked separately.
 
+## Next steps in order
+
+1. **Turn the live replay checks into a permanent browser regression.** Extend `tests/trial-cushion-browser.py` or add a focused trial test for Oracle Lens, Hex Breaker, Guardian Gauntlet victory, and D772 All-Section Review. For each path, finish a qualifying run, reload the same profile, and finish it again. Assert the exact completion receipt and only one completion celebration. Check the completion bonus separately from any legitimate per-answer rewards.
+2. **Verify the remaining reward boundaries.** Cover below-threshold completions and the D756 source-review variants first. Then inventory other untested learning activities and check each against its existing policy, including wrong answers, assisted work, and replay. Record which paths intentionally earn no completion reward. Fix any payout or celebration gaps in the existing reward owner, and add a regression for each fix.
+3. **Continue Sanctuary crafting and Guardian use.** Use the Moonweave Cushion as the reference for the next functional furnishing. Reuse the existing crafting transaction, shared layout, and Guardian care handlers. Verify the ingredient debit, repeat craft, placement and storage, an actual Guardian interaction in Pixi and Phaser, and persistence after reload.
+4. **Publish and verify the next app change.** Run the canonical release gate and targeted browser tests, publish through GitHub Pages, and confirm the exact live commit and production checks. Update this handoff with the evidence and any remaining coverage gaps.
+
 ## Recovery and continuation
 
 Keep existing saves, reward ledger keys, ingredients, Guardian identities, and protected movement assets. For a reward issue, inspect `current-site/game-realm.js` and `current-site/reward-core.js`. Compare the saved `trial-completion:<course>:<type>` receipt before troubleshooting a replay. For a missing cushion, check Workshop ownership and then the shared Sanctuary room's stored status. Publish app changes through the existing Pages workflow and confirm production against the deployment identity above.
