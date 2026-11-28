@@ -1262,7 +1262,7 @@
       '<small>'+(won?'TRIAL CLEARED':'TRIAL COMPLETE')+'</small><h2>'+E(title)+'</h2><div class="realmResultScore">'+score+'/'+total+' <span>'+acc+'%</span></div><p>'+E(detail)+'</p>'+
       '<div class="realmResultStats">'+stats.map(([label,value])=>'<div><small>'+E(label)+'</small><b>'+E(value)+'</b></div>').join('')+'</div>'+
       (g?'<div class="realmResultGuardian">'+(g.image?'<img src="'+E(g.image)+'" alt="'+E(g.name)+'" style="filter:hue-rotate('+Number(g.hue||0)+'deg)">':'<span>'+E(g.icon||'✦')+'</span>')+'<div><b>'+E(g.name)+'</b><p>'+E(guardianLine('finish'))+'</p></div></div>':'')+
-      '<div class="heroBtns"><button class="btn primary" onclick="'+(id==='assessmentsigilsort'?'startAssessmentSigilSort()':id==='runesort'?'startRuneSort()':id==='oraclelens'?'startOracleLens()':id==='constellation'?'startMemoryConstellation()':id==='hexbreaker'?'startHexBreaker()':'startGuardianGauntlet()')+'">Play again</button><button class="btn secondary" onclick="session=null;navigate(\'games\')">Back to Game Realm</button></div></section></div>';
+      '<div class="heroBtns"><button class="btn primary" onclick="'+(id==='assessmentsigilsort'?'startAssessmentSigilSort()':id==='runesort'?'startRuneSort()':id==='oraclelens'?'startOracleLens()':id==='constellation'?'startMemoryConstellation()':id==='hexbreaker'?'startHexBreaker()':id==='gauntlet'&&session?.reviewMode?'startD772SectionReview()':'startGuardianGauntlet()')+'">Play again</button><button class="btn secondary" onclick="session=null;navigate(\'games\')">Back to Game Realm</button></div></section></div>';
   }
 
   // Learning UI supplies the context; reward-core alone commits inventory and rewards.

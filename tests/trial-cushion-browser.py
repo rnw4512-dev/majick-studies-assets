@@ -300,4 +300,16 @@ with sync_playwright() as pw:
     }""")
     policy.context.close()
     print('PASS wrong, assisted, conflicting flags, guided rates and duplicate study rewards', flush=True)
+
+    routing = browser.new_page(reduced_motion='reduce')
+    routing.goto(url, wait_until='domcontentloaded')
+    routing.wait_for_function('!!window.MajickRewardCore && !!window.startD772SectionReview')
+    routing.evaluate("switchCourse('D772');startD772SectionReview()")
+    for _ in range(12):
+        routing.evaluate("()=>{gauntletAnswer(session.current.answer);if(!session.finished)gauntletNext()}")
+    assert routing.evaluate('session.finished && session.score===12 && session.reviewMode')
+    routing.get_by_role('button', name='Play again', exact=True).click()
+    assert routing.evaluate('session.reviewMode && session.limit===12 && session.round===1 && session.reviewQueue.length===11')
+    routing.context.close()
+    print('PASS D772 result Play again preserves balanced twelve-question review', flush=True)
     browser.close()
